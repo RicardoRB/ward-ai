@@ -97,7 +97,7 @@ public final class DoctorService {
     final Project detected = project.get();
     final boolean openCode = flag(facts, "openCodeCommandPresent");
     findings.add(new Finding("project", Status.OK, root.toString()));
-    findings.addAll(BuildToolFindings.of(detected, facts));
+    findings.addAll(BuildToolFindings.forToolchain(detected.toolchain()).findings(detected, facts));
     findings.add(
         check(
             "configuration",
