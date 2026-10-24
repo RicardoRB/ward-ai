@@ -11,7 +11,10 @@
     type-checked rules off for `**/*.{js,mjs,cjs}` with `tseslint.configs.disableTypeChecked`.
   - For JavaScript it enables `@eslint/js` recommended rules, spreads `globals.browser` and
     `globals.node` into `languageOptions.globals`, parses JSX in `**/*.jsx`, and, without
-    `"type": "module"`, sets `sourceType: "commonjs"` for `**/*.js`.
+    `"type": "module"`, sets `sourceType: "commonjs"` for `**/*.js`. With the `jest` gate it
+    adds `globals.jest` for `**/__tests__/**` and `**/*.{test,spec}.{js,jsx,mjs,cjs}`. When the
+    project's Jest `testMatch` uses other locations, widen that `files` list to match; that is
+    neutral, not a weakening.
 - An existing `eslint.config.*` or `.eslintrc*` is the user's. Init reuses it unchanged.
 - The `eslint` gate runs `<runner> eslint . --format json`, so Ward reads one structured finding
   per message, with the rule as `eslint:<rule-id>`.

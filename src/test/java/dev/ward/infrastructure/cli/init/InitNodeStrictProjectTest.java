@@ -71,7 +71,7 @@ class InitNodeStrictProjectTest {
     assertThat(fixture.read("jest.config.mjs")).contains("lines: 85,", "branches: 75,");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"jest\"", "break: 60,");
     assertThat(fixture.read("eslint.config.mjs"))
-        .contains("js.configs.recommended")
+        .contains("js.configs.recommended", "globals.jest")
         .doesNotContain("typescript-eslint");
     assertThat(fixture.read(AGENTS)).contains("Tests (Jest)", "85% line").doesNotContain("tsc");
 

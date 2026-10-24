@@ -49,7 +49,8 @@ final class NodeConfigFiles {
           root,
           configs.userConfig(root, ESLINT),
           file,
-          marker(JS_MARKER, preset) + eslintConfig(project.language(), manifest, preset));
+          marker(JS_MARKER, preset)
+              + eslintConfig(project.language(), manifest, preset, ids.contains(JEST)));
     }
     if (ids.contains(VITEST)) {
       target(
@@ -105,9 +106,12 @@ final class NodeConfigFiles {
   }
 
   private static String eslintConfig(
-      final Language language, final PackageManifest manifest, final QualityPreset preset) {
+      final Language language,
+      final PackageManifest manifest,
+      final QualityPreset preset,
+      final boolean jest) {
     if (language == Language.JAVASCRIPT) {
-      return NodeConfigTemplates.javascriptEslint(manifest.module());
+      return NodeConfigTemplates.javascriptEslint(manifest.module(), jest);
     }
     return preset == QualityPreset.STRICT
         ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT

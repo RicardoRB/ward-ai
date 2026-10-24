@@ -67,7 +67,16 @@ final class NodeConfigTemplates {
           files: ["**/*.jsx"],
           languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
         },
-      {commonjs});
+      {jest}{commonjs});
+      """;
+
+  // Jest's test, expect and describe are globals in its default test file locations.
+  private static final String JEST_BLOCK =
+      """
+        {
+          files: ["**/__tests__/**", "**/*.{test,spec}.{js,jsx,mjs,cjs}"],
+          languageOptions: { globals: globals.jest },
+        },
       """;
 
   // ESLint parses .js as ESM and does not read "type" from package.json.
@@ -126,9 +135,14 @@ final class NodeConfigTemplates {
 
   private NodeConfigTemplates() {}
 
-  /** Returns the JavaScript flat config, parsing {@code .js} as CommonJS unless {@code module}. */
-  static String javascriptEslint(final boolean module) {
-    return JAVASCRIPT_ESLINT.replace("{commonjs}", module ? "" : COMMONJS_BLOCK);
+  /**
+   * Returns the JavaScript flat config, parsing {@code .js} as CommonJS unless {@code module}, and
+   * declaring Jest's globals in test files when {@code jest}.
+   */
+  static String javascriptEslint(final boolean module, final boolean jest) {
+    return JAVASCRIPT_ESLINT
+        .replace("{jest}", jest ? JEST_BLOCK : "")
+        .replace("{commonjs}", module ? "" : COMMONJS_BLOCK);
   }
 
   /** Returns a Vitest config that fails below {@code preset}'s coverage minimums. */

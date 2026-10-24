@@ -349,8 +349,9 @@ Before writing, init checks each package it would add against the project's Node
   - For JavaScript it enables the `@eslint/js` recommended rules and declares both browser and
     Node globals from `globals`, so `require`, `process`, and `window` pass `no-undef`. It parses
     JSX in `.jsx` files. Without `"type": "module"` it also parses `.js` files as CommonJS, because
-    ESLint parses them as ES modules otherwise. Narrow the globals to your runtime once the first
-    check passes.
+    ESLint parses them as ES modules otherwise. With the `jest` gate it also declares Jest's
+    globals (`test`, `expect`, `describe`, ...) for files under `__tests__` and `*.test.*` or
+    `*.spec.*` files. Narrow the globals to your runtime once the first check passes.
 - **`vitest.config.mjs`** or **`jest.config.mjs`** with the coverage thresholds, unless the
   project has its own test config; see [Where the thresholds live](#where-the-thresholds-live).
 - **`bunfig.toml`** for `bun-test` when none exists, with
