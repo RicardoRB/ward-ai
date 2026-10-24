@@ -12,10 +12,10 @@ final class InitToolchains {
 
   private InitToolchains() {}
 
-  /** Returns whether init can configure {@code project}. */
-  static boolean supported(final Project project) {
+  /** Returns whether init can configure {@code project}, reading it through {@code inputs}. */
+  static boolean supported(final Project project, final InitInputs inputs) {
     final ToolchainInitSupport support = SUPPORTS.get(project.toolchain());
-    return support != null && support.supports(project);
+    return support != null && support.supports(project, inputs);
   }
 
   /**
@@ -31,16 +31,14 @@ final class InitToolchains {
     return support;
   }
 
-  /** Returns the message explaining that init cannot configure {@code project}. */
+  /** Returns whether init has no support at all for {@code project}'s toolchain. */
+  static boolean unknown(final Project project) {
+    return !SUPPORTS.containsKey(project.toolchain());
+  }
+
+  /** Returns the message explaining that init cannot configure {@code project}'s toolchain. */
   static String unsupported(final Project project) {
-    if (SUPPORTS.containsKey(project.toolchain())) {
-      return "Ward init does not support "
-          + project.language().displayName()
-          + " "
-          + project.buildTool().displayName()
-          + " projects yet.";
-    }
-    return "Ward init supports Maven, Gradle and TypeScript projects; "
+    return "Ward init supports Maven, Gradle, TypeScript and JavaScript projects; "
         + project.buildTool().displayName()
         + " projects are not supported yet.";
   }

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Offline npx for the TypeScript init fixture: every tool passes; ESLint prints an empty JSON report.
+# Offline npx for the Node init fixtures: every tool passes; ESLint prints an empty JSON report.
 echo "stub npx: $*" >&2
 if [ "$1" = "eslint" ]; then
   echo "[]"

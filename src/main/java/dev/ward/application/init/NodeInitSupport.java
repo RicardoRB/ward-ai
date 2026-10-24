@@ -25,10 +25,11 @@ final class NodeInitSupport implements ToolchainInitSupport {
     return languages(project, testGate).presetGates(preset);
   }
 
-  /** A JavaScript package, such as a monorepo root, is not a project init configures yet. */
+  /** A JavaScript package without sources of its own, such as a monorepo root, is no project. */
   @Override
-  public boolean supports(final Project project) {
-    return project.language() == Language.TYPESCRIPT;
+  public boolean supports(final Project project, final InitInputs inputs) {
+    return project.language() == Language.TYPESCRIPT
+        || project.language() == Language.JAVASCRIPT && inputs.sources().hasSources(project.root());
   }
 
   @Override
@@ -41,12 +42,14 @@ final class NodeInitSupport implements ToolchainInitSupport {
     return NodeCiSetup.steps(project, manifest.packageManager());
   }
 
-  // JavaScript has no entry until its preset (#83), so SourceLanguages rejects it.
   private static SourceLanguages<NodeTools> languages(
       final Project project, final String testGate) {
     return SourceLanguages.of(
         Map.<Language, SourceLanguageGates<NodeTools>>of(
-            Language.TYPESCRIPT, new TypeScriptGates(testGate)),
+            Language.TYPESCRIPT,
+            new TypeScriptGates(testGate),
+            Language.JAVASCRIPT,
+            new JavaScriptGates(testGate)),
         project);
   }
 }

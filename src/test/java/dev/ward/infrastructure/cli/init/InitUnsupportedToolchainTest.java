@@ -26,12 +26,12 @@ class InitUnsupportedToolchainTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output())
         .contains("Poetry")
-        .contains("Ward init supports Maven, Gradle and TypeScript projects");
+        .contains("Ward init supports Maven, Gradle, TypeScript and JavaScript projects");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 
   @Test
-  void javaScriptProjectFailsNamingTheLanguageAndPackageManager() throws IOException {
+  void javaScriptPackageWithoutSourcesIsNoSupportedProject() throws IOException {
     final InitCommandFixture init = InitCommandFixture.repository(root);
     Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
     final Map<String, String> before = ProjectSnapshot.of(root);
@@ -39,7 +39,7 @@ class InitUnsupportedToolchainTest {
     final int exit = init.run("", "--integration", "none", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output()).contains("Ward init does not support JavaScript npm projects yet.");
+    assertThat(init.output()).contains("No supported project detected.");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 
@@ -55,6 +55,23 @@ class InitUnsupportedToolchainTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output())
         .contains("strict preset is not available for TypeScript yet")
+        .contains("--preset standard");
+    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+  }
+
+  @Test
+  void strictPresetIsRejectedForJavaScript() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
+    Files.createDirectories(root.resolve("src"));
+    Files.writeString(root.resolve("src/index.js"), "module.exports = 1;\n");
+    final Map<String, String> before = ProjectSnapshot.of(root);
+
+    final int exit = init.run("", "--integration", "none", "--preset", "strict", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+    assertThat(init.output())
+        .contains("strict preset is not available for JavaScript yet")
         .contains("--preset standard");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }

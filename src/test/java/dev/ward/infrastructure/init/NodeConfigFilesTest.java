@@ -105,6 +105,28 @@ class NodeConfigFilesTest {
     assertThat(warnings).singleElement().asString().contains("bunfig.toml", "coverageThreshold");
   }
 
+  @Test
+  void typeScriptConfigIsUnchanged() throws IOException {
+    manifest("{\n  \"name\": \"shop\"\n}\n");
+
+    writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
+
+    assertThat(Files.readString(root.resolve("eslint.config.mjs")))
+        .isEqualTo(
+            """
+            // managed-by: ward preset=standard
+            import js from "@eslint/js";
+            import { defineConfig } from "eslint/config";
+            import tseslint from "typescript-eslint";
+
+            export default defineConfig(
+              { ignores: ["dist/", "coverage/", ".ward/"] },
+              js.configs.recommended,
+              tseslint.configs.recommended,
+            );
+            """);
+  }
+
   private void manifest(final String content) throws IOException {
     Files.writeString(root.resolve("package.json"), content);
   }

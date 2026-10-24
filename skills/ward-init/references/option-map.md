@@ -10,8 +10,8 @@ as a whole is not that yes.
 | Decision | Option | Values | Consent |
 |---|---|---|---|
 | Project directory | `-C <dir>` | Directory init starts in: the project root, or a monorepo root together with `--project` | No |
-| Projects in a monorepo | `--project <dir>` | Maven, Gradle, or TypeScript project root relative to `-C`. Repeat once per project the user chose | No |
-| Preset | `--preset <id>` | `standard` or `strict` (`standard` only for TypeScript). Leave the option out for a custom selection | No |
+| Projects in a monorepo | `--project <dir>` | Maven, Gradle, TypeScript, or JavaScript project root relative to `-C`. Repeat once per project the user chose | No |
+| Preset | `--preset <id>` | `standard` or `strict` (`standard` only for TypeScript and JavaScript). Leave the option out for a custom selection | No |
 | Gates | `--gate <id>[,<id>...]` | Gate ids from the gate reference | No |
 | Architecture style | `--architecture <style>` | `layered`, `hexagonal`, or `clean`. Only when `archunit` is selected and no ArchUnit tests exist | No |
 | Optional tools | `--tool openspec` | `openspec` | No |
@@ -21,7 +21,7 @@ as a whole is not that yes.
 | CI workflow | `--ci github` | `github`. Leave it out to skip | No |
 | Agent rules in `AGENTS.md` | `--agent-rules` | Present to write the section; leave it out to skip | No |
 | Remove quality hooks | `--remove-quality-hooks` | Present to remove Ward's hook sections | No |
-| Install a TypeScript project's dev dependencies | none: applying a plan with `run <manager> install` runs it | Every `add devDependency` and `run ... install` line in the plan | **Yes, before applying** |
+| Install a Node project's dev dependencies | none: applying a plan with `run <manager> install` runs it | Every `add devDependency` and `run ... install` line in the plan | **Yes, before applying** |
 | Install a missing tool | `--install-tool <id>[,<id>...]` | `openspec`, or a selected gate id that the plan shows with an `install` line | **Yes, per tool** |
 | Replace an existing `ward.toml` | `--overwrite` | Present | **Yes** |
 | Accept plugin version updates | `--accept-compatibility-updates` | Present | **Yes, after showing each `(requires approval)` line** |

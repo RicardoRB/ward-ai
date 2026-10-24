@@ -62,7 +62,10 @@ class GateCatalogContractTest {
                 Stream.of(BuildTool.NPM, BuildTool.BUN)
                     .flatMap(
                         buildTool ->
-                            catalog.gates(project(buildTool, Language.TYPESCRIPT)).stream())))
+                            Stream.of(Language.TYPESCRIPT, Language.JAVASCRIPT)
+                                .flatMap(
+                                    language ->
+                                        catalog.gates(project(buildTool, language)).stream()))))
         .extracting(InitGateOption::id)
         .allSatisfy(
             id ->

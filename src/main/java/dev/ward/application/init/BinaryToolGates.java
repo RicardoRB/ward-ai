@@ -5,7 +5,6 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -69,7 +68,12 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
   }
 
   private List<InitGateOption> securityGates() {
-    final String ruleset = project.language() == Language.TYPESCRIPT ? "p/typescript" : "p/java";
+    final String ruleset =
+        switch (project.language()) {
+          case TYPESCRIPT -> "p/typescript";
+          case JAVASCRIPT -> "p/javascript";
+          default -> "p/java";
+        };
     return List.of(
         option(
             "semgrep",

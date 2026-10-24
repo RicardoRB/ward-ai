@@ -77,7 +77,8 @@ class NodeInitFilesTest {
             "Prettier",
             "`npx tsc --noEmit --pretty false`",
             "Tests (Vitest)",
-            "at least 70% line coverage")
+            "at least 70% line coverage",
+            "with typescript-eslint's recommended rules")
         .doesNotContain("Checkstyle", "PMD", "JaCoCo", "SpotBugs");
   }
 
@@ -101,7 +102,7 @@ class NodeInitFilesTest {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new dev.ward.domain.FakeEnvironmentInspection(),
-            directory -> PackageManifest.EMPTY,
+            new NodeInputs(directory -> PackageManifest.EMPTY, directory -> false),
             null,
             null,
             "dev");

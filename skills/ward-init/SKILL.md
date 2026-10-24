@@ -1,8 +1,8 @@
 ---
 name: ward-init
-description: Set up or reconfigure Ward quality gates in a Java (Maven or Gradle) or TypeScript (npm, pnpm, Yarn, Bun) project together with the user. Inspects the project, explains each choice (preset, gates, architecture style, tools, agent integration, Git hooks) with a recommendation grounded in what it found, previews the exact changes with `ward init --dry-run`, and applies them only after approval. Use when the user wants to add Ward, initialize or change ward.toml, choose quality gates, or asks how to set up Ward for this repository.
+description: Set up or reconfigure Ward quality gates in a Java (Maven or Gradle) or Node (TypeScript or JavaScript with npm, pnpm, Yarn, Bun) project together with the user. Inspects the project, explains each choice (preset, gates, architecture style, tools, agent integration, Git hooks) with a recommendation grounded in what it found, previews the exact changes with `ward init --dry-run`, and applies them only after approval. Use when the user wants to add Ward, initialize or change ward.toml, choose quality gates, or asks how to set up Ward for this repository.
 license: Apache-2.0
-compatibility: Requires the ward CLI >= 0.1.3, a Maven or Gradle Java project or a TypeScript project, and a shell.
+compatibility: Requires the ward CLI >= 0.1.3, a Maven or Gradle Java project or a TypeScript or JavaScript project, and a shell.
 metadata:
   min-ward-version: "0.1.3"
 ---
@@ -70,15 +70,15 @@ Follow [references/inspection.md](references/inspection.md). It is read-only fro
 it runs `ward detect`, `ward doctor`, file listings, `grep`, and one `ward init --dry-run`
 probe for tool availability. It never runs a build or a gate.
 
-If the directory is a monorepo root rather than a Maven, Gradle, or TypeScript project, the
+If the directory is a monorepo root rather than a Maven, Gradle, TypeScript, or JavaScript project, the
 inspection reference explains how to find the projects below it and pass each chosen one with
 `--project <dir>`. If no such project exists there either, tell the user that Ward cannot be set up
 here, and stop. `ward init` fails the same way on its own: when only a project of another build tool
 (for example Poetry or Cargo) is found, its error names that build tool and changes no file, and a
-JavaScript project fails naming JavaScript and its package manager.
+JavaScript `package.json` without sources of its own reports that no supported project was detected.
 
-For a TypeScript project, also follow [references/typescript.md](references/typescript.md): it
-replaces the Java-only inspection steps and lists the TypeScript choices and plan lines.
+For a TypeScript or JavaScript project, also follow [references/node.md](references/node.md): it
+replaces the Java-only inspection steps and lists the Node choices and plan lines.
 
 Show the user the short inspection summary described at the end of that file before asking anything.
 
@@ -105,8 +105,8 @@ order:
    ward init --dry-run --preset standard --integration none
    ```
 
-   Add `--overwrite` when `ward.toml` exists. For TypeScript, only `standard` or a custom selection
-   exists; see [references/typescript.md](references/typescript.md#choices). Recommend `standard` for a first setup or a large
+   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, only `standard` or a custom selection
+   exists; see [references/node.md](references/node.md#choices). Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
    writes a license allowlist that fails on any license it does
@@ -199,8 +199,8 @@ Do not summarize it instead. Then explain it:
   one **separately**. Only if the user accepts every listed update, add
   `--accept-compatibility-updates`. If they decline, leave it out: the apply step keeps the plugin
   unchanged and reports that the gate was not reconfigured.
-- For TypeScript, `add devDependency` and `run <manager> install` lines, `INCOMPATIBLE` findings,
-  and Node notes: see [references/typescript.md](references/typescript.md#reading-the-plan). The
+- For TypeScript and JavaScript, `add devDependency` and `run <manager> install` lines, `INCOMPATIBLE` findings,
+  and Node notes: see [references/node.md](references/node.md#reading-the-plan). The
   install needs its own yes before you apply.
 - `conflict`: a user-owned file blocks initialization. Explain which file and why, and **do not
   apply**. Resolving the conflict is the user's decision. Then preview again.
@@ -240,7 +240,7 @@ Tell the user:
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that `ward.toml` has `partial` tables for Checkstyle, PMD, format, Semgrep, and
-   Gitleaks (ESLint and Prettier for TypeScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
+   Gitleaks (ESLint and Prettier for TypeScript and JavaScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
    not affect and narrow supported tools to the edited or staged files. Claude Code and the native
    harnesses still run the full `default` check when the turn ends; the pre-push hook and CI always
    check the whole project.

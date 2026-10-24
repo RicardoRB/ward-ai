@@ -1,5 +1,5 @@
 #!/bin/sh
-# Offline npm for the TypeScript init fixture: install records itself in the lock file.
+# Offline npm for the Node init fixtures: install records itself in the lock file.
 if [ "$1" = "install" ]; then
   printf '{\n  "name": "shop",\n  "lockfileVersion": 3,\n  "stub": "installed"\n}\n' > package-lock.json
   exit 0

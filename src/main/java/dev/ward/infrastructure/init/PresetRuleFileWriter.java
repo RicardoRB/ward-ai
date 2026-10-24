@@ -94,7 +94,8 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
     if (project.toolchain() == Toolchain.NODE) {
-      return NodeConfigFiles.targets(project.root(), manifests.read(project.root()), preset, gates);
+      return NodeConfigFiles.targets(
+          project.root(), project.language(), manifests.read(project.root()), preset, gates);
     }
     if (preset == null) {
       return Map.of();

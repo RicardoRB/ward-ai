@@ -6,7 +6,7 @@ description: Create ward.toml and select integrations.
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 `ward init` creates `ward.toml` using an interactive wizard or explicit options. It sets up Maven,
-Gradle, and TypeScript projects; see [TypeScript projects](#typescript-projects) for what changes
+Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects) for what changes
 in a Node project.
 
 ```sh
@@ -25,7 +25,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | Option | What it does |
 |---|---|
 | `-C`, `--directory <dir>` | Start in `<dir>` instead of the current directory. See [Choosing projects](#choosing-projects). |
-| `--project <dir>` | Configure this Maven, Gradle, or TypeScript project, relative to `-C`. Repeat for several. |
+| `--project <dir>` | Configure this Maven, Gradle, TypeScript, or JavaScript project, relative to `-C`. Repeat for several. |
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
@@ -49,8 +49,8 @@ each choice for this codebase, and runs `init` with explicit options after you a
 ## Presets and gates
 
 - `standard` and `strict` pre-select their offline gates. `custom` (wizard only) starts with none.
-- `strict` is not available for TypeScript yet: `--preset strict` fails before changing any file
-  and suggests `standard`, and the wizard offers only `standard` and `custom`.
+- `strict` is not available for TypeScript or JavaScript yet: `--preset strict` fails before
+  changing any file and suggests `standard`, and the wizard offers only `standard` and `custom`.
 - The gates you confirm are exactly the gates configured. Unticking a pre-selected gate removes its
   `ward.toml` section, build declarations, and rule file. The preset's rules still apply to the
   other gates.
@@ -231,11 +231,20 @@ finding. With `strict`, expect these on most existing projects:
   `includedLicenses` once your legal policy approves it, or add its spelling to `licenseMerges`
   when it is an approved license written another way. On Gradle, add a rule to `licenseReport`.
 
-## TypeScript projects
+## Node projects
 
-Init sets up a project detected as TypeScript (`tsconfig.json` next to `package.json`) with npm,
-pnpm, Yarn, or Bun. Every Node tool runs as a local dev dependency through the package manager's
-runner: `npx`, `pnpm exec`, `yarn`, or `bunx`.
+Init sets up TypeScript and JavaScript projects with npm, pnpm, Yarn, or Bun. Every Node tool runs
+as a local dev dependency through the package manager's runner: `npx`, `pnpm exec`, `yarn`, or
+`bunx`.
+
+- A project is TypeScript when `tsconfig.json` sits next to `package.json`, or a workspace member
+  has one.
+- Any other `package.json` is JavaScript, and counts as a project only when it holds `.js`, `.jsx`,
+  `.mjs`, or `.cjs` sources of its own. Init does not count files in `node_modules`, build output
+  (`dist`, `build`, `out`, `target`, `coverage`), hidden directories, directories with another build
+  file (such as `pom.xml`), packages that are not workspace members, or root tool configs such as
+  `vite.config.js`. A package without sources, such as a monorepo root, is skipped; see
+  [Choosing projects](#choosing-projects).
 
 ### Gates
 
@@ -247,10 +256,11 @@ runner: `npx`, `pnpm exec`, `yarn`, or `bunx`.
 | `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
 | `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
-| `semgrep` | `semgrep scan --config p/typescript --error` | `ci` |
+| `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
-- `standard` selects `tsc`, the test runner gate, `prettier`, and `eslint`. `semgrep` stays opt-in,
-  and `gitleaks` and `trivy` are offered as for Java.
+- JavaScript gets the same gates except `tsc`.
+- `standard` selects `tsc` (TypeScript only), the test runner gate, `prettier`, and `eslint`.
+  `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`.
 - The test gates fail below 70% line coverage, the `standard` minimum, also for a custom selection.
@@ -278,6 +288,11 @@ runner: `npx`, `pnpm exec`, `yarn`, or `bunx`.
 | `prettier` | 3.9.10 | `>=14` |
 | `vitest`, `@vitest/coverage-v8` | 5.0.3 | `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0` |
 | `typescript` | 6.0.3 | `>=14.17` |
+| `globals` | 17.13.0 | `>=18` |
+
+The `eslint` gate adds `eslint`, `@eslint/js`, and `typescript-eslint` (plus `typescript` when it is
+missing) to a TypeScript project, and `eslint`, `@eslint/js`, and `globals` to a JavaScript project,
+with no TypeScript package.
 
 ### Compatibility checks
 
@@ -297,9 +312,14 @@ Before writing, init checks each package it would add against the project's Node
 
 - **`eslint.config.js`** (with `"type": "module"`) or **`eslint.config.mjs`** (otherwise) when the
   `eslint` gate is selected and the project has no `eslint.config.*` or `.eslintrc*`. It is a flat
-  config with `@eslint/js` and `typescript-eslint` recommended rules, ignoring `dist/`, `coverage/`,
-  and `.ward/`. It starts with a `// managed-by: ward` marker. An existing config is reused
-  unchanged and listed as user-owned.
+  config ignoring `dist/`, `coverage/`, and `.ward/`, and it starts with a `// managed-by: ward`
+  marker. An existing config is reused unchanged and listed as user-owned.
+  - For TypeScript it enables the `@eslint/js` and `typescript-eslint` recommended rules.
+  - For JavaScript it enables the `@eslint/js` recommended rules and declares both browser and
+    Node globals from `globals`, so `require`, `process`, and `window` pass `no-undef`. It parses
+    JSX in `.jsx` files. Without `"type": "module"` it also parses `.js` files as CommonJS, because
+    ESLint parses them as ES modules otherwise. Narrow the globals to your runtime once the first
+    check passes.
 - **`bunfig.toml`** for `bun-test` when none exists, with
   `[test] coverageThreshold = { lines = 0.7 }` and a `#` marker. An existing `bunfig.toml` is kept,
   and init warns that the coverage threshold is enforced only if it sets one.
@@ -371,7 +391,8 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
 enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
 enforcer rules. For TypeScript it names the `tsc`, ESLint, Prettier, and test commands, the 70% line
-coverage minimum, and the ESLint config in use, and no Java tool.
+coverage minimum, and the ESLint config in use, and no Java tool. For JavaScript it names the same
+without `tsc`.
 
 - Content outside the section's markers is kept.
 - When a rule file is user-owned, the section points to the file instead of quoting preset values.
@@ -380,12 +401,12 @@ coverage minimum, and the ESLint config in use, and no Java tool.
 
 ## Choosing projects
 
-Init configures the Maven, Gradle, or TypeScript project that contains the `-C` directory. Started inside a
+Init configures the Maven, Gradle, TypeScript, or JavaScript project that contains the `-C` directory. Started inside a
 build module, it configures the aggregator that lists the module, so `ward.toml` lands next to the
 aggregator's `pom.xml` or `settings.gradle(.kts)`.
 
-When the `-C` directory is not inside a project init supports, such as the JavaScript root of a pnpm or Turbo
-monorepo, init looks for projects below it:
+When the `-C` directory is not inside a project init supports, such as the root of a pnpm or Turbo
+monorepo whose `package.json` has no JavaScript sources of its own, init looks for projects below it:
 
 - It skips hidden directories and `node_modules`, `target`, `build`, `dist`, and `out`.
 - Modules count toward their aggregator instead of being listed.
@@ -394,9 +415,12 @@ monorepo, init looks for projects below it:
   init stops and lists the `--project` values to pass.
 - With none, init stops without changing any file. If the `-C` directory is inside a project of
   another build tool, such as Poetry or Cargo, the error names that build tool and says that init
-  supports Maven, Gradle and TypeScript projects.
-- A JavaScript project (`package.json` without `tsconfig.json`) fails without changing any file,
-  with an error that names JavaScript and its package manager. JavaScript support is planned.
+  supports Maven, Gradle, TypeScript and JavaScript projects. Inside a JavaScript package without
+  sources, it reports that no supported project was detected.
+- `.js` files inside a Java project, such as `src/main/resources/static/app.js`, belong to that
+  project, so they do not make the repository root a JavaScript project.
+- A root with a stray script of its own, such as `scripts/release.js`, is a JavaScript project and
+  stops discovery. Pass `--project` to choose the projects below it instead.
 
 `--project <dir>` names a project explicitly, relative to `-C`. Repeat it to configure several
 projects in one run:
@@ -405,7 +429,7 @@ projects in one run:
 ward init --project apps/api --project services/billing --preset standard --integration none
 ```
 
-Each value must be a Maven, Gradle, or TypeScript project root. A module or a subdirectory fails before anything
+Each value must be a Maven, Gradle, TypeScript, or JavaScript project root. A module or a subdirectory fails before anything
 is planned, and the error names the project to use instead. The answers apply to every selected
 project; run init again with a single `--project` to give one project different settings.
 

@@ -131,7 +131,8 @@ class TypeScriptGatesTest {
 
   private static InitGeneralCatalog catalog(final PackageManifest manifest) {
     return new InitGeneralCatalog(
-        new InitInputs(new FakeEnvironmentInspection("npm", "pnpm"), root -> manifest));
+        new InitInputs(
+            new FakeEnvironmentInspection("npm", "pnpm"), root -> manifest, root -> false));
   }
 
   private Project project(final BuildTool manager) {

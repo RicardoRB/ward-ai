@@ -4,6 +4,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.QualityPreset.PresetRules;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
@@ -73,7 +74,7 @@ final class AgentRulesTemplate {
     if (preset != null) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    lines.addAll(nodeLines(gates, owned));
+    lines.addAll(nodeLines(project, gates, owned));
     // Node projects check Markdown with Prettier, which wants blank lines around the markers.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(
@@ -136,7 +137,8 @@ final class AgentRulesTemplate {
    * Returns one line per selected Node tool gate, naming its command; the coverage minimum is the
    * one the test commands enforce.
    */
-  private static List<String> nodeLines(final List<InitGateOption> gates, final Set<String> owned) {
+  private static List<String> nodeLines(
+      final Project project, final List<InitGateOption> gates, final Set<String> owned) {
     final String coverage = "at least " + NodeTools.LINE_MINIMUM + "% line coverage";
     final String tests = ". New code needs tests that assert behavior.";
     final String eslintConfig =
@@ -145,7 +147,10 @@ final class AgentRulesTemplate {
             .findFirst()
             .map(file -> "follow the rules in `" + file + "`")
             .orElse(
-                "Ward's flat config (`eslint.config.*`) with typescript-eslint's recommended rules");
+                "Ward's flat config (`eslint.config.*`) with "
+                    + (project.language() == Language.JAVASCRIPT
+                        ? "ESLint's recommended JavaScript rules"
+                        : "typescript-eslint's recommended rules"));
     final Map<String, String> rows =
         Map.of(
             "tsc",

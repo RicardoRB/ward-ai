@@ -66,18 +66,18 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
   }
 
   /**
-   * Creates the catalog. {@code manifests} reads Node manifests, {@code qualityHooks} installs Git
-   * hooks, {@code configurations} reads the configuration being replaced, and {@code wardVersion}
-   * is the release a generated CI workflow installs.
+   * Creates the catalog. {@code node} reads Node packages, {@code qualityHooks} installs Git hooks,
+   * {@code configurations} reads the configuration being replaced, and {@code wardVersion} is the
+   * release a generated CI workflow installs.
    */
   @Inject
   public InitSetupCatalog(
       final EnvironmentInspection environment,
-      final PackageManifests manifests,
+      final NodeInputs node,
       final QualityHookGeneration qualityHooks,
       final WardConfigurationReader configurations,
       @Named("ward.version") final String wardVersion) {
-    this(new InitInputs(environment, manifests), qualityHooks, configurations, wardVersion);
+    this(InitInputs.of(environment, node), qualityHooks, configurations, wardVersion);
   }
 
   private InitSetupCatalog(

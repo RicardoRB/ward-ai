@@ -18,7 +18,7 @@ interface ToolchainInitSupport {
    * Returns whether the toolchain has gates for {@code project}'s language; the default accepts
    * every language and lets {@link SourceLanguages} name the one it lacks.
    */
-  default boolean supports(final Project project) {
+  default boolean supports(final Project project, final InitInputs inputs) {
     return true;
   }
 

@@ -62,10 +62,11 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | `standard` | compile, tests, format, Checkstyle, PMD, SpotBugs, coverage | 70% line coverage |
 | `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
+| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
 
-`strict` is not available for TypeScript yet. For TypeScript, `standard` writes no rule files: init
-adds the tools to `package.json` and writes an ESLint flat config when the project has none; see
-[TypeScript projects](/commands/init/#typescript-projects).
+`strict` is not available for TypeScript or JavaScript yet. For both, `standard` writes no rule
+files: init adds the tools to `package.json` and writes an ESLint flat config when the project has
+none; see [Node projects](/commands/init/#node-projects).
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
@@ -111,9 +112,11 @@ run their `command` from the project root, exactly as written, and pass when it 
   such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
 - For a TypeScript project, `ward init` offers `tsc`, `eslint`, `prettier`, the project's test
   runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
-  package manager's runner; see [TypeScript projects](/commands/init/#typescript-projects).
-  `stryker`, `dependency-cruiser`, and JavaScript projects are not set up by init yet, so add those
-  to `ward.toml` yourself.
+  package manager's runner; see [Node projects](/commands/init/#node-projects).
+- For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
+  `p/javascript` ruleset.
+- `stryker` and `dependency-cruiser` are not set up by init yet, so add those to `ward.toml`
+  yourself.
 
 ```toml
 [quality-gates.eslint]
@@ -366,7 +369,7 @@ edit, and for the files a commit stages, a gate:
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
-In a TypeScript project, `eslint` and `prettier` take edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
+In a TypeScript or JavaScript project, `eslint` and `prettier` take edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
 `.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
 command without its `.` target, so a narrowed check runs, for example,
 `npx prettier --check src/app.ts`. An edit of their configs or `package.json` runs them in full.
