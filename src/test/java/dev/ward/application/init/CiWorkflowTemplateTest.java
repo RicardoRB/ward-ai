@@ -136,6 +136,7 @@ class CiWorkflowTemplateTest {
         false,
         false,
         repository,
-        Set.of());
+        Set.of(),
+        "");
   }
 }

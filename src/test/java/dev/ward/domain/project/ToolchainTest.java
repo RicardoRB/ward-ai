@@ -17,17 +17,18 @@ class ToolchainTest {
 
     assertThat(toolchains)
         .containsExactlyInAnyOrderEntriesOf(
-            Map.of(
-                BuildTool.MAVEN, Toolchain.JVM,
-                BuildTool.GRADLE, Toolchain.JVM,
-                BuildTool.NPM, Toolchain.NODE,
-                BuildTool.PNPM, Toolchain.NODE,
-                BuildTool.YARN, Toolchain.NODE,
-                BuildTool.POETRY, Toolchain.PYTHON,
-                BuildTool.PIP, Toolchain.PYTHON,
-                BuildTool.GO, Toolchain.GO,
-                BuildTool.CARGO, Toolchain.RUST,
-                BuildTool.DOTNET, Toolchain.DOTNET));
+            Map.ofEntries(
+                Map.entry(BuildTool.MAVEN, Toolchain.JVM),
+                Map.entry(BuildTool.GRADLE, Toolchain.JVM),
+                Map.entry(BuildTool.NPM, Toolchain.NODE),
+                Map.entry(BuildTool.PNPM, Toolchain.NODE),
+                Map.entry(BuildTool.YARN, Toolchain.NODE),
+                Map.entry(BuildTool.BUN, Toolchain.NODE),
+                Map.entry(BuildTool.POETRY, Toolchain.PYTHON),
+                Map.entry(BuildTool.PIP, Toolchain.PYTHON),
+                Map.entry(BuildTool.GO, Toolchain.GO),
+                Map.entry(BuildTool.CARGO, Toolchain.RUST),
+                Map.entry(BuildTool.DOTNET, Toolchain.DOTNET)));
   }
 
   @Test

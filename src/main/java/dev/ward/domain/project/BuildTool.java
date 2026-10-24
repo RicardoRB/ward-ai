@@ -7,6 +7,7 @@ public enum BuildTool {
   NPM("npm", Toolchain.NODE),
   PNPM("pnpm", Toolchain.NODE),
   YARN("Yarn", Toolchain.NODE),
+  BUN("Bun", Toolchain.NODE),
   POETRY("Poetry", Toolchain.PYTHON),
   PIP("pip", Toolchain.PYTHON),
   GO("Go", Toolchain.GO),

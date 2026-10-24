@@ -27,6 +27,41 @@ ward detect [-C <dir>]
   - With both, the language is Java, and `Languages:` lists Java and Kotlin.
   - With no sources yet, the language is Java.
 - Spring Boot is recognized when the POM references `org.springframework.boot`.
+- TypeScript projects are recognized from `tsconfig.json`, and JavaScript projects from
+  `package.json`.
+
+### Node package manager
+
+For TypeScript and JavaScript, the first match decides the build tool:
+
+1. The `packageManager` field of `package.json` (`npm@…`, `pnpm@…`, `yarn@…` or `bun@…`). Other
+   values are ignored.
+2. A lock file, in this order: `bun.lock` or `bun.lockb` (Bun), `pnpm-lock.yaml` (pnpm),
+   `yarn.lock` (Yarn), `package-lock.json` (npm).
+3. npm.
+
+The `packageManager` field wins over a lock file that disagrees with it, because it is what Corepack
+enforces. Deno is not supported.
+
+### Node version
+
+`detect` prints a `Node:` line with the target Node major version. The first source that gives a
+number decides:
+
+1. `.nvmrc`, such as `v20.11.1` → `20`. Aliases such as `lts/*` fall through.
+2. `.node-version`.
+3. The lower bound of `engines.node` in `package.json`, such as `^18.18.0 || >=20` → `18`.
+4. `24`.
+
+```text
+Language:     TypeScript
+Build tool:   pnpm
+Framework:    None
+Node:         22
+Project root: /path/to/frontend
+```
+
+A malformed `package.json` is still detected; the manager then comes from lock files alone.
 
 ## Modules and aggregators
 
@@ -35,7 +70,16 @@ Build modules belong to their aggregator, up to the Git top-level:
 - A directory listed in an enclosing `pom.xml` `<modules>`, including profile modules, resolves to
   that aggregator.
 - A Gradle build below an enclosing `settings.gradle(.kts)` resolves to that build.
+- A package matched by the `workspaces` field of an enclosing `package.json` (an array, or
+  `{ "packages": [...] }`), or by the `packages` list of an enclosing `pnpm-workspace.yaml`,
+  resolves to that workspace root. This covers npm, pnpm, Yarn and Bun workspaces.
 - A nested build that no aggregator lists is its own project.
+
+A workspace root is TypeScript when the root or any member has `tsconfig.json`, and JavaScript
+otherwise.
+
+Workspace patterns that start with `!` are ignored rather than applied, so a package they would
+exclude is still grouped under the root.
 
 ## Exit codes
 

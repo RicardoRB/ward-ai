@@ -165,6 +165,7 @@ public class JsonReportRenderer {
     public String buildTool;
     public String framework;
     public String root;
+    public String languageVersion;
 
     static ProjectDto from(final Project project) {
       final ProjectDto dto = new ProjectDto();
@@ -172,6 +173,9 @@ public class JsonReportRenderer {
       dto.buildTool = project.buildTool().name();
       dto.framework = project.framework().name();
       dto.root = project.root().toString();
+      if (!project.languageVersion().isEmpty()) {
+        dto.languageVersion = project.languageVersion();
+      }
       return dto;
     }
   }
