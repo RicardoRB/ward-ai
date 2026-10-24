@@ -4,6 +4,7 @@ import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.gate.MutationReport;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.domain.gate.SkippedQualityGate;
@@ -30,6 +31,7 @@ public class QualityGateFactory {
   private final TestMappingInventory testMappingInventory;
   private final ReportDirectories reportDirectories;
   private final OpenApiGates openApiGates;
+  private final MutationReport mutationReport;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -65,22 +67,23 @@ public class QualityGateFactory {
         executor,
         environment,
         new TraceabilitySources(scenarioInventory, testMappingInventory),
-        reportDirectories,
+        new GateReportPorts(reportDirectories, null),
         null);
   }
 
   /**
-   * Creates the factory. {@code reportDirectories} tells command gates where their tools write
-   * reports, and {@code openApiGates} builds the OpenAPI gates.
+   * Creates the factory. {@code reports} tells command gates where their tools write reports and
+   * reads mutation reports, and {@code openApiGates} builds the OpenAPI gates.
    */
   @Inject
   public QualityGateFactory(
       final CommandExecutor executor,
       final EnvironmentInspection environment,
       final TraceabilitySources traceability,
-      final ReportDirectories reportDirectories,
+      final GateReportPorts reports,
       final OpenApiGates openApiGates) {
-    this.reportDirectories = reportDirectories;
+    this.reportDirectories = reports.directories();
+    this.mutationReport = reports.mutations();
     this.executor = executor;
     this.environment = environment;
     this.scenarioInventory = traceability.scenarios();
@@ -141,7 +144,23 @@ public class QualityGateFactory {
     if (SupportedQualityGates.openApiIds().contains(id)) {
       return openApiGate(id, configuration, project);
     }
+    if (SupportedQualityGates.STRYKER.equals(id)) {
+      return strykerGate(configuration);
+    }
     return new CommandQualityGate(id, executor, configuration.command(), reportDirectories);
+  }
+
+  private QualityGate strykerGate(final GateConfiguration configuration) {
+    final QualityGate command =
+        new CommandQualityGate(
+            SupportedQualityGates.STRYKER, executor, configuration.command(), reportDirectories);
+    if (configuration.minimum() == null) {
+      return command;
+    }
+    if (mutationReport == null) {
+      throw new WardException("Stryker gate dependencies are unavailable.");
+    }
+    return new StrykerGate(command, mutationReport, configuration.minimum());
   }
 
   private QualityGate openApiGate(

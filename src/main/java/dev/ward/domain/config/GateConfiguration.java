@@ -15,6 +15,7 @@ import java.util.Set;
  * @param root the project-relative directory it runs from, or {@code null} for the project root;
  *     only OpenSpec gates read it
  * @param openApi the OpenAPI options of an {@code openapi-*} gate, or {@code null} for others
+ * @param minimum the minimum score from 0 to 100 of a mutation gate, or {@code null} when unset
  */
 public record GateConfiguration(
     boolean enabled,
@@ -22,7 +23,8 @@ public record GateConfiguration(
     Set<String> profiles,
     PartialGateConfiguration partial,
     String root,
-    OpenApiGateOptions openApi) {
+    OpenApiGateOptions openApi,
+    Integer minimum) {
 
   /** Creates a gate without OpenAPI options. */
   public GateConfiguration(
@@ -31,7 +33,7 @@ public record GateConfiguration(
       final Set<String> profiles,
       final PartialGateConfiguration partial,
       final String root) {
-    this(enabled, command, profiles, partial, root, null);
+    this(enabled, command, profiles, partial, root, null, null);
   }
 
   /** Creates a gate that runs from the project root. */

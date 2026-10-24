@@ -17,10 +17,21 @@ import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class InitSetupCatalogTest {
+  private static final Set<String> NODE_GATES =
+      Set.of(
+          "tsc",
+          "eslint",
+          "prettier",
+          "vitest",
+          "jest",
+          "bun-test",
+          "stryker",
+          "dependency-cruiser");
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
@@ -194,6 +205,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
+                // Node gates are run by check only; init does not offer them for JVM projects.
+                .filter(id -> !NODE_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestCoverageVerification");

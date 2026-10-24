@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 /** Which findings become rule records, and what the records and prompts carry. */
 class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   private static final String CHECKSTYLE = "checkstyle";
+  private static final String ESLINT = "eslint";
+  private static final String TSC = "tsc";
   private static final int VIOLATIONS = 12;
 
   @Test
@@ -86,6 +88,23 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
     assertThat(outcome.ledger().records()).isEmpty();
+  }
+
+  @Test
+  void eslintRulesAndTscDiagnosticsAreLearnedButParsingErrorsAreNot() {
+    final CheckReport report =
+        new CheckReport(
+            PROJECT,
+            List.of(
+                failedResult(
+                    ESLINT,
+                    finding(ESLINT, "no-unused-vars", "x is never used"),
+                    finding(ESLINT, ESLINT, "Parsing error: ';' expected.")),
+                failedResult(TSC, finding(TSC, "TS2322", "not assignable"))));
+
+    final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
+
+    assertThat(outcome.ledger().records()).containsOnlyKeys("eslint:no-unused-vars", "tsc:TS2322");
   }
 
   @Test

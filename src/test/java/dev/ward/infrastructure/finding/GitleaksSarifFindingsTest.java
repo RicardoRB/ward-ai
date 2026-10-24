@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class GitleaksSarifFindingsTest {
+  private static final String GATE = "gitleaks";
   // Region of the secret in the SARIF fixture below.
   private static final int SECRET_LINE = 3;
   private static final int SECRET_COLUMN = 9;
@@ -56,7 +57,7 @@ class GitleaksSarifFindingsTest {
     final List<Finding> findings =
         source.extract(
             FindingFixtures.maven(root),
-            FindingFixtures.failed("gitleaks", ""),
+            FindingFixtures.failed(GATE, ""),
             FindingFixtures.justBefore());
 
     assertThat(findings).hasSize(2);
@@ -73,13 +74,27 @@ class GitleaksSarifFindingsTest {
   }
 
   @Test
+  void nodeReportLivesInWardReports() {
+    FindingFixtures.write(root.resolve(".ward/reports/gitleaks.sarif"), REPORT);
+
+    assertThat(
+            source.extract(
+                FindingFixtures.typescript(root),
+                FindingFixtures.failed(GATE, ""),
+                FindingFixtures.justBefore()))
+        .hasSize(2);
+    assertThat(ToolReports.gitleaksSarif(FindingFixtures.typescript(root)))
+        .isEqualTo(".ward/reports/gitleaks.sarif");
+  }
+
+  @Test
   void gradleReportLivesInBuildDirectory() {
     FindingFixtures.write(root.resolve("build/gitleaks.sarif"), REPORT);
 
     assertThat(
             source.extract(
                 FindingFixtures.gradle(root),
-                FindingFixtures.failed("gitleaks", ""),
+                FindingFixtures.failed(GATE, ""),
                 FindingFixtures.justBefore()))
         .hasSize(2);
     assertThat(ToolReports.gitleaksSarif(FindingFixtures.gradle(root)))
@@ -106,7 +121,7 @@ class GitleaksSarifFindingsTest {
     assertThat(
             source.extract(
                 FindingFixtures.maven(root),
-                FindingFixtures.failed("gitleaks", ""),
+                FindingFixtures.failed(GATE, ""),
                 FindingFixtures.justBefore()))
         .isEmpty();
   }
@@ -119,7 +134,7 @@ class GitleaksSarifFindingsTest {
             () ->
                 source.extract(
                     FindingFixtures.maven(root),
-                    FindingFixtures.failed("gitleaks", ""),
+                    FindingFixtures.failed(GATE, ""),
                     FindingFixtures.justBefore()))
         .isInstanceOf(MalformedReportException.class)
         .hasMessageNotContaining(SECRET);
@@ -133,7 +148,7 @@ class GitleaksSarifFindingsTest {
     assertThat(
             source.extract(
                 FindingFixtures.maven(root),
-                FindingFixtures.failed("gitleaks", ""),
+                FindingFixtures.failed(GATE, ""),
                 FindingFixtures.justBefore()))
         .isEmpty();
   }

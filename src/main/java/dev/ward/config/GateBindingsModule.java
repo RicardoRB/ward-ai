@@ -10,7 +10,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.spec.SpecValidationService;
 import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.ProjectFiles;
-import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.domain.gate.ReportSink;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.project.ProjectChanges;
@@ -23,7 +22,6 @@ import dev.ward.infrastructure.cli.gate.ReportRenderers;
 import dev.ward.infrastructure.cli.gate.SarifReportRenderer;
 import dev.ward.infrastructure.cli.gate.TextReportRenderer;
 import dev.ward.infrastructure.finding.CompositeFindingExtractor;
-import dev.ward.infrastructure.finding.FileSystemReportDirectories;
 import dev.ward.infrastructure.gate.FileSystemProjectFiles;
 import dev.ward.infrastructure.gate.GitRevisionFiles;
 import dev.ward.infrastructure.project.GitProjectChanges;
@@ -33,9 +31,6 @@ import dev.ward.infrastructure.report.FileReportSink;
 interface GateBindingsModule {
   @Binds
   FindingExtractor findingExtractor(CompositeFindingExtractor implementation);
-
-  @Binds
-  ReportDirectories reportDirectories(FileSystemReportDirectories implementation);
 
   @Binds
   ReportSink reportSink(FileReportSink implementation);

@@ -140,6 +140,7 @@ final class ArchitectureBoundarySupport {
                       "dev.ward.config.TraceabilityBindingsModule",
                       "dev.ward.config.ProvenanceBindingsModule",
                       "dev.ward.config.GateBindingsModule",
+                      "dev.ward.config.ReportBindingsModule",
                       "dev.ward.config.WardProvidesModule")
                   .contains(name);
       case "dev.ward.infrastructure.cli" ->

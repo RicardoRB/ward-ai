@@ -28,6 +28,10 @@ final class FindingFixtures {
     return new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE, true);
   }
 
+  static Project typescript(final Path root) {
+    return new Project(root, Language.TYPESCRIPT, BuildTool.PNPM, Framework.NONE);
+  }
+
   static GateResult failed(final String gate, final String stdout) {
     return GateResult.builder(gate, GateStatus.FAILED)
         .command(List.of("x"))

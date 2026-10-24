@@ -9,6 +9,7 @@ public final class SupportedQualityGates {
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";
   public static final String OPENAPI_COMPAT = "openapi-compat";
+  public static final String STRYKER = "stryker";
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 

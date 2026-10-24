@@ -32,6 +32,12 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |
 | | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
 | | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
+| TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
+| | `eslint` | ESLint | Lint TypeScript and JavaScript sources. |
+| | `prettier` | Prettier | Check source formatting. |
+| | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
+| | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
+| | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
 | Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
@@ -90,6 +96,48 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 - `ward init` can install supported tools with your consent; `check` never installs them.
 - When a command contains `--report-path <path>` inside the project, Ward creates the parent
   directory before running it. The command itself never changes.
+
+## TypeScript and JavaScript gates
+
+`tsc`, `eslint`, `prettier`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
+run their `command` from the project root, exactly as written, and pass when it exits with code 0.
+
+- Ward does not add flags and does not choose a package manager. Put the runner in the command,
+  such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
+- `ward init` does not generate these gates yet, so add them to `ward.toml` yourself.
+
+```toml
+[quality-gates.eslint]
+command = ["pnpm", "exec", "eslint", ".", "--format", "json"]
+profiles = ["default"]
+
+[quality-gates.tsc]
+command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
+profiles = ["pre-push"]
+```
+
+## Stryker mutation score
+
+Without `minimum`, the `stryker` gate passes or fails on Stryker's exit code alone. With
+`minimum = <0-100>`, Ward also reads Stryker's JSON report after a successful run and fails the gate
+when the mutation score is below the minimum.
+
+```toml
+[quality-gates.stryker]
+command = ["npx", "stryker", "run", "--reporters", "clear-text,progress,json"]
+minimum = 60
+profiles = ["ci"]
+```
+
+- The score is detected / valid × 100. Detected mutants were killed or timed out. Valid mutants are
+  the detected ones plus those that survived or that no test covers. Ignored, pending, compile-error,
+  and runtime-error mutants do not count.
+- The command must enable Stryker's `json` reporter. Ward reads the report at Stryker's default
+  path, `reports/mutation/mutation.json`.
+- A report that is missing, older than the gate run, unreadable, or without valid mutants is an
+  execution error, never a pass. The message says which case applies.
+- Use `minimum` instead of Stryker's own `thresholds.break`. That threshold, like a moved report
+  path, can only be set in Stryker's configuration file, which Ward never writes.
 
 ## Traceability gate
 
@@ -242,22 +290,29 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, or `format` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, or `tsc` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
-| Gate | Source | Maven | Gradle |
-|---|---|---|---|
-| `checkstyle` | XML report | `target/checkstyle-result.xml` | `build/reports/checkstyle/*.xml` |
-| `pmd` | XML report | `target/pmd.xml` | `build/reports/pmd/*.xml` |
-| `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` |
-| `compile` | javac messages in the output | | |
-| `format` | Spotless file list in the output (file only, no line) | | |
+| Gate | Source | Maven | Gradle | TypeScript & JavaScript |
+|---|---|---|---|---|
+| `checkstyle` | XML report | `target/checkstyle-result.xml` | `build/reports/checkstyle/*.xml` | |
+| `pmd` | XML report | `target/pmd.xml` | `build/reports/pmd/*.xml` | |
+| `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
+| `compile` | javac messages in the output | | | |
+| `format` | Spotless file list in the output (file only, no line) | | | |
+| `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
+| `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
   report is ignored.
+- TypeScript and JavaScript projects keep the reports Ward reads under `.ward/reports/` instead of
+  `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
+  `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
 - Gitleaks findings never contain the matched secret.
+- ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
+  does not change. An ESLint parsing error is reported with the rule `eslint`.
 - Other gates have no findings yet.
 
 ## Partial checks
