@@ -3,7 +3,7 @@ package dev.ward.application.gate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import dev.ward.application.gate.StrykerGateFixtures.FakeReport;
+import dev.ward.application.gate.MutationGateFixtures.FakeReport;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
@@ -25,12 +25,12 @@ class StrykerGateReportTest {
   @Test
   void unusableReportIsAnExecutionErrorNamingTheProblemAndTheReporter() {
     final GateResult result =
-        StrykerGateFixtures.run(
+        MutationGateFixtures.run(
             0,
             new FakeReport(
                 MutationCounts.unusable(
                     "Stryker's JSON report reports/mutation/mutation.json is missing.")),
-            StrykerGateFixtures.MINIMUM);
+            MutationGateFixtures.MINIMUM);
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.summary()).contains("is missing", REPORTER);
@@ -39,8 +39,8 @@ class StrykerGateReportTest {
   @Test
   void reportWithoutValidMutantsIsAnExecutionError() {
     final GateResult result =
-        StrykerGateFixtures.run(
-            0, new FakeReport(MutationCounts.of(0, 0)), StrykerGateFixtures.MINIMUM);
+        MutationGateFixtures.run(
+            0, new FakeReport(MutationCounts.of(0, 0)), MutationGateFixtures.MINIMUM);
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.summary()).contains("no mutation score can be computed", REPORTER);
@@ -56,10 +56,10 @@ class StrykerGateReportTest {
                     new WardConfiguration(
                         1,
                         Map.of(
-                            StrykerGateFixtures.STRYKER,
-                            StrykerGateFixtures.gate(StrykerGateFixtures.MINIMUM)))))
+                            MutationGateFixtures.STRYKER,
+                            MutationGateFixtures.gate(MutationGateFixtures.MINIMUM)))))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("Stryker");
+        .hasMessageContaining("'stryker' gate");
   }
 
   @Test
@@ -82,21 +82,24 @@ class StrykerGateReportTest {
             // Nothing to release.
           }
         };
-    final Logger logger = Logger.getLogger(StrykerGate.class.getName());
+    final Logger logger = Logger.getLogger(MutationScoreGate.class.getName());
     logger.addHandler(handler);
     try {
-      StrykerGateFixtures.run(
-          0, new FakeReport(StrykerGateFixtures.SIXTY_PERCENT), StrykerGateFixtures.MINIMUM);
-      StrykerGateFixtures.run(
-          0, new FakeReport(MutationCounts.unusable("missing")), StrykerGateFixtures.MINIMUM);
+      MutationGateFixtures.run(
+          0, new FakeReport(MutationGateFixtures.SIXTY_PERCENT), MutationGateFixtures.MINIMUM);
+      MutationGateFixtures.run(
+          0, new FakeReport(MutationCounts.unusable("missing")), MutationGateFixtures.MINIMUM);
     } finally {
       logger.removeHandler(handler);
     }
 
     assertThat(records)
         .extracting(LogRecord::getMessage)
-        .anySatisfy(message -> assertThat(message).contains("event=stryker-score", "score=60"))
-        .anySatisfy(message -> assertThat(message).contains("event=stryker-report-unusable"))
+        .anySatisfy(
+            message ->
+                assertThat(message).contains("event=mutation-score gate=stryker", "score=60"))
+        .anySatisfy(
+            message -> assertThat(message).contains("event=mutation-report-unusable gate=stryker"))
         .allSatisfy(message -> assertThat(message).doesNotContain("stdout-marker"));
   }
 }

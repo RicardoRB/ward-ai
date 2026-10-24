@@ -9,7 +9,8 @@ import org.tomlj.TomlTable;
 final class TomlMinimumParser {
   private static final String MINIMUM = "minimum";
   private static final long MAXIMUM_SCORE = 100;
-  private static final Set<String> MINIMUM_GATES = Set.of(SupportedQualityGates.STRYKER);
+  private static final Set<String> MINIMUM_GATES =
+      Set.of(SupportedQualityGates.STRYKER, SupportedQualityGates.MUTATION);
 
   private TomlMinimumParser() {}
 
@@ -19,7 +20,7 @@ final class TomlMinimumParser {
     }
     final String key = where + "." + MINIMUM;
     if (!MINIMUM_GATES.contains(where.substring(where.lastIndexOf('.') + 1))) {
-      throw new WardException("'" + key + "' is only supported for the stryker gate");
+      throw new WardException("'" + key + "' is only supported for the stryker and mutation gates");
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;
     if (value == null || value < 0 || value > MAXIMUM_SCORE) {

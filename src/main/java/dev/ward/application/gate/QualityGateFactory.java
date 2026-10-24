@@ -17,6 +17,7 @@ import dev.ward.domain.traceability.TestMappingInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 
 /** Resolves the typed built-in gate registry in stable configuration order. */
@@ -24,6 +25,14 @@ public class QualityGateFactory {
   private static final String ZAP = "zap";
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
+  private static final Set<String> MUTATION_GATES =
+      Set.of(SupportedQualityGates.STRYKER, SupportedQualityGates.MUTATION);
+  private static final String STRYKER_REPORT_HINT =
+      "Enable Stryker's json reporter in the command, for example with"
+          + " --reporters clear-text,progress,json.";
+  private static final String PIT_REPORT_HINT =
+      "Enable PIT's XML output, for example with -DoutputFormats=XML,HTML for Maven or"
+          + " outputFormats = ['XML', 'HTML'] in the Gradle pitest block.";
 
   private final CommandExecutor executor;
   private final EnvironmentInspection environment;
@@ -31,7 +40,8 @@ public class QualityGateFactory {
   private final TestMappingInventory testMappingInventory;
   private final ReportDirectories reportDirectories;
   private final OpenApiGates openApiGates;
-  private final MutationReport mutationReport;
+  private final MutationReport strykerReport;
+  private final MutationReport pitReport;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -67,7 +77,7 @@ public class QualityGateFactory {
         executor,
         environment,
         new TraceabilitySources(scenarioInventory, testMappingInventory),
-        new GateReportPorts(reportDirectories, null),
+        new GateReportPorts(reportDirectories, null, null),
         null);
   }
 
@@ -83,7 +93,8 @@ public class QualityGateFactory {
       final GateReportPorts reports,
       final OpenApiGates openApiGates) {
     this.reportDirectories = reports.directories();
-    this.mutationReport = reports.mutations();
+    this.strykerReport = reports.stryker();
+    this.pitReport = reports.pit();
     this.executor = executor;
     this.environment = environment;
     this.scenarioInventory = traceability.scenarios();
@@ -144,23 +155,26 @@ public class QualityGateFactory {
     if (SupportedQualityGates.openApiIds().contains(id)) {
       return openApiGate(id, configuration, project);
     }
-    if (SupportedQualityGates.STRYKER.equals(id)) {
-      return strykerGate(configuration);
+    if (MUTATION_GATES.contains(id)) {
+      return mutationGate(id, configuration);
     }
     return new CommandQualityGate(id, executor, configuration.command(), reportDirectories);
   }
 
-  private QualityGate strykerGate(final GateConfiguration configuration) {
+  /** Builds a Stryker or PIT gate that checks its {@code minimum} against the tool's report. */
+  private QualityGate mutationGate(final String id, final GateConfiguration configuration) {
     final QualityGate command =
-        new CommandQualityGate(
-            SupportedQualityGates.STRYKER, executor, configuration.command(), reportDirectories);
+        new CommandQualityGate(id, executor, configuration.command(), reportDirectories);
     if (configuration.minimum() == null) {
       return command;
     }
-    if (mutationReport == null) {
-      throw new WardException("Stryker gate dependencies are unavailable.");
+    final boolean stryker = SupportedQualityGates.STRYKER.equals(id);
+    final MutationReport report = stryker ? strykerReport : pitReport;
+    if (report == null) {
+      throw new WardException("The '" + id + "' gate cannot check its minimum here.");
     }
-    return new StrykerGate(command, mutationReport, configuration.minimum());
+    return new MutationScoreGate(
+        command, report, configuration.minimum(), stryker ? STRYKER_REPORT_HINT : PIT_REPORT_HINT);
   }
 
   private QualityGate openApiGate(

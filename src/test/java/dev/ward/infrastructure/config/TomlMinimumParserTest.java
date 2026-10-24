@@ -30,6 +30,20 @@ class TomlMinimumParserTest {
   }
 
   @Test
+  void minimumOnPitIsRead() throws IOException {
+    assertThat(
+            read(
+                    reader,
+                    dir,
+                    "version = 1\n[quality-gates.mutation]\ncommand = \"./mvnw pitest:mutationCoverage\"\n"
+                        + "minimum = 60")
+                .gates()
+                .get("mutation")
+                .minimum())
+        .isEqualTo(MINIMUM);
+  }
+
+  @Test
   void boundsAreAccepted() throws IOException {
     assertThat(read(reader, dir, STRYKER + "minimum = 0").gates().get("stryker").minimum())
         .isZero();

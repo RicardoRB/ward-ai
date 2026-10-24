@@ -10,21 +10,24 @@ import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Runs Stryker, then fails when the mutation score in its JSON report is below the minimum. */
-final class StrykerGate implements QualityGate {
-  private static final Logger LOGGER = Logger.getLogger(StrykerGate.class.getName());
-  private static final String REPORTER_HINT =
-      " Enable Stryker's json reporter in the command, for example with"
-          + " --reporters clear-text,progress,json.";
-
+/** Runs a mutation tool, then fails when the score in its report is below the minimum. */
+final class MutationScoreGate implements QualityGate {
+  private static final Logger LOGGER = Logger.getLogger(MutationScoreGate.class.getName());
   private final QualityGate command;
   private final MutationReport report;
   private final int minimum;
+  private final String reportHint;
 
-  StrykerGate(final QualityGate command, final MutationReport report, final int minimum) {
+  /** {@code reportHint} tells the user how to make the tool write the report the gate reads. */
+  MutationScoreGate(
+      final QualityGate command,
+      final MutationReport report,
+      final int minimum,
+      final String reportHint) {
     this.command = command;
     this.report = report;
     this.minimum = minimum;
+    this.reportHint = reportHint;
   }
 
   @Override
@@ -41,21 +44,26 @@ final class StrykerGate implements QualityGate {
     }
     final MutationCounts counts = report.read(project, start);
     if (!counts.usable()) {
-      LOGGER.log(Level.INFO, "event=stryker-report-unusable reason=unreadable");
-      return with(result, GateStatus.EXECUTION_ERROR, counts.problem() + REPORTER_HINT);
+      LOGGER.log(
+          Level.INFO, () -> "event=mutation-report-unusable gate=" + name() + " reason=unreadable");
+      return with(result, GateStatus.EXECUTION_ERROR, counts.problem() + " " + reportHint);
     }
     if (counts.valid() == 0) {
-      LOGGER.log(Level.INFO, "event=stryker-report-unusable reason=no-valid-mutants");
+      LOGGER.log(
+          Level.INFO,
+          () -> "event=mutation-report-unusable gate=" + name() + " reason=no-valid-mutants");
       return with(
           result,
           GateStatus.EXECUTION_ERROR,
-          "Stryker's JSON report has no valid mutants, so no mutation score can be computed."
-              + REPORTER_HINT);
+          "The mutation report has no valid mutants, so no mutation score can be computed. "
+              + reportHint);
     }
     LOGGER.log(
         Level.INFO,
         () ->
-            "event=stryker-score detected="
+            "event=mutation-score gate="
+                + name()
+                + " detected="
                 + counts.detected()
                 + " undetected="
                 + counts.undetected()

@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Runs a stryker gate built by the factory against a fake mutation report. */
-final class StrykerGateFixtures {
+/** Runs a mutation gate built by the factory against a fake mutation report. */
+final class MutationGateFixtures {
   static final String STRYKER = "stryker";
+  static final String PIT = "mutation";
   static final String STDOUT = "All mutants have been tested. stdout-marker";
   static final List<String> COMMAND =
       List.of("npx", "stryker", "run", "--reporters", "clear-text,progress,json");
@@ -31,7 +32,7 @@ final class StrykerGateFixtures {
   private static final Project PROJECT =
       new Project(Path.of("/repo/web"), Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE);
 
-  private StrykerGateFixtures() {}
+  private MutationGateFixtures() {}
 
   /** A report that answers with fixed counts and records each read. */
   static final class FakeReport implements MutationReport {
@@ -54,15 +55,25 @@ final class StrykerGateFixtures {
   }
 
   static GateResult run(final int exitCode, final MutationReport report, final Integer minimum) {
+    return run(STRYKER, exitCode, report, minimum);
+  }
+
+  /** Runs gate {@code id}; the fake report answers for that gate's tool. */
+  static GateResult run(
+      final String id, final int exitCode, final MutationReport report, final Integer minimum) {
+    final GateReportPorts ports =
+        PIT.equals(id)
+            ? new GateReportPorts(ReportDirectories.NONE, null, report)
+            : new GateReportPorts(ReportDirectories.NONE, report, null);
     final QualityGateFactory factory =
         new QualityGateFactory(
             new FakeCommandExecutor(exitCode, STDOUT, ""),
             null,
             new TraceabilitySources(null, null),
-            new GateReportPorts(ReportDirectories.NONE, report),
+            ports,
             null);
     return factory
-        .create(new WardConfiguration(1, Map.of(STRYKER, gate(minimum))))
+        .create(new WardConfiguration(1, Map.of(id, gate(minimum))))
         .getFirst()
         .execute(PROJECT);
   }

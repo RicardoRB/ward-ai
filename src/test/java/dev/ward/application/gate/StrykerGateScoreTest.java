@@ -2,7 +2,7 @@ package dev.ward.application.gate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.application.gate.StrykerGateFixtures.FakeReport;
+import dev.ward.application.gate.MutationGateFixtures.FakeReport;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.MutationCounts;
@@ -19,10 +19,10 @@ class StrykerGateScoreTest {
   @Test
   void scoreAtTheMinimumPasses() {
     final GateResult result =
-        StrykerGateFixtures.run(
-            0, new FakeReport(StrykerGateFixtures.SIXTY_PERCENT), StrykerGateFixtures.MINIMUM);
+        MutationGateFixtures.run(
+            0, new FakeReport(MutationGateFixtures.SIXTY_PERCENT), MutationGateFixtures.MINIMUM);
 
-    assertThat(result.name()).isEqualTo(StrykerGateFixtures.STRYKER);
+    assertThat(result.name()).isEqualTo(MutationGateFixtures.STRYKER);
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.summary()).contains("60%");
   }
@@ -30,18 +30,18 @@ class StrykerGateScoreTest {
   @Test
   void scoreBelowTheMinimumFailsStatingBothValues() {
     final GateResult result =
-        StrykerGateFixtures.run(
-            0, new FakeReport(StrykerGateFixtures.SIXTY_PERCENT), HIGHER_MINIMUM);
+        MutationGateFixtures.run(
+            0, new FakeReport(MutationGateFixtures.SIXTY_PERCENT), HIGHER_MINIMUM);
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.summary()).contains("60%", "minimum of 80%");
-    assertThat(result.stdout()).isEqualTo(StrykerGateFixtures.STDOUT);
+    assertThat(result.stdout()).isEqualTo(MutationGateFixtures.STDOUT);
   }
 
   @Test
   void fractionalScoreJustBelowTheMinimumFails() {
     assertThat(
-            StrykerGateFixtures.run(0, new FakeReport(JUST_BELOW), StrykerGateFixtures.MINIMUM)
+            MutationGateFixtures.run(0, new FakeReport(JUST_BELOW), MutationGateFixtures.MINIMUM)
                 .status())
         .isEqualTo(GateStatus.FAILED);
   }
@@ -50,8 +50,8 @@ class StrykerGateScoreTest {
   void withoutMinimumOnlyTheExitCodeCountsAndTheReportIsNotRead() {
     final FakeReport report = new FakeReport(MutationCounts.of(0, ALL));
 
-    assertThat(StrykerGateFixtures.run(0, report, null).status()).isEqualTo(GateStatus.PASSED);
-    assertThat(StrykerGateFixtures.run(1, report, null).status()).isEqualTo(GateStatus.FAILED);
+    assertThat(MutationGateFixtures.run(0, report, null).status()).isEqualTo(GateStatus.PASSED);
+    assertThat(MutationGateFixtures.run(1, report, null).status()).isEqualTo(GateStatus.FAILED);
     assertThat(report.reads).isEmpty();
   }
 
@@ -59,7 +59,7 @@ class StrykerGateScoreTest {
   void failingStrykerFailsAsACommandGateWithoutReadingTheReport() {
     final FakeReport report = new FakeReport(MutationCounts.of(ALL, 0));
 
-    assertThat(StrykerGateFixtures.run(1, report, StrykerGateFixtures.MINIMUM).status())
+    assertThat(MutationGateFixtures.run(1, report, MutationGateFixtures.MINIMUM).status())
         .isEqualTo(GateStatus.FAILED);
     assertThat(report.reads).isEmpty();
   }
@@ -67,9 +67,9 @@ class StrykerGateScoreTest {
   @Test
   void reportIsReadForTheRunThatJustFinished() {
     final Instant before = Instant.now();
-    final FakeReport report = new FakeReport(StrykerGateFixtures.SIXTY_PERCENT);
+    final FakeReport report = new FakeReport(MutationGateFixtures.SIXTY_PERCENT);
 
-    StrykerGateFixtures.run(0, report, StrykerGateFixtures.MINIMUM);
+    MutationGateFixtures.run(0, report, MutationGateFixtures.MINIMUM);
 
     assertThat(report.reads)
         .singleElement()

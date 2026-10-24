@@ -139,6 +139,28 @@ profiles = ["ci"]
 - Use `minimum` instead of Stryker's own `thresholds.break`. That threshold, like a moved report
   path, can only be set in Stryker's configuration file, which Ward never writes.
 
+## PIT mutation score
+
+The `mutation` gate accepts the same `minimum`. Without it, the gate passes or fails on PIT's exit
+code, which already enforces any `mutationThreshold` in your build. With it, Ward also reads PIT's
+XML report after a successful run and fails the gate when the score is below the minimum.
+
+```toml
+[quality-gates.mutation]
+command = ["./mvnw", "-DoutputFormats=XML,HTML", "pitest:mutationCoverage"]
+minimum = 60
+profiles = ["ci"]
+```
+
+- The score is PIT's own: detected mutations divided by all mutations. It matches what
+  `mutationThreshold` would check.
+- Ward reads `target/pit-reports/mutations.xml` for Maven and `build/reports/pitest/mutations.xml`
+  for Gradle. PIT writes only HTML by default, so enable XML output: `-DoutputFormats=XML,HTML` for
+  Maven, or `outputFormats = ['XML', 'HTML']` in the Gradle `pitest` block. Timestamped report
+  folders are not read.
+- A report that is missing, older than the gate run, unreadable, or without mutations is an
+  execution error, never a pass.
+
 ## Traceability gate
 
 `openspec-junit-traceability` is the one built-in gate that needs no `command`:

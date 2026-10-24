@@ -42,9 +42,10 @@ Unknown gate IDs, and checks with no enabled matching gates, are errors.
 
 ## Mutation score minimum
 
-The `stryker` gate accepts an optional `minimum`, an integer from 0 to 100. When it is set and
-Stryker succeeds, Ward reads Stryker's JSON report and fails the gate when the mutation score is
-below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score).
+The `stryker` and PIT `mutation` gates accept an optional `minimum`, an integer from 0 to 100. When
+it is set and the tool succeeds, Ward reads the tool's report and fails the gate when the mutation
+score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score)
+and [PIT mutation score](/configuration/gates/#pit-mutation-score).
 
 ```toml
 [quality-gates.stryker]
