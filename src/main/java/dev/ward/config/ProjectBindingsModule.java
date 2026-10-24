@@ -9,6 +9,7 @@ import dev.ward.domain.init.CompatibilityInspection;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.learning.LearningStore;
 import dev.ward.domain.loop.GitStateInspection;
+import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.ProjectInspection;
 import dev.ward.domain.spec.ProjectPaths;
 import dev.ward.infrastructure.agent.ProcessAgentRunnerFactory;
@@ -17,6 +18,7 @@ import dev.ward.infrastructure.doctor.SystemEnvironmentInspection;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.learning.JsonLearningStore;
 import dev.ward.infrastructure.loop.GitStateInspector;
+import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import dev.ward.infrastructure.project.MavenCompatibilityInspection;
 import dev.ward.infrastructure.spec.FileSystemProjectPaths;
@@ -28,6 +30,9 @@ interface ProjectBindingsModule {
 
   @Binds
   ProjectInspection projectInspection(FileSystemProjectInspection implementation);
+
+  @Binds
+  PackageManifests packageManifests(FileSystemPackageManifests implementation);
 
   @Binds
   CompatibilityInspection compatibilityInspection(MavenCompatibilityInspection implementation);

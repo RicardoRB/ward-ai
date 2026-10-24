@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ArchUnit architecture rules) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java or TypeScript project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ArchUnit architecture rules, ESLint rules, and the Vitest, Jest, or Bun coverage threshold) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.1.3, a project with ward.toml, and a shell.
 metadata:
@@ -47,7 +47,7 @@ Read `ward.toml` as text. If it does not exist, stop and suggest `ward-init`.
 
 ## Step 2: Scope the tuning
 
-List the gates with `enabled = true`. This skill tunes five of them:
+List the gates with `enabled = true`. This skill tunes these:
 
 | Gate id | What you tune | Reference |
 |---|---|---|
@@ -56,6 +56,8 @@ List the gates with `enabled = true`. This skill tunes five of them:
 | `coverage` | JaCoCo minimum ratios | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
+| `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
+| `vitest`, `jest`, `bun-test` | The line coverage minimum | [references/coverage.md](references/coverage.md#typescript-test-gates) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a
 gate that is not enabled, say so, suggest `ward-init` to add it, and change nothing. This skill
@@ -97,7 +99,8 @@ with the user before tuning anything else.
 
 For each rule file you might edit, read its first line:
 
-- `<!-- managed-by: ward preset=<id> -->` means Ward owns the file. The next `ward init`
+- `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `eslint.config.*`,
+  `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
   run refreshes it to the preset's content and **silently undoes any tuning**.
 - No marker means the user owns it. Init keeps it as it is and lists it as `keep`.
 

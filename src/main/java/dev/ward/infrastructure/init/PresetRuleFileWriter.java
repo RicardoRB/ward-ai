@@ -6,7 +6,10 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
+import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,27 +19,40 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
-/** Writes ownership-marked Maven rule files for a quality preset. */
+/**
+ * Writes ownership-marked rule files: Maven rule files for a quality preset under {@code config/},
+ * and the Node tool configs in the project root.
+ */
 public final class PresetRuleFileWriter implements RuleFileGeneration {
   private static final String MARKER = "<!-- managed-by: ward preset=";
+  private final PackageManifests manifests;
 
-  /** Creates the stateless adapter that Dagger injects. */
+  /** Creates a writer for projects without a {@code package.json}. */
+  public PresetRuleFileWriter() {
+    this(root -> PackageManifest.EMPTY);
+  }
+
+  /** Creates the adapter; {@code manifests} tells whether a Node project uses ES modules. */
   @Inject
-  public PresetRuleFileWriter() {}
+  public PresetRuleFileWriter(final PackageManifests manifests) {
+    this.manifests = manifests;
+  }
 
   @Override
   public RuleFileChange apply(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
     final Path config = project.root().resolve("config");
-    if (preset == null) {
-      return new RuleFileChange(config, false, Map.of(), List.of());
-    }
-    final boolean createdDirectory = !Files.exists(config);
     final Map<Path, String> originals = new LinkedHashMap<>();
     final List<Path> preserved = new ArrayList<>();
     try {
-      Files.createDirectories(config);
-      for (final Map.Entry<Path, String> target : targets(config, preset, gates).entrySet()) {
+      final Map<Path, String> targets = targets(project, preset, gates);
+      // Node configs live in the project root, so only JVM presets need config/.
+      final boolean createdDirectory =
+          preset != null && project.toolchain() != Toolchain.NODE && !Files.exists(config);
+      if (createdDirectory) {
+        Files.createDirectories(config);
+      }
+      for (final Map.Entry<Path, String> target : targets.entrySet()) {
         final Path file = target.getKey();
         switch (decide(file, target.getValue())) {
           case PRESERVE_USER_OWNED -> preserved.add(file);
@@ -58,13 +74,9 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
   @Override
   public List<PlannedFileChange> plan(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
-    if (preset == null) {
-      return List.of();
-    }
     final List<PlannedFileChange> plan = new ArrayList<>();
     try {
-      for (final Map.Entry<Path, String> target :
-          targets(project.root().resolve("config"), preset, gates).entrySet()) {
+      for (final Map.Entry<Path, String> target : targets(project, preset, gates).entrySet()) {
         plan.add(
             new PlannedFileChange(target.getKey(), decide(target.getKey(), target.getValue())));
       }
@@ -74,9 +86,20 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     return plan;
   }
 
-  /** The rule files the selected gates need under this preset, with their marked content. */
-  private static Map<Path, String> targets(
-      final Path config, final QualityPreset preset, final List<InitGateOption> gates) {
+  /**
+   * The files the selected gates need, with their marked content; {@code null} content is a user's
+   * file that is kept.
+   */
+  private Map<Path, String> targets(
+      final Project project, final QualityPreset preset, final List<InitGateOption> gates)
+      throws IOException {
+    if (project.toolchain() == Toolchain.NODE) {
+      return NodeConfigFiles.targets(project.root(), manifests.read(project.root()), preset, gates);
+    }
+    if (preset == null) {
+      return Map.of();
+    }
+    final Path config = project.root().resolve("config");
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final Map<Path, String> targets = new LinkedHashMap<>();
     if (ids.contains("pmd")) {
@@ -104,11 +127,14 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
   /** Decides what writing {@code content} to {@code file} would do; shared by apply and plan. */
   private static PlannedFileChange.Action decide(final Path file, final String content)
       throws IOException {
+    if (content == null) {
+      return PlannedFileChange.Action.PRESERVE_USER_OWNED;
+    }
     if (!Files.exists(file)) {
       return PlannedFileChange.Action.CREATE;
     }
     final String existing = Files.readString(file);
-    if (!existing.startsWith(MARKER)) {
+    if (!existing.startsWith(MARKER) && !NodeConfigFiles.owned(existing)) {
       return PlannedFileChange.Action.PRESERVE_USER_OWNED;
     }
     return existing.equals(content)

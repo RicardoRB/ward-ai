@@ -5,7 +5,9 @@ description: Create ward.toml and select integrations.
 
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
-`ward init` creates `ward.toml` using an interactive wizard or explicit options.
+`ward init` creates `ward.toml` using an interactive wizard or explicit options. It sets up Maven,
+Gradle, and TypeScript projects; see [TypeScript projects](#typescript-projects) for what changes
+in a Node project.
 
 ```sh
 ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--yes]
@@ -23,7 +25,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | Option | What it does |
 |---|---|
 | `-C`, `--directory <dir>` | Start in `<dir>` instead of the current directory. See [Choosing projects](#choosing-projects). |
-| `--project <dir>` | Configure this Maven or Gradle project, relative to `-C`. Repeat for several. |
+| `--project <dir>` | Configure this Maven, Gradle, or TypeScript project, relative to `-C`. Repeat for several. |
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
@@ -47,6 +49,8 @@ each choice for this codebase, and runs `init` with explicit options after you a
 ## Presets and gates
 
 - `standard` and `strict` pre-select their offline gates. `custom` (wizard only) starts with none.
+- `strict` is not available for TypeScript yet: `--preset strict` fails before changing any file
+  and suggests `standard`, and the wizard offers only `standard` and `custom`.
 - The gates you confirm are exactly the gates configured. Unticking a pre-selected gate removes its
   `ward.toml` section, build declarations, and rule file. The preset's rules still apply to the
   other gates.
@@ -76,8 +80,8 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `format`, `checkstyle`, `pmd`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
-| Slower local gates, including `compile`, and custom commands | `pre-push`, `ci` |
+| Fast: `format`, `checkstyle`, `pmd`, `gitleaks`, `prettier`, `eslint` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
 `default` is the same fast tier as `pre-commit`, and `ci` contains every selected gate.
@@ -156,7 +160,7 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `checkstyle`, `pmd`, `format`, `semgrep`, and `gitleaks`. The check after each agent edit, and
+  `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, and `prettier`. The check after each agent edit, and
   the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
@@ -227,6 +231,84 @@ finding. With `strict`, expect these on most existing projects:
   `includedLicenses` once your legal policy approves it, or add its spelling to `licenseMerges`
   when it is an approved license written another way. On Gradle, add a rule to `licenseReport`.
 
+## TypeScript projects
+
+Init sets up a project detected as TypeScript (`tsconfig.json` next to `package.json`) with npm,
+pnpm, Yarn, or Bun. Every Node tool runs as a local dev dependency through the package manager's
+runner: `npx`, `pnpm exec`, `yarn`, or `bunx`.
+
+### Gates
+
+| Gate | Command (npm) | Profiles |
+|---|---|---|
+| `tsc` | `npx tsc --noEmit --pretty false` | `pre-push`, `ci` |
+| `vitest` | `npx vitest run --coverage --coverage.thresholds.lines=70` | `pre-push`, `ci` |
+| `jest` | `npx jest --coverage --coverageThreshold={"global":{"lines":70}}` | `pre-push`, `ci` |
+| `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
+| `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
+| `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
+| `semgrep` | `semgrep scan --config p/typescript --error` | `ci` |
+
+- `standard` selects `tsc`, the test runner gate, `prettier`, and `eslint`. `semgrep` stays opt-in,
+  and `gitleaks` and `trivy` are offered as for Java.
+- The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
+  either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`.
+- The test gates fail below 70% line coverage, the `standard` minimum, also for a custom selection.
+  Vitest and Jest measure the files the tests load.
+
+### What init changes in `package.json`
+
+- Init adds each dev dependency the selected gates need and the project does not declare, with an
+  exact version from Ward's catalog and no range prefix. A package already in `dependencies` or
+  `devDependencies` keeps its version, and existing tool configs are reused.
+- The edit inserts entries into `devDependencies`, or creates it, with the file's own indentation;
+  nothing else in the file changes. A file whose layout cannot be located, such as a minified one,
+  fails init before anything is written.
+- Then init runs `<manager> install` from the project root. When nothing is missing, no install
+  runs. `--dry-run` lists the packages and the install without running it.
+- If the install fails, init fails naming the command, restores `package.json` and the lock file
+  byte for byte, removes a lock file the install created, and writes no `ward.toml`. A later init
+  failure rolls back the same way. `node_modules` is not restored; the next install converges.
+
+| Package | Version | Node |
+|---|---|---|
+| `eslint` | 10.12.0 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
+| `@eslint/js` | 10.0.1 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
+| `typescript-eslint` | 8.71.1 | `^18.18.0 \|\| ^20.9.0 \|\| >=21.1.0`, TypeScript `>=4.8.4 <6.1.0` |
+| `prettier` | 3.9.10 | `>=14` |
+| `vitest`, `@vitest/coverage-v8` | 5.0.3 | `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0` |
+| `typescript` | 6.0.3 | `>=14.17` |
+
+### Compatibility checks
+
+Before writing, init checks each package it would add against the project's Node version (from
+`.nvmrc`, `.node-version`, or `engines.node`, else 24), and `typescript-eslint` against the declared
+`typescript` version (the lower bound of its range, or 6.0.3 when init adds it).
+
+- A package outside its range is an `INCOMPATIBLE` finding naming the package and the range.
+  `--dry-run` lists it, and applying fails without changing any file. A Node or TypeScript version
+  cannot be fixed by choosing another package version, so there is no approval option.
+- For example, `"typescript": "7.0.2"` with the `eslint` gate fails because `typescript-eslint`
+  8.71.1 supports TypeScript `>=4.8.4 <6.1.0`. Pin TypeScript 6.0 or lower, or skip `eslint`.
+- Node is compared on its major version. When a range needs a later minor, such as `^22.13.0` for
+  ESLint on Node 22, the plan notes the minimum version.
+
+### Generated files
+
+- **`eslint.config.js`** (with `"type": "module"`) or **`eslint.config.mjs`** (otherwise) when the
+  `eslint` gate is selected and the project has no `eslint.config.*` or `.eslintrc*`. It is a flat
+  config with `@eslint/js` and `typescript-eslint` recommended rules, ignoring `dist/`, `coverage/`,
+  and `.ward/`. It starts with a `// managed-by: ward` marker. An existing config is reused
+  unchanged and listed as user-owned.
+- **`bunfig.toml`** for `bun-test` when none exists, with
+  `[test] coverageThreshold = { lines = 0.7 }` and a `#` marker. An existing `bunfig.toml` is kept,
+  and init warns that the coverage threshold is enforced only if it sets one.
+- **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
+  the file does not exist. Prettier skips Git-ignored files, so it does not check coverage reports.
+- **`ward.toml`** gets `partial` tables for `eslint` and `prettier`: an edit hook runs them on the
+  edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
+  `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
+
 ## Tools init can install
 
 Init installs a missing tool only with your explicit consent, one tool at a time.
@@ -277,6 +359,9 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 - passes the `NVD_API_KEY` secret to `dependency-check`;
 - uploads the SARIF report to code scanning for pull requests from the same repository.
 
+In a Node project the workflow sets up Node or Bun instead of Java and installs the dependencies
+from the lock file first; see [CI for Node projects](/guides/ci-cd/#node-projects).
+
 The file is Ward-owned, so re-running init refreshes it. An existing workflow at that path without
 Ward's marker blocks initialization as a conflict. Gates that need a running application, such as
 `zap`, are not set up in the workflow.
@@ -285,7 +370,8 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
 enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
-enforcer rules.
+enforcer rules. For TypeScript it names the `tsc`, ESLint, Prettier, and test commands, the 70% line
+coverage minimum, and the ESLint config in use, and no Java tool.
 
 - Content outside the section's markers is kept.
 - When a rule file is user-owned, the section points to the file instead of quoting preset values.
@@ -294,11 +380,11 @@ enforcer rules.
 
 ## Choosing projects
 
-Init configures the Maven or Gradle project that contains the `-C` directory. Started inside a
+Init configures the Maven, Gradle, or TypeScript project that contains the `-C` directory. Started inside a
 build module, it configures the aggregator that lists the module, so `ward.toml` lands next to the
 aggregator's `pom.xml` or `settings.gradle(.kts)`.
 
-When the `-C` directory is not inside a Maven or Gradle project, such as the root of a pnpm or Turbo
+When the `-C` directory is not inside a project init supports, such as the JavaScript root of a pnpm or Turbo
 monorepo, init looks for projects below it:
 
 - It skips hidden directories and `node_modules`, `target`, `build`, `dist`, and `out`.
@@ -307,8 +393,10 @@ monorepo, init looks for projects below it:
 - With several, the wizard asks which to configure, all checked. Without a terminal, or with `--yes`,
   init stops and lists the `--project` values to pass.
 - With none, init stops without changing any file. If the `-C` directory is inside a project of
-  another build tool, such as Poetry, Cargo or npm, the error names that build tool and says that
-  init supports Maven and Gradle projects.
+  another build tool, such as Poetry or Cargo, the error names that build tool and says that init
+  supports Maven, Gradle and TypeScript projects.
+- A JavaScript project (`package.json` without `tsconfig.json`) fails without changing any file,
+  with an error that names JavaScript and its package manager. JavaScript support is planned.
 
 `--project <dir>` names a project explicitly, relative to `-C`. Repeat it to configure several
 projects in one run:
@@ -317,7 +405,7 @@ projects in one run:
 ward init --project apps/api --project services/billing --preset standard --integration none
 ```
 
-Each value must be a Maven or Gradle project root. A module or a subdirectory fails before anything
+Each value must be a Maven, Gradle, or TypeScript project root. A module or a subdirectory fails before anything
 is planned, and the error names the project to use instead. The answers apply to every selected
 project; run init again with a single `--project` to give one project different settings.
 

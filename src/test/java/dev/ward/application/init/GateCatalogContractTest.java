@@ -56,8 +56,13 @@ class GateCatalogContractTest {
   void everyOfferedGateIsDefined() {
     final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
     assertThat(
-            Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
-                .flatMap(buildTool -> catalog.gates(project(buildTool)).stream()))
+            Stream.concat(
+                Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
+                    .flatMap(buildTool -> catalog.gates(project(buildTool)).stream()),
+                Stream.of(BuildTool.NPM, BuildTool.BUN)
+                    .flatMap(
+                        buildTool ->
+                            catalog.gates(project(buildTool, Language.TYPESCRIPT)).stream())))
         .extracting(InitGateOption::id)
         .allSatisfy(
             id ->
@@ -100,7 +105,8 @@ class GateCatalogContractTest {
 
   private static List<InitGateOption> jvmGates(final Project project) {
     final ToolchainInitSupport.Gates gates =
-        new JvmInitSupport().gates(project, new FakeEnvironmentInspection());
+        new JvmInitSupport()
+            .gates(project, InitInputs.withoutManifests(new FakeEnvironmentInspection()));
     return Stream.concat(gates.analysis().stream(), gates.policy().stream()).toList();
   }
 

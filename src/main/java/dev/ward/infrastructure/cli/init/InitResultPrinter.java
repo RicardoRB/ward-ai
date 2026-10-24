@@ -12,11 +12,13 @@ import dev.ward.domain.project.Project;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Prints the outcome of {@code ward init}. */
 final class InitResultPrinter {
+  private static final Set<String> NODE_RUNNERS = Set.of("npx", "pnpm", "yarn", "bunx", "bun");
   private static final Logger LOGGER = Logger.getLogger(InitResultPrinter.class.getName());
   private final PrintWriter out;
 
@@ -114,13 +116,25 @@ final class InitResultPrinter {
     };
   }
 
-  /** Gradle gates run the wrapper or {@code gradle}; the result carries no build-file path. */
-  private static boolean gradle(final InitResult result) {
-    return result.gates().stream()
-        .map(InitGateOption::command)
-        .filter(command -> !command.isEmpty())
-        .map(List::getFirst)
-        .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable));
+  /**
+   * Names the build file the tools went into, from the gates' executables: Node runners mean {@code
+   * package.json}, the Gradle wrapper or {@code gradle} the Gradle build, else {@code pom.xml}. The
+   * result carries no build-file path.
+   */
+  private static String buildFileHeading(final InitResult result) {
+    final List<String> executables =
+        result.gates().stream()
+            .map(InitGateOption::command)
+            .filter(command -> !command.isEmpty())
+            .map(List::getFirst)
+            .toList();
+    if (executables.stream().anyMatch(NODE_RUNNERS::contains)) {
+      return "Updated package.json with dev dependencies:";
+    }
+    return executables.stream()
+            .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))
+        ? "Updated the Gradle build with tools:"
+        : "Updated pom.xml with Maven tools:";
   }
 
   void print(final InitResult result) {
@@ -130,10 +144,7 @@ final class InitResultPrinter {
     }
     out.println((result.overwritten() ? "Updated " : "Created ") + result.file());
     if (!result.pomChanges().isEmpty()) {
-      out.println(
-          gradle(result)
-              ? "Updated the Gradle build with tools:"
-              : "Updated pom.xml with Maven tools:");
+      out.println(buildFileHeading(result));
       result.pomChanges().forEach(tool -> out.println("- " + tool));
     }
     result

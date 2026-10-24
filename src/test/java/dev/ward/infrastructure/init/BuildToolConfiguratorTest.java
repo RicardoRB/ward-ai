@@ -40,7 +40,7 @@ class BuildToolConfiguratorTest {
     assertThatThrownBy(() -> router.apply(project(BuildTool.CARGO), List.of()))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("Cargo")
-        .hasMessageContaining("Maven and Gradle");
+        .hasMessageContaining("Maven, Gradle and TypeScript");
     assertThat(jvm.calls).isEmpty();
   }
 

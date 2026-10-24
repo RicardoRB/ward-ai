@@ -49,19 +49,33 @@ final class InitWizard {
     this.answering = new Answering(terminal, out);
   }
 
-  /** Asks for the preset; an empty answer selects {@code defaultChoice} (1 to 3). */
-  QualityPreset selectPreset(final int defaultChoice) {
+  /**
+   * Asks for the preset; an empty answer selects {@code defaultChoice}. Without {@code strict}, the
+   * choices are 1) standard and 2) custom; with it, 1) standard, 2) strict and 3) custom.
+   */
+  QualityPreset selectPreset(final int defaultChoice, final boolean strict) {
+    final String choices = strict ? "1) standard  2) strict  3) custom" : "1) standard  2) custom";
+    final String last = strict ? "3" : "2";
     return answering.ask(
         () -> {
-          out.println("Select quality preset: 1) standard  2) strict  3) custom");
-          out.print("Choose a preset [1-3, Enter=" + defaultChoice + "]: ");
+          out.println("Select quality preset: " + choices);
+          out.print("Choose a preset [1-" + last + ", Enter=" + defaultChoice + "]: ");
           out.flush();
           final String value =
               prompt
                   .readLine("preset selection")
                   .map(String::trim)
                   .orElseThrow(() -> new WardException(GATE_INPUT_ENDED));
-          return switch (value.isEmpty() ? String.valueOf(defaultChoice) : value) {
+          final String answer = value.isEmpty() ? String.valueOf(defaultChoice) : value;
+          if (!strict) {
+            return switch (answer) {
+              case "1" -> QualityPreset.STANDARD;
+              case "2" -> null;
+              default ->
+                  throw new InvalidAnswerException("Invalid preset selection. Choose 1 or 2.");
+            };
+          }
+          return switch (answer) {
             case "1" -> QualityPreset.STANDARD;
             case "2" -> QualityPreset.STRICT;
             case "3" -> null;

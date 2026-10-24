@@ -82,6 +82,24 @@ jobs:
 GitHub's required status checks can block merges until the `ward` job passes. Use the runtime setup
 and cache action appropriate for your project; the example uses Maven only as an illustration.
 
+### Node projects
+
+For a TypeScript project, the workflow `ward init --ci github` writes sets up the runtime instead of
+Java, then installs the dependencies from the lock file before running Ward, so the locally
+installed tools the gates call are present:
+
+| Package manager | Setup | Install |
+|---|---|---|
+| npm | `actions/setup-node@v5` with `cache: npm` | `npm ci` |
+| pnpm | `pnpm/action-setup@v4`, then `actions/setup-node@v5` with `cache: pnpm` | `pnpm install --frozen-lockfile` |
+| Yarn 2 or later | `actions/setup-node@v5` with `cache: yarn` | `yarn install --immutable` |
+| Yarn 1, or no `packageManager` | `actions/setup-node@v5` with `cache: yarn` | `yarn install --frozen-lockfile` |
+| Bun | `oven-sh/setup-bun@v2` | `bun install --frozen-lockfile` |
+
+`node-version` is the major version Ward detects from `.nvmrc`, `.node-version`, or
+`engines.node`, or `"24"` when none sets one. The Yarn row follows the `packageManager` field of
+`package.json`, such as `"yarn@4.5.0"`. Commit the lock file: a frozen install fails without it.
+
 ### Projects in a subdirectory
 
 GitHub only runs workflows from `.github/workflows/` at the repository root. When the project sits

@@ -26,7 +26,36 @@ class InitUnsupportedToolchainTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output())
         .contains("Poetry")
-        .contains("Ward init supports Maven and Gradle projects");
+        .contains("Ward init supports Maven, Gradle and TypeScript projects");
+    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+  }
+
+  @Test
+  void javaScriptProjectFailsNamingTheLanguageAndPackageManager() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
+    final Map<String, String> before = ProjectSnapshot.of(root);
+
+    final int exit = init.run("", "--integration", "none", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+    assertThat(init.output()).contains("Ward init does not support JavaScript npm projects yet.");
+    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+  }
+
+  @Test
+  void strictPresetIsRejectedForTypeScript() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
+    Files.writeString(root.resolve("tsconfig.json"), "{}\n");
+    final Map<String, String> before = ProjectSnapshot.of(root);
+
+    final int exit = init.run("", "--integration", "none", "--preset", "strict", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+    assertThat(init.output())
+        .contains("strict preset is not available for TypeScript yet")
+        .contains("--preset standard");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 }

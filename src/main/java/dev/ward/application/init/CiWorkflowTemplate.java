@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
+import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +36,22 @@ final class CiWorkflowTemplate {
       final Project project,
       final List<InitGateOption> gates,
       final String wardVersion) {
+    return render(provider, project, gates, wardVersion, PackageManifest.EMPTY);
+  }
+
+  /** Returns the workflow, reading the Node package manager's version from {@code manifest}. */
+  static OwnedSection render(
+      final String provider,
+      final Project project,
+      final List<InitGateOption> gates,
+      final String wardVersion,
+      final PackageManifest manifest) {
     if (!GITHUB.equals(provider)) {
       throw new WardException(
           "Unknown CI provider '" + provider + "'. Supported providers: " + GITHUB);
     }
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
-    final StringBuilder body = new StringBuilder(header(ids, project, fileName(project)));
+    final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), manifest));
     body.append(tools(ids));
     if (ids.contains("trivy")) {
       body.append(
@@ -90,7 +101,11 @@ final class CiWorkflowTemplate {
     return project.nested() ? project.projectPath() + "/" + SARIF : SARIF;
   }
 
-  private static String header(final Set<String> ids, final Project project, final String file) {
+  private static String header(
+      final Set<String> ids,
+      final Project project,
+      final String file,
+      final PackageManifest manifest) {
     final boolean nested = project.nested();
     final String paths =
         nested
@@ -129,7 +144,7 @@ final class CiWorkflowTemplate {
         + "      - uses: actions/checkout@v5\n"
         // gitleaks scans the whole history.
         + (ids.contains("gitleaks") ? "        with:\n          fetch-depth: 0\n" : "")
-        + InitToolchains.support(project).ciSetup(project);
+        + InitToolchains.support(project).ciSetup(project, manifest);
   }
 
   private static String tools(final Set<String> ids) {

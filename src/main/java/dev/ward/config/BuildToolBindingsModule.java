@@ -6,6 +6,7 @@ import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.BuildToolConfigurator;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
+import dev.ward.infrastructure.init.NodeBuildToolConfigurator;
 import java.util.Map;
 
 /** Build-file adapters, one per supported toolchain, behind the routing configurator. */
@@ -20,7 +21,7 @@ final class BuildToolBindingsModule {
 
   @Provides
   static Map<Toolchain, BuildToolConfiguration> buildToolAdapters(
-      final JvmBuildToolConfigurator jvm) {
-    return Map.of(Toolchain.JVM, jvm);
+      final JvmBuildToolConfigurator jvm, final NodeBuildToolConfigurator node) {
+    return Map.of(Toolchain.JVM, jvm, Toolchain.NODE, node);
   }
 }

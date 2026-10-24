@@ -5,10 +5,12 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The {@code [quality-gates.<id>.partial]} table init writes for a gate whose tool can be scoped to
@@ -21,6 +23,39 @@ final class PartialCheckDefaults {
   private static final List<String> GRADLE_BUILD = List.of("build.gradle*", "settings.gradle*");
   private static final String GRADLE_PATHS = "-PwardPaths={paths}";
   private static final String COMMA = ",";
+  private static final List<String> NODE_SOURCES =
+      List.of(
+          "**/*.ts",
+          "**/*.tsx",
+          "**/*.mts",
+          "**/*.cts",
+          "**/*.js",
+          "**/*.jsx",
+          "**/*.mjs",
+          "**/*.cjs");
+  private static final List<String> PATHS = List.of("{paths}");
+
+  // Their full commands end with a target (or none), so the narrowed command replaces it.
+  private static final Map<String, Function<BuildTool, Table>> NODE_TABLES =
+      Map.of(
+          "eslint",
+          manager ->
+              new Table(
+                  NODE_SOURCES,
+                  List.of("eslint.config.*", ".eslintrc*", "package.json"),
+                  PATHS,
+                  null,
+                  null,
+                  NodeTools.command(manager, "eslint", "--format", "json")),
+          "prettier",
+          manager ->
+              new Table(
+                  NODE_SOURCES,
+                  List.of(".prettierrc*", "prettier.config.*", ".prettierignore", "package.json"),
+                  PATHS,
+                  null,
+                  null,
+                  NodeTools.command(manager, "prettier", "--check")));
 
   private static final Map<String, TableFactory> TABLES =
       Map.of(
@@ -44,13 +79,31 @@ final class PartialCheckDefaults {
                   null,
                   null));
 
-  /** The table's keys; {@code item} and {@code separator} are omitted when {@code null}. */
+  /**
+   * The table's keys; {@code item} and {@code separator} are omitted when {@code null}, and {@code
+   * command} when empty.
+   */
   record Table(
-      List<String> inputs, List<String> config, List<String> args, String item, String separator) {
+      List<String> inputs,
+      List<String> config,
+      List<String> args,
+      String item,
+      String separator,
+      List<String> command) {
     Table {
       inputs = List.copyOf(inputs);
       config = List.copyOf(config);
       args = List.copyOf(args);
+      command = List.copyOf(command);
+    }
+
+    Table(
+        final List<String> inputs,
+        final List<String> config,
+        final List<String> args,
+        final String item,
+        final String separator) {
+      this(inputs, config, args, item, separator, List.of());
     }
 
     private static Table full(final List<String> inputs, final List<String> config) {
@@ -70,13 +123,19 @@ final class PartialCheckDefaults {
       final String gate, final Project project, final QualityPreset preset) {
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final List<String> build = gradle ? GRADLE_BUILD : MAVEN_BUILD;
-    return Optional.ofNullable(TABLES.get(gate))
-        .map(factory -> factory.create(gradle, preset, build));
+    return Optional.ofNullable(NODE_TABLES.get(gate))
+        .map(factory -> factory.apply(project.buildTool()))
+        .or(
+            () ->
+                Optional.ofNullable(TABLES.get(gate))
+                    .map(factory -> factory.create(gradle, preset, build)));
   }
 
   /** Returns the gates that have a partial table, for the gate contract test. */
   static Set<String> gates() {
-    return TABLES.keySet();
+    final Set<String> gates = new HashSet<>(TABLES.keySet());
+    gates.addAll(NODE_TABLES.keySet());
+    return gates;
   }
 
   /**

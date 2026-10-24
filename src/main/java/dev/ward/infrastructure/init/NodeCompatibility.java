@@ -1,0 +1,116 @@
+package dev.ward.infrastructure.init;
+
+import dev.ward.domain.init.CompatibilityFinding;
+import dev.ward.domain.init.CompatibilityOutcome;
+import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.Project;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Checks the packages init adds against the project's Node major version, and {@code
+ * typescript-eslint} against its TypeScript version. A Node or TypeScript version cannot be fixed
+ * by choosing another package version, so findings have no approval path.
+ *
+ * @param findings the {@code INCOMPATIBLE} findings, one per package
+ * @param notes plan notes, such as a minimum minor Node version a range needs
+ */
+record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes) {
+  private static final Logger LOGGER = Logger.getLogger(NodeCompatibility.class.getName());
+
+  NodeCompatibility {
+    findings = List.copyOf(findings);
+    notes = List.copyOf(notes);
+  }
+
+  /** Checks {@code added}, the packages init would add to {@code project}. */
+  static NodeCompatibility check(
+      final Project project,
+      final PackageManifest manifest,
+      final List<NodePackageCatalog.Package> added) {
+    final int node = Integer.parseInt(project.languageVersion());
+    final List<CompatibilityFinding> findings = new ArrayList<>();
+    final List<String> notes = new ArrayList<>();
+    for (final NodePackageCatalog.Package tool : added) {
+      final Optional<String> minimum = NodeVersionRange.nodeMinimum(tool.node(), node);
+      if (minimum.isEmpty()) {
+        findings.add(
+            finding(
+                tool,
+                "Node " + node,
+                tool.name()
+                    + " "
+                    + tool.version()
+                    + " supports Node "
+                    + tool.node()
+                    + "; the project uses Node "
+                    + node
+                    + "."));
+      } else if (minimum.get().startsWith(node + ".") && !minimum.get().endsWith(".0.0")) {
+        notes.add(tool.name() + " needs Node " + minimum.get() + " or later.");
+      }
+      typescript(tool, manifest, added).ifPresent(findings::add);
+    }
+    findings.forEach(
+        finding ->
+            LOGGER.log(
+                Level.INFO,
+                () ->
+                    "event=node-compatibility outcome="
+                        + finding.outcome()
+                        + " tool="
+                        + finding.artifactId()));
+    return new NodeCompatibility(findings, notes);
+  }
+
+  private static Optional<CompatibilityFinding> typescript(
+      final NodePackageCatalog.Package tool,
+      final PackageManifest manifest,
+      final List<NodePackageCatalog.Package> added) {
+    if (tool.typescript() == null) {
+      return Optional.empty();
+    }
+    final Optional<String> version =
+        manifest.declares(NodePackageCatalog.TYPESCRIPT)
+            ? NodeVersionRange.lowerBound(
+                manifest.dependencies().get(NodePackageCatalog.TYPESCRIPT))
+            : added.stream()
+                .filter(candidate -> NodePackageCatalog.TYPESCRIPT.equals(candidate.name()))
+                .map(NodePackageCatalog.Package::version)
+                .findFirst();
+    return version
+        .filter(declared -> !NodeVersionRange.matches(tool.typescript(), declared))
+        .map(
+            declared ->
+                finding(
+                    tool,
+                    "TypeScript " + declared,
+                    tool.name()
+                        + " "
+                        + tool.version()
+                        + " supports TypeScript "
+                        + tool.typescript()
+                        + "; the project uses TypeScript "
+                        + declared
+                        + "."));
+  }
+
+  private static CompatibilityFinding finding(
+      final NodePackageCatalog.Package tool, final String current, final String message) {
+    return new CompatibilityFinding(
+        tool.name(), current, tool.version(), CompatibilityOutcome.INCOMPATIBLE, message);
+  }
+
+  /** Returns whether any finding blocks init. */
+  boolean incompatible() {
+    return !findings.isEmpty();
+  }
+
+  /** Returns the findings' messages, joined for an error. */
+  String message() {
+    return String.join(" ", findings.stream().map(CompatibilityFinding::message).toList());
+  }
+}

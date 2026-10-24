@@ -12,6 +12,7 @@ import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -20,11 +21,18 @@ import javax.inject.Inject;
 public class InitGeneralCatalog {
   public static final String NO_INTEGRATION = "none";
   private final EnvironmentInspection environment;
+  private final InitInputs inputs;
 
   /** Creates the catalog; {@code environment} resolves which executables are on the path. */
   @Inject
   public InitGeneralCatalog(final EnvironmentInspection environment) {
-    this.environment = environment;
+    this(InitInputs.withoutManifests(environment));
+  }
+
+  /** Creates the catalog from what the toolchain supports read. */
+  InitGeneralCatalog(final InitInputs inputs) {
+    this.environment = inputs.environment();
+    this.inputs = inputs;
   }
 
   /** Returns the agent integration choices, starting with the option to install none. */
@@ -68,7 +76,7 @@ public class InitGeneralCatalog {
    */
   public List<InitGateOption> gates(final Project project) {
     final ToolchainInitSupport.Gates buildTool =
-        InitToolchains.support(project).gates(project, environment);
+        InitToolchains.support(project).gates(project, inputs);
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
@@ -87,7 +95,7 @@ public class InitGeneralCatalog {
    * order.
    */
   public List<String> presetGates(final Project project, final QualityPreset preset) {
-    return InitToolchains.support(project).presetGates(project, preset);
+    return InitToolchains.support(project).presetGates(project, preset, inputs);
   }
 
   /**
@@ -158,9 +166,9 @@ public class InitGeneralCatalog {
                                 executable, null, List.of(), entry.manualGuidance())));
   }
 
-  /** Returns the quality presets init can apply. */
-  public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
+  /** Returns the quality presets init offers for {@code project}, in wizard order. */
+  public List<QualityPreset> presets(final Project project) {
+    return InitToolchains.support(project).presets();
   }
 
   /**
@@ -169,7 +177,7 @@ public class InitGeneralCatalog {
    * @throws WardException if {@code id} is not a supported preset
    */
   public QualityPreset preset(final String id) {
-    return presets().stream()
+    return Arrays.stream(QualityPreset.values())
         .filter(candidate -> candidate.id().equals(id))
         .findFirst()
         .orElseThrow(
