@@ -15,9 +15,49 @@
 
 Ward resolves behavior along three axes. Add classes and rows; do not add `BuildTool` or `Language` branches outside the owning support. `GateCatalogContractTest`, `PomToolsContractTest` and `FindingSourceContractTest` name any missing piece.
 
-- **Toolchain** (`domain/project/Toolchain`, from `BuildTool`): implement `ToolchainInitSupport` (gates, preset gates, CI setup) and register it in `InitToolchains`; implement `BuildToolConfiguration` and register it in `BuildToolBindingsModule`; add its case to `doctor/BuildToolFindings`.
+- **Toolchain** (`domain/project/Toolchain`, from `BuildTool`): implement `ToolchainInitSupport` (gates, preset gates, CI setup) and register it in `InitToolchains`; implement `BuildToolConfiguration` and register it in `BuildToolBindingsModule`; implement `ToolchainFinding` for its doctor checks and add its case to `BuildToolFindings.forToolchain` (see Design patterns).
 - **Language**: add the `Language` constant and its detection in `infrastructure/project` (from sources, not build files); implement `SourceLanguageGates` for its toolchain (analysis gates and preset gate sets) and add it to that toolchain's language map. A language without an entry fails init by design.
 - **Tool**: add its row to `QualityGateDefinitions` (ID, display name, phase, learning); offer it from a `SourceLanguageGates`; add its build-file entry for each build tool (`PomTools` and `ManagedPluginCatalog`, Gradle `PLUGINS` or `GradleBuildBlocks`); add optional rows in `PartialCheckDefaults`, `AgentRulesTemplate`, preset rule files and a `GateFindingSource`. Update `ward.toml` and the `website/` gate docs.
+
+## Design patterns
+
+Pick the pattern from the scenario, and copy the existing example rather than inventing a new shape. Use a pattern only when the scenario is there; a single case with no variation needs no pattern.
+
+| Scenario | Pattern | Example in this repo |
+|---|---|---|
+| Behavior varies by a closed enum (`Toolchain`, `BuildTool`) | Strategy behind a factory | `ToolchainFinding` → `BuildToolFindings.forToolchain` |
+| Many interchangeable checks chosen by id or config | Strategy + factory | `QualityGate` → `QualityGateFactory` |
+| Variants map to Dagger-provided support objects | Registry (`Map`) | `InitToolchains` |
+| Domain needs I/O or a platform call | Port (domain interface) + adapter (`infrastructure`) | `RawTerminal` → `PosixRawTerminal`; `ProjectInspection` → `FileSystemProjectInspection` |
+| A use case coordinates several domain ports | Facade (application service) | `CheckService`, `DoctorService` |
+| Callers should observe progress without knowing the sink | Observer (listener interface) | `CheckProgressListener` |
+| Immutable data passed between layers | Value object (record) | `Project`, `Finding` |
+| Wiring the object graph | Constructor injection through Dagger | `WardComponent`, `ProjectBindingsModule` |
+
+Rules for each pattern:
+
+- **Strategy.** Declare the interface in the layer that owns the behavior (`domain` for ports, `application` for doctor and init checks). Keep single-method interfaces `@FunctionalInterface` (PMD `ImplicitFunctionalInterface`) and package-private unless another package needs them. Name the method for what the caller does, with a verb (`check`).
+- **Implementations.** Name them `<Variant><Feature>`. Make them `final` and stateless. Keep each private helper in the one implementation that uses it; extract a package-private helper only when two implementations need the same code.
+- **Factory.** A `final` class with a private constructor and a static `forX(...)` method. Use an exhaustive `switch` expression. Checkstyle requires a `default`, so map unsupported variants to a warning implementation, not an exception. Stateless implementations may be created per call.
+- **Registry.** Use a `Map` when the values are injected objects. Use a `switch` when each variant has its own logic. Use a table of rows (such as `QualityGateDefinitions`) when the variants are only data.
+- **Port and adapter.** Put the interface in `domain` with no I/O types leaking into it. The adapter lives in `infrastructure/<feature>` and is wired in a Dagger module. CLI code uses the port and never the adapter, and it does not start processes (see Architecture).
+- **Facade.** Keep it thin: it orchestrates ports and domain objects, and holds no parsing or I/O logic itself.
+- **Observer.** Keep listeners optional with a no-op default, and do not let a listener change the result of the operation.
+- **Value objects.** Use records for data crossing layers. Copy collections in and out, as SpotBugs requires.
+
+Avoid in this codebase:
+
+- Reflection, `java.lang.reflect.Proxy`, or runtime class generation for decorators or proxies. Native images only contain classes seen at build time (see Architecture), so use explicit wrapper classes instead.
+- Static mutable state, and the Singleton pattern. Use a Dagger-scoped object injected through the constructor.
+- Field injection, as stated under Code Style.
+- Generic "manager" or "helper" classes that gather unrelated variants. Name the class after the one variant or feature it serves.
+- A pattern added for one case. Wait for the second variant, then extract it.
+
+Tests:
+
+- Test each strategy through the caller's public behavior (for example `DoctorNodeTest`).
+- When a factory or registry covers an enum, add a test that every constant maps to an implementation, so a new constant without one fails the build.
+- New behavior behind a port is tested with a fake implementation, not the real adapter (`FakeCommandExecutor` for processes).
 
 ## Code Style
 

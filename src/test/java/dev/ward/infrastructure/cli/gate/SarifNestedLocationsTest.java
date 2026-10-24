@@ -81,6 +81,14 @@ class SarifNestedLocationsTest {
 
   private static Project project(final Path root) {
     return new Project(
-        root, Language.JAVA, BuildTool.MAVEN, Framework.NONE, false, false, REPOSITORY, Set.of());
+        root,
+        Language.JAVA,
+        BuildTool.MAVEN,
+        Framework.NONE,
+        false,
+        false,
+        REPOSITORY,
+        Set.of(),
+        "");
   }
 }

@@ -44,7 +44,15 @@ class CoverageProjectMutationTest {
     final List<InitGateOption> gates =
         catalog.gates(
             new Project(
-                root, Language.JAVA, BuildTool.MAVEN, Framework.NONE, false, true, root, Set.of()));
+                root,
+                Language.JAVA,
+                BuildTool.MAVEN,
+                Framework.NONE,
+                false,
+                true,
+                root,
+                Set.of(),
+                ""));
     final PomToolConfigurator configurator = new PomToolConfigurator();
     final BuildFileChange change =
         configurator.apply(

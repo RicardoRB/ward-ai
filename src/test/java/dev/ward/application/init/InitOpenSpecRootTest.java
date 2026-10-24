@@ -40,7 +40,8 @@ class InitOpenSpecRootTest {
             false,
             false,
             repository,
-            Set.of());
+            Set.of(),
+            "");
   }
 
   @Test

@@ -9,7 +9,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** Decides whether a build directory is a module of an enclosing Maven or Gradle aggregator. */
+/**
+ * Decides whether a build directory is a module of an enclosing Maven or Gradle aggregator or Node
+ * workspace.
+ */
 final class BuildModules {
   private static final String MODULE = "module";
   private static final String POM_SUFFIX = "/" + FileSystemProjectInspection.POM;
@@ -21,7 +24,8 @@ final class BuildModules {
 
   /**
    * Returns whether {@code candidate} belongs to the build at {@code aggregator}: listed in its
-   * Maven {@code <modules>}, including profile modules, or below its Gradle settings file.
+   * Maven {@code <modules>}, including profile modules, below its Gradle settings file, or matched
+   * by its Node workspace patterns.
    */
   static boolean isModuleOf(final Path aggregator, final Path candidate) {
     if (aggregator.equals(candidate) || !candidate.startsWith(aggregator)) {
@@ -30,7 +34,8 @@ final class BuildModules {
     // shortcut: any Gradle build below a settings file is a module, so a custom projectDir outside
     // the settings root is missed; read include() and projectDir if that layout shows up.
     return hasAny(aggregator, GRADLE_SETTINGS) && hasAny(candidate, GRADLE_BUILDS)
-        || mavenModules(aggregator).contains(candidate);
+        || mavenModules(aggregator).contains(candidate)
+        || NodeWorkspaces.isMember(aggregator, candidate);
   }
 
   /** Returns the module directories that the POM in {@code dir} lists, resolved and normalized. */

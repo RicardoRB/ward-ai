@@ -64,7 +64,7 @@ class SourceLanguagesTest {
 
   private static Project project(final Language language, final Set<Language> others) {
     return new Project(
-        ROOT, language, BuildTool.GRADLE, Framework.NONE, false, false, ROOT, others);
+        ROOT, language, BuildTool.GRADLE, Framework.NONE, false, false, ROOT, others, "");
   }
 
   private static SourceLanguageGates<String> fixed(final String... ids) {

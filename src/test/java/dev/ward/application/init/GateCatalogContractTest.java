@@ -110,6 +110,6 @@ class GateCatalogContractTest {
 
   private Project project(final BuildTool buildTool, final Language language) {
     // Publishing makes Maven offer api-compat, so every JVM gate is listed.
-    return new Project(root, language, buildTool, Framework.NONE, false, true, root, Set.of());
+    return new Project(root, language, buildTool, Framework.NONE, false, true, root, Set.of(), "");
   }
 }

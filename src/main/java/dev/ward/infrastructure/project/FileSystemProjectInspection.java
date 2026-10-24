@@ -37,12 +37,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new Marker(POM, FileSystemProjectInspection::mavenProject),
           new Marker("build.gradle.kts", FileSystemProjectInspection::gradleProject),
           new Marker("build.gradle", FileSystemProjectInspection::gradleProject),
-          new Marker(
-              "tsconfig.json",
-              dir -> new Project(dir, Language.TYPESCRIPT, tool(dir), Framework.NONE)),
-          new Marker(
-              "package.json",
-              dir -> new Project(dir, Language.JAVASCRIPT, tool(dir), Framework.NONE)),
+          new Marker(NodeProjectInspection.TSCONFIG, NodeProjectInspection::project),
+          new Marker(NodeProjectInspection.PACKAGE_JSON, NodeProjectInspection::project),
           new Marker(
               "pyproject.toml",
               dir -> new Project(dir, Language.PYTHON, BuildTool.POETRY, Framework.NONE)),
@@ -121,7 +117,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         Files.isRegularFile(dir.resolve("mvnw")),
         pom.map(FileSystemProjectInspection::publishes).orElse(false),
         dir,
-        languages);
+        languages,
+        "");
   }
 
   private static Project gradleProject(final Path dir) {
@@ -134,17 +131,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         Files.isExecutable(dir.resolve("gradlew")),
         false,
         dir,
-        languages);
-  }
-
-  private static BuildTool tool(final Path dir) {
-    if (Files.isRegularFile(dir.resolve("pnpm-lock.yaml"))) {
-      return BuildTool.PNPM;
-    }
-    if (Files.isRegularFile(dir.resolve("yarn.lock"))) {
-      return BuildTool.YARN;
-    }
-    return BuildTool.NPM;
+        languages,
+        "");
   }
 
   /** Parses the POM securely; a malformed or hostile POM is still a Maven marker. */

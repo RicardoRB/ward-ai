@@ -19,6 +19,8 @@ import java.util.Set;
  * @param repositoryRoot the Git top-level containing the project, or {@code root} outside a Git
  *     work tree
  * @param languages every source language the project contains; always includes {@code language}
+ * @param languageVersion the target language major version, such as the Node version, or empty when
+ *     none is detected
  */
 public record Project(
     Path root,
@@ -28,7 +30,8 @@ public record Project(
     boolean mavenWrapperAvailable,
     boolean publishesArtifacts,
     Path repositoryRoot,
-    Set<Language> languages) {
+    Set<Language> languages,
+    String languageVersion) {
   /** Copies {@code languages}, in declaration order, and adds the primary language. */
   public Project {
     final Set<Language> all = EnumSet.of(language);
@@ -52,7 +55,7 @@ public record Project(
       final BuildTool buildTool,
       final Framework framework,
       final boolean mavenWrapperAvailable) {
-    this(root, language, buildTool, framework, mavenWrapperAvailable, false, root, Set.of());
+    this(root, language, buildTool, framework, mavenWrapperAvailable, false, root, Set.of(), "");
   }
 
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
@@ -65,7 +68,8 @@ public record Project(
         mavenWrapperAvailable,
         publishesArtifacts,
         repository,
-        languages);
+        languages,
+        languageVersion);
   }
 
   /**
@@ -130,6 +134,10 @@ public record Project(
     return switch (buildTool) {
       case MAVEN -> mavenWrapperAvailable ? "./mvnw" : "mvn";
       case GRADLE -> mavenWrapperAvailable ? "./gradlew" : "gradle";
+      case NPM -> "npm";
+      case PNPM -> "pnpm";
+      case YARN -> "yarn";
+      case BUN -> "bun";
       default -> buildTool.displayName();
     };
   }
