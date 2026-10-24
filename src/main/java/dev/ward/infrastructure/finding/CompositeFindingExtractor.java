@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /** Routes a gate result to the finding source registered for its gate id. */
@@ -22,12 +23,13 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   /** Creates the extractor that delegates to the extractor of each supported gate. */
   @Inject
   public CompositeFindingExtractor(
-      final CheckstyleXmlFindings checkstyle,
-      final PmdXmlFindings pmd,
-      final GitleaksSarifFindings gitleaks,
-      final JavacOutputFindings javac,
-      final SpotlessOutputFindings spotless) {
-    this(List.of(checkstyle, pmd, gitleaks, javac, spotless));
+      final JvmFindingSources jvm,
+      final NodeFindingSources node,
+      final GitleaksSarifFindings gitleaks) {
+    this(
+        Stream.of(jvm.sources(), node.sources(), List.<GateFindingSource>of(gitleaks))
+            .flatMap(List::stream)
+            .toList());
   }
 
   CompositeFindingExtractor(final List<GateFindingSource> sources) {

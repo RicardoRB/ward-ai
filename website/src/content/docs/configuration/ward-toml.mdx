@@ -40,6 +40,23 @@ Profiles:
 
 Unknown gate IDs, and checks with no enabled matching gates, are errors.
 
+## Mutation score minimum
+
+The `stryker` and PIT `mutation` gates accept an optional `minimum`, an integer from 0 to 100. When
+it is set and the tool succeeds, Ward reads the tool's report and fails the gate when the mutation
+score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score)
+and [PIT mutation score](/configuration/gates/#pit-mutation-score).
+
+```toml
+[quality-gates.stryker]
+command = ["npx", "stryker", "run", "--reporters", "clear-text,progress,json"]
+minimum = 60
+profiles = ["ci"]
+```
+
+`minimum` on any other gate, or a value that is not an integer from 0 to 100, is a configuration
+error that names the key.
+
 ## Partial checks
 
 An optional `[quality-gates.<id>.partial]` table controls how a gate responds to an edited path
