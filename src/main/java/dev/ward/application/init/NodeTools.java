@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -15,26 +14,49 @@ import java.util.List;
  * @param manager the project's package manager
  * @param testGate the test runner gate: {@code vitest}, {@code jest} or {@code bun-test}
  * @param available whether the package manager is on the path
+ * @param preset the selected preset, or {@code null} for a custom selection
+ * @param ownTestConfig whether the project keeps its own test runner config, which init leaves
+ *     unchanged
  */
-record NodeTools(BuildTool manager, String testGate, boolean available) {
+record NodeTools(
+    BuildTool manager,
+    String testGate,
+    boolean available,
+    QualityPreset preset,
+    boolean ownTestConfig) {
   static final String VITEST = "vitest";
   static final String JEST = "jest";
   static final String BUN_TEST = "bun-test";
+  static final String LINE = "LINE";
+  static final String BRANCH = "BRANCH";
+  private static final int PERCENT = 100;
 
-  // shortcut: every Node gate uses the standard preset's line minimum until the TypeScript strict
-  // preset (#84) exists; read the selected preset then.
-  static final int LINE_MINIMUM =
-      (int) Math.round(QualityPreset.STANDARD.rules().jacocoMinimums().get("LINE") * 100);
-
-  /** Resolves the tools of {@code project} from its manifest and the executables on the path. */
+  /**
+   * Resolves the tools of {@code project} from its manifest, the executables on the path and the
+   * configs it keeps, for {@code preset}.
+   */
   static NodeTools of(
       final Project project,
       final PackageManifest manifest,
-      final EnvironmentInspection environment) {
+      final InitInputs inputs,
+      final QualityPreset preset) {
+    final String testGate = testGate(project.buildTool(), manifest);
     return new NodeTools(
         project.buildTool(),
-        testGate(project.buildTool(), manifest),
-        environment.inspect(project.root()).hasExecutable(project.buildExecutable()));
+        testGate,
+        inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
+        preset,
+        inputs.configs().userConfig(project.root(), testGate).isPresent());
+  }
+
+  /**
+   * Returns {@code preset}'s minimum percentage for coverage {@code counter}, such as {@code LINE},
+   * or {@code null} when it sets none; a custom selection uses the standard preset's minimums.
+   */
+  static Integer minimum(final QualityPreset preset, final String counter) {
+    final Double ratio =
+        (preset == null ? QualityPreset.STANDARD : preset).rules().jacocoMinimums().get(counter);
+    return ratio == null ? null : (int) Math.round(ratio * PERCENT);
   }
 
   /** A declared runner is reused; Bun has its own, and any other project gets Vitest. */
@@ -75,29 +97,49 @@ record NodeTools(BuildTool manager, String testGate, boolean available) {
     return List.copyOf(command);
   }
 
-  /** The gate of the project's test runner, failing below {@link #LINE_MINIMUM}% line coverage. */
+  /**
+   * The gate of the project's test runner, failing below the preset's coverage minimums. A config
+   * Ward writes holds them; a project's own config gets them as command-line flags.
+   */
   InitGateOption tests() {
     final String description = "Runs the project's tests with coverage.";
+    final Integer branches = minimum(preset, BRANCH);
     return switch (testGate) {
-      case JEST ->
-          option(
-              JEST,
-              description,
-              command(
-                  JEST,
-                  "--coverage",
-                  "--coverageThreshold={\"global\":{\"lines\":" + LINE_MINIMUM + "}}"));
+      case JEST -> {
+        final String threshold =
+            "--coverageThreshold={\"global\":{\"lines\":"
+                + minimum(preset, LINE)
+                + (branches == null ? "" : ",\"branches\":" + branches)
+                + "}}";
+        yield option(
+            JEST,
+            description,
+            ownTestConfig ? command(JEST, "--coverage", threshold) : command(JEST, "--coverage"));
+      }
       case BUN_TEST ->
           option(
               BUN_TEST,
               description + " (the coverage threshold is configured in bunfig.toml.)",
               List.of("bun", "test", "--coverage"));
-      default ->
-          option(
-              VITEST,
-              description,
-              command(VITEST, "run", "--coverage", "--coverage.thresholds.lines=" + LINE_MINIMUM));
+      default -> option(VITEST, description, vitest(branches));
     };
+  }
+
+  private List<String> vitest(final Integer branches) {
+    final List<String> arguments = new ArrayList<>(List.of(VITEST, "run", "--coverage"));
+    if (ownTestConfig) {
+      arguments.add("--coverage.thresholds.lines=" + minimum(preset, LINE));
+      if (branches != null) {
+        arguments.add("--coverage.thresholds.branches=" + branches);
+      }
+    }
+    return command(arguments.toArray(String[]::new));
+  }
+
+  /** The Stryker mutation gate; its config file sets the minimum score. */
+  InitGateOption stryker() {
+    return option(
+        "stryker", "Mutation-tests the project with Stryker (ci).", command("stryker", "run"));
   }
 
   /** A gate that runs the local tool with {@code command}. */

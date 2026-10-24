@@ -14,6 +14,7 @@ import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,7 +63,7 @@ class NodeInitFilesTest {
     final List<InitGateOption> gates =
         new InitGeneralCatalog(
                 InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm")))
-            .gates(project(BuildTool.NPM, "24")).stream()
+            .gates(project(BuildTool.NPM, "24"), null).stream()
                 .filter(gate -> Set.of("tsc", "vitest", "prettier", "eslint").contains(gate.id()))
                 .toList();
 
@@ -102,7 +103,10 @@ class NodeInitFilesTest {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new dev.ward.domain.FakeEnvironmentInspection(),
-            new NodeInputs(directory -> PackageManifest.EMPTY, directory -> false),
+            new NodeInputs(
+                directory -> PackageManifest.EMPTY,
+                directory -> false,
+                (directory, gate) -> Optional.empty()),
             null,
             null,
             "dev");

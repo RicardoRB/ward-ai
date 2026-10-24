@@ -6,6 +6,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
+import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.inject.Inject;
 
 /**
@@ -26,16 +28,21 @@ import javax.inject.Inject;
 public final class PresetRuleFileWriter implements RuleFileGeneration {
   private static final String MARKER = "<!-- managed-by: ward preset=";
   private final PackageManifests manifests;
+  private final NodeToolConfigs configs;
 
   /** Creates a writer for projects without a {@code package.json}. */
   public PresetRuleFileWriter() {
-    this(root -> PackageManifest.EMPTY);
+    this(root -> PackageManifest.EMPTY, (root, gate) -> Optional.empty());
   }
 
-  /** Creates the adapter; {@code manifests} tells whether a Node project uses ES modules. */
+  /**
+   * Creates the adapter; {@code manifests} tells whether a Node project uses ES modules, and {@code
+   * configs} finds the tool configs it keeps itself.
+   */
   @Inject
-  public PresetRuleFileWriter(final PackageManifests manifests) {
+  public PresetRuleFileWriter(final PackageManifests manifests, final NodeToolConfigs configs) {
     this.manifests = manifests;
+    this.configs = configs;
   }
 
   @Override
@@ -95,7 +102,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       throws IOException {
     if (project.toolchain() == Toolchain.NODE) {
       return NodeConfigFiles.targets(
-          project.root(), project.language(), manifests.read(project.root()), preset, gates);
+          project, manifests.read(project.root()), configs, preset, gates);
     }
     if (preset == null) {
       return Map.of();

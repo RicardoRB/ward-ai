@@ -11,9 +11,9 @@ import java.util.Map;
 final class NodeInitSupport implements ToolchainInitSupport {
 
   @Override
-  public Gates gates(final Project project, final InitInputs inputs) {
+  public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final NodeTools tools =
-        NodeTools.of(project, inputs.manifests().read(project.root()), inputs.environment());
+        NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
     return new Gates(languages(project, tools.testGate()).analysisGates(tools), List.of());
   }
 
@@ -34,7 +34,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD);
+    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Override

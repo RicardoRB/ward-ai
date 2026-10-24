@@ -42,37 +42,4 @@ class InitUnsupportedToolchainTest {
     assertThat(init.output()).contains("No supported project detected.");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
-
-  @Test
-  void strictPresetIsRejectedForTypeScript() throws IOException {
-    final InitCommandFixture init = InitCommandFixture.repository(root);
-    Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
-    Files.writeString(root.resolve("tsconfig.json"), "{}\n");
-    final Map<String, String> before = ProjectSnapshot.of(root);
-
-    final int exit = init.run("", "--integration", "none", "--preset", "strict", "--yes");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output())
-        .contains("strict preset is not available for TypeScript yet")
-        .contains("--preset standard");
-    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
-  }
-
-  @Test
-  void strictPresetIsRejectedForJavaScript() throws IOException {
-    final InitCommandFixture init = InitCommandFixture.repository(root);
-    Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");
-    Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("src/index.js"), "module.exports = 1;\n");
-    final Map<String, String> before = ProjectSnapshot.of(root);
-
-    final int exit = init.run("", "--integration", "none", "--preset", "strict", "--yes");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output())
-        .contains("strict preset is not available for JavaScript yet")
-        .contains("--preset standard");
-    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
-  }
 }

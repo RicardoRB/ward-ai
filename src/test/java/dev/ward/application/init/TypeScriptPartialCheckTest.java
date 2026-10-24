@@ -51,7 +51,7 @@ class TypeScriptPartialCheckTest {
                 directory -> false));
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> gates =
-        catalog.gates(project).stream().filter(gate -> selected.contains(gate.id())).toList();
+        catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
     Files.writeString(
         root.resolve(WardConfiguration.FILE_NAME),
         ConfigurationTemplate.render(gates, QualityPreset.STANDARD, project));

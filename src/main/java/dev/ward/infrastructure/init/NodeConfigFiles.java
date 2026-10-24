@@ -3,10 +3,9 @@ package dev.ward.infrastructure.init;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Language;
+import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
+import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,80 +13,71 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The tool configs init writes in a Node project root: a flat ESLint config and Bun's coverage
- * threshold. A project's own config is reused instead.
+ * The tool configs init writes in a Node project root: a flat ESLint config, the test runner's
+ * coverage thresholds and Stryker's config. A project's own config is reused instead.
  */
 final class NodeConfigFiles {
   static final String JS_MARKER = "// managed-by: ward";
   static final String TOML_MARKER = "# managed-by: ward";
   static final String BUNFIG = "bunfig.toml";
-  private static final String TYPESCRIPT_ESLINT_CONFIG =
-      """
-      import js from "@eslint/js";
-      import { defineConfig } from "eslint/config";
-      import tseslint from "typescript-eslint";
-
-      export default defineConfig(
-        { ignores: ["dist/", "coverage/", ".ward/"] },
-        js.configs.recommended,
-        tseslint.configs.recommended,
-      );
-      """;
-
-  // Ward cannot tell Node code from browser code, so both globals sets keep no-undef quiet.
-  private static final String JAVASCRIPT_ESLINT_CONFIG =
-      """
-      import js from "@eslint/js";
-      import { defineConfig } from "eslint/config";
-      import globals from "globals";
-
-      export default defineConfig(
-        { ignores: ["dist/", "coverage/", ".ward/"] },
-        js.configs.recommended,
-        { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
-        {
-          files: ["**/*.jsx"],
-          languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-        },
-      {commonjs});
-      """;
-
-  // ESLint parses .js as ESM and does not read "type" from package.json.
-  private static final String COMMONJS_BLOCK =
-      "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"commonjs\" } },\n";
+  static final String STRYKER = "stryker";
+  private static final String ESLINT = "eslint";
+  private static final String VITEST = "vitest";
+  private static final String JEST = "jest";
+  private static final String BUN_TEST = "bun-test";
+  private static final String PACKAGE_JSON = "package.json";
 
   private NodeConfigFiles() {}
 
   /**
-   * Returns each config file the gates need with its marked content; an existing ESLint config is
-   * returned with {@code null} content, meaning it is kept as the user wrote it.
+   * Returns each config file the gates need with its marked content; a config the project keeps
+   * itself is returned with {@code null} content, meaning it is kept as the user wrote it.
    */
   static Map<Path, String> targets(
-      final Path root,
-      final Language language,
+      final Project project,
       final PackageManifest manifest,
+      final NodeToolConfigs configs,
       final QualityPreset preset,
-      final List<InitGateOption> gates)
-      throws IOException {
+      final List<InitGateOption> gates) {
+    final Path root = project.root();
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final Map<Path, String> targets = new LinkedHashMap<>();
-    if (ids.contains("eslint")) {
-      final Optional<Path> existing = existingEslintConfig(root);
-      if (existing.isPresent()) {
-        targets.put(existing.get(), null);
-      } else {
-        targets.put(
-            root.resolve(manifest.module() ? "eslint.config.js" : "eslint.config.mjs"),
-            marker(JS_MARKER, preset) + eslintConfig(language, manifest));
-      }
+    if (ids.contains(ESLINT)) {
+      final String file = manifest.module() ? "eslint.config.js" : "eslint.config.mjs";
+      target(
+          targets,
+          root,
+          configs.userConfig(root, ESLINT),
+          file,
+          marker(JS_MARKER, preset) + eslintConfig(project.language(), manifest, preset));
     }
-    if (ids.contains("bun-test")) {
+    if (ids.contains(VITEST)) {
+      target(
+          targets,
+          root,
+          configs.userConfig(root, VITEST),
+          "vitest.config.mjs",
+          marker(JS_MARKER, preset) + NodeConfigTemplates.vitest(preset));
+    }
+    if (ids.contains(JEST)) {
+      target(
+          targets,
+          root,
+          configs.userConfig(root, JEST),
+          "jest.config.mjs",
+          marker(JS_MARKER, preset) + NodeConfigTemplates.jest(preset));
+    }
+    if (ids.contains(BUN_TEST)) {
       targets.put(
-          root.resolve(BUNFIG),
-          marker(TOML_MARKER, preset)
-              + "[test]\ncoverageThreshold = { lines = "
-              + lineMinimum(preset)
-              + " }\n");
+          root.resolve(BUNFIG), marker(TOML_MARKER, preset) + NodeConfigTemplates.bunfig(preset));
+    }
+    if (ids.contains(STRYKER)) {
+      target(
+          targets,
+          root,
+          configs.userConfig(root, STRYKER),
+          "stryker.config.mjs",
+          marker(JS_MARKER, preset) + NodeConfigTemplates.stryker(testGate(ids), preset));
     }
     return targets;
   }
@@ -97,32 +87,38 @@ final class NodeConfigFiles {
     return existing.startsWith(JS_MARKER) || existing.startsWith(TOML_MARKER);
   }
 
-  private static String eslintConfig(final Language language, final PackageManifest manifest) {
-    if (language != Language.JAVASCRIPT) {
-      return TYPESCRIPT_ESLINT_CONFIG;
+  /**
+   * Adds the user's config with {@code null} content, or Ward's {@code file}; a config kept in
+   * {@code package.json} is already part of the plan, so it adds nothing.
+   */
+  private static void target(
+      final Map<Path, String> targets,
+      final Path root,
+      final Optional<Path> userConfig,
+      final String file,
+      final String content) {
+    if (userConfig.isEmpty()) {
+      targets.put(root.resolve(file), content);
+    } else if (!userConfig.get().equals(root.resolve(PACKAGE_JSON))) {
+      targets.put(userConfig.get(), null);
     }
-    return JAVASCRIPT_ESLINT_CONFIG.replace("{commonjs}", manifest.module() ? "" : COMMONJS_BLOCK);
   }
 
-  private static Optional<Path> existingEslintConfig(final Path root) throws IOException {
-    try (DirectoryStream<Path> files =
-        Files.newDirectoryStream(root, "{eslint.config.*,.eslintrc*}")) {
-      for (final Path file : files) {
-        if (Files.isRegularFile(file) && !owned(Files.readString(file))) {
-          return Optional.of(file);
-        }
-      }
+  private static String eslintConfig(
+      final Language language, final PackageManifest manifest, final QualityPreset preset) {
+    if (language == Language.JAVASCRIPT) {
+      return NodeConfigTemplates.javascriptEslint(manifest.module());
     }
-    return Optional.empty();
+    return preset == QualityPreset.STRICT
+        ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT
+        : NodeConfigTemplates.TYPESCRIPT_ESLINT;
+  }
+
+  private static String testGate(final List<String> ids) {
+    return ids.contains(JEST) ? JEST : ids.contains(BUN_TEST) ? BUN_TEST : VITEST;
   }
 
   private static String marker(final String marker, final QualityPreset preset) {
     return marker + (preset == null ? "" : " preset=" + preset.id()) + "\n";
-  }
-
-  // shortcut: TypeScript has only the standard preset (#84), so custom selections use its minimum.
-  private static double lineMinimum(final QualityPreset preset) {
-    final QualityPreset source = preset == null ? QualityPreset.STANDARD : preset;
-    return source.rules().jacocoMinimums().get("LINE");
   }
 }

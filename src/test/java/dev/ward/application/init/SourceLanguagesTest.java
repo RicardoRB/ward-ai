@@ -57,7 +57,7 @@ class SourceLanguagesTest {
 
   private static List<String> gateIds(final Project project) {
     return new JvmInitSupport()
-            .gates(project, InitInputs.withoutManifests(new FakeEnvironmentInspection()))
+            .gates(project, null, InitInputs.withoutManifests(new FakeEnvironmentInspection()))
             .analysis()
             .stream()
             .map(InitGateOption::id)

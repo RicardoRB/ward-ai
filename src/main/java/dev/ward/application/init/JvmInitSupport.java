@@ -17,7 +17,7 @@ final class JvmInitSupport implements ToolchainInitSupport {
       Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
 
   @Override
-  public Gates gates(final Project project, final InitInputs inputs) {
+  public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final BuildToolGates buildTool = buildToolGates(project, inputs.environment());
     return new Gates(
         SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool),

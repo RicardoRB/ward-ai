@@ -77,11 +77,12 @@ public class InitGeneralCatalog {
 
   /**
    * Returns every gate choice for {@code project}, in wizard order, with availability resolved
-   * against the project's build tool and the executables on the path.
+   * against the project's build tool and the executables on the path. Commands are configured for
+   * {@code preset}, or for a custom selection or a plain listing when it is {@code null}.
    */
-  public List<InitGateOption> gates(final Project project) {
+  public List<InitGateOption> gates(final Project project, final QualityPreset preset) {
     final ToolchainInitSupport.Gates buildTool =
-        InitToolchains.support(project).gates(project, inputs);
+        InitToolchains.support(project).gates(project, preset, inputs);
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
@@ -128,7 +129,7 @@ public class InitGeneralCatalog {
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);
-    return gates(project).stream()
+    return gates(project, null).stream()
         .filter(option -> option.id().equals(id))
         .findFirst()
         .orElseThrow(

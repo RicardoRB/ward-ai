@@ -63,21 +63,31 @@ holds the JaCoCo message, for example `lines covered ratio is 0.62, but expected
 - **Generated or trivial code drags the ratio down,** such as generated sources or DTOs. Excluding
   it is still a weakening. Name every pattern and the number of classes it removes.
 
-## TypeScript test gates
+## TypeScript and JavaScript test gates
 
-For TypeScript, init puts the line minimum in the test gate's command in `ward.toml`, not in a
-build file:
+Where init puts the thresholds depends on whether the project had its own test config:
 
-- `vitest`: `--coverage.thresholds.lines=70` in `<runner> vitest run --coverage ...`.
-- `jest`: `--coverageThreshold={"global":{"lines":70}}`, one argument because no shell runs it.
-- `bun-test`: `bun test --coverage` reads `coverageThreshold` from `bunfig.toml`. Init writes
-  `[test] coverageThreshold = { lines = 0.7 }` there only when no `bunfig.toml` existed.
+- **Ward's config.** Without a user config, init writes `vitest.config.mjs` (Vitest) or
+  `jest.config.mjs` (Jest), marked `// managed-by: ward preset=<id>`, with
+  `coverage.thresholds` (Vitest) or `coverageThreshold.global` (Jest). `standard` writes
+  `lines: 70`; `strict` writes `lines: 85` and `branches: 75`. The gate command is then plain
+  `<runner> vitest run --coverage` or `<runner> jest --coverage`.
+- **The project's config.** With `vitest.config.*`, `vite.config.*`, `jest.config.*`, or a `"jest"`
+  key in `package.json`, init leaves that config alone and puts the thresholds in the command in
+  `ward.toml`: `--coverage.thresholds.lines=85 --coverage.thresholds.branches=75` for Vitest, or one
+  `--coverageThreshold={"global":{"lines":85,"branches":75}}` argument for Jest (no shell runs it).
+  A threshold in the project's own config is overridden by these flags.
+- **Bun.** `bun test --coverage` reads `coverageThreshold` from `bunfig.toml`. Init writes
+  `[test] coverageThreshold = { lines = 0.7 }` (`0.85` with `strict`) only when no `bunfig.toml`
+  existed. Bun measures no branches, so there is no branch threshold to tune.
 
-Editing the threshold means editing that command (or `bunfig.toml`). A later `ward init` rewrites
-`ward.toml`, so say that a re-run restores the preset's 70%.
+Edit the threshold where it lives. Treat a marked config like any managed rule file (Step 4): ask
+whether it should become the user's before the first edit, and remove the marker in the same
+approved edit, or a later `ward init` rewrites it with the preset's values. A threshold in a
+`ward.toml` command is also rewritten by a later `ward init`; say so.
 
 Read the measured value from the runner's summary in the gate output (`Lines : 62.5%`), or from
 `coverage/coverage-summary.json` when the project enables the `json-summary` reporter. Vitest and
-Jest measure only the files the tests load unless the project's config sets `coverage.include`
-(Vitest) or `collectCoverageFrom` (Jest). Setting it is a strengthening: files no test imports
-start counting. Classify threshold changes as in the table above.
+Jest measure only the files the tests load unless the config sets `coverage.include` (Vitest) or
+`collectCoverageFrom` (Jest). Setting it is a strengthening: files no test imports start counting.
+Classify threshold changes as in the table above.

@@ -32,7 +32,7 @@ class InitApiCompatCatalogTest {
     assertThat(published.publishesArtifacts()).isTrue();
     assertThat(catalog.gate(published, "api-compat").command())
         .endsWith("-DskipTests", "package", "japicmp:cmp");
-    assertThat(catalog.gates(application))
+    assertThat(catalog.gates(application, null))
         .extracting(InitGateOption::id)
         .doesNotContain("api-compat");
     assertThatThrownBy(() -> catalog.gate(application, "api-compat"))

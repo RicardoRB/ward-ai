@@ -6,6 +6,7 @@ import dev.ward.domain.project.PackageManifest;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,27 +24,36 @@ final class NodePackageCatalog {
   private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
   private static final String VITEST_NODE = "^22.12.0 || ^24.0.0 || >=26.0.0";
   private static final String VITEST_VERSION = "5.0.3";
+  private static final String STRYKER = "stryker";
+  private static final String STRYKER_CORE = "@stryker-mutator/core";
+  private static final String STRYKER_VERSION = "10.1.1";
+  private static final String STRYKER_NODE = ">=22.0.0";
+
+  /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
+  private static final Map<String, String> STRYKER_RUNNERS =
+      Map.of("vitest", "@stryker-mutator/vitest-runner", "jest", "@stryker-mutator/jest-runner");
 
   private static final Map<String, Package> PACKAGES =
-      Map.of(
-          ESLINT,
-          new Package(ESLINT, "10.12.0", ESLINT_NODE, null),
-          ESLINT_JS,
-          new Package(ESLINT_JS, "10.0.1", ESLINT_NODE, null),
-          GLOBALS,
-          new Package(GLOBALS, "17.13.0", ">=18", null),
-          TYPESCRIPT_ESLINT,
-          new Package(
-              TYPESCRIPT_ESLINT, "8.71.1", "^18.18.0 || ^20.9.0 || >=21.1.0", ">=4.8.4 <6.1.0"),
-          "prettier",
-          new Package("prettier", "3.9.10", ">=14", null),
-          "vitest",
-          new Package("vitest", VITEST_VERSION, VITEST_NODE, null),
-          "@vitest/coverage-v8",
-          new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null),
+      Map.ofEntries(
+          entry(new Package(ESLINT, "10.12.0", ESLINT_NODE, null)),
+          entry(new Package(ESLINT_JS, "10.0.1", ESLINT_NODE, null)),
+          entry(new Package(GLOBALS, "17.13.0", ">=18", null)),
+          entry(
+              new Package(
+                  TYPESCRIPT_ESLINT,
+                  "8.71.1",
+                  "^18.18.0 || ^20.9.0 || >=21.1.0",
+                  ">=4.8.4 <6.1.0")),
+          entry(new Package("prettier", "3.9.10", ">=14", null)),
+          entry(new Package("vitest", VITEST_VERSION, VITEST_NODE, null)),
+          entry(new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null)),
           // The newest release inside typescript-eslint's range; 7.0.2 is outside it.
-          TYPESCRIPT,
-          new Package(TYPESCRIPT, "6.0.3", ">=14.17", null));
+          entry(new Package(TYPESCRIPT, "6.0.3", ">=14.17", null)),
+          // Younger than 14 days on 2026-10-24, but 10.0.0's Vitest runner kills no mutant on
+          // Vitest 5, so every strict run scored 0. 10.1.1 supports Vitest 4 and 5.
+          entry(new Package(STRYKER_CORE, STRYKER_VERSION, STRYKER_NODE, null)),
+          entry(new Package(STRYKER_RUNNERS.get("vitest"), STRYKER_VERSION, STRYKER_NODE, null)),
+          entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null)));
 
   // typescript-eslint needs the compiler as a peer, so ESLint adds it when it is missing.
   private static final Map<String, List<String>> GATES =
@@ -59,7 +69,9 @@ final class NodePackageCatalog {
           "jest",
           List.of(),
           "bun-test",
-          List.of());
+          List.of(),
+          STRYKER,
+          List.of(STRYKER_CORE));
 
   /** Rows that replace a {@link #GATES} row for one language; other gates are shared. */
   private static final Map<Language, Map<String, List<String>>> LANGUAGE_GATES =
@@ -76,6 +88,10 @@ final class NodePackageCatalog {
   record Package(String name, String version, String node, String typescript) {}
 
   private NodePackageCatalog() {}
+
+  private static Map.Entry<String, Package> entry(final Package tool) {
+    return Map.entry(tool.name(), tool);
+  }
 
   /** Returns the pinned package {@code name}, if the catalog has it. */
   static Optional<Package> find(final String name) {
@@ -105,6 +121,12 @@ final class NodePackageCatalog {
       final Language language, final List<InitGateOption> gates, final PackageManifest manifest) {
     final Set<String> names = new LinkedHashSet<>();
     gates.forEach(gate -> names.addAll(packages(language, gate.id())));
+    if (names.contains(STRYKER_CORE)) {
+      gates.stream()
+          .map(gate -> STRYKER_RUNNERS.get(gate.id()))
+          .filter(Objects::nonNull)
+          .forEach(names::add);
+    }
     return names.stream().filter(name -> !manifest.declares(name)).map(PACKAGES::get).toList();
   }
 }

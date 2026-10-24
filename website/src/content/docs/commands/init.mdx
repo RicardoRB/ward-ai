@@ -49,8 +49,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 ## Presets and gates
 
 - `standard` and `strict` pre-select their offline gates. `custom` (wizard only) starts with none.
-- `strict` is not available for TypeScript or JavaScript yet: `--preset strict` fails before
-  changing any file and suggests `standard`, and the wizard offers only `standard` and `custom`.
+- For TypeScript and JavaScript, see [Node projects](#node-projects) for what each preset selects.
 - The gates you confirm are exactly the gates configured. Unticking a pre-selected gate removes its
   `ward.toml` section, build declarations, and rule file. The preset's rules still apply to the
   other gates.
@@ -251,20 +250,44 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | Gate | Command (npm) | Profiles |
 |---|---|---|
 | `tsc` | `npx tsc --noEmit --pretty false` | `pre-push`, `ci` |
-| `vitest` | `npx vitest run --coverage --coverage.thresholds.lines=70` | `pre-push`, `ci` |
-| `jest` | `npx jest --coverage --coverageThreshold={"global":{"lines":70}}` | `pre-push`, `ci` |
+| `vitest` | `npx vitest run --coverage` | `pre-push`, `ci` |
+| `jest` | `npx jest --coverage` | `pre-push`, `ci` |
 | `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
+| `stryker` | `npx stryker run` | `ci` |
 | `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
 - JavaScript gets the same gates except `tsc`.
-- `standard` selects `tsc` (TypeScript only), the test runner gate, `prettier`, and `eslint`.
-  `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`.
-- The test gates fail below 70% line coverage, the `standard` minimum, also for a custom selection.
-  Vitest and Jest measure the files the tests load.
+- `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
+
+| | `standard` | `strict` |
+|---|---|---|
+| Gates | `tsc` (TypeScript only), the test runner, `prettier`, `eslint` | the same, plus `stryker` |
+| Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
+| ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
+| Mutation score | none | at least 60%, in `ci` |
+
+A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
+score without a minimum. dependency-cruiser is not part of `strict` yet.
+
+#### Where the thresholds live
+
+The thresholds sit in the tools' own config files, so you can see and tune them there:
+
+- When the project has no test config, init writes a Ward-owned **`vitest.config.mjs`** or
+  **`jest.config.mjs`** with the preset's coverage thresholds, and the test command carries no
+  threshold flag.
+- When the project has its own config (`vitest.config.*` or `vite.config.*` for Vitest;
+  `jest.config.*` or a `"jest"` key in `package.json` for Jest), init keeps it unchanged and lists
+  it as user-owned. The command then passes the thresholds, for example
+  `npx vitest run --coverage --coverage.thresholds.lines=85 --coverage.thresholds.branches=75`.
+- Bun reads its threshold from `bunfig.toml`, and Stryker reads its minimum from
+  `stryker.config.mjs`.
+- Projects set up by an earlier Ward version keep the threshold flag on their test command. Running
+  init again moves it into `vitest.config.mjs` or `jest.config.mjs`.
 
 ### What init changes in `package.json`
 
@@ -289,10 +312,13 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `vitest`, `@vitest/coverage-v8` | 5.0.3 | `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0` |
 | `typescript` | 6.0.3 | `>=14.17` |
 | `globals` | 17.13.0 | `>=18` |
+| `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
 
 The `eslint` gate adds `eslint`, `@eslint/js`, and `typescript-eslint` (plus `typescript` when it is
 missing) to a TypeScript project, and `eslint`, `@eslint/js`, and `globals` to a JavaScript project,
-with no TypeScript package.
+with no TypeScript package. The `stryker` gate adds `@stryker-mutator/core` and the runner plugin
+for Vitest or Jest. Bun has no runner plugin, so Stryker runs `bun test` through its command
+runner. Stryker 10 needs Node 22 or later.
 
 ### Compatibility checks
 
@@ -314,17 +340,34 @@ Before writing, init checks each package it would add against the project's Node
   `eslint` gate is selected and the project has no `eslint.config.*` or `.eslintrc*`. It is a flat
   config ignoring `dist/`, `coverage/`, and `.ward/`, and it starts with a `// managed-by: ward`
   marker. An existing config is reused unchanged and listed as user-owned.
-  - For TypeScript it enables the `@eslint/js` and `typescript-eslint` recommended rules.
+  - For TypeScript it enables the `@eslint/js` and `typescript-eslint` recommended rules. With
+    `strict` it enables `strict-type-checked` instead, with type information from `tsconfig.json`
+    through the project service. Type-checked rules are off for `.js`, `.mjs`, and `.cjs` files,
+    such as init's own configs, because they sit outside `tsconfig.json`. TypeScript files that
+    `tsconfig.json` does not include, such as excluded tests, fail with a project-service error:
+    add them to `tsconfig.json`. An existing ESLint config stays as it is, also with `strict`.
   - For JavaScript it enables the `@eslint/js` recommended rules and declares both browser and
     Node globals from `globals`, so `require`, `process`, and `window` pass `no-undef`. It parses
     JSX in `.jsx` files. Without `"type": "module"` it also parses `.js` files as CommonJS, because
     ESLint parses them as ES modules otherwise. Narrow the globals to your runtime once the first
     check passes.
+- **`vitest.config.mjs`** or **`jest.config.mjs`** with the coverage thresholds, unless the
+  project has its own test config; see [Where the thresholds live](#where-the-thresholds-live).
 - **`bunfig.toml`** for `bun-test` when none exists, with
-  `[test] coverageThreshold = { lines = 0.7 }` and a `#` marker. An existing `bunfig.toml` is kept,
-  and init warns that the coverage threshold is enforced only if it sets one.
+  `[test] coverageThreshold = { lines = 0.7 }` (0.85 with `strict`) and a `#` marker. An existing
+  `bunfig.toml` is kept, and init warns that the coverage threshold is enforced only if it sets
+  one.
+- **`stryker.config.mjs`** for `stryker` when the project has no `stryker.conf.*`,
+  `stryker.config.*`, or `.stryker.conf.*`. It names the test runner, enables the `json`,
+  `clear-text`, and `progress` reporters, and sets `thresholds` with `high: 80` and `low: 60`. With
+  `strict` it also sets `break: 60`, so Stryker fails below a 60% mutation score. An existing
+  Stryker config is kept with its own thresholds.
+- These generated configs are ES modules (`.mjs`) in every project and start with a
+  `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
+  never touches a config you wrote.
 - **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
-  the file does not exist. Prettier skips Git-ignored files, so it does not check coverage reports.
+  the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
+  Prettier skips Git-ignored files, so it does not check these reports.
 - **`ward.toml`** gets `partial` tables for `eslint` and `prettier`: an edit hook runs them on the
   edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
   `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
@@ -390,9 +433,12 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
 enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
-enforcer rules. For TypeScript it names the `tsc`, ESLint, Prettier, and test commands, the 70% line
-coverage minimum, and the ESLint config in use, and no Java tool. For JavaScript it names the same
-without `tsc`.
+enforcer rules.
+
+- For TypeScript it names the `tsc`, ESLint, Prettier, and test commands, the 70% line coverage
+  minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under
+  `strict`), and the ESLint config in use, and no Java tool.
+- For JavaScript it names the same without `tsc`.
 
 - Content outside the section's markers is kept.
 - When a rule file is user-owned, the section points to the file instead of quoting preset values.

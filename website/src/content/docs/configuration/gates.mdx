@@ -63,10 +63,14 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
+| `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
+| `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
 
-`strict` is not available for TypeScript or JavaScript yet. For both, `standard` writes no rule
-files: init adds the tools to `package.json` and writes an ESLint flat config when the project has
-none; see [Node projects](/commands/init/#node-projects).
+For TypeScript and JavaScript, presets write no rule files under `config/`. Init adds the tools to
+`package.json` and writes the tools' own configs when the project has none: an ESLint flat config,
+`vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.
+Bun checks lines only, because it does not measure branch coverage. See
+[Node projects](/commands/init/#node-projects).
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
@@ -115,8 +119,8 @@ run their `command` from the project root, exactly as written, and pass when it 
   package manager's runner; see [Node projects](/commands/init/#node-projects).
 - For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
   `p/javascript` ruleset.
-- `stryker` and `dependency-cruiser` are not set up by init yet, so add those to `ward.toml`
-  yourself.
+- Init also offers `stryker`, in the `ci` profile, and `strict` selects it. `dependency-cruiser` is
+  not set up by init yet, so add it to `ward.toml` yourself.
 
 ```toml
 [quality-gates.eslint]
@@ -148,8 +152,10 @@ profiles = ["ci"]
   path, `reports/mutation/mutation.json`.
 - A report that is missing, older than the gate run, unreadable, or without valid mutants is an
   execution error, never a pass. The message says which case applies.
-- Use `minimum` instead of Stryker's own `thresholds.break`. That threshold, like a moved report
-  path, can only be set in Stryker's configuration file, which Ward never writes.
+- Stryker's own `thresholds.break` also fails the gate, through Stryker's exit code. The
+  `stryker.config.mjs` that init writes with `strict` uses `break: 60` and sets no `minimum`, so the
+  threshold lives in one place. Tune it there. Use `minimum` when you keep your own Stryker config
+  and want Ward to report the score.
 
 ## PIT mutation score
 

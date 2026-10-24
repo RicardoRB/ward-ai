@@ -58,7 +58,7 @@ class InitOpenApiGatesTest {
   void projectWithCommittedSpecIsOfferedTheThreeGates() {
     final InitSetupCatalog catalog = new InitSetupCatalog(environment(SPEC));
 
-    assertThat(catalog.gates(project()))
+    assertThat(catalog.gates(project(), null))
         .extracting(InitGateOption::id)
         .contains(LINT, DIFF, COMPAT);
     assertThat(catalog.gate(project(), LINT).command())
@@ -73,7 +73,7 @@ class InitOpenApiGatesTest {
   void projectWithoutSpecIsNotOfferedTheGates() {
     final InitSetupCatalog catalog = new InitSetupCatalog(environment(null));
 
-    assertThat(catalog.gates(project()))
+    assertThat(catalog.gates(project(), null))
         .extracting(InitGateOption::id)
         .doesNotContain(LINT, DIFF, COMPAT);
     assertThatThrownBy(() -> catalog.gate(project(), COMPAT))

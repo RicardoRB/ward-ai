@@ -106,7 +106,7 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       return Optional.empty();
     }
     final Set<String> offered =
-        gates(project).stream().map(InitGateOption::id).collect(Collectors.toSet());
+        gates(project, null).stream().map(InitGateOption::id).collect(Collectors.toSet());
     return Optional.of(
         new PreviousChoices(
             configuration.preset() == null ? null : preset(configuration.preset()),

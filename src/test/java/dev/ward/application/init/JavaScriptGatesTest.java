@@ -1,12 +1,10 @@
 package dev.ward.application.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -29,22 +27,23 @@ import org.junit.jupiter.params.provider.CsvSource;
 /** The gates init offers a JavaScript project, and the standard preset's selection. */
 class JavaScriptGatesTest {
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
+  private static final String ESLINT = "eslint";
 
   @TempDir Path root;
 
   @Test
   void npmAndBunCommandsRunThroughThePackageManager() {
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, "eslint").command())
-        .containsExactly("npx", "eslint", ".", "--format", "json");
+    assertThat(gate(BuildTool.NPM, NO_RUNNER, ESLINT).command())
+        .containsExactly("npx", ESLINT, ".", "--format", "json");
     assertThat(gate(BuildTool.NPM, NO_RUNNER, "prettier").command())
         .containsExactly("npx", "prettier", "--check", ".");
-    assertThat(gate(BuildTool.BUN, NO_RUNNER, "eslint").command())
-        .containsExactly("bunx", "eslint", ".", "--format", "json");
+    assertThat(gate(BuildTool.BUN, NO_RUNNER, ESLINT).command())
+        .containsExactly("bunx", ESLINT, ".", "--format", "json");
   }
 
   @Test
   void noTypeCheckIsOfferedAndSemgrepUsesTheJavaScriptRuleset() {
-    assertThat(catalog(NO_RUNNER).gates(project(BuildTool.NPM)))
+    assertThat(catalog(NO_RUNNER).gates(project(BuildTool.NPM), null))
         .extracting(InitGateOption::id)
         .doesNotContain("tsc");
     assertThat(gate(BuildTool.NPM, NO_RUNNER, "semgrep").command()).contains("p/javascript");
@@ -66,17 +65,15 @@ class JavaScriptGatesTest {
             : new PackageManifest(Map.of(declared, "^1.0.0"), null, null);
 
     assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
-        .containsExactly(gate, "prettier", "eslint");
+        .containsExactly(gate, "prettier", ESLINT);
   }
 
   @Test
-  void strictPresetIsNotAvailableYet() {
-    assertThatThrownBy(
-            () -> catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .isInstanceOf(WardException.class)
-        .hasMessage(JavaScriptGates.STRICT_UNAVAILABLE);
+  void strictPresetAddsStrykerAndIsOffered() {
+    assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
+        .containsExactly("vitest", "prettier", ESLINT, "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
-        .containsExactly(QualityPreset.STANDARD);
+        .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Test
@@ -85,15 +82,15 @@ class JavaScriptGatesTest {
     final InitGeneralCatalog catalog = catalog(NO_RUNNER);
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> options =
-        catalog.gates(project).stream().filter(gate -> selected.contains(gate.id())).toList();
+        catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
     final Path file = root.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(file, ConfigurationTemplate.render(options, QualityPreset.STANDARD, project));
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).gates();
 
-    assertThat(gates).containsOnlyKeys("vitest", "prettier", "eslint");
+    assertThat(gates).containsOnlyKeys("vitest", "prettier", ESLINT);
     final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci");
-    assertThat(gates.get("eslint").profiles()).isEqualTo(fast);
+    assertThat(gates.get(ESLINT).profiles()).isEqualTo(fast);
     assertThat(gates.get("prettier").profiles()).isEqualTo(fast);
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }
@@ -128,7 +125,7 @@ class JavaScriptGatesTest {
                 new FakeEnvironmentInspection("npm"), dir -> PackageManifest.EMPTY, dir -> true));
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> gates =
-        catalog.gates(project).stream().filter(gate -> selected.contains(gate.id())).toList();
+        catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
 
     final String body =
         AgentRulesTemplate.render(project, gates, QualityPreset.STANDARD, List.of()).body();
@@ -145,7 +142,7 @@ class JavaScriptGatesTest {
 
   private InitGateOption gate(
       final BuildTool manager, final PackageManifest manifest, final String id) {
-    return catalog(manifest).gates(project(manager)).stream()
+    return catalog(manifest).gates(project(manager), null).stream()
         .filter(gate -> gate.id().equals(id))
         .findFirst()
         .orElseThrow();
