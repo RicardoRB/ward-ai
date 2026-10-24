@@ -25,6 +25,8 @@ final class InitQuestions {
   private static final int STANDARD_CHOICE = 1;
   private static final int STRICT_CHOICE = 2;
   private static final int CUSTOM_CHOICE = 3;
+  // Without strict, custom moves up to the second choice.
+  private static final int CUSTOM_WITHOUT_STRICT_CHOICE = 2;
 
   private final Answers answers;
   private final InitWizard wizard;
@@ -107,7 +109,12 @@ final class InitQuestions {
       throw new WardException(GATES_MISSING);
     }
     progress.step();
-    return wizard.selectPreset(previous.map(InitQuestions::presetChoice).orElse(STANDARD_CHOICE));
+    if (!catalog.presets(project).contains(QualityPreset.STRICT)) {
+      final boolean custom = previous.map(choices -> choices.preset() == null).orElse(false);
+      return wizard.selectPreset(custom ? CUSTOM_WITHOUT_STRICT_CHOICE : STANDARD_CHOICE, false);
+    }
+    return wizard.selectPreset(
+        previous.map(InitQuestions::presetChoice).orElse(STANDARD_CHOICE), true);
   }
 
   private List<String> integrations() {

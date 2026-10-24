@@ -4,6 +4,7 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Language;
+import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,8 @@ final class JvmInitSupport implements ToolchainInitSupport {
       Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
 
   @Override
-  public Gates gates(final Project project, final EnvironmentInspection environment) {
-    final BuildToolGates buildTool = buildToolGates(project, environment);
+  public Gates gates(final Project project, final InitInputs inputs) {
+    final BuildToolGates buildTool = buildToolGates(project, inputs.environment());
     return new Gates(
         SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool),
         buildTool.policyGates().stream()
@@ -26,12 +27,18 @@ final class JvmInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public List<String> presetGates(final Project project, final QualityPreset preset) {
+  public List<String> presetGates(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
     return SourceLanguages.of(LANGUAGES, project).presetGates(preset);
   }
 
   @Override
-  public String ciSetup(final Project project) {
+  public List<QualityPreset> presets() {
+    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
+  }
+
+  @Override
+  public String ciSetup(final Project project, final PackageManifest manifest) {
     return CiWorkflowTemplate.STEP
         + "Set up JDK\n"
         + "        uses: actions/setup-java@v5\n"

@@ -89,6 +89,9 @@ final class ConfigurationTemplate {
               if (!table.args().isEmpty()) {
                 array(content, "args", table.args());
               }
+              if (!table.command().isEmpty()) {
+                array(content, "command", table.command());
+              }
               string(content, "item", table.item());
               string(content, "separator", table.separator());
             });

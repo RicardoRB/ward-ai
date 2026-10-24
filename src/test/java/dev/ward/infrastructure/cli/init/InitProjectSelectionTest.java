@@ -69,7 +69,8 @@ class InitProjectSelectionTest {
     final int exit = init.run("", with(PROJECT, "apps/web", "--yes"));
 
     assertThat(exit).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output()).contains("'apps/web' is not inside a Maven or Gradle project");
+    assertThat(init.output())
+        .contains("'apps/web' is not inside a Maven, Gradle or TypeScript project");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 

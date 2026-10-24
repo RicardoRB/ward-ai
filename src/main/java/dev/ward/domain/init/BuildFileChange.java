@@ -12,17 +12,32 @@ import java.util.List;
  * @param originalContent the file content before the change
  * @param tools the plugins added or updated
  * @param warnings compatibility warnings raised while editing
+ * @param lockFile the lock file an install rewrote, or {@code null} when none was run
+ * @param lockOriginal the lock file content before the install, or {@code null} when it did not
+ *     exist
  */
 public record BuildFileChange(
     Toolchain toolchain,
     Path file,
     String originalContent,
     List<String> tools,
-    List<String> warnings) {
+    List<String> warnings,
+    Path lockFile,
+    String lockOriginal) {
   /** Copies the lists; missing warnings mean none. */
   public BuildFileChange {
     tools = List.copyOf(tools);
     warnings = warnings == null ? List.of() : List.copyOf(warnings);
+  }
+
+  /** Creates a change that rewrote no lock file. */
+  public BuildFileChange(
+      final Toolchain toolchain,
+      final Path file,
+      final String originalContent,
+      final List<String> tools,
+      final List<String> warnings) {
+    this(toolchain, file, originalContent, tools, warnings, null, null);
   }
 
   /** Creates a change without warnings. */

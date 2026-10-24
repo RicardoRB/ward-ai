@@ -62,3 +62,22 @@ holds the JaCoCo message, for example `lines covered ratio is 0.62, but expected
   suggest a date or milestone for raising it again.
 - **Generated or trivial code drags the ratio down,** such as generated sources or DTOs. Excluding
   it is still a weakening. Name every pattern and the number of classes it removes.
+
+## TypeScript test gates
+
+For TypeScript, init puts the line minimum in the test gate's command in `ward.toml`, not in a
+build file:
+
+- `vitest`: `--coverage.thresholds.lines=70` in `<runner> vitest run --coverage ...`.
+- `jest`: `--coverageThreshold={"global":{"lines":70}}`, one argument because no shell runs it.
+- `bun-test`: `bun test --coverage` reads `coverageThreshold` from `bunfig.toml`. Init writes
+  `[test] coverageThreshold = { lines = 0.7 }` there only when no `bunfig.toml` existed.
+
+Editing the threshold means editing that command (or `bunfig.toml`). A later `ward init` rewrites
+`ward.toml`, so say that a re-run restores the preset's 70%.
+
+Read the measured value from the runner's summary in the gate output (`Lines : 62.5%`), or from
+`coverage/coverage-summary.json` when the project enables the `json-summary` reporter. Vitest and
+Jest measure only the files the tests load unless the project's config sets `coverage.include`
+(Vitest) or `collectCoverageFrom` (Jest). Setting it is a strengthening: files no test imports
+start counting. Classify threshold changes as in the table above.

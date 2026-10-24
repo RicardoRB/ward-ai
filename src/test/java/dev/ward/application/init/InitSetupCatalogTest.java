@@ -72,9 +72,13 @@ class InitSetupCatalogTest {
   }
 
   @Test
-  void exposesPresetRules() {
+  void exposesPresetRules(@TempDir final Path dir) throws Exception {
+    ProjectFixtures.withPom(dir, ProjectFixtures.PLAIN_POM);
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
-    assertThat(catalog.presets()).containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
+    final Project maven =
+        new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
+    assertThat(catalog.presets(maven))
+        .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
     assertThat(JavaPresetGates.STANDARD)
         .containsExactly(COMPILE, TESTS, "format", "checkstyle", "pmd", "spotbugs", "coverage");
     assertThat(QualityPreset.STRICT.rules().jacocoMinimums())

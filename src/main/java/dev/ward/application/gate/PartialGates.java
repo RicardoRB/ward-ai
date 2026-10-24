@@ -25,7 +25,8 @@ final class PartialGates {
 
   /**
    * Creates the selected gates in configuration order. A narrowed gate runs its command followed by
-   * the plan's arguments, and an enabled gate the plan skips runs nothing.
+   * the plan's arguments (or the partial table's command when it sets one), and an enabled gate the
+   * plan skips runs nothing.
    */
   static List<QualityGate> create(
       final WardConfiguration selected,
@@ -88,9 +89,11 @@ final class PartialGates {
     if (plan.scope() != PartialCheckPlan.Scope.NARROW) {
       return gate;
     }
+    final List<String> base =
+        gate.partial().command().isEmpty() ? gate.command() : gate.partial().command();
     return new GateConfiguration(
         gate.enabled(),
-        Stream.concat(gate.command().stream(), plan.args().stream()).toList(),
+        Stream.concat(base.stream(), plan.args().stream()).toList(),
         gate.profiles(),
         gate.partial(),
         gate.root(),

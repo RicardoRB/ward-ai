@@ -13,6 +13,7 @@ final class TomlPartialParser {
   private static final String INPUTS = "inputs";
   private static final String ARGS = "args";
   private static final String ITEM = "item";
+  private static final String COMMAND = "command";
 
   private TomlPartialParser() {}
 
@@ -26,15 +27,22 @@ final class TomlPartialParser {
     if (table == null) {
       throw new WardException("'" + key + "' must be a table");
     }
-    if (table.contains(ARGS) && !table.contains(INPUTS)) {
-      throw new WardException("'" + key + ".args' requires '" + key + ".inputs'");
-    }
+    requires(table, key, ARGS, INPUTS);
+    requires(table, key, COMMAND, ARGS);
     return new PartialGateConfiguration(
         strings(table, key, INPUTS),
         strings(table, key, "config"),
         strings(table, key, ARGS),
         item(table, key),
-        string(table, key, "separator"));
+        string(table, key, "separator"),
+        strings(table, key, COMMAND));
+  }
+
+  private static void requires(
+      final TomlTable table, final String key, final String name, final String required) {
+    if (table.contains(name) && !table.contains(required)) {
+      throw new WardException("'" + key + "." + name + "' requires '" + key + "." + required + "'");
+    }
   }
 
   /** An {@code item} without a placeholder would pass the same text for every edited path. */

@@ -61,6 +61,11 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 |---|---|---|
 | `standard` | compile, tests, format, Checkstyle, PMD, SpotBugs, coverage | 70% line coverage |
 | `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
+
+`strict` is not available for TypeScript yet. For TypeScript, `standard` writes no rule files: init
+adds the tools to `package.json` and writes an ESLint flat config when the project has none; see
+[TypeScript projects](/commands/init/#typescript-projects).
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
@@ -104,7 +109,11 @@ run their `command` from the project root, exactly as written, and pass when it 
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
-- `ward init` does not generate these gates yet, so add them to `ward.toml` yourself.
+- For a TypeScript project, `ward init` offers `tsc`, `eslint`, `prettier`, the project's test
+  runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
+  package manager's runner; see [TypeScript projects](/commands/init/#typescript-projects).
+  `stryker`, `dependency-cruiser`, and JavaScript projects are not set up by init yet, so add those
+  to `ward.toml` yourself.
 
 ```toml
 [quality-gates.eslint]
@@ -340,7 +349,8 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[quality-gates.<id>.partial]` table](/configuration/ward-toml/#partial-checks)
-for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `openapi-lint`, and `openapi-diff`. After an agent
+for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `openapi-lint`, and
+`openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
 - is skipped when no edited file is in its `inputs`;
@@ -355,6 +365,12 @@ edit, and for the files a commit stages, a gate:
 | `semgrep` | each path as its own argument | each path as its own argument |
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
+
+In a TypeScript project, `eslint` and `prettier` take edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
+`.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
+command without its `.` target, so a narrowed check runs, for example,
+`npx prettier --check src/app.ts`. An edit of their configs or `package.json` runs them in full.
+`tsc` and the test runners have no table, so they run in full in `pre-push` and `ci`.
 
 Gradle notes:
 

@@ -68,6 +68,7 @@ passed to `ward check --path`:
 | `config` | Files that configure the gate, as patterns relative to the project root. If an edited path matches, the gate runs its normal command. |
 | `args` | The narrowed arguments. `{paths}` is replaced with the edited paths as separate process arguments, or as one value joined by `separator`. |
 | `item` | How each path is rendered: `{path}` (the root-relative path) by default, or `"**/{name}"` for the file name. |
+| `command` | Optional. The base command a narrowed check runs, with `args` appended, instead of the gate's `command`. Use it when the full command ends with a target that would still be analyzed, such as `prettier --check .`. |
 
 ```toml
 [quality-gates.checkstyle.partial]
@@ -81,18 +82,26 @@ separator = ","
 inputs = ["**"]
 config = [".semgrep.yml", ".semgrepignore"]
 args = ["{paths}"]
+
+[quality-gates.prettier.partial]
+inputs = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
+config = [".prettierrc*", "package.json"]
+args = ["{paths}"]
+command = ["npx", "prettier", "--check"]
 ```
 
 For example, a Maven Checkstyle edit of `src/main/java/acme/Order.java` receives
 `-Dcheckstyle.includes=**/Order.java`; a Semgrep edit receives the root-relative path as its own
-argument. Other `args` entries are appended unchanged, and nothing passes through a shell.
+argument. A Prettier edit of `src/app.ts` runs `npx prettier --check src/app.ts` instead of
+`npx prettier --check .`. Other `args` entries are appended unchanged, and nothing passes through a
+shell.
 
 - A `config` match wins over an `inputs` match, and a gate without `args` runs in full when an edited
   path matches its `inputs`.
 - A deleted file counts as an edit of the gate, but is not passed in `{paths}`. When every relevant
   edit is a deletion, the gate runs in full.
 - Paths outside the project root are ignored. A gate without `partial` always runs in full.
-- `args` requires `inputs`, every list must contain non-blank strings, and `item` must contain
+- `args` requires `inputs`, `command` requires `args`, every list must contain non-blank strings, and `item` must contain
   `{path}` or `{name}`. Otherwise `ward check` exits with code `2`.
 
 Verify custom arguments with the real tool: a path format the tool does not understand can analyze

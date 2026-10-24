@@ -68,7 +68,8 @@ public record InitTargets(
     final Path dir = base.resolve(name).toAbsolutePath().normalize();
     final Optional<Project> project = detector.detect(dir).filter(InitToolchains::supported);
     if (project.isEmpty()) {
-      throw new WardException("'" + name + "' is not inside a Maven or Gradle project.");
+      throw new WardException(
+          "'" + name + "' is not inside a Maven, Gradle or TypeScript project.");
     }
     final Path root = project.get().root();
     if (!root.equals(dir)) {
