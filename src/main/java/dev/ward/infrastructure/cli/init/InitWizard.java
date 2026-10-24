@@ -127,7 +127,7 @@ final class InitWizard {
   /** Asks for the gates, starting with {@code preselected} checked. */
   List<String> selectGates(
       final InitSetupCatalog catalog, final Project project, final List<String> preselected) {
-    final List<InitGateOption> choices = catalog.gates(project);
+    final List<InitGateOption> choices = catalog.gates(project, null);
     final List<String> ids = choices.stream().map(InitGateOption::id).toList();
     final List<String> presetGates = preselected;
     final Optional<List<String>> fromMenu =

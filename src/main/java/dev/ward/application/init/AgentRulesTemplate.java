@@ -4,7 +4,6 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.QualityPreset.PresetRules;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
@@ -74,7 +73,7 @@ final class AgentRulesTemplate {
     if (preset != null) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    lines.addAll(nodeLines(project, gates, owned));
+    lines.addAll(NodeAgentRules.lines(project, gates, preset, owned));
     // Node projects check Markdown with Prettier, which wants blank lines around the markers.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(
@@ -131,45 +130,6 @@ final class AgentRulesTemplate {
         "archunit", "- ArchUnit: keep the architecture tests passing; do not add `@ArchIgnore`.");
     lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
     return lines;
-  }
-
-  /**
-   * Returns one line per selected Node tool gate, naming its command; the coverage minimum is the
-   * one the test commands enforce.
-   */
-  private static List<String> nodeLines(
-      final Project project, final List<InitGateOption> gates, final Set<String> owned) {
-    final String coverage = "at least " + NodeTools.LINE_MINIMUM + "% line coverage";
-    final String tests = ". New code needs tests that assert behavior.";
-    final String eslintConfig =
-        owned.stream()
-            .filter(file -> file.startsWith("eslint.config.") || file.startsWith(".eslintrc"))
-            .findFirst()
-            .map(file -> "follow the rules in `" + file + "`")
-            .orElse(
-                "Ward's flat config (`eslint.config.*`) with "
-                    + (project.language() == Language.JAVASCRIPT
-                        ? "ESLint's recommended JavaScript rules"
-                        : "typescript-eslint's recommended rules"));
-    final Map<String, String> rows =
-        Map.of(
-            "tsc",
-            "- TypeScript compiler: `{command}` must report no errors.",
-            "eslint",
-            "- ESLint: " + eslintConfig + "; the gate runs `{command}`.",
-            "prettier",
-            "- Prettier: format edited files with Prettier and the project's config; the gate"
-                + " runs `{command}`.",
-            NodeTools.VITEST,
-            "- Tests (Vitest): `{command}`, " + coverage + tests,
-            NodeTools.JEST,
-            "- Tests (Jest): `{command}`, " + coverage + tests,
-            NodeTools.BUN_TEST,
-            "- Tests (Bun): `{command}`, " + coverage + " set in `bunfig.toml`" + tests);
-    return gates.stream()
-        .filter(gate -> rows.containsKey(gate.id()))
-        .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
-        .toList();
   }
 
   private static String checkstyle(final PresetRules rules) {

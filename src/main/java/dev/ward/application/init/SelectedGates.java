@@ -4,6 +4,7 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.util.ArrayList;
@@ -40,12 +41,27 @@ final class SelectedGates {
                 id ->
                     catalog.openSpecValidations().contains(id)
                         ? catalog.openSpecValidation(project, id, openSpecExecutable)
-                        : catalog.gate(project, id))
+                        : configured(catalog, project, id, selection.preset()))
             .toList();
     if (gates.isEmpty() && selection.tools().isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
     return offlineTrivy(gates, project);
+  }
+
+  /** Returns the offered gate {@code id}, with the command {@code preset} configures. */
+  private static InitGateOption configured(
+      final InitSetupCatalog catalog,
+      final Project project,
+      final String id,
+      final QualityPreset preset) {
+    final InitGateOption offered = catalog.gate(project, id);
+    return preset == null
+        ? offered
+        : catalog.gates(project, preset).stream()
+            .filter(gate -> gate.id().equals(id))
+            .findFirst()
+            .orElse(offered);
   }
 
   /**

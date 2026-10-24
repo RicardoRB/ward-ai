@@ -44,7 +44,7 @@ class InitTypeScriptProjectTest {
             "[quality-gates.vitest]",
             "[quality-gates.prettier]",
             "[quality-gates.eslint]",
-            "command = \"npx vitest run --coverage --coverage.thresholds.lines=70\"",
+            "command = \"npx vitest run --coverage\"",
             "command = [\"npx\", \"prettier\", \"--check\"]")
         .doesNotContain("checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
@@ -57,6 +57,10 @@ class InitTypeScriptProjectTest {
     assertThat(fixture.read("package-lock.json")).contains("\"stub\": \"installed\"");
     assertThat(fixture.read("eslint.config.mjs"))
         .startsWith("// managed-by: ward preset=standard\n");
+    assertThat(fixture.read("vitest.config.mjs"))
+        .startsWith("// managed-by: ward preset=standard\n")
+        .contains("lines: 70,")
+        .doesNotContain("branches");
     assertThat(fixture.read(".github/workflows/ward.yml"))
         .contains("actions/setup-node@v5", "node-version: \"24\"", "run: npm ci")
         .doesNotContain("setup-java");

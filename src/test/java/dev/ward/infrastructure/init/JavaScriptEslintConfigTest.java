@@ -9,6 +9,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +26,7 @@ class JavaScriptEslintConfigTest {
   @TempDir Path root;
 
   private final PresetRuleFileWriter writer =
-      new PresetRuleFileWriter(new FileSystemPackageManifests());
+      new PresetRuleFileWriter(new FileSystemPackageManifests(), new FileSystemNodeToolConfigs());
 
   @Test
   void commonJsJavaScriptConfigDeclaresGlobalsJsxAndCommonJs() throws IOException {
@@ -85,6 +86,35 @@ class JavaScriptEslintConfigTest {
     assertThat(root.resolve("eslint.config.mjs")).doesNotExist();
   }
 
+  @Test
+  void jestProjectGetsJestGlobalsInTestFilesOnly() throws IOException {
+    manifest("{\n  \"name\": \"shop\"\n}\n");
+
+    writer.apply(javaScript(), QualityPreset.STANDARD, List.of(gate(), runner("jest")));
+
+    assertThat(Files.readString(root.resolve("eslint.config.mjs")))
+        .contains(
+            """
+              {
+                files: ["**/__tests__/**", "**/*.{test,spec}.{js,jsx,mjs,cjs}"],
+                languageOptions: { globals: globals.jest },
+              },
+              { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
+            );
+            """);
+  }
+
+  @Test
+  void otherRunnersGetNoJestGlobals() throws IOException {
+    manifest("{\n  \"type\": \"module\"\n}\n");
+
+    writer.apply(javaScript(), QualityPreset.STRICT, List.of(gate(), runner("vitest")));
+
+    assertThat(Files.readString(root.resolve("eslint.config.js")))
+        .doesNotContain("globals.jest")
+        .endsWith("  },\n);\n");
+  }
+
   private Project javaScript() {
     return new Project(
         root,
@@ -104,5 +134,9 @@ class JavaScriptEslintConfigTest {
 
   private static InitGateOption gate() {
     return new InitGateOption(ESLINT, ESLINT, List.of("npx", ESLINT), true, "available");
+  }
+
+  private static InitGateOption runner(final String id) {
+    return new InitGateOption(id, id, List.of("npx", id), true, "available");
   }
 }

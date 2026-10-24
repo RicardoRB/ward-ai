@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java or TypeScript project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ArchUnit architecture rules, ESLint rules, and the Vitest, Jest, or Bun coverage threshold) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, or JavaScript project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ArchUnit architecture rules, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, and Stryker mutation testing) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.1.3, a project with ward.toml, and a shell.
 metadata:
@@ -57,7 +57,8 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
-| `vitest`, `jest`, `bun-test` | The line coverage minimum | [references/coverage.md](references/coverage.md#typescript-test-gates) |
+| `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
+| `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a
 gate that is not enabled, say so, suggest `ward-init` to add it, and change nothing. This skill

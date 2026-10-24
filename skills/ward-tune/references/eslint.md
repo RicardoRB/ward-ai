@@ -4,11 +4,17 @@
 
 - Init writes `eslint.config.mjs`, or `eslint.config.js` when `package.json` has
   `"type": "module"`, only when the project has no ESLint config. Its first line is
-  `// managed-by: ward preset=standard`, and it ignores `dist/`, `coverage/`, and `.ward/`.
+  `// managed-by: ward preset=<id>`, and it ignores `dist/`, `coverage/`, and `.ward/`.
   - For TypeScript it enables `@eslint/js` recommended and `typescript-eslint` recommended rules.
+    With `strict` it enables `tseslint.configs.strictTypeChecked` instead, sets
+    `parserOptions.projectService: true` with `tsconfigRootDir: import.meta.dirname`, and turns
+    type-checked rules off for `**/*.{js,mjs,cjs}` with `tseslint.configs.disableTypeChecked`.
   - For JavaScript it enables `@eslint/js` recommended rules, spreads `globals.browser` and
     `globals.node` into `languageOptions.globals`, parses JSX in `**/*.jsx`, and, without
-    `"type": "module"`, sets `sourceType: "commonjs"` for `**/*.js`.
+    `"type": "module"`, sets `sourceType: "commonjs"` for `**/*.js`. With the `jest` gate it
+    adds `globals.jest` for `**/__tests__/**` and `**/*.{test,spec}.{js,jsx,mjs,cjs}`. When the
+    project's Jest `testMatch` uses other locations, widen that `files` list to match; that is
+    neutral, not a weakening.
 - An existing `eslint.config.*` or `.eslintrc*` is the user's. Init reuses it unchanged.
 - The `eslint` gate runs `<runner> eslint . --format json`, so Ward reads one structured finding
   per message, with the rule as `eslint:<rule-id>`.
@@ -27,6 +33,19 @@ npx eslint . --format json --rule '{"@typescript-eslint/no-floating-promises": "
 
 Rules from `typescript-eslint`'s type-checked sets need type information
 (`parserOptions.projectService`), which makes the gate slower. Say so before proposing them.
+
+## Moving to or from `strict-type-checked`
+
+- **To it** (a strengthening). In a user-owned config, add `tseslint.configs.strictTypeChecked`,
+  the `projectService` block, and the `disableTypeChecked` block for JavaScript files, as in
+  Ward's strict config. Measure first: count the findings per rule against a copy of the config.
+- **Files outside `tsconfig.json`.** The project service reports a TypeScript file that
+  `tsconfig.json` does not include, such as tests or scripts outside `include`, as a parsing error
+  ("was not found by the project service"). Propose adding it to `include` (or a
+  `tsconfig.eslint.json` that extends the main one), or listing a few root files in
+  `projectService: { allowDefaultProject: [...] }`. Adding the file to `ignores` is a weakening.
+- **From it** back to `recommended` or `recommendedTypeChecked`: a weakening that needs its own
+  reason, such as lint time on a large codebase; show the rules it removes and their counts.
 
 ## JavaScript globals and module type
 

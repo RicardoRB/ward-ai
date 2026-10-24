@@ -61,13 +61,15 @@ class InitSetupCatalogTest {
             "amp");
     assertThat(
             catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow()))
+                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
+                null))
         .extracting(InitGateOption::id)
         .doesNotContain(OPENSPEC, OPENSPEC_ARCHIVED);
     assertThat(QualityGateFactory.SUPPORTED_GATES).contains(OPENSPEC, OPENSPEC_ARCHIVED);
     assertThat(
             catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow()))
+                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
+                null))
         .allSatisfy(gate -> assertThat(gate.description()).isNotBlank());
   }
 
@@ -202,7 +204,7 @@ class InitSetupCatalogTest {
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection("gradle"));
 
-    assertThat(catalog.gates(project))
+    assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
             QualityGateFactory.SUPPORTED_GATES.stream()

@@ -8,8 +8,11 @@ import java.util.List;
 
 /** The init choices that depend on a project's toolchain. */
 interface ToolchainInitSupport {
-  /** Returns the gates that run through the toolchain's build tool, with availability resolved. */
-  Gates gates(Project project, InitInputs inputs);
+  /**
+   * Returns the gates that run through the toolchain's build tool, with availability resolved;
+   * {@code preset} is the selected preset, or {@code null} for a custom selection or a gate list.
+   */
+  Gates gates(Project project, QualityPreset preset, InitInputs inputs);
 
   /** Returns the gate IDs {@code preset} enables for {@code project}, in configuration order. */
   List<String> presetGates(Project project, QualityPreset preset, InitInputs inputs);

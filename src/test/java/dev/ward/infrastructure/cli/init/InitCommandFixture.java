@@ -18,6 +18,7 @@ import dev.ward.infrastructure.init.PomToolConfigurator;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.project.FileSystemNodeSources;
+import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
@@ -93,7 +94,10 @@ final class InitCommandFixture {
             Set.of(new ClaudeCodeIntegration()),
             new InitSetupCatalog(
                 new FakeEnvironmentInspection(executables),
-                new NodeInputs(new FileSystemPackageManifests(), new FileSystemNodeSources()),
+                new NodeInputs(
+                    new FileSystemPackageManifests(),
+                    new FileSystemNodeSources(),
+                    new FileSystemNodeToolConfigs()),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),

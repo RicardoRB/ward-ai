@@ -105,8 +105,8 @@ order:
    ward init --dry-run --preset standard --integration none
    ```
 
-   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, only `standard` or a custom selection
-   exists; see [references/node.md](references/node.md#choices). Recommend `standard` for a first setup or a large
+   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
+   stricter coverage and ESLint rules; see [references/node.md](references/node.md#choices). Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
    writes a license allowlist that fails on any license it does

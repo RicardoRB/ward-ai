@@ -11,7 +11,7 @@ as a whole is not that yes.
 |---|---|---|---|
 | Project directory | `-C <dir>` | Directory init starts in: the project root, or a monorepo root together with `--project` | No |
 | Projects in a monorepo | `--project <dir>` | Maven, Gradle, TypeScript, or JavaScript project root relative to `-C`. Repeat once per project the user chose | No |
-| Preset | `--preset <id>` | `standard` or `strict` (`standard` only for TypeScript and JavaScript). Leave the option out for a custom selection | No |
+| Preset | `--preset <id>` | `standard` or `strict`. Leave the option out for a custom selection | No |
 | Gates | `--gate <id>[,<id>...]` | Gate ids from the gate reference | No |
 | Architecture style | `--architecture <style>` | `layered`, `hexagonal`, or `clean`. Only when `archunit` is selected and no ArchUnit tests exist | No |
 | Optional tools | `--tool openspec` | `openspec` | No |

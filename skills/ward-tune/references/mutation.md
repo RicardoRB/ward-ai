@@ -56,3 +56,32 @@ Also note how long the gate takes. A run of several minutes is a cost the team p
   Name the classes and methods with the most `SURVIVED` mutants, and say which assertion is missing,
   for example "nothing checks the return value of `Pricing.discount`". Lowering the threshold comes
   only after the user declines that, as a separate weakening.
+
+## Stryker (TypeScript and JavaScript)
+
+- **Where it lives.** Without a user Stryker config, init writes `stryker.config.mjs`, marked
+  `// managed-by: ward preset=<id>`. It names the `testRunner` (`vitest`, `jest`, or the
+  `command` runner with `bun test` on Bun), enables the `json`, `clear-text`, and `progress`
+  reporters, and sets `thresholds: { high: 80, low: 60 }`. `strict` adds `break: 60`. The gate runs
+  `<runner> stryker run` in `ci` only. An existing `stryker.conf.*`, `stryker.config.*`, or
+  `.stryker.conf.*` is the user's and init keeps it.
+- **What fails the gate.** `thresholds.break` makes Stryker exit non-zero below that score, and the
+  gate fails on the exit code. `high` and `low` only color the report. Ward's own `minimum` key on
+  `[quality-gates.stryker]` is an alternative that reads `reports/mutation/mutation.json`; do not set
+  both, or the threshold lives in two places.
+- **Reading results.** `reports/mutation/mutation.json` lists each file's mutants with a `status`
+  (`Killed`, `Survived`, `NoCoverage`, `Timeout`, ...) and a `location`. The score is
+  detected / valid × 100, as Ward computes it for `minimum`. Count `Survived` and `NoCoverage` per
+  directory, as for PIT above.
+
+| Change | Class |
+|---|---|
+| Raise `break`, or add `break` to a config without one | strengthen |
+| Set `concurrency`, `timeoutMS`, or `coverageAnalysis` | neutral (same accepted code, different run time) |
+| Lower or remove `break` | weaken |
+| Narrow `mutate` to fewer files, or add `ignorePatterns` for source code | weaken (it hides code from the measurement) |
+
+Treat a marked `stryker.config.mjs` like any managed rule file (Step 4): ask whether it should
+become the user's before the first edit, and remove the marker in the same approved edit. Ground
+proposals as for PIT: name the files with the most `Survived` mutants and the missing assertion
+before proposing a lower `break`.

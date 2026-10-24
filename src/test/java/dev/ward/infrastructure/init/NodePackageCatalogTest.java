@@ -14,6 +14,7 @@ import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -96,14 +97,16 @@ class NodePackageCatalogTest {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new FakeEnvironmentInspection(),
-            new NodeInputs(directory -> manifest, directory -> true),
+            new NodeInputs(
+                directory -> manifest, directory -> true, (directory, gate) -> Optional.empty()),
             null,
             null,
             "dev");
     return catalog
         .gates(
             new Project(
-                root, language, buildTool, Framework.NONE, false, false, root, Set.of(), "24"))
+                root, language, buildTool, Framework.NONE, false, false, root, Set.of(), "24"),
+            null)
         .stream()
         .map(InitGateOption::id)
         .collect(Collectors.toSet());

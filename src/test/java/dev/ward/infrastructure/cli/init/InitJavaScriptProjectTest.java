@@ -43,7 +43,7 @@ class InitJavaScriptProjectTest {
             "[quality-gates.vitest]",
             "[quality-gates.prettier]",
             "[quality-gates.eslint]",
-            "command = \"npx vitest run --coverage --coverage.thresholds.lines=70\"")
+            "command = \"npx vitest run --coverage\"")
         .doesNotContain("[quality-gates.tsc]", "checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
         .contains(
@@ -57,6 +57,10 @@ class InitJavaScriptProjectTest {
         .startsWith("// managed-by: ward preset=standard\n")
         .contains("globals.node");
     assertThat(fixture.read(eslintConfig).contains("sourceType: \"commonjs\"")).isEqualTo(commonJs);
+    assertThat(fixture.read("vitest.config.mjs"))
+        .startsWith("// managed-by: ward preset=standard\n")
+        .contains("lines: 70,")
+        .doesNotContain("branches");
     assertThat(fixture.read(".github/workflows/ward.yml"))
         .contains("actions/setup-node@v5", "run: npm ci")
         .doesNotContain("setup-java");

@@ -32,8 +32,9 @@ ArchUnit, rule files under `config/`).
     `typescript-eslint`.
   - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep
     their version.
-- **Configs.** List `eslint.config.*`, `.eslintrc*`, `.prettierrc*`, `prettier.config.*`, and
-  `bunfig.toml` in the project root. A file whose first line is not `// managed-by: ward` or
+- **Configs.** List `eslint.config.*`, `.eslintrc*`, `.prettierrc*`, `prettier.config.*`,
+  `vitest.config.*`, `vite.config.*`, `jest.config.*` (and a `"jest"` key in `package.json`),
+  `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, and `bunfig.toml` in the project root. A file whose first line is not `// managed-by: ward` or
   `# managed-by: ward` is the user's, and init keeps it.
 - **Lock file.** `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, or `bun.lockb`.
   Init's install updates it, and the generated CI workflow's frozen install needs it committed.
@@ -47,17 +48,25 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
 
 ## Choices
 
-- **Preset.** Only `standard` or a custom selection. `strict` is not available for TypeScript or
-  JavaScript yet, and `--preset strict` fails. For TypeScript `standard` selects `tsc`, the test
-  gate, `prettier`, and `eslint`; for JavaScript it selects the same without `tsc`, which is not
-  offered. The test gate fails below 70% line coverage.
-- **Gates.** Init also offers `semgrep` (ruleset `p/typescript`, or `p/javascript` for
-  JavaScript; needs network access), `gitleaks`, `trivy`, and `zap`. `stryker` and
-  `dependency-cruiser` are not offered yet.
+- **Preset.** `standard`, `strict`, or a custom selection.
+  - `standard`: for TypeScript it selects `tsc`, the test gate, `prettier`, and `eslint`; for
+    JavaScript the same without `tsc`, which is not offered. The test gate fails below 70% line
+    coverage.
+  - `strict`: the same gates plus `stryker` in `ci`. Tests fail below 85% line and 75% branch
+    coverage (Bun: lines only), Stryker fails below a 60% mutation score, and a generated
+    TypeScript ESLint config uses `strict-type-checked`, which needs type information from
+    `tsconfig.json`.
+  - Recommend `strict` when the project already has tests that cover most code, runs Node 22 or
+    later (Stryker 10 needs it), and its `tsconfig.json` includes the files ESLint lints, tests
+    too. A user-owned ESLint config stays as it is, so `strict` does not switch it to
+    `strict-type-checked`; offer `ward-tune` for that.
+- **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
+  Stryker runner plugin), `semgrep` (ruleset `p/typescript`, or `p/javascript` for JavaScript;
+  needs network access), `gitleaks`, `trivy`, and `zap`. `dependency-cruiser` is not offered yet.
 - **Probe.** For tool availability, probe only the gates init offers here:
 
   ```sh
-  ward init -C <dir> --dry-run --preset standard --integration none --gate semgrep,gitleaks,trivy
+  ward init -C <dir> --dry-run --preset strict --integration none --gate semgrep,gitleaks,trivy
   ```
 
 ## Reading the plan
@@ -79,9 +88,19 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   `@eslint/js` recommended rules, declares browser and Node globals, parses JSX in `.jsx` files,
   and, without `"type": "module"`, parses `.js` files as CommonJS. `keep .eslintrc.json` means the
   user's config is reused.
+- `create vitest.config.mjs` or `create jest.config.mjs`: Ward's test config holding the
+  preset's coverage thresholds; the test command then carries no threshold flag. `keep
+  vite.config.ts` (or another user test config) means the thresholds are passed as flags on the
+  command instead. A Jest config in `package.json` produces no line.
+- `create stryker.config.mjs`: the test runner (Bun: the command runner with `bun test`), the
+  `json` reporter, and with `strict` `thresholds.break: 60`. `keep stryker.conf.json` means the
+  user's own Stryker thresholds apply.
+- `stryker` adds `@stryker-mutator/core` and, for Vitest or Jest, its runner plugin. An
+  `INCOMPATIBLE @stryker-mutator/core` finding means Node is older than 22.
 - For JavaScript, the `eslint` gate adds `eslint`, `@eslint/js`, and `globals`, and no
   `typescript` or `typescript-eslint`. A plan that adds either for a JavaScript project is wrong:
   stop and report it.
-- `modify .gitignore`: a Ward section with `.ward/reports/` and `coverage/`.
+- `modify .gitignore`: a Ward section with `.ward/reports/` and `coverage/`, plus `.stryker-tmp/`
+  and `reports/mutation/` with `stryker`.
 - If the install fails on apply, init restores `package.json` and the lock file and writes no
   `ward.toml`. Show the error and the command; do not retry without asking.

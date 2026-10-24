@@ -1,12 +1,10 @@
 package dev.ward.application.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -73,32 +71,17 @@ class TypeScriptGatesTest {
 
     assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
         .containsExactly("tsc", gate, "prettier", "eslint");
-    assertThat(catalog(manifest).gates(project(manager)))
+    assertThat(catalog(manifest).gates(project(manager), null))
         .extracting(InitGateOption::id)
         .contains(gate);
   }
 
   @Test
-  void testCommandsEnforceTheStandardLineMinimum() {
-    final PackageManifest jest = new PackageManifest(Map.of("jest", "^30.0.0"), null, null);
-
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, "vitest").command())
-        .containsExactly("npx", "vitest", "run", "--coverage", "--coverage.thresholds.lines=70");
-    assertThat(gate(BuildTool.NPM, jest, "jest").command())
-        .containsExactly(
-            "npx", "jest", "--coverage", "--coverageThreshold={\"global\":{\"lines\":70}}");
-    assertThat(gate(BuildTool.BUN, NO_RUNNER, "bun-test").command())
-        .containsExactly("bun", "test", "--coverage");
-  }
-
-  @Test
-  void strictPresetIsNotAvailableYet() {
-    assertThatThrownBy(
-            () -> catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .isInstanceOf(WardException.class)
-        .hasMessage(TypeScriptGates.STRICT_UNAVAILABLE);
+  void strictPresetAddsStrykerAndIsOffered() {
+    assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
+        .containsExactly("tsc", "vitest", "prettier", "eslint", "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
-        .containsExactly(QualityPreset.STANDARD);
+        .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Test
@@ -107,7 +90,7 @@ class TypeScriptGatesTest {
     final InitGeneralCatalog catalog = catalog(NO_RUNNER);
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> options =
-        catalog.gates(project).stream().filter(gate -> selected.contains(gate.id())).toList();
+        catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
     final Path file = root.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(file, ConfigurationTemplate.render(options, QualityPreset.STANDARD, project));
 
@@ -123,7 +106,7 @@ class TypeScriptGatesTest {
 
   private InitGateOption gate(
       final BuildTool manager, final PackageManifest manifest, final String id) {
-    return catalog(manifest).gates(project(manager)).stream()
+    return catalog(manifest).gates(project(manager), null).stream()
         .filter(gate -> gate.id().equals(id))
         .findFirst()
         .orElseThrow();

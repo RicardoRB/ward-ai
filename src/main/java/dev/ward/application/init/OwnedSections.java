@@ -39,8 +39,11 @@ final class OwnedSections {
               project.root().resolve(".gitignore"),
               GITIGNORE_BEGIN,
               GITIGNORE_END,
-              // Prettier skips Git-ignored files, so Vitest's coverage/ report is not checked.
-              ".ward/reports/\ncoverage/\n",
+              // Prettier skips Git-ignored files, so coverage and Stryker reports are not checked.
+              ".ward/reports/\ncoverage/\n"
+                  + (gates.stream().anyMatch(gate -> "stryker".equals(gate.id()))
+                      ? ".stryker-tmp/\nreports/mutation/\n"
+                      : ""),
               false));
     }
     if (selection.agentRules()) {

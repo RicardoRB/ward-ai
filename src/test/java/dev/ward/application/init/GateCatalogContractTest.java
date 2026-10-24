@@ -58,14 +58,16 @@ class GateCatalogContractTest {
     assertThat(
             Stream.concat(
                 Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
-                    .flatMap(buildTool -> catalog.gates(project(buildTool)).stream()),
+                    .flatMap(buildTool -> catalog.gates(project(buildTool), null).stream()),
                 Stream.of(BuildTool.NPM, BuildTool.BUN)
                     .flatMap(
                         buildTool ->
                             Stream.of(Language.TYPESCRIPT, Language.JAVASCRIPT)
                                 .flatMap(
                                     language ->
-                                        catalog.gates(project(buildTool, language)).stream()))))
+                                        catalog
+                                            .gates(project(buildTool, language), null)
+                                            .stream()))))
         .extracting(InitGateOption::id)
         .allSatisfy(
             id ->
@@ -109,7 +111,7 @@ class GateCatalogContractTest {
   private static List<InitGateOption> jvmGates(final Project project) {
     final ToolchainInitSupport.Gates gates =
         new JvmInitSupport()
-            .gates(project, InitInputs.withoutManifests(new FakeEnvironmentInspection()));
+            .gates(project, null, InitInputs.withoutManifests(new FakeEnvironmentInspection()));
     return Stream.concat(gates.analysis().stream(), gates.policy().stream()).toList();
   }
 
