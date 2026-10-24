@@ -46,7 +46,9 @@ class TypeScriptPartialCheckTest {
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
-                new FakeEnvironmentInspection("npm"), directory -> PackageManifest.EMPTY));
+                new FakeEnvironmentInspection("npm"),
+                directory -> PackageManifest.EMPTY,
+                directory -> false));
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> gates =
         catalog.gates(project).stream().filter(gate -> selected.contains(gate.id())).toList();

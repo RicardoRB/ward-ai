@@ -3,6 +3,7 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.InitService;
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.NodeInputs;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.WardException;
@@ -16,6 +17,8 @@ import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PomToolConfigurator;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
+import dev.ward.infrastructure.project.FileSystemNodeSources;
+import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -90,6 +93,7 @@ final class InitCommandFixture {
             Set.of(new ClaudeCodeIntegration()),
             new InitSetupCatalog(
                 new FakeEnvironmentInspection(executables),
+                new NodeInputs(new FileSystemPackageManifests(), new FileSystemNodeSources()),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),

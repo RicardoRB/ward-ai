@@ -45,7 +45,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
   public BuildFileChange apply(final Project project, final List<InitGateOption> gates) {
     final Path file = project.root().resolve(PACKAGE_JSON);
     final PackageManifest manifest = manifests.read(project.root());
-    final List<NodePackageCatalog.Package> missing = NodePackageCatalog.missing(gates, manifest);
+    final List<NodePackageCatalog.Package> missing =
+        NodePackageCatalog.missing(project.language(), gates, manifest);
     final List<String> warnings = new ArrayList<>(bunfigWarning(project, gates));
     if (missing.isEmpty()) {
       return new BuildFileChange(Toolchain.NODE, null, null, List.of(), warnings);
@@ -87,7 +88,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
       final boolean approved) {
     final Path file = project.root().resolve(PACKAGE_JSON);
     final PackageManifest manifest = manifests.read(project.root());
-    final List<NodePackageCatalog.Package> missing = NodePackageCatalog.missing(gates, manifest);
+    final List<NodePackageCatalog.Package> missing =
+        NodePackageCatalog.missing(project.language(), gates, manifest);
     if (missing.isEmpty()) {
       return new PlannedFileChange(
           file, PlannedFileChange.Action.UNCHANGED, bunfigWarning(project, gates));

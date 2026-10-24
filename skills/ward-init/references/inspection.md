@@ -13,12 +13,13 @@ ward detect -C <dir>
 ```
 
 - Exit `0`: note the reported language, build tool (`MAVEN` or `GRADLE`), framework, and project root.
-  Use that root for every later step. For `TYPESCRIPT` with `NPM`, `PNPM`, `YARN`, or `BUN`, follow
-  [typescript.md](typescript.md) instead of steps 3, 4, and 6.
-- Exit `1`, or a project init cannot configure (for example the JavaScript `package.json` at a
-  monorepo root): look for Maven, Gradle, and TypeScript projects below the directory. List
-  `pom.xml`, `build.gradle(.kts)`, `settings.gradle(.kts)`, and `tsconfig.json` next to a
-  `package.json`, without descending into `node_modules`,
+  Use that root for every later step. For `TYPESCRIPT` or `JAVASCRIPT` with `NPM`, `PNPM`, `YARN`, or `BUN`,
+  follow [node.md](node.md) instead of steps 3, 4, and 6.
+- Exit `1`, or a project init cannot configure (for example a JavaScript `package.json` with no
+  sources of its own at a monorepo root; see [node.md](node.md#inspection)): look for Maven,
+  Gradle, TypeScript, and JavaScript projects below the directory. List `pom.xml`,
+  `build.gradle(.kts)`, `settings.gradle(.kts)`, `tsconfig.json` next to a `package.json`, and
+  `package.json` files whose directory holds JavaScript sources, without descending into `node_modules`,
   `target`, `build`, `dist`, `out`, or hidden directories, and treat a directory listed in a parent
   `pom.xml` `<modules>` or below a `settings.gradle(.kts)` as a module of that parent, not a
   project. If none remain, tell the user Ward cannot be initialized here and stop. Otherwise list

@@ -8,6 +8,7 @@ import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,34 +30,41 @@ public record InitTargets(
 
   /**
    * Resolves the projects for {@code start}: the {@code explicit} directories when given, else the
-   * Maven or Gradle project containing {@code start}, else the ones discovered below it.
+   * supported project containing {@code start}, else the ones discovered below it; {@code
+   * supported} says which projects init can configure.
    *
-   * @throws WardException if an explicit directory is not a Maven or Gradle project root, or if
-   *     nothing supported is found and {@code start} is inside a project of another toolchain
+   * @throws WardException if an explicit directory is not a supported project root, or if nothing
+   *     supported is found and {@code start} is inside a project of another toolchain
    * @throws ProjectNotFoundException if no supported project is found
    */
   static InitTargets resolve(
-      final ProjectDetector detector, final Path start, final List<String> explicit) {
+      final ProjectDetector detector,
+      final Path start,
+      final List<String> explicit,
+      final Predicate<Project> supported) {
     final Path base = start.toAbsolutePath().normalize();
     if (!explicit.isEmpty()) {
       log("explicit", explicit.size());
       return new InitTargets(
-          explicit.stream().map(dir -> named(detector, base, dir)).toList(), false, false);
+          explicit.stream().map(dir -> named(detector, base, dir, supported)).toList(),
+          false,
+          false);
     }
     final Optional<Project> containing = detector.detect(base);
-    if (containing.filter(InitToolchains::supported).isPresent()) {
+    if (containing.filter(supported).isPresent()) {
       log("containing", 1);
       return new InitTargets(List.of(new DiscoveredProject(containing.get(), 0)), false, false);
     }
     final List<DiscoveredProject> discovered =
         detector.discover(base).stream()
-            .filter(candidate -> InitToolchains.supported(candidate.project()))
+            .filter(candidate -> supported.test(candidate.project()))
             .filter(candidate -> candidate.project().root().startsWith(base))
             .toList();
     log("discovered", discovered.size());
     if (discovered.isEmpty()) {
       // No supported project below: an unsupported containing project must not get JVM files.
       throw containing
+          .filter(InitToolchains::unknown)
           .<RuntimeException>map(project -> new WardException(InitToolchains.unsupported(project)))
           .orElseGet(ProjectNotFoundException::new);
     }
@@ -64,12 +72,15 @@ public record InitTargets(
   }
 
   private static DiscoveredProject named(
-      final ProjectDetector detector, final Path base, final String name) {
+      final ProjectDetector detector,
+      final Path base,
+      final String name,
+      final Predicate<Project> supported) {
     final Path dir = base.resolve(name).toAbsolutePath().normalize();
-    final Optional<Project> project = detector.detect(dir).filter(InitToolchains::supported);
+    final Optional<Project> project = detector.detect(dir).filter(supported);
     if (project.isEmpty()) {
       throw new WardException(
-          "'" + name + "' is not inside a Maven, Gradle or TypeScript project.");
+          "'" + name + "' is not inside a Maven, Gradle, TypeScript or JavaScript project.");
     }
     final Path root = project.get().root();
     if (!root.equals(dir)) {

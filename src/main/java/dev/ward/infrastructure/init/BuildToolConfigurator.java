@@ -66,7 +66,7 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       throw new WardException(
           "Ward does not configure "
               + project.buildTool().displayName()
-              + " build files; ward init supports Maven, Gradle and TypeScript projects.");
+              + " build files; ward init supports Maven, Gradle, TypeScript and JavaScript projects.");
     }
     return adapter;
   }

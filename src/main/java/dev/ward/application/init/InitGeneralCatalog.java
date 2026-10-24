@@ -70,6 +70,11 @@ public class InitGeneralCatalog {
                         + "'. Supported architectures: layered, hexagonal, clean"));
   }
 
+  /** Returns whether init can configure {@code project}. */
+  public boolean isSupported(final Project project) {
+    return InitToolchains.supported(project, inputs);
+  }
+
   /**
    * Returns every gate choice for {@code project}, in wizard order, with availability resolved
    * against the project's build tool and the executables on the path.

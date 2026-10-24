@@ -4,6 +4,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.init.InitProjectFiles;
+import dev.ward.application.init.NodeInputs;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.ConfigurationStorage;
@@ -12,6 +13,7 @@ import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.init.RawTerminal;
 import dev.ward.domain.init.RuleFileGeneration;
 import dev.ward.domain.init.ToolInstaller;
+import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.terminal.TerminalCapabilities;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.CompositeToolInstaller;
@@ -19,6 +21,7 @@ import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
+import dev.ward.infrastructure.project.FileSystemNodeSources;
 import dev.ward.infrastructure.terminal.JdkTerminalCapabilities;
 import dev.ward.infrastructure.terminal.PosixRawTerminal;
 
@@ -56,5 +59,11 @@ interface InitBindingsModule {
       final ConfigurationStorage configuration,
       final OwnedSectionGeneration sections) {
     return new InitProjectFiles(buildTools, ruleFiles, architectureTests, configuration, sections);
+  }
+
+  @Provides
+  static NodeInputs nodeInputs(
+      final PackageManifests manifests, final FileSystemNodeSources sources) {
+    return new NodeInputs(manifests, sources);
   }
 }

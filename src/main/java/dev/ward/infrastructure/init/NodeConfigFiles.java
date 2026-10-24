@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -20,7 +21,7 @@ final class NodeConfigFiles {
   static final String JS_MARKER = "// managed-by: ward";
   static final String TOML_MARKER = "# managed-by: ward";
   static final String BUNFIG = "bunfig.toml";
-  private static final String ESLINT_CONFIG =
+  private static final String TYPESCRIPT_ESLINT_CONFIG =
       """
       import js from "@eslint/js";
       import { defineConfig } from "eslint/config";
@@ -33,6 +34,28 @@ final class NodeConfigFiles {
       );
       """;
 
+  // Ward cannot tell Node code from browser code, so both globals sets keep no-undef quiet.
+  private static final String JAVASCRIPT_ESLINT_CONFIG =
+      """
+      import js from "@eslint/js";
+      import { defineConfig } from "eslint/config";
+      import globals from "globals";
+
+      export default defineConfig(
+        { ignores: ["dist/", "coverage/", ".ward/"] },
+        js.configs.recommended,
+        { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+        {
+          files: ["**/*.jsx"],
+          languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+        },
+      {commonjs});
+      """;
+
+  // ESLint parses .js as ESM and does not read "type" from package.json.
+  private static final String COMMONJS_BLOCK =
+      "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"commonjs\" } },\n";
+
   private NodeConfigFiles() {}
 
   /**
@@ -41,6 +64,7 @@ final class NodeConfigFiles {
    */
   static Map<Path, String> targets(
       final Path root,
+      final Language language,
       final PackageManifest manifest,
       final QualityPreset preset,
       final List<InitGateOption> gates)
@@ -54,7 +78,7 @@ final class NodeConfigFiles {
       } else {
         targets.put(
             root.resolve(manifest.module() ? "eslint.config.js" : "eslint.config.mjs"),
-            marker(JS_MARKER, preset) + ESLINT_CONFIG);
+            marker(JS_MARKER, preset) + eslintConfig(language, manifest));
       }
     }
     if (ids.contains("bun-test")) {
@@ -71,6 +95,13 @@ final class NodeConfigFiles {
   /** Returns whether {@code existing} starts with a Ward marker of a Node config file. */
   static boolean owned(final String existing) {
     return existing.startsWith(JS_MARKER) || existing.startsWith(TOML_MARKER);
+  }
+
+  private static String eslintConfig(final Language language, final PackageManifest manifest) {
+    if (language != Language.JAVASCRIPT) {
+      return TYPESCRIPT_ESLINT_CONFIG;
+    }
+    return JAVASCRIPT_ESLINT_CONFIG.replace("{commonjs}", manifest.module() ? "" : COMMONJS_BLOCK);
   }
 
   private static Optional<Path> existingEslintConfig(final Path root) throws IOException {

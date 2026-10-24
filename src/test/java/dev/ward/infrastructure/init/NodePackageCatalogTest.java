@@ -3,6 +3,7 @@ package dev.ward.infrastructure.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.NodeInputs;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.BuildTool;
@@ -27,25 +28,27 @@ class NodePackageCatalogTest {
   void everyOfferedNodeGateHasItsPackagesInTheCatalog() {
     final Set<String> standalone = gateIds(BuildTool.MAVEN, Language.JAVA, PackageManifest.EMPTY);
     final PackageManifest jest = new PackageManifest(Map.of("jest", "^30.0.0"), null, null);
-    final Set<String> node =
-        Stream.of(
-                gateIds(BuildTool.NPM, Language.TYPESCRIPT, PackageManifest.EMPTY),
-                gateIds(BuildTool.NPM, Language.TYPESCRIPT, jest),
-                gateIds(BuildTool.BUN, Language.TYPESCRIPT, PackageManifest.EMPTY))
-            .flatMap(Set::stream)
-            .filter(id -> !standalone.contains(id))
-            .collect(Collectors.toSet());
+    for (final Language language : List.of(Language.TYPESCRIPT, Language.JAVASCRIPT)) {
+      final Set<String> node =
+          Stream.of(
+                  gateIds(BuildTool.NPM, language, PackageManifest.EMPTY),
+                  gateIds(BuildTool.NPM, language, jest),
+                  gateIds(BuildTool.BUN, language, PackageManifest.EMPTY))
+              .flatMap(Set::stream)
+              .filter(id -> !standalone.contains(id))
+              .collect(Collectors.toSet());
 
-    assertThat(node).isNotEmpty();
-    assertThat(NodePackageCatalog.gates()).containsAll(node);
-    node.forEach(
-        gate ->
-            assertThat(NodePackageCatalog.packages(gate))
-                .allSatisfy(
-                    name ->
-                        assertThat(NodePackageCatalog.find(name))
-                            .as("package %s of gate %s", name, gate)
-                            .isPresent()));
+      assertThat(node).as("%s gates", language).isNotEmpty();
+      assertThat(NodePackageCatalog.gates()).containsAll(node);
+      node.forEach(
+          gate ->
+              assertThat(NodePackageCatalog.packages(language, gate))
+                  .allSatisfy(
+                      name ->
+                          assertThat(NodePackageCatalog.find(name))
+                              .as("package %s of %s gate %s", name, language, gate)
+                              .isPresent()));
+    }
   }
 
   @Test
@@ -68,18 +71,35 @@ class NodePackageCatalogTest {
     final PackageManifest manifest =
         new PackageManifest(Map.of("prettier", "^3.3.0", "typescript", "~5.9.3"), null, null);
 
-    assertThat(NodePackageCatalog.missing(List.of(gate("prettier"), gate("tsc")), manifest))
+    assertThat(
+            NodePackageCatalog.missing(
+                Language.TYPESCRIPT, List.of(gate("prettier"), gate("tsc")), manifest))
         .isEmpty();
-    assertThat(NodePackageCatalog.missing(List.of(gate("eslint")), manifest))
+    assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate("eslint")), manifest))
         .extracting(NodePackageCatalog.Package::name)
         .containsExactly("eslint", "@eslint/js", "typescript-eslint");
+  }
+
+  @Test
+  void javaScriptEslintAddsGlobalsAndNoTypeScriptPackages() {
+    assertThat(
+            NodePackageCatalog.missing(
+                Language.JAVASCRIPT,
+                List.of(gate("eslint"), gate("prettier")),
+                PackageManifest.EMPTY))
+        .extracting(NodePackageCatalog.Package::name)
+        .containsExactly("eslint", "@eslint/js", "globals", "prettier");
   }
 
   private Set<String> gateIds(
       final BuildTool buildTool, final Language language, final PackageManifest manifest) {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
-            new FakeEnvironmentInspection(), directory -> manifest, null, null, "dev");
+            new FakeEnvironmentInspection(),
+            new NodeInputs(directory -> manifest, directory -> true),
+            null,
+            null,
+            "dev");
     return catalog
         .gates(
             new Project(
