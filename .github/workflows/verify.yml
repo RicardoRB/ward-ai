@@ -173,7 +173,8 @@ jobs:
   # One job per Node version. Each runs only the cells whose row names that version.
   node-matrix:
     name: Node ${{ matrix.node }} compatibility matrix
-    needs: node-matrix-versions
+    # Runs after the Ward ci profile passes, so a failing gate stops the matrix early.
+    needs: [quality, node-matrix-versions]
     if: needs.node-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
@@ -251,7 +252,8 @@ jobs:
   # One job per JDK. Ward runs on JDK 25; Maven, Gradle and every gate run on the cell's JDK.
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
-    needs: java-matrix-versions
+    # Runs after the Ward ci profile passes, so a failing gate stops the matrix early.
+    needs: [quality, java-matrix-versions]
     if: needs.java-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
