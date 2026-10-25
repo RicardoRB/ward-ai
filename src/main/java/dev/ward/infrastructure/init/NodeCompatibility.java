@@ -27,14 +27,15 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
   }
 
   /**
-   * Checks {@code added}, the packages init would add to {@code project}, and a declared Biome when
-   * {@code biome} is selected.
+   * Checks {@code added}, the packages init would add to {@code project}, and a declared Biome or
+   * ESLint when {@code biome} or {@code eslint} is selected.
    */
   static NodeCompatibility check(
       final Project project,
       final PackageManifest manifest,
       final List<NodePackageCatalog.Package> added,
-      final boolean biome) {
+      final boolean biome,
+      final boolean eslint) {
     final int node = Integer.parseInt(project.languageVersion());
     final List<CompatibilityFinding> findings = new ArrayList<>();
     final List<String> notes = new ArrayList<>();
@@ -60,6 +61,9 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     }
     if (biome) {
       declaredBiome(manifest).ifPresent(findings::add);
+    }
+    if (eslint) {
+      declaredEslint(manifest).ifPresent(findings::add);
     }
     findings.forEach(
         finding ->
@@ -125,6 +129,29 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + declared
                         + " is outside the supported range "
                         + NodePackageCatalog.BIOME_SUPPORTED
+                        + "."));
+  }
+
+  /** A declared ESLint must start inside the range the generated config supports. */
+  private static Optional<CompatibilityFinding> declaredEslint(final PackageManifest manifest) {
+    final String declared = manifest.dependencies().get(NodePackageCatalog.ESLINT);
+    if (declared == null) {
+      return Optional.empty();
+    }
+    return NodeVersionRange.lowerBound(declared)
+        .filter(version -> !NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, version))
+        .map(
+            version ->
+                new CompatibilityFinding(
+                    NodePackageCatalog.ESLINT,
+                    "ESLint " + version,
+                    NodePackageCatalog.ESLINT_VERSION,
+                    CompatibilityOutcome.INCOMPATIBLE,
+                    NodePackageCatalog.ESLINT
+                        + " "
+                        + declared
+                        + " is outside the supported range "
+                        + NodePackageCatalog.ESLINT_SUPPORTED
                         + "."));
   }
 

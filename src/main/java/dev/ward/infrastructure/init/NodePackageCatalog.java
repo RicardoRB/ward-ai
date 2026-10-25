@@ -18,7 +18,8 @@ import java.util.Set;
 final class NodePackageCatalog {
   static final String TYPESCRIPT = "typescript";
   static final String TYPESCRIPT_ESLINT = "typescript-eslint";
-  private static final String ESLINT = "eslint";
+  static final String ESLINT = "eslint";
+  static final String ESLINT_VERSION = "10.12.0";
   private static final String ESLINT_JS = "@eslint/js";
   private static final String GLOBALS = "globals";
   private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
@@ -40,13 +41,16 @@ final class NodePackageCatalog {
   /** The Biome releases with the checkstyle reporter; 3.x may change the config schema. */
   static final String BIOME_SUPPORTED = ">=2.3.0 <3.0.0";
 
+  /** The ESLint releases with {@code eslint/config}, which the generated config imports. */
+  static final String ESLINT_SUPPORTED = ">=9.22.0 <11.0.0";
+
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
   private static final Map<String, String> STRYKER_RUNNERS =
       Map.of("vitest", "@stryker-mutator/vitest-runner", "jest", "@stryker-mutator/jest-runner");
 
   private static final Map<String, Package> PACKAGES =
       Map.ofEntries(
-          entry(new Package(ESLINT, "10.12.0", ESLINT_NODE, null)),
+          entry(new Package(ESLINT, ESLINT_VERSION, ESLINT_NODE, null)),
           entry(new Package(ESLINT_JS, "10.0.1", ESLINT_NODE, null)),
           entry(new Package(GLOBALS, "17.13.0", ">=18", null)),
           entry(
