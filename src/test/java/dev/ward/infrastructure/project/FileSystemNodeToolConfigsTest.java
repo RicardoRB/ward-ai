@@ -24,7 +24,8 @@ class FileSystemNodeToolConfigsTest {
     "stryker, .stryker.config.mjs",
     "stryker, stryker.config.mjs",
     "eslint, eslint.config.js",
-    "eslint, .eslintrc.json"
+    "eslint, .eslintrc.json",
+    "dependency-cruiser, .dependency-cruiser.cjs"
   })
   void userConfigOfTheGatesToolIsFound(final String gate, final String file) throws IOException {
     Files.writeString(root.resolve(file), "export default {};\n");
@@ -38,6 +39,18 @@ class FileSystemNodeToolConfigsTest {
     Files.writeString(root.resolve("bunfig.toml"), "# managed-by: ward\n");
 
     assertThat(configs.userConfig(root, "vitest")).isEmpty();
+  }
+
+  @Test
+  void wardOwnedDependencyCruiserConfigDoesNotCount() throws IOException {
+    Files.writeString(root.resolve(".dependency-cruiser.mjs"), "// managed-by: ward\n");
+
+    assertThat(configs.userConfig(root, "dependency-cruiser")).isEmpty();
+  }
+
+  @Test
+  void emptyRootHasNoDependencyCruiserConfig() {
+    assertThat(configs.userConfig(root, "dependency-cruiser")).isEmpty();
   }
 
   @Test

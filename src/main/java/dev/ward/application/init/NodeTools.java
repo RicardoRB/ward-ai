@@ -17,19 +17,24 @@ import java.util.List;
  * @param preset the selected preset, or {@code null} for a custom selection
  * @param ownTestConfig whether the project keeps its own test runner config, which init leaves
  *     unchanged
+ * @param dependencyCruiserConfig the dependency-cruiser config file name the gate reads: the
+ *     project's own, or {@code .dependency-cruiser.mjs}
  */
 record NodeTools(
     BuildTool manager,
     String testGate,
     boolean available,
     QualityPreset preset,
-    boolean ownTestConfig) {
+    boolean ownTestConfig,
+    String dependencyCruiserConfig) {
   static final String VITEST = "vitest";
   static final String JEST = "jest";
   static final String BUN_TEST = "bun-test";
   static final String LINE = "LINE";
   static final String BRANCH = "BRANCH";
   private static final int PERCENT = 100;
+  private static final String DEPENDENCY_CRUISER = "dependency-cruiser";
+  private static final String WARD_DEPENDENCY_CRUISER = ".dependency-cruiser.mjs";
 
   /**
    * Resolves the tools of {@code project} from its manifest, the executables on the path and the
@@ -46,7 +51,12 @@ record NodeTools(
         testGate,
         inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
         preset,
-        inputs.configs().userConfig(project.root(), testGate).isPresent());
+        inputs.configs().userConfig(project.root(), testGate).isPresent(),
+        inputs
+            .configs()
+            .userConfig(project.root(), DEPENDENCY_CRUISER)
+            .map(config -> String.valueOf(config.getFileName()))
+            .orElse(WARD_DEPENDENCY_CRUISER));
   }
 
   /**
@@ -134,6 +144,14 @@ record NodeTools(
       }
     }
     return command(arguments.toArray(String[]::new));
+  }
+
+  /** The import-boundary gate; the config it reads enforces the architecture style. */
+  InitGateOption dependencyCruiser() {
+    return option(
+        DEPENDENCY_CRUISER,
+        "Checks import boundaries with dependency-cruiser (pre-push, ci).",
+        command("depcruise", ".", "--config", dependencyCruiserConfig, "--output-type", "err"));
   }
 
   /** The Stryker mutation gate; its config file sets the minimum score. */

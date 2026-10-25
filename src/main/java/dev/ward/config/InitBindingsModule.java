@@ -13,12 +13,12 @@ import dev.ward.domain.init.RawTerminal;
 import dev.ward.domain.init.RuleFileGeneration;
 import dev.ward.domain.init.ToolInstaller;
 import dev.ward.domain.terminal.TerminalCapabilities;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.CompositeToolInstaller;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
+import dev.ward.infrastructure.init.ToolchainArchitectureRules;
 import dev.ward.infrastructure.terminal.JdkTerminalCapabilities;
 import dev.ward.infrastructure.terminal.PosixRawTerminal;
 
@@ -34,7 +34,7 @@ interface InitBindingsModule {
   TerminalCapabilities terminalCapabilities(JdkTerminalCapabilities implementation);
 
   @Binds
-  ArchitectureTestGeneration architectureTestGeneration(ArchitectureTestGenerator implementation);
+  ArchitectureTestGeneration architectureTestGeneration(ToolchainArchitectureRules implementation);
 
   @Binds
   RuleFileGeneration ruleFileGeneration(PresetRuleFileWriter implementation);

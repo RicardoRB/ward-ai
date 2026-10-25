@@ -26,13 +26,14 @@ record TypeScriptGates(String testGate) implements SourceLanguageGates<NodeTools
             "prettier",
             "Checks formatting with Prettier.",
             node.command("prettier", "--check", ".")),
+        node.dependencyCruiser(),
         node.stryker());
   }
 
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     return preset == QualityPreset.STRICT
-        ? List.of("tsc", testGate, "prettier", "eslint", "stryker")
+        ? List.of("tsc", testGate, "prettier", "eslint", "stryker", "dependency-cruiser")
         : List.of("tsc", testGate, "prettier", "eslint");
   }
 }

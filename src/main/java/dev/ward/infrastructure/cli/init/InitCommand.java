@@ -78,7 +78,8 @@ public class InitCommand implements Callable<Integer> {
   @Option(
       names = "--architecture",
       description =
-          "Architecture style for architecture/ArchUnit tests: layered, hexagonal, or clean.")
+          "Architecture style for ArchUnit tests or the dependency-cruiser config: layered,"
+              + " hexagonal, or clean.")
   private String architecture;
 
   @Option(names = "--preset", description = "Quality preset: standard or strict.")

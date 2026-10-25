@@ -14,6 +14,7 @@ class InitNodeStrictProjectTest {
   private static final String STRYKER_CONFIG = "stryker.config.mjs";
   private static final String GITIGNORE = ".gitignore";
   private static final String AGENTS = "AGENTS.md";
+  private static final String DEPENDENCY_CRUISER_CONFIG = ".dependency-cruiser.mjs";
 
   @TempDir Path project;
 
@@ -78,6 +79,56 @@ class InitNodeStrictProjectTest {
     final NodeFixtureRun.Result check = fixture.ward("check", "--profile", "pre-push");
 
     assertThat(check.exit()).as(check.output()).isZero();
+  }
+
+  @Test
+  void strictTypeScriptProjectGetsALayeredDependencyCruiserConfig()
+      throws IOException, InterruptedException {
+    final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
+
+    final NodeFixtureRun.Result init = init(fixture);
+
+    assertThat(init.exit()).as(init.output()).isZero();
+    assertThat(init.output()).contains("Generated layered dependency-cruiser config");
+    assertThat(fixture.read(WARD_TOML))
+        .contains(
+            "[quality-gates.dependency-cruiser]",
+            "command = \"npx depcruise . --config .dependency-cruiser.mjs --output-type err\"");
+    assertThat(fixture.read("package.json")).contains("\"dependency-cruiser\": \"18.6.0\"");
+    assertThat(fixture.read(DEPENDENCY_CRUISER_CONFIG))
+        .startsWith("// managed-by: ward\n")
+        .contains("name: \"layered-architecture\"", "name: \"no-circular\"");
+    assertThat(fixture.read(AGENTS)).contains("Dependency rules (dependency-cruiser)");
+  }
+
+  @Test
+  void projectsOwnDependencyCruiserConfigIsKeptAndPointedAt()
+      throws IOException, InterruptedException {
+    final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
+    Files.writeString(project.resolve(".dependency-cruiser.cjs"), "module.exports = {};\n");
+
+    final NodeFixtureRun.Result init = init(fixture);
+
+    assertThat(init.exit()).as(init.output()).isZero();
+    assertThat(fixture.read(".dependency-cruiser.cjs")).isEqualTo("module.exports = {};\n");
+    assertThat(project.resolve(DEPENDENCY_CRUISER_CONFIG)).doesNotExist();
+    assertThat(fixture.read(WARD_TOML))
+        .contains(
+            "command = \"npx depcruise . --config .dependency-cruiser.cjs --output-type err\"");
+  }
+
+  @Test
+  void unsupportedArchitectureStyleFailsBeforeAnyFileIsWritten()
+      throws IOException, InterruptedException {
+    final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
+
+    final NodeFixtureRun.Result init =
+        fixture.ward("init", "--preset", "strict", "--architecture", "onion", "--yes");
+
+    assertThat(init.exit()).isNotZero();
+    assertThat(init.output()).contains("layered, hexagonal", "clean");
+    assertThat(project.resolve(WARD_TOML)).doesNotExist();
+    assertThat(project.resolve(DEPENDENCY_CRUISER_CONFIG)).doesNotExist();
   }
 
   private static NodeFixtureRun.Result init(final NodeFixtureRun fixture)

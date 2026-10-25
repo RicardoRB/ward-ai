@@ -160,10 +160,12 @@ final class InitResultPrinter {
     if (test == null) {
       return;
     }
-    if (test.created()) {
-      out.println("Generated " + test.architecture() + " ArchUnit test: " + test.file());
+    final boolean java = test.file().toString().endsWith(".java");
+    final String tool = java ? "ArchUnit test" : "dependency-cruiser config";
+    if (test.created() || test.previous() != null) {
+      out.println("Generated " + test.architecture() + " " + tool + ": " + test.file());
     } else {
-      out.println("Preserved existing ArchUnit test: " + test.file());
+      out.println("Preserved existing " + tool + ": " + test.file());
     }
   }
 

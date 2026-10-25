@@ -88,6 +88,7 @@ Gates in `ward.toml`; edit hooks run the `default` profile (format, checkstyle, 
 - Use `FakeCommandExecutor` for process tests. Existing test names use descriptive camelCase.
 - `NativeInitTerminalSmokeTest` drives a built executable's `init` wizard through a pseudo-terminal and is skipped unless `-Dward.native.binary` is set: `./mvnw -Dtest=NativeInitTerminalSmokeTest -Dward.native.binary=target/ward test` after `native:compile`.
 - `GradleMutationJava25SmokeTest` runs the generated Gradle `pitest` task on Java 25 and is skipped unless `-Dward.gradle.binary` points to a Gradle executable (needs network).
+- `DependencyCruiserRulesSmokeTest` runs a real dependency-cruiser on the generated configs and the `src/test/resources/fixtures/node-architecture` TypeScript and JavaScript fixtures; it is skipped unless `-Dward.depcruise.binary` points to a local `depcruise` (for example `node_modules/.bin/depcruise` after installing `dependency-cruiser@18.6.0`).
 - Testcontainers is not configured; do not invent or claim that check.
 
 ## Security

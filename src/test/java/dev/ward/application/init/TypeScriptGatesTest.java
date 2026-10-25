@@ -79,7 +79,7 @@ class TypeScriptGatesTest {
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("tsc", "vitest", "prettier", "eslint", "stryker");
+        .containsExactly("tsc", "vitest", "prettier", "eslint", "stryker", "dependency-cruiser");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }

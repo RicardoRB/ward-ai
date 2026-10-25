@@ -29,7 +29,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
-| `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the `archunit` gate. |
+| `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the `archunit` and `dependency-cruiser` gates. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
 | `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `trivy` or `openspec`. |
@@ -61,6 +61,9 @@ Some gates need extra input:
 - **`archunit`** asks for Layered, Hexagonal, or Clean architecture. If test sources already
   contain ArchUnit classes ending in `Test` or `Tests`, init runs those instead of generating a
   duplicate. Otherwise it creates a minimal `ArchitectureTest.java`; see
+  [Generated files](#generated-files).
+- **`dependency-cruiser`** in a TypeScript or JavaScript project asks for the same three styles.
+  Init writes the config that enforces the style, unless the project has its own; see
   [Generated files](#generated-files).
 - **`zap`** writes a `<TARGET_URL>` placeholder. Replace it with an authorized target before
   `check` will run the gate.
@@ -256,6 +259,7 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `stryker` | `npx stryker run` | `ci` |
 | `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
+| `dependency-cruiser` | `npx depcruise . --config <file> --output-type err` | `pre-push`, `ci` |
 | `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
 - JavaScript gets the same gates except `tsc`.
@@ -265,13 +269,13 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 
 | | `standard` | `strict` |
 |---|---|---|
-| Gates | `tsc` (TypeScript only), the test runner, `prettier`, `eslint` | the same, plus `stryker` |
+| Gates | `tsc` (TypeScript only), the test runner, `prettier`, `eslint` | the same, plus `stryker` and `dependency-cruiser` |
 | Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
 | ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
 | Mutation score | none | at least 60%, in `ci` |
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
-score without a minimum. dependency-cruiser is not part of `strict` yet.
+score without a minimum. `dependency-cruiser` is offered by both presets, and `strict` selects it.
 
 #### Where the thresholds live
 
@@ -313,12 +317,14 @@ The thresholds sit in the tools' own config files, so you can see and tune them 
 | `typescript` | 6.0.3 | `>=14.17` |
 | `globals` | 17.13.0 | `>=18` |
 | `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
+| `dependency-cruiser` | 18.6.0 | `^22.0.0 \|\| ^24.0.0 \|\| >=26.0.0`, TypeScript `>=2.0.0 <7.0.0` |
 
 The `eslint` gate adds `eslint`, `@eslint/js`, and `typescript-eslint` (plus `typescript` when it is
 missing) to a TypeScript project, and `eslint`, `@eslint/js`, and `globals` to a JavaScript project,
 with no TypeScript package. The `stryker` gate adds `@stryker-mutator/core` and the runner plugin
 for Vitest or Jest. Bun has no runner plugin, so Stryker runs `bun test` through its command
-runner. Stryker 10 needs Node 22 or later.
+runner. Stryker 10 needs Node 22 or later. The `dependency-cruiser` gate adds `dependency-cruiser`,
+and `typescript` to a TypeScript project when it is missing.
 
 ### Compatibility checks
 
@@ -363,6 +369,22 @@ Before writing, init checks each package it would add against the project's Node
   `clear-text`, and `progress` reporters, and sets `thresholds` with `high: 80` and `low: 60`. With
   `strict` it also sets `break: 60`, so Stryker fails below a 60% mutation score. An existing
   Stryker config is kept with its own thresholds.
+- **`.dependency-cruiser.mjs`** for `dependency-cruiser` when the project has no dependency-cruiser
+  config of its own (`.dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}`). In the chosen style, a
+  module in one layer must not import another. A layer is a directory with that name in the
+  module's path, and the config does not cruise `node_modules`:
+
+  | Style | Modules in a path named | Must not import modules in |
+  |---|---|---|
+  | `layered` | `controller` | `repository` |
+  | `hexagonal` | `domain`, `application` | `adapter`, `infrastructure` |
+  | `clean` | `domain`, `core` | `controller`, `adapter`, `infrastructure` |
+
+  `strict` also forbids circular dependencies. In a TypeScript project, type-only imports count, and
+  the config names `tsconfig.json` when it exists. A layer folder that does not exist matches
+  nothing, so the gate passes. A config the project wrote is used as it is. Init rewrites Ward's
+  file when you change the style or preset, and its first line is `// managed-by: ward` with no
+  preset.
 - These generated configs are ES modules (`.mjs`) in every project and start with a
   `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
   never touches a config you wrote.
