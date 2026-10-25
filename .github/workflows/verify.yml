@@ -135,10 +135,11 @@ jobs:
             target/ward.sarif
           if-no-files-found: ignore
 
-  # Reads the Node versions from the matrix data and skips the matrix for pull requests that change
-  # only website, openspec or Markdown files.
+  # After the Ward ci profile passes, reads the Node versions from the matrix data and skips the
+  # matrix for pull requests that change only website, openspec or Markdown files.
   node-matrix-versions:
     name: Node matrix versions
+    needs: quality
     runs-on: ubuntu-24.04
     outputs:
       nodes: ${{ steps.versions.outputs.nodes }}
@@ -173,8 +174,7 @@ jobs:
   # One job per Node version. Each runs only the cells whose row names that version.
   node-matrix:
     name: Node ${{ matrix.node }} compatibility matrix
-    # Runs after the Ward ci profile passes, so a failing gate stops the matrix early.
-    needs: [quality, node-matrix-versions]
+    needs: node-matrix-versions
     if: needs.node-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
@@ -214,10 +214,11 @@ jobs:
           -Dward.node.matrix.jar=target/ward.jar
           test
 
-  # Reads the JDK and Gradle versions from the matrix data and skips the matrix for pull requests
-  # that change only website, openspec or Markdown files.
+  # After the Ward ci profile passes, reads the JDK and Gradle versions from the matrix data and
+  # skips the matrix for pull requests that change only website, openspec or Markdown files.
   java-matrix-versions:
     name: Java matrix versions
+    needs: quality
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -252,8 +253,7 @@ jobs:
   # One job per JDK. Ward runs on JDK 25; Maven, Gradle and every gate run on the cell's JDK.
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
-    # Runs after the Ward ci profile passes, so a failing gate stops the matrix early.
-    needs: [quality, java-matrix-versions]
+    needs: java-matrix-versions
     if: needs.java-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
