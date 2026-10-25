@@ -3,6 +3,7 @@ package dev.ward.infrastructure.finding;
 import dev.ward.domain.gate.FindingExtractionException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.xml.stream.XMLInputFactory;
@@ -20,25 +21,42 @@ final class SafeXml {
   }
 
   static void read(final Path file, final ElementVisitor visitor) {
-    final XMLInputFactory factory = XMLInputFactory.newFactory();
-    factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
-    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
     try (InputStream input = Files.newInputStream(file)) {
-      final XMLStreamReader reader = factory.createXMLStreamReader(input);
-      try {
-        while (reader.hasNext()) {
-          if (reader.next() == XMLStreamReader.START_ELEMENT) {
-            visitor.startElement(reader);
-          }
-        }
-      } finally {
-        reader.close();
-      }
+      final XMLStreamReader reader = factory().createXMLStreamReader(input);
+      visit(reader, visitor);
     } catch (XMLStreamException exception) {
       throw new MalformedReportException(file, exception);
     } catch (IOException exception) {
       throw new FindingExtractionException("Cannot read report", exception);
+    }
+  }
+
+  static void read(final String xml, final ElementVisitor visitor) {
+    try {
+      visit(factory().createXMLStreamReader(new StringReader(xml)), visitor);
+    } catch (XMLStreamException exception) {
+      throw new MalformedReportException(exception);
+    }
+  }
+
+  private static XMLInputFactory factory() {
+    final XMLInputFactory factory = XMLInputFactory.newFactory();
+    factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+    return factory;
+  }
+
+  private static void visit(final XMLStreamReader reader, final ElementVisitor visitor)
+      throws XMLStreamException {
+    try {
+      while (reader.hasNext()) {
+        if (reader.next() == XMLStreamReader.START_ELEMENT) {
+          visitor.startElement(reader);
+        }
+      }
+    } finally {
+      reader.close();
     }
   }
 

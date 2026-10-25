@@ -35,6 +35,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `eslint` | ESLint | Lint TypeScript and JavaScript sources. |
 | | `prettier` | Prettier | Check source formatting. |
+| | `biome` | Biome | Lint and check formatting of sources in one run; replaces `prettier` and `eslint` where the project uses Biome. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
@@ -61,8 +62,8 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 |---|---|---|
 | `standard` | compile, tests, format, Checkstyle, PMD, SpotBugs, coverage | 70% line coverage |
 | `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
-| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
-| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier`, `eslint` | 70% line coverage |
+| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
+| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
 | `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
 
@@ -109,7 +110,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## TypeScript and JavaScript gates
 
-`tsc`, `eslint`, `prettier`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
+`tsc`, `eslint`, `prettier`, `biome`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
 run their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
@@ -119,6 +120,10 @@ run their `command` from the project root, exactly as written, and pass when it 
   package manager's runner; see [Node projects](/commands/init/#node-projects).
 - For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
   `p/javascript` ruleset.
+- In a project that uses Biome, init offers `biome` in place of `prettier`, and offers `eslint` only
+  with the project's own ESLint config. The `biome` command is
+  `<runner> biome ci --colors=off --reporter=checkstyle .`; under `strict` it adds
+  `--error-on-warnings`. See [Node projects](/commands/init/#biome).
 - Init also offers `stryker`, in the `ci` profile, and `strict` selects it. It offers
   `dependency-cruiser` too, which `strict` selects; see [Node projects](/commands/init/#node-projects).
 
@@ -330,7 +335,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, or `tsc` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, or `tsc` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -342,6 +347,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `compile` | javac messages in the output | | | |
 | `format` | Spotless file list in the output (file only, no line) | | | |
 | `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
+| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`, and `format` findings have no line. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
@@ -358,8 +364,8 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[quality-gates.<id>.partial]` table](/configuration/ward-toml/#partial-checks)
-for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `openapi-lint`, and
-`openapi-diff`. After an agent
+for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `biome`,
+`openapi-lint`, and `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
 - is skipped when no edited file is in its `inputs`;
@@ -379,7 +385,9 @@ In a TypeScript or JavaScript project, `eslint` and `prettier` take edited `.ts`
 `.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
 command without its `.` target, so a narrowed check runs, for example,
 `npx prettier --check src/app.ts`. An edit of their configs or `package.json` runs them in full.
-`tsc` and the test runners have no table, so they run in full in `pre-push` and `ci`.
+`biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
+Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
+and `ci`.
 
 Gradle notes:
 

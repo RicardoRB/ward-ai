@@ -48,14 +48,16 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     final List<NodePackageCatalog.Package> missing =
         NodePackageCatalog.missing(project.language(), gates, manifest);
     final List<String> warnings = new ArrayList<>(bunfigWarning(project, gates));
-    if (missing.isEmpty()) {
-      return new BuildFileChange(Toolchain.NODE, null, null, List.of(), warnings);
-    }
-    final NodeCompatibility compatibility = NodeCompatibility.check(project, manifest, missing);
+    final NodeCompatibility compatibility =
+        NodeCompatibility.check(
+            project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
     if (compatibility.incompatible()) {
       throw new WardException(compatibility.message());
     }
     warnings.addAll(compatibility.notes());
+    if (missing.isEmpty()) {
+      return new BuildFileChange(Toolchain.NODE, null, null, List.of(), warnings);
+    }
     final String original = read(file);
     final String edited = PackageJsonEdit.addDevDependencies(original, versions(missing));
     final Path lock = lockFile(project);
@@ -90,11 +92,9 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     final PackageManifest manifest = manifests.read(project.root());
     final List<NodePackageCatalog.Package> missing =
         NodePackageCatalog.missing(project.language(), gates, manifest);
-    if (missing.isEmpty()) {
-      return new PlannedFileChange(
-          file, PlannedFileChange.Action.UNCHANGED, bunfigWarning(project, gates));
-    }
-    final NodeCompatibility compatibility = NodeCompatibility.check(project, manifest, missing);
+    final NodeCompatibility compatibility =
+        NodeCompatibility.check(
+            project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
     if (compatibility.incompatible()) {
       return new PlannedFileChange(
           file,
@@ -102,6 +102,10 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
           compatibility.findings().stream()
               .map(finding -> "INCOMPATIBLE " + finding.artifactId() + ": " + finding.message())
               .toList());
+    }
+    if (missing.isEmpty()) {
+      return new PlannedFileChange(
+          file, PlannedFileChange.Action.UNCHANGED, bunfigWarning(project, gates));
     }
     final List<String> details = new ArrayList<>();
     missing.forEach(tool -> details.add("add devDependency " + tool.name() + " " + tool.version()));

@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
  *     unchanged
  * @param dependencyCruiserConfig the dependency-cruiser config file name the gate reads: the
  *     project's own, or {@code .dependency-cruiser.mjs}
+ * @param biome whether the project uses Biome for linting and formatting
+ * @param ownEslintConfig whether the project keeps its own ESLint config
  */
 record NodeTools(
     BuildTool manager,
@@ -26,7 +29,9 @@ record NodeTools(
     boolean available,
     QualityPreset preset,
     boolean ownTestConfig,
-    String dependencyCruiserConfig) {
+    String dependencyCruiserConfig,
+    boolean biome,
+    boolean ownEslintConfig) {
   static final String VITEST = "vitest";
   static final String JEST = "jest";
   static final String BUN_TEST = "bun-test";
@@ -35,6 +40,9 @@ record NodeTools(
   private static final int PERCENT = 100;
   private static final String DEPENDENCY_CRUISER = "dependency-cruiser";
   private static final String WARD_DEPENDENCY_CRUISER = ".dependency-cruiser.mjs";
+  private static final String BIOME_PACKAGE = "@biomejs/biome";
+  private static final String BIOME = "biome";
+  private static final String ESLINT = "eslint";
 
   /**
    * Resolves the tools of {@code project} from its manifest, the executables on the path and the
@@ -46,6 +54,7 @@ record NodeTools(
       final InitInputs inputs,
       final QualityPreset preset) {
     final String testGate = testGate(project.buildTool(), manifest);
+    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     return new NodeTools(
         project.buildTool(),
         testGate,
@@ -56,7 +65,26 @@ record NodeTools(
             .configs()
             .userConfig(project.root(), DEPENDENCY_CRUISER)
             .map(config -> String.valueOf(config.getFileName()))
-            .orElse(WARD_DEPENDENCY_CRUISER));
+            .orElse(WARD_DEPENDENCY_CRUISER),
+        linting.biome(),
+        linting.ownEslintConfig());
+  }
+
+  /** Returns whether the project uses Biome: it declares the package or keeps a Biome config. */
+  static boolean biome(
+      final Project project, final PackageManifest manifest, final NodeToolConfigs configs) {
+    return manifest.declares(BIOME_PACKAGE)
+        || configs.userConfig(project.root(), BIOME).isPresent();
+  }
+
+  /** Returns whether the project keeps its own ESLint config, which init leaves in place. */
+  static boolean ownEslintConfig(final Project project, final NodeToolConfigs configs) {
+    return configs.userConfig(project.root(), ESLINT).isPresent();
+  }
+
+  /** Returns the project's lint and format choices. */
+  NodeLinting linting() {
+    return new NodeLinting(biome, ownEslintConfig);
   }
 
   /**
@@ -158,6 +186,23 @@ record NodeTools(
   InitGateOption stryker() {
     return option(
         "stryker", "Mutation-tests the project with Stryker (ci).", command("stryker", "run"));
+  }
+
+  /**
+   * The Biome gate, which lints and checks formatting in one run. Under strict, warnings fail it
+   * too. Biome's own checkstyle reporter keeps its findings readable by Ward.
+   */
+  InitGateOption biomeGate() {
+    final List<String> arguments =
+        new ArrayList<>(List.of(BIOME, "ci", "--colors=off", "--reporter=checkstyle"));
+    if (preset == QualityPreset.STRICT) {
+      arguments.add("--error-on-warnings");
+    }
+    arguments.add(".");
+    return option(
+        BIOME,
+        "Lints and checks formatting with Biome.",
+        command(arguments.toArray(String[]::new)));
   }
 
   /** A gate that runs the local tool with {@code command}. */

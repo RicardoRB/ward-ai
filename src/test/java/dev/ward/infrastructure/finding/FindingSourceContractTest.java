@@ -20,7 +20,8 @@ class FindingSourceContractTest {
                 new JavacOutputFindings(),
                 new SpotlessOutputFindings(),
                 new EslintJsonFindings(new ForyJsonCodec()),
-                new TscOutputFindings()));
+                new TscOutputFindings(),
+                new BiomeCheckstyleFindings()));
 
     assertThat(extractor.gates())
         .allSatisfy(

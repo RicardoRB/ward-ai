@@ -22,8 +22,8 @@ final class NodePackageCatalog {
   private static final String ESLINT_JS = "@eslint/js";
   private static final String GLOBALS = "globals";
   private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
-  private static final String VITEST_NODE = "^22.12.0 || ^24.0.0 || >=26.0.0";
-  private static final String VITEST_VERSION = "5.0.3";
+  private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
+  private static final String VITEST_VERSION = "4.0.18";
   private static final String STRYKER = "stryker";
   private static final String STRYKER_CORE = "@stryker-mutator/core";
   private static final String STRYKER_VERSION = "10.1.1";
@@ -32,6 +32,13 @@ final class NodePackageCatalog {
   private static final String DEPENDENCY_CRUISER_VERSION = "18.6.0";
   private static final String DEPENDENCY_CRUISER_NODE = "^22.0.0 || ^24.0.0 || >=26.0.0";
   private static final String DEPENDENCY_CRUISER_TYPESCRIPT = ">=2.0.0 <7.0.0";
+  private static final String BIOME = "biome";
+  static final String BIOME_PACKAGE = "@biomejs/biome";
+  static final String BIOME_VERSION = "2.5.15";
+  private static final String BIOME_NODE = ">=14.21.3";
+
+  /** The Biome releases with the checkstyle reporter; 3.x may change the config schema. */
+  static final String BIOME_SUPPORTED = ">=2.3.0 <3.0.0";
 
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
   private static final Map<String, String> STRYKER_RUNNERS =
@@ -49,6 +56,7 @@ final class NodePackageCatalog {
                   "^18.18.0 || ^20.9.0 || >=21.1.0",
                   ">=4.8.4 <6.1.0")),
           entry(new Package("prettier", "3.9.10", ">=14", null)),
+          entry(new Package(BIOME_PACKAGE, BIOME_VERSION, BIOME_NODE, null)),
           entry(new Package("vitest", VITEST_VERSION, VITEST_NODE, null)),
           entry(new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null)),
           // The newest release inside typescript-eslint's range; 7.0.2 is outside it.
@@ -83,7 +91,9 @@ final class NodePackageCatalog {
           STRYKER,
           List.of(STRYKER_CORE),
           DEPENDENCY_CRUISER,
-          List.of(DEPENDENCY_CRUISER, TYPESCRIPT));
+          List.of(DEPENDENCY_CRUISER, TYPESCRIPT),
+          BIOME,
+          List.of(BIOME_PACKAGE));
 
   /** Rows that replace a {@link #GATES} row for one language; other gates are shared. */
   private static final Map<Language, Map<String, List<String>>> LANGUAGE_GATES =

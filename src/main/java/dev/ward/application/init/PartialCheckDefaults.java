@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * The {@code [quality-gates.<id>.partial]} table init writes for a gate whose tool can be scoped to
@@ -36,10 +36,10 @@ final class PartialCheckDefaults {
   private static final List<String> PATHS = List.of("{paths}");
 
   // Their full commands end with a target (or none), so the narrowed command replaces it.
-  private static final Map<String, Function<BuildTool, Table>> NODE_TABLES =
+  private static final Map<String, BiFunction<BuildTool, QualityPreset, Table>> NODE_TABLES =
       Map.of(
           "eslint",
-          manager ->
+          (manager, preset) ->
               new Table(
                   NODE_SOURCES,
                   List.of("eslint.config.*", ".eslintrc*", "package.json"),
@@ -48,14 +48,24 @@ final class PartialCheckDefaults {
                   null,
                   NodeTools.command(manager, "eslint", "--format", "json")),
           "prettier",
-          manager ->
+          (manager, preset) ->
               new Table(
                   NODE_SOURCES,
                   List.of(".prettierrc*", "prettier.config.*", ".prettierignore", "package.json"),
                   PATHS,
                   null,
                   null,
-                  NodeTools.command(manager, "prettier", "--check")));
+                  NodeTools.command(manager, "prettier", "--check")),
+          "biome",
+          (manager, preset) ->
+              new Table(
+                  NODE_SOURCES,
+                  List.of(
+                      "biome.json", "biome.jsonc", ".biome.json", ".biome.jsonc", "package.json"),
+                  PATHS,
+                  null,
+                  null,
+                  biomeCommand(manager, preset)));
 
   private static final Map<String, TableFactory> TABLES =
       Map.of(
@@ -124,11 +134,30 @@ final class PartialCheckDefaults {
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final List<String> build = gradle ? GRADLE_BUILD : MAVEN_BUILD;
     return Optional.ofNullable(NODE_TABLES.get(gate))
-        .map(factory -> factory.apply(project.buildTool()))
+        .map(factory -> factory.apply(project.buildTool(), preset))
         .or(
             () ->
                 Optional.ofNullable(TABLES.get(gate))
                     .map(factory -> factory.create(gradle, preset, build)));
+  }
+
+  /**
+   * The narrowed Biome command. {@code --no-errors-on-unmatched} lets an edited file that Biome
+   * ignores pass; strict keeps warnings failing.
+   */
+  private static List<String> biomeCommand(final BuildTool manager, final QualityPreset preset) {
+    final List<String> arguments =
+        new ArrayList<>(
+            List.of(
+                "biome",
+                "ci",
+                "--colors=off",
+                "--reporter=checkstyle",
+                "--no-errors-on-unmatched"));
+    if (preset == QualityPreset.STRICT) {
+      arguments.add("--error-on-warnings");
+    }
+    return NodeTools.command(manager, arguments.toArray(String[]::new));
   }
 
   /** Returns the gates that have a partial table, for the gate contract test. */

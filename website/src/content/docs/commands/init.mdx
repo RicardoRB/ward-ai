@@ -82,7 +82,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `format`, `checkstyle`, `pmd`, `gitleaks`, `prettier`, `eslint` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `format`, `checkstyle`, `pmd`, `gitleaks`, `prettier`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -162,7 +162,7 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, and `prettier`. The check after each agent edit, and
+  `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, and `biome`. The check after each agent edit, and
   the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
@@ -259,23 +259,53 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `stryker` | `npx stryker run` | `ci` |
 | `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
+| `biome` | `npx biome ci --colors=off --reporter=checkstyle .` (`--error-on-warnings` under `strict`) | `default`, `pre-commit`, `pre-push`, `ci` |
 | `dependency-cruiser` | `npx depcruise . --config <file> --output-type err` | `pre-push`, `ci` |
 | `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
 - JavaScript gets the same gates except `tsc`.
+- A project that uses Biome gets the `biome` gate instead of `prettier`; see [Biome](#biome).
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`.
 - `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
 
 | | `standard` | `strict` |
 |---|---|---|
-| Gates | `tsc` (TypeScript only), the test runner, `prettier`, `eslint` | the same, plus `stryker` and `dependency-cruiser` |
+| Gates | `tsc` (TypeScript only), the test runner, `prettier` and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` and `dependency-cruiser` |
 | Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
 | ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
 | Mutation score | none | at least 60%, in `ci` |
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum. `dependency-cruiser` is offered by both presets, and `strict` selects it.
+
+#### Biome
+
+Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own
+`biome.json`, `biome.jsonc`, `.biome.json`, or `.biome.jsonc`. It asks no question about Biome.
+
+- A Biome project gets one `biome` gate, which lints and checks formatting in one run. It replaces
+  `prettier` and, unless the project has its own ESLint config, `eslint`. With `strict`, warnings
+  fail the gate too (`--error-on-warnings`).
+- A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
+  that config unchanged. Init writes no ESLint or Prettier config for a Biome project, and a
+  Prettier config the project has stays in place without a gate.
+- A project's own Biome config is kept unchanged and listed as user-owned. Otherwise init writes an
+  ownership-marked `biome.jsonc` with Biome's recommended rules. It also turns on Git-ignore support,
+  so Biome skips `.ward/reports/` and coverage output. `strict` sets these rules to `error`:
+  `noExplicitAny`, `noNonNullAssertion`, `useConst`, `noUnusedImports`, `noUnusedVariables`,
+  `noExcessiveCognitiveComplexity`, `noFloatingPromises`, and `noMisusedPromises`.
+- If the project does not declare `@biomejs/biome`, init adds it at 2.5.15. A declared version
+  outside `>=2.3.0 <3.0.0` is an `INCOMPATIBLE` finding, and applying changes nothing. Biome 2.3.0 is
+  the first release with the checkstyle reporter that Ward reads, and 3.x may change the config
+  schema.
+- Edit hooks run Biome on the edited files only. An edited file that Biome ignores passes.
+
+<Aside type="caution">
+Ward's `biome.jsonc` reads the project's ignore file. In a directory that is not a Git repository
+and has no `.gitignore`, Biome reports a configuration error and the `biome` gate fails. Add a
+`.gitignore`, or set up the repository, before running the gate.
+</Aside>
 
 #### Where the thresholds live
 
@@ -313,7 +343,8 @@ The thresholds sit in the tools' own config files, so you can see and tune them 
 | `@eslint/js` | 10.0.1 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
 | `typescript-eslint` | 8.71.1 | `^18.18.0 \|\| ^20.9.0 \|\| >=21.1.0`, TypeScript `>=4.8.4 <6.1.0` |
 | `prettier` | 3.9.10 | `>=14` |
-| `vitest`, `@vitest/coverage-v8` | 5.0.3 | `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0` |
+| `@biomejs/biome` | 2.5.15 | `>=14.21.3` (declared versions must be `>=2.3.0 <3.0.0`) |
+| `vitest`, `@vitest/coverage-v8` | 4.0.18 | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` |
 | `typescript` | 6.0.3 | `>=14.17` |
 | `globals` | 17.13.0 | `>=18` |
 | `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
@@ -388,9 +419,11 @@ Before writing, init checks each package it would add against the project's Node
 - These generated configs are ES modules (`.mjs`) in every project and start with a
   `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
   never touches a config you wrote.
+- **`biome.jsonc`** for the `biome` gate when the project has no Biome config of its own. It starts
+  with a `// managed-by: ward preset=<id>` marker; see [Biome](#biome).
 - **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
   the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
-  Prettier skips Git-ignored files, so it does not check these reports.
+  Prettier and Biome skip Git-ignored files, so they do not check these reports.
 - **`ward.toml`** gets `partial` tables for `eslint` and `prettier`: an edit hook runs them on the
   edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
   `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
@@ -458,7 +491,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
 enforcer rules.
 
-- For TypeScript it names the `tsc`, ESLint, Prettier, and test commands, the 70% line coverage
+- For TypeScript it names the `tsc`, Biome (or ESLint and Prettier), and test commands, the 70% line coverage
   minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under
   `strict`), and the ESLint config in use, and no Java tool.
 - For JavaScript it names the same without `tsc`.

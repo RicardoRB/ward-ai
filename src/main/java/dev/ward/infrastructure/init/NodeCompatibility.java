@@ -26,11 +26,15 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     notes = List.copyOf(notes);
   }
 
-  /** Checks {@code added}, the packages init would add to {@code project}. */
+  /**
+   * Checks {@code added}, the packages init would add to {@code project}, and a declared Biome when
+   * {@code biome} is selected.
+   */
   static NodeCompatibility check(
       final Project project,
       final PackageManifest manifest,
-      final List<NodePackageCatalog.Package> added) {
+      final List<NodePackageCatalog.Package> added,
+      final boolean biome) {
     final int node = Integer.parseInt(project.languageVersion());
     final List<CompatibilityFinding> findings = new ArrayList<>();
     final List<String> notes = new ArrayList<>();
@@ -53,6 +57,9 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
         notes.add(tool.name() + " needs Node " + minimum.get() + " or later.");
       }
       typescript(tool, manifest, added).ifPresent(findings::add);
+    }
+    if (biome) {
+      declaredBiome(manifest).ifPresent(findings::add);
     }
     findings.forEach(
         finding ->
@@ -95,6 +102,29 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + tool.typescript()
                         + "; the project uses TypeScript "
                         + declared
+                        + "."));
+  }
+
+  /** A declared Biome must start inside the range Ward's checkstyle reading supports. */
+  private static Optional<CompatibilityFinding> declaredBiome(final PackageManifest manifest) {
+    final String declared = manifest.dependencies().get(NodePackageCatalog.BIOME_PACKAGE);
+    if (declared == null) {
+      return Optional.empty();
+    }
+    return NodeVersionRange.lowerBound(declared)
+        .filter(version -> !NodeVersionRange.matches(NodePackageCatalog.BIOME_SUPPORTED, version))
+        .map(
+            version ->
+                new CompatibilityFinding(
+                    NodePackageCatalog.BIOME_PACKAGE,
+                    "Biome " + version,
+                    NodePackageCatalog.BIOME_VERSION,
+                    CompatibilityOutcome.INCOMPATIBLE,
+                    NodePackageCatalog.BIOME_PACKAGE
+                        + " "
+                        + declared
+                        + " is outside the supported range "
+                        + NodePackageCatalog.BIOME_SUPPORTED
                         + "."));
   }
 

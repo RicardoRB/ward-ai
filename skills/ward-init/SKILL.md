@@ -106,7 +106,8 @@ order:
    ```
 
    Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
-   stricter coverage and ESLint rules; see [references/node.md](references/node.md#choices). Recommend `standard` for a first setup or a large
+   stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
+   that uses Biome gets one `biome` gate in place of Prettier and ESLint, as described there. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
    writes a license allowlist that fails on any license it does
@@ -240,7 +241,7 @@ Tell the user:
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that `ward.toml` has `partial` tables for Checkstyle, PMD, format, Semgrep, and
-   Gitleaks (ESLint and Prettier for TypeScript and JavaScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
+   Gitleaks (ESLint and Prettier, or Biome, for TypeScript and JavaScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
    not affect and narrow supported tools to the edited or staged files. Claude Code and the native
    harnesses still run the full `default` check when the turn ends; the pre-push hook and CI always
    check the whole project.
@@ -251,6 +252,6 @@ Tell the user:
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
    the `ward.toml`, so it is trusted. Ask first anyway, because it runs the build.
-4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `vitest`, `jest`, or
+4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `biome`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.

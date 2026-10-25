@@ -22,6 +22,7 @@ final class NodeConfigFiles {
   static final String BUNFIG = "bunfig.toml";
   static final String STRYKER = "stryker";
   private static final String ESLINT = "eslint";
+  private static final String BIOME = "biome";
   private static final String VITEST = "vitest";
   private static final String JEST = "jest";
   private static final String BUN_TEST = "bun-test";
@@ -79,6 +80,14 @@ final class NodeConfigFiles {
           configs.userConfig(root, STRYKER),
           "stryker.config.mjs",
           marker(JS_MARKER, preset) + NodeConfigTemplates.stryker(testGate(ids), preset));
+    }
+    if (ids.contains(BIOME)) {
+      target(
+          targets,
+          root,
+          configs.userConfig(root, BIOME),
+          "biome.jsonc",
+          marker(JS_MARKER, preset) + NodeConfigTemplates.biome(preset));
     }
     return targets;
   }

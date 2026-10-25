@@ -32,6 +32,11 @@ final class NodeAgentRules {
             "prettier",
             "- Prettier: format edited files with Prettier and the project's config; the gate"
                 + " runs `{command}`.",
+            "biome",
+            "- Biome: "
+                + biomeRules(project, preset, owned)
+                + "; format and fix edited files with `biome check --write`, and the gate runs"
+                + " `{command}`.",
             NodeTools.VITEST,
             "- Tests (Vitest): `{command}`, " + coverage + tests,
             NodeTools.JEST,
@@ -80,6 +85,30 @@ final class NodeAgentRules {
         .findFirst()
         .map(file -> "follow the rules in `" + file + "`")
         .orElse("Ward's flat config (`eslint.config.*`) with " + rules);
+  }
+
+  /**
+   * Names the Biome config in use and the rules it enforces. Under strict, warnings fail the gate,
+   * and for TypeScript Biome's type-aware rules replace typescript-eslint's strict rules.
+   */
+  private static String biomeRules(
+      final Project project, final QualityPreset preset, final Set<String> owned) {
+    final String config =
+        owned.stream()
+            .filter(file -> file.startsWith("biome.") || file.startsWith(".biome."))
+            .findFirst()
+            .map(file -> "follow the rules in `" + file + "`")
+            .orElse(
+                "Ward's `biome.jsonc` with Biome's recommended rules"
+                    + (preset == QualityPreset.STRICT ? " and Ward's strict rules" : ""));
+    if (preset != QualityPreset.STRICT) {
+      return config;
+    }
+    final String typeAware =
+        project.language() == Language.TYPESCRIPT
+            ? "; Biome's type-aware rules replace typescript-eslint's `strict-type-checked`"
+            : "";
+    return config + "; warnings fail the gate" + typeAware;
   }
 
   /** Names the break threshold of Ward's Stryker config; a project's own config sets its own. */

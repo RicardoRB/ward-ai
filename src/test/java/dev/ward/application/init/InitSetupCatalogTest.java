@@ -27,6 +27,7 @@ class InitSetupCatalogTest {
           "tsc",
           "eslint",
           "prettier",
+          "biome",
           "vitest",
           "jest",
           "bun-test",

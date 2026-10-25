@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -28,6 +29,34 @@ class TypeScriptPartialCheckTest {
 
   @Test
   void editedFileNarrowsEslintAndPrettierAndSkipsTheRest() throws IOException {
+    final FakeCommandExecutor executor = checkEditedFile(PackageManifest.EMPTY);
+
+    assertThat(executor.commands)
+        .containsExactlyInAnyOrder(
+            List.of("npx", "prettier", "--check", "src/app.ts"),
+            List.of("npx", "eslint", "--format", "json", "src/app.ts"));
+  }
+
+  @Test
+  void biomeProjectNarrowsBiomeToTheEditedFile() throws IOException {
+    final PackageManifest biome =
+        new PackageManifest(Map.of("@biomejs/biome", "2.5.15"), null, null);
+
+    final FakeCommandExecutor executor = checkEditedFile(biome);
+
+    assertThat(executor.commands)
+        .containsExactly(
+            List.of(
+                "npx",
+                "biome",
+                "ci",
+                "--colors=off",
+                "--reporter=checkstyle",
+                "--no-errors-on-unmatched",
+                "src/app.ts"));
+  }
+
+  private FakeCommandExecutor checkEditedFile(final PackageManifest manifest) throws IOException {
     Files.writeString(root.resolve("package.json"), "{\"name\": \"shop\"}\n");
     Files.writeString(root.resolve("tsconfig.json"), "{}\n");
     Files.createDirectories(root.resolve("src"));
@@ -46,9 +75,7 @@ class TypeScriptPartialCheckTest {
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
-                new FakeEnvironmentInspection("npm"),
-                directory -> PackageManifest.EMPTY,
-                directory -> false));
+                new FakeEnvironmentInspection("npm"), directory -> manifest, directory -> false));
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> gates =
         catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
@@ -59,10 +86,6 @@ class TypeScriptPartialCheckTest {
 
     CheckServiceFixtures.checks(executor)
         .checkPartial(root, List.of(root.resolve("src/app.ts")), SupportedQualityGates.specIds());
-
-    assertThat(executor.commands)
-        .containsExactlyInAnyOrder(
-            List.of("npx", "prettier", "--check", "src/app.ts"),
-            List.of("npx", "eslint", "--format", "json", "src/app.ts"));
+    return executor;
   }
 }

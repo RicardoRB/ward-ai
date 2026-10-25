@@ -53,7 +53,7 @@ class InitTypeScriptProjectTest {
             "\"eslint\": \"10.12.0\"",
             "\"typescript-eslint\": \"8.71.1\"",
             "\"prettier\": \"3.9.10\"",
-            "\"@vitest/coverage-v8\": \"5.0.3\"");
+            "\"@vitest/coverage-v8\": \"4.0.18\"");
     assertThat(fixture.read("package-lock.json")).contains("\"stub\": \"installed\"");
     assertThat(fixture.read("eslint.config.mjs"))
         .startsWith("// managed-by: ward preset=standard\n");
