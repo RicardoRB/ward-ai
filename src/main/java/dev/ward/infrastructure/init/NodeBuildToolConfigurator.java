@@ -52,7 +52,11 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     warnings.addAll(bunfigWarning(project, gates));
     final NodeCompatibility compatibility =
         NodeCompatibility.check(
-            project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
+            project,
+            manifest,
+            missing,
+            gates.stream().anyMatch(gate -> "biome".equals(gate.id())),
+            gates.stream().anyMatch(gate -> "eslint".equals(gate.id())));
     if (compatibility.incompatible()) {
       throw new WardException(compatibility.message());
     }
@@ -97,7 +101,11 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
         NodePackageCatalog.missing(project.language(), gates, manifest);
     final NodeCompatibility compatibility =
         NodeCompatibility.check(
-            project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
+            project,
+            manifest,
+            missing,
+            gates.stream().anyMatch(gate -> "biome".equals(gate.id())),
+            gates.stream().anyMatch(gate -> "eslint".equals(gate.id())));
     if (compatibility.incompatible()) {
       final List<String> details = new ArrayList<>(nodeWarning);
       compatibility

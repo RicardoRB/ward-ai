@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 /**
@@ -34,6 +37,7 @@ class NodeCompatibilityMatrixTest {
   private static final Path VIOLATIONS = Path.of("src/test/resources/node-matrix/violations");
   private static final String STRYKER = "stryker";
   private static final String BIOME = "biome";
+  private static final String ESLINT_JS = "@eslint/js";
   private static final String PACKAGE_JSON = "package.json";
   // Test sources skip annotation processing, so the matrix reads each check's name and status pair
   // from the compact JSON report instead of decoding it into a DTO.
@@ -43,12 +47,13 @@ class NodeCompatibilityMatrixTest {
   @ParameterizedTest(name = "node {0} {1} {2} {3}")
   @CsvFileSource(resources = "/node-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
-      final String node,
-      final String fixture,
-      final String linting,
-      final String preset,
-      @TempDir final Path project)
+      final ArgumentsAccessor cell, @TempDir final Path project)
       throws IOException, InterruptedException {
+    final String node = cell.getString(0);
+    final String fixture = cell.getString(1);
+    final String linting = cell.getString(2);
+    final String preset = cell.getString(3);
+    final String version = Objects.requireNonNullElse(cell.getString(4), "");
     Assumptions.assumeTrue(
         node.equals(System.getProperty(NODE_PROPERTY)), "row is for Node " + node);
     final String runtime = runtimeMajor();
@@ -57,9 +62,7 @@ class NodeCompatibilityMatrixTest {
         .isEqualTo(node);
 
     copyTree(FIXTURES.resolve(fixture), project);
-    if (BIOME.equals(linting)) {
-      declareBiome(project);
-    }
+    declareLinter(project, linting, version);
     Files.writeString(project.resolve(".nvmrc"), node + "\n");
     run(project, "git", "init", "-q");
     final CommandRun init = ward(project, "init", "--preset", preset, "--yes");
@@ -123,17 +126,39 @@ class NodeCompatibilityMatrixTest {
     return version.replaceFirst("^v", "").split("\\.")[0];
   }
 
-  /** Declares Biome at the version Ward pins, so the cell's init selects the biome gate. */
-  private static void declareBiome(final Path project) throws IOException {
+  /**
+   * Declares the linter at the row's version, or at the pinned version when the row has none, so
+   * init keeps the declared version. ESLint 9 needs {@code @eslint/js} at its own version; ESLint
+   * 10 declares no {@code @eslint/js} dependency, so it gets the pinned one.
+   */
+  private static void declareLinter(final Path project, final String linting, final String version)
+      throws IOException {
+    final boolean biome = BIOME.equals(linting);
+    final String declared =
+        version.isEmpty()
+            ? (biome ? NodePackageCatalog.BIOME_VERSION : NodePackageCatalog.ESLINT_VERSION)
+            : version;
+    final Map<String, String> dependencies = new LinkedHashMap<>();
+    if (biome) {
+      dependencies.put(NodePackageCatalog.BIOME_PACKAGE, declared);
+    } else {
+      dependencies.put("eslint", declared);
+      dependencies.put(ESLINT_JS, declared.startsWith("9.") ? declared : eslintJsPin());
+    }
+    final String entries =
+        dependencies.entrySet().stream()
+            .map(entry -> "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\"")
+            .collect(Collectors.joining(",\n    "));
     final Path file = project.resolve(PACKAGE_JSON);
     final String edited =
         Files.readString(file)
             .replaceFirst(
-                "\\n\\}\\s*$",
-                ",\n  \"devDependencies\": {\n    \"@biomejs/biome\": \""
-                    + NodePackageCatalog.BIOME_VERSION
-                    + "\"\n  }\n}\n");
+                "\\n\\}\\s*$", ",\n  \"devDependencies\": {\n    " + entries + "\n  }\n}\n");
     Files.writeString(file, edited);
+  }
+
+  private static String eslintJsPin() {
+    return NodePackageCatalog.find(ESLINT_JS).orElseThrow().version();
   }
 
   private static void copyTree(final Path from, final Path to) throws IOException {

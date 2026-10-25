@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -18,8 +19,12 @@ class NodeMatrixCellsTest {
       List.of("typescript", "javascript-esm", "javascript-commonjs");
   private static final List<String> LINTERS = List.of("eslint", "biome");
 
+  /** The oldest and newest supported version of each linter, declared in the TypeScript rows. */
+  private static final Map<String, List<String>> DECLARED_VERSIONS =
+      Map.of("eslint", List.of("9.22.0", "10.13.0"), "biome", List.of("2.3.0", "2.6.3"));
+
   @Test
-  void strictCellsCoverEveryCombination() throws IOException {
+  void strictCellsCoverEveryCombinationAtThePinnedVersion() throws IOException {
     final List<String> expected =
         NODES.stream()
             .flatMap(
@@ -30,22 +35,48 @@ class NodeMatrixCellsTest {
                                 LINTERS.stream()
                                     .map(
                                         linting ->
-                                            node + "," + fixture + "," + linting + ",strict")))
+                                            node + "," + fixture + "," + linting + ",strict,")))
             .toList();
 
-    assertThat(rowsWithPreset("strict")).containsExactlyInAnyOrderElementsOf(expected);
+    assertThat(rowsEndingWith(",strict,")).containsExactlyInAnyOrderElementsOf(expected);
+  }
+
+  @Test
+  void typeScriptCellsDeclareBothEndsOfEachLinterRange() throws IOException {
+    final List<String> expected =
+        NODES.stream()
+            .flatMap(
+                node ->
+                    DECLARED_VERSIONS.entrySet().stream()
+                        .flatMap(
+                            entry ->
+                                entry.getValue().stream()
+                                    .map(
+                                        version ->
+                                            node
+                                                + ",typescript,"
+                                                + entry.getKey()
+                                                + ",strict,"
+                                                + version)))
+            .toList();
+
+    assertThat(rows().stream().filter(row -> !row.endsWith(",")).toList())
+        .containsExactlyInAnyOrderElementsOf(expected);
   }
 
   @Test
   void standardCellsAreTypeScriptOnNode22WithEachLinter() throws IOException {
-    assertThat(rowsWithPreset("standard"))
-        .containsExactlyInAnyOrder("22,typescript,eslint,standard", "22,typescript,biome,standard");
+    assertThat(rowsEndingWith(",standard,"))
+        .containsExactlyInAnyOrder(
+            "22,typescript,eslint,standard,", "22,typescript,biome,standard,");
   }
 
-  private static List<String> rowsWithPreset(final String preset) throws IOException {
-    return Files.readAllLines(CELLS).stream()
-        .skip(1)
-        .filter(row -> row.endsWith("," + preset))
-        .toList();
+  private static List<String> rows() throws IOException {
+    return Files.readAllLines(CELLS).stream().skip(1).toList();
+  }
+
+  /** The rows whose last columns match, so a pinned row ends with its empty version column. */
+  private static List<String> rowsEndingWith(final String suffix) throws IOException {
+    return rows().stream().filter(row -> row.endsWith(suffix)).toList();
   }
 }

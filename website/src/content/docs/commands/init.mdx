@@ -279,6 +279,21 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum. `dependency-cruiser` is offered by both presets, and `strict` selects it.
 
+#### Declared ESLint and Biome versions
+
+When `package.json` already declares `eslint` or `@biomejs/biome`, init keeps that version, as long as
+it is inside Ward's supported range. Ward tests the oldest and newest version of each range on Node 22
+and 24, with the TypeScript fixture.
+
+| Tool | Ward pins | Supported range | Tested versions |
+| --- | --- | --- | --- |
+| `eslint` | 10.12.0 | `>=9.22.0 <11.0.0` | 9.22.0, 10.13.0 |
+| `@biomejs/biome` | 2.5.15 | `>=2.3.0 <3.0.0` | 2.3.0, 2.6.3 |
+
+A declared version outside its range is an `INCOMPATIBLE` finding that names the tool and the range.
+`--dry-run` lists it, and applying the plan fails without changing any file. Pick a version inside the
+range, or skip the gate.
+
 #### Biome
 
 Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own

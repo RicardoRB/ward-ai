@@ -68,6 +68,15 @@ class NodePackageCatalogTest {
   }
 
   @Test
+  void pinnedEslintIsInsideTheSupportedEslintRange() {
+    assertThat(
+            NodeVersionRange.matches(
+                NodePackageCatalog.ESLINT_SUPPORTED,
+                NodePackageCatalog.find("eslint").orElseThrow().version()))
+        .isTrue();
+  }
+
+  @Test
   void declaredPackagesAreNotAddedAgain() {
     final PackageManifest manifest =
         new PackageManifest(Map.of("prettier", "^3.3.0", "typescript", "~5.9.3"), null, null);

@@ -1,13 +1,19 @@
 package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.domain.FakeCommandExecutor;
+import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.CompatibilityOutcome;
+import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +56,36 @@ class NodeBiomeCompatibilityTest {
     assertThat(checkBiome(manifest).findings()).isEmpty();
   }
 
+  @Test
+  void declaredOldestSupportedBiomeHasNoFinding() {
+    final PackageManifest manifest =
+        new PackageManifest(Map.of("@biomejs/biome", "2.3.0"), null, null);
+
+    assertThat(checkBiome(manifest).findings()).isEmpty();
+  }
+
+  @Test
+  void declaredBiomeJustBelowTheRangeChangesNoFile() throws IOException {
+    final String manifest =
+        "{\n  \"devDependencies\": {\n    \"@biomejs/biome\": \"2.2.7\"\n  }\n}\n";
+    Files.writeString(root.resolve("package.json"), manifest);
+    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+    final NodeBuildToolConfigurator configurator =
+        new NodeBuildToolConfigurator(
+            directory -> new PackageManifest(Map.of("@biomejs/biome", "2.2.7"), null, null),
+            executor);
+    final List<InitGateOption> biome =
+        List.of(new InitGateOption("biome", "Biome", List.of("npx", "biome"), true, "ok"));
+
+    assertThatThrownBy(() -> configurator.apply(project(), biome))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("@biomejs/biome", ">=2.3.0 <3.0.0");
+    assertThat(Files.readString(root.resolve("package.json"))).isEqualTo(manifest);
+    assertThat(executor.commands).isEmpty();
+  }
+
   private NodeCompatibility checkBiome(final PackageManifest manifest) {
-    return NodeCompatibility.check(project(), manifest, List.of(), true);
+    return NodeCompatibility.check(project(), manifest, List.of(), true, false);
   }
 
   private Project project() {

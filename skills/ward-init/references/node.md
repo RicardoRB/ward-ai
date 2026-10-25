@@ -31,7 +31,8 @@ ArchUnit, rule files under `config/`).
   - `typescript` (TypeScript only): note the declared range. Its lower bound is checked against
     `typescript-eslint`.
   - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep
-    their version.
+    their version. A declared `eslint` outside `>=9.22.0 <11.0.0` is an `INCOMPATIBLE` finding
+    (see Compatibility checks); tested versions are 9.22.0 and 10.13.0.
   - `@biomejs/biome`: a project that declares it, or that has a user-owned Biome config, uses Biome
     for linting and formatting (see Biome below). Note its declared range; init checks it against
     `>=2.3.0 <3.0.0`.
@@ -112,7 +113,8 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
 - `add devDependency @biomejs/biome 2.5.15` (a Biome project that does not declare it): the pinned
   Biome. A declared Biome is kept unless it is outside `>=2.3.0 <3.0.0`, which gives an
   `INCOMPATIBLE @biomejs/biome` finding and blocks apply; explain the range and the choices (pin a
-  Biome in range, or use a custom selection without `biome`).
+  Biome in range, or use a custom selection without `biome`). Tested Biome versions are 2.3.0 and
+  2.6.3.
 - `create biome.jsonc`: Ward's Biome config, marked as Ward's, with Biome's recommended rules and
   Git-ignore support, so Biome skips `.ward/reports/` and coverage output. `strict` also sets eight
   rules to `error`, including the type-aware `noFloatingPromises` and `noMisusedPromises`. `keep

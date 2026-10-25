@@ -144,6 +144,7 @@ class NodeCompatibilityTest {
         List.of(packages).stream()
             .map(name -> NodePackageCatalog.find(name).orElseThrow())
             .toList(),
+        false,
         false);
   }
 
