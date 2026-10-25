@@ -39,12 +39,34 @@ class NodeBiomeAgentRulesTest {
   }
 
   @Test
-  void strictRulesWithAUserConfigFollowThatConfig() {
-    final String line = biomeLine(QualityPreset.STRICT, Set.of("biome.json"));
+  void strictLayeredConfigNamesTheBaseFile() {
+    final String line = biomeLine(QualityPreset.STRICT, Set.of("biome.base.json"));
 
     assertThat(line)
-        .contains("follow the rules in `biome.json`", "warnings fail the gate")
-        .contains("replace typescript-eslint's `strict-type-checked`");
+        .contains("extends `biome.base.json`", "warnings fail the gate")
+        .contains("replace typescript-eslint's `strict-type-checked`")
+        .doesNotContain("not applied");
+  }
+
+  @Test
+  void strictKeptDotFileConfigSaysItsRulesAreNotApplied() {
+    final String line = biomeLine(QualityPreset.STRICT, Set.of(".biome.json"));
+
+    assertThat(line)
+        .contains(
+            "follow the rules in `.biome.json`",
+            "the strict preset's Biome rules are not applied to it")
+        .doesNotContain("warnings fail the gate");
+  }
+
+  @Test
+  void standardKeptConfigSaysItsRulesAreNotApplied() {
+    final String line = biomeLine(QualityPreset.STANDARD, Set.of("biome.json"));
+
+    assertThat(line)
+        .contains(
+            "follow the rules in `biome.json`",
+            "the standard preset's Biome rules are not applied to it");
   }
 
   private static String biomeLine(final QualityPreset preset, final Set<String> owned) {

@@ -14,11 +14,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
@@ -35,6 +37,19 @@ class BiomeConfigSmokeTest {
   private static final String UNFORMATTED_REPORT = "var   report=1\n";
   private static final String FLOATING_PROMISE = "Promise.resolve(1);\n";
   private static final String FLOATING_RULE = "noFloatingPromises";
+  private static final String ANY_SOURCE = "export const value: any = 1;\n";
+  private static final String BASE_EXCLUDING_GENERATED =
+      """
+      {
+        "files": { "includes": ["**", "!**/generated"] },
+        "formatter": { "indentStyle": "space" },
+        "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+        "linter": {
+          "enabled": true,
+          "rules": { "recommended": true, "suspicious": { "noExplicitAny": "off" } }
+        }
+      }
+      """;
 
   @TempDir Path work;
 
@@ -68,6 +83,39 @@ class BiomeConfigSmokeTest {
     assertThat(result.output()).contains(FLOATING_RULE);
   }
 
+  @Test
+  void strictLayerFailsAnyAndSkipsTheBasesExcludedDirectory() throws Exception {
+    final Path project = layeredProject("strict-layered");
+
+    final Result result = run(project, true);
+
+    assertThat(result.exit()).as(result.output()).isNotZero();
+    assertThat(result.output())
+        .contains("noExplicitAny", "src/app.ts")
+        .doesNotContain("generated/")
+        .doesNotContain("source=\"format\"");
+  }
+
+  /**
+   * Writes a base config that turns {@code noExplicitAny} off and excludes {@code generated/}, and
+   * the strict layer over it, with an {@code any} in both directories.
+   */
+  private Path layeredProject(final String name) throws IOException, InterruptedException {
+    final Path root = Files.createDirectories(work.resolve(name));
+    git(root, "init", "-q");
+    Files.writeString(root.resolve(".gitignore"), ".ward/reports/\n");
+    Files.createDirectories(root.resolve("src"));
+    Files.createDirectories(root.resolve("generated"));
+    Files.writeString(root.resolve("src/app.ts"), ANY_SOURCE);
+    Files.writeString(root.resolve("generated/gen.ts"), ANY_SOURCE);
+    Files.writeString(root.resolve("biome.base.json"), BASE_EXCLUDING_GENERATED);
+    Files.writeString(
+        root.resolve("biome.jsonc"),
+        "// managed-by: ward preset=strict\n"
+            + NodeLayerTemplates.biome(QualityPreset.STRICT, "biome.base.json"));
+    return root;
+  }
+
   /**
    * Writes the generated config for {@code preset} and a source file into a Git repository whose
    * ignore file lists Ward's reports.
@@ -88,7 +136,8 @@ class BiomeConfigSmokeTest {
   }
 
   /** The configs init writes for a Biome project, from the same code path init uses. */
-  private static Map<Path, String> configs(final Path root, final QualityPreset preset) {
+  private static Map<Path, String> configs(final Path root, final QualityPreset preset)
+      throws IOException {
     final Project project =
         new Project(
             root,
@@ -103,11 +152,19 @@ class BiomeConfigSmokeTest {
     final InitGateOption biome =
         new InitGateOption("biome", "Biome", List.of("npx", "biome"), true, "ok");
     return NodeConfigFiles.targets(
-        project,
-        PackageManifest.EMPTY,
-        (directory, gate) -> Optional.empty(),
-        preset,
-        List.of(biome));
+            project,
+            PackageManifest.EMPTY,
+            (directory, gate) -> Optional.empty(),
+            preset,
+            List.of(biome))
+        .stream()
+        .filter(target -> target.content() != null)
+        .collect(
+            Collectors.toMap(
+                NodeConfigTarget::file,
+                NodeConfigTarget::content,
+                (first, second) -> first,
+                LinkedHashMap::new));
   }
 
   private static void git(final Path root, final String... arguments)

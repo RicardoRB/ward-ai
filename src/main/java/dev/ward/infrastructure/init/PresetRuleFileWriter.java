@@ -26,7 +26,6 @@ import javax.inject.Inject;
  * and the Node tool configs in the project root.
  */
 public final class PresetRuleFileWriter implements RuleFileGeneration {
-  private static final String MARKER = "<!-- managed-by: ward preset=";
   private final PackageManifests manifests;
   private final NodeToolConfigs configs;
 
@@ -51,28 +50,21 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     final Path config = project.root().resolve("config");
     final Map<Path, String> originals = new LinkedHashMap<>();
     final List<Path> preserved = new ArrayList<>();
+    final List<String> warnings = new ArrayList<>();
     try {
-      final Map<Path, String> targets = targets(project, preset, gates);
+      final List<RuleFileActions.Decision> decisions =
+          RuleFileActions.decide(targets(project, preset, gates));
+      RuleFileActions.refuseConflicts(decisions);
       // Node configs live in the project root, so only JVM presets need config/.
       final boolean createdDirectory =
           preset != null && project.toolchain() != Toolchain.NODE && !Files.exists(config);
       if (createdDirectory) {
         Files.createDirectories(config);
       }
-      for (final Map.Entry<Path, String> target : targets.entrySet()) {
-        final Path file = target.getKey();
-        switch (decide(file, target.getValue())) {
-          case PRESERVE_USER_OWNED -> preserved.add(file);
-          case CREATE, MODIFY -> {
-            originals.put(file, Files.exists(file) ? Files.readString(file) : null);
-            Files.writeString(file, target.getValue());
-          }
-          default -> {
-            // Already current.
-          }
-        }
+      for (final RuleFileActions.Decision decision : decisions) {
+        write(decision, originals, preserved, warnings);
       }
-      return new RuleFileChange(config, createdDirectory, originals, preserved);
+      return new RuleFileChange(config, createdDirectory, originals, preserved, warnings);
     } catch (IOException e) {
       throw new WardException("Could not write preset rule files: " + e.getMessage(), e);
     }
@@ -83,9 +75,11 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
     final List<PlannedFileChange> plan = new ArrayList<>();
     try {
-      for (final Map.Entry<Path, String> target : targets(project, preset, gates).entrySet()) {
-        plan.add(
-            new PlannedFileChange(target.getKey(), decide(target.getKey(), target.getValue())));
+      for (final RuleFileActions.Decision decision :
+          RuleFileActions.decide(targets(project, preset, gates))) {
+        final NodeConfigTarget target = decision.target();
+        final List<String> details = target.detail() == null ? List.of() : List.of(target.detail());
+        plan.add(new PlannedFileChange(target.file(), decision.action(), details));
       }
     } catch (IOException e) {
       throw new WardException("Could not read preset rule files: " + e.getMessage(), e);
@@ -94,16 +88,26 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
   }
 
   /**
-   * The files the selected gates need, with their marked content; {@code null} content is a user's
-   * file that is kept.
+   * The files the selected gates need. A Node project's targets come from its tool configs; a JVM
+   * project writes each preset rule file as Ward's content.
    */
-  private Map<Path, String> targets(
+  private List<NodeConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
     if (project.toolchain() == Toolchain.NODE) {
       return NodeConfigFiles.targets(
           project, manifests.read(project.root()), configs, preset, gates);
     }
+    return jvmTargets(project, preset, gates).entrySet().stream()
+        .map(
+            entry ->
+                new NodeConfigTarget(
+                    entry.getKey(), NodeConfigTarget.Disposition.WRITE, entry.getValue(), null))
+        .toList();
+  }
+
+  private static Map<Path, String> jvmTargets(
+      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
     if (preset == null) {
       return Map.of();
     }
@@ -132,26 +136,41 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     return targets;
   }
 
-  /** Decides what writing {@code content} to {@code file} would do; shared by apply and plan. */
-  private static PlannedFileChange.Action decide(final Path file, final String content)
+  /** Applies one decision, and records what a rollback or the init output needs from it. */
+  private static void write(
+      final RuleFileActions.Decision decision,
+      final Map<Path, String> originals,
+      final List<Path> preserved,
+      final List<String> warnings)
       throws IOException {
-    if (content == null) {
-      return PlannedFileChange.Action.PRESERVE_USER_OWNED;
+    final NodeConfigTarget target = decision.target();
+    final Path file = target.file();
+    switch (decision.action()) {
+      case PRESERVE_USER_OWNED -> {
+        preserved.add(file);
+        if (target.detail() != null) {
+          warnings.add(target.detail());
+        }
+      }
+      case CREATE, MODIFY -> {
+        originals.put(file, Files.exists(file) ? Files.readString(file) : null);
+        Files.writeString(file, target.content());
+        if (target.disposition() == NodeConfigTarget.Disposition.MOVE) {
+          preserved.add(file);
+        }
+      }
+      case REMOVE -> {
+        originals.put(file, Files.readString(file));
+        Files.delete(file);
+      }
+      default -> {
+        // Already current.
+      }
     }
-    if (!Files.exists(file)) {
-      return PlannedFileChange.Action.CREATE;
-    }
-    final String existing = Files.readString(file);
-    if (!existing.startsWith(MARKER) && !NodeConfigFiles.owned(existing)) {
-      return PlannedFileChange.Action.PRESERVE_USER_OWNED;
-    }
-    return existing.equals(content)
-        ? PlannedFileChange.Action.UNCHANGED
-        : PlannedFileChange.Action.MODIFY;
   }
 
   private static String marked(final QualityPreset preset, final String body) {
-    return MARKER + preset.id() + " -->\n" + body;
+    return RuleFileActions.MARKER + preset.id() + " -->\n" + body;
   }
 
   @Override

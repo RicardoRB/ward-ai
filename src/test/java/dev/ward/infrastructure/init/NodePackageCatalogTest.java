@@ -23,6 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Every Node gate init offers has its pinned packages, and packages that must match do. */
 class NodePackageCatalogTest {
+  private static final String ESLINT = "eslint";
   @TempDir Path root;
 
   @Test
@@ -72,7 +73,7 @@ class NodePackageCatalogTest {
     assertThat(
             NodeVersionRange.matches(
                 NodePackageCatalog.ESLINT_SUPPORTED,
-                NodePackageCatalog.find("eslint").orElseThrow().version()))
+                NodePackageCatalog.find(ESLINT).orElseThrow().version()))
         .isTrue();
   }
 
@@ -85,9 +86,9 @@ class NodePackageCatalogTest {
             NodePackageCatalog.missing(
                 Language.TYPESCRIPT, List.of(gate("prettier"), gate("tsc")), manifest))
         .isEmpty();
-    assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate("eslint")), manifest))
+    assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate(ESLINT)), manifest))
         .extracting(NodePackageCatalog.Package::name)
-        .containsExactly("eslint", "@eslint/js", "typescript-eslint");
+        .containsExactly(ESLINT, "@eslint/js", "typescript-eslint");
   }
 
   @Test
@@ -95,10 +96,10 @@ class NodePackageCatalogTest {
     assertThat(
             NodePackageCatalog.missing(
                 Language.JAVASCRIPT,
-                List.of(gate("eslint"), gate("prettier")),
+                List.of(gate(ESLINT), gate("prettier")),
                 PackageManifest.EMPTY))
         .extracting(NodePackageCatalog.Package::name)
-        .containsExactly("eslint", "@eslint/js", "globals", "prettier");
+        .containsExactly(ESLINT, "@eslint/js", "globals", "prettier");
   }
 
   private Set<String> gateIds(
@@ -123,5 +124,37 @@ class NodePackageCatalogTest {
 
   private static InitGateOption gate(final String id) {
     return new InitGateOption(id, id, List.of(id), true, "available");
+  }
+
+  @Test
+  void eslintJsFollowsADeclaredEslintRange() {
+    final PackageManifest nextStyle = new PackageManifest(Map.of(ESLINT, "^9"), null, null);
+    final InitGateOption eslint =
+        new InitGateOption(ESLINT, "ESLint", List.of("npx", ESLINT), true, "ok");
+
+    final List<NodePackageCatalog.Package> missing =
+        NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(eslint), nextStyle);
+
+    assertThat(missing)
+        .filteredOn(tool -> "@eslint/js".equals(tool.name()))
+        .singleElement()
+        .satisfies(tool -> assertThat(tool.version()).isEqualTo("^9"));
+  }
+
+  @Test
+  void eslintJsKeepsItsPinWhenESLintIsNotDeclared() {
+    final InitGateOption eslint =
+        new InitGateOption(ESLINT, "ESLint", List.of("npx", ESLINT), true, "ok");
+
+    final List<NodePackageCatalog.Package> missing =
+        NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(eslint), PackageManifest.EMPTY);
+
+    assertThat(missing)
+        .filteredOn(tool -> "@eslint/js".equals(tool.name()))
+        .singleElement()
+        .satisfies(
+            tool ->
+                assertThat(tool.version())
+                    .isEqualTo(NodePackageCatalog.find("@eslint/js").orElseThrow().version()));
   }
 }

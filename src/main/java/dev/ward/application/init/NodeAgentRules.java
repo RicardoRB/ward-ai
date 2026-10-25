@@ -6,6 +6,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** The agent rule lines of a Node project's tool gates, part of {@link AgentRulesTemplate}. */
@@ -80,11 +81,32 @@ final class NodeAgentRules {
     } else {
       rules = "typescript-eslint's recommended rules";
     }
+    final Optional<String> base =
+        owned.stream().filter(file -> file.startsWith("eslint.base.")).findFirst();
+    if (base.isPresent()) {
+      return "Ward's flat config (`eslint.config.*`) imports `"
+          + base.get()
+          + "`, the project's own config, and adds "
+          + rules
+          + " after it, so Ward's rules win over the base's";
+    }
     return owned.stream()
         .filter(file -> file.startsWith("eslint.config.") || file.startsWith(".eslintrc"))
         .findFirst()
-        .map(file -> "follow the rules in `" + file + "`")
+        .map(file -> keptRules(file, preset, "ESLint"))
         .orElse("Ward's flat config (`eslint.config.*`) with " + rules);
+  }
+
+  /** Names a config init kept, and says that the preset's rules do not reach it. */
+  private static String keptRules(
+      final String file, final QualityPreset preset, final String tool) {
+    return "follow the rules in `"
+        + file
+        + "`; "
+        + (preset == null ? "Ward's" : "the " + preset.id() + " preset's")
+        + " "
+        + tool
+        + " rules are not applied to it";
   }
 
   /**
@@ -93,11 +115,19 @@ final class NodeAgentRules {
    */
   private static String biomeRules(
       final Project project, final QualityPreset preset, final Set<String> owned) {
+    final Optional<String> base =
+        owned.stream().filter(file -> file.startsWith("biome.base.")).findFirst();
+    if (base.isEmpty()) {
+      final Optional<String> kept =
+          owned.stream()
+              .filter(file -> file.startsWith("biome.") || file.startsWith(".biome."))
+              .findFirst();
+      if (kept.isPresent()) {
+        return keptRules(kept.get(), preset, "Biome");
+      }
+    }
     final String config =
-        owned.stream()
-            .filter(file -> file.startsWith("biome.") || file.startsWith(".biome."))
-            .findFirst()
-            .map(file -> "follow the rules in `" + file + "`")
+        base.map(file -> "Ward's `biome.jsonc` extends `" + file + "`, the project's own config")
             .orElse(
                 "Ward's `biome.jsonc` with Biome's recommended rules"
                     + (preset == QualityPreset.STRICT ? " and Ward's strict rules" : ""));

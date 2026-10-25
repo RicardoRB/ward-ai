@@ -139,7 +139,7 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
       return Optional.empty();
     }
     return NodeVersionRange.lowerBound(declared)
-        .filter(version -> !NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, version))
+        .filter(version -> !reachesSupportedEslint(declared, version))
         .map(
             version ->
                 new CompatibilityFinding(
@@ -153,6 +153,20 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + " is outside the supported range "
                         + NodePackageCatalog.ESLINT_SUPPORTED
                         + "."));
+  }
+
+  /**
+   * Returns whether {@code declared} can resolve inside the supported ESLint range. A caret range
+   * such as {@code ^9} resolves to the newest release of its major, so it reaches the range when
+   * that major has a supported release; the top of the major stands for all of it.
+   */
+  private static boolean reachesSupportedEslint(final String declared, final String lowerBound) {
+    if (NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, lowerBound)) {
+      return true;
+    }
+    final String major = lowerBound.substring(0, lowerBound.indexOf('.'));
+    return declared.startsWith("^")
+        && NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, major + ".999.999");
   }
 
   private static CompatibilityFinding finding(

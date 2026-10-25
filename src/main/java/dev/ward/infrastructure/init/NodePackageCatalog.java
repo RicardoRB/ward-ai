@@ -160,6 +160,21 @@ final class NodePackageCatalog {
           .filter(Objects::nonNull)
           .forEach(names::add);
     }
-    return names.stream().filter(name -> !manifest.declares(name)).map(PACKAGES::get).toList();
+    return names.stream()
+        .filter(name -> !manifest.declares(name))
+        .map(name -> pinned(name, manifest))
+        .toList();
+  }
+
+  /**
+   * Returns the catalog pin of {@code name}. @eslint/js ships with ESLint, so when the project
+   * declares ESLint it takes the declared range; a pin outside that range fails the install.
+   */
+  private static Package pinned(final String name, final PackageManifest manifest) {
+    final Package tool = PACKAGES.get(name);
+    if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
+      return new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript());
+    }
+    return tool;
   }
 }

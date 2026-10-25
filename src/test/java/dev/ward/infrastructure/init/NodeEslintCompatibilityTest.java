@@ -24,17 +24,18 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** A declared ESLint must sit inside the range the generated config supports. */
 class NodeEslintCompatibilityTest {
+  private static final String ESLINT = "eslint";
   @TempDir Path root;
 
   @Test
   void declaredEslintBelowTheSupportedRangeIsIncompatible() {
-    final PackageManifest manifest = new PackageManifest(Map.of("eslint", "8.57.0"), null, null);
+    final PackageManifest manifest = new PackageManifest(Map.of(ESLINT, "8.57.0"), null, null);
 
     assertThat(checkEslint(manifest).findings())
         .singleElement()
         .satisfies(
             finding -> {
-              assertThat(finding.artifactId()).isEqualTo("eslint");
+              assertThat(finding.artifactId()).isEqualTo(ESLINT);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains("8.57.0", ">=9.22.0 <11.0.0");
             });
@@ -42,9 +43,30 @@ class NodeEslintCompatibilityTest {
 
   @Test
   void declaredEslintInsideTheSupportedRangeHasNoFinding() {
-    final PackageManifest manifest = new PackageManifest(Map.of("eslint", "9.39.0"), null, null);
+    final PackageManifest manifest = new PackageManifest(Map.of(ESLINT, "9.39.0"), null, null);
 
     assertThat(checkEslint(manifest).findings()).isEmpty();
+  }
+
+  @Test
+  void declaredCaretEslintWithASupportedMajorHasNoFinding() {
+    final PackageManifest manifest = new PackageManifest(Map.of(ESLINT, "^9"), null, null);
+
+    assertThat(checkEslint(manifest).findings()).isEmpty();
+  }
+
+  @Test
+  void declaredCaretEslintWithAnUnsupportedMajorIsIncompatible() {
+    final PackageManifest manifest = new PackageManifest(Map.of(ESLINT, "^8.57.0"), null, null);
+
+    assertThat(checkEslint(manifest).findings()).singleElement();
+  }
+
+  @Test
+  void declaredExactEslintBelowTheRangeInsideItsMajorIsIncompatible() {
+    final PackageManifest manifest = new PackageManifest(Map.of(ESLINT, "9.20.0"), null, null);
+
+    assertThat(checkEslint(manifest).findings()).singleElement();
   }
 
   @Test
@@ -54,9 +76,9 @@ class NodeEslintCompatibilityTest {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final NodeBuildToolConfigurator configurator =
         new NodeBuildToolConfigurator(
-            directory -> new PackageManifest(Map.of("eslint", "8.57.0"), null, null), executor);
+            directory -> new PackageManifest(Map.of(ESLINT, "8.57.0"), null, null), executor);
     final List<InitGateOption> eslint =
-        List.of(new InitGateOption("eslint", "ESLint", List.of("npx", "eslint"), true, "ok"));
+        List.of(new InitGateOption(ESLINT, "ESLint", List.of("npx", ESLINT), true, "ok"));
 
     final PlannedFileChange plan = configurator.plan(project(), eslint, null, false);
 
@@ -67,7 +89,7 @@ class NodeEslintCompatibilityTest {
         .contains("INCOMPATIBLE eslint", ">=9.22.0 <11.0.0");
     assertThatThrownBy(() -> configurator.apply(project(), eslint))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("eslint");
+        .hasMessageContaining(ESLINT);
     assertThat(Files.readString(root.resolve("package.json"))).isEqualTo(manifest);
     assertThat(executor.commands).isEmpty();
   }
