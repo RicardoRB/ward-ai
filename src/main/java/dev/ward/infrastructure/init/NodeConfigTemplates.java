@@ -133,6 +133,39 @@ final class NodeConfigTemplates {
       """
           .stripTrailing();
 
+  // The bodies biome format writes with spaces, so Biome reports no format finding in them.
+
+  private static final String BIOME_STANDARD =
+      """
+      {
+        "formatter": { "indentStyle": "space" },
+        "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+        "linter": { "enabled": true, "rules": { "recommended": true } }
+      }
+      """;
+
+  private static final String BIOME_STRICT =
+      """
+      {
+        "formatter": { "indentStyle": "space" },
+        "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+        "linter": {
+          "enabled": true,
+          "rules": {
+            "recommended": true,
+            "suspicious": { "noExplicitAny": "error" },
+            "style": { "noNonNullAssertion": "error", "useConst": "error" },
+            "correctness": {
+              "noUnusedImports": "error",
+              "noUnusedVariables": "error"
+            },
+            "complexity": { "noExcessiveCognitiveComplexity": "error" },
+            "nursery": { "noFloatingPromises": "error", "noMisusedPromises": "error" }
+          }
+        }
+      }
+      """;
+
   private NodeConfigTemplates() {}
 
   /**
@@ -158,6 +191,14 @@ final class NodeConfigTemplates {
   /** Returns Bun's test config, which measures lines but not branches. */
   static String bunfig(final QualityPreset preset) {
     return "[test]\ncoverageThreshold = { lines = " + minimums(preset).get(LINE) + " }\n";
+  }
+
+  /**
+   * Returns Ward's biome.jsonc. Strict adds the rules that its preset needs; the standard body also
+   * keeps Biome out of Git-ignored output such as Ward's coverage reports.
+   */
+  static String biome(final QualityPreset preset) {
+    return preset == QualityPreset.STRICT ? BIOME_STRICT : BIOME_STANDARD;
   }
 
   /**

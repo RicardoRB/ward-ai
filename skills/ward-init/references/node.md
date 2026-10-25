@@ -32,10 +32,14 @@ ArchUnit, rule files under `config/`).
     `typescript-eslint`.
   - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep
     their version.
+  - `@biomejs/biome`: a project that declares it, or that has a user-owned Biome config, uses Biome
+    for linting and formatting (see Biome below). Note its declared range; init checks it against
+    `>=2.3.0 <3.0.0`.
 - **Configs.** List `eslint.config.*`, `.eslintrc*`, `.prettierrc*`, `prettier.config.*`,
   `vitest.config.*`, `vite.config.*`, `jest.config.*` (and a `"jest"` key in `package.json`),
-  `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, and `bunfig.toml` in the project root. A file whose first line is not `// managed-by: ward` or
-  `# managed-by: ward` is the user's, and init keeps it.
+  `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, `biome.json`, `biome.jsonc`,
+  `.biome.json`, `.biome.jsonc`, and `bunfig.toml` in the project root. A file whose first line is
+  not `// managed-by: ward` or `# managed-by: ward` is the user's, and init keeps it.
 - **Lock file.** `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, or `bun.lockb`.
   Init's install updates it, and the generated CI workflow's frozen install needs it committed.
 
@@ -61,6 +65,12 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
     later (Stryker 10 needs it), and its `tsconfig.json` includes the files ESLint lints, tests
     too. A user-owned ESLint config stays as it is, so `strict` does not switch it to
     `strict-type-checked`; offer `ward-tune` for that.
+- **Biome.** A Biome project (see Declared tools and Configs) gets one `biome` gate in place of
+  `prettier` and `eslint`, in the same profiles and presets. The gate runs
+  `biome ci --colors=off --reporter=checkstyle .`, and under `strict` it adds `--error-on-warnings`,
+  so warnings fail it. Init asks no question about Biome. A project's own ESLint config
+  (`eslint.config.*` or `.eslintrc*`) still gets the `eslint` gate, which runs that config
+  unchanged. Recommend the Biome gate as-is; do not offer to migrate ESLint or Prettier to Biome.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
   Stryker runner plugin), `semgrep` (ruleset `p/typescript`, or `p/javascript` for JavaScript;
   needs network access), `gitleaks`, `trivy`, and `zap`. `dependency-cruiser` checks import
@@ -96,6 +106,19 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   preset's coverage thresholds; the test command then carries no threshold flag. `keep
   vite.config.ts` (or another user test config) means the thresholds are passed as flags on the
   command instead. A Jest config in `package.json` produces no line.
+- `add devDependency @biomejs/biome 2.5.15` (a Biome project that does not declare it): the pinned
+  Biome. A declared Biome is kept unless it is outside `>=2.3.0 <3.0.0`, which gives an
+  `INCOMPATIBLE @biomejs/biome` finding and blocks apply; explain the range and the choices (pin a
+  Biome in range, or use a custom selection without `biome`).
+- `create biome.jsonc`: Ward's Biome config, marked as Ward's, with Biome's recommended rules and
+  Git-ignore support, so Biome skips `.ward/reports/` and coverage output. `strict` also sets eight
+  rules to `error`, including the type-aware `noFloatingPromises` and `noMisusedPromises`. `keep
+  biome.json` means the user's config is reused unchanged.
+- A Biome project gets no `eslint.config.*` and no Prettier config from init, and the plan does
+  not list `prettier`. The project's own `.prettierrc*`, if any, stays in place without a gate.
+- Edge case: Ward's `biome.jsonc` reads the ignore file (`vcs.useIgnoreFile`). In a directory
+  that is not a Git repository and has no `.gitignore`, Biome reports a configuration error and
+  the `biome` gate fails. Add a `.gitignore` first, or set up the repository.
 - `create stryker.config.mjs`: the test runner (Bun: the command runner with `bun test`), the
   `json` reporter, and with `strict` `thresholds.break: 60`. `keep stryker.conf.json` means the
   user's own Stryker thresholds apply.

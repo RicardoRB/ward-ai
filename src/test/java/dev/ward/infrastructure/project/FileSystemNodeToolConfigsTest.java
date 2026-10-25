@@ -25,7 +25,9 @@ class FileSystemNodeToolConfigsTest {
     "stryker, stryker.config.mjs",
     "eslint, eslint.config.js",
     "eslint, .eslintrc.json",
-    "dependency-cruiser, .dependency-cruiser.cjs"
+    "dependency-cruiser, .dependency-cruiser.cjs",
+    "biome, biome.json",
+    "biome, .biome.jsonc"
   })
   void userConfigOfTheGatesToolIsFound(final String gate, final String file) throws IOException {
     Files.writeString(root.resolve(file), "export default {};\n");
@@ -46,6 +48,13 @@ class FileSystemNodeToolConfigsTest {
     Files.writeString(root.resolve(".dependency-cruiser.mjs"), "// managed-by: ward\n");
 
     assertThat(configs.userConfig(root, "dependency-cruiser")).isEmpty();
+  }
+
+  @Test
+  void wardOwnedBiomeConfigDoesNotCount() throws IOException {
+    Files.writeString(root.resolve("biome.jsonc"), "// managed-by: ward preset=standard\n{}\n");
+
+    assertThat(configs.userConfig(root, "biome")).isEmpty();
   }
 
   @Test

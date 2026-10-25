@@ -58,6 +58,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
 | `dependency-cruiser` | Layer paths, added layers and cycle rules of the import-boundary config | [references/dependency-cruiser.md](references/dependency-cruiser.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
+| `biome` | Biome rules in `biome.jsonc` or the project's own Biome config | [references/biome.md](references/biome.md) |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
@@ -101,8 +102,8 @@ with the user before tuning anything else.
 
 For each rule file you might edit, read its first line:
 
-- `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `eslint.config.*`,
-  `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
+- `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `eslint.config.*` and
+  `biome.jsonc`, `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
   run refreshes it to the preset's content and **silently undoes any tuning**.
 - No marker means the user owns it. Init keeps it as it is and lists it as `keep`.
 

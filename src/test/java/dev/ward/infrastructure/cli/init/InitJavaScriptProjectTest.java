@@ -51,7 +51,7 @@ class InitJavaScriptProjectTest {
             "\"@eslint/js\": \"10.0.1\"",
             "\"globals\": \"17.13.0\"",
             "\"prettier\": \"3.9.10\"",
-            "\"vitest\": \"5.0.3\"")
+            "\"vitest\": \"4.0.18\"")
         .doesNotContain("typescript");
     assertThat(fixture.read(eslintConfig))
         .startsWith("// managed-by: ward preset=standard\n")

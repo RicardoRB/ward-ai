@@ -56,7 +56,7 @@ class NodeCompatibilityTest {
   @Test
   void nodeTooOldForVitestIsIncompatible() {
     final List<CompatibilityFinding> findings =
-        check("20", PackageManifest.EMPTY, "vitest", "@vitest/coverage-v8").findings();
+        check("18", PackageManifest.EMPTY, "vitest", "@vitest/coverage-v8").findings();
 
     assertThat(findings)
         .extracting(CompatibilityFinding::artifactId)
@@ -65,7 +65,7 @@ class NodeCompatibilityTest {
         .allSatisfy(
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
-              assertThat(finding.message()).contains("^22.12.0 || ^24.0.0 || >=26.0.0", "Node 20");
+              assertThat(finding.message()).contains("^20.0.0 || ^22.0.0 || >=24.0.0", "Node 18");
             });
   }
 
@@ -108,9 +108,7 @@ class NodeCompatibilityTest {
     final NodeCompatibility compatibility = check("22", PackageManifest.EMPTY, "eslint", "vitest");
 
     assertThat(compatibility.findings()).isEmpty();
-    assertThat(compatibility.notes())
-        .containsExactly(
-            "eslint needs Node 22.13.0 or later.", "vitest needs Node 22.12.0 or later.");
+    assertThat(compatibility.notes()).containsExactly("eslint needs Node 22.13.0 or later.");
   }
 
   @Test
@@ -145,7 +143,8 @@ class NodeCompatibilityTest {
         manifest,
         List.of(packages).stream()
             .map(name -> NodePackageCatalog.find(name).orElseThrow())
-            .toList());
+            .toList(),
+        false);
   }
 
   private Project project(final String node) {

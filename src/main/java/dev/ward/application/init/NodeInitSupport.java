@@ -14,15 +14,17 @@ final class NodeInitSupport implements ToolchainInitSupport {
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
-    return new Gates(languages(project, tools.testGate()).analysisGates(tools), List.of());
+    return new Gates(
+        languages(project, tools.testGate(), tools.linting()).analysisGates(tools), List.of());
   }
 
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final String testGate =
-        NodeTools.testGate(project.buildTool(), inputs.manifests().read(project.root()));
-    return languages(project, testGate).presetGates(preset);
+    final PackageManifest manifest = inputs.manifests().read(project.root());
+    final String testGate = NodeTools.testGate(project.buildTool(), manifest);
+    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
+    return languages(project, testGate, linting).presetGates(preset);
   }
 
   /** A JavaScript package without sources of its own, such as a monorepo root, is no project. */
@@ -43,13 +45,13 @@ final class NodeInitSupport implements ToolchainInitSupport {
   }
 
   private static SourceLanguages<NodeTools> languages(
-      final Project project, final String testGate) {
+      final Project project, final String testGate, final NodeLinting linting) {
     return SourceLanguages.of(
         Map.<Language, SourceLanguageGates<NodeTools>>of(
             Language.TYPESCRIPT,
-            new TypeScriptGates(testGate),
+            new TypeScriptGates(testGate, linting),
             Language.JAVASCRIPT,
-            new JavaScriptGates(testGate)),
+            new JavaScriptGates(testGate, linting)),
         project);
   }
 }

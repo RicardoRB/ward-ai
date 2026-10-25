@@ -38,7 +38,9 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
           "eslint",
           "{eslint.config.*,.eslintrc*}",
           "dependency-cruiser",
-          ".dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}");
+          ".dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}",
+          "biome",
+          "{biome,.biome}.{json,jsonc}");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject

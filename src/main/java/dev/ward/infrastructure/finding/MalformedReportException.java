@@ -10,4 +10,9 @@ final class MalformedReportException extends FindingExtractionException {
   MalformedReportException(final Path report, final Throwable cause) {
     super("Malformed report " + report.getFileName(), cause);
   }
+
+  /** Reports XML that came from standard output, which has no file name to name. */
+  MalformedReportException(final Throwable cause) {
+    super("Malformed report on standard output", cause);
+  }
 }

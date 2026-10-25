@@ -34,6 +34,7 @@ public final class QualityGateDefinitions {
           new Definition("tsc", "TypeScript compiler", Phase.LOCAL, true),
           new Definition("eslint", "ESLint", Phase.FAST, true),
           new Definition("prettier", "Prettier", Phase.FAST, false),
+          new Definition("biome", "Biome", Phase.FAST, true),
           new Definition("vitest", "Vitest", Phase.LOCAL, false),
           new Definition("jest", "Jest", Phase.LOCAL, false),
           new Definition("bun-test", "Bun test", Phase.LOCAL, false),
