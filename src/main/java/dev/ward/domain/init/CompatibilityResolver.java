@@ -1,5 +1,6 @@
 package dev.ward.domain.init;
 
+import dev.ward.domain.project.JavaSupport;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public final class CompatibilityResolver {
       return new CompatibilityFinding(
           tool, current, null, CompatibilityOutcome.UNKNOWN, unknown.get());
     }
-    final int jdk = toolchain.runtimeJdk().orElseThrow();
+    final int jdk = JavaSupport.selectionJdk(toolchain.runtimeJdk().orElseThrow());
     final String buildTool = toolchain.buildToolVersion().orElseThrow();
     final List<ManagedPluginCandidate> compatible =
         candidates.stream()

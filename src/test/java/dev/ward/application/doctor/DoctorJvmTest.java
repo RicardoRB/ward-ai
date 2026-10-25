@@ -28,6 +28,7 @@ class DoctorJvmTest {
   private static final int JAVA_7 = 7;
   private static final int JAVA_8 = 8;
   private static final int JAVA_17 = 17;
+  private static final int JAVA_27 = 27;
   private static final String JDK = "jdk";
   private static final String SPOTBUGS = "spotbugs";
 
@@ -72,6 +73,21 @@ class DoctorJvmTest {
         .filteredOn(finding -> finding.status() == Status.ERROR)
         .extracting(Finding::name)
         .doesNotContain(JDK, SPOTBUGS);
+  }
+
+  @Test
+  void jdkAbove25WarnsAndChecksPinsAsJdk25() {
+    final List<Finding> findings = diagnose(Optional.of(JAVA_27));
+
+    assertThat(findings)
+        .filteredOn(finding -> JDK.equals(finding.name()))
+        .containsExactly(
+            new Finding(
+                JDK,
+                Status.WARNING,
+                "Ward has not been tested on JDK 27 and does not support it; it is configured as"
+                    + " JDK 25."));
+    assertThat(names(findings)).doesNotContain(SPOTBUGS);
   }
 
   @Test

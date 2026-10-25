@@ -138,8 +138,10 @@ format omitted: spotless-maven-plugin needs JDK 8+; this project builds on JDK 7
 - In the interactive gate list, such a gate is shown as unavailable and cannot be selected.
 - The Gradle `dependency-check` and `sonar` plugins need JDK 11, so on Gradle they are omitted on
   JDK 8.
-- Below Java 8 or above 25, init warns that Ward supports Java 8 to 25 and may not work with that
-  version. The warning does not stop init.
+- Above Java 25, init configures the project exactly as for JDK 25 and warns that Ward has not been
+  tested on that JDK and does not support it.
+- Below Java 8, init warns that Ward supports Java 8 to 25 and may not work with that version.
+- Neither warning stops init.
 
 <Tabs>
 <TabItem label="Maven">

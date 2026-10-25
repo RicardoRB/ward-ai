@@ -40,8 +40,9 @@ Read one line per check:
 - `maven` / `gradle`: `OK` means the wrapper or executable is available. `ERROR` means gates that use
   the build tool cannot run until it is installed. Say so, because it affects every build-based gate.
 - `jdk`: the JDK that runs the build. Init picks every tool version for it. `WARNING` means it is
-  outside Java 8 to 25, or could not be read; then init cannot check versions and will stop until
-  the build tool reports a Java version.
+  below 8, above 25 (untested and unsupported; init configures it as JDK 25), or could not be read;
+  in the last case init cannot check versions and will stop until the build tool reports a Java
+  version.
 - a gate id, such as `spotbugs`, with `WARNING`: a configured gate pins a version that does not run
   on that JDK. Reconfiguring with init chooses a compatible version.
 - `configuration`: `ERROR` with `Run 'ward init'` means there is no `ward.toml` yet. `OK`

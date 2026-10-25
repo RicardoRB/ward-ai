@@ -12,14 +12,28 @@ public final class JavaSupport {
 
   private JavaSupport() {}
 
+  /**
+   * Returns the JDK to choose tool versions for: {@code jdk}, or {@link #MAXIMUM_JDK} for a newer
+   * JDK, which is configured as the newest one Ward supports.
+   */
+  public static int selectionJdk(final int jdk) {
+    return Math.min(jdk, MAXIMUM_JDK);
+  }
+
   /** Returns the warning for a runtime JDK outside 8 to 25, or empty when it is supported. */
   public static Optional<String> warning(final int jdk) {
-    if (jdk >= MINIMUM_JDK && jdk <= MAXIMUM_JDK) {
-      return Optional.empty();
+    if (jdk > MAXIMUM_JDK) {
+      return Optional.of(
+          "Ward has not been tested on JDK "
+              + jdk
+              + " and does not support it; it is configured as JDK 25.");
     }
-    return Optional.of(
-        "Ward supports Java 8 to 25; the project builds on JDK "
-            + jdk
-            + ", and Ward may not work with it.");
+    if (jdk < MINIMUM_JDK) {
+      return Optional.of(
+          "Ward supports Java 8 to 25; the project builds on JDK "
+              + jdk
+              + ", and Ward may not work with it.");
+    }
+    return Optional.empty();
   }
 }

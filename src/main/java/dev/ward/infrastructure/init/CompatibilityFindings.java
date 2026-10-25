@@ -9,6 +9,7 @@ import dev.ward.domain.init.CompatibilityProjectSnapshot;
 import dev.ward.domain.init.CompatibilityResolver;
 import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.ManagedPluginCandidate;
+import dev.ward.domain.project.JavaSupport;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +94,7 @@ final class CompatibilityFindings {
             entry ->
                 entry.getValue().stream()
                     .flatMap(tool -> pinnedRow(snapshot, tool).stream())
-                    .filter(row -> !row.runsOn(jdk.get()))
+                    .filter(row -> !row.runsOn(JavaSupport.selectionJdk(jdk.get())))
                     .findFirst()
                     .map(
                         row ->

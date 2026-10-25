@@ -15,6 +15,7 @@ class CompatibilityResolverJdkTest {
   private static final int JAVA_8 = 8;
   private static final int JAVA_17 = 17;
   private static final int JAVA_21 = 21;
+  private static final int JAVA_27 = 27;
   private static final int NEWEST_JAVA = 25;
   private static final String ARTIFACT = "demo-plugin";
   private static final String MAVEN = "3.9.9";
@@ -78,6 +79,19 @@ class CompatibilityResolverJdkTest {
     final CompatibilityPlan plan =
         RESOLVER.resolve(
             snapshot(JAVA_21, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
+            ManagedPluginCatalog.entries(),
+            List.of(SPOTBUGS, "spotless-maven-plugin", "google-java-format"));
+
+    assertThat(plan.findings())
+        .extracting(CompatibilityFinding::selectedVersion)
+        .containsExactly("4" + ".9.7.0", "3.10.3", "1.36.1");
+  }
+
+  @Test
+  void jdkAbove25SelectsTheJdk25Versions() {
+    final CompatibilityPlan plan =
+        RESOLVER.resolve(
+            snapshot(JAVA_27, Optional.of(MAVEN), Optional.empty(), Map.of()),
             ManagedPluginCatalog.entries(),
             List.of(SPOTBUGS, "spotless-maven-plugin", "google-java-format"));
 
