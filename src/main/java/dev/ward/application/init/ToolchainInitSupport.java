@@ -2,7 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.List;
 
@@ -32,7 +31,7 @@ interface ToolchainInitSupport {
    * Returns the CI workflow steps that set up the toolchain, each line ending in a newline; {@code
    * manifest} is the project's {@code package.json}, empty outside Node.
    */
-  String ciSetup(Project project, PackageManifest manifest);
+  String ciSetup(Project project, CiWorkflowTemplate.ProjectFacts facts);
 
   /**
    * Build-tool gates in wizard order, split around the toolchain-independent binary-tool gates.

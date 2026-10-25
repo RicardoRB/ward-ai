@@ -10,6 +10,7 @@ import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import java.nio.file.Path;
@@ -27,6 +28,7 @@ public final class DoctorService {
   private final WardConfigurationReader configurationReader;
   private final TraceabilityPrerequisites traceabilityPrerequisites;
   private final Set<AgentIntegration> integrations;
+  private final Optional<BuildToolConfiguration> buildTools;
 
   /** How serious a diagnostic finding is. */
   public enum Status {
@@ -48,18 +50,35 @@ public final class DoctorService {
    * Creates the service. {@code traceabilityPrerequisites} checks the traceability gate's inputs,
    * and {@code integrations} are checked for installation health.
    */
-  @Inject
   public DoctorService(
       final ProjectDetector detector,
       final EnvironmentInspection environment,
       final WardConfigurationReader configurationReader,
       final TraceabilityPrerequisites traceabilityPrerequisites,
       final Set<AgentIntegration> integrations) {
+    this(
+        detector,
+        environment,
+        new DoctorPorts(configurationReader, traceabilityPrerequisites, null),
+        integrations);
+  }
+
+  /**
+   * Creates the service that Dagger injects; {@code ports} also read the project's runtime JDK and
+   * the tool versions its build file pins.
+   */
+  @Inject
+  public DoctorService(
+      final ProjectDetector detector,
+      final EnvironmentInspection environment,
+      final DoctorPorts ports,
+      final Set<AgentIntegration> integrations) {
     this.detector = detector;
     this.environment = environment;
-    this.configurationReader = configurationReader;
-    this.traceabilityPrerequisites = traceabilityPrerequisites;
+    this.configurationReader = ports.configurationReader();
+    this.traceabilityPrerequisites = ports.traceabilityPrerequisites();
     this.integrations = Set.copyOf(integrations);
+    this.buildTools = Optional.ofNullable(ports.buildTools());
   }
 
   /** Creates a service that checks only the project and environment. */
@@ -97,7 +116,13 @@ public final class DoctorService {
     final Project detected = project.get();
     final boolean openCode = flag(facts, "openCodeCommandPresent");
     findings.add(new Finding("project", Status.OK, root.toString()));
-    findings.addAll(BuildToolFindings.forToolchain(detected.toolchain()).findings(detected, facts));
+    findings.addAll(
+        BuildToolFindings.forToolchain(detected.toolchain())
+            .findings(
+                detected,
+                facts,
+                ToolchainContext.read(
+                    buildTools, configurationReader, root, flag(facts, "configurationPresent"))));
     findings.add(
         check(
             "configuration",

@@ -4,6 +4,7 @@ import dev.ward.domain.agent.SupportedAgents;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.init.InitArchitectureOption;
 import dev.ward.domain.init.InitGateOption;
@@ -15,13 +16,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 /** Stable choices and project-aware defaults used by the interactive init flow. */
 public class InitGeneralCatalog {
   public static final String NO_INTEGRATION = "none";
   private final EnvironmentInspection environment;
-  private final InitInputs inputs;
+
+  /** What the toolchain supports read; {@link JdkGates} reads the runtime JDK through it. */
+  final InitInputs inputs;
 
   /** Creates the catalog; {@code environment} resolves which executables are on the path. */
   @Inject
@@ -101,7 +106,11 @@ public class InitGeneralCatalog {
    * order.
    */
   public List<String> presetGates(final Project project, final QualityPreset preset) {
-    return InitToolchains.support(project).presetGates(project, preset, inputs);
+    final List<String> gates = InitToolchains.support(project).presetGates(project, preset, inputs);
+    final Set<String> omitted =
+        new JdkGates(inputs)
+            .omissions(project, gates).stream().map(GateOmission::gate).collect(Collectors.toSet());
+    return gates.stream().filter(gate -> !omitted.contains(gate)).toList();
   }
 
   /**
@@ -125,10 +134,23 @@ public class InitGeneralCatalog {
   /**
    * Returns the gate choice with {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool or not a supported gate
+   * @throws WardException if {@code id} is an OpenSpec tool, not a supported gate, or a gate the
+   *     project's runtime JDK cannot run
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);
+    new JdkGates(inputs)
+        .omissions(project, List.of(id)).stream()
+            .findFirst()
+            .ifPresent(
+                omission -> {
+                  throw new WardException(
+                      "Quality gate '"
+                          + id
+                          + "' cannot run on this project's JDK: "
+                          + omission.reason()
+                          + ".");
+                });
     return gates(project, null).stream()
         .filter(option -> option.id().equals(id))
         .findFirst()

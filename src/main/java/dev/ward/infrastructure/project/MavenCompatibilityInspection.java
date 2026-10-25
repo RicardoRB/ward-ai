@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
  */
 public final class MavenCompatibilityInspection implements CompatibilityInspection {
   private static final Pattern MAVEN_VERSION = Pattern.compile("Apache Maven\\s+([0-9][^\\s]*)");
+  private static final Pattern JAVA_VERSION = Pattern.compile("Java version:\\s*([0-9][^\\s,]*)");
   private final CommandExecutor commands;
 
   /** Creates the inspection; {@code commands} runs Maven to read the toolchain. */
@@ -47,11 +48,14 @@ public final class MavenCompatibilityInspection implements CompatibilityInspecti
       final Map<String, String> properties = properties(root);
       final Map<String, String> plugins = plugins(root);
       final Optional<Integer> release = compilerRelease(root, properties);
-      final Optional<String> maven = mavenVersion(project);
+      final Optional<String> version = versionOutput(project);
       return new CompatibilityProjectSnapshot(
           project,
           new ToolchainSnapshot(
-              release.orElse(Runtime.version().feature()), maven, release, project.framework()),
+              version.flatMap(output -> match(JAVA_VERSION, output)).map(JavaVersions::feature),
+              release,
+              version.flatMap(output -> match(MAVEN_VERSION, output)),
+              project.framework()),
           plugins);
     } catch (ParserConfigurationException | SAXException | IOException e) {
       throw new WardException(
@@ -59,13 +63,14 @@ public final class MavenCompatibilityInspection implements CompatibilityInspecti
     }
   }
 
-  private Optional<String> mavenVersion(final Project project) {
+  private Optional<String> versionOutput(final Project project) {
     final String executable = project.mavenWrapperAvailable() ? "./mvnw" : "mvn";
     final CommandResult result = commands.execute(List.of(executable, "--version"), project.root());
-    if (!result.succeeded()) {
-      return Optional.empty();
-    }
-    final Matcher matcher = MAVEN_VERSION.matcher(result.stdout());
+    return result.succeeded() ? Optional.of(result.stdout()) : Optional.empty();
+  }
+
+  private static Optional<String> match(final Pattern pattern, final String output) {
+    final Matcher matcher = pattern.matcher(output);
     return matcher.find() ? Optional.of(matcher.group(1)) : Optional.empty();
   }
 
@@ -134,9 +139,8 @@ public final class MavenCompatibilityInspection implements CompatibilityInspecti
     if (value == null || value.isBlank() || value.startsWith("${")) {
       return null;
     }
-    final String normalized = value.startsWith("1.") ? value.substring(2) : value;
     try {
-      return Integer.parseInt(normalized.replaceAll("[^0-9].*", ""));
+      return JavaVersions.feature(value);
     } catch (NumberFormatException ignored) {
       return null;
     }

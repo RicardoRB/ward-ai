@@ -2,6 +2,7 @@
 cd "$(dirname "$0")"
 if [ "$1" = "--version" ]; then
   echo "Apache Maven 3.9.8"
+  echo "Java version: 25.0.5, vendor: Eclipse Adoptium, runtime: /opt/jdk"
   exit 0
 fi
 echo "stub mvnw: $*"

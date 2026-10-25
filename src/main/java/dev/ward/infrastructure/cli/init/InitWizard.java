@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.JdkGates;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitArchitectureOption;
 import dev.ward.domain.init.InitGateOption;
@@ -10,6 +11,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RawTerminal.RawSession;
 import dev.ward.domain.project.Project;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -127,7 +129,17 @@ final class InitWizard {
   /** Asks for the gates, starting with {@code preselected} checked. */
   List<String> selectGates(
       final InitSetupCatalog catalog, final Project project, final List<String> preselected) {
-    final List<InitGateOption> choices = catalog.gates(project, null);
+    final List<InitGateOption> offered = catalog.gates(project, null);
+    final Set<String> omittedIds = new HashSet<>();
+    JdkGates.of(catalog)
+        .omissions(project, offered.stream().map(InitGateOption::id).toList())
+        .forEach(
+            omission -> {
+              out.println("Unavailable on this JDK: " + omission.note());
+              omittedIds.add(omission.gate());
+            });
+    final List<InitGateOption> choices =
+        offered.stream().filter(choice -> !omittedIds.contains(choice.id())).toList();
     final List<String> ids = choices.stream().map(InitGateOption::id).toList();
     final List<String> presetGates = preselected;
     final Optional<List<String>> fromMenu =

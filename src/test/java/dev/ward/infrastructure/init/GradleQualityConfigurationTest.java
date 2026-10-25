@@ -72,11 +72,14 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "checkstyle {\n    configFile = file('config/checkstyle.xml')\n"
+            "checkstyle {\n    toolVersion = '10.20.2'\n"
+                + "    configFile = file('config/checkstyle.xml')\n"
                 + "    sourceSets = [project.sourceSets.main]\n}",
-            "pmd {\n    ruleSetFiles = files('config/pmd-ruleset.xml')\n    ruleSets = []\n",
-            "spotless {\n    java {\n        googleJavaFormat()\n",
-            "\njacocoTestCoverageVerification {\n",
+            "pmd {\n    toolVersion = '7.17.0'\n    ruleSetFiles = files('config/pmd-ruleset.xml')\n"
+                + "    ruleSets = []\n",
+            "spotless {\n    java {\n        googleJavaFormat('1.36.1')\n",
+            "spotbugs {\n    toolVersion = '4.9.7'\n}",
+            "jacoco {\n    toolVersion = '0.8.13'\n}\njacocoTestCoverageVerification {\n",
             "counter = 'BRANCH'\n                minimum = 0.75",
             "counter = 'LINE'\n                minimum = 0.85",
             "pitest {\n    pitestVersion = '1.30.1'\n    junit5PluginVersion = '1.2.3'\n"
@@ -95,6 +98,8 @@ class GradleQualityConfigurationTest {
             "configFile = file(\"config/checkstyle.xml\")",
             "sourceSets = listOf(project.sourceSets.main.get())",
             "ruleSets = listOf()",
+            "googleJavaFormat(\"1.36.1\")",
+            "toolVersion = \"4.9.7\"",
             "\ntasks.jacocoTestCoverageVerification {\n",
             "minimum = \"0.85\".toBigDecimal()",
             "pitestVersion = \"1.30.1\"",

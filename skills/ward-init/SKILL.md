@@ -200,6 +200,16 @@ Do not summarize it instead. Then explain it:
   one **separately**. Only if the user accepts every listed update, add
   `--accept-compatibility-updates`. If they decline, leave it out: the apply step keeps the plugin
   unchanged and reports that the gate was not reconfigured.
+- `<gate> omitted: <tool> needs JDK <n>+; this project builds on JDK <m>` under `ward.toml`: no
+  version of that gate's tool runs on the JDK that runs the build (`mvn --version` or the Gradle
+  launcher JVM), so init leaves the gate out and configures the rest. Name the gate and the JDK it
+  needs; the only fix is to run the build on that JDK, then preview again. Do not add the gate with
+  `--gate`: init would stop with an error.
+- `Ward supports Java 8 to 25; the project builds on JDK <m>`: a warning only, for a JDK below 8.
+  Init and its output are otherwise unchanged; say that Ward may not work on that JDK.
+- `Ward has not been tested on JDK <m> and does not support it; it is configured as JDK 25`: a
+  JDK above 25. Init writes the same versions as for JDK 25; say that this setup is untested and
+  unsupported, so a gate may fail until Ward supports that JDK.
 - For TypeScript and JavaScript, `add devDependency` and `run <manager> install` lines, `INCOMPATIBLE` findings,
   and Node notes: see [references/node.md](references/node.md#reading-the-plan). The
   install needs its own yes before you apply.

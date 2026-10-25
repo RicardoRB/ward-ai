@@ -4,7 +4,6 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.Map;
 /** Init choices for Maven and Gradle projects. */
 final class JvmInitSupport implements ToolchainInitSupport {
   private static final JavaGates JAVA = new JavaGates();
+  private static final int DEFAULT_CI_JDK = 25;
   // shortcut: Kotlin gets Java's tools until Ward ships ktlint/detekt; give it its own gates then.
   private static final Map<Language, SourceLanguageGates<BuildToolGates>> LANGUAGES =
       Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
@@ -38,15 +38,16 @@ final class JvmInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public String ciSetup(final Project project, final PackageManifest manifest) {
+  public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
     return CiWorkflowTemplate.STEP
         + "Set up JDK\n"
         + "        uses: actions/setup-java@v5\n"
         + "        with:\n"
         + "          distribution: temurin\n"
-        // shortcut: always JDK 25, which compiles older releases; read the project's toolchain if a
-        // build pins a newer one.
-        + "          java-version: '25'\n"
+        // The pinned tools run only on the JDK init chose them for.
+        + "          java-version: '"
+        + facts.runtimeJdk().orElse(DEFAULT_CI_JDK)
+        + "'\n"
         + "          cache: "
         + (project.buildTool() == BuildTool.GRADLE ? "gradle" : "maven")
         + "\n";

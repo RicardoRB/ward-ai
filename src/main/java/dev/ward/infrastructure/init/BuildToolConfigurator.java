@@ -5,12 +5,14 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 
@@ -45,6 +47,21 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final boolean approved) {
     return adapter(project).plan(project, gates, preset, approved);
+  }
+
+  @Override
+  public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
+    return adapter(project).omissions(project, gateIds);
+  }
+
+  @Override
+  public List<GateOmission> unsupportedPins(final Project project, final List<String> gateIds) {
+    return adapter(project).unsupportedPins(project, gateIds);
+  }
+
+  @Override
+  public Optional<Integer> runtimeJdk(final Project project) {
+    return adapter(project).runtimeJdk(project);
   }
 
   @Override

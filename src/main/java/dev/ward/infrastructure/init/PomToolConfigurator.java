@@ -6,7 +6,9 @@ import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.CompatibilityInspection;
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.init.ManagedPluginCatalog;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
@@ -17,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -34,7 +35,9 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
    */
   @Inject
   public PomToolConfigurator(final CompatibilityInspection compatibilityInspection) {
-    this.compatibility = Optional.of(new CompatibilityFindings(compatibilityInspection));
+    this.compatibility =
+        Optional.of(
+            new CompatibilityFindings(compatibilityInspection, ManagedPluginCatalog.entries()));
   }
 
   /** Legacy construction retained for focused configurator fixtures. */
@@ -124,28 +127,52 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       throw new WardException(
           "Could not configure Maven tools in " + pom + ": " + e.getMessage(), e);
     }
-    final Map<String, CompatibilityFinding> findings =
-        compatibility
-            .map(
-                resolver ->
-                    resolver.resolve(
-                        project,
-                        PomTools.TOOLS.stream()
-                            .filter(tool -> selected.contains(tool.gate()))
-                            .map(Tool::artifact)
-                            .toList()))
-            .orElse(Map.of());
-    for (final Tool tool : PomTools.TOOLS) {
-      if (selected.contains(tool.gate())) {
-        applySelectedTool(tool, preset, findings.get(tool.artifact()), approval, edit);
-      }
-    }
+    final PomToolVersions versions = PomToolVersions.resolve(compatibility, project, selected);
+    versions
+        .warning()
+        .ifPresent(
+            warning -> {
+              edit.warnings.add(warning);
+              edit.details.add(warning);
+            });
+    PomTools.TOOLS.stream()
+        .filter(tool -> selected.contains(tool.gate()))
+        .forEach(
+            tool ->
+                versions
+                    .unavailable(tool)
+                    .ifPresentOrElse(
+                        reason -> edit.warnings.add(tool.gate() + " omitted: " + reason),
+                        () -> applySelectedTool(tool, preset, versions, approval, edit)));
     edit.content = PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
     if (!edit.tools.isEmpty()) {
       PomDeclarationValidator.validate(
-          edit.content, addedDeclarations(edit.original, edit.content, selected));
+          edit.content, PomTools.addedDeclarations(edit.original, edit.content, selected));
     }
     return edit;
+  }
+
+  @Override
+  public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
+    return compatibility
+        .map(
+            resolver ->
+                resolver.omissions(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds))))
+        .orElse(List.of());
+  }
+
+  @Override
+  public List<GateOmission> unsupportedPins(final Project project, final List<String> gateIds) {
+    return compatibility
+        .map(
+            resolver ->
+                resolver.unsupportedPins(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds))))
+        .orElse(List.of());
+  }
+
+  @Override
+  public Optional<Integer> runtimeJdk(final Project project) {
+    return compatibility.flatMap(resolver -> resolver.runtimeJdk(project));
   }
 
   @Override
@@ -167,11 +194,12 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
   private void applySelectedTool(
       final Tool tool,
       final QualityPreset preset,
-      final CompatibilityFinding finding,
+      final PomToolVersions versions,
       final Predicate<? super CompatibilityFinding> approval,
       final PomEdit edit) {
-    if (finding != null && !containsArtifact(edit.content, tool.artifact())) {
-      edit.add(tool, preset, finding.selectedVersion());
+    final CompatibilityFinding finding = versions.plugin(tool);
+    if (finding != null && !PomTools.declares(edit.content, tool.artifact())) {
+      edit.add(tool, preset, finding.selectedVersion(), versions.engine(tool));
     } else if (finding != null && finding.changesVersion()) {
       final boolean accepted = approval.test(finding);
       if (accepted) {
@@ -182,29 +210,14 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                 + tool.artifact()
                 + "; selected gate was not reconfigured.");
       }
-    } else if (containsArtifact(edit.content, tool.artifact())) {
+    } else if (PomTools.declares(edit.content, tool.artifact())) {
       if (preset != null && tool.presetSnippet() != null) {
         edit.warnings.add(
             tool.artifact() + " already declared; " + preset.id() + " settings not applied");
       }
     } else {
-      edit.add(tool, preset, null);
+      edit.add(tool, preset, null, null);
     }
-  }
-
-  /** Declarations for the selected tools that this run added to the pom. */
-  private static List<PomDeclarationValidator.Declaration> addedDeclarations(
-      final String original, final String updated, final Set<String> selected) {
-    return PomTools.TOOLS.stream()
-        .filter(tool -> selected.contains(tool.gate()))
-        .filter(tool -> !containsArtifact(original, tool.artifact()))
-        .filter(tool -> containsArtifact(updated, tool.artifact()))
-        .map(tool -> new PomDeclarationValidator.Declaration(tool.artifact(), tool.dependency()))
-        .toList();
-  }
-
-  private static boolean containsArtifact(final String pom, final String artifactId) {
-    return pom.contains("<artifactId>" + artifactId + "</artifactId>");
   }
 
   /** The pom being edited in memory, with what changed so far. */
@@ -222,8 +235,12 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       this.content = original;
     }
 
-    void add(final Tool tool, final QualityPreset preset, final String selectedVersion) {
-      content = tool.addTo(content, preset, selectedVersion);
+    void add(
+        final Tool tool,
+        final QualityPreset preset,
+        final String selectedVersion,
+        final String engineVersion) {
+      content = tool.addTo(content, preset, selectedVersion, engineVersion);
       tools.add(
           selectedVersion == null ? tool.artifact() : tool.artifact() + " " + selectedVersion);
       details.add("+ " + tool.artifact() + " " + tool.version(preset, selectedVersion));

@@ -46,7 +46,10 @@ class InitCompatibilityRollbackTest {
                 new CompatibilityProjectSnapshot(
                     new Project(Path.of("."), Language.JAVA, BuildTool.MAVEN, Framework.NONE),
                     new ToolchainSnapshot(
-                        JAVA_17, Optional.of("3.9.0"), Optional.empty(), Framework.NONE),
+                        Optional.of(JAVA_17),
+                        Optional.empty(),
+                        Optional.of("3.9.0"),
+                        Framework.NONE),
                     Map.of("spotless-maven-plugin", "1.0.0")));
     final RuleFileGeneration failingRules =
         new RuleFileGeneration() {

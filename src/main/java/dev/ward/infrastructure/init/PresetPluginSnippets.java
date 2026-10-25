@@ -28,7 +28,7 @@ final class PresetPluginSnippets {
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-pmd-plugin</artifactId>
-              <version>3.26.0</version>
+              <version>3.28.0</version>
               <configuration>
                 <rulesets><ruleset>${project.basedir}/config/pmd-ruleset.xml</ruleset></rulesets>
                 <failOnViolation>true</failOnViolation>
@@ -46,7 +46,7 @@ final class PresetPluginSnippets {
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-checkstyle-plugin</artifactId>
               <version>3.6.0</version>
-              <dependencies><dependency><groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>10.20.2</version></dependency></dependencies>
+              <dependencies><dependency><groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>ENGINE_VERSION</version></dependency></dependencies>
               <configuration><configLocation>${project.basedir}/config/checkstyle.xml</configLocation><violationSeverity>error</violationSeverity><consoleOutput>true</consoleOutput></configuration>
             </plugin>
           """;

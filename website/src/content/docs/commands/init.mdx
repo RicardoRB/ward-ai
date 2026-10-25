@@ -100,6 +100,49 @@ Ward's embedded Java compatibility catalog.
 - A declined update leaves the build file unchanged, and init reports that the gate was not
   reconfigured.
 
+### Java compatibility
+
+Ward supports Java 8 to 25. Init chooses every plugin and engine version for the JDK that runs
+your build, not for the JVM that runs Ward:
+
+- **Maven:** the `Java version` that `mvn --version` (or `./mvnw --version`) reports.
+- **Gradle:** the `Launcher JVM` that `gradle --version` (or `./gradlew --version`) reports. Init
+  also reads the Gradle version, because some plugins need a newer Gradle.
+
+The release the build targets (`maven.compiler.release`, `sourceCompatibility`,
+`JavaLanguageVersion.of(n)`, or `options.release`) defaults to that JDK. A release above the
+runtime JDK cannot compile, so init stops and asks you to run the build on a newer JDK.
+
+Each version was run on a real JDK in Ward's compatibility matrix:
+
+| Tool | JDK 8 | JDK 11 | JDK 17 | JDK 21 | JDK 25 |
+|---|---|---|---|---|---|
+| Checkstyle engine | 9.3 | 10.20.2 | 10.20.2 | 10.20.2 | 10.20.2 |
+| SpotBugs (Maven plugin / Gradle engine) | 4.8.6.6 / 4.8.6 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 |
+| PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
+| Spotless (Maven / Gradle) | 2.30.0 / 6.13.0 | 2.46.1 / 7.2.1 | 3.10.3 / 8.10.4 | 3.10.3 / 8.10.4 | 3.10.3 / 8.10.4 |
+| google-java-format | 1.7 | 1.24.0 | 1.28.0 | 1.36.1 | 1.36.1 |
+
+PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, ArchUnit 1.5.1, and Enforcer 3.5.0 use the same
+version on every JDK.
+
+Every strict gate runs on each LTS JDK from 8 to 25. When no version of a gate's tool runs on your
+JDK, init leaves that gate out and configures the others. The plan, `--dry-run`, and the init
+output name it:
+
+```text
+format omitted: spotless-maven-plugin needs JDK 8+; this project builds on JDK 7
+```
+
+- A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
+- In the interactive gate list, such a gate is shown as unavailable and cannot be selected.
+- The Gradle `dependency-check` and `sonar` plugins need JDK 11, so on Gradle they are omitted on
+  JDK 8.
+- Above Java 25, init configures the project exactly as for JDK 25 and warns that Ward has not been
+  tested on that JDK and does not support it.
+- Below Java 8, init warns that Ward supports Java 8 to 25 and may not work with that version.
+- Neither warning stops init.
+
 <Tabs>
 <TabItem label="Maven">
 
@@ -491,6 +534,8 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 `main`. The workflow:
 
 - installs the Ward release that ran init (`WARD_VERSION`);
+- for a Java project, sets up the JDK that runs your build (JDK 25 when init cannot read it), since
+  the pinned tools were chosen for that JDK;
 - pins the tools the selected gates need (gitleaks, trivy, semgrep, OpenSpec);
 - fetches full history for gitleaks and caches the trivy database;
 - passes the `NVD_API_KEY` secret to `dependency-check`;
