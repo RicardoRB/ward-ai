@@ -3,7 +3,14 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.JdkCatalogs;
 import dev.ward.domain.FakeEnvironmentInspection;
+import dev.ward.domain.agent.PlannedFileChange;
+import dev.ward.domain.init.BuildFileChange;
+import dev.ward.domain.init.BuildToolConfiguration;
+import dev.ward.domain.init.GateOmission;
+import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RawTerminal.RawSession;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
@@ -57,6 +64,31 @@ class InitAvailabilityTest {
   }
 
   @Test
+  void interactiveGateListOnAnOlderJdkShowsTheGateUnavailableAndUnselectable() {
+    final StringWriter output = new StringWriter();
+    final InitWizard wizard =
+        new InitWizard(
+            new LinePrompt(new BufferedReader(new StringReader("\n"))),
+            Optional::empty,
+            new PrintWriter(output, true),
+            false);
+    final InitSetupCatalog catalog = JdkCatalogs.reading(new FormatNeedsJdk11());
+
+    final List<String> selected =
+        wizard.selectGates(
+            catalog,
+            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
+            List.of("tests", "format"));
+
+    assertThat(output.toString())
+        .contains(
+            "Unavailable on this JDK: format omitted: spotless-maven-plugin needs JDK 11+;"
+                + " this project builds on JDK 8")
+        .doesNotContain("format - ");
+    assertThat(selected).containsExactly("tests");
+  }
+
+  @Test
   void selectedUnavailableGateShowsItsRemediation() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
     final String remediation =
@@ -88,6 +120,37 @@ class InitAvailabilityTest {
     init.run("", "--dry-run", "--integration", "none", "--gate", "trivy");
 
     assertThat(init.output()).doesNotContain("trivy already scans dependencies");
+  }
+
+  /** A build-tool port whose runtime JDK cannot run the format gate; it writes nothing. */
+  private static final class FormatNeedsJdk11 implements BuildToolConfiguration {
+    @Override
+    public BuildFileChange apply(final Project project, final List<InitGateOption> gates) {
+      throw new UnsupportedOperationException("not written in this test");
+    }
+
+    @Override
+    public PlannedFileChange plan(
+        final Project project,
+        final List<InitGateOption> gates,
+        final QualityPreset preset,
+        final boolean approved) {
+      throw new UnsupportedOperationException("not planned in this test");
+    }
+
+    @Override
+    public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
+      return gateIds.contains("format")
+          ? List.of(
+              new GateOmission(
+                  "format", "spotless-maven-plugin needs JDK 11+; this project builds on JDK 8"))
+          : List.of();
+    }
+
+    @Override
+    public void rollback(final BuildFileChange change) {
+      // Nothing was written.
+    }
   }
 
   /** Replays the given keys, then reports end of input. */

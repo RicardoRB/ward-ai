@@ -13,7 +13,8 @@ import java.util.List;
 final class NodeToolchainFinding implements ToolchainFinding {
 
   @Override
-  public List<Finding> findings(final Project detected, final EnvironmentFacts facts) {
+  public List<Finding> findings(
+      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
     if (detected.buildTool() == BuildTool.BUN) {
       return List.of(executableFinding(detected.buildExecutable(), facts));
     }

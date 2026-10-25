@@ -9,6 +9,9 @@ import java.util.List;
 @FunctionalInterface
 interface ToolchainFinding {
 
-  /** Returns the findings for {@code detected}, given what is installed on this machine. */
-  List<Finding> findings(Project detected, EnvironmentFacts facts);
+  /**
+   * Returns the findings for {@code detected}, given what is installed on this machine and what
+   * {@code context} reads from the project.
+   */
+  List<Finding> findings(Project detected, EnvironmentFacts facts, ToolchainContext context);
 }

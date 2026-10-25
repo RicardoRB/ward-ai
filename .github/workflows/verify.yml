@@ -213,6 +213,94 @@ jobs:
           -Dward.node.matrix.jar=target/ward.jar
           test
 
+  # Reads the JDK and Gradle versions from the matrix data and skips the matrix for pull requests
+  # that change only website, openspec or Markdown files.
+  java-matrix-versions:
+    name: Java matrix versions
+    runs-on: ubuntu-24.04
+    outputs:
+      cells: ${{ steps.versions.outputs.cells }}
+      run: ${{ steps.versions.outputs.run }}
+    steps:
+      # Full history so the base branch is available for the documentation-only check.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Read JDK versions and decide whether the matrix runs
+        id: versions
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          cells=$(tail -n +2 src/test/resources/java-matrix/jdks.csv \
+            | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {jdk: .[0], gradle: .[1]})')
+          echo "cells=$cells" >> "$GITHUB_OUTPUT"
+          run=true
+          if [ "$EVENT" = pull_request ]; then
+            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            # No changed path outside the documentation patterns means the matrix can be skipped.
+            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
+              run=false
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "JDK cells: $cells, matrix runs: $run"
+
+  # One job per JDK. Ward runs on JDK 25; Maven, Gradle and every gate run on the cell's JDK.
+  java-matrix:
+    name: JDK ${{ matrix.cell.jdk }} compatibility matrix
+    needs: java-matrix-versions
+    if: needs.java-matrix-versions.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.java-matrix-versions.outputs.cells) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK ${{ matrix.cell.jdk }}
+        id: cell-jdk
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.cell.jdk }}
+
+      # Set up last, so JDK 25 is the default that builds and runs Ward.
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Set up Gradle ${{ matrix.cell.gradle }}
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: ${{ matrix.cell.gradle }}
+
+      # setup-gradle caches ~/.gradle; this keeps the Maven distribution the fixture wrapper fetches,
+      # keyed on the catalogs so a pinned version change starts fresh.
+      - name: Restore Maven Wrapper cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2/wrapper
+          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('src/main/java/dev/ward/domain/init/ManagedPluginCatalog.java', 'src/main/java/dev/ward/domain/init/GradleToolCatalog.java') }}
+
+      - name: Build Ward
+        run: ./mvnw -B -q package -DskipTests
+
+      - name: Run matrix cells for JDK ${{ matrix.cell.jdk }}
+        run: >-
+          ./mvnw -B
+          -Dtest=JavaCompatibilityMatrixTest
+          -Dward.java.matrix=${{ matrix.cell.jdk }}
+          -Dward.java.matrix.jar=target/ward.jar
+          -Dward.java.matrix.home=${{ steps.cell-jdk.outputs.path }}
+          test
+
   native:
     name: Native checks (${{ matrix.os }})
     needs: quality

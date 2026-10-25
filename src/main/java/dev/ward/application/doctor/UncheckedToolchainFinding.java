@@ -11,7 +11,8 @@ import java.util.Locale;
 final class UncheckedToolchainFinding implements ToolchainFinding {
 
   @Override
-  public List<Finding> findings(final Project detected, final EnvironmentFacts facts) {
+  public List<Finding> findings(
+      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
     final String toolName = detected.buildTool().displayName();
     return List.of(
         new Finding(

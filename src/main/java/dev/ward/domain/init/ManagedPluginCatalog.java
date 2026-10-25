@@ -1,47 +1,64 @@
 package dev.ward.domain.init;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Ward-managed Maven plugin compatibility catalog. */
+/**
+ * The Maven plugins, test dependencies, and engines init can pin, one row per version. The JDK
+ * ranges of one tool never overlap, and each was measured on a real JDK; see the Java compatibility
+ * matrix.
+ */
 public final class ManagedPluginCatalog {
-  private static final int JAVA_8 = 8;
-  private static final int JAVA_11 = 11;
-  private static final int NEWEST_SUPPORTED_JAVA = 25;
+  private static final int JDK_8 = 8;
+  private static final int JDK_10 = 10;
+  private static final int JDK_11 = 11;
+  private static final int JDK_16 = 16;
+  private static final int JDK_17 = 17;
+  private static final int JDK_20 = 20;
+  private static final int JDK_21 = 21;
+  private static final int JDK_25 = 25;
+  private static final String MAVEN = "3.6";
+  private static final String SPOTLESS = "spotless-maven-plugin";
+  private static final String FORMATTER = "google-java-format";
+  private static final String SPOTBUGS = "spotbugs-maven-plugin";
+  private static final String PIT = "pitest-maven";
+
+  private static final List<ManagedPluginCandidate> ROWS =
+      List.of(
+          row("maven-checkstyle-plugin", "3.6.0", JDK_8, JDK_25),
+          row("checkstyle", "9.3", JDK_8, JDK_10),
+          row("checkstyle", "10.20.2", JDK_11, JDK_25),
+          row("maven-pmd-plugin", "3.28.0", JDK_8, JDK_25),
+          row(SPOTBUGS, "4" + ".8.6.6", JDK_8, JDK_10),
+          row(SPOTBUGS, "4" + ".9.7.0", JDK_11, JDK_25),
+          row("jacoco-maven-plugin", "0.8.13", JDK_8, JDK_25),
+          row(PIT, "1.17.4", JDK_8, JDK_10),
+          row(PIT, "1.30.1", JDK_11, JDK_25),
+          row("maven-enforcer-plugin", "3.5.0", JDK_8, JDK_25),
+          row(SPOTLESS, "2.30.0", JDK_8, JDK_10),
+          row(SPOTLESS, "2.46.1", JDK_11, JDK_16),
+          row(SPOTLESS, "3.10.3", JDK_17, JDK_25),
+          row(FORMATTER, "1.7", JDK_8, JDK_10),
+          row(FORMATTER, "1.24.0", JDK_11, JDK_16),
+          row(FORMATTER, "1.28.0", JDK_17, JDK_20),
+          row(FORMATTER, "1.36.1", JDK_21, JDK_25),
+          row("archunit-junit5", "1.5.1", JDK_8, JDK_25),
+          row("sonar-maven-plugin", "3.11.0.3922", JDK_8, JDK_10),
+          row("sonar-maven-plugin", "5.1.0.4751", JDK_11, JDK_25),
+          row("dependency-check-maven", "8.4.0", JDK_8, JDK_10),
+          row("dependency-check-maven", "12.1.0", JDK_11, JDK_25),
+          row("license-maven-plugin", "2.5.0", JDK_8, JDK_25),
+          row("japicmp-maven-plugin", "0.23.1", JDK_8, JDK_25));
 
   private ManagedPluginCatalog() {}
 
-  /** Returns each managed plugin's current and legacy versions with their toolchain ranges. */
+  /** Returns each tool's rows, keyed by tool. */
   public static Map<String, List<ManagedPluginCandidate>> entries() {
-    final Map<String, List<ManagedPluginCandidate>> entries = new LinkedHashMap<>();
-    entries.put("maven-checkstyle-plugin", candidates("maven-checkstyle-plugin", "3.6.0", "3.3.1"));
-    entries.put("maven-pmd-plugin", candidates("maven-pmd-plugin", "3.28.0", "3.26.0"));
-    entries.put(
-        "spotbugs-maven-plugin",
-        candidates("spotbugs-maven-plugin", "4" + ".9.7.0", "4" + ".8.6.6"));
-    entries.put(
-        "sonar-maven-plugin", candidates("sonar-maven-plugin", "5.1.0.4751", "3.11.0.3922"));
-    entries.put("jacoco-maven-plugin", candidates("jacoco-maven-plugin", "0.8.13", "0.8.8"));
-    entries.put("dependency-check-maven", candidates("dependency-check-maven", "12.1.0", "8.4.0"));
-    entries.put("pitest-maven", candidates("pitest-maven", "1.30.1", "1.9.11"));
-    entries.put("maven-enforcer-plugin", candidates("maven-enforcer-plugin", "3.5.0", "3.0.0"));
-    entries.put("spotless-maven-plugin", candidates("spotless-maven-plugin", "3.10.3", "2.44.4"));
-    entries.put("license-maven-plugin", candidates("license-maven-plugin", "2.5.0", "2.0.0"));
-    entries.put("japicmp-maven-plugin", candidates("japicmp-maven-plugin", "0.23.1", "0.21.2"));
-    return Map.copyOf(entries);
+    return ManagedPluginCandidate.byTool(ROWS);
   }
 
-  private static List<ManagedPluginCandidate> candidates(
-      final String artifact, final String current, final String legacy) {
-    final int currentJava =
-        "spotless-maven-plugin".equals(artifact) || "sonar-maven-plugin".equals(artifact)
-            ? JAVA_11
-            : JAVA_8;
-    return List.of(
-        new ManagedPluginCandidate(
-            artifact, current, currentJava, NEWEST_SUPPORTED_JAVA, "3.6", "default"),
-        new ManagedPluginCandidate(
-            artifact, legacy, JAVA_8, NEWEST_SUPPORTED_JAVA, "3.5", "legacy"));
+  private static ManagedPluginCandidate row(
+      final String tool, final String version, final int minimumJdk, final int maximumJdk) {
+    return new ManagedPluginCandidate(tool, version, minimumJdk, maximumJdk, MAVEN, "measured");
   }
 }

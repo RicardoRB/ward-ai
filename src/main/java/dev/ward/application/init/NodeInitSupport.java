@@ -40,7 +40,8 @@ final class NodeInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public String ciSetup(final Project project, final PackageManifest manifest) {
+  public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
+    final PackageManifest manifest = facts.manifest();
     return NodeCiSetup.steps(project, manifest.packageManager());
   }
 

@@ -34,6 +34,8 @@ per check:
 |---|---|---|
 | `project` | `OK` / `ERROR` | A supported project was detected. When none is found, only the `ward` check runs after it. |
 | `maven` / `gradle` | `OK` / `ERROR` | For Java and Kotlin projects: the detected build tool's wrapper exists in the project root, or its executable (`mvn` / `gradle`) is on `PATH`. |
+| `jdk` | `OK` / `WARNING` | For Java and Kotlin projects: the JDK that runs the build, read from `mvn --version` or the Gradle launcher JVM, as [init reads it](/commands/init/#java-compatibility). `WARNING` means the JDK is below 8 or above 25 (Ward supports Java 8 to 25 and may not work with it), or that neither the build tool nor its wrapper reported a Java version. The warning does not change the exit status. |
+| a gate id, such as `spotbugs` | `WARNING` | For each gate `ward.toml` enables whose version pinned in the build file does not run on that JDK, for example `spotbugs-maven-plugin 4.9.7.0 runs on JDK 11 to 25; this project builds on JDK 8.` Re-run `ward init` to choose a compatible version. Not reported when the JDK is unknown, and it does not change the exit status. |
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
 | `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |

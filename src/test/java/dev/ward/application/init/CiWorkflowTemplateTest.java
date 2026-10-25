@@ -18,10 +18,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CiWorkflowTemplateTest {
-  private static final Project MAVEN =
+  static final Project MAVEN =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
-  private static List<InitGateOption> gates(final String... ids) {
+  static List<InitGateOption> gates(final String... ids) {
     return java.util.Arrays.stream(ids)
         .map(id -> new InitGateOption(id, id, List.of(id), true, ""))
         .toList();

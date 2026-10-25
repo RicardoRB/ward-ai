@@ -103,7 +103,8 @@ class PomToolVersionUpdateTest {
       final int javaVersion, final Map<String, String> plugins) {
     return new CompatibilityProjectSnapshot(
         project(Path.of(".")),
-        new ToolchainSnapshot(javaVersion, Optional.of("3.9.0"), Optional.empty(), Framework.NONE),
+        new ToolchainSnapshot(
+            Optional.of(javaVersion), Optional.empty(), Optional.of("3.9.0"), Framework.NONE),
         plugins);
   }
 }

@@ -7,6 +7,7 @@ import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,14 @@ final class CiWorkflowTemplate {
   static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
+
+  /**
+   * What the setup steps read from the project.
+   *
+   * @param manifest the Node package manifest, or {@link PackageManifest#EMPTY}
+   * @param runtimeJdk the JDK that runs a JVM build, when init could read it
+   */
+  record ProjectFacts(PackageManifest manifest, Optional<Integer> runtimeJdk) {}
 
   /**
    * Returns the workflow for {@code provider}, installing the tools the selected gates run.
@@ -46,12 +55,23 @@ final class CiWorkflowTemplate {
       final List<InitGateOption> gates,
       final String wardVersion,
       final PackageManifest manifest) {
+    return render(
+        provider, project, gates, wardVersion, new ProjectFacts(manifest, Optional.empty()));
+  }
+
+  /** Returns the workflow for the project's {@code facts}: its manifest and runtime JDK. */
+  static OwnedSection render(
+      final String provider,
+      final Project project,
+      final List<InitGateOption> gates,
+      final String wardVersion,
+      final ProjectFacts facts) {
     if (!GITHUB.equals(provider)) {
       throw new WardException(
           "Unknown CI provider '" + provider + "'. Supported providers: " + GITHUB);
     }
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
-    final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), manifest));
+    final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), facts));
     body.append(tools(ids));
     if (ids.contains("trivy")) {
       body.append(
@@ -102,10 +122,7 @@ final class CiWorkflowTemplate {
   }
 
   private static String header(
-      final Set<String> ids,
-      final Project project,
-      final String file,
-      final PackageManifest manifest) {
+      final Set<String> ids, final Project project, final String file, final ProjectFacts facts) {
     final boolean nested = project.nested();
     final String paths =
         nested
@@ -144,7 +161,7 @@ final class CiWorkflowTemplate {
         + "      - uses: actions/checkout@v5\n"
         // gitleaks scans the whole history.
         + (ids.contains("gitleaks") ? "        with:\n          fetch-depth: 0\n" : "")
-        + InitToolchains.support(project).ciSetup(project, manifest);
+        + InitToolchains.support(project).ciSetup(project, facts);
   }
 
   private static String tools(final Set<String> ids) {

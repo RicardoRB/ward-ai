@@ -54,7 +54,10 @@ class PomToolConfiguratorValidationTest {
                 new CompatibilityProjectSnapshot(
                     project(Path.of(".")),
                     new ToolchainSnapshot(
-                        JAVA_17, Optional.of("3.9.0"), Optional.empty(), Framework.NONE),
+                        Optional.of(JAVA_17),
+                        Optional.empty(),
+                        Optional.of("3.9.0"),
+                        Framework.NONE),
                     Map.of()));
     final Predicate<Object> approveAll = ignored -> true;
 

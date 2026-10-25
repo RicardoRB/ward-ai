@@ -14,8 +14,6 @@ final class GradleQualityBlocks {
   static final String PMD_RULESET = "config/pmd-ruleset.xml";
   static final String COVERAGE_TASK = "jacocoTestCoverageVerification";
   static final String PITEST_JUNIT5 = "junit5PluginVersion";
-  static final String ARCHUNIT_VERSION = "1.3.0";
-  private static final String PITEST_VERSION = "1.30.1";
   private static final String PITEST_JUNIT5_VERSION = "1.2.3";
   private static final Map<String, Double> DEFAULT_MINIMUMS = Map.of("LINE", 0.80);
   private static final int LIMIT_LENGTH = 128;
@@ -28,8 +26,8 @@ final class GradleQualityBlocks {
         : "tasks.named('check') { dependsOn 'checkstyleMain' }";
   }
 
-  static String archunit(final boolean kotlin) {
-    final String coordinates = "com.tngtech.archunit:archunit-junit5:" + ARCHUNIT_VERSION;
+  static String archunit(final boolean kotlin, final String version) {
+    final String coordinates = "com.tngtech.archunit:archunit-junit5:" + version;
     return kotlin
         ? "dependencies { testImplementation(\"" + coordinates + "\") }"
         : "dependencies { testImplementation '" + coordinates + "' }";
@@ -53,8 +51,10 @@ final class GradleQualityBlocks {
    * Like the Maven plugins init configures, Checkstyle and PMD analyze main sources only, so the
    * {@code check} task does not apply production rules to tests.
    */
-  static String checkstyle(final boolean kotlin) {
-    return "checkstyle {\n    configFile = file("
+  static String checkstyle(final boolean kotlin, final String version) {
+    return "checkstyle {\n"
+        + GradleEngineBlocks.toolVersion(kotlin, version)
+        + "    configFile = file("
         + quote(kotlin, CHECKSTYLE_CONFIG)
         + ")\n"
         + mainSourceSetOnly(kotlin)
@@ -63,8 +63,10 @@ final class GradleQualityBlocks {
   }
 
   /** {@code ruleSets} is cleared so Gradle's default rule set does not run beside the preset's. */
-  static String pmd(final boolean kotlin) {
-    return "pmd {\n    ruleSetFiles = files("
+  static String pmd(final boolean kotlin, final String version) {
+    return "pmd {\n"
+        + GradleEngineBlocks.toolVersion(kotlin, version)
+        + "    ruleSetFiles = files("
         + quote(kotlin, PMD_RULESET)
         + ")\n    ruleSets = "
         + (kotlin ? "listOf()" : "[]")
@@ -80,12 +82,14 @@ final class GradleQualityBlocks {
         : "    sourceSets = [project.sourceSets.main]\n";
   }
 
-  static String spotless() {
-    return "spotless {\n    java {\n        googleJavaFormat()\n    }\n}";
+  static String spotless(final boolean kotlin, final String formatterVersion) {
+    return "spotless {\n    java {\n        googleJavaFormat("
+        + quote(kotlin, formatterVersion)
+        + ")\n    }\n}";
   }
 
   /** One limit per counter, the preset's minimums or a line ratio of 0.80 without a preset. */
-  static String coverage(final boolean kotlin, final QualityPreset preset) {
+  static String coverage(final boolean kotlin, final QualityPreset preset, final String version) {
     final Map<String, Double> minimums =
         new TreeMap<>(preset == null ? DEFAULT_MINIMUMS : preset.rules().jacocoMinimums());
     final StringBuilder limits = new StringBuilder(LIMIT_LENGTH * minimums.size());
@@ -98,7 +102,10 @@ final class GradleQualityBlocks {
                 .append(kotlin ? "\"" + minimum + "\".toBigDecimal()" : minimum.toString())
                 .append("\n            }\n"));
     // The Kotlin DSL reaches tasks through their type-safe accessor on tasks.
-    return (kotlin ? "tasks." : "")
+    return "jacoco {\n"
+        + GradleEngineBlocks.toolVersion(kotlin, version)
+        + "}\n"
+        + (kotlin ? "tasks." : "")
         + COVERAGE_TASK
         + " {\n    violationRules {\n        rule {\n"
         + limits
@@ -109,10 +116,10 @@ final class GradleQualityBlocks {
    * PIT needs its JUnit 5 plugin to find JUnit Jupiter tests; the Gradle plugin's default PIT
    * cannot read Java 25 class files, so the engine version is pinned.
    */
-  static String pitest(final boolean kotlin, final QualityPreset preset) {
+  static String pitest(final boolean kotlin, final QualityPreset preset, final String version) {
     final Integer threshold = preset == null ? null : preset.rules().mutationThreshold();
     return "pitest {\n    pitestVersion = "
-        + quote(kotlin, PITEST_VERSION)
+        + quote(kotlin, version)
         + "\n    "
         + PITEST_JUNIT5
         + " = "
@@ -121,7 +128,7 @@ final class GradleQualityBlocks {
         + "\n}";
   }
 
-  private static String quote(final boolean kotlin, final String value) {
+  static String quote(final boolean kotlin, final String value) {
     return kotlin ? "\"" + value + "\"" : "'" + value + "'";
   }
 }

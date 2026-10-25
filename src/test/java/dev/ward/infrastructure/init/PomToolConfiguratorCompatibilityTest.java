@@ -1,10 +1,10 @@
 package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.CompatibilityProjectSnapshot;
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.ToolchainSnapshot;
 import dev.ward.domain.project.BuildTool;
@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PomToolConfiguratorCompatibilityTest {
+  private static final String POM = "pom.xml";
   private static final int JAVA_17 = 17;
   // Older than every managed plugin supports.
   private static final int JAVA_7 = 7;
@@ -34,7 +35,7 @@ class PomToolConfiguratorCompatibilityTest {
 
     configurator.apply(project, List.of(gate("format")), null, finding -> true);
 
-    assertThat(Files.readString(root.resolve("pom.xml"))).contains("<version>3.10.3</version>");
+    assertThat(Files.readString(root.resolve(POM))).contains("<version>3.10.3</version>");
   }
 
   @Test
@@ -49,47 +50,56 @@ class PomToolConfiguratorCompatibilityTest {
     final PomToolConfigurator configurator =
         new PomToolConfigurator(
             ignored -> snapshot(JAVA_17, Map.of("spotless-maven-plugin", "1.0.0")));
-    final String original = Files.readString(root.resolve("pom.xml"));
+    final String original = Files.readString(root.resolve(POM));
 
     final BuildFileChange change =
         configurator.apply(project, List.of(gate("format")), null, ignored -> false);
 
-    assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(original);
+    assertThat(Files.readString(root.resolve(POM))).isEqualTo(original);
     assertThat(change.warnings()).anyMatch(message -> message.contains("declined"));
   }
 
   @Test
-  void rejectsProjectWithNoCompatibleVersionBeforeWriting(@TempDir final Path root)
+  void omitsAGateWithNoVersionForTheRuntimeJdkWithoutWriting(@TempDir final Path root)
       throws IOException {
     writePom(root, "<project><build/></project>");
     final Project project = project(root);
     final PomToolConfigurator configurator =
         new PomToolConfigurator(ignored -> snapshot(JAVA_7, Map.of()));
-    final String original = Files.readString(root.resolve("pom.xml"));
+    final String original = Files.readString(root.resolve(POM));
 
-    assertThatThrownBy(
-            () -> configurator.apply(project, List.of(gate("format")), null, ignored -> true))
-        .hasMessageContaining("No catalog version");
-    assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(original);
+    final BuildFileChange change =
+        configurator.apply(project, List.of(gate("format")), null, ignored -> true);
+
+    assertThat(Files.readString(root.resolve(POM))).isEqualTo(original);
+    assertThat(change.warnings())
+        .containsExactly(
+            "Ward supports Java 8 to 25; the project builds on JDK 7, and Ward may not work with"
+                + " it.",
+            "format omitted: spotless-maven-plugin needs JDK 8+; this project builds on JDK 7");
+    assertThat(configurator.omissions(project, List.of("format", "pmd")))
+        .extracting(GateOmission::gate)
+        .containsExactly("pmd", "format");
   }
 
-  private static CompatibilityProjectSnapshot snapshot(
+  static CompatibilityProjectSnapshot snapshot(
       final int javaVersion, final Map<String, String> plugins) {
     return new CompatibilityProjectSnapshot(
         new Project(Path.of("."), Language.JAVA, BuildTool.MAVEN, Framework.NONE),
-        new ToolchainSnapshot(javaVersion, Optional.of("3.9.0"), Optional.empty(), Framework.NONE),
+        new ToolchainSnapshot(
+            Optional.of(javaVersion), Optional.empty(), Optional.of("3.9.0"), Framework.NONE),
         plugins);
   }
 
-  private static Project project(final Path root) {
+  static Project project(final Path root) {
     return new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
   }
 
-  private static InitGateOption gate(final String id) {
+  static InitGateOption gate(final String id) {
     return new InitGateOption(id, id, List.of("mvn", id), true, "available");
   }
 
-  private static void writePom(final Path root, final String content) throws IOException {
-    Files.writeString(root.resolve("pom.xml"), content);
+  static void writePom(final Path root, final String content) throws IOException {
+    Files.writeString(root.resolve(POM), content);
   }
 }

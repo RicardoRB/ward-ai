@@ -110,8 +110,9 @@ final class InitPlanner {
       final List<InitGateOption> gates,
       final QualityPreset preset) {
     final Optional<String> existing = files.configuration().read(file);
+    final List<String> notes = OmissionNotes.of(catalog.get(), project, preset);
     if (existing.isEmpty()) {
-      return new PlannedFileChange(file, PlannedFileChange.Action.CREATE);
+      return new PlannedFileChange(file, PlannedFileChange.Action.CREATE, notes);
     }
     return new PlannedFileChange(
         file,
@@ -119,6 +120,7 @@ final class InitPlanner {
                     gates, preset, project, catalog.get().openSpecDirectories().root(project))
                 .equals(existing.get())
             ? PlannedFileChange.Action.UNCHANGED
-            : PlannedFileChange.Action.MODIFY);
+            : PlannedFileChange.Action.MODIFY,
+        notes);
   }
 }

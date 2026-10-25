@@ -1,0 +1,17 @@
+jdk,buildtool,dsl,preset
+8,maven,,strict
+11,maven,,strict
+17,maven,,strict
+21,maven,,strict
+25,maven,,strict
+8,maven,,standard
+25,maven,,standard
+8,gradle,groovy,strict
+11,gradle,groovy,strict
+17,gradle,groovy,strict
+21,gradle,groovy,strict
+25,gradle,groovy,strict
+8,gradle,groovy,standard
+25,gradle,groovy,standard
+8,gradle,kotlin,strict
+25,gradle,kotlin,strict

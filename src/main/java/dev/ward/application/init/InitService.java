@@ -11,6 +11,7 @@ import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.ToolInstaller;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -193,12 +194,10 @@ public class InitService {
     } else {
       created = files.configuration().create(file, content);
     }
-    return changes.result(
-        file,
-        created,
-        overwrite,
-        gates,
-        catalog.get().openSpecDirectories().warnings(project, gates));
+    final List<String> warnings =
+        new ArrayList<>(OmissionNotes.of(catalog.get(), project, selection.preset()));
+    warnings.addAll(catalog.get().openSpecDirectories().warnings(project, gates));
+    return changes.result(file, created, overwrite, gates, warnings);
   }
 
   // Cleanup is best effort: any failure here must not hide the original setup failure.

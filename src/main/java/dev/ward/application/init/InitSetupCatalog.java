@@ -70,7 +70,6 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
    * {@code configurations} reads the configuration being replaced, and {@code wardVersion} is the
    * release a generated CI workflow installs.
    */
-  @Inject
   public InitSetupCatalog(
       final EnvironmentInspection environment,
       final NodeInputs node,
@@ -78,6 +77,19 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final WardConfigurationReader configurations,
       @Named("ward.version") final String wardVersion) {
     this(InitInputs.of(environment, node), qualityHooks, configurations, wardVersion);
+  }
+
+  /**
+   * Creates the catalog that Dagger injects. {@code ports} also read the project's runtime JDK, so
+   * the catalog omits the gates it cannot run.
+   */
+  @Inject
+  public InitSetupCatalog(
+      final InitPorts ports,
+      final QualityHookGeneration qualityHooks,
+      final WardConfigurationReader configurations,
+      @Named("ward.version") final String wardVersion) {
+    this(InitInputs.of(ports), qualityHooks, configurations, wardVersion);
   }
 
   private InitSetupCatalog(
@@ -117,7 +129,12 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
   OwnedSection ciWorkflow(
       final String provider, final Project project, final List<InitGateOption> gates) {
     return CiWorkflowTemplate.render(
-        provider, project, gates, wardVersion, manifests.read(project.root()));
+        provider,
+        project,
+        gates,
+        wardVersion,
+        new CiWorkflowTemplate.ProjectFacts(
+            manifests.read(project.root()), inputs.runtimeJdk(project)));
   }
 
   QualityHookGeneration qualityHooks() {

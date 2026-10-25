@@ -2,6 +2,8 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.QualityPreset;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
@@ -25,10 +27,10 @@ final class PomTools {
               <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.44.4</version>
+                <version>3.10.3</version>
                 <configuration>
                   <java>
-                    <googleJavaFormat/>
+                    <googleJavaFormat><version>ENGINE_VERSION</version></googleJavaFormat>
                   </java>
                 </configuration>
               </plugin>
@@ -63,6 +65,7 @@ final class PomTools {
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.6.0</version>
+                <dependencies><dependency><groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>ENGINE_VERSION</version></dependency></dependencies>
               </plugin>
             """;
   private static final String SPOTBUGS_PLUGIN =
@@ -86,7 +89,7 @@ final class PomTools {
               <dependency>
                 <groupId>com.tngtech.archunit</groupId>
                 <artifactId>archunit-junit5</artifactId>
-                <version>1.3.0</version>
+                <version>1.5.1</version>
                 <scope>test</scope>
               </dependency>
             """;
@@ -160,10 +163,19 @@ final class PomTools {
               <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.26.0</version>
+                <version>3.28.0</version>
                 <configuration><analysisCache>true</analysisCache></configuration>
               </plugin>
             """;
+
+  /** Where an engine version goes in a snippet. */
+  static final String ENGINE_VERSION = "ENGINE_VERSION";
+
+  /** The engine each plugin carries, keyed by plugin artifact, with its default version. */
+  static final Map<String, Engine> ENGINES =
+      Map.of(
+          CHECKSTYLE, new Engine("checkstyle", "10.20.2"),
+          SPOTLESS, new Engine("google-java-format", "1.36.1"));
 
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
@@ -189,6 +201,25 @@ final class PomTools {
 
   private PomTools() {}
 
+  /** Returns whether {@code pom} declares {@code artifactId}. */
+  static boolean declares(final String pom, final String artifactId) {
+    return pom.contains("<artifactId>" + artifactId + "</artifactId>");
+  }
+
+  /** Declarations for the selected tools that a run added to the pom. */
+  static List<PomDeclarationValidator.Declaration> addedDeclarations(
+      final String original, final String updated, final Set<String> selected) {
+    return TOOLS.stream()
+        .filter(tool -> selected.contains(tool.gate()))
+        .filter(tool -> !declares(original, tool.artifact()))
+        .filter(tool -> declares(updated, tool.artifact()))
+        .map(tool -> new PomDeclarationValidator.Declaration(tool.artifact(), tool.dependency()))
+        .toList();
+  }
+
+  /** A tool a plugin runs, such as the Checkstyle engine, and the version pinned by default. */
+  record Engine(String name, String version) {}
+
   /**
    * A Maven tool added for a selected gate. Its preset snippet, when present, replaces the default
    * snippet under a quality preset.
@@ -213,15 +244,25 @@ final class PomTools {
       return new Tool(gate, artifact, snippet, presetSnippet, false);
     }
 
-    String addTo(final String pom, final QualityPreset preset, final String selectedVersion) {
+    String addTo(
+        final String pom,
+        final QualityPreset preset,
+        final String selectedVersion,
+        final String engineVersion) {
       final String chosen =
           preset == null || presetSnippet == null ? snippet : presetSnippet.apply(preset);
-      final String versioned =
+      final String pinned =
           selectedVersion == null
               ? chosen
               : chosen.replaceFirst(
                   "<version>[^<]+</version>",
                   Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
+      final Engine engine = ENGINES.get(artifact);
+      final String versioned =
+          engine == null
+              ? pinned
+              : pinned.replace(
+                  ENGINE_VERSION, engineVersion == null ? engine.version() : engineVersion);
       return dependency ? PomXml.addDependency(pom, versioned) : PomXml.addPlugin(pom, versioned);
     }
 
