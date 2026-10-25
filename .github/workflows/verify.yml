@@ -135,6 +135,84 @@ jobs:
             target/ward.sarif
           if-no-files-found: ignore
 
+  # Reads the Node versions from the matrix data and skips the matrix for pull requests that change
+  # only website, openspec or Markdown files.
+  node-matrix-versions:
+    name: Node matrix versions
+    runs-on: ubuntu-24.04
+    outputs:
+      nodes: ${{ steps.versions.outputs.nodes }}
+      run: ${{ steps.versions.outputs.run }}
+    steps:
+      # Full history so the base branch is available for the documentation-only check.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Read Node versions and decide whether the matrix runs
+        id: versions
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          nodes=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1 | sort -un \
+            | jq -R -sc 'split("\n") | map(select(length > 0))')
+          echo "nodes=$nodes" >> "$GITHUB_OUTPUT"
+          run=true
+          if [ "$EVENT" = pull_request ]; then
+            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            # No changed path outside the documentation patterns means the matrix can be skipped.
+            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
+              run=false
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Node versions: $nodes, matrix runs: $run"
+
+  # One job per Node version. Each runs only the cells whose row names that version.
+  node-matrix:
+    name: Node ${{ matrix.node }} compatibility matrix
+    needs: node-matrix-versions
+    if: needs.node-matrix-versions.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ${{ fromJSON(needs.node-matrix-versions.outputs.nodes) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+
+      # Keyed on the catalog so a pinned version change refetches the packages.
+      - name: Restore npm cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/NodePackageCatalog.java') }}
+
+      - name: Build Ward
+        run: ./mvnw -B -q package -DskipTests
+
+      - name: Run matrix cells for Node ${{ matrix.node }}
+        run: >-
+          ./mvnw -B
+          -Dtest=NodeCompatibilityMatrixTest
+          -Dward.node.matrix=${{ matrix.node }}
+          -Dward.node.matrix.jar=target/ward.jar
+          test
+
   native:
     name: Native checks (${{ matrix.os }})
     needs: quality

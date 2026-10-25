@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -46,6 +47,44 @@ class DoctorNodeTest {
         .extracting(DoctorService.Finding::message)
         .containsExactly("node is required on PATH.");
     assertThat(status(findings, "npm")).isEqualTo(DoctorService.Status.OK);
+  }
+
+  @Test
+  void nodeTwentyDeclaredWarnsWithoutFailing() throws IOException {
+    Files.writeString(root.resolve(PACKAGE_JSON), "{}");
+    Files.writeString(root.resolve(".nvmrc"), "20");
+
+    final List<DoctorService.Finding> findings = diagnose(NODE, "npm");
+
+    assertThat(status(findings, "node-version")).isEqualTo(DoctorService.Status.WARNING);
+    assertThat(findings)
+        .filteredOn(finding -> "node-version".equals(finding.name()))
+        .extracting(DoctorService.Finding::message)
+        .singleElement(InstanceOfAssertFactories.STRING)
+        .contains("Node 20", "Node 22 and 24", "may not work");
+    assertThat(status(findings, NODE)).isEqualTo(DoctorService.Status.OK);
+    assertThat(status(findings, "npm")).isEqualTo(DoctorService.Status.OK);
+  }
+
+  @Test
+  void supportedNodeVersionDoesNotWarn() throws IOException {
+    Files.writeString(root.resolve(PACKAGE_JSON), "{}");
+    Files.writeString(root.resolve(".nvmrc"), "24");
+
+    final List<DoctorService.Finding> findings = diagnose(NODE, "npm");
+
+    assertThat(names(findings)).doesNotContain("node-version");
+  }
+
+  @Test
+  void bunProjectWithOldVersionFileDoesNotWarn() throws IOException {
+    Files.writeString(root.resolve(PACKAGE_JSON), "{}");
+    Files.writeString(root.resolve("bun.lock"), "");
+    Files.writeString(root.resolve(".nvmrc"), "20");
+
+    final List<DoctorService.Finding> findings = diagnose("bun");
+
+    assertThat(names(findings)).doesNotContain("node-version");
   }
 
   @Test

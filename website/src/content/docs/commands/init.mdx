@@ -370,6 +370,9 @@ Before writing, init checks each package it would add against the project's Node
   8.71.1 supports TypeScript `>=4.8.4 <6.1.0`. Pin TypeScript 6.0 or lower, or skip `eslint`.
 - Node is compared on its major version. When a range needs a later minor, such as `^22.13.0` for
   ESLint on Node 22, the plan notes the minimum version.
+- Ward supports Node 22 and 24. For a project that declares an older Node version, init shows a
+  warning that Ward may not work with it. The warning does not stop init or change the files it
+  writes, and Bun projects do not get it.
 
 ### Generated files
 

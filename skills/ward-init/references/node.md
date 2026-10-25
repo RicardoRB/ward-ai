@@ -93,6 +93,9 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   no, do not apply; offer a custom selection without the gates that need missing packages.
 - `needs Node <version> or later`: the range needs a later minor than detection can see. Ask
   which Node version the project and CI run.
+- `Ward supports Node 22 and 24` warning: the declared Node version is below 22 (not Bun). It does
+  not block init. Tell the user that Ward may not work with that Node version, and ask whether the
+  project and CI can run Node 22 or 24.
 - `conflict package.json` with `INCOMPATIBLE <package>` lines: the project's Node or TypeScript
   version is outside the package's supported range. Init applies nothing, and no option overrides
   it. Explain the range and the choices (upgrade Node, pin another TypeScript version, or drop
