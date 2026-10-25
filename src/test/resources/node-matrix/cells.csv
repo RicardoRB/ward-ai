@@ -21,3 +21,7 @@ node,fixture,linting,preset,version
 24,typescript,eslint,strict,10.13.0
 24,typescript,biome,strict,2.3.0
 24,typescript,biome,strict,2.6.3
+24,nextjs,eslint,strict,9.22.0
+24,vite-react,eslint,strict,9.22.0
+24,nestjs,eslint,strict,
+24,express,eslint,strict,

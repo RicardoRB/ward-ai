@@ -38,7 +38,7 @@ class NodeMatrixCellsTest {
                                             node + "," + fixture + "," + linting + ",strict,")))
             .toList();
 
-    assertThat(rowsEndingWith(",strict,")).containsExactlyInAnyOrderElementsOf(expected);
+    assertThat(plainRowsEndingWith(",strict,")).containsExactlyInAnyOrderElementsOf(expected);
   }
 
   @Test
@@ -60,8 +60,23 @@ class NodeMatrixCellsTest {
                                                 + version)))
             .toList();
 
-    assertThat(rows().stream().filter(row -> !row.endsWith(",")).toList())
+    assertThat(
+            rows().stream()
+                .filter(row -> row.contains(",typescript,") && !row.endsWith(","))
+                .toList())
         .containsExactlyInAnyOrderElementsOf(expected);
+  }
+
+  @Test
+  void frameworkCellsRunStrictOnNode24WithEslint() throws IOException {
+    assertThat(rows().stream().filter(row -> row.startsWith("24,") && row.contains(",strict,")))
+        .as("framework rows")
+        .containsAll(
+            List.of(
+                "24,nextjs,eslint,strict,9.22.0",
+                "24,vite-react,eslint,strict,9.22.0",
+                "24,nestjs,eslint,strict,",
+                "24,express,eslint,strict,"));
   }
 
   @Test
@@ -78,5 +93,12 @@ class NodeMatrixCellsTest {
   /** The rows whose last columns match, so a pinned row ends with its empty version column. */
   private static List<String> rowsEndingWith(final String suffix) throws IOException {
     return rows().stream().filter(row -> row.endsWith(suffix)).toList();
+  }
+
+  /** The rows of the plain TypeScript and JavaScript fixtures, which the matrix's sets cover. */
+  private static List<String> plainRowsEndingWith(final String suffix) throws IOException {
+    return rowsEndingWith(suffix).stream()
+        .filter(row -> FIXTURES.contains(row.split(",", -1)[1]))
+        .toList();
   }
 }
