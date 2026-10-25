@@ -35,6 +35,7 @@ per check:
 | `project` | `OK` / `ERROR` | A supported project was detected. When none is found, only the `ward` check runs after it. |
 | `maven` / `gradle` | `OK` / `ERROR` | For Java and Kotlin projects: the detected build tool's wrapper exists in the project root, or its executable (`mvn` / `gradle`) is on `PATH`. |
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
+| `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |
 | Other build tools, such as `cargo` or `poetry` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |

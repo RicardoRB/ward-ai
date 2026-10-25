@@ -1,0 +1,15 @@
+node,fixture,linting,preset
+22,typescript,eslint,strict
+22,typescript,biome,strict
+22,javascript-esm,eslint,strict
+22,javascript-esm,biome,strict
+22,javascript-commonjs,eslint,strict
+22,javascript-commonjs,biome,strict
+24,typescript,eslint,strict
+24,typescript,biome,strict
+24,javascript-esm,eslint,strict
+24,javascript-esm,biome,strict
+24,javascript-commonjs,eslint,strict
+24,javascript-commonjs,biome,strict
+22,typescript,eslint,standard
+22,typescript,biome,standard

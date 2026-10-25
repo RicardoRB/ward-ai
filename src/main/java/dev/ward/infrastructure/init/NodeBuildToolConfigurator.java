@@ -8,6 +8,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import dev.ward.domain.project.NodeSupport;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
@@ -47,7 +48,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     final PackageManifest manifest = manifests.read(project.root());
     final List<NodePackageCatalog.Package> missing =
         NodePackageCatalog.missing(project.language(), gates, manifest);
-    final List<String> warnings = new ArrayList<>(bunfigWarning(project, gates));
+    final List<String> warnings = new ArrayList<>(NodeSupport.warning(project).stream().toList());
+    warnings.addAll(bunfigWarning(project, gates));
     final NodeCompatibility compatibility =
         NodeCompatibility.check(
             project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
@@ -89,6 +91,7 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final boolean approved) {
     final Path file = project.root().resolve(PACKAGE_JSON);
+    final List<String> nodeWarning = NodeSupport.warning(project).stream().toList();
     final PackageManifest manifest = manifests.read(project.root());
     final List<NodePackageCatalog.Package> missing =
         NodePackageCatalog.missing(project.language(), gates, manifest);
@@ -96,18 +99,20 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
         NodeCompatibility.check(
             project, manifest, missing, gates.stream().anyMatch(gate -> "biome".equals(gate.id())));
     if (compatibility.incompatible()) {
-      return new PlannedFileChange(
-          file,
-          PlannedFileChange.Action.CONFLICT,
-          compatibility.findings().stream()
-              .map(finding -> "INCOMPATIBLE " + finding.artifactId() + ": " + finding.message())
-              .toList());
+      final List<String> details = new ArrayList<>(nodeWarning);
+      compatibility
+          .findings()
+          .forEach(
+              finding ->
+                  details.add("INCOMPATIBLE " + finding.artifactId() + ": " + finding.message()));
+      return new PlannedFileChange(file, PlannedFileChange.Action.CONFLICT, details);
     }
     if (missing.isEmpty()) {
-      return new PlannedFileChange(
-          file, PlannedFileChange.Action.UNCHANGED, bunfigWarning(project, gates));
+      final List<String> details = new ArrayList<>(nodeWarning);
+      details.addAll(bunfigWarning(project, gates));
+      return new PlannedFileChange(file, PlannedFileChange.Action.UNCHANGED, details);
     }
-    final List<String> details = new ArrayList<>();
+    final List<String> details = new ArrayList<>(nodeWarning);
     missing.forEach(tool -> details.add("add devDependency " + tool.name() + " " + tool.version()));
     details.addAll(compatibility.notes());
     details.addAll(bunfigWarning(project, gates));
