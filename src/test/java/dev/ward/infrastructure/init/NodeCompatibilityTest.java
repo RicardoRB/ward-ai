@@ -70,6 +70,17 @@ class NodeCompatibilityTest {
   }
 
   @Test
+  void nodeTooOldForDependencyCruiserIsIncompatible() {
+    assertThat(check("20", PackageManifest.EMPTY, "dependency-cruiser").findings())
+        .singleElement()
+        .satisfies(
+            finding -> {
+              assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
+              assertThat(finding.message()).contains("^22.0.0 || ^24.0.0 || >=26.0.0", "Node 20");
+            });
+  }
+
+  @Test
   void typescriptTooNewForTypescriptEslintIsIncompatible() {
     final PackageManifest manifest = new PackageManifest(Map.of("typescript", "7.0.2"), null, null);
 

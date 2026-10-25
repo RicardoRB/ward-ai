@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.CompatibilityFinding;
@@ -64,7 +65,7 @@ final class InitChanges {
     }
     pomChange = files.buildTools().apply(project, gates, preset, approval);
     ruleFileChange = files.ruleFiles().apply(project, preset, gates);
-    if (gates.stream().anyMatch(gate -> "archunit".equals(gate.id()))) {
+    if (gates.stream().anyMatch(gate -> ArchitectureGates.IDS.contains(gate.id()))) {
       architectureTest =
           files
               .architectureTests()

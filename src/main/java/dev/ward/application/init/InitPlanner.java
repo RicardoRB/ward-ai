@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
@@ -10,6 +11,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -81,7 +83,7 @@ final class InitPlanner {
 
   private List<PlannedFileChange> architectureFiles(
       final Project project, final InitSelection selection, final List<String> existing) {
-    if (!selection.gates().contains("archunit")) {
+    if (Collections.disjoint(selection.gates(), ArchitectureGates.IDS)) {
       return List.of();
     }
     if (!existing.isEmpty()) {

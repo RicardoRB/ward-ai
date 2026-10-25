@@ -44,7 +44,11 @@ final class NodeAgentRules {
             "stryker",
             "- Mutation testing (Stryker): `{command}` in `ci`"
                 + strykerMinimum(preset, owned)
-                + ".");
+                + ".",
+            "dependency-cruiser",
+            "- Dependency rules (dependency-cruiser): `{command}` must pass. Fix the import that"
+                + " breaks an architecture rule; do not edit or weaken the `.dependency-cruiser.*`"
+                + " rules.");
     return gates.stream()
         .filter(gate -> rows.containsKey(gate.id()))
         .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))

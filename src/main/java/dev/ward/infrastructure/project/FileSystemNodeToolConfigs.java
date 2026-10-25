@@ -36,7 +36,9 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
           "stryker",
           "{stryker,.stryker}.{conf,config}.*",
           "eslint",
-          "{eslint.config.*,.eslintrc*}");
+          "{eslint.config.*,.eslintrc*}",
+          "dependency-cruiser",
+          ".dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject

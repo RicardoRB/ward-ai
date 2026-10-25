@@ -3,11 +3,13 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.application.init.PreviousChoices;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +23,6 @@ final class InitQuestions {
   static final String GATES_MISSING =
       "No gate selection given. In non-interactive mode pass --preset or --gate, or --yes to"
           + " accept defaults.";
-  private static final String ARCHUNIT = "archunit";
   private static final int STANDARD_CHOICE = 1;
   private static final int STRICT_CHOICE = 2;
   private static final int CUSTOM_CHOICE = 3;
@@ -149,8 +150,10 @@ final class InitQuestions {
   }
 
   private String architecture(final List<String> chosenGates, final List<String> gates) {
-    if (!chosenGates.contains(ARCHUNIT)) {
-      return answers.architecture() == null && useDefaults && gates.contains(ARCHUNIT)
+    if (Collections.disjoint(chosenGates, ArchitectureGates.IDS)) {
+      return answers.architecture() == null
+              && useDefaults
+              && !Collections.disjoint(gates, ArchitectureGates.IDS)
           ? DEFAULT_ARCHITECTURE
           : answers.architecture();
     }

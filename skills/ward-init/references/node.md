@@ -52,7 +52,8 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   - `standard`: for TypeScript it selects `tsc`, the test gate, `prettier`, and `eslint`; for
     JavaScript the same without `tsc`, which is not offered. The test gate fails below 70% line
     coverage.
-  - `strict`: the same gates plus `stryker` in `ci`. Tests fail below 85% line and 75% branch
+  - `strict`: the same gates plus `stryker` in `ci` and `dependency-cruiser` in `pre-push` and `ci`.
+    Tests fail below 85% line and 75% branch
     coverage (Bun: lines only), Stryker fails below a 60% mutation score, and a generated
     TypeScript ESLint config uses `strict-type-checked`, which needs type information from
     `tsconfig.json`.
@@ -62,7 +63,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
     `strict-type-checked`; offer `ward-tune` for that.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
   Stryker runner plugin), `semgrep` (ruleset `p/typescript`, or `p/javascript` for JavaScript;
-  needs network access), `gitleaks`, `trivy`, and `zap`. `dependency-cruiser` is not offered yet.
+  needs network access), `gitleaks`, `trivy`, and `zap`. `dependency-cruiser` checks import
+  boundaries for the architecture style, and selecting it asks for the style (Layered, Hexagonal,
+  or Clean, with `layered` as the default; `--architecture` answers it). `standard` offers it
+  without selecting it.
 - **Probe.** For tool availability, probe only the gates init offers here:
 
   ```sh
@@ -97,6 +101,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   user's own Stryker thresholds apply.
 - `stryker` adds `@stryker-mutator/core` and, for Vitest or Jest, its runner plugin. An
   `INCOMPATIBLE @stryker-mutator/core` finding means Node is older than 22.
+- `create .dependency-cruiser.mjs`: Ward's config that forbids the style's cross-layer imports, plus
+  circular dependencies with `strict`. `keep .dependency-cruiser.cjs` (or another dependency-cruiser
+  config) means init writes nothing and the gate reads that file. `dependency-cruiser` adds
+  `dependency-cruiser` 18.6.0 and, in TypeScript, `typescript` when it is missing.
 - For JavaScript, the `eslint` gate adds `eslint`, `@eslint/js`, and `globals`, and no
   `typescript` or `typescript-eslint`. A plan that adds either for a JavaScript project is wrong:
   stop and report it.
