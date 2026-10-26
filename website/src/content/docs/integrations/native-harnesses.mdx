@@ -159,7 +159,7 @@ Without this flag Junie runs no Ward hook, and Ward cannot report that it is mis
 
 | Junie event | Matcher | What happens |
 |---|---|---|
-| `PreToolUse` | `Write`, `Edit`, `Bash`, `apply_patch` | With the guard enabled, refuses protected changes with `decision: "deny"`. Allowed calls run no quality check. |
+| `PreToolUse` | `Write`, `Edit`, `Bash`, `apply_patch` | With the guard enabled, refuses protected changes with exit status 2 and Ward's reason on stderr. Junie ignores a JSON `deny` on stdout, so Ward does not use one. Allowed calls run no quality check. |
 | `Stop` | | Runs the quality check on the projects the turn changed. Findings block the stop once with `decision: "block"`, so Junie retries the turn with them. |
 
 Junie has no post-tool event, so Ward reports no post-edit capability: findings arrive only when the

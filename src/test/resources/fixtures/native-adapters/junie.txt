@@ -51,7 +51,7 @@ case "$1" in
 esac
 
 == deny
-{"decision":"deny","reason":"Blocked \"quoted\" \\ path"}
+Blocked "quoted" \ path
 == feedback
 {"decision":"block","reason":"Fix it"}
 == error

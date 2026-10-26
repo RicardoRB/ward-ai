@@ -69,9 +69,12 @@ public final class JunieIntegration implements NativeHarnessAdapter {
     return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
   }
 
-  /** Returns the hook response that blocks the tool call and tells the agent {@code reason}. */
+  /**
+   * Returns {@code reason} unchanged. Junie refuses a tool call only on exit status 2 and shows the
+   * agent stderr; a JSON {@code decision: deny} on stdout is logged but does not stop the call.
+   */
   public String denyResponse(final String reason) {
-    return NativeHookText.genericDenial(reason);
+    return reason;
   }
 
   /** A blocking Stop decision makes Junie retry the turn with the reason. */
@@ -84,6 +87,11 @@ public final class JunieIntegration implements NativeHarnessAdapter {
       case ERROR -> outcome.message();
       case ALLOW -> "";
     };
+  }
+
+  @Override
+  public boolean deniesWithExitStatus() {
+    return true;
   }
 
   @Override

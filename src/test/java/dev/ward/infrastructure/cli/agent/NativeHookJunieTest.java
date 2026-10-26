@@ -42,10 +42,9 @@ class NativeHookJunieTest {
                 preTool(
                     "Write", "{\"file_path\":\"openspec/specs/auth/spec.md\",\"content\":\"x\"}"),
                 "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"decision\":\"deny\",\"reason\":")
-        .contains("openspec/specs/auth/spec.md");
+        .isEqualTo(2);
+    assertThat(hook.out.toString()).isEmpty();
+    assertThat(hook.err.toString()).contains("openspec/specs/auth/spec.md");
   }
 
   @Test
@@ -57,10 +56,9 @@ class NativeHookJunieTest {
                     "apply_patch",
                     "{\"patch\":\"*** Begin Patch\\n*** Update File: openspec/specs/auth/spec.md\\n@@\\n-a\\n+b\\n*** End Patch\"}"),
                 "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"decision\":\"deny\",\"reason\":")
-        .contains("openspec/specs/auth/spec.md");
+        .isEqualTo(2);
+    assertThat(hook.out.toString()).isEmpty();
+    assertThat(hook.err.toString()).contains("openspec/specs/auth/spec.md");
   }
 
   @Test

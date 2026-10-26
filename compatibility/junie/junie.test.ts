@@ -11,8 +11,9 @@ import { cleanupOwnedProcesses, run, SYSTEM_PATH } from "../src/process";
 // - Config: `hooks` keyed by event, each entry an optional regular-expression `matcher` and a `hooks`
 //   list of `{type: "command", command, timeout}`; Stop takes no matcher; timeout is in seconds
 //   (Stop defaults to 600). Commands run through `sh -c` in the session directory.
-// - PreToolUse receives `hook_event_name`, `tool_name`, `tool_input`; stdout `{"decision":"deny"}`
-//   refuses the call.
+// - PreToolUse receives `hook_event_name`, `tool_name`, `tool_input`. Exit status 2 refuses the call
+//   and shows stderr to the agent; a JSON `decision: deny` on stdout is logged but not enforced
+//   (confirmed by a live run: the call still ran).
 // - Stop receives `stop_hook_active`; stdout `{"decision":"block","reason":...}` makes Junie retry.
 // - There is no post-tool event, so the integration generates no post-edit hook.
 // The `tool_input` field names for Write and Edit are assumed to match Claude Code's
@@ -128,28 +129,28 @@ describe("generated config against the Junie CLI hook contract", () => {
 
 describe("hook execution", () => {
   test("the guard refuses a write to an approved spec, from a subdirectory session", async () => {
-    const { output, invocations } = await pre(
+    const { result, invocations } = await pre(
       "Write",
       { file_path: join(fixture.root, "openspec/specs/auth/spec.md"), content: "# Changed\n" },
       join(fixture.root, "src/main/java"),
     );
     expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "junie", "--guard-approved-specs", "--event-stdin"]]);
     expect(invocations[0].cwd.endsWith("/project")).toBe(true);
-    expect(output.decision).toBe("deny");
-    expect(output.reason).toContain("openspec/specs/auth/spec.md");
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("openspec/specs/auth/spec.md");
   });
 
   test("the guard refuses an edit to an approved spec", async () => {
-    const { output } = await pre("Edit", { file_path: join(fixture.root, "openspec/specs/auth/spec.md"), old_string: "Auth", new_string: "X" });
-    expect(output.decision).toBe("deny");
+    const { result } = await pre("Edit", { file_path: join(fixture.root, "openspec/specs/auth/spec.md"), old_string: "Auth", new_string: "X" });
+    expect(result.exitCode).toBe(2);
   });
 
   test("the guard refuses a patch to an approved spec, which is how Junie edits files", async () => {
     const patch = `*** Begin Patch\n*** Update File: ${join(fixture.root, "openspec/specs/auth/spec.md")}\n@@\n-# Auth\n+# Changed\n*** End Patch`;
-    const { output, invocations } = await pre("apply_patch", { patch });
+    const { result, invocations } = await pre("apply_patch", { patch });
     expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "junie", "--guard-approved-specs", "--event-stdin"]]);
-    expect(output.decision).toBe("deny");
-    expect(output.reason).toContain("openspec/specs/auth/spec.md");
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("openspec/specs/auth/spec.md");
   });
 
   test("the guard allows an edit in an active change", async () => {
@@ -159,14 +160,14 @@ describe("hook execution", () => {
 
   test("the guard refuses a protected shell command and passes a harmless one", async () => {
     const denied = await pre("Bash", { command: "rm openspec/specs/auth/spec.md" });
-    expect(denied.output.decision).toBe("deny");
+    expect(denied.result.exitCode).toBe(2);
     const allowed = await pre("Bash", { command: "ls src" });
     expect([allowed.result.exitCode, blocking(allowed.output)]).toEqual([0, false]);
   });
 
   test("uninspectable input is refused", async () => {
-    const { output } = await launch(fixture, hooks("PreToolUse", "Bash")[0], "{not json");
-    expect(blocking(output)).toBe(true);
+    const { result } = await launch(fixture, hooks("PreToolUse", "Bash")[0], "{not json");
+    expect(result.exitCode).toBe(2);
   });
 
   test("failing checks at Stop block the stop once with the findings", async () => {
