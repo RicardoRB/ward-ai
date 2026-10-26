@@ -32,6 +32,7 @@ class NativeHarnessIntegrationTest extends WardCliIntegrationSupport {
         Arguments.of("windsurf", ".windsurf/hooks.json", ".windsurf/hooks/ward.sh"),
         Arguments.of("cline", ".cline/hooks/PostToolUse", ".cline/hooks/PreToolUse"),
         Arguments.of("factory-droid", ".factory/hooks.json", ".factory/hooks/ward.sh"),
-        Arguments.of("amp", ".amp/plugins/ward.ts", ".amp/plugins/ward.sh"));
+        Arguments.of("amp", ".amp/plugins/ward.ts", ".amp/plugins/ward.sh"),
+        Arguments.of("junie", ".junie/config.json", ".junie/hooks/ward.sh"));
   }
 }

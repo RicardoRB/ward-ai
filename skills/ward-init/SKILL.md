@@ -147,7 +147,7 @@ order:
    specs). Ask about `--tool openspec`, then separately about each validation (`openspec`,
    `openspec-archived`). Installing OpenSpec is its own yes for `--install-tool openspec`.
 7. **Agent integration.** Recommend the harness you are running in (for example `claude-code`,
-   `opencode`, or `codex`), plus any other the user names. `none` is valid.
+   `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
 8. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
    without replacing existing hook logic; they print `--format json` reports so agents can act on findings. Recommend them when the project has no CI, and mention that
    they slow down commits and pushes.
@@ -265,3 +265,6 @@ Tell the user:
 4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `biome`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
+5. When `junie` was selected, the launch command. Junie loads a project's hooks only when started with
+   `junie --config-location .junie/config.json`, so state that command. Findings reach Junie only when
+   a turn ends, not after each edit.

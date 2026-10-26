@@ -50,7 +50,7 @@ class WardCliContract3Test extends WardCliIntegrationSupport {
 
   @Test
   void rejectsInvalidInteractiveSelectionWithoutWritingFiles() {
-    assertThat(runWithInput("11\n", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(runWithInput("99\n", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("Invalid agent selection");
     assertThat(project.resolve(".claude")).doesNotExist();
     assertThat(project.resolve(".opencode")).doesNotExist();

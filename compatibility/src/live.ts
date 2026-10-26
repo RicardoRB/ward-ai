@@ -18,6 +18,7 @@ export const CREDENTIAL_ALLOWLIST = [
   "CURSOR_API_KEY",
   "FACTORY_API_KEY",
   "AMP_API_KEY",
+  "JUNIE_API_KEY",
 ] as const;
 
 export interface LiveContext {

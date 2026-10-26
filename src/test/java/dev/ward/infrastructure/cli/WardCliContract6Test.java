@@ -53,7 +53,7 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
 
   @Test
   void interactiveIntegrationRejectsInvalidAndEof() {
-    assertThat(runWithInput("11\n", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(runWithInput("99\n", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("Invalid agent selection");
     err.getBuffer().setLength(0);
     assertThat(runWithInput("", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);

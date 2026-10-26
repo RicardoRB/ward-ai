@@ -6,7 +6,7 @@ const registered = registeredHarnessIds();
 const clone = (): Manifest => structuredClone(manifest);
 
 describe("compatibility inventory", () => {
-  test("covers exactly the ten registered adapters and is valid", () => {
+  test("covers exactly the eleven registered adapters and is valid", () => {
     expect(registered).toEqual([
       "opencode",
       "claude-code",
@@ -18,6 +18,7 @@ describe("compatibility inventory", () => {
       "cline",
       "factory-droid",
       "amp",
+      "junie",
     ]);
     expect(validateManifest(manifest, registered)).toEqual([]);
   });

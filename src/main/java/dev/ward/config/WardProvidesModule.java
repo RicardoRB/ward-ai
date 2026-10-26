@@ -14,6 +14,7 @@ import dev.ward.infrastructure.agent.CopilotIntegration;
 import dev.ward.infrastructure.agent.CursorIntegration;
 import dev.ward.infrastructure.agent.FactoryDroidIntegration;
 import dev.ward.infrastructure.agent.GeminiIntegration;
+import dev.ward.infrastructure.agent.JunieIntegration;
 import dev.ward.infrastructure.agent.OpenCodeIntegration;
 import dev.ward.infrastructure.agent.WindsurfIntegration;
 import dev.ward.infrastructure.cli.VersionProvider;
@@ -39,7 +40,8 @@ final class WardProvidesModule {
         new WindsurfIntegration(),
         new ClineIntegration(),
         new FactoryDroidIntegration(),
-        new AmpIntegration());
+        new AmpIntegration(),
+        new JunieIntegration());
   }
 
   @Provides
