@@ -50,7 +50,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
     return SourceLanguages.of(
         Map.<Language, SourceLanguageGates<NodeTools>>of(
             Language.TYPESCRIPT,
-            new TypeScriptGates(testGate, linting),
+            new TypeScriptGates(project.framework(), testGate, linting),
             Language.JAVASCRIPT,
             new JavaScriptGates(testGate, linting)),
         project);

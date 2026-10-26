@@ -41,6 +41,16 @@ final class NodePackageCatalog {
   /** The Biome releases with the checkstyle reporter; 3.x may change the config schema. */
   static final String BIOME_SUPPORTED = ">=2.3.0 <3.0.0";
 
+  /**
+   * The framework checkers' supported ranges: the major each was verified in, so a declared checker
+   * outside it is {@code INCOMPATIBLE}.
+   */
+  static final Map<String, String> CHECKER_SUPPORTED =
+      Map.of(
+          "vue-tsc", ">=3.3.12 <4.0.0",
+          "svelte-check", ">=4.7.6 <5.0.0",
+          "@astrojs/check", ">=0.9.10 <1.0.0");
+
   /** The ESLint releases with {@code eslint/config}, which the generated config imports. */
   static final String ESLINT_SUPPORTED = ">=9.22.0 <11.0.0";
 
@@ -65,6 +75,11 @@ final class NodePackageCatalog {
           entry(new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null)),
           // The newest release inside typescript-eslint's range; 7.0.2 is outside it.
           entry(new Package(TYPESCRIPT, "6.0.3", ">=14.17", null)),
+          // Verified on Node 22.12 and 24 with TypeScript 5.9.3 and 6.0.3; Node 18 for
+          // svelte-check.
+          entry(new Package("vue-tsc", "3.3.12", ">=22.12.0", ">=5.9.3")),
+          entry(new Package("svelte-check", "4.7.6", ">=18.0.0", "^5.0.0 || ^6.0.0")),
+          entry(new Package("@astrojs/check", "0.9.10", ">=22.12.0", "^5.0.0 || ^6.0.0")),
           // Younger than 14 days on 2026-10-24, but 10.0.0's Vitest runner kills no mutant on
           // Vitest 5, so every strict run scored 0. 10.1.1 supports Vitest 4 and 5.
           entry(new Package(STRYKER_CORE, STRYKER_VERSION, STRYKER_NODE, null)),
@@ -79,25 +94,19 @@ final class NodePackageCatalog {
 
   // typescript-eslint needs the compiler as a peer, so ESLint adds it when it is missing.
   private static final Map<String, List<String>> GATES =
-      Map.of(
-          "tsc",
-          List.of(TYPESCRIPT),
-          ESLINT,
-          List.of(ESLINT, ESLINT_JS, TYPESCRIPT_ESLINT, TYPESCRIPT),
-          "prettier",
-          List.of("prettier"),
-          "vitest",
-          List.of("vitest", "@vitest/coverage-v8"),
-          "jest",
-          List.of(),
-          "bun-test",
-          List.of(),
-          STRYKER,
-          List.of(STRYKER_CORE),
-          DEPENDENCY_CRUISER,
-          List.of(DEPENDENCY_CRUISER, TYPESCRIPT),
-          BIOME,
-          List.of(BIOME_PACKAGE));
+      Map.ofEntries(
+          Map.entry("tsc", List.of(TYPESCRIPT)),
+          Map.entry(ESLINT, List.of(ESLINT, ESLINT_JS, TYPESCRIPT_ESLINT, TYPESCRIPT)),
+          Map.entry("prettier", List.of("prettier")),
+          Map.entry("vitest", List.of("vitest", "@vitest/coverage-v8")),
+          Map.entry("jest", List.of()),
+          Map.entry("bun-test", List.of()),
+          Map.entry(STRYKER, List.of(STRYKER_CORE)),
+          Map.entry(DEPENDENCY_CRUISER, List.of(DEPENDENCY_CRUISER, TYPESCRIPT)),
+          Map.entry(BIOME, List.of(BIOME_PACKAGE)),
+          Map.entry("vue-tsc", List.of("vue-tsc", TYPESCRIPT)),
+          Map.entry("svelte-check", List.of("svelte-check", TYPESCRIPT)),
+          Map.entry("astro-check", List.of("@astrojs/check", TYPESCRIPT)));
 
   /** Rows that replace a {@link #GATES} row for one language; other gates are shared. */
   private static final Map<Language, Map<String, List<String>>> LANGUAGE_GATES =

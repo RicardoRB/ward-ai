@@ -54,7 +54,8 @@ final class NodeLintConfigTargets {
           NodeConfigTarget.write(
               root.resolve(file),
               NodeConfigFiles.marker(NodeConfigFiles.JS_MARKER, preset)
-                  + NodeConfigFiles.eslintConfig(project.language(), manifest, preset, jest)));
+                  + NodeConfigFiles.eslintConfig(
+                      project.language(), manifest, preset, jest, project.framework())));
       return targets;
     }
     if (typescript && preset == QualityPreset.STRICT && isFlat(root, user.get())) {

@@ -3,6 +3,10 @@ package dev.ward.domain.project;
 /** The application framework detected in a project. */
 public enum Framework {
   SPRING_BOOT("Spring Boot"),
+  VUE("Vue"),
+  SVELTE("Svelte"),
+  ASTRO("Astro"),
+  ANGULAR("Angular"),
   NONE("None");
 
   private final String displayName;

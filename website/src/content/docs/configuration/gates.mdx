@@ -118,6 +118,13 @@ run their `command` from the project root, exactly as written, and pass when it 
 - For a TypeScript project, `ward init` offers `tsc`, `eslint`, `prettier`, the project's test
   runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
   package manager's runner; see [Node projects](/commands/init/#node-projects).
+- For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
+  `astro-check` instead of `tsc`, because only the framework's checker reads its component files.
+  The framework comes from the project's declared packages; see
+  [Node projects](/commands/init/#node-projects). Angular keeps `tsc`, and its templates are not
+  type-checked. A type-check configuration with no inputs fails the gate and names the file.
+- For a Vue, Svelte, or Astro project, `stryker` mutates only `src`, and the generated ESLint config
+  ignores `.astro/` (Astro) or `.svelte-kit/` (Svelte).
 - For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
   `p/javascript` ruleset.
 - In a project that uses Biome, init offers `biome` in place of `prettier`, and offers `eslint` only

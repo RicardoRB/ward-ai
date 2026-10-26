@@ -6,6 +6,7 @@ import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +66,7 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     if (eslint) {
       declaredEslint(manifest).ifPresent(findings::add);
     }
+    findings.addAll(declaredCheckers(manifest));
     findings.forEach(
         finding ->
             LOGGER.log(
@@ -130,6 +132,33 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + " is outside the supported range "
                         + NodePackageCatalog.BIOME_SUPPORTED
                         + "."));
+  }
+
+  /** Each declared framework checker must start inside the range its gate supports. */
+  private static List<CompatibilityFinding> declaredCheckers(final PackageManifest manifest) {
+    return NodePackageCatalog.CHECKER_SUPPORTED.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .flatMap(
+            checker -> declaredChecker(manifest, checker.getKey(), checker.getValue()).stream())
+        .toList();
+  }
+
+  private static Optional<CompatibilityFinding> declaredChecker(
+      final PackageManifest manifest, final String name, final String supported) {
+    final String declared = manifest.dependencies().get(name);
+    if (declared == null) {
+      return Optional.empty();
+    }
+    return NodeVersionRange.lowerBound(declared)
+        .filter(version -> !NodeVersionRange.matches(supported, version))
+        .map(
+            version ->
+                new CompatibilityFinding(
+                    name,
+                    name + " " + version,
+                    NodePackageCatalog.find(name).orElseThrow().version(),
+                    CompatibilityOutcome.INCOMPATIBLE,
+                    name + " " + declared + " is outside the supported range " + supported + "."));
   }
 
   /** A declared ESLint must start inside the range the generated config supports. */

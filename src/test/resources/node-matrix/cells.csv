@@ -25,3 +25,5 @@ node,fixture,linting,preset,version
 24,vite-react,eslint,strict,9.22.0
 24,nestjs,eslint,strict,
 24,express,eslint,strict,
+24,vue,eslint,strict,
+24,astro,eslint,strict,

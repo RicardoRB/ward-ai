@@ -32,7 +32,10 @@ class InitSetupCatalogTest {
           "jest",
           "bun-test",
           "stryker",
-          "dependency-cruiser");
+          "dependency-cruiser",
+          "vue-tsc",
+          "svelte-check",
+          "astro-check");
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
