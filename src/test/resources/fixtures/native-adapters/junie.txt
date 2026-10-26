@@ -1,0 +1,60 @@
+== definition
+junie .junie/config.json .junie/hooks/ward.sh PreToolUse,Stop [APPROVED_ARTIFACT_GUARD, FEEDBACK, PRE_TOOL, TURN_END]
+== config
+{
+  "hooks": {
+    "PreToolUse": [{"matcher": "^(Write|Edit|Bash|apply_patch)$", "hooks": [{"type": "command", "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)/.junie/hooks/ward.sh\" pre # ward-owned: junie-native-hooks v1"}]}],
+    "Stop": [{"hooks": [{"type": "command", "command": "\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)/.junie/hooks/ward.sh\" post # ward-owned: junie-native-hooks v1", "timeout": 600}]}]
+  }
+}
+
+== hook KEEP
+#!/bin/sh
+# ward-owned: junie-native-hooks v1
+# Native event adapter for junie. Usage: ward.sh pre|post, with the event JSON on stdin.
+# Hooks may run in a subdirectory, so Ward always checks the project this file is in.
+cd "$(dirname "$0")/../.." || exit 2
+case "$1" in
+  pre)
+    [ "keep" = "enable" ] || exit 0
+    exec ward hook native --agent junie --guard-approved-specs --event-stdin ;;
+  post) exec ward hook native --agent junie --event-stdin ;;
+  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
+esac
+
+== hook ENABLE
+#!/bin/sh
+# ward-owned: junie-native-hooks v1
+# Native event adapter for junie. Usage: ward.sh pre|post, with the event JSON on stdin.
+# Hooks may run in a subdirectory, so Ward always checks the project this file is in.
+cd "$(dirname "$0")/../.." || exit 2
+case "$1" in
+  pre)
+    [ "enable" = "enable" ] || exit 0
+    exec ward hook native --agent junie --guard-approved-specs --event-stdin ;;
+  post) exec ward hook native --agent junie --event-stdin ;;
+  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
+esac
+
+== hook DISABLE
+#!/bin/sh
+# ward-owned: junie-native-hooks v1
+# Native event adapter for junie. Usage: ward.sh pre|post, with the event JSON on stdin.
+# Hooks may run in a subdirectory, so Ward always checks the project this file is in.
+cd "$(dirname "$0")/../.." || exit 2
+case "$1" in
+  pre)
+    [ "disable" = "enable" ] || exit 0
+    exec ward hook native --agent junie --guard-approved-specs --event-stdin ;;
+  post) exec ward hook native --agent junie --event-stdin ;;
+  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
+esac
+
+== deny
+{"decision":"deny","reason":"Blocked \"quoted\" \\ path"}
+== feedback
+{"decision":"block","reason":"Fix it"}
+== error
+Broken
+== allow
+

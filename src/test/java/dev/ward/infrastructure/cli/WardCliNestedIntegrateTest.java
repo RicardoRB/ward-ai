@@ -10,13 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /** `ward integrate` and `ward doctor` treat a nested project like `ward init` does. */
 @DisabledOnOs(OS.WINDOWS)
 class WardCliNestedIntegrateTest extends WardCliIntegrationSupport {
   private static final String CLAUDE = "claude-code";
   private static final String DOCTOR = "doctor";
-  private static final String CODEX = "codex";
 
   @TempDir Path repository;
 
@@ -48,21 +49,23 @@ class WardCliNestedIntegrateTest extends WardCliIntegrationSupport {
     assertThat(repository.resolve(".claude/hooks/ward-edit-write-apps-api")).doesNotExist();
   }
 
-  @Test
-  void nativeHarnessIsSharedByEveryNestedProject() throws IOException {
+  @ParameterizedTest
+  @CsvSource({"codex,.codex/hooks.json,.codex", "junie,.junie/config.json,.junie"})
+  void nativeHarnessIsSharedByEveryNestedProject(
+      final String id, final String config, final String directory) throws IOException {
     final Path billing = Files.createDirectories(repository.resolve("services/billing"));
     Files.copy(project.resolve("pom.xml"), billing.resolve("pom.xml"));
 
-    assertThat(run("integrate", CODEX, "-C", api.toString())).as(err.toString()).isZero();
-    final String installed = Files.readString(repository.resolve(".codex/hooks.json"));
-    assertThat(run("integrate", CODEX, "-C", billing.toString())).as(err.toString()).isZero();
+    assertThat(run("integrate", id, "-C", api.toString())).as(err.toString()).isZero();
+    final String installed = Files.readString(repository.resolve(config));
+    assertThat(run("integrate", id, "-C", billing.toString())).as(err.toString()).isZero();
 
-    assertThat(repository.resolve(".codex/hooks.json")).hasContent(installed);
-    assertThat(repository.resolve(".codex/hooks/ward.sh")).exists();
-    assertThat(api.resolve(".codex")).doesNotExist();
-    assertThat(billing.resolve(".codex")).doesNotExist();
+    assertThat(repository.resolve(config)).hasContent(installed);
+    assertThat(repository.resolve(directory + "/hooks/ward.sh")).exists();
+    assertThat(api.resolve(directory)).doesNotExist();
+    assertThat(billing.resolve(directory)).doesNotExist();
     out.getBuffer().setLength(0);
     run(DOCTOR, "-C", billing.toString());
-    assertThat(out.toString()).contains("codex=installed");
+    assertThat(out.toString()).contains(id + "=installed");
   }
 }

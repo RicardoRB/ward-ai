@@ -26,6 +26,11 @@ class NativeAdapterUpgradeTest {
     return NativeAdapterSnapshotTest.adapters();
   }
 
+  /** Junie shipped after 0.0.7, so it has no captured 0.0.7 artifacts to upgrade. */
+  static List<NativeHarnessAdapter> upgradableAdapters() {
+    return adapters().stream().filter(adapter -> !"junie".equals(adapter.id())).toList();
+  }
+
   /** The 0.0.7 config path, hook path, config and enabled-guard hook of an adapter. */
   private record Captured(String configFile, String hookFile, String config, String hook) {
     static Captured of(final String id) throws IOException {
@@ -48,7 +53,7 @@ class NativeAdapterUpgradeTest {
   }
 
   @ParameterizedTest
-  @MethodSource("adapters")
+  @MethodSource("upgradableAdapters")
   void refreshUpgradesTheCapturedArtifactsAndKeepsTheGuard(
       final NativeHarnessAdapter adapter, @TempDir final Path root) throws IOException {
     final Captured old = Captured.of(adapter.id());

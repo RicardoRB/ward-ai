@@ -22,7 +22,7 @@ class NativeAgentAdapterContractTest {
       final AgentIntegration integration,
       final String config,
       final String hook,
-      final boolean preTool,
+      final boolean postEdit,
       @TempDir final Path root)
       throws Exception {
     final IntegrationResult result = integration.integrate(root, IntegrationRequest.INSTALL);
@@ -31,8 +31,8 @@ class NativeAgentAdapterContractTest {
     assertThat(integration.getClass()).isNotEqualTo(NativeAgentIntegration.class);
     assertThat(root.resolve(config)).isRegularFile();
     assertThat(root.resolve(hook)).isRegularFile();
-    assertThat(result.capabilities()).contains(IntegrationCapability.POST_EDIT);
-    assertThat(result.capabilities().contains(IntegrationCapability.PRE_TOOL)).isEqualTo(preTool);
+    assertThat(result.capabilities()).contains(IntegrationCapability.PRE_TOOL);
+    assertThat(result.capabilities().contains(IntegrationCapability.POST_EDIT)).isEqualTo(postEdit);
     assertThat(Files.readString(root.resolve(config))).contains(integration.id());
   }
 
@@ -52,11 +52,11 @@ class NativeAgentAdapterContractTest {
       final AgentIntegration integration,
       final String config,
       final String hook,
-      final boolean preTool,
+      final boolean postEdit,
       @TempDir final Path root)
       throws Exception {
-    assertThat(integration.capabilities().contains(IntegrationCapability.PRE_TOOL))
-        .isEqualTo(preTool);
+    assertThat(integration.capabilities().contains(IntegrationCapability.POST_EDIT))
+        .isEqualTo(postEdit);
     integration.integrate(root, IntegrationRequest.INSTALL);
     final Path configPath = root.resolve(config);
     final Path hookPath = root.resolve(hook);
@@ -90,6 +90,7 @@ class NativeAgentAdapterContractTest {
             new ClineIntegration(), ".cline/hooks/PostToolUse", ".cline/hooks/PreToolUse", true),
         Arguments.of(
             new FactoryDroidIntegration(), ".factory/hooks.json", ".factory/hooks/ward.sh", true),
+        Arguments.of(new JunieIntegration(), ".junie/config.json", ".junie/hooks/ward.sh", false),
         Arguments.of(new AmpIntegration(), ".amp/plugins/ward.ts", ".amp/plugins/ward.sh", true));
   }
 }

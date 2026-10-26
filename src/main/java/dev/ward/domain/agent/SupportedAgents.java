@@ -16,7 +16,8 @@ public final class SupportedAgents {
           new Definition("windsurf", "Windsurf"),
           new Definition("cline", "Cline"),
           new Definition("factory-droid", "Factory Droid"),
-          new Definition("amp", "Amp"));
+          new Definition("amp", "Amp"),
+          new Definition("junie", "Junie CLI"));
 
   /**
    * One supported agent.

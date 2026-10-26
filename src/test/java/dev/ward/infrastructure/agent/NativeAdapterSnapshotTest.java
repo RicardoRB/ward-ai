@@ -24,6 +24,7 @@ class NativeAdapterSnapshotTest {
         new CursorIntegration(),
         new FactoryDroidIntegration(),
         new GeminiIntegration(),
+        new JunieIntegration(),
         new WindsurfIntegration());
   }
 

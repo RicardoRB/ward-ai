@@ -232,5 +232,5 @@ test("the live command prints a report and exits non-zero for blocked harnesses"
 });
 
 test("every manifest harness is accounted for by the live command", () => {
-  expect(loadManifest().harnesses.length).toBe(10);
+  expect(loadManifest().harnesses.length).toBe(11);
 });

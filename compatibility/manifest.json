@@ -268,6 +268,36 @@
         "post-edit": "The plugin API is experimental and works only in the binary-installed Amp CLI, not the npm package or editor extension."
       },
       "verification": { "mode": "automated", "prerequisites": ["AMP_API_KEY", "binary-installed Amp CLI"] }
+    },
+    {
+      "id": "junie",
+      "label": "Junie CLI",
+      "runtime": {
+        "executable": "junie",
+        "executableEnv": "WARD_COMPAT_JUNIE_BIN",
+        "version": "26.10.20",
+        "versionCommand": ["--version"],
+        "versionPattern": "^Junie version: (\\S+)",
+        "source": "https://junie.jetbrains.com/install.sh",
+        "install": []
+      },
+      "contractPackages": [],
+      "provenance": [
+        "https://junie.jetbrains.com/docs/junie-cli-hooks.html",
+        "https://junie.jetbrains.com/docs/junie-headless.html"
+      ],
+      "platforms": ["darwin", "linux"],
+      "discovery": [".junie/config.json"],
+      "capabilities": {
+        "post-edit": "unsupported",
+        "feedback": "supported",
+        "pre-tool-guard": "supported",
+        "turn-end": "supported"
+      },
+      "capabilityNotes": {
+        "post-edit": "Junie has no post-tool hook event, so findings arrive only when the turn ends."
+      },
+      "verification": { "mode": "automated", "prerequisites": ["JUNIE_API_KEY", "junie --config-location .junie/config.json"] }
     }
   ]
 }

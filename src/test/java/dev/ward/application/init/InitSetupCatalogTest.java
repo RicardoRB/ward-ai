@@ -59,7 +59,8 @@ class InitSetupCatalogTest {
             "windsurf",
             "cline",
             "factory-droid",
-            "amp");
+            "amp",
+            "junie");
     assertThat(
             catalog.gates(
                 new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),

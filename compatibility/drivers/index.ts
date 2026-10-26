@@ -7,6 +7,7 @@ import { copilotDriver } from "./copilot";
 import { cursorDriver } from "./cursor";
 import { factoryDroidDriver } from "./factory-droid";
 import { geminiDriver } from "./gemini";
+import { junieDriver } from "./junie";
 import { opencodeDriver } from "./opencode";
 
 /** Live drivers by harness ID; a harness without one is reported blocked, never skipped. */
@@ -19,5 +20,6 @@ export const DRIVERS: Record<string, LiveDriver> = {
   cursor: cursorDriver,
   "factory-droid": factoryDroidDriver,
   gemini: geminiDriver,
+  junie: junieDriver,
   opencode: opencodeDriver,
 };
