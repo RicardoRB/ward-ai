@@ -348,7 +348,10 @@ Init detects Biome when `package.json` declares `@biomejs/biome` or the project 
 - A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
   that config unchanged. Init writes no ESLint or Prettier config for a Biome project, and a
   Prettier config the project has stays in place without a gate.
-- A project's own Biome config is kept unchanged and listed as user-owned. Otherwise init writes an
+- Under `strict`, a project's own `biome.json` or `biome.jsonc` is layered (see
+  [Layered configs](#layered-configs)). A `.biome.json` or `.biome.jsonc` is kept with a warning.
+  Under `standard`, a project's own Biome config is kept unchanged and listed as user-owned, with a
+  warning that the preset's Biome rules are not applied to it. Otherwise init writes an
   ownership-marked `biome.jsonc` with Biome's recommended rules. It also turns on Git-ignore support,
   so Biome skips `.ward/reports/` and coverage output. `strict` sets these rules to `error`:
   `noExplicitAny`, `noNonNullAssertion`, `useConst`, `noUnusedImports`, `noUnusedVariables`,
@@ -380,6 +383,35 @@ The thresholds sit in the tools' own config files, so you can see and tune them 
   `stryker.config.mjs`.
 - Projects set up by an earlier Ward version keep the threshold flag on their test command. Running
   init again moves it into `vitest.config.mjs` or `jest.config.mjs`.
+
+### Layered configs
+
+Under `strict`, a TypeScript project's own flat ESLint config (`eslint.config.*`), or the project's
+own `biome.json` or `biome.jsonc`, is not replaced. Init moves it to a base file and writes Ward's
+root config in its place:
+
+| Project file | Base file | Ward's root |
+| --- | --- | --- |
+| `eslint.config.mjs` | `eslint.base.mjs` | `eslint.config.mjs` |
+| `eslint.config.js` with `"type": "module"` | `eslint.base.js` | `eslint.config.js` |
+| `eslint.config.js` without `"type"` | `eslint.base.js` | `eslint.config.mjs` |
+| `eslint.config.cjs` | `eslint.base.cjs` | `eslint.config.mjs` |
+| `eslint.config.ts` | `eslint.base.ts` | `eslint.config.ts` |
+| `biome.json` | `biome.base.json` | `biome.jsonc` |
+| `biome.jsonc` | `biome.base.jsonc` | `biome.jsonc` |
+
+- ESLint: Ward's root imports the base file and appends the strict rules, so Ward's rules win over
+  the base's. The base's own rules still apply, so a framework's rules, such as Next's
+  `core-web-vitals` or Nest's Jest globals, keep working. The base file is ignored by the lint.
+- Biome: Ward's `biome.jsonc` extends the base file and sets the eight strict rules itself, so they
+  win over the base's settings. Biome checks the same files it checked before.
+- The base file's content is not changed. Editors, `npx eslint`, `npm run lint`, and `ward check`
+  all read the combined config.
+- Running `ward init --preset strict` again regenerates Ward's root and leaves the base file alone.
+- If the base file name is already taken by a file Ward did not write, init stops with a conflict
+  and changes no file. Rename or move that file, then run init again.
+- To undo the layering, delete Ward's root config and rename the base file back to the project's
+  own name. The project's config is then the user's again.
 
 ### What init changes in `package.json`
 
@@ -436,14 +468,19 @@ Before writing, init checks each package it would add against the project's Node
 
 - **`eslint.config.js`** (with `"type": "module"`) or **`eslint.config.mjs`** (otherwise) when the
   `eslint` gate is selected and the project has no `eslint.config.*` or `.eslintrc*`. It is a flat
-  config ignoring `dist/`, `coverage/`, and `.ward/`, and it starts with a `// managed-by: ward`
-  marker. An existing config is reused unchanged and listed as user-owned.
+  config ignoring `dist/`, `coverage/`, `.ward/`, `.next/`, `out/`, and `build/` (framework build
+  output), and it starts with a `// managed-by: ward` marker. Under `strict`, a TypeScript
+  project's own flat config is layered instead (see [Layered configs](#layered-configs)). Otherwise
+  an existing config is reused unchanged and listed as user-owned, and the plan warns that the
+  preset's ESLint rules are not applied to it. A project with no tests fails the test gate until it
+  adds one, because a test gate that passes with no tests is misleading.
   - For TypeScript it enables the `@eslint/js` and `typescript-eslint` recommended rules. With
     `strict` it enables `strict-type-checked` instead, with type information from `tsconfig.json`
     through the project service. Type-checked rules are off for `.js`, `.mjs`, and `.cjs` files,
     such as init's own configs, because they sit outside `tsconfig.json`. TypeScript files that
     `tsconfig.json` does not include, such as excluded tests, fail with a project-service error:
-    add them to `tsconfig.json`. An existing ESLint config stays as it is, also with `strict`.
+    add them to `tsconfig.json`. Under `strict`, empty classes that carry a decorator, such as a
+    NestJS module, are allowed.
   - For JavaScript it enables the `@eslint/js` recommended rules and declares both browser and
     Node globals from `globals`, so `require`, `process`, and `window` pass `no-undef`. It parses
     JSX in `.jsx` files. Without `"type": "module"` it also parses `.js` files as CommonJS, because

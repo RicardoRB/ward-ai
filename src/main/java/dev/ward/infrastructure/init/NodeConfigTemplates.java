@@ -20,22 +20,16 @@ final class NodeConfigTemplates {
       import tseslint from "typescript-eslint";
 
       export default defineConfig(
-        { ignores: ["dist/", "coverage/", ".ward/"] },
+        { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
         js.configs.recommended,
         tseslint.configs.recommended,
       );
       """;
 
   // Init's own .mjs configs lie outside tsconfig.json, so type-checked rules skip JavaScript files.
-  static final String STRICT_TYPESCRIPT_ESLINT =
+  // The layer over a project's own config shares these rules with the generated strict config.
+  static final String STRICT_TYPESCRIPT_RULES =
       """
-      import js from "@eslint/js";
-      import { defineConfig } from "eslint/config";
-      import tseslint from "typescript-eslint";
-
-      export default defineConfig(
-        { ignores: ["dist/", "coverage/", ".ward/"] },
-        js.configs.recommended,
         tseslint.configs.strictTypeChecked,
         {
           languageOptions: {
@@ -46,11 +40,33 @@ final class NodeConfigTemplates {
           },
         },
         {
+          rules: {
+            "@typescript-eslint/no-extraneous-class": [
+              "error",
+              { allowWithDecorator: true },
+            ],
+          },
+        },
+        {
           files: ["**/*.{js,mjs,cjs}"],
           extends: [tseslint.configs.disableTypeChecked],
         },
-      );
       """;
+
+  static final String STRICT_TYPESCRIPT_ESLINT =
+      """
+      import js from "@eslint/js";
+      import { defineConfig } from "eslint/config";
+      import tseslint from "typescript-eslint";
+
+      export default defineConfig(
+        { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
+        js.configs.recommended,
+      """
+          + STRICT_TYPESCRIPT_RULES
+          + ");\n";
+
+  static final String STANDARD_TYPESCRIPT_RULES = "  tseslint.configs.recommended,\n";
 
   // Ward cannot tell Node code from browser code, so both globals sets keep no-undef quiet.
   private static final String JAVASCRIPT_ESLINT =
@@ -60,7 +76,7 @@ final class NodeConfigTemplates {
       import globals from "globals";
 
       export default defineConfig(
-        { ignores: ["dist/", "coverage/", ".ward/"] },
+        { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
         js.configs.recommended,
         { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
         {

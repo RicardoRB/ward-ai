@@ -7,7 +7,11 @@ findings from the checkstyle report. Its rules live in one file:
 - Ward's own `biome.jsonc`, when the project had no Biome config at init. Its first line is
   `// managed-by: ward preset=<id>`.
 - The project's own `biome.json`, `biome.jsonc`, `.biome.json` or `.biome.jsonc`, which init keeps
-  unchanged. Ward's `vcs` and `files` settings in that file are the user's; tune rules only.
+  unchanged under `standard`. Under `strict`, a `biome.json` or `biome.jsonc` is moved to
+  `biome.base.json` or `biome.base.jsonc` unchanged, and Ward's `biome.jsonc` extends it and sets
+  the strict rules, so tune those rules in `biome.jsonc` and the base's rules in the base file.
+  `.biome.json` and `.biome.jsonc` are never moved. Ward's `vcs` and `files` settings in a kept
+  config are the user's; tune rules only.
 
 ## Evidence
 

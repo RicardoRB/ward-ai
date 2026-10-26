@@ -14,7 +14,8 @@ final class NoRuleFileGeneration implements RuleFileGeneration {
   @Override
   public RuleFileChange apply(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
-    return new RuleFileChange(project.root().resolve("config"), false, Map.of(), List.of());
+    return new RuleFileChange(
+        project.root().resolve("config"), false, Map.of(), List.of(), List.of());
   }
 
   @Override

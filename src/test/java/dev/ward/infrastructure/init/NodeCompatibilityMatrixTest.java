@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -145,16 +144,10 @@ class NodeCompatibilityMatrixTest {
       dependencies.put("eslint", declared);
       dependencies.put(ESLINT_JS, declared.startsWith("9.") ? declared : eslintJsPin());
     }
-    final String entries =
-        dependencies.entrySet().stream()
-            .map(entry -> "\"" + entry.getKey() + "\": \"" + entry.getValue() + "\"")
-            .collect(Collectors.joining(",\n    "));
+    // A framework fixture may already declare dependencies, so the linter merges into them.
     final Path file = project.resolve(PACKAGE_JSON);
-    final String edited =
-        Files.readString(file)
-            .replaceFirst(
-                "\\n\\}\\s*$", ",\n  \"devDependencies\": {\n    " + entries + "\n  }\n}\n");
-    Files.writeString(file, edited);
+    Files.writeString(
+        file, PackageJsonEdit.addDevDependencies(Files.readString(file), dependencies));
   }
 
   private static String eslintJsPin() {

@@ -45,7 +45,7 @@ class JavaScriptEslintConfigTest {
             import globals from "globals";
 
             export default defineConfig(
-              { ignores: ["dist/", "coverage/", ".ward/"] },
+              { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
               js.configs.recommended,
               { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
               {

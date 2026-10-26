@@ -38,7 +38,14 @@ class NodeConfigFilesTest {
     final Path config = root.resolve("eslint.config.js");
     assertThat(Files.readString(config))
         .startsWith("// managed-by: ward preset=standard\n")
-        .contains("tseslint.configs.recommended", "\"dist/\"", "\"coverage/\"", "\".ward/\"");
+        .contains(
+            "tseslint.configs.recommended",
+            "\"dist/\"",
+            "\"coverage/\"",
+            "\".next/\"",
+            "\"out/\"",
+            "\"build/\"",
+            "\".ward/\"");
     assertThat(root.resolve("config")).doesNotExist();
     writer.rollback(change);
     assertThat(config).doesNotExist();
@@ -64,11 +71,15 @@ class NodeConfigFilesTest {
     final RuleFileChange change =
         writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
 
+    final String warning = "the standard preset's ESLint rules are not applied to .eslintrc.json";
     assertThat(plan)
         .containsExactly(
             new PlannedFileChange(
-                root.resolve(".eslintrc.json"), PlannedFileChange.Action.PRESERVE_USER_OWNED));
+                root.resolve(".eslintrc.json"),
+                PlannedFileChange.Action.PRESERVE_USER_OWNED,
+                List.of(warning)));
     assertThat(change.preserved()).containsExactly(root.resolve(".eslintrc.json"));
+    assertThat(change.warnings()).containsExactly(warning);
     assertThat(root.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(Files.readString(root.resolve(".eslintrc.json"))).isEqualTo("{\"root\": true}\n");
   }
@@ -121,7 +132,7 @@ class NodeConfigFilesTest {
             import tseslint from "typescript-eslint";
 
             export default defineConfig(
-              { ignores: ["dist/", "coverage/", ".ward/"] },
+              { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
               js.configs.recommended,
               tseslint.configs.recommended,
             );

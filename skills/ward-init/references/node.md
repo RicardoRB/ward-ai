@@ -64,8 +64,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
     `tsconfig.json`.
   - Recommend `strict` when the project already has tests that cover most code, runs Node 22 or
     later (Stryker 10 needs it), and its `tsconfig.json` includes the files ESLint lints, tests
-    too. A user-owned ESLint config stays as it is, so `strict` does not switch it to
-    `strict-type-checked`; offer `ward-tune` for that.
+    too. Under `strict`, a user-owned flat ESLint config in a TypeScript project is layered, so
+    Ward's `strict-type-checked` rules apply over it; under `standard`, a user-owned config stays as
+    it is, and the plan warns that the preset's rules are not applied to it. Offer `ward-tune` for
+    that.
 - **Biome.** A Biome project (see Declared tools and Configs) gets one `biome` gate in place of
   `prettier` and `eslint`, in the same profiles and presets. The gate runs
   `biome ci --colors=off --reporter=checkstyle .`, and under `strict` it adds `--error-on-warnings`,
@@ -105,7 +107,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   TypeScript it enables typescript-eslint's recommended rules. For JavaScript it enables
   `@eslint/js` recommended rules, declares browser and Node globals, parses JSX in `.jsx` files,
   and, without `"type": "module"`, parses `.js` files as CommonJS. `keep .eslintrc.json` means the
-  user's config is reused.
+  user's config is reused, with a warning that the preset's rules are not applied to it. Under
+  `strict`, a flat config in a TypeScript project is layered instead: `move eslint.config.*` to
+  `eslint.base.*`, and Ward's root imports it and adds the strict rules. An existing
+  `eslint.base.*` that Ward did not write stops apply with a conflict.
 - `create vitest.config.mjs` or `create jest.config.mjs`: Ward's test config holding the
   preset's coverage thresholds; the test command then carries no threshold flag. `keep
   vite.config.ts` (or another user test config) means the thresholds are passed as flags on the
@@ -117,8 +122,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   2.6.3.
 - `create biome.jsonc`: Ward's Biome config, marked as Ward's, with Biome's recommended rules and
   Git-ignore support, so Biome skips `.ward/reports/` and coverage output. `strict` also sets eight
-  rules to `error`, including the type-aware `noFloatingPromises` and `noMisusedPromises`. `keep
-  biome.json` means the user's config is reused unchanged.
+  rules to `error`, including the type-aware `noFloatingPromises` and `noMisusedPromises`. Under
+  `strict`, a `biome.json` or `biome.jsonc` is moved to `biome.base.*`, and Ward's `biome.jsonc`
+  extends it. `keep biome.json` under `standard` means the user's config is reused unchanged, with
+  a warning that the preset's Biome rules are not applied to it.
 - A Biome project gets no `eslint.config.*` and no Prettier config from init, and the plan does
   not list `prettier`. The project's own `.prettierrc*`, if any, stays in place without a gate.
 - Edge case: Ward's `biome.jsonc` reads the ignore file (`vcs.useIgnoreFile`). In a directory

@@ -1,0 +1,13 @@
+{
+  "name": "express-fixture",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}

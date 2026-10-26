@@ -4,7 +4,8 @@
 
 - Init writes `eslint.config.mjs`, or `eslint.config.js` when `package.json` has
   `"type": "module"`, only when the project has no ESLint config. Its first line is
-  `// managed-by: ward preset=<id>`, and it ignores `dist/`, `coverage/`, and `.ward/`.
+  `// managed-by: ward preset=<id>`, and it ignores `dist/`, `coverage/`, `.next/`, `out/`,
+  `build/`, and `.ward/`.
   - For TypeScript it enables `@eslint/js` recommended and `typescript-eslint` recommended rules.
     With `strict` it enables `tseslint.configs.strictTypeChecked` instead, sets
     `parserOptions.projectService: true` with `tsconfigRootDir: import.meta.dirname`, and turns
@@ -15,7 +16,12 @@
     adds `globals.jest` for `**/__tests__/**` and `**/*.{test,spec}.{js,jsx,mjs,cjs}`. When the
     project's Jest `testMatch` uses other locations, widen that `files` list to match; that is
     neutral, not a weakening.
-- An existing `eslint.config.*` or `.eslintrc*` is the user's. Init reuses it unchanged.
+- An existing `eslint.config.*` or `.eslintrc*` is the user's. Under `standard`, init reuses it
+  unchanged and warns that the preset's ESLint rules are not applied to it. Under `strict`, a flat
+  config in a TypeScript project is layered: init moves it to `eslint.base.<ext>` unchanged, and
+  Ward's root config imports that base and appends the strict rules, so Ward's rules win. Tune the
+  strict rules in the root config, and the base's rules in the base file. A `.eslintrc*` cannot be
+  imported by a flat config, so it is reused with the same warning.
 - The `eslint` gate runs `<runner> eslint . --format json`, so Ward reads one structured finding
   per message, with the rule as `eslint:<rule-id>`.
 

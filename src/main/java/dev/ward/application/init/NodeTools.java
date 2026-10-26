@@ -70,16 +70,24 @@ record NodeTools(
         linting.ownEslintConfig());
   }
 
-  /** Returns whether the project uses Biome: it declares the package or keeps a Biome config. */
+  /**
+   * Returns whether the project uses Biome: it declares the package, or keeps a Biome config or the
+   * base file of a layered one.
+   */
   static boolean biome(
       final Project project, final PackageManifest manifest, final NodeToolConfigs configs) {
     return manifest.declares(BIOME_PACKAGE)
-        || configs.userConfig(project.root(), BIOME).isPresent();
+        || configs.userConfig(project.root(), BIOME).isPresent()
+        || configs.baseConfig(project.root(), BIOME).isPresent();
   }
 
-  /** Returns whether the project keeps its own ESLint config, which init leaves in place. */
+  /**
+   * Returns whether the project has its own ESLint config: one it keeps, or the base file of one
+   * that init layers. Either way, a re-run keeps the same gates.
+   */
   static boolean ownEslintConfig(final Project project, final NodeToolConfigs configs) {
-    return configs.userConfig(project.root(), ESLINT).isPresent();
+    return configs.userConfig(project.root(), ESLINT).isPresent()
+        || configs.baseConfig(project.root(), ESLINT).isPresent();
   }
 
   /** Returns the project's lint and format choices. */

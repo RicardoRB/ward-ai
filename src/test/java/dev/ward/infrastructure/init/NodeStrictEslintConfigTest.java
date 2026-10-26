@@ -23,6 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** The ESLint config the strict preset writes, and the configs it leaves alone. */
 class NodeStrictEslintConfigTest {
   private static final String CONFIG = "eslint.config.mjs";
+  private static final String USER_ESLINT = "export default [];\n";
 
   @TempDir Path root;
 
@@ -47,7 +48,7 @@ class NodeStrictEslintConfigTest {
             import tseslint from "typescript-eslint";
 
             export default defineConfig(
-              { ignores: ["dist/", "coverage/", ".ward/"] },
+              { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
               js.configs.recommended,
               tseslint.configs.strictTypeChecked,
               {
@@ -56,6 +57,14 @@ class NodeStrictEslintConfigTest {
                     projectService: true,
                     tsconfigRootDir: import.meta.dirname,
                   },
+                },
+              },
+              {
+                rules: {
+                  "@typescript-eslint/no-extraneous-class": [
+                    "error",
+                    { allowWithDecorator: true },
+                  ],
                 },
               },
               {
@@ -79,16 +88,51 @@ class NodeStrictEslintConfigTest {
   }
 
   @Test
-  void strictKeepsTheProjectsOwnConfig() throws IOException {
+  void strictLayersTheProjectsOwnFlatConfig() throws IOException {
     Files.writeString(root.resolve("eslint.config.js"), "export default [];\n");
 
     final RuleFileChange change =
         writer.apply(project(Language.TYPESCRIPT), QualityPreset.STRICT, gates("eslint"));
 
-    assertThat(change.preserved()).containsExactly(root.resolve("eslint.config.js"));
-    assertThat(Files.readString(root.resolve("eslint.config.js")))
-        .isEqualTo("export default [];\n");
-    assertThat(root.resolve(CONFIG)).doesNotExist();
+    assertThat(change.preserved()).containsExactly(root.resolve("eslint.base.js"));
+    assertThat(Files.readString(root.resolve("eslint.base.js"))).isEqualTo("export default [];\n");
+    assertThat(root.resolve("eslint.config.js")).doesNotExist();
+    assertThat(Files.readString(root.resolve(CONFIG)))
+        .startsWith("// managed-by: ward preset=strict\n")
+        .contains("import base from \"./eslint.base.js\";", "await base,");
+  }
+
+  @Test
+  void strictKeepsAJavaScriptConfigWithAWarning() throws IOException {
+    Files.writeString(root.resolve("eslint.config.mjs"), USER_ESLINT);
+
+    final RuleFileChange change =
+        writer.apply(
+            new Project(
+                root,
+                Language.JAVASCRIPT,
+                BuildTool.NPM,
+                Framework.NONE,
+                false,
+                false,
+                root,
+                Set.of(),
+                "24"),
+            QualityPreset.STRICT,
+            gates("eslint"));
+
+    assertThat(change.warnings())
+        .containsExactly("the strict preset's ESLint rules are not applied to eslint.config.mjs");
+    assertThat(root.resolve("eslint.config.mjs")).hasContent(USER_ESLINT);
+    assertThat(root.resolve("eslint.base.mjs")).doesNotExist();
+  }
+
+  @Test
+  void theLayerAndTheGeneratedStrictConfigShareTheStrictRules() {
+    assertThat(NodeLayerTemplates.eslint(QualityPreset.STRICT, "eslint.base.mjs"))
+        .contains(NodeConfigTemplates.STRICT_TYPESCRIPT_RULES);
+    assertThat(NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT)
+        .contains(NodeConfigTemplates.STRICT_TYPESCRIPT_RULES);
   }
 
   private Project project(final Language language) {
