@@ -92,6 +92,34 @@ class NodeStrykerConfigTest {
   }
 
   @Test
+  void frameworkProjectMutatesScriptFilesOnly() throws IOException {
+    writer.apply(
+        new Project(
+            root,
+            Language.TYPESCRIPT,
+            BuildTool.NPM,
+            Framework.VUE,
+            false,
+            false,
+            root,
+            Set.of(),
+            "24"),
+        QualityPreset.STRICT,
+        gates("vitest", "stryker"));
+
+    assertThat(Files.readString(root.resolve(CONFIG)))
+        .contains("mutate: [\"src/**/*.{js,ts,jsx,tsx,mjs,mts,cts,cjs}\"],")
+        .doesNotContain(".vue");
+  }
+
+  @Test
+  void plainProjectSetsNoMutateGlob() throws IOException {
+    writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest", "stryker"));
+
+    assertThat(Files.readString(root.resolve(CONFIG))).doesNotContain("mutate");
+  }
+
+  @Test
   void projectsStrykerConfigIsKeptAndListedAsUserOwned() throws IOException {
     Files.writeString(root.resolve("stryker.conf.json"), "{\"testRunner\": \"vitest\"}\n");
 

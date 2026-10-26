@@ -1,0 +1,7 @@
+---
+import { greeting } from '../lib/greeting';
+
+const { name = '' } = Astro.props;
+---
+
+<h1>{greeting(name)}</h1>

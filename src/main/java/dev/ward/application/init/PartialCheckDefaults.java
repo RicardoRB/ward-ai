@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 /**
  * The {@code [quality-gates.<id>.partial]} table init writes for a gate whose tool can be scoped to
@@ -34,30 +36,36 @@ final class PartialCheckDefaults {
           "**/*.mjs",
           "**/*.cjs");
   private static final List<String> PATHS = List.of("{paths}");
+  // The component files of a detected framework, which ESLint reads only when its config does.
+  private static final Map<Framework, String> FRAMEWORK_SOURCES =
+      Map.of(
+          Framework.VUE, "**/*.vue",
+          Framework.SVELTE, "**/*.svelte",
+          Framework.ASTRO, "**/*.astro");
 
   // Their full commands end with a target (or none), so the narrowed command replaces it.
-  private static final Map<String, BiFunction<BuildTool, QualityPreset, Table>> NODE_TABLES =
+  private static final Map<String, BiFunction<Project, QualityPreset, Table>> NODE_TABLES =
       Map.of(
           "eslint",
-          (manager, preset) ->
+          (project, preset) ->
               new Table(
-                  NODE_SOURCES,
+                  eslintSources(project),
                   List.of("eslint.config.*", ".eslintrc*", "package.json"),
                   PATHS,
                   null,
                   null,
-                  NodeTools.command(manager, "eslint", "--format", "json")),
+                  NodeTools.command(project.buildTool(), "eslint", "--format", "json")),
           "prettier",
-          (manager, preset) ->
+          (project, preset) ->
               new Table(
                   NODE_SOURCES,
                   List.of(".prettierrc*", "prettier.config.*", ".prettierignore", "package.json"),
                   PATHS,
                   null,
                   null,
-                  NodeTools.command(manager, "prettier", "--check")),
+                  NodeTools.command(project.buildTool(), "prettier", "--check")),
           "biome",
-          (manager, preset) ->
+          (project, preset) ->
               new Table(
                   NODE_SOURCES,
                   List.of(
@@ -65,7 +73,7 @@ final class PartialCheckDefaults {
                   PATHS,
                   null,
                   null,
-                  biomeCommand(manager, preset)));
+                  biomeCommand(project.buildTool(), preset)));
 
   private static final Map<String, TableFactory> TABLES =
       Map.of(
@@ -134,11 +142,19 @@ final class PartialCheckDefaults {
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final List<String> build = gradle ? GRADLE_BUILD : MAVEN_BUILD;
     return Optional.ofNullable(NODE_TABLES.get(gate))
-        .map(factory -> factory.apply(project.buildTool(), preset))
+        .map(factory -> factory.apply(project, preset))
         .or(
             () ->
                 Optional.ofNullable(TABLES.get(gate))
                     .map(factory -> factory.create(gradle, preset, build)));
+  }
+
+  /** The Node sources, plus the component files of a detected framework. */
+  private static List<String> eslintSources(final Project project) {
+    final String framework = FRAMEWORK_SOURCES.get(project.framework());
+    return framework == null
+        ? NODE_SOURCES
+        : Stream.concat(NODE_SOURCES.stream(), Stream.of(framework)).toList();
   }
 
   /**

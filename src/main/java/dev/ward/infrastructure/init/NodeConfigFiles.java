@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
@@ -77,7 +78,8 @@ final class NodeConfigFiles {
           root,
           configs.userConfig(root, STRYKER),
           "stryker.config.mjs",
-          marker(JS_MARKER, preset) + NodeConfigTemplates.stryker(testGate(ids), preset));
+          marker(JS_MARKER, preset)
+              + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()));
     }
     if (ids.contains(BIOME)) {
       targets.addAll(NodeLintConfigTargets.biome(project, configs, preset));
@@ -112,13 +114,16 @@ final class NodeConfigFiles {
       final Language language,
       final PackageManifest manifest,
       final QualityPreset preset,
-      final boolean jest) {
+      final boolean jest,
+      final Framework framework) {
     if (language == Language.JAVASCRIPT) {
       return NodeConfigTemplates.javascriptEslint(manifest.module(), jest);
     }
-    return preset == QualityPreset.STRICT
-        ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT
-        : NodeConfigTemplates.TYPESCRIPT_ESLINT;
+    return NodeConfigTemplates.withGeneratedIgnores(
+        preset == QualityPreset.STRICT
+            ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT
+            : NodeConfigTemplates.TYPESCRIPT_ESLINT,
+        framework);
   }
 
   private static String testGate(final List<String> ids) {

@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -68,6 +70,9 @@ final class NodeConfigTemplates {
 
   static final String STANDARD_TYPESCRIPT_RULES = "  tseslint.configs.recommended,\n";
 
+  private static final String IGNORES_LINE =
+      "  { ignores: [\"dist/\", \"coverage/\", \".next/\", \"out/\", \"build/\", \".ward/\"] },\n";
+
   // Ward cannot tell Node code from browser code, so both globals sets keep no-undef quiet.
   private static final String JAVASCRIPT_ESLINT =
       """
@@ -125,29 +130,6 @@ final class NodeConfigTemplates {
         },
       };
       """;
-
-  private static final String STRYKER =
-      """
-      export default {
-      {runner}
-        reporters: ["json", "clear-text", "progress"],
-        thresholds: {
-          high: 80,
-          low: 60,
-      {break}  },
-      };
-      """;
-
-  // Stryker has no Bun runner plugin; its command runner runs the whole suite per mutant.
-  private static final String BUN_RUNNER =
-      """
-        testRunner: "command",
-        commandRunner: {
-          command: "bun test",
-        },
-        coverageAnalysis: "off",
-      """
-          .stripTrailing();
 
   // The bodies biome format writes with spaces, so Biome reports no format finding in them.
 
@@ -218,16 +200,26 @@ final class NodeConfigTemplates {
   }
 
   /**
-   * Returns a Stryker config for {@code testGate} with the {@code json} reporter Ward reads. Like
-   * PIT, it fails below a minimum score only for a preset that sets a mutation threshold.
+   * Adds the generated output folder of {@code framework} to the TypeScript config's ignores. Astro
+   * writes {@code .astro/} type files and SvelteKit writes {@code .svelte-kit/}; ESLint would lint
+   * them and report findings Ward did not write. Other frameworks leave the config unchanged.
    */
-  static String stryker(final String testGate, final QualityPreset preset) {
-    final Integer minimum = preset == null ? null : preset.rules().mutationThreshold();
-    final String runner =
-        "bun-test".equals(testGate) ? BUN_RUNNER : "  testRunner: \"" + testGate + "\",";
-    return STRYKER
-        .replace("{runner}", runner)
-        .replace("{break}", minimum == null ? "" : "    break: " + minimum + ",\n");
+  static String withGeneratedIgnores(final String config, final Framework framework) {
+    final String folder =
+        switch (framework) {
+          case ASTRO -> ".astro/";
+          case SVELTE -> ".svelte-kit/";
+          default -> null;
+        };
+    if (folder == null) {
+      return config;
+    }
+    final StringBuilder entries = new StringBuilder();
+    for (final String ignore :
+        List.of("dist/", "coverage/", ".next/", "out/", "build/", folder, ".ward/")) {
+      entries.append("      \"").append(ignore).append("\",\n");
+    }
+    return config.replace(IGNORES_LINE, "  {\n    ignores: [\n" + entries + "    ],\n  },\n");
   }
 
   /** The preset's line and, when it sets one, branch minimum, as whole percentages. */

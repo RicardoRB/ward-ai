@@ -284,6 +284,25 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 
 - A project is TypeScript when `tsconfig.json` sits next to `package.json`, or a workspace member
   has one.
+- A TypeScript project's framework comes from the packages it declares in `dependencies` or
+  `devDependencies`, never from file names: `vue` or `nuxt` is Vue, `svelte` or `@sveltejs/kit` is
+  Svelte, `astro` is Astro, and `@angular/core` is Angular. If several match, the first in that order
+  (Astro, Svelte, Vue, Angular) decides.
+- For Vue, Svelte and Astro, the type-check gate is the framework's checker in place of `tsc`:
+  `vue-tsc` (`vue-tsc --build`), `svelte-check`, and `astro-check` (`astro check`). `tsc` is not
+  offered for those projects. Angular keeps `tsc`, which does not read template files, and init's
+  plan says so.
+- A framework project whose TypeScript configuration has no inputs fails the type-check gate and
+  names the file. `vue-tsc --build` reports `TS18002` for a root `tsconfig.json` with `"files": []`
+  and no references, and `TS18003` for a referenced config with `"include": []`. A root with
+  references to configs that have sources passes.
+- Stryker mutates only the `src` folder in Vue, Svelte and Astro projects, so component files and
+  tests are not mutated. Other projects keep Stryker's default.
+- The generated ESLint config ignores each framework's output folder: `.astro/` for Astro and
+  `.svelte-kit/` for Svelte.
+- Biome and framework lint rules are out of scope: a Biome project with a framework keeps Biome's
+  current behavior, and `eslint` lints `.vue`, `.svelte`, or `.astro` files only when the project's own
+  ESLint config handles them.
 - Any other `package.json` is JavaScript, and counts as a project only when it holds `.js`, `.jsx`,
   `.mjs`, or `.cjs` sources of its own. Init does not count files in `node_modules`, build output
   (`dist`, `build`, `out`, `target`, `coverage`), hidden directories, directories with another build

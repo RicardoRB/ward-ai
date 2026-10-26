@@ -10,6 +10,7 @@ import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +36,17 @@ final class NodeProjectInspection {
           Map.entry("yarn.lock", BuildTool.YARN),
           Map.entry("package-lock.json", BuildTool.NPM));
 
+  /**
+   * Framework packages in precedence order: one framework per project, so a site that declares
+   * several, such as Astro with Vue islands, is classified by the first one listed here.
+   */
+  private static final List<Map.Entry<Framework, Set<String>>> FRAMEWORKS =
+      List.of(
+          Map.entry(Framework.ASTRO, Set.of("astro")),
+          Map.entry(Framework.SVELTE, Set.of("svelte", "@sveltejs/kit")),
+          Map.entry(Framework.VUE, Set.of("vue", "nuxt")),
+          Map.entry(Framework.ANGULAR, Set.of("@angular/core")));
+
   private static final Map<String, BuildTool> MANAGERS =
       Map.of(
           "npm", BuildTool.NPM,
@@ -56,12 +68,27 @@ final class NodeProjectInspection {
         dir,
         language,
         manager(dir, manifest),
-        Framework.NONE,
+        framework(manifest),
         false,
         false,
         dir,
         Set.of(language),
         version(dir, manifest));
+  }
+
+  /** Reads the framework from declared packages only; file names never decide. */
+  private static Framework framework(final Map<?, ?> manifest) {
+    final Set<String> declared = new HashSet<>();
+    for (final String field : List.of("dependencies", "devDependencies")) {
+      if (manifest.get(field) instanceof Map<?, ?> packages) {
+        packages.keySet().forEach(name -> declared.add(String.valueOf(name)));
+      }
+    }
+    return FRAMEWORKS.stream()
+        .filter(framework -> framework.getValue().stream().anyMatch(declared::contains))
+        .map(Map.Entry::getKey)
+        .findFirst()
+        .orElse(Framework.NONE);
   }
 
   private static BuildTool manager(final Path dir, final Map<?, ?> manifest) {

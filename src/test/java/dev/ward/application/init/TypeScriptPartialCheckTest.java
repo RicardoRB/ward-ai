@@ -56,17 +56,34 @@ class TypeScriptPartialCheckTest {
                 "src/app.ts"));
   }
 
+  @Test
+  void vueEditNarrowsEslintToTheComponentFile() throws IOException {
+    final PackageManifest vue = new PackageManifest(Map.of("vue", "3.5.0"), null, null);
+
+    final FakeCommandExecutor executor =
+        checkEditedFile(vue, Framework.VUE, "src/components/Button.vue");
+
+    assertThat(executor.commands)
+        .containsExactly(List.of("npx", "eslint", "--format", "json", "src/components/Button.vue"));
+  }
+
   private FakeCommandExecutor checkEditedFile(final PackageManifest manifest) throws IOException {
+    return checkEditedFile(manifest, Framework.NONE, "src/app.ts");
+  }
+
+  private FakeCommandExecutor checkEditedFile(
+      final PackageManifest manifest, final Framework framework, final String edited)
+      throws IOException {
     Files.writeString(root.resolve("package.json"), "{\"name\": \"shop\"}\n");
     Files.writeString(root.resolve("tsconfig.json"), "{}\n");
-    Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("src/app.ts"), "export const a = 1;\n");
+    Files.createDirectories(root.resolve(edited).getParent());
+    Files.writeString(root.resolve(edited), "export const a = 1;\n");
     final Project project =
         new Project(
             root,
             Language.TYPESCRIPT,
             BuildTool.NPM,
-            Framework.NONE,
+            framework,
             false,
             false,
             root,
@@ -85,7 +102,7 @@ class TypeScriptPartialCheckTest {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "[]", "");
 
     CheckServiceFixtures.checks(executor)
-        .checkPartial(root, List.of(root.resolve("src/app.ts")), SupportedQualityGates.specIds());
+        .checkPartial(root, List.of(root.resolve(edited)), SupportedQualityGates.specIds());
     return executor;
   }
 }
