@@ -265,6 +265,7 @@ Tell the user:
 4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `biome`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
+   When the check fails, offer the `ward-fix` skill to fix the code rule by rule.
 5. When `junie` was selected, the launch command. Junie loads a project's hooks only when started with
    `junie --config-location .junie/config.json`, so state that command. Findings reach Junie only when
    a turn ends, not after each edit.

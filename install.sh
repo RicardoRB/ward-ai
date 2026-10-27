@@ -143,7 +143,7 @@ main() {
   esac
 
   info "next: install the agent skills, then run /ward-init in your coding agent:"
-  printf '\n    npx skills add %s --skill ward-init ward-tune\n\n' "$REPO"
+  printf '\n    npx skills add %s --skill ward-init ward-tune ward-fix\n\n' "$REPO"
 }
 
 main "$@"

@@ -4,13 +4,13 @@
     "name": "Ricardo Romero Benitez"
   },
   "metadata": {
-    "description": "Ward agent skills for guided setup and rule tuning."
+    "description": "Ward agent skills for guided setup, rule tuning, and fixing findings."
   },
   "plugins": [
     {
       "name": "ward",
       "source": "./",
-      "description": "Guided Ward setup (ward-init) and codebase-grounded rule tuning (ward-tune)."
+      "description": "Guided Ward setup (ward-init), codebase-grounded rule tuning (ward-tune), and gate fixing (ward-fix)."
     }
   ]
 }

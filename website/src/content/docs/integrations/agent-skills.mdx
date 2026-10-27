@@ -3,7 +3,7 @@ title: Agent skills
 description: Set up Ward and tune its rules together with your coding agent.
 ---
 
-Ward ships two agent skills. A skill is a `SKILL.md` file that teaches a coding agent a
+Ward ships three agent skills. A skill is a `SKILL.md` file that teaches a coding agent a
 workflow. With these skills, your agent sets up Ward *with* you: it looks at the project first,
 explains each choice for this codebase, and changes files only after you approve.
 
@@ -11,6 +11,7 @@ explains each choice for this codebase, and changes files only after you approve
 |---|---|
 | `ward-init` | Inspects the project, asks about the preset, gates, architecture style, tools, agent integration, and Git hooks one question at a time, with a recommendation based on what it found. It then previews the exact changes with `ward init --dry-run` and applies the same options after you approve the plan. |
 | `ward-tune` | Fits the rules of the gates you already run to the code: Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, and ArchUnit architecture rules. For a large backlog of findings it plans the fixes rule by rule instead of hiding them. Every edit is grounded in findings from `ward check`, shown as a diff, and written only after you approve it. |
+| `ward-fix` | Fixes the code so the failing gates pass. It reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule with you, and re-runs the gate after each rule. It never edits `ward.toml` or rule files and never adds suppressions; a rule you want changed goes to `ward-tune`. |
 
 The skills follow the open [Agent Skills](https://agentskills.io) format, so the same files work in
 Claude Code, OpenCode, Codex, Cursor, and other agents that support skills. They are distributed
@@ -37,7 +38,7 @@ can also invoke the skill by name: `/ward:ward-init`.
 Install the skills with the cross-agent installer. It asks which agents to install them for:
 
 ```sh
-npx skills add RicardoRB/ward-ai --skill ward-init ward-tune
+npx skills add RicardoRB/ward-ai --skill ward-init ward-tune ward-fix
 ```
 
 ## Requirements
@@ -49,13 +50,14 @@ doing anything else, and stops with an upgrade offer when the CLI is older.
 |---|---|
 | `ward-init` | 0.2.0 |
 | `ward-tune` | 0.2.0 |
+| `ward-fix` | 0.2.0 |
 
-Both skills need a Maven or Gradle Java project and a shell. `ward-tune` also needs an existing
-`ward.toml`.
+Each skill needs a Java, TypeScript, or JavaScript project and a shell. `ward-tune` and `ward-fix`
+also need an existing `ward.toml`.
 
 ## Guardrails
 
-Both skills follow the same rules, whatever the agent is asked:
+All skills follow the same rules, whatever the agent is asked:
 
 - **`ward.toml` is treated as executable code.** Reading it is safe. Before running
   `ward check` on a `ward.toml` that existed before the session, the agent asks you to
@@ -103,10 +105,21 @@ its plan. If you decline, the file is not edited.
 JaCoCo settings in your build file and existing ArchUnit test classes carry no marker. Init leaves
 them unchanged.
 
+## How `ward-fix` fixes findings
+
+1. It runs the profile you want green and sorts the gates: missing tools and configuration errors
+   are reported, not fixed in code.
+2. It shows one table of the failing rules, largest first, each marked as a mechanical or a design
+   fix, and you choose which to fix and in what order.
+3. It fixes one rule at a time and re-runs the gate before moving on. Design fixes, real bugs,
+   changed test expectations, and dependency upgrades each need your yes first.
+4. Coverage and mutation gaps are closed with tests that assert behavior, and a leaked secret is
+   moved out of the code with a reminder to rotate it.
+
 ## Uninstall
 
 - Claude Code: `/plugin uninstall ward@ward-ai`.
-- Other agents: delete the `ward-init` and `ward-tune` directories from the agent's skills
+- Other agents: delete the `ward-init`, `ward-tune`, and `ward-fix` directories from the agent's skills
   directory.
 
 Uninstalling the skills does not change anything Ward configured in your projects.
