@@ -92,7 +92,7 @@ collect the gate-specific evidence that each reference describes: per-rule count
 reports, measured coverage ratios, and the package dependency table.
 
 If a gate reports hundreds of findings, for example after a first `strict` setup on an existing
-codebase, do not propose rules one finding at a time. Use the remediation plan in Step 5a.
+codebase, do not propose rules one finding at a time. See Step 5a.
 
 A gate whose tool cannot even load its configuration, for example a rule file that fails to parse,
 is a configuration problem, not a finding. Report the tool's error as is, and fix the configuration
@@ -140,26 +140,13 @@ reason in an XML or Java comment next to the change, so reviewers see why it was
 Write a change only after the user approves it. If the user declines, leave the file untouched and
 move on to the next proposal. Never batch several weakenings into one approval.
 
-## Step 5a: Remediation plan for a large backlog
+## Step 5a: Large backlogs belong to ward-fix
 
-Use this when a gate has more findings than the user can review one by one (as a rule of thumb, more
-than 50). The goal is to fix the code, not to hide the backlog.
-
-1. Group the findings by `rule` and count them per rule and per file. Use `findingsTotal` and the
-   full XML report when `findings` is truncated.
-2. Show a table, largest first: rule, count, files affected, and the kind of fix, for example
-   `MagicNumber: 214 in 61 files, named constants` or `MethodLength: 37 in 22 files, split methods`.
-   Mark fixes that are mechanical (imports, `final`, Javadoc) and fixes that need design (long
-   methods, too many parameters, complexity).
-3. For each rule, ask the user to choose: fix the code, or propose a rule change. A rule change goes
-   through Step 5 as usual, with evidence and, for a weakening, its own approval and reason.
-4. Fix the approved rules one at a time. After each rule, run only that gate (for example
-   `ward check --profile ci --format json` and read its check), and report the remaining count.
-   Do not start the next rule while the current one still has findings you introduced.
-5. Keep behavior and test coverage unchanged. Run the `tests` gate after design fixes.
-
-Never use a baseline, an "ignore existing findings" file, or a suppression to shrink the backlog.
-These are suppressions under the guardrails.
+When a gate has more findings than the user can review one by one (as a rule of thumb, more than
+50) and the user wants the code fixed, hand off to the `ward-fix` skill. It plans and fixes the
+backlog rule by rule. Propose rule changes here only for the rules the user wants changed, through
+Step 5 as usual. Never use a baseline, an "ignore existing findings" file, or a suppression to shrink
+the backlog. These are suppressions under the guardrails.
 
 ## Step 6: Apply approved edits
 

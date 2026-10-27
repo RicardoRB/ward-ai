@@ -15,6 +15,7 @@ class AgentSkillsConsistencyTest {
     assertThat(SkillFixtures.consistency(Path.of("")).problems()).isEmpty();
     assertThat(Path.of("skills/ward-init/SKILL.md")).isRegularFile();
     assertThat(Path.of("skills/ward-tune/SKILL.md")).isRegularFile();
+    assertThat(Path.of("skills/ward-fix/SKILL.md")).isRegularFile();
   }
 
   @Test

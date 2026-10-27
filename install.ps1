@@ -94,5 +94,5 @@
   }
 
   Write-Info 'next: install the agent skills, then run /ward-init in your coding agent:'
-  Write-Host "`n    npx skills add $repo --skill ward-init ward-tune`n"
+  Write-Host "`n    npx skills add $repo --skill ward-init ward-tune ward-fix`n"
 }
