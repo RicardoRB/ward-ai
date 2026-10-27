@@ -1,6 +1,8 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
@@ -14,6 +16,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
+    refuseBiomeForAngular(project, tools);
     return new Gates(
         languages(project, tools.testGate(), tools.linting()).analysisGates(tools), List.of());
   }
@@ -22,9 +25,19 @@ final class NodeInitSupport implements ToolchainInitSupport {
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
     final PackageManifest manifest = inputs.manifests().read(project.root());
-    final String testGate = NodeTools.testGate(project.buildTool(), manifest);
+    final String testGate = NodeTools.testGate(project, manifest);
     final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     return languages(project, testGate, linting).presetGates(preset);
+  }
+
+  /** Biome has no Angular template support, so a green Biome gate would hide template errors. */
+  private static void refuseBiomeForAngular(final Project project, final NodeTools tools) {
+    if (project.framework() == Framework.ANGULAR && tools.linting().biome()) {
+      throw new WardException(
+          "Biome does not check Angular templates, so a passing biome gate would hide template"
+              + " errors. Lint this Angular project with eslint instead: remove biome from the"
+              + " project, then run init again.");
+    }
   }
 
   /** A JavaScript package without sources of its own, such as a monorepo root, is no project. */

@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
@@ -35,6 +36,7 @@ record NodeTools(
   static final String VITEST = "vitest";
   static final String JEST = "jest";
   static final String BUN_TEST = "bun-test";
+  static final String NG_TEST = "ng-test";
   static final String LINE = "LINE";
   static final String BRANCH = "BRANCH";
   private static final int PERCENT = 100;
@@ -53,7 +55,7 @@ record NodeTools(
       final PackageManifest manifest,
       final InitInputs inputs,
       final QualityPreset preset) {
-    final String testGate = testGate(project.buildTool(), manifest);
+    final String testGate = testGate(project, manifest);
     final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     return new NodeTools(
         project.buildTool(),
@@ -105,15 +107,22 @@ record NodeTools(
     return ratio == null ? null : (int) Math.round(ratio * PERCENT);
   }
 
-  /** A declared runner is reused; Bun has its own, and any other project gets Vitest. */
-  static String testGate(final BuildTool manager, final PackageManifest manifest) {
+  /**
+   * A declared runner is reused. Angular gets {@code ng test} unless it declares Jest, since the
+   * Vitest that its scaffold adds is not a choice. Bun has its own, and any other project gets
+   * Vitest.
+   */
+  static String testGate(final Project project, final PackageManifest manifest) {
+    if (project.framework() == Framework.ANGULAR) {
+      return manifest.declares(JEST) ? JEST : NG_TEST;
+    }
     if (manifest.declares(VITEST)) {
       return VITEST;
     }
     if (manifest.declares(JEST)) {
       return JEST;
     }
-    return manager == BuildTool.BUN ? BUN_TEST : VITEST;
+    return project.buildTool() == BuildTool.BUN ? BUN_TEST : VITEST;
   }
 
   /** Returns the command prefix that runs a locally installed package binary. */
@@ -167,6 +176,11 @@ record NodeTools(
               BUN_TEST,
               description + " (the coverage threshold is configured in bunfig.toml.)",
               List.of("bun", "test", "--coverage"));
+      case NG_TEST ->
+          option(
+              NG_TEST,
+              description + " (the project's angular.json sets any coverage threshold.)",
+              command("ng", "test", "--watch=false", "--coverage"));
       default -> option(VITEST, description, vitest(branches));
     };
   }

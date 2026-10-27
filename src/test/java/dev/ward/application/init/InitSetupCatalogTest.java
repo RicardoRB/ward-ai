@@ -35,7 +35,9 @@ class InitSetupCatalogTest {
           "dependency-cruiser",
           "vue-tsc",
           "svelte-check",
-          "astro-check");
+          "astro-check",
+          "ngc",
+          "ng-test");
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;

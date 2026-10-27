@@ -121,8 +121,9 @@ run their `command` from the project root, exactly as written, and pass when it 
 - For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
   `astro-check` instead of `tsc`, because only the framework's checker reads its component files.
   The framework comes from the project's declared packages; see
-  [Node projects](/commands/init/#node-projects). Angular keeps `tsc`, and its templates are not
-  type-checked. A type-check configuration with no inputs fails the gate and names the file.
+  [Node projects](/commands/init/#node-projects). Angular's type-check gate is `ngc`, which checks
+  its templates, and its test gate is `ng-test`. A type-check configuration with no inputs fails
+  the gate and names the file.
 - For a Vue, Svelte, or Astro project, `stryker` mutates only `src`, and the generated ESLint config
   ignores `.astro/` (Astro) or `.svelte-kit/` (Svelte).
 - For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the

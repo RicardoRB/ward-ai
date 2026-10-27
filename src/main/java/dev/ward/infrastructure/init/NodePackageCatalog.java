@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
@@ -54,6 +55,23 @@ final class NodePackageCatalog {
   /** The ESLint releases with {@code eslint/config}, which the generated config imports. */
   static final String ESLINT_SUPPORTED = ">=9.22.0 <11.0.0";
 
+  static final String ANGULAR_CORE = "@angular/core";
+  static final String ANGULAR_ESLINT = "angular-eslint";
+  static final String NG_TEST = "ng-test";
+  static final String VITEST = "vitest";
+  static final String COVERAGE_V8 = "@vitest/coverage-v8";
+
+  /**
+   * angular-eslint for each Angular major the matrix verified. The Node range is the Angular CLI's,
+   * since angular-eslint declares none of its own.
+   */
+  private static final Map<String, Package> ANGULAR_ESLINT_BY_MAJOR =
+      Map.of(
+          "21",
+          new Package(ANGULAR_ESLINT, "21.4.0", "^20.19.0 || ^22.12.0 || >=24.0.0", null),
+          "22",
+          new Package(ANGULAR_ESLINT, "22.6.0", "^22.22.3 || ^24.15.0 || >=26.0.0", null));
+
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
   private static final Map<String, String> STRYKER_RUNNERS =
       Map.of("vitest", "@stryker-mutator/vitest-runner", "jest", "@stryker-mutator/jest-runner");
@@ -99,6 +117,7 @@ final class NodePackageCatalog {
           Map.entry(ESLINT, List.of(ESLINT, ESLINT_JS, TYPESCRIPT_ESLINT, TYPESCRIPT)),
           Map.entry("prettier", List.of("prettier")),
           Map.entry("vitest", List.of("vitest", "@vitest/coverage-v8")),
+          Map.entry(NG_TEST, List.of(COVERAGE_V8)),
           Map.entry("jest", List.of()),
           Map.entry("bun-test", List.of()),
           Map.entry(STRYKER, List.of(STRYKER_CORE)),
@@ -156,6 +175,22 @@ final class NodePackageCatalog {
   }
 
   /**
+   * Returns the angular-eslint release pinned for the project's Angular major, or empty when the
+   * manifest does not declare Angular or the major has no pin.
+   */
+  static Optional<Package> angularEslint(final PackageManifest manifest) {
+    return angularMajor(manifest).map(ANGULAR_ESLINT_BY_MAJOR::get);
+  }
+
+  private static Optional<String> angularMajor(final PackageManifest manifest) {
+    if (!manifest.declares(ANGULAR_CORE)) {
+      return Optional.empty();
+    }
+    return NodeVersionRange.lowerBound(manifest.dependencies().get(ANGULAR_CORE))
+        .map(version -> version.substring(0, version.indexOf('.')));
+  }
+
+  /**
    * Returns the packages {@code gates} need in a {@code language} project that {@code manifest}
    * does not declare, each once, in gate order.
    */
@@ -168,6 +203,10 @@ final class NodePackageCatalog {
           .map(gate -> STRYKER_RUNNERS.get(gate.id()))
           .filter(Objects::nonNull)
           .forEach(names::add);
+    }
+    if (gates.stream().anyMatch(gate -> NG_TEST.equals(gate.id()))
+        && gates.stream().anyMatch(gate -> ESLINT.equals(gate.id()))) {
+      names.add(ANGULAR_ESLINT);
     }
     return names.stream()
         .filter(name -> !manifest.declares(name))
@@ -183,6 +222,16 @@ final class NodePackageCatalog {
     final Package tool = PACKAGES.get(name);
     if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
       return new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript());
+    }
+    if (ANGULAR_ESLINT.equals(name)) {
+      return angularEslint(manifest)
+          .orElseThrow(
+              () ->
+                  new WardException("No angular-eslint release is pinned for this Angular major."));
+    }
+    if (COVERAGE_V8.equals(name) && manifest.declares(ANGULAR_CORE) && manifest.declares(VITEST)) {
+      // Angular's unit-test builder needs the coverage package at the Vitest version it runs.
+      return new Package(name, manifest.dependencies().get(VITEST), tool.node(), null);
     }
     return tool;
   }

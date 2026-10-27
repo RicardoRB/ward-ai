@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 
 /**
  * The layer bodies init writes over a project's own config. Ward's root config imports or extends
@@ -66,7 +67,10 @@ final class NodeLayerTemplates {
    * Returns the ESLint layer: Ward's rules over the base config in {@code base}. {@code strict}
    * adds the strict TypeScript rules, and standard adds the recommended ones.
    */
-  static String eslint(final QualityPreset preset, final String base) {
+  static String eslint(final QualityPreset preset, final String base, final Framework framework) {
+    if (framework == Framework.ANGULAR) {
+      return NodeAngularEslintTemplate.layer(ESLINT_LAYER, preset, base);
+    }
     final String rules =
         preset == QualityPreset.STRICT
             ? NodeConfigTemplates.STRICT_TYPESCRIPT_RULES

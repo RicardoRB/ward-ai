@@ -290,8 +290,22 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
   (Astro, Svelte, Vue, Angular) decides.
 - For Vue, Svelte and Astro, the type-check gate is the framework's checker in place of `tsc`:
   `vue-tsc` (`vue-tsc --build`), `svelte-check`, and `astro-check` (`astro check`). `tsc` is not
-  offered for those projects. Angular keeps `tsc`, which does not read template files, and init's
-  plan says so.
+  offered for those projects.
+- For Angular, the type-check gate is `ngc -p tsconfig.app.json --noEmit`, which checks component
+  code and templates. The test gate is `ng-test`: `ng test --watch=false --coverage`, run with the
+  project's own test builder. Ward writes no test config for Angular and edits no `angular.json`,
+  `karma.conf.js` or `tsconfig*.json`. Angular's default `vitest` dependency does not select the
+  `vitest` gate; a declared `jest` keeps `jest`.
+- Angular's coverage minimums are enforced only when `angular.json` sets `coverageThresholds`. When
+  it sets none, the plan says so and names `angular.json` and `karma.conf.js` as the files to set
+  them in.
+- Angular's ESLint config uses `angular-eslint`, which lints `.html` templates. Init pins
+  `angular-eslint` to the release for the project's Angular major (21.4.0 or 22.6.0) and checks
+  the Node range of that release.
+- `stryker` is not offered for Angular, and the strict preset omits it, because no Stryker runner
+  works with Angular's test builder. The plan says so.
+- `biome` is refused for Angular, because Biome does not check templates. Init stops with an error
+  that names `biome` and suggests `eslint`, and changes no file.
 - A framework project whose TypeScript configuration has no inputs fails the type-check gate and
   names the file. `vue-tsc --build` reports `TS18002` for a root `tsconfig.json` with `"files": []`
   and no references, and `TS18003` for a referenced config with `"include": []`. A root with

@@ -27,3 +27,5 @@ node,fixture,linting,preset,version
 24,express,eslint,strict,
 24,vue,eslint,strict,
 24,astro,eslint,strict,
+22,angular,eslint,standard,
+24,angular,eslint,strict,

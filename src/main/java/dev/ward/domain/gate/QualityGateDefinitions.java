@@ -35,6 +35,8 @@ public final class QualityGateDefinitions {
           new Definition("vue-tsc", "vue-tsc", Phase.LOCAL, true),
           new Definition("svelte-check", "svelte-check", Phase.LOCAL, true),
           new Definition("astro-check", "astro check", Phase.LOCAL, true),
+          new Definition("ngc", "Angular compiler", Phase.LOCAL, true),
+          new Definition("ng-test", "ng test", Phase.LOCAL, false),
           new Definition("eslint", "ESLint", Phase.FAST, true),
           new Definition("prettier", "Prettier", Phase.FAST, false),
           new Definition("biome", "Biome", Phase.FAST, true),

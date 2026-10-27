@@ -119,10 +119,12 @@ final class NodeConfigFiles {
     if (language == Language.JAVASCRIPT) {
       return NodeConfigTemplates.javascriptEslint(manifest.module(), jest);
     }
-    return NodeConfigTemplates.withGeneratedIgnores(
+    final String typescript =
         preset == QualityPreset.STRICT
             ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT
-            : NodeConfigTemplates.TYPESCRIPT_ESLINT,
+            : NodeConfigTemplates.TYPESCRIPT_ESLINT;
+    return NodeConfigTemplates.withGeneratedIgnores(
+        framework == Framework.ANGULAR ? NodeAngularEslintTemplate.apply(typescript) : typescript,
         framework);
   }
 

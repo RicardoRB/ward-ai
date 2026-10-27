@@ -67,6 +67,7 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
       declaredEslint(manifest).ifPresent(findings::add);
     }
     findings.addAll(declaredCheckers(manifest));
+    declaredAngularEslintNode(node, manifest, added).ifPresent(findings::add);
     findings.forEach(
         finding ->
             LOGGER.log(
@@ -131,6 +132,34 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + declared
                         + " is outside the supported range "
                         + NodePackageCatalog.BIOME_SUPPORTED
+                        + "."));
+  }
+
+  /**
+   * A declared angular-eslint that init does not add is checked against its Angular release's Node
+   * range; an added one is checked by {@link #check} as any package is.
+   */
+  private static Optional<CompatibilityFinding> declaredAngularEslintNode(
+      final int node,
+      final PackageManifest manifest,
+      final List<NodePackageCatalog.Package> added) {
+    if (!manifest.declares(NodePackageCatalog.ANGULAR_ESLINT)
+        || added.stream().anyMatch(tool -> NodePackageCatalog.ANGULAR_ESLINT.equals(tool.name()))) {
+      return Optional.empty();
+    }
+    return NodePackageCatalog.angularEslint(manifest)
+        .filter(tool -> NodeVersionRange.nodeMinimum(tool.node(), node).isEmpty())
+        .map(
+            tool ->
+                finding(
+                    tool,
+                    "Node " + node,
+                    "Angular's angular-eslint "
+                        + tool.version()
+                        + " supports Node "
+                        + tool.node()
+                        + "; the project uses Node "
+                        + node
                         + "."));
   }
 

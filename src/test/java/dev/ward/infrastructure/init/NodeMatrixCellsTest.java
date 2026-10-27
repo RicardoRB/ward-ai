@@ -76,14 +76,17 @@ class NodeMatrixCellsTest {
                 "24,nextjs,eslint,strict,9.22.0",
                 "24,vite-react,eslint,strict,9.22.0",
                 "24,nestjs,eslint,strict,",
-                "24,express,eslint,strict,"));
+                "24,express,eslint,strict,",
+                "24,angular,eslint,strict,"));
   }
 
   @Test
   void standardCellsAreTypeScriptOnNode22WithEachLinter() throws IOException {
     assertThat(rowsEndingWith(",standard,"))
         .containsExactlyInAnyOrder(
-            "22,typescript,eslint,standard,", "22,typescript,biome,standard,");
+            "22,typescript,eslint,standard,",
+            "22,typescript,biome,standard,",
+            "22,angular,eslint,standard,");
   }
 
   private static List<String> rows() throws IOException {
