@@ -129,7 +129,7 @@ class NodeStrictEslintConfigTest {
 
   @Test
   void theLayerAndTheGeneratedStrictConfigShareTheStrictRules() {
-    assertThat(NodeLayerTemplates.eslint(QualityPreset.STRICT, "eslint.base.mjs"))
+    assertThat(NodeLayerTemplates.eslint(QualityPreset.STRICT, "eslint.base.mjs", Framework.NONE))
         .contains(NodeConfigTemplates.STRICT_TYPESCRIPT_RULES);
     assertThat(NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT)
         .contains(NodeConfigTemplates.STRICT_TYPESCRIPT_RULES);

@@ -13,8 +13,11 @@ ArchUnit, rule files under `config/`).
   `dependencies` or `devDependencies`: `vue` or `nuxt` (Vue), `svelte` or `@sveltejs/kit` (Svelte),
   `astro` (Astro), `@angular/core` (Angular). File names never decide. When several match, the first
   in the order Astro, Svelte, Vue, Angular wins. Vue, Svelte and Astro replace `tsc` with `vue-tsc`,
-  `svelte-check` or `astro-check`; Angular keeps `tsc` and the plan says its templates are not
-  type-checked. Biome and framework lint rules are out of scope. A framework project with no
+  `svelte-check` or `astro-check`. Angular uses `ngc -p tsconfig.app.json --noEmit`, which checks
+  templates, and the `ng-test` gate (`ng test --watch=false --coverage`) unless `jest` is declared.
+  Ward writes no Angular test config. Coverage minimums apply only when `angular.json` sets
+  `coverageThresholds`, and the plan says so otherwise. `biome` is refused for Angular, and
+  `stryker` is not offered. Biome and framework lint rules are out of scope. A framework project with no
   type-check inputs fails the gate and names the file (`TS18002` or `TS18003`). Stryker mutates only
   `src` for Vue, Svelte and Astro, and the ESLint config ignores `.astro/` or `.svelte-kit/`.
 - **JavaScript sources.** A `JAVASCRIPT` package is a project init configures only when it holds

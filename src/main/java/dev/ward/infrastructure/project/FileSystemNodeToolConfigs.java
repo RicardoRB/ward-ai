@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 /**
@@ -22,6 +23,10 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
   private static final Logger LOGGER = Logger.getLogger(FileSystemNodeToolConfigs.class.getName());
   private static final String JEST = "jest";
   private static final String PACKAGE_JSON = "package.json";
+  private static final String ANGULAR_JSON = "angular.json";
+  // Angular's unit-test builder reads coverageThresholds from the test target's options.
+  private static final Pattern ANGULAR_LINE_THRESHOLD =
+      Pattern.compile("\"coverageThresholds\"\\s*:\\s*\\{[^}]*\"lines\"\\s*:");
   // The markers init writes in JavaScript and TOML configs.
   private static final List<String> WARD_MARKERS =
       List.of("// managed-by: ward", "# managed-by: ward");
@@ -68,6 +73,20 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
                 Level.FINE,
                 () -> "event=node-user-config gate=" + gate + " file=" + found.getFileName()));
     return file;
+  }
+
+  @Override
+  public boolean angularCoverageThresholdsSet(final Path root) {
+    final Path angular = root.resolve(ANGULAR_JSON);
+    if (!Files.isRegularFile(angular)) {
+      return false;
+    }
+    try {
+      return ANGULAR_LINE_THRESHOLD.matcher(Files.readString(angular)).find();
+    } catch (IOException exception) {
+      LOGGER.log(Level.WARNING, "event=angular-json-unreadable", exception);
+      return false;
+    }
   }
 
   @Override

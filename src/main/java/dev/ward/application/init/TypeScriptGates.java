@@ -20,6 +20,7 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
   private static final String VUE_TSC = "vue-tsc";
   private static final String SVELTE_CHECK = "svelte-check";
   private static final String ASTRO_CHECK = "astro-check";
+  private static final String NGC = "ngc";
 
   @Override
   public List<InitGateOption> analysisGates(final NodeTools node) {
@@ -34,7 +35,9 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
                 "Lints sources with ESLint and typescript-eslint's recommended rules.",
                 node.command("eslint", ".", "--format", "json"))));
     gates.add(node.dependencyCruiser());
-    gates.add(node.stryker());
+    if (!mutationUnavailable()) {
+      gates.add(node.stryker());
+    }
     return List.copyOf(gates);
   }
 
@@ -43,9 +46,17 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
     final List<String> gates = new ArrayList<>(List.of(typeCheckId(), testGate));
     gates.addAll(linting.presetIds());
     if (preset == QualityPreset.STRICT) {
-      gates.addAll(List.of("stryker", "dependency-cruiser"));
+      if (!mutationUnavailable()) {
+        gates.add("stryker");
+      }
+      gates.add("dependency-cruiser");
     }
     return List.copyOf(gates);
+  }
+
+  /** Angular's test builder has no working Stryker runner, so Stryker is not offered for it. */
+  private boolean mutationUnavailable() {
+    return framework == Framework.ANGULAR;
   }
 
   /** Returns the framework's own checker, or {@code tsc} when it has none. */
@@ -66,6 +77,11 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
               ASTRO_CHECK,
               "Type-checks Astro components and TypeScript with astro check.",
               node.command("astro", "check"));
+      case ANGULAR ->
+          node.option(
+              NGC,
+              "Type-checks Angular components and their templates with ngc.",
+              node.command("ngc", "-p", "tsconfig.app.json", "--noEmit"));
       default ->
           node.option(
               TSC,
@@ -80,6 +96,7 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
       case VUE -> VUE_TSC;
       case SVELTE -> SVELTE_CHECK;
       case ASTRO -> ASTRO_CHECK;
+      case ANGULAR -> NGC;
       default -> TSC;
     };
   }

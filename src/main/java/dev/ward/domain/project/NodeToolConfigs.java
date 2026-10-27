@@ -27,4 +27,13 @@ public interface NodeToolConfigs {
   default Optional<Path> baseConfig(final Path root, final String gate) {
     return Optional.empty();
   }
+
+  /**
+   * Returns whether the project's {@code angular.json} sets a line coverage threshold, which the
+   * {@code ng-test} gate enforces. Ward does not write that file, so it reports a missing threshold
+   * instead of adding one.
+   */
+  default boolean angularCoverageThresholdsSet(final Path root) {
+    return false;
+  }
 }

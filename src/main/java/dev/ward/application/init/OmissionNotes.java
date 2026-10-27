@@ -13,9 +13,13 @@ import java.util.List;
  * check does not cover.
  */
 final class OmissionNotes {
-  private static final String ANGULAR_TEMPLATES =
-      "Angular templates are not type-checked: tsc reads only .ts files, so the type-check gate"
-          + " misses them.";
+  private static final String ANGULAR_NO_COVERAGE =
+      "Coverage minimums are not enforced for this Angular project: angular.json sets no"
+          + " coverageThresholds, so ng-test checks no coverage. Set coverageThresholds under the"
+          + " test target's options in angular.json (or in karma.conf.js for Karma).";
+  private static final String ANGULAR_NO_MUTATION =
+      "Mutation testing is not offered for Angular: no Stryker runner works with Angular's test"
+          + " builder, so the strict preset omits stryker.";
 
   private OmissionNotes() {}
 
@@ -24,7 +28,12 @@ final class OmissionNotes {
       final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
     final List<String> notes = new ArrayList<>();
     if (project.language() == Language.TYPESCRIPT && project.framework() == Framework.ANGULAR) {
-      notes.add(ANGULAR_TEMPLATES);
+      if (!catalog.inputs.configs().angularCoverageThresholdsSet(project.root())) {
+        notes.add(ANGULAR_NO_COVERAGE);
+      }
+      if (preset == QualityPreset.STRICT) {
+        notes.add(ANGULAR_NO_MUTATION);
+      }
     }
     if (preset != null) {
       JdkGates.of(catalog).presetOmissions(project, preset).stream()

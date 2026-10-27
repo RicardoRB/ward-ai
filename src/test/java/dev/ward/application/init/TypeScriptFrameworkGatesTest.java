@@ -26,7 +26,9 @@ class TypeScriptFrameworkGatesTest {
     "VUE, NPM, npx vue-tsc --build, vue-tsc",
     "SVELTE, PNPM, pnpm exec svelte-check, svelte-check",
     "ASTRO, YARN, yarn astro check, astro-check",
-    "ANGULAR, NPM, npx tsc --noEmit --pretty false, tsc",
+    "ANGULAR, NPM, npx ngc -p tsconfig.app.json --noEmit, ngc",
+    "ANGULAR, PNPM, pnpm exec ngc -p tsconfig.app.json --noEmit, ngc",
+    "ANGULAR, YARN, yarn ngc -p tsconfig.app.json --noEmit, ngc",
     "NONE, NPM, npx tsc --noEmit --pretty false, tsc"
   })
   void frameworkCheckerReplacesTscInTheTypeCheckGate(
@@ -46,6 +48,20 @@ class TypeScriptFrameworkGatesTest {
 
     assertThat(catalog().presetGates(project, QualityPreset.STRICT)).doesNotContain("tsc");
     assertThat(catalog().gates(project, null)).extracting(InitGateOption::id).doesNotContain("tsc");
+  }
+
+  @Test
+  void angularStrictPresetOmitsStrykerAndStillKeepsDependencyCruiser() {
+    final Project angular = project(BuildTool.NPM, Framework.ANGULAR);
+
+    assertThat(catalog().presetGates(angular, QualityPreset.STRICT))
+        .doesNotContain("stryker")
+        .contains("dependency-cruiser");
+    assertThat(catalog().gates(angular, null))
+        .extracting(InitGateOption::id)
+        .doesNotContain("stryker");
+    assertThat(catalog().presetGates(project(BuildTool.NPM, Framework.VUE), QualityPreset.STRICT))
+        .contains("stryker");
   }
 
   private InitGeneralCatalog catalog() {

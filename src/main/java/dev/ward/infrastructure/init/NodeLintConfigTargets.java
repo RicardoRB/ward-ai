@@ -44,7 +44,8 @@ final class NodeLintConfigTargets {
           NodeConfigTarget.write(
               ward.get(),
               NodeConfigFiles.marker(NodeConfigFiles.JS_MARKER, preset)
-                  + NodeLayerTemplates.eslint(preset, nameOf(root, base.get()))));
+                  + NodeLayerTemplates.eslint(
+                      preset, nameOf(root, base.get()), project.framework())));
       return targets;
     }
     final Optional<Path> user = configs.userConfig(root, NodeConfigFiles.ESLINT);
@@ -59,7 +60,7 @@ final class NodeLintConfigTargets {
       return targets;
     }
     if (typescript && preset == QualityPreset.STRICT && isFlat(root, user.get())) {
-      targets.addAll(layerEslint(root, user.get(), base, manifest, preset));
+      targets.addAll(layerEslint(project, user.get(), base, manifest, preset));
       return targets;
     }
     targets.add(NodeConfigTarget.keep(user.get(), notApplied(preset, "ESLint", root, user.get())));
@@ -105,7 +106,7 @@ final class NodeLintConfigTargets {
    * takes the user's name, unless that name would make it CommonJS; then the root is {@code .mjs}.
    */
   private static List<NodeConfigTarget> layerEslint(
-      final Path root,
+      final Project project,
       final Path user,
       final Optional<Path> base,
       final PackageManifest manifest,
@@ -114,6 +115,7 @@ final class NodeLintConfigTargets {
     if (base.isPresent()) {
       return List.of(NodeConfigTarget.conflict(base.get()));
     }
+    final Path root = project.root();
     final String name = nameOf(root, user);
     final String ext = extension(name);
     final Path baseFile = root.resolve(ESLINT_BASE + ext);
@@ -123,7 +125,7 @@ final class NodeLintConfigTargets {
         baseFile,
         rootFile,
         NodeConfigFiles.marker(NodeConfigFiles.JS_MARKER, preset)
-            + NodeLayerTemplates.eslint(preset, nameOf(root, baseFile)));
+            + NodeLayerTemplates.eslint(preset, nameOf(root, baseFile), project.framework()));
   }
 
   /** Moves a Biome config to its base file, and writes Ward's {@code biome.jsonc} in its place. */
