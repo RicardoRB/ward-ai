@@ -27,6 +27,15 @@ enabled = true
 command = "./gradlew test"
 ```
 
+For TypeScript and JavaScript projects, run the locally installed tool through the project's package
+manager, such as `pnpm exec`, `npx`, `yarn`, or `bunx`:
+
+```toml
+[quality-gates.tsc]
+command = ["pnpm", "exec", "tsc", "--noEmit", "--pretty", "false"]
+profiles = ["pre-push"]
+```
+
 `command` accepts a string or an array of strings. Arrays preserve exact argument boundaries. A
 string is parsed into arguments. Neither form is executed through a shell.
 

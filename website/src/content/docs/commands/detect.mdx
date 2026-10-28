@@ -29,6 +29,9 @@ ward detect [-C <dir>]
 - Spring Boot is recognized when the POM references `org.springframework.boot`.
 - TypeScript projects are recognized from `tsconfig.json`, and JavaScript projects from
   `package.json`.
+- A TypeScript or JavaScript project's framework comes from its declared packages: Astro, Svelte,
+  Vue, or Angular. Other frameworks, such as Next.js or NestJS, are reported as `None`; Ward runs the
+  same gates for them. See [Node projects](/commands/init/#node-projects).
 
 ### Node package manager
 
