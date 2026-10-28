@@ -19,10 +19,23 @@ Ward checks code in [four layers](/getting-started/how-it-works/): after every a
 each commit, before each push, and in CI. The rules live in `ward.toml`, so every teammate and
 every agent follows the same ones.
 
-Ward is in alpha. It supports Java projects built with Maven or Gradle today, and support for
-the most widely used languages is planned. It also provides project-local integrations for Claude Code, OpenCode, and
+Ward is in alpha. It supports Java projects built with Maven or Gradle, and TypeScript and
+JavaScript projects built with npm, pnpm, Yarn, or Bun. Support for more languages is planned. It
+also provides project-local integrations for Claude Code, OpenCode, and
 [native harnesses](/integrations/native-harnesses/) (Codex, Cursor, GitHub Copilot CLI, Gemini CLI,
 Windsurf, Cline, Factory Droid, and Amp).
+
+## Supported projects
+
+| Language | Build tools | Frameworks Ward recognizes | Quality tools |
+|---|---|---|---|
+| Java / Kotlin | Maven, Gradle | Spring Boot | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
+| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
+| JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
+
+Node projects are tested on Node 22 and 24 in Ward's compatibility matrix, which runs Next.js,
+Vite with React, NestJS, Express, Vue, Astro, and Angular fixtures. See
+[Node projects](/commands/init/#node-projects) for what `init` changes.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
@@ -36,7 +49,7 @@ irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
 
 ## What you can do
 
-- Detect supported Java/Maven and Java/Kotlin Gradle projects and initialize configuration from `standard` or `strict` presets.
+- Detect supported Java/Maven, Java/Kotlin Gradle, TypeScript, and JavaScript projects and initialize configuration from `standard` or `strict` presets.
 - Run configured quality gates as text or machine-readable JSON, locally or in [CI](/guides/ci-cd/), using cumulative local and complete CI profiles.
 - Install agent hooks that run checks after edits and writes.
 - Opt into managed Git quality hooks for fast pre-commit and cumulative pre-push checks.

@@ -3,7 +3,8 @@ title: Quick start
 description: Configure and run your first Ward check.
 ---
 
-From a supported Maven or Gradle project, detect the project, create a configuration, and run the gates:
+From a supported Maven, Gradle, TypeScript, or JavaScript project, detect the project, create a
+configuration, and run the gates:
 
 ```bash
 ward detect
@@ -18,6 +19,17 @@ For non-interactive setup, choose a preset or explicit gates:
 
 Gradle projects use `build.gradle` or `build.gradle.kts`; Ward prefers `./gradlew` and falls back
 to `gradle` when no wrapper is available.
+
+TypeScript and JavaScript projects use the package manager their `packageManager` field or lock file
+names (npm, pnpm, Yarn, or Bun). `init` adds the tools it needs as dev dependencies, runs the
+install, and writes the tools' config files:
+
+```bash
+cd my-app
+ward detect   # Language: TypeScript, Build tool: pnpm, Framework: Vue, Node: 22
+ward init --preset strict --integration none
+ward check
+```
 
 ```bash
 ward init --preset standard --integration none

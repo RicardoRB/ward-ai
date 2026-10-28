@@ -25,8 +25,15 @@ edit to production.
 </div>
 
 > [!NOTE]
-> **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle**. Support
-> for the most widely used languages is planned. The CLI and configuration may change before `1.0`.
+> **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle** and
+> **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun. Support for more
+> languages is planned. The CLI and configuration may change before `1.0`.
+
+| Language | Build tools | Frameworks Ward recognizes | Quality tools |
+|---|---|---|---|
+| Java / Kotlin | Maven, Gradle | Spring Boot | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
+| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
+| JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 
 ## Why Ward?
 
@@ -156,9 +163,12 @@ ward check --profile ci --format json > ward-report.json
 | Architecture | ArchUnit (Layered, Hexagonal, or Clean), Maven Enforcer / Gradle checks |
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
+| TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Prettier, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Anything else | Any command you add to `ward.toml` |
 
-Ward runs the tools; the rules live in each tool's own configuration. See
+Ward runs the tools; the rules live in each tool's own configuration. For TypeScript and JavaScript
+projects, `ward init` writes the tools' own config files, such as an ESLint flat config or
+`vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
 **Coding agents:** Claude Code, OpenCode, Codex, Cursor, GitHub Copilot CLI, Gemini CLI, Windsurf,
@@ -182,7 +192,7 @@ Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes.
 
 **Roadmap:**
 
-- Support for the most widely used languages beyond Java
+- Support for more languages beyond Java, TypeScript, and JavaScript
 - Shared Git hooks (for example through `core.hooksPath`), so teammates get the commit and push
   layers without a setup step
 - Homebrew tap, Scoop and winget packages, and container image
