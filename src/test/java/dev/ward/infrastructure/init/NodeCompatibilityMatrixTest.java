@@ -26,13 +26,15 @@ import org.junit.jupiter.params.provider.CsvFileSource;
  * Runs each Node compatibility matrix cell through the real CLI: {@code init}, the clean {@code
  * check}, then the seeded violations, which must make every selected gate except {@code stryker}
  * fail. Runs only for the cells whose Node value is named by {@code ward.node.matrix} (a major, or
- * a major and minor), with the Ward jar named by {@code ward.node.matrix.jar}.
+ * a major and minor) and, when {@code ward.node.matrix.fixture} is set, whose fixture it names,
+ * with the Ward jar named by {@code ward.node.matrix.jar}.
  */
 @EnabledIfSystemProperty(
     named = NodeCompatibilityMatrixTest.NODE_PROPERTY,
     matches = "\\d+(\\.\\d+)?")
 class NodeCompatibilityMatrixTest {
   static final String NODE_PROPERTY = "ward.node.matrix";
+  private static final String FIXTURE_PROPERTY = "ward.node.matrix.fixture";
   private static final String JAR_PROPERTY = "ward.node.matrix.jar";
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/node-matrix/violations");
@@ -63,6 +65,9 @@ class NodeCompatibilityMatrixTest {
     final Map<String, String> packages = NodeMatrixFixtureEdits.parsePackages(packageSpec);
     Assumptions.assumeTrue(
         node.equals(System.getProperty(NODE_PROPERTY)), "row is for Node " + node);
+    Assumptions.assumeTrue(
+        fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)),
+        "row is for fixture " + fixture);
     final String runtime = runtimeVersion();
     assertThat(runtime.equals(node) || runtime.startsWith(node + "."))
         .as("Wrong runtime: the cell needs Node %s, node --version reports %s", node, runtime)
