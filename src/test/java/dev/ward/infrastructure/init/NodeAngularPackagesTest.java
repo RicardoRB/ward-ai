@@ -61,6 +61,18 @@ class NodeAngularPackagesTest {
   }
 
   @Test
+  void unsupportedAngularMajorDoesNotAddAngularEslint() {
+    final PackageManifest manifest = manifest(Map.of("@angular/core", "^19.0.0"));
+
+    final List<NodePackageCatalog.Package> missing =
+        NodePackageCatalog.missing(Language.TYPESCRIPT, gates("ng-test", "eslint"), manifest);
+
+    assertThat(missing)
+        .extracting(NodePackageCatalog.Package::name)
+        .doesNotContain("angular-eslint");
+  }
+
+  @Test
   void declaredAngularEslintOutsideNodeRangeIsIncompatible() {
     final PackageManifest manifest =
         manifest(Map.of("@angular/core", "^22.2.0", "angular-eslint", "22.6.0"));
@@ -70,7 +82,8 @@ class NodeAngularPackagesTest {
         .satisfies(
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
-              assertThat(finding.artifactId()).isEqualTo("angular-eslint");
+              assertThat(finding.artifactId()).isEqualTo("@angular/core");
+              assertThat(finding.message()).contains("Angular 22 supports Node");
             });
   }
 

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
  */
 class NodeMatrixCellsTest {
   private static final Path CELLS = Path.of("src/test/resources/node-matrix/cells.csv");
+  private static final Path NODE_FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final List<String> NODES = List.of("22", "24");
   private static final List<String> FIXTURES =
       List.of("typescript", "javascript-esm", "javascript-commonjs");
@@ -77,7 +78,8 @@ class NodeMatrixCellsTest {
                 "24,vite-react,eslint,strict,9.22.0",
                 "24,nestjs,eslint,strict,",
                 "24,express,eslint,strict,",
-                "24,angular,eslint,strict,"));
+                "24,angular-21,eslint,strict,",
+                "24,angular-22,eslint,strict,"));
   }
 
   @Test
@@ -86,7 +88,30 @@ class NodeMatrixCellsTest {
         .containsExactlyInAnyOrder(
             "22,typescript,eslint,standard,",
             "22,typescript,biome,standard,",
-            "22,angular,eslint,standard,");
+            "22,angular-21,eslint,standard,",
+            "22,angular-22,eslint,standard,");
+  }
+
+  @Test
+  void everySupportedAngularMajorHasItsFixtureAndBothMatrixCells() throws IOException {
+    final List<String> expected =
+        AngularReleases.majors().stream()
+            .flatMap(
+                major ->
+                    List.of(
+                        "22,angular-" + major + ",eslint,standard,",
+                        "24,angular-" + major + ",eslint,strict,")
+                        .stream())
+            .toList();
+
+    assertThat(rows().stream().filter(row -> row.split(",", -1)[1].startsWith("angular-")).toList())
+        .containsExactlyInAnyOrderElementsOf(expected);
+    for (final String major : AngularReleases.majors()) {
+      final Path fixture = NODE_FIXTURES.resolve("angular-" + major);
+      assertThat(fixture).isDirectory();
+      assertThat(Files.readString(fixture.resolve("package.json")))
+          .contains("\"@angular/core\": \"^" + major + ".");
+    }
   }
 
   private static List<String> rows() throws IOException {

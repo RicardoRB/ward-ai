@@ -16,8 +16,11 @@ ArchUnit, rule files under `config/`).
   `svelte-check` or `astro-check`. Angular uses `ngc -p tsconfig.app.json --noEmit`, which checks
   templates, and the `ng-test` gate (`ng test --watch=false --coverage`) unless `jest` is declared.
   Ward writes no Angular test config. Coverage minimums apply only when `angular.json` sets
-  `coverageThresholds`, and the plan says so otherwise. `biome` is refused for Angular, and
-  `stryker` is not offered. Biome and framework lint rules are out of scope. A framework project with no
+  `coverageThresholds`, and the plan says so otherwise. Ward supports Angular 21 and 22. For an
+  unsupported major, a TypeScript version outside the major's range, an `angular-eslint` major that
+  differs from Angular's, or a Node version outside the major's range, init reports `INCOMPATIBLE`
+  before it changes any file; an unsupported major reports only that finding. `biome` is refused for
+  Angular, and `stryker` is not offered. Biome and framework lint rules are out of scope. A framework project with no
   type-check inputs fails the gate and names the file (`TS18002` or `TS18003`). Stryker mutates only
   `src` for Vue, Svelte and Astro, and the ESLint config ignores `.astro/` or `.svelte-kit/`.
 - **JavaScript sources.** A `JAVASCRIPT` package is a project init configures only when it holds

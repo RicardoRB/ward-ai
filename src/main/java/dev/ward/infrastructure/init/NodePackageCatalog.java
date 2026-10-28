@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.init;
 
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
@@ -60,17 +59,6 @@ final class NodePackageCatalog {
   static final String NG_TEST = "ng-test";
   static final String VITEST = "vitest";
   static final String COVERAGE_V8 = "@vitest/coverage-v8";
-
-  /**
-   * angular-eslint for each Angular major the matrix verified. The Node range is the Angular CLI's,
-   * since angular-eslint declares none of its own.
-   */
-  private static final Map<String, Package> ANGULAR_ESLINT_BY_MAJOR =
-      Map.of(
-          "21",
-          new Package(ANGULAR_ESLINT, "21.4.0", "^20.19.0 || ^22.12.0 || >=24.0.0", null),
-          "22",
-          new Package(ANGULAR_ESLINT, "22.6.0", "^22.22.3 || ^24.15.0 || >=26.0.0", null));
 
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
   private static final Map<String, String> STRYKER_RUNNERS =
@@ -175,14 +163,16 @@ final class NodePackageCatalog {
   }
 
   /**
-   * Returns the angular-eslint release pinned for the project's Angular major, or empty when the
-   * manifest does not declare Angular or the major has no pin.
+   * Returns the angular-eslint package for the project's supported Angular major, or empty when the
+   * manifest does not declare Angular or its major is unsupported.
    */
   static Optional<Package> angularEslint(final PackageManifest manifest) {
-    return angularMajor(manifest).map(ANGULAR_ESLINT_BY_MAJOR::get);
+    return angularMajor(manifest)
+        .flatMap(AngularReleases::forMajor)
+        .map(release -> new Package(ANGULAR_ESLINT, release.angularEslint(), release.node(), null));
   }
 
-  private static Optional<String> angularMajor(final PackageManifest manifest) {
+  static Optional<String> angularMajor(final PackageManifest manifest) {
     if (!manifest.declares(ANGULAR_CORE)) {
       return Optional.empty();
     }
@@ -205,12 +195,13 @@ final class NodePackageCatalog {
           .forEach(names::add);
     }
     if (gates.stream().anyMatch(gate -> NG_TEST.equals(gate.id()))
-        && gates.stream().anyMatch(gate -> ESLINT.equals(gate.id()))) {
+        && gates.stream().anyMatch(gate -> ESLINT.equals(gate.id()))
+        && angularEslint(manifest).isPresent()) {
       names.add(ANGULAR_ESLINT);
     }
     return names.stream()
         .filter(name -> !manifest.declares(name))
-        .map(name -> pinned(name, manifest))
+        .flatMap(name -> pinned(name, manifest).stream())
         .toList();
   }
 
@@ -218,21 +209,19 @@ final class NodePackageCatalog {
    * Returns the catalog pin of {@code name}. @eslint/js ships with ESLint, so when the project
    * declares ESLint it takes the declared range; a pin outside that range fails the install.
    */
-  private static Package pinned(final String name, final PackageManifest manifest) {
+  private static Optional<Package> pinned(final String name, final PackageManifest manifest) {
     final Package tool = PACKAGES.get(name);
-    if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
-      return new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript());
-    }
     if (ANGULAR_ESLINT.equals(name)) {
-      return angularEslint(manifest)
-          .orElseThrow(
-              () ->
-                  new WardException("No angular-eslint release is pinned for this Angular major."));
+      return angularEslint(manifest);
+    }
+    if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
+      return Optional.of(
+          new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript()));
     }
     if (COVERAGE_V8.equals(name) && manifest.declares(ANGULAR_CORE) && manifest.declares(VITEST)) {
       // Angular's unit-test builder needs the coverage package at the Vitest version it runs.
-      return new Package(name, manifest.dependencies().get(VITEST), tool.node(), null);
+      return Optional.of(new Package(name, manifest.dependencies().get(VITEST), tool.node(), null));
     }
-    return tool;
+    return Optional.of(tool);
   }
 }

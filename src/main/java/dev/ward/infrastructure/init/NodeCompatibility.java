@@ -41,8 +41,37 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     final List<CompatibilityFinding> findings = new ArrayList<>();
     final List<String> notes = new ArrayList<>();
     for (final NodePackageCatalog.Package tool : added) {
-      final Optional<String> minimum = NodeVersionRange.nodeMinimum(tool.node(), node);
-      if (minimum.isEmpty()) {
+      checkNode(tool, node, findings, notes);
+      typescript(tool, manifest, added).ifPresent(findings::add);
+    }
+    if (biome) {
+      declaredBiome(manifest).ifPresent(findings::add);
+    }
+    if (eslint) {
+      declaredEslint(manifest).ifPresent(findings::add);
+    }
+    findings.addAll(declaredCheckers(manifest));
+    findings.addAll(NodeAngularCompatibility.check(node, manifest, added));
+    findings.forEach(
+        finding ->
+            LOGGER.log(
+                Level.INFO,
+                () ->
+                    "event=node-compatibility outcome="
+                        + finding.outcome()
+                        + " tool="
+                        + finding.artifactId()));
+    return new NodeCompatibility(findings, notes);
+  }
+
+  private static void checkNode(
+      final NodePackageCatalog.Package tool,
+      final int node,
+      final List<CompatibilityFinding> findings,
+      final List<String> notes) {
+    final Optional<String> minimum = NodeVersionRange.nodeMinimum(tool.node(), node);
+    if (minimum.isEmpty()) {
+      if (!NodePackageCatalog.ANGULAR_ESLINT.equals(tool.name())) {
         findings.add(
             finding(
                 tool,
@@ -55,29 +84,10 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                     + "; the project uses Node "
                     + node
                     + "."));
-      } else if (minimum.get().startsWith(node + ".") && !minimum.get().endsWith(".0.0")) {
-        notes.add(tool.name() + " needs Node " + minimum.get() + " or later.");
       }
-      typescript(tool, manifest, added).ifPresent(findings::add);
+    } else if (minimum.get().startsWith(node + ".") && !minimum.get().endsWith(".0.0")) {
+      notes.add(tool.name() + " needs Node " + minimum.get() + " or later.");
     }
-    if (biome) {
-      declaredBiome(manifest).ifPresent(findings::add);
-    }
-    if (eslint) {
-      declaredEslint(manifest).ifPresent(findings::add);
-    }
-    findings.addAll(declaredCheckers(manifest));
-    declaredAngularEslintNode(node, manifest, added).ifPresent(findings::add);
-    findings.forEach(
-        finding ->
-            LOGGER.log(
-                Level.INFO,
-                () ->
-                    "event=node-compatibility outcome="
-                        + finding.outcome()
-                        + " tool="
-                        + finding.artifactId()));
-    return new NodeCompatibility(findings, notes);
   }
 
   private static Optional<CompatibilityFinding> typescript(
@@ -132,34 +142,6 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + declared
                         + " is outside the supported range "
                         + NodePackageCatalog.BIOME_SUPPORTED
-                        + "."));
-  }
-
-  /**
-   * A declared angular-eslint that init does not add is checked against its Angular release's Node
-   * range; an added one is checked by {@link #check} as any package is.
-   */
-  private static Optional<CompatibilityFinding> declaredAngularEslintNode(
-      final int node,
-      final PackageManifest manifest,
-      final List<NodePackageCatalog.Package> added) {
-    if (!manifest.declares(NodePackageCatalog.ANGULAR_ESLINT)
-        || added.stream().anyMatch(tool -> NodePackageCatalog.ANGULAR_ESLINT.equals(tool.name()))) {
-      return Optional.empty();
-    }
-    return NodePackageCatalog.angularEslint(manifest)
-        .filter(tool -> NodeVersionRange.nodeMinimum(tool.node(), node).isEmpty())
-        .map(
-            tool ->
-                finding(
-                    tool,
-                    "Node " + node,
-                    "Angular's angular-eslint "
-                        + tool.version()
-                        + " supports Node "
-                        + tool.node()
-                        + "; the project uses Node "
-                        + node
                         + "."));
   }
 

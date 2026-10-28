@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.agent.PlannedFileChange;
@@ -39,7 +40,9 @@ class NodeBuildToolConfiguratorTest {
 
   @TempDir Path root;
 
-  private FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+  private final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+  private final NodeBuildToolConfigurator configurator =
+      new NodeBuildToolConfigurator(new FileSystemPackageManifests(), executor);
 
   @BeforeEach
   void manifest() throws IOException {
@@ -49,7 +52,7 @@ class NodeBuildToolConfiguratorTest {
   @ParameterizedTest
   @CsvSource({"NPM, npm", "PNPM, pnpm", "YARN, yarn", "BUN, bun"})
   void installsWithThePackageManager(final BuildTool manager, final String executable) {
-    final BuildFileChange change = configurator().apply(project(manager, "24"), gates("prettier"));
+    final BuildFileChange change = configurator.apply(project(manager, "24"), gates("prettier"));
 
     assertThat(executor.commands).containsExactly(List.of(executable, "install"));
     assertThat(executor.workingDirectories).containsExactly(root);
@@ -58,7 +61,7 @@ class NodeBuildToolConfiguratorTest {
 
   @Test
   void addsPinnedVersionsAndKeepsDeclaredOnes() throws IOException {
-    configurator().apply(project(BuildTool.NPM, "24"), gates("tsc", "prettier"));
+    configurator.apply(project(BuildTool.NPM, "24"), gates("tsc", "prettier"));
 
     assertThat(Files.readString(root.resolve("package.json")))
         .contains("\"typescript\": \"^5.9.3\",\n    \"prettier\": \"3.9.10\"\n");
@@ -66,7 +69,7 @@ class NodeBuildToolConfiguratorTest {
 
   @Test
   void runsNoInstallWhenNothingIsMissing() throws IOException {
-    final BuildFileChange change = configurator().apply(project(BuildTool.NPM, "24"), gates("tsc"));
+    final BuildFileChange change = configurator.apply(project(BuildTool.NPM, "24"), gates("tsc"));
 
     assertThat(executor.commands).isEmpty();
     assertThat(change.changed()).isFalse();
@@ -76,23 +79,25 @@ class NodeBuildToolConfiguratorTest {
   @Test
   void failedInstallRestoresPackageJsonAndTheLockFile() throws IOException {
     Files.writeString(root.resolve("package-lock.json"), LOCK);
-    executor =
-        new FakeCommandExecutor(1, "", "") {
-          @Override
-          public dev.ward.domain.process.CommandResult execute(
-              final List<String> command, final Path workingDirectory) {
-            try {
-              Files.writeString(
-                  workingDirectory.resolve("package-lock.json"),
-                  "{\"lockfileVersion\": 3, \"changed\": true}\n");
-            } catch (IOException e) {
-              throw new IllegalStateException(e);
-            }
-            return super.execute(command, workingDirectory);
-          }
-        };
+    final NodeBuildToolConfigurator failing =
+        new NodeBuildToolConfigurator(
+            new FileSystemPackageManifests(),
+            new FakeCommandExecutor(1, "", "") {
+              @Override
+              public dev.ward.domain.process.CommandResult execute(
+                  final List<String> command, final Path workingDirectory) {
+                try {
+                  Files.writeString(
+                      workingDirectory.resolve("package-lock.json"),
+                      "{\"lockfileVersion\": 3, \"changed\": true}\n");
+                } catch (IOException e) {
+                  throw new IllegalStateException(e);
+                }
+                return super.execute(command, workingDirectory);
+              }
+            });
 
-    assertThatThrownBy(() -> configurator().apply(project(BuildTool.NPM, "24"), gates("prettier")))
+    assertThatThrownBy(() -> failing.apply(project(BuildTool.NPM, "24"), gates("prettier")))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("`npm install` failed");
     assertThat(Files.readString(root.resolve("package.json"))).isEqualTo(MANIFEST);
@@ -101,7 +106,6 @@ class NodeBuildToolConfiguratorTest {
 
   @Test
   void rollbackDeletesALockFileTheInstallCreated() throws IOException {
-    final NodeBuildToolConfigurator configurator = configurator();
     final BuildFileChange change =
         configurator.apply(project(BuildTool.PNPM, "24"), gates("prettier"));
     Files.writeString(root.resolve("pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
@@ -113,9 +117,43 @@ class NodeBuildToolConfiguratorTest {
   }
 
   @Test
+  void unsupportedAngularMajorIsReportedBeforeInitChangesAnyFile() throws IOException {
+    final String unsupportedManifest =
+        """
+        {
+          "name": "shop",
+          "devDependencies": {
+            "@angular/core": "^19.0.0",
+            "typescript": "6.0.3"
+          }
+        }
+        """;
+    Files.writeString(root.resolve("package.json"), unsupportedManifest);
+    final Project angular =
+        new Project(
+            root,
+            Language.TYPESCRIPT,
+            BuildTool.NPM,
+            Framework.ANGULAR,
+            false,
+            false,
+            root,
+            Set.of(),
+            "24");
+    final Throwable thrown =
+        catchThrowable(() -> configurator.apply(angular, gates("ng-test", "eslint")));
+
+    assertThat(thrown)
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("@angular/core ^19.0.0", "supported Angular majors 21, 22");
+    assertThat(Files.readString(root.resolve("package.json"))).isEqualTo(unsupportedManifest);
+    assertThat(executor.commands).isEmpty();
+  }
+
+  @Test
   void planListsThePackagesAndTheInstall() {
     final PlannedFileChange plan =
-        configurator().plan(project(BuildTool.PNPM, "24"), gates("eslint"), null, false);
+        configurator.plan(project(BuildTool.PNPM, "24"), gates("eslint"), null, false);
 
     assertThat(plan.action()).isEqualTo(PlannedFileChange.Action.MODIFY);
     assertThat(plan.details())
@@ -125,10 +163,6 @@ class NodeBuildToolConfiguratorTest {
             "add devDependency typescript-eslint 8.71.1",
             "run pnpm install, which updates pnpm-lock.yaml");
     assertThat(executor.commands).isEmpty();
-  }
-
-  private NodeBuildToolConfigurator configurator() {
-    return new NodeBuildToolConfigurator(new FileSystemPackageManifests(), executor);
   }
 
   private Project project(final BuildTool manager, final String node) {
