@@ -1,4 +1,4 @@
-node,fixture,linting,preset,version
+node,fixture,linting,preset,version,packages
 22,typescript,eslint,strict,
 22,typescript,biome,strict,
 22,javascript-esm,eslint,strict,
@@ -27,6 +27,8 @@ node,fixture,linting,preset,version
 24,express,eslint,strict,
 24,vue,eslint,strict,
 24,astro,eslint,strict,
+22.12,astro,eslint,standard,,astro@7.3.8 typescript@5.0.4
+24,astro,eslint,strict,,astro@7.3.8 @astrojs/check@0.9.12
 22,angular-21,eslint,standard,
 24,angular-21,eslint,strict,
 22,angular-22,eslint,standard,

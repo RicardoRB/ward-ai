@@ -25,10 +25,12 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 /**
  * Runs each Node compatibility matrix cell through the real CLI: {@code init}, the clean {@code
  * check}, then the seeded violations, which must make every selected gate except {@code stryker}
- * fail. Runs only for the cells of the Node major version named by {@code ward.node.matrix}, with
- * the Ward jar named by {@code ward.node.matrix.jar}.
+ * fail. Runs only for the cells whose Node value is named by {@code ward.node.matrix} (a major, or
+ * a major and minor), with the Ward jar named by {@code ward.node.matrix.jar}.
  */
-@EnabledIfSystemProperty(named = NodeCompatibilityMatrixTest.NODE_PROPERTY, matches = "\\d+")
+@EnabledIfSystemProperty(
+    named = NodeCompatibilityMatrixTest.NODE_PROPERTY,
+    matches = "\\d+(\\.\\d+)?")
 class NodeCompatibilityMatrixTest {
   static final String NODE_PROPERTY = "ward.node.matrix";
   private static final String JAR_PROPERTY = "ward.node.matrix.jar";
@@ -38,6 +40,8 @@ class NodeCompatibilityMatrixTest {
   private static final String BIOME = "biome";
   private static final String ESLINT_JS = "@eslint/js";
   private static final String PACKAGE_JSON = "package.json";
+  private static final String ASTRO = "astro";
+  private static final int PACKAGES_ARGUMENT = 5;
   // Test sources skip annotation processing, so the matrix reads each check's name and status pair
   // from the compact JSON report instead of decoding it into a DTO.
   private static final Pattern CHECK =
@@ -53,15 +57,23 @@ class NodeCompatibilityMatrixTest {
     final String linting = cell.getString(2);
     final String preset = cell.getString(3);
     final String version = Objects.requireNonNullElse(cell.getString(4), "");
+    // The packages column is optional: rows without it have only the first five arguments.
+    final String packageSpec =
+        cell.size() > PACKAGES_ARGUMENT ? cell.getString(PACKAGES_ARGUMENT) : "";
+    final Map<String, String> packages = NodeMatrixFixtureEdits.parsePackages(packageSpec);
     Assumptions.assumeTrue(
         node.equals(System.getProperty(NODE_PROPERTY)), "row is for Node " + node);
-    final String runtime = runtimeMajor();
-    assertThat(runtime)
+    final String runtime = runtimeVersion();
+    assertThat(runtime.equals(node) || runtime.startsWith(node + "."))
         .as("Wrong runtime: the cell needs Node %s, node --version reports %s", node, runtime)
-        .isEqualTo(node);
+        .isTrue();
 
     copyTree(FIXTURES.resolve(fixture), project);
     declareLinter(project, linting, version);
+    NodeMatrixFixtureEdits.declarePackages(project, packages);
+    if (ASTRO.equals(fixture)) {
+      NodeMatrixFixtureEdits.writeLintViolationInAstroFolder(project);
+    }
     Files.writeString(project.resolve(".nvmrc"), node + "\n");
     run(project, "git", "init", "-q");
     final CommandRun init = ward(project, "init", "--preset", preset, "--yes");
@@ -122,9 +134,9 @@ class NodeCompatibilityMatrixTest {
     return new CommandRun(process.waitFor(), stdout);
   }
 
-  private static String runtimeMajor() throws IOException, InterruptedException {
-    final String version = run(Path.of("."), "node", "--version").stdout().trim();
-    return version.replaceFirst("^v", "").split("\\.")[0];
+  /** The runtime's full version without the leading {@code v}, such as {@code 22.12.0}. */
+  private static String runtimeVersion() throws IOException, InterruptedException {
+    return run(Path.of("."), "node", "--version").stdout().trim().replaceFirst("^v", "");
   }
 
   /**

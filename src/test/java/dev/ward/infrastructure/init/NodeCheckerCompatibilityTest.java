@@ -23,7 +23,12 @@ class NodeCheckerCompatibilityTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({"vue-tsc, ^2.0.0", "svelte-check, ^3.0.0", "@astrojs/check, ^0.8.0"})
+  @CsvSource({
+    "vue-tsc, ^2.0.0",
+    "svelte-check, ^3.0.0",
+    "@astrojs/check, ^0.8.0",
+    "@astrojs/check, ^1.0.0"
+  })
   void declaredCheckerOutsideItsSupportedRangeIsIncompatible(
       final String name, final String range) {
     final List<CompatibilityFinding> findings =
