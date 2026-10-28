@@ -302,6 +302,12 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 - Angular's ESLint config uses `angular-eslint`, which lints `.html` templates. Init pins
   `angular-eslint` to the release for the project's Angular major (21.4.0 or 22.6.0) and checks
   the Node range of that release.
+- Ward supports Angular 21 and 22. Before it changes any file, init reports an `INCOMPATIBLE`
+  finding and writes nothing when the project declares an unsupported Angular major, a TypeScript
+  version outside the major's peer range (`>=5.9 <6.1` for 21, `>=6.0 <6.1` for 22), an
+  `angular-eslint` major that differs from Angular's, or runs on a Node version outside the major's
+  range (`^20.19.0 || ^22.12.0 || >=24.0.0` for 21, `^22.22.3 || ^24.15.0 || >=26.0.0` for 22). An
+  unsupported major reports only that finding.
 - `stryker` is not offered for Angular, and the strict preset omits it, because no Stryker runner
   works with Angular's test builder. The plan says so.
 - `biome` is refused for Angular, because Biome does not check templates. Init stops with an error

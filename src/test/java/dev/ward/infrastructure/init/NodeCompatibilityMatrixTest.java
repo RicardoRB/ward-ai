@@ -68,7 +68,9 @@ class NodeCompatibilityMatrixTest {
     assertThat(init.exitCode()).as("ward init exit code").isZero();
 
     final CommandRun cleanCheck = check(project);
-    assertThat(cleanCheck.exitCode()).as("clean check exit code").isZero();
+    assertThat(cleanCheck.exitCode())
+        .as("clean check exit code; output: %s", cleanCheck.stdout())
+        .isZero();
     final Map<String, String> clean = statuses(cleanCheck);
     assertThat(clean).as("selected gates").isNotEmpty();
     clean.forEach(
