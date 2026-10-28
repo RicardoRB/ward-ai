@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,9 @@ class NodeMatrixCellsTest {
   private static final List<String> FIXTURES =
       List.of("typescript", "javascript-esm", "javascript-commonjs");
   private static final List<String> LINTERS = List.of("eslint", "biome");
+  private static final int NODE_COLUMN = 0;
+  private static final int FIXTURE_COLUMN = 1;
+  private static final int PACKAGES_COLUMN = 5;
 
   /** The oldest and newest supported version of each linter, declared in the TypeScript rows. */
   private static final Map<String, List<String>> DECLARED_VERSIONS =
@@ -112,6 +116,28 @@ class NodeMatrixCellsTest {
       assertThat(Files.readString(fixture.resolve("package.json")))
           .contains("\"@angular/core\": \"^" + major + ".");
     }
+  }
+
+  @Test
+  void astroCellsCoverEveryRequiredVersion() throws IOException {
+    final List<String> astroRows =
+        rows().stream().filter(row -> "astro".equals(column(row, FIXTURE_COLUMN))).toList();
+    final List<String> declared =
+        astroRows.stream()
+            .flatMap(row -> Arrays.stream(column(row, PACKAGES_COLUMN).trim().split("\\s+")))
+            .toList();
+
+    // The Node 24 row without packages covers the fixture's astro 7.4.2 and the pinned checker and
+    // TypeScript.
+    assertThat(declared).contains("astro@7.3.8", "typescript@5.0.4", "@astrojs/check@0.9.12");
+    assertThat(astroRows).contains("24,astro,eslint,strict,");
+    assertThat(astroRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.12");
+  }
+
+  /** The value at {@code index} of a CSV row, or empty when the row omits that column. */
+  private static String column(final String row, final int index) {
+    final String[] columns = row.split(",", -1);
+    return index < columns.length ? columns[index] : "";
   }
 
   private static List<String> rows() throws IOException {

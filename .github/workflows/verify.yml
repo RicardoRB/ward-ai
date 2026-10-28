@@ -135,14 +135,14 @@ jobs:
             target/ward.sarif
           if-no-files-found: ignore
 
-  # After the Ward ci profile passes, reads the Node versions from the matrix data and skips the
-  # matrix for pull requests that change only website, openspec or Markdown files.
+  # After the Ward ci profile passes, reads the Node and fixture pairs from the matrix data and skips
+  # the matrix for pull requests that change only website, openspec or Markdown files.
   node-matrix-versions:
     name: Node matrix versions
     needs: quality
     runs-on: ubuntu-24.04
     outputs:
-      nodes: ${{ steps.versions.outputs.nodes }}
+      cells: ${{ steps.versions.outputs.cells }}
       run: ${{ steps.versions.outputs.run }}
     steps:
       # Full history so the base branch is available for the documentation-only check.
@@ -157,9 +157,9 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -eu
-          nodes=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1 | sort -un \
-            | jq -R -sc 'split("\n") | map(select(length > 0))')
-          echo "nodes=$nodes" >> "$GITHUB_OUTPUT"
+          cells=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
+            | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {node: .[0], fixture: .[1]})')
+          echo "cells=$cells" >> "$GITHUB_OUTPUT"
           run=true
           if [ "$EVENT" = pull_request ]; then
             changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
@@ -169,18 +169,18 @@ jobs:
             fi
           fi
           echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "Node versions: $nodes, matrix runs: $run"
+          echo "Node cells: $cells, matrix runs: $run"
 
-  # One job per Node version. Each runs only the cells whose row names that version.
+  # One job per Node version and fixture. Each runs only the rows with that Node value and fixture.
   node-matrix:
-    name: Node ${{ matrix.node }} compatibility matrix
+    name: Node ${{ matrix.cell.node }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: node-matrix-versions
     if: needs.node-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        node: ${{ fromJSON(needs.node-matrix-versions.outputs.nodes) }}
+        cell: ${{ fromJSON(needs.node-matrix-versions.outputs.cells) }}
     steps:
       - uses: actions/checkout@v5
 
@@ -194,7 +194,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.cell.node }}
 
       # Keyed on the catalog so a pinned version change refetches the packages.
       - name: Restore npm cache
@@ -206,11 +206,12 @@ jobs:
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
 
-      - name: Run matrix cells for Node ${{ matrix.node }}
+      - name: Run ${{ matrix.cell.fixture }} cells for Node ${{ matrix.cell.node }}
         run: >-
           ./mvnw -B
           -Dtest=NodeCompatibilityMatrixTest
-          -Dward.node.matrix=${{ matrix.node }}
+          -Dward.node.matrix=${{ matrix.cell.node }}
+          -Dward.node.matrix.fixture=${{ matrix.cell.fixture }}
           -Dward.node.matrix.jar=target/ward.jar
           test
 
