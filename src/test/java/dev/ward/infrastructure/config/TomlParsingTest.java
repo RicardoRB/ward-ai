@@ -25,17 +25,17 @@ class TomlParsingTest {
             reader,
             dir,
             """
-                version = 1
+                version = 2
 
-                [quality-gates.tests]
+                [checks.tests]
                 enabled = true
                 command = "./mvnw test"
                 """);
 
-    assertThat(config.version()).isEqualTo(1);
-    assertThat(config.gates()).containsOnlyKeys("tests");
-    assertThat(config.gates().get("tests"))
-        .isEqualTo(new GateConfiguration(true, List.of("./mvnw", "test")));
+    assertThat(config.version()).isEqualTo(2);
+    assertThat(config.checks()).containsOnlyKeys("tests");
+    assertThat(config.checks().get("tests"))
+        .isEqualTo(new GateConfiguration("tests", true, List.of("./mvnw", "test")));
   }
 
   @Test
@@ -45,24 +45,24 @@ class TomlParsingTest {
             reader,
             dir,
             """
-                version = 1
+                version = 2
 
-                [quality-gates.tests]
+                [checks.tests]
                 enabled = true
                 command = "./mvnw test"
 
-                [quality-gates.architecture]
+                [checks.architecture]
                 enabled = false
                 command = "./mvnw test -Dtest=ArchitectureTest"
 
-                [quality-gates.sonar]
+                [checks.sonar]
                 enabled = false
                 command = "sonar analyze agentic"
                 """);
 
-    assertThat(config.gates()).containsOnlyKeys("tests", "architecture", "sonar");
+    assertThat(config.checks()).containsOnlyKeys("tests", "architecture", "sonar");
     assertThat(config.enabledGates()).containsOnlyKeys("tests");
-    assertThat(config.gates().get("architecture").command())
+    assertThat(config.checks().get("architecture").command())
         .containsExactly("./mvnw", "test", "-Dtest=ArchitectureTest");
   }
 
@@ -73,13 +73,13 @@ class TomlParsingTest {
             reader,
             dir,
             """
-                version = 1
-                [quality-gates.tests]
+                version = 2
+                [checks.tests]
                 command = ["./mvnw", "test", "-Dtest=A, B"]
                 """);
 
-    assertThat(config.gates().get("tests").enabled()).isTrue();
-    assertThat(config.gates().get("tests").command())
+    assertThat(config.checks().get("tests").enabled()).isTrue();
+    assertThat(config.checks().get("tests").command())
         .containsExactly("./mvnw", "test", "-Dtest=A, B");
   }
 
@@ -90,20 +90,20 @@ class TomlParsingTest {
             reader,
             dir,
             """
-                version = 1
-                [quality-gates.checkstyle]
+                version = 2
+                [checks.checkstyle]
                 command = ["./mvnw", "checkstyle:check"]
-                [quality-gates.checkstyle.partial]
-                inputs = ["src/**/*.java"]
-                config = ["config/checkstyle.xml"]
+                [checks.checkstyle.paths]
+                match = ["src/**/*.java"]
+                full = ["config/checkstyle.xml"]
                 args = ["-Dcheckstyle.includes={paths}"]
                 item = "**/{name}"
                 separator = ","
                 """);
 
-    assertThat(config.gates().get("checkstyle").partial().inputs())
+    assertThat(config.checks().get("checkstyle").partial().match())
         .containsExactly("src/**/*.java");
-    assertThat(config.gates().get("checkstyle").partial().args())
+    assertThat(config.checks().get("checkstyle").partial().args())
         .containsExactly("-Dcheckstyle.includes={paths}");
   }
 
@@ -115,15 +115,15 @@ class TomlParsingTest {
                     reader,
                     dir,
                     """
-                        version = 1
-                        [quality-gates.tests]
+                        version = 2
+                        [checks.tests]
                         command = "echo test"
-                        [quality-gates.tests.partial]
+                        [checks.tests.paths]
                         args = ["{paths}"]
                         """))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("tests.partial.args")
-        .hasMessageContaining("inputs");
+        .hasMessageContaining("tests.paths.args")
+        .hasMessageContaining("match");
   }
 
   @Test
@@ -134,14 +134,14 @@ class TomlParsingTest {
                     reader,
                     dir,
                     """
-                        version = 1
-                        [quality-gates.tests]
+                        version = 2
+                        [checks.tests]
                         command = "echo test"
-                        [quality-gates.tests.partial]
+                        [checks.tests.paths]
                         inputs = "src/**/*.java"
                         """))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("tests.partial.inputs");
+        .hasMessageContaining("tests.paths.inputs");
   }
 
   @Test
@@ -152,20 +152,20 @@ class TomlParsingTest {
                     reader,
                     dir,
                     """
-                        version = 1
-                        [quality-gates.tests]
+                        version = 2
+                        [checks.tests]
                         command = "echo test"
-                        [quality-gates.tests.partial]
-                        inputs = ["**"]
+                        [checks.tests.paths]
+                        match = ["**"]
                         item = "**/Order.java"
                         """))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("tests.partial.item");
+        .hasMessageContaining("tests.paths.item");
   }
 
   @Test
   void noGatesIsValid() throws Exception {
-    assertThat(read(reader, dir, "version = 1").gates()).isEmpty();
+    assertThat(read(reader, dir, "version = 2").checks()).isEmpty();
   }
 
   @Test

@@ -39,8 +39,8 @@ class WardCliNodeProjectTest extends WardCliIntegrationSupport {
     Files.writeString(
         node.resolve(WARD_TOML),
         """
-        version = 1
-        [quality-gates.format]
+        version = 2
+        [checks.format]
         command = ["true"]
         """);
 

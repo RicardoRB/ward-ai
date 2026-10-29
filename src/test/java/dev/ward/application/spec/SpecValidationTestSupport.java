@@ -23,10 +23,10 @@ class SpecValidationTestSupport {
           + "Next steps:\n  - hint\n";
   static final String BOTH_ENABLED =
       """
-      version = 1
-      [quality-gates.openspec]
+      version = 2
+      [checks.openspec]
       command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-      [quality-gates.openspec-archived]
+      [checks.openspec-archived]
       command = ["openspec", "validate", "--archived", "--no-interactive"]
       """;
   static final List<String> ACTIVE_COMMAND =

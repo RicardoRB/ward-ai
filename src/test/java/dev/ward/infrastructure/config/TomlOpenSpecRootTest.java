@@ -12,7 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** OpenSpec gates accept a relative root; other gates and other values are rejected. */
 class TomlOpenSpecRootTest {
   private static final String OPENSPEC =
-      "version = 1\n[quality-gates.openspec]\ncommand = \"openspec validate --all\"\n";
+      "version = 2\n[checks.openspec]\ncommand = \"openspec validate --all\"\n";
 
   @TempDir Path dir;
 
@@ -20,9 +20,9 @@ class TomlOpenSpecRootTest {
 
   @Test
   void relativeRootIsRead() throws IOException {
-    assertThat(read(reader, dir, OPENSPEC + "root = \"../..\"").gates().get("openspec").root())
+    assertThat(read(reader, dir, OPENSPEC + "root = \"../..\"").checks().get("openspec").root())
         .isEqualTo("../..");
-    assertThat(read(reader, dir, OPENSPEC).gates().get("openspec").root()).isNull();
+    assertThat(read(reader, dir, OPENSPEC).checks().get("openspec").root()).isNull();
   }
 
   @Test
@@ -46,7 +46,7 @@ class TomlOpenSpecRootTest {
                 read(
                     reader,
                     dir,
-                    "version = 1\n[quality-gates.tests]\ncommand = \"./mvnw test\"\nroot = \"..\""))
-        .hasMessageContaining("only supported for the openspec gates");
+                    "version = 2\n[checks.tests]\ncommand = \"./mvnw test\"\nroot = \"..\""))
+        .hasMessageContaining("only supported for the openspec checks");
   }
 }

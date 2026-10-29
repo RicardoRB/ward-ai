@@ -89,8 +89,8 @@ class TargetedSpecValidationTest extends SpecValidationTestSupport {
   void targetedValidationIsANoOpWithoutActiveRegistration() throws IOException {
     project(
         """
-        version = 1
-        [quality-gates.openspec-archived]
+        version = 2
+        [checks.openspec-archived]
         command = ["openspec", "validate", "--archived", "--no-interactive"]
         """,
         FOO);

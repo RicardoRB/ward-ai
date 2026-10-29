@@ -30,7 +30,7 @@ class InitOpenSpecIgnoreWarningTest {
     final InitResult result = initialize(true, List.of("openspec"));
 
     assertThat(result.pomWarnings()).contains(OpenSpecIgnoreWarning.MESSAGE);
-    assertThat(Files.readString(root.resolve("ward.toml"))).contains("[quality-gates.openspec]");
+    assertThat(Files.readString(root.resolve("ward.toml"))).contains("[checks.openspec]");
   }
 
   @Test

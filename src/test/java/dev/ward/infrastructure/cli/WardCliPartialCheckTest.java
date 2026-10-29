@@ -23,13 +23,17 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
     Files.writeString(
         project.resolve(WARD_TOML),
         """
-        version = 1
-        [quality-gates.format]
+        version = 2
+        [checks.format]
+        uses = "format"
+        profiles = ["default", "edit"]
         command = "./mvnw spotless:check"
-        [quality-gates.checkstyle]
+        [checks.checkstyle]
+        uses = "checkstyle"
+        profiles = ["default", "edit"]
         command = "./mvnw checkstyle:check"
-        [quality-gates.checkstyle.partial]
-        inputs = ["src/**/*.java"]
+        [checks.checkstyle.paths]
+        match = ["src/**/*.java"]
         args = ["-Dcheckstyle.includes={paths}"]
         item = "**/{name}"
         separator = ","

@@ -13,8 +13,9 @@ final class TomlOpenApiParser {
    * Returns the OpenAPI options of an {@code openapi-*} gate, or {@code null} for other gates and
    * for a disabled gate without a {@code spec}.
    */
-  static OpenApiGateOptions parse(final String where, final TomlTable gate, final boolean enabled) {
-    if (!SupportedQualityGates.openApiIds().contains(where.substring(where.lastIndexOf('.') + 1))) {
+  static OpenApiGateOptions parse(
+      final String where, final String type, final TomlTable gate, final boolean enabled) {
+    if (!SupportedQualityGates.openApiIds().contains(type)) {
       return null;
     }
     final String spec = string(where, gate, "spec");

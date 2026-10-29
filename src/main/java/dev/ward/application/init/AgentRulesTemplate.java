@@ -61,7 +61,7 @@ final class AgentRulesTemplate {
     lines.add("## Ward quality gates");
     lines.add("");
     lines.add(
-        "`ward.toml` defines the gates: "
+        "`ward.toml` defines the checks: "
             + gates.stream().map(gate -> "`" + gate.id() + "`").collect(Collectors.joining(", "))
             + ".");
     lines.add("");

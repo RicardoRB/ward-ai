@@ -56,10 +56,10 @@ class ConfigurationTemplatePartialTest {
   void mavenWithoutPresetListsOnlyTheBuildFileAsConfiguration() throws IOException {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, null);
 
-    assertThat(gates.get(CHECKSTYLE).partial().config()).containsExactly("pom.xml");
+    assertThat(gates.get(CHECKSTYLE).partial().full()).containsExactly("pom.xml");
     assertThat(gates.get(CHECKSTYLE).partial().args())
         .containsExactly("-Dcheckstyle.includes={paths}");
-    assertThat(gates.get(PMD).partial().config()).containsExactly("pom.xml");
+    assertThat(gates.get(PMD).partial().full()).containsExactly("pom.xml");
   }
 
   @Test
@@ -70,7 +70,7 @@ class ConfigurationTemplatePartialTest {
       assertThat(gates.get(gate).partial().args()).containsExactly("-PwardPaths={paths}");
       assertThat(gates.get(gate).partial().separator()).isEqualTo(",");
       assertThat(gates.get(gate).partial().item()).isEqualTo("{path}");
-      assertThat(gates.get(gate).partial().config()).containsAll(GRADLE_BUILD);
+      assertThat(gates.get(gate).partial().full()).containsAll(GRADLE_BUILD);
     }
     assertThat(gates.get(FORMAT).partial())
         .isEqualTo(
@@ -83,7 +83,7 @@ class ConfigurationTemplatePartialTest {
 
     assertThat(gates.get(CHECKSTYLE).partial().args()).isEmpty();
     assertThat(gates.get(PMD).partial().args()).isEmpty();
-    assertThat(gates.get(CHECKSTYLE).partial().config()).isEqualTo(GRADLE_BUILD);
+    assertThat(gates.get(CHECKSTYLE).partial().full()).isEqualTo(GRADLE_BUILD);
   }
 
   @Test
@@ -143,6 +143,6 @@ class ConfigurationTemplatePartialTest {
         file,
         ConfigurationTemplate.render(
             options, preset, new Project(dir, Language.JAVA, buildTool, Framework.NONE)));
-    return new TomlConfigurationReader().read(file).gates();
+    return new TomlConfigurationReader().read(file).checks();
   }
 }

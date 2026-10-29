@@ -41,7 +41,8 @@ class CheckServiceTest {
             new ProjectDetector(projects),
             file ->
                 new WardConfiguration(
-                    1, Map.of("tests", new GateConfiguration(true, List.of("mvn", "test")))),
+                    1,
+                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
             Files::exists);
@@ -63,8 +64,9 @@ class CheckServiceTest {
     Files.writeString(
         dir.resolve("ward.toml"),
         """
-                version = 1
-                [quality-gates.tests]
+                version = 2
+                [checks.tests]
+                uses = "tests"
                 command = "make verify"
                 """);
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
@@ -81,10 +83,12 @@ class CheckServiceTest {
     Files.writeString(
         dir.resolve("ward.toml"),
         """
-                version = 1
-                [quality-gates.tests]
+                version = 2
+                [checks.tests]
+                uses = "tests"
                 command = "./mvnw test"
-                [quality-gates.sonar]
+                [checks.sonar]
+                uses = "sonar"
                 enabled = false
                 command = "sonar analyze agentic"
                 """);
@@ -99,7 +103,8 @@ class CheckServiceTest {
   void failsWhenNoGateIsEnabled(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\nenabled = false\n");
+        dir.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"mvn test\"\nenabled = false\n");
 
     assertThatThrownBy(() -> service(new FakeCommandExecutor(0, "", "")).check(dir))
         .isInstanceOf(WardException.class)
@@ -111,7 +116,7 @@ class CheckServiceTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 1\n[quality-gates.sonar]\ncommand = \"sonar analyze agentic\"\n");
+        "version = 2\n[checks.sonar]\nuses = \"sonar\"\ncommand = \"sonar analyze agentic\"\n");
 
     assertThat(service(new FakeCommandExecutor(0, "", "")).check(dir).results())
         .singleElement()
@@ -136,13 +141,16 @@ class CheckServiceTest {
     Files.writeString(
         dir.resolve("ward.toml"),
         """
-            version = 1
-            [quality-gates.tests]
+            version = 2
+            [checks.tests]
+            uses = "tests"
             command = "first"
             profiles = ["a", "b"]
-            [quality-gates.coverage]
+            [checks.coverage]
+            uses = "coverage"
             command = "defaulted"
-            [quality-gates.compile]
+            [checks.compile]
+            uses = "compile"
             command = "second"
             profiles = ["b"]
             """);
@@ -174,7 +182,7 @@ class CheckServiceTest {
         .hasMessageContaining("must not be blank");
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 1\n[quality-gates.compile]\nenabled = false\ncommand = 'unused'\nprofiles = ['disabled']\n");
+        "version = 2\n[checks.compile]\nuses = \"compile\"\nenabled = false\ncommand = 'unused'\nprofiles = ['disabled']\n");
     executed.clear();
     assertThatThrownBy(() -> checks.check(dir, List.of("disabled")))
         .isInstanceOf(WardException.class)

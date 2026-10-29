@@ -39,9 +39,10 @@ class WardCliNodeFindingsTest extends WardCliIntegrationSupport {
     Files.setPosixFilePermissions(eslint, PosixFilePermissions.fromString("rwxr-xr-x"));
     Files.writeString(
         node.resolve(WARD_TOML),
-        """
-        version = 1
-        [quality-gates.eslint]
+"""
+        version = 2
+        [checks.eslint]
+uses = "eslint"
         command = ["./fake-eslint"]
         """);
   }

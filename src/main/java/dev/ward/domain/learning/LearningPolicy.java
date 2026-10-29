@@ -46,10 +46,10 @@ public final class LearningPolicy {
       }
       rules.forEach(
           (rule, message) -> {
-            final String key = result.name() + ":" + rule;
-            records.put(key, failing(records.get(key), result.name(), rule, message, now));
+            final String key = result.type() + ":" + rule;
+            records.put(key, failing(records.get(key), result.type(), rule, message, now));
           });
-      prompts.addAll(resolve(records, result.name(), rules.keySet(), threshold, now));
+      prompts.addAll(resolve(records, result.type(), rules.keySet(), threshold, now));
     }
     return new LearningOutcome(
         new LearningLedger(ledger.formatVersion(), records), prompts, List.of());

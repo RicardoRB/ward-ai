@@ -22,7 +22,7 @@
 Init leaves the configuration of a JaCoCo plugin that already exists untouched, so threshold edits in
 the build file survive later `ward init` runs.
 
-Init writes no `partial` table for `coverage`: coverage depends on the whole project, so the check
+Init writes no `paths` table for `coverage`: coverage depends on the whole project, so the check
 after each agent edit runs it in full when it is in the `default` profile.
 
 ## Reading the current coverage

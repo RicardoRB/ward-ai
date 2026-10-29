@@ -25,7 +25,7 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
   void initConfiguresMultipleQualityGatesSelectedWithSpaces() throws IOException {
     assertThat(runInitWithInput("3\n1\n1 2\n", "-C", project.toString())).isZero();
     final String config = Files.readString(project.resolve(WARD_TOML));
-    assertThat(config).contains("[quality-gates.tests]", "[quality-gates.compile]");
+    assertThat(config).contains("[checks.tests]", "[checks.compile]");
   }
 
   @Test

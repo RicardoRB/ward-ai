@@ -11,6 +11,7 @@ import java.util.Objects;
  */
 public record GateResult(
     String name,
+    String type,
     GateStatus status,
     List<String> command,
     int exitCode,
@@ -24,8 +25,12 @@ public record GateResult(
     GateScope scope,
     GatePrerequisite prerequisite) {
 
-  /** Copies {@code command} and replaces missing findings with {@link GateFindings#NONE}. */
+  /**
+   * Copies {@code command} and replaces missing findings with {@link GateFindings#NONE}. A missing
+   * {@code type} is the check's name.
+   */
   public GateResult {
+    type = Objects.requireNonNullElse(type, name);
     command = List.copyOf(command);
     findings = Objects.requireNonNullElse(findings, GateFindings.NONE);
   }
@@ -61,10 +66,30 @@ public record GateResult(
         .build();
   }
 
+  /** Returns a copy of this result carrying the built-in tool {@code type} of its check. */
+  public GateResult withType(final String checkType) {
+    return new GateResult(
+        name,
+        checkType,
+        status,
+        command,
+        exitCode,
+        duration,
+        stdout,
+        stderr,
+        summary,
+        errors,
+        warnings,
+        findings,
+        scope,
+        prerequisite);
+  }
+
   /** Returns a copy of this result carrying {@code gateFindings}. */
   public GateResult withFindings(final GateFindings gateFindings) {
     return new GateResult(
         name,
+        type,
         status,
         command,
         exitCode,
@@ -83,6 +108,7 @@ public record GateResult(
   public GateResult withScope(final GateScope gateScope) {
     return new GateResult(
         name,
+        type,
         status,
         command,
         exitCode,
@@ -101,6 +127,7 @@ public record GateResult(
   public GateResult withPrerequisite(final GatePrerequisite gatePrerequisite) {
     return new GateResult(
         name,
+        type,
         status,
         command,
         exitCode,
@@ -123,6 +150,7 @@ public record GateResult(
   /** Accumulates the optional parts of a {@link GateResult}. */
   public static final class Builder {
     private final String name;
+    private String type;
     private final GateStatus status;
     private List<String> command = List.of();
     private int exitCode;
@@ -135,7 +163,14 @@ public record GateResult(
 
     private Builder(final String name, final GateStatus status) {
       this.name = name;
+      this.type = name;
       this.status = status;
+    }
+
+    /** Sets the built-in tool type of the check, which defaults to its name. */
+    public Builder type(final String value) {
+      type = value;
+      return this;
     }
 
     /** Sets the argument vector the gate ran. */
@@ -190,6 +225,7 @@ public record GateResult(
     public GateResult build() {
       return new GateResult(
           name,
+          type,
           status,
           command,
           exitCode,

@@ -69,7 +69,7 @@ class WardCliContract3Test extends WardCliIntegrationSupport {
     assertThat(runInitWithInput("3\n1\n1\n", "-C", project.toString())).isZero();
     assertThat(out.toString())
         .contains("Select agent integrations", "> [ ] 1)", "Select quality gates", "AVAILABLE");
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[quality-gates.tests]");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[checks.tests]");
   }
 
   @Test

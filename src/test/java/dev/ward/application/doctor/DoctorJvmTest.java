@@ -43,7 +43,7 @@ class DoctorJvmTest {
             + "</plugin></plugins></build></project>");
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n\n[quality-gates.spotbugs]\nenabled = true\nprofiles = [\"ci\"]\n"
+        "version = 2\n\n[checks.spotbugs]\nenabled = true\nprofiles = [\"ci\"]\n"
             + "command = \"mvn spotbugs:check\"\n");
   }
 

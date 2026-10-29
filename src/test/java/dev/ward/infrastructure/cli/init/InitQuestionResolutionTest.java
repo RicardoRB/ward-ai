@@ -24,7 +24,7 @@ class InitQuestionResolutionTest {
         .doesNotContain(
             "Choose a preset", "Select agent", "Select quality gates", "Select optional", "[y/N]");
     for (final String gate : JavaPresetGates.STANDARD) {
-      assertThat(init.configuration()).contains("[quality-gates." + gate + "]");
+      assertThat(init.configuration()).contains("[checks." + gate + "]");
     }
     assertThat(init.output()).contains("No agent integration installed.");
     assertThat(root.resolve(".git/hooks/pre-commit")).doesNotExist();
@@ -37,20 +37,20 @@ class InitQuestionResolutionTest {
     final int exit = init.run("", "--yes", "--preset", "strict", "--integration", "claude-code");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.configuration()).contains("preset = \"strict\"", "[quality-gates.archunit]");
+    assertThat(init.configuration()).contains("[checks.archunit]").doesNotContain("preset =");
     assertThat(init.output()).contains("Generated layered ArchUnit test");
     assertThat(root.resolve(".claude/settings.json")).exists();
   }
 
   @Test
   void yesKeepsAnExistingConfiguration() throws IOException {
-    Files.writeString(root.resolve("ward.toml"), "version = 1\n");
+    Files.writeString(root.resolve("ward.toml"), "version = 2\n");
     final InitCommandFixture init = new InitCommandFixture(root);
 
     assertThat(init.run("", "--yes")).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("Kept existing ward.toml. No changes were made.");
-    assertThat(init.configuration()).isEqualTo("version = 1\n");
+    assertThat(init.configuration()).isEqualTo("version = 2\n");
   }
 
   @Test
@@ -73,7 +73,7 @@ class InitQuestionResolutionTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).doesNotContain("Select optional tools", "[y/N]");
-    assertThat(init.configuration()).contains("[quality-gates.tests]");
+    assertThat(init.configuration()).contains("[checks.tests]");
   }
 
   @Test
@@ -106,7 +106,7 @@ class InitQuestionResolutionTest {
     assertThat(init.run("", "--gate", "tests")).as(init.output()).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("No agent integration installed.");
-    assertThat(init.configuration()).contains("[quality-gates.tests]");
+    assertThat(init.configuration()).contains("[checks.tests]");
   }
 
   @Test

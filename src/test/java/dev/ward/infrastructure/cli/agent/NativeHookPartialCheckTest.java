@@ -53,13 +53,17 @@ class NativeHookPartialCheckTest {
     Files.writeString(
         root.resolve("ward.toml"),
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
+        uses = "tests"
+        profiles = ["default", "edit"]
         command = "mvn test"
-        [quality-gates.checkstyle]
+        [checks.checkstyle]
+        uses = "checkstyle"
+        profiles = ["default", "edit"]
         command = "mvn checkstyle:check"
-        [quality-gates.checkstyle.partial]
-        inputs = ["src/**/*.java"]
+        [checks.checkstyle.paths]
+        match = ["src/**/*.java"]
         args = ["-Dcheckstyle.includes={paths}"]
         item = "**/{name}"
         separator = ","
@@ -87,10 +91,10 @@ class NativeHookPartialCheckTest {
   }
 
   @Test
-  void eventWithoutPathsRunsEveryGateInFull() {
+  void eventWithoutPathsSkipsGatesWithPathsAndRunsTheRest() {
     assertThat(run(postPatch("*** Begin Patch"))).isZero();
 
-    assertThat(commands).containsExactly(TESTS, CHECKSTYLE);
+    assertThat(commands).containsExactly(TESTS);
   }
 
   @Test

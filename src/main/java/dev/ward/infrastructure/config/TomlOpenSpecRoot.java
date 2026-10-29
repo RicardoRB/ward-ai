@@ -15,13 +15,13 @@ final class TomlOpenSpecRoot {
 
   private TomlOpenSpecRoot() {}
 
-  static String parse(final String where, final TomlTable gate) {
+  static String parse(final String where, final String type, final TomlTable gate) {
     if (!gate.contains(ROOT)) {
       return null;
     }
     final String key = where + "." + ROOT;
-    if (!OPENSPEC_GATES.contains(where.substring(where.lastIndexOf('.') + 1))) {
-      throw new WardException("'" + key + "' is only supported for the openspec gates");
+    if (!OPENSPEC_GATES.contains(type)) {
+      throw new WardException("'" + key + "' is only supported for the openspec checks");
     }
     return relative(key, gate.isString(ROOT) ? gate.getString(ROOT) : null);
   }

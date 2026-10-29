@@ -24,10 +24,7 @@ final class InitQuestions {
       "No gate selection given. In non-interactive mode pass --preset or --gate, or --yes to"
           + " accept defaults.";
   private static final int STANDARD_CHOICE = 1;
-  private static final int STRICT_CHOICE = 2;
-  private static final int CUSTOM_CHOICE = 3;
   // Without strict, custom moves up to the second choice.
-  private static final int CUSTOM_WITHOUT_STRICT_CHOICE = 2;
 
   private final Answers answers;
   private final InitWizard wizard;
@@ -111,11 +108,9 @@ final class InitQuestions {
     }
     progress.step();
     if (!catalog.presets(project).contains(QualityPreset.STRICT)) {
-      final boolean custom = previous.map(choices -> choices.preset() == null).orElse(false);
-      return wizard.selectPreset(custom ? CUSTOM_WITHOUT_STRICT_CHOICE : STANDARD_CHOICE, false);
+      return wizard.selectPreset(STANDARD_CHOICE, false);
     }
-    return wizard.selectPreset(
-        previous.map(InitQuestions::presetChoice).orElse(STANDARD_CHOICE), true);
+    return wizard.selectPreset(STANDARD_CHOICE, true);
   }
 
   private List<String> integrations() {
@@ -143,10 +138,9 @@ final class InitQuestions {
     return wizard.selectGates(
         catalog,
         project,
-        previous
-            .filter(choices -> choices.preset() == preset)
-            .map(PreviousChoices::gates)
-            .orElse(preset == null ? List.of() : catalog.presetGates(project, preset)));
+        preset == null
+            ? previous.map(PreviousChoices::gates).orElse(List.of())
+            : catalog.presetGates(project, preset));
   }
 
   private String architecture(final List<String> chosenGates, final List<String> gates) {
@@ -195,14 +189,6 @@ final class InitQuestions {
       questions++;
     }
     return questions;
-  }
-
-  /** The preset question's number for a recorded preset; no preset means custom. */
-  private static int presetChoice(final PreviousChoices choices) {
-    if (choices.preset() == null) {
-      return CUSTOM_CHOICE;
-    }
-    return choices.preset() == QualityPreset.STRICT ? STRICT_CHOICE : STANDARD_CHOICE;
   }
 
   /** The command-line answers; {@code null} means the option was not given. */

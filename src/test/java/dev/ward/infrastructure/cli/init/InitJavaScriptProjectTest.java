@@ -40,11 +40,11 @@ class InitJavaScriptProjectTest {
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
         .contains(
-            "[quality-gates.vitest]",
-            "[quality-gates.prettier]",
-            "[quality-gates.eslint]",
+            "[checks.vitest]",
+            "[checks.prettier]",
+            "[checks.eslint]",
             "command = \"npx vitest run --coverage\"")
-        .doesNotContain("[quality-gates.tsc]", "checkstyle", "mvnw");
+        .doesNotContain("[checks.tsc]", "checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
         .contains(
             "\"eslint\": \"10.12.0\"",

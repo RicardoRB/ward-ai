@@ -28,10 +28,10 @@ class ConfiguredSpecValidationTest extends SpecValidationTestSupport {
   void configuredValidationPassesSilentlyAndSkipsCodeQualityGates() throws IOException {
     project(
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
         command = "mvn test"
-        [quality-gates.openspec]
+        [checks.openspec]
         command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
         """);
 
@@ -45,10 +45,10 @@ class ConfiguredSpecValidationTest extends SpecValidationTestSupport {
   void configuredValidationHonorsProfiles() throws IOException {
     project(
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
         command = "mvn test"
-        [quality-gates.openspec-archived]
+        [checks.openspec-archived]
         command = ["openspec", "validate", "--archived", "--no-interactive"]
         profiles = ["ci"]
         """);

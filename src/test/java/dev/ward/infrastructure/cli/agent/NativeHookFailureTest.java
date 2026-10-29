@@ -46,7 +46,8 @@ class NativeHookFailureTest {
   void project() throws IOException {
     withPom(root, PLAIN_POM);
     Files.writeString(
-        root.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"mvn test\"\n");
+        root.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
   }
 
   private int run(final String payload, final String... args) {

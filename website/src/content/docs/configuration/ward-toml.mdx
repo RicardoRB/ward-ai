@@ -1,28 +1,68 @@
 ---
 title: ward.toml
-description: Configure quality gates and profiles.
+description: Configure checks, profiles, and path-scoped edit checks.
 ---
 
-Configuration uses TOML version 1. Each gate is declared in `[quality-gates.<id>]` and must have a
-`command`:
+Configuration uses TOML version 2. Each check is declared as `[checks.<name>]` and must have a
+`command`. `<name>` is any non-blank name you choose, and it is what Ward prints and what `--gate`
+selects:
 
 ```toml
-version = 1
-preset = "standard" # optional: standard or strict; informational
+version = 2
 
-[quality-gates.tests]
+[checks.tests]
 enabled = true # default: true
 command = "./mvnw test"
 
-[quality-gates.integration]
+[checks.integration]
 command = ["./mvnw", "verify"]
 profiles = ["ci", "strict"]
 ```
 
+Names may contain dots when quoted, and two checks may run the same tool:
+
+```toml
+[checks."rule.number1"]
+command = "./scripts/lint-docs.sh"
+
+[checks.checkstyle]
+command = "./mvnw checkstyle:check"
+
+[checks.checkstyle-tests]
+command = "./mvnw -Dcheckstyle.includes=**/*Test.java checkstyle:check"
+```
+
+Version 1 files (`[quality-gates.<id>]`, `preset`, top-level `[profiles]`) are rejected. Regenerate
+the file with `ward init --overwrite`, or edit it by hand using this page.
+
+## Tool types
+
+Each check has a tool type. The type decides its behavior: how its findings are read, its
+prerequisites, its learning keys, and whether `--exclude-spec` selects it. The name does not.
+
+- `uses` sets the type explicitly. It must be a supported type, or the file is rejected.
+- Without `uses`, Ward infers the type from `command`. A command that matches no type, or more than
+  one, is a plain `command` check: its verdict comes from the exit code, and it has no findings.
+
+```toml
+[checks.style]
+command = "./mvnw checkstyle:check" # inferred: checkstyle
+
+[checks.archunit]
+uses = "archunit"
+command = "./mvnw -Dtest=ArchitectureBoundaryTest test" # a filtered test run is not inferred as tests
+
+[checks.lint]
+uses = "eslint"
+command = "npm run lint" # ESLint JSON output on stdout becomes findings
+```
+
+`ward check --format json` reports each result's `name` and `type`.
+
 For Gradle projects, use the Gradle Wrapper when present (or `gradle` when it is not):
 
 ```toml
-[quality-gates.tests]
+[checks.tests]
 enabled = true
 command = "./gradlew test"
 ```
@@ -31,7 +71,7 @@ For TypeScript and JavaScript projects, run the locally installed tool through t
 manager, such as `pnpm exec`, `npx`, `yarn`, or `bunx`:
 
 ```toml
-[quality-gates.tsc]
+[checks.tsc]
 command = ["pnpm", "exec", "tsc", "--noEmit", "--pretty", "false"]
 profiles = ["pre-push"]
 ```
@@ -39,62 +79,71 @@ profiles = ["pre-push"]
 `command` accepts a string or an array of strings. Arrays preserve exact argument boundaries. A
 string is parsed into arguments. Neither form is executed through a shell.
 
-Profiles:
+## Profiles
 
-- Gates without `profiles` belong to `default`.
-- Init-generated configurations assign fast gates to both `default` and `pre-commit`, slower local
-  gates to `pre-push`, and every selected gate to `ci`. `pre-push` is cumulative.
+- Checks without `profiles` belong to `default`.
+- Init-generated configurations assign fast checks to `default`, `pre-commit`, `pre-push`, `ci`, and
+  `edit`; slower local checks to `pre-push` and `ci`; and every selected check to `ci`. `pre-push` is
+  cumulative.
+- `ward check` without flags runs `default`. `ward check --path <file>` without `--profile` runs
+  `edit`.
 - Select other profiles with `ward check --profile ci,strict`.
 - Legacy top-level `[profiles]` tables are unsupported.
 
-Unknown gate IDs, and checks with no enabled matching gates, are errors.
+The `edit` profile is the set of checks that run after an agent edits a file. See
+[Partial checks](#partial-checks).
+
+Unknown check names are errors, and so are checks with no enabled matching check. A selected `edit`
+profile with no check belonging to it passes with a warning on stderr, because a hook must not fail
+every edit on a configuration without `edit` checks.
 
 ## Mutation score minimum
 
-The `stryker` and PIT `mutation` gates accept an optional `minimum`, an integer from 0 to 100. When
-it is set and the tool succeeds, Ward reads the tool's report and fails the gate when the mutation
+The `stryker` and PIT `mutation` checks accept an optional `minimum`, an integer from 0 to 100. When
+it is set and the tool succeeds, Ward reads the tool's report and fails the check when the mutation
 score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score)
 and [PIT mutation score](/configuration/gates/#pit-mutation-score).
 
 ```toml
-[quality-gates.stryker]
+[checks.stryker]
 command = ["npx", "stryker", "run", "--reporters", "clear-text,progress,json"]
 minimum = 60
 profiles = ["ci"]
 ```
 
-`minimum` on any other gate, or a value that is not an integer from 0 to 100, is a configuration
+`minimum` on any other check, or a value that is not an integer from 0 to 100, is a configuration
 error that names the key.
 
 ## Partial checks
 
-An optional `[quality-gates.<id>.partial]` table controls how a gate responds to an edited path
-passed to `ward check --path`:
+An optional `[checks.<name>.paths]` table controls how a check responds to an edited path passed to
+`ward check --path`:
 
 | Key | Meaning |
 |---|---|
-| `inputs` | Files the gate analyzes, as patterns relative to the project root. If an edited path matches, `args` can narrow the command. |
-| `config` | Files that configure the gate, as patterns relative to the project root. If an edited path matches, the gate runs its normal command. |
+| `match` | Files the check analyzes, as patterns relative to the project root. If an edited path matches, `args` can narrow the command. |
+| `full` | Files that configure the check, as patterns relative to the project root. If an edited path matches, the check runs its normal command. |
 | `args` | The narrowed arguments. `{paths}` is replaced with the edited paths as separate process arguments, or as one value joined by `separator`. |
 | `item` | How each path is rendered: `{path}` (the root-relative path) by default, or `"**/{name}"` for the file name. |
-| `command` | Optional. The base command a narrowed check runs, with `args` appended, instead of the gate's `command`. Use it when the full command ends with a target that would still be analyzed, such as `prettier --check .`. |
+| `command` | Optional. The base command a narrowed check runs, with `args` appended, instead of the check's `command`. Use it when the full command ends with a target that would still be analyzed, such as `prettier --check .`. |
+| `separator` | Optional. Joins the rendered paths into one argument. |
 
 ```toml
-[quality-gates.checkstyle.partial]
-inputs = ["src/**/*.java"]
-config = ["config/checkstyle.xml", "pom.xml"]
+[checks.checkstyle.paths]
+match = ["src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
 
-[quality-gates.semgrep.partial]
-inputs = ["**"]
-config = [".semgrep.yml", ".semgrepignore"]
+[checks.semgrep.paths]
+match = ["**"]
+full = [".semgrep.yml", ".semgrepignore"]
 args = ["{paths}"]
 
-[quality-gates.prettier.partial]
-inputs = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
-config = [".prettierrc*", "package.json"]
+[checks.prettier.paths]
+match = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
+full = [".prettierrc*", "package.json"]
 args = ["{paths}"]
 command = ["npx", "prettier", "--check"]
 ```
@@ -105,23 +154,28 @@ argument. A Prettier edit of `src/app.ts` runs `npx prettier --check src/app.ts`
 `npx prettier --check .`. Other `args` entries are appended unchanged, and nothing passes through a
 shell.
 
-- A `config` match wins over an `inputs` match, and a gate without `args` runs in full when an edited
-  path matches its `inputs`.
-- A deleted file counts as an edit of the gate, but is not passed in `{paths}`. When every relevant
-  edit is a deletion, the gate runs in full.
-- Paths outside the project root are ignored. A gate without `partial` always runs in full.
-- `args` requires `inputs`, `command` requires `args`, every list must contain non-blank strings, and `item` must contain
-  `{path}` or `{name}`. Otherwise `ward check` exits with code `2`.
+- A `full` match wins over a `match` match, and a check without `args` runs in full when an edited
+  path matches its `match`.
+- A deleted file counts as an edit of the check, but is not passed in `{paths}`. When every relevant
+  edit is a deletion, the check runs in full.
+- Paths outside the project root are ignored. A check without `paths` always runs in full.
+- `args` requires `match`, `command` requires `args`, every list must contain non-blank strings, and
+  `item` must contain `{path}` or `{name}`. The keys `partial`, `inputs` and `config` were renamed to
+  `paths`, `match` and `full`; using them is an error that names the replacement. Otherwise
+  `ward check` exits with code `2`.
+
+When `edit` runs without edited paths, a check with a `paths` table is skipped and a check without one
+runs in full, with a warning on stderr that the `edit` profile expects edited paths.
 
 Verify custom arguments with the real tool: a path format the tool does not understand can analyze
-no files and pass. Only checks with `--path` read these tables.
+no files and pass.
 
 **Security:** commands are trusted executable code and run with the current user's privileges in
 the project root. Review `ward.toml` as carefully as a build script; do not run checks on
 untrusted repositories outside a sandbox. See [security](/security/).
 
-OpenSpec registrations are optional and independent. Use `openspec` for strict active validation and
-`openspec-archived` for completed-task validation. A configured local executable is resolved from the
-target project root and is never silently replaced by a PATH executable. An OpenSpec gate may set
-`root`, a path relative to the project root such as `"../.."`, to run from the directory that holds
-`openspec/`; see [OpenSpec tool validations](/configuration/gates/#openspec-tool-validations).
+OpenSpec checks are optional and independent. Use `uses = "openspec"` for strict active validation
+and `uses = "openspec-archived"` for completed-task validation. A configured local executable is
+resolved from the target project root and is never silently replaced by a PATH executable. An OpenSpec
+check may set `root`, a path relative to the project root such as `"../.."`, to run from the directory
+that holds `openspec/`; see [OpenSpec tool validations](/configuration/gates/#openspec-tool-validations).

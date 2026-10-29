@@ -23,16 +23,16 @@ class TomlPartialCommandTest {
             reader,
             dir,
             """
-                version = 1
-                [quality-gates.prettier]
+                version = 2
+                [checks.prettier]
                 command = ["npx", "prettier", "--check", "."]
-                [quality-gates.prettier.partial]
-                inputs = ["**/*.ts"]
+                [checks.prettier.paths]
+                match = ["**/*.ts"]
                 args = ["{paths}"]
                 command = ["npx", "prettier", "--check"]
                 """);
 
-    assertThat(config.gates().get("prettier").partial().command())
+    assertThat(config.checks().get("prettier").partial().command())
         .containsExactly("npx", "prettier", "--check");
   }
 
@@ -44,15 +44,15 @@ class TomlPartialCommandTest {
                     reader,
                     dir,
                     """
-                        version = 1
-                        [quality-gates.prettier]
+                        version = 2
+                        [checks.prettier]
                         command = "npx prettier --check ."
-                        [quality-gates.prettier.partial]
-                        inputs = ["**/*.ts"]
+                        [checks.prettier.paths]
+                        match = ["**/*.ts"]
                         command = ["npx", "prettier", "--check"]
                         """))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("prettier.partial.command")
+        .hasMessageContaining("prettier.paths.command")
         .hasMessageContaining("args");
   }
 
@@ -64,15 +64,15 @@ class TomlPartialCommandTest {
                     reader,
                     dir,
                     """
-                        version = 1
-                        [quality-gates.prettier]
+                        version = 2
+                        [checks.prettier]
                         command = "npx prettier --check ."
-                        [quality-gates.prettier.partial]
-                        inputs = ["**/*.ts"]
+                        [checks.prettier.paths]
+                        match = ["**/*.ts"]
                         args = ["{paths}"]
                         command = ["npx", " "]
                         """))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("prettier.partial.command");
+        .hasMessageContaining("prettier.paths.command");
   }
 }

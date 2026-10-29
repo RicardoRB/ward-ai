@@ -32,8 +32,9 @@ class WardCliSpecSupport extends WardCliIntegrationSupport {
 
   protected String active() throws IOException {
     return """
-        version = 1
-        [quality-gates.openspec]
+        version = 2
+        [checks.openspec]
+        uses = "openspec"
         command = ["%s", "validate", "--all", "--strict", "--no-interactive"]
         """
         .formatted(stub());

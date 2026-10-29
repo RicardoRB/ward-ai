@@ -1,5 +1,6 @@
 package dev.ward.application.doctor;
 
+import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
@@ -34,8 +35,9 @@ record ToolchainContext(Optional<BuildToolConfiguration> buildTools, List<String
     try {
       return new ToolchainContext(
           buildTools,
-          List.copyOf(
-              reader.read(root.resolve(WardConfiguration.FILE_NAME)).enabledGates().keySet()));
+          reader.read(root.resolve(WardConfiguration.FILE_NAME)).enabledGates().values().stream()
+              .map(GateConfiguration::type)
+              .toList());
     } catch (WardException unreadable) {
       return new ToolchainContext(buildTools, List.of());
     }

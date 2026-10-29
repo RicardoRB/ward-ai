@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
-/** Routes a gate result to the finding source registered for its gate id. */
+/** Routes a gate result to the finding source registered for its tool type. */
 public final class CompositeFindingExtractor implements FindingExtractor {
   private static final Logger LOGGER = Logger.getLogger(CompositeFindingExtractor.class.getName());
 
@@ -46,7 +46,7 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   @Override
   public List<Finding> extract(
       final Project project, final GateResult result, final Instant gateStart) {
-    final GateFindingSource source = sources.get(result.name());
+    final GateFindingSource source = sources.get(result.type());
     if (source == null) {
       LOGGER.log(Level.FINE, () -> "event=findings-unsupported gate=" + result.name());
       return List.of();
@@ -56,6 +56,8 @@ public final class CompositeFindingExtractor implements FindingExtractor {
         () ->
             "event=findings-extract gate="
                 + result.name()
+                + " type="
+                + result.type()
                 + " source="
                 + source.getClass().getSimpleName()
                 + " build-tool="

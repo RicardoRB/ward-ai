@@ -96,7 +96,7 @@ class NodeDependencyCruiserGatesTest {
     final Path file = root.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(file, ConfigurationTemplate.render(options, QualityPreset.STRICT, project));
 
-    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).gates();
+    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
     assertThat(gates.get(GATE).profiles()).isEqualTo(Set.of("pre-push", "ci"));
     assertThat(gates.get(GATE).command())

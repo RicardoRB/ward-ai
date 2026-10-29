@@ -52,7 +52,7 @@ class JavaCompatibilityMatrixTest {
 
   private static final Pattern CHECK =
       Pattern.compile("\"name\":\"([^\"]+)\",\"status\":\"([A-Z]+)\"");
-  private static final Pattern CONFIGURED = Pattern.compile("\\[quality-gates\\.([a-z-]+)\\]");
+  private static final Pattern CONFIGURED = Pattern.compile("\\[checks\\.([a-z-]+)\\]");
   private static final Pattern DETECTED = Pattern.compile("JDK (\\d+) runs the build");
 
   @ParameterizedTest(name = "jdk {0} {1} {2} {3}")

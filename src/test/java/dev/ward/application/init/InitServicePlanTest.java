@@ -120,15 +120,14 @@ class InitServicePlanTest {
     final Path configuration = dir.resolve("ward.toml");
     final String written = Files.readString(configuration);
 
-    assertThat(written).contains("[quality-gates.checkstyle.partial]");
+    assertThat(written).contains("[checks.checkstyle.paths]");
     assertThat(actions(dir, service.plan(dir, selection, true)))
         .containsEntry("ward.toml", Action.UNCHANGED);
 
     Files.writeString(
-        configuration,
-        written.replaceAll("(?s)\\n\\[quality-gates\\.[a-z]+\\.partial\\][^\\[]*", "\n"));
+        configuration, written.replaceAll("(?s)\\n\\[checks\\.[a-z]+\\.paths\\][^\\[]*", "\n"));
 
-    assertThat(Files.readString(configuration)).doesNotContain(".partial]");
+    assertThat(Files.readString(configuration)).doesNotContain(".paths]");
     assertThat(actions(dir, service.plan(dir, selection, true)))
         .containsEntry("ward.toml", Action.MODIFY);
   }

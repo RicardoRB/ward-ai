@@ -106,7 +106,7 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
   }
 
   /**
-   * The preset and offered quality gates recorded in the project's existing {@code ward.toml}, in
+   * The enabled quality checks offered by init in the project's existing {@code ward.toml}, in
    * declaration order, or empty when it cannot be read.
    */
   public Optional<PreviousChoices> previousChoices(final Project project) {
@@ -121,7 +121,6 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
         gates(project, null).stream().map(InitGateOption::id).collect(Collectors.toSet());
     return Optional.of(
         new PreviousChoices(
-            configuration.preset() == null ? null : preset(configuration.preset()),
             configuration.enabledGates().keySet().stream().filter(offered::contains).toList()));
   }
 

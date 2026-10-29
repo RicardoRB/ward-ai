@@ -20,7 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** A nested project ignores edits that land elsewhere in the repository it shares. */
 class CheckServiceNestedPartialTest {
   private static final String CONFIGURATION =
-      "version = 1\n[quality-gates.format]\ncommand = \"mvn spotless:check\"\n";
+      "version = 2\n[checks.format]\nuses = \"format\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn spotless:check\"\n";
   private static final String WEB_PAGE = "apps/web/page.tsx";
 
   @TempDir Path repository;

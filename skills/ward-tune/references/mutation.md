@@ -12,7 +12,7 @@ Init leaves an existing PIT configuration untouched, so edits survive later `war
 PIT 1.30.1 or newer is needed to read Java 25 class files. An older version fails before it mutates
 anything. That is a configuration problem, not a finding: report it and offer the version update.
 
-Init writes no `partial` table for `mutation`: mutation testing runs on the whole project and only in
+Init writes no `paths` table for `mutation`: mutation testing runs on the whole project and only in
 the `ci` profile.
 
 ## Reading the current results
@@ -67,7 +67,7 @@ Also note how long the gate takes. A run of several minutes is a cost the team p
   `.stryker.conf.*` is the user's and init keeps it.
 - **What fails the gate.** `thresholds.break` makes Stryker exit non-zero below that score, and the
   gate fails on the exit code. `high` and `low` only color the report. Ward's own `minimum` key on
-  `[quality-gates.stryker]` is an alternative that reads `reports/mutation/mutation.json`; do not set
+  `[checks.stryker]` is an alternative that reads `reports/mutation/mutation.json`; do not set
   both, or the threshold lives in two places.
 - **Reading results.** `reports/mutation/mutation.json` lists each file's mutants with a `status`
   (`Killed`, `Survived`, `NoCoverage`, `Timeout`, ...) and a `location`. The score is

@@ -35,7 +35,7 @@ final class PartialGates {
       final Project project) {
     final Map<String, GateConfiguration> executed = new LinkedHashMap<>();
     selected
-        .gates()
+        .checks()
         .forEach(
             (name, gate) -> {
               if (!skipped(name, gate, plan)) {
@@ -43,17 +43,16 @@ final class PartialGates {
               }
             });
     final Iterator<QualityGate> created =
-        factory
-            .create(new WardConfiguration(selected.version(), executed, selected.preset()), project)
-            .iterator();
-    final List<QualityGate> gates = new ArrayList<>(selected.gates().size());
+        factory.create(new WardConfiguration(selected.version(), executed), project).iterator();
+    final List<QualityGate> gates = new ArrayList<>(selected.checks().size());
     selected
-        .gates()
+        .checks()
         .forEach(
             (name, gate) ->
                 gates.add(
                     skipped(name, gate, plan)
-                        ? new SkippedQualityGate(name, NOT_AFFECTED)
+                        ? new TypedQualityGate(
+                            gate.type(), new SkippedQualityGate(name, NOT_AFFECTED))
                         : created.next()));
     return gates;
   }
@@ -92,6 +91,8 @@ final class PartialGates {
     final List<String> base =
         gate.partial().command().isEmpty() ? gate.command() : gate.partial().command();
     return new GateConfiguration(
+        gate.name(),
+        gate.type(),
         gate.enabled(),
         Stream.concat(base.stream(), plan.args().stream()).toList(),
         gate.profiles(),

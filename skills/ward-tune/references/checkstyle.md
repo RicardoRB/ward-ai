@@ -10,11 +10,11 @@
   set only. Without that block, for example in a build set up by an older Ward, Gradle reads its
   default, `config/checkstyle/checkstyle.xml`. Check which file the build actually uses before you
   tune anything, and tell the user when the Ward file is not in use.
-- The gate command is in `ward.toml` under `[quality-gates.checkstyle]`, for example
+- The gate command is in `ward.toml` under `[checks.checkstyle]`, for example
   `./mvnw checkstyle:check` or `./gradlew checkstyleMain`.
-- The `[quality-gates.checkstyle.partial]` table init writes narrows the per-edit check with Maven
+- The `[checks.checkstyle.paths]` table init writes narrows the per-edit check with Maven
   `-Dcheckstyle.includes=**/<file name>`, or on Gradle with `-PwardPaths=<paths>`, which the
-  `tasks.named('checkstyleMain')` filter init writes with a preset reads. Keep `config` listing the
+  `tasks.named('checkstyleMain')` filter init writes with a preset reads. Keep `full` listing the
   rule file and build files, so editing them runs the gate in full. A root-relative
   `checkstyle.includes` analyzes no files and passes; verify any custom form against the real tool.
 

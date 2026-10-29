@@ -6,7 +6,7 @@ import { Plugin } from "@opencode/plugin";
 // execute.after rejection as a defect, so feedback is appended to the content the model
 // reads instead of being thrown.
 const EDIT_TOOLS = new Set(["edit", "write", "multiedit", "apply_patch", "patch"]);
-const CHECK = ["check", "--format", "json", "--exclude-spec", "--learn-after", "3"];
+const CHECK = ["check", "--profile", "edit", "--format", "json", "--exclude-spec", "--learn-after", "3"];
 const FEEDBACK_MARKER = "[ward spec validation]";
 const MAX_FEEDBACK = 20000;
 const bound = (text) => (text.length > MAX_FEEDBACK ? `${text.slice(0, MAX_FEEDBACK)}\n[truncated]` : text);

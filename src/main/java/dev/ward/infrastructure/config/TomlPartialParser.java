@@ -4,38 +4,60 @@ import dev.ward.domain.config.PartialGateConfiguration;
 import dev.ward.domain.config.WardException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
-/** Parses the optional {@code [quality-gates.<id>.partial]} table of one gate. */
+/** Parses the optional {@code [checks.<name>.paths]} table of one check. */
 final class TomlPartialParser {
-  private static final String PARTIAL = "partial";
+  private static final String PATHS = "paths";
+  private static final String MATCH = "match";
   private static final String INPUTS = "inputs";
+  private static final String CONFIG = "config";
+  private static final String FULL = "full";
   private static final String ARGS = "args";
   private static final String ITEM = "item";
   private static final String COMMAND = "command";
+  private static final String SEPARATOR = "separator";
+  private static final Set<String> KEYS = Set.of(MATCH, FULL, ARGS, ITEM, COMMAND, SEPARATOR);
 
   private TomlPartialParser() {}
 
-  /** Returns the gate's partial settings, or {@code null} when it declares none. */
+  /** Returns the check's paths settings, or {@code null} when it declares none. */
   static PartialGateConfiguration parse(final String where, final TomlTable gate) {
-    if (!gate.contains(PARTIAL)) {
+    if (!gate.contains(PATHS)) {
       return null;
     }
-    final String key = where + "." + PARTIAL;
-    final TomlTable table = gate.isTable(PARTIAL) ? gate.getTable(PARTIAL) : null;
+    final String key = where + "." + PATHS;
+    final TomlTable table = gate.isTable(PATHS) ? gate.getTable(PATHS) : null;
     if (table == null) {
       throw new WardException("'" + key + "' must be a table");
     }
-    requires(table, key, ARGS, INPUTS);
+    rejectUnknownKeys(key, table);
+    requires(table, key, ARGS, MATCH);
     requires(table, key, COMMAND, ARGS);
     return new PartialGateConfiguration(
-        strings(table, key, INPUTS),
-        strings(table, key, "config"),
+        strings(table, key, MATCH),
+        strings(table, key, FULL),
         strings(table, key, ARGS),
         item(table, key),
-        string(table, key, "separator"),
+        string(table, key, SEPARATOR),
         strings(table, key, COMMAND));
+  }
+
+  /** Names the replacement of a renamed key, and rejects any other unknown key. */
+  private static void rejectUnknownKeys(final String key, final TomlTable table) {
+    for (final String name : table.keySet()) {
+      if (INPUTS.equals(name)) {
+        throw new WardException("'" + key + ".inputs' was renamed; use '" + key + ".match'");
+      }
+      if (CONFIG.equals(name)) {
+        throw new WardException("'" + key + ".config' was renamed; use '" + key + ".full'");
+      }
+      if (!KEYS.contains(name)) {
+        throw new WardException("'" + key + "." + name + "' is not a supported key");
+      }
+    }
   }
 
   private static void requires(

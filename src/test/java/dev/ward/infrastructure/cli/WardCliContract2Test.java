@@ -50,27 +50,27 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
 
   @Test
   void initDoesNotOverwriteAndExitsCleanly() throws IOException {
-    Files.writeString(project.resolve(WARD_TOML), "version = 1\n");
+    Files.writeString(project.resolve(WARD_TOML), "version = 2\n");
 
     assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
         .isZero();
 
     assertThat(out.toString()).contains("Kept existing ward.toml. No changes were made.");
-    assertThat(project.resolve(WARD_TOML)).hasContent("version = 1\n");
+    assertThat(project.resolve(WARD_TOML)).hasContent("version = 2\n");
   }
 
   @Test
   void initAsksBeforeOverwritingExistingConfiguration() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 1\n\n[quality-gates.compile]\nenabled = true\ncommand = \"old\"\n");
+        "version = 2\n\n[checks.compile]\nenabled = true\ncommand = \"old\"\n");
 
     assertThat(runInitWithInput("n\n", "-C", project.toString())).isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("command = \"old\"");
 
     out.getBuffer().setLength(0);
     assertThat(runInitWithInput("y\n3\n1\n1\n", "-C", project.toString())).isZero();
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[quality-gates.tests]");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[checks.tests]");
     assertThat(out.toString()).contains("Overwrite it?", "Updated ");
   }
 

@@ -1,55 +1,79 @@
 package dev.ward.infrastructure.config;
 
-import dev.ward.domain.config.CommandLineTokenizer;
+import dev.ward.domain.config.CommandTypeInference;
 import dev.ward.domain.config.GateConfiguration;
-import dev.ward.domain.config.PartialGateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.gate.SupportedQualityGates;
-import java.util.ArrayList;
+import dev.ward.domain.gate.QualityGateDefinitions;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
-/** Parses one {@code [quality-gates.<id>]} table. */
+/** Parses one {@code [checks.<name>]} table. */
 final class TomlGateParser {
-  private static final String COMMAND = "command";
   private static final String PROFILES = "profiles";
+  private static final String USES = "uses";
+  private static final String PARTIAL = "partial";
 
   private TomlGateParser() {}
 
-  static GateConfiguration parse(final String where, final TomlTable gate) {
-    final Set<String> profiles = profiles(where, gate);
+  /** Parses the check {@code name}, whose table is {@code gate}. */
+  static GateConfiguration parse(final String name, final TomlTable gate) {
+    final String where = TomlConfigurationReader.CHECKS + "." + name;
+    rejectLegacyPartial(where, gate);
+    final String uses = uses(where, gate);
+    final List<String> command = TomlCommandParser.parse(where, gate, uses);
+    final String type = type(uses, command);
     final boolean enabled = enabled(where, gate);
-    final PartialGateConfiguration partial = TomlPartialParser.parse(where, gate);
-    final String root = TomlOpenSpecRoot.parse(where, gate);
-    final Integer minimum = TomlMinimumParser.parse(where, gate);
-    if (!gate.contains(COMMAND)) {
-      if (enabled && where.endsWith("." + SupportedQualityGates.TRACEABILITY)) {
-        return new GateConfiguration(true, List.of(), profiles, partial, root);
-      }
-      if (enabled) {
-        throw new WardException("'" + where + ".command' is required for an enabled gate");
-      }
-      return new GateConfiguration(
-          false,
-          List.of(),
-          profiles,
-          partial,
-          root,
-          TomlOpenApiParser.parse(where, gate, false),
-          minimum);
-    }
     return new GateConfiguration(
+        name,
+        type,
         enabled,
-        command(where, gate),
-        profiles,
-        partial,
-        root,
-        TomlOpenApiParser.parse(where, gate, enabled),
-        minimum);
+        command,
+        profiles(where, gate),
+        TomlPartialParser.parse(where, gate),
+        TomlOpenSpecRoot.parse(where, type, gate),
+        TomlOpenApiParser.parse(where, type, gate, enabled),
+        TomlMinimumParser.parse(where, type, gate));
+  }
+
+  private static void rejectLegacyPartial(final String where, final TomlTable gate) {
+    if (gate.contains(PARTIAL)) {
+      throw new WardException(
+          "'"
+              + where
+              + "."
+              + PARTIAL
+              + "' is no longer supported; use '"
+              + where
+              + ".paths' with"
+              + " 'match' and 'full' instead");
+    }
+  }
+
+  private static String uses(final String where, final TomlTable gate) {
+    if (!gate.contains(USES)) {
+      return null;
+    }
+    final String key = where + "." + USES;
+    final String uses = gate.isString(USES) ? gate.getString(USES) : null;
+    if (uses == null || QualityGateDefinitions.find(uses).isEmpty()) {
+      throw new WardException(
+          "'"
+              + key
+              + "' must be one of the supported types: "
+              + QualityGateDefinitions.all().stream()
+                  .map(QualityGateDefinitions.Definition::id)
+                  .toList());
+    }
+    return uses;
+  }
+
+  /** The declared {@code uses}, or the type the command implies. */
+  private static String type(final String uses, final List<String> command) {
+    return uses != null ? uses : CommandTypeInference.infer(command);
   }
 
   private static boolean enabled(final String where, final TomlTable gate) {
@@ -88,44 +112,5 @@ final class TomlGateParser {
       throw new WardException("'" + key + "' must contain only non-blank strings");
     }
     return profile.trim();
-  }
-
-  private static List<String> command(final String where, final TomlTable gate) {
-    final List<String> command;
-    if (gate.isString(COMMAND)) {
-      command = commandString(where, gate);
-    } else if (gate.isArray(COMMAND)) {
-      command = commandArray(where, gate);
-    } else {
-      throw new WardException("'" + where + ".command' must be a string or an array of strings");
-    }
-    if ((command.isEmpty() && !where.endsWith("." + SupportedQualityGates.TRACEABILITY))
-        || (!command.isEmpty() && command.getFirst().isBlank())) {
-      throw new WardException("'" + where + ".command' must not be empty");
-    }
-    return command;
-  }
-
-  private static List<String> commandString(final String where, final TomlTable gate) {
-    final String value = gate.getString(COMMAND);
-    if (value == null) {
-      throw new WardException("'" + where + ".command' must be a string");
-    }
-    return CommandLineTokenizer.tokenize(value);
-  }
-
-  private static List<String> commandArray(final String where, final TomlTable gate) {
-    final TomlArray array = gate.getArray(COMMAND);
-    if (array == null) {
-      throw new WardException("'" + where + ".command' must be an array of strings");
-    }
-    final List<String> command = new ArrayList<>(array.size());
-    for (int i = 0; i < array.size(); i++) {
-      if (!array.isString(i)) {
-        throw new WardException("'" + where + ".command' array must contain only strings");
-      }
-      command.add(array.getString(i));
-    }
-    return command;
   }
 }

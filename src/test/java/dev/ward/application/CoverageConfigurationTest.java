@@ -50,16 +50,17 @@ class CoverageConfigurationTest {
     Files.writeString(
         file,
         """
-                version = 1
-                [quality-gates.tests]
+                version = 2
+                [checks.tests]
+                command = ["mvn", "test"]
                 enabled = false
                 profiles = ["fast"]
-                [quality-gates.compile]
+                [checks.compile]
                 command = ["mvn", "compile"]
                 profiles = ["fast"]
                 """);
     final WardConfiguration configuration = new TomlConfigurationReader().read(file);
-    assertThat(configuration.gates()).containsOnlyKeys("tests", "compile");
+    assertThat(configuration.checks()).containsOnlyKeys("tests", "compile");
     assertThat(configuration.profileNames()).containsExactly("fast");
     assertThat(configuration.enabledGates()).containsOnlyKeys("compile");
     assertThatThrownBy(() -> new TomlConfigurationReader().read(root.resolve("missing.toml")))
@@ -99,7 +100,8 @@ class CoverageConfigurationTest {
     assertThatThrownBy(() -> new LoopConfiguration(1, 0, false))
         .isInstanceOf(IllegalArgumentException.class);
     assertThat(new LoopConfiguration(2, TIMEOUT_SECONDS, true).allowDirty()).isTrue();
-    assertThat(new GateConfiguration(true, List.of("test")).command()).containsExactly("test");
+    assertThat(new GateConfiguration("tests", true, List.of("test")).command())
+        .containsExactly("test");
     assertThat(new WardConfiguration(1, Map.of()).enabledGates()).isEmpty();
     assertThat(new AgentResult(true, "done", "").succeeded()).isTrue();
     assertThat(

@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Configuration describing how a quality gate can be scoped to edited files. A non-empty {@code
- * command} replaces the gate's command as the base of a narrowed check.
+ * Configuration describing how a check can be scoped to edited files. {@code match} names the files
+ * the check analyzes, {@code full} the files whose edit needs the whole check. A non-empty {@code
+ * command} replaces the check's command as the base of a narrowed check.
  */
 public record PartialGateConfiguration(
-    List<String> inputs,
-    List<String> config,
+    List<String> match,
+    List<String> full,
     List<String> args,
     String item,
     String separator,
@@ -17,8 +18,8 @@ public record PartialGateConfiguration(
 
   /** Copies the lists. */
   public PartialGateConfiguration {
-    inputs = List.copyOf(inputs);
-    config = List.copyOf(config);
+    match = List.copyOf(match);
+    full = List.copyOf(full);
     args = List.copyOf(args);
     item = Objects.requireNonNullElse(item, "{path}");
     command = List.copyOf(command);
@@ -26,11 +27,11 @@ public record PartialGateConfiguration(
 
   /** Creates a configuration whose narrowed check runs the gate's own command. */
   public PartialGateConfiguration(
-      final List<String> inputs,
-      final List<String> config,
+      final List<String> match,
+      final List<String> full,
       final List<String> args,
       final String item,
       final String separator) {
-    this(inputs, config, args, item, separator, List.of());
+    this(match, full, args, item, separator, List.of());
   }
 }

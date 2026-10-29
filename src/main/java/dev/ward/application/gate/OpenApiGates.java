@@ -34,17 +34,17 @@ public final class OpenApiGates {
    */
   public QualityGate create(
       final String id, final GateConfiguration configuration, final Project project) {
+    final String type = configuration.type();
     OpenApiCommandValidation.require(id, configuration.command());
     final OpenApiGateOptions options = configuration.openApi();
     if (options == null) {
-      throw new WardException(
-          "'quality-gates." + id + ".spec' is required for an enabled OpenAPI gate");
+      throw new WardException("'checks." + id + ".spec' is required for an enabled OpenAPI gate");
     }
-    if (SupportedQualityGates.OPENAPI_LINT.equals(id)) {
+    if (SupportedQualityGates.OPENAPI_LINT.equals(type)) {
       return new OpenApiLintGate(
           id, ports.executor(), ports.files(), configuration.command(), options.spec());
     }
-    if (SupportedQualityGates.OPENAPI_DIFF.equals(id)) {
+    if (SupportedQualityGates.OPENAPI_DIFF.equals(type)) {
       return new OpenApiDiffGate(
           id,
           ports,

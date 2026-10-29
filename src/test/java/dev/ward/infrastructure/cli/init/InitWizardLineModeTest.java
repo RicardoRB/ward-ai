@@ -32,7 +32,7 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
 class InitWizardLineModeTest {
-  // format, checkstyle, and pmd each add a [quality-gates.<id>.partial] table.
+  // format, checkstyle, and pmd each add a [checks.<id>.paths] table.
   private static final int STANDARD_PARTIAL_TABLES = 3;
   @TempDir Path root;
 
@@ -90,7 +90,7 @@ class InitWizardLineModeTest {
 
     assertThat(exit).as(output.toString()).isZero();
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[quality-gates.tests]").doesNotContain("openspec");
+    assertThat(configuration).contains("[checks.tests]").doesNotContain("openspec");
     assertThat(root.resolve(".git/hooks/pre-commit")).doesNotExist();
     assertThat(root.resolve(".git/hooks/pre-push")).doesNotExist();
     assertThat(events)
@@ -120,8 +120,8 @@ class InitWizardLineModeTest {
     assertThat(output.toString()).contains("> [x] 6) pmd", "or press Enter to accept");
     final String configuration = Files.readString(root.resolve("ward.toml"));
     assertThat(configuration)
-        .contains("preset = \"standard\"", "[quality-gates.checkstyle]")
-        .doesNotContain("[quality-gates.pmd]");
+        .contains("version = 2", "[checks.checkstyle]")
+        .doesNotContain("[checks.pmd]");
     assertThat(root.resolve("config/pmd-ruleset.xml")).doesNotExist();
   }
 
@@ -133,9 +133,9 @@ class InitWizardLineModeTest {
     assertThat(exit).as(output.toString()).isZero();
     final String configuration = Files.readString(root.resolve("ward.toml"));
     for (final String gate : JavaPresetGates.STANDARD) {
-      assertThat(configuration).contains("[quality-gates." + gate + "]");
+      assertThat(configuration).contains("[checks." + gate + "]");
     }
-    assertThat(configuration.split("\\[quality-gates\\.", -1))
+    assertThat(configuration.split("\\[checks\\.", -1))
         .hasSize(JavaPresetGates.STANDARD.size() + STANDARD_PARTIAL_TABLES + 1);
   }
 
@@ -154,7 +154,7 @@ class InitWizardLineModeTest {
     assertThat(exit).as(output.toString()).isZero();
     assertThat(output.toString()).doesNotContain("Select an architecture style");
     assertThat(Files.readString(root.resolve("ward.toml")))
-        .contains("[quality-gates.archunit]", "[quality-gates.mutation]");
+        .contains("[checks.archunit]", "[checks.mutation]");
     assertThat(output.toString()).contains("Generated layered ArchUnit test");
   }
 

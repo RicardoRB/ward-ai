@@ -34,11 +34,13 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
     script("fake-pmd", "echo 'PMD Failure: secret-rule'\nexit 1\n");
     Files.writeString(
         project.resolve(WARD_TOML),
-        """
-        version = 1
-        [quality-gates.gitleaks]
+"""
+        version = 2
+        [checks.gitleaks]
+uses = "gitleaks"
         command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
-        [quality-gates.pmd]
+        [checks.pmd]
+uses = "pmd"
         command = ["./fake-pmd"]
         """);
     final Path report = project.resolve("out/ward.sarif");

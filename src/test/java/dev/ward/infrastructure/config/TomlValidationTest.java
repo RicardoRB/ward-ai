@@ -26,62 +26,58 @@ class TomlValidationTest {
 
   @Test
   void rejectsMissingOrUnsupportedVersion() {
-    assertThatThrownBy(() -> read(reader, dir, "[quality-gates.tests]\ncommand = \"x\""))
+    assertThatThrownBy(() -> read(reader, dir, "[checks.tests]\ncommand = \"x\""))
         .hasMessageContaining("version");
-    assertThatThrownBy(() -> read(reader, dir, "version = 2")).hasMessageContaining("Unsupported");
+    assertThatThrownBy(() -> read(reader, dir, "version = 3")).hasMessageContaining("Unsupported");
     assertThatThrownBy(() -> read(reader, dir, "version = \"1\"")).hasMessageContaining("integer");
   }
 
   @Test
   void rejectsEnabledGateWithoutCommand() {
-    assertThatThrownBy(
-            () -> read(reader, dir, "version = 1\n[quality-gates.tests]\nenabled = true"))
+    assertThatThrownBy(() -> read(reader, dir, "version = 2\n[checks.tests]\nenabled = true"))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("quality-gates.tests.command");
+        .hasMessageContaining("checks.tests.command");
   }
 
   @Test
   void rejectsBadCommandTypes() {
-    assertThatThrownBy(() -> read(reader, dir, "version = 1\n[quality-gates.tests]\ncommand = 5"))
+    assertThatThrownBy(() -> read(reader, dir, "version = 2\n[checks.tests]\ncommand = 5"))
         .hasMessageContaining("string or an array");
-    assertThatThrownBy(
-            () -> read(reader, dir, "version = 1\n[quality-gates.tests]\ncommand = [\"a\", 1]"))
+    assertThatThrownBy(() -> read(reader, dir, "version = 2\n[checks.tests]\ncommand = [\"a\", 1]"))
         .hasMessageContaining("only strings");
-    assertThatThrownBy(
-            () -> read(reader, dir, "version = 1\n[quality-gates.tests]\ncommand = \"  \""))
+    assertThatThrownBy(() -> read(reader, dir, "version = 2\n[checks.tests]\ncommand = \"  \""))
         .hasMessageContaining("empty");
     assertThatThrownBy(
             () ->
                 read(
-                    reader,
-                    dir,
-                    "version = 1\n[quality-gates.tests]\nenabled = \"yes\"\ncommand = \"x\""))
+                    reader, dir, "version = 2\n[checks.tests]\nenabled = \"yes\"\ncommand = \"x\""))
         .hasMessageContaining("true or false");
   }
 
   @Test
   void parsesGateProfilesAndRejectsInvalidOrLegacyProfiles() throws Exception {
-    final WardConfiguration defaults =
-        read(reader, dir, "version = 1\n[quality-gates.a]\ncommand = 'x'");
-    assertThat(defaults.gates().get("a").profiles()).containsExactly("default");
+    final WardConfiguration defaults = read(reader, dir, "version = 2\n[checks.a]\ncommand = 'x'");
+    assertThat(defaults.checks().get("a").profiles()).containsExactly("default");
     final WardConfiguration configured =
         read(
             reader,
             dir,
-            "version = 1\n[quality-gates.a]\nprofiles = [' ci ', 'fast']\nenabled = false");
-    assertThat(configured.gates().get("a").profiles()).containsExactly("ci", "fast");
+            "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = [' ci ', 'fast']\nenabled = false");
+    assertThat(configured.checks().get("a").profiles()).containsExactly("ci", "fast");
     for (final String value : List.of("[]", "[1]", "['  ']", "'not-an-array'")) {
       assertThatThrownBy(
               () ->
                   read(
                       reader,
                       dir,
-                      "version = 1\n[quality-gates.a]\nprofiles = " + value + "\nenabled = false"))
+                      "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = "
+                          + value
+                          + "\nenabled = false"))
           .isInstanceOf(WardException.class)
-          .hasMessageContaining("quality-gates.a.profiles");
+          .hasMessageContaining("checks.a.profiles");
     }
-    assertThatThrownBy(() -> read(reader, dir, "version = 1\n[profiles.old]\ngates = ['a']"))
+    assertThatThrownBy(() -> read(reader, dir, "version = 2\n[profiles.old]\ngates = ['a']"))
         .hasMessageContaining("no longer supported")
-        .hasMessageContaining("quality-gates");
+        .hasMessageContaining("[checks.<name>]");
   }
 }

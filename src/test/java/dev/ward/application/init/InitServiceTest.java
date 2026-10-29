@@ -55,15 +55,15 @@ class InitServiceTest {
 
     final WardConfiguration configuration =
         new TomlConfigurationReader().read(dir.resolve(WARD_TOML));
-    assertThat(configuration.gates().get(FORMAT).profiles())
-        .containsExactly("default", "pre-commit", "pre-push", "ci");
-    assertThat(configuration.gates().get("tests").profiles()).containsExactly("pre-push", "ci");
-    assertThat(configuration.gates().get("mutation").profiles()).containsExactly("ci");
-    assertThat(configuration.forProfiles(List.of()).gates()).containsOnlyKeys(FORMAT);
-    assertThat(configuration.forProfiles(List.of("pre-commit")).gates()).containsOnlyKeys(FORMAT);
-    assertThat(configuration.forProfiles(List.of("pre-push")).gates())
+    assertThat(configuration.checks().get(FORMAT).profiles())
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
+    assertThat(configuration.checks().get("tests").profiles()).containsExactly("pre-push", "ci");
+    assertThat(configuration.checks().get("mutation").profiles()).containsExactly("ci");
+    assertThat(configuration.forProfiles(List.of()).checks()).containsOnlyKeys(FORMAT);
+    assertThat(configuration.forProfiles(List.of("pre-commit")).checks()).containsOnlyKeys(FORMAT);
+    assertThat(configuration.forProfiles(List.of("pre-push")).checks())
         .containsOnlyKeys("format", "tests");
-    assertThat(configuration.forProfiles(List.of("ci")).gates())
+    assertThat(configuration.forProfiles(List.of("ci")).checks())
         .containsOnlyKeys("format", "tests", "mutation");
   }
 
@@ -99,7 +99,7 @@ class InitServiceTest {
 
     final String configuration = Files.readString(dir.resolve(WARD_TOML));
     assertThat(configuration)
-        .contains("profiles = [\"default\", \"pre-commit\", \"pre-push\", \"ci\"]")
+        .contains("profiles = [\"default\", \"pre-commit\", \"pre-push\", \"ci\", \"edit\"]")
         .contains("profiles = [\"ci\"]");
     assertThat(Files.readString(dir.resolve(".git/hooks/pre-commit")))
         .contains("ward check --profile pre-commit --format json");
@@ -176,9 +176,9 @@ class InitServiceTest {
     assertThat(Files.readString(dir.resolve(WARD_TOML)))
         .isEqualTo(
             """
-                version = 1
+                version = 2
 
-                [quality-gates.tests]
+                [checks.tests]
                 enabled = true
                 command = "mvn test"
                 """);
@@ -197,12 +197,12 @@ class InitServiceTest {
   @Test
   void neverOverwritesExistingConfiguration(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    Files.writeString(dir.resolve(WARD_TOML), "version = 1 # mine\n");
+    Files.writeString(dir.resolve(WARD_TOML), "version = 2 # mine\n");
 
     final InitResult result = service.init(dir);
 
     assertThat(result.created()).isFalse();
-    assertThat(Files.readString(dir.resolve(WARD_TOML))).isEqualTo("version = 1 # mine\n");
+    assertThat(Files.readString(dir.resolve(WARD_TOML))).isEqualTo("version = 2 # mine\n");
   }
 
   @Test

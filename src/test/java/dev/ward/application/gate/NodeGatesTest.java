@@ -32,7 +32,7 @@ class NodeGatesTest {
 
   private static WardConfiguration config(final Map<String, List<String>> commands) {
     final Map<String, GateConfiguration> gates = new LinkedHashMap<>();
-    commands.forEach((id, command) -> gates.put(id, new GateConfiguration(true, command)));
+    commands.forEach((id, command) -> gates.put(id, new GateConfiguration(id, true, command)));
     return new WardConfiguration(1, gates);
   }
 

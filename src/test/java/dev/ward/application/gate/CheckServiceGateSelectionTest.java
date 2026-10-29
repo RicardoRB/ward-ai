@@ -37,12 +37,12 @@ class CheckServiceGateSelectionTest {
   void gateSubsetRunsOnlyListedGatesInConfigurationOrder() throws IOException {
     configure(
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
         command = "mvn test"
-        [quality-gates.openspec]
+        [checks.openspec]
         command = "openspec validate --all"
-        [quality-gates.openspec-archived]
+        [checks.openspec-archived]
         command = "openspec validate --archived"
         """);
 
@@ -56,10 +56,10 @@ class CheckServiceGateSelectionTest {
   void gateSubsetWithNothingEnabledIsAnEmptyPassingReport() throws IOException {
     configure(
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
         command = "mvn test"
-        [quality-gates.openspec]
+        [checks.openspec]
         enabled = false
         command = "openspec validate --all"
         """);
@@ -75,10 +75,10 @@ class CheckServiceGateSelectionTest {
   void gateSubsetHonorsProfileSelection() throws IOException {
     configure(
         """
-        version = 1
-        [quality-gates.openspec]
+        version = 2
+        [checks.openspec]
         command = "openspec validate --all"
-        [quality-gates.openspec-archived]
+        [checks.openspec-archived]
         command = "openspec validate --archived"
         profiles = ["ci"]
         """);
@@ -95,10 +95,10 @@ class CheckServiceGateSelectionTest {
   void excludedSpecGatesDoNotRun() throws IOException {
     configure(
         """
-        version = 1
-        [quality-gates.tests]
+        version = 2
+        [checks.tests]
         command = "mvn test"
-        [quality-gates.openspec]
+        [checks.openspec]
         command = "openspec validate --all"
         """);
 
@@ -117,7 +117,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void excludingEveryEnabledGateIsAnEmptyPass() throws IOException {
-    configure("version = 1\n[quality-gates.openspec]\ncommand = \"openspec validate --all\"\n");
+    configure("version = 2\n[checks.openspec]\ncommand = \"openspec validate --all\"\n");
 
     final CheckReport report =
         service()
@@ -135,7 +135,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void excludingNothingKeepsTheNoEnabledGatesError() throws IOException {
-    configure("version = 1\n[quality-gates.openspec]\nenabled = false\ncommand = \"x\"\n");
+    configure("version = 2\n[checks.openspec]\nenabled = false\ncommand = \"x\"\n");
 
     assertThatThrownBy(
             () ->

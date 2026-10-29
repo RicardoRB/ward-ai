@@ -26,8 +26,6 @@ import org.junit.jupiter.api.Test;
 
 class ExtendedGatesTest {
   private static final String GITLEAKS = "gitleaks";
-  private static final GateConfiguration ENABLED_GATE =
-      new GateConfiguration(true, List.of("tool"));
   private static final List<String> GATE_IDENTIFIERS =
       List.of(
           "format",
@@ -44,16 +42,14 @@ class ExtendedGatesTest {
 
   private static WardConfiguration config(final String id, final List<String> command) {
     final Map<String, GateConfiguration> gates = new LinkedHashMap<>();
-    gates.put(id, new GateConfiguration(true, command));
+    gates.put(id, new GateConfiguration(id, true, command));
     return new WardConfiguration(1, gates);
   }
 
   @Test
   void acceptsEveryNewAndLegacyIdentifierInConfigurationOrder() {
     final Map<String, GateConfiguration> gates = new LinkedHashMap<>();
-    for (final String id : GATE_IDENTIFIERS) {
-      gates.put(id, ENABLED_GATE);
-    }
+    GATE_IDENTIFIERS.forEach(id -> gates.put(id, new GateConfiguration(id, true, List.of("tool"))));
     final List<QualityGate> created =
         new QualityGateFactory(new FakeCommandExecutor(0, "", ""))
             .create(new WardConfiguration(1, gates));
@@ -108,7 +104,7 @@ class ExtendedGatesTest {
   @Test
   void disabledZapWithoutTargetIsSkippedNotRejected() {
     final Map<String, GateConfiguration> gates =
-        Map.of("zap", new GateConfiguration(false, List.of("z")));
+        Map.of("zap", new GateConfiguration("zap", false, List.of("z")));
 
     assertThat(
             new QualityGateFactory(new FakeCommandExecutor(0, "", ""))

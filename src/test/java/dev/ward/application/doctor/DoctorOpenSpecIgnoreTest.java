@@ -56,7 +56,7 @@ class DoctorOpenSpecIgnoreTest {
   private void configure(final boolean enabled) throws IOException {
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n[quality-gates.openspec]\nenabled = "
+        "version = 2\n[checks.openspec]\nenabled = "
             + enabled
             + "\ncommand = \"openspec validate --all\"\n");
   }

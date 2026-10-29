@@ -121,9 +121,18 @@ class OpenApiLintGateTest {
             () ->
                 gates.create(
                     LINT,
-                    new GateConfiguration(true, OpenApiGateFixtures.LINT_COMMAND, Set.of("ci")),
+                    new GateConfiguration(
+                        LINT,
+                        LINT,
+                        true,
+                        OpenApiGateFixtures.LINT_COMMAND,
+                        Set.of("ci"),
+                        null,
+                        null,
+                        null,
+                        null),
                     OpenApiGateFixtures.PROJECT))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("quality-gates.openapi-lint.spec");
+        .hasMessageContaining("checks.openapi-lint.spec");
   }
 }

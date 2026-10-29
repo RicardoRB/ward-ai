@@ -4,7 +4,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.AgentIntegration;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.IntegrationHealth;
-import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
@@ -141,6 +140,7 @@ public final class DoctorService {
     diagnoseOpenSpec(root, facts, findings);
     diagnoseNvdApiKey(root, facts, findings);
     diagnoseTraceability(root, findings);
+    CheckTypeFindings.diagnose(configurationReader, root, facts, findings);
     return findings;
   }
 
@@ -152,8 +152,7 @@ public final class DoctorService {
     try {
       final WardConfiguration configuration =
           configurationReader.read(root.resolve(WardConfiguration.FILE_NAME));
-      final GateConfiguration gate = configuration.gates().get("dependency-check");
-      if (gate != null && gate.enabled()) {
+      if (CheckTypeFindings.enabledOfType(configuration, "dependency-check")) {
         findings.addAll(
             DependencyCheckDiagnosis.findings(facts, environment.ossIndexSetting(root)));
       }
@@ -236,8 +235,7 @@ public final class DoctorService {
     } catch (WardException e) {
       return false;
     }
-    final GateConfiguration gate = configuration.gates().get("openspec-junit-traceability");
-    return gate != null && gate.enabled();
+    return CheckTypeFindings.enabledOfType(configuration, "openspec-junit-traceability");
   }
 
   private static Finding traceabilityFinding(final boolean specs, final boolean tests) {
@@ -266,16 +264,16 @@ public final class DoctorService {
               "Configuration could not be read. Fix ward.toml and run doctor again."));
       return;
     }
-    configuration.gates().entrySet().stream()
-        .filter(entry -> isOpenSpec(entry.getKey()) && entry.getValue().enabled())
+    configuration.checks().entrySet().stream()
+        .filter(entry -> isOpenSpec(entry.getValue().type()) && entry.getValue().enabled())
         .forEach(entry -> findings.addAll(OpenSpecDoctorFindings.of(environment, root, entry)));
   }
 
-  private static boolean isOpenSpec(final String id) {
-    return "openspec".equals(id) || "openspec-archived".equals(id);
+  private static boolean isOpenSpec(final String type) {
+    return "openspec".equals(type) || "openspec-archived".equals(type);
   }
 
-  private static boolean flag(final EnvironmentFacts facts, final String name) {
+  static boolean flag(final EnvironmentFacts facts, final String name) {
     return Boolean.parseBoolean(facts.values().get(name));
   }
 

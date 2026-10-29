@@ -68,7 +68,7 @@ class WardCliSpecValidateTest extends WardCliSpecSupport {
     stub();
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 1\n[quality-gates.tests]\ncommand = \"./mvnw test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n");
     Files.createDirectories(project.resolve("openspec/changes/bad"));
 
     assertThat(run(SPEC, VALIDATE, DIRECTORY, project.toString(), "openspec/changes/bad/a.md"))
@@ -83,10 +83,13 @@ class WardCliSpecValidateTest extends WardCliSpecSupport {
     final Path executable = stub();
     configure(
         active()
-            + """
-            [quality-gates.openspec-archived]
+            +
+"""
+            [checks.openspec-archived]
+uses = "openspec-archived"
             command = ["%s", "validate", "--archived", "--no-interactive"]
-            [quality-gates.tests]
+            [checks.tests]
+uses = "tests"
             command = "./mvnw test"
             """
                 .formatted(executable));

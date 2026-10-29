@@ -30,7 +30,7 @@ class BiomeRenderingTest {
   private static final PackageManifest BIOME_PACKAGE =
       new PackageManifest(Map.of("@biomejs/biome", "2.5.15"), null, null);
   private static final NodeToolConfigs NO_CONFIGS = (root, gate) -> Optional.empty();
-  private static final Set<String> FAST = Set.of("default", "pre-commit", "pre-push", "ci");
+  private static final Set<String> FAST = Set.of("default", "pre-commit", "pre-push", "ci", "edit");
 
   @TempDir Path root;
 
@@ -48,7 +48,7 @@ class BiomeRenderingTest {
     final Path file = root.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(file, ConfigurationTemplate.render(options, QualityPreset.STANDARD, project));
 
-    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).gates();
+    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
     assertThat(gates.get(BIOME).profiles()).isEqualTo(FAST);
     assertThat(gates).doesNotContainKeys("prettier", "eslint");
@@ -70,7 +70,7 @@ class BiomeRenderingTest {
             "--reporter=checkstyle",
             "--no-errors-on-unmatched");
     assertThat(standard.args()).containsExactly("{paths}");
-    assertThat(standard.config()).contains("biome.jsonc", ".biome.json", "package.json");
+    assertThat(standard.full()).contains("biome.jsonc", ".biome.json", "package.json");
     assertThat(strict.command()).contains("--error-on-warnings");
   }
 

@@ -71,7 +71,7 @@ public class CheckService {
     return check(start, List.of(), CheckProgressListener.NO_OP, false, excludedGates);
   }
 
-  /** Runs a partial check of the {@code default} profile, without progress output. */
+  /** Runs a partial check of the {@code edit} profile, without progress output. */
   public CheckReport checkPartial(
       final Path start, final List<Path> paths, final Set<String> excludedGates) {
     return checkPartial(
@@ -81,28 +81,36 @@ public class CheckService {
   }
 
   /**
-   * Runs the selected gates for the edited {@code paths}. Each gate with a {@code partial} table is
-   * skipped, narrowed to the paths, or run in full, as {@link PartialCheckPlan} decides. Without
-   * paths every gate runs in full.
+   * Runs the selected gates for the edited {@code paths}, by default the {@code edit} profile. Each
+   * check with a {@code paths} table is skipped, narrowed to the paths, or run in full, as {@link
+   * PartialCheckPlan} decides. Without paths, checks with a {@code paths} table are skipped and the
+   * others run in full.
    */
   public CheckReport checkPartial(
       final Path start, final List<Path> paths, final CheckRunOptions options) {
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
-    final Optional<WardConfiguration> selected =
-        select(project, options.profiles(), options.excludedGates());
+    final List<String> profiles =
+        options.profiles().isEmpty() ? List.of(EditProfile.NAME) : options.profiles();
+    final Optional<WardConfiguration> selected = select(project, profiles, options.excludedGates());
     if (selected.isEmpty()) {
       return new CheckReport(project, List.of());
     }
     if (PartialGates.outsideNestedProject(project, paths)) {
       LOGGER.log(Level.INFO, "event=partial-plan scope=outside-project");
       final List<QualityGate> skipped =
-          selected.get().gates().keySet().stream()
-              .<QualityGate>map(name -> new SkippedQualityGate(name, OUTSIDE_PROJECT))
+          selected.get().checks().values().stream()
+              .<QualityGate>map(
+                  check ->
+                      new TypedQualityGate(
+                          check.type(), new SkippedQualityGate(check.name(), OUTSIDE_PROJECT)))
               .toList();
       return runner.run(project, skipped, options.listener(), options.failFast());
     }
     final PartialCheckPlan plan =
-        PartialCheckPlan.create(project.root(), selected.get().gates(), paths, pathExistence);
+        paths.isEmpty()
+            ? EditProfile.plan(selected.get())
+            : PartialCheckPlan.create(
+                project.root(), selected.get().checks(), paths, pathExistence);
     LOGGER.log(
         Level.INFO,
         () ->
@@ -120,17 +128,17 @@ public class CheckService {
   }
 
   /**
-   * Runs only the configured gates whose IDs are in {@code gateIds}, after profile selection.
+   * Runs only the configured checks whose tool types are in {@code types}, after profile selection.
    * Unlike a full check, having none of them enabled is not an error: the report is empty.
    */
   public CheckReport check(
-      final Path start, final List<String> requestedProfiles, final Set<String> gateIds) {
+      final Path start, final List<String> requestedProfiles, final Set<String> types) {
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final WardConfiguration selected =
         configurationReader
             .read(project.root().resolve(WardConfiguration.FILE_NAME))
             .forProfiles(requestedProfiles)
-            .onlyGates(gateIds);
+            .onlyTypes(types);
     LOGGER.log(
         Level.INFO, () -> "event=gate-subset-selected gates=" + selected.enabledGates().size());
     if (selected.enabledGates().isEmpty()) {
@@ -142,7 +150,7 @@ public class CheckService {
 
   /**
    * Runs the gates of {@code requestedProfiles}, stopping after the first failure when {@code
-   * failFast}.
+   * failFast}. The {@code edit} profile without paths runs as a partial check.
    */
   public CheckReport check(
       final Path start,
@@ -162,6 +170,12 @@ public class CheckService {
       final CheckProgressListener listener,
       final boolean failFast,
       final Set<String> excludedGates) {
+    if (requestedProfiles != null && requestedProfiles.contains(EditProfile.NAME)) {
+      return checkPartial(
+          start,
+          List.of(),
+          new CheckRunOptions(requestedProfiles, listener, failFast, excludedGates));
+    }
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     final Optional<WardConfiguration> selected = select(project, requestedProfiles, excludedGates);
     if (selected.isEmpty()) {
@@ -187,11 +201,14 @@ public class CheckService {
       final Project project,
       final List<String> requestedProfiles,
       final Set<String> excludedGates) {
-    final WardConfiguration profiled =
-        configurationReader
-            .read(project.root().resolve(WardConfiguration.FILE_NAME))
-            .forProfiles(requestedProfiles);
-    final WardConfiguration selected = profiled.withoutGates(excludedGates);
+    final WardConfiguration configuration =
+        configurationReader.read(project.root().resolve(WardConfiguration.FILE_NAME));
+    final List<String> profiles = EditProfile.withoutEmptyEdit(configuration, requestedProfiles);
+    if (profiles.isEmpty() && requestedProfiles != null && !requestedProfiles.isEmpty()) {
+      return Optional.empty();
+    }
+    final WardConfiguration profiled = configuration.forProfiles(profiles);
+    final WardConfiguration selected = profiled.withoutTypes(excludedGates);
     if (!profiled.enabledGates().isEmpty() && selected.enabledGates().isEmpty()) {
       LOGGER.log(Level.INFO, "event=configuration-selected gates=0 reason=all-excluded");
       return Optional.empty();
