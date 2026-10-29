@@ -51,7 +51,7 @@ class JavaCompatibilityMatrixTest {
   private static final Set<String> NOT_SEEDED = Set.of("compile", "coverage", "mutation");
 
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\",\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
   private static final Pattern CONFIGURED = Pattern.compile("\\[checks\\.([a-z-]+)\\]");
   private static final Pattern DETECTED = Pattern.compile("JDK (\\d+) runs the build");
 
