@@ -32,7 +32,7 @@ async function turn(context: LiveContext, prompt: string) {
   );
 }
 
-const CHECK = ["check", "--format", "json", "--exclude-spec", "--learn-after", "3"];
+const CHECK = ["check", "--profile", "edit", "--format", "json", "--exclude-spec", "--learn-after", "3"];
 const sameArgv = (a: string[], b: string[]) => JSON.stringify(a) === JSON.stringify(b);
 
 export const opencodeDriver: LiveDriver = {

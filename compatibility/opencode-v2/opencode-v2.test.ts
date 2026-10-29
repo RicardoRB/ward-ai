@@ -13,7 +13,7 @@ import { Defect, Host, Refusal } from "./host";
 // starts the suite with only the stub directory and system directories on PATH.
 const STUB_DIR = join(import.meta.dir, ".stub-bin");
 
-const CHECK = ["check", "--format", "json", "--exclude-spec", "--learn-after", "3"];
+const CHECK = ["check", "--profile", "edit", "--format", "json", "--exclude-spec", "--learn-after", "3"];
 const checkFor = (...paths: string[]) => [...CHECK, ...paths.flatMap((path) => ["--path", path])];
 const MARKER = "[ward spec validation]";
 
