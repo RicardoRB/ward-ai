@@ -1,117 +1,115 @@
-version = 2
+version = 1
+preset = "strict"
 
-[checks.compile]
+[quality-gates.compile]
 enabled = true
 # Not in pre-push: the tests gate compiles anyway.
 profiles = ["ci"]
 command = "./mvnw compile"
 
-[checks.tests]
+[quality-gates.tests]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw test"
 
-[checks.format]
+[quality-gates.format]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw spotless:check"
 
-[checks.format.paths]
-match = ["src/**/*.java"]
-full = ["pom.xml"]
+[quality-gates.format.partial]
+inputs = ["src/**/*.java"]
+config = ["pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
 
-[checks.checkstyle]
+[quality-gates.checkstyle]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw checkstyle:check"
 
-[checks.checkstyle.paths]
-match = ["src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml"]
+[quality-gates.checkstyle.partial]
+inputs = ["src/**/*.java"]
+config = ["config/checkstyle.xml", "pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
 
-[checks.pmd]
+[quality-gates.pmd]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw pmd:check"
 
-[checks.pmd.paths]
-match = ["src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml"]
+[quality-gates.pmd.partial]
+inputs = ["src/**/*.java"]
+config = ["config/pmd-ruleset.xml", "pom.xml"]
 
-[checks.spotbugs]
+[quality-gates.spotbugs]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw spotbugs:check"
 
-[checks.coverage]
+[quality-gates.coverage]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw jacoco:check"
 
-[checks.archunit]
-uses = "archunit"
+[quality-gates.archunit]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw -Dtest=ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
-[checks.enforcer]
+[quality-gates.enforcer]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw enforcer:enforce"
 
-[checks.mutation]
+[quality-gates.mutation]
 enabled = true
 profiles = ["ci"]
 command = "./mvnw pitest:mutationCoverage"
 
-[checks.gitleaks]
+[quality-gates.gitleaks]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "gitleaks detect --no-banner --redact --report-format sarif --report-path target/gitleaks.sarif"
 
 # History scans miss uncommitted and staged edits, so edited and staged files are scanned directly.
-[checks.gitleaks.paths]
-match = ["**"]
-full = [".gitleaks*"]
+[quality-gates.gitleaks.partial]
+inputs = ["**"]
+config = [".gitleaks*"]
 args = ["--no-git", "--source={paths}"]
 
-[checks.semgrep]
+[quality-gates.semgrep]
 enabled = true
-profiles = ["ci", "edit"]
+profiles = ["ci"]
 command = "semgrep scan --config p/java --error"
 
-[checks.semgrep.paths]
-match = ["**"]
-full = [".semgrep*"]
+[quality-gates.semgrep.partial]
+inputs = ["**"]
+config = [".semgrep*"]
 args = ["{paths}"]
 
 # Disabled: trivy already scans Maven dependencies without an NVD API key.
-[checks.dependency-check]
+[quality-gates.dependency-check]
 enabled = false
 profiles = ["ci"]
 command = "./mvnw dependency-check:check"
 
-[checks.trivy]
+[quality-gates.trivy]
 enabled = true
 profiles = ["ci"]
 # Offline: resolve Maven POMs from ~/.m2 (filled by earlier gates); Maven Central rate-limits CI runners.
 command = "trivy fs --offline-scan --exit-code 1 ."
 
-[checks.license]
-uses = "license"
+[quality-gates.license]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw license:add-third-party"
 
 # Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.
-[checks.openspec]
-uses = "openspec"
+[quality-gates.openspec]
 enabled = false
 profiles = ["ci"]
 command = "openspec validate --all --strict --no-interactive"
