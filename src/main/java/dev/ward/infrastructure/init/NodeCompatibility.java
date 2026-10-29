@@ -22,6 +22,9 @@ import java.util.logging.Logger;
  */
 record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes) {
   private static final Logger LOGGER = Logger.getLogger(NodeCompatibility.class.getName());
+  private static final String SVELTE_CHECK = "svelte-check";
+  private static final String SVELTE_KIT = "@sveltejs/kit";
+  private static final String SVELTE_SYNC = "svelte-kit sync";
 
   NodeCompatibility {
     findings = List.copyOf(findings);
@@ -54,6 +57,7 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     vitestVite(manifest, gates).ifPresent(findings::add);
     findings.addAll(declaredCheckers(manifest));
     findings.addAll(NodeAngularCompatibility.check(node, manifest, added));
+    svelteKitSync(manifest, gates).ifPresent(notes::add);
     findings.forEach(
         finding ->
             LOGGER.log(
@@ -270,6 +274,27 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     final String major = lowerBound.substring(0, lowerBound.indexOf('.'));
     return declared.startsWith("^")
         && NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, major + ".999.999");
+  }
+
+  /**
+   * A SvelteKit project's {@code svelte-check} reads {@code .svelte-kit/tsconfig.json}, which only
+   * {@code svelte-kit sync} writes. The note does not block init, because the project may sync in
+   * another step, such as CI.
+   */
+  private static Optional<String> svelteKitSync(
+      final PackageManifest manifest, final Set<String> gates) {
+    if (!gates.contains(SVELTE_CHECK) || !manifest.declares(SVELTE_KIT)) {
+      return Optional.empty();
+    }
+    final String prepare = manifest.prepare();
+    if (prepare != null && prepare.contains(SVELTE_SYNC)) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        SVELTE_CHECK
+            + " needs "
+            + SVELTE_SYNC
+            + ": add \"prepare\": \"svelte-kit sync || echo ''\" to package.json scripts.");
   }
 
   private static CompatibilityFinding finding(

@@ -41,6 +41,22 @@ class FileSystemPackageManifestsTest {
   }
 
   @Test
+  void readsPrepareScript() throws IOException {
+    Files.writeString(
+        dir.resolve("package.json"),
+        "{\"scripts\": {\"prepare\": \"svelte-kit sync || echo ''\"}}");
+
+    assertThat(manifests.read(dir).prepare()).isEqualTo("svelte-kit sync || echo ''");
+  }
+
+  @Test
+  void manifestWithoutScriptsHasNoPrepare() throws IOException {
+    Files.writeString(dir.resolve("package.json"), "{\"name\": \"shop\"}");
+
+    assertThat(manifests.read(dir).prepare()).isNull();
+  }
+
+  @Test
   void projectWithoutTypeIsNotAModule() throws IOException {
     Files.writeString(dir.resolve("package.json"), "{\"name\": \"shop\"}");
 

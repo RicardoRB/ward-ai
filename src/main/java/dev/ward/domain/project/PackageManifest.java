@@ -9,11 +9,18 @@ import java.util.Map;
  *     name, with their declared version ranges
  * @param type the {@code "type"} field, or {@code null} when absent
  * @param packageManager the {@code packageManager} field, or {@code null} when absent
+ * @param prepare the {@code scripts.prepare} command, or {@code null} when absent
  */
 public record PackageManifest(
-    Map<String, String> dependencies, String type, String packageManager) {
+    Map<String, String> dependencies, String type, String packageManager, String prepare) {
   /** A project without a readable {@code package.json}. */
   public static final PackageManifest EMPTY = new PackageManifest(Map.of(), null, null);
+
+  /** Creates a manifest without a {@code prepare} script. */
+  public PackageManifest(
+      final Map<String, String> dependencies, final String type, final String packageManager) {
+    this(dependencies, type, packageManager, null);
+  }
 
   /** Copies the dependencies. */
   public PackageManifest {

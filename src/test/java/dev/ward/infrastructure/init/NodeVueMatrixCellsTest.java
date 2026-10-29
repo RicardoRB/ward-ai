@@ -1,10 +1,10 @@
 package dev.ward.infrastructure.init;
 
+import static dev.ward.infrastructure.init.NodeMatrixCsv.column;
+import static dev.ward.infrastructure.init.NodeMatrixCsv.rows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
  * incompatible with Vite 8.
  */
 class NodeVueMatrixCellsTest {
-  private static final Path CELLS = Path.of("src/test/resources/node-matrix/cells.csv");
   private static final int NODE_COLUMN = 0;
   private static final int FIXTURE_COLUMN = 1;
   private static final int LINTING_COLUMN = 2;
@@ -45,15 +44,5 @@ class NodeVueMatrixCellsTest {
     assertThat(vueRows)
         .filteredOn(row -> column(row, PACKAGES_COLUMN).contains("vitest@4.0.18"))
         .allSatisfy(row -> assertThat(column(row, PACKAGES_COLUMN)).contains("vite@7."));
-  }
-
-  /** The value at {@code index} of a CSV row, or empty when the row omits that column. */
-  private static String column(final String row, final int index) {
-    final String[] columns = row.split(",", -1);
-    return index < columns.length ? columns[index] : "";
-  }
-
-  private static List<String> rows() throws IOException {
-    return Files.readAllLines(CELLS).stream().skip(1).toList();
   }
 }

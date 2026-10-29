@@ -1,5 +1,8 @@
 package dev.ward.infrastructure.init;
 
+import static dev.ward.infrastructure.init.NodeMatrixCsv.column;
+import static dev.ward.infrastructure.init.NodeMatrixCsv.rows;
+import static dev.ward.infrastructure.init.NodeMatrixCsv.rowsEndingWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
@@ -14,7 +17,6 @@ import org.junit.jupiter.api.Test;
  * Checks the rows of the Node compatibility matrix offline, so a dropped row cannot go unnoticed.
  */
 class NodeMatrixCellsTest {
-  private static final Path CELLS = Path.of("src/test/resources/node-matrix/cells.csv");
   private static final Path NODE_FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final List<String> NODES = List.of("22", "24");
   private static final List<String> FIXTURES =
@@ -22,6 +24,7 @@ class NodeMatrixCellsTest {
   private static final List<String> LINTERS = List.of("eslint", "biome");
   private static final int NODE_COLUMN = 0;
   private static final int FIXTURE_COLUMN = 1;
+  private static final int PRESET_COLUMN = 3;
   private static final int PACKAGES_COLUMN = 5;
 
   /** The oldest and newest supported version of each linter, declared in the TypeScript rows. */
@@ -134,19 +137,24 @@ class NodeMatrixCellsTest {
     assertThat(astroRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.12");
   }
 
-  /** The value at {@code index} of a CSV row, or empty when the row omits that column. */
-  private static String column(final String row, final int index) {
-    final String[] columns = row.split(",", -1);
-    return index < columns.length ? columns[index] : "";
-  }
+  @Test
+  void svelteCellsCoverEveryRequiredVersion() throws IOException {
+    final List<String> svelteRows =
+        rows().stream().filter(row -> "svelte".equals(column(row, FIXTURE_COLUMN))).toList();
+    final List<String> declared =
+        svelteRows.stream()
+            .flatMap(row -> Arrays.stream(column(row, PACKAGES_COLUMN).trim().split("\\s+")))
+            .toList();
 
-  private static List<String> rows() throws IOException {
-    return Files.readAllLines(CELLS).stream().skip(1).toList();
-  }
-
-  /** The rows whose last columns match, so a pinned row ends with its empty version column. */
-  private static List<String> rowsEndingWith(final String suffix) throws IOException {
-    return rows().stream().filter(row -> row.endsWith(suffix)).toList();
+    assertThat(declared)
+        .contains("svelte-check@4.7.6", "svelte-check@4.7.7", "typescript@6.0.3", "vitest@4.1.11")
+        .noneMatch(entry -> entry.startsWith("typescript@5"));
+    assertThat(svelteRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.17", "24");
+    assertThat(svelteRows)
+        .anyMatch(
+            row ->
+                "24".equals(column(row, NODE_COLUMN))
+                    && "strict".equals(column(row, PRESET_COLUMN)));
   }
 
   /** The rows of the plain TypeScript and JavaScript fixtures, which the matrix's sets cover. */
