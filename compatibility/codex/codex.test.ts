@@ -177,7 +177,7 @@ describe("hook execution from a subdirectory of the repository", () => {
       const { result, invocations } = await launch(fixture, handler("PostToolUse", "apply_patch")[0].command, {
         hook_event_name: "PostToolUse",
         tool_name: "apply_patch",
-        tool_input: { command: "*** Begin Patch" },
+        tool_input: { command: "*** Begin Patch\n*** Update File: src/main/java/A.java\n*** End Patch" },
         tool_response: "ok",
       });
       expect(invocations.map((i) => i.argv)).toEqual([["hook", "native", "--agent", "codex", "--event-stdin"]]);
