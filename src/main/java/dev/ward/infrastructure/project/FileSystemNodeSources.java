@@ -32,6 +32,8 @@ public final class FileSystemNodeSources implements NodeSources {
           "settings.gradle",
           "settings.gradle.kts",
           "pyproject.toml",
+          "setup.py",
+          "setup.cfg",
           "Cargo.toml",
           "go.mod");
 

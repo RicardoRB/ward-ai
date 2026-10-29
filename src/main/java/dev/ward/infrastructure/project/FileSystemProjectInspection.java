@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -52,12 +53,9 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new Marker("build.gradle", FileSystemProjectInspection::gradleProject),
           new Marker(NodeProjectInspection.TSCONFIG, NodeProjectInspection::project),
           new Marker(NodeProjectInspection.PACKAGE_JSON, NodeProjectInspection::project),
-          new Marker(
-              "pyproject.toml",
-              dir -> new Project(dir, Language.PYTHON, BuildTool.POETRY, Framework.NONE)),
-          new Marker(
-              "requirements.txt",
-              dir -> new Project(dir, Language.PYTHON, BuildTool.PIP, Framework.NONE)),
+          new Marker(PythonProjectInspection.PYPROJECT, PythonProjectInspection::project),
+          new Marker(PythonProjectInspection.SETUP_PY, PythonProjectInspection::project),
+          new Marker(PythonProjectInspection.SETUP_CFG, PythonProjectInspection::project),
           new Marker("go.mod", dir -> new Project(dir, Language.GO, BuildTool.GO, Framework.NONE)),
           new Marker(
               "Cargo.toml",
@@ -109,9 +107,12 @@ public final class FileSystemProjectInspection implements ProjectInspection {
       }
     }
     try (Stream<Path> files = Files.list(dir)) {
-      return files
-              .map(Path::getFileName)
-              .anyMatch(name -> name != null && name.toString().endsWith(".csproj"))
+      final List<String> names =
+          files.map(Path::getFileName).filter(Objects::nonNull).map(Path::toString).toList();
+      if (names.stream().anyMatch(PythonProjectInspection::isRequirementsFile)) {
+        return Optional.of(PythonProjectInspection.project(dir));
+      }
+      return names.stream().anyMatch(name -> name.endsWith(".csproj"))
           ? Optional.of(new Project(dir, Language.CSHARP, BuildTool.DOTNET, Framework.NONE))
           : Optional.empty();
     } catch (IOException e) {

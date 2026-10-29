@@ -36,6 +36,9 @@ ward detect [-C <dir>]
 - A TypeScript or JavaScript project's framework comes from its declared packages: Astro, Svelte,
   Vue, or Angular. Other frameworks, such as Next.js or NestJS, are reported as `None`; Ward runs the
   same gates for them. See [Node projects](/commands/init/#node-projects).
+- Python projects are recognized from `pyproject.toml`, `setup.py`, `setup.cfg`, or a file whose
+  name matches `requirements*.txt`. A Maven or Gradle build in the same directory keeps its
+  precedence.
 
 ### Node package manager
 
@@ -70,6 +73,38 @@ Project root: /path/to/frontend
 
 A malformed `package.json` is still detected; the manager then comes from lock files alone.
 
+### Python package manager
+
+For Python, the first rule that matches decides the build tool:
+
+1. uv, when `uv.lock` exists or `pyproject.toml` has a `[tool.uv]` table.
+2. Poetry, when `poetry.lock` exists or `pyproject.toml` has a `[tool.poetry]` table.
+3. PDM, when `pdm.lock` exists.
+4. Hatch, when `pyproject.toml` has a `[tool.hatch]` table.
+5. pip otherwise, including a `pyproject.toml` that has only a `[project]` table.
+
+PDM and Hatch are detected, but `ward doctor` warns that Ward does not support them yet. A
+`pyproject.toml` that does not parse is treated as having no tables, so a lock file still decides and
+pip is the fallback.
+
+### Python version
+
+`detect` prints a `Python:` line with the target Python version as `major.minor`. The first source
+that gives a version decides:
+
+1. The first `major.minor` in the first line of `.python-version`, such as `3.12.4` → `3.12`, or
+   `cpython-3.13` → `3.13`.
+2. The lower bound of `requires-python` in `pyproject.toml`, such as `>=3.11,<4` → `3.11`.
+3. `3.14`.
+
+```text
+Language:     Python
+Build tool:   uv
+Framework:    None
+Python:       3.12
+Project root: /path/to/api
+```
+
 ## Modules and aggregators
 
 Build modules belong to their aggregator, up to the Git top-level:
@@ -80,6 +115,9 @@ Build modules belong to their aggregator, up to the Git top-level:
 - A package matched by the `workspaces` field of an enclosing `package.json` (an array, or
   `{ "packages": [...] }`), or by the `packages` list of an enclosing `pnpm-workspace.yaml`,
   resolves to that workspace root. This covers npm, pnpm, Yarn and Bun workspaces.
+- A directory listed in the `[tool.uv.workspace] members` of an enclosing `pyproject.toml`, and not
+  matched by its `exclude`, resolves to that uv workspace root. A member's `pyproject.toml` must
+  exist for it to count.
 - A nested build that no aggregator lists is its own project.
 
 A workspace root is TypeScript when the root or any member has `tsconfig.json`, and JavaScript
@@ -87,6 +125,13 @@ otherwise.
 
 Workspace patterns that start with `!` are ignored rather than applied, so a package they would
 exclude is still grouped under the root.
+
+### Python next to Node
+
+A directory with both a Python marker and a `package.json` or `tsconfig.json` is two projects in
+repository discovery: one Python and one TypeScript or JavaScript, both rooted at that directory. The
+`detect` command started in that directory keeps reporting the Node project, as it did before, so
+`check` and `init` there still use the Node project.
 
 ## Exit codes
 
