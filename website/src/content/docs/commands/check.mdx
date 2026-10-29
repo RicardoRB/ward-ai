@@ -14,11 +14,11 @@ ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info]
 | Option | What it does | Default |
 |---|---|---|
 | `-C`, `--directory <dir>` | Check the project in `<dir>` instead of the current directory. | current directory |
-| `--profile <name>[,...]` | Run the gates in these profiles. Repeat or comma-separate to select the union. | `default` |
+| `--profile <name>[,...]` | Run the checks in these profiles. Repeat or comma-separate to select the union. | `default`, or `edit` when `--path` is given |
 | `--format text\|json\|sarif` | Report format. See [Output formats](#output-formats). Any other value is a usage error. | `text` |
 | `--severity error\|warning\|info` | Which findings and output to show. See [Severity](#severity). | `warning` |
 | `--output <path>` | Write the JSON or SARIF report to a file. See [Writing the report to a file](#writing-the-report-to-a-file). | stdout |
-| `--path <path>` | Run a [partial check](#partial-checks) for an edited file. Repeat for several. | whole project |
+| `--path <path>` | Run a [partial check](#partial-checks) for an edited file. Repeat for several. | no partial check |
 | `--fail-fast` | Stop after the first gate that does not pass. | off |
 | `--exclude-spec` | Skip the `openspec` and `openspec-archived` gates. See [Excluding spec gates](#excluding-spec-gates). | off |
 | `--learn-after <n>` | Record recurring rule findings after `n` occurrences. Must be at least `1`. See [Learning](#learning). | off |
@@ -47,22 +47,24 @@ Started inside a Maven or Gradle module, Ward checks the aggregator project and 
 ## Partial checks
 
 Repeat `--path <path>` to check only what an edit can affect, as the agent integrations do after
-each edit. Paths are resolved against the working directory, and `--profile` still selects the
-gates.
+each edit. Paths are resolved against the working directory. Without `--profile`, a partial check
+runs the `edit` profile; with `--profile`, it runs the checks of the profiles you name.
 
-Each gate with a [`partial` table](/configuration/ward-toml/#partial-checks) is handled this way:
+Each check with a [`paths` table](/configuration/ward-toml/#partial-checks) is handled this way:
 
-| The edited paths | The gate |
+| The edited paths | The check |
 |---|---|
-| Include none relevant to the gate | Is skipped and does not affect the verdict |
-| Include relevant files, and the gate declares `args` | Runs on the edited files only |
-| Include one of the gate's `config` files | Runs in full |
+| Include none relevant to the check | Is skipped and does not affect the verdict |
+| Include relevant files, and the check declares `args` | Runs on the edited files only |
+| Include one of the check's `full` files | Runs in full |
 
-Gates without a `partial` table run in full. Skipped gates are listed as
+Checks without a `paths` table run in full. Skipped checks are listed as
 `– Checkstyle — Not affected by the edited files`. The JSON report adds the edited paths and each
-gate's `scope`; see [JSON output](/reference/json-output/).
+check's `scope`; see [JSON output](/reference/json-output/).
 
-Checks without `--path`, including Git hooks and CI, never apply `partial` settings.
+Checks without `--path`, including Git hooks and CI, never apply `paths` settings. `--profile edit`
+without `--path` is the exception: checks with a `paths` table are skipped, the others run in full,
+and Ward warns on stderr that the `edit` profile expects edited paths.
 
 ## Excluding spec gates
 

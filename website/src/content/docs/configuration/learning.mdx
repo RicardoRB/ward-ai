@@ -4,7 +4,7 @@ description: Track recurring quality-gate failures.
 ---
 
 Learning is opt-in with `ward check --learn-after <n>`. It tracks the problems a gate finds, not
-the gate itself: each record is one tool rule, keyed `gate:rule` (for example
+the gate itself: each record is one tool rule, keyed `type:rule`, where the type is the check's built-in tool type (for example
 `pmd:UnusedLocalVariable` or `checkstyle:LineLength`). Ward stores compact metadata in
 `.ward/learning.json`: the gate and rule, one example finding message of at most 200 characters,
 occurrence count, state, timestamps, and whether a prompt has been issued. Full stdout and stderr are
