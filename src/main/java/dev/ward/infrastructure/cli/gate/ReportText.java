@@ -118,6 +118,9 @@ final class ReportText {
         .append(NL)
         .append(String.join(" ", result.command()))
         .append(NL);
+    if (result.prerequisite() != null) {
+      output.append(result.prerequisite().remediation()).append(NL);
+    }
     final GateFindings.Visible visible = result.findings().visible(threshold);
     final GateOutputVisibility visibility = GateOutputVisibility.of(result, threshold);
     if (visibility == GateOutputVisibility.FINDINGS || visibility == GateOutputVisibility.FULL) {

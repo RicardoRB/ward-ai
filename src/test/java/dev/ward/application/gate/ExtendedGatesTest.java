@@ -122,7 +122,12 @@ class ExtendedGatesTest {
         (command, dir) ->
             new CommandResult(-1, "", "", Duration.ZERO, "Could not start [gitleaks]: not found");
     final GateResult result =
-        new CommandQualityGate(GITLEAKS, missing, List.of(GITLEAKS, "detect")).execute(PROJECT);
+        new QualityGateRunner()
+            .run(
+                PROJECT,
+                List.of(new CommandQualityGate(GITLEAKS, missing, List.of(GITLEAKS, "detect"))))
+            .results()
+            .getFirst();
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.summary()).contains(GITLEAKS).contains("Install gitleaks");

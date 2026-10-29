@@ -355,6 +355,21 @@ code findings:
 Install Ward with the verified installer rather than building it from source in CI: the native
 binary needs no JDK and starts faster.
 
+## Missing tools and JDK mismatch
+
+A gate that cannot run reports `UNAVAILABLE` with a prerequisite that names the missing tool or the
+JDK version. Read the fix under the gate's command in the text report, or the `prerequisite` object in
+JSON. In SARIF it appears as a failed tool invocation, not as a code finding.
+
+Two setup steps prevent most of these failures:
+
+- **Tool install steps.** `ward init` generates the gitleaks and Trivy install steps for the gates it
+  configures. If a step is removed, or runs after the gate that needs the tool, the gate reports
+  `UNAVAILABLE`. Install the tool in an earlier step; Ward never installs tools.
+- **Java version.** `ward init` generates an `actions/setup-java` step. Keep its `java-version` at or
+  above the release your build declares. When the runner's JDK is older, the Maven or Gradle gate
+  reports the declared release and the detected JDK, and the fix is to run the build on a newer JDK.
+
 ## Trivy offline scans
 
 When init configures `trivy` after a Maven or Gradle gate, it generates

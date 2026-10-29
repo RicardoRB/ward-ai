@@ -24,16 +24,26 @@ public class QualityGateRunner {
   private static final Logger LOGGER = Logger.getLogger(QualityGateRunner.class.getName());
 
   private final FindingExtractor findingExtractor;
+  private final GatePrerequisites prerequisites;
 
-  /** Creates a runner that extracts no findings. */
+  /** Creates a runner that extracts no findings and explains only missing executables. */
   public QualityGateRunner() {
     this(FindingExtractor.NONE);
   }
 
   /** Creates a runner; {@code findingExtractor} turns each result into structured findings. */
-  @Inject
   public QualityGateRunner(final FindingExtractor findingExtractor) {
+    this(findingExtractor, new GatePrerequisites());
+  }
+
+  /**
+   * Creates a runner; {@code prerequisites} explains gates that could not run in this environment.
+   */
+  @Inject
+  public QualityGateRunner(
+      final FindingExtractor findingExtractor, final GatePrerequisites prerequisites) {
     this.findingExtractor = findingExtractor;
+    this.prerequisites = prerequisites;
   }
 
   /** Runs every gate in order, without progress output. */
@@ -63,13 +73,15 @@ public class QualityGateRunner {
       final CheckProgressListener listener,
       final boolean failFast) {
     final List<GateResult> results = new ArrayList<>();
+    final GatePrerequisites.RunPrerequisites checks = prerequisites.start();
     for (int i = 0; i < gates.size(); i++) {
       final QualityGate gate = gates.get(i);
       listener.gateStarted(gate.name());
       final long start = System.nanoTime();
       final Instant gateStart = Instant.now();
       LOGGER.log(Level.INFO, () -> "event=gate-start gate=" + gate.name());
-      final GateResult result = withFindings(project, gate.execute(project), gateStart);
+      final GateResult result =
+          withFindings(project, checks.attach(project, gate.execute(project)), gateStart);
       results.add(result);
       listener.gateFinished(result);
       LOGGER.log(

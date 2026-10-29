@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.JsonTree;
 import dev.ward.domain.gate.CheckReport;
+import dev.ward.domain.gate.GatePrerequisite;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.project.BuildTool;
@@ -160,5 +161,34 @@ class ReportRendererTest {
 
     assertThat(new TextReportRenderer().render(report))
         .contains("✗ Checkstyle — 3 errors", "3 errors · 7 warnings");
+  }
+
+  @Test
+  void textReportPrintsPrerequisiteRemediation() {
+    final CheckReport report =
+        new CheckReport(
+            project,
+            List.of(
+                GateResult.builder("gitleaks", GateStatus.UNAVAILABLE)
+                    .command(List.of("gitleaks", "detect"))
+                    .exitCode(-1)
+                    .duration(Duration.ZERO)
+                    .stdout("")
+                    .stderr("")
+                    .summary("Gate 'gitleaks' could not start 'gitleaks'.")
+                    .build()
+                    .withPrerequisite(
+                        new GatePrerequisite(
+                            GatePrerequisite.Kind.EXECUTABLE,
+                            "gitleaks",
+                            null,
+                            null,
+                            "Install gitleaks: https://github.com/gitleaks/gitleaks#installing"))));
+
+    final String text = new TextReportRenderer().render(report);
+
+    assertThat(text)
+        .contains("✗ Gitleaks — unavailable")
+        .contains("Install gitleaks: https://github.com/gitleaks/gitleaks#installing");
   }
 }

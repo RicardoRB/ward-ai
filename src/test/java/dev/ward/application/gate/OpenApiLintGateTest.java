@@ -99,9 +99,14 @@ class OpenApiLintGateTest {
             new CommandResult(-1, "", "", Duration.ZERO, "Could not start [vacuum]: not found");
 
     final GateResult result =
-        OpenApiGateFixtures.committedSpec()
-            .gate(LINT, OpenApiGateFixtures.LINT_COMMAND, missing)
-            .execute(OpenApiGateFixtures.PROJECT);
+        new QualityGateRunner()
+            .run(
+                OpenApiGateFixtures.PROJECT,
+                List.of(
+                    OpenApiGateFixtures.committedSpec()
+                        .gate(LINT, OpenApiGateFixtures.LINT_COMMAND, missing)))
+            .results()
+            .getFirst();
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.summary()).contains("Install vacuum");
