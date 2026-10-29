@@ -39,7 +39,7 @@ beforeAll(async () => {
   chmodSync(join(fixture.root, "openspec-stub.sh"), 0o755);
   writeFileSync(
     join(fixture.root, "ward.toml"),
-    `${readFileSync(join(fixture.root, "ward.toml"), "utf8")}\n[quality-gates.openspec]\nenabled = true\ncommand = ["./openspec-stub.sh"]\n`,
+    `${readFileSync(join(fixture.root, "ward.toml"), "utf8")}\n[checks.openspec]\nuses = \"openspec\"\nenabled = true\ncommand = ["./openspec-stub.sh"]\n`,
   );
 });
 
