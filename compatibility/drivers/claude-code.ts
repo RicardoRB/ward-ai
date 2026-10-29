@@ -25,7 +25,7 @@ function prepare(fixture: Fixture): void {
   writeFileSync(join(fixture.root, "openspec-stub.sh"), '#!/bin/sh\nif [ -f SPEC_FAIL ]; then echo "smoke-change: missing scenario"; exit 1; fi\n');
   chmodSync(join(fixture.root, "openspec-stub.sh"), 0o755);
   const toml = join(fixture.root, "ward.toml");
-  writeFileSync(toml, `${readFileSync(toml, "utf8")}\n[quality-gates.openspec]\nenabled = true\ncommand = ["./openspec-stub.sh"]\n`);
+  writeFileSync(toml, `${readFileSync(toml, "utf8")}\n[checks.openspec]\nuses = \"openspec\"\nenabled = true\ncommand = ["./openspec-stub.sh"]\n`);
 }
 
 function turn(context: LiveContext, prompt: string) {
