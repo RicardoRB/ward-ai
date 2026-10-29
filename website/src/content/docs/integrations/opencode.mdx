@@ -36,7 +36,7 @@ from:
 - the file and move paths in the `apply_patch` result metadata;
 - `args.path` for the newer `patch` tool.
 
-Each path is passed to the check as `--path`, so it is a [partial check](/commands/check/): gates the
+Each path is passed to the check as `--path` with `--profile edit`, so it is a [partial check](/commands/check/): checks the
 edit does not affect are skipped, and supported tools analyze only the edited files.
 
 - A tool call that reports no path runs every gate in full.

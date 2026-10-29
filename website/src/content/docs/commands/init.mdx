@@ -575,7 +575,7 @@ Before writing, init checks each package it would add against the project's Node
 - **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
   the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
   Prettier and Biome skip Git-ignored files, so they do not check these reports.
-- **`ward.toml`** gets `partial` tables for `eslint` and `prettier`: an edit hook runs them on the
+- **`ward.toml`** gets `paths` tables for `eslint` and `prettier`: an edit hook runs them on the
   edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
   `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
 
