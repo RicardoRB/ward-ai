@@ -67,7 +67,8 @@ public class SarifReportRenderer {
         findings.stream()
             .map(finding -> ResultDto.from(finding, prefix))
             .collect(Collectors.toCollection(ArrayList::new));
-    if (!result.passed() && findings.isEmpty()) {
+    final List<InvocationDto> invocations = invocations(result);
+    if (!result.passed() && findings.isEmpty() && result.prerequisite() == null) {
       rules.putIfAbsent(result.name(), new RuleDto(result.name(), null));
       results.add(
           new ResultDto(
@@ -92,7 +93,18 @@ public class SarifReportRenderer {
             result.status().name(),
             visible.total(),
             visible.hidden(),
-            visible.truncated()));
+            visible.truncated()),
+        invocations);
+  }
+
+  /** A gate that could not run because of its environment is a failed invocation, not a result. */
+  private static List<InvocationDto> invocations(final GateResult result) {
+    if (result.prerequisite() == null) {
+      return List.of();
+    }
+    return List.of(
+        new InvocationDto(
+            false, List.of(new NotificationDto("error", new MessageDto(result.summary())))));
   }
 
   /**
@@ -116,14 +128,44 @@ public class SarifReportRenderer {
    * @param tool the tool that produced the results
    * @param results the visible results
    * @param properties gate status and truncation details
+   * @param invocations the failed invocation of a gate that could not run; omitted when empty
    */
   @JsonType
-  public record RunDto(ToolDto tool, List<ResultDto> results, RunPropertiesDto properties) {
-    /** Copies the results. */
+  public record RunDto(
+      ToolDto tool,
+      List<ResultDto> results,
+      RunPropertiesDto properties,
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<InvocationDto> invocations) {
+    /** Copies the results and invocations. */
     public RunDto {
       results = List.copyOf(results);
+      invocations = List.copyOf(invocations);
     }
   }
+
+  /**
+   * A SARIF invocation of the tool.
+   *
+   * @param executionSuccessful whether the tool ran to completion
+   * @param toolExecutionNotifications why it did not
+   */
+  @JsonType
+  public record InvocationDto(
+      boolean executionSuccessful, List<NotificationDto> toolExecutionNotifications) {
+    /** Copies the notifications. */
+    public InvocationDto {
+      toolExecutionNotifications = List.copyOf(toolExecutionNotifications);
+    }
+  }
+
+  /**
+   * A SARIF tool execution notification.
+   *
+   * @param level the severity of the notification
+   * @param message what happened
+   */
+  @JsonType
+  public record NotificationDto(String level, MessageDto message) {}
 
   /**
    * The SARIF tool object.

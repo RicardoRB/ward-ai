@@ -4,6 +4,7 @@ import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateOutputVisibility;
+import dev.ward.domain.gate.GatePrerequisite;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.SeverityThreshold;
 import dev.ward.domain.json.JsonCodec;
@@ -13,6 +14,7 @@ import dev.ward.domain.policy.PolicyEvaluator;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.inject.Inject;
 import org.apache.fory.json.annotation.JsonType;
 
@@ -198,7 +200,8 @@ public class JsonReportRenderer {
       int findingsTotal,
       int findingsHidden,
       boolean findingsTruncated,
-      String scope) {
+      String scope,
+      PrerequisiteDto prerequisite) {
 
     /** Copies the findings. */
     public CheckDto {
@@ -226,7 +229,32 @@ public class JsonReportRenderer {
           visible.total(),
           visible.hidden(),
           visible.truncated(),
-          result.scope() == null ? null : result.scope().label());
+          result.scope() == null ? null : result.scope().label(),
+          result.prerequisite() == null ? null : PrerequisiteDto.from(result.prerequisite()));
+    }
+
+    /**
+     * Why a gate could not run in this environment; its fields are part of the report schema.
+     * Fields that do not apply are omitted.
+     *
+     * @param kind {@code executable} or {@code runtime}
+     * @param executable the executable that could not start
+     * @param required the version the project needs
+     * @param detected the version the environment has
+     * @param remediation how to fix the problem
+     */
+    @JsonType
+    public record PrerequisiteDto(
+        String kind, String executable, String required, String detected, String remediation) {
+
+      static PrerequisiteDto from(final GatePrerequisite prerequisite) {
+        return new PrerequisiteDto(
+            prerequisite.kind().name().toLowerCase(Locale.ROOT),
+            prerequisite.executable(),
+            prerequisite.required(),
+            prerequisite.detected(),
+            prerequisite.remediation());
+      }
     }
 
     /** Keeps the last {@link #OUTPUT_TAIL_LINES} lines; full text stays in stdout and stderr. */

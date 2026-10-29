@@ -184,6 +184,47 @@ process status metadata. They never contain gate stdout or stderr, command argum
 contents, or credentials. Gate failures stay in the normal check report and are not warnings by
 themselves.
 
+## Unavailable gates
+
+A gate is `UNAVAILABLE` when the environment, not the code, stopped it. Ward explains the cause and
+how to fix it:
+
+- **Missing executable.** The gate's command could not start. The summary names the gate and the
+  executable. For the tools in Ward's install catalog (trivy, gitleaks, semgrep, zap-baseline.py,
+  vacuum and oasdiff) it gives the install command or link; for any other tool it says to install
+  it or add it to `PATH`.
+- **JDK older than the project.** When a Maven or Gradle gate fails and the build declares a Java
+  release newer than the JDK that runs it, the gate is `UNAVAILABLE`. The summary names both
+  versions. Ward reads the JDK only after a build gate fails, once per run. A gate that passes, and a
+  failure where either version is unknown or the JDK is new enough, stays `FAILED`.
+
+Each prerequisite is reported in every output format:
+
+- **Text** prints the fix on the line after the gate's command.
+- **JSON** adds a `prerequisite` object to the gate's check. It has `kind` (`executable` or
+  `runtime`), `remediation`, and, when they apply, `executable`, `required` and `detected`. Fields that
+  do not apply are omitted. Gates without a prerequisite have no `prerequisite` object, and the schema
+  version does not change.
+- **SARIF** reports no result for the gate. It reports a failed invocation whose error notification
+  carries the summary, so code-scanning tools show an environment problem as a tool error, not as a
+  code finding.
+
+```json
+{
+  "name": "trivy",
+  "status": "UNAVAILABLE",
+  "prerequisite": {
+    "kind": "executable",
+    "executable": "trivy",
+    "remediation": "Install trivy: https://trivy.dev/latest/getting-started/installation/"
+  }
+}
+```
+
+Exit code `1` still means the check did not pass. Install the tool, or run the build on the JDK the
+project needs, and run the check again. [CI/CD setup](/guides/ci-cd/#missing-tools-and-jdk-mismatch)
+lists the CI steps that prevent these failures.
+
 ## Exit codes
 
 | Code | Meaning |

@@ -1,11 +1,9 @@
 package dev.ward.application.gate;
 
 import dev.ward.domain.gate.GateResult;
-import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.domain.gate.ReportWriteException;
-import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.Project;
 import java.util.List;
@@ -51,21 +49,7 @@ public final class CommandQualityGate implements QualityGate {
   @Override
   public GateResult execute(final Project project) {
     prepareReportDirectory(project);
-    final GateResult result =
-        GateResult.from(name, command, executor.execute(command, project.root()));
-    final String hint =
-        command.isEmpty() ? null : GateToolInstallCatalog.installHint(command.getFirst());
-    if (hint == null || result.status() != GateStatus.UNAVAILABLE) {
-      return result;
-    }
-    return GateResult.builder(result.name(), result.status())
-        .command(result.command())
-        .exitCode(result.exitCode())
-        .duration(result.duration())
-        .stdout(result.stdout())
-        .stderr(result.stderr())
-        .summary(result.summary() + " Install " + command.getFirst() + ": " + hint)
-        .build();
+    return GateResult.from(name, command, executor.execute(command, project.root()));
   }
 
   /** Lets tools such as gitleaks write reports into build directories that do not exist yet. */

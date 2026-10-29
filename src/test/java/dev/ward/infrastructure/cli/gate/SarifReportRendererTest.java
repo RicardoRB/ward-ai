@@ -184,4 +184,12 @@ class SarifReportRendererTest {
         .isEqualTo("file:///x/B.java");
     assertThat(physical.get("region").get("startColumn").asInt()).isEqualTo(OUTSIDE_COLUMN);
   }
+
+  @Test
+  void failedGateWithoutPrerequisiteHasNoInvocations() {
+    final JsonTree run = render(result("tests", GateStatus.FAILED)).get(RUNS).get(0);
+
+    assertThat(run.get(RESULTS).size()).isEqualTo(1);
+    assertThat(run.has("invocations")).isFalse();
+  }
 }

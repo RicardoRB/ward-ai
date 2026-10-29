@@ -29,7 +29,11 @@ diagnostics go to stderr.
       "file": "string", "line": "number", "column": "number", "helpUri": "string"
     }],
     "findingsTotal": "number", "findingsHidden": "number", "findingsTruncated": "boolean",
-    "scope": "skipped|narrowed|full"
+    "scope": "skipped|narrowed|full",
+    "prerequisite": {
+      "kind": "executable|runtime", "executable": "string?", "required": "string?",
+      "detected": "string?", "remediation": "string"
+    }
   }],
   "policies": [{ "name": "string", "passed": "boolean", "message": "string" }],
   "partial": { "paths": ["string"] }
@@ -62,6 +66,10 @@ Omitted fields are intentional in schema v2.
   path outside the project is listed as given.
 - `scope` is `skipped`, `narrowed`, or `full`. Skipped checks have status `SKIPPED` and do not
   affect the verdict.
+- `prerequisite` is present only on an `UNAVAILABLE` check whose cause is the environment. `kind` is
+  `executable` when the gate's command could not start, and `runtime` when the build declares a Java
+  release newer than the JDK that runs it; `required` and `detected` then hold both versions.
+  `remediation` says how to fix it. See [unavailable gates](/commands/check/#unavailable-gates).
 
 ## Findings
 

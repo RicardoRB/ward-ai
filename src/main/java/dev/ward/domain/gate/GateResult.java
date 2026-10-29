@@ -21,7 +21,8 @@ public record GateResult(
     Integer errors,
     Integer warnings,
     GateFindings findings,
-    GateScope scope) {
+    GateScope scope,
+    GatePrerequisite prerequisite) {
 
   /** Copies {@code command} and replaces missing findings with {@link GateFindings#NONE}. */
   public GateResult {
@@ -74,14 +75,44 @@ public record GateResult(
         errors,
         warnings,
         gateFindings,
-        scope);
+        scope,
+        prerequisite);
   }
 
   /** Returns a copy carrying the partial-check scope. */
   public GateResult withScope(final GateScope gateScope) {
     return new GateResult(
-        name, status, command, exitCode, duration, stdout, stderr, summary, errors, warnings,
-        findings, gateScope);
+        name,
+        status,
+        command,
+        exitCode,
+        duration,
+        stdout,
+        stderr,
+        summary,
+        errors,
+        warnings,
+        findings,
+        gateScope,
+        prerequisite);
+  }
+
+  /** Returns a copy carrying {@code gatePrerequisite}, why the gate could not run. */
+  public GateResult withPrerequisite(final GatePrerequisite gatePrerequisite) {
+    return new GateResult(
+        name,
+        status,
+        command,
+        exitCode,
+        duration,
+        stdout,
+        stderr,
+        summary,
+        errors,
+        warnings,
+        findings,
+        scope,
+        gatePrerequisite);
   }
 
   /** Returns whether the gate passed. */
@@ -169,6 +200,7 @@ public record GateResult(
           errors,
           warnings,
           GateFindings.NONE,
+          null,
           null);
     }
   }
