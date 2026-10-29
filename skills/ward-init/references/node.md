@@ -47,6 +47,13 @@ ArchUnit, rule files under `config/`).
     (bundled with Node 22) crashes on it (npm/cli#9787).
   - `typescript` (TypeScript only): note the declared range. Its lower bound is checked against
     `typescript-eslint`.
+  - `@sveltejs/kit` with the `svelte-check` gate: `svelte-check` reads `.svelte-kit/tsconfig.json`,
+    which only `svelte-kit sync` writes. When the `prepare` script in `package.json` does not run
+    `svelte-kit sync`, or is missing, the plan notes the line to add,
+    `"prepare": "svelte-kit sync || echo ''"`. The note does not block init, and init does not edit
+    `scripts`.
+    npm skips `prepare` when install scripts are disabled (for example `ignore-scripts=true` in an
+    `.npmrc`), so run `svelte-kit sync` before `ward check` in that setup.
   - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep
     their version. A declared `eslint` outside `>=9.22.0 <11.0.0` is an `INCOMPATIBLE` finding
     (see Compatibility checks); tested versions are 9.22.0 and 10.13.0.
