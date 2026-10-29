@@ -95,7 +95,7 @@ class NodeEslintCompatibilityTest {
   }
 
   private NodeCompatibility checkEslint(final PackageManifest manifest) {
-    return NodeCompatibility.check(project(), manifest, List.of(), false, true);
+    return NodeCompatibility.check(project(), manifest, List.of(), Set.of("eslint"));
   }
 
   private Project project() {

@@ -52,7 +52,7 @@ class NodeCheckerCompatibilityTest {
   }
 
   private NodeCompatibility check(final String node, final PackageManifest manifest) {
-    return NodeCompatibility.check(project(node), manifest, List.of(), false, false);
+    return NodeCompatibility.check(project(node), manifest, List.of(), Set.of());
   }
 
   private Project project(final String node) {

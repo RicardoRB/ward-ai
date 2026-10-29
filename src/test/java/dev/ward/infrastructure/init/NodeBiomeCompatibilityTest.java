@@ -85,7 +85,7 @@ class NodeBiomeCompatibilityTest {
   }
 
   private NodeCompatibility checkBiome(final PackageManifest manifest) {
-    return NodeCompatibility.check(project(), manifest, List.of(), true, false);
+    return NodeCompatibility.check(project(), manifest, List.of(), Set.of("biome"));
   }
 
   private Project project() {

@@ -196,6 +196,12 @@ jobs:
         with:
           node-version: ${{ matrix.cell.node }}
 
+      # Node 22 bundles npm 10.9, which crashes installing vitest 4.1.11 (npm/cli#9787); npm 11.6+
+      # installs it. Only the Vue cells need it, so the other fixtures keep their bundled npm.
+      - name: Upgrade npm for Vitest 4.1.11
+        if: matrix.cell.fixture == 'vue'
+        run: npm install -g npm@11.21.1
+
       # Keyed on the catalog so a pinned version change refetches the packages.
       - name: Restore npm cache
         uses: actions/cache@v5

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 /**
@@ -55,8 +56,7 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             project,
             manifest,
             missing,
-            gates.stream().anyMatch(gate -> "biome".equals(gate.id())),
-            gates.stream().anyMatch(gate -> "eslint".equals(gate.id())));
+            gates.stream().map(InitGateOption::id).collect(Collectors.toSet()));
     if (compatibility.incompatible()) {
       throw new WardException(compatibility.message());
     }
@@ -104,8 +104,7 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             project,
             manifest,
             missing,
-            gates.stream().anyMatch(gate -> "biome".equals(gate.id())),
-            gates.stream().anyMatch(gate -> "eslint".equals(gate.id())));
+            gates.stream().map(InitGateOption::id).collect(Collectors.toSet()));
     if (compatibility.incompatible()) {
       final List<String> details = new ArrayList<>(nodeWarning);
       compatibility
