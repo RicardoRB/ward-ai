@@ -47,7 +47,7 @@ class NodeCompatibilityMatrixTest {
   // Test sources skip annotation processing, so the matrix reads each check's name and status pair
   // from the compact JSON report instead of decoding it into a DTO.
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\",\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
 
   @ParameterizedTest(name = "node {0} {1} {2} {3}")
   @CsvFileSource(resources = "/node-matrix/cells.csv", numLinesToSkip = 1)
