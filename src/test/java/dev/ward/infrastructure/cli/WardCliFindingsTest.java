@@ -52,12 +52,15 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     Files.writeString(
         project.resolve(WARD_TOML),
         """
-        version = 1
-        [quality-gates.checkstyle]
+        version = 2
+        [checks.checkstyle]
+        uses = "checkstyle"
         command = ["./fake-checkstyle"]
-        [quality-gates.gitleaks]
+        [checks.gitleaks]
+        uses = "gitleaks"
         command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
-        [quality-gates.tests]
+        [checks.tests]
+        uses = "tests"
         command = "./mvnw test"
         """);
   }
@@ -143,7 +146,7 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     pass();
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 1\n[quality-gates.tests]\ncommand = \"./mvnw test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n");
     final Path report = project.resolve("ward.json");
 
     assertThat(
@@ -191,7 +194,7 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     pass();
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 1\n[quality-gates.tests]\ncommand = \"./mvnw test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n");
     Files.writeString(project.resolve("blocker"), "a file, not a directory");
 
     final int exit =

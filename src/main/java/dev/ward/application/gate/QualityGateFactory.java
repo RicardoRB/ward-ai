@@ -16,7 +16,6 @@ import dev.ward.domain.traceability.ScenarioInventory;
 import dev.ward.domain.traceability.TestMappingInventory;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 
@@ -108,82 +107,84 @@ public class QualityGateFactory {
   }
 
   /**
-   * Creates one gate per configured ID; disabled gates become skipped gates.
+   * Creates one gate per configured check, in declaration order; disabled checks become skipped
+   * gates. Each gate's result carries the check's type.
    *
-   * @throws WardException if a gate ID is unknown
+   * @throws WardException if a check's type is unknown
    */
   public List<QualityGate> create(final WardConfiguration configuration, final Project project) {
-    final List<QualityGate> gates = new ArrayList<>();
-    configuration
-        .gates()
-        .keySet()
-        .forEach(
-            id -> {
-              if (!SUPPORTED_GATES.contains(id) && !SupportedQualityGates.LEGACY_IDS.contains(id)) {
-                throw new WardException(
-                    "Quality gate '" + id + "' is unknown. Supported gates: " + SUPPORTED_GATES);
-              }
-            });
-    for (final Map.Entry<String, GateConfiguration> entry : configuration.gates().entrySet()) {
-      final String id = entry.getKey();
-      if (!entry.getValue().enabled()) {
-        gates.add(new SkippedQualityGate(id));
-        continue;
-      }
-      gates.add(createGate(id, entry.getValue(), project));
-    }
-    return gates;
+    configuration.checks().values().forEach(QualityGateFactory::requireSupportedType);
+    return configuration.checks().values().stream().map(check -> typed(check, project)).toList();
   }
 
-  private QualityGate createGate(
-      final String id, final GateConfiguration configuration, final Project project) {
-    if (OpenSpecQualityGate.ACTIVE.equals(id) || OpenSpecQualityGate.ARCHIVED.equals(id)) {
+  private QualityGate typed(final GateConfiguration check, final Project project) {
+    final QualityGate gate =
+        check.enabled() ? createGate(check, project) : new SkippedQualityGate(check.name());
+    return new TypedQualityGate(check.type(), gate);
+  }
+
+  private static void requireSupportedType(final GateConfiguration check) {
+    if (!SUPPORTED_GATES.contains(check.type())
+        && !SupportedQualityGates.LEGACY_IDS.contains(check.type())) {
+      throw new WardException(
+          "Quality gate type '"
+              + check.type()
+              + "' of check '"
+              + check.name()
+              + "' is unknown. Supported types: "
+              + SUPPORTED_GATES);
+    }
+  }
+
+  private QualityGate createGate(final GateConfiguration check, final Project project) {
+    final String name = check.name();
+    final String type = check.type();
+    if (OpenSpecQualityGate.ACTIVE.equals(type) || OpenSpecQualityGate.ARCHIVED.equals(type)) {
       return environment == null
-          ? new CommandQualityGate(id, executor, configuration.command())
-          : new OpenSpecQualityGate(
-              id, executor, environment, configuration.command(), configuration.root());
+          ? new CommandQualityGate(name, executor, check.command())
+          : new OpenSpecQualityGate(name, executor, environment, check.command(), check.root());
     }
-    if (MavenTestGate.NAME.equals(id)) {
-      return new MavenTestGate(executor, testsCommand(configuration.command(), project));
+    if (MavenTestGate.NAME.equals(type)) {
+      return new MavenTestGate(executor, testsCommand(check.command(), project));
     }
-    if (OpenSpecJunitTraceabilityGate.NAME.equals(id)) {
+    if (OpenSpecJunitTraceabilityGate.NAME.equals(type)) {
       return traceabilityGate();
     }
-    if (ZAP.equals(id)) {
-      ZapTargetValidation.require(id, configuration.command());
+    if (ZAP.equals(type)) {
+      ZapTargetValidation.require(name, check.command());
     }
-    if (SupportedQualityGates.openApiIds().contains(id)) {
-      return openApiGate(id, configuration, project);
+    if (SupportedQualityGates.openApiIds().contains(type)) {
+      return openApiGate(name, check, project);
     }
-    if (MUTATION_GATES.contains(id)) {
-      return mutationGate(id, configuration);
+    if (MUTATION_GATES.contains(type)) {
+      return mutationGate(check);
     }
-    return new CommandQualityGate(id, executor, configuration.command(), reportDirectories);
+    return new CommandQualityGate(name, executor, check.command(), reportDirectories);
   }
 
   /** Builds a Stryker or PIT gate that checks its {@code minimum} against the tool's report. */
-  private QualityGate mutationGate(final String id, final GateConfiguration configuration) {
+  private QualityGate mutationGate(final GateConfiguration check) {
     final QualityGate command =
-        new CommandQualityGate(id, executor, configuration.command(), reportDirectories);
-    if (configuration.minimum() == null) {
+        new CommandQualityGate(check.name(), executor, check.command(), reportDirectories);
+    if (check.minimum() == null) {
       return command;
     }
-    final boolean stryker = SupportedQualityGates.STRYKER.equals(id);
+    final boolean stryker = SupportedQualityGates.STRYKER.equals(check.type());
     final MutationReport report = stryker ? strykerReport : pitReport;
     if (report == null) {
-      throw new WardException("The '" + id + "' gate cannot check its minimum here.");
+      throw new WardException("The '" + check.name() + "' check cannot check its minimum here.");
     }
     return new MutationScoreGate(
-        command, report, configuration.minimum(), stryker ? STRYKER_REPORT_HINT : PIT_REPORT_HINT);
+        command, report, check.minimum(), stryker ? STRYKER_REPORT_HINT : PIT_REPORT_HINT);
   }
 
   private QualityGate openApiGate(
-      final String id, final GateConfiguration configuration, final Project project) {
+      final String name, final GateConfiguration check, final Project project) {
     if (openApiGates == null) {
-      OpenApiCommandValidation.require(id, configuration.command());
+      OpenApiCommandValidation.require(name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
-    return openApiGates.create(id, configuration, project);
+    return openApiGates.create(name, check, project);
   }
 
   private QualityGate traceabilityGate() {

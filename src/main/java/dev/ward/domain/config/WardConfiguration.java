@@ -9,33 +9,28 @@ import java.util.Map;
 import java.util.Set;
 
 /** Parsed {@code ward.toml}. Gates keep their declaration order. */
-public record WardConfiguration(int version, Map<String, GateConfiguration> gates, String preset) {
+public record WardConfiguration(int version, Map<String, GateConfiguration> checks) {
 
   public static final String FILE_NAME = "ward.toml";
-  public static final int SUPPORTED_VERSION = 1;
+  public static final int SUPPORTED_VERSION = 2;
   public static final String DEFAULT_PROFILE = "default";
 
-  /** Copies the gates, keeping their order. */
+  /** Copies the checks, keeping their order. */
   public WardConfiguration {
-    gates = Collections.unmodifiableMap(new LinkedHashMap<>(gates));
-  }
-
-  /** Creates a configuration without explicit profiles. */
-  public WardConfiguration(final int version, final Map<String, GateConfiguration> gates) {
-    this(version, gates, null);
+    checks = Collections.unmodifiableMap(new LinkedHashMap<>(checks));
   }
 
   /** Returns every profile any gate belongs to, in first-seen order. */
   public Set<String> profileNames() {
     final Set<String> names = new LinkedHashSet<>();
-    gates.values().forEach(gate -> names.addAll(gate.profiles()));
+    checks.values().forEach(gate -> names.addAll(gate.profiles()));
     return Collections.unmodifiableSet(names);
   }
 
   /** Returns the enabled gates, in configuration order. */
   public Map<String, GateConfiguration> enabledGates() {
     final Map<String, GateConfiguration> enabled = new LinkedHashMap<>();
-    gates.forEach(
+    checks.forEach(
         (name, gate) -> {
           if (gate.enabled()) {
             enabled.put(name, gate);
@@ -59,32 +54,39 @@ public record WardConfiguration(int version, Map<String, GateConfiguration> gate
     final Set<String> selectedNames = new LinkedHashSet<>(names);
     requireKnownProfiles(selectedNames);
     final Map<String, GateConfiguration> selected = new LinkedHashMap<>();
-    gates.forEach(
+    checks.forEach(
         (gate, config) -> {
           if (config.profiles().stream().anyMatch(selectedNames::contains)) {
             selected.put(gate, config);
           }
         });
-    return new WardConfiguration(version, selected, preset);
+    return new WardConfiguration(version, selected);
   }
 
-  /** Returns only the gates whose IDs are listed, keeping declaration order. */
-  public WardConfiguration onlyGates(final Collection<String> ids) {
+  /** Returns only the checks whose built-in types are listed, keeping declaration order. */
+  public WardConfiguration onlyTypes(final Collection<String> types) {
     final Map<String, GateConfiguration> selected = new LinkedHashMap<>();
-    gates.forEach(
-        (gate, config) -> {
-          if (ids.contains(gate)) {
-            selected.put(gate, config);
+    checks.forEach(
+        (name, check) -> {
+          if (types.contains(check.type())) {
+            selected.put(name, check);
           }
         });
-    return new WardConfiguration(version, selected, preset);
+    return new WardConfiguration(version, selected);
   }
 
-  /** Returns the configuration without the listed gates, keeping declaration order. */
-  public WardConfiguration withoutGates(final Collection<String> ids) {
-    final Map<String, GateConfiguration> remaining = new LinkedHashMap<>(gates);
-    remaining.keySet().removeAll(ids);
-    return new WardConfiguration(version, remaining, preset);
+  /**
+   * Returns the configuration without the checks of the listed types, keeping declaration order.
+   */
+  public WardConfiguration withoutTypes(final Collection<String> types) {
+    final Map<String, GateConfiguration> remaining = new LinkedHashMap<>();
+    checks.forEach(
+        (name, check) -> {
+          if (!types.contains(check.type())) {
+            remaining.put(name, check);
+          }
+        });
+    return new WardConfiguration(version, remaining);
   }
 
   private void requireKnownProfiles(final Set<String> selectedNames) {

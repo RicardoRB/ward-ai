@@ -50,7 +50,7 @@ class NodeStrictPresetTest {
             List.of(gate(project, "stryker")), QualityPreset.STRICT, project));
 
     final GateConfiguration stryker =
-        new TomlConfigurationReader().read(file).gates().get("stryker");
+        new TomlConfigurationReader().read(file).checks().get("stryker");
 
     assertThat(stryker.profiles()).isEqualTo(Set.of("ci"));
     assertThat(stryker.minimum()).isNull();

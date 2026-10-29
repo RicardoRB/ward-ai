@@ -50,8 +50,8 @@ final class MutationGateFixtures {
     }
   }
 
-  static GateConfiguration gate(final Integer minimum) {
-    return new GateConfiguration(true, COMMAND, Set.of("ci"), null, null, null, minimum);
+  static GateConfiguration gate(final String id, final Integer minimum) {
+    return new GateConfiguration(id, id, true, COMMAND, Set.of("ci"), null, null, null, minimum);
   }
 
   static GateResult run(final int exitCode, final MutationReport report, final Integer minimum) {
@@ -73,7 +73,7 @@ final class MutationGateFixtures {
             ports,
             null);
     return factory
-        .create(new WardConfiguration(1, Map.of(id, gate(minimum))))
+        .create(new WardConfiguration(1, Map.of(id, gate(id, minimum))))
         .getFirst()
         .execute(PROJECT);
   }

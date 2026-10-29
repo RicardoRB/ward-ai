@@ -9,6 +9,7 @@ public final class QualityGatePhasePolicy {
   public static final String PRE_COMMIT = "pre-commit";
   public static final String PRE_PUSH = "pre-push";
   public static final String CI = "ci";
+  public static final String EDIT = "edit";
 
   private QualityGatePhasePolicy() {}
 
@@ -17,7 +18,7 @@ public final class QualityGatePhasePolicy {
     return switch (QualityGateDefinitions.find(gateId)
         .map(QualityGateDefinitions.Definition::phase)
         .orElse(QualityGateDefinitions.Phase.CI)) {
-      case FAST -> List.of(DEFAULT, PRE_COMMIT, PRE_PUSH, CI);
+      case FAST -> List.of(DEFAULT, PRE_COMMIT, PRE_PUSH, CI, EDIT);
       // Against HEAD it only sees uncommitted edits; pushed commits are openapi-compat's job.
       case DIFF -> List.of(DEFAULT, PRE_COMMIT);
       case LOCAL -> List.of(PRE_PUSH, CI);

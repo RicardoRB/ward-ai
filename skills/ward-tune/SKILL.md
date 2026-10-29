@@ -68,9 +68,9 @@ never enables or disables gates in `ward.toml`.
 
 Load only the references for the gates in scope.
 
-Also review each enabled gate's optional `[quality-gates.<id>.partial]` table when tuning per-edit
-checks. `inputs` and `config` control relevance, while `args`, `item`, and `separator` control safe
-path narrowing. Narrowing `inputs` is a **weakening of the per-edit check only**; it does not weaken
+Also review each enabled gate's optional `[checks.<name>.paths]` table when tuning per-edit
+checks. `match` and `full` control relevance, while `args`, `item`, and `separator` control safe
+path narrowing. Narrowing `match` is a **weakening of the per-edit check only**; it does not weaken
 the full check or the turn-end check, so propose it separately with evidence and a reason. Verify
 custom path rendering against the real tool because an unsupported argument can falsely pass.
 

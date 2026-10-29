@@ -186,6 +186,7 @@ public class JsonReportRenderer {
   @JsonType
   public record CheckDto(
       String name,
+      String type,
       String status,
       String command,
       int exitCode,
@@ -215,6 +216,7 @@ public class JsonReportRenderer {
       final GateFindings.Visible visible = result.findings().visible(threshold);
       return new CheckDto(
           result.name(),
+          result.type(),
           result.status().name(),
           String.join(" ", result.command()),
           result.exitCode(),

@@ -46,7 +46,7 @@ final class InitFailureFixtures {
       @Override
       public Optional<String> read(final Path file) {
         return file.equals(configuration)
-            ? Optional.of("version = 1 # original\n")
+            ? Optional.of("version = 2 # original\n")
             : Optional.empty();
       }
 

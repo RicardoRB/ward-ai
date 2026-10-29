@@ -35,10 +35,14 @@ import picocli.CommandLine;
 class ClaudeCodeHookTestSupport {
   static final String CONFIG =
       """
-      version = 1
-      [quality-gates.tests]
+      version = 2
+      [checks.tests]
+      uses = "tests"
+      profiles = ["default", "edit"]
       command = "mvn test"
-      [quality-gates.openspec]
+      [checks.openspec]
+      uses = "openspec"
+      profiles = ["default", "edit"]
       command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
       """;
   static final String INVALID =

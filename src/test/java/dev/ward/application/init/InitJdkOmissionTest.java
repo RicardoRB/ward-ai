@@ -87,9 +87,7 @@ class InitJdkOmissionTest {
     final InitResult result = service.initialize(root, strict(), false, finding -> true);
 
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration)
-        .contains("[quality-gates.checkstyle]")
-        .doesNotContain("[quality-gates.format]");
+    assertThat(configuration).contains("[checks.checkstyle]").doesNotContain("[checks.format]");
     assertThat(result.pomWarnings()).contains(NOTE);
   }
 

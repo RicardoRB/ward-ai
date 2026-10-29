@@ -24,7 +24,7 @@ class InitReviewTest {
     assertThat(init.run(true, "\nn\n\n", TESTS_ONLY)).as(init.output()).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("Ward will make these changes:", "Proceed? [Y/n]");
-    assertThat(init.configuration()).contains("[quality-gates.tests]");
+    assertThat(init.configuration()).contains("[checks.tests]");
   }
 
   @Test

@@ -23,8 +23,8 @@ class ApprovedArtifactGuardServiceTest {
   static final String SPEC = "openspec/specs/x/spec.md";
   private static final String ENABLED_OPENSPEC_GATE =
       """
-      version = 1
-      [quality-gates.openspec]
+      version = 2
+      [checks.openspec]
       command = ["./missing-openspec", "validate", "--all"]
       """;
 

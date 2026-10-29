@@ -1,15 +1,22 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.config.CommandTypeInference;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityGatePhasePolicy;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.List;
+import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 final class ConfigurationTemplate {
   private static final int SECTION_CAPACITY = 96;
+  private static final String VERSION = "version = 2\n";
+
+  /** Types written with {@code uses} even when their command would infer them. */
+  private static final Set<String> CRITICAL_USES =
+      Set.of("archunit", "openspec", "openspec-archived");
 
   private ConfigurationTemplate() {}
 
@@ -28,10 +35,7 @@ final class ConfigurationTemplate {
       final Project project,
       final String openSpecRoot) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
-    content.append("version = 1\n");
-    if (preset != null) {
-      content.append("preset = \"").append(preset.id()).append("\"\n");
-    }
+    content.append(VERSION);
     for (final InitGateOption gate : gates) {
       final List<String> command = gate.command();
       final String goal =
@@ -40,7 +44,7 @@ final class ConfigurationTemplate {
               .reduce((left, right) -> left + " " + right)
               .orElse("");
       content
-          .append("\n[quality-gates.")
+          .append("\n[checks.")
           .append(gate.id())
           .append("]\nenabled = true\nprofiles = [")
           .append(
@@ -50,6 +54,9 @@ final class ConfigurationTemplate {
                       .map(profile -> "\"" + profile + "\"")
                       .toList()))
           .append("]\n");
+      if (writesUses(gate)) {
+        content.append("uses = \"").append(gate.id()).append("\"\n");
+      }
       if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
         content
             .append("command = \"")
@@ -67,6 +74,15 @@ final class ConfigurationTemplate {
     return content.toString();
   }
 
+  /**
+   * Whether the check needs {@code uses}: its command does not imply its type, or the type is one
+   * that must never depend on command shape.
+   */
+  private static boolean writesUses(final InitGateOption gate) {
+    return CRITICAL_USES.contains(gate.id())
+        || !CommandTypeInference.infer(gate.command()).equals(gate.id());
+  }
+
   private static boolean isOpenSpec(final String id) {
     return "openspec".equals(id) || "openspec-archived".equals(id);
   }
@@ -81,10 +97,10 @@ final class ConfigurationTemplate {
         .or(() -> PartialCheckDefaults.forOpenApi(id, gate.settings().get("spec")))
         .ifPresent(
             table -> {
-              content.append("\n[quality-gates.").append(id).append(".partial]\n");
-              array(content, "inputs", table.inputs());
-              if (!table.config().isEmpty()) {
-                array(content, "config", table.config());
+              content.append("\n[checks.").append(id).append(".paths]\n");
+              array(content, "match", table.match());
+              if (!table.full().isEmpty()) {
+                array(content, "full", table.full());
               }
               if (!table.args().isEmpty()) {
                 array(content, "args", table.args());

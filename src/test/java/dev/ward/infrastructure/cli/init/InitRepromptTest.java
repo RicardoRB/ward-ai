@@ -20,7 +20,7 @@ class InitRepromptTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Invalid preset selection. Choose 1, 2, or 3.");
-    assertThat(init.configuration()).contains("preset = \"standard\"");
+    assertThat(init.configuration()).contains("version = 2").doesNotContain("preset =");
   }
 
   @Test
@@ -31,7 +31,7 @@ class InitRepromptTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Invalid quality-gate selection '99'");
-    assertThat(init.configuration()).contains("[quality-gates.tests]");
+    assertThat(init.configuration()).contains("[checks.tests]");
   }
 
   @Test

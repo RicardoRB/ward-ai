@@ -115,8 +115,8 @@ class NativeInitTerminalSmokeTest {
             .doesNotContain("unexpected error")
             .doesNotContain("Exception");
         assertThat(Files.readString(project.resolve("ward.toml")))
-            .contains("preset = \"standard\"", "[quality-gates.checkstyle]")
-            .doesNotContain("[quality-gates.pmd]");
+            .contains("preset = \"standard\"", "[checks.checkstyle]")
+            .doesNotContain("[checks.pmd]");
         assertThat(project.resolve("config/pmd-ruleset.xml")).doesNotExist();
         assertThat(Files.readString(project.resolve(".git/hooks/pre-commit")))
             .contains("ward-owned: quality-hooks");

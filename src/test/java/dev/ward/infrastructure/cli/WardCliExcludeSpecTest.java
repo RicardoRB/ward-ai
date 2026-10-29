@@ -12,7 +12,7 @@ import org.junit.jupiter.api.condition.OS;
 class WardCliExcludeSpecTest extends WardCliSpecSupport {
   @Test
   void checkExcludeSpecSkipsSpecGatesAndKeepsJsonOnlyStdout() throws IOException {
-    configure(active() + "[quality-gates.tests]\ncommand = \"./mvnw -q test\"\n");
+    configure(active() + "[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw -q test\"\n");
 
     assertThat(run(CHECK, FORMAT_OPTION, JSON, "--exclude-spec", DIRECTORY, project.toString()))
         .isEqualTo(ExitCodes.OK);

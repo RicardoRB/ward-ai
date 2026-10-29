@@ -39,7 +39,8 @@ class InitSetupCatalogPreviousChoicesTest {
               new FileConfigurationStorage()));
 
   @Test
-  void strictConfigurationGivesItsPresetAndGatesInOrder(@TempDir final Path dir) throws Exception {
+  void strictConfigurationGivesItsGatesInOrderWithoutAPreset(@TempDir final Path dir)
+      throws Exception {
     withPom(dir, PLAIN_POM);
     service.initialize(
         dir,
@@ -47,16 +48,16 @@ class InitSetupCatalogPreviousChoicesTest {
             List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT));
 
     assertThat(catalog.previousChoices(project(dir)))
-        .hasValue(new PreviousChoices(QualityPreset.STRICT, JavaPresetGates.STRICT));
+        .hasValue(new PreviousChoices(JavaPresetGates.STRICT));
   }
 
   @Test
-  void customConfigurationHasNoPreset(@TempDir final Path dir) throws Exception {
+  void configurationGivesItsGatesWithoutAPreset(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     service.initialize(dir, new InitSelection(List.of("none"), List.of("tests", "gitleaks")));
 
     assertThat(catalog.previousChoices(project(dir)))
-        .hasValue(new PreviousChoices(null, List.of("tests", "gitleaks")));
+        .hasValue(new PreviousChoices(List.of("tests", "gitleaks")));
   }
 
   @Test
@@ -77,7 +78,7 @@ class InitSetupCatalogPreviousChoicesTest {
             false));
 
     assertThat(catalog.previousChoices(project(dir)))
-        .hasValue(new PreviousChoices(null, List.of("tests")));
+        .hasValue(new PreviousChoices(List.of("tests")));
   }
 
   @Test

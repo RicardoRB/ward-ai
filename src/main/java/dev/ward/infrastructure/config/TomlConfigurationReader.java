@@ -10,15 +10,25 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
-/** Reads {@code ward.toml} into the configuration model. */
+/** Reads {@code ward.toml} version 2 into the configuration model. */
 public class TomlConfigurationReader implements WardConfigurationReader {
 
-  private static final String GATES_TABLE = "quality-gates";
+  /** The table that holds every check, one sub-table per check name. */
+  static final String CHECKS = "checks";
+
+  private static final String VERSION = "version";
+  private static final Set<String> TOP_LEVEL_KEYS = Set.of(VERSION, CHECKS);
+  private static final Set<String> RENAMED_KEYS = Set.of("quality-gates", "preset");
+  private static final String PROFILES = "profiles";
+  private static final String MIGRATION =
+      " Ward configuration version 2 declares each check as [checks.<name>]; regenerate the file"
+          + " with 'ward init --overwrite'.";
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -42,7 +52,13 @@ public class TomlConfigurationReader implements WardConfigurationReader {
   }
 
   WardConfiguration parse(final TomlTable toml) {
-    final Long version = requireLong(toml, "version");
+    checkVersion(toml);
+    rejectUnknownKeys(toml);
+    return new WardConfiguration(WardConfiguration.SUPPORTED_VERSION, parseChecks(toml));
+  }
+
+  private static void checkVersion(final TomlTable toml) {
+    final Long version = requireLong(toml, VERSION);
     if (version == null) {
       throw new WardException("Missing required key 'version' in " + WardConfiguration.FILE_NAME);
     }
@@ -52,47 +68,54 @@ public class TomlConfigurationReader implements WardConfigurationReader {
               + version
               + " (supported: "
               + WardConfiguration.SUPPORTED_VERSION
-              + ")");
+              + ")."
+              + MIGRATION);
     }
-    final Map<String, GateConfiguration> gates = parseGates(toml);
-    if (toml.contains("profiles")) {
-      throw new WardException(
-          "'[profiles]' is no longer supported; declare 'profiles = [...]' under [quality-gates.<id>] instead");
-    }
-    return new WardConfiguration((int) (long) version, gates, parsePreset(toml));
   }
 
-  private static Map<String, GateConfiguration> parseGates(final TomlTable toml) {
-    final Map<String, GateConfiguration> gates = new LinkedHashMap<>();
-    if (!toml.contains(GATES_TABLE)) {
-      return gates;
+  private static void rejectUnknownKeys(final TomlTable toml) {
+    for (final String key : toml.keySet()) {
+      if (PROFILES.equals(key)) {
+        throw new WardException(
+            "'[profiles]' is no longer supported; declare 'profiles = [...]' under [checks.<name>]"
+                + " instead.");
+      }
+      if (RENAMED_KEYS.contains(key)) {
+        throw new WardException("'" + key + "' is no longer supported in ward.toml." + MIGRATION);
+      }
+      if (!TOP_LEVEL_KEYS.contains(key)) {
+        throw new WardException("Unknown top-level key '" + key + "' in ward.toml.");
+      }
     }
-    final TomlTable table = toml.getTable(GATES_TABLE);
+  }
+
+  private static Map<String, GateConfiguration> parseChecks(final TomlTable toml) {
+    final Map<String, GateConfiguration> checks = new LinkedHashMap<>();
+    if (!toml.contains(CHECKS)) {
+      return checks;
+    }
+    final TomlTable table = toml.getTable(CHECKS);
     if (table == null) {
-      throw new WardException("'" + GATES_TABLE + "' must be a table");
+      throw new WardException("'" + CHECKS + "' must be a table");
     }
     for (final String name : table.keySet()) {
-      final TomlTable gate = table.getTable(List.of(name));
-      if (gate == null) {
-        throw new WardException("'" + GATES_TABLE + "." + name + "' must be a table");
-      }
-      gates.put(name, TomlGateParser.parse(GATES_TABLE + "." + name, gate));
+      checks.put(name, parseCheck(name, table));
     }
-    return gates;
+    return checks;
   }
 
-  private static String parsePreset(final TomlTable toml) {
-    if (!toml.contains("preset")) {
-      return null;
+  private static GateConfiguration parseCheck(final String name, final TomlTable table) {
+    if (name.isBlank()) {
+      throw new WardException("Check names under '" + CHECKS + "' must not be blank.");
     }
-    final String preset = toml.isString("preset") ? toml.getString("preset") : null;
-    if (!"standard".equals(preset) && !"strict".equals(preset)) {
-      throw new WardException("'preset' must be one of: standard, strict");
+    final TomlTable check = table.getTable(List.of(name));
+    if (check == null) {
+      throw new WardException("'" + CHECKS + "." + name + "' must be a table");
     }
-    return preset;
+    return TomlGateParser.parse(name, check);
   }
 
-  private Long requireLong(final TomlTable toml, final String key) {
+  private static Long requireLong(final TomlTable toml, final String key) {
     if (!toml.contains(key)) {
       return null;
     }

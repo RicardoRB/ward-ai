@@ -40,10 +40,10 @@ class InitTypeScriptProjectTest {
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
         .contains(
-            "[quality-gates.tsc]",
-            "[quality-gates.vitest]",
-            "[quality-gates.prettier]",
-            "[quality-gates.eslint]",
+            "[checks.tsc]",
+            "[checks.vitest]",
+            "[checks.prettier]",
+            "[checks.eslint]",
             "command = \"npx vitest run --coverage\"",
             "command = [\"npx\", \"prettier\", \"--check\"]")
         .doesNotContain("checkstyle", "mvnw");

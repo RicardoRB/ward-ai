@@ -15,8 +15,8 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 /**
- * The {@code [quality-gates.<id>.partial]} table init writes for a gate whose tool can be scoped to
- * edited files. Each narrowing form was verified against the real tool: a form the tool does not
+ * The {@code [checks.<id>.paths]} table init writes for a gate whose tool can be scoped to edited
+ * files. Each narrowing form was verified against the real tool: a form the tool does not
  * understand analyzes nothing and passes.
  */
 final class PartialCheckDefaults {
@@ -102,30 +102,30 @@ final class PartialCheckDefaults {
    * command} when empty.
    */
   record Table(
-      List<String> inputs,
-      List<String> config,
+      List<String> match,
+      List<String> full,
       List<String> args,
       String item,
       String separator,
       List<String> command) {
     Table {
-      inputs = List.copyOf(inputs);
-      config = List.copyOf(config);
+      match = List.copyOf(match);
+      full = List.copyOf(full);
       args = List.copyOf(args);
       command = List.copyOf(command);
     }
 
     Table(
-        final List<String> inputs,
-        final List<String> config,
+        final List<String> match,
+        final List<String> full,
         final List<String> args,
         final String item,
         final String separator) {
-      this(inputs, config, args, item, separator, List.of());
+      this(match, full, args, item, separator, List.of());
     }
 
-    private static Table full(final List<String> inputs, final List<String> config) {
-      return new Table(inputs, config, List.of(), null, null);
+    private static Table whole(final List<String> match, final List<String> full) {
+      return new Table(match, full, List.of(), null, null);
     }
   }
 
@@ -193,7 +193,7 @@ final class PartialCheckDefaults {
             && !SupportedQualityGates.OPENAPI_DIFF.equals(gate)) {
       return Optional.empty();
     }
-    return Optional.of(Table.full(List.of(spec), List.of()));
+    return Optional.of(Table.whole(List.of(spec), List.of()));
   }
 
   /** Checkstyle's {@code includes} matches source-relative paths, so only the file name works. */
@@ -211,7 +211,7 @@ final class PartialCheckDefaults {
   private static Table pmd(
       final boolean gradle, final QualityPreset preset, final List<String> build) {
     final List<String> config = withRuleFile(preset, "config/pmd-ruleset.xml", build);
-    return gradle ? gradleFiltered(preset, config) : Table.full(JAVA_SOURCES, config);
+    return gradle ? gradleFiltered(preset, config) : Table.whole(JAVA_SOURCES, config);
   }
 
   /**
@@ -221,7 +221,7 @@ final class PartialCheckDefaults {
   private static Table format(final boolean gradle, final List<String> build) {
     final List<String> config = gradle ? List.of(build.getFirst()) : build;
     if (gradle) {
-      return Table.full(JAVA_SOURCES, config);
+      return Table.whole(JAVA_SOURCES, config);
     }
     return new Table(JAVA_SOURCES, config, List.of("-DspotlessFiles={paths}"), ".*/{path}", COMMA);
   }
@@ -229,9 +229,9 @@ final class PartialCheckDefaults {
   /** Only the Gradle blocks init writes with a preset read {@code wardPaths}. */
   private static Table gradleFiltered(final QualityPreset preset, final List<String> config) {
     if (preset == null) {
-      return Table.full(JAVA_SOURCES, config);
+      return Table.whole(JAVA_SOURCES, config);
     }
-    return new Table(JAVA_SOURCES, config, List.of(GRADLE_PATHS), null, COMMA);
+    return new Table(JAVA_SOURCES, config, List.of(GRADLE_PATHS), "{path}", COMMA);
   }
 
   private static List<String> withRuleFile(

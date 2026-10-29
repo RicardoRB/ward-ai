@@ -51,7 +51,15 @@ final class OpenApiGateFixtures {
         .create(
             id,
             new GateConfiguration(
-                true, command, Set.of("ci"), null, null, new OpenApiGateOptions(SPEC, null), null),
+                id,
+                id,
+                true,
+                command,
+                Set.of("ci"),
+                null,
+                null,
+                new OpenApiGateOptions(SPEC, null),
+                null),
             PROJECT);
   }
 

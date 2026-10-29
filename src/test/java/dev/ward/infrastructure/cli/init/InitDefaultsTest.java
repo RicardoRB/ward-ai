@@ -22,7 +22,7 @@ class InitDefaultsTest {
     assertThat(init.run("\n1\n\n\n\n")).as(init.output()).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");
-    assertThat(init.configuration()).contains("preset = \"standard\"");
+    assertThat(init.configuration()).contains("version = 2").doesNotContain("preset =");
   }
 
   @Test
@@ -36,13 +36,13 @@ class InitDefaultsTest {
 
   @Test
   void decliningTheOverwritePrintsOneMessage() throws IOException {
-    Files.writeString(root.resolve("ward.toml"), "version = 1\n");
+    Files.writeString(root.resolve("ward.toml"), "version = 2\n");
     final InitCommandFixture init = new InitCommandFixture(root);
 
     assertThat(init.run(true, "n\n")).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output().split(KEPT, -1)).hasSize(2);
     assertThat(init.output()).doesNotContain("Keeping existing", "Nothing was changed");
-    assertThat(init.configuration()).isEqualTo("version = 1\n");
+    assertThat(init.configuration()).isEqualTo("version = 2\n");
   }
 }

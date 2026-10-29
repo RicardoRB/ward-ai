@@ -94,10 +94,10 @@ class TypeScriptGatesTest {
     final Path file = root.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(file, ConfigurationTemplate.render(options, QualityPreset.STANDARD, project));
 
-    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).gates();
+    final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
     assertThat(gates).containsOnlyKeys("tsc", "vitest", "prettier", "eslint");
-    final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci");
+    final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(gates.get("eslint").profiles()).isEqualTo(fast);
     assertThat(gates.get("prettier").profiles()).isEqualTo(fast);
     assertThat(gates.get("tsc").profiles()).isEqualTo(Set.of("pre-push", "ci"));

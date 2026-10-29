@@ -14,13 +14,14 @@ final class TomlMinimumParser {
 
   private TomlMinimumParser() {}
 
-  static Integer parse(final String where, final TomlTable gate) {
+  static Integer parse(final String where, final String type, final TomlTable gate) {
     if (!gate.contains(MINIMUM)) {
       return null;
     }
     final String key = where + "." + MINIMUM;
-    if (!MINIMUM_GATES.contains(where.substring(where.lastIndexOf('.') + 1))) {
-      throw new WardException("'" + key + "' is only supported for the stryker and mutation gates");
+    if (!MINIMUM_GATES.contains(type)) {
+      throw new WardException(
+          "'" + key + "' is only supported for the stryker and mutation checks");
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;
     if (value == null || value < 0 || value > MAXIMUM_SCORE) {

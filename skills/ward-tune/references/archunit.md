@@ -5,7 +5,7 @@
 - Init generates `src/test/java/<package>/ArchitectureTest.java` only when no ArchUnit test exists.
   Once the file exists, it belongs to the user. Init never rewrites it and carries no ownership
   marker. When the project already had ArchUnit tests, init reused them instead, and the
-  `[quality-gates.archunit]` command in `ward.toml` names those classes.
+  `[checks.archunit]` command in `ward.toml` names those classes.
 - The gate command runs the test classes by simple name, for example
   `./mvnw -Dtest=ArchitectureTest test`, or `./gradlew test --tests '*ArchitectureTest'` on Gradle. Moving a class to another
   package keeps working. **Renaming** it, or adding a new class, needs the command updated too. That

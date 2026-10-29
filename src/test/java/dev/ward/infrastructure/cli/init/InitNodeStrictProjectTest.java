@@ -28,10 +28,10 @@ class InitNodeStrictProjectTest {
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read(WARD_TOML))
         .contains(
-            "preset = \"strict\"",
-            "[quality-gates.tsc]",
+            "version = 2",
+            "[checks.tsc]",
             "command = \"npx vitest run --coverage\"",
-            "[quality-gates.stryker]\nenabled = true\nprofiles = [\"ci\"]\n"
+            "[checks.stryker]\nenabled = true\nprofiles = [\"ci\"]\n"
                 + "command = \"npx stryker run\"")
         .doesNotContain("minimum");
     assertThat(fixture.read("package.json"))
@@ -63,9 +63,8 @@ class InitNodeStrictProjectTest {
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read(WARD_TOML))
-        .contains(
-            "[quality-gates.jest]", "command = \"npx jest --coverage\"", "[quality-gates.stryker]")
-        .doesNotContain("[quality-gates.tsc]", "[quality-gates.vitest]");
+        .contains("[checks.jest]", "command = \"npx jest --coverage\"", "[checks.stryker]")
+        .doesNotContain("[checks.tsc]", "[checks.vitest]");
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/jest-runner\": \"10.1.1\"")
         .doesNotContain("typescript", "vitest");
@@ -92,7 +91,7 @@ class InitNodeStrictProjectTest {
     assertThat(init.output()).contains("Generated layered dependency-cruiser config");
     assertThat(fixture.read(WARD_TOML))
         .contains(
-            "[quality-gates.dependency-cruiser]",
+            "[checks.dependency-cruiser]",
             "command = \"npx depcruise . --config .dependency-cruiser.mjs --output-type err\"");
     assertThat(fixture.read("package.json")).contains("\"dependency-cruiser\": \"18.6.0\"");
     assertThat(fixture.read(DEPENDENCY_CRUISER_CONFIG))

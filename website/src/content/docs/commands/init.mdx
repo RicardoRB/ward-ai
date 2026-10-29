@@ -218,7 +218,7 @@ commercial Arcmutate history plugin.
   line, and rule) to a failed gate:
 
   ```toml
-  [quality-gates.gitleaks]
+  [checks.gitleaks]
   command = ["gitleaks", "detect", "--no-banner", "--redact",
              "--report-format", "sarif", "--report-path", "target/gitleaks.sarif"]
   ```
@@ -751,8 +751,8 @@ except `pmd`.
 
 Run `ward init` again and answer `y` to the overwrite question, or pass `--overwrite`.
 
-- The preset question defaults to the preset recorded in `ward.toml` (`custom` when none is
-  recorded).
+- The preset question defaults to `standard`. Ward no longer records a preset in `ward.toml`, so
+  re-running init does not preselect the previous preset.
 - The gate list starts with the currently enabled gates, so changing one gate takes a couple of key
   presses.
 - Integrations, hooks, tools, and the architecture style are asked as usual.

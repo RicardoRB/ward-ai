@@ -56,7 +56,7 @@ layers always include the inner ones. The bare `ward check` runs the same checks
 To move a gate, edit its `profiles` list:
 
 ```toml
-[quality-gates.spotbugs]
+[checks.spotbugs]
 command = "./mvnw spotbugs:check"
 profiles = ["pre-push", "ci"]   # not on every edit or commit
 ```

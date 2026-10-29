@@ -21,7 +21,7 @@ class InitKotlinPresetTest {
   void kotlinProjectGetsTheJavaStrictGateSet() throws IOException {
     final String javaToml = wardToml(java, "src/main/java");
 
-    assertThat(javaToml).contains("[quality-gates.checkstyle]", "[quality-gates.mutation]");
+    assertThat(javaToml).contains("[checks.checkstyle]", "[checks.mutation]");
     assertThat(wardToml(kotlin, "src/main/kotlin")).isEqualTo(javaToml);
   }
 

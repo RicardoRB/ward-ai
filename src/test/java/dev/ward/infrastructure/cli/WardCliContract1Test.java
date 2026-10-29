@@ -87,7 +87,8 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
             run(INIT, "--preset", "standard", INTEGRATION_OPTION, NONE, "-C", project.toString()))
         .isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML)))
-        .contains("preset = \"standard\"", "quality-gates.pmd");
+        .contains("version = 2", "[checks.pmd]")
+        .doesNotContain("preset");
     assertThat(project.resolve("config/pmd-ruleset.xml")).exists();
   }
 
@@ -115,7 +116,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
                 project.toString()))
         .isZero();
     assertThat(project.resolve("config/enforcer-rules.xml")).exists();
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("quality-gates.mutation");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.mutation");
     try (Stream<Path> files = Files.walk(project.resolve("src/test/java"))) {
       assertThat(files)
           .anyMatch(path -> "ArchitectureTest.java".equals(path.getFileName().toString()));
@@ -136,6 +137,6 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
                 "-C",
                 project.toString()))
         .isZero();
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("quality-gates.gitleaks");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.gitleaks");
   }
 }

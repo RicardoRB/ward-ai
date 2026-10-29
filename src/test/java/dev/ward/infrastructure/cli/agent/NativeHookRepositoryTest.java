@@ -34,7 +34,8 @@ import picocli.CommandLine;
 /** A native hook started at a monorepo root checks the configured projects its event touches. */
 class NativeHookRepositoryTest {
   private static final String STOP = "{\"hook_event_name\":\"Stop\",\"stop_hook_active\":false}";
-  private static final String TOML = "version = 1\n[quality-gates.tests]\ncommand = \"mvn test\"\n";
+  private static final String TOML =
+      "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n";
 
   @TempDir Path repository;
 

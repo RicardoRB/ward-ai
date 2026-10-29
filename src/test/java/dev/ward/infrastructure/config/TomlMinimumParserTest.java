@@ -13,7 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** The stryker gate accepts a minimum score from 0 to 100; other gates and values are rejected. */
 class TomlMinimumParserTest {
   private static final String STRYKER =
-      "version = 1\n[quality-gates.stryker]\ncommand = [\"npx\", \"stryker\", \"run\"]\n";
+      "version = 2\n[checks.stryker]\ncommand = [\"npx\", \"stryker\", \"run\"]\n";
   private static final int MINIMUM = 60;
   private static final int MAXIMUM = 100;
   private static final String RANGE = "must be an integer from 0 to 100";
@@ -24,9 +24,9 @@ class TomlMinimumParserTest {
 
   @Test
   void minimumOnStrykerIsRead() throws IOException {
-    assertThat(read(reader, dir, STRYKER + "minimum = 60").gates().get("stryker").minimum())
+    assertThat(read(reader, dir, STRYKER + "minimum = 60").checks().get("stryker").minimum())
         .isEqualTo(MINIMUM);
-    assertThat(read(reader, dir, STRYKER).gates().get("stryker").minimum()).isNull();
+    assertThat(read(reader, dir, STRYKER).checks().get("stryker").minimum()).isNull();
   }
 
   @Test
@@ -35,9 +35,9 @@ class TomlMinimumParserTest {
             read(
                     reader,
                     dir,
-                    "version = 1\n[quality-gates.mutation]\ncommand = \"./mvnw pitest:mutationCoverage\"\n"
+                    "version = 2\n[checks.mutation]\ncommand = \"./mvnw pitest:mutationCoverage\"\n"
                         + "minimum = 60")
-                .gates()
+                .checks()
                 .get("mutation")
                 .minimum())
         .isEqualTo(MINIMUM);
@@ -45,9 +45,9 @@ class TomlMinimumParserTest {
 
   @Test
   void boundsAreAccepted() throws IOException {
-    assertThat(read(reader, dir, STRYKER + "minimum = 0").gates().get("stryker").minimum())
+    assertThat(read(reader, dir, STRYKER + "minimum = 0").checks().get("stryker").minimum())
         .isZero();
-    assertThat(read(reader, dir, STRYKER + "minimum = 100").gates().get("stryker").minimum())
+    assertThat(read(reader, dir, STRYKER + "minimum = 100").checks().get("stryker").minimum())
         .isEqualTo(MAXIMUM);
   }
 
@@ -58,10 +58,10 @@ class TomlMinimumParserTest {
                 read(
                     reader,
                     dir,
-                    "version = 1\n[quality-gates.vitest]\ncommand = \"npx vitest run\"\n"
+                    "version = 2\n[checks.vitest]\ncommand = \"npx vitest run\"\n"
                         + "minimum = 60"))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("quality-gates.vitest.minimum");
+        .hasMessageContaining("checks.vitest.minimum");
   }
 
   @Test

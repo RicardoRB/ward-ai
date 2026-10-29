@@ -42,7 +42,8 @@ class QualityLoopPortTest {
             new ProjectDetector(projects),
             ignored ->
                 new WardConfiguration(
-                    1, Map.of("tests", new GateConfiguration(true, List.of("mvn", "test")))),
+                    1,
+                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
             new QualityGateFactory(commands),
             new QualityGateRunner(),
             new FilePathExistence());

@@ -5,8 +5,10 @@ description: Supported quality gate identifiers and configuration.
 
 import { Aside } from '@astrojs/starlight/components';
 
-Every gate uses `[quality-gates.<id>]` with `command` (string or argument array), optional
-`enabled` (default `true`) and optional `profiles` (default profile when omitted). The command
+Every check uses `[checks.<name>]` with `command` (string or argument array), optional
+`enabled` (default `true`), optional `profiles` (default profile when omitted), and optional `uses`.
+`uses` names the built-in tool type that decides how the check's findings are read; when it is
+omitted, Ward infers the type from `command`. The `<id>` in the tables below is the type. The command
 defines the actual tool invocation. Ward does not install gate tools during `check`.
 
 | Category | ID | Tool | Typical purpose |
@@ -136,11 +138,11 @@ run their `command` from the project root, exactly as written, and pass when it 
   `dependency-cruiser` too, which `strict` selects; see [Node projects](/commands/init/#node-projects).
 
 ```toml
-[quality-gates.eslint]
+[checks.eslint]
 command = ["pnpm", "exec", "eslint", ".", "--format", "json"]
 profiles = ["default"]
 
-[quality-gates.tsc]
+[checks.tsc]
 command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
 profiles = ["pre-push"]
 ```
@@ -152,7 +154,7 @@ Without `minimum`, the `stryker` gate passes or fails on Stryker's exit code alo
 when the mutation score is below the minimum.
 
 ```toml
-[quality-gates.stryker]
+[checks.stryker]
 command = ["npx", "stryker", "run", "--reporters", "clear-text,progress,json"]
 minimum = 60
 profiles = ["ci"]
@@ -177,7 +179,7 @@ code, which already enforces any `mutationThreshold` in your build. With it, War
 XML report after a successful run and fails the gate when the score is below the minimum.
 
 ```toml
-[quality-gates.mutation]
+[checks.mutation]
 command = ["./mvnw", "-DoutputFormats=XML,HTML", "pitest:mutationCoverage"]
 minimum = 60
 profiles = ["ci"]
@@ -197,7 +199,7 @@ profiles = ["ci"]
 `openspec-junit-traceability` is the one built-in gate that needs no `command`:
 
 ```toml
-[quality-gates.openspec-junit-traceability]
+[checks.openspec-junit-traceability]
 enabled = true
 ```
 
@@ -239,17 +241,17 @@ spec. Each one needs a `spec` option with the project-relative path of that file
 spec to the command, so the command names only the tool and its flags:
 
 ```toml
-[quality-gates.openapi-lint]
+[checks.openapi-lint]
 profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = ["vacuum", "lint", "-z", "-n", "warn"]
 spec = "src/main/resources/openapi.yml"
 
-[quality-gates.openapi-diff]
+[checks.openapi-diff]
 profiles = ["default", "pre-commit"]
 command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 
-[quality-gates.openapi-compat]
+[checks.openapi-compat]
 profiles = ["pre-push", "ci"]
 command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
@@ -371,13 +373,13 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 ## Partial checks
 
-`ward init` writes a [`[quality-gates.<id>.partial]` table](/configuration/ward-toml/#partial-checks)
+`ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
 for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `biome`,
 `openapi-lint`, and `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
-- is skipped when no edited file is in its `inputs`;
-- runs in full when one of its `config` files was edited;
+- is skipped when no edited file is in its `match`;
+- runs in full when one of its `full` files was edited;
 - is narrowed to the edited files when the tool supports it:
 
 | Gate | Maven | Gradle |
@@ -416,11 +418,11 @@ OpenSpec is an optional project tool, not a quality-gate menu entry. A configura
 the two validations independently:
 
 ```toml
-[quality-gates.openspec]
+[checks.openspec]
 enabled = true
 command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
 
-[quality-gates.openspec-archived]
+[checks.openspec-archived]
 enabled = true
 command = ["openspec", "validate", "--archived", "--no-interactive"]
 ```
@@ -439,7 +441,7 @@ subdirectory. Set `root` on each OpenSpec gate to the directory that holds `open
 the project root:
 
 ```toml
-[quality-gates.openspec]
+[checks.openspec]
 enabled = true
 command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
 root = "../.."

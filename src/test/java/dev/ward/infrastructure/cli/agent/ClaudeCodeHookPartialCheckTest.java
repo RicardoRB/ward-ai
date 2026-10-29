@@ -21,10 +21,12 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
         root.resolve("ward.toml"),
         CONFIG
             + """
-            [quality-gates.checkstyle]
+            [checks.checkstyle]
+            uses = "checkstyle"
+            profiles = ["default", "edit"]
             command = "mvn checkstyle:check"
-            [quality-gates.checkstyle.partial]
-            inputs = ["src/**/*.java"]
+            [checks.checkstyle.paths]
+            match = ["src/**/*.java"]
             args = ["-Dcheckstyle.includes={paths}"]
             item = "**/{name}"
             separator = ","
@@ -65,13 +67,13 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
   }
 
   @Test
-  void eventWithoutPathRunsEveryGateInFull() {
+  void eventWithoutPathSkipsGatesWithPathsAndRunsTheRest() {
     hook(
         """
         {"hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{}}
         """);
 
-    assertThat(commands).containsExactly(TESTS, CHECKSTYLE);
+    assertThat(commands).containsExactly(TESTS);
   }
 
   @Test

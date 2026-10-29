@@ -62,8 +62,7 @@ class InitServicePresetSelectionTest {
         .extracting(InitGateOption::id)
         .containsExactly(
             "compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage", "gitleaks");
-    assertThat(Files.readString(dir.resolve(WARD_TOML)))
-        .contains("version = 1\npreset = \"standard\"");
+    assertThat(Files.readString(dir.resolve(WARD_TOML))).contains("version = 2\n");
     assertThat(dir.resolve("config/pmd-ruleset.xml")).exists();
   }
 
@@ -83,8 +82,8 @@ class InitServicePresetSelectionTest {
         .extracting(InitGateOption::id)
         .containsExactlyElementsOf(strictWithoutMutation);
     assertThat(Files.readString(dir.resolve(WARD_TOML)))
-        .contains("preset = \"strict\"")
-        .doesNotContain("[quality-gates.mutation]");
+        .doesNotContain("preset")
+        .doesNotContain("[checks.mutation]");
     assertThat(Files.readString(dir.resolve("pom.xml"))).doesNotContain("pitest-maven");
   }
 
@@ -97,7 +96,7 @@ class InitServicePresetSelectionTest {
     service.initialize(
         dir, new InitSelection(List.of("none"), standardWithoutPmd, null, QualityPreset.STANDARD));
 
-    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("[quality-gates.pmd]");
+    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("[checks.pmd]");
     assertThat(dir.resolve("config/pmd-ruleset.xml")).doesNotExist();
     assertThat(dir.resolve("config/checkstyle.xml")).exists();
   }

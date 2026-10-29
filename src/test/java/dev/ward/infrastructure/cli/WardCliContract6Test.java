@@ -19,9 +19,10 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
   void checkRejectsZapWithoutTargetAsConfigurationError() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        """
-                version = 1
-                [quality-gates.zap]
+"""
+                version = 2
+                [checks.zap]
+uses = "zap"
                 command = ["zap-baseline.py", "-t", "<TARGET_URL>"]
                 """);
 

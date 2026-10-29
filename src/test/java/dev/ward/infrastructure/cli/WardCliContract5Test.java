@@ -76,7 +76,7 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
     err.getBuffer().setLength(0);
     assertThat(runInitWithInput("3\n1\n9\n", "-C", project.toString())).isEqualTo(ExitCodes.OK);
     assertThat(out.toString()).contains("Generated layered ArchUnit test");
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[quality-gates.archunit]");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[checks.archunit]");
   }
 
   @Test
@@ -84,12 +84,14 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
     run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests,compile", "-C", project.toString());
     Files.writeString(
         project.resolve(WARD_TOML),
-        """
-                version = 1
-                 [quality-gates.tests]
+"""
+                version = 2
+                 [checks.tests]
+uses = "tests"
                  command = "./mvnw test"
                  profiles = ["strict", "fast"]
-                 [quality-gates.compile]
+                 [checks.compile]
+uses = "compile"
                  command = "./mvnw compile"
                  profiles = ["strict"]
                 """);
@@ -119,13 +121,16 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
   void checkReportsNewGatesAndMissingToolDoesNotStopOthers() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        """
-                version = 1
-                [quality-gates.gitleaks]
+"""
+                version = 2
+                [checks.gitleaks]
+uses = "gitleaks"
                 command = ["./missing-gitleaks", "detect", "--redact"]
-                [quality-gates.format]
+                [checks.format]
+uses = "format"
                 command = "./mvnw test"
-                [quality-gates.enforcer]
+                [checks.enforcer]
+uses = "enforcer"
                 command = "./mvnw test"
                 """);
 
@@ -151,11 +156,13 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
     Files.createFile(project.resolve("FAIL"));
     Files.writeString(
         project.resolve(WARD_TOML),
-        """
-            version = 1
-            [quality-gates.tests]
+"""
+            version = 2
+            [checks.tests]
+uses = "tests"
             command = "./mvnw test"
-            [quality-gates.compile]
+            [checks.compile]
+uses = "compile"
             command = "./mvnw compile"
             """);
 

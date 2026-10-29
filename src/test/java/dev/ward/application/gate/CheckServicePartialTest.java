@@ -25,28 +25,37 @@ import org.junit.jupiter.api.io.TempDir;
 class CheckServicePartialTest {
   private static final String CONFIGURATION =
       """
-      version = 1
-      [quality-gates.format]
+      version = 2
+      [checks.format]
+      uses = "format"
+      profiles = ["default", "edit"]
       command = "mvn spotless:check"
-      [quality-gates.checkstyle]
+      [checks.checkstyle]
+      uses = "checkstyle"
+      profiles = ["default", "edit"]
       command = "mvn checkstyle:check"
-      [quality-gates.checkstyle.partial]
-      inputs = ["src/**/*.java"]
-      config = ["config/checkstyle.xml", "pom.xml"]
+      [checks.checkstyle.paths]
+      match = ["src/**/*.java"]
+      full = ["config/checkstyle.xml", "pom.xml"]
       args = ["-Dcheckstyle.includes={paths}"]
       item = "**/{name}"
       separator = ","
-      [quality-gates.pmd]
+      [checks.pmd]
+      uses = "pmd"
+      profiles = ["default", "edit"]
       command = "mvn pmd:check"
-      [quality-gates.pmd.partial]
-      inputs = ["src/**/*.java"]
-      config = ["pom.xml"]
-      [quality-gates.tests]
+      [checks.pmd.paths]
+      match = ["src/**/*.java"]
+      full = ["pom.xml"]
+      [checks.tests]
+      uses = "tests"
       command = "mvn test"
       profiles = ["pre-push"]
-      [quality-gates.tests.partial]
-      inputs = ["src/**/*.java"]
-      [quality-gates.openspec]
+      [checks.tests.paths]
+      match = ["src/**/*.java"]
+      [checks.openspec]
+      uses = "openspec"
+      profiles = ["default", "edit"]
       command = "openspec validate --all"
       """;
   private static final List<String> FORMAT = List.of("mvn", "spotless:check");
@@ -163,8 +172,10 @@ class CheckServicePartialTest {
     Files.writeString(
         dir.resolve("ward.toml"),
         """
-        version = 1
-        [quality-gates.openspec]
+        version = 2
+        [checks.openspec]
+        uses = "openspec"
+        profiles = ["default", "edit"]
         command = "openspec validate --all"
         """);
 

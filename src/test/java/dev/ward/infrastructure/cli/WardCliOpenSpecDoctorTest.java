@@ -17,8 +17,9 @@ class WardCliOpenSpecDoctorTest extends WardCliIntegrationSupport {
     Files.writeString(
         project.resolve(WARD_TOML),
         """
-                version = 1
-                [quality-gates.openspec]
+                version = 2
+                [checks.openspec]
+                uses = "openspec"
                 enabled = true
                 command = ["missing-openspec", "validate", "--no-interactive"]
                 """);
@@ -37,8 +38,9 @@ class WardCliOpenSpecDoctorTest extends WardCliIntegrationSupport {
     Files.writeString(
         project.resolve(WARD_TOML),
         """
-                version = 1
-                [quality-gates.openspec-archived]
+                version = 2
+                [checks.openspec-archived]
+                uses = "openspec-archived"
                 enabled = true
                 command = ["%s", "validate", "--archived", "--no-interactive"]
                 """

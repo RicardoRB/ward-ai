@@ -22,7 +22,7 @@ class NestedOpenSpecRootTest {
   private static final String DESIGN = "openspec/changes/foo/design.md";
   private static final String SPEC = "openspec/specs/x/spec.md";
   private static final String CONFIGURATION =
-      "version = 1\n[quality-gates.openspec]\ncommand = [\"openspec\", \"validate\", \"--all\"]\n";
+      "version = 2\n[checks.openspec]\ncommand = [\"openspec\", \"validate\", \"--all\"]\n";
 
   @TempDir Path repository;
 

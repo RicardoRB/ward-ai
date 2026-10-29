@@ -250,7 +250,7 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that `ward.toml` has `partial` tables for Checkstyle, PMD, format, Semgrep, and
+   Mention that `ward.toml` has `paths` tables for Checkstyle, PMD, format, Semgrep, and
    Gitleaks (ESLint and Prettier, or Biome, for TypeScript and JavaScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
    not affect and narrow supported tools to the edited or staged files. Claude Code and the native
    harnesses still run the full `default` check when the turn ends; the pre-push hook and CI always

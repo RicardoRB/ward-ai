@@ -36,7 +36,7 @@ class QualityLoopScenarioTest {
   void passesAfterAgentAttempt(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner agent =
@@ -65,7 +65,7 @@ class QualityLoopScenarioTest {
   void stopsAtMaximumIterations(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "failure", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner agent =
@@ -94,7 +94,7 @@ class QualityLoopScenarioTest {
   void distinguishesAgentTimeoutAndFailure(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner timeout =
@@ -148,7 +148,7 @@ class QualityLoopScenarioTest {
   void retriesWithFeedbackUntilSuccess(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
     final int[] calls = {0};
     final CommandExecutor executor =
         (command, root) -> {

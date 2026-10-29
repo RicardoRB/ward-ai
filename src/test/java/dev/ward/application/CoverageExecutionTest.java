@@ -50,12 +50,14 @@ class CoverageExecutionTest {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     Files.writeString(
         root.resolve("ward.toml"),
-        """
-                version = 1
-                 [quality-gates.tests]
+"""
+                version = 2
+                 [checks.tests]
+uses = "tests"
                  command = "test"
                  profiles = ["tests-only"]
-                 [quality-gates.compile]
+                 [checks.compile]
+uses = "compile"
                  command = "compile"
                 """);
     final CommandExecutor executor =
@@ -72,7 +74,7 @@ class CoverageExecutionTest {
         .isInstanceOf(WardException.class);
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n[quality-gates.tests]\ncommand='test'\nprofiles=['bad']\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand='test'\nprofiles=['bad']\n");
     assertThatThrownBy(() -> service.check(root))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("--profile");
@@ -88,7 +90,7 @@ class CoverageExecutionTest {
     assertThat(runner.run("detect", "-C", root.toString())).isZero();
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n\n[quality-gates.tests]\nenabled = true\ncommand = \"echo ok\"\n");
+        "version = 2\n\n[checks.tests]\nuses = \"tests\"\nenabled = true\ncommand = \"echo ok\"\n");
     assertThat(runner.run("check", "-C", root.toString())).isZero();
     assertThat(runner.run("unknown-command")).isEqualTo(2);
   }

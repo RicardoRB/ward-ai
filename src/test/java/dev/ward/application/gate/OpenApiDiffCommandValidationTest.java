@@ -83,6 +83,8 @@ class OpenApiDiffCommandValidationTest {
         Map.of(
             LINT,
             new GateConfiguration(
+                LINT,
+                LINT,
                 true,
                 lint("-n", "warn"),
                 Set.of("default"),

@@ -55,7 +55,7 @@ class PartialNarrowingToolMatchingTest {
             List.of(gate("checkstyle"), gate("format")),
             QualityPreset.STANDARD,
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE)));
-    gates = new TomlConfigurationReader().read(file).gates();
+    gates = new TomlConfigurationReader().read(file).checks();
   }
 
   @Test

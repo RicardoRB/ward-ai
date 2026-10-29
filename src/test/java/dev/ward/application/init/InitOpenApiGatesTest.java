@@ -99,11 +99,11 @@ class InitOpenApiGatesTest {
     Files.writeString(file, ConfigurationTemplate.render(gates, null, project()));
 
     final WardConfiguration configuration = new TomlConfigurationReader().read(file);
-    final GateConfiguration lint = configuration.gates().get(LINT);
-    final GateConfiguration diff = configuration.gates().get(DIFF);
-    final GateConfiguration compat = configuration.gates().get(COMPAT);
+    final GateConfiguration lint = configuration.checks().get(LINT);
+    final GateConfiguration diff = configuration.checks().get(DIFF);
+    final GateConfiguration compat = configuration.checks().get(COMPAT);
 
-    assertThat(lint.profiles()).containsExactly("default", "pre-commit", "pre-push", "ci");
+    assertThat(lint.profiles()).containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(diff.profiles()).containsExactly("default", "pre-commit");
     assertThat(compat.profiles()).containsExactly("pre-push", "ci");
     assertThat(lint.openApi()).isEqualTo(new OpenApiGateOptions(SPEC, null));

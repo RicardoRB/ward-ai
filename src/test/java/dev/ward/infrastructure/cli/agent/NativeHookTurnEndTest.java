@@ -43,7 +43,8 @@ class NativeHookTurnEndTest {
   void project() throws IOException {
     withPom(root, PLAIN_POM);
     Files.writeString(
-        root.resolve("ward.toml"), "version = 1\n[quality-gates.tests]\ncommand = \"mvn test\"\n");
+        root.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
     Files.createDirectories(root.resolve("openspec/specs/auth"));
     Files.writeString(root.resolve("openspec/specs/auth/spec.md"), "# Auth\n");
   }

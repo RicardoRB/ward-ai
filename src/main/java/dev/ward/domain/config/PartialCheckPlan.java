@@ -51,6 +51,21 @@ public final class PartialCheckPlan {
     return new PartialCheckPlan(plans);
   }
 
+  /**
+   * Plans an {@code edit} run without edited paths: a check with a {@code paths} table is skipped,
+   * any other check runs in full.
+   */
+  public static PartialCheckPlan withoutPaths(final Map<String, GateConfiguration> configurations) {
+    final Map<String, GatePlan> plans = new LinkedHashMap<>();
+    configurations.forEach(
+        (name, configuration) ->
+            plans.put(
+                name,
+                new GatePlan(
+                    name, configuration.partial() == null ? Scope.FULL : Scope.SKIP, List.of())));
+    return new PartialCheckPlan(plans);
+  }
+
   /** Returns the decision for each gate, in configuration order. */
   public Map<String, GatePlan> gates() {
     return gates;
@@ -71,8 +86,8 @@ public final class PartialCheckPlan {
       return new GatePlan(name, Scope.FULL, List.of());
     }
     final List<EditedPath> relevant =
-        paths.stream().filter(path -> matches(partial.inputs(), path.relative())).toList();
-    if (paths.stream().anyMatch(path -> matches(partial.config(), path.relative()))) {
+        paths.stream().filter(path -> matches(partial.match(), path.relative())).toList();
+    if (paths.stream().anyMatch(path -> matches(partial.full(), path.relative()))) {
       return new GatePlan(name, Scope.FULL, List.of());
     }
     if (relevant.isEmpty()) {

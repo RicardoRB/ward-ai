@@ -9,14 +9,14 @@ class QualityGatePhasePolicyTest {
   @Test
   void assignsFastGatesToDefaultAndAllLocalPhases() {
     assertThat(QualityGatePhasePolicy.profilesFor("format"))
-        .containsExactly("default", "pre-commit", "pre-push", "ci");
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("compile")).containsExactly("pre-push", "ci");
     assertThat(QualityGatePhasePolicy.profilesFor("checkstyle"))
-        .containsExactly("default", "pre-commit", "pre-push", "ci");
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("pmd"))
-        .containsExactly("default", "pre-commit", "pre-push", "ci");
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("gitleaks"))
-        .containsExactly("default", "pre-commit", "pre-push", "ci");
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
   }
 
   @Test

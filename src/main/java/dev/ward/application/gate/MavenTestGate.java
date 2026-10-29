@@ -7,8 +7,8 @@ import dev.ward.domain.project.Project;
 import java.util.List;
 
 /**
- * Runs the project's automated tests using the command configured under {@code
- * [quality-gates.tests]}. The command is never hardcoded here.
+ * Runs the project's automated tests using the command configured under {@code [checks.tests]}. The
+ * command is never hardcoded here.
  */
 public class MavenTestGate implements QualityGate {
 

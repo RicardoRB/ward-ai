@@ -1,13 +1,12 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.init.QualityPreset;
 import java.util.List;
 
 /**
- * The preset and quality gates recorded in an existing {@code ward.toml}, used to pre-fill the
- * wizard when reconfiguring. {@code preset} is {@code null} for a custom configuration.
+ * The quality checks recorded in an existing {@code ward.toml}, used to pre-fill the wizard when
+ * reconfiguring. The file no longer records a preset, so init asks for one again.
  */
-public record PreviousChoices(QualityPreset preset, List<String> gates) {
+public record PreviousChoices(List<String> gates) {
   /** Copies the gates. */
   public PreviousChoices {
     gates = List.copyOf(gates);

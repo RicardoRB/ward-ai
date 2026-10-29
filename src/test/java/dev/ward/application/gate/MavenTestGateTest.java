@@ -58,7 +58,7 @@ class MavenTestGateTest {
     final QualityGateFactory factory = new QualityGateFactory(executor);
     final WardConfiguration configuration =
         new WardConfiguration(
-            1, Map.of("tests", new GateConfiguration(true, List.of("./gradlew", "test"))));
+            1, Map.of("tests", new GateConfiguration("tests", true, List.of("./gradlew", "test"))));
 
     factory.create(configuration, gradleProject).getFirst().execute(gradleProject);
 

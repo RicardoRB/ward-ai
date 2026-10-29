@@ -25,11 +25,13 @@ class CheckServicePartialCommandTest {
     Files.writeString(
         dir.resolve("ward.toml"),
         """
-        version = 1
-        [quality-gates.prettier]
+        version = 2
+        [checks.prettier]
+        uses = "prettier"
+        profiles = ["default", "edit"]
         command = ["npx", "prettier", "--check", "."]
-        [quality-gates.prettier.partial]
-        inputs = ["src/**/*.ts"]
+        [checks.prettier.paths]
+        match = ["src/**/*.ts"]
         args = ["{paths}"]
         command = ["npx", "prettier", "--check"]
         """);

@@ -29,9 +29,9 @@ public class InitService {
 
   static final String DEFAULT_CONFIGURATION =
       """
-            version = 1
+            version = 2
 
-            [quality-gates.tests]
+            [checks.tests]
             enabled = true
             command = "./mvnw test"
             """;

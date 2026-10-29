@@ -57,9 +57,10 @@ class StrykerGateReportTest {
                         1,
                         Map.of(
                             MutationGateFixtures.STRYKER,
-                            MutationGateFixtures.gate(MutationGateFixtures.MINIMUM)))))
+                            MutationGateFixtures.gate(
+                                MutationGateFixtures.STRYKER, MutationGateFixtures.MINIMUM)))))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("'stryker' gate");
+        .hasMessageContaining("'stryker' check");
   }
 
   @Test

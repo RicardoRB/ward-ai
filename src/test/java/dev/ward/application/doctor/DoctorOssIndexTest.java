@@ -29,7 +29,7 @@ class DoctorOssIndexTest {
     Files.writeString(root.resolve("pom.xml"), "<project></project>");
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n[quality-gates.dependency-check]\nenabled = true\n"
+        "version = 2\n[checks.dependency-check]\nenabled = true\n"
             + "command = \"./mvnw dependency-check:check\"\n");
   }
 
@@ -64,7 +64,7 @@ class DoctorOssIndexTest {
   void staysQuietWhenGateIsDisabled() throws IOException {
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 1\n[quality-gates.dependency-check]\nenabled = false\n"
+        "version = 2\n[checks.dependency-check]\nenabled = false\n"
             + "command = \"./mvnw dependency-check:check\"\n");
 
     assertThat(names(diagnose(OssIndexSetting.ENABLED, false))).doesNotContain(FINDING);
