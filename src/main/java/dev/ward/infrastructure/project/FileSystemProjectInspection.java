@@ -29,6 +29,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
   public static final String POM = "pom.xml";
   static final String GIT = ".git";
   private static final String SPRING_BOOT_GROUP_ID = "org.springframework.boot";
+  private static final List<String> GRADLE_BUILD_FILES =
+      List.of("build.gradle", "build.gradle.kts");
   private static final String DISTRIBUTION_MANAGEMENT = "distributionManagement";
 
   /** Build-file markers in precedence order; the first match decides a directory's project. */
@@ -127,7 +129,7 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         dir,
         JvmSourceLanguages.primary(languages),
         BuildTool.GRADLE,
-        Framework.NONE,
+        gradleFramework(dir),
         Files.isExecutable(dir.resolve("gradlew")),
         false,
         dir,
@@ -159,6 +161,31 @@ public final class FileSystemProjectInspection implements ProjectInspection {
       }
     }
     return Framework.NONE;
+  }
+
+  /**
+   * Spring Boot is detected when a Gradle build script mentions the org.springframework.boot plugin
+   * or dependency group. The script is read as text, so Groovy and Kotlin DSL both match.
+   */
+  private static Framework gradleFramework(final Path dir) {
+    for (final String file : GRADLE_BUILD_FILES) {
+      if (readText(dir.resolve(file)).contains(SPRING_BOOT_GROUP_ID)) {
+        return Framework.SPRING_BOOT;
+      }
+    }
+    return Framework.NONE;
+  }
+
+  /** Returns the file's text, or an empty string when the file is missing or unreadable. */
+  private static String readText(final Path file) {
+    if (!Files.isRegularFile(file)) {
+      return "";
+    }
+    try {
+      return Files.readString(file);
+    } catch (IOException e) {
+      return "";
+    }
   }
 
   /** Only a direct child of {@code <project>} counts; profiles do not publish by default. */

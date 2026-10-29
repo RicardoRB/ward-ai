@@ -26,7 +26,9 @@ ward detect [-C <dir>]
   - With only Kotlin sources, the language is Kotlin.
   - With both, the language is Java, and `Languages:` lists Java and Kotlin.
   - With no sources yet, the language is Java.
-- Spring Boot is recognized when the POM references `org.springframework.boot`.
+- Spring Boot is labeled when the POM or a Gradle build script references `org.springframework.boot`.
+  The label is informational: Ward runs the same Java gates for every framework, including plain Java,
+  Quarkus, and Micronaut.
 - TypeScript projects are recognized from `tsconfig.json`, and JavaScript projects from
   `package.json`.
 - A TypeScript or JavaScript project's framework comes from its declared packages: Astro, Svelte,
