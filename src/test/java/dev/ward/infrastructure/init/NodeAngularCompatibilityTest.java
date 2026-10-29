@@ -136,8 +136,7 @@ class NodeAngularCompatibilityTest {
         List.of(packages).stream()
             .map(name -> NodePackageCatalog.find(name).orElseThrow())
             .toList(),
-        false,
-        false);
+        Set.of());
   }
 
   private Project project(final String node) {

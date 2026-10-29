@@ -24,7 +24,7 @@ final class NodePackageCatalog {
   private static final String GLOBALS = "globals";
   private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
   private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
-  private static final String VITEST_VERSION = "4.0.18";
+  static final String VITEST_VERSION = "4.0.18";
   private static final String STRYKER = "stryker";
   private static final String STRYKER_CORE = "@stryker-mutator/core";
   private static final String STRYKER_VERSION = "10.1.1";
@@ -58,6 +58,7 @@ final class NodePackageCatalog {
   static final String ANGULAR_ESLINT = "angular-eslint";
   static final String NG_TEST = "ng-test";
   static final String VITEST = "vitest";
+  static final String VITE = "vite";
   static final String COVERAGE_V8 = "@vitest/coverage-v8";
 
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
@@ -218,10 +219,24 @@ final class NodePackageCatalog {
       return Optional.of(
           new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript()));
     }
-    if (COVERAGE_V8.equals(name) && manifest.declares(ANGULAR_CORE) && manifest.declares(VITEST)) {
-      // Angular's unit-test builder needs the coverage package at the Vitest version it runs.
+    if (COVERAGE_V8.equals(name) && manifest.declares(VITEST)) {
+      // Each coverage release requires its own Vitest version, so it follows the declared one.
       return Optional.of(new Package(name, manifest.dependencies().get(VITEST), tool.node(), null));
     }
+    if (VITEST.equals(name) || COVERAGE_V8.equals(name)) {
+      return Optional.of(new Package(name, pinnedVitest(manifest), tool.node(), null));
+    }
     return Optional.of(tool);
+  }
+
+  /** Returns the Vitest release for the project's Vite, or the default pin without a Vite. */
+  private static String pinnedVitest(final PackageManifest manifest) {
+    final Optional<String> vite =
+        manifest.declares(VITE)
+            ? NodeVersionRange.lowerBound(manifest.dependencies().get(VITE))
+            : Optional.empty();
+    return vite.flatMap(NodeVitestReleases::forVite)
+        .map(NodeVitestReleases.Release::version)
+        .orElse(VITEST_VERSION);
   }
 }

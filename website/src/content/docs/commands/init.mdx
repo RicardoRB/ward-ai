@@ -348,7 +348,7 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 - JavaScript gets the same gates except `tsc`.
 - A project that uses Biome gets the `biome` gate instead of `prettier`; see [Biome](#biome).
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
-  either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`.
+  either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
 - `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
 
 | | `standard` | `strict` |
@@ -473,7 +473,7 @@ root config in its place:
 | `typescript-eslint` | 8.71.1 | `^18.18.0 \|\| ^20.9.0 \|\| >=21.1.0`, TypeScript `>=4.8.4 <6.1.0` |
 | `prettier` | 3.9.10 | `>=14` |
 | `@biomejs/biome` | 2.5.15 | `>=14.21.3` (declared versions must be `>=2.3.0 <3.0.0`) |
-| `vitest`, `@vitest/coverage-v8` | 4.0.18 | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` |
+| `vitest`, `@vitest/coverage-v8` | 4.1.11 for a project that declares Vite `^6`, `^7`, or `^8`, else 4.0.18 (see below) | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` |
 | `typescript` | 6.0.3 | `>=14.17` |
 | `globals` | 17.13.0 | `>=18` |
 | `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
@@ -499,6 +499,13 @@ Before writing, init checks each package it would add against the project's Node
   8.71.1 supports TypeScript `>=4.8.4 <6.1.0`. Pin TypeScript 6.0 or lower, or skip `eslint`.
 - Node is compared on its major version. When a range needs a later minor, such as `^22.13.0` for
   ESLint on Node 22, the plan notes the minimum version.
+- When the `vitest` gate is selected and the project declares `vite`, init checks the Vitest against
+  that Vite. A declared Vitest whose release does not declare the project's Vite is `INCOMPATIBLE`,
+  such as `vitest` 4.0.18 with `vite` `^8.2.2`, which names the Vitest, the Vite version, and the
+  range it supports (`^6.0.0 || ^7.0.0`). Without a declared Vitest, a Vite that no pinned release
+  supports, such as `^9.0.0`, is `INCOMPATIBLE`. Vitest minors Ward does not pin are not checked.
+  Vitest 4.1.11 needs npm 11.6 or later: Node 22 bundles npm 10.9, which crashes on it
+  (npm/cli#9787), so a Vite 8 project on Node 22 must upgrade npm first.
 - Ward supports Node 22 and 24. For a project that declares an older Node version, init shows a
   warning that Ward may not work with it. The warning does not stop init or change the files it
   writes, and Bun projects do not get it.

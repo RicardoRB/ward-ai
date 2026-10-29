@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,15 +29,15 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
   }
 
   /**
-   * Checks {@code added}, the packages init would add to {@code project}, and a declared Biome or
-   * ESLint when {@code biome} or {@code eslint} is selected.
+   * Checks {@code added}, the packages init would add to {@code project}, a declared Biome or
+   * ESLint when {@code gates} selects it, and the Vitest the {@code vitest} gate runs against the
+   * project's Vite.
    */
   static NodeCompatibility check(
       final Project project,
       final PackageManifest manifest,
       final List<NodePackageCatalog.Package> added,
-      final boolean biome,
-      final boolean eslint) {
+      final Set<String> gates) {
     final int node = Integer.parseInt(project.languageVersion());
     final List<CompatibilityFinding> findings = new ArrayList<>();
     final List<String> notes = new ArrayList<>();
@@ -44,12 +45,13 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
       checkNode(tool, node, findings, notes);
       typescript(tool, manifest, added).ifPresent(findings::add);
     }
-    if (biome) {
+    if (gates.contains("biome")) {
       declaredBiome(manifest).ifPresent(findings::add);
     }
-    if (eslint) {
+    if (gates.contains("eslint")) {
       declaredEslint(manifest).ifPresent(findings::add);
     }
+    vitestVite(manifest, gates).ifPresent(findings::add);
     findings.addAll(declaredCheckers(manifest));
     findings.addAll(NodeAngularCompatibility.check(node, manifest, added));
     findings.forEach(
@@ -170,6 +172,67 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                     NodePackageCatalog.find(name).orElseThrow().version(),
                     CompatibilityOutcome.INCOMPATIBLE,
                     name + " " + declared + " is outside the supported range " + supported + "."));
+  }
+
+  /**
+   * Checks the Vitest the {@code vitest} gate runs against the project's Vite. Ward's pins are the
+   * only Vitest releases with a recorded Vite range, so other minors are not checked.
+   */
+  private static Optional<CompatibilityFinding> vitestVite(
+      final PackageManifest manifest, final Set<String> gates) {
+    if (!gates.contains(NodePackageCatalog.VITEST) || !manifest.declares(NodePackageCatalog.VITE)) {
+      return Optional.empty();
+    }
+    return NodeVersionRange.lowerBound(manifest.dependencies().get(NodePackageCatalog.VITE))
+        .flatMap(
+            vite ->
+                manifest.declares(NodePackageCatalog.VITEST)
+                    ? declaredVitestVite(manifest, vite)
+                    : undeclaredVitestVite(vite));
+  }
+
+  /** A declared Vitest must support the project's Vite, as its pinned release declares. */
+  private static Optional<CompatibilityFinding> declaredVitestVite(
+      final PackageManifest manifest, final String vite) {
+    final String declared = manifest.dependencies().get(NodePackageCatalog.VITEST);
+    return NodeVersionRange.lowerBound(declared)
+        .flatMap(NodeVitestReleases::onMinor)
+        .filter(release -> !NodeVersionRange.matches(release.vite(), vite))
+        .map(
+            release ->
+                new CompatibilityFinding(
+                    NodePackageCatalog.VITEST,
+                    "Vite " + vite,
+                    release.version(),
+                    CompatibilityOutcome.INCOMPATIBLE,
+                    NodePackageCatalog.VITEST
+                        + " "
+                        + declared
+                        + " supports Vite "
+                        + release.vite()
+                        + "; the project uses Vite "
+                        + vite
+                        + "."));
+  }
+
+  /** Without a declared Vitest, some pinned release must support the project's Vite. */
+  private static Optional<CompatibilityFinding> undeclaredVitestVite(final String vite) {
+    if (NodeVitestReleases.forVite(vite).isPresent()) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        new CompatibilityFinding(
+            NodePackageCatalog.VITEST,
+            "Vite " + vite,
+            null,
+            CompatibilityOutcome.INCOMPATIBLE,
+            "No pinned "
+                + NodePackageCatalog.VITEST
+                + " supports Vite "
+                + vite
+                + "; the newest supports "
+                + NodeVitestReleases.newestViteRange()
+                + "."));
   }
 
   /** A declared ESLint must start inside the range the generated config supports. */

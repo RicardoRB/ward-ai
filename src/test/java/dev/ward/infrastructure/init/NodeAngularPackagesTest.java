@@ -107,7 +107,7 @@ class NodeAngularPackagesTest {
             root,
             Set.of(),
             String.valueOf(node));
-    return NodeCompatibility.check(project, manifest, List.of(), false, false).findings();
+    return NodeCompatibility.check(project, manifest, List.of(), Set.of()).findings();
   }
 
   private static NodePackageCatalog.Package byName(

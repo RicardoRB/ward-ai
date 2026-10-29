@@ -41,7 +41,10 @@ ArchUnit, rule files under `config/`).
 - **Declared tools.** Read `dependencies` and `devDependencies` in `package.json`:
   - `vitest` or `jest` decides the test gate (`vitest`, then `jest`). A Bun project with neither
     gets `bun-test`; any other project gets `vitest`, and init adds `vitest` and
-    `@vitest/coverage-v8`.
+    `@vitest/coverage-v8`. Without a declared Vitest, the version is 4.1.11 when `vite` is declared
+    in `^6`, `^7`, or `^8`, and 4.0.18 otherwise. A declared Vitest whose Vite range excludes the
+    project's `vite` is `INCOMPATIBLE`. Vitest 4.1.11 needs npm 11.6 or later, because npm 10
+    (bundled with Node 22) crashes on it (npm/cli#9787).
   - `typescript` (TypeScript only): note the declared range. Its lower bound is checked against
     `typescript-eslint`.
   - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep

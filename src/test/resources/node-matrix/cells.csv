@@ -25,7 +25,9 @@ node,fixture,linting,preset,version,packages
 24,vite-react,eslint,strict,9.22.0
 24,nestjs,eslint,strict,
 24,express,eslint,strict,
-24,vue,eslint,strict,
+24,vue,eslint,strict,,vue-tsc@3.3.13 typescript@6.0.3
+22.12,vue,eslint,standard,,vue-tsc@3.3.12 typescript@5.9.3 vitest@4.1.11
+24,vue,eslint,strict,,vite@7.3.7 vitest@4.0.18
 24,astro,eslint,strict,
 22.12,astro,eslint,standard,,astro@7.3.8 typescript@5.0.4
 24,astro,eslint,strict,,astro@7.3.8 @astrojs/check@0.9.12
