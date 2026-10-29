@@ -29,9 +29,9 @@ edit to production.
 > **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun. Support for more
 > languages is planned. The CLI and configuration may change before `1.0`.
 
-| Language | Build tools | Frameworks Ward recognizes | Quality tools |
+| Language | Build tools | Frameworks | Quality tools |
 |---|---|---|---|
-| Java / Kotlin | Maven, Gradle | Spring Boot | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
+| Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 

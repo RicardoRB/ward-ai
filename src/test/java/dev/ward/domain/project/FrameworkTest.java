@@ -9,6 +9,12 @@ class FrameworkTest {
   @ParameterizedTest
   @CsvSource({
     "SPRING_BOOT, Spring Boot",
+    "QUARKUS, Quarkus",
+    "MICRONAUT, Micronaut",
+    "HELIDON, Helidon",
+    "DROPWIZARD, Dropwizard",
+    "JAVALIN, Javalin",
+    "KTOR, Ktor",
     "VUE, Vue",
     "SVELTE, Svelte",
     "ASTRO, Astro",

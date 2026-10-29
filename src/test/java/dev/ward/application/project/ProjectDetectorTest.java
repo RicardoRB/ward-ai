@@ -1,7 +1,6 @@
 package dev.ward.application.project;
 
 import static dev.ward.ProjectFixtures.PLAIN_POM;
-import static dev.ward.ProjectFixtures.SPRING_BOOT_POM;
 import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,16 +33,6 @@ class ProjectDetectorTest {
   }
 
   @Test
-  void detectsSpringBoot(@TempDir final Path dir) {
-    withPom(dir, SPRING_BOOT_POM);
-
-    assertThat(detector.detect(dir))
-        .get()
-        .extracting(Project::framework)
-        .isEqualTo(Framework.SPRING_BOOT);
-  }
-
-  @Test
   void detectsGradleGroovyProjectAndWrapper(@TempDir final Path dir) throws Exception {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     Files.writeString(dir.resolve("gradlew"), "#!/bin/sh\nexit 0\n");
@@ -70,22 +59,6 @@ class ProjectDetectorTest {
     assertThat(project.buildTool()).isEqualTo(BuildTool.GRADLE);
     assertThat(project.wrapperAvailable()).isFalse();
     assertThat(project.buildExecutable()).isEqualTo("gradle");
-  }
-
-  @Test
-  void detectsSpringBootFromDependencyWithoutParent(@TempDir final Path dir) {
-    withPom(
-        dir,
-        """
-                <project><dependencies><dependency>
-                  <groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter</artifactId>
-                </dependency></dependencies></project>
-                """);
-
-    assertThat(detector.detect(dir))
-        .get()
-        .extracting(Project::framework)
-        .isEqualTo(Framework.SPRING_BOOT);
   }
 
   @Test

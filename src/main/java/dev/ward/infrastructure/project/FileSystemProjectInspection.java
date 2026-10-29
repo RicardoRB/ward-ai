@@ -28,7 +28,20 @@ public final class FileSystemProjectInspection implements ProjectInspection {
   static final int MAX_SEARCH_DEPTH = 4;
   public static final String POM = "pom.xml";
   static final String GIT = ".git";
-  private static final String SPRING_BOOT_GROUP_ID = "org.springframework.boot";
+
+  /** Framework markers in precedence order; the first framework whose group matches wins. */
+  private static final List<FrameworkGroup> FRAMEWORK_GROUPS =
+      List.of(
+          new FrameworkGroup(Framework.SPRING_BOOT, "org.springframework.boot"),
+          new FrameworkGroup(Framework.QUARKUS, "io.quarkus"),
+          new FrameworkGroup(Framework.MICRONAUT, "io.micronaut"),
+          new FrameworkGroup(Framework.HELIDON, "io.helidon"),
+          new FrameworkGroup(Framework.DROPWIZARD, "io.dropwizard"),
+          new FrameworkGroup(Framework.JAVALIN, "io.javalin"),
+          new FrameworkGroup(Framework.KTOR, "io.ktor"));
+
+  private static final List<String> GRADLE_BUILD_FILES =
+      List.of("build.gradle", "build.gradle.kts");
   private static final String DISTRIBUTION_MANAGEMENT = "distributionManagement";
 
   /** Build-file markers in precedence order; the first match decides a directory's project. */
@@ -127,7 +140,7 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         dir,
         JvmSourceLanguages.primary(languages),
         BuildTool.GRADLE,
-        Framework.NONE,
+        gradleFramework(dir),
         Files.isExecutable(dir.resolve("gradlew")),
         false,
         dir,
@@ -150,15 +163,45 @@ public final class FileSystemProjectInspection implements ProjectInspection {
     }
   }
 
-  /** Spring Boot is detected when the POM references any org.springframework.boot groupId. */
+  /** A framework is detected when a POM groupId is its group or one of its sub-groups. */
   private static Framework framework(final Document pom) {
     final NodeList groupIds = pom.getElementsByTagName("groupId");
-    for (int i = 0; i < groupIds.getLength(); i++) {
-      if (SPRING_BOOT_GROUP_ID.equals(groupIds.item(i).getTextContent().trim())) {
-        return Framework.SPRING_BOOT;
+    for (final FrameworkGroup group : FRAMEWORK_GROUPS) {
+      for (int i = 0; i < groupIds.getLength(); i++) {
+        final String groupId = groupIds.item(i).getTextContent().trim();
+        if (groupId.equals(group.groupId()) || groupId.startsWith(group.groupId() + ".")) {
+          return group.framework();
+        }
       }
     }
     return Framework.NONE;
+  }
+
+  /**
+   * A framework is detected when a Gradle build script mentions its plugin or dependency group. The
+   * scripts are read as text, so Groovy and Kotlin DSL both match.
+   */
+  private static Framework gradleFramework(final Path dir) {
+    final String script =
+        GRADLE_BUILD_FILES.stream().map(f -> readText(dir.resolve(f))).reduce("", String::concat);
+    for (final FrameworkGroup group : FRAMEWORK_GROUPS) {
+      if (script.contains(group.groupId())) {
+        return group.framework();
+      }
+    }
+    return Framework.NONE;
+  }
+
+  /** Returns the file's text, or an empty string when the file is missing or unreadable. */
+  private static String readText(final Path file) {
+    if (!Files.isRegularFile(file)) {
+      return "";
+    }
+    try {
+      return Files.readString(file);
+    } catch (IOException e) {
+      return "";
+    }
   }
 
   /** Only a direct child of {@code <project>} counts; profiles do not publish by default. */
@@ -173,4 +216,6 @@ public final class FileSystemProjectInspection implements ProjectInspection {
   }
 
   private record Marker(String file, Function<Path, Project> project) {}
+
+  private record FrameworkGroup(Framework framework, String groupId) {}
 }

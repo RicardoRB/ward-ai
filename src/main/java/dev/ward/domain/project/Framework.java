@@ -3,6 +3,12 @@ package dev.ward.domain.project;
 /** The application framework detected in a project. */
 public enum Framework {
   SPRING_BOOT("Spring Boot"),
+  QUARKUS("Quarkus"),
+  MICRONAUT("Micronaut"),
+  HELIDON("Helidon"),
+  DROPWIZARD("Dropwizard"),
+  JAVALIN("Javalin"),
+  KTOR("Ktor"),
   VUE("Vue"),
   SVELTE("Svelte"),
   ASTRO("Astro"),
