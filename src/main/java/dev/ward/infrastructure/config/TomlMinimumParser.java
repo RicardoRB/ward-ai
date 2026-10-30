@@ -10,7 +10,10 @@ final class TomlMinimumParser {
   private static final String MINIMUM = "minimum";
   private static final long MAXIMUM_SCORE = 100;
   private static final Set<String> MINIMUM_GATES =
-      Set.of(SupportedQualityGates.STRYKER, SupportedQualityGates.MUTATION);
+      Set.of(
+          SupportedQualityGates.STRYKER,
+          SupportedQualityGates.MUTATION,
+          SupportedQualityGates.MUTMUT);
 
   private TomlMinimumParser() {}
 
@@ -21,7 +24,7 @@ final class TomlMinimumParser {
     final String key = where + "." + MINIMUM;
     if (!MINIMUM_GATES.contains(type)) {
       throw new WardException(
-          "'" + key + "' is only supported for the stryker and mutation checks");
+          "'" + key + "' is only supported for the stryker, mutation and mutmut checks");
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;
     if (value == null || value < 0 || value > MAXIMUM_SCORE) {

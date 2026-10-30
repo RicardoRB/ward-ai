@@ -99,10 +99,11 @@ every edit on a configuration without `edit` checks.
 
 ## Mutation score minimum
 
-The `stryker` and PIT `mutation` checks accept an optional `minimum`, an integer from 0 to 100. When
-it is set and the tool succeeds, Ward reads the tool's report and fails the check when the mutation
-score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score)
-and [PIT mutation score](/configuration/gates/#pit-mutation-score).
+The `stryker`, PIT `mutation` and `mutmut` checks accept an optional `minimum`, an integer from 0 to
+100. When it is set and the tool succeeds, Ward reads the tool's report and fails the check when the
+mutation score is below the minimum. See [Stryker mutation score](/configuration/gates/#stryker-mutation-score),
+[PIT mutation score](/configuration/gates/#pit-mutation-score) and
+[mutmut mutation score](/configuration/gates/#mutmut-mutation-score).
 
 ```toml
 [checks.stryker]

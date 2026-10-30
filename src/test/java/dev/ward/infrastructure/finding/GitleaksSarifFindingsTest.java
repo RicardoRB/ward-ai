@@ -88,6 +88,20 @@ class GitleaksSarifFindingsTest {
   }
 
   @Test
+  void pythonReportLivesInWardReports() {
+    FindingFixtures.write(root.resolve(".ward/reports/gitleaks.sarif"), REPORT);
+
+    assertThat(
+            source.extract(
+                FindingFixtures.python(root),
+                FindingFixtures.failed(GATE, ""),
+                FindingFixtures.justBefore()))
+        .hasSize(2);
+    assertThat(ToolReports.gitleaksSarif(FindingFixtures.python(root)))
+        .isEqualTo(".ward/reports/gitleaks.sarif");
+  }
+
+  @Test
   void gradleReportLivesInBuildDirectory() {
     FindingFixtures.write(root.resolve("build/gitleaks.sarif"), REPORT);
 

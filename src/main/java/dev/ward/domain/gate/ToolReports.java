@@ -9,11 +9,11 @@ public final class ToolReports {
   private ToolReports() {}
 
   /**
-   * Returns {@code .ward/reports} for Node projects, {@code build} for Gradle projects and {@code
-   * target} otherwise.
+   * Returns {@code .ward/reports} for Node and Python projects, {@code build} for Gradle projects
+   * and {@code target} otherwise.
    */
   public static String buildDirectory(final Project project) {
-    if (project.toolchain() == Toolchain.NODE) {
+    if (project.toolchain() == Toolchain.NODE || project.toolchain() == Toolchain.PYTHON) {
       return ".ward/reports";
     }
     return project.buildTool() == BuildTool.GRADLE ? "build" : "target";

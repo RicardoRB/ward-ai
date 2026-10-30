@@ -16,6 +16,7 @@ import dev.ward.domain.traceability.ScenarioInventory;
 import dev.ward.domain.traceability.TestMappingInventory;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 
@@ -25,13 +26,23 @@ public class QualityGateFactory {
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> MUTATION_GATES =
-      Set.of(SupportedQualityGates.STRYKER, SupportedQualityGates.MUTATION);
+      Set.of(
+          SupportedQualityGates.STRYKER,
+          SupportedQualityGates.MUTATION,
+          SupportedQualityGates.MUTMUT);
   private static final String STRYKER_REPORT_HINT =
       "Enable Stryker's json reporter in the command, for example with"
           + " --reporters clear-text,progress,json.";
+  private static final String MUTMUT_REPORT_HINT =
+      "Run `mutmut run` from mutmut 3, which writes its results under mutants/.";
   private static final String PIT_REPORT_HINT =
       "Enable PIT's XML output, for example with -DoutputFormats=XML,HTML for Maven or"
           + " outputFormats = ['XML', 'HTML'] in the Gradle pitest block.";
+  private static final Map<String, String> MUTATION_REPORT_HINTS =
+      Map.of(
+          SupportedQualityGates.STRYKER, STRYKER_REPORT_HINT,
+          SupportedQualityGates.MUTMUT, MUTMUT_REPORT_HINT,
+          SupportedQualityGates.MUTATION, PIT_REPORT_HINT);
 
   private final CommandExecutor executor;
   private final EnvironmentInspection environment;
@@ -41,6 +52,7 @@ public class QualityGateFactory {
   private final OpenApiGates openApiGates;
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
+  private final MutationReport mutmutReport;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -76,7 +88,7 @@ public class QualityGateFactory {
         executor,
         environment,
         new TraceabilitySources(scenarioInventory, testMappingInventory),
-        new GateReportPorts(reportDirectories, null, null),
+        new GateReportPorts(reportDirectories, null, null, null),
         null);
   }
 
@@ -94,6 +106,7 @@ public class QualityGateFactory {
     this.reportDirectories = reports.directories();
     this.strykerReport = reports.stryker();
     this.pitReport = reports.pit();
+    this.mutmutReport = reports.mutmut();
     this.executor = executor;
     this.environment = environment;
     this.scenarioInventory = traceability.scenarios();
@@ -162,20 +175,24 @@ public class QualityGateFactory {
     return new CommandQualityGate(name, executor, check.command(), reportDirectories);
   }
 
-  /** Builds a Stryker or PIT gate that checks its {@code minimum} against the tool's report. */
+  /** Builds a Stryker, PIT or mutmut gate that checks its {@code minimum} against its report. */
   private QualityGate mutationGate(final GateConfiguration check) {
     final QualityGate command =
         new CommandQualityGate(check.name(), executor, check.command(), reportDirectories);
     if (check.minimum() == null) {
       return command;
     }
-    final boolean stryker = SupportedQualityGates.STRYKER.equals(check.type());
-    final MutationReport report = stryker ? strykerReport : pitReport;
+    final MutationReport report =
+        switch (check.type()) {
+          case SupportedQualityGates.STRYKER -> strykerReport;
+          case SupportedQualityGates.MUTMUT -> mutmutReport;
+          default -> pitReport;
+        };
     if (report == null) {
       throw new WardException("The '" + check.name() + "' check cannot check its minimum here.");
     }
     return new MutationScoreGate(
-        command, report, check.minimum(), stryker ? STRYKER_REPORT_HINT : PIT_REPORT_HINT);
+        command, report, check.minimum(), MUTATION_REPORT_HINTS.get(check.type()));
   }
 
   private QualityGate openApiGate(

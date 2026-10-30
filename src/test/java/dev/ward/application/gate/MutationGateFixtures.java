@@ -22,6 +22,7 @@ import java.util.Set;
 final class MutationGateFixtures {
   static final String STRYKER = "stryker";
   static final String PIT = "mutation";
+  static final String MUTMUT = "mutmut";
   static final String STDOUT = "All mutants have been tested. stdout-marker";
   static final List<String> COMMAND =
       List.of("npx", "stryker", "run", "--reporters", "clear-text,progress,json");
@@ -62,9 +63,11 @@ final class MutationGateFixtures {
   static GateResult run(
       final String id, final int exitCode, final MutationReport report, final Integer minimum) {
     final GateReportPorts ports =
-        PIT.equals(id)
-            ? new GateReportPorts(ReportDirectories.NONE, null, report)
-            : new GateReportPorts(ReportDirectories.NONE, report, null);
+        switch (id) {
+          case PIT -> new GateReportPorts(ReportDirectories.NONE, null, report, null);
+          case MUTMUT -> new GateReportPorts(ReportDirectories.NONE, null, null, report);
+          default -> new GateReportPorts(ReportDirectories.NONE, report, null, null);
+        };
     final QualityGateFactory factory =
         new QualityGateFactory(
             new FakeCommandExecutor(exitCode, STDOUT, ""),

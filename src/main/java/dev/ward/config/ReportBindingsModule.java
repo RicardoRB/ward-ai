@@ -5,6 +5,7 @@ import dagger.Provides;
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.infrastructure.finding.FileSystemReportDirectories;
+import dev.ward.infrastructure.finding.MutmutMetaMutationReport;
 import dev.ward.infrastructure.finding.PitXmlMutationReport;
 import dev.ward.infrastructure.finding.StrykerJsonMutationReport;
 
@@ -21,7 +22,8 @@ final class ReportBindingsModule {
   static GateReportPorts gateReportPorts(
       final ReportDirectories directories,
       final StrykerJsonMutationReport stryker,
-      final PitXmlMutationReport pit) {
-    return new GateReportPorts(directories, stryker, pit);
+      final PitXmlMutationReport pit,
+      final MutmutMetaMutationReport mutmut) {
+    return new GateReportPorts(directories, stryker, pit, mutmut);
   }
 }

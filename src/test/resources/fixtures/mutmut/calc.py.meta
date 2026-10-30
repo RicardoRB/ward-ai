@@ -1,0 +1,8 @@
+{
+    "exit_code_by_key": {
+        "demo.calc.x_add__mutmut_1": 1,
+        "demo.calc.x_is_positive__mutmut_1": 0,
+        "demo.calc.x_countdown__mutmut_3": -24,
+        "demo.calc.x_unused__mutmut_1": 33
+    }
+}

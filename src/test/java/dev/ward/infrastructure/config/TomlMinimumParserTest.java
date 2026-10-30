@@ -44,6 +44,20 @@ class TomlMinimumParserTest {
   }
 
   @Test
+  void minimumOnMutmutIsRead() throws IOException {
+    assertThat(
+            read(
+                    reader,
+                    dir,
+                    "version = 2\n[checks.mutmut]\ncommand = [\"uv\", \"run\", \"mutmut\", \"run\"]\n"
+                        + "minimum = 60")
+                .checks()
+                .get("mutmut")
+                .minimum())
+        .isEqualTo(MINIMUM);
+  }
+
+  @Test
   void boundsAreAccepted() throws IOException {
     assertThat(read(reader, dir, STRYKER + "minimum = 0").checks().get("stryker").minimum())
         .isZero();
