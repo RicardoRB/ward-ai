@@ -43,6 +43,15 @@ final class JsonMembers {
                     .findFirst());
   }
 
+  /**
+   * Returns the text of the string value of {@code name} in the top-level object {@code key},
+   * quotes included, or empty when the file has no such string.
+   */
+  static Optional<String> stringText(final String content, final String key, final String name) {
+    return stringValue(JsonText.mask(content), key, name)
+        .map(span -> content.substring(span.open(), span.close() + 1));
+  }
+
   /** Reads the members of {@code object}; nested values are skipped, not descended into. */
   static List<Member> read(final String masked, final JsonSpan object) {
     final List<Member> members = new ArrayList<>();

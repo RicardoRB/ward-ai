@@ -154,7 +154,8 @@ final class PackageJsonEdit {
     return content.substring(start, end);
   }
 
-  private static String quoted(final String value) {
+  /** Returns {@code value} as a JSON string literal, quotes included. */
+  static String quoted(final String value) {
     return QUOTE + value.replace("\\", "\\\\").replace("\"", "\\\"") + QUOTE;
   }
 }
