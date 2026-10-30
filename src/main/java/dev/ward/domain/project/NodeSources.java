@@ -12,8 +12,9 @@ public interface NodeSources {
   boolean hasSources(Path root);
 
   /**
-   * Returns whether {@code root} holds sources under its {@code src} directory, which is where a
-   * Turborepo member keeps the code its gates check. A member with configuration only has none.
+   * Returns whether {@code root} holds a source below its own directory, in a subfolder such as
+   * {@code src/} or {@code app/}. A source file directly in {@code root} does not count, so a
+   * package with only root-level configuration has none.
    */
   default boolean hasSourceTree(final Path root) {
     return hasSources(root);

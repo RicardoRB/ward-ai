@@ -57,6 +57,7 @@ final class NodeWorkspaces {
       return files
           .filter(Files::isDirectory)
           .filter(member -> !member.toString().contains("node_modules"))
+          .filter(member -> !hasOtherBuildFile(member))
           .filter(member -> WorkspaceGlobs.matchesAny(patterns, root, member))
           .filter(NodeWorkspaces::hasProjectFile)
           .sorted()
@@ -64,6 +65,15 @@ final class NodeWorkspaces {
     } catch (IOException | UncheckedIOException e) {
       return List.of();
     }
+  }
+
+  /**
+   * Returns whether {@code dir} has another language's build file, such as a Maven POM. Such a
+   * package is that language's project, so a Node workspace does not plan it.
+   */
+  private static boolean hasOtherBuildFile(final Path dir) {
+    return FileSystemNodeSources.OTHER_BUILD_FILES.stream()
+        .anyMatch(file -> Files.isRegularFile(dir.resolve(file)));
   }
 
   private static boolean hasProjectFile(final Path dir) {
