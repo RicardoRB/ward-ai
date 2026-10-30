@@ -6,5 +6,11 @@ public enum TaskRunner {
   NONE,
 
   /** Turborepo: each gate runs as {@code turbo run <task>} from the workspace root. */
-  TURBO
+  TURBO,
+
+  /**
+   * A package inside a Turborepo workspace. Its gates run as its scripts, and the workspace root
+   * installs its dependencies.
+   */
+  TURBO_MEMBER
 }

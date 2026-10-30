@@ -22,8 +22,9 @@ import javax.inject.Inject;
  */
 public final class FileSystemNodeSources implements NodeSources {
   private static final Logger LOGGER = Logger.getLogger(FileSystemNodeSources.class.getName());
-  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs)$");
-  private static final Pattern TOOL_CONFIG = Pattern.compile(".*\\.config\\.(js|mjs|cjs)$");
+  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs|ts|tsx|mts|cts)$");
+  private static final Pattern TOOL_CONFIG =
+      Pattern.compile(".*\\.config\\.(js|mjs|cjs|ts|mts|cts)$");
   private static final Set<String> OTHER_BUILD_FILES =
       Set.of(
           FileSystemProjectInspection.POM,

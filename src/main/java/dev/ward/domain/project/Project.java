@@ -72,6 +72,21 @@ public record Project(
         TaskRunner.NONE);
   }
 
+  /** Returns this project with {@code runner} as its task runner. */
+  public Project withTaskRunner(final TaskRunner runner) {
+    return new Project(
+        root,
+        language,
+        buildTool,
+        framework,
+        mavenWrapperAvailable,
+        publishesArtifacts,
+        repositoryRoot,
+        languages,
+        languageVersion,
+        runner);
+  }
+
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
   public Project withRepositoryRoot(final Path repository) {
     return new Project(

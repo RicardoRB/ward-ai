@@ -6,20 +6,21 @@ import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.TurboWorkspace;
+import dev.ward.domain.init.TurboWorkspaceChange;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.NodeSupport;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -45,12 +46,16 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
 
   @Override
   public BuildFileChange apply(final Project project, final List<InitGateOption> gates) {
+    return write(project, gates);
+  }
+
+  private BuildFileChange write(final Project project, final List<InitGateOption> gates) {
     final Path file = project.root().resolve(PACKAGE_JSON);
     final PackageManifest manifest = manifests.read(project.root());
     final List<NodePackageCatalog.Package> missing =
-        NodePackageCatalog.missing(project.language(), gates, manifest);
+        NodeManifestFiles.missing(project, gates, manifest);
     final List<String> warnings = new ArrayList<>(NodeSupport.warning(project).stream().toList());
-    warnings.addAll(bunfigWarning(project, gates));
+    warnings.addAll(NodeManifestFiles.bunfigWarning(project, gates));
     final NodeCompatibility compatibility =
         NodeCompatibility.check(
             project,
@@ -64,9 +69,10 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     if (missing.isEmpty()) {
       return new BuildFileChange(Toolchain.NODE, null, null, List.of(), warnings);
     }
-    final String original = read(file);
-    final String edited = PackageJsonEdit.addDevDependencies(original, versions(missing));
-    final Path lock = lockFile(project);
+    final String original = NodeManifestFiles.read(file);
+    final String edited =
+        PackageJsonEdit.addDevDependencies(original, NodeManifestFiles.versions(missing));
+    final Path lock = NodeInstall.lockFile(project);
     final BuildFileChange change =
         new BuildFileChange(
             Toolchain.NODE,
@@ -75,8 +81,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             missing.stream().map(NodePackageCatalog.Package::name).toList(),
             warnings,
             lock,
-            Files.isRegularFile(lock) ? read(lock) : null);
-    write(file, edited);
+            Files.isRegularFile(lock) ? NodeManifestFiles.read(lock) : null);
+    NodeManifestFiles.writeText(file, edited);
     LOGGER.log(
         Level.INFO,
         () ->
@@ -84,7 +90,9 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
                 + missing.size()
                 + " manager="
                 + project.buildExecutable());
-    install(project, change);
+    if (installs(project)) {
+      install(project, change);
+    }
     return change;
   }
 
@@ -94,11 +102,15 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved) {
+    return describe(project, gates);
+  }
+
+  private PlannedFileChange describe(final Project project, final List<InitGateOption> gates) {
     final Path file = project.root().resolve(PACKAGE_JSON);
     final List<String> nodeWarning = NodeSupport.warning(project).stream().toList();
     final PackageManifest manifest = manifests.read(project.root());
     final List<NodePackageCatalog.Package> missing =
-        NodePackageCatalog.missing(project.language(), gates, manifest);
+        NodeManifestFiles.missing(project, gates, manifest);
     final NodeCompatibility compatibility =
         NodeCompatibility.check(
             project,
@@ -116,18 +128,20 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
     }
     if (missing.isEmpty()) {
       final List<String> details = new ArrayList<>(nodeWarning);
-      details.addAll(bunfigWarning(project, gates));
+      details.addAll(NodeManifestFiles.bunfigWarning(project, gates));
       return new PlannedFileChange(file, PlannedFileChange.Action.UNCHANGED, details);
     }
     final List<String> details = new ArrayList<>(nodeWarning);
     missing.forEach(tool -> details.add("add devDependency " + tool.name() + " " + tool.version()));
     details.addAll(compatibility.notes());
-    details.addAll(bunfigWarning(project, gates));
-    details.add(
-        "run "
-            + String.join(" ", installCommand(project))
-            + ", which updates "
-            + project.root().relativize(lockFile(project)));
+    details.addAll(NodeManifestFiles.bunfigWarning(project, gates));
+    if (installs(project)) {
+      details.add(
+          "run "
+              + String.join(" ", NodeInstall.installCommand(project))
+              + ", which updates "
+              + project.root().relativize(NodeInstall.lockFile(project)));
+    }
     return new PlannedFileChange(file, PlannedFileChange.Action.MODIFY, details);
   }
 
@@ -137,7 +151,7 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
       return;
     }
     LOGGER.log(Level.INFO, "event=node-rollback");
-    write(change.file(), change.originalContent());
+    NodeManifestFiles.writeText(change.file(), change.originalContent());
     final Path lock = change.lockFile();
     if (lock == null) {
       return;
@@ -149,12 +163,36 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
         throw new WardException("Could not remove " + lock + ": " + e.getMessage(), e);
       }
     } else {
-      write(lock, change.lockOriginal());
+      NodeManifestFiles.writeText(lock, change.lockOriginal());
     }
   }
 
+  @Override
+  public TurboWorkspaceChange applyWorkspace(final TurboWorkspace workspace) {
+    final TurborepoWriter.Result result = TurborepoWriter.apply(workspace);
+    return new TurboWorkspaceChange(
+        result.written().stream()
+            .map(
+                written -> new TurboWorkspaceChange.WrittenFile(written.file(), written.original()))
+            .toList(),
+        result.kept());
+  }
+
+  @Override
+  public void rollbackWorkspace(final TurboWorkspaceChange change) {
+    TurborepoWriter.rollback(
+        change.written().stream()
+            .map(written -> new TurborepoWriter.Written(written.file(), written.original()))
+            .toList());
+  }
+
+  /** A Turborepo member's dependencies are installed by its workspace root, once. */
+  private static boolean installs(final Project project) {
+    return project.taskRunner() != TaskRunner.TURBO_MEMBER;
+  }
+
   private void install(final Project project, final BuildFileChange change) {
-    final List<String> command = installCommand(project);
+    final List<String> command = NodeInstall.installCommand(project);
     LOGGER.log(Level.INFO, () -> "event=node-install-start manager=" + project.buildExecutable());
     final CommandResult result = executor.execute(command, project.root());
     LOGGER.log(Level.INFO, () -> "event=node-install-complete exit=" + result.exitCode());
@@ -168,60 +206,6 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
               + "; package.json and "
               + change.lockFile().getFileName()
               + " were restored.");
-    }
-  }
-
-  /** Bun reads its coverage threshold only from bunfig.toml, which init never edits. */
-  private static List<String> bunfigWarning(
-      final Project project, final List<InitGateOption> gates) {
-    final Path bunfig = project.root().resolve(NodeConfigFiles.BUNFIG);
-    if (gates.stream().noneMatch(gate -> "bun-test".equals(gate.id()))
-        || !Files.isRegularFile(bunfig)
-        || NodeConfigFiles.owned(read(bunfig))) {
-      return List.of();
-    }
-    return List.of(
-        "bunfig.toml is kept as you wrote it; bun-test enforces a coverage threshold only if it"
-            + " sets [test] coverageThreshold.");
-  }
-
-  private static List<String> installCommand(final Project project) {
-    return List.of(project.buildExecutable(), "install");
-  }
-
-  /** The lock file the install writes; Bun keeps a binary {@code bun.lockb} it already has. */
-  private static Path lockFile(final Project project) {
-    final Path root = project.root();
-    return switch (project.buildTool()) {
-      case PNPM -> root.resolve("pnpm-lock.yaml");
-      case YARN -> root.resolve("yarn.lock");
-      case BUN ->
-          Files.isRegularFile(root.resolve("bun.lockb"))
-              ? root.resolve("bun.lockb")
-              : root.resolve("bun.lock");
-      default -> root.resolve("package-lock.json");
-    };
-  }
-
-  private static Map<String, String> versions(final List<NodePackageCatalog.Package> packages) {
-    final Map<String, String> versions = new LinkedHashMap<>();
-    packages.forEach(tool -> versions.put(tool.name(), tool.version()));
-    return versions;
-  }
-
-  private static String read(final Path file) {
-    try {
-      return Files.readString(file);
-    } catch (IOException e) {
-      throw new WardException("Could not read " + file + ": " + e.getMessage(), e);
-    }
-  }
-
-  private static void write(final Path file, final String content) {
-    try {
-      Files.writeString(file, content);
-    } catch (IOException e) {
-      throw new WardException("Could not write " + file + ": " + e.getMessage(), e);
     }
   }
 }

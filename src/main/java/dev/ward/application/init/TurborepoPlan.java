@@ -50,9 +50,11 @@ final class TurborepoPlan {
   private TurborepoPlan() {}
 
   /** One member's package.json scripts, by the turbo task each one runs. */
-  record MemberScripts(String name, Map<String, String> scripts) {
-    /** Copies the scripts. */
-    MemberScripts {
+  record MemberPlan(
+      Project project, String name, List<InitGateOption> gates, Map<String, String> scripts) {
+    /** Copies the gates and scripts. */
+    MemberPlan {
+      gates = List.copyOf(gates);
       scripts = Map.copyOf(scripts);
     }
   }
@@ -103,7 +105,7 @@ final class TurborepoPlan {
    * Returns each plannable member's scripts. Lint is the root's tool, so a member's lint script
    * matches the root's; the member keeps its own test runner and checker.
    */
-  static List<MemberScripts> memberScripts(
+  static List<MemberPlan> memberScripts(
       final Project root, final QualityPreset preset, final InitInputs inputs) {
     final NodeLinting linting =
         NodeLinting.of(root, inputs.manifests().read(root.root()), inputs.configs());
@@ -112,7 +114,7 @@ final class TurborepoPlan {
         .toList();
   }
 
-  private static MemberScripts memberScripts(
+  private static MemberPlan memberScripts(
       final WorkspaceMember member,
       final NodeLinting linting,
       final QualityPreset preset,
@@ -122,18 +124,18 @@ final class TurborepoPlan {
     final NodeTools tools = NodeTools.of(project, manifest, inputs, preset).withLinting(linting);
     NodeInitSupport.refuseBiomeForAngular(project, tools);
     final Map<String, String> scripts = new LinkedHashMap<>();
-    NodeInitSupport.languages(project, NodeTools.testGate(project, manifest), linting)
-        .analysisGates(tools)
-        .forEach(
-            gate ->
-                taskOf(gate.id())
-                    .ifPresent(
-                        task ->
-                            scripts.putIfAbsent(
-                                task,
-                                ScriptLine.of(
-                                    withoutRunner(gate.command(), project.buildTool())))));
-    return new MemberScripts(member.name(), scripts);
+    final List<InitGateOption> gates =
+        NodeInitSupport.languages(project, NodeTools.testGate(project, manifest), linting)
+            .analysisGates(tools);
+    gates.forEach(
+        gate ->
+            taskOf(gate.id())
+                .ifPresent(
+                    task ->
+                        scripts.putIfAbsent(
+                            task,
+                            ScriptLine.of(withoutRunner(gate.command(), project.buildTool())))));
+    return new MemberPlan(project, member.name(), gates, scripts);
   }
 
   private static PackageManifest manifest(final WorkspaceMember member, final InitInputs inputs) {

@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.project;
 
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.WorkspaceMember;
 import dev.ward.domain.project.WorkspaceMembers;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
@@ -10,14 +12,23 @@ import javax.inject.Inject;
 
 /** Lists the members of a npm, pnpm, Yarn or Bun workspace from its workspace patterns. */
 public final class NodeWorkspaceMembers implements WorkspaceMembers {
+  private static final String TURBO_JSON = "turbo.json";
+
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public NodeWorkspaceMembers() {}
 
   @Override
   public List<WorkspaceMember> members(final Path root) {
+    final TaskRunner runner =
+        Files.isRegularFile(root.resolve(TURBO_JSON)) ? TaskRunner.TURBO_MEMBER : TaskRunner.NONE;
     return NodeWorkspaces.memberDirectories(root, NodeProjectInspection.manifest(root)).stream()
-        .map(dir -> new WorkspaceMember(name(root, dir), dir, NodeProjectInspection.project(dir)))
+        .map(
+            dir ->
+                new WorkspaceMember(
+                    name(root, dir),
+                    dir,
+                    NodeProjectInspection.project(dir).withTaskRunner(runner)))
         .toList();
   }
 

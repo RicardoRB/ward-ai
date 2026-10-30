@@ -22,7 +22,7 @@ class TurborepoMemberScriptsTest {
   void frameworkMemberGetsItsOwnChecker() {
     final WorkspaceMember astro = TurborepoFixtures.memberOf(root, "apps/astro", Framework.ASTRO);
 
-    final List<TurborepoPlan.MemberScripts> scripts =
+    final List<TurborepoPlan.MemberPlan> scripts =
         TurborepoPlan.memberScripts(
             TurborepoFixtures.rootProject(root, BuildTool.PNPM),
             QualityPreset.STANDARD,
@@ -57,7 +57,7 @@ class TurborepoMemberScriptsTest {
     final PackageManifest biome =
         new PackageManifest(Map.of("@biomejs/biome", "2.3.0"), null, null);
 
-    final TurborepoPlan.MemberScripts member =
+    final TurborepoPlan.MemberPlan member =
         TurborepoPlan.memberScripts(
                 TurborepoFixtures.rootProject(root, BuildTool.PNPM),
                 QualityPreset.STANDARD,

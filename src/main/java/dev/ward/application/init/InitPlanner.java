@@ -9,6 +9,7 @@ import dev.ward.domain.init.OpenSpecDistribution;
 import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +53,7 @@ final class InitPlanner {
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
     }
+    changes.addAll(turborepoPlan(project, gates, selection.preset(), approved));
     changes.add(files.buildTools().plan(project, gates, selection.preset(), approved));
     final List<PlannedFileChange> ruleFiles =
         files.ruleFiles().plan(project, selection.preset(), gates);
@@ -71,6 +73,37 @@ final class InitPlanner {
             ? Optional.of(OpenSpecDistribution.installation(project.root()))
             : Optional.empty(),
         gateInstallations);
+  }
+
+  /** Lists a Turborepo root's member changes and turbo.json, in the order they are applied. */
+  private List<PlannedFileChange> turborepoPlan(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved) {
+    if (project.taskRunner() != TaskRunner.TURBO) {
+      return List.of();
+    }
+    final List<PlannedFileChange> changes = new ArrayList<>();
+    final List<TurborepoPlan.MemberPlan> members =
+        TurborepoMembers.plan(project, preset, catalog.get().inputs);
+    for (final TurborepoPlan.MemberPlan member : members) {
+      changes.add(files.buildTools().plan(member.project(), member.gates(), preset, approved));
+      changes.addAll(files.ruleFiles().plan(member.project(), preset, member.gates()));
+      changes.add(
+          new PlannedFileChange(
+              member.project().root().resolve("package.json"),
+              PlannedFileChange.Action.MODIFY,
+              member.scripts().keySet().stream().map(script -> "add script " + script).toList()));
+    }
+    changes.add(
+        new PlannedFileChange(
+            project.root().resolve("turbo.json"),
+            PlannedFileChange.Action.MODIFY,
+            TurborepoMembers.workspace(project.root(), members, gates).tasks().stream()
+                .map(task -> "add task " + task)
+                .toList()));
+    return changes;
   }
 
   private List<PlannedGateInstallation> gateInstallations(

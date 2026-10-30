@@ -20,6 +20,9 @@ final class NodePackageCatalog {
   static final String TYPESCRIPT_ESLINT = "typescript-eslint";
   static final String ESLINT = "eslint";
   static final String ESLINT_VERSION = "10.12.0";
+  static final String TURBO = "turbo";
+  // The newest release at least 14 days old on 2026-10-30. npm publishes no engines range for it.
+  static final String TURBO_VERSION = "2.11.9";
   private static final String ESLINT_JS = "@eslint/js";
   private static final String GLOBALS = "globals";
   private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
@@ -77,6 +80,7 @@ final class NodePackageCatalog {
                   "^18.18.0 || ^20.9.0 || >=21.1.0",
                   ">=4.8.4 <6.1.0")),
           entry(new Package("prettier", "3.9.10", ">=14", null)),
+          entry(new Package(TURBO, TURBO_VERSION, ">=18", null)),
           entry(new Package(BIOME_PACKAGE, BIOME_VERSION, BIOME_NODE, null)),
           entry(new Package("vitest", VITEST_VERSION, VITEST_NODE, null)),
           entry(new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null)),
@@ -187,7 +191,22 @@ final class NodePackageCatalog {
    */
   static List<Package> missing(
       final Language language, final List<InitGateOption> gates, final PackageManifest manifest) {
+    return missing(language, gates, manifest, false);
+  }
+
+  /**
+   * Returns the packages {@link #missing(Language, List, PackageManifest)} returns, plus turbo when
+   * {@code turborepo} is set, the root of a Turborepo workspace runs its tasks.
+   */
+  static List<Package> missing(
+      final Language language,
+      final List<InitGateOption> gates,
+      final PackageManifest manifest,
+      final boolean turborepo) {
     final Set<String> names = new LinkedHashSet<>();
+    if (turborepo) {
+      names.add(TURBO);
+    }
     gates.forEach(gate -> names.addAll(packages(language, gate.id())));
     if (names.contains(STRYKER_CORE)) {
       gates.stream()
