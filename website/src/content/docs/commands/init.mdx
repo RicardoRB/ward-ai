@@ -581,7 +581,7 @@ Before writing, init checks each package it would add against the project's Node
 
 ## Python projects
 
-Init sets up uv, Poetry, and pip projects with the `standard` or `strict` preset. PDM and Hatch
+Init sets up uv, Poetry, and pip projects with the `standard` or `strict` preset. Ward supports Python 3.11 to 3.14; 3.15 waits for mutmut to build on it. PDM and Hatch
 projects are not supported yet, and init stops with an error that names the manager.
 
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in

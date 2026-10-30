@@ -13,7 +13,7 @@ public final class PythonSupport {
   public static final int MINIMUM_MINOR = 11;
 
   /** The highest Python minor version Ward supports within {@link #MINIMUM_MAJOR}. */
-  public static final int MAXIMUM_MINOR = 15;
+  public static final int MAXIMUM_MINOR = 14;
 
   private static final Pattern MAJOR_MINOR = Pattern.compile("(\\d{1,9})\\.(\\d{1,9})");
 

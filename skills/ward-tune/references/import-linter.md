@@ -11,7 +11,8 @@ the architecture rules.
 - A `forbidden` contract named after the style. Each layer is listed twice: as `pkg.<layer>` when that
   package sits directly under the root, and as `pkg.**.<layer>` at any depth. import-linter's `**`
   matches one or more package levels, so both forms are needed. The exact form is listed only when
-  the package exists, because import-linter rejects a module it cannot find.
+  the package exists, because import-linter rejects a module it cannot find. A top-level layer
+  created after init is therefore not enforced until init runs again.
 - Under strict, an `independence` contract between the root package's feature packages, when there
   are at least two. It is computed at init, so a new feature package needs init to run again.
 
@@ -25,7 +26,8 @@ the architecture rules.
 
 ## Tuning
 
-- A layer that does not exist matches nothing and passes. Add a layer by creating its package.
+- A layer that does not exist when init runs matches nothing and passes. After creating a top-level
+  layer package, run `ward init` again so the contract names it.
 - To change a contract, edit `.importlinter` and keep the rule the user asked for. Do not delete a
   contract to make the gate pass.
 - A project's own `.importlinter`, `[tool.importlinter]` or `setup.cfg` section is never overwritten.

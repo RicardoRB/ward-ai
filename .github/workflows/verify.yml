@@ -256,6 +256,86 @@ jobs:
           -Dward.node.matrix.jar=target/ward.jar
           test
 
+  # After the Ward ci profile passes, reads the Python and fixture pairs from the matrix data and
+  # skips the matrix for pull requests that change only website, openspec or Markdown files.
+  python-matrix-versions:
+    name: Python matrix versions
+    needs: quality
+    runs-on: ubuntu-24.04
+    outputs:
+      cells: ${{ steps.versions.outputs.cells }}
+      run: ${{ steps.versions.outputs.run }}
+    steps:
+      # Full history so the base branch is available for the documentation-only check.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Read Python versions and decide whether the matrix runs
+        id: versions
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          cells=$(tail -n +2 src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+            | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {python: .[0], fixture: .[1]})')
+          echo "cells=$cells" >> "$GITHUB_OUTPUT"
+          run=true
+          if [ "$EVENT" = pull_request ]; then
+            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            # No changed path outside the documentation patterns means the matrix can be skipped.
+            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
+              run=false
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Python cells: $cells, matrix runs: $run"
+
+  # One job per Python version and fixture. Each runs only the rows with that version and fixture.
+  python-matrix:
+    name: Python ${{ matrix.cell.python }} ${{ matrix.cell.fixture }} compatibility matrix
+    needs: python-matrix-versions
+    if: needs.python-matrix-versions.outputs.run == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.python-matrix-versions.outputs.cells) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      # The runner's interpreter is the cell's version, so uv and Poetry pick it up on the PATH.
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.cell.python }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Build Ward
+        run: ./mvnw -B -q package -DskipTests
+
+      - name: Run ${{ matrix.cell.fixture }} cells for Python ${{ matrix.cell.python }}
+        run: >-
+          ./mvnw -B
+          -Dtest=PythonCompatibilityMatrixTest
+          -Dward.python.matrix=${{ matrix.cell.python }}
+          -Dward.python.matrix.fixture=${{ matrix.cell.fixture }}
+          -Dward.python.matrix.jar=target/ward.jar
+          test
+
   # After the Ward ci profile passes, reads the JDK and Gradle versions from the matrix data and
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   java-matrix-versions:
