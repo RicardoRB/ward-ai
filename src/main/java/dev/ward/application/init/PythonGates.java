@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,13 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
   @Override
   public List<InitGateOption> analysisGates(final PythonTools python) {
     final List<InitGateOption> gates = new ArrayList<>();
+    if (python.framework() == Framework.DJANGO) {
+      gates.add(
+          python.option(
+              "django-check",
+              "Runs Django's system checks, failing on warnings.",
+              python.command("python", "manage.py", "check", "--fail-level", "WARNING")));
+    }
     gates.add(
         python.option(
             "ruff-format",
@@ -94,9 +102,13 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
    * tests skip {@code mutants/}, which mutmut fills with copies of them.
    */
   private static List<String> pytest(final PythonTools python) {
-    return python.strict() && python.ownCoverageConfig()
-        ? python.command("coverage", "run", "--branch", "-m", "pytest", "--ignore=mutants")
-        : python.command("coverage", "run", "-m", "pytest", "--ignore=mutants");
+    final List<String> arguments = new ArrayList<>(List.of("run"));
+    if (python.strict() && python.ownCoverageConfig()) {
+      arguments.add("--branch");
+    }
+    arguments.addAll(List.of("-m", "pytest", "--ignore=mutants"));
+    python.pytestSettings().ifPresent(settings -> arguments.add("--ds=" + settings));
+    return python.command("coverage", arguments.toArray(String[]::new));
   }
 
   /** Puts the threshold on the command only when the project owns its coverage config. */

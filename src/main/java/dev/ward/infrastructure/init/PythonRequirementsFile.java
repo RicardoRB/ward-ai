@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.infrastructure.project.PyprojectDependencies;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

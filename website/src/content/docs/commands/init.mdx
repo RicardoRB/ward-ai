@@ -600,6 +600,11 @@ projects are not supported yet, and init stops with an error that names the mana
 - `strict` adds `import-linter` and `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
   and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
   project's own. `mutmut` runs in `ci` with a 60% minimum.
+- A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
+  plugin, `pytest-django` with a Ward `pytest.ini` that names the settings module, and a `django-check`
+  gate (`manage.py check --fail-level WARNING`) in both presets. Its import contracts cover every
+  top-level package, and each app is a feature under strict. A `[tool.mutmut]` config must name the
+  code and tests, because mutmut copies only those paths.
 - An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
   The root package comes from `[project] name` under `src/`. Init stops when it finds no single
   root package.

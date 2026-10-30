@@ -4,6 +4,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.infrastructure.project.PythonFrameworks;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ final class PythonConfigFiles {
   static final String RUFF = "ruff";
   static final String MYPY = "mypy";
   static final String COVERAGE = "coverage";
+  static final String PYTEST = "pytest";
   private static final String PYPROJECT = "pyproject.toml";
   private static final Set<String> SHARED_FILES = Set.of(PYPROJECT, "setup.cfg", "tox.ini");
 
@@ -90,9 +92,9 @@ final class PythonConfigFiles {
       final PythonToolConfigs configs,
       final QualityPreset preset,
       final List<InitGateOption> gates) {
-    final Path root = project.root();
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final List<NodeConfigTarget> targets = new ArrayList<>();
+    final Path root = project.root();
     final String marker = NodeConfigFiles.marker(NodeConfigFiles.TOML_MARKER, preset);
     final boolean strict = preset == QualityPreset.STRICT;
     if (ids.contains("ruff-format") || ids.contains("ruff")) {
@@ -104,10 +106,10 @@ final class PythonConfigFiles {
     }
     if (ids.contains("mypy")) {
       target(
-          targets,
-          root,
-          configs,
-          new Own(MYPY, "mypy.ini", marker + (strict ? MYPY_STRICT : MYPY_STANDARD)));
+          targets, root, configs, new Own(MYPY, "mypy.ini", mypyContent(project, marker, strict)));
+    }
+    if (ids.contains("pytest")) {
+      pytestTarget(project, configs, marker).ifPresent(targets::add);
     }
     if (ids.contains("coverage")) {
       target(
@@ -118,6 +120,40 @@ final class PythonConfigFiles {
               COVERAGE, ".coveragerc", marker + (strict ? COVERAGE_STRICT : COVERAGE_STANDARD)));
     }
     return targets;
+  }
+
+  /** Returns mypy's config, with the Django plugin when the project is Django. */
+  private static String mypyContent(
+      final Project project, final String marker, final boolean strict) {
+    final String mypy = marker + (strict ? MYPY_STRICT : MYPY_STANDARD);
+    return PythonFrameworks.djangoSettings(project.root(), project.framework())
+        .map(settings -> mypy + djangoMypy(settings))
+        .orElse(mypy);
+  }
+
+  /**
+   * Returns a pytest.ini naming the Django settings, when the project is Django and has no pytest
+   * config.
+   */
+  private static Optional<NodeConfigTarget> pytestTarget(
+      final Project project, final PythonToolConfigs configs, final String marker) {
+    return PythonFrameworks.djangoSettings(project.root(), project.framework())
+        .filter(settings -> configs.userConfig(project.root(), PYTEST).isEmpty())
+        .map(
+            settings ->
+                new NodeConfigTarget(
+                    project.root().resolve("pytest.ini"),
+                    NodeConfigTarget.Disposition.WRITE,
+                    marker + "[pytest]\nDJANGO_SETTINGS_MODULE = " + settings + "\n",
+                    null));
+  }
+
+  /** The mypy plugin section that makes django-stubs read the project's settings module. */
+  private static String djangoMypy(final String settings) {
+    return "plugins = mypy_django_plugin.main\n\n[mypy.plugins.django-stubs]\ndjango_settings_module = "
+        + "\""
+        + settings
+        + "\"\n";
   }
 
   /**

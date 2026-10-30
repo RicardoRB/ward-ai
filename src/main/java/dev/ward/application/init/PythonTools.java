@@ -3,11 +3,13 @@ package dev.ward.application.init;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonToolConfigs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Gate choices that run a Python tool through the project's package manager, in the environment
@@ -16,18 +18,23 @@ import java.util.Map;
  * @param manager the project's package manager: uv, Poetry or pip
  * @param available whether the manager's executable is on the path
  * @param preset the selected preset, or {@code null} for a custom selection
+ * @param framework the project's framework; Django adds its system checks
  * @param ownRuffConfig whether the project keeps its own Ruff config; init then passes the strict
  *     rules on the command instead of writing them
  * @param ownMypyConfig whether the project keeps its own mypy config
  * @param ownCoverageConfig whether the project keeps its own coverage config
+ * @param pytestSettings the Django settings module that pytest gets as {@code --ds} when the
+ *     project keeps its own pytest config, which init leaves unchanged
  */
 record PythonTools(
     BuildTool manager,
     boolean available,
     QualityPreset preset,
+    Framework framework,
     boolean ownRuffConfig,
     boolean ownMypyConfig,
-    boolean ownCoverageConfig) {
+    boolean ownCoverageConfig,
+    Optional<String> pytestSettings) {
   static final String GROUP = "ward";
   private static final String VENV_BIN = ".venv/bin/";
   private static final int STANDARD_COVERAGE = 80;
@@ -46,9 +53,14 @@ record PythonTools(
         project.buildTool(),
         executableAvailable,
         preset,
+        project.framework(),
         configs.userConfig(project.root(), "ruff").isPresent(),
         configs.userConfig(project.root(), "mypy").isPresent(),
-        configs.userConfig(project.root(), "coverage").isPresent());
+        configs.userConfig(project.root(), "coverage").isPresent(),
+        project.framework() == Framework.DJANGO
+                && configs.userConfig(project.root(), "pytest").isPresent()
+            ? configs.djangoSettings(project.root())
+            : Optional.empty());
   }
 
   /** Returns the executable whose presence means the manager is available. */

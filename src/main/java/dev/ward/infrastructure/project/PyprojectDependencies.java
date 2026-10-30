@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.init;
+package dev.ward.infrastructure.project;
 
 import dev.ward.domain.config.WardException;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
 /** Reads the distributions a {@code pyproject.toml} declares, under PEP 503 normalized names. */
-final class PyprojectDependencies {
+public final class PyprojectDependencies {
   private static final Pattern NAME = Pattern.compile("^\\s*([A-Za-z0-9][A-Za-z0-9._-]*)");
 
   private PyprojectDependencies() {}
@@ -24,7 +24,7 @@ final class PyprojectDependencies {
    *
    * @throws WardException if {@code toml} is not valid TOML
    */
-  static Set<String> declared(final String toml) {
+  public static Set<String> declared(final String toml) {
     final TomlParseResult parsed = parse(toml);
     final Set<String> names = new HashSet<>();
     addRequirements(names, parsed.getArray("project.dependencies"));
@@ -39,13 +39,13 @@ final class PyprojectDependencies {
   }
 
   /** Returns the normalized name of a PEP 508 requirement, or empty when it has none. */
-  static Optional<String> nameOf(final String requirement) {
+  public static Optional<String> nameOf(final String requirement) {
     final Matcher matcher = NAME.matcher(requirement);
     return matcher.find() ? Optional.of(normalize(matcher.group(1))) : Optional.empty();
   }
 
   /** Returns {@code name} as PEP 503 normalizes it. */
-  static String normalize(final String name) {
+  public static String normalize(final String name) {
     return name.toLowerCase(Locale.ROOT).replaceAll("[-_.]+", "-");
   }
 
@@ -54,7 +54,7 @@ final class PyprojectDependencies {
    *
    * @throws WardException if it is not valid TOML
    */
-  static TomlParseResult parse(final String toml) {
+  public static TomlParseResult parse(final String toml) {
     final TomlParseResult parsed = Toml.parse(toml);
     if (parsed.hasErrors()) {
       throw new WardException(

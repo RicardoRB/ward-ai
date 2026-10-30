@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.project;
 
 import dev.ward.domain.project.BuildTool;
-import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.io.IOException;
@@ -73,7 +72,7 @@ final class PythonProjectInspection {
         dir,
         Language.PYTHON,
         manager,
-        Framework.NONE,
+        PythonFrameworks.of(dir),
         manager == BuildTool.PIP && Files.isDirectory(dir.resolve(VENV)),
         false,
         dir,

@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.List;
@@ -29,11 +30,20 @@ final class PythonInitSupport implements ToolchainInitSupport {
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    return SourceLanguages.of(LANGUAGES, project)
-        .presetGates(preset == null ? QualityPreset.STANDARD : preset);
+    final List<String> gates =
+        SourceLanguages.of(LANGUAGES, project)
+            .presetGates(preset == null ? QualityPreset.STANDARD : preset);
+    return project.framework() == Framework.DJANGO ? withDjangoCheck(gates) : gates;
   }
 
   /** Only the managers Ward installs through; other Python managers fail init with their name. */
+  /** Django's system checks run in both presets, after the gates of the language. */
+  private static List<String> withDjangoCheck(final List<String> gates) {
+    return java.util.stream.Stream.concat(
+            gates.stream(), java.util.stream.Stream.of("django-check"))
+        .toList();
+  }
+
   @Override
   public boolean handles(final Project project) {
     return project.buildTool() == BuildTool.UV

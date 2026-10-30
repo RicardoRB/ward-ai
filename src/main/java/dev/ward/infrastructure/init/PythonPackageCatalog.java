@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.project.Framework;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,8 @@ final class PythonPackageCatalog {
   static final String PIP_AUDIT = "pip-audit";
   static final String MUTMUT = "mutmut";
   static final String IMPORT_LINTER = "import-linter";
+  static final String PYTEST_DJANGO = "pytest-django";
+  static final String DJANGO_STUBS = "django-stubs";
 
   private static final Map<String, Package> PACKAGES =
       Map.of(
@@ -29,7 +32,9 @@ final class PythonPackageCatalog {
           COVERAGE, new Package(COVERAGE, "7.16.2"),
           PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1"),
           MUTMUT, new Package(MUTMUT, "3.8.0"),
-          IMPORT_LINTER, new Package(IMPORT_LINTER, "2.15"));
+          IMPORT_LINTER, new Package(IMPORT_LINTER, "2.15"),
+          PYTEST_DJANGO, new Package(PYTEST_DJANGO, "4.14.0"),
+          DJANGO_STUBS, new Package(DJANGO_STUBS, "6.1.2"));
 
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
@@ -43,6 +48,10 @@ final class PythonPackageCatalog {
           "mutmut", List.of(MUTMUT),
           "import-linter", List.of(IMPORT_LINTER));
 
+  /** The extra distributions Django projects need: the test plugin and the type stubs. */
+  private static final Map<String, List<String>> DJANGO_TOOLS =
+      Map.of("pytest", List.of(PYTEST_DJANGO), "mypy", List.of(DJANGO_STUBS));
+
   private PythonPackageCatalog() {}
 
   /**
@@ -50,8 +59,20 @@ final class PythonPackageCatalog {
    * gate order, each once. {@code declared} holds normalized names.
    */
   static List<Package> missing(final List<InitGateOption> gates, final Set<String> declared) {
+    return missing(gates, declared, Framework.NONE);
+  }
+
+  /**
+   * Returns the same as {@link #missing(List, Set)}, and for Django the packages its test and type
+   * checks need: pytest-django and django-stubs.
+   */
+  static List<Package> missing(
+      final List<InitGateOption> gates, final Set<String> declared, final Framework framework) {
     final Set<String> names = new LinkedHashSet<>();
     gates.forEach(gate -> names.addAll(GATE_TOOLS.getOrDefault(gate.id(), List.of())));
+    if (framework == Framework.DJANGO) {
+      gates.forEach(gate -> names.addAll(DJANGO_TOOLS.getOrDefault(gate.id(), List.of())));
+    }
     return names.stream()
         .filter(name -> !declared.contains(name))
         .map(PACKAGES::get)

@@ -14,3 +14,5 @@ python,manager,preset,fixture,packages
 3.14,uv,standard,basic-uv,
 3.14,poetry,standard,basic-poetry,
 3.14,pip,standard,basic-pip,
+3.14,uv,strict,django-uv,
+3.14,uv,standard,django-uv,

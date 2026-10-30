@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.project.PyprojectDependencies;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +42,33 @@ final class PythonPackages {
       return Optional.of(src.getFirst());
     }
     return src.isEmpty() && top.size() == SINGLE ? Optional.of(top.getFirst()) : Optional.empty();
+  }
+
+  /**
+   * Returns the root packages import-linter names. A Django project has several: each top-level
+   * package, its settings package and its apps. Any other project has the one root package.
+   *
+   * @throws WardException if a non-Django project has no root package
+   */
+  static List<String> roots(final Project project) {
+    if (project.framework() == Framework.DJANGO) {
+      return packages(project.root()).stream().filter(name -> !NOT_ROOT.contains(name)).toList();
+    }
+    return root(project)
+        .map(List::of)
+        .orElseThrow(
+            () ->
+                new WardException(
+                    "import-linter needs the project's root package, and init finds none: keep one"
+                        + " package under src/ or set [project] name to it."));
+  }
+
+  /** Returns the Django apps: the top-level packages that define an {@code apps.py}. */
+  static List<String> djangoApps(final Project project) {
+    return roots(project).stream()
+        .filter(name -> Files.isRegularFile(project.root().resolve(name).resolve("apps.py")))
+        .sorted()
+        .toList();
   }
 
   /**

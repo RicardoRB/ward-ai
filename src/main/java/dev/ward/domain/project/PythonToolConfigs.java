@@ -12,4 +12,9 @@ public interface PythonToolConfigs {
    * pyproject.toml} returns that file.
    */
   Optional<Path> userConfig(Path root, String tool);
+
+  /** Returns the Django settings module the project names, or empty when it names none. */
+  default Optional<String> djangoSettings(final Path root) {
+    return Optional.empty();
+  }
 }

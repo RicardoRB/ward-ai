@@ -5,8 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /** The exact commands Python gates run for each package manager and preset. */
@@ -94,7 +96,9 @@ class PythonGatesTest {
   private static List<InitGateOption> gates(
       final BuildTool manager, final QualityPreset preset, final boolean owned) {
     return new PythonGates()
-        .analysisGates(new PythonTools(manager, true, preset, owned, owned, owned));
+        .analysisGates(
+            new PythonTools(
+                manager, true, preset, Framework.NONE, owned, owned, owned, Optional.empty()));
   }
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {

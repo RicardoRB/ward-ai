@@ -51,6 +51,7 @@ public final class QualityGateDefinitions {
           new Definition("pytest", "pytest", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),
           new Definition("import-linter", "Import Linter", Phase.LOCAL, false),
+          new Definition("django-check", "Django system checks", Phase.LOCAL, false),
           new Definition("pip-audit", "pip-audit", Phase.CI, false),
           gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
           gate("command", Phase.LOCAL),

@@ -10,6 +10,7 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.project.PyprojectDependencies;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,7 +120,7 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
             ? PyprojectDependencies.declared(original)
             : PythonRequirementsFile.declaredNames(root);
     final List<PythonPackageCatalog.Package> missing =
-        PythonPackageCatalog.missing(gates, declared);
+        PythonPackageCatalog.missing(gates, declared, project.framework());
     final boolean buildSystem =
         pyproject && PyprojectDependencies.parse(original).contains("build-system");
     if (missing.isEmpty()) {

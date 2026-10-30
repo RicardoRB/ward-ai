@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.init;
 
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,45 +25,60 @@ final class ImportLinterContracts {
       final Project project,
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
-    final String rootPackage =
-        PythonPackages.root(project)
-            .orElseThrow(
-                () ->
-                    new WardException(
-                        "import-linter needs the project's root package, and init finds none: keep"
-                            + " one package under src/ or set [project] name to it."));
+    final List<String> roots = PythonPackages.roots(project);
     final Layers layers = layers(architecture);
     final Set<String> names = Set.copyOf(concat(layers.sources(), layers.forbidden()));
     return MARKER
-        + "[importlinter]\nroot_package = "
-        + rootPackage
-        + "\n\n[importlinter:contract:layers]\nname = "
+        + "[importlinter]\n"
+        + rootLines(project, roots)
+        + "\n[importlinter:contract:layers]\nname = "
         + architecture
         + " layers\ntype = forbidden\nsource_modules =\n"
-        + modules(project, rootPackage, layers.sources())
+        + modules(project, roots, layers.sources())
         + "forbidden_modules =\n"
-        + modules(project, rootPackage, layers.forbidden())
-        + (extras.cycles() ? independence(project, rootPackage, names) : "");
+        + modules(project, roots, layers.forbidden())
+        + (extras.cycles() ? independence(project, roots, names) : "");
   }
 
   /**
-   * Returns the independence contract when the root package has at least two features, else none.
+   * Names one root package, or every root of a Django project, which import-linter reads as a list.
+   */
+  private static String rootLines(final Project project, final List<String> roots) {
+    if (project.framework() != Framework.DJANGO) {
+      return "root_package = " + roots.getFirst() + "\n";
+    }
+    return "root_packages =\n"
+        + roots.stream().map(root -> "    " + root + "\n").reduce("", String::concat);
+  }
+
+  /**
+   * Returns the independence contract between the features: the Django apps, or the root's feature
+   * packages. Empty when there are fewer than {@code MIN_FEATURES}.
    */
   private static String independence(
-      final Project project, final String rootPackage, final Set<String> layers) {
-    final List<String> features = PythonPackages.features(project, rootPackage, layers);
+      final Project project, final List<String> roots, final Set<String> layers) {
+    final List<String> features =
+        project.framework() == Framework.DJANGO
+            ? PythonPackages.djangoApps(project)
+            : PythonPackages.features(project, roots.getFirst(), layers).stream()
+                .map(feature -> roots.getFirst() + "." + feature)
+                .toList();
     if (features.size() < MIN_FEATURES) {
       return "";
     }
     return "\n[importlinter:contract:features]\nname = Features are independent\n"
         + "type = independence\nmodules =\n"
-        + features.stream()
-            .map(feature -> "    " + rootPackage + "." + feature + "\n")
-            .reduce("", String::concat);
+        + features.stream().map(feature -> "    " + feature + "\n").reduce("", String::concat);
+  }
+
+  /** Returns each layer of each root as a module expression, at any depth below the root. */
+  private static String modules(
+      final Project project, final List<String> roots, final List<String> layers) {
+    return roots.stream().map(root -> modules(project, root, layers)).reduce("", String::concat);
   }
 
   /**
-   * Returns each layer as a module expression at any depth below the root. A layer that is a
+   * Returns each layer of one root as a module expression at any depth below it. A layer that is a
    * package directly under the root is also named exactly, since import-linter's {@code **} needs
    * at least one package level; an exact name must exist, so it is listed only when the package
    * does.
