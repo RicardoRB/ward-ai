@@ -14,7 +14,15 @@ final class PythonInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final PythonTools python = PythonTools.of(project, inputs, preset);
+    final PythonTools python =
+        PythonTools.of(
+            project,
+            inputs.pythonConfigs(),
+            inputs
+                .environment()
+                .inspect(project.root())
+                .hasExecutable(PythonTools.executable(project)),
+            preset);
     return new Gates(SourceLanguages.of(LANGUAGES, project).analysisGates(python), List.of());
   }
 
@@ -40,7 +48,7 @@ final class PythonInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD);
+    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Override

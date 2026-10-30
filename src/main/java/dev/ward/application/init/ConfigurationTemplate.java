@@ -11,6 +11,7 @@ import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 final class ConfigurationTemplate {
+  private static final String MINIMUM = "minimum";
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
 
@@ -68,7 +69,7 @@ final class ConfigurationTemplate {
       if (openSpecRoot != null && isOpenSpec(gate.id())) {
         content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
       }
-      gate.settings().forEach((key, value) -> string(content, key, value));
+      gate.settings().forEach((key, value) -> setting(content, key, value));
       partial(content, gate, project, preset);
     }
     return content.toString();
@@ -120,6 +121,15 @@ final class ConfigurationTemplate {
         .append(" = [")
         .append(String.join(", ", values.stream().map(ConfigurationTemplate::quoted).toList()))
         .append("]\n");
+  }
+
+  /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
+  private static void setting(final StringBuilder content, final String key, final String value) {
+    if (MINIMUM.equals(key) && value != null) {
+      content.append(key).append(" = ").append(value).append('\n');
+    } else {
+      string(content, key, value);
+    }
   }
 
   private static void string(final StringBuilder content, final String key, final String value) {

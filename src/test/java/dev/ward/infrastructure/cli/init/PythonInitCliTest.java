@@ -46,16 +46,24 @@ class PythonInitCliTest {
   }
 
   @Test
-  void strictIsRefusedWithoutChangingFiles() throws IOException {
+  void strictApplyWritesStrictConfigsAndTheMutationGate() throws IOException {
     writeUvProject();
-    final InitCommandFixture init = python();
-    final Map<String, String> before = ProjectSnapshot.of(root);
+    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+    final InitCommandFixture init =
+        InitCommandFixture.repository(root, new PythonBuildToolConfigurator(executor), "uv");
 
     final int exit = init.run("", "--preset", "strict", "--integration", "none", "--yes");
 
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output()).contains("strict", "standard");
-    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ruff.toml")))
+        .contains("\"C90\"", "max-complexity = 10");
+    assertThat(Files.readString(root.resolve("mypy.ini"))).contains("strict = True");
+    assertThat(Files.readString(root.resolve(".coveragerc")))
+        .contains("branch = True", "fail_under = 85");
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("[checks.mutmut]", "command = \"uv run --group ward mutmut run\"")
+        .contains("minimum = 60");
+    assertThat(Files.readString(root.resolve("pyproject.toml"))).contains("mutmut==3.8.0");
   }
 
   @Test

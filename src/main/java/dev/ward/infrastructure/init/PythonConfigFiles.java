@@ -30,11 +30,29 @@ final class PythonConfigFiles {
       select = ["E", "F", "I", "B", "UP"]
       """;
 
+  private static final String RUFF_STRICT =
+      """
+      extend-exclude = [".venv", ".ward", "mutants"]
+
+      [lint]
+      select = ["E", "F", "I", "B", "UP", "W", "C4", "SIM", "RUF", "PTH", "C90"]
+
+      [lint.mccabe]
+      max-complexity = 10
+      """;
+
   private static final String MYPY_STANDARD =
       """
       [mypy]
       exclude = (^|/)(\\.venv|\\.ward|mutants)/
       warn_unused_ignores = True
+      """;
+
+  private static final String MYPY_STRICT =
+      """
+      [mypy]
+      exclude = (^|/)(\\.venv|\\.ward|mutants)/
+      strict = True
       """;
 
   private static final String COVERAGE_STANDARD =
@@ -50,6 +68,20 @@ final class PythonConfigFiles {
       show_missing = True
       """;
 
+  private static final String COVERAGE_STRICT =
+      """
+      [run]
+      branch = True
+      omit =
+          .venv/*
+          .ward/*
+          mutants/*
+
+      [report]
+      fail_under = 85
+      show_missing = True
+      """;
+
   private PythonConfigFiles() {}
 
   /** Returns each config file the gates need, in the order init writes them. */
@@ -62,14 +94,28 @@ final class PythonConfigFiles {
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final List<NodeConfigTarget> targets = new ArrayList<>();
     final String marker = NodeConfigFiles.marker(NodeConfigFiles.TOML_MARKER, preset);
+    final boolean strict = preset == QualityPreset.STRICT;
     if (ids.contains("ruff-format") || ids.contains("ruff")) {
-      target(targets, root, configs, new Own(RUFF, "ruff.toml", marker + RUFF_STANDARD));
+      target(
+          targets,
+          root,
+          configs,
+          new Own(RUFF, "ruff.toml", marker + (strict ? RUFF_STRICT : RUFF_STANDARD)));
     }
     if (ids.contains("mypy")) {
-      target(targets, root, configs, new Own(MYPY, "mypy.ini", marker + MYPY_STANDARD));
+      target(
+          targets,
+          root,
+          configs,
+          new Own(MYPY, "mypy.ini", marker + (strict ? MYPY_STRICT : MYPY_STANDARD)));
     }
     if (ids.contains("coverage")) {
-      target(targets, root, configs, new Own(COVERAGE, ".coveragerc", marker + COVERAGE_STANDARD));
+      target(
+          targets,
+          root,
+          configs,
+          new Own(
+              COVERAGE, ".coveragerc", marker + (strict ? COVERAGE_STRICT : COVERAGE_STANDARD)));
     }
     return targets;
   }

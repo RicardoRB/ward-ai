@@ -32,8 +32,13 @@ final class PythonAgentRules {
                 + " behavior.",
             "coverage",
             "- Coverage: `{command}` must meet the "
-                + PythonTools.LINE_MINIMUM
-                + "% line minimum; do not lower it.",
+                + PythonTools.coverageMinimum(preset)
+                + "% minimum"
+                + (preset == QualityPreset.STRICT ? " of lines and branches" : " of lines")
+                + "; do not lower it.",
+            "mutmut",
+            "- Mutation testing (mutmut): `{command}` in `ci` must score at least 60%; kill the"
+                + " surviving mutants with tests, do not weaken the code under test.",
             "pip-audit",
             "- Dependency audit (pip-audit): `{command}` in `ci` must pass; upgrade the vulnerable"
                 + " package instead of ignoring the advisory.");

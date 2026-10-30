@@ -18,6 +18,7 @@ final class PythonPackageCatalog {
   static final String PYTEST = "pytest";
   static final String COVERAGE = "coverage";
   static final String PIP_AUDIT = "pip-audit";
+  static final String MUTMUT = "mutmut";
 
   private static final Map<String, Package> PACKAGES =
       Map.of(
@@ -25,7 +26,8 @@ final class PythonPackageCatalog {
           MYPY, new Package(MYPY, "2.4.0"),
           PYTEST, new Package(PYTEST, "9.1.1"),
           COVERAGE, new Package(COVERAGE, "7.16.2"),
-          PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1"));
+          PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1"),
+          MUTMUT, new Package(MUTMUT, "3.8.0"));
 
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
@@ -35,7 +37,8 @@ final class PythonPackageCatalog {
           "mypy", List.of(MYPY),
           "pytest", List.of(PYTEST, COVERAGE),
           "coverage", List.of(COVERAGE),
-          "pip-audit", List.of(PIP_AUDIT));
+          "pip-audit", List.of(PIP_AUDIT),
+          "mutmut", List.of(MUTMUT));
 
   private PythonPackageCatalog() {}
 
