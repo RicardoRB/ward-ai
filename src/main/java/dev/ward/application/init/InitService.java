@@ -197,6 +197,7 @@ public class InitService {
     final List<String> warnings =
         new ArrayList<>(OmissionNotes.of(catalog.get(), project, selection.preset()));
     warnings.addAll(catalog.get().openSpecDirectories().warnings(project, gates));
+    warnings.addAll(SharedDirectoryNotes.of(detector, project));
     return changes.result(file, created, overwrite, gates, warnings);
   }
 

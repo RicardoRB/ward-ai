@@ -81,6 +81,15 @@ final class InitCommandFixture {
     return new InitCommandFixture(root, false, tools);
   }
 
+  /**
+   * Runs init in a repository whose root is not a project, with {@code executables} on the PATH.
+   */
+  static InitCommandFixture repository(
+      final Path root, final BuildToolConfiguration tools, final String... executables)
+      throws IOException {
+    return new InitCommandFixture(root, false, tools, executables);
+  }
+
   /** Runs init with piped input. */
   int run(final String input, final String... args) {
     return run(false, input, args);
