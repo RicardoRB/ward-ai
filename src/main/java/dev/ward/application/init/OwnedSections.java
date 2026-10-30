@@ -46,6 +46,15 @@ final class OwnedSections {
                       : ""),
               false));
     }
+    if (project.toolchain() == Toolchain.PYTHON) {
+      sections.add(
+          new OwnedSection(
+              project.root().resolve(".gitignore"),
+              GITIGNORE_BEGIN,
+              GITIGNORE_END,
+              ".ward/reports/\nmutants/\n.coverage\n",
+              false));
+    }
     if (selection.agentRules()) {
       sections.add(
           AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));

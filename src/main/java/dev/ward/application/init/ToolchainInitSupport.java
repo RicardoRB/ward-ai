@@ -17,6 +17,14 @@ interface ToolchainInitSupport {
   List<String> presetGates(Project project, QualityPreset preset, InitInputs inputs);
 
   /**
+   * Returns whether init handles {@code project}'s build tool; the default accepts every build tool
+   * of the toolchain, and a project whose tool is not handled is reported as unsupported.
+   */
+  default boolean handles(final Project project) {
+    return true;
+  }
+
+  /**
    * Returns whether the toolchain has gates for {@code project}'s language; the default accepts
    * every language and lets {@link SourceLanguages} name the one it lacks.
    */

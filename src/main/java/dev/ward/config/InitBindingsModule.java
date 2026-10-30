@@ -22,7 +22,12 @@ import dev.ward.infrastructure.init.ToolchainArchitectureRules;
 import dev.ward.infrastructure.terminal.JdkTerminalCapabilities;
 import dev.ward.infrastructure.terminal.PosixRawTerminal;
 
-@Module(includes = {BuildToolBindingsModule.class, NodeBindingsModule.class})
+@Module(
+    includes = {
+      BuildToolBindingsModule.class,
+      NodeBindingsModule.class,
+      PythonBindingsModule.class
+    })
 interface InitBindingsModule {
   @Binds
   ConfigurationStorage configurationStorage(FileConfigurationStorage implementation);

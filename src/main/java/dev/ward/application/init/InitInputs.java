@@ -8,6 +8,7 @@ import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.PythonToolConfigs;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,18 @@ record InitInputs(
     PackageManifests manifests,
     NodeSources sources,
     NodeToolConfigs configs,
-    Optional<BuildToolConfiguration> buildTools) {
+    Optional<BuildToolConfiguration> buildTools,
+    PythonToolConfigs pythonConfigs) {
+  /** Inputs that read no Python config of their own. */
+  InitInputs(
+      final EnvironmentInspection environment,
+      final PackageManifests manifests,
+      final NodeSources sources,
+      final NodeToolConfigs configs,
+      final Optional<BuildToolConfiguration> buildTools) {
+    this(environment, manifests, sources, configs, buildTools, (root, tool) -> Optional.empty());
+  }
+
   /** Inputs that do not read the runtime JDK. */
   InitInputs(
       final EnvironmentInspection environment,
@@ -45,7 +57,11 @@ record InitInputs(
 
   /** Inputs for a catalog that reads no Node package. */
   static InitInputs withoutManifests(final EnvironmentInspection environment) {
-    return new InitInputs(environment, root -> PackageManifest.EMPTY, root -> false);
+    return new InitInputs(
+        environment,
+        root -> PackageManifest.EMPTY,
+        root -> false,
+        (root, gate) -> Optional.empty());
   }
 
   /** Inputs that read Node packages through {@code node}. */
@@ -62,7 +78,8 @@ record InitInputs(
         node.manifests(),
         node.sources(),
         node.configs(),
-        Optional.of(ports.buildTools()));
+        Optional.of(ports.buildTools()),
+        ports.python());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */
