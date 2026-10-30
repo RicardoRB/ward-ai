@@ -11,6 +11,7 @@ public final class SupportedQualityGates {
   public static final String OPENAPI_COMPAT = "openapi-compat";
   public static final String STRYKER = "stryker";
   public static final String MUTATION = "mutation";
+  public static final String MUTMUT = "mutmut";
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 

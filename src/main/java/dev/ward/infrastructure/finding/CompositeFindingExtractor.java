@@ -25,9 +25,14 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   public CompositeFindingExtractor(
       final JvmFindingSources jvm,
       final NodeFindingSources node,
+      final PythonFindingSources python,
       final GitleaksSarifFindings gitleaks) {
     this(
-        Stream.of(jvm.sources(), node.sources(), List.<GateFindingSource>of(gitleaks))
+        Stream.of(
+                jvm.sources(),
+                node.sources(),
+                python.sources(),
+                List.<GateFindingSource>of(gitleaks))
             .flatMap(List::stream)
             .toList());
   }

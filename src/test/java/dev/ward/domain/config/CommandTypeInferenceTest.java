@@ -25,6 +25,19 @@ class CommandTypeInferenceTest {
         "spotbugs|./mvnw spotbugs:check",
         "coverage|./mvnw jacoco:check",
         "coverage|./gradlew jacocoTestCoverageVerification",
+        "coverage|uv run coverage report --fail-under=85",
+        "ruff-format|uv run ruff format --check .",
+        "ruff-format|poetry run ruff format --check .",
+        "ruff|uv run ruff check .",
+        "ruff|poetry run ruff check . --output-format json",
+        "mypy|uv run mypy src",
+        "mypy|python -m mypy src",
+        "pytest|uv run pytest -q",
+        "pytest|uv run coverage run -m pytest",
+        "mutmut|uv run mutmut run",
+        "mutmut|poetry run mutmut run",
+        "import-linter|uv run lint-imports",
+        "pip-audit|uv run pip-audit",
         "mutation|./mvnw pitest:mutationCoverage",
         "stryker|npx stryker run",
         "tests|./mvnw test",
@@ -53,7 +66,9 @@ class CommandTypeInferenceTest {
         "./gradlew test --tests com.acme.OrderTest",
         "./scripts/lint-docs.sh",
         "npm run lint",
-        "./mvnw checkstyle:check spotless:check"
+        "./mvnw checkstyle:check spotless:check",
+        "uv run mutmut results",
+        "uv run ruff check . uv run mypy src"
       })
   void unrecognizedOrAmbiguousCommandsFallBackToCommand(final String command) {
     assertThat(CommandTypeInference.infer(List.of(command.split(" "))))

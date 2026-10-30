@@ -28,6 +28,10 @@ final class FindingFixtures {
     return new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE, true);
   }
 
+  static Project python(final Path root) {
+    return new Project(root, Language.PYTHON, BuildTool.POETRY, Framework.NONE);
+  }
+
   static Project typescript(final Path root) {
     return new Project(root, Language.TYPESCRIPT, BuildTool.PNPM, Framework.NONE);
   }

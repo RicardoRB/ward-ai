@@ -15,8 +15,8 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 |---|---|---|---|
 | Build & Tests | `compile` | Maven Compiler / Gradle compilation | Compile the project. |
 | | `tests` | JUnit 5 | Run the project's automated tests. |
-| | `coverage` | JaCoCo | Enforce or report test coverage. |
-| | `mutation` | PIT | Run mutation testing. |
+| | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
+| | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
 | Code Quality | `checkstyle` | Checkstyle | Check Java style rules. |
 | | `pmd` | PMD | Find common Java design and implementation problems. |
 | | `spotbugs` | SpotBugs | Run static analysis for potential bugs. |
@@ -41,6 +41,13 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
+| Python | `ruff-format` | Ruff formatter | Check source formatting. |
+| | `ruff` | Ruff | Lint Python sources. |
+| | `mypy` | mypy | Type-check the project. |
+| | `pytest` | pytest | Run the project's automated tests. |
+| | `import-linter` | Import Linter | Check import contracts. |
+| | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
+| | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
 | Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
@@ -147,6 +154,30 @@ command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
 profiles = ["pre-push"]
 ```
 
+## Python gates
+
+`ruff-format`, `ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
+their `command` from the project root, exactly as written, and pass when it exits with code 0.
+
+- Ward does not add flags and does not choose a package manager. Put the runner in the command,
+  such as `uv run` or `poetry run`, so the project's own environment runs the tool.
+- When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
+  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `ruff format` is `ruff-format`,
+  `coverage report` is `coverage`, `mutmut run` is `mutmut`, `lint-imports` is `import-linter`, and
+  `pytest` is `pytest`, including `coverage run -m pytest`.
+- `ruff` and `mypy` findings are read from their output; see
+  [structured findings](#structured-findings).
+
+```toml
+[checks.ruff]
+command = ["uv", "run", "ruff", "check", ".", "--output-format", "json"]
+profiles = ["default"]
+
+[checks.mypy]
+command = ["uv", "run", "mypy", "-O", "json", "src"]
+profiles = ["pre-push"]
+```
+
 ## Stryker mutation score
 
 Without `minimum`, the `stryker` gate passes or fails on Stryker's exit code alone. With
@@ -193,6 +224,29 @@ profiles = ["ci"]
   folders are not read.
 - A report that is missing, older than the gate run, unreadable, or without mutations is an
   execution error, never a pass.
+
+## mutmut mutation score
+
+The `mutmut` gate accepts the same `minimum`. Run mutmut 3 with `mutmut run`. Without `minimum`, the
+gate passes or fails on mutmut's exit code alone. With it, Ward reads mutmut's per-file results
+after a successful run and fails the gate when the score is below the minimum.
+
+```toml
+[checks.mutmut]
+command = ["uv", "run", "mutmut", "run"]
+minimum = 60
+profiles = ["ci"]
+```
+
+- The score counts detected mutants (killed, timed out, or caught by the type checker) divided by
+  valid mutants (detected, survived, or with no tests). Skipped, not checked, suspicious, and
+  interrupted mutants do not count.
+- Ward reads the `.meta` files under `mutants/`, which mutmut 3 writes in the project root. It
+  decodes only the exit codes, so a mutmut layout change can make the results unreadable.
+- Results that are missing, older than the gate run, unparseable, or without valid mutants are an
+  execution error, never a pass. mutmut always writes these results under `mutants/`, so Ward
+  reads them there.
+- mutmut's results for source files that were deleted keep counting until mutmut rewrites them.
 
 ## Traceability gate
 
@@ -345,7 +399,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, or `tsc` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, `tsc`, `ruff`, or `mypy` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -362,11 +416,15 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 - Only default report locations are read, and only reports written during the current run. An older
   report is ignored.
-- TypeScript and JavaScript projects keep the reports Ward reads under `.ward/reports/` instead of
-  `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
+- TypeScript, JavaScript and Python projects keep the reports Ward reads under `.ward/reports/`
+  instead of `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
 - Gitleaks findings never contain the matched secret.
+- `ruff` reads the JSON array of `ruff check --output-format json` from standard output, and
+  `mypy` reads the JSON lines of `mypy -O json`. Ruff findings are errors; mypy `note` lines are
+  skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
+  change. Only the structured formats are read: the command must pass them.
 - ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
   does not change. An ESLint parsing error is reported with the rule `eslint`.
 - Other gates have no findings yet.

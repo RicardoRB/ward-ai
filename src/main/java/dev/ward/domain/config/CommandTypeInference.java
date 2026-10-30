@@ -55,7 +55,10 @@ public final class CommandTypeInference {
           new Rule("spotbugs", anyOf(sequence("spotbugs:check"), sequence("spotbugs*"))),
           new Rule(
               "coverage",
-              anyOf(sequence("jacoco:check"), sequence("jacocoTestCoverageVerification"))),
+              anyOf(
+                  sequence("jacoco:check"),
+                  sequence("jacocoTestCoverageVerification"),
+                  sequence("coverage", "report"))),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),
@@ -80,7 +83,14 @@ public final class CommandTypeInference {
           new Rule("bun-test", sequence("bun", "test")),
           new Rule(
               "dependency-cruiser", anyOf(sequence("depcruise"), sequence("dependency-cruiser"))),
-          new Rule("openspec", sequence("openspec", "validate")));
+          new Rule("openspec", sequence("openspec", "validate")),
+          new Rule("ruff-format", sequence("ruff", "format")),
+          new Rule("ruff", sequence("ruff", "check")),
+          new Rule("mypy", sequence("mypy")),
+          new Rule("pytest", sequence("pytest")),
+          new Rule("mutmut", sequence("mutmut", "run")),
+          new Rule("import-linter", sequence("lint-imports")),
+          new Rule("pip-audit", sequence("pip-audit")));
 
   /** One row: the type a command gets when {@code matches} accepts it. */
   private record Rule(String type, Predicate<List<String>> matches) {}

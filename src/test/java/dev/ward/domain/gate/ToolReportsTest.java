@@ -31,4 +31,10 @@ class ToolReportsTest {
     assertThat(directory(Language.TYPESCRIPT, BuildTool.NPM)).isEqualTo(".ward/reports");
     assertThat(directory(Language.JAVASCRIPT, BuildTool.BUN)).isEqualTo(".ward/reports");
   }
+
+  @Test
+  void pythonReportsLiveInWardReports() {
+    assertThat(directory(Language.PYTHON, BuildTool.POETRY)).isEqualTo(".ward/reports");
+    assertThat(directory(Language.PYTHON, BuildTool.PIP)).isEqualTo(".ward/reports");
+  }
 }

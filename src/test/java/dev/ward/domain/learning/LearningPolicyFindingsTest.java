@@ -127,4 +127,24 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
     assertThat(record.summary()).isEqualTo(UNUSED_MESSAGE);
     assertThat(record).hasNoNullFieldsOrProperties();
   }
+
+  @Test
+  void ruffAndMypyRulesAreLearnedButCatchAllRulesAreNot() {
+    final CheckReport report =
+        new CheckReport(
+            PROJECT,
+            List.of(
+                failedResult(
+                    "ruff",
+                    finding("ruff", "F401", "`os` imported but unused"),
+                    finding("ruff", "ruff", "Expected a statement")),
+                failedResult(
+                    "mypy",
+                    finding("mypy", "arg-type", "Argument 1 has incompatible type"),
+                    finding("mypy", "mypy", "Plugin says no"))));
+
+    final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
+
+    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:F401", "mypy:arg-type");
+  }
 }

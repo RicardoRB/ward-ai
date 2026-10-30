@@ -21,7 +21,9 @@ class FindingSourceContractTest {
                 new SpotlessOutputFindings(),
                 new EslintJsonFindings(new ForyJsonCodec()),
                 new TscOutputFindings(),
-                new BiomeCheckstyleFindings()));
+                new BiomeCheckstyleFindings(),
+                new RuffJsonFindings(new ForyJsonCodec()),
+                new MypyJsonFindings(new ForyJsonCodec())));
 
     assertThat(extractor.gates())
         .allSatisfy(

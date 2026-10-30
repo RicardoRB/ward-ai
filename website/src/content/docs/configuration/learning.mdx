@@ -12,7 +12,8 @@ never stored.
 
 Only findings from failed gates whose tool reports specific rule IDs are learned: Checkstyle, PMD,
 gitleaks, ESLint (for example `eslint:no-unused-vars`), Biome (for example
-`biome:lint/suspicious/noExplicitAny`) and the TypeScript compiler (for example `tsc:TS2322`). Gates without rule-level findings (tests, coverage, SpotBugs, ArchUnit, mutation) and
+`biome:lint/suspicious/noExplicitAny`), the TypeScript compiler (for example `tsc:TS2322`), Ruff
+(for example `ruff:F401`) and mypy (for example `mypy:arg-type`). Gates without rule-level findings (tests, coverage, SpotBugs, ArchUnit, mutation) and
 catch-all findings such as Spotless formatting, javac errors or ESLint parsing errors are not
 tracked, because the only lesson they offer is to run the command again.
 

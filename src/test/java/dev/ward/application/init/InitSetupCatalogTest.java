@@ -38,6 +38,11 @@ class InitSetupCatalogTest {
           "astro-check",
           "ngc",
           "ng-test");
+
+  /** Python gates are offered by init only for Python projects (#136). */
+  private static final Set<String> PYTHON_GATES =
+      Set.of("ruff-format", "ruff", "mypy", "pytest", "mutmut", "import-linter", "pip-audit");
+
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
@@ -220,6 +225,7 @@ class InitSetupCatalogTest {
                 .filter(id -> !id.startsWith("openapi-"))
                 // Node gates are run by check only; init does not offer them for JVM projects.
                 .filter(id -> !NODE_GATES.contains(id))
+                .filter(id -> !PYTHON_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestCoverageVerification");
