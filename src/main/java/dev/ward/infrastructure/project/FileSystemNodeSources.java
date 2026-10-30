@@ -22,9 +22,10 @@ import javax.inject.Inject;
  */
 public final class FileSystemNodeSources implements NodeSources {
   private static final Logger LOGGER = Logger.getLogger(FileSystemNodeSources.class.getName());
-  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs)$");
-  private static final Pattern TOOL_CONFIG = Pattern.compile(".*\\.config\\.(js|mjs|cjs)$");
-  private static final Set<String> OTHER_BUILD_FILES =
+  private static final Pattern SOURCE = Pattern.compile(".*\\.(js|jsx|mjs|cjs|ts|tsx|mts|cts)$");
+  private static final Pattern TOOL_CONFIG =
+      Pattern.compile(".*\\.config\\.(js|mjs|cjs|ts|mts|cts)$");
+  static final Set<String> OTHER_BUILD_FILES =
       Set.of(
           FileSystemProjectInspection.POM,
           "build.gradle",
@@ -45,6 +46,16 @@ public final class FileSystemNodeSources implements NodeSources {
 
   @Override
   public boolean hasSources(final Path root) {
+    return sources(root, false);
+  }
+
+  /** Returns whether a source sits below {@code root}, not directly in it. */
+  @Override
+  public boolean hasSourceTree(final Path root) {
+    return sources(root, true);
+  }
+
+  private static boolean sources(final Path root, final boolean nestedOnly) {
     final AtomicBoolean found = new AtomicBoolean();
     try {
       Files.walkFileTree(
@@ -63,7 +74,9 @@ public final class FileSystemNodeSources implements NodeSources {
             @Override
             public FileVisitResult visitFile(
                 final Path file, final BasicFileAttributes attributes) {
-              if (attributes.isRegularFile() && isSource(root, file)) {
+              if (attributes.isRegularFile()
+                  && isSource(root, file)
+                  && (!nestedOnly || !root.equals(file.getParent()))) {
                 found.set(true);
                 return FileVisitResult.TERMINATE;
               }

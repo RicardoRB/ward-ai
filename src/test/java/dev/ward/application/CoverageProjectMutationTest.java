@@ -52,7 +52,8 @@ class CoverageProjectMutationTest {
                 true,
                 root,
                 Set.of(),
-                ""),
+                "",
+                dev.ward.domain.project.TaskRunner.NONE),
             null);
     final PomToolConfigurator configurator = new PomToolConfigurator();
     final BuildFileChange change =

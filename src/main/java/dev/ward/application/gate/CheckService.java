@@ -3,7 +3,6 @@ package dev.ward.application.gate;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.config.PartialCheckPlan;
-import dev.ward.domain.config.PathExistence;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
@@ -28,24 +27,21 @@ public class CheckService {
   private final WardConfigurationReader configurationReader;
   private final QualityGateFactory gateFactory;
   private final QualityGateRunner runner;
-  private final PathExistence pathExistence;
+  private final PartialPorts partialPorts;
 
-  /**
-   * Creates the service. {@code pathExistence} decides which edited paths still exist during a
-   * partial check.
-   */
+  /** Creates the service. {@code partialPorts} reads the edited paths of a partial check. */
   @Inject
   public CheckService(
       final ProjectDetector detector,
       final WardConfigurationReader configurationReader,
       final QualityGateFactory gateFactory,
       final QualityGateRunner runner,
-      final PathExistence pathExistence) {
+      final PartialPorts partialPorts) {
     this.detector = detector;
     this.configurationReader = configurationReader;
     this.gateFactory = gateFactory;
     this.runner = runner;
-    this.pathExistence = pathExistence;
+    this.partialPorts = partialPorts;
   }
 
   /** Runs the {@code default} profile gates of the project containing {@code start}. */
@@ -110,7 +106,11 @@ public class CheckService {
         paths.isEmpty()
             ? EditProfile.plan(selected.get())
             : PartialCheckPlan.create(
-                project.root(), selected.get().checks(), paths, pathExistence);
+                project.root(),
+                selected.get().checks(),
+                paths,
+                partialPorts.existence(),
+                path -> partialPorts.members().packageOf(project.root(), path));
     LOGGER.log(
         Level.INFO,
         () ->

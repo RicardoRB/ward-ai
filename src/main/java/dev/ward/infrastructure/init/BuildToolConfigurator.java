@@ -8,6 +8,8 @@ import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.TurboWorkspace;
+import dev.ward.domain.init.TurboWorkspaceChange;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.util.List;
@@ -38,6 +40,24 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final Predicate<? super CompatibilityFinding> approval) {
     return adapter(project).apply(project, gates, preset, approval);
+  }
+
+  /** Turborepo workspaces are Node projects, so only the Node adapter writes them. */
+  @Override
+  public TurboWorkspaceChange applyWorkspace(
+      final TurboWorkspace workspace, final boolean replaceScripts) {
+    final BuildToolConfiguration node = adapters.get(Toolchain.NODE);
+    return node == null
+        ? new TurboWorkspaceChange(List.of(), List.of())
+        : node.applyWorkspace(workspace, replaceScripts);
+  }
+
+  @Override
+  public void rollbackWorkspace(final TurboWorkspaceChange change) {
+    final BuildToolConfiguration node = adapters.get(Toolchain.NODE);
+    if (node != null) {
+      node.rollbackWorkspace(change);
+    }
   }
 
   @Override

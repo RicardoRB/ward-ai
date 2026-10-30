@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,8 @@ class NodeBiomeAgentRulesTest {
           false,
           Path.of("shop"),
           Set.of(),
-          "24");
+          "24",
+          TaskRunner.NONE);
   private static final InitGateOption BIOME =
       new InitGateOption("biome", "Biome", List.of("npx", "biome", "ci", "."), true, "ok");
 

@@ -125,7 +125,7 @@ An optional `[checks.<name>.paths]` table controls how a check responds to an ed
 | `match` | Files the check analyzes, as patterns relative to the project root. If an edited path matches, `args` can narrow the command. |
 | `full` | Files that configure the check, as patterns relative to the project root. If an edited path matches, the check runs its normal command. |
 | `args` | The narrowed arguments. `{paths}` is replaced with the edited paths as separate process arguments, or as one value joined by `separator`. |
-| `item` | How each path is rendered: `{path}` (the root-relative path) by default, or `"**/{name}"` for the file name. |
+| `item` | How each path is rendered: `{path}` (the root-relative path) by default, or `"**/{name}"` for the file name. `{package}` is the name of the workspace package that holds the path, such as `"--filter=...{package}"` for Turborepo. A path in no package is left out of the items, and a check left with no items runs in full. Identical rendered items are passed once. |
 | `command` | Optional. The base command a narrowed check runs, with `args` appended, instead of the check's `command`. Use it when the full command ends with a target that would still be analyzed, such as `prettier --check .`. |
 | `separator` | Optional. Joins the rendered paths into one argument. |
 
@@ -161,7 +161,7 @@ shell.
   edit is a deletion, the check runs in full.
 - Paths outside the project root are ignored. A check without `paths` always runs in full.
 - `args` requires `match`, `command` requires `args`, every list must contain non-blank strings, and
-  `item` must contain `{path}` or `{name}`. The keys `partial`, `inputs` and `config` were renamed to
+  `item` must contain `{path}`, `{name}` or `{package}`. The keys `partial`, `inputs` and `config` were renamed to
   `paths`, `match` and `full`; using them is an error that names the replacement. Otherwise
   `ward check` exits with code `2`.
 

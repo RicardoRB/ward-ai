@@ -222,6 +222,7 @@ class InitServiceTest {
                     dir,
                     new InitSelection(List.of("none"), List.of("tests"), null, null),
                     true,
+                    false,
                     finding -> false))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("setup failed");

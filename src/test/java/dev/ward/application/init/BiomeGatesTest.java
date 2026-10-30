@@ -11,6 +11,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +126,17 @@ class BiomeGatesTest {
   }
 
   private Project project(final Language language, final BuildTool manager) {
-    return new Project(root, language, manager, Framework.NONE, false, false, root, Set.of(), "24");
+    return new Project(
+        root,
+        language,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 
   private static List<String> ids(

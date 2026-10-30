@@ -70,8 +70,11 @@ final class TomlPartialParser {
   /** An {@code item} without a placeholder would pass the same text for every edited path. */
   private static String item(final TomlTable table, final String key) {
     final String item = string(table, key, ITEM);
-    if (item != null && !item.contains("{path}") && !item.contains("{name}")) {
-      throw new WardException("'" + key + ".item' must contain {path} or {name}");
+    if (item != null
+        && !item.contains("{path}")
+        && !item.contains("{name}")
+        && !item.contains("{package}")) {
+      throw new WardException("'" + key + ".item' must contain {path}, {name} or {package}");
     }
     return item;
   }

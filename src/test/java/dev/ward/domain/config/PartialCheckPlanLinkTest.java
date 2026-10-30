@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /** Edited paths are compared with the root in the canonical form the port returns. */
@@ -40,7 +41,8 @@ class PartialCheckPlanLinkTest {
                         "{path}",
                         null))),
             List.of(link.resolve(PartialPlans.ORDER)),
-            existence);
+            existence,
+            path -> Optional.empty());
 
     assertThat(plan.gates().get(PartialPlans.GATE))
         .isEqualTo(PartialPlans.narrowed("-Dcheckstyle.includes=" + PartialPlans.ORDER));

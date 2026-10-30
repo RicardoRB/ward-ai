@@ -3,6 +3,7 @@ package dev.ward.infrastructure.project;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,7 +78,8 @@ final class PythonProjectInspection {
         false,
         dir,
         Set.of(Language.PYTHON),
-        version(dir, pyproject));
+        version(dir, pyproject),
+        TaskRunner.NONE);
   }
 
   /** The first rule that matches decides the manager: uv, Poetry, PDM, Hatch, else pip. */

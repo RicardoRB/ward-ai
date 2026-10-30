@@ -22,6 +22,8 @@ import java.util.Set;
  * @param languages every source language the project contains; always includes {@code language}
  * @param languageVersion the target language major version, such as the Node version, or empty when
  *     none is detected
+ * @param taskRunner the tool that runs the workspace's per-package tasks, {@link TaskRunner#NONE}
+ *     unless a workspace root declares one
  */
 public record Project(
     Path root,
@@ -32,7 +34,8 @@ public record Project(
     boolean publishesArtifacts,
     Path repositoryRoot,
     Set<Language> languages,
-    String languageVersion) {
+    String languageVersion,
+    TaskRunner taskRunner) {
   /** Copies {@code languages}, in declaration order, and adds the primary language. */
   public Project {
     final Set<Language> all = EnumSet.of(language);
@@ -56,7 +59,32 @@ public record Project(
       final BuildTool buildTool,
       final Framework framework,
       final boolean mavenWrapperAvailable) {
-    this(root, language, buildTool, framework, mavenWrapperAvailable, false, root, Set.of(), "");
+    this(
+        root,
+        language,
+        buildTool,
+        framework,
+        mavenWrapperAvailable,
+        false,
+        root,
+        Set.of(),
+        "",
+        TaskRunner.NONE);
+  }
+
+  /** Returns this project with {@code runner} as its task runner. */
+  public Project withTaskRunner(final TaskRunner runner) {
+    return new Project(
+        root,
+        language,
+        buildTool,
+        framework,
+        mavenWrapperAvailable,
+        publishesArtifacts,
+        repositoryRoot,
+        languages,
+        languageVersion,
+        runner);
   }
 
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
@@ -70,7 +98,8 @@ public record Project(
         publishesArtifacts,
         repository,
         languages,
-        languageVersion);
+        languageVersion,
+        taskRunner);
   }
 
   /**

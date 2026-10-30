@@ -9,6 +9,7 @@ import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.WorkspaceMembers;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ import java.util.Optional;
  * @param sources finds whether a Node package holds JavaScript sources of its own
  * @param configs finds the tool configs a Node project keeps itself
  * @param buildTools reads which gates the project's runtime JDK cannot run, when available
+ * @param pythonConfigs finds the tool configs a Python project keeps itself
+ * @param members lists the packages a Node workspace root holds
  */
 record InitInputs(
     EnvironmentInspection environment,
@@ -27,7 +30,8 @@ record InitInputs(
     NodeSources sources,
     NodeToolConfigs configs,
     Optional<BuildToolConfiguration> buildTools,
-    PythonToolConfigs pythonConfigs) {
+    PythonToolConfigs pythonConfigs,
+    WorkspaceMembers members) {
   /** Inputs that read no Python config of their own. */
   InitInputs(
       final EnvironmentInspection environment,
@@ -35,7 +39,14 @@ record InitInputs(
       final NodeSources sources,
       final NodeToolConfigs configs,
       final Optional<BuildToolConfiguration> buildTools) {
-    this(environment, manifests, sources, configs, buildTools, (root, tool) -> Optional.empty());
+    this(
+        environment,
+        manifests,
+        sources,
+        configs,
+        buildTools,
+        (root, tool) -> Optional.empty(),
+        WorkspaceMembers.none());
   }
 
   /** Inputs that do not read the runtime JDK. */
@@ -67,7 +78,13 @@ record InitInputs(
   /** Inputs that read Node packages through {@code node}. */
   static InitInputs of(final EnvironmentInspection environment, final NodeInputs node) {
     return new InitInputs(
-        environment, node.manifests(), node.sources(), node.configs(), Optional.empty());
+        environment,
+        node.manifests(),
+        node.sources(),
+        node.configs(),
+        Optional.empty(),
+        (root, tool) -> Optional.empty(),
+        node.members());
   }
 
   /** Inputs that also read the runtime JDK through the build-file adapters of {@code ports}. */
@@ -79,7 +96,8 @@ record InitInputs(
         node.sources(),
         node.configs(),
         Optional.of(ports.buildTools()),
-        ports.python());
+        ports.python(),
+        node.members());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

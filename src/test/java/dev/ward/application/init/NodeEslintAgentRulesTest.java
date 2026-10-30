@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -66,7 +67,8 @@ class NodeEslintAgentRulesTest {
             false,
             Path.of("/repo"),
             Set.of(),
-            "24");
+            "24",
+            TaskRunner.NONE);
     return NodeAgentRules.lines(project, List.of(ESLINT), preset, owned).getFirst();
   }
 }

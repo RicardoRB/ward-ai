@@ -43,6 +43,15 @@ class NodeSupportTest {
   private static Project node(final BuildTool tool, final String version) {
     final Path root = Path.of("app");
     return new Project(
-        root, Language.TYPESCRIPT, tool, Framework.NONE, false, false, root, Set.of(), version);
+        root,
+        Language.TYPESCRIPT,
+        tool,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        version,
+        TaskRunner.NONE);
   }
 }

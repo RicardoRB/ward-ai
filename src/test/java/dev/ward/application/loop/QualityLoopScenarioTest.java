@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.gate.CheckService;
 import dev.ward.application.gate.CheckServiceFixtures;
+import dev.ward.application.gate.PartialPorts;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.agent.AgentRequest;
 import dev.ward.domain.agent.AgentResult;
@@ -186,7 +187,7 @@ class QualityLoopScenarioTest {
   @Test
   void convertsUnexpectedGateFailureToGateError(@TempDir final Path dir) {
     final CheckService checks =
-        new CheckService(null, null, null, null, null) {
+        new CheckService(null, null, null, null, new PartialPorts(null, null)) {
           @Override
           public CheckReport check(final Path ignored) {
             throw new IllegalStateException("gate exploded");

@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,7 +42,8 @@ class InitOpenSpecRootTest {
             false,
             repository,
             Set.of(),
-            "");
+            "",
+            TaskRunner.NONE);
   }
 
   @Test

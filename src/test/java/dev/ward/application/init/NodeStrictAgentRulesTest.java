@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +78,17 @@ class NodeStrictAgentRulesTest {
             .map(id -> new InitGateOption(id, id, List.of("npx", id), true, "ok"))
             .toList();
     final Project project =
-        new Project(ROOT, language, manager, Framework.NONE, false, false, ROOT, Set.of(), "24");
+        new Project(
+            ROOT,
+            language,
+            manager,
+            Framework.NONE,
+            false,
+            false,
+            ROOT,
+            Set.of(),
+            "24",
+            TaskRunner.NONE);
     return AgentRulesTemplate.render(project, gates, preset, List.of()).body();
   }
 }

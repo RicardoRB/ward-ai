@@ -11,6 +11,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
@@ -61,6 +62,15 @@ class AngularBiomeRefusalTest {
 
   private Project project(final Framework framework) {
     return new Project(
-        root, Language.TYPESCRIPT, BuildTool.NPM, framework, false, false, root, Set.of(), "24");
+        root,
+        Language.TYPESCRIPT,
+        BuildTool.NPM,
+        framework,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 }

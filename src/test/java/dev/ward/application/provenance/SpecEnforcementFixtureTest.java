@@ -3,6 +3,7 @@ package dev.ward.application.provenance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.gate.CheckService;
+import dev.ward.application.gate.PartialPorts;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FixedProjectInspection;
 import dev.ward.domain.gate.CheckReport;
@@ -34,7 +35,7 @@ class SpecEnforcementFixtureTest {
           new FixedProjectInspection(
               new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.NONE)));
   private static final CheckService PASSING_CHECKS =
-      new CheckService(null, null, null, null, null) {
+      new CheckService(null, null, null, null, new PartialPorts(null, null)) {
         @Override
         public CheckReport check(
             final Path start, final List<String> profiles, final Set<String> gates) {

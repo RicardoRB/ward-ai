@@ -164,6 +164,10 @@ final class PartialCheckDefaults {
 
   static Optional<Table> forGate(
       final String gate, final Project project, final QualityPreset preset) {
+    final Optional<Table> turbo = TurboPartialDefaults.forGate(gate, project);
+    if (turbo.isPresent()) {
+      return turbo;
+    }
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final List<String> build = gradle ? GRADLE_BUILD : MAVEN_BUILD;
     return Optional.ofNullable(NODE_TABLES.get(gate))

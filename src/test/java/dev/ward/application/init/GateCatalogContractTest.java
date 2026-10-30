@@ -13,6 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.GradleToolConfigurator;
 import dev.ward.infrastructure.init.PomToolConfigurator;
 import java.io.IOException;
@@ -121,6 +122,16 @@ class GateCatalogContractTest {
 
   private Project project(final BuildTool buildTool, final Language language) {
     // Publishing makes Maven offer api-compat, so every JVM gate is listed.
-    return new Project(root, language, buildTool, Framework.NONE, false, true, root, Set.of(), "");
+    return new Project(
+        root,
+        language,
+        buildTool,
+        Framework.NONE,
+        false,
+        true,
+        root,
+        Set.of(),
+        "",
+        TaskRunner.NONE);
   }
 }

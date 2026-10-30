@@ -7,6 +7,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -137,7 +138,8 @@ class DependencyCruiserRulesSmokeTest {
                 false,
                 project,
                 Set.of(),
-                "24"),
+                "24",
+                TaskRunner.NONE),
             style,
             extras);
   }

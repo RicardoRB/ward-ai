@@ -1,0 +1,8 @@
+{
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "dev": "./mvnw spring-boot:run",
+    "quality:test": "./mvnw test"
+  }
+}

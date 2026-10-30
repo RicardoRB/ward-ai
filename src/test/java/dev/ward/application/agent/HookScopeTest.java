@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,8 @@ class HookScopeTest {
           false,
           REPOSITORY,
           Set.of(),
-          "");
+          "",
+          TaskRunner.NONE);
   private static final Project ROOT =
       new Project(REPOSITORY, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 

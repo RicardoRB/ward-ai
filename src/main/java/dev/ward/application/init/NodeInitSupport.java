@@ -14,6 +14,9 @@ final class NodeInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
+    if (project.taskRunner().isRootRunner()) {
+      return turborepoGates(project, preset, inputs);
+    }
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
     refuseBiomeForAngular(project, tools);
@@ -24,14 +27,40 @@ final class NodeInitSupport implements ToolchainInitSupport {
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
+    if (project.taskRunner().isRootRunner()) {
+      final NodeLinting linting =
+          NodeLinting.of(project, inputs.manifests().read(project.root()), inputs.configs());
+      return languages(project, TurborepoPlan.testGate(project, inputs), linting)
+          .presetGates(preset);
+    }
     final PackageManifest manifest = inputs.manifests().read(project.root());
     final String testGate = NodeTools.testGate(project, manifest);
     final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     return languages(project, testGate, linting).presetGates(preset);
   }
 
+  /**
+   * Returns the root's gates of a Turborepo workspace: the task gates run through turbo, with the
+   * test gate named after the members' majority runner.
+   */
+  private static Gates turborepoGates(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
+    final PackageManifest manifest = inputs.manifests().read(project.root());
+    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
+    final String testGate = TurborepoPlan.testGate(project, inputs);
+    final NodeTools tools =
+        NodeTools.of(project, manifest, inputs, preset).withTestGate(testGate).withLinting(linting);
+    refuseBiomeForAngular(project, tools);
+    return new Gates(
+        TurborepoPlan.rootGates(
+            languages(project, testGate, linting).analysisGates(tools),
+            TaskRunnerStrategies.of(project).orElseThrow(),
+            project.buildTool()),
+        List.of());
+  }
+
   /** Biome has no Angular template support, so a green Biome gate would hide template errors. */
-  private static void refuseBiomeForAngular(final Project project, final NodeTools tools) {
+  static void refuseBiomeForAngular(final Project project, final NodeTools tools) {
     if (project.framework() == Framework.ANGULAR && tools.linting().biome()) {
       throw new WardException(
           "Biome does not check Angular templates, so a passing biome gate would hide template"
@@ -58,7 +87,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
     return NodeCiSetup.steps(project, manifest.packageManager());
   }
 
-  private static SourceLanguages<NodeTools> languages(
+  static SourceLanguages<NodeTools> languages(
       final Project project, final String testGate, final NodeLinting linting) {
     return SourceLanguages.of(
         Map.<Language, SourceLanguageGates<NodeTools>>of(

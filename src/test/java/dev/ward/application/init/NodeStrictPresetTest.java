@@ -13,6 +13,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -113,6 +114,16 @@ class NodeStrictPresetTest {
   }
 
   private Project project(final Language language, final BuildTool manager) {
-    return new Project(root, language, manager, Framework.NONE, false, false, root, Set.of(), "24");
+    return new Project(
+        root,
+        language,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 }

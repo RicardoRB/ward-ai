@@ -25,6 +25,7 @@ as a whole is not that yes.
 | Install a missing tool | `--install-tool <id>[,<id>...]` | `openspec`, or a selected gate id that the plan shows with an `install` line | **Yes, per tool** |
 | Replace an existing `ward.toml` | `--overwrite` | Present | **Yes** |
 | Accept plugin version updates | `--accept-compatibility-updates` | Present | **Yes, after showing each `(requires approval)` line** |
+| Replace differing Turborepo member scripts | `--replace-scripts` | Each `replace <script> script (requires approval)` line in the plan | **Yes, once, after listing each member, script, current and proposed command** |
 | Preview only | `--dry-run` | Present for the review step; removed for the apply step | No |
 
 ## How presets and gates combine

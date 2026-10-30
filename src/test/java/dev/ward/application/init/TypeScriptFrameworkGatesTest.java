@@ -10,6 +10,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,15 @@ class TypeScriptFrameworkGatesTest {
 
   private Project project(final BuildTool manager, final Framework framework) {
     return new Project(
-        root, Language.TYPESCRIPT, manager, framework, false, false, root, Set.of(), "24");
+        root,
+        Language.TYPESCRIPT,
+        manager,
+        framework,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 }

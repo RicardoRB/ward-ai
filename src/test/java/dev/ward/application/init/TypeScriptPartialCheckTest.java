@@ -14,6 +14,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,7 +89,8 @@ class TypeScriptPartialCheckTest {
             false,
             root,
             Set.of(),
-            "24");
+            "24",
+            TaskRunner.NONE);
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(

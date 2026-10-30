@@ -157,6 +157,13 @@ class NodeMatrixCellsTest {
                     && "strict".equals(column(row, PRESET_COLUMN)));
   }
 
+  @Test
+  void turborepoCellRunsStrictOnNode24WithEslint() throws IOException {
+    assertThat(rows()).contains("24,turborepo,eslint,strict,");
+    assertThat(NODE_FIXTURES.resolve("turborepo")).isDirectory();
+    assertThat(Path.of("src/test/resources/node-matrix/violations/turborepo")).isDirectory();
+  }
+
   /** The rows of the plain TypeScript and JavaScript fixtures, which the matrix's sets cover. */
   private static List<String> plainRowsEndingWith(final String suffix) throws IOException {
     return rowsEndingWith(suffix).stream()

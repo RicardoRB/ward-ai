@@ -3,6 +3,7 @@ package dev.ward.domain.config;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** Builds one-gate partial check plans for the plan tests. */
@@ -22,7 +23,8 @@ final class PartialPlans {
             ROOT,
             Map.of(GATE, gate),
             List.of(paths).stream().map(ROOT::resolve).toList(),
-            EVERYTHING_EXISTS)
+            EVERYTHING_EXISTS,
+            path -> Optional.empty())
         .gates()
         .get(GATE);
   }

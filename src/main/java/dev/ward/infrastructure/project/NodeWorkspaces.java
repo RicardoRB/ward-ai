@@ -25,12 +25,9 @@ final class NodeWorkspaces {
    * {@code workspaces} field of its package.json, or its {@code pnpm-workspace.yaml}.
    */
   static boolean isMember(final Path root, final Path candidate) {
-    if (!Files.isRegularFile(candidate.resolve(NodeProjectInspection.PACKAGE_JSON))
-        && !Files.isRegularFile(candidate.resolve(NodeProjectInspection.TSCONFIG))) {
-      return false;
-    }
-    return WorkspaceGlobs.matchesAny(
-        patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
+    return hasProjectFile(candidate)
+        && WorkspaceGlobs.matchesAny(
+            patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
   }
 
   /** Returns whether a directory matched by the workspace patterns has {@code tsconfig.json}. */
@@ -48,6 +45,40 @@ final class NodeWorkspaces {
     } catch (IOException | UncheckedIOException e) {
       return false;
     }
+  }
+
+  /** Returns the member directories of {@code root} that hold package.json or tsconfig.json. */
+  static List<Path> memberDirectories(final Path root, final Map<?, ?> manifest) {
+    final List<String> patterns = patterns(root, manifest);
+    if (patterns.isEmpty()) {
+      return List.of();
+    }
+    try (Stream<Path> files = Files.walk(root, FileSystemProjectInspection.MAX_SEARCH_DEPTH)) {
+      return files
+          .filter(Files::isDirectory)
+          .filter(member -> !member.toString().contains("node_modules"))
+          .filter(member -> !hasOtherBuildFile(member))
+          .filter(member -> WorkspaceGlobs.matchesAny(patterns, root, member))
+          .filter(NodeWorkspaces::hasProjectFile)
+          .sorted()
+          .toList();
+    } catch (IOException | UncheckedIOException e) {
+      return List.of();
+    }
+  }
+
+  /**
+   * Returns whether {@code dir} has another language's build file, such as a Maven POM. Such a
+   * package is that language's project, so a Node workspace does not plan it.
+   */
+  private static boolean hasOtherBuildFile(final Path dir) {
+    return FileSystemNodeSources.OTHER_BUILD_FILES.stream()
+        .anyMatch(file -> Files.isRegularFile(dir.resolve(file)));
+  }
+
+  private static boolean hasProjectFile(final Path dir) {
+    return Files.isRegularFile(dir.resolve(NodeProjectInspection.PACKAGE_JSON))
+        || Files.isRegularFile(dir.resolve(NodeProjectInspection.TSCONFIG));
   }
 
   /** Returns the workspace patterns of {@code root}; negations are ignored, not applied. */

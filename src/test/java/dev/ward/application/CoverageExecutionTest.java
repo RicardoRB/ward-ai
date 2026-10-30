@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.ProjectFixtures;
 import dev.ward.application.gate.CheckService;
+import dev.ward.application.gate.PartialPorts;
 import dev.ward.application.gate.QualityGateFactory;
 import dev.ward.application.gate.QualityGateRunner;
 import dev.ward.application.project.ProjectDetector;
@@ -19,6 +20,7 @@ import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,7 +70,7 @@ uses = "compile"
             new TomlConfigurationReader(),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
-            new FilePathExistence());
+            new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
     assertThat(service.check(root, List.of("tests-only")).results()).hasSize(1);
     assertThatThrownBy(() -> service.check(root, List.of("missing")))
         .isInstanceOf(WardException.class);

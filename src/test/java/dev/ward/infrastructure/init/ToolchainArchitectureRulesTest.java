@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import java.io.IOException;
@@ -66,6 +67,16 @@ class ToolchainArchitectureRulesTest {
   private Project project(final Toolchain toolchain) {
     final BuildTool manager = toolchain == Toolchain.NODE ? BuildTool.NPM : BuildTool.MAVEN;
     final Language language = toolchain == Toolchain.NODE ? Language.TYPESCRIPT : Language.JAVA;
-    return new Project(root, language, manager, Framework.NONE, false, false, root, Set.of(), "24");
+    return new Project(
+        root,
+        language,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 }

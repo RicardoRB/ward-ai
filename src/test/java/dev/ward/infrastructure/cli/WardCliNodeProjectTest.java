@@ -28,6 +28,23 @@ class WardCliNodeProjectTest extends WardCliIntegrationSupport {
   }
 
   @Test
+  void detectPrintsTheTaskRunnerOfATurborepo() throws IOException {
+    typeScriptProject();
+    Files.writeString(node.resolve("turbo.json"), "{}");
+
+    assertThat(run("detect", "-C", node.toString())).isZero();
+    assertThat(out.toString()).contains("Task runner:  Turborepo");
+  }
+
+  @Test
+  void detectPrintsNoTaskRunnerForAPlainTypeScriptProject() throws IOException {
+    typeScriptProject();
+
+    assertThat(run("detect", "-C", node.toString())).isZero();
+    assertThat(out.toString()).doesNotContain("Task runner:");
+  }
+
+  @Test
   void detectPrintsNoNodeLineForJava() {
     assertThat(run("detect", "-C", project.toString())).isZero();
     assertThat(out.toString()).doesNotContain("Node:");

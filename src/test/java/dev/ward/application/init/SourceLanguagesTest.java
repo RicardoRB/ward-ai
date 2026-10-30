@@ -11,6 +11,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,16 @@ class SourceLanguagesTest {
 
   private static Project project(final Language language, final Set<Language> others) {
     return new Project(
-        ROOT, language, BuildTool.GRADLE, Framework.NONE, false, false, ROOT, others, "");
+        ROOT,
+        language,
+        BuildTool.GRADLE,
+        Framework.NONE,
+        false,
+        false,
+        ROOT,
+        others,
+        "",
+        TaskRunner.NONE);
   }
 
   private static SourceLanguageGates<String> fixed(final String... ids) {

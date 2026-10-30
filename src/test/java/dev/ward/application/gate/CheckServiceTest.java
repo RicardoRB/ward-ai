@@ -19,6 +19,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -45,7 +46,7 @@ class CheckServiceTest {
                     Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
-            Files::exists);
+            new PartialPorts(Files::exists, new NodeWorkspaceMembers()));
 
     final CheckReport report = checks.check(root);
 

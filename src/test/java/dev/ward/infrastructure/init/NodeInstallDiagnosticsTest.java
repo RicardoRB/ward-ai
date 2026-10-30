@@ -8,6 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -46,7 +47,8 @@ class NodeInstallDiagnosticsTest {
                   false,
                   root,
                   Set.of(),
-                  "24"),
+                  "24",
+                  TaskRunner.NONE),
               List.of(new InitGateOption("prettier", "Prettier", List.of("npx"), true, "ok")));
     } finally {
       logger.removeHandler(handler);

@@ -85,6 +85,7 @@ class InitCompatibilityRollbackTest {
                     root,
                     new InitSelection(List.of("none"), List.of("format")),
                     false,
+                    false,
                     finding -> true))
         .hasMessage("later setup failed");
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(original);

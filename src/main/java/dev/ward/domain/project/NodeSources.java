@@ -10,4 +10,13 @@ public interface NodeSources {
    * sources outside dependencies, build output and projects nested below it.
    */
   boolean hasSources(Path root);
+
+  /**
+   * Returns whether {@code root} holds a source below its own directory, in a subfolder such as
+   * {@code src/} or {@code app/}. A source file directly in {@code root} does not count, so a
+   * package with only root-level configuration has none.
+   */
+  default boolean hasSourceTree(final Path root) {
+    return hasSources(root);
+  }
 }

@@ -58,6 +58,7 @@ public class DetectCommand implements Callable<Integer> {
     }
     output().printf("Build tool:   %s%n", p.buildTool().displayName());
     output().printf("Framework:    %s%n", p.framework().displayName());
+    p.taskRunner().displayName().ifPresent(name -> output().println("Task runner:  " + name));
     if (p.language() == Language.TYPESCRIPT || p.language() == Language.JAVASCRIPT) {
       output().printf("Node:         %s%n", p.languageVersion());
     }

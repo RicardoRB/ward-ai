@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -40,6 +40,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--overwrite` | Replace an existing `ward.toml` without asking. |
 | `--dry-run` | Print the change plan and exit without writing anything. |
 | `--accept-compatibility-updates` | Approve validated Maven plugin version updates without asking. |
+| `--replace-scripts` | Replace Turborepo member scripts that already run a different command, without asking. Without it, init lists them once and asks; a declined or unanswered question keeps them. |
 | `--yes` | Use defaults for unanswered questions, skip the review, approve compatibility updates. See [How questions are answered](#how-questions-are-answered). |
 | `--verbose` | Print initialization diagnostics to stderr. See [Troubleshooting](#troubleshooting-with-verbose-diagnostics). |
 

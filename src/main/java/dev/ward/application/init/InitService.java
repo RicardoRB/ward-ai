@@ -110,17 +110,23 @@ public class InitService {
    * updates.
    */
   public InitResult initialize(final Path start, final InitSelection selection) {
-    return initialize(start, selection, false, finding -> false);
+    return initialize(start, selection, false, false, finding -> false);
   }
 
   /**
    * Applies {@code selection}, overwriting an existing configuration when {@code overwrite} and
    * updating plugins that {@code approval} accepts. Every change is rolled back if a step fails.
    */
+  /**
+   * Applies {@code selection} as {@link #initialize(Path, InitSelection, boolean, Predicate)} does,
+   * and replaces a Turborepo member's script that differs from the plan when {@code replaceScripts}
+   * is set. Otherwise the script is kept and named in the result.
+   */
   public InitResult initialize(
       final Path start,
       final InitSelection selection,
       final boolean overwrite,
+      final boolean replaceScripts,
       final Predicate<? super CompatibilityFinding> approval) {
     LOGGER.log(Level.INFO, () -> "event=initialization-start overwrite=" + overwrite);
     final Project project = project(start);
@@ -145,7 +151,7 @@ public class InitService {
         new InitChanges(project, selection.integrations(), files, installer, catalog.get());
     boolean completed = false;
     try {
-      changes.apply(selection, gates, approval);
+      changes.apply(selection, gates, replaceScripts, approval);
       final InitResult result = writeConfiguration(project, gates, selection, changes, overwrite);
       if (!result.created()) {
         changes.rollback();
@@ -174,7 +180,8 @@ public class InitService {
    * approved} marks compatibility updates as already approved.
    */
   public InitPlan plan(final Path start, final InitSelection selection, final boolean approved) {
-    return new InitPlanner(catalog, installer, files).plan(project(start), selection, approved);
+    final Project project = project(start);
+    return new InitPlanner(catalog, installer, files).plan(project, selection, approved);
   }
 
   private InitResult writeConfiguration(

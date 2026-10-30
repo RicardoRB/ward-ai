@@ -204,6 +204,11 @@ Do not summarize it instead. Then explain it:
   one **separately**. Only if the user accepts every listed update, add
   `--accept-compatibility-updates`. If they decline, leave it out: the apply step keeps the plugin
   unchanged and reports that the gate was not reconfigured.
+- `replace <script> script (requires approval)` under a Turborepo member's `package.json`: the
+  script already runs a different command, which init would replace. Ask about these **once**, and
+  list each member, script, current and proposed command. Only if the user accepts all of them, add
+  `--replace-scripts`. If they decline, leave it out: init keeps those scripts and names each one in
+  its summary. Never add the option on your own.
 - `<gate> omitted: <tool> needs JDK <n>+; this project builds on JDK <m>` under `ward.toml`: no
   version of that gate's tool runs on the JDK that runs the build (`mvn --version` or the Gradle
   launcher JVM), so init leaves the gate out and configures the rest. Name the gate and the JDK it

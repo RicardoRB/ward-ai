@@ -8,9 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /** The agent rule lines of a Node project's tool gates, part of {@link AgentRulesTemplate}. */
 final class NodeAgentRules {
+  /** The rule for a workspace root, naming its runner as the runner shows it. */
+  private static String workspaceRule(final String runnerName) {
+    return "- This is a "
+        + runnerName
+        + " workspace. Run the gates through `ward check`, not per package: each gate runs the"
+        + " workspace runner for every package, and a package script exists only so the runner can"
+        + " run it.";
+  }
+
   private NodeAgentRules() {}
 
   /**
@@ -55,9 +65,17 @@ final class NodeAgentRules {
             "- Dependency rules (dependency-cruiser): `{command}` must pass. Fix the import that"
                 + " breaks an architecture rule; do not edit or weaken the `.dependency-cruiser.*`"
                 + " rules.");
-    return gates.stream()
-        .filter(gate -> rows.containsKey(gate.id()))
-        .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
+    final List<String> lines =
+        gates.stream()
+            .filter(gate -> rows.containsKey(gate.id()))
+            .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
+            .toList();
+    if (!project.taskRunner().isRootRunner()) {
+      return lines;
+    }
+    return Stream.concat(
+            Stream.of(workspaceRule(project.taskRunner().displayName().orElseThrow())),
+            lines.stream())
         .toList();
   }
 
