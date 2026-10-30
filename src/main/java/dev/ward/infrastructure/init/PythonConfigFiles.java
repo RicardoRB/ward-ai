@@ -1,11 +1,14 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.infrastructure.project.PythonFrameworks;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,8 +113,7 @@ final class PythonConfigFiles {
           new Own(RUFF, "ruff.toml", marker + (strict ? RUFF_STRICT : RUFF_STANDARD)));
     }
     if (ids.contains("mypy")) {
-      target(
-          targets, root, configs, new Own(MYPY, "mypy.ini", mypyContent(project, marker, strict)));
+      mypyTarget(targets, project, configs, marker, strict);
     }
     if (ids.contains("pytest")) {
       pytestTarget(project, configs, marker).ifPresent(targets::add);
@@ -125,6 +127,46 @@ final class PythonConfigFiles {
               COVERAGE, ".coveragerc", marker + (strict ? COVERAGE_STRICT : COVERAGE_STANDARD)));
     }
     return targets;
+  }
+
+  /**
+   * Adds mypy's config. A project's own config is kept, and for Django the plan warns when it lacks
+   * the plugin, since mypy then reports false errors on the models.
+   */
+  private static void mypyTarget(
+      final List<NodeConfigTarget> targets,
+      final Project project,
+      final PythonToolConfigs configs,
+      final String marker,
+      final boolean strict) {
+    final Optional<Path> userConfig = configs.userConfig(project.root(), MYPY);
+    if (project.framework() == Framework.DJANGO
+        && userConfig.isPresent()
+        && !hasDjangoPlugin(userConfig.get())) {
+      targets.add(
+          new NodeConfigTarget(
+              userConfig.get(),
+              NodeConfigTarget.Disposition.KEEP,
+              null,
+              "mypy has no Django plugin, so it reports false errors on models. Add `plugins ="
+                  + " mypy_django_plugin.main` and a [mypy.plugins.django-stubs] section with"
+                  + " django_settings_module set to the settings module."));
+      return;
+    }
+    target(
+        targets,
+        project.root(),
+        configs,
+        new Own(MYPY, "mypy.ini", mypyContent(project, marker, strict)));
+  }
+
+  /** Returns whether the config file names the Django mypy plugin. */
+  private static boolean hasDjangoPlugin(final Path config) {
+    try {
+      return Files.readString(config).contains("mypy_django_plugin");
+    } catch (IOException e) {
+      throw new WardException("Could not read " + config + ": " + e.getMessage(), e);
+    }
   }
 
   /** Returns mypy's config, with the plugin of the project's framework: Django's or pydantic's. */

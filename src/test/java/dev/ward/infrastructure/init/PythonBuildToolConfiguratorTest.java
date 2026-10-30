@@ -99,6 +99,18 @@ class PythonBuildToolConfiguratorTest {
     assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(PYPROJECT);
   }
 
+  @Test
+  void declaredToolAtAnotherMajorBlocksInitWithoutChangingTheFile() throws IOException {
+    final String declared = PYPROJECT + "dependencies = [\"mypy==1.4.0\"]\n";
+    Files.writeString(root.resolve(PYPROJECT_FILE), declared);
+    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+
+    assertThatThrownBy(() -> new PythonBuildToolConfigurator(executor).apply(uv(), GATES))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("INCOMPATIBLE mypy==1.4.0");
+    assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(declared);
+  }
+
   private Project uv() {
     return new Project(root, Language.PYTHON, BuildTool.UV, Framework.NONE);
   }

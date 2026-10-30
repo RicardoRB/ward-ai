@@ -26,6 +26,9 @@ final class PythonPackageCatalog {
   static final String HTTPX = "httpx";
   static final String PYTEST_FLASK = "pytest-flask";
 
+  /** The Python versions Ward supports, which every pinned tool runs on (the matrix proves it). */
+  static final String SUPPORTED_PYTHON = ">=3.11,<3.15";
+
   private static final Map<String, Package> PACKAGES =
       Map.ofEntries(
           Map.entry(RUFF, new Package(RUFF, "0.17.1")),
@@ -89,11 +92,26 @@ final class PythonPackageCatalog {
         .toList();
   }
 
+  /** Returns every pinned distribution. */
+  static java.util.Collection<Package> packages() {
+    return PACKAGES.values();
+  }
+
   /** One pinned distribution. */
-  record Package(String name, String version) {
+  record Package(String name, String version, String pythonRange) {
+    /** A row with the Python range the pinned version supports, which the matrix proves. */
+    Package(final String name, final String version) {
+      this(name, version, SUPPORTED_PYTHON);
+    }
+
     /** Returns the PEP 508 requirement that pins this distribution. */
     String requirement() {
       return name + "==" + version;
+    }
+
+    /** Returns the major version of the pinned release, the part a declared version must match. */
+    int major() {
+      return Integer.parseInt(version.substring(0, version.indexOf('.')));
     }
   }
 }

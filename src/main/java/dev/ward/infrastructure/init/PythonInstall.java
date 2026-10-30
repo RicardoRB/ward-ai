@@ -6,10 +6,13 @@ import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonSupport;
+import dev.ward.infrastructure.project.PyprojectDependencies;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +28,7 @@ final class PythonInstall {
   private static final String PIP_MINIMUM = "25.1";
   private static final Pattern VERSION = Pattern.compile("(\\d+)\\.(\\d+)");
   private static final String PYPROJECT = "pyproject.toml";
+  private static final Pattern VERSION_MAJOR = Pattern.compile("(\\d+)\\.");
 
   private PythonInstall() {}
 
@@ -42,10 +46,52 @@ final class PythonInstall {
               + " .venv`, then run init again.");
     }
     managerTooOld(project, executor).ifPresent(problems::add);
+    problems.addAll(declaredOutsideRange(project));
     return problems;
   }
 
-  /** Returns the blocking reason when the manager's version is below the minimum it can install. */
+  /**
+   * Returns a blocking reason for each managed tool the project declares at a major version other
+   * than the one Ward verified; init then stops without changing the declaration.
+   */
+  private static List<String> declaredOutsideRange(final Project project) {
+    final Path file = project.root().resolve(PYPROJECT);
+    if (!Files.isRegularFile(file)) {
+      return List.of();
+    }
+    final Map<String, String> declared;
+    try {
+      declared = PyprojectDependencies.requirements(Files.readString(file));
+    } catch (IOException e) {
+      throw new WardException("Could not read " + file + ": " + e.getMessage(), e);
+    }
+    return PythonPackageCatalog.packages().stream()
+        .filter(tool -> declared.containsKey(PyprojectDependencies.normalize(tool.name())))
+        .filter(
+            tool ->
+                !declaredMajor(declared.get(PyprojectDependencies.normalize(tool.name())))
+                    .equals(String.valueOf(tool.major())))
+        .map(
+            tool ->
+                "INCOMPATIBLE "
+                    + declared.get(PyprojectDependencies.normalize(tool.name()))
+                    + ": Ward verified "
+                    + tool.name()
+                    + " "
+                    + tool.version()
+                    + "; declare a "
+                    + tool.major()
+                    + ".x version, or remove the requirement so init can pin one.")
+        .toList();
+  }
+
+  /** Returns the first major version in a requirement, or empty when it names none. */
+  private static String declaredMajor(final String requirement) {
+    final Matcher version = VERSION_MAJOR.matcher(requirement);
+    return version.find() ? version.group(1) : "";
+  }
+
+  /** Returns the reason when the manager\'s version is below the minimum it can install. */
   private static Optional<String> managerTooOld(
       final Project project, final CommandExecutor executor) {
     final Path root = project.root();

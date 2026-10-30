@@ -1,8 +1,10 @@
 package dev.ward.infrastructure.project;
 
 import dev.ward.domain.config.WardException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -36,6 +38,32 @@ public final class PyprojectDependencies {
       groups.keySet().forEach(group -> addPoetry(names, parsed.getTable(poetryGroup(group))));
     }
     return names;
+  }
+
+  /**
+   * Returns each declared distribution in {@code toml} with its full requirement, by normalized
+   * name.
+   */
+  public static Map<String, String> requirements(final String toml) {
+    final Map<String, String> requirements = new HashMap<>();
+    final TomlParseResult parsed = parse(toml);
+    collect(requirements, parsed.getArray("project.dependencies"));
+    final TomlTable groups = parsed.getTable("dependency-groups");
+    if (groups != null) {
+      groups.keySet().forEach(key -> collect(requirements, groups.getArray(key)));
+    }
+    return requirements;
+  }
+
+  private static void collect(final Map<String, String> requirements, final TomlArray items) {
+    if (items == null) {
+      return;
+    }
+    for (final Object item : items.toList()) {
+      if (item instanceof String text) {
+        nameOf(text).ifPresent(name -> requirements.putIfAbsent(name, text));
+      }
+    }
   }
 
   /** Returns the normalized name of a PEP 508 requirement, or empty when it has none. */
