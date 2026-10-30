@@ -581,14 +581,14 @@ Before writing, init checks each package it would add against the project's Node
 
 ## Python projects
 
-Init sets up uv, Poetry, and pip projects with the `standard` preset. PDM and Hatch projects are not
-supported yet, and init stops with an error that names the manager.
+Init sets up uv, Poetry, and pip projects with the `standard` or `strict` preset. PDM and Hatch
+projects are not supported yet, and init stops with an error that names the manager.
 
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
   `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
   `standard` selects `ruff-format`, `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%).
-  `pip-audit` is opt-in. `--preset strict` is refused for now.
+  `pip-audit` is opt-in.
 - Ward writes `ruff.toml`, `mypy.ini`, and `.coveragerc` only where the project has none. A config the
   project keeps is never changed; its coverage threshold goes on the command instead.
 - Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
@@ -597,6 +597,12 @@ supported yet, and init stops with an error that names the manager.
   pip also installs the project itself, as `uv sync` and `poetry install` do.
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
+- `strict` adds `import-linter` and `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
+  and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
+  project's own. `mutmut` runs in `ci` with a 60% minimum.
+- An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
+  The root package comes from `[project] name` under `src/`. Init stops when it finds no single
+  root package.
 
 ## Tools init can install
 

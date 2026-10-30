@@ -16,13 +16,17 @@ import javax.inject.Inject;
 public final class ToolchainArchitectureRules implements ArchitectureTestGeneration {
   private final ArchitectureTestGenerator jvm;
   private final DependencyCruiserConfigGenerator node;
+  private final ImportLinterConfigGenerator python;
 
   /** Creates the router that Dagger injects. */
   @Inject
   public ToolchainArchitectureRules(
-      final ArchitectureTestGenerator jvm, final DependencyCruiserConfigGenerator node) {
+      final ArchitectureTestGenerator jvm,
+      final DependencyCruiserConfigGenerator node,
+      final ImportLinterConfigGenerator python) {
     this.jvm = jvm;
     this.node = node;
+    this.python = python;
   }
 
   @Override
@@ -68,6 +72,7 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
   ArchitectureTestGeneration generator(final Toolchain toolchain) {
     return switch (toolchain) {
       case NODE -> node;
+      case PYTHON -> python;
       case JVM -> jvm;
       default -> jvm;
     };

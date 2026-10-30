@@ -14,7 +14,7 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
   private static final List<String> STANDARD =
       List.of("ruff-format", "ruff", "mypy", "pytest", "coverage");
   private static final List<String> STRICT =
-      List.of("ruff-format", "ruff", "mypy", "pytest", "coverage", "mutmut");
+      List.of("ruff-format", "ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
 
   @Override
   public List<InitGateOption> analysisGates(final PythonTools python) {
@@ -49,6 +49,11 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
             "pip-audit",
             "Audits the installed dependencies for known vulnerabilities (opt-in).",
             python.command("pip-audit")));
+    gates.add(
+        python.option(
+            "import-linter",
+            "Checks the architecture style's import contracts with import-linter.",
+            python.command("lint-imports")));
     gates.add(
         python.option(
             "mutmut",

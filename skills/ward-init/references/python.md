@@ -28,9 +28,17 @@ Everything here is read-only until the user approves the plan.
 | `coverage` | `coverage report`, `--fail-under=80` with a user config | yes |
 | `pip-audit` | `pip-audit` in `ci` | no, opt-in |
 
-Only `standard` is offered for Python. `--preset strict` is refused with a suggestion to use
-`standard`; strict arrives in a later change. Each command runs through the manager: `uv run --group
-ward`, `poetry run`, or `.venv/bin/`.
+`strict` adds `import-linter` (an architecture style's import contracts, `lint-imports`) and `mutmut`
+(mutation testing in `ci`, with a 60% minimum). It also turns on mypy's strict mode, Ruff's C90 and
+extra rule sets with complexity 10, and branch coverage with an 85% total. A project's own Ruff,
+mypy or coverage config is kept unchanged, and the same settings go on the commands instead. Each
+command runs through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/`.
+
+Architecture: when `import-linter` is selected, init asks for the style (`layered`, `hexagonal` or
+`clean`, default `layered`) and writes `.importlinter` with contracts that match the Java and Node
+rules. A project's own `.importlinter`, `[tool.importlinter]` or `setup.cfg` section is kept. The
+root package comes from `[project] name` under `src/`, or the only package there. Init stops when it
+cannot find one.
 
 ## Plan lines
 

@@ -36,6 +36,9 @@ final class PythonAgentRules {
                 + "% minimum"
                 + (preset == QualityPreset.STRICT ? " of lines and branches" : " of lines")
                 + "; do not lower it.",
+            "import-linter",
+            "- Import rules (import-linter): `{command}` must pass. Fix the import that breaks a"
+                + " contract; do not edit or weaken the `.importlinter` contracts.",
             "mutmut",
             "- Mutation testing (mutmut): `{command}` in `ci` must score at least 60%; kill the"
                 + " surviving mutants with tests, do not weaken the code under test.",
