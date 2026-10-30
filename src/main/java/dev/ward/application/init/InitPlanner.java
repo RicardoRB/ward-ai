@@ -9,7 +9,6 @@ import dev.ward.domain.init.OpenSpecDistribution;
 import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +84,7 @@ final class InitPlanner {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved) {
-    if (project.taskRunner() != TaskRunner.TURBO) {
+    if (!project.taskRunner().isRootRunner()) {
       return List.of();
     }
     final List<PlannedFileChange> changes = new ArrayList<>();

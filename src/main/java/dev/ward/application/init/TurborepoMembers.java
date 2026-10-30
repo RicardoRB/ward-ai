@@ -9,7 +9,6 @@ import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.init.TurboWorkspace;
 import dev.ward.domain.init.TurboWorkspaceChange;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ final class TurborepoMembers {
   /** Returns the member plans of {@code root}, or none when it is not a Turborepo root. */
   static List<TurborepoPlan.MemberPlan> plan(
       final Project root, final QualityPreset preset, final InitInputs inputs) {
-    return root.taskRunner() == TaskRunner.TURBO
+    return root.taskRunner().isRootRunner()
         ? TurborepoPlan.memberScripts(root, preset, inputs)
         : List.of();
   }
@@ -104,7 +103,7 @@ final class TurborepoMembers {
       final QualityPreset preset,
       final boolean replaceScripts,
       final Predicate<? super CompatibilityFinding> approval) {
-    if (root.taskRunner() != TaskRunner.TURBO) {
+    if (!root.taskRunner().isRootRunner()) {
       return;
     }
     final List<TurborepoPlan.MemberPlan> members = plan(root, preset, inputs);

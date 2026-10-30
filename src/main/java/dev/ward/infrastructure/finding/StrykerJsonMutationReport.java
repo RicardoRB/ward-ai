@@ -6,7 +6,6 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.WorkspaceMember;
 import dev.ward.domain.project.WorkspaceMembers;
 import java.io.IOException;
@@ -48,7 +47,7 @@ public final class StrykerJsonMutationReport implements MutationReport {
 
   @Override
   public MutationCounts read(final Project project, final Instant since) {
-    return project.taskRunner() == TaskRunner.TURBO
+    return project.taskRunner().isRootRunner()
         ? readMembers(project, since)
         : readOne(project.root().resolve(REPORT), since);
   }

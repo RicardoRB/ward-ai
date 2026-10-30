@@ -2,7 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.application.init.PartialCheckDefaults.Table;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +28,8 @@ final class TurboPartialDefaults {
    * package. Empty for any other gate or project.
    */
   static Optional<Table> forGate(final String gate, final Project project) {
-    if (project.taskRunner() != TaskRunner.TURBO || !LINT_GATES.contains(gate)) {
+    final Optional<TaskRunnerStrategy> strategy = TaskRunnerStrategies.of(project);
+    if (!project.taskRunner().isRootRunner() || strategy.isEmpty() || !LINT_GATES.contains(gate)) {
       return Optional.empty();
     }
     return Optional.of(
@@ -45,8 +45,8 @@ final class TurboPartialDefaults {
                 ".biome.json",
                 ".biome.jsonc"),
             List.of("{paths}"),
-            "--filter=...{package}",
+            strategy.get().packageFilter(),
             null,
-            TurborepoPlan.turboCommand(project.buildTool(), TurborepoPlan.LINT)));
+            strategy.get().rootTaskCommand(project.buildTool(), TurborepoPlan.LINT)));
   }
 }

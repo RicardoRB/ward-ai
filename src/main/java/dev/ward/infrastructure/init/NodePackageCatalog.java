@@ -194,22 +194,21 @@ final class NodePackageCatalog {
    */
   static List<Package> missing(
       final Language language, final List<InitGateOption> gates, final PackageManifest manifest) {
-    return missing(language, gates, manifest, false);
+    return missing(language, gates, manifest, Optional.empty());
   }
 
   /**
-   * Returns the packages {@link #missing(Language, List, PackageManifest)} returns, plus turbo when
-   * {@code turborepo} is set, the root of a Turborepo workspace runs its tasks.
+   * Returns the packages {@link #missing(Language, List, PackageManifest)} returns, plus the task
+   * runner's package when {@code runnerPackage} is present: the root of a workspace runs its tasks
+   * with it.
    */
   static List<Package> missing(
       final Language language,
       final List<InitGateOption> gates,
       final PackageManifest manifest,
-      final boolean turborepo) {
+      final Optional<String> runnerPackage) {
     final Set<String> names = new LinkedHashSet<>();
-    if (turborepo) {
-      names.add(TURBO);
-    }
+    runnerPackage.ifPresent(names::add);
     gates.forEach(gate -> names.addAll(packages(language, gate.id())));
     if (names.contains(STRYKER_CORE)) {
       gates.stream()

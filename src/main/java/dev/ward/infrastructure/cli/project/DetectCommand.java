@@ -3,7 +3,6 @@ package dev.ward.infrastructure.cli.project;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.cli.ProjectOptions;
 import dev.ward.infrastructure.cli.VersionProvider;
@@ -59,9 +58,7 @@ public class DetectCommand implements Callable<Integer> {
     }
     output().printf("Build tool:   %s%n", p.buildTool().displayName());
     output().printf("Framework:    %s%n", p.framework().displayName());
-    if (p.taskRunner() == TaskRunner.TURBO) {
-      output().println("Task runner:  Turborepo");
-    }
+    p.taskRunner().displayName().ifPresent(name -> output().println("Task runner:  " + name));
     if (p.language() == Language.TYPESCRIPT || p.language() == Language.JAVASCRIPT) {
       output().printf("Node:         %s%n", p.languageVersion());
     }

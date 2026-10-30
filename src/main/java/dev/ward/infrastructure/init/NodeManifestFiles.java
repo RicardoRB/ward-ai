@@ -4,7 +4,6 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +32,7 @@ final class NodeManifestFiles {
   static List<NodePackageCatalog.Package> missing(
       final Project project, final List<InitGateOption> gates, final PackageManifest manifest) {
     return NodePackageCatalog.missing(
-        project.language(), gates, manifest, project.taskRunner() == TaskRunner.TURBO);
+        project.language(), gates, manifest, project.taskRunner().packageName());
   }
 
   static Map<String, String> versions(final List<NodePackageCatalog.Package> packages) {

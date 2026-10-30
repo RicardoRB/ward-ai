@@ -6,7 +6,6 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    if (project.taskRunner() == TaskRunner.TURBO) {
+    if (project.taskRunner().isRootRunner()) {
       return turborepoGates(project, preset, inputs);
     }
     final NodeTools tools =
@@ -28,7 +27,7 @@ final class NodeInitSupport implements ToolchainInitSupport {
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    if (project.taskRunner() == TaskRunner.TURBO) {
+    if (project.taskRunner().isRootRunner()) {
       final NodeLinting linting =
           NodeLinting.of(project, inputs.manifests().read(project.root()), inputs.configs());
       return languages(project, TurborepoPlan.testGate(project, inputs), linting)
@@ -54,7 +53,9 @@ final class NodeInitSupport implements ToolchainInitSupport {
     refuseBiomeForAngular(project, tools);
     return new Gates(
         TurborepoPlan.rootGates(
-            languages(project, testGate, linting).analysisGates(tools), project.buildTool()),
+            languages(project, testGate, linting).analysisGates(tools),
+            TaskRunnerStrategies.of(project).orElseThrow(),
+            project.buildTool()),
         List.of());
   }
 

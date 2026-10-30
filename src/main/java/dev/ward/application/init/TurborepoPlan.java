@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Plans a Turborepo workspace. Each per-source gate of the root runs its turbo task, and each
@@ -25,9 +24,6 @@ final class TurborepoPlan {
   static final String LINT = "lint";
   static final String TEST = "test";
   static final String MUTATION = "mutation";
-  private static final List<String> TURBO_FLAGS =
-      List.of("--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream");
-
   private static final Map<String, String> TASK_BY_GATE =
       Map.ofEntries(
           Map.entry("tsc", CHECK_TYPES),
@@ -105,13 +101,17 @@ final class TurborepoPlan {
   }
 
   /**
-   * Returns the root's analysis gates: each task gate runs {@code turbo run <task>} through the
-   * package manager, and the others are unchanged.
+   * Returns the root's analysis gates: each task gate runs its task through {@code strategy}, and
+   * the others are unchanged.
    */
   static List<InitGateOption> rootGates(
-      final List<InitGateOption> analysis, final BuildTool manager) {
+      final List<InitGateOption> analysis,
+      final TaskRunnerStrategy strategy,
+      final BuildTool manager) {
     return analysis.stream()
-        .map(gate -> taskOf(gate.id()).map(task -> turboGate(gate, task, manager)).orElse(gate))
+        .map(
+            gate ->
+                taskOf(gate.id()).map(task -> rootGate(gate, task, strategy, manager)).orElse(gate))
         .toList();
   }
 
@@ -161,19 +161,15 @@ final class TurborepoPlan {
     return command.subList(NodeTools.runner(manager).size(), command.size());
   }
 
-  /** Returns the command that runs {@code task} for every package through {@code turbo run}. */
-  static List<String> turboCommand(final BuildTool manager, final String task) {
-    final String[] arguments =
-        Stream.concat(Stream.of("turbo", "run", task), TURBO_FLAGS.stream()).toArray(String[]::new);
-    return NodeTools.command(manager, arguments);
-  }
-
-  private static InitGateOption turboGate(
-      final InitGateOption gate, final String task, final BuildTool manager) {
+  private static InitGateOption rootGate(
+      final InitGateOption gate,
+      final String task,
+      final TaskRunnerStrategy strategy,
+      final BuildTool manager) {
     return new InitGateOption(
         gate.id(),
         gate.description(),
-        turboCommand(manager, task),
+        strategy.rootTaskCommand(manager, task),
         gate.available(),
         gate.availabilityMessage(),
         gate.settings());
