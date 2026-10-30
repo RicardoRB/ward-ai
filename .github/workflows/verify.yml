@@ -26,6 +26,33 @@ env:
   OPENSPEC_VERSION: 1.14.1
 
 jobs:
+  # Pull requests that change only website, openspec or Markdown files skip the native checks.
+  changes:
+    name: Code changes
+    runs-on: ubuntu-24.04
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether the native checks run
+        id: filter
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          code=true
+          if [ "$EVENT" = pull_request ]; then
+            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
+              code=false
+            fi
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
   quality:
     name: Ward ci profile
     runs-on: ubuntu-24.04
@@ -54,6 +81,14 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+
+      - name: Restore gate tool caches
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.npm
+          key: gate-tools-${{ env.SEMGREP_VERSION }}-${{ env.OPENSPEC_VERSION }}
 
       - name: Install gate tools
         run: |
@@ -312,7 +347,8 @@ jobs:
 
   native:
     name: Native checks (${{ matrix.os }})
-    needs: quality
+    needs: [quality, changes]
+    if: ${{ success() && needs.changes.outputs.code == 'true' }}
     strategy:
       fail-fast: false
       matrix:

@@ -1,11 +1,5 @@
 version = 2
 
-[checks.compile]
-enabled = true
-# Not in pre-push: the tests gate compiles anyway.
-profiles = ["ci"]
-command = "./mvnw compile"
-
 [checks.tests]
 enabled = true
 profiles = ["pre-push", "ci"]
