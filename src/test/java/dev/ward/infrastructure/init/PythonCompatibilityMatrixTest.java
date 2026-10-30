@@ -61,7 +61,7 @@ class PythonCompatibilityMatrixTest {
     copyTree(FIXTURES.resolve(fixture), project);
     Files.writeString(project.resolve(".python-version"), python + "\n");
     pinPackages(project, cell.size() > PACKAGES_COLUMN ? cell.getString(PACKAGES_COLUMN) : "");
-    prepareManager(manager, project, env);
+    prepareManager(manager, find(python), project, env);
 
     final Run init =
         run(env, project, "init", "--preset", preset, "--integration", "none", "--yes");
@@ -138,10 +138,13 @@ class PythonCompatibilityMatrixTest {
    * env.
    */
   private static void prepareManager(
-      final String manager, final Path project, final Map<String, String> env)
+      final String manager,
+      final String interpreter,
+      final Path project,
+      final Map<String, String> env)
       throws IOException, InterruptedException {
     if (PIP.equals(manager)) {
-      assertThat(exec(env, project, List.of("python3", "-m", "venv", ".venv")).exit()).isZero();
+      assertThat(exec(env, project, List.of(interpreter, "-m", "venv", ".venv")).exit()).isZero();
       assertThat(
               exec(
                       env,
@@ -156,7 +159,7 @@ class PythonCompatibilityMatrixTest {
                   .exit())
           .isZero();
     } else if (POETRY.equals(manager)) {
-      assertThat(exec(env, project, List.of("poetry", "env", "use", "python3")).exit()).isZero();
+      assertThat(exec(env, project, List.of("poetry", "env", "use", interpreter)).exit()).isZero();
     }
   }
 
