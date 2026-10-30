@@ -22,16 +22,26 @@ public final class PythonFrameworks {
   private static final String PYPROJECT = "pyproject.toml";
   private static final String MANAGE = "manage.py";
   private static final String DJANGO = "django";
+  private static final String FASTAPI = "fastapi";
+  private static final String FLASK = "flask";
   private static final Pattern SETTINGS =
       Pattern.compile("DJANGO_SETTINGS_MODULE[\"'],\\s*[\"']([\\w.]+)");
 
   private PythonFrameworks() {}
 
-  /** Returns the framework of the project at {@code dir}; Django is declared or has a manage.py. */
+  /**
+   * Returns the framework of the project at {@code dir}, first match wins: Django (declared or a
+   * manage.py), then FastAPI, then Flask.
+   */
   public static Framework of(final Path dir) {
-    return declared(dir).contains(DJANGO) || Files.isRegularFile(dir.resolve(MANAGE))
-        ? Framework.DJANGO
-        : Framework.NONE;
+    final Set<String> declared = declared(dir);
+    if (declared.contains(DJANGO) || Files.isRegularFile(dir.resolve(MANAGE))) {
+      return Framework.DJANGO;
+    }
+    if (declared.contains(FASTAPI)) {
+      return Framework.FASTAPI;
+    }
+    return declared.contains(FLASK) ? Framework.FLASK : Framework.NONE;
   }
 
   /**

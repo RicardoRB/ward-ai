@@ -23,18 +23,22 @@ final class PythonPackageCatalog {
   static final String IMPORT_LINTER = "import-linter";
   static final String PYTEST_DJANGO = "pytest-django";
   static final String DJANGO_STUBS = "django-stubs";
+  static final String HTTPX = "httpx";
+  static final String PYTEST_FLASK = "pytest-flask";
 
   private static final Map<String, Package> PACKAGES =
-      Map.of(
-          RUFF, new Package(RUFF, "0.17.1"),
-          MYPY, new Package(MYPY, "2.4.0"),
-          PYTEST, new Package(PYTEST, "9.1.1"),
-          COVERAGE, new Package(COVERAGE, "7.16.2"),
-          PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1"),
-          MUTMUT, new Package(MUTMUT, "3.8.0"),
-          IMPORT_LINTER, new Package(IMPORT_LINTER, "2.15"),
-          PYTEST_DJANGO, new Package(PYTEST_DJANGO, "4.14.0"),
-          DJANGO_STUBS, new Package(DJANGO_STUBS, "6.1.2"));
+      Map.ofEntries(
+          Map.entry(RUFF, new Package(RUFF, "0.17.1")),
+          Map.entry(MYPY, new Package(MYPY, "2.4.0")),
+          Map.entry(PYTEST, new Package(PYTEST, "9.1.1")),
+          Map.entry(COVERAGE, new Package(COVERAGE, "7.16.2")),
+          Map.entry(PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1")),
+          Map.entry(MUTMUT, new Package(MUTMUT, "3.8.0")),
+          Map.entry(IMPORT_LINTER, new Package(IMPORT_LINTER, "2.15")),
+          Map.entry(PYTEST_DJANGO, new Package(PYTEST_DJANGO, "4.14.0")),
+          Map.entry(DJANGO_STUBS, new Package(DJANGO_STUBS, "6.1.2")),
+          Map.entry(HTTPX, new Package(HTTPX, "0.28.1")),
+          Map.entry(PYTEST_FLASK, new Package(PYTEST_FLASK, "1.3.0")));
 
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
@@ -49,8 +53,14 @@ final class PythonPackageCatalog {
           "import-linter", List.of(IMPORT_LINTER));
 
   /** The extra distributions Django projects need: the test plugin and the type stubs. */
-  private static final Map<String, List<String>> DJANGO_TOOLS =
-      Map.of("pytest", List.of(PYTEST_DJANGO), "mypy", List.of(DJANGO_STUBS));
+  private static final Map<Framework, Map<String, List<String>>> FRAMEWORK_TOOLS =
+      Map.of(
+          Framework.DJANGO,
+          Map.of("pytest", List.of(PYTEST_DJANGO), "mypy", List.of(DJANGO_STUBS)),
+          Framework.FASTAPI,
+          Map.of("pytest", List.of(HTTPX)),
+          Framework.FLASK,
+          Map.of("pytest", List.of(PYTEST_FLASK)));
 
   private PythonPackageCatalog() {}
 
@@ -70,9 +80,8 @@ final class PythonPackageCatalog {
       final List<InitGateOption> gates, final Set<String> declared, final Framework framework) {
     final Set<String> names = new LinkedHashSet<>();
     gates.forEach(gate -> names.addAll(GATE_TOOLS.getOrDefault(gate.id(), List.of())));
-    if (framework == Framework.DJANGO) {
-      gates.forEach(gate -> names.addAll(DJANGO_TOOLS.getOrDefault(gate.id(), List.of())));
-    }
+    final Map<String, List<String>> extra = FRAMEWORK_TOOLS.getOrDefault(framework, Map.of());
+    gates.forEach(gate -> names.addAll(extra.getOrDefault(gate.id(), List.of())));
     return names.stream()
         .filter(name -> !declared.contains(name))
         .map(PACKAGES::get)

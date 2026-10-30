@@ -37,12 +37,30 @@ class PythonFrameworksTest {
   }
 
   @Test
-  void projectWithoutDjangoIsNotDjango() throws IOException {
+  void projectWithoutAFrameworkIsNone() throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"shop\"\ndependencies = [\"fastapi\"]\n");
+        "[project]\nname = \"shop\"\ndependencies = [\"requests\"]\n");
 
     assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.NONE);
+  }
+
+  @Test
+  void fastapiDeclaredIsFastApi() throws IOException {
+    Files.writeString(
+        root.resolve("pyproject.toml"),
+        "[project]\nname = \"app\"\ndependencies = [\"fastapi==0.143.2\"]\n");
+
+    assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.FASTAPI);
+  }
+
+  @Test
+  void flaskDeclaredIsFlaskUnlessDjangoOrFastapiToo() throws IOException {
+    Files.writeString(root.resolve("requirements.txt"), "Flask==3.1.3\n");
+    assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.FLASK);
+
+    Files.writeString(root.resolve("requirements.txt"), "Flask==3.1.3\nfastapi==0.143.2\n");
+    assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.FASTAPI);
   }
 
   @Test

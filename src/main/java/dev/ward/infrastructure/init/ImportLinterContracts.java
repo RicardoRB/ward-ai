@@ -13,6 +13,8 @@ import java.util.Set;
  */
 final class ImportLinterContracts {
   private static final String MARKER = "# managed-by: ward\n";
+  private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
+  private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
   private static final int MIN_FEATURES = 2;
 
   /** The layers of a style: sources may not import the forbidden layers. */
@@ -26,7 +28,7 @@ final class ImportLinterContracts {
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
     final List<String> roots = PythonPackages.roots(project);
-    final Layers layers = layers(architecture);
+    final Layers layers = layers(architecture, project.framework());
     final Set<String> names = Set.copyOf(concat(layers.sources(), layers.forbidden()));
     return MARKER
         + "[importlinter]\n"
@@ -58,11 +60,17 @@ final class ImportLinterContracts {
   private static String independence(
       final Project project, final List<String> roots, final Set<String> layers) {
     final List<String> features =
-        project.framework() == Framework.DJANGO
-            ? PythonPackages.djangoApps(project)
-            : PythonPackages.features(project, roots.getFirst(), layers).stream()
-                .map(feature -> roots.getFirst() + "." + feature)
-                .toList();
+        switch (project.framework()) {
+          case DJANGO -> PythonPackages.djangoApps(project);
+          case FLASK ->
+              FlaskPackages.blueprints(project, roots.getFirst()).stream()
+                  .map(feature -> roots.getFirst() + "." + feature)
+                  .toList();
+          default ->
+              PythonPackages.features(project, roots.getFirst(), layers).stream()
+                  .map(feature -> roots.getFirst() + "." + feature)
+                  .toList();
+        };
     if (features.size() < MIN_FEATURES) {
       return "";
     }
@@ -98,7 +106,18 @@ final class ImportLinterContracts {
         : "";
   }
 
-  private static Layers layers(final String architecture) {
+  /** Returns a style's layers, with FastAPI's router and repository package names when FastAPI. */
+  private static Layers layers(final String architecture, final Framework framework) {
+    final Layers base = baseLayers(architecture);
+    if (framework != Framework.FASTAPI) {
+      return base;
+    }
+    return new Layers(
+        concat(base.sources(), FASTAPI_CONTROLLERS),
+        concat(base.forbidden(), FASTAPI_REPOSITORIES));
+  }
+
+  private static Layers baseLayers(final String architecture) {
     return switch (architecture) {
       case "hexagonal" ->
           new Layers(List.of("domain", "application"), List.of("adapter", "infrastructure"));

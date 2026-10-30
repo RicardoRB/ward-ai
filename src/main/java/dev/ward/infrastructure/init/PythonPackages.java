@@ -91,7 +91,7 @@ final class PythonPackages {
   }
 
   /** Returns the names of the packages directly inside {@code dir}, sorted. */
-  private static List<String> packages(final Path dir) {
+  static List<String> packages(final Path dir) {
     if (!Files.isDirectory(dir)) {
       return List.of();
     }

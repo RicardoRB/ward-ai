@@ -75,6 +75,22 @@ When mutmut is selected, `[tool.mutmut]` must name the code and tests, for examp
 ["orders"]`, `tests_dir = ["orders/"]`, and `also_copy` for the settings package and the other apps.
 mutmut copies only those paths, and Django fails to start without the settings.
 
+## FastAPI
+
+A project that declares `fastapi` (and not Django) is a FastAPI project. Init adds `httpx` for
+`TestClient` when the project does not declare it, and a Ward `mypy.ini` that enables the pydantic
+plugin (`init_typed = True`). Under `layered` (and the other styles), packages named `routers`, `api`
+or `endpoints` count as controllers, and `repositories` or `crud` as repositories. A route must not
+reach a repository even through a service: the contract is transitive, as in the Java and Node rules.
+Business logic goes in plain functions, because mutmut does not count calls through a decorated route.
+
+## Flask
+
+A project that declares `flask` (and neither Django nor FastAPI) is a Flask project. Init adds
+`pytest-flask` only when the root package defines `create_app`. Under strict, each package that
+creates a `Blueprint` is an independence feature, so blueprints may not import one another. The
+`pytest-flask` `app` fixture is the project's, in its `conftest.py`.
+
 ## Agent rules
 
 Init writes one rule line per gate. They forbid `# noqa`, `# type: ignore`, and `per-file-ignores`,

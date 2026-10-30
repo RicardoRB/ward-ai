@@ -120,7 +120,13 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
             ? PyprojectDependencies.declared(original)
             : PythonRequirementsFile.declaredNames(root);
     final List<PythonPackageCatalog.Package> missing =
-        PythonPackageCatalog.missing(gates, declared, project.framework());
+        PythonPackageCatalog.missing(gates, declared, project.framework()).stream()
+            // pytest-flask needs an app factory; a Flask app without one imports its app directly.
+            .filter(
+                tool ->
+                    !PythonPackageCatalog.PYTEST_FLASK.equals(tool.name())
+                        || FlaskPackages.hasAppFactory(project))
+            .toList();
     final boolean buildSystem =
         pyproject && PyprojectDependencies.parse(original).contains("build-system");
     if (missing.isEmpty()) {

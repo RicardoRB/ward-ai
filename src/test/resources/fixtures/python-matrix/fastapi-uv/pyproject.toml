@@ -1,0 +1,11 @@
+[project]
+name = "app"
+version = "0.1.0"
+requires-python = ">=3.11,<3.15"
+dependencies = ["fastapi==0.143.2"]
+
+[tool.uv]
+
+[tool.mutmut]
+source_paths = ["app"]
+tests_dir = ["tests/"]

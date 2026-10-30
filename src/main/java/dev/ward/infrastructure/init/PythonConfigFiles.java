@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.infrastructure.project.PythonFrameworks;
@@ -23,6 +24,10 @@ final class PythonConfigFiles {
   static final String PYTEST = "pytest";
   private static final String PYPROJECT = "pyproject.toml";
   private static final Set<String> SHARED_FILES = Set.of(PYPROJECT, "setup.cfg", "tox.ini");
+
+  // The pydantic plugin checks models and their fields, which plain mypy checks only in part.
+  private static final String PYDANTIC_MYPY =
+      "plugins = pydantic.mypy\n\n[pydantic-mypy]\ninit_typed = True\nwarn_required_dynamic_aliases = True\n";
 
   private static final String RUFF_STANDARD =
       """
@@ -122,10 +127,13 @@ final class PythonConfigFiles {
     return targets;
   }
 
-  /** Returns mypy's config, with the Django plugin when the project is Django. */
+  /** Returns mypy's config, with the plugin of the project's framework: Django's or pydantic's. */
   private static String mypyContent(
       final Project project, final String marker, final boolean strict) {
     final String mypy = marker + (strict ? MYPY_STRICT : MYPY_STANDARD);
+    if (project.framework() == Framework.FASTAPI) {
+      return mypy + PYDANTIC_MYPY;
+    }
     return PythonFrameworks.djangoSettings(project.root(), project.framework())
         .map(settings -> mypy + djangoMypy(settings))
         .orElse(mypy);
