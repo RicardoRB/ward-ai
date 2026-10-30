@@ -19,7 +19,6 @@ import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.project.FileSystemNodeSources;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
-import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -81,6 +80,15 @@ final class InitCommandFixture {
     return new InitCommandFixture(root, false, tools);
   }
 
+  /**
+   * Runs init in a repository whose root is not a project, with {@code executables} on the PATH.
+   */
+  static InitCommandFixture repository(
+      final Path root, final BuildToolConfiguration tools, final String... executables)
+      throws IOException {
+    return new InitCommandFixture(root, false, tools, executables);
+  }
+
   /** Runs init with piped input. */
   int run(final String input, final String... args) {
     return run(false, input, args);
@@ -93,17 +101,23 @@ final class InitCommandFixture {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(new ClaudeCodeIntegration()),
             new InitSetupCatalog(
-                new FakeEnvironmentInspection(executables),
-                new NodeInputs(
-                    new FileSystemPackageManifests(),
-                    new FileSystemNodeSources(),
-                    new FileSystemNodeToolConfigs()),
+                new dev.ward.application.init.InitPorts(
+                    new FakeEnvironmentInspection(executables),
+                    new NodeInputs(
+                        new dev.ward.infrastructure.project.FileSystemPackageManifests(),
+                        new FileSystemNodeSources(),
+                        new FileSystemNodeToolConfigs()),
+                    buildTools,
+                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),
             new InitProjectFiles(
                 buildTools,
-                new PresetRuleFileWriter(),
+                new PresetRuleFileWriter(
+                    new dev.ward.infrastructure.project.FileSystemPackageManifests(),
+                    new FileSystemNodeToolConfigs(),
+                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
                 new ArchitectureTestGenerator(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));

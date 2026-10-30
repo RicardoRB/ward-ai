@@ -18,29 +18,30 @@ class InitUnsupportedToolchainTest {
   @Test
   void projectOfAnUnsupportedToolchainFailsWithoutChangingFiles() throws IOException {
     final InitCommandFixture init = InitCommandFixture.repository(root);
-    Files.writeString(root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\n");
+    Files.writeString(root.resolve("go.mod"), "module demo\n");
     final Map<String, String> before = ProjectSnapshot.of(root);
 
     final int exit = init.run("", "--integration", "none", "--gate", "tests", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output())
-        .contains("pip")
-        .doesNotContain("Poetry")
-        .contains("Ward init supports Maven, Gradle, TypeScript and JavaScript projects");
+        .contains("Go")
+        .contains(
+            "Ward init supports Maven, Gradle, TypeScript, JavaScript and Python (uv, Poetry, pip) projects");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 
   @Test
-  void poetryProjectFailsNamingPoetryWithoutChangingFiles() throws IOException {
+  void pdmProjectFailsNamingPdmWithoutChangingFiles() throws IOException {
     final InitCommandFixture init = InitCommandFixture.repository(root);
-    Files.writeString(root.resolve("pyproject.toml"), "[tool.poetry]\nname = \"demo\"\n");
+    Files.writeString(root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\n");
+    Files.writeString(root.resolve("pdm.lock"), "");
     final Map<String, String> before = ProjectSnapshot.of(root);
 
     final int exit = init.run("", "--integration", "none", "--gate", "tests", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output()).contains("Poetry");
+    assertThat(init.output()).contains("PDM");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 

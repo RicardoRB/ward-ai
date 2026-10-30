@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 
 /** Explains why init does not offer a supported gate for a project. */
@@ -39,7 +40,29 @@ final class GateOffers {
           id
               + " checks a committed OpenAPI spec, so it is offered only when Git tracks"
               + " openapi.yml, openapi.yaml, or openapi.json in src/main/resources or the project"
-              + " root.");
+              + " root."
+              + (project.framework() == Framework.FASTAPI
+                  ? fastApiExport(environment, project)
+                  : ""));
     }
+  }
+
+  /**
+   * Returns the sentence that names how to export a FastAPI app's document: {@code app.openapi()}
+   * is the document the app serves at {@code /openapi.json}. Ward does not run it.
+   */
+  private static String fastApiExport(
+      final EnvironmentInspection environment, final Project project) {
+    final String target = environment.fastApiApp(project.root()).orElse("<module>:<app>");
+    final String module = target.substring(0, target.indexOf(':'));
+    final String attribute = target.substring(target.indexOf(':') + 1);
+    return " For a FastAPI app, export its document to openapi.json with: python -c \"import json;"
+        + " from "
+        + module
+        + " import "
+        + attribute
+        + "; print(json.dumps("
+        + attribute
+        + ".openapi()))\" > openapi.json";
   }
 }

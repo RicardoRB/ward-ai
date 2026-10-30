@@ -27,7 +27,9 @@ class ToolchainArchitectureRulesTest {
   private final ArchitectureTestGenerator jvm = new ArchitectureTestGenerator();
   private final DependencyCruiserConfigGenerator node =
       new DependencyCruiserConfigGenerator(new FileSystemNodeToolConfigs());
-  private final ToolchainArchitectureRules rules = new ToolchainArchitectureRules(jvm, node);
+  private final ToolchainArchitectureRules rules =
+      new ToolchainArchitectureRules(
+          jvm, node, new ImportLinterConfigGenerator((dir, tool) -> java.util.Optional.empty()));
 
   @Test
   void everyToolchainMapsToAGeneratorAndNodeUsesDependencyCruiser() {

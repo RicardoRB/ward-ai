@@ -579,6 +579,41 @@ Before writing, init checks each package it would add against the project's Node
   edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
   `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
 
+## Python projects
+
+Init sets up uv, Poetry, and pip projects with the `standard` or `strict` preset. Ward supports Python 3.11 to 3.14; 3.15 waits for mutmut to build on it. PDM and Hatch
+projects are not supported yet, and init stops with an error that names the manager.
+
+- Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
+  `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
+- The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
+  `standard` selects `ruff-format`, `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%).
+  `pip-audit` is opt-in.
+- Ward writes `ruff.toml`, `mypy.ini`, and `.coveragerc` only where the project has none. A config the
+  project keeps is never changed; its coverage threshold goes on the command instead.
+- Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
+  file, and `requirements-ward.txt`.
+- pip needs a `.venv` first (`python -m venv .venv`). When `pyproject.toml` has a `[build-system]`,
+  pip also installs the project itself, as `uv sync` and `poetry install` do.
+  A pip project with a `src/` layout and no `[build-system]` gets a plan note: pip will not install
+  the package, so tests cannot import it until one is added.
+- Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
+  `pyproject.toml`) before it changes any file.
+- `strict` adds `import-linter` and `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
+  and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
+  project's own. `mutmut` runs in `ci` with a 60% minimum.
+- A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
+  plugin, `pytest-django` with a Ward `pytest.ini` that names the settings module, and a `django-check`
+  gate (`manage.py check --fail-level WARNING`) in both presets. Its import contracts cover every
+  top-level package, and each app is a feature under strict. A `[tool.mutmut]` config must name the
+  code and tests, because mutmut copies only those paths.
+- A FastAPI project adds `httpx` for its test client and the pydantic mypy plugin. A Flask project adds
+  `pytest-flask` when it has an app factory (`create_app`), and under strict its blueprints are
+  independent features.
+- An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
+  The root package comes from `[project] name` under `src/`. Init stops when it finds no single
+  root package.
+
 ## Tools init can install
 
 Init installs a missing tool only with your explicit consent, one tool at a time.

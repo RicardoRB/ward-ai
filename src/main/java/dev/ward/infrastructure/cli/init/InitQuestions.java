@@ -98,7 +98,7 @@ final class InitQuestions {
 
   private QualityPreset preset(final boolean gatesGiven) {
     if (gatesGiven) {
-      return answers.preset() == null ? null : catalog.preset(answers.preset());
+      return answers.preset() == null ? null : explicitPreset(answers.preset());
     }
     if (answers.yes()) {
       return QualityPreset.STANDARD;
@@ -111,6 +111,22 @@ final class InitQuestions {
       return wizard.selectPreset(STANDARD_CHOICE, false);
     }
     return wizard.selectPreset(STANDARD_CHOICE, true);
+  }
+
+  /** Returns the preset named on the command line, refused when its toolchain does not offer it. */
+  private QualityPreset explicitPreset(final String id) {
+    final QualityPreset preset = catalog.preset(id);
+    final List<QualityPreset> offered = catalog.presets(project);
+    if (!offered.contains(preset)) {
+      throw new WardException(
+          preset.id()
+              + " is not available yet for "
+              + project.buildTool().displayName()
+              + " projects; use --preset "
+              + offered.getFirst().id()
+              + ".");
+    }
+    return preset;
   }
 
   private List<String> integrations() {

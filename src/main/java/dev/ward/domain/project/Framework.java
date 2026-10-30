@@ -13,6 +13,9 @@ public enum Framework {
   SVELTE("Svelte"),
   ASTRO("Astro"),
   ANGULAR("Angular"),
+  DJANGO("Django"),
+  FASTAPI("FastAPI"),
+  FLASK("Flask"),
   NONE("None");
 
   private final String displayName;

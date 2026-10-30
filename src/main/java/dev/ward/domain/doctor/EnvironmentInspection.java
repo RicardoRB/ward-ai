@@ -38,6 +38,15 @@ public interface EnvironmentInspection {
     return Optional.empty();
   }
 
+  /**
+   * Returns the FastAPI application the project defines, as {@code module:attribute} such as {@code
+   * app.main:app}, found in {@code main.py} or {@code app.py} at the root, or under {@code app/};
+   * empty when there is none.
+   */
+  default Optional<String> fastApiApp(final Path projectRoot) {
+    return Optional.empty();
+  }
+
   /** Returns how the project's Dependency-Check build configuration sets the OSS Index analyzer. */
   default OssIndexSetting ossIndexSetting(final Path projectRoot) {
     return OssIndexSetting.ABSENT;

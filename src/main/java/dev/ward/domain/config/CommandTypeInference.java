@@ -90,6 +90,7 @@ public final class CommandTypeInference {
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("import-linter", sequence("lint-imports")),
+          new Rule("django-check", sequence("manage.py", "check")),
           new Rule("pip-audit", sequence("pip-audit")));
 
   /** One row: the type a command gets when {@code matches} accepts it. */

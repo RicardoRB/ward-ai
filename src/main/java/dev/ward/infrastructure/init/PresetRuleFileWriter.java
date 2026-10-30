@@ -10,6 +10,7 @@ import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,20 +29,34 @@ import javax.inject.Inject;
 public final class PresetRuleFileWriter implements RuleFileGeneration {
   private final PackageManifests manifests;
   private final NodeToolConfigs configs;
+  private final PythonToolConfigs pythonConfigs;
 
-  /** Creates a writer for projects without a {@code package.json}. */
+  /** Creates a writer for projects without a {@code package.json} or Python config. */
   public PresetRuleFileWriter() {
-    this(root -> PackageManifest.EMPTY, (root, gate) -> Optional.empty());
+    this(
+        root -> PackageManifest.EMPTY,
+        (root, gate) -> Optional.empty(),
+        (root, tool) -> Optional.empty());
+  }
+
+  /** Creates a writer for projects with no Python tool config of their own to find. */
+  public PresetRuleFileWriter(final PackageManifests manifests, final NodeToolConfigs configs) {
+    this(manifests, configs, (root, tool) -> Optional.empty());
   }
 
   /**
-   * Creates the adapter; {@code manifests} tells whether a Node project uses ES modules, and {@code
-   * configs} finds the tool configs it keeps itself.
+   * Creates the adapter; {@code manifests} tells whether a Node project uses ES modules, {@code
+   * configs} finds the tool configs it keeps itself, and {@code pythonConfigs} does the same for a
+   * Python project.
    */
   @Inject
-  public PresetRuleFileWriter(final PackageManifests manifests, final NodeToolConfigs configs) {
+  public PresetRuleFileWriter(
+      final PackageManifests manifests,
+      final NodeToolConfigs configs,
+      final PythonToolConfigs pythonConfigs) {
     this.manifests = manifests;
     this.configs = configs;
+    this.pythonConfigs = pythonConfigs;
   }
 
   @Override
@@ -55,9 +70,9 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       final List<RuleFileActions.Decision> decisions =
           RuleFileActions.decide(targets(project, preset, gates));
       RuleFileActions.refuseConflicts(decisions);
-      // Node configs live in the project root, so only JVM presets need config/.
+      // Node and Python configs live in the project root, so only JVM presets need config/.
       final boolean createdDirectory =
-          preset != null && project.toolchain() != Toolchain.NODE && !Files.exists(config);
+          preset != null && project.toolchain() == Toolchain.JVM && !Files.exists(config);
       if (createdDirectory) {
         Files.createDirectories(config);
       }
@@ -97,6 +112,9 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     if (project.toolchain() == Toolchain.NODE) {
       return NodeConfigFiles.targets(
           project, manifests.read(project.root()), configs, preset, gates);
+    }
+    if (project.toolchain() == Toolchain.PYTHON) {
+      return PythonConfigFiles.targets(project, pythonConfigs, preset, gates);
     }
     return jvmTargets(project, preset, gates).entrySet().stream()
         .map(

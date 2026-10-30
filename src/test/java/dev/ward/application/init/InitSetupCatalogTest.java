@@ -41,7 +41,15 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("ruff-format", "ruff", "mypy", "pytest", "mutmut", "import-linter", "pip-audit");
+      Set.of(
+          "ruff-format",
+          "ruff",
+          "mypy",
+          "pytest",
+          "mutmut",
+          "import-linter",
+          "pip-audit",
+          "django-check");
 
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;

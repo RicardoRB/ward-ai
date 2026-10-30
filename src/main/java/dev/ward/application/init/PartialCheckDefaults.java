@@ -75,6 +75,31 @@ final class PartialCheckDefaults {
                   null,
                   biomeCommand(project.buildTool(), preset)));
 
+  private static final List<String> PYTHON_SOURCES = List.of("**/*.py", "**/*.pyi");
+
+  // Their commands end with the target, so the narrowed command replaces it, as for Node.
+  private static final Map<String, BiFunction<Project, QualityPreset, Table>> PYTHON_TABLES =
+      Map.of(
+          "ruff-format",
+          (project, preset) ->
+              new Table(
+                  PYTHON_SOURCES,
+                  List.of("ruff.toml", ".ruff.toml", "pyproject.toml"),
+                  PATHS,
+                  null,
+                  null,
+                  PythonTools.command(project.buildTool(), "ruff", "format", "--check")),
+          "ruff",
+          (project, preset) ->
+              new Table(
+                  PYTHON_SOURCES,
+                  List.of("ruff.toml", ".ruff.toml", "pyproject.toml"),
+                  PATHS,
+                  null,
+                  null,
+                  PythonTools.command(
+                      project.buildTool(), "ruff", "check", "--output-format", "json")));
+
   private static final Map<String, TableFactory> TABLES =
       Map.of(
           "checkstyle",
@@ -143,6 +168,10 @@ final class PartialCheckDefaults {
     final List<String> build = gradle ? GRADLE_BUILD : MAVEN_BUILD;
     return Optional.ofNullable(NODE_TABLES.get(gate))
         .map(factory -> factory.apply(project, preset))
+        .or(
+            () ->
+                Optional.ofNullable(PYTHON_TABLES.get(gate))
+                    .map(factory -> factory.apply(project, preset)))
         .or(
             () ->
                 Optional.ofNullable(TABLES.get(gate))

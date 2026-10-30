@@ -32,7 +32,7 @@ class DoctorPythonVersionTest {
     assertThat(finding(findings, "python-version").status()).isEqualTo(DoctorService.Status.ERROR);
     assertThat(finding(findings, "python-version").message())
         .contains("Python 3.10 is INCOMPATIBLE")
-        .contains("3.11 to 3.15");
+        .contains("3.11 to 3.14");
   }
 
   @Test

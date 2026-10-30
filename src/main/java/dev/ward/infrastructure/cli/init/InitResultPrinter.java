@@ -131,10 +131,20 @@ final class InitResultPrinter {
     if (executables.stream().anyMatch(NODE_RUNNERS::contains)) {
       return "Updated package.json with dev dependencies:";
     }
+    if (executables.stream().anyMatch(InitResultPrinter::isPythonRunner)) {
+      return "Updated the Python ward dependency group with tools:";
+    }
     return executables.stream()
             .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))
         ? "Updated the Gradle build with tools:"
         : "Updated pom.xml with Maven tools:";
+  }
+
+  /** Returns whether {@code executable} runs a Python tool: uv, Poetry, or a pip virtual env. */
+  private static boolean isPythonRunner(final String executable) {
+    return "uv".equals(executable)
+        || "poetry".equals(executable)
+        || executable.startsWith(".venv/bin/");
   }
 
   void print(final InitResult result) {

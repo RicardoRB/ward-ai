@@ -17,7 +17,7 @@ class PythonSupportTest {
             message ->
                 assertThat(message)
                     .contains("Python " + version + " is INCOMPATIBLE")
-                    .contains("3.11 to 3.15"));
+                    .contains("3.11 to 3.14"));
   }
 
   @ParameterizedTest

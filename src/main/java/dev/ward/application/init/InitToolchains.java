@@ -8,7 +8,13 @@ import java.util.Map;
 /** The toolchains init can configure, each with its init support. */
 final class InitToolchains {
   private static final Map<Toolchain, ToolchainInitSupport> SUPPORTS =
-      Map.of(Toolchain.JVM, new JvmInitSupport(), Toolchain.NODE, new NodeInitSupport());
+      Map.of(
+          Toolchain.JVM,
+          new JvmInitSupport(),
+          Toolchain.NODE,
+          new NodeInitSupport(),
+          Toolchain.PYTHON,
+          new PythonInitSupport());
 
   private InitToolchains() {}
 
@@ -33,12 +39,14 @@ final class InitToolchains {
 
   /** Returns whether init has no support at all for {@code project}'s toolchain. */
   static boolean unknown(final Project project) {
-    return !SUPPORTS.containsKey(project.toolchain());
+    final ToolchainInitSupport support = SUPPORTS.get(project.toolchain());
+    return support == null || !support.handles(project);
   }
 
   /** Returns the message explaining that init cannot configure {@code project}'s toolchain. */
   static String unsupported(final Project project) {
-    return "Ward init supports Maven, Gradle, TypeScript and JavaScript projects; "
+    return "Ward init supports Maven, Gradle, TypeScript, JavaScript and Python (uv, Poetry, pip)"
+        + " projects; "
         + project.buildTool().displayName()
         + " projects are not supported yet.";
   }
