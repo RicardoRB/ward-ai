@@ -111,3 +111,5 @@ Gates in `ward.toml`; edit hooks run the `default` profile (format, checkstyle, 
 - CLI changes must update the matching documentation pages under `website/`.
 - Changes to `ward init` options or behavior must update the agent skills under `skills/` in the same pull request; `AgentSkillsConsistencyTest` checks options and versions, not wording.
 - `./mvnw package` builds `target/ward.jar`; native builds require GraalVM 25 and `./mvnw -Pnative -DskipTests native:compile`.
+
+<!-- CI check: docs-only change, Python matrix should skip. Delete after the check. -->
