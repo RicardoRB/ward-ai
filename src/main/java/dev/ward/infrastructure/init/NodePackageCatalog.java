@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The dev dependencies init adds for the Node gates, pinned to the newest releases at least 14 days
@@ -20,6 +22,7 @@ final class NodePackageCatalog {
   static final String TYPESCRIPT_ESLINT = "typescript-eslint";
   static final String ESLINT = "eslint";
   static final String ESLINT_VERSION = "10.12.0";
+  private static final Pattern FIRST_NUMBER = Pattern.compile("\\d+");
   static final String TURBO = "turbo";
   // The newest release at least 14 days old on 2026-10-30. npm publishes no engines range for it.
   static final String TURBO_VERSION = "2.11.9";
@@ -235,8 +238,12 @@ final class NodePackageCatalog {
       return angularEslint(manifest);
     }
     if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
+      // @eslint/js versions on its own, so an exact ESLint release has no same-numbered match.
+      final String declared = manifest.dependencies().get(ESLINT);
+      final Matcher major = FIRST_NUMBER.matcher(declared);
       return Optional.of(
-          new Package(name, manifest.dependencies().get(ESLINT), tool.node(), tool.typescript()));
+          new Package(
+              name, major.find() ? "^" + major.group() : declared, tool.node(), tool.typescript()));
     }
     if (COVERAGE_V8.equals(name) && manifest.declares(VITEST)) {
       // Each coverage release requires its own Vitest version, so it follows the declared one.

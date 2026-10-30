@@ -81,7 +81,7 @@ final class TurborepoPlan {
   /** Returns the workspace members that hold sources, which are the ones init plans. */
   static List<WorkspaceMember> plannable(final Project root, final InitInputs inputs) {
     return inputs.members().members(root.root()).stream()
-        .filter(member -> inputs.sources().hasSources(member.directory()))
+        .filter(member -> inputs.sources().hasSourceTree(member.directory()))
         .toList();
   }
 

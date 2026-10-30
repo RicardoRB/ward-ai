@@ -122,11 +122,11 @@ final class TurborepoWriter {
     if (TEST.equals(task)) {
       final boolean build = JsonMembers.names(turboJson, "tasks").contains(BUILD);
       return build
-          ? "{\"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"]}"
-          : "{\"outputs\": [\"coverage/**\"]}";
+          ? "{ \"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"] }"
+          : "{ \"outputs\": [\"coverage/**\"] }";
     }
     if (MUTATION.equals(task)) {
-      return "{\"outputs\": [\"reports/**\"]}";
+      return "{ \"outputs\": [\"reports/**\"] }";
     }
     return "{}";
   }

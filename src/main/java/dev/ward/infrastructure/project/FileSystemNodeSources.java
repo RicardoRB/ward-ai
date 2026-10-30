@@ -83,6 +83,12 @@ public final class FileSystemNodeSources implements NodeSources {
     return found.get();
   }
 
+  @Override
+  public boolean hasSourceTree(final Path root) {
+    final Path src = root.resolve("src");
+    return Files.isDirectory(src) && hasSources(src);
+  }
+
   private static boolean skipped(final Path root, final Path dir) {
     final Path name = dir.getFileName();
     return RepositoryProjectScan.skipped(dir)

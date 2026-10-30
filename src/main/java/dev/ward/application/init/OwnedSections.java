@@ -4,6 +4,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ final class OwnedSections {
               GITIGNORE_END,
               // Prettier skips Git-ignored files, so coverage and Stryker reports are not checked.
               ".ward/reports/\ncoverage/\n"
+                  + (project.taskRunner() == TaskRunner.TURBO ? ".turbo/\n" : "")
                   + (gates.stream().anyMatch(gate -> "stryker".equals(gate.id()))
                       ? ".stryker-tmp/\nreports/mutation/\n"
                       : ""),

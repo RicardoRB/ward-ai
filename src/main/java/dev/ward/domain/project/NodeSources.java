@@ -10,4 +10,12 @@ public interface NodeSources {
    * sources outside dependencies, build output and projects nested below it.
    */
   boolean hasSources(Path root);
+
+  /**
+   * Returns whether {@code root} holds sources under its {@code src} directory, which is where a
+   * Turborepo member keeps the code its gates check. A member with configuration only has none.
+   */
+  default boolean hasSourceTree(final Path root) {
+    return hasSources(root);
+  }
 }

@@ -64,8 +64,8 @@ class TurborepoWriterTest {
                 },
                 "check-types": {},
                 "lint": {},
-                "test": {"dependsOn": ["^build"], "outputs": ["coverage/**"]},
-                "mutation": {"outputs": ["reports/**"]}
+                "test": { "dependsOn": ["^build"], "outputs": ["coverage/**"] },
+                "mutation": { "outputs": ["reports/**"] }
               }
             }
             """);
@@ -78,7 +78,7 @@ class TurborepoWriterTest {
     TurborepoWriter.apply(workspace(Map.of()), false);
 
     assertThat(Files.readString(turboJson()))
-        .contains("\"test\": {\"outputs\": [\"coverage/**\"]}")
+        .contains("\"test\": { \"outputs\": [\"coverage/**\"] }")
         .doesNotContain("^build");
   }
 

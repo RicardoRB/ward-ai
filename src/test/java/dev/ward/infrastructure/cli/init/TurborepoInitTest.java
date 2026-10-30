@@ -36,8 +36,10 @@ class TurborepoInitTest {
     assertThat(fixture.read("packages/eslint-config/" + PACKAGE_JSON)).isEqualTo(configOnly);
     assertThat(fixture.read(TURBO_JSON))
         .contains(
-            "\"check-types\": {}", "\"lint\": {}", "\"mutation\": {\"outputs\": [\"reports/**\"]}")
-        .contains("\"test\": {\"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"]}");
+            "\"check-types\": {}",
+            "\"lint\": {}",
+            "\"mutation\": { \"outputs\": [\"reports/**\"] }")
+        .contains("\"test\": { \"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"] }");
     assertThat(fixture.read("apps/web/eslint.config.mjs")).startsWith("// managed-by: ward");
     assertThat(fixture.read("packages/ui/" + PACKAGE_JSON)).contains("\"vitest\":");
     assertThat(fixture.read("ward.toml")).contains("turbo", "run", "--filter=...");

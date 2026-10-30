@@ -1,7 +1,11 @@
 {
   "name": "my-turborepo",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "packageManager": "npm@11.19.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
