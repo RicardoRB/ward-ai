@@ -1,0 +1,12 @@
+#!/bin/sh
+# Offline stand-in for the Python tools init configures: the file is run under the name of the tool it
+# stands for, so one script serves uv, Poetry and a pip virtual environment. Every call passes; ruff
+# prints an empty JSON report, and the version queries answer the minimums init checks.
+tool=$(basename "$0")
+case "$tool" in
+  poetry) [ "$1" = "--version" ] && echo "Poetry (version 2.5.1)" ;;
+  python) [ "$1" = "-m" ] && [ "$2" = "pip" ] && [ "$3" = "--version" ] && echo "pip 26.2.2 from stub" ;;
+  uv) case "$*" in *ruff*check*) echo "[]" ;; esac ;;
+  ruff) echo "[]" ;;
+esac
+exit 0
