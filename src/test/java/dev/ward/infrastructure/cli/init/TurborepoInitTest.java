@@ -14,20 +14,22 @@ import org.junit.jupiter.api.io.TempDir;
 class TurborepoInitTest {
   private static final String PACKAGE_JSON = "package.json";
   private static final String TURBO_JSON = "turbo.json";
+  private static final String FIXTURE = "turborepo-workspace";
+  private static final String WEB = "apps/web/";
 
   @TempDir Path project;
 
   @Test
   void turborepoWorkspaceGetsMemberScriptsTurboTasksAndAPinnedRootTurbo()
       throws IOException, InterruptedException {
-    final NodeFixtureRun fixture = NodeFixtureRun.copy("turborepo-workspace", project);
+    final NodeFixtureRun fixture = NodeFixtureRun.copy(FIXTURE, project);
     final String configOnly = fixture.read("packages/eslint-config/package.json");
 
     final NodeFixtureRun.Result init = init(fixture);
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read(PACKAGE_JSON)).contains("\"turbo\": \"2.11.9\"");
-    assertThat(fixture.read("apps/web/" + PACKAGE_JSON))
+    assertThat(fixture.read(WEB + PACKAGE_JSON))
         .contains("\"check-types\": \"tsc --noEmit --pretty false\"");
     assertThat(fixture.read("packages/ui/" + PACKAGE_JSON))
         .contains("\"check-types\": \"tsc --noEmit --pretty false\"");
@@ -43,7 +45,7 @@ class TurborepoInitTest {
 
   @Test
   void memberOwnEslintConfigIsKept() throws IOException, InterruptedException {
-    final NodeFixtureRun fixture = NodeFixtureRun.copy("turborepo-workspace", project);
+    final NodeFixtureRun fixture = NodeFixtureRun.copy(FIXTURE, project);
     final String own = "import base from \"@repo/eslint-config\";\nexport default [base];\n";
     Files.writeString(project.resolve("apps/web/eslint.config.mjs"), own);
 
@@ -56,9 +58,9 @@ class TurborepoInitTest {
 
   @Test
   void failurePartwayRollsEveryMemberAndTheRootBack() throws IOException, InterruptedException {
-    final NodeFixtureRun fixture = NodeFixtureRun.copy("turborepo-workspace", project);
+    final NodeFixtureRun fixture = NodeFixtureRun.copy(FIXTURE, project);
     final String root = fixture.read(PACKAGE_JSON);
-    final String web = fixture.read("apps/web/" + PACKAGE_JSON);
+    final String web = fixture.read(WEB + PACKAGE_JSON);
     final String turbo = fixture.read(TURBO_JSON);
     Files.writeString(project.resolve("packages/ui/" + PACKAGE_JSON), "{\"name\":\"@repo/ui\"}");
     final String ui = fixture.read("packages/ui/" + PACKAGE_JSON);
@@ -67,7 +69,7 @@ class TurborepoInitTest {
 
     assertThat(init.exit()).isNotZero();
     assertThat(fixture.read(PACKAGE_JSON)).isEqualTo(root);
-    assertThat(fixture.read("apps/web/" + PACKAGE_JSON)).isEqualTo(web);
+    assertThat(fixture.read(WEB + PACKAGE_JSON)).isEqualTo(web);
     assertThat(fixture.read("packages/ui/" + PACKAGE_JSON)).isEqualTo(ui);
     assertThat(fixture.read(TURBO_JSON)).isEqualTo(turbo);
     assertThat(project.resolve("ward.toml")).doesNotExist();

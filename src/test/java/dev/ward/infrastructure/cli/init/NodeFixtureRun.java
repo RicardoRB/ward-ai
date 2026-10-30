@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,8 +46,19 @@ final class NodeFixtureRun {
     return Files.readString(project.resolve(file));
   }
 
+  /** Runs {@code ward} with {@code args}, answering its questions with {@code input}. */
+  Result wardWithInput(final String input, final String... args)
+      throws IOException, InterruptedException {
+    return run(input, args);
+  }
+
   /** Runs {@code ward} with {@code args} followed by {@code -C <project>}. */
   Result ward(final String... args) throws IOException, InterruptedException {
+    return run("", args);
+  }
+
+  private Result run(final String input, final String... args)
+      throws IOException, InterruptedException {
     final List<String> command = new ArrayList<>();
     command.add(ProcessHandle.current().info().command().orElse("java"));
     command.add("-cp");
@@ -62,6 +74,9 @@ final class NodeFixtureRun {
             "PATH",
             STUBS.toAbsolutePath() + File.pathSeparator + System.getenv().getOrDefault("PATH", ""));
     final Process process = builder.start();
+    try (OutputStream stdin = process.getOutputStream()) {
+      stdin.write(input.getBytes(StandardCharsets.UTF_8));
+    }
     final String output =
         new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(process.waitFor(TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();

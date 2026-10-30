@@ -6,6 +6,9 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
+import dev.ward.domain.project.WorkspaceMember;
+import dev.ward.domain.project.WorkspaceMembers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,16 +32,58 @@ public final class StrykerJsonMutationReport implements MutationReport {
       Set.of("Ignored", "Pending", "CompileError", "RuntimeError");
 
   private final JsonCodec codec;
+  private final WorkspaceMembers members;
 
   /** Creates the adapter that decodes Stryker reports with {@code codec}. */
   @Inject
-  public StrykerJsonMutationReport(final JsonCodec codec) {
+  public StrykerJsonMutationReport(final JsonCodec codec, final WorkspaceMembers members) {
     this.codec = codec;
+    this.members = members;
+  }
+
+  /** Creates the adapter for a single project, without workspace members. */
+  public StrykerJsonMutationReport(final JsonCodec codec) {
+    this(codec, WorkspaceMembers.none());
   }
 
   @Override
   public MutationCounts read(final Project project, final Instant since) {
-    final Path report = project.root().resolve(REPORT);
+    return project.taskRunner() == TaskRunner.TURBO
+        ? readMembers(project, since)
+        : readOne(project.root().resolve(REPORT), since);
+  }
+
+  /** Adds up the reports of every member that has one. */
+  private MutationCounts readMembers(final Project project, final Instant since) {
+    final List<Path> reports =
+        members.members(project.root()).stream()
+            .map(WorkspaceMember::project)
+            .map(Project::root)
+            .map(root -> root.resolve(REPORT))
+            .filter(Files::isRegularFile)
+            .toList();
+    if (reports.isEmpty()) {
+      return MutationCounts.unusable("Stryker's JSON report " + REPORT + " is missing.");
+    }
+    final List<Path> fresh = ReportFiles.fresh(SupportedQualityGates.STRYKER, since, reports);
+    if (fresh.isEmpty()) {
+      return MutationCounts.unusable(
+          "Stryker's JSON report " + REPORT + " was written before the gate started.");
+    }
+    int detected = 0;
+    int undetected = 0;
+    for (final Path report : fresh) {
+      final MutationCounts counts = readReport(report);
+      if (!counts.usable()) {
+        return counts;
+      }
+      detected += counts.detected();
+      undetected += counts.undetected();
+    }
+    return MutationCounts.of(detected, undetected);
+  }
+
+  private MutationCounts readOne(final Path report, final Instant since) {
     if (!Files.isRegularFile(report)) {
       return MutationCounts.unusable("Stryker's JSON report " + REPORT + " is missing.");
     }
@@ -46,6 +91,10 @@ public final class StrykerJsonMutationReport implements MutationReport {
       return MutationCounts.unusable(
           "Stryker's JSON report " + REPORT + " was written before the gate started.");
     }
+    return readReport(report);
+  }
+
+  private MutationCounts readReport(final Path report) {
     final StrykerReport decoded;
     try {
       decoded = codec.fromJson(Files.readString(report), StrykerReport.class);

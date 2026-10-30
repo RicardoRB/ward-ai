@@ -4,6 +4,7 @@ import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.WorkspaceMembers;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   private static final Logger LOGGER = Logger.getLogger(CompositeFindingExtractor.class.getName());
 
   private final Map<String, GateFindingSource> sources;
+  private final WorkspaceMembers members;
 
   /** Creates the extractor that delegates to the extractor of each supported gate. */
   @Inject
@@ -26,7 +28,8 @@ public final class CompositeFindingExtractor implements FindingExtractor {
       final JvmFindingSources jvm,
       final NodeFindingSources node,
       final PythonFindingSources python,
-      final GitleaksSarifFindings gitleaks) {
+      final GitleaksSarifFindings gitleaks,
+      final WorkspaceMembers members) {
     this(
         Stream.of(
                 jvm.sources(),
@@ -34,13 +37,19 @@ public final class CompositeFindingExtractor implements FindingExtractor {
                 python.sources(),
                 List.<GateFindingSource>of(gitleaks))
             .flatMap(List::stream)
-            .toList());
+            .toList(),
+        members);
   }
 
   CompositeFindingExtractor(final List<GateFindingSource> sources) {
+    this(sources, WorkspaceMembers.none());
+  }
+
+  CompositeFindingExtractor(final List<GateFindingSource> sources, final WorkspaceMembers members) {
     final Map<String, GateFindingSource> byGate = new LinkedHashMap<>();
     sources.forEach(source -> byGate.put(source.gateId(), source));
     this.sources = Map.copyOf(byGate);
+    this.members = members;
   }
 
   /** Returns the gates that have a finding source, for the gate contract test. */
@@ -67,6 +76,6 @@ public final class CompositeFindingExtractor implements FindingExtractor {
                 + source.getClass().getSimpleName()
                 + " build-tool="
                 + project.buildTool());
-    return source.extract(project, result, gateStart);
+    return new TurborepoFindings(source, members).extract(project, result, gateStart);
   }
 }

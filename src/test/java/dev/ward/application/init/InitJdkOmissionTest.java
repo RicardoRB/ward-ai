@@ -84,7 +84,7 @@ class InitJdkOmissionTest {
 
   @Test
   void initOmitsTheGateFromWardTomlAndExplainsIt() throws IOException {
-    final InitResult result = service.initialize(root, strict(), false, finding -> true);
+    final InitResult result = service.initialize(root, strict(), false, false, finding -> true);
 
     final String configuration = Files.readString(root.resolve("ward.toml"));
     assertThat(configuration).contains("[checks.checkstyle]").doesNotContain("[checks.format]");
@@ -96,7 +96,7 @@ class InitJdkOmissionTest {
       throws IOException {
     final InitSelection selection = new InitSelection(List.of("none"), List.of("format", "pmd"));
 
-    assertThatThrownBy(() -> service.initialize(root, selection, false, finding -> true))
+    assertThatThrownBy(() -> service.initialize(root, selection, false, false, finding -> true))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'format'", "JDK 8", "JDK 11+");
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(POM);

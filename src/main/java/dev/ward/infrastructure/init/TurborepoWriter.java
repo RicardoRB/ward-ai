@@ -39,16 +39,18 @@ final class TurborepoWriter {
   }
 
   /**
-   * Writes {@code workspace}. A failure restores every file already changed, then rethrows.
+   * Writes {@code workspace}. A script that differs from the plan is replaced only when {@code
+   * replaceScripts} is set, and kept otherwise. A failure restores every file already changed, then
+   * rethrows.
    *
    * @throws WardException if a file cannot be read or written, or its layout cannot be located
    */
-  static Result apply(final TurboWorkspace workspace) {
+  static Result apply(final TurboWorkspace workspace, final boolean replaceScripts) {
     final List<Written> written = new ArrayList<>();
     final List<String> kept = new ArrayList<>();
     try {
       for (final TurboWorkspace.Member member : workspace.members()) {
-        writeScripts(member, written, kept);
+        writeScripts(member, replaceScripts, written, kept);
       }
       writeTasks(workspace, written);
       return new Result(written, kept);
@@ -71,7 +73,10 @@ final class TurborepoWriter {
   }
 
   private static void writeScripts(
-      final TurboWorkspace.Member member, final List<Written> written, final List<String> kept) {
+      final TurboWorkspace.Member member,
+      final boolean replaceScripts,
+      final List<Written> written,
+      final List<String> kept) {
     final Path file = member.directory().resolve(PACKAGE_JSON);
     final String original = read(file);
     String edited = original;
@@ -81,7 +86,11 @@ final class TurborepoWriter {
       if (existing.isEmpty()) {
         edited = PackageJsonEdit.withScript(edited, script.getKey(), script.getValue());
       } else if (!existing.get().equals(quoted)) {
-        kept.add(member.name() + " keeps its " + script.getKey() + " script");
+        if (replaceScripts) {
+          edited = PackageJsonEdit.withScript(edited, script.getKey(), script.getValue());
+        } else {
+          kept.add(member.name() + " keeps its " + script.getKey() + " script");
+        }
       }
     }
     if (!edited.equals(original)) {

@@ -6,7 +6,9 @@ import dev.ward.domain.project.WorkspaceMembers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
 
@@ -28,7 +30,8 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
                 new WorkspaceMember(
                     name(root, dir),
                     dir,
-                    NodeProjectInspection.project(dir).withTaskRunner(runner)))
+                    NodeProjectInspection.project(dir).withTaskRunner(runner),
+                    scripts(dir)))
         .toList();
   }
 
@@ -38,6 +41,20 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
         .filter(member -> path.startsWith(member.directory()))
         .max(Comparator.comparingInt(member -> member.directory().getNameCount()))
         .map(WorkspaceMember::name);
+  }
+
+  /** Returns the command of each string script in the package.json of {@code dir}. */
+  private static Map<String, String> scripts(final Path dir) {
+    final Map<String, String> scripts = new LinkedHashMap<>();
+    if (NodeProjectInspection.manifest(dir).get("scripts") instanceof Map<?, ?> declared) {
+      declared.forEach(
+          (name, command) -> {
+            if (command instanceof String text) {
+              scripts.put(String.valueOf(name), text);
+            }
+          });
+    }
+    return scripts;
   }
 
   /** Returns the package.json name of {@code dir}, or its path below {@code root} when unnamed. */

@@ -3,8 +3,10 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.init.OpenSpecDistribution;
+import dev.ward.domain.init.ScriptReplacement;
 import java.io.PrintWriter;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -72,6 +74,28 @@ final class InitConfirmations {
     out.print("Install Ward pre-commit and pre-push quality hooks? [y/N]: ");
     out.flush();
     return prompt.confirm("quality-hooks");
+  }
+
+  /**
+   * Lists each member script that already runs a different command, then asks once. Only {@code y}
+   * replaces them; a {@code n} or the end of input keeps them.
+   */
+  boolean replaceScripts(final List<ScriptReplacement> replacements) {
+    out.println("These member scripts already run a different command:");
+    replacements.forEach(
+        replacement ->
+            out.println(
+                "  "
+                    + replacement.member()
+                    + " "
+                    + replacement.script()
+                    + ": "
+                    + replacement.current()
+                    + " -> "
+                    + replacement.proposed()));
+    out.print("Replace them? [y/n]: ");
+    out.flush();
+    return prompt.confirm("replace-scripts");
   }
 
   boolean compatibilityUpdate(final CompatibilityFinding finding) {

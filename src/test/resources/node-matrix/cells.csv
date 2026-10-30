@@ -37,3 +37,4 @@ node,fixture,linting,preset,version,packages
 24,angular-22,eslint,strict,
 22.17,svelte,eslint,standard,,svelte-check@4.7.6 typescript@6.0.3 vitest@4.1.11
 24,svelte,eslint,strict,,svelte-check@4.7.7 typescript@6.0.3
+24,turborepo,eslint,strict,

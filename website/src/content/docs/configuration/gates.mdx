@@ -154,6 +154,29 @@ command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
 profiles = ["pre-push"]
 ```
 
+## Turborepo workspaces
+
+A Node workspace root that contains `turbo.json` is a Turborepo project. Its per-source gates run
+through turbo from the root, and the repository-wide gates run once:
+
+```toml
+[checks.tsc]
+command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
+
+[checks.eslint]
+command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
+```
+
+- `tsc`, lint, test, and `stryker` map to the `check-types`, `lint`, `test`, and `mutation` tasks.
+  Init writes the missing tasks and each member's script. See
+  [Turborepo projects](/guides/turborepo/).
+- Findings are read per package. Ward splits the output at turbo's `<package>:<task>: ` prefix,
+  parses each block with the gate's parser, and reports the file under the member directory, such as
+  `apps/web/src/page.tsx`. Unprefixed output is read as before.
+- A narrowed lint check uses turbo's filter for the edited packages and their dependents:
+  `item = "--filter=...{package}"`; see [partial checks](#partial-checks).
+- At a Turborepo root, `minimum` on `stryker` compares the combined score of every member's report.
+
 ## Python gates
 
 `ruff-format`, `ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
@@ -196,6 +219,8 @@ profiles = ["ci"]
   and runtime-error mutants do not count.
 - The command must enable Stryker's `json` reporter. Ward reads the report at Stryker's default
   path, `reports/mutation/mutation.json`.
+- At a Turborepo root, Ward reads each planned member's report and compares the combined score. A
+  member without a report is skipped; no report at all is an execution error.
 - A report that is missing, older than the gate run, unreadable, or without valid mutants is an
   execution error, never a pass. The message says which case applies.
 - Stryker's own `thresholds.break` also fails the gate, through Stryker's exit code. The
@@ -456,6 +481,11 @@ command without its `.` target, so a narrowed check runs, for example,
 `biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
 Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
 and `ci`.
+
+In a Turborepo workspace, the lint gate narrows with turbo's `--filter=...<package>` for the packages
+that contain the edited files and their dependents. Its `full` files are `turbo.json`, the root
+`package.json`, and the root lint configs; an edit that no member contains runs it in full. The
+type-check and test gates have no table and always run in full.
 
 Gradle notes:
 

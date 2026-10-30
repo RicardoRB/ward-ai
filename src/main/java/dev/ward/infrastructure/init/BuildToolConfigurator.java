@@ -44,11 +44,12 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
 
   /** Turborepo workspaces are Node projects, so only the Node adapter writes them. */
   @Override
-  public TurboWorkspaceChange applyWorkspace(final TurboWorkspace workspace) {
+  public TurboWorkspaceChange applyWorkspace(
+      final TurboWorkspace workspace, final boolean replaceScripts) {
     final BuildToolConfiguration node = adapters.get(Toolchain.NODE);
     return node == null
         ? new TurboWorkspaceChange(List.of(), List.of())
-        : node.applyWorkspace(workspace);
+        : node.applyWorkspace(workspace, replaceScripts);
   }
 
   @Override

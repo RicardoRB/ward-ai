@@ -206,7 +206,11 @@ public class InitCommand implements Callable<Integer> {
 
   private InitApply.Mode mode(final boolean overwrite) {
     return new InitApply.Mode(
-        dryRun, terminal && !yesOption, yesOption || acceptCompatibilityUpdates, overwrite);
+        dryRun,
+        terminal && !yesOption,
+        yesOption || acceptCompatibilityUpdates,
+        overwrite,
+        yesOption || generatedFiles.replaceScripts());
   }
 
   private InitQuestions.Answers answers() {

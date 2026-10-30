@@ -5,6 +5,7 @@ import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
+import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.init.TurboWorkspace;
 import dev.ward.domain.init.TurboWorkspaceChange;
 import dev.ward.domain.project.Project;
@@ -65,11 +66,43 @@ final class TurborepoMembers {
         tasks);
   }
 
-  /** Writes the members and turbo.json of {@code root}; does nothing for any other project. */
+  /**
+   * Returns the scripts of {@code members} that already run a different command than init would
+   * write. Init replaces them only when the user approves.
+   */
+  static List<ScriptReplacement> replacements(final List<TurborepoPlan.MemberPlan> members) {
+    return members.stream()
+        .flatMap(
+            member ->
+                member.scripts().entrySet().stream()
+                    .filter(
+                        script ->
+                            member.current().containsKey(script.getKey())
+                                && !member.current().get(script.getKey()).equals(script.getValue()))
+                    .map(
+                        script ->
+                            new ScriptReplacement(
+                                member.name(),
+                                script.getKey(),
+                                member.current().get(script.getKey()),
+                                script.getValue())))
+        .toList();
+  }
+
+  /** Returns the scripts the last {@link #apply} kept, for the summary. */
+  List<String> kept() {
+    return workspace == null ? List.of() : workspace.kept();
+  }
+
+  /**
+   * Writes the members and turbo.json of {@code root}; does nothing for any other project. An
+   * existing script that differs is replaced only when {@code replaceScripts} is set.
+   */
   void apply(
       final Project root,
       final List<InitGateOption> gates,
       final QualityPreset preset,
+      final boolean replaceScripts,
       final Predicate<? super CompatibilityFinding> approval) {
     if (root.taskRunner() != TaskRunner.TURBO) {
       return;
@@ -79,7 +112,8 @@ final class TurborepoMembers {
       builds.add(files.buildTools().apply(member.project(), member.gates(), preset, approval));
       rules.add(files.ruleFiles().apply(member.project(), preset, member.gates()));
     }
-    workspace = files.buildTools().applyWorkspace(workspace(root.root(), members, gates));
+    workspace =
+        files.buildTools().applyWorkspace(workspace(root.root(), members, gates), replaceScripts);
   }
 
   /** Undoes what {@link #apply} changed, last changed first. */

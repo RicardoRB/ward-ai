@@ -57,8 +57,10 @@ public interface BuildToolConfiguration {
 
   /**
    * Writes a Turborepo workspace's member scripts and turbo.json tasks; the default writes nothing.
+   * A script that differs from the plan is replaced only when {@code replaceScripts} is set.
    */
-  default TurboWorkspaceChange applyWorkspace(final TurboWorkspace workspace) {
+  default TurboWorkspaceChange applyWorkspace(
+      final TurboWorkspace workspace, final boolean replaceScripts) {
     return new TurboWorkspaceChange(List.of(), List.of());
   }
 

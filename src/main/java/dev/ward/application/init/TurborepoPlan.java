@@ -50,12 +50,26 @@ final class TurborepoPlan {
   private TurborepoPlan() {}
 
   /** One member's package.json scripts, by the turbo task each one runs. */
+  /**
+   * One member's gates and the scripts init writes for it, with the scripts it has now.
+   *
+   * @param project the member inspected as a project
+   * @param name the member's package name
+   * @param gates the member's gates, with the root's lint tool
+   * @param scripts the command init writes for each script, by script name
+   * @param current the command each existing script runs now, by script name
+   */
   record MemberPlan(
-      Project project, String name, List<InitGateOption> gates, Map<String, String> scripts) {
+      Project project,
+      String name,
+      List<InitGateOption> gates,
+      Map<String, String> scripts,
+      Map<String, String> current) {
     /** Copies the gates and scripts. */
     MemberPlan {
       gates = List.copyOf(gates);
       scripts = Map.copyOf(scripts);
+      current = Map.copyOf(current);
     }
   }
 
@@ -135,7 +149,7 @@ final class TurborepoPlan {
                         scripts.putIfAbsent(
                             task,
                             ScriptLine.of(withoutRunner(gate.command(), project.buildTool())))));
-    return new MemberPlan(project, member.name(), gates, scripts);
+    return new MemberPlan(project, member.name(), gates, scripts, member.scripts());
   }
 
   private static PackageManifest manifest(final WorkspaceMember member, final InitInputs inputs) {

@@ -168,8 +168,9 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
   }
 
   @Override
-  public TurboWorkspaceChange applyWorkspace(final TurboWorkspace workspace) {
-    final TurborepoWriter.Result result = TurborepoWriter.apply(workspace);
+  public TurboWorkspaceChange applyWorkspace(
+      final TurboWorkspace workspace, final boolean replaceScripts) {
+    final TurborepoWriter.Result result = TurborepoWriter.apply(workspace, replaceScripts);
     return new TurboWorkspaceChange(
         result.written().stream()
             .map(
