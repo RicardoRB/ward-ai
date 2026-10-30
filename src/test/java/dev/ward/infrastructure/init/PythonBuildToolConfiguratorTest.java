@@ -111,6 +111,20 @@ class PythonBuildToolConfiguratorTest {
     assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(declared);
   }
 
+  @Test
+  void pipWithoutAVirtualEnvironmentIsRefusedBeforeAnyWrite() throws IOException {
+    Files.writeString(root.resolve(PYPROJECT_FILE), PYPROJECT);
+    final Project pip = new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE);
+
+    assertThatThrownBy(
+            () ->
+                new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", ""))
+                    .apply(pip, GATES))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining(".venv");
+    assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(PYPROJECT);
+  }
+
   private Project uv() {
     return new Project(root, Language.PYTHON, BuildTool.UV, Framework.NONE);
   }

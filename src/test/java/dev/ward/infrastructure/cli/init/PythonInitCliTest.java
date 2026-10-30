@@ -109,6 +109,24 @@ class PythonInitCliTest {
         .doesNotContain("uv sync");
   }
 
+  @Test
+  void strictKeepsAProjectsOwnMypyTableAndPassesStrictOnTheCommand() throws IOException {
+    writeUvProject();
+    Files.writeString(
+        root.resolve("pyproject.toml"), PYPROJECT + "\n[tool.mypy]\nstrict = false\n");
+    final InitCommandFixture init =
+        InitCommandFixture.repository(
+            root, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "uv");
+
+    final int exit = init.run("", "--preset", "strict", "--integration", "none", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.exists(root.resolve("mypy.ini"))).isFalse();
+    assertThat(Files.readString(root.resolve("pyproject.toml")))
+        .contains("[tool.mypy]", "strict = false");
+    assertThat(Files.readString(root.resolve("ward.toml"))).contains("mypy . --strict -O json");
+  }
+
   private void writeUvProject() throws IOException {
     Files.writeString(root.resolve("pyproject.toml"), PYPROJECT);
     Files.writeString(root.resolve("uv.lock"), "version = 1\n");

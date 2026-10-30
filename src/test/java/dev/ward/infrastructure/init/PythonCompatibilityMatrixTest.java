@@ -39,6 +39,7 @@ class PythonCompatibilityMatrixTest {
   private static final Path VIOLATIONS = Path.of("src/test/resources/python-matrix/violations");
   private static final Set<String> NOT_VIOLATED = Set.of("coverage", "mutmut");
   private static final String PIP = "pip";
+  private static final int PACKAGES_COLUMN = 4;
   private static final String POETRY = "poetry";
   private static final Pattern CHECK =
       Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
@@ -59,6 +60,7 @@ class PythonCompatibilityMatrixTest {
     final Map<String, String> env = environment(python, bin);
     copyTree(FIXTURES.resolve(fixture), project);
     Files.writeString(project.resolve(".python-version"), python + "\n");
+    pinPackages(project, cell.size() > PACKAGES_COLUMN ? cell.getString(PACKAGES_COLUMN) : "");
     prepareManager(manager, project, env);
 
     final Run init =
@@ -85,6 +87,28 @@ class PythonCompatibilityMatrixTest {
                 assertThat(violated.get(gate))
                     .as("seeded violation for gate %s", gate)
                     .isEqualTo("FAILED"));
+  }
+
+  /**
+   * Pins each {@code name==version} of the row's packages column in the fixture's pyproject,
+   * replacing the quoted requirement of the same name, so a row can test one release of a
+   * framework.
+   */
+  private static void pinPackages(final Path project, final String packages) throws IOException {
+    if (packages == null || packages.isBlank()) {
+      return;
+    }
+    final Path pyproject = project.resolve("pyproject.toml");
+    String text = Files.readString(pyproject);
+    for (final String requirement : packages.split(" ")) {
+      final String name = requirement.split("[=<>~!]", 2)[0];
+      final Matcher pinned =
+          Pattern.compile("\"" + Pattern.quote(name) + "[^\"]*\"", Pattern.CASE_INSENSITIVE)
+              .matcher(text);
+      assertThat(pinned.find()).as("fixture declares %s", name).isTrue();
+      text = pinned.replaceFirst(Matcher.quoteReplacement("\"" + requirement + "\""));
+    }
+    Files.writeString(pyproject, text);
   }
 
   /**

@@ -4,6 +4,12 @@ Use this reference when `ward detect` reports `PYTHON` with `UV`, `POETRY` or `P
 projects are not supported yet: init stops and names the manager, so tell the user and stop.
 Everything here is read-only until the user approves the plan.
 
+## Supported versions
+
+Ward supports Python 3.11 to 3.14 with uv, Poetry and pip, and the pinned tools are proven on each
+version by the Python matrix. Python 3.15 waits until mutmut installs on it. Django 6.1 needs Python
+3.12 or newer. Poetry 2.2 or newer and pip 25.1 or newer are required.
+
 ## Inspection
 
 - **Language and manager.** `pyproject.toml`, `setup.py`, `setup.cfg` or a `requirements*.txt`

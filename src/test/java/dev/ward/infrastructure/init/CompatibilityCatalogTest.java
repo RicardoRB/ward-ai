@@ -9,13 +9,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Every pinned tool declares a Python range that the Python matrix cells run. */
-class PythonCatalogRangesTest {
+class CompatibilityCatalogTest {
   private static final Path CELLS = Path.of("src/test/resources/python-matrix/cells.csv");
   private static final int FIRST_MINOR = 11;
   private static final int LAST_EXCLUSIVE_MINOR = 15;
 
   @Test
-  void everyCatalogRowHasAMatrixCellInItsPythonRange() throws IOException {
+  void everyPythonCatalogRowHasAMatrixCellInItsRange() throws IOException {
     final List<String> versions =
         Files.readAllLines(CELLS).stream()
             .skip(1)

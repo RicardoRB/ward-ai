@@ -7,6 +7,7 @@ import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 /** Reads executable availability and prerequisite markers from the current machine. */
@@ -50,6 +53,15 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "zap-baseline.py",
           "vacuum",
           "oasdiff");
+  // The files a FastAPI project keeps its application in, the first match wins.
+  private static final List<Path> FASTAPI_FILES =
+      List.of(
+          Path.of("main.py"),
+          Path.of("app.py"),
+          Path.of("app", "main.py"),
+          Path.of("app", "app.py"));
+  private static final Pattern FASTAPI_ASSIGNMENT =
+      Pattern.compile("(?m)^(\\w+)\\s*=\\s*FastAPI\\(");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -149,6 +161,30 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     }
     final List<String> tracked = Arrays.asList(result.stdout().split("\\u0000"));
     return OPENAPI_SPECS.stream().filter(tracked::contains).findFirst();
+  }
+
+  @Override
+  public Optional<String> fastApiApp(final Path projectRoot) {
+    return FASTAPI_FILES.stream()
+        .map(projectRoot::resolve)
+        .filter(Files::isRegularFile)
+        .flatMap(file -> fastApiAttribute(projectRoot, file).stream())
+        .findFirst();
+  }
+
+  /** Returns {@code module:attribute} when {@code file} assigns a {@code FastAPI(} instance. */
+  private static Optional<String> fastApiAttribute(final Path projectRoot, final Path file) {
+    try {
+      final Matcher app = FASTAPI_ASSIGNMENT.matcher(Files.readString(file));
+      if (!app.find()) {
+        return Optional.empty();
+      }
+      final String module =
+          projectRoot.relativize(file).toString().replaceAll("\\.py$", "").replace('/', '.');
+      return Optional.of(module + ":" + app.group(1));
+    } catch (IOException e) {
+      return Optional.empty();
+    }
   }
 
   @Override

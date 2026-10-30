@@ -20,3 +20,8 @@ python,manager,preset,fixture,packages
 3.14,uv,standard,fastapi-uv,
 3.14,uv,strict,flask-uv,
 3.14,uv,standard,flask-uv,
+3.14,uv,strict,django-uv,django==5.2.18
+3.14,uv,strict,django-uv,django==6.1.2
+3.14,uv,standard,django-uv,django==6.1.2
+3.14,uv,strict,fastapi-uv,fastapi==0.115.0
+3.14,uv,strict,flask-uv,flask==3.0.3
