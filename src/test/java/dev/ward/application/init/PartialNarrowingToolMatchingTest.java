@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,7 +93,8 @@ class PartialNarrowingToolMatchingTest {
                 root,
                 Map.of(gate, gates.get(gate)),
                 List.of(paths).stream().map(root::resolve).toList(),
-                Files::exists)
+                Files::exists,
+                path -> Optional.empty())
             .gates()
             .get(gate);
     assertThat(plan.scope()).isEqualTo(PartialCheckPlan.Scope.NARROW);

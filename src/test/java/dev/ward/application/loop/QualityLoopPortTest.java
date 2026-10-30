@@ -24,6 +24,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.config.FilePathExistence;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,8 @@ class QualityLoopPortTest {
                     Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
             new QualityGateFactory(commands),
             new QualityGateRunner(),
-            new FilePathExistence());
+            new dev.ward.application.gate.PartialPorts(
+                new FilePathExistence(), new NodeWorkspaceMembers()));
     final List<String> requested = new ArrayList<>();
     final AgentRunnerFactory agents =
         (workingDirectory, arguments) -> {

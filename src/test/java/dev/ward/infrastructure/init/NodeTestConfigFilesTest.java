@@ -10,6 +10,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import java.io.IOException;
@@ -144,7 +145,16 @@ class NodeTestConfigFilesTest {
 
   private Project project(final BuildTool manager) {
     return new Project(
-        root, Language.TYPESCRIPT, manager, Framework.NONE, false, false, root, Set.of(), "24");
+        root,
+        Language.TYPESCRIPT,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 
   private static List<InitGateOption> gates(final String... ids) {

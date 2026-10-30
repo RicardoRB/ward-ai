@@ -8,6 +8,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,7 @@ class NodeVitestCompatibilityTest {
         false,
         root,
         Set.of(),
-        "24");
+        "24",
+        TaskRunner.NONE);
   }
 }

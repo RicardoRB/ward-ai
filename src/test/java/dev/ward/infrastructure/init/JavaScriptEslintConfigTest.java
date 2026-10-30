@@ -9,6 +9,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import java.io.IOException;
@@ -125,7 +126,8 @@ class JavaScriptEslintConfigTest {
         false,
         root,
         Set.of(),
-        "24");
+        "24",
+        TaskRunner.NONE);
   }
 
   private void manifest(final String content) throws IOException {

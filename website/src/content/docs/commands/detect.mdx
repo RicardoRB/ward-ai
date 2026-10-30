@@ -73,6 +73,20 @@ Project root: /path/to/frontend
 
 A malformed `package.json` is still detected; the manager then comes from lock files alone.
 
+### Turborepo
+
+A workspace root that holds `turbo.json` is a Turborepo project. `detect` prints a `Task runner:`
+line for it, and a member of that workspace resolves to the root:
+
+```text
+Language:     TypeScript
+Build tool:   pnpm
+Framework:    None
+Task runner:  Turborepo
+Node:         22
+Project root: /path/to/monorepo
+```
+
 ### Python package manager
 
 For Python, the first rule that matches decides the build tool:

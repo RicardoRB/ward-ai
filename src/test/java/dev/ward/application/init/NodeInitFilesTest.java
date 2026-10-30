@@ -11,6 +11,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +152,15 @@ class NodeInitFilesTest {
 
   private static Project project(final BuildTool manager, final String node) {
     return new Project(
-        ROOT, Language.TYPESCRIPT, manager, Framework.NONE, false, false, ROOT, Set.of(), node);
+        ROOT,
+        Language.TYPESCRIPT,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        ROOT,
+        Set.of(),
+        node,
+        TaskRunner.NONE);
   }
 }

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /** Which gates a partial check skips, narrows, or runs in full. */
@@ -101,7 +102,8 @@ class PartialCheckPlanTest {
                                 "**/{name}",
                                 ","))),
                     List.of(PartialPlans.ROOT.resolve("src/B.java")),
-                    path -> false)
+                    path -> false,
+                    path -> Optional.empty())
                 .gates()
                 .get(PartialPlans.GATE))
         .isEqualTo(PartialPlans.full());
@@ -120,7 +122,8 @@ class PartialCheckPlanTest {
                             PartialPlans.partial(
                                 PartialPlans.JAVA, List.of(), List.of("{paths}"), null, null))),
                     List.of(PartialPlans.ROOT.resolve("src/A.java"), deleted),
-                    path -> !path.equals(deleted))
+                    path -> !path.equals(deleted),
+                    path -> Optional.empty())
                 .gates()
                 .get(PartialPlans.GATE))
         .isEqualTo(PartialPlans.narrowed("src/A.java"));
@@ -137,7 +140,8 @@ class PartialCheckPlanTest {
                     PartialPlans.partial(
                         PartialPlans.JAVA, PartialPlans.RULES, PartialPlans.INCLUDES, null, ","))),
             List.of(),
-            PartialPlans.EVERYTHING_EXISTS);
+            PartialPlans.EVERYTHING_EXISTS,
+            path -> Optional.empty());
 
     assertThat(plan.gates().get(PartialPlans.GATE)).isEqualTo(PartialPlans.full());
   }
@@ -156,7 +160,8 @@ class PartialCheckPlanTest {
             PartialPlans.ROOT,
             gates,
             List.of(PartialPlans.ROOT.resolveSibling("other/Order.java")),
-            PartialPlans.EVERYTHING_EXISTS);
+            PartialPlans.EVERYTHING_EXISTS,
+            path -> Optional.empty());
 
     assertThat(plan.gates().get(PartialPlans.GATE).scope()).isEqualTo(PartialCheckPlan.Scope.SKIP);
     assertThat(plan.gates().get("tests").scope()).isEqualTo(PartialCheckPlan.Scope.FULL);

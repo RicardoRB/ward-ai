@@ -11,6 +11,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.project.FileSystemPackageManifests;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -108,7 +109,8 @@ class NodeStrykerPackagesTest {
         false,
         root,
         Set.of(),
-        node);
+        node,
+        TaskRunner.NONE);
   }
 
   private static List<InitGateOption> gates(final String... ids) {

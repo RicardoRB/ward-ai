@@ -2,8 +2,10 @@ package dev.ward.config;
 
 import dagger.Module;
 import dagger.Provides;
+import dev.ward.application.gate.PartialPorts;
 import dev.ward.domain.agent.AgentIntegration;
 import dev.ward.domain.config.PathExistence;
+import dev.ward.domain.project.WorkspaceMembers;
 import dev.ward.domain.update.LatestReleaseLookup;
 import dev.ward.domain.update.UpdateCheckCache;
 import dev.ward.infrastructure.agent.AmpIntegration;
@@ -53,6 +55,11 @@ final class WardProvidesModule {
   @Provides
   static PathExistence pathExistence() {
     return new FilePathExistence();
+  }
+
+  @Provides
+  static PartialPorts partialPorts(final PathExistence existence, final WorkspaceMembers members) {
+    return new PartialPorts(existence, members);
   }
 
   @Provides

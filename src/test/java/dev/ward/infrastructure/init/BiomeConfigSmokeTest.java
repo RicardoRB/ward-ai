@@ -9,6 +9,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -148,7 +149,8 @@ class BiomeConfigSmokeTest {
             false,
             root,
             Set.of(),
-            "24");
+            "24",
+            TaskRunner.NONE);
     final InitGateOption biome =
         new InitGateOption("biome", "Biome", List.of("npx", "biome"), true, "ok");
     return NodeConfigFiles.targets(

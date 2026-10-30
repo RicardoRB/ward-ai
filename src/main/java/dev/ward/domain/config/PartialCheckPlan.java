@@ -1,17 +1,15 @@
 package dev.ward.domain.config;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 /** Pure decision model for selecting and narrowing gates for an edit. */
 public final class PartialCheckPlan {
-  private static final String PATHS = "{paths}";
-  private static final String PATH = "{path}";
-  private static final String NAME = "{name}";
 
   private final Map<String, GatePlan> gates;
 
@@ -36,18 +34,21 @@ public final class PartialCheckPlan {
 
   /**
    * Decides, for each configured gate, whether the edited paths skip it, narrow it, or run it in
-   * full. Without paths every gate runs in full.
+   * full. Without paths every gate runs in full. {@code packages} names the workspace package that
+   * holds a path, or is empty for a path in no package.
    */
   public static PartialCheckPlan create(
       final Path root,
       final Map<String, GateConfiguration> configurations,
       final List<Path> editedPaths,
-      final PathExistence existence) {
+      final PathExistence existence,
+      final Function<Path, Optional<String>> packages) {
     final List<EditedPath> paths = normalize(root, editedPaths, existence);
     final boolean noPaths = editedPaths == null || editedPaths.isEmpty();
     final Map<String, GatePlan> plans = new LinkedHashMap<>();
     configurations.forEach(
-        (name, configuration) -> plans.put(name, decide(name, configuration, paths, noPaths)));
+        (name, configuration) ->
+            plans.put(name, decide(name, configuration, paths, noPaths, packages)));
     return new PartialCheckPlan(plans);
   }
 
@@ -80,7 +81,8 @@ public final class PartialCheckPlan {
       final String name,
       final GateConfiguration configuration,
       final List<EditedPath> paths,
-      final boolean noPaths) {
+      final boolean noPaths,
+      final Function<Path, Optional<String>> packages) {
     final PartialGateConfiguration partial = configuration.partial();
     if (partial == null || noPaths) {
       return new GatePlan(name, Scope.FULL, List.of());
@@ -94,37 +96,11 @@ public final class PartialCheckPlan {
       return new GatePlan(name, Scope.SKIP, List.of());
     }
     final List<EditedPath> existing = relevant.stream().filter(EditedPath::exists).toList();
-    if (partial.args().isEmpty() || existing.isEmpty()) {
+    final List<String> items = PartialArguments.items(partial.item(), existing, packages);
+    if (partial.args().isEmpty() || items.isEmpty()) {
       return new GatePlan(name, Scope.FULL, List.of());
     }
-    return new GatePlan(name, Scope.NARROW, render(partial, existing));
-  }
-
-  private static List<String> render(
-      final PartialGateConfiguration partial, final List<EditedPath> paths) {
-    final String item = partial.item();
-    final List<String> items =
-        paths.stream()
-            .map(path -> item.replace(PATH, path.relative()).replace(NAME, path.name()))
-            .toList();
-    final List<String> rendered = new ArrayList<>();
-    for (final String argument : partial.args()) {
-      if (argument.contains(PATHS)) {
-        rendered.addAll(substituted(argument, items, partial.separator()));
-      } else {
-        rendered.add(argument);
-      }
-    }
-    return rendered;
-  }
-
-  /** One argument per item, or one argument joining the items with {@code separator}. */
-  private static List<String> substituted(
-      final String argument, final List<String> items, final String separator) {
-    if (separator == null) {
-      return items.stream().map(value -> argument.replace(PATHS, value)).toList();
-    }
-    return List.of(argument.replace(PATHS, String.join(separator, items)));
+    return new GatePlan(name, Scope.NARROW, PartialArguments.render(partial, items));
   }
 
   private static List<EditedPath> normalize(
@@ -142,13 +118,12 @@ public final class PartialCheckPlan {
                 new EditedPath(
                     absoluteRoot.relativize(path).toString().replace('\\', '/'),
                     String.valueOf(path.getFileName()),
-                    existence.exists(path)))
+                    existence.exists(path),
+                    path))
         .toList();
   }
 
   private static boolean matches(final List<String> patterns, final String path) {
     return patterns.stream().anyMatch(pattern -> PathPattern.of(pattern).matches(path));
   }
-
-  private record EditedPath(String relative, String name, boolean exists) {}
 }

@@ -12,6 +12,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -118,7 +119,8 @@ class JavaScriptGatesTest {
             false,
             root,
             Set.of(),
-            "24");
+            "24",
+            TaskRunner.NONE);
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
@@ -155,6 +157,15 @@ class JavaScriptGatesTest {
 
   private Project project(final BuildTool manager) {
     return new Project(
-        root, Language.JAVASCRIPT, manager, Framework.NONE, false, false, root, Set.of(), "24");
+        root,
+        Language.JAVASCRIPT,
+        manager,
+        Framework.NONE,
+        false,
+        false,
+        root,
+        Set.of(),
+        "24",
+        TaskRunner.NONE);
   }
 }

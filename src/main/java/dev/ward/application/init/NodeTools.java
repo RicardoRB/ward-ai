@@ -97,6 +97,32 @@ record NodeTools(
     return new NodeLinting(biome, ownEslintConfig);
   }
 
+  /** Returns these tools with the lint and format choices of {@code linting}. */
+  NodeTools withLinting(final NodeLinting linting) {
+    return new NodeTools(
+        manager,
+        testGate,
+        available,
+        preset,
+        ownTestConfig,
+        dependencyCruiserConfig,
+        linting.biome(),
+        linting.ownEslintConfig());
+  }
+
+  /** Returns these tools with {@code gate} as the test runner gate. */
+  NodeTools withTestGate(final String gate) {
+    return new NodeTools(
+        manager,
+        gate,
+        available,
+        preset,
+        ownTestConfig,
+        dependencyCruiserConfig,
+        biome,
+        ownEslintConfig);
+  }
+
   /**
    * Returns {@code preset}'s minimum percentage for coverage {@code counter}, such as {@code LINE},
    * or {@code null} when it sets none; a custom selection uses the standard preset's minimums.

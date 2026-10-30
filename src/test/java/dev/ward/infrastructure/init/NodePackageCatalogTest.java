@@ -11,6 +11,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +116,16 @@ class NodePackageCatalogTest {
     return catalog
         .gates(
             new Project(
-                root, language, buildTool, Framework.NONE, false, false, root, Set.of(), "24"),
+                root,
+                language,
+                buildTool,
+                Framework.NONE,
+                false,
+                false,
+                root,
+                Set.of(),
+                "24",
+                TaskRunner.NONE),
             null)
         .stream()
         .map(InitGateOption::id)

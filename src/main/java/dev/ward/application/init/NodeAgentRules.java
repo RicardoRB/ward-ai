@@ -4,13 +4,20 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /** The agent rule lines of a Node project's tool gates, part of {@link AgentRulesTemplate}. */
 final class NodeAgentRules {
+  private static final String TURBO_RULE =
+      "- This is a Turborepo workspace. Run the gates through `ward check`, not per package: each"
+          + " gate runs `turbo run` for every package, and a package script exists only so turbo can"
+          + " run it.";
+
   private NodeAgentRules() {}
 
   /**
@@ -55,10 +62,15 @@ final class NodeAgentRules {
             "- Dependency rules (dependency-cruiser): `{command}` must pass. Fix the import that"
                 + " breaks an architecture rule; do not edit or weaken the `.dependency-cruiser.*`"
                 + " rules.");
-    return gates.stream()
-        .filter(gate -> rows.containsKey(gate.id()))
-        .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
-        .toList();
+    final List<String> lines =
+        gates.stream()
+            .filter(gate -> rows.containsKey(gate.id()))
+            .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
+            .toList();
+    if (project.taskRunner() != TaskRunner.TURBO) {
+      return lines;
+    }
+    return Stream.concat(Stream.of(TURBO_RULE), lines.stream()).toList();
   }
 
   /** The preset's coverage minimum; Bun measures no branches, so it gets only the line minimum. */

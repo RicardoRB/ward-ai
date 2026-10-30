@@ -10,6 +10,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +107,8 @@ class NodeAngularPackagesTest {
             false,
             root,
             Set.of(),
-            String.valueOf(node));
+            String.valueOf(node),
+            TaskRunner.NONE);
     return NodeCompatibility.check(project, manifest, List.of(), Set.of()).findings();
   }
 

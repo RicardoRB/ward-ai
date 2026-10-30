@@ -6,6 +6,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 final class NodeProjectInspection {
   static final String PACKAGE_JSON = "package.json";
   static final String TSCONFIG = "tsconfig.json";
+  private static final String TURBO_JSON = "turbo.json";
   private static final String DEFAULT_NODE_VERSION = "24";
   private static final Pattern LEADING_MAJOR = Pattern.compile("^v?(\\d+)");
   private static final Pattern FIRST_NUMBER = Pattern.compile("(\\d+)");
@@ -73,7 +75,13 @@ final class NodeProjectInspection {
         false,
         dir,
         Set.of(language),
-        version(dir, manifest));
+        version(dir, manifest),
+        taskRunner(dir));
+  }
+
+  /** Returns Turborepo when the workspace root holds {@code turbo.json}, else no task runner. */
+  private static TaskRunner taskRunner(final Path dir) {
+    return Files.isRegularFile(dir.resolve(TURBO_JSON)) ? TaskRunner.TURBO : TaskRunner.NONE;
   }
 
   /** Reads the framework from declared packages only; file names never decide. */

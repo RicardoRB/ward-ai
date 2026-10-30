@@ -1,6 +1,7 @@
 package dev.ward.application.spec;
 
 import dev.ward.application.gate.CheckService;
+import dev.ward.application.gate.PartialPorts;
 import dev.ward.application.gate.QualityGateFactory;
 import dev.ward.application.gate.QualityGateRunner;
 import dev.ward.application.project.ProjectDetector;
@@ -9,6 +10,7 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 import dev.ward.infrastructure.spec.FileSystemProjectPaths;
 
 /** Wires real project detection, configuration, and paths around a test executor. */
@@ -26,7 +28,7 @@ public final class SpecValidationFixtures {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor, environment),
         new QualityGateRunner(),
-        new FilePathExistence());
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
   }
 
   /**

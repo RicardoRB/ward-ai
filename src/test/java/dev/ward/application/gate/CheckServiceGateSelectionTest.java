@@ -13,6 +13,7 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -161,6 +162,6 @@ class CheckServiceGateSelectionTest {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new FilePathExistence());
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
   }
 }

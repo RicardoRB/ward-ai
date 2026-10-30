@@ -13,6 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -89,6 +90,7 @@ class SarifNestedLocationsTest {
         false,
         REPOSITORY,
         Set.of(),
-        "");
+        "",
+        TaskRunner.NONE);
   }
 }

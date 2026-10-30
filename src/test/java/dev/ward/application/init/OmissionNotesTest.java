@@ -10,6 +10,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.NodeToolConfigs;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,17 @@ class OmissionNotesTest {
       final QualityPreset preset,
       final boolean thresholdsSet) {
     final Project project =
-        new Project(ROOT, language, BuildTool.NPM, framework, false, false, ROOT, Set.of(), "24");
+        new Project(
+            ROOT,
+            language,
+            BuildTool.NPM,
+            framework,
+            false,
+            false,
+            ROOT,
+            Set.of(),
+            "24",
+            TaskRunner.NONE);
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(

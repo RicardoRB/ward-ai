@@ -10,6 +10,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,16 @@ class NodeTestCommandsTest {
                         : Optional.empty()));
     final Project project =
         new Project(
-            root, Language.TYPESCRIPT, manager, Framework.NONE, false, false, root, Set.of(), "24");
+            root,
+            Language.TYPESCRIPT,
+            manager,
+            Framework.NONE,
+            false,
+            false,
+            root,
+            Set.of(),
+            "24",
+            TaskRunner.NONE);
     return catalog.gates(project, preset).stream()
         .filter(gate -> gate.id().equals(id))
         .findFirst()

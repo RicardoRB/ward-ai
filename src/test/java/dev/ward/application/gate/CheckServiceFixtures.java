@@ -5,6 +5,7 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.NodeWorkspaceMembers;
 
 /** A {@link CheckService} wired like production around a test {@link CommandExecutor}. */
 public final class CheckServiceFixtures {
@@ -19,6 +20,6 @@ public final class CheckServiceFixtures {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new FilePathExistence());
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
   }
 }

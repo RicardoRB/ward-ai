@@ -115,7 +115,7 @@ class PackageJsonEditTest {
                 PackageJsonEdit.addDevDependencies(
                     "{\"name\":\"shop\",\"devDependencies\":{}}", ordered("prettier", "3.9.10")))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("package.json");
+        .hasMessageContaining("layout");
   }
 
   private static Map<String, String> ordered(final String... pairs) {

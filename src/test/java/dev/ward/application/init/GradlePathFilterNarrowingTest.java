@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -49,7 +50,11 @@ class GradlePathFilterNarrowingTest {
 
     final PartialCheckPlan plan =
         PartialCheckPlan.create(
-            root, Map.of("checkstyle", checkstyle), List.of(first, second), Files::exists);
+            root,
+            Map.of("checkstyle", checkstyle),
+            List.of(first, second),
+            Files::exists,
+            path -> Optional.empty());
 
     assertThat(plan.gates().get("checkstyle").scope()).isEqualTo(PartialCheckPlan.Scope.NARROW);
     assertThat(plan.gates().get("checkstyle").args())

@@ -6,6 +6,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.ProjectInspection;
+import dev.ward.domain.project.TaskRunner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -132,7 +133,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         pom.map(FileSystemProjectInspection::publishes).orElse(false),
         dir,
         languages,
-        "");
+        "",
+        TaskRunner.NONE);
   }
 
   private static Project gradleProject(final Path dir) {
@@ -146,7 +148,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         false,
         dir,
         languages,
-        "");
+        "",
+        TaskRunner.NONE);
   }
 
   /** Parses the POM securely; a malformed or hostile POM is still a Maven marker. */
