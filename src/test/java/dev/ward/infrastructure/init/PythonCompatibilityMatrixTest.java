@@ -150,7 +150,11 @@ class PythonCompatibilityMatrixTest {
   private Run run(final Map<String, String> env, final Path project, final String... args)
       throws IOException, InterruptedException {
     final List<String> command =
-        new ArrayList<>(List.of("java", "-jar", System.getProperty(JAR_PROPERTY)));
+        new ArrayList<>(
+            List.of(
+                "java",
+                "-jar",
+                Path.of(System.getProperty(JAR_PROPERTY)).toAbsolutePath().toString()));
     command.addAll(List.of(args));
     return exec(env, project, command);
   }
