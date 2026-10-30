@@ -36,7 +36,8 @@ class CoverageProjectDiscoveryTest {
     Files.writeString(root.resolve("javascript/package.json"), "{}");
     Files.writeString(root.resolve("javascript/yarn.lock"), "");
     Files.createDirectories(root.resolve("python-poetry"));
-    Files.writeString(root.resolve("python-poetry/pyproject.toml"), "");
+    Files.writeString(
+        root.resolve("python-poetry/pyproject.toml"), "[tool.poetry]\nname = \"demo\"\n");
     Files.createDirectories(root.resolve("python-pip"));
     Files.writeString(root.resolve("python-pip/requirements.txt"), "");
     Files.createDirectories(root.resolve("go"));

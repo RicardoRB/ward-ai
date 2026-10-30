@@ -13,7 +13,8 @@ import java.util.Set;
  * @param language its primary language
  * @param buildTool its build tool
  * @param framework its framework
- * @param mavenWrapperAvailable whether the build tool's wrapper, such as {@code mvnw}, is present
+ * @param mavenWrapperAvailable whether the build tool's wrapper, such as {@code mvnw}, is present;
+ *     for pip, whether the project root has a {@code .venv} that the build runs through
  * @param publishesArtifacts whether the Maven POM declares {@code <distributionManagement>}, the
  *     signal that a released library baseline exists
  * @param repositoryRoot the Git top-level containing the project, or {@code root} outside a Git
@@ -132,13 +133,20 @@ public record Project(
   /** Returns the wrapper-first executable name for this project's build tool. */
   public String buildExecutable() {
     return switch (buildTool) {
-      case MAVEN -> mavenWrapperAvailable ? "./mvnw" : "mvn";
-      case GRADLE -> mavenWrapperAvailable ? "./gradlew" : "gradle";
+      case MAVEN -> wrapperOr("./mvnw", "mvn");
+      case GRADLE -> wrapperOr("./gradlew", "gradle");
       case NPM -> "npm";
       case PNPM -> "pnpm";
       case YARN -> "yarn";
       case BUN -> "bun";
+      case UV -> "uv";
+      case POETRY -> "poetry";
       default -> buildTool.displayName();
     };
+  }
+
+  /** Returns the wrapper when this project has one, else the executable on PATH. */
+  private String wrapperOr(final String wrapper, final String executable) {
+    return mavenWrapperAvailable ? wrapper : executable;
   }
 }

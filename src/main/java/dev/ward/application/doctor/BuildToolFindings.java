@@ -11,6 +11,7 @@ final class BuildToolFindings {
     return switch (toolchain) {
       case JVM -> new JvmToolchainFinding();
       case NODE -> new NodeToolchainFinding();
+      case PYTHON -> new PythonToolchainFinding();
       default -> new UncheckedToolchainFinding();
     };
   }

@@ -40,7 +40,12 @@ per check:
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
 | `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |
-| Other build tools, such as `cargo` or `poetry` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
+| `python` | `OK` / `ERROR` / `WARNING` | For Python projects: `python3` or `python` is on `PATH`. For uv a missing interpreter is a `WARNING`, because uv installs its own. No `maven` or `gradle` line is printed for Python projects. |
+| `uv` / `poetry` | `OK` / `ERROR` | For uv and Poetry projects: the manager's executable is on `PATH`. |
+| `venv` | `OK` / `WARNING` | For pip projects: the project root has a `.venv`. Otherwise the warning shows how to create one, `python3 -m venv .venv`. |
+| `pdm` / `hatch` | `WARNING` | For PDM and Hatch projects: Ward does not support that manager yet. The warning does not change the exit status. |
+| `python-version` | `ERROR` | For Python projects whose target version (from `.python-version` or `requires-python`, see [detect](/commands/detect/#python-version)) is below 3.11: the version is `INCOMPATIBLE`, and Ward supports Python 3.11 to 3.15. |
+| Other build tools, such as `cargo` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
 | `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. Integrations without pre-tool support are marked `advisory-only`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
 | `native` | `OK` / `WARNING` | `target/ward` exists in the current directory. This is a development check for the Ward repository. |

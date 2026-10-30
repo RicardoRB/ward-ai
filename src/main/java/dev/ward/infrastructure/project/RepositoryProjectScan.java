@@ -2,6 +2,7 @@ package dev.ward.infrastructure.project;
 
 import dev.ward.domain.project.DiscoveredProject;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
@@ -49,7 +50,7 @@ final class RepositoryProjectScan {
               if (!dir.equals(root) && skipped(dir)) {
                 return FileVisitResult.SKIP_SUBTREE;
               }
-              FileSystemProjectInspection.projectAt(dir).ifPresent(found::add);
+              found.addAll(projectsAt(dir));
               return FileVisitResult.CONTINUE;
             }
 
@@ -58,7 +59,7 @@ final class RepositoryProjectScan {
             public FileVisitResult visitFile(
                 final Path file, final BasicFileAttributes attributes) {
               if (attributes.isDirectory() && !skipped(file)) {
-                FileSystemProjectInspection.projectAt(file).ifPresent(found::add);
+                found.addAll(projectsAt(file));
               }
               return FileVisitResult.CONTINUE;
             }
@@ -77,6 +78,21 @@ final class RepositoryProjectScan {
   static boolean skipped(final Path dir) {
     final Path name = dir.getFileName();
     return name != null && (name.toString().startsWith(".") || SKIPPED.contains(name.toString()));
+  }
+
+  /**
+   * Returns the projects rooted at {@code dir}: the one {@link
+   * FileSystemProjectInspection#projectAt} picks, plus a Python project when that one is Node and
+   * the directory also holds a Python marker.
+   */
+  private static List<Project> projectsAt(final Path dir) {
+    final Optional<Project> project = FileSystemProjectInspection.projectAt(dir);
+    if (project.isPresent()
+        && project.get().toolchain() == Toolchain.NODE
+        && PythonProjectInspection.hasMarker(dir)) {
+      return List.of(project.get(), PythonProjectInspection.project(dir));
+    }
+    return project.stream().toList();
   }
 
   private static boolean isModule(final Project project, final List<Project> candidates) {

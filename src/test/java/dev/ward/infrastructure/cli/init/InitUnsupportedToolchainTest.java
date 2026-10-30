@@ -25,8 +25,22 @@ class InitUnsupportedToolchainTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output())
-        .contains("Poetry")
+        .contains("pip")
+        .doesNotContain("Poetry")
         .contains("Ward init supports Maven, Gradle, TypeScript and JavaScript projects");
+    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+  }
+
+  @Test
+  void poetryProjectFailsNamingPoetryWithoutChangingFiles() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.writeString(root.resolve("pyproject.toml"), "[tool.poetry]\nname = \"demo\"\n");
+    final Map<String, String> before = ProjectSnapshot.of(root);
+
+    final int exit = init.run("", "--integration", "none", "--gate", "tests", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+    assertThat(init.output()).contains("Poetry");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 

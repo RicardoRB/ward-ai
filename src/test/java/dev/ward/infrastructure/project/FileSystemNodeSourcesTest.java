@@ -72,6 +72,16 @@ class FileSystemNodeSourcesTest {
   }
 
   @Test
+  void pythonPackageBelowNodeRootDoesNotCount() throws IOException {
+    tree.write("python/setup.py", "from setuptools import setup\n");
+    tree.write("python/static/app.js", "console.log(1);\n");
+    tree.write("tools/legacy/setup.cfg", "[metadata]\n");
+    tree.write("tools/legacy/build.js", "");
+
+    assertThat(sources.hasSources(dir)).isFalse();
+  }
+
+  @Test
   void workspaceMemberSourcesCount() throws IOException {
     tree.write(PACKAGE_JSON, "{\"workspaces\": [\"packages/*\"]}");
     tree.write("packages/ui/package.json", MANIFEST);

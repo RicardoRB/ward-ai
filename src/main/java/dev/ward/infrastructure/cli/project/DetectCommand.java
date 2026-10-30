@@ -61,6 +61,9 @@ public class DetectCommand implements Callable<Integer> {
     if (p.language() == Language.TYPESCRIPT || p.language() == Language.JAVASCRIPT) {
       output().printf("Node:         %s%n", p.languageVersion());
     }
+    if (p.language() == Language.PYTHON) {
+      output().printf("Python:       %s%n", p.languageVersion());
+    }
     output().printf("Project root: %s%n", p.root());
     return ExitCodes.OK;
   }

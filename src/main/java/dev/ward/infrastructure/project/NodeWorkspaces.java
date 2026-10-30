@@ -2,7 +2,6 @@ package dev.ward.infrastructure.project;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -30,7 +29,8 @@ final class NodeWorkspaces {
         && !Files.isRegularFile(candidate.resolve(NodeProjectInspection.TSCONFIG))) {
       return false;
     }
-    return matchesAny(patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
+    return WorkspaceGlobs.matchesAny(
+        patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
   }
 
   /** Returns whether a directory matched by the workspace patterns has {@code tsconfig.json}. */
@@ -44,22 +44,10 @@ final class NodeWorkspaces {
           .filter(file -> file.endsWith(NodeProjectInspection.TSCONFIG))
           .map(Path::getParent)
           .filter(member -> !member.toString().contains("node_modules"))
-          .anyMatch(member -> matchesAny(patterns, root, member));
+          .anyMatch(member -> WorkspaceGlobs.matchesAny(patterns, root, member));
     } catch (IOException | UncheckedIOException e) {
       return false;
     }
-  }
-
-  private static boolean matchesAny(
-      final List<String> patterns, final Path root, final Path candidate) {
-    if (root.equals(candidate)) {
-      return false;
-    }
-    final Path relative = Path.of(root.relativize(candidate).toString().replace('\\', '/'));
-    return patterns.stream()
-        .map(pattern -> pattern.replaceFirst("^\\./", "").replaceFirst("/$", ""))
-        .anyMatch(
-            glob -> FileSystems.getDefault().getPathMatcher("glob:" + glob).matches(relative));
   }
 
   /** Returns the workspace patterns of {@code root}; negations are ignored, not applied. */
