@@ -142,6 +142,19 @@ class PythonCompatibilityMatrixTest {
       throws IOException, InterruptedException {
     if (PIP.equals(manager)) {
       assertThat(exec(env, project, List.of("python3", "-m", "venv", ".venv")).exit()).isZero();
+      assertThat(
+              exec(
+                      env,
+                      project,
+                      List.of(
+                          project.resolve(".venv/bin/python").toString(),
+                          "-m",
+                          "pip",
+                          "install",
+                          "--upgrade",
+                          "pip"))
+                  .exit())
+          .isZero();
     } else if (POETRY.equals(manager)) {
       assertThat(exec(env, project, List.of("poetry", "env", "use", "python3")).exit()).isZero();
     }
