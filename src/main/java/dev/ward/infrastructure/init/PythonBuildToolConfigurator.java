@@ -8,6 +8,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.project.PyprojectDependencies;
@@ -30,6 +31,9 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
   private static final Logger LOGGER =
       Logger.getLogger(PythonBuildToolConfigurator.class.getName());
   private static final String PYPROJECT = "pyproject.toml";
+  private static final String SRC_NOTE =
+      "src/ layout without [build-system]: pip will not install the package, so tests cannot import"
+          + " it. Add a [build-system] table to pyproject.toml.";
   static final String REQUIREMENTS = "requirements-ward.txt";
   private final CommandExecutor executor;
 
@@ -86,7 +90,18 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
                 details.add(
                     "add " + tool.requirement() + " to the " + PyprojectEdit.GROUP + " group"));
     commands(project, edit).forEach(command -> details.add("run " + String.join(" ", command)));
+    if (isSrcWithoutBuildSystem(project, edit)) {
+      details.add(SRC_NOTE);
+    }
     return new PlannedFileChange(edit.file(), PlannedFileChange.Action.MODIFY, details);
+  }
+
+  /** A src layout is importable only once pip installs the project, which needs a build system. */
+  private static boolean isSrcWithoutBuildSystem(final Project project, final Edit edit) {
+    return project.buildTool() == BuildTool.PIP
+        && edit.pyproject()
+        && !edit.buildSystem()
+        && Files.isDirectory(project.root().resolve("src"));
   }
 
   @Override

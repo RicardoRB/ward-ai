@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeCommandExecutor;
+import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.InitGateOption;
@@ -65,6 +66,39 @@ class PythonBuildToolConfiguratorTest {
         .isInstanceOf(WardException.class)
         .hasMessageContaining("Poetry 2.1 is too old");
     assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(PYPROJECT);
+  }
+
+  @Test
+  void srcLayoutWithoutBuildSystemPlansANoteThatPipWillNotInstallThePackage() throws IOException {
+    Files.writeString(root.resolve(PYPROJECT_FILE), PYPROJECT);
+    Files.createDirectories(root.resolve(".venv"));
+    Files.createDirectories(root.resolve("src/shop"));
+    final FakeCommandExecutor executor =
+        new FakeCommandExecutor(0, "pip 26.0 from /shop/.venv/lib/pip (python 3.12)", "");
+    final Project pip = new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE);
+
+    final PlannedFileChange plan =
+        new PythonBuildToolConfigurator(executor).plan(pip, GATES, null, true);
+
+    assertThat(plan.details())
+        .anyMatch(detail -> detail.startsWith("src/ layout without [build-system]"));
+  }
+
+  @Test
+  void srcLayoutWithBuildSystemPlansNoSrcNote() throws IOException {
+    Files.writeString(
+        root.resolve(PYPROJECT_FILE),
+        PYPROJECT + "\n[build-system]\nrequires = [\"setuptools\"]\n");
+    Files.createDirectories(root.resolve(".venv"));
+    Files.createDirectories(root.resolve("src/shop"));
+    final FakeCommandExecutor executor =
+        new FakeCommandExecutor(0, "pip 26.0 from /shop/.venv/lib/pip (python 3.12)", "");
+    final Project pip = new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE);
+
+    final PlannedFileChange plan =
+        new PythonBuildToolConfigurator(executor).plan(pip, GATES, null, true);
+
+    assertThat(plan.details()).noneMatch(detail -> detail.startsWith("src/ layout"));
   }
 
   @Test

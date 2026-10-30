@@ -85,3 +85,15 @@ Treat a marked `stryker.config.mjs` like any managed rule file (Step 4): ask whe
 become the user's before the first edit, and remove the marker in the same approved edit. Ground
 proposals as for PIT: name the files with the most `Survived` mutants and the missing assertion
 before proposing a lower `break`.
+
+## mutmut (Python)
+
+- **Where the configuration lives:** the `mutmut` gate runs `mutmut run` in the `ci` profile and
+  fails below 60%. Init writes no `[tool.mutmut]` table: the user owns it in `pyproject.toml`.
+- **Flat layouts:** a project whose package sits at the root needs `source_paths` and `tests_dir`
+  in its own `[tool.mutmut]` table, and `also_copy` for any non-Python file the tests read. Without them mutmut
+  copies too little and reports no useful mutants.
+- **Decorated routes:** mutmut does not count calls through a decorated route, so a mutant there
+  survives no matter what the test asserts. Move the logic into a plain function and test that.
+- **Tuning:** lower the threshold only with a reason from the code, as with PIT. Never add a
+  `# pragma: no mutate` comment to hide a surviving mutant; kill it with a test.

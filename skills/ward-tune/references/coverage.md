@@ -91,3 +91,11 @@ Read the measured value from the runner's summary in the gate output (`Lines : 6
 Jest measure only the files the tests load unless the config sets `coverage.include` (Vitest) or
 `collectCoverageFrom` (Jest). Setting it is a strengthening: files no test imports start counting.
 Classify threshold changes as in the table above.
+
+## Python
+
+- **Ward-owned:** `.coveragerc`, with `fail_under` from the preset: 80% of lines under standard, and
+  85% of lines and branches under strict. A user-owned `.coveragerc` or `[tool.coverage]` table is
+  reused, and init does not write `.coveragerc`.
+- **Tuning:** lower a minimum only with a reason from the code. A line that cannot run in tests is a
+  reason to change the test setup, not to add an exclusion.

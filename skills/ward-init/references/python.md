@@ -52,6 +52,8 @@ cannot find one.
   `pyproject.toml`. Without `pyproject.toml`, it goes to `requirements-ward.txt`.
 - `run uv sync --group ward`, `poetry lock` then `poetry install --with ward`, or `.venv/bin/python
   -m pip install --group ward` followed by `-e .` when `pyproject.toml` has a `[build-system]`.
+- A pip project with a `src/` layout and no `[build-system]` gets a plan note: pip will not install the
+  package, so ask the user to add a `[build-system]` table before running tests.
 - `Created ruff.toml`, `mypy.ini` or `.coveragerc`: Ward's owned configs, written only where the
   project has none.
 

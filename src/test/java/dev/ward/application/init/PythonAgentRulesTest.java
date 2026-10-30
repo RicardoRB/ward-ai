@@ -46,6 +46,48 @@ class PythonAgentRulesTest {
         .contains("`# noqa`", "`# type: ignore`", "per-file-ignores");
   }
 
+  @Test
+  void djangoRulesNameTheCheckCommand() {
+    final Project django =
+        new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.DJANGO);
+
+    assertThat(
+            String.join(
+                "\n",
+                PythonAgentRules.lines(
+                    django, gates("django-check"), QualityPreset.STANDARD, Set.of())))
+        .contains("Django: `django-check` must report no issues");
+  }
+
+  @Test
+  void fastApiRulesExportTheDocumentOnlyWhenAnOpenApiGateIsSelected() {
+    final Project api =
+        new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.FASTAPI);
+
+    assertThat(
+            String.join(
+                "\n",
+                PythonAgentRules.lines(
+                    api, gates("openapi-diff"), QualityPreset.STANDARD, Set.of())))
+        .contains("re-export openapi.json");
+    assertThat(
+            String.join(
+                "\n", PythonAgentRules.lines(api, gates("ruff"), QualityPreset.STANDARD, Set.of())))
+        .doesNotContain("openapi.json");
+  }
+
+  @Test
+  void flaskRulesKeepTheAppFactoryImportable() {
+    final Project flask =
+        new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.FLASK);
+
+    assertThat(
+            String.join(
+                "\n",
+                PythonAgentRules.lines(flask, gates("ruff"), QualityPreset.STANDARD, Set.of())))
+        .contains("`create_app`");
+  }
+
   private static List<InitGateOption> gates(final String... ids) {
     return java.util.Arrays.stream(ids)
         .map(id -> new InitGateOption(id, List.of(id), true, ""))

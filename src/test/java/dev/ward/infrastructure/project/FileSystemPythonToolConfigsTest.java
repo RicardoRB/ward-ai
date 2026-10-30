@@ -39,6 +39,36 @@ class FileSystemPythonToolConfigsTest {
   }
 
   @Test
+  void importLinterFileCountsAsUserOwnedUnlessWardWrote() throws IOException {
+    Files.writeString(root.resolve(".importlinter"), "[importlinter]\nroot_package = shop\n");
+    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "import-linter"))
+        .contains(root.resolve(".importlinter"));
+
+    Files.writeString(root.resolve(".importlinter"), "# managed-by: ward\n[importlinter]\n");
+    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "import-linter")).isEmpty();
+  }
+
+  @Test
+  void importLinterPyprojectTableCountsAsUserOwned() throws IOException {
+    Files.writeString(
+        root.resolve("pyproject.toml"),
+        "[project]\nname = \"shop\"\n\n[tool.importlinter]\nroot_package = \"shop\"\n");
+
+    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "import-linter"))
+        .contains(root.resolve("pyproject.toml"));
+  }
+
+  @Test
+  void importLinterSetupCfgSectionCountsAsUserOwned() throws IOException {
+    Files.writeString(
+        root.resolve("setup.cfg"),
+        "[metadata]\nname = shop\n\n[importlinter]\nroot_package = shop\n");
+
+    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "import-linter"))
+        .contains(root.resolve("setup.cfg"));
+  }
+
+  @Test
   void setupCfgSectionCountsAsUserOwned() throws IOException {
     Files.writeString(
         root.resolve("setup.cfg"), "[metadata]\nname = shop\n\n[coverage:run]\nbranch = True\n");

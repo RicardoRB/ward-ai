@@ -595,6 +595,8 @@ projects are not supported yet, and init stops with an error that names the mana
   file, and `requirements-ward.txt`.
 - pip needs a `.venv` first (`python -m venv .venv`). When `pyproject.toml` has a `[build-system]`,
   pip also installs the project itself, as `uv sync` and `poetry install` do.
+  A pip project with a `src/` layout and no `[build-system]` gets a plan note: pip will not install
+  the package, so tests cannot import it until one is added.
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
 - `strict` adds `import-linter` and `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,

@@ -31,3 +31,10 @@ the architecture rules.
 - To change a contract, edit `.importlinter` and keep the rule the user asked for. Do not delete a
   contract to make the gate pass.
 - A project's own `.importlinter`, `[tool.importlinter]` or `setup.cfg` section is never overwritten.
+
+## Flask blueprints
+
+Under Flask, the strict `independence` contract names each blueprint package under the root as a
+feature, so no blueprint may import another. Move code that two blueprints share into a package
+outside the blueprint packages. The contract is rendered at init, so run init again after adding a
+blueprint for the contract to list it.
