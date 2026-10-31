@@ -1,0 +1,67 @@
+version = 2
+
+[checks.vitest]
+enabled = true
+profiles = ["pre-push", "ci"]
+command = "npx vitest run --coverage"
+
+[checks.prettier]
+enabled = true
+profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+uses = "prettier"
+command = "npx prettier --check ."
+
+[checks.prettier.paths]
+match = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"]
+full = [".prettierrc*", "prettier.config.*", ".prettierignore", "package.json"]
+args = ["{paths}"]
+command = ["npx", "prettier", "--check"]
+
+[checks.eslint]
+enabled = true
+profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+command = "npx eslint . --format json"
+
+[checks.eslint.paths]
+match = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"]
+full = ["eslint.config.*", ".eslintrc*", "package.json"]
+args = ["{paths}"]
+command = ["npx", "eslint", "--format", "json"]
+
+[checks.stryker]
+enabled = true
+profiles = ["ci"]
+command = "npx stryker run"
+
+[checks.dependency-cruiser]
+enabled = true
+profiles = ["pre-push", "ci"]
+command = "npx depcruise . --config .dependency-cruiser.mjs --output-type err"
+
+[checks.openapi-lint]
+enabled = true
+profiles = ["default", "pre-commit", "pre-push", "ci", "edit"]
+uses = "openapi-lint"
+command = "vacuum lint -z -n warn"
+spec = "openapi.yaml"
+
+[checks.openapi-lint.paths]
+match = ["openapi.yaml"]
+
+[checks.openapi-diff]
+enabled = true
+profiles = ["default", "pre-commit"]
+uses = "openapi-diff"
+command = "oasdiff breaking --fail-on ERR"
+spec = "openapi.yaml"
+
+[checks.openapi-diff.paths]
+match = ["openapi.yaml"]
+
+[checks.openapi-compat]
+enabled = true
+profiles = ["pre-push", "ci"]
+uses = "openapi-compat"
+command = "oasdiff breaking --fail-on ERR"
+spec = "openapi.yaml"
+base = "origin/main"

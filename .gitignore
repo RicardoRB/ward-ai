@@ -1,0 +1,6 @@
+# ward-owned: gitignore v1 begin
+.ward/reports/
+coverage/
+.stryker-tmp/
+reports/mutation/
+# ward-owned: gitignore v1 end

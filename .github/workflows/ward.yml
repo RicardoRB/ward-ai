@@ -1,0 +1,54 @@
+# ward-owned: github-ci v1 begin
+name: Ward
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Ward ci profile
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install gate tools
+        run: |
+          set -eu
+          curl -sSfL "https://github.com/daveshanley/vacuum/releases/download/v0.36.1/vacuum_0.36.1_linux_x86_64.tar.gz" | sudo tar -xz -C /usr/local/bin vacuum
+          curl -sSfL "https://github.com/oasdiff/oasdiff/releases/download/v1.35.0/oasdiff_1.35.0_linux_amd64.tar.gz" | sudo tar -xz -C /usr/local/bin oasdiff
+      - name: Install Ward
+        env:
+          WARD_VERSION: v0.4.0
+          WARD_INSTALL_DIR: ${{ runner.temp }}/ward/bin
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
+          echo "$WARD_INSTALL_DIR" >> "$GITHUB_PATH"
+      - name: Run quality gates
+        run: ward check --profile ci --format sarif --output ward.sarif
+      - name: Upload SARIF to code scanning
+        if: >-
+          always()
+          && github.event_name == 'pull_request'
+          && github.event.pull_request.head.repo.full_name == github.repository
+          && hashFiles('ward.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: ward.sarif
+          category: ward
+# ward-owned: github-ci v1 end
