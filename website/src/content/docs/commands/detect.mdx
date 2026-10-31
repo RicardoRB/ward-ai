@@ -34,8 +34,8 @@ ward detect [-C <dir>]
 - TypeScript projects are recognized from `tsconfig.json`, and JavaScript projects from
   `package.json`.
 - A TypeScript or JavaScript project's framework comes from its declared packages: Astro, Svelte,
-  Vue, or Angular. Other frameworks, such as Next.js or NestJS, are reported as `None`; Ward runs the
-  same gates for them. See [Node projects](/commands/init/#node-projects).
+  Vue, Angular, or the server frameworks Next.js, NestJS, Fastify and Express. Other frameworks are
+  reported as `None`; Ward runs the same gates for them. See [Node projects](/commands/init/#node-projects).
 - Python projects are recognized from `pyproject.toml`, `setup.py`, `setup.cfg`, or a file whose
   name matches `requirements*.txt`. A Maven or Gradle build in the same directory keeps its
   precedence.

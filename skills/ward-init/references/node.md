@@ -11,8 +11,9 @@ ArchUnit, rule files under `config/`).
   (or a workspace member has one), and `JAVASCRIPT` for any other `package.json`.
 - **Framework.** A TypeScript project's framework comes only from its declared packages, in
   `dependencies` or `devDependencies`: `vue` or `nuxt` (Vue), `svelte` or `@sveltejs/kit` (Svelte),
-  `astro` (Astro), `@angular/core` (Angular). File names never decide. When several match, the first
-  in the order Astro, Svelte, Vue, Angular wins. Vue, Svelte and Astro replace `tsc` with `vue-tsc`,
+  `astro` (Astro), `@angular/core` (Angular), `next` (Next.js), `@nestjs/core` (NestJS), `fastify`
+  (Fastify), `express` (Express). File names never decide. When several match, the first in the order
+  Astro, Svelte, Vue, Angular, Next.js, NestJS, Fastify, Express wins. Vue, Svelte and Astro replace `tsc` with `vue-tsc`,
   `svelte-check` or `astro-check`. Angular uses `ngc -p tsconfig.app.json --noEmit`, which checks
   templates, and the `ng-test` gate (`ng test --watch=false --coverage`) unless `jest` is declared.
   Ward writes no Angular test config. Coverage minimums apply only when `angular.json` sets

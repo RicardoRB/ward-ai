@@ -1,5 +1,8 @@
 package dev.ward.domain.project;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 /** The application framework detected in a project. */
 public enum Framework {
   SPRING_BOOT("Spring Boot"),
@@ -13,10 +16,31 @@ public enum Framework {
   SVELTE("Svelte"),
   ASTRO("Astro"),
   ANGULAR("Angular"),
+  NEXT("Next.js"),
+  NEST("NestJS"),
+  FASTIFY("Fastify"),
+  EXPRESS("Express"),
   DJANGO("Django"),
   FASTAPI("FastAPI"),
   FLASK("Flask"),
   NONE("None");
+
+  private static final Set<Framework> SERVER_FRAMEWORKS =
+      EnumSet.of(
+          SPRING_BOOT,
+          QUARKUS,
+          MICRONAUT,
+          HELIDON,
+          DROPWIZARD,
+          JAVALIN,
+          KTOR,
+          DJANGO,
+          FASTAPI,
+          FLASK,
+          NEXT,
+          NEST,
+          FASTIFY,
+          EXPRESS);
 
   private final String displayName;
 
@@ -27,5 +51,12 @@ public enum Framework {
   /** Returns the name shown to users. */
   public String displayName() {
     return displayName;
+  }
+
+  /**
+   * Returns whether the framework serves HTTP routes, so its project may publish an API contract.
+   */
+  public boolean servesHttp() {
+    return SERVER_FRAMEWORKS.contains(this);
   }
 }

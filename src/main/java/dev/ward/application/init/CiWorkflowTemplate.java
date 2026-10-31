@@ -159,8 +159,10 @@ final class CiWorkflowTemplate {
         + "      security-events: write\n"
         + "    steps:\n"
         + "      - uses: actions/checkout@v5\n"
-        // gitleaks scans the whole history.
-        + (ids.contains("gitleaks") ? "        with:\n          fetch-depth: 0\n" : "")
+        // gitleaks scans the whole history, and openapi-compat needs the base branch.
+        + (ids.contains("gitleaks") || ids.contains("openapi-compat")
+            ? "        with:\n          fetch-depth: 0\n"
+            : "")
         + InitToolchains.support(project).ciSetup(project, facts);
   }
 
@@ -186,6 +188,7 @@ final class CiWorkflowTemplate {
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
     }
+    OpenApiToolInstalls.add(ids, install);
     if (ids.contains("openspec") || ids.contains("openspec-archived")) {
       install.add("          npm install -g @fission-ai/openspec@" + OPENSPEC_VERSION + "\n");
     }

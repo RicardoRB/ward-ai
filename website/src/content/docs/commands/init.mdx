@@ -72,8 +72,11 @@ Some gates need extra input:
   `<distributionManagement>`; otherwise `--gate api-compat` fails with that explanation.
 - **`openapi-lint`, `openapi-diff`, and `openapi-compat`** are offered only when Git tracks an
   `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
-  Init writes that path as their `spec`; see
-  [OpenAPI contract gates](/configuration/gates/#openapi-contract-gates).
+  With a tracked spec, `--preset` adds `openapi-lint` and `openapi-diff`, and `strict` adds
+  `openapi-compat`. Init writes that path as their `spec`; see
+  [OpenAPI contract gates](/configuration/gates/#openapi-contract-gates). When the project's
+  framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked spec, init's plan
+  says so and asks you to commit one first.
 - **`dependency-check` with `trivy`**: init warns that trivy already scans dependencies without an
   API key, so you can usually drop one of them.
 
@@ -287,8 +290,9 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
   has one.
 - A TypeScript project's framework comes from the packages it declares in `dependencies` or
   `devDependencies`, never from file names: `vue` or `nuxt` is Vue, `svelte` or `@sveltejs/kit` is
-  Svelte, `astro` is Astro, and `@angular/core` is Angular. If several match, the first in that order
-  (Astro, Svelte, Vue, Angular) decides.
+  Svelte, `astro` is Astro, `@angular/core` is Angular, `next` is Next.js, `@nestjs/core` is NestJS,
+  `fastify` is Fastify, and `express` is Express. If several match, the first in that order (Astro,
+  Svelte, Vue, Angular, Next.js, NestJS, Fastify, Express) decides.
 - For Vue, Svelte and Astro, the type-check gate is the framework's checker in place of `tsc`:
   `vue-tsc` (`vue-tsc --build`), `svelte-check`, and `astro-check` (`astro check`). `tsc` is not
   offered for those projects.
