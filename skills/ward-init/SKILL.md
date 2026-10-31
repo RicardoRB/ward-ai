@@ -119,6 +119,11 @@ order:
    `apply false`. `archunit` is not offered there, because module boundaries already enforce the
    dependency direction; a single-module Kotlin project keeps it. Do not offer `archunit` for such
    a build, even under `strict`.
+   In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format`
+   and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
+   versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
+   is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
+   the same gates.
    With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
    writes a license allowlist that fails on any license it does
    not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask the user which

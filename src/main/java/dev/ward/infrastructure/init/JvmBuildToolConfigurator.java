@@ -52,16 +52,18 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration, B
     return adapter(project).plan(project, gates, preset, approved);
   }
 
-  /** Plans module scripts for Gradle only; a Maven build has none. */
+  /** Plans the module build files of a Gradle or Maven build; other builds have none. */
   @Override
   public List<PlannedFileChange> planModules(
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved) {
-    return project.buildTool() == BuildTool.GRADLE
-        ? gradle.planModules(project, gates, preset, approved)
-        : List.of();
+    return switch (project.buildTool()) {
+      case GRADLE -> gradle.planModules(project, gates, preset, approved);
+      case MAVEN -> maven.planModules(project, gates, preset, approved);
+      default -> List.of();
+    };
   }
 
   @Override

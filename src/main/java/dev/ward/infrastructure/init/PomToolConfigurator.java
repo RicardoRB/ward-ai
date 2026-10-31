@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
@@ -13,10 +12,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.PomTools.Tool;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import dev.ward.infrastructure.project.MavenJavaModules;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +21,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
-/** Adds only missing, pinned Maven tool declarations required by selected init gates. */
+/**
+ * Adds only missing, pinned Maven tool declarations required by selected init gates. In a
+ * multi-module build the module-placed gates go into each Java module's pom, and the aggregator
+ * pins their versions in {@code pluginManagement}.
+ */
 public final class PomToolConfigurator implements BuildToolConfiguration {
   private final Optional<CompatibilityFindings> compatibility;
 
@@ -63,16 +63,30 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final Predicate<? super CompatibilityFinding> approval) {
     final PomEdit edit = compute(project, gates, preset, approval);
-    if (!edit.tools.isEmpty()) {
-      try {
-        Files.writeString(
-            edit.pom, edit.content, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-      } catch (IOException e) {
-        throw new WardException(
-            "Could not configure Maven tools in " + edit.pom + ": " + e.getMessage(), e);
-      }
-    }
-    return new BuildFileChange(Toolchain.JVM, edit.pom, edit.original, edit.tools, edit.warnings);
+    PomFiles.writeAll(edit);
+    return new BuildFileChange(
+        Toolchain.JVM,
+        edit.pom,
+        edit.original,
+        edit.allTools(),
+        edit.warnings,
+        null,
+        null,
+        edit.moduleScripts());
+  }
+
+  /** Describes, without writing, the module poms the gates would change. */
+  public List<PlannedFileChange> planModules(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved) {
+    return compute(project, gates, preset, finding -> approved).modules.stream()
+        .filter(module -> !module.details.isEmpty())
+        .map(
+            module ->
+                new PlannedFileChange(module.pom, PlannedFileChange.Action.MODIFY, module.details))
+        .toList();
   }
 
   @Override
@@ -118,15 +132,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Predicate<? super CompatibilityFinding> approval) {
-    final Path pom = project.root().resolve("pom.xml");
     final Set<String> selected = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
-    final PomEdit edit;
-    try {
-      edit = new PomEdit(pom, Files.readString(pom));
-    } catch (IOException e) {
-      throw new WardException(
-          "Could not configure Maven tools in " + pom + ": " + e.getMessage(), e);
-    }
+    final PomEdit edit = PomEdit.read(project.root().resolve("pom.xml"));
     final PomToolVersions versions = PomToolVersions.resolve(compatibility, project, selected);
     versions
         .warning()
@@ -135,6 +142,19 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
               edit.warnings.add(warning);
               edit.details.add(warning);
             });
+    final List<PomEdit> modules =
+        MavenJavaModules.of(project.root()).stream().map(PomEdit::read).toList();
+    edit.modules.addAll(modules);
+    final Set<String> moduleGates =
+        modules.isEmpty()
+            ? Set.of()
+            : PomTools.TOOLS.stream()
+                .filter(Tool::module)
+                .map(Tool::gate)
+                .filter(selected::contains)
+                .collect(Collectors.toSet());
+    final Set<String> rootGates =
+        selected.stream().filter(gate -> !moduleGates.contains(gate)).collect(Collectors.toSet());
     PomTools.TOOLS.stream()
         .filter(tool -> selected.contains(tool.gate()))
         .forEach(
@@ -143,12 +163,26 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                     .unavailable(tool)
                     .ifPresentOrElse(
                         reason -> edit.warnings.add(tool.gate() + " omitted: " + reason),
-                        () -> applySelectedTool(tool, preset, versions, approval, edit)));
+                        () -> {
+                          if (tool.module() && !edit.modules.isEmpty()) {
+                            PomModulePlacement.place(tool, preset, versions, edit);
+                          } else {
+                            PomToolPlacement.apply(tool, preset, versions, approval, edit);
+                          }
+                        }));
     edit.content = PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
     if (!edit.tools.isEmpty()) {
       PomDeclarationValidator.validate(
-          edit.content, PomTools.addedDeclarations(edit.original, edit.content, selected));
+          edit.content, PomTools.addedDeclarations(edit.original, edit.content, rootGates));
     }
+    edit.modules.forEach(
+        module -> {
+          if (!module.tools.isEmpty()) {
+            PomDeclarationValidator.validate(
+                module.content,
+                PomTools.addedDeclarations(module.original, module.content, selected));
+          }
+        });
     return edit;
   }
 
@@ -180,88 +214,9 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
     if (change == null || !change.changed()) {
       return;
     }
-    try {
-      Files.writeString(
-          change.file(),
-          change.originalContent(),
-          StandardOpenOption.TRUNCATE_EXISTING,
-          StandardOpenOption.WRITE);
-    } catch (IOException e) {
-      throw new WardException("Could not restore " + change.file() + ": " + e.getMessage(), e);
-    }
-  }
-
-  private void applySelectedTool(
-      final Tool tool,
-      final QualityPreset preset,
-      final PomToolVersions versions,
-      final Predicate<? super CompatibilityFinding> approval,
-      final PomEdit edit) {
-    final CompatibilityFinding finding = versions.plugin(tool);
-    if (finding != null && !PomTools.declares(edit.content, tool.artifact())) {
-      edit.add(tool, preset, finding.selectedVersion(), versions.engine(tool));
-    } else if (finding != null && finding.changesVersion()) {
-      final boolean accepted = approval.test(finding);
-      if (accepted) {
-        edit.updateVersion(tool.artifact(), finding);
-      } else {
-        edit.warnings.add(
-            "Compatibility update declined for "
-                + tool.artifact()
-                + "; selected gate was not reconfigured.");
-      }
-    } else if (PomTools.declares(edit.content, tool.artifact())) {
-      if (preset != null && tool.presetSnippet() != null) {
-        edit.warnings.add(
-            tool.artifact() + " already declared; " + preset.id() + " settings not applied");
-      }
-    } else {
-      edit.add(tool, preset, null, null);
-    }
-  }
-
-  /** The pom being edited in memory, with what changed so far. */
-  private static final class PomEdit {
-    private final Path pom;
-    private final String original;
-    private final List<String> tools = new ArrayList<>();
-    private final List<String> warnings = new ArrayList<>();
-    private final List<String> details = new ArrayList<>();
-    private String content;
-
-    PomEdit(final Path pom, final String original) {
-      this.pom = pom;
-      this.original = original;
-      this.content = original;
-    }
-
-    void add(
-        final Tool tool,
-        final QualityPreset preset,
-        final String selectedVersion,
-        final String engineVersion) {
-      content = tool.addTo(content, preset, selectedVersion, engineVersion);
-      tools.add(
-          selectedVersion == null ? tool.artifact() : tool.artifact() + " " + selectedVersion);
-      details.add("+ " + tool.artifact() + " " + tool.version(preset, selectedVersion));
-    }
-
-    void updateVersion(final String artifact, final CompatibilityFinding finding) {
-      final Optional<String> updated =
-          PomXml.replacePluginVersion(
-              content, artifact, finding.currentVersion(), finding.selectedVersion());
-      if (updated.isEmpty()) {
-        warnings.add(
-            "Compatibility update skipped for "
-                + artifact
-                + " because it is not declared in the project-level build; selected gate was not"
-                + " reconfigured.");
-        return;
-      }
-      final String change = finding.currentVersion() + " -> " + finding.selectedVersion();
-      content = updated.get();
-      tools.add(artifact + " " + change);
-      details.add("~ " + artifact + " " + change);
-    }
+    PomFiles.write(change.file(), change.originalContent());
+    change
+        .moduleScripts()
+        .forEach(module -> PomFiles.write(module.file(), module.originalContent()));
   }
 }

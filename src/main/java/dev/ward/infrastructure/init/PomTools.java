@@ -180,21 +180,21 @@ final class PomTools {
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
       List.of(
-          Tool.plugin(
+          Tool.modulePlugin(
               "checkstyle",
               CHECKSTYLE,
               CHECKSTYLE_PLUGIN,
               preset -> PresetPluginSnippets.checkstyle()),
-          Tool.plugin("pmd", PMD, PMD_PLUGIN, preset -> PresetPluginSnippets.pmd()),
-          Tool.plugin("spotbugs", SPOTBUGS, SPOTBUGS_PLUGIN, PresetPluginSnippets::spotbugs),
+          Tool.modulePlugin("pmd", PMD, PMD_PLUGIN, preset -> PresetPluginSnippets.pmd()),
+          Tool.modulePlugin("spotbugs", SPOTBUGS, SPOTBUGS_PLUGIN, PresetPluginSnippets::spotbugs),
           Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
-          Tool.plugin("coverage", JACOCO, JACOCO_PLUGIN, PresetPluginSnippets::jacoco),
+          Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN, PresetPluginSnippets::jacoco),
           Tool.plugin("dependency-check", DEPENDENCY_CHECK, DEPENDENCY_CHECK_PLUGIN),
-          new Tool("archunit", ARCHUNIT, ARCHUNIT_DEPENDENCY, null, true),
-          Tool.plugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
-          Tool.plugin(
+          new Tool("archunit", ARCHUNIT, ARCHUNIT_DEPENDENCY, null, true, false),
+          Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
+          Tool.modulePlugin(
               "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),
-          Tool.plugin("format", SPOTLESS, SPOTLESS_PLUGIN),
+          Tool.modulePlugin("format", SPOTLESS, SPOTLESS_PLUGIN),
           Tool.plugin(
               "license", LICENSE, LicensePolicySnippets.DENYLIST, LicensePolicySnippets::forPreset),
           Tool.plugin("api-compat", JAPICMP, JAPICMP_PLUGIN));
@@ -222,18 +222,21 @@ final class PomTools {
 
   /**
    * A Maven tool added for a selected gate. Its preset snippet, when present, replaces the default
-   * snippet under a quality preset.
+   * snippet under a quality preset. A module-placed tool goes into each Java module of a
+   * multi-module build, and the aggregator pins its version in {@code pluginManagement}.
    */
   record Tool(
       String gate,
       String artifact,
       String snippet,
       Function<QualityPreset, String> presetSnippet,
-      boolean dependency) {
+      boolean dependency,
+      boolean module) {
     private static final String VERSION_START = "<version>";
+    private static final String GROUP_START = "<groupId>";
 
     static Tool plugin(final String gate, final String artifact, final String snippet) {
-      return new Tool(gate, artifact, snippet, null, false);
+      return new Tool(gate, artifact, snippet, null, false, false);
     }
 
     static Tool plugin(
@@ -241,16 +244,26 @@ final class PomTools {
         final String artifact,
         final String snippet,
         final Function<QualityPreset, String> presetSnippet) {
-      return new Tool(gate, artifact, snippet, presetSnippet, false);
+      return new Tool(gate, artifact, snippet, presetSnippet, false, false);
     }
 
-    String addTo(
-        final String pom,
-        final QualityPreset preset,
-        final String selectedVersion,
-        final String engineVersion) {
-      final String chosen =
-          preset == null || presetSnippet == null ? snippet : presetSnippet.apply(preset);
+    /** A plugin placed in each Java module of a multi-module build, not in the aggregator. */
+    static Tool modulePlugin(final String gate, final String artifact, final String snippet) {
+      return new Tool(gate, artifact, snippet, null, false, true);
+    }
+
+    static Tool modulePlugin(
+        final String gate,
+        final String artifact,
+        final String snippet,
+        final Function<QualityPreset, String> presetSnippet) {
+      return new Tool(gate, artifact, snippet, presetSnippet, false, true);
+    }
+
+    /** The plugin or dependency declaration, with the chosen versions filled in. */
+    String declaration(
+        final QualityPreset preset, final String selectedVersion, final String engineVersion) {
+      final String chosen = chosen(preset);
       final String pinned =
           selectedVersion == null
               ? chosen
@@ -258,12 +271,39 @@ final class PomTools {
                   "<version>[^<]+</version>",
                   Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
       final Engine engine = ENGINES.get(artifact);
-      final String versioned =
-          engine == null
-              ? pinned
-              : pinned.replace(
-                  ENGINE_VERSION, engineVersion == null ? engine.version() : engineVersion);
-      return dependency ? PomXml.addDependency(pom, versioned) : PomXml.addPlugin(pom, versioned);
+      return engine == null
+          ? pinned
+          : pinned.replace(
+              ENGINE_VERSION, engineVersion == null ? engine.version() : engineVersion);
+    }
+
+    String addTo(
+        final String pom,
+        final QualityPreset preset,
+        final String selectedVersion,
+        final String engineVersion) {
+      final String declaration = declaration(preset, selectedVersion, engineVersion);
+      return dependency
+          ? PomXml.addDependency(pom, declaration)
+          : PomXml.addPlugin(pom, declaration);
+    }
+
+    /** The aggregator's {@code pluginManagement} entry: coordinates and the chosen version only. */
+    String managed(final QualityPreset preset, final String selectedVersion) {
+      final String chosen = chosen(preset);
+      final int start = chosen.indexOf(GROUP_START) + GROUP_START.length();
+      final String group = chosen.substring(start, chosen.indexOf("</groupId>", start));
+      return "<plugin>\n  <groupId>"
+          + group
+          + "</groupId>\n  <artifactId>"
+          + artifact
+          + "</artifactId>\n  <version>"
+          + version(preset, selectedVersion)
+          + "</version>\n</plugin>\n";
+    }
+
+    private String chosen(final QualityPreset preset) {
+      return preset == null || presetSnippet == null ? snippet : presetSnippet.apply(preset);
     }
 
     /** The version this tool's declaration pins, preferring a compatibility-selected version. */
@@ -271,8 +311,7 @@ final class PomTools {
       if (selectedVersion != null) {
         return selectedVersion;
       }
-      final String chosen =
-          preset == null || presetSnippet == null ? snippet : presetSnippet.apply(preset);
+      final String chosen = chosen(preset);
       final int start = chosen.indexOf(VERSION_START);
       return start < 0
           ? ""

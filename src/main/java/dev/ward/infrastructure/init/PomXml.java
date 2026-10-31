@@ -61,6 +61,16 @@ final class PomXml {
   }
 
   /**
+   * Returns whether {@code project/build/plugins} declares {@code artifact}, not pluginManagement.
+   */
+  static boolean hasProjectPlugin(final String pom, final String artifact) {
+    return PomElements.child(pom, PomElements.project(pom), BUILD)
+        .flatMap(build -> PomElements.child(pom, build, PLUGINS))
+        .flatMap(plugins -> PomElements.declaration(pom, plugins, artifact))
+        .isPresent();
+  }
+
+  /**
    * Replaces the version of {@code artifact}'s project-level plugin declaration. Returns empty when
    * the plugin is not declared in {@code project/build/plugins}.
    *

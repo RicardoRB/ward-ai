@@ -56,6 +56,14 @@ public interface EnvironmentInspection {
     return List.of();
   }
 
+  /**
+   * Returns the root-relative paths of the Gradle or Maven modules that init leaves out of the
+   * module-placed gates, because they have no Java sources; empty when there are none.
+   */
+  default List<String> skippedJvmModules(final Path projectRoot) {
+    return List.of();
+  }
+
   /** Returns how the project's Dependency-Check build configuration sets the OSS Index analyzer. */
   default OssIndexSetting ossIndexSetting(final Path projectRoot) {
     return OssIndexSetting.ABSENT;

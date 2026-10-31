@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
- * Finds the Gradle modules that apply the Kotlin JVM plugin in their own build script, so init can
- * configure each module where its code is. A convention plugin hides the plugin, so its module is
- * not found and the build stays in the root script.
+ * Finds the Gradle modules whose own build script applies a JVM plugin (Kotlin, or Java with Java
+ * sources), so init can configure each module where its code is. A convention plugin hides the
+ * plugin, so its module is not found and the build stays in the root script.
  */
 public final class GradleKotlinModules {
   private static final String BUILD_SRC = "buildSrc";
@@ -21,20 +21,20 @@ public final class GradleKotlinModules {
       Pattern.compile(
           "org\\.jetbrains\\.kotlin\\.jvm|kotlin\\(\\s*\"jvm\"\\s*\\)|alias\\s*\\([^)]*kotlin[.-]jvm");
   private static final Pattern JAVA =
-      Pattern.compile("['\"](java|java-library)['\"]|apply\\s+plugin:\\s*['\"]java['\"]");
+      Pattern.compile("[`'\"](java|java-library)[`'\"]|apply\\s+plugin:\\s*['\"]java['\"]");
 
   private GradleKotlinModules() {}
 
   /**
-   * Returns the module directories below {@code root} whose build script applies the Kotlin JVM
-   * plugin. Directories in {@code buildSrc}, in a nested settings build or in build output are
-   * skipped.
+   * Returns the module directories below {@code root} that init configures: a build script that
+   * applies the Kotlin JVM plugin, or the Java plugin with Java sources. Directories in {@code
+   * buildSrc}, in a nested settings build or in build output are skipped.
    */
   public static List<Path> of(final Path root) {
     return ProjectDirectories.below(root).stream()
         .filter(dir -> !dir.equals(root))
         .filter(dir -> !nested(root, dir))
-        .filter(dir -> appliesKotlinJvm(script(dir)))
+        .filter(GradleModuleScan::placed)
         .toList();
   }
 
@@ -58,12 +58,13 @@ public final class GradleKotlinModules {
     return BUILDS.stream().map(dir::resolve).filter(Files::isRegularFile).findFirst();
   }
 
-  private static String script(final Path dir) {
+  /** Returns the text of the build script of {@code dir}, or none when it has no script. */
+  static String scriptText(final Path dir) {
     return scriptFile(dir).map(GradleKotlinModules::read).orElse("");
   }
 
   /** A directory below {@code root} that is buildSrc, or sits under its own settings file. */
-  private static boolean nested(final Path root, final Path dir) {
+  static boolean nested(final Path root, final Path dir) {
     for (Path current = dir;
         current != null && !current.equals(root);
         current = current.getParent()) {
