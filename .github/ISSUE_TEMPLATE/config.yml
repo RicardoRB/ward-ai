@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/RicardoRB/ward-ai/security/advisories/new
+    about: Report vulnerabilities privately, not in a public issue.
+  - name: Documentation
+    url: https://ricardorb.github.io/ward-ai/
+    about: Guides and command reference.

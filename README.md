@@ -237,7 +237,7 @@ ward check --profile pre-push             # required before every pull request
 ```
 
 Contributions are welcome: fork, branch, make sure `ward check --profile pre-push` passes, and
-open a pull request. Conventions are in [AGENTS.md](AGENTS.md). Report bugs and request features in
+open a pull request. Start with [CONTRIBUTING.md](CONTRIBUTING.md); conventions are in [AGENTS.md](AGENTS.md). Report bugs and request features in
 [GitHub Issues](https://github.com/RicardoRB/ward-ai/issues) with your `ward --version` and
 `ward doctor` output.
 
