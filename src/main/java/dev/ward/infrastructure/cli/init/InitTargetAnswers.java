@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Resolves the answers of every project a run configures: the first project is asked, the others
- * reuse its answers, and a project whose existing configuration the user keeps is left out.
+ * Resolves the answers of every project a run configures: the first project of each language is
+ * asked and the others of that language reuse its answers, and a project whose existing
+ * configuration the user keeps is left out.
  */
 final class InitTargetAnswers {
   private final InitQuestions.Answers answers;
@@ -54,11 +55,15 @@ final class InitTargetAnswers {
       out.println("Kept existing ward.toml. No changes were made.");
       return Optional.empty();
     }
-    if (exists && earlier.isEmpty()) {
+    final Optional<InitApply.Target> sameLanguage =
+        earlier.stream()
+            .filter(target -> target.project().toolchain() == project.toolchain())
+            .findFirst();
+    if (exists && sameLanguage.isEmpty()) {
       catalog.previousChoices(project).ifPresent(questions::reconfigure);
     }
     final InitSelection selection =
-        earlier.isEmpty() ? questions.resolve() : earlier.getFirst().selection();
+        sameLanguage.map(InitApply.Target::selection).orElseGet(questions::resolve);
     new InitResultPrinter(out).printSelectedGates(catalog, project, selection.gates());
     return Optional.of(new InitApply.Target(project, selection, overwrite || exists));
   }

@@ -1,0 +1,9 @@
+{
+  "name": "codeja-platform",
+  "private": true,
+  "packageManager": "npm@11.19.1",
+  "workspaces": [
+    "apps/*",
+    "services/*"
+  ]
+}

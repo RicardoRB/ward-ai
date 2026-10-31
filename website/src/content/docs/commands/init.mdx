@@ -706,6 +706,10 @@ monorepo whose `package.json` has no JavaScript sources of its own, init looks f
 - With one project found, init configures it and says so.
 - With several, the wizard asks which to configure, all checked. Without a terminal, or with `--yes`,
   init stops and lists the `--project` values to pass.
+
+In a Turborepo root, a workspace member with another language's build file, such as a Maven API or
+a Python service, is one of these projects, configured with its own toolchain in the same run. See
+[Turborepo projects](/guides/turborepo/#members-in-other-languages).
 - With none, init stops without changing any file. If the `-C` directory is inside a project of
   another build tool, such as Poetry or Cargo, the error names that build tool and says that init
   supports Maven, Gradle, TypeScript, JavaScript and Python projects. Inside a JavaScript package without

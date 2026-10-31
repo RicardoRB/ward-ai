@@ -26,8 +26,14 @@ final class NodeWorkspaces {
    */
   static boolean isMember(final Path root, final Path candidate) {
     return hasProjectFile(candidate)
-        && WorkspaceGlobs.matchesAny(
-            patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
+        && !hasOtherBuildFile(candidate)
+        && listsByPattern(root, candidate);
+  }
+
+  /** Returns whether the workspace patterns of {@code root} match {@code candidate}. */
+  static boolean listsByPattern(final Path root, final Path candidate) {
+    return WorkspaceGlobs.matchesAny(
+        patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
   }
 
   /** Returns whether a directory matched by the workspace patterns has {@code tsconfig.json}. */
@@ -49,6 +55,19 @@ final class NodeWorkspaces {
 
   /** Returns the member directories of {@code root} that hold package.json or tsconfig.json. */
   static List<Path> memberDirectories(final Path root, final Map<?, ?> manifest) {
+    return directories(root, manifest, false);
+  }
+
+  /**
+   * Returns the member directories of {@code root} that hold package.json or tsconfig.json and
+   * another language's build file, which makes each one that language's own project.
+   */
+  static List<Path> ownLanguageMemberDirectories(final Path root, final Map<?, ?> manifest) {
+    return directories(root, manifest, true);
+  }
+
+  private static List<Path> directories(
+      final Path root, final Map<?, ?> manifest, final boolean otherBuild) {
     final List<String> patterns = patterns(root, manifest);
     if (patterns.isEmpty()) {
       return List.of();
@@ -57,7 +76,7 @@ final class NodeWorkspaces {
       return files
           .filter(Files::isDirectory)
           .filter(member -> !member.toString().contains("node_modules"))
-          .filter(member -> !hasOtherBuildFile(member))
+          .filter(member -> hasOtherBuildFile(member) == otherBuild)
           .filter(member -> WorkspaceGlobs.matchesAny(patterns, root, member))
           .filter(NodeWorkspaces::hasProjectFile)
           .sorted()

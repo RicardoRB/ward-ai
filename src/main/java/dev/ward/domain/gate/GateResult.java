@@ -85,6 +85,25 @@ public record GateResult(
         prerequisite);
   }
 
+  /** Returns a copy of this result named {@code gateName}, keeping its check type. */
+  public GateResult withName(final String gateName) {
+    return new GateResult(
+        gateName,
+        type,
+        status,
+        command,
+        exitCode,
+        duration,
+        stdout,
+        stderr,
+        summary,
+        errors,
+        warnings,
+        findings,
+        scope,
+        prerequisite);
+  }
+
   /** Returns a copy of this result carrying {@code gateFindings}. */
   public GateResult withFindings(final GateFindings gateFindings) {
     return new GateResult(

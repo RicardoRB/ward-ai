@@ -104,7 +104,7 @@ public final class FileSystemProjectInspection implements ProjectInspection {
   static Optional<Project> projectAt(final Path dir) {
     for (final Marker marker : MARKERS) {
       if (Files.isRegularFile(dir.resolve(marker.file()))) {
-        return Optional.of(marker.project().apply(dir));
+        return Optional.of(OwnLanguageMembers.ownLanguage(dir, marker.project().apply(dir)));
       }
     }
     try (Stream<Path> files = Files.list(dir)) {
