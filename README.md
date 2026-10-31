@@ -37,6 +37,14 @@ edit to production.
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
 
+<div align="center">
+  <a href="https://youtu.be/ETuomU8HxXw">
+    <img src="https://img.youtube.com/vi/ETuomU8HxXw/maxresdefault.jpg" alt="Watch the 90-second explanation of Ward on YouTube" width="720">
+  </a>
+  <br>
+  <sub>Ward in 90 seconds (<a href="https://youtu.be/ETuomU8HxXw">watch on YouTube</a>)</sub>
+</div>
+
 ## Why Ward?
 
 AI coding agents write code faster than anyone can review it. To keep quality up, you end up
