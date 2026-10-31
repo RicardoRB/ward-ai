@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /** Stable choices and project-aware defaults used by the interactive init flow. */
@@ -110,7 +111,10 @@ public class InitGeneralCatalog {
     final Set<String> omitted =
         new JdkGates(inputs)
             .omissions(project, gates).stream().map(GateOmission::gate).collect(Collectors.toSet());
-    return gates.stream().filter(gate -> !omitted.contains(gate)).toList();
+    final List<String> kept = gates.stream().filter(gate -> !omitted.contains(gate)).toList();
+    return Stream.concat(
+            kept.stream(), OpenApiPresetGates.of(environment, project, preset).stream())
+        .toList();
   }
 
   /**

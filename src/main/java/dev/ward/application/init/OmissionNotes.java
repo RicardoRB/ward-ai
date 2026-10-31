@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
@@ -21,12 +22,22 @@ final class OmissionNotes {
       "Mutation testing is not offered for Angular: no Stryker runner works with Angular's test"
           + " builder, so the strict preset omits stryker.";
 
+  private static final String NO_SPEC_NOTE =
+      " Git tracks no OpenAPI spec, so openapi-lint and openapi-diff are not offered. Commit"
+          + " openapi.yml or openapi.json under src/main/resources or the project root, then run"
+          + " init again to add them.";
+
   private OmissionNotes() {}
 
   /** Returns the notes for {@code project}, and for the gates {@code preset} omits, if any. */
   static List<String> of(
       final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
     final List<String> notes = new ArrayList<>();
+    final EnvironmentInspection environment = catalog.inputs.environment();
+    if (project.framework().servesHttp() && environment.openApiSpec(project.root()).isEmpty()) {
+      notes.add(
+          "The " + project.framework().displayName() + " project serves HTTP." + NO_SPEC_NOTE);
+    }
     if (project.language() == Language.TYPESCRIPT && project.framework() == Framework.ANGULAR) {
       if (!catalog.inputs.configs().angularCoverageThresholdsSet(project.root())) {
         notes.add(ANGULAR_NO_COVERAGE);

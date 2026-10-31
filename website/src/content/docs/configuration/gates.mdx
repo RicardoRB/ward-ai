@@ -76,6 +76,10 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
 | `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
 
+When Git tracks an OpenAPI spec, both presets add `openapi-lint` and `openapi-diff`, and `strict`
+also adds `openapi-compat`. A project whose framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked
+spec gets a note asking you to commit one, because the gates have nothing to check without it.
+
 For TypeScript and JavaScript, presets write no rule files under `config/`. Init adds the tools to
 `package.json` and writes the tools' own configs when the project has none: an ESLint flat config,
 `vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.

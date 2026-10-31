@@ -133,10 +133,22 @@ order:
      `check` fails until it is replaced.
    - `openapi-lint`, `openapi-diff`, and `openapi-compat` are offered only when Git tracks an
      `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
-     They need `vacuum` and `oasdiff`. They allow no exceptions: `openapi-lint` runs every built-in
-     vacuum rule, and the gates fail on `vacuum.conf.yaml`, `.oasdiff.*` files, or `x-lint-ignore`
-     in the spec. Say so before recommending them on a spec that has never been linted.
-     `openapi-compat` compares with `origin/main`, so CI needs the base branch history.
+     When one is found, the `standard` and `strict` presets include `openapi-lint` and
+     `openapi-diff` (`strict` also `openapi-compat`), so recommend the preset as usual and say that
+     it adds them. Their tools are `vacuum` (`openapi-lint`) and `oasdiff` (`openapi-diff`,
+     `openapi-compat`). If a tool is missing, its `install` line (for example `brew install vacuum`)
+     is the recommended step, asked in step 5 like any other gate. CI installs both tools pinned.
+     They allow no exceptions: `openapi-lint` runs every built-in vacuum rule, and the gates fail on
+     `vacuum.conf.yaml`, `.oasdiff.*` files, or `x-lint-ignore` in the spec. Say so before
+     recommending them on a spec that has never been linted. `openapi-compat` compares with
+     `origin/main`, and the CI workflow fetches full history for it.
+     A project whose framework serves HTTP, as `ward detect` reports it (Spring Boot, Quarkus,
+     Micronaut, Helidon, Dropwizard, Javalin, Ktor, Django, FastAPI, Flask, Express, Fastify, NestJS
+     or Next.js), gets the same recommendation without a committed spec, because a server is the
+     reason to lint a contract. Init's plan notes the framework and adds no OpenAPI gate without a
+     spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
+     to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
+     the gates and `vacuum` as above.
    - `archunit` when the layering checks in the inspection found violations: the gate fails on its
      first run.
 

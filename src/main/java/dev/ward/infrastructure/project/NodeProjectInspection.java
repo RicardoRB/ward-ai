@@ -47,7 +47,11 @@ final class NodeProjectInspection {
           Map.entry(Framework.ASTRO, Set.of("astro")),
           Map.entry(Framework.SVELTE, Set.of("svelte", "@sveltejs/kit")),
           Map.entry(Framework.VUE, Set.of("vue", "nuxt")),
-          Map.entry(Framework.ANGULAR, Set.of("@angular/core")));
+          Map.entry(Framework.ANGULAR, Set.of("@angular/core")),
+          Map.entry(Framework.NEXT, Set.of("next")),
+          Map.entry(Framework.NEST, Set.of("@nestjs/core")),
+          Map.entry(Framework.FASTIFY, Set.of("fastify")),
+          Map.entry(Framework.EXPRESS, Set.of("express")));
 
   private static final Map<String, BuildTool> MANAGERS =
       Map.of(
