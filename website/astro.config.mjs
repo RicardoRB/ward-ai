@@ -33,7 +33,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Ward',
-      description: 'Quality gates for AI coding agents.',
+      description: 'The quality gate for AI coding agents.',
       favicon: '/favicon.svg',
       social: [{ icon: 'github', label: 'GitHub', href: `https://github.com/${repository}` }],
       editLink: { baseUrl: `https://github.com/${repository}/edit/main/website/src/content/docs/` },

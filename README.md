@@ -4,9 +4,9 @@
 
 # Ward
 
-**Quality guardrails for AI coding agents.**
-Define your rules once, share them with your team, and every agent follows them, from the first
-edit to production.
+**The quality gate for AI coding agents.**
+Your agent says it's done. Ward makes sure it is. Define your rules once, share them with your
+team, and Ward checks every change against them, from the first edit to production.
 
 [![Release](https://img.shields.io/github/v/release/RicardoRB/ward-ai?sort=semver&label=release)](https://github.com/RicardoRB/ward-ai/releases)
 [![Build](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml/badge.svg)](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml)
