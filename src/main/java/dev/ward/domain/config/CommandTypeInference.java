@@ -32,6 +32,7 @@ public final class CommandTypeInference {
           "openapi-lint",
           "openapi-diff",
           "openapi-compat",
+          "swift-coverage",
           COMMAND);
 
   private static final String MAVEN = "mvn";
@@ -91,7 +92,14 @@ public final class CommandTypeInference {
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("import-linter", sequence("lint-imports")),
           new Rule("django-check", sequence("manage.py", "check")),
-          new Rule("pip-audit", sequence("pip-audit")));
+          new Rule("pip-audit", sequence("pip-audit")),
+          new Rule("swift-format", sequence("swift", "format", "lint")),
+          new Rule(
+              "swiftlint",
+              anyOf(sequence("swiftlint", "lint"), sequence("SwiftLintBinary", "lint"))),
+          new Rule("swift-build", sequence("swift", "build")),
+          new Rule("swift-test", sequence("swift", "test")),
+          new Rule("xcodebuild-test", sequence("xcodebuild", "test")));
 
   /** One row: the type a command gets when {@code matches} accepts it. */
   private record Rule(String type, Predicate<List<String>> matches) {}

@@ -55,4 +55,36 @@ class FileSystemReportDirectoriesTest {
     assertThatThrownBy(() -> directories.prepareParent(root, "target/sub/report.sarif"))
         .isInstanceOf(ReportWriteException.class);
   }
+
+  @Test
+  void prepareFreshRemovesAnEarlierResultBundleAndKeepsItsParent() throws Exception {
+    final Path bundle = root.resolve(".ward/reports/xcode/tests.xcresult");
+    Files.createDirectories(bundle.resolve("Data"));
+    Files.writeString(bundle.resolve("Data/data.0"), "old");
+
+    directories.prepareFresh(root, ".ward/reports/xcode/tests.xcresult");
+
+    assertThat(bundle).doesNotExist();
+    assertThat(bundle.getParent()).isDirectory();
+  }
+
+  @Test
+  void prepareFreshCreatesTheParentWhenNothingWasLeft() {
+    directories.prepareFresh(root, ".ward/reports/xcode/tests.xcresult");
+
+    assertThat(root.resolve(".ward/reports/xcode")).isDirectory();
+  }
+
+  @Test
+  void prepareFreshIgnoresPathsOutsideTheProject() throws Exception {
+    final Path project = Files.createDirectories(root.resolve("project"));
+    final Path outside = Files.writeString(root.resolve("keep.txt"), "user file");
+
+    directories.prepareFresh(project, "../keep.txt");
+    directories.prepareFresh(project, ".");
+    directories.prepareFresh(project, "bad\0path");
+
+    assertThat(outside).exists();
+    assertThat(project).isDirectory();
+  }
 }

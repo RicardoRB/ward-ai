@@ -39,7 +39,7 @@ final class PartialPlans {
 
   static GateConfiguration gate(final PartialGateConfiguration partial) {
     return new GateConfiguration(
-        GATE, GATE, true, List.of("tool"), Set.of("default"), partial, null, null, null);
+        GATE, GATE, true, List.of("tool"), Set.of("default"), partial, null, null, null, null);
   }
 
   static PartialGateConfiguration partial(

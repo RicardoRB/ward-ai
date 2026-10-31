@@ -51,6 +51,15 @@ class InitSetupCatalogTest {
           "pip-audit",
           "django-check");
 
+  private static final Set<String> SWIFT_GATES =
+      Set.of(
+          "swift-format",
+          "swiftlint",
+          "swift-build",
+          "swift-test",
+          "xcodebuild-test",
+          "swift-coverage");
+
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
@@ -234,6 +243,8 @@ class InitSetupCatalogTest {
                 // Node gates are run by check only; init does not offer them for JVM projects.
                 .filter(id -> !NODE_GATES.contains(id))
                 .filter(id -> !PYTHON_GATES.contains(id))
+                // Swift init arrives later; check runs Swift gates only.
+                .filter(id -> !SWIFT_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestCoverageVerification");

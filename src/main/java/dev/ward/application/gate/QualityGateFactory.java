@@ -30,6 +30,8 @@ public class QualityGateFactory {
           SupportedQualityGates.STRYKER,
           SupportedQualityGates.MUTATION,
           SupportedQualityGates.MUTMUT);
+  private static final Set<String> SWIFT_GATES =
+      Set.of(SupportedQualityGates.XCODEBUILD_TEST, SupportedQualityGates.SWIFT_COVERAGE);
   private static final String STRYKER_REPORT_HINT =
       "Enable Stryker's json reporter in the command, for example with"
           + " --reporters clear-text,progress,json.";
@@ -53,6 +55,7 @@ public class QualityGateFactory {
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
   private final MutationReport mutmutReport;
+  private final GateReportPorts reports;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -107,6 +110,7 @@ public class QualityGateFactory {
     this.strykerReport = reports.stryker();
     this.pitReport = reports.pit();
     this.mutmutReport = reports.mutmut();
+    this.reports = reports;
     this.executor = executor;
     this.environment = environment;
     this.scenarioInventory = traceability.scenarios();
@@ -152,7 +156,7 @@ public class QualityGateFactory {
   private QualityGate createGate(final GateConfiguration check, final Project project) {
     final String name = check.name();
     final String type = check.type();
-    if (OpenSpecQualityGate.ACTIVE.equals(type) || OpenSpecQualityGate.ARCHIVED.equals(type)) {
+    if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null
           ? new CommandQualityGate(name, executor, check.command())
           : new OpenSpecQualityGate(name, executor, environment, check.command(), check.root());
@@ -171,6 +175,9 @@ public class QualityGateFactory {
     }
     if (MUTATION_GATES.contains(type)) {
       return mutationGate(check);
+    }
+    if (SWIFT_GATES.contains(type)) {
+      return SwiftGates.create(check, executor, reports);
     }
     return new CommandQualityGate(name, executor, check.command(), reportDirectories);
   }

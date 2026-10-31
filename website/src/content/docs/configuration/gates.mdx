@@ -48,6 +48,12 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `import-linter` | Import Linter | Check import contracts. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
+| Swift | `swift-format` | swift-format | Check source formatting with `swift format lint`. |
+| | `swiftlint` | SwiftLint | Lint Swift sources. |
+| | `swift-build` | Swift build | Compile the SwiftPM package. |
+| | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
+| | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
+| | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
 | Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
@@ -204,6 +210,86 @@ profiles = ["default"]
 command = ["uv", "run", "mypy", "-O", "json", "src"]
 profiles = ["pre-push"]
 ```
+
+## Swift gates
+
+`swift-format`, `swiftlint`, `swift-build` and `swift-test` run their `command` from the project
+root, exactly as written, and pass when it exits with code 0. `xcodebuild-test` and
+`swift-coverage` add the steps below.
+
+- When `uses` is omitted, Ward infers the type from the command wherever the tool appears:
+  `swift format lint` is `swift-format`; `swiftlint lint`, or SwiftLintPlugins' `SwiftLintBinary
+  lint` run through `swift run`, is `swiftlint`; `swift build` is `swift-build`; `swift test` is
+  `swift-test`; and `xcodebuild test` is `xcodebuild-test`. `swift-coverage` is never inferred,
+  so write `uses = "swift-coverage"`.
+- `swiftlint`, `swift-format`, `swift-build` and `xcodebuild-test` findings are read from their
+  output; see [structured findings](#structured-findings).
+
+```toml
+[checks.swiftlint]
+command = ["swiftlint", "lint", "--reporter", "json", "--quiet"]
+profiles = ["default"]
+
+[checks.swift-test]
+command = ["swift", "test", "--enable-code-coverage"]
+profiles = ["pre-push"]
+```
+
+### Xcode tests
+
+An `xcodebuild-test` check names a `platform`: `iOS Simulator` or `macOS`.
+
+```toml
+[checks.xcode-tests]
+command = ["xcodebuild", "test", "-scheme", "Shop"]
+platform = "iOS Simulator"
+profiles = ["pre-push"]
+```
+
+- For `iOS Simulator`, Ward picks the newest installed iOS runtime and the first iPhone in it by
+  name, so `ward.toml` never names a device that another machine or CI image lacks. Ward boots
+  the device unless it is already booted, waits until it has finished booting, and appends
+  `-destination id=<device>`. It leaves the simulator running, so the next run starts warm. The
+  first simulator run on a machine may install CoreSimulator components.
+- With no iOS runtime or no iPhone, the gate is an execution error that says how to install one,
+  and `xcodebuild` does not run.
+- For `macOS`, Ward appends `-destination platform=macOS`.
+- A command that already has `-destination` runs as written, and `platform` can be left out.
+- Every run writes its result bundle to `.ward/reports/xcode/tests.xcresult`: Ward removes the
+  bundle an earlier run left there, because `xcodebuild` refuses an existing path, and appends
+  `-resultBundlePath`. The gate fails when `xcodebuild` exits with a non-zero code, such as 65 for
+  a failing test.
+
+### Swift coverage
+
+A `swift-coverage` check needs `minimum`, the lowest line coverage in percent. After its command
+exits with 0, Ward reads the coverage of production code and fails below the minimum.
+
+```toml
+# SwiftPM: swift test --show-codecov-path prints where the last coverage run wrote its export.
+[checks.coverage]
+uses = "swift-coverage"
+command = ["swift", "test", "--show-codecov-path"]
+minimum = 80
+profiles = ["pre-push"]
+
+# Xcode: read the result bundle the xcodebuild-test check wrote.
+[checks.xcode-coverage]
+uses = "swift-coverage"
+command = ["xcrun", "xccov", "view", "--report", "--json", ".ward/reports/xcode/tests.xcresult"]
+minimum = 80
+profiles = ["pre-push"]
+```
+
+- A command that runs `xccov` is read as xccov's JSON report on standard output; test bundles
+  (`.xctest`) are left out.
+- Any other command is read as SwiftPM: the last line of its output names an llvm-cov export.
+  Files under `.build/` or `.ward/`, generated derived sources, and files in a directory named
+  `Tests` or ending in `Tests` are left out. Run `swift test --enable-code-coverage` first; a
+  failing test writes no export.
+- A missing, unreadable or empty report is an execution error, never a pass.
+- Coverage of an unconventional layout, such as tests outside a `Tests` directory, counts the test
+  files as production code.
 
 ## Stryker mutation score
 
@@ -428,7 +514,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, `tsc`, `ruff`, or `mypy` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-format`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -442,10 +528,13 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
 | `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`, and `format` findings have no line. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
+| `swiftlint` | SwiftLint JSON on standard output; the command must pass `--reporter json` | | | |
+| `swift-format` | `file:line:column: error: [Rule] message` lines on standard error | | | |
+| `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
   report is ignored.
-- TypeScript, JavaScript and Python projects keep the reports Ward reads under `.ward/reports/`
+- TypeScript, JavaScript, Python and Swift projects keep the reports Ward reads under `.ward/reports/`
   instead of `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
@@ -456,6 +545,9 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   change. Only the structured formats are read: the command must pass them.
 - ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
   does not change. An ESLint parsing error is reported with the rule `eslint`.
+- SwiftLint findings keep SwiftLint's severity, and a violation without a character has no column.
+  Swift compiler errors are read without terminal colours, once each even when the compiler
+  repeats them in a source excerpt. Without `--reporter json`, SwiftLint gives no findings.
 - Other gates have no findings yet.
 
 ## Partial checks

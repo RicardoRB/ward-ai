@@ -32,6 +32,10 @@ final class FindingFixtures {
     return new Project(root, Language.PYTHON, BuildTool.POETRY, Framework.NONE);
   }
 
+  static Project xcode(final Path root) {
+    return new Project(root, Language.SWIFT, BuildTool.XCODE, Framework.NONE);
+  }
+
   static Project typescript(final Path root) {
     return new Project(root, Language.TYPESCRIPT, BuildTool.PNPM, Framework.NONE);
   }

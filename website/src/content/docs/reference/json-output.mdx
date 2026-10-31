@@ -74,7 +74,7 @@ Omitted fields are intentional in schema v2.
 
 ## Findings
 
-A failed `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `tsc`, `ruff`, or `mypy` gate lists one entry per visible
+A failed `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-format`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
 violation in `findings`, in the tool's report order, so an agent can go straight to the file and
 line.
 
@@ -97,6 +97,9 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
 - `file` is relative to the project root with `/` separators. `file`, `line`, `column`, and
   `helpUri` are omitted when the tool does not report them; `format` findings name only the file.
 - Gitleaks findings never contain the matched secret.
+- Swift compiler errors from `swift-build` and `xcodebuild-test` have `tool` and `rule` `swiftc`.
+  SwiftLint findings carry SwiftLint's rule ID, such as `force_cast`, and swift-format findings
+  its rule name, such as `Indentation`.
 - When a report is missing, stale, or unreadable, the check keeps its status and simply has no
   findings; use `output` as the fallback.
 

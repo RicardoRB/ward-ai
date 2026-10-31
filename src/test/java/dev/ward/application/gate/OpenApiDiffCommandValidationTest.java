@@ -91,6 +91,7 @@ class OpenApiDiffCommandValidationTest {
                 null,
                 null,
                 new OpenApiGateOptions("openapi.yml", null),
+                null,
                 null));
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 

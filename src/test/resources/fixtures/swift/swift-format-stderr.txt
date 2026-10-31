@@ -1,0 +1,9 @@
+Sources/App/Cart.swift:2:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:3:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:4:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:5:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:6:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:7:1: error: [Indentation] unindent by 2 spaces
+Sources/App/Cart.swift:8:1: error: [Indentation] unindent by 4 spaces
+Sources/App/Cart.swift:9:1: error: [Indentation] unindent by 4 spaces
+Sources/App/Cart.swift:10:1: error: [Indentation] unindent by 2 spaces

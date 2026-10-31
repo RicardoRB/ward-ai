@@ -25,20 +25,10 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   /** Creates the extractor that delegates to the extractor of each supported gate. */
   @Inject
   public CompositeFindingExtractor(
-      final JvmFindingSources jvm,
-      final NodeFindingSources node,
-      final PythonFindingSources python,
+      final ToolchainFindingSources toolchains,
       final GitleaksSarifFindings gitleaks,
       final WorkspaceMembers members) {
-    this(
-        Stream.of(
-                jvm.sources(),
-                node.sources(),
-                python.sources(),
-                List.<GateFindingSource>of(gitleaks))
-            .flatMap(List::stream)
-            .toList(),
-        members);
+    this(Stream.concat(toolchains.sources().stream(), Stream.of(gitleaks)).toList(), members);
   }
 
   CompositeFindingExtractor(final List<GateFindingSource> sources) {

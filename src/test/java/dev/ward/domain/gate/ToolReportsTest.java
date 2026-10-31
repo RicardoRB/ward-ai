@@ -37,4 +37,10 @@ class ToolReportsTest {
     assertThat(directory(Language.PYTHON, BuildTool.POETRY)).isEqualTo(".ward/reports");
     assertThat(directory(Language.PYTHON, BuildTool.PIP)).isEqualTo(".ward/reports");
   }
+
+  @Test
+  void swiftReportsLiveInWardReports() {
+    assertThat(directory(Language.SWIFT, BuildTool.XCODE)).isEqualTo(".ward/reports");
+    assertThat(directory(Language.SWIFT, BuildTool.SWIFTPM)).isEqualTo(".ward/reports");
+  }
 }
