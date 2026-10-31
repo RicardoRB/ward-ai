@@ -5,7 +5,6 @@ import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.config.PartialCheckPlan;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.SkippedQualityGate;
@@ -85,9 +84,32 @@ public class CheckService {
   public CheckReport checkPartial(
       final Path start, final List<Path> paths, final CheckRunOptions options) {
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
+    final List<Path> directories =
+        OwnLanguageMemberChecks.directories(project, partialPorts.members());
+    if (directories.isEmpty()) {
+      return partialOf(project, paths, options);
+    }
+    final List<Path> rootPaths =
+        paths.stream()
+            .filter(path -> !OwnLanguageMemberChecks.insideAny(path, directories))
+            .toList();
+    final CheckReport own =
+        paths.isEmpty() || !rootPaths.isEmpty()
+            ? partialOf(project, rootPaths, options)
+            : new CheckReport(project, List.of());
+    return OwnLanguageMemberChecks.partial(
+        own,
+        directories,
+        paths,
+        (directory, memberPaths) -> checkPartial(directory, memberPaths, options));
+  }
+
+  private CheckReport partialOf(
+      final Project project, final List<Path> paths, final CheckRunOptions options) {
     final List<String> profiles =
         options.profiles().isEmpty() ? List.of(EditProfile.NAME) : options.profiles();
-    final Optional<WardConfiguration> selected = select(project, profiles, options.excludedGates());
+    final Optional<WardConfiguration> selected =
+        ProfileSelection.select(configurationReader, project, profiles, options.excludedGates());
     if (selected.isEmpty()) {
       return new CheckReport(project, List.of());
     }
@@ -177,48 +199,26 @@ public class CheckService {
           new CheckRunOptions(requestedProfiles, listener, failFast, excludedGates));
     }
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
-    final Optional<WardConfiguration> selected = select(project, requestedProfiles, excludedGates);
+    final Optional<WardConfiguration> selected =
+        ProfileSelection.select(configurationReader, project, requestedProfiles, excludedGates);
+    final CheckReport own;
     if (selected.isEmpty()) {
-      return new CheckReport(project, List.of());
+      own = new CheckReport(project, List.of());
+    } else {
+      final List<QualityGate> gates = gateFactory.create(selected.get(), project);
+      LOGGER.log(
+          Level.INFO,
+          () ->
+              "event=configuration-selected profiles="
+                  + selected.get().profileNames().size()
+                  + " gates="
+                  + gates.size());
+      own = runner.run(project, gates, listener, failFast);
     }
-    final List<QualityGate> gates = gateFactory.create(selected.get(), project);
-    LOGGER.log(
-        Level.INFO,
-        () ->
-            "event=configuration-selected profiles="
-                + selected.get().profileNames().size()
-                + " gates="
-                + gates.size());
-    return runner.run(project, gates, listener, failFast);
-  }
-
-  /**
-   * Selects the profiles' gates except {@code excludedGates}. When the exclusion alone leaves
-   * nothing enabled, the result is empty rather than an error, because the excluded gates run
-   * elsewhere.
-   */
-  private Optional<WardConfiguration> select(
-      final Project project,
-      final List<String> requestedProfiles,
-      final Set<String> excludedGates) {
-    final WardConfiguration configuration =
-        configurationReader.read(project.root().resolve(WardConfiguration.FILE_NAME));
-    final List<String> profiles = EditProfile.withoutEmptyEdit(configuration, requestedProfiles);
-    if (profiles.isEmpty() && requestedProfiles != null && !requestedProfiles.isEmpty()) {
-      return Optional.empty();
-    }
-    final WardConfiguration profiled = configuration.forProfiles(profiles);
-    final WardConfiguration selected = profiled.withoutTypes(excludedGates);
-    if (!profiled.enabledGates().isEmpty() && selected.enabledGates().isEmpty()) {
-      LOGGER.log(Level.INFO, "event=configuration-selected gates=0 reason=all-excluded");
-      return Optional.empty();
-    }
-    if (selected.enabledGates().isEmpty()) {
-      throw new WardException(
-          "No quality gates are enabled in "
-              + WardConfiguration.FILE_NAME
-              + "; refusing to report a pass without checking anything.");
-    }
-    return Optional.of(selected);
+    return OwnLanguageMemberChecks.checkAll(
+        own,
+        OwnLanguageMemberChecks.directories(project, partialPorts.members()),
+        failFast,
+        directory -> check(directory, requestedProfiles, listener, failFast, excludedGates));
   }
 }

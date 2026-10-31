@@ -9,6 +9,14 @@ public interface WorkspaceMembers {
   /** Returns the members of the workspace rooted at {@code root}, sorted by directory. */
   List<WorkspaceMember> members(Path root);
 
+  /**
+   * Returns the members of the workspace rooted at {@code root} that hold another language's build
+   * file, each as a project of that language. Empty unless the workspace has such members.
+   */
+  default List<WorkspaceMember> ownLanguageMembers(final Path root) {
+    return List.of();
+  }
+
   /** Returns the name of the member whose directory holds {@code path}, or empty when none does. */
   Optional<String> packageOf(Path root, Path path);
 

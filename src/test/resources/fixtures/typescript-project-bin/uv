@@ -1,0 +1,4 @@
+#!/bin/sh
+# Offline uv for the init fixtures: every command passes without touching the network.
+echo "stub uv: $*" >&2
+exit 0

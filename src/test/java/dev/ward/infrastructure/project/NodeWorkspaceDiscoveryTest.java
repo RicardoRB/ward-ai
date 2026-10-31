@@ -98,4 +98,31 @@ class NodeWorkspaceDiscoveryTest {
 
     assertThat(inspection.detect(root).map(Project::language)).contains(Language.JAVASCRIPT);
   }
+
+  @Test
+  void workspaceMemberWithAnotherLanguageBuildIsItsOwnProject() throws IOException {
+    tree.write(PACKAGE_JSON, "{\"workspaces\": [\"apps/*\"]}");
+    tree.write("apps/web/" + PACKAGE_JSON, MEMBER);
+    tree.write("apps/api/" + PACKAGE_JSON, MEMBER);
+    tree.write("apps/api/pom.xml", "<project><artifactId>api</artifactId></project>");
+    tree.write("apps/api/src/main/java/App.java", "class App {}");
+
+    assertThat(ProjectTree.roots(inspection.discover(root)))
+        .containsExactly(tree.path(""), tree.path("apps/api"));
+    assertThat(inspection.detect(root.resolve("apps/api/src/main/java")).map(Project::root))
+        .contains(tree.path("apps/api"));
+  }
+
+  @Test
+  void workspaceMemberWithAPythonBuildIsOnlyItsPythonProject() throws IOException {
+    tree.write(PACKAGE_JSON, "{\"workspaces\": [\"services/*\"]}");
+    tree.write("services/ingest/" + PACKAGE_JSON, MEMBER);
+    tree.write("services/ingest/pyproject.toml", "[project]\nname = \"ingest\"\n");
+    tree.write("services/ingest/app/main.py", "def ingest() -> None:\n    pass\n");
+
+    assertThat(inspection.discover(root).stream().map(found -> found.project().language()))
+        .containsExactly(Language.JAVASCRIPT, Language.PYTHON);
+    assertThat(inspection.detect(root.resolve("services/ingest/app")).map(Project::language))
+        .contains(Language.PYTHON);
+  }
 }

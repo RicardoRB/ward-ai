@@ -36,6 +36,18 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
   }
 
   @Override
+  public List<WorkspaceMember> ownLanguageMembers(final Path root) {
+    return NodeWorkspaces.ownLanguageMemberDirectories(root, NodeProjectInspection.manifest(root))
+        .stream()
+        .flatMap(
+            dir ->
+                FileSystemProjectInspection.projectAt(dir)
+                    .map(project -> new WorkspaceMember(name(root, dir), dir, project))
+                    .stream())
+        .toList();
+  }
+
+  @Override
   public Optional<String> packageOf(final Path root, final Path path) {
     return members(root).stream()
         .filter(member -> path.startsWith(member.directory()))

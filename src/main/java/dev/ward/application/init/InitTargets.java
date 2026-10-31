@@ -5,12 +5,15 @@ import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.DiscoveredProject;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.WorkspaceMember;
+import dev.ward.domain.project.WorkspaceMembers;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * The projects one init run may configure.
@@ -41,7 +44,8 @@ public record InitTargets(
       final ProjectDetector detector,
       final Path start,
       final List<String> explicit,
-      final Predicate<Project> supported) {
+      final Predicate<Project> supported,
+      final WorkspaceMembers members) {
     final Path base = start.toAbsolutePath().normalize();
     if (!explicit.isEmpty()) {
       log("explicit", explicit.size());
@@ -52,8 +56,13 @@ public record InitTargets(
     }
     final Optional<Project> containing = detector.detect(base);
     if (containing.filter(supported).isPresent()) {
-      log("containing", 1);
-      return new InitTargets(List.of(new DiscoveredProject(containing.get(), 0)), false, false);
+      final Project project = containing.get();
+      final List<DiscoveredProject> own = ownLanguageMembers(project, supported, members);
+      log("containing", 1 + own.size());
+      return new InitTargets(
+          Stream.concat(Stream.of(new DiscoveredProject(project, 0)), own.stream()).toList(),
+          false,
+          false);
     }
     final List<DiscoveredProject> discovered =
         detector.discover(base).stream()
@@ -69,6 +78,22 @@ public record InitTargets(
           .orElseGet(ProjectNotFoundException::new);
     }
     return new InitTargets(discovered, true, discovered.size() > 1);
+  }
+
+  /**
+   * Returns the members of a Turborepo root that hold another language's build file: init
+   * configures each one as its own project. Other roots have none.
+   */
+  private static List<DiscoveredProject> ownLanguageMembers(
+      final Project root, final Predicate<Project> supported, final WorkspaceMembers members) {
+    if (!root.taskRunner().isRootRunner()) {
+      return List.of();
+    }
+    return members.ownLanguageMembers(root.root()).stream()
+        .map(WorkspaceMember::project)
+        .filter(supported)
+        .map(project -> new DiscoveredProject(project, 0))
+        .toList();
   }
 
   private static DiscoveredProject named(

@@ -92,7 +92,8 @@ public class InitService {
    * else the containing supported project, else the ones discovered below {@code start}.
    */
   public InitTargets targets(final Path start, final List<String> explicit) {
-    return InitTargets.resolve(detector, start, explicit, catalog.get()::isSupported);
+    return InitTargets.resolve(
+        detector, start, explicit, catalog.get()::isSupported, catalog.get().inputs.members());
   }
 
   /** Returns whether {@code project} already has a {@code ward.toml}. */

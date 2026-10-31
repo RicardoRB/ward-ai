@@ -50,6 +50,21 @@ existing task or any byte outside the inserted entries:
 When the root does not declare `turbo`, init adds it with a pinned version to the root
 `devDependencies`.
 
+## Members in other languages
+
+A workspace member that has its own build file of another language, such as `pom.xml`, a Gradle
+build, `pyproject.toml`, or `Cargo.toml`, is its own project of that language. It stays a
+workspace member, even when it also has a `package.json`, but it is not a Node member. `ward detect`
+run inside it reports that language, and init configures it with that toolchain: a Maven API in
+`apps/api` gets `apps/api/ward.toml` and its Maven gates, and a Python service in `services/ingest`
+gets `services/ingest/ward.toml` and its Python gates. The root `package.json` and `turbo.json` never
+receive another language's scripts or tasks.
+
+Turbo does not run these members' tasks. `ward check` at the root runs the root's gates, then each
+such member's gates in its own directory, and names each result by the member's path, such as
+`apps/api: checkstyle`. Findings carry the path from the repository root. An edit inside such a
+member runs only that member's gates, and an edit inside a Node member runs only its turbo task.
+
 ## Scripts print JSON
 
 A member's script is the whole standalone command without the package-manager runner prefix. That

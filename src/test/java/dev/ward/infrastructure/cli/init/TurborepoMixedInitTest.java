@@ -45,5 +45,6 @@ class TurborepoMixedInitTest {
     assertThat(project.resolve("apps/api/stryker.config.mjs")).doesNotExist();
     assertThat(Files.readString(project.resolve("apps/api/pom.xml")))
         .contains("<artifactId>api</artifactId>");
+    assertThat(project.resolve("apps/api/ward.toml")).exists();
   }
 }
