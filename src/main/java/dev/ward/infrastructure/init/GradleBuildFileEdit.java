@@ -1,5 +1,8 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.domain.config.WardException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,16 @@ final class GradleBuildFileEdit {
     this.buildFile = buildFile;
     this.original = original;
     this.content = original;
+  }
+
+  /** Reads {@code buildFile} into an edit; a read failure names the file. */
+  static GradleBuildFileEdit read(final Path buildFile) {
+    try {
+      return new GradleBuildFileEdit(buildFile, Files.readString(buildFile));
+    } catch (IOException e) {
+      throw new WardException(
+          "Could not configure Gradle tools in " + buildFile + ": " + e.getMessage(), e);
+    }
   }
 
   Path buildFile() {

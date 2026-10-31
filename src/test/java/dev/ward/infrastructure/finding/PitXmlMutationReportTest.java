@@ -84,4 +84,44 @@ class PitXmlMutationReportTest {
     assertThat(counts.usable()).isTrue();
     assertThat(counts.valid()).isZero();
   }
+
+  @Test
+  void gradleModuleReportsAreSummed() {
+    FindingFixtures.write(root.resolve("api/build/reports/pitest/mutations.xml"), REPORT);
+    FindingFixtures.write(root.resolve("domain/build/reports/pitest/mutations.xml"), REPORT);
+
+    final MutationCounts counts =
+        report.read(FindingFixtures.gradle(root), FindingFixtures.justBefore());
+
+    assertThat(counts.detected()).isEqualTo(2 * DETECTED);
+    assertThat(counts.undetected()).isEqualTo(2 * UNDETECTED);
+  }
+
+  @Test
+  void staleModuleReportIsIgnored() {
+    FindingFixtures.write(root.resolve("api/build/reports/pitest/mutations.xml"), REPORT);
+    FindingFixtures.write(root.resolve("domain/build/reports/pitest/mutations.xml"), REPORT);
+    FindingFixtures.age(
+        root.resolve("domain/build/reports/pitest/mutations.xml"), Duration.ofHours(1));
+
+    final MutationCounts counts =
+        report.read(FindingFixtures.gradle(root), FindingFixtures.justBefore());
+
+    assertThat(counts.valid()).isEqualTo(DETECTED + UNDETECTED);
+  }
+
+  @Test
+  void unparseableFreshModuleReportIsNamed() {
+    FindingFixtures.write(root.resolve("api/build/reports/pitest/mutations.xml"), REPORT);
+    FindingFixtures.write(
+        root.resolve("domain/build/reports/pitest/mutations.xml"),
+        "<mutations><mutation detected='true'");
+
+    final MutationCounts counts =
+        report.read(FindingFixtures.gradle(root), FindingFixtures.justBefore());
+
+    assertThat(counts.usable()).isFalse();
+    assertThat(counts.problem())
+        .contains("domain/build/reports/pitest/mutations.xml", "cannot be parsed");
+  }
 }

@@ -1,6 +1,7 @@
 package dev.ward.domain.doctor;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 /** Outbound contract for observing host and project environment facts. */
@@ -45,6 +46,14 @@ public interface EnvironmentInspection {
    */
   default Optional<String> fastApiApp(final Path projectRoot) {
     return Optional.empty();
+  }
+
+  /**
+   * Returns the directories below {@code projectRoot} whose build script applies the Kotlin JVM
+   * plugin, as a Gradle build has them; empty when there are none.
+   */
+  default List<Path> gradleKotlinModules(final Path projectRoot) {
+    return List.of();
   }
 
   /** Returns how the project's Dependency-Check build configuration sets the OSS Index analyzer. */

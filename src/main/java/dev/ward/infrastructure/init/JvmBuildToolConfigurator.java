@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.BuildFileChange;
+import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.GateOmission;
@@ -16,7 +17,7 @@ import java.util.function.Predicate;
 import javax.inject.Inject;
 
 /** Routes JVM initialization mutations to the Maven or Gradle adapter. */
-public final class JvmBuildToolConfigurator implements BuildToolConfiguration {
+public final class JvmBuildToolConfigurator implements BuildToolConfiguration, BuildModulePlanning {
   private final PomToolConfigurator maven;
   private final GradleToolConfigurator gradle;
 
@@ -49,6 +50,18 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final boolean approved) {
     return adapter(project).plan(project, gates, preset, approved);
+  }
+
+  /** Plans module scripts for Gradle only; a Maven build has none. */
+  @Override
+  public List<PlannedFileChange> planModules(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved) {
+    return project.buildTool() == BuildTool.GRADLE
+        ? gradle.planModules(project, gates, preset, approved)
+        : List.of();
   }
 
   @Override

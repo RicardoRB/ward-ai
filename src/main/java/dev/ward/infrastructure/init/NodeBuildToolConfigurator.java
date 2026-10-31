@@ -81,7 +81,8 @@ public final class NodeBuildToolConfigurator implements BuildToolConfiguration {
             missing.stream().map(NodePackageCatalog.Package::name).toList(),
             warnings,
             lock,
-            Files.isRegularFile(lock) ? NodeManifestFiles.read(lock) : null);
+            Files.isRegularFile(lock) ? NodeManifestFiles.read(lock) : null,
+            List.of());
     NodeManifestFiles.writeText(file, edited);
     LOGGER.log(
         Level.INFO,

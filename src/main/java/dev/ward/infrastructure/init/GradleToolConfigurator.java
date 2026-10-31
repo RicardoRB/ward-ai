@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
@@ -10,12 +9,11 @@ import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.GradleToolCatalog;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.ScriptEdit;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
-import java.io.IOException;
-import java.nio.file.Files;
+import dev.ward.infrastructure.project.GradleKotlinModules;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,22 +26,27 @@ import javax.inject.Named;
 /**
  * Adds conservative, reversible Gradle configuration for selected init gates: plugin declarations
  * inside the {@code plugins {}} block, and blocks that wire the plugins to the generated rule files
- * and thresholds.
+ * and thresholds. In a multi-module Kotlin build the module-placed gates go into each module
+ * script.
  */
 public final class GradleToolConfigurator implements BuildToolConfiguration {
   /** Plugins in declaration order; a versioned plugin takes its version from the catalog. */
-  private static final List<Plugin> PLUGINS =
+  private static final List<GradlePlugin> PLUGINS =
       List.of(
-          new Plugin("format", GradleToolCatalog.SPOTLESS, true),
-          new Plugin("checkstyle", "checkstyle", false),
-          new Plugin("pmd", "pmd", false),
-          new Plugin("spotbugs", GradleToolCatalog.SPOTBUGS, true),
-          new Plugin("coverage", "jacoco", false),
-          new Plugin("dependency-check", "org.owasp.dependencycheck", true),
-          new Plugin("mutation", GradleToolCatalog.PITEST, true),
-          new Plugin("sonar", "org.sonarqube", true),
-          new Plugin("license", "com.github.jk1.dependency-license-report", true),
-          new Plugin("api-compat", "me.champeau.gradle.japicmp", true));
+          new GradlePlugin("format", GradleToolCatalog.SPOTLESS, true, true),
+          new GradlePlugin("checkstyle", "checkstyle", false, true),
+          new GradlePlugin("pmd", "pmd", false, true),
+          new GradlePlugin("spotbugs", GradleToolCatalog.SPOTBUGS, true, true),
+          new GradlePlugin("coverage", "jacoco", false, true),
+          new GradlePlugin("dependency-check", "org.owasp.dependencycheck", true, false),
+          new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true),
+          new GradlePlugin("sonar", "org.sonarqube", true, false),
+          new GradlePlugin("license", "com.github.jk1.dependency-license-report", true, false),
+          new GradlePlugin("api-compat", "me.champeau.gradle.japicmp", true, false));
+
+  private static final String NO_KOTLIN_MODULE =
+      "No module applies the Kotlin JVM plugin directly, so the coverage, SpotBugs and mutation"
+          + " gates stay in the root build script.";
 
   private final Optional<CompatibilityFindings> compatibility;
 
@@ -74,21 +77,20 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       final QualityPreset preset,
       final Predicate<? super CompatibilityFinding> approval) {
     final Computed computed = compute(project, gates, preset);
-    final GradleBuildFileEdit edit = computed.edit();
-    if (!edit.tools().isEmpty()) {
-      try {
-        Files.writeString(
-            edit.buildFile(),
-            edit.content(),
-            StandardOpenOption.TRUNCATE_EXISTING,
-            StandardOpenOption.WRITE);
-      } catch (IOException e) {
-        throw new WardException(
-            "Could not configure Gradle tools in " + edit.buildFile() + ": " + e.getMessage(), e);
-      }
-    }
+    GradleScriptFiles.writeAll(computed.edits());
+    final GradleBuildFileEdit root = computed.root();
     return new BuildFileChange(
-        Toolchain.JVM, edit.buildFile(), edit.original(), edit.tools(), computed.warnings());
+        Toolchain.JVM,
+        root.buildFile(),
+        root.original(),
+        computed.edits().stream().flatMap(edit -> edit.tools().stream()).distinct().toList(),
+        computed.warnings(),
+        null,
+        null,
+        computed.modules().stream()
+            .filter(module -> !module.tools().isEmpty())
+            .map(module -> new ScriptEdit(module.buildFile(), module.original()))
+            .toList());
   }
 
   @Override
@@ -99,13 +101,28 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       final boolean approved) {
     final Computed computed = compute(project, gates, preset);
     final List<String> details = new ArrayList<>(computed.warnings());
-    details.addAll(computed.edit().details());
+    details.addAll(computed.root().details());
     return new PlannedFileChange(
-        computed.edit().buildFile(),
-        computed.edit().details().isEmpty()
+        computed.root().buildFile(),
+        computed.root().details().isEmpty()
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,
         details);
+  }
+
+  /** Describes the Kotlin module scripts the gates would change, without writing. */
+  public List<PlannedFileChange> planModules(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved) {
+    return compute(project, gates, preset).modules().stream()
+        .filter(module -> !module.details().isEmpty())
+        .map(
+            module ->
+                new PlannedFileChange(
+                    module.buildFile(), PlannedFileChange.Action.MODIFY, module.details()))
+        .toList();
   }
 
   @Override
@@ -132,21 +149,16 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
     return compatibility.flatMap(resolver -> resolver.runtimeJdk(project));
   }
 
-  /** Builds the edited build file in memory; shared by {@link #apply} and {@link #plan}. */
+  /**
+   * Builds the edited scripts in memory; shared by {@link #apply}, {@link #plan} and planModules.
+   */
   private Computed compute(
       final Project project, final List<InitGateOption> gates, final QualityPreset preset) {
-    final Path buildFile = buildFile(project.root());
+    final Path buildFile = GradleScriptFiles.buildFile(project.root());
     final Set<String> requested =
         gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final GradleToolVersions versions =
         GradleToolVersions.resolve(compatibility, project, requested);
-    final GradleBuildFileEdit edit;
-    try {
-      edit = new GradleBuildFileEdit(buildFile, Files.readString(buildFile));
-    } catch (IOException e) {
-      throw new WardException(
-          "Could not configure Gradle tools in " + buildFile + ": " + e.getMessage(), e);
-    }
     final List<String> warnings = new ArrayList<>(versions.warning().stream().toList());
     requested.stream()
         .sorted()
@@ -159,18 +171,33 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
         requested.stream()
             .filter(gate -> versions.unavailable(gate).isEmpty())
             .collect(Collectors.toSet());
-    final boolean kotlin = Files.isRegularFile(project.root().resolve("build.gradle.kts"));
-    final List<String> declarations = new ArrayList<>();
-    for (final Plugin plugin : PLUGINS) {
-      if (selected.contains(plugin.gate()) && !edit.contains(plugin.id())) {
-        final String version = plugin.versioned() ? versions.version(plugin.id()) : "";
-        declarations.add(plugin.declaration(kotlin, version));
-        edit.record(plugin.id(), version);
-      }
+    final GradleBuildFileEdit root = GradleBuildFileEdit.read(buildFile);
+    final List<Path> kotlinModules = GradleKotlinModules.of(project.root());
+    final boolean rootJvm =
+        GradleKotlinModules.appliesJava(root.original())
+            || GradleKotlinModules.appliesKotlinJvm(root.original());
+    final Set<String> moduleGates = GradleScriptPlacement.moduleGates(selected, kotlinModules);
+    final Set<String> rootGates =
+        rootJvm || moduleGates.isEmpty()
+            ? selected
+            : selected.stream()
+                .filter(gate -> !moduleGates.contains(gate))
+                .collect(Collectors.toSet());
+    root.addPlugins(
+        GradleScriptPlacement.rootDeclarations(root, PLUGINS, rootGates, moduleGates, versions));
+    GradleBuildBlocks.append(root, rootGates, preset, versions, false);
+    final List<GradleBuildFileEdit> modules = new ArrayList<>();
+    for (final Path module : kotlinModules) {
+      modules.add(GradleScriptPlacement.moduleEdit(module, PLUGINS, moduleGates, preset, versions));
     }
-    edit.addPlugins(declarations);
-    GradleBuildBlocks.append(edit, selected, preset, kotlin, versions);
-    return new Computed(edit, warnings);
+    GradleScriptPlacement.logPlacement(project, kotlinModules, rootJvm);
+    if (kotlinModules.isEmpty()
+        && !rootJvm
+        && GradleScriptPlacement.hasModuleGate(selected)
+        && GradleKotlinModules.hasKotlinSources(project.root())) {
+      warnings.add(NO_KOTLIN_MODULE);
+    }
+    return new Computed(root, modules, warnings);
   }
 
   @Override
@@ -178,39 +205,19 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
     if (change == null || !change.changed()) {
       return;
     }
-    try {
-      Files.writeString(
-          change.file(),
-          change.originalContent(),
-          StandardOpenOption.TRUNCATE_EXISTING,
-          StandardOpenOption.WRITE);
-    } catch (IOException e) {
-      throw new WardException("Could not restore " + change.file() + ": " + e.getMessage(), e);
-    }
+    GradleScriptFiles.restore(change.file(), change.originalContent());
+    change
+        .moduleScripts()
+        .forEach(script -> GradleScriptFiles.restore(script.file(), script.originalContent()));
   }
 
-  private static Path buildFile(final Path root) {
-    final Path kotlin = root.resolve("build.gradle.kts");
-    final Path groovy = root.resolve("build.gradle");
-    if (Files.isRegularFile(kotlin)) {
-      return kotlin;
-    }
-    if (Files.isRegularFile(groovy)) {
-      return groovy;
-    }
-    throw new WardException(
-        "Could not configure Gradle tools: no build.gradle or build.gradle.kts found.");
-  }
-
-  /** The edited build file and the warnings for the init output. */
-  private record Computed(GradleBuildFileEdit edit, List<String> warnings) {}
-
-  private record Plugin(String gate, String id, boolean versioned) {
-    String declaration(final boolean kotlin, final String version) {
-      if (kotlin) {
-        return "id(\"" + id + "\")" + (version.isBlank() ? "" : " version \"" + version + "\"");
-      }
-      return "id '" + id + "'" + (version.isBlank() ? "" : " version '" + version + "'");
+  /** The root and module edits, and the warnings for the init output. */
+  private record Computed(
+      GradleBuildFileEdit root, List<GradleBuildFileEdit> modules, List<String> warnings) {
+    List<GradleBuildFileEdit> edits() {
+      final List<GradleBuildFileEdit> edits = new ArrayList<>(List.of(root));
+      edits.addAll(modules);
+      return edits;
     }
   }
 }
