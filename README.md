@@ -26,7 +26,8 @@ edit to production.
 
 > [!NOTE]
 > **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle** and
-> **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun. Support for more
+> **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun (including Turborepo
+> workspaces), and **Python projects** managed with uv, Poetry, or pip. Support for more
 > languages is planned. The CLI and configuration may change before `1.0`.
 
 | Language | Build tools | Frameworks | Quality tools |
@@ -34,6 +35,7 @@ edit to production.
 | Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
+| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
 
 ## Why Ward?
 
@@ -71,6 +73,22 @@ move a check between layers by editing its `profiles` list. Read the
 [four quality layers guide](https://ricardorb.github.io/ward-ai/getting-started/how-it-works/).
 
 ## Quick start
+
+**Using a coding agent?** Paste this prompt into Claude Code, Codex, Cursor, OpenCode, or any other
+agent, and it installs Ward and sets it up with you:
+
+```text
+Set up Ward (https://github.com/RicardoRB/ward-ai) quality gates in this project.
+
+1. Run `ward --version`. If Ward is missing, ask me first, then install it:
+   - Linux, macOS, or Git Bash: curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
+   - Windows PowerShell: irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
+2. Read https://raw.githubusercontent.com/RicardoRB/ward-ai/main/skills/ward-init/SKILL.md and follow it
+   step by step. Fetch the reference files it links from the same folder.
+3. Ask me before changing any file. When setup is done, run `ward check` and show me the result.
+```
+
+Or set it up yourself:
 
 **1. Install** on Linux, macOS, or Git Bash (see [installation](https://ricardorb.github.io/ward-ai/getting-started/installation/) for options):
 
@@ -164,6 +182,7 @@ ward check --profile ci --format json > ward-report.json
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Prettier, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
+| Python | Ruff (format and lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
 | Anything else | Any command you add to `ward.toml` |
 
 Ward runs the tools; the rules live in each tool's own configuration. For TypeScript and JavaScript
@@ -187,12 +206,12 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.3.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
+**Alpha** (`0.4.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
 Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes.
 
 **Roadmap:**
 
-- Support for more languages beyond Java, TypeScript, and JavaScript
+- Support for more languages beyond Java, TypeScript, JavaScript, and Python
 - Shared Git hooks (for example through `core.hooksPath`), so teammates get the commit and push
   layers without a setup step
 - Homebrew tap, Scoop and winget packages, and container image

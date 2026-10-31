@@ -2,7 +2,7 @@
 name: ward-init
 description: Set up or reconfigure Ward quality gates in a Java (Maven or Gradle), Node (TypeScript or JavaScript with npm, pnpm, Yarn, Bun) or Python (uv, Poetry or pip) project together with the user. Inspects the project, explains each choice (preset, gates, architecture style, tools, agent integration, Git hooks) with a recommendation grounded in what it found, previews the exact changes with `ward init --dry-run`, and applies them only after approval. Use when the user wants to add Ward, initialize or change ward.toml, choose quality gates, or asks how to set up Ward for this repository.
 license: Apache-2.0
-compatibility: Requires the ward CLI >= 0.2.0, a Maven or Gradle Java project or a TypeScript or JavaScript project, and a shell.
+compatibility: Requires the ward CLI >= 0.2.0, a Maven or Gradle Java project, a TypeScript or JavaScript project, or a Python project, and a shell.
 metadata:
   min-ward-version: "0.2.0"
 ---
