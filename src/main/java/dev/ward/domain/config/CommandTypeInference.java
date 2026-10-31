@@ -96,7 +96,10 @@ public final class CommandTypeInference {
           new Rule("swift-format", sequence("swift", "format", "lint")),
           new Rule(
               "swiftlint",
-              anyOf(sequence("swiftlint", "lint"), sequence("SwiftLintBinary", "lint"))),
+              anyOf(
+                  sequence("swiftlint", "lint"),
+                  sequence("*/swiftlint", "lint"),
+                  sequence("SwiftLintBinary", "lint"))),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")));
@@ -178,6 +181,9 @@ public final class CommandTypeInference {
   }
 
   private static boolean tokenMatches(final String token, final String pattern) {
+    if (pattern.startsWith("*")) {
+      return token.endsWith(pattern.substring(1));
+    }
     if (pattern.endsWith("*")) {
       return token.startsWith(pattern.substring(0, pattern.length() - 1));
     }

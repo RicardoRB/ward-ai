@@ -19,6 +19,10 @@ import java.util.logging.Logger;
 /** Prints the outcome of {@code ward init}. */
 final class InitResultPrinter {
   private static final Set<String> NODE_RUNNERS = Set.of("npx", "pnpm", "yarn", "bunx", "bun");
+
+  /** The executables of Swift gates, which read the Ward-owned SwiftLint tools package. */
+  private static final Set<String> SWIFT_RUNNERS = Set.of("swift", "xcodebuild", "xcrun");
+
   private static final Logger LOGGER = Logger.getLogger(InitResultPrinter.class.getName());
   private final PrintWriter out;
 
@@ -133,6 +137,9 @@ final class InitResultPrinter {
     }
     if (executables.stream().anyMatch(InitResultPrinter::isPythonRunner)) {
       return "Updated the Python ward dependency group with tools:";
+    }
+    if (executables.stream().anyMatch(SWIFT_RUNNERS::contains)) {
+      return "Created .ward/swift-tools/Package.swift with the SwiftLint tool:";
     }
     return executables.stream()
             .anyMatch(executable -> executable.endsWith("gradlew") || "gradle".equals(executable))

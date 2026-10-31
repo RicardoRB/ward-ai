@@ -88,7 +88,8 @@ class NodeStrictAgentRulesTest {
             ROOT,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     return AgentRulesTemplate.render(project, gates, preset, List.of()).body();
   }
 }

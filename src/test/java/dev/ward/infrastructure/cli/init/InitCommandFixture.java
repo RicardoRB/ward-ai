@@ -35,6 +35,8 @@ final class InitCommandFixture {
   private final BuildToolConfiguration buildTools;
   private final String[] executables;
   private final StringWriter output = new StringWriter();
+  private dev.ward.application.init.SwiftPorts swiftPorts =
+      dev.ward.application.init.SwiftPorts.NONE;
 
   InitCommandFixture(final Path root) throws IOException {
     this(root, new PomToolConfigurator());
@@ -89,6 +91,12 @@ final class InitCommandFixture {
     return new InitCommandFixture(root, false, tools, executables);
   }
 
+  /** Gives init the Swift ports a Swift project reads its Xcode schemes and configs through. */
+  InitCommandFixture withSwiftPorts(final dev.ward.application.init.SwiftPorts ports) {
+    this.swiftPorts = ports;
+    return this;
+  }
+
   /** Runs init with piped input. */
   int run(final String input, final String... args) {
     return run(false, input, args);
@@ -108,7 +116,8 @@ final class InitCommandFixture {
                         new FileSystemNodeSources(),
                         new FileSystemNodeToolConfigs()),
                     buildTools,
-                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
+                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs(),
+                    swiftPorts),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),

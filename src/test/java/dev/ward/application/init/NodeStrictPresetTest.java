@@ -82,7 +82,8 @@ class NodeStrictPresetTest {
             List.of(),
             false,
             null,
-            false);
+            false,
+            null);
 
     assertThat(
             OwnedSections.of(
@@ -124,6 +125,7 @@ class NodeStrictPresetTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

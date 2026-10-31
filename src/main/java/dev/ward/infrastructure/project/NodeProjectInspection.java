@@ -80,7 +80,8 @@ final class NodeProjectInspection {
         dir,
         Set.of(language),
         version(dir, manifest),
-        taskRunner(dir));
+        taskRunner(dir),
+        null);
   }
 
   /** Returns Turborepo when the workspace root holds {@code turbo.json}, else no task runner. */

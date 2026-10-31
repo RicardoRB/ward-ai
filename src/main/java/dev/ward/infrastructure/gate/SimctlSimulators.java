@@ -6,6 +6,7 @@ import dev.ward.domain.json.JsonCodecException;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -49,27 +50,39 @@ public final class SimctlSimulators implements Simulators {
     if (runtimes.isEmpty() || devices.isEmpty()) {
       return unavailable("list-failed", LIST_FAILED);
     }
-    final Optional<SimRuntime> runtime = newestIos(runtimes.get());
-    if (runtime.isEmpty()) {
+    final List<SimRuntime> newestFirst = iosRuntimesNewestFirst(runtimes.get());
+    if (newestFirst.isEmpty()) {
       return unavailable("no-runtime", NO_RUNTIME);
     }
-    final Optional<SimDevice> device = firstIPhone(devices.get(), runtime.get().identifier);
-    if (device.isEmpty()) {
-      return unavailable(
-          "no-iphone",
-          "The "
-              + runtime.get().name
-              + " simulator runtime has no available iPhone. Create one in Xcode > Window >"
-              + " Devices and Simulators, or with `xcrun simctl create`.");
+    // simctl lists a runtime as available before its files exist, so a boot can fail; try the next.
+    final List<Simulator> failures = new ArrayList<>();
+    for (final SimRuntime runtime : newestFirst) {
+      final Optional<SimDevice> device = firstIPhone(devices.get(), runtime.identifier);
+      if (device.isEmpty()) {
+        failures.add(
+            unavailable(
+                "no-iphone",
+                "The "
+                    + runtime.name
+                    + " simulator runtime has no available iPhone. Create one in Xcode > Window >"
+                    + " Devices and Simulators, or with `xcrun simctl create`."));
+        continue;
+      }
+      LOGGER.log(
+          Level.INFO,
+          () ->
+              "event=simulator-selected runtime="
+                  + runtime.identifier
+                  + " state="
+                  + device.get().state);
+      final Simulator simulator = boot(device.get(), workingDirectory);
+      if (simulator.problem() == null) {
+        return simulator;
+      }
+      failures.add(simulator);
     }
-    LOGGER.log(
-        Level.INFO,
-        () ->
-            "event=simulator-selected runtime="
-                + runtime.get().identifier
-                + " state="
-                + device.get().state);
-    return boot(device.get(), workingDirectory);
+    // The first failure names the newest runtime, which is the one the user is most likely to fix.
+    return failures.getFirst();
   }
 
   private <T> Optional<T> list(final Path directory, final String what, final Class<T> type) {
@@ -89,12 +102,16 @@ public final class SimctlSimulators implements Simulators {
     }
   }
 
-  private static Optional<SimRuntime> newestIos(final RuntimeList runtimes) {
+  /** Returns the available iOS runtimes, the newest version first. */
+  private static List<SimRuntime> iosRuntimesNewestFirst(final RuntimeList runtimes) {
     return runtimes.runtimesOrEmpty().stream()
         .filter(
             runtime -> IOS.equals(runtime.platform) && !Boolean.FALSE.equals(runtime.isAvailable))
         .filter(runtime -> runtime.identifier != null && runtime.version != null)
-        .max(Comparator.comparing(runtime -> version(runtime.version), Arrays::compare));
+        .sorted(
+            Comparator.comparing((SimRuntime runtime) -> version(runtime.version), Arrays::compare)
+                .reversed())
+        .toList();
   }
 
   /** Splits {@code 26.5} into {@code [26, 5]}; parts that are not numbers count as 0. */

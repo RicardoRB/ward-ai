@@ -130,7 +130,7 @@ public class InitService {
       final boolean replaceScripts,
       final Predicate<? super CompatibilityFinding> approval) {
     LOGGER.log(Level.INFO, () -> "event=initialization-start overwrite=" + overwrite);
-    final Project project = project(start);
+    final Project project = project(start).withXcodeScheme(selection.scheme());
     installer.validate(selection.integrations());
     final Path configurationFile = project.root().resolve("ward.toml");
     final String originalConfiguration = files.configuration().read(configurationFile).orElse(null);
@@ -181,7 +181,7 @@ public class InitService {
    * approved} marks compatibility updates as already approved.
    */
   public InitPlan plan(final Path start, final InitSelection selection, final boolean approved) {
-    final Project project = project(start);
+    final Project project = project(start).withXcodeScheme(selection.scheme());
     return new InitPlanner(catalog, installer, files).plan(project, selection, approved);
   }
 

@@ -150,7 +150,8 @@ class BiomeConfigSmokeTest {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     final InitGateOption biome =
         new InitGateOption("biome", "Biome", List.of("npx", "biome"), true, "ok");
     return NodeConfigFiles.targets(

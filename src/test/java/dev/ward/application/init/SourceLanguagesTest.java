@@ -76,7 +76,8 @@ class SourceLanguagesTest {
         ROOT,
         others,
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static SourceLanguageGates<String> fixed(final String... ids) {

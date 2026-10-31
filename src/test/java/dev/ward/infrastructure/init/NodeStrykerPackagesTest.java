@@ -110,7 +110,8 @@ class NodeStrykerPackagesTest {
         root,
         Set.of(),
         node,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static List<InitGateOption> gates(final String... ids) {

@@ -41,6 +41,11 @@ interface ToolchainInitSupport {
    */
   String ciSetup(Project project, CiWorkflowTemplate.ProjectFacts facts);
 
+  /** Returns the GitHub Actions runner the CI job of {@code project} runs on. */
+  default String runner() {
+    return "ubuntu-24.04";
+  }
+
   /**
    * Build-tool gates in wizard order, split around the toolchain-independent binary-tool gates.
    *

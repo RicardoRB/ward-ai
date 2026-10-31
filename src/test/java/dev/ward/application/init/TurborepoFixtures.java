@@ -35,7 +35,8 @@ final class TurborepoFixtures {
         root,
         Set.of(),
         "24",
-        TaskRunner.TURBO);
+        TaskRunner.TURBO,
+        null);
   }
 
   static WorkspaceMember memberOf(
@@ -54,7 +55,8 @@ final class TurborepoFixtures {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE));
+            TaskRunner.NONE,
+            null));
   }
 
   /**
@@ -72,7 +74,8 @@ final class TurborepoFixtures {
         (dir, gate) -> Optional.empty(),
         Optional.empty(),
         (dir, tool) -> Optional.empty(),
-        new Members(members));
+        new Members(members),
+        SwiftPorts.NONE);
   }
 
   static InitInputs inputs(

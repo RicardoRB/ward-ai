@@ -79,7 +79,8 @@ final class PythonProjectInspection {
         dir,
         Set.of(Language.PYTHON),
         version(dir, pyproject),
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   /** The first rule that matches decides the manager: uv, Poetry, PDM, Hatch, else pip. */

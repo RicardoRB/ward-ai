@@ -53,7 +53,7 @@ List the gates with `enabled = true`. This skill tunes these:
 |---|---|---|
 | `checkstyle` | Checkstyle modules and their properties | [references/checkstyle.md](references/checkstyle.md) |
 | `pmd` | PMD rules and categories | [references/pmd.md](references/pmd.md) |
-| `coverage` | JaCoCo minimum ratios | [references/coverage.md](references/coverage.md) |
+| `coverage`, `swift-coverage` | JaCoCo minimum ratios, and the Swift coverage minimum | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
 | `dependency-cruiser` | Layer paths, added layers and cycle rules of the import-boundary config | [references/dependency-cruiser.md](references/dependency-cruiser.md) |
@@ -64,6 +64,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `import-linter` | Layer and feature contracts in `.importlinter` | [references/import-linter.md](references/import-linter.md) |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
+| `swiftlint`, `swift-format` | SwiftLint rules in `.swiftlint.yml` and the swift-format settings in `.swift-format` | [references/swiftlint.md](references/swiftlint.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a

@@ -66,7 +66,8 @@ class InitToolLifecycleTest {
                 List.of("semgrep"),
                 false,
                 null,
-                false));
+                false,
+                null));
 
     assertThat(installer.installed).containsExactly("semgrep");
     assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
@@ -97,7 +98,8 @@ class InitToolLifecycleTest {
         installTools,
         false,
         null,
-        false);
+        false,
+        null);
   }
 
   private static InitService service(final ToolInstaller installer) {

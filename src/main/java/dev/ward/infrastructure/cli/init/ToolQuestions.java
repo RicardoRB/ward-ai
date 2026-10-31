@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.XcodeSchemeChoices;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.init.InitGateOption;
@@ -160,5 +161,20 @@ final class ToolQuestions {
             }
           });
     }
+  }
+
+  /**
+   * Returns the Xcode scheme the user named, or asks for one when the project has several schemes
+   * and the wizard is interactive. Null for projects with no Xcode scheme choice.
+   */
+  String scheme(final InitSetupCatalog catalog, final Project project) {
+    if (answers.scheme() != null) {
+      return answers.scheme();
+    }
+    final List<String> schemes = XcodeSchemeChoices.of(catalog, project);
+    if (schemes.size() < 2 || useDefaults) {
+      return null;
+    }
+    return wizard.selectScheme(schemes);
   }
 }

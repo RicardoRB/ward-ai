@@ -13,10 +13,10 @@ import org.junit.jupiter.api.Test;
 
 /** Picks an iPhone of the newest iOS runtime and boots it through {@code xcrun simctl}. */
 class SimctlSimulatorsTest {
-  private static final Path ROOT = Path.of("/repo/shop");
+  static final Path ROOT = Path.of("/repo/shop");
   private static final String IOS_26 = "com.apple.CoreSimulator.SimRuntime.iOS-26-5";
   private static final String IOS_27 = "com.apple.CoreSimulator.SimRuntime.iOS-27-0";
-  private static final String RUNTIMES =
+  static final String RUNTIMES =
       """
       {"runtimes": [
         {"identifier": "%s", "name": "iOS 26.5", "platform": "iOS", "version": "26.5",
@@ -29,9 +29,9 @@ class SimctlSimulatorsTest {
       """
           .formatted(IOS_26, IOS_27);
   private static final String NEW_PRO = "84D0A34E-0000-0000-0000-000000000001";
-  private static final String NEW_BASE = "84D0A34E-0000-0000-0000-000000000002";
+  static final String NEW_BASE = "84D0A34E-0000-0000-0000-000000000002";
 
-  private static String devices(final String newestState) {
+  static String devices(final String newestState) {
     return """
         {"devices": {
           "%s": [
@@ -52,11 +52,11 @@ class SimctlSimulatorsTest {
         .formatted(IOS_26, IOS_27, NEW_PRO, NEW_BASE, newestState);
   }
 
-  private static CommandResult ok(final String stdout) {
+  static CommandResult ok(final String stdout) {
     return new CommandResult(0, stdout, "", Duration.ZERO);
   }
 
-  private static Simulator ready(final FakeCommandExecutor commands) {
+  static Simulator ready(final FakeCommandExecutor commands) {
     return new SimctlSimulators(commands, new ForyJsonCodec()).readyIPhone(ROOT);
   }
 
@@ -123,36 +123,5 @@ class SimctlSimulatorsTest {
     assertThat(ready(new FakeCommandExecutor(1, "", "CoreSimulator is broken")).problem())
         .contains("xcrun simctl list");
     assertThat(ready(new FakeCommandExecutor(0, "not json", "")).isReady()).isFalse();
-  }
-
-  @Test
-  void failedBootIsUnavailable() {
-    final FakeCommandExecutor commands =
-        new FakeCommandExecutor(
-            ok(RUNTIMES),
-            ok(devices("Shutdown")),
-            new CommandResult(1, "", "Invalid device", Duration.ZERO));
-
-    assertThat(ready(commands).problem()).contains("did not boot", NEW_BASE);
-  }
-
-  @Test
-  void bootedMeanwhileIsReadyButUnfinishedBootIsNot() {
-    final FakeCommandExecutor meanwhile =
-        new FakeCommandExecutor(
-            ok(RUNTIMES),
-            ok(devices("Shutdown")),
-            new CommandResult(
-                149, "", "Unable to boot device in current state: Booted", Duration.ZERO),
-            ok(""));
-
-    assertThat(ready(meanwhile).isReady()).isTrue();
-    final FakeCommandExecutor unfinished =
-        new FakeCommandExecutor(
-            ok(RUNTIMES),
-            ok(devices("Booted")),
-            new CommandResult(-1, "", "", Duration.ZERO, "timed out"));
-
-    assertThat(ready(unfinished).problem()).contains("did not finish booting");
   }
 }

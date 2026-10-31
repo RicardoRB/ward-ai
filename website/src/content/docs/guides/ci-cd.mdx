@@ -110,6 +110,13 @@ installed tools the gates call are present:
 `engines.node`, or `"24"` when none sets one. The Yarn row follows the `packageManager` field of
 `package.json`, such as `"yarn@4.5.0"`. Commit the lock file: a frozen install fails without it.
 
+### Swift projects
+
+Swift projects run the job on `macos-26`, which ships Xcode 26 or newer. The job caches
+`.ward/swift-tools/.build` and resolves Ward's SwiftLint tools package before the gates run. macOS
+runners cost about 10 times Linux minutes on private repositories, so check the usage before you
+enable the Swift workflow for a busy repository.
+
 ### Projects in a subdirectory
 
 GitHub only runs workflows from `.github/workflows/` at the repository root. When the project sits

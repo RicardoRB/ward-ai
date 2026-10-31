@@ -1,0 +1,83 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00000000000000000000001A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000D /* main.swift */; };
+		00000000000000000000001B /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000B /* Cart.swift */; };
+		00000000000000000000001C /* ShopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000C /* ShopTests.swift */; };
+		00000000000000000000001E /* ShopKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000F /* ShopKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		000000000000000000000029 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000001 /* Project object */; proxyType = 1; remoteGlobalIDString = 000000000000000000000012; remoteInfo = ShopKit; };
+		00000000000000000000002B /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000001 /* Project object */; proxyType = 1; remoteGlobalIDString = 000000000000000000000011; remoteInfo = Shop; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00000000000000000000000D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		00000000000000000000000B /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
+		00000000000000000000000C /* ShopTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopTests.swift; sourceTree = "<group>"; };
+		00000000000000000000000E /* Shop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00000000000000000000000F /* ShopKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ShopKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000010 /* ShopTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000000000000000000000017 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000018 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000019 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001E /* ShopKit.framework in Frameworks */); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000005 = {isa = PBXGroup; children = (000000000000000000000006, 000000000000000000000007, 000000000000000000000008, 000000000000000000000009); sourceTree = "<group>"; };
+		000000000000000000000006 /* App */ = {isa = PBXGroup; children = (00000000000000000000000D); path = App; sourceTree = "<group>"; };
+		000000000000000000000007 /* ShopKit */ = {isa = PBXGroup; children = (00000000000000000000000B); path = ShopKit; sourceTree = "<group>"; };
+		000000000000000000000008 /* ShopTests */ = {isa = PBXGroup; children = (00000000000000000000000C); path = ShopTests; sourceTree = "<group>"; };
+		000000000000000000000009 /* Products */ = {isa = PBXGroup; children = (00000000000000000000000E, 00000000000000000000000F, 000000000000000000000010); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000011 /* Shop */ = {isa = PBXNativeTarget; buildConfigurationList = 00000000000000000000001F; buildPhases = (000000000000000000000014, 000000000000000000000017); buildRules = (); dependencies = (); name = Shop; productName = Shop; productReference = 00000000000000000000000E; productType = "com.apple.product-type.application"; };
+		000000000000000000000012 /* ShopKit */ = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000022; buildPhases = (000000000000000000000015, 000000000000000000000018); buildRules = (); dependencies = (); name = ShopKit; productName = ShopKit; productReference = 00000000000000000000000F; productType = "com.apple.product-type.framework"; };
+		000000000000000000000013 /* ShopTests */ = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000025; buildPhases = (000000000000000000000016, 000000000000000000000019); buildRules = (); dependencies = (000000000000000000000028 /* PBXTargetDependency */); name = ShopTests; productName = ShopTests; productReference = 000000000000000000000010; productType = "com.apple.product-type.bundle.unit-test"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastUpgradeCheck = 2600;}; buildConfigurationList = 000000000000000000000002; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 000000000000000000000005; productRefGroup = 000000000000000000000009; projectDirPath = ""; projectRoot = ""; targets = (000000000000000000000011, 000000000000000000000012, 000000000000000000000013); };
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000000000014 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001A); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000015 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001B); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000016 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001C); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		000000000000000000000028 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 000000000000000000000012 /* ShopKit */; targetProxy = 000000000000000000000029 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; SWIFT_VERSION = 6.0;}; name = Debug; };
+		000000000000000000000004 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; SWIFT_VERSION = 6.0;}; name = Release; };
+		000000000000000000000020 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.example.Shop; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Debug; };
+		000000000000000000000021 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.example.Shop; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Release; };
+		000000000000000000000023 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {DEFINES_MODULE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.ShopKit; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Debug; };
+		000000000000000000000024 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {DEFINES_MODULE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.example.ShopKit; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Release; };
+		000000000000000000000026 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.example.ShopTests; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Debug; };
+		000000000000000000000027 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.example.ShopTests; PRODUCT_NAME = "$(TARGET_NAME)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 26.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2";}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000000000002 /* Build configuration list for PBXProject "Shop" */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000003, 000000000000000000000004); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		00000000000000000000001F /* Build configuration list for PBXNativeTarget "Shop" */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000020, 000000000000000000000021); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000022 /* Build configuration list for PBXNativeTarget "ShopKit" */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000023, 000000000000000000000024); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000025 /* Build configuration list for PBXNativeTarget "ShopTests" */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000026, 000000000000000000000027); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000001 /* Project object */;
+}

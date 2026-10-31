@@ -52,7 +52,8 @@ final class SwiftProjectInspection {
                     dir,
                     Set.of(Language.SWIFT),
                     version(dir, names, tool),
-                    TaskRunner.NONE));
+                    TaskRunner.NONE,
+                    null));
   }
 
   /** The first rule that matches decides: Xcode, SwiftPM, Tuist, then XcodeGen. */

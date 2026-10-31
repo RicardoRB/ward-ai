@@ -62,7 +62,8 @@ class NodeDependencyCruiserPackagesTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static List<InitGateOption> gate() {

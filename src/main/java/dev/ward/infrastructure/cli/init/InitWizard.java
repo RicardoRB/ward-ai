@@ -270,6 +270,34 @@ final class InitWizard {
         });
   }
 
+  /** Asks which of several Xcode schemes Ward's test gate runs; the first is the default. */
+  String selectScheme(final List<String> schemes) {
+    return answering.ask(
+        () -> {
+          out.println("Select the Xcode scheme that the tests run:");
+          for (int i = 0; i < schemes.size(); i++) {
+            out.printf("> %d) %s%n", i + 1, schemes.get(i));
+          }
+          out.printf("Choose a scheme [1-%d, Enter=1]: ", schemes.size());
+          out.flush();
+          final Optional<String> answer = prompt.readOrDefault("scheme");
+          if (answer.isEmpty() || answer.get().isBlank()) {
+            return schemes.getFirst();
+          }
+          final int choice;
+          try {
+            choice = Integer.parseInt(answer.get().trim());
+          } catch (NumberFormatException e) {
+            throw new InvalidAnswerException("Invalid scheme selection '" + answer.get() + "'.", e);
+          }
+          if (choice <= 0 || choice > schemes.size()) {
+            throw new InvalidAnswerException(
+                "Invalid scheme selection. Choose a number from 1 to " + schemes.size() + ".");
+          }
+          return schemes.get(choice - 1);
+        });
+  }
+
   /**
    * Asks which discovered projects to configure; every row starts checked. {@code labels} are the
    * rows and {@code ids} the {@code --project} values they stand for.

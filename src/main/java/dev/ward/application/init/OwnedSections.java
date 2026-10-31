@@ -56,6 +56,15 @@ final class OwnedSections {
               ".ward/reports/\nmutants/\n.coverage\n",
               false));
     }
+    if (project.toolchain() == Toolchain.SWIFT) {
+      sections.add(
+          new OwnedSection(
+              project.root().resolve(".gitignore"),
+              GITIGNORE_BEGIN,
+              GITIGNORE_END,
+              ".ward/reports/\n.ward/swift-tools/.build/\n",
+              false));
+    }
     if (selection.agentRules()) {
       sections.add(
           AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));

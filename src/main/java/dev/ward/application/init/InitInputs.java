@@ -23,6 +23,8 @@ import java.util.Optional;
  * @param buildTools reads which gates the project's runtime JDK cannot run, when available
  * @param pythonConfigs finds the tool configs a Python project keeps itself
  * @param members lists the packages a Node workspace root holds
+ * @param swift reads the Xcode schemes, Swift tool configs and source directories of a Swift
+ *     project
  */
 record InitInputs(
     EnvironmentInspection environment,
@@ -31,7 +33,8 @@ record InitInputs(
     NodeToolConfigs configs,
     Optional<BuildToolConfiguration> buildTools,
     PythonToolConfigs pythonConfigs,
-    WorkspaceMembers members) {
+    WorkspaceMembers members,
+    SwiftPorts swift) {
   /** Inputs that read no Python config of their own. */
   InitInputs(
       final EnvironmentInspection environment,
@@ -46,7 +49,8 @@ record InitInputs(
         configs,
         buildTools,
         (root, tool) -> Optional.empty(),
-        WorkspaceMembers.none());
+        WorkspaceMembers.none(),
+        SwiftPorts.NONE);
   }
 
   /** Inputs that do not read the runtime JDK. */
@@ -84,7 +88,8 @@ record InitInputs(
         node.configs(),
         Optional.empty(),
         (root, tool) -> Optional.empty(),
-        node.members());
+        node.members(),
+        SwiftPorts.NONE);
   }
 
   /** Inputs that also read the runtime JDK through the build-file adapters of {@code ports}. */
@@ -97,7 +102,8 @@ record InitInputs(
         node.configs(),
         Optional.of(ports.buildTools()),
         ports.python(),
-        node.members());
+        node.members(),
+        ports.swift());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

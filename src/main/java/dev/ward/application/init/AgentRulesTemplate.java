@@ -71,11 +71,14 @@ final class AgentRulesTemplate {
     lines.add(
         "- Run `ward check` after changes and `ward check --profile ci` before" + " finishing.");
     // Python's coverage gate is not JaCoCo, so the Maven limit lines do not apply to it.
-    if (preset != null && project.toolchain() != Toolchain.PYTHON) {
+    if (preset != null
+        && project.toolchain() != Toolchain.PYTHON
+        && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
     lines.addAll(NodeAgentRules.lines(project, gates, preset, owned));
     lines.addAll(PythonAgentRules.lines(project, gates, preset, owned));
+    lines.addAll(SwiftAgentRules.lines(gates));
     // Node projects check Markdown with Prettier, which wants blank lines around the markers.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(

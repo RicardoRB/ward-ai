@@ -138,7 +138,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         dir,
         languages,
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static Project gradleProject(final Path dir) {
@@ -153,7 +154,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         dir,
         languages,
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   /** Parses the POM securely; a malformed or hostile POM is still a Maven marker. */

@@ -95,7 +95,8 @@ class InitServiceTest {
             List.of(),
             true,
             null,
-            false));
+            false,
+            null));
 
     final String configuration = Files.readString(dir.resolve(WARD_TOML));
     assertThat(configuration)

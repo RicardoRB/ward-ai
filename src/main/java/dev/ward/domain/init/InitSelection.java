@@ -17,7 +17,8 @@ public record InitSelection(
     List<String> installTools,
     boolean qualityHooks,
     String ci,
-    boolean agentRules) {
+    boolean agentRules,
+    String scheme) {
   /** Copies the lists; missing optional lists mean empty. */
   public InitSelection {
     integrations = List.copyOf(integrations);
@@ -40,7 +41,8 @@ public record InitSelection(
         List.of(),
         false,
         null,
-        false);
+        false,
+        null);
   }
 
   /** Selects {@code integrations} and one gate. */
@@ -55,12 +57,14 @@ public record InitSelection(
         List.of(),
         false,
         null,
-        false);
+        false,
+        null);
   }
 
   /** Selects {@code integrations} and {@code gates}, without preset, tools, or hooks. */
   public InitSelection(final List<String> integrations, final List<String> gates) {
-    this(integrations, gates, null, null, List.of(), List.of(), List.of(), false, null, false);
+    this(
+        integrations, gates, null, null, List.of(), List.of(), List.of(), false, null, false, null);
   }
 
   /** Selects {@code integrations} and {@code gates} with an architecture style. */
@@ -76,7 +80,8 @@ public record InitSelection(
         List.of(),
         false,
         null,
-        false);
+        false,
+        null);
   }
 
   /** Selects {@code integrations} and {@code gates} with an architecture style and preset. */
@@ -95,6 +100,7 @@ public record InitSelection(
         List.of(),
         false,
         null,
-        false);
+        false,
+        null);
   }
 }

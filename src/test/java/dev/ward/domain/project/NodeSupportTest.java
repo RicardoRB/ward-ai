@@ -52,6 +52,7 @@ class NodeSupportTest {
         root,
         Set.of(),
         version,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

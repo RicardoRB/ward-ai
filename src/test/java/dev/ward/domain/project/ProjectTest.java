@@ -34,7 +34,8 @@ class ProjectTest {
             Path.of("app"),
             Set.of(),
             "",
-            TaskRunner.TURBO);
+            TaskRunner.TURBO,
+            null);
 
     assertThat(plain.taskRunner()).isEqualTo(TaskRunner.NONE);
     assertThat(turbo.withRepositoryRoot(Path.of(".")).taskRunner()).isEqualTo(TaskRunner.TURBO);

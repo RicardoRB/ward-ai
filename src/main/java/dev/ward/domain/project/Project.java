@@ -25,6 +25,8 @@ import java.util.Set;
  *     none is detected
  * @param taskRunner the tool that runs the workspace's per-package tasks, {@link TaskRunner#NONE}
  *     unless a workspace root declares one
+ * @param xcodeScheme the Xcode scheme the user chose for an Xcode project's tests, or {@code null}
+ *     when the project has one scheme or the choice is not needed
  */
 public record Project(
     Path root,
@@ -36,7 +38,8 @@ public record Project(
     Path repositoryRoot,
     Set<Language> languages,
     String languageVersion,
-    TaskRunner taskRunner) {
+    TaskRunner taskRunner,
+    String xcodeScheme) {
   /** Copies {@code languages}, in declaration order, and adds the primary language. */
   public Project {
     final Set<Language> all = EnumSet.of(language);
@@ -70,7 +73,8 @@ public record Project(
         root,
         Set.of(),
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   /** Returns this project with {@code runner} as its task runner. */
@@ -85,7 +89,24 @@ public record Project(
         repositoryRoot,
         languages,
         languageVersion,
-        runner);
+        runner,
+        xcodeScheme);
+  }
+
+  /** Returns this project whose Xcode tests run {@code scheme}. */
+  public Project withXcodeScheme(final String scheme) {
+    return new Project(
+        root,
+        language,
+        buildTool,
+        framework,
+        mavenWrapperAvailable,
+        publishesArtifacts,
+        repositoryRoot,
+        languages,
+        languageVersion,
+        taskRunner,
+        scheme);
   }
 
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
@@ -100,7 +121,8 @@ public record Project(
         repository,
         languages,
         languageVersion,
-        taskRunner);
+        taskRunner,
+        xcodeScheme);
   }
 
   /**

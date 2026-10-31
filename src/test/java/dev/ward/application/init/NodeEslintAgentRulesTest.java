@@ -68,7 +68,8 @@ class NodeEslintAgentRulesTest {
             Path.of("/repo"),
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     return NodeAgentRules.lines(project, List.of(ESLINT), preset, owned).getFirst();
   }
 }

@@ -67,6 +67,7 @@ class NodeCheckerCompatibilityTest {
         root,
         Set.of(),
         node,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

@@ -100,6 +100,7 @@ class NodeBiomeCompatibilityTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

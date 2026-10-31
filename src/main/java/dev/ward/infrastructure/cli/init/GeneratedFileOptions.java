@@ -2,7 +2,10 @@ package dev.ward.infrastructure.cli.init;
 
 import picocli.CommandLine.Option;
 
-/** Options that ask init to write Ward-owned files beyond the gate configuration. */
+/**
+ * Options that shape the Ward-owned files init writes beyond the gate configuration, and the Xcode
+ * scheme that the Swift test gate runs.
+ */
 public class GeneratedFileOptions {
   // Picocli assigns annotated fields reflectively, so they cannot be final.
   @Option(

@@ -120,7 +120,8 @@ class JavaScriptGatesTest {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
@@ -166,6 +167,7 @@ class JavaScriptGatesTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

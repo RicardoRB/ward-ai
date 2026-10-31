@@ -74,7 +74,8 @@ class DependencyCruiserMemberImportsSmokeTest {
                 root,
                 Set.of(),
                 "24",
-                TaskRunner.TURBO),
+                TaskRunner.TURBO,
+                null),
             "hexagonal",
             new QualityPreset.ArchitectureExtras(false, false, false));
   }

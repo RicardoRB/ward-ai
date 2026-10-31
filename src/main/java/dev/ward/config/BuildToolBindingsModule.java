@@ -5,6 +5,7 @@ import dagger.Provides;
 import dev.ward.application.doctor.DoctorPorts;
 import dev.ward.application.init.InitPorts;
 import dev.ward.application.init.NodeInputs;
+import dev.ward.application.init.SwiftPorts;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
@@ -17,6 +18,7 @@ import dev.ward.infrastructure.init.BuildToolConfigurator;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
 import dev.ward.infrastructure.init.NodeBuildToolConfigurator;
 import dev.ward.infrastructure.init.PythonBuildToolConfigurator;
+import dev.ward.infrastructure.init.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.project.GradleCompatibilityInspection;
 import java.util.Map;
 import javax.inject.Named;
@@ -43,8 +45,9 @@ final class BuildToolBindingsModule {
       final EnvironmentInspection environment,
       final NodeInputs node,
       final BuildToolConfiguration buildTools,
-      final PythonToolConfigs python) {
-    return new InitPorts(environment, node, buildTools, python);
+      final PythonToolConfigs python,
+      final SwiftPorts swift) {
+    return new InitPorts(environment, node, buildTools, python, swift);
   }
 
   @Provides
@@ -60,7 +63,9 @@ final class BuildToolBindingsModule {
   static Map<Toolchain, BuildToolConfiguration> buildToolAdapters(
       final JvmBuildToolConfigurator jvm,
       final NodeBuildToolConfigurator node,
-      final PythonBuildToolConfigurator python) {
-    return Map.of(Toolchain.JVM, jvm, Toolchain.NODE, node, Toolchain.PYTHON, python);
+      final PythonBuildToolConfigurator python,
+      final SwiftBuildToolConfigurator swift) {
+    return Map.of(
+        Toolchain.JVM, jvm, Toolchain.NODE, node, Toolchain.PYTHON, python, Toolchain.SWIFT, swift);
   }
 }

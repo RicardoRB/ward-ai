@@ -30,6 +30,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
 | `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the `archunit` and `dependency-cruiser` gates. |
+| `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
 | `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `trivy` or `openspec`. |
@@ -618,6 +619,34 @@ projects are not supported yet, and init stops with an error that names the mana
 - An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
   The root package comes from `[project] name` under `src/`. Init stops when it finds no single
   root package.
+
+## Swift projects
+
+Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard`
+preset. It runs on macOS with Xcode 26.0 or newer. Tuist and XcodeGen projects stop init with an
+error that names the generator.
+
+- **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
+  older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
+  Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
+- **Gates.** `swift-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
+  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` at an
+  80% minimum in the `pre-push` and `ci` profiles. `strict` is not available for Swift yet; init
+  refuses it and suggests `standard`.
+- **Xcode scheme and platform.** Init reads the schemes that the project shares, which are the
+  `.xcscheme` files in each `xcshareddata/xcschemes` folder. Schemes Xcode creates for each target
+  are not counted. One shared scheme is used. With
+  several, the wizard asks, or `--scheme <name>` chooses one; `--yes` without `--scheme` fails and
+  names the schemes. The test platform is `iOS Simulator`, or `macOS` when every target builds only
+  for macOS.
+- **Ward's SwiftLint.** SwiftLint is pinned in an ownership-marked `.ward/swift-tools/Package.swift`
+  and resolved with `swift package resolve`. A failed resolve removes `.ward/swift-tools/` and changes
+  nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
+- **Configs.** Init writes `.swiftlint.yml` and `.swift-format` only when the project has none. The
+  `.swift-format` indentation follows the project's sources, so Xcode's 4-space templates pass.
+  Files the project keeps are never changed.
+- **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
+  JDK, Node, or Python for the Swift job.
 
 ## Tools init can install
 

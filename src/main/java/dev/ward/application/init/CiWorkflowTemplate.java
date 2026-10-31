@@ -147,7 +147,9 @@ final class CiWorkflowTemplate {
         + "jobs:\n"
         + "  quality:\n"
         + "    name: Ward ci profile\n"
-        + "    runs-on: ubuntu-24.04\n"
+        + "    runs-on: "
+        + InitToolchains.support(project).runner()
+        + "\n"
         // Shell steps run in the project; uses: steps ignore this, so SARIF paths stay rooted.
         + (nested
             ? "    defaults:\n      run:\n        working-directory: "

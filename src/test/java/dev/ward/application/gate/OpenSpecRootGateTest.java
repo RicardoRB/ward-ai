@@ -45,7 +45,8 @@ class OpenSpecRootGateTest {
             repository,
             Set.of(),
             "",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
   }
 
   @Test

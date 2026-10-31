@@ -91,6 +91,7 @@ class SarifNestedLocationsTest {
         REPOSITORY,
         Set.of(),
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

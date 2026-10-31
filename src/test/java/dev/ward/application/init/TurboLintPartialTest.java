@@ -25,7 +25,8 @@ class TurboLintPartialTest {
           Path.of("/work/monorepo"),
           Set.of(),
           "24",
-          TaskRunner.TURBO);
+          TaskRunner.TURBO,
+          null);
 
   @Test
   void editInSharedPackageNarrowsTheTurboLintToItsFilter() {
@@ -68,7 +69,8 @@ class TurboLintPartialTest {
             Path.of("/work/app"),
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
 
     assertThat(
             PartialCheckDefaults.forGate("eslint", plain, QualityPreset.STANDARD)

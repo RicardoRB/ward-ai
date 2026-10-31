@@ -147,7 +147,8 @@ class NodeInitFilesTest {
         List.of(),
         false,
         ci,
-        agentRules);
+        agentRules,
+        null);
   }
 
   private static Project project(final BuildTool manager, final String node) {
@@ -161,6 +162,7 @@ class NodeInitFilesTest {
         ROOT,
         Set.of(),
         node,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

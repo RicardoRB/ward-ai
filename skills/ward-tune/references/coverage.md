@@ -99,3 +99,17 @@ Classify threshold changes as in the table above.
   reused, and init does not write `.coveragerc`.
 - **Tuning:** lower a minimum only with a reason from the code. A line that cannot run in tests is a
   reason to change the test setup, not to add an exclusion.
+
+## Swift coverage
+
+- **Where the minimum lives:** `ward.toml`, in the `[checks.swift-coverage]` table as
+  `minimum = 80`. Init writes it; it is the only threshold for Swift projects.
+- **SwiftPM:** the gate reads the llvm-cov export of `swift test --enable-code-coverage`, which
+  prints its path with `swift test --show-codecov-path`.
+- **Xcode:** the Xcode test gate writes `.ward/reports/xcode/tests.xcresult`, and `xcrun xccov view
+  --report --json` reads it. Run the `xcodebuild-test` check before `swift-coverage`, or the report
+  does not exist yet.
+- **Changing the minimum:** lowering it below 80 is a weakening and needs its own approval and a
+  reason. Raising it is a tightening; propose it with the current line coverage from the report.
+- **Classifying:** a missing report is an environment problem (the test gate did not run), not a
+  reason to change the threshold.

@@ -100,6 +100,30 @@ final class PartialCheckDefaults {
                   PythonTools.command(
                       project.buildTool(), "ruff", "check", "--output-format", "json")));
 
+  private static final List<String> SWIFT_SOURCES = List.of("**/*.swift");
+
+  // Both commands take the edited files as arguments, so the narrowed run checks only those.
+  private static final Map<String, BiFunction<Project, QualityPreset, Table>> SWIFT_TABLES =
+      Map.of(
+          "swift-format",
+          (project, preset) ->
+              new Table(
+                  SWIFT_SOURCES,
+                  List.of(".swift-format"),
+                  PATHS,
+                  null,
+                  null,
+                  List.of("swift", "format", "lint", "--strict")),
+          "swiftlint",
+          (project, preset) ->
+              new Table(
+                  SWIFT_SOURCES,
+                  List.of(".swiftlint.yml"),
+                  PATHS,
+                  null,
+                  null,
+                  SwiftTools.swiftLintCommand()));
+
   private static final Map<String, TableFactory> TABLES =
       Map.of(
           "checkstyle",
@@ -175,6 +199,10 @@ final class PartialCheckDefaults {
         .or(
             () ->
                 Optional.ofNullable(PYTHON_TABLES.get(gate))
+                    .map(factory -> factory.apply(project, preset)))
+        .or(
+            () ->
+                Optional.ofNullable(SWIFT_TABLES.get(gate))
                     .map(factory -> factory.apply(project, preset)))
         .or(
             () ->

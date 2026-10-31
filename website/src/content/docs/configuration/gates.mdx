@@ -218,8 +218,9 @@ root, exactly as written, and pass when it exits with code 0. `xcodebuild-test` 
 `swift-coverage` add the steps below.
 
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears:
-  `swift format lint` is `swift-format`; `swiftlint lint`, or SwiftLintPlugins' `SwiftLintBinary
-  lint` run through `swift run`, is `swiftlint`; `swift build` is `swift-build`; `swift test` is
+  `swift format lint` is `swift-format`; `swiftlint lint`, or any path ending in `/swiftlint lint`
+  such as the binary that `swift package resolve` leaves for Ward's SwiftLint tools package, is
+  `swiftlint`; `swift build` is `swift-build`; `swift test` is
   `swift-test`; and `xcodebuild test` is `xcodebuild-test`. `swift-coverage` is never inferred,
   so write `uses = "swift-coverage"`.
 - `swiftlint`, `swift-format`, `swift-build` and `xcodebuild-test` findings are read from their
@@ -253,6 +254,10 @@ profiles = ["pre-push"]
   first simulator run on a machine may install CoreSimulator components.
 - With no iOS runtime or no iPhone, the gate is an execution error that says how to install one,
   and `xcodebuild` does not run.
+- If Ward boots the newest runtime's iPhone and the boot fails, for example because that runtime's
+  files are not installed, Ward tries the next newest runtime's iPhone. Simulator lists report a
+  runtime as available before its files exist, so the listing alone does not prove it can boot.
+  Ward reports the first failure if no iPhone boots.
 - For `macOS`, Ward appends `-destination platform=macOS`.
 - A command that already has `-destination` runs as written, and `platform` can be left out.
 - Every run writes its result bundle to `.ward/reports/xcode/tests.xcresult`: Ward removes the

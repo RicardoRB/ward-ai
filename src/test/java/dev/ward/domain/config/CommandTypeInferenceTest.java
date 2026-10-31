@@ -56,6 +56,7 @@ class CommandTypeInferenceTest {
         "swift-format|swift format lint --strict --recursive Sources Tests",
         "swiftlint|swiftlint lint --reporter json",
         "swiftlint|swift run --package-path .ward/swift-tools SwiftLintBinary lint --reporter json",
+        "swiftlint|.ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint lint --reporter json --quiet",
         "swift-build|swift build --build-tests",
         "swift-test|swift test --enable-code-coverage",
         "swift-test|swift test --show-codecov-path",
