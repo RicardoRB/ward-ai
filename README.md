@@ -20,7 +20,9 @@ edit to production.
 [How it works](#how-it-works) ·
 [Report a bug](https://github.com/RicardoRB/ward-ai/issues)
 
-<img src="website/public/ward-layers.svg" alt="Four nested shields around your code: Edit, Commit, Push, and CI. Faster checks sit close to the code, stricter ones further out." width="880">
+<img src=".github/assets/ward-demo.webp" alt="An agent's change fails a quality check, the agent fixes it, and the quick check and the stricter pre-push check pass" width="900">
+<br>
+<sub>An agent's change fails a quality check, the agent fixes it, and the fast and pre-push checks pass. (<a href=".github/assets/ward-demo.webm">WebM version</a>)</sub>
 
 </div>
 
@@ -65,6 +67,10 @@ You spend less time guiding the agent and fewer tokens on corrections, because t
 tells the agent what "good" means.
 
 ## How it works
+
+<p align="center">
+  <img src="website/public/ward-layers.svg" alt="Four nested shields around your code: Edit, Commit, Push, and CI. Faster checks sit close to the code, stricter ones further out." width="880">
+</p>
 
 Ward checks your code in four layers. Each layer is a **profile** in `ward.toml`. Inner
 layers are fast so they can run constantly; outer layers are stricter.
@@ -130,12 +136,6 @@ ward init --preset standard --integration claude-code --quality-hooks
 ward check                     # layer 1: fast checks
 ward check --profile pre-push  # layer 3: stricter checks
 ```
-
-<p align="center">
-  <img src=".github/assets/ward-demo.webp" alt="An agent's change fails the PMD check, the agent uses the constant instead, and the quick check and the stricter pre-push check pass" width="900">
-  <br>
-  <sub>An agent's change fails PMD, the agent fixes it, and the fast and pre-push checks pass. (<a href=".github/assets/ward-demo.webm">WebM version</a>)</sub>
-</p>
 
 Something not working? Run `ward doctor`.
 
@@ -237,7 +237,7 @@ ward check --profile pre-push             # required before every pull request
 ```
 
 Contributions are welcome: fork, branch, make sure `ward check --profile pre-push` passes, and
-open a pull request. Conventions are in [AGENTS.md](AGENTS.md). Report bugs and request features in
+open a pull request. Start with [CONTRIBUTING.md](CONTRIBUTING.md); conventions are in [AGENTS.md](AGENTS.md). Report bugs and request features in
 [GitHub Issues](https://github.com/RicardoRB/ward-ai/issues) with your `ward --version` and
 `ward doctor` output.
 

@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest a language, tool, agent integration or improvement.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What Ward could do about it.
+  - type: textarea
+    id: context
+    attributes:
+      label: Your setup
+      description: Language, build tool, agent.
