@@ -4,9 +4,9 @@
 
 # Ward
 
-**Quality guardrails for AI coding agents.**
-Define your rules once, share them with your team, and every agent follows them, from the first
-edit to production.
+**The quality gate for AI coding agents.**
+Your agent says it's done. Ward makes sure it is. Define your rules once, share them with your
+team, and Ward checks every change against them, from the first edit to production.
 
 [![Release](https://img.shields.io/github/v/release/RicardoRB/ward-ai?sort=semver&label=release)](https://github.com/RicardoRB/ward-ai/releases)
 [![Build](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml/badge.svg)](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml)
@@ -57,7 +57,8 @@ forgets.
 Ward moves those rules out of your prompts and into your project:
 
 - **The rules live in the repository.** `ward.toml` lists the checks (tests, coverage,
-  Checkstyle, PMD, SpotBugs, ArchUnit, security scanners, or any command).
+  linters such as ESLint, Ruff, or Checkstyle, architecture rules, security scanners, or any
+  command).
 - **Every agent gets the same feedback.** After each edit, Ward runs the fast checks and hands the
   exact failure back to the agent, which fixes it on its own.
 - **Stricter checks run later, automatically.** Commit, push, and CI each add more checks, so
