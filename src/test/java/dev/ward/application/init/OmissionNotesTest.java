@@ -43,6 +43,40 @@ class OmissionNotesTest {
   }
 
   @Test
+  void jvmBuildNamesEachModuleLeftOutOfTheModuleGates() {
+    final Project project =
+        new Project(
+            ROOT,
+            Language.JAVA,
+            BuildTool.MAVEN,
+            Framework.NONE,
+            false,
+            false,
+            ROOT,
+            Set.of(),
+            "25",
+            TaskRunner.NONE);
+    final FakeEnvironmentInspection environment =
+        new FakeEnvironmentInspection("mvn") {
+          @Override
+          public List<String> skippedJvmModules(final Path projectRoot) {
+            return List.of("config", "docs");
+          }
+        };
+    final InitGeneralCatalog catalog =
+        new InitGeneralCatalog(
+            new InitInputs(
+                environment,
+                directory -> PackageManifest.EMPTY,
+                directory -> false,
+                new ThresholdConfigs(false)));
+
+    assertThat(OmissionNotes.of(catalog, project, QualityPreset.STANDARD))
+        .singleElement()
+        .satisfies(note -> assertThat(note).contains("config, docs"));
+  }
+
+  @Test
   void otherFrameworksAndJavaScriptHaveNoNote() {
     assertThat(notes(Language.TYPESCRIPT, Framework.VUE, QualityPreset.STRICT, false)).isEmpty();
     assertThat(notes(Language.JAVASCRIPT, Framework.ANGULAR, QualityPreset.STRICT, false))

@@ -45,8 +45,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
           new GradlePlugin("api-compat", "me.champeau.gradle.japicmp", true, false));
 
   private static final String NO_KOTLIN_MODULE =
-      "No module applies the Kotlin JVM plugin directly, so the coverage, SpotBugs and mutation"
-          + " gates stay in the root build script.";
+      "No module applies the Kotlin JVM plugin, or the Java plugin with Java sources, directly, so"
+          + " the coverage, SpotBugs and mutation gates stay in the root build script.";
 
   private final Optional<CompatibilityFindings> compatibility;
 

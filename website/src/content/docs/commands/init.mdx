@@ -104,6 +104,28 @@ Ward's embedded Java compatibility catalog.
 - A declined update leaves the build file unchanged, and init reports that the gate was not
   reconfigured.
 
+### Multi-module Java builds
+
+In a multi-module Maven build, init places the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT),
+`checkstyle`, `pmd`, `format` (Spotless) and `enforcer` gates in each module that has Java sources, so
+each module's configuration and report live with its code. Other gates stay in the aggregator. The
+module-placed gates are the same for Gradle and Maven.
+
+Module declarations keep their version, so a module builds the same way whether or not the aggregator
+pins it. Rule files stay in the aggregator, and module declarations point at them from the
+multi-module directory.
+
+- Each module's `pom.xml` declares the plugin in its own `build/plugins`. The aggregator pins the
+  plugin version in `build/pluginManagement` and declares no module gate in its own `build/plugins`,
+  so each gate runs once per module. A single-module project keeps the root declaration.
+- A module with no `src/main/java` or `src/test/java` directory is left out, and init names it, with
+  the reason, in its output.
+- `ward init --dry-run` lists each module `pom.xml` that would change. Rollback restores every pom
+  init changed.
+- In a Gradle build, modules that apply the `java` or `java-library` plugin and have Java sources are
+  configured the same way as the Kotlin modules below.
+- `ward.toml` is unchanged: a Maven or Gradle task run from the root runs in every module that has it.
+
 ### Multi-module Kotlin Gradle builds
 
 When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
