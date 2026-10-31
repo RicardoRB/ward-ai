@@ -7,5 +7,6 @@ public enum Toolchain {
   PYTHON,
   GO,
   RUST,
-  DOTNET
+  DOTNET,
+  SWIFT
 }

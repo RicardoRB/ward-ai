@@ -36,7 +36,8 @@ public final class FileSystemNodeSources implements NodeSources {
           "setup.py",
           "setup.cfg",
           "Cargo.toml",
-          "go.mod");
+          "go.mod",
+          "Package.swift");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject

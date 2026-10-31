@@ -46,6 +46,44 @@ class InitUnsupportedToolchainTest {
   }
 
   @Test
+  void swiftPackageFailsNamingSwiftPmWithoutChangingFiles() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.writeString(root.resolve("Package.swift"), "// swift-tools-version: 6.0\n");
+    swiftSources();
+
+    assertRefusedNaming(init, "SwiftPM");
+  }
+
+  @Test
+  void xcodeAppFailsNamingXcodeWithoutChangingFiles() throws IOException {
+    final InitCommandFixture init = InitCommandFixture.repository(root);
+    Files.createDirectories(root.resolve("App.xcodeproj"));
+    Files.writeString(root.resolve("App.xcodeproj/project.pbxproj"), "// !$*UTF8*$!\n");
+    swiftSources();
+
+    assertRefusedNaming(init, "Xcode");
+  }
+
+  private void swiftSources() throws IOException {
+    Files.createDirectories(root.resolve("Sources/App"));
+    Files.writeString(root.resolve("Sources/App/App.swift"), "print(1)\n");
+  }
+
+  private void assertRefusedNaming(final InitCommandFixture init, final String buildTool)
+      throws IOException {
+    final Map<String, String> before = ProjectSnapshot.of(root);
+
+    final int exit = init.run("", "--integration", "none", "--gate", "tests", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+    assertThat(init.output())
+        .contains(buildTool)
+        .contains(
+            "Ward init supports Maven, Gradle, TypeScript, JavaScript and Python (uv, Poetry, pip) projects");
+    assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
+  }
+
+  @Test
   void javaScriptPackageWithoutSourcesIsNoSupportedProject() throws IOException {
     final InitCommandFixture init = InitCommandFixture.repository(root);
     Files.writeString(root.resolve("package.json"), "{\"name\": \"demo\"}\n");

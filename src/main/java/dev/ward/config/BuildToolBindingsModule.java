@@ -10,6 +10,7 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityInspection;
 import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.SwiftToolchainInspection;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import dev.ward.infrastructure.init.BuildToolConfigurator;
@@ -50,8 +51,9 @@ final class BuildToolBindingsModule {
   static DoctorPorts doctorPorts(
       final WardConfigurationReader configurationReader,
       final TraceabilityPrerequisites traceabilityPrerequisites,
-      final BuildToolConfiguration buildTools) {
-    return new DoctorPorts(configurationReader, traceabilityPrerequisites, buildTools);
+      final BuildToolConfiguration buildTools,
+      final SwiftToolchainInspection swift) {
+    return new DoctorPorts(configurationReader, traceabilityPrerequisites, buildTools, swift);
   }
 
   @Provides

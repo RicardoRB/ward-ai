@@ -12,6 +12,7 @@ final class BuildToolFindings {
       case JVM -> new JvmToolchainFinding();
       case NODE -> new NodeToolchainFinding();
       case PYTHON -> new PythonToolchainFinding();
+      case SWIFT -> new SwiftToolchainFinding();
       default -> new UncheckedToolchainFinding();
     };
   }

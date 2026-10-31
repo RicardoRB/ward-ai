@@ -20,7 +20,9 @@ import java.util.Set;
 /** Walks a repository for project roots, skipping dependencies and grouping build modules. */
 final class RepositoryProjectScan {
   private static final Set<String> SKIPPED =
-      Set.of("node_modules", "target", "build", "dist", "out");
+      Set.of("node_modules", "target", "build", "dist", "out", "Pods", "Carthage", "DerivedData");
+  private static final List<String> SKIPPED_BUNDLES =
+      List.of(".xcodeproj", ".xcworkspace", ".xcassets");
 
   private RepositoryProjectScan() {}
 
@@ -77,7 +79,13 @@ final class RepositoryProjectScan {
 
   static boolean skipped(final Path dir) {
     final Path name = dir.getFileName();
-    return name != null && (name.toString().startsWith(".") || SKIPPED.contains(name.toString()));
+    return name != null && skipped(name.toString());
+  }
+
+  private static boolean skipped(final String name) {
+    return name.startsWith(".")
+        || SKIPPED.contains(name)
+        || SKIPPED_BUNDLES.stream().anyMatch(name::endsWith);
   }
 
   /**

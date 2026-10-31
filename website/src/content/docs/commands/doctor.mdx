@@ -45,6 +45,12 @@ per check:
 | `venv` | `OK` / `WARNING` | For pip projects: the project root has a `.venv`. Otherwise the warning shows how to create one, `python3 -m venv .venv`. |
 | `pdm` / `hatch` | `WARNING` | For PDM and Hatch projects: Ward does not support that manager yet. The warning does not change the exit status. |
 | `python-version` | `ERROR` | For Python projects whose target version (from `.python-version` or `requires-python`, see [detect](/commands/detect/#python-version)) is below 3.11: the version is `INCOMPATIBLE`, and Ward supports Python 3.11 to 3.14. |
+| `swift` | `OK` / `ERROR` | For Swift projects: `swift` is on `PATH`. No `maven` or `gradle` line is printed for Swift projects. |
+| `xcodebuild` / `xcrun` | `OK` / `ERROR` | For Xcode, Tuist and XcodeGen projects: the executable is on `PATH`. |
+| `xcode` | `OK` / `ERROR` / `WARNING` | For Swift projects on macOS: the Xcode version `xcodebuild -version` reports. `ERROR` means it is below Xcode 26.0, the minimum: the version is `INCOMPATIBLE`. `WARNING` means the version could not be read, for example when no Xcode is selected. |
+| `platform` | `WARNING` | For Swift projects on systems other than macOS: Ward verifies Swift projects on macOS only. No `xcode` line is printed. |
+| `tuist` / `xcodegen` | `WARNING` | For Tuist and XcodeGen projects: Ward does not support that generator yet. The warning does not change the exit status. |
+| `cocoapods` | `WARNING` | For Xcode projects whose root holds a `Podfile`: CocoaPods trunk is read-only, and Ward does not install pods. The warning does not change the exit status. |
 | Other build tools, such as `cargo` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
 | `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. Integrations without pre-tool support are marked `advisory-only`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |

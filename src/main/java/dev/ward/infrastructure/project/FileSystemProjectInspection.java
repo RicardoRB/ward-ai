@@ -113,6 +113,10 @@ public final class FileSystemProjectInspection implements ProjectInspection {
       if (names.stream().anyMatch(PythonProjectInspection::isRequirementsFile)) {
         return Optional.of(PythonProjectInspection.project(dir));
       }
+      final Optional<Project> swift = SwiftProjectInspection.project(dir, names);
+      if (swift.isPresent()) {
+        return swift;
+      }
       return names.stream().anyMatch(name -> name.endsWith(".csproj"))
           ? Optional.of(new Project(dir, Language.CSHARP, BuildTool.DOTNET, Framework.NONE))
           : Optional.empty();
