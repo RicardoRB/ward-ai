@@ -74,6 +74,22 @@ move a check between layers by editing its `profiles` list. Read the
 
 ## Quick start
 
+**Using a coding agent?** Paste this prompt into Claude Code, Codex, Cursor, OpenCode, or any other
+agent, and it installs Ward and sets it up with you:
+
+```text
+Set up Ward (https://github.com/RicardoRB/ward-ai) quality gates in this project.
+
+1. Run `ward --version`. If Ward is missing, ask me first, then install it:
+   - Linux, macOS, or Git Bash: curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
+   - Windows PowerShell: irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
+2. Read https://raw.githubusercontent.com/RicardoRB/ward-ai/main/skills/ward-init/SKILL.md and follow it
+   step by step. Fetch the reference files it links from the same folder.
+3. Ask me before changing any file. When setup is done, run `ward check` and show me the result.
+```
+
+Or set it up yourself:
+
 **1. Install** on Linux, macOS, or Git Bash (see [installation](https://ricardorb.github.io/ward-ai/getting-started/installation/) for options):
 
 ```bash
