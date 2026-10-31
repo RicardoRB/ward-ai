@@ -72,7 +72,8 @@ final class TurborepoFixtures {
         (dir, gate) -> Optional.empty(),
         Optional.empty(),
         (dir, tool) -> Optional.empty(),
-        new Members(members));
+        new Members(members),
+        dev.ward.domain.init.BuildModulePlanning.none());
   }
 
   static InitInputs inputs(

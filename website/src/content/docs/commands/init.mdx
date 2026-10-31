@@ -104,6 +104,33 @@ Ward's embedded Java compatibility catalog.
 - A declined update leaves the build file unchanged, and init reports that the gate was not
   reconfigured.
 
+### Multi-module Kotlin Gradle builds
+
+When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
+example `kotlin("jvm")`, `org.jetbrains.kotlin.jvm`, or a catalog `alias` for `kotlin.jvm`), init
+writes the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT), `checkstyle`, `pmd`, `format` (Spotless)
+and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
+stay in the root script.
+
+- The root script declares a versioned module plugin once, with its version and `apply false`.
+  Module scripts declare it without a version, so the version is resolved once for the project.
+- The root script receives the module blocks only when it applies the `java` or Kotlin JVM plugin
+  itself, so a single-module Kotlin project is configured exactly as before.
+- Convention plugins, `buildSrc`, and nested builds with their own settings file are not modules.
+  When a module applies the Kotlin JVM plugin only through a convention plugin, its blocks stay in
+  the root script, and init says that no module applies the Kotlin JVM plugin directly.
+- `archunit` is not offered for a multi-module Kotlin build, even under `strict`: module boundaries
+  already enforce the dependency direction. A single-module Kotlin project keeps `archunit`.
+- `ward init --dry-run` lists every module script that would change. Rollback restores every
+  script init changed, and a rerun changes no script.
+- The Gradle `coverage` gate fails a module that has no tests, instead of passing it: Gradle skips
+  JaCoCo verification when no test wrote coverage data, so init adds a task that runs the tests and
+  fails when they leave none.
+- The `mutation` minimum score sums the fresh PIT XML reports of the root and each module. The
+  strict preset writes its threshold there as the gate's `minimum`; the Gradle PIT block sets none.
+  The generated PIT block enables the XML output that the gate reads and reruns PIT on every
+  check, so a repeat run is not reported as stale.
+
 ### Java compatibility
 
 Ward supports Java 8 to 25. Init chooses every plugin and engine version for the JDK that runs

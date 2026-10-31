@@ -113,6 +113,12 @@ order:
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
    that uses Biome gets one `biome` gate in place of Prettier and ESLint, as described there. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
+   In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
+   script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format` and `enforcer` are
+   written into each of those module scripts, and the root script declares their versions with
+   `apply false`. `archunit` is not offered there, because module boundaries already enforce the
+   dependency direction; a single-module Kotlin project keeps it. Do not offer `archunit` for such
+   a build, even under `strict`.
    With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
    writes a license allowlist that fails on any license it does
    not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask the user which

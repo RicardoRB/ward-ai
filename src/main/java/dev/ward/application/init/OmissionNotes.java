@@ -22,12 +22,24 @@ final class OmissionNotes {
       "Mutation testing is not offered for Angular: no Stryker runner works with Angular's test"
           + " builder, so the strict preset omits stryker.";
 
+  private static final String MULTI_MODULE_NO_ARCHUNIT =
+      "archunit is not offered for this Gradle build: its Kotlin modules already enforce the"
+          + " dependency direction between them.";
+
   private static final String NO_SPEC_NOTE =
       " Git tracks no OpenAPI spec, so openapi-lint and openapi-diff are not offered. Commit"
           + " openapi.yml or openapi.json under src/main/resources or the project root, then run"
           + " init again to add them.";
 
   private OmissionNotes() {}
+
+  /** The ArchUnit note for a multi-module Kotlin build under the strict preset, when it applies. */
+  private static List<String> multiModuleNotes(
+      final Project project, final QualityPreset preset, final EnvironmentInspection environment) {
+    return preset == QualityPreset.STRICT && JvmInitSupport.multiModuleKotlin(project, environment)
+        ? List.of(MULTI_MODULE_NO_ARCHUNIT)
+        : List.of();
+  }
 
   /** Returns the notes for {@code project}, and for the gates {@code preset} omits, if any. */
   static List<String> of(
@@ -46,6 +58,7 @@ final class OmissionNotes {
         notes.add(ANGULAR_NO_MUTATION);
       }
     }
+    notes.addAll(multiModuleNotes(project, preset, environment));
     if (preset != null) {
       JdkGates.of(catalog).presetOmissions(project, preset).stream()
           .map(GateOmission::note)

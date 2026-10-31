@@ -12,6 +12,7 @@ import java.util.Map;
 final class JvmInitSupport implements ToolchainInitSupport {
   private static final JavaGates JAVA = new JavaGates();
   private static final int DEFAULT_CI_JDK = 25;
+  private static final String ARCHUNIT = "archunit";
   // shortcut: Kotlin gets Java's tools until Ward ships ktlint/detekt; give it its own gates then.
   private static final Map<Language, SourceLanguageGates<BuildToolGates>> LANGUAGES =
       Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
@@ -19,17 +20,33 @@ final class JvmInitSupport implements ToolchainInitSupport {
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final BuildToolGates buildTool = buildToolGates(project, inputs.environment());
+    final boolean multiModule = multiModuleKotlin(project, inputs.environment());
     return new Gates(
-        SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool),
+        SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool).stream()
+            .filter(gate -> !(multiModule && ARCHUNIT.equals(gate.id())))
+            .toList(),
         buildTool.policyGates().stream()
             .filter(gate -> !"api-compat".equals(gate.id()) || project.hasApiBaseline())
+            .filter(gate -> !(multiModule && ARCHUNIT.equals(gate.id())))
             .toList());
   }
 
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    return SourceLanguages.of(LANGUAGES, project).presetGates(preset);
+    final boolean multiModule = multiModuleKotlin(project, inputs.environment());
+    return SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
+        .filter(gate -> !(multiModule && ARCHUNIT.equals(gate)))
+        .toList();
+  }
+
+  /**
+   * Returns whether a Gradle build has a Kotlin module below its root. Its module boundaries
+   * already enforce the dependency direction, so ArchUnit is not offered there.
+   */
+  static boolean multiModuleKotlin(final Project project, final EnvironmentInspection environment) {
+    return project.buildTool() == BuildTool.GRADLE
+        && !environment.gradleKotlinModules(project.root()).isEmpty();
   }
 
   @Override

@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.project.NodeSources;
@@ -23,6 +24,7 @@ import java.util.Optional;
  * @param buildTools reads which gates the project's runtime JDK cannot run, when available
  * @param pythonConfigs finds the tool configs a Python project keeps itself
  * @param members lists the packages a Node workspace root holds
+ * @param modules plans the module build scripts a build tool would change
  */
 record InitInputs(
     EnvironmentInspection environment,
@@ -31,7 +33,8 @@ record InitInputs(
     NodeToolConfigs configs,
     Optional<BuildToolConfiguration> buildTools,
     PythonToolConfigs pythonConfigs,
-    WorkspaceMembers members) {
+    WorkspaceMembers members,
+    BuildModulePlanning modules) {
   /** Inputs that read no Python config of their own. */
   InitInputs(
       final EnvironmentInspection environment,
@@ -46,7 +49,8 @@ record InitInputs(
         configs,
         buildTools,
         (root, tool) -> Optional.empty(),
-        WorkspaceMembers.none());
+        WorkspaceMembers.none(),
+        BuildModulePlanning.none());
   }
 
   /** Inputs that do not read the runtime JDK. */
@@ -84,7 +88,8 @@ record InitInputs(
         node.configs(),
         Optional.empty(),
         (root, tool) -> Optional.empty(),
-        node.members());
+        node.members(),
+        BuildModulePlanning.none());
   }
 
   /** Inputs that also read the runtime JDK through the build-file adapters of {@code ports}. */
@@ -97,7 +102,8 @@ record InitInputs(
         node.configs(),
         Optional.of(ports.buildTools()),
         ports.python(),
-        node.members());
+        node.members(),
+        ports.modulePlanning());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

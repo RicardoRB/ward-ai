@@ -51,29 +51,33 @@ final class GradleQualityBlocks {
    * Like the Maven plugins init configures, Checkstyle and PMD analyze main sources only, so the
    * {@code check} task does not apply production rules to tests.
    */
-  static String checkstyle(final boolean kotlin, final String version) {
+  static String checkstyle(final boolean kotlin, final String version, final boolean module) {
     return "checkstyle {\n"
         + GradleEngineBlocks.toolVersion(kotlin, version)
-        + "    configFile = file("
+        + "    configFile = "
+        + (module ? "rootProject.file" : "file")
+        + "("
         + quote(kotlin, CHECKSTYLE_CONFIG)
         + ")\n"
         + mainSourceSetOnly(kotlin)
         + "}\n"
-        + GradlePathFilterBlock.render(kotlin, "checkstyleMain", "Checkstyle");
+        + GradlePathFilterBlock.render(kotlin, "checkstyleMain", "Checkstyle", module);
   }
 
   /** {@code ruleSets} is cleared so Gradle's default rule set does not run beside the preset's. */
-  static String pmd(final boolean kotlin, final String version) {
+  static String pmd(final boolean kotlin, final String version, final boolean module) {
     return "pmd {\n"
         + GradleEngineBlocks.toolVersion(kotlin, version)
-        + "    ruleSetFiles = files("
+        + "    ruleSetFiles = "
+        + (module ? "rootProject.files" : "files")
+        + "("
         + quote(kotlin, PMD_RULESET)
         + ")\n    ruleSets = "
         + (kotlin ? "listOf()" : "[]")
         + "\n"
         + mainSourceSetOnly(kotlin)
         + "}\n"
-        + GradlePathFilterBlock.render(kotlin, "pmdMain", "Pmd");
+        + GradlePathFilterBlock.render(kotlin, "pmdMain", "Pmd", module);
   }
 
   private static String mainSourceSetOnly(final boolean kotlin) {
@@ -109,23 +113,29 @@ final class GradleQualityBlocks {
         + COVERAGE_TASK
         + " {\n    violationRules {\n        rule {\n"
         + limits
-        + "        }\n    }\n}";
+        + "        }\n    }\n}\n"
+        + GradleCoverageData.block(kotlin);
   }
 
   /**
    * PIT needs its JUnit 5 plugin to find JUnit Jupiter tests; the Gradle plugin's default PIT
-   * cannot read Java 25 class files, so the engine version is pinned.
+   * cannot read Java 25 class files, so the engine version is pinned. The minimum score is the
+   * gate's, summed over the modules, so the build sets no PIT threshold of its own. The task always
+   * runs: Gradle would otherwise keep an unchanged run's report, which the gate reads as stale.
    */
-  static String pitest(final boolean kotlin, final QualityPreset preset, final String version) {
-    final Integer threshold = preset == null ? null : preset.rules().mutationThreshold();
+  static String pitest(final boolean kotlin, final String version) {
     return "pitest {\n    pitestVersion = "
         + quote(kotlin, version)
         + "\n    "
         + PITEST_JUNIT5
         + " = "
         + quote(kotlin, PITEST_JUNIT5_VERSION)
-        + (threshold == null ? "" : "\n    mutationThreshold = " + threshold)
-        + "\n}";
+        + "\n    outputFormats = "
+        + (kotlin ? "listOf(\"XML\", \"HTML\")" : "['XML', 'HTML']")
+        + "\n}\n"
+        + (kotlin
+            ? "tasks.named(\"pitest\") { outputs.upToDateWhen { false } }"
+            : "tasks.named('pitest') { outputs.upToDateWhen { false } }");
   }
 
   static String quote(final boolean kotlin, final String value) {

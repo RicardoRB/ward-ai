@@ -6,6 +6,7 @@ import dev.ward.domain.doctor.ExecutableObservation;
 import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import dev.ward.infrastructure.project.GradleKotlinModules;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -154,6 +155,11 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   @Override
   public Optional<String> fastApiApp(final Path projectRoot) {
     return FastApiAppInspection.find(projectRoot);
+  }
+
+  @Override
+  public List<Path> gradleKotlinModules(final Path projectRoot) {
+    return GradleKotlinModules.of(projectRoot);
   }
 
   @Override
