@@ -61,6 +61,11 @@ public final class QualityGateDefinitions {
           new Definition(
               SupportedQualityGates.SWIFT_COVERAGE, "Swift coverage", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.HARMONIZE, "Harmonize", Phase.LOCAL, false),
+          new Definition(SupportedQualityGates.ANDROID_LINT, "Android Lint", Phase.LOCAL, false),
+          new Definition(
+              SupportedQualityGates.ANDROID_UNIT_TEST, "Android unit tests", Phase.LOCAL, false),
+          new Definition(
+              SupportedQualityGates.ANDROID_COVERAGE, "Android coverage", Phase.LOCAL, false),
           gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
           gate("command", Phase.LOCAL),
           gate("openspec", Phase.CI),

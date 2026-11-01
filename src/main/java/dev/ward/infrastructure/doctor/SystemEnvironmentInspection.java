@@ -6,8 +6,10 @@ import dev.ward.domain.doctor.ExecutableObservation;
 import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import dev.ward.infrastructure.project.AndroidGradlePluginVersion;
 import dev.ward.infrastructure.project.GradleKotlinModules;
 import dev.ward.infrastructure.project.GradleModuleScan;
+import dev.ward.infrastructure.project.GradleWrapperVersion;
 import dev.ward.infrastructure.project.MavenJavaModules;
 import java.io.File;
 import java.nio.file.Files;
@@ -103,6 +105,11 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
     observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
     observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
+    observed.put("androidSdkHome", Boolean.toString(isSdkDirectory("ANDROID_HOME")));
+    observed.put("androidSdkRoot", Boolean.toString(isSdkDirectory("ANDROID_SDK_ROOT")));
+    observed.put(
+        "androidGradlePluginVersion", AndroidGradlePluginVersion.read(projectRoot).orElse(""));
+    observed.put("gradleVersion", GradleWrapperVersion.read(projectRoot).orElse(""));
     LOGGER.log(
         Level.INFO,
         () -> "event=environment-inspection status=complete available=" + available.size());
@@ -177,6 +184,12 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   @Override
   public OssIndexSetting ossIndexSetting(final Path projectRoot) {
     return DependencyCheckSettings.read(projectRoot);
+  }
+
+  /** Whether the variable names an existing directory; its path never leaves this method. */
+  private static boolean isSdkDirectory(final String name) {
+    final String value = System.getenv(name);
+    return value != null && !value.isBlank() && Files.isDirectory(Path.of(value));
   }
 
   /** Only presence is recorded; values never leave this method. */

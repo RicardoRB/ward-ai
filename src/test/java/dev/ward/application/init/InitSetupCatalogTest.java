@@ -9,6 +9,7 @@ import dev.ward.application.gate.QualityGateFactory;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitIntegrationOption;
 import dev.ward.domain.init.QualityPreset;
@@ -51,6 +52,11 @@ class InitSetupCatalogTest {
           "pip-audit",
           "django-check");
 
+  private static final Set<String> ANDROID_GATES =
+      Set.of(
+          SupportedQualityGates.ANDROID_LINT,
+          SupportedQualityGates.ANDROID_UNIT_TEST,
+          SupportedQualityGates.ANDROID_COVERAGE);
   private static final Set<String> SWIFT_GATES =
       Set.of(
           "swift-format",
@@ -246,6 +252,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))
+                // Android gates are offered only for Android projects.
+                .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestCoverageVerification");

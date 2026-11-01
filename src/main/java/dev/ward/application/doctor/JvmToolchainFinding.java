@@ -5,6 +5,7 @@ import dev.ward.application.doctor.DoctorService.Status;
 import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.JavaSupport;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ final class JvmToolchainFinding implements ToolchainFinding {
             wrapper || facts.hasExecutable(executable) ? Status.OK : Status.ERROR,
             toolMessage));
     context.buildTools().ifPresent(tools -> findings.addAll(jdkFindings(detected, tools, context)));
+    if (detected.framework() == Framework.ANDROID) {
+      findings.addAll(AndroidFindings.findings(detected, facts, context));
+    }
     return findings;
   }
 

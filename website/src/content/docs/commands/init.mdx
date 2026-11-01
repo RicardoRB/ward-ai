@@ -669,6 +669,20 @@ projects are not supported yet, and init stops with an error that names the mana
   The root package comes from `[project] name` under `src/`. Init stops when it finds no single
   root package.
 
+## Android projects
+
+Init recognizes an Android project from the Android Gradle Plugin (`com.android.application` or
+`com.android.library`) in the root or a module build script, by plugin id or version-catalog alias.
+It keeps the Gradle setup and adds the Android gates.
+
+- **Gates.** `android-lint` runs `lintDebug`, `android-unit-test` runs `testDebugUnitTest`, and
+  `android-coverage` runs `createDebugUnitTestCoverageReport` at an 80% minimum. The JVM `coverage`
+  gate is left out, since an Android root has no JaCoCo verification task.
+- **Modules.** Each Android module script gets the debug unit-test coverage block. An Android module
+  applies no JVM plugin, so init writes no Checkstyle, PMD or SpotBugs block into it.
+- **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
+  directory, and when the Android Gradle Plugin needs a newer JDK or Gradle than the build runs on.
+
 ## Swift projects
 
 Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or

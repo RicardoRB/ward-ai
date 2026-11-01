@@ -62,7 +62,7 @@ class XcodeTestGateTest {
             null,
             null,
             null,
-            new SwiftGatePorts(
+            new PlatformGatePorts(
                 root -> {
                   booted.add(root);
                   return simulator;

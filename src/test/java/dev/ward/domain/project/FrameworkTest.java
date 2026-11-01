@@ -19,9 +19,15 @@ class FrameworkTest {
     "SVELTE, Svelte",
     "ASTRO, Astro",
     "ANGULAR, Angular",
+    "ANDROID, Android",
     "NONE, None"
   })
   void everyFrameworkHasItsDisplayName(final Framework framework, final String displayName) {
     assertThat(framework.displayName()).isEqualTo(displayName);
+  }
+
+  @org.junit.jupiter.api.Test
+  void androidIsNotAServerFramework() {
+    assertThat(Framework.ANDROID.servesHttp()).isFalse();
   }
 }

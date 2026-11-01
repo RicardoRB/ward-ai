@@ -18,6 +18,7 @@ public final class GradleModuleScan {
         .filter(dir -> !GradleKotlinModules.nested(root, dir))
         .filter(dir -> GradleKotlinModules.scriptFile(dir).isPresent())
         .filter(dir -> !placed(dir))
+        .filter(dir -> !GradleAndroidModules.appliesAndroid(GradleKotlinModules.scriptText(dir)))
         .map(dir -> root.relativize(dir).toString())
         .toList();
   }

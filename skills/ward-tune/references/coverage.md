@@ -113,3 +113,14 @@ Classify threshold changes as in the table above.
   reason. Raising it is a tightening; propose it with the current line coverage from the report.
 - **Classifying:** a missing report is an environment problem (the test gate did not run), not a
   reason to change the threshold.
+
+## Android coverage
+
+- **Where the minimum lives:** `ward.toml`, in the `[checks.android-coverage]` table as
+  `minimum = 80`. Init writes it; it is the threshold for the debug unit tests of Android modules.
+- **Report:** the gate's command runs `createDebugUnitTestCoverageReport`, and Ward sums the JaCoCo
+  XML reports the Android modules write for the debug unit tests. A module without a report
+  contributes nothing; no report at all is an execution error, not a pass. The report path is
+  assumed to be `build/reports/coverage/test/debug/report.xml` and is not yet checked against a live
+  AGP build, so a missing-report failure on a real project may mean the path differs.
+- **Changing the minimum:** the same rules as Swift: lowering it needs its own approval and a reason.

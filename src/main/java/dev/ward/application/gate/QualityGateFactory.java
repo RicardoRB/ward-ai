@@ -179,6 +179,9 @@ public class QualityGateFactory {
     if (SWIFT_GATES.contains(type)) {
       return SwiftGates.create(check, executor, reports);
     }
+    if (SupportedQualityGates.ANDROID_COVERAGE.equals(type)) {
+      return CoverageGates.minimum(check, executor, reports, reports.swift().android());
+    }
     return new CommandQualityGate(name, executor, check.command(), reportDirectories);
   }
 
