@@ -27,10 +27,11 @@ team, and Ward checks every change against them, from the first edit to producti
 </div>
 
 > [!NOTE]
-> **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle** and
+> **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle**,
 > **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun (including Turborepo
-> workspaces), and **Python projects** managed with uv, Poetry, or pip. Support for more
-> languages is planned. The CLI and configuration may change before `1.0`.
+> workspaces), **Python projects** managed with uv, Poetry, or pip, and **Swift projects** built
+> with SwiftPM or Xcode on macOS (Xcode 26 or newer). Support for more languages is planned. The CLI
+> and configuration may change before `1.0`.
 
 | Language | Build tools | Frameworks | Quality tools |
 |---|---|---|---|
@@ -38,6 +39,7 @@ team, and Ward checks every change against them, from the first edit to producti
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
+| Swift | SwiftPM, Xcode | Any | swift-format, SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov, Harmonize |
 
 <div align="center">
   <a href="https://youtu.be/ETuomU8HxXw">
@@ -192,6 +194,7 @@ ward check --profile ci --format json > ward-report.json
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Prettier, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ruff (format and lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
+| Swift | swift-format, SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Harmonize architecture rules |
 | Anything else | Any command you add to `ward.toml` |
 
 Ward runs the tools; the rules live in each tool's own configuration. For TypeScript and JavaScript
@@ -215,12 +218,12 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.4.1`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
+**Alpha** (`0.5.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
 Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes.
 
 **Roadmap:**
 
-- Support for more languages beyond Java, TypeScript, JavaScript, and Python
+- Support for more languages beyond Java, TypeScript, JavaScript, Python, and Swift
 - Shared Git hooks (for example through `core.hooksPath`), so teammates get the commit and push
   layers without a setup step
 - Homebrew tap, Scoop and winget packages, and container image
