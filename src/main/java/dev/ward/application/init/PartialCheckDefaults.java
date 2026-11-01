@@ -103,10 +103,11 @@ final class PartialCheckDefaults {
   private static final List<String> SWIFT_SOURCES = List.of("**/*.swift");
 
   // Both commands take the edited files as arguments, so the narrowed run checks only those.
-  private static final Map<String, BiFunction<Project, QualityPreset, Table>> SWIFT_TABLES =
+  // SwiftLint takes the gate's own command, so a strict edit hook lints as strictly as pre-push.
+  private static final Map<String, BiFunction<Project, List<String>, Table>> SWIFT_TABLES =
       Map.of(
           "swift-format",
-          (project, preset) ->
+          (project, command) ->
               new Table(
                   SWIFT_SOURCES,
                   List.of(".swift-format"),
@@ -115,14 +116,14 @@ final class PartialCheckDefaults {
                   null,
                   List.of("swift", "format", "lint", "--strict")),
           "swiftlint",
-          (project, preset) ->
+          (project, command) ->
               new Table(
                   SWIFT_SOURCES,
-                  List.of(".swiftlint.yml"),
+                  List.of(".swiftlint.yml", SwiftTools.STRICT_CONFIG),
                   PATHS,
                   null,
                   null,
-                  SwiftTools.swiftLintCommand()));
+                  command));
 
   private static final Map<String, TableFactory> TABLES =
       Map.of(
@@ -186,8 +187,12 @@ final class PartialCheckDefaults {
 
   private PartialCheckDefaults() {}
 
+  /** Returns the partial-run table of {@code gate}; {@code command} is the gate's full command. */
   static Optional<Table> forGate(
-      final String gate, final Project project, final QualityPreset preset) {
+      final String gate,
+      final Project project,
+      final QualityPreset preset,
+      final List<String> command) {
     final Optional<Table> turbo = TurboPartialDefaults.forGate(gate, project);
     if (turbo.isPresent()) {
       return turbo;
@@ -203,7 +208,7 @@ final class PartialCheckDefaults {
         .or(
             () ->
                 Optional.ofNullable(SWIFT_TABLES.get(gate))
-                    .map(factory -> factory.apply(project, preset)))
+                    .map(factory -> factory.apply(project, command)))
         .or(
             () ->
                 Optional.ofNullable(TABLES.get(gate))

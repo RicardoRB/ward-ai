@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -46,7 +47,8 @@ class SwiftConfigFilesTest {
   void writesSwiftFormatWithTheDetectedIndentation() throws IOException {
     writeSource("App.swift", "struct A {\n  func f() {}\n}\n");
 
-    final NodeConfigTarget target = SwiftConfigFiles.targets(swift()).get(1);
+    final NodeConfigTarget target =
+        SwiftConfigFiles.targets(swift(), QualityPreset.STANDARD).get(1);
 
     assertThat(target.disposition()).isEqualTo(NodeConfigTarget.Disposition.WRITE);
     assertThat(target.content()).isEqualTo("{\"version\": 1, \"indentation\": {\"spaces\": 2}}\n");
@@ -54,7 +56,8 @@ class SwiftConfigFilesTest {
 
   @Test
   void writesWardMarkedSwiftLintConfigWhenTheProjectHasNone() {
-    final NodeConfigTarget target = SwiftConfigFiles.targets(swift()).getFirst();
+    final NodeConfigTarget target =
+        SwiftConfigFiles.targets(swift(), QualityPreset.STANDARD).getFirst();
 
     assertThat(target.disposition()).isEqualTo(NodeConfigTarget.Disposition.WRITE);
     assertThat(target.content()).startsWith("# managed-by: ward").contains("  - .ward");
@@ -64,7 +67,7 @@ class SwiftConfigFilesTest {
   void keepsAUserSwiftLintConfigUnchanged() throws IOException {
     Files.writeString(root.resolve(".swiftlint.yml"), "disabled_rules:\n  - line_length\n");
 
-    assertThat(SwiftConfigFiles.targets(swift()).getFirst().disposition())
+    assertThat(SwiftConfigFiles.targets(swift(), QualityPreset.STANDARD).getFirst().disposition())
         .isEqualTo(NodeConfigTarget.Disposition.KEEP);
   }
 
@@ -72,7 +75,7 @@ class SwiftConfigFilesTest {
   void keepsAnExistingSwiftFormatUnchanged() throws IOException {
     Files.writeString(root.resolve(".swift-format"), "{\"version\": 1}\n");
 
-    assertThat(SwiftConfigFiles.targets(swift()).get(1).disposition())
+    assertThat(SwiftConfigFiles.targets(swift(), QualityPreset.STANDARD).get(1).disposition())
         .isEqualTo(NodeConfigTarget.Disposition.KEEP);
   }
 

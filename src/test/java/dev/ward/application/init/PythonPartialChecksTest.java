@@ -8,6 +8,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -20,7 +21,8 @@ class PythonPartialChecksTest {
   @Test
   void ruffFormatNarrowsToEditedPythonFiles() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("ruff-format", UV, QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate("ruff-format", UV, QualityPreset.STANDARD, List.of())
+            .orElseThrow();
 
     assertThat(table.match()).containsExactly("**/*.py", "**/*.pyi");
     assertThat(table.command())
@@ -31,7 +33,7 @@ class PythonPartialChecksTest {
   @Test
   void ruffNarrowsToEditedPythonFiles() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("ruff", UV, QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate("ruff", UV, QualityPreset.STANDARD, List.of()).orElseThrow();
 
     assertThat(table.command())
         .containsExactly(
@@ -41,7 +43,9 @@ class PythonPartialChecksTest {
 
   @Test
   void mypyAndTestsAreNotPartialChecks() {
-    assertThat(PartialCheckDefaults.forGate("mypy", UV, QualityPreset.STANDARD)).isEmpty();
-    assertThat(PartialCheckDefaults.forGate("pytest", UV, QualityPreset.STANDARD)).isEmpty();
+    assertThat(PartialCheckDefaults.forGate("mypy", UV, QualityPreset.STANDARD, List.of()))
+        .isEmpty();
+    assertThat(PartialCheckDefaults.forGate("pytest", UV, QualityPreset.STANDARD, List.of()))
+        .isEmpty();
   }
 }

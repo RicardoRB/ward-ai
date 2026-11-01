@@ -1,7 +1,6 @@
 package dev.ward.application.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -31,12 +30,14 @@ class InitToolchainsSwiftTest {
   }
 
   @Test
-  void strictIsRefusedAndSuggestsStandard() {
+  void strictOffersTheStandardGatesAndNoMutationGate() {
     final Project project = swift(BuildTool.SWIFTPM);
+    final ToolchainInitSupport support = InitToolchains.support(project);
 
-    assertThatThrownBy(
-            () -> InitToolchains.support(project).presetGates(project, QualityPreset.STRICT, null))
-        .hasMessageContaining("--preset standard");
+    assertThat(support.presets()).containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
+    assertThat(support.presetGates(project, QualityPreset.STRICT, null))
+        .containsExactlyElementsOf(support.presetGates(project, QualityPreset.STANDARD, null))
+        .doesNotContain("mutation");
   }
 
   private static Project swift(final BuildTool buildTool) {

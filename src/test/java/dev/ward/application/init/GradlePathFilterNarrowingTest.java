@@ -34,7 +34,8 @@ class GradlePathFilterNarrowingTest {
     Files.writeString(second, "class B {}\n");
     final Project gradle = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("checkstyle", gradle, QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate("checkstyle", gradle, QualityPreset.STANDARD, List.of())
+            .orElseThrow();
     final GateConfiguration checkstyle =
         new GateConfiguration(
             "checkstyle",

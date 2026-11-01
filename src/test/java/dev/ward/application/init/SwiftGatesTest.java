@@ -1,10 +1,10 @@
 package dev.ward.application.init;
 
+import static dev.ward.application.init.SwiftGateFixtures.swiftPm;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.BuildTool;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the exact Swift gate commands, their platform and minimum, and their order. */
 class SwiftGatesTest {
-  private static final List<String> SOURCES = List.of("Package.swift", "Sources", "Tests");
-
   @Test
   void swiftPackageGatesRunSwiftPmInOrder() {
-    final List<InitGateOption> gates = gates(swiftPm());
+    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD, false));
 
     assertThat(gates.stream().map(InitGateOption::id))
         .containsExactly(
@@ -49,7 +47,8 @@ class SwiftGatesTest {
 
   @Test
   void xcodeGatesRunTheSchemeWithPlatformAndCoverageFromTheResultBundle() {
-    final List<InitGateOption> gates = gates(xcode("iOS Simulator", Optional.empty()));
+    final List<InitGateOption> gates =
+        gates(SwiftGateFixtures.xcode("iOS Simulator", Optional.empty()));
 
     assertThat(gates.stream().map(InitGateOption::id))
         .containsExactly("swift-format", "swiftlint", "xcodebuild-test", "swift-coverage");
@@ -64,7 +63,8 @@ class SwiftGatesTest {
 
   @Test
   void xcodeTestUsesTheWorkspaceWhenThereIsOne() {
-    final List<InitGateOption> gates = gates(xcode("macOS", Optional.of("Shop.xcworkspace")));
+    final List<InitGateOption> gates =
+        gates(SwiftGateFixtures.xcode("macOS", Optional.of("Shop.xcworkspace")));
 
     assertThat(command(gates, "xcodebuild-test"))
         .containsExactly(
@@ -80,32 +80,23 @@ class SwiftGatesTest {
   }
 
   @Test
-  void standardPresetNamesEveryGateThatTheToolHasAndStrictIsRefused() {
+  void standardPresetNamesEveryGateThatTheToolHasAndStrictNamesTheSameGates() {
     assertThat(new SwiftGates().presetGates(QualityPreset.STANDARD)).contains("swift-coverage");
-    assertThat(
-            org.assertj.core.api.Assertions.catchThrowable(
-                () -> new SwiftGates().presetGates(QualityPreset.STRICT)))
-        .hasMessageContaining("--preset standard");
+    assertThat(new SwiftGates().presetGates(QualityPreset.STRICT))
+        .containsExactlyElementsOf(new SwiftGates().presetGates(QualityPreset.STANDARD));
   }
 
-  private static SwiftTools swiftPm() {
-    return new SwiftTools(
-        BuildTool.SWIFTPM, true, QualityPreset.STANDARD, SOURCES, Optional.empty(), null, null);
-  }
-
-  private static SwiftTools xcode(final String platform, final Optional<String> workspace) {
-    return new SwiftTools(
-        BuildTool.XCODE, true, QualityPreset.STANDARD, SOURCES, workspace, "Shop", platform);
-  }
-
+  /** Returns the gates the tools select, in order. */
   private static List<InitGateOption> gates(final SwiftTools tools) {
     return new SwiftGates().analysisGates(tools);
   }
 
+  /** Returns the command of the gate {@code id}. */
   private static List<String> command(final List<InitGateOption> gates, final String id) {
     return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().command();
   }
 
+  /** Returns the setting {@code key} of the gate {@code id}. */
   private static String setting(
       final List<InitGateOption> gates, final String id, final String key) {
     final Map<String, String> settings =

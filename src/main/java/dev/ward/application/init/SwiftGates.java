@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -10,10 +9,9 @@ import java.util.Map;
 
 /**
  * Swift's gates on SwiftPM or Xcode: formatting, SwiftLint, the build tool's test gates and
- * coverage with a minimum of 80%. Strict is not available for Swift yet.
+ * coverage. Strict selects the same gates, with stricter commands and a coverage minimum of 85%.
  */
 final class SwiftGates implements SourceLanguageGates<SwiftTools> {
-  static final String COVERAGE_MINIMUM = "80";
   private static final String MINIMUM = "minimum";
   private static final String PLATFORM = "platform";
 
@@ -43,8 +41,9 @@ final class SwiftGates implements SourceLanguageGates<SwiftTools> {
         option(
             swift,
             SwiftTools.SWIFTLINT,
-            "Lints sources with SwiftLint, built from the Ward-owned tools package.",
-            SwiftTools.swiftLintCommand(),
+            "Lints sources with SwiftLint, built from the Ward-owned tools package; strict fails on"
+                + " warnings.",
+            swift.swiftLintGateCommand(),
             Map.of()));
     gates.addAll(testGates(swift));
     gates.add(
@@ -53,16 +52,12 @@ final class SwiftGates implements SourceLanguageGates<SwiftTools> {
             SwiftTools.SWIFT_COVERAGE,
             "Fails below the line coverage minimum of the test run.",
             coverageCommand(swift),
-            Map.of(MINIMUM, COVERAGE_MINIMUM)));
+            Map.of(MINIMUM, swift.coverageMinimum())));
     return List.copyOf(gates);
   }
 
   @Override
   public List<String> presetGates(final QualityPreset preset) {
-    if (preset == QualityPreset.STRICT) {
-      throw new WardException(
-          "Strict is not available for Swift projects yet; use --preset standard.");
-    }
     return STANDARD;
   }
 
@@ -82,18 +77,18 @@ final class SwiftGates implements SourceLanguageGates<SwiftTools> {
             swift,
             SwiftTools.SWIFT_BUILD,
             "Builds the package and its tests.",
-            SwiftTools.swiftBuildCommand(),
+            swift.swiftBuildCommand(),
             Map.of()),
         option(
             swift,
             SwiftTools.SWIFT_TEST,
             "Runs the package's tests with code coverage.",
-            SwiftTools.swiftTestCommand(),
+            swift.swiftTestCommand(),
             Map.of()));
   }
 
   private static List<String> coverageCommand(final SwiftTools swift) {
-    return swift.xcode() ? SwiftTools.xcodeCoverageCommand() : SwiftTools.swiftCoverageCommand();
+    return swift.xcode() ? SwiftTools.xcodeCoverageCommand() : swift.swiftCoverageCommand();
   }
 
   /** Returns a gate choice whose availability is the build tool's executable on the path. */

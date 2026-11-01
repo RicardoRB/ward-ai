@@ -11,6 +11,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class AgentRulesTemplateTest {
@@ -43,6 +44,33 @@ class AgentRulesTemplateTest {
             "`@ArchIgnore`",
             "requirePluginVersions",
             "Do not add suppressions");
+  }
+
+  @Test
+  void strictSwiftRulesNameTheCoverageMinimumAndWarningsAsErrors() {
+    final Project swift =
+        new Project(Path.of("/p"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
+    final List<InitGateOption> gates =
+        List.of(
+            new InitGateOption(
+                "swift-build",
+                "Builds",
+                List.of("swift", "build", "-Xswiftc", "-warnings-as-errors"),
+                true,
+                "",
+                Map.of()),
+            new InitGateOption(
+                "swift-coverage",
+                "Coverage",
+                List.of("swift", "test", "--show-codecov-path"),
+                true,
+                "",
+                Map.of("minimum", "85")));
+
+    final String body =
+        AgentRulesTemplate.render(swift, gates, QualityPreset.STRICT, List.of()).body();
+
+    assertThat(body).contains("must meet the 85% minimum of line coverage", "warnings are errors");
   }
 
   @Test

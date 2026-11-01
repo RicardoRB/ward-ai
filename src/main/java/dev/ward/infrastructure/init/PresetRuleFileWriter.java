@@ -117,7 +117,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       return PythonConfigFiles.targets(project, pythonConfigs, preset, gates);
     }
     if (project.toolchain() == Toolchain.SWIFT) {
-      return SwiftConfigFiles.targets(project);
+      return SwiftConfigFiles.targets(project, preset);
     }
     return jvmTargets(project, preset, gates).entrySet().stream()
         .map(

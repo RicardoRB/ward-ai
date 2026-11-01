@@ -1,21 +1,26 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 /**
  * The tool configs init writes in a Swift project root: {@code .swiftlint.yml}, and {@code
  * .swift-format} with the indentation of the project's sources. A config the project keeps is never
- * changed; Ward writes only the files that are absent.
+ * changed. Strict over a project's own {@code .swiftlint.yml} writes {@code
+ * .ward/swiftlint-strict.yml} instead, which the SwiftLint command passes after the user's file.
  */
 final class SwiftConfigFiles {
   static final String SWIFTLINT = ".swiftlint.yml";
+  static final String STRICT_SWIFTLINT = ".ward/swiftlint-strict.yml";
   static final String SWIFT_FORMAT = ".swift-format";
   private static final String MARKER = "# managed-by: ward";
   private static final int SOURCE_LIMIT = 200;
@@ -32,20 +37,61 @@ final class SwiftConfigFiles {
           + "  - Pods\n"
           + "  - Carthage\n"
           + "  - DerivedData\n";
+  private static final String STRICT_RULES =
+      "opt_in_rules:\n"
+          + "  - force_unwrapping\n"
+          + "  - implicitly_unwrapped_optional\n"
+          + "  - fatal_error_message\n"
+          + "  - empty_count\n"
+          + "  - first_where\n"
+          + "  - contains_over_first_not_nil\n"
+          + "cyclomatic_complexity:\n"
+          + "  warning: 10\n";
 
   private SwiftConfigFiles() {}
 
   /** Returns each config file of a Swift project, in the order init writes them. */
-  static List<NodeConfigTarget> targets(final Project project) {
+  static List<NodeConfigTarget> targets(final Project project, final QualityPreset preset) {
     final Path root = project.root();
     final FileSystemSwiftToolConfigs configs = new FileSystemSwiftToolConfigs();
-    return List.of(
-        configs.userConfig(root, SWIFTLINT).isPresent()
+    final boolean strict = preset == QualityPreset.STRICT;
+    final boolean ownSwiftLint = configs.userConfig(root, SWIFTLINT).isPresent();
+    final List<NodeConfigTarget> targets = new ArrayList<>();
+    targets.add(
+        ownSwiftLint
             ? NodeConfigTarget.keep(root.resolve(SWIFTLINT), "kept: your .swiftlint.yml")
-            : NodeConfigTarget.write(root.resolve(SWIFTLINT), SWIFTLINT_CONFIG),
+            : NodeConfigTarget.write(root.resolve(SWIFTLINT), swiftLintConfig(strict)));
+    strictLayer(root, strict && ownSwiftLint).ifPresent(targets::add);
+    targets.add(
         configs.userConfig(root, SWIFT_FORMAT).isPresent()
             ? NodeConfigTarget.keep(root.resolve(SWIFT_FORMAT), "kept: your .swift-format")
             : NodeConfigTarget.write(root.resolve(SWIFT_FORMAT), swiftFormat(indentation(root))));
+    return List.copyOf(targets);
+  }
+
+  /** The {@code .swiftlint.yml} Ward writes: strict adds the opt-in rules and complexity. */
+  private static String swiftLintConfig(final boolean strict) {
+    return strict ? SWIFTLINT_CONFIG + STRICT_RULES : SWIFTLINT_CONFIG;
+  }
+
+  /**
+   * The strict layer over a user's SwiftLint config: written when {@code wanted}, and otherwise
+   * removed when a previous strict run left it behind. Empty when neither applies.
+   */
+  private static Optional<NodeConfigTarget> strictLayer(final Path root, final boolean wanted) {
+    final Path file = root.resolve(STRICT_SWIFTLINT);
+    if (wanted) {
+      return Optional.of(NodeConfigTarget.write(file, MARKER + "\n" + STRICT_RULES));
+    }
+    if (!Files.exists(file)) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        new NodeConfigTarget(
+            file,
+            NodeConfigTarget.Disposition.REMOVE,
+            null,
+            "removed: strict layer no longer used"));
   }
 
   /** The {@code .swift-format} JSON for {@code indentation}: {@code tabs} or a number of spaces. */

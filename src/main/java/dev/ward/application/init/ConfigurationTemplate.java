@@ -94,7 +94,7 @@ final class ConfigurationTemplate {
       final Project project,
       final QualityPreset preset) {
     final String id = gate.id();
-    PartialCheckDefaults.forGate(id, project, preset)
+    PartialCheckDefaults.forGate(id, project, preset, gate.command())
         .or(() -> PartialCheckDefaults.forOpenApi(id, gate.settings().get("spec")))
         .ifPresent(
             table -> {

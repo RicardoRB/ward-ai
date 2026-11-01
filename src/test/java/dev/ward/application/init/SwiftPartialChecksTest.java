@@ -8,6 +8,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** The edit hooks narrow swift-format and swiftlint to the edited Swift files, not the tests. */
@@ -18,7 +19,7 @@ class SwiftPartialChecksTest {
   @Test
   void swiftFormatNarrowsToEditedSwiftFiles() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("swift-format", SWIFT_PM, QualityPreset.STANDARD)
+        PartialCheckDefaults.forGate("swift-format", SWIFT_PM, QualityPreset.STANDARD, List.of())
             .orElseThrow();
 
     assertThat(table.match()).containsExactly("**/*.swift");
@@ -29,7 +30,9 @@ class SwiftPartialChecksTest {
   @Test
   void swiftLintNarrowsToEditedSwiftFiles() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("swiftlint", SWIFT_PM, QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate(
+                "swiftlint", SWIFT_PM, QualityPreset.STANDARD, SwiftTools.swiftLintCommand())
+            .orElseThrow();
 
     assertThat(table.command())
         .containsExactly(
@@ -38,16 +41,43 @@ class SwiftPartialChecksTest {
             "--reporter",
             "json",
             "--quiet");
-    assertThat(table.full()).containsExactly(".swiftlint.yml");
+    assertThat(table.full()).containsExactly(".swiftlint.yml", ".ward/swiftlint-strict.yml");
+  }
+
+  @Test
+  void strictSwiftLintHookRunsTheGatesOwnStrictCommand() {
+    final List<String> strict =
+        List.of(
+            SwiftTools.SWIFTLINT_BINARY,
+            "lint",
+            "--reporter",
+            "json",
+            "--quiet",
+            "--strict",
+            "--config",
+            ".swiftlint.yml",
+            "--config",
+            ".ward/swiftlint-strict.yml");
+
+    final PartialCheckDefaults.Table table =
+        PartialCheckDefaults.forGate("swiftlint", SWIFT_PM, QualityPreset.STRICT, strict)
+            .orElseThrow();
+
+    assertThat(table.command()).isEqualTo(strict);
   }
 
   @Test
   void testAndCoverageGatesAreNotPartialChecks() {
-    assertThat(PartialCheckDefaults.forGate("swift-build", SWIFT_PM, QualityPreset.STANDARD))
+    assertThat(
+            PartialCheckDefaults.forGate(
+                "swift-build", SWIFT_PM, QualityPreset.STANDARD, List.of()))
         .isEmpty();
-    assertThat(PartialCheckDefaults.forGate("swift-test", SWIFT_PM, QualityPreset.STANDARD))
+    assertThat(
+            PartialCheckDefaults.forGate("swift-test", SWIFT_PM, QualityPreset.STANDARD, List.of()))
         .isEmpty();
-    assertThat(PartialCheckDefaults.forGate("swift-coverage", SWIFT_PM, QualityPreset.STANDARD))
+    assertThat(
+            PartialCheckDefaults.forGate(
+                "swift-coverage", SWIFT_PM, QualityPreset.STANDARD, List.of()))
         .isEmpty();
   }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 /**
  * Init choices for SwiftPM packages and Xcode projects with Swift sources. Tuist and XcodeGen
- * projects are not handled, and strict is refused.
+ * projects are not handled.
  */
 final class SwiftInitSupport implements ToolchainInitSupport {
   private static final Map<Language, SourceLanguageGates<SwiftTools>> LANGUAGES =
@@ -21,7 +21,6 @@ final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    refuseStrict(preset);
     final SwiftTools swift = tools(project, preset, inputs);
     return new Gates(SourceLanguages.of(LANGUAGES, project).analysisGates(swift), List.of());
   }
@@ -29,8 +28,7 @@ final class SwiftInitSupport implements ToolchainInitSupport {
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    refuseStrict(preset);
-    return SourceLanguages.of(LANGUAGES, project).presetGates(QualityPreset.STANDARD).stream()
+    return SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
         .filter(gate -> SwiftGates.appliesTo(project.buildTool(), gate))
         .toList();
   }
@@ -47,7 +45,7 @@ final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD);
+    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Override
@@ -59,14 +57,6 @@ final class SwiftInitSupport implements ToolchainInitSupport {
   @Override
   public String runner() {
     return SwiftCiSetup.RUNNER;
-  }
-
-  /** Strict is not available for Swift yet; the error suggests the standard preset. */
-  private static void refuseStrict(final QualityPreset preset) {
-    if (preset == QualityPreset.STRICT) {
-      throw new WardException(
-          "Strict is not available for Swift projects yet; use --preset standard.");
-    }
   }
 
   /** Builds the tools of {@code project} from its executables, Xcode metadata and sources. */
@@ -84,7 +74,8 @@ final class SwiftInitSupport implements ToolchainInitSupport {
         xcode
             ? scheme(ports.xcode().schemes(root), Optional.ofNullable(project.xcodeScheme()))
             : null,
-        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null);
+        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null,
+        ports.configs().userConfig(root, SwiftTools.SWIFTLINT_CONFIG).isPresent());
   }
 
   /**
