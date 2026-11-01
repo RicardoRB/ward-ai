@@ -38,20 +38,28 @@ Init reports these and writes nothing; say what to change before the user approv
 
 | Choice | When to ask | Option |
 |---|---|---|
-| Preset | Always; Swift offers `standard` only | `--preset standard` |
+| Preset | Always; Swift offers `standard` and `strict` | `--preset standard` or `--preset strict` |
 | Xcode scheme | Only when the project has several shared schemes | `--scheme <name>` |
 | Gates | Preset gates; the gate list follows the build tool | `--gate <id>[,<id>...]` |
 | Agent integration | Ask whether to add one | `--integration <id>` |
 | CI workflow | Ask whether to add one; it runs on `macos-26` | `--ci github` |
 
-Strict is not available for Swift yet. If the user asks for it, say that `--preset strict` fails
-without changing anything and that `standard` is the choice for now.
+Strict selects the standard gates with stricter commands: SwiftLint runs with `--strict` and the
+opt-in rules, compiler warnings are errors with complete concurrency checking, and coverage needs
+85%. Swift strict has no mutation gate, because no Swift mutation tool is mature enough yet. Say so
+when the user asks for mutation testing.
 
 ## Plan lines to expect
 
 - `swift-format`, `swiftlint`, then for SwiftPM `swift-build` and `swift-test`, or for Xcode
   `xcodebuild-test` with its scheme and platform.
-- `swift-coverage` with `minimum = 80`.
+- `swift-coverage` with `minimum = 80`, or `minimum = 85` under `strict`.
+- Under `strict`, the `swiftlint` command contains `--strict`, and the SwiftPM build, test and
+  coverage commands (or the Xcode test command) carry the warnings-as-errors and strict-concurrency
+  flags.
+- Under `strict` over a project's own `.swiftlint.yml`: `.ward/swiftlint-strict.yml` and a
+  `swiftlint` command with `--config .swiftlint.yml --config .ward/swiftlint-strict.yml`. Under
+  `standard`, that file is removed.
 - `.ward/swift-tools/Package.swift` pinning SwiftLintPlugins, resolved with `swift package resolve`.
   A failed resolve removes `.ward/swift-tools/` and changes nothing else.
 - `.swiftlint.yml` and `.swift-format`, each written only when absent.

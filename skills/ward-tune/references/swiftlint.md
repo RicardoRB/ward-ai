@@ -4,8 +4,14 @@
 
 - **SwiftLint:** `.swiftlint.yml` at the project root. Init writes a Ward-marked one with the
   `excluded:` list (`.build`, `.ward`, `Pods`, `Carthage`, `DerivedData`) and SwiftLint's default
-  rules. A project that already has its own `.swiftlint.yml` keeps it, and Ward never rewrites that
-  file, so changes go in that file.
+  rules; under `strict` it also carries the opt-in rules and `cyclomatic_complexity` at 10. A
+  project that already has its own `.swiftlint.yml` keeps it, and Ward never rewrites that file.
+- **Layered strict config:** when the project owns `.swiftlint.yml` and init runs with `strict`,
+  the strict rules live in `.ward/swiftlint-strict.yml` instead. The `swiftlint` gate runs
+  `--config .swiftlint.yml --config .ward/swiftlint-strict.yml --strict`, so the user's file is read
+  first and the strict file adds its rules on top. Tune the user's rules in `.swiftlint.yml`, and the
+  strict rules in `.ward/swiftlint-strict.yml`. Ward owns that second file, so changes to it are
+  overwritten by the next init; propose any change to a strict rule as a change to the preset.
 - **swift-format:** `.swift-format` (JSON) at the project root. Init writes it only when the file is
   absent, with the indentation of the project's sources, and never rewrites it afterwards. Ward
   cannot mark a JSON file, so treat it as the user's own from then on.
@@ -40,7 +46,7 @@
 
 ## Coverage
 
-The Swift coverage gate (`swift-coverage`) has `minimum = 80`. SwiftPM reads its coverage from
+The Swift coverage gate (`swift-coverage`) has `minimum = 80`, or `minimum = 85` under `strict`. SwiftPM reads its coverage from
 `swift test --show-codecov-path`; Xcode reads `.ward/reports/xcode/tests.xcresult` through
 `xcrun xccov`. Lowering the minimum is a weakening and needs approval; see
 [coverage.md](coverage.md#swift-coverage).

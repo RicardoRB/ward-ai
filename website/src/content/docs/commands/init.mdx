@@ -622,17 +622,30 @@ projects are not supported yet, and init stops with an error that names the mana
 
 ## Swift projects
 
-Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard`
-preset. It runs on macOS with Xcode 26.0 or newer. Tuist and XcodeGen projects stop init with an
+Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or
+`strict` preset. It runs on macOS with Xcode 26.0 or newer. Tuist and XcodeGen projects stop init with an
 error that names the generator.
 
 - **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
   older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
   Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
 - **Gates.** `swift-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
-  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` at an
-  80% minimum in the `pre-push` and `ci` profiles. `strict` is not available for Swift yet; init
-  refuses it and suggests `standard`.
+  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
+  `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
+- **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
+  Swift mutation tool is mature enough yet, so Swift strict stops at the checks below.
+
+  | Gate | `standard` | `strict` |
+  |---|---|---|
+  | `swift-format` | `swift format lint --strict` | same |
+  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
+  | `swift-build` (SwiftPM) | `swift build --build-tests` | adds `-Xswiftc -warnings-as-errors -Xswiftc -strict-concurrency=complete` |
+  | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
+  | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
+  | `swift-coverage` (SwiftPM) | `swift test --show-codecov-path`, `minimum = 80` | same flags as `swift-test`, `minimum = 85` |
+
+  The project's `Package.swift`, `project.pbxproj` and build settings are never edited; the compiler
+  flags and build settings are on the command line only.
 - **Xcode scheme and platform.** Init reads the schemes that the project shares, which are the
   `.xcscheme` files in each `xcshareddata/xcschemes` folder. Schemes Xcode creates for each target
   are not counted. One shared scheme is used. With
@@ -644,7 +657,12 @@ error that names the generator.
   nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
 - **Configs.** Init writes `.swiftlint.yml` and `.swift-format` only when the project has none. The
   `.swift-format` indentation follows the project's sources, so Xcode's 4-space templates pass.
-  Files the project keeps are never changed.
+  Files the project keeps are never changed. Under `strict`, Ward's `.swiftlint.yml` carries the
+  strict rules itself.
+- **Strict over your own `.swiftlint.yml`.** Strict leaves your file byte-for-byte unchanged and
+  writes an ownership-marked `.ward/swiftlint-strict.yml` with the strict rules. The `swiftlint` gate
+  then passes both files, yours first, so your `disabled_rules` and other keys still apply. Running
+  init with `standard` again removes that file.
 - **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
   JDK, Node, or Python for the Swift job.
 
