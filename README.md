@@ -29,13 +29,15 @@ team, and Ward checks every change against them, from the first edit to producti
 > [!NOTE]
 > **Ward is in alpha.** Today it supports **Java projects built with Maven or Gradle**,
 > **TypeScript and JavaScript projects** built with npm, pnpm, Yarn, or Bun (including Turborepo
-> workspaces), **Python projects** managed with uv, Poetry, or pip, and **Swift projects** built
-> with SwiftPM or Xcode on macOS (Xcode 26 or newer). Support for more languages is planned. The CLI
+> workspaces), **Python projects** managed with uv, Poetry, or pip, **Swift projects** built
+> with SwiftPM or Xcode on macOS (Xcode 26 or newer), and **Kotlin and Java Android projects** built
+> with Gradle and the Android Gradle Plugin. Support for more languages is planned. The CLI
 > and configuration may change before `1.0`.
 
 | Language | Build tools | Frameworks | Quality tools |
 |---|---|---|---|
 | Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
+| Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
@@ -195,6 +197,7 @@ ward check --profile ci --format json > ward-report.json
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Prettier, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ruff (format and lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
 | Swift | swift-format, SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Harmonize architecture rules |
+| Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 
 Ward runs the tools; the rules live in each tool's own configuration. For TypeScript and JavaScript
@@ -223,7 +226,7 @@ Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes.
 
 **Roadmap:**
 
-- Support for more languages beyond Java, TypeScript, JavaScript, Python, and Swift
+- Support for more languages beyond Java, Kotlin, TypeScript, JavaScript, Python, Swift, and Android
 - Shared Git hooks (for example through `core.hooksPath`), so teammates get the commit and push
   layers without a setup step
 - Homebrew tap, Scoop and winget packages, and container image
