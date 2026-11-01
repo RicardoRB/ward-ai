@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.InitGateOption;
@@ -20,7 +21,7 @@ import java.util.function.Predicate;
  * build-file and config writers with the member as root, then the workspace writer runs. The root
  * installs after this, so its single install sees every member's dependencies.
  */
-final class TurborepoMembers {
+final class TurborepoMembers implements MemberWriter {
   private final InitProjectFiles files;
   private final InitInputs inputs;
   private final List<BuildFileChange> builds = new ArrayList<>();
@@ -88,8 +89,53 @@ final class TurborepoMembers {
         .toList();
   }
 
+  /**
+   * Lists a Turborepo root's member changes and turbo.json, in the order they are applied; any
+   * other project has none.
+   */
+  static List<PlannedFileChange> planChanges(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved,
+      final MemberPlanning planning) {
+    if (!project.taskRunner().isRootRunner()) {
+      return List.of();
+    }
+    final List<TurborepoPlan.MemberPlan> members = plan(project, preset, planning.inputs());
+    final List<PlannedFileChange> changes = new ArrayList<>();
+    for (final TurborepoPlan.MemberPlan member : members) {
+      changes.addAll(planning.buildFiles(member.project(), member.gates(), preset, approved));
+      changes.addAll(planning.ruleFiles(member.project(), preset, member.gates()));
+      changes.add(
+          new PlannedFileChange(
+              member.project().root().resolve("package.json"),
+              PlannedFileChange.Action.MODIFY,
+              member.scripts().entrySet().stream()
+                  .map(script -> scriptDetail(member, script.getKey()))
+                  .toList()));
+    }
+    changes.add(
+        new PlannedFileChange(
+            project.root().resolve("turbo.json"),
+            PlannedFileChange.Action.MODIFY,
+            workspace(project.root(), members, gates).tasks().stream()
+                .map(task -> "add task " + task)
+                .toList()));
+    return changes;
+  }
+
+  /** Names a member script as added, or as a replacement that needs approval. */
+  private static String scriptDetail(final TurborepoPlan.MemberPlan member, final String script) {
+    return member.current().containsKey(script)
+            && !member.current().get(script).equals(member.scripts().get(script))
+        ? "replace " + script + " script (requires approval)"
+        : "add script " + script;
+  }
+
   /** Returns the scripts the last {@link #apply} kept, for the summary. */
-  List<String> kept() {
+  @Override
+  public List<String> kept() {
     return workspace == null ? List.of() : workspace.kept();
   }
 
@@ -97,7 +143,8 @@ final class TurborepoMembers {
    * Writes the members and turbo.json of {@code root}; does nothing for any other project. An
    * existing script that differs is replaced only when {@code replaceScripts} is set.
    */
-  void apply(
+  @Override
+  public void apply(
       final Project root,
       final List<InitGateOption> gates,
       final QualityPreset preset,
@@ -116,7 +163,8 @@ final class TurborepoMembers {
   }
 
   /** Undoes what {@link #apply} changed, last changed first. */
-  void rollback() {
+  @Override
+  public void rollback() {
     if (workspace != null) {
       files.buildTools().rollbackWorkspace(workspace);
     }

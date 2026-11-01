@@ -136,10 +136,10 @@ final class TurborepoPlan {
     final Project project = member.project();
     final PackageManifest manifest = manifest(member, inputs);
     final NodeTools tools = NodeTools.of(project, manifest, inputs, preset).withLinting(linting);
-    NodeInitSupport.refuseBiomeForAngular(project, tools);
+    NodeGates.refuseBiomeForAngular(project, tools);
     final Map<String, String> scripts = new LinkedHashMap<>();
     final List<InitGateOption> gates =
-        NodeInitSupport.languages(project, NodeTools.testGate(project, manifest), linting)
+        NodeGates.languages(project, NodeTools.testGate(project, manifest), linting)
             .analysisGates(tools);
     gates.forEach(
         gate ->

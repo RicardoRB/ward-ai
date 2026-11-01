@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -11,6 +12,8 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
@@ -19,6 +22,12 @@ final class JvmInitSupport implements ToolchainInitSupport {
   private static final int DEFAULT_CI_JDK = 25;
   private static final String ARCHUNIT = "archunit";
   private static final String COVERAGE = "coverage";
+  private static final String MULTI_MODULE_NO_ARCHUNIT =
+      "archunit is not offered for this Gradle build: its modules already enforce the dependency"
+          + " direction between them.";
+  private static final String SKIPPED_MODULES =
+      "These modules are left out of the gates that init places per module, because they have no"
+          + " Java sources or apply no Java or Kotlin JVM plugin: ";
   private static final List<String> ANDROID_GATES =
       List.of(
           SupportedQualityGates.ANDROID_LINT,
@@ -30,9 +39,9 @@ final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final BuildToolGates buildTool = buildToolGates(project, inputs.environment());
+    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment());
     final boolean multiModule = multiModuleKotlin(project, inputs.environment());
-    final boolean android = isAndroid(project);
+    final boolean android = project.framework() == Framework.ANDROID;
     return new Gates(
         analysisGates(project, buildTool, multiModule, android),
         buildTool.policyGates().stream()
@@ -65,7 +74,7 @@ final class JvmInitSupport implements ToolchainInitSupport {
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
     final boolean multiModule = multiModuleKotlin(project, inputs.environment());
-    final boolean android = isAndroid(project);
+    final boolean android = project.framework() == Framework.ANDROID;
     final List<String> gates =
         SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
             .filter(gate -> !(multiModule && ARCHUNIT.equals(gate)))
@@ -77,11 +86,6 @@ final class JvmInitSupport implements ToolchainInitSupport {
     return gates;
   }
 
-  /** Returns whether the project is an Android project built with Gradle. */
-  private static boolean isAndroid(final Project project) {
-    return project.framework() == Framework.ANDROID;
-  }
-
   /**
    * Returns whether a Gradle build has a Kotlin module below its root. Its module boundaries
    * already enforce the dependency direction, so ArchUnit is not offered there.
@@ -89,11 +93,6 @@ final class JvmInitSupport implements ToolchainInitSupport {
   static boolean multiModuleKotlin(final Project project, final EnvironmentInspection environment) {
     return project.buildTool() == BuildTool.GRADLE
         && !environment.gradleKotlinModules(project.root()).isEmpty();
-  }
-
-  @Override
-  public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
 
   @Override
@@ -112,24 +111,48 @@ final class JvmInitSupport implements ToolchainInitSupport {
         + "\n";
   }
 
-  private static BuildToolGates buildToolGates(
-      final Project project, final EnvironmentInspection environment) {
-    final boolean gradle = project.buildTool() == BuildTool.GRADLE;
-    final String executable = project.buildExecutable();
-    final String toolName = gradle ? "Gradle" : "Maven";
-    final String systemExecutable = gradle ? "gradle" : "mvn";
-    final boolean toolAvailable =
-        project.wrapperAvailable()
-            || environment.inspect(project.root()).hasExecutable(systemExecutable);
-    final String availability =
-        toolAvailable
-            ? toolName + " command available: " + executable
-            : toolName
-                + " is unavailable; install "
-                + toolName
-                + " or add a "
-                + toolName
-                + " Wrapper before running this gate.";
-    return new BuildToolGates(gradle, toolAvailable, availability, executable);
+  @Override
+  public List<InitGateOption> reuseTests(
+      final Project project, final List<InitGateOption> gates, final List<String> tests) {
+    return ArchUnitGateReuse.rewrite(project, gates, tests);
+  }
+
+  @Override
+  public List<GateOmission> omissions(
+      final Project project, final List<String> gateIds, final InitInputs inputs) {
+    return new JdkGates(inputs).omissions(project, gateIds);
+  }
+
+  @Override
+  public List<String> notes(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
+    final List<String> notes = new ArrayList<>();
+    final EnvironmentInspection environment = inputs.environment();
+    if (preset == QualityPreset.STRICT && multiModuleKotlin(project, environment)) {
+      notes.add(MULTI_MODULE_NO_ARCHUNIT);
+    }
+    final List<String> skipped = environment.skippedJvmModules(project.root());
+    if (!skipped.isEmpty()) {
+      notes.add(SKIPPED_MODULES + String.join(", ", skipped) + ".");
+    }
+    if (preset != null) {
+      new JdkGates(inputs)
+          .presetOmissions(project, preset).stream().map(GateOmission::note).forEach(notes::add);
+    }
+    return notes;
+  }
+
+  @Override
+  public Set<String> partialGates() {
+    return JvmPartialTables.GATES;
+  }
+
+  @Override
+  public Optional<PartialCheckDefaults.Table> partialTable(
+      final String gate,
+      final Project project,
+      final QualityPreset preset,
+      final List<String> command) {
+    return JvmPartialTables.forGate(gate, project, preset);
   }
 }

@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -57,18 +56,17 @@ final class OwnedSections {
               ".ward/reports/\nmutants/\n.coverage\n",
               false));
     }
-    if (project.toolchain() == Toolchain.SWIFT) {
-      sections.add(
-          new OwnedSection(
-              project.root().resolve(".gitignore"),
-              GITIGNORE_BEGIN,
-              GITIGNORE_END,
-              ".ward/reports/\n.ward/swift-tools/.build/\n"
-                  + (gates.stream().anyMatch(gate -> SwiftTools.HARMONIZE.equals(gate.id()))
-                      ? ArchitectureGates.HARMONIZE_PACKAGE + "/.build/\n"
-                      : ""),
-              false));
-    }
+    InitToolchains.find(project)
+        .flatMap(support -> support.gitignoreEntries(project, gates))
+        .ifPresent(
+            entries ->
+                sections.add(
+                    new OwnedSection(
+                        project.root().resolve(".gitignore"),
+                        GITIGNORE_BEGIN,
+                        GITIGNORE_END,
+                        entries,
+                        false)));
     if (selection.agentRules()) {
       sections.add(
           AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));

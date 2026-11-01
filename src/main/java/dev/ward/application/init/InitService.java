@@ -141,7 +141,7 @@ public class InitService {
     final Path installed = OpenSpecInstallation.install(toolInstaller, project, selection);
     final String executable = OpenSpecInstallation.executable(installed);
     final List<InitGateOption> gates =
-        ArchUnitGateReuse.rewrite(
+        InitToolchains.reuseTests(
             project,
             SelectedGates.resolve(catalog.get(), project, selection, executable),
             files.architectureTests().existingArchUnitTests(project));

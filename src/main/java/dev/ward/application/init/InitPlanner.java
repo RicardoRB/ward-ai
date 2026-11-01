@@ -21,6 +21,29 @@ final class InitPlanner {
   private final Supplier<InitSetupCatalog> catalog;
   private final IntegrationInstaller installer;
   private final InitProjectFiles files;
+  // A toolchain's members reuse this planner's build-file and rule-file changes.
+  private final MemberPlanning memberPlanning =
+      new MemberPlanning() {
+        @Override
+        public List<PlannedFileChange> buildFiles(
+            final Project project,
+            final List<InitGateOption> gates,
+            final QualityPreset preset,
+            final boolean approved) {
+          return InitPlanner.this.buildFiles(project, gates, preset, approved);
+        }
+
+        @Override
+        public List<PlannedFileChange> ruleFiles(
+            final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+          return files.ruleFiles().plan(project, preset, gates);
+        }
+
+        @Override
+        public InitInputs inputs() {
+          return catalog.get().inputs;
+        }
+      };
 
   InitPlanner(
       final Supplier<InitSetupCatalog> catalog,
@@ -40,7 +63,7 @@ final class InitPlanner {
     final List<String> existingArchUnitTests =
         files.architectureTests().existingArchUnitTests(project);
     final List<InitGateOption> gates =
-        ArchUnitGateReuse.rewrite(
+        InitToolchains.reuseTests(
             project,
             SelectedGates.resolve(catalog.get(), project, selection, executable),
             existingArchUnitTests);
@@ -52,9 +75,13 @@ final class InitPlanner {
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
     }
-    final List<TurborepoPlan.MemberPlan> members =
-        TurborepoMembers.plan(project, selection.preset(), catalog.get().inputs);
-    changes.addAll(turborepoPlan(project, members, gates, selection.preset(), approved));
+    changes.addAll(
+        InitToolchains.find(project)
+            .map(
+                support ->
+                    support.planMembers(
+                        project, gates, selection.preset(), approved, memberPlanning))
+            .orElse(List.of()));
     changes.addAll(buildFiles(project, gates, selection.preset(), approved));
     final List<PlannedFileChange> ruleFiles =
         files.ruleFiles().plan(project, selection.preset(), gates);
@@ -74,39 +101,11 @@ final class InitPlanner {
             ? Optional.of(OpenSpecDistribution.installation(project.root()))
             : Optional.empty(),
         gateInstallations,
-        TurborepoMembers.replacements(members));
-  }
-
-  /** Lists a Turborepo root's member changes and turbo.json, in the order they are applied. */
-  private List<PlannedFileChange> turborepoPlan(
-      final Project project,
-      final List<TurborepoPlan.MemberPlan> members,
-      final List<InitGateOption> gates,
-      final QualityPreset preset,
-      final boolean approved) {
-    if (!project.taskRunner().isRootRunner()) {
-      return List.of();
-    }
-    final List<PlannedFileChange> changes = new ArrayList<>();
-    for (final TurborepoPlan.MemberPlan member : members) {
-      changes.addAll(buildFiles(member.project(), member.gates(), preset, approved));
-      changes.addAll(files.ruleFiles().plan(member.project(), preset, member.gates()));
-      changes.add(
-          new PlannedFileChange(
-              member.project().root().resolve("package.json"),
-              PlannedFileChange.Action.MODIFY,
-              member.scripts().entrySet().stream()
-                  .map(script -> scriptDetail(member, script.getKey()))
-                  .toList()));
-    }
-    changes.add(
-        new PlannedFileChange(
-            project.root().resolve("turbo.json"),
-            PlannedFileChange.Action.MODIFY,
-            TurborepoMembers.workspace(project.root(), members, gates).tasks().stream()
-                .map(task -> "add task " + task)
-                .toList()));
-    return changes;
+        InitToolchains.find(project)
+            .map(
+                support ->
+                    support.scriptReplacements(project, selection.preset(), catalog.get().inputs))
+            .orElse(List.of()));
   }
 
   /** Lists a project's build file, then each module build script that would change. */
@@ -119,14 +118,6 @@ final class InitPlanner {
     changes.add(files.buildTools().plan(project, gates, preset, approved));
     changes.addAll(catalog.get().inputs.modules().planModules(project, gates, preset, approved));
     return changes;
-  }
-
-  /** Names a member script as added, or as a replacement that needs approval. */
-  private static String scriptDetail(final TurborepoPlan.MemberPlan member, final String script) {
-    return member.current().containsKey(script)
-            && !member.current().get(script).equals(member.scripts().get(script))
-        ? "replace " + script + " script (requires approval)"
-        : "add script " + script;
   }
 
   private List<PlannedGateInstallation> gateInstallations(

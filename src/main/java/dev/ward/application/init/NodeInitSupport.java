@@ -1,27 +1,67 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.config.WardException;
+import dev.ward.application.init.PartialCheckDefaults.Table;
+import dev.ward.domain.agent.PlannedFileChange;
+import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.Framework;
+import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
 final class NodeInitSupport implements ToolchainInitSupport {
+  @Override
+  public MemberWriter memberWriter(final InitProjectFiles files, final InitInputs inputs) {
+    return new TurborepoMembers(files, inputs);
+  }
+
+  @Override
+  public List<PlannedFileChange> planMembers(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved,
+      final MemberPlanning planning) {
+    return TurborepoMembers.planChanges(project, gates, preset, approved, planning);
+  }
+
+  @Override
+  public List<ScriptReplacement> scriptReplacements(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
+    return TurborepoMembers.replacements(TurborepoMembers.plan(project, preset, inputs));
+  }
+
+  @Override
+  public Set<String> partialGates() {
+    return NodePartialTables.GATES;
+  }
+
+  /** A Turborepo root runs its lint gates through turbo; other projects use their own tables. */
+  @Override
+  public Optional<Table> partialTable(
+      final String gate,
+      final Project project,
+      final QualityPreset preset,
+      final List<String> command) {
+    return TurboPartialDefaults.forGate(gate, project)
+        .or(() -> NodePartialTables.forGate(gate, project, preset));
+  }
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     if (project.taskRunner().isRootRunner()) {
-      return turborepoGates(project, preset, inputs);
+      return NodeGates.turborepo(project, preset, inputs);
     }
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
-    refuseBiomeForAngular(project, tools);
+    NodeGates.refuseBiomeForAngular(project, tools);
     return new Gates(
-        languages(project, tools.testGate(), tools.linting()).analysisGates(tools), List.of());
+        NodeGates.languages(project, tools.testGate(), tools.linting()).analysisGates(tools),
+        List.of());
   }
 
   @Override
@@ -30,43 +70,13 @@ final class NodeInitSupport implements ToolchainInitSupport {
     if (project.taskRunner().isRootRunner()) {
       final NodeLinting linting =
           NodeLinting.of(project, inputs.manifests().read(project.root()), inputs.configs());
-      return languages(project, TurborepoPlan.testGate(project, inputs), linting)
+      return NodeGates.languages(project, TurborepoPlan.testGate(project, inputs), linting)
           .presetGates(preset);
     }
     final PackageManifest manifest = inputs.manifests().read(project.root());
     final String testGate = NodeTools.testGate(project, manifest);
     final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
-    return languages(project, testGate, linting).presetGates(preset);
-  }
-
-  /**
-   * Returns the root's gates of a Turborepo workspace: the task gates run through turbo, with the
-   * test gate named after the members' majority runner.
-   */
-  private static Gates turborepoGates(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final PackageManifest manifest = inputs.manifests().read(project.root());
-    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
-    final String testGate = TurborepoPlan.testGate(project, inputs);
-    final NodeTools tools =
-        NodeTools.of(project, manifest, inputs, preset).withTestGate(testGate).withLinting(linting);
-    refuseBiomeForAngular(project, tools);
-    return new Gates(
-        TurborepoPlan.rootGates(
-            languages(project, testGate, linting).analysisGates(tools),
-            TaskRunnerStrategies.of(project).orElseThrow(),
-            project.buildTool()),
-        List.of());
-  }
-
-  /** Biome has no Angular template support, so a green Biome gate would hide template errors. */
-  static void refuseBiomeForAngular(final Project project, final NodeTools tools) {
-    if (project.framework() == Framework.ANGULAR && tools.linting().biome()) {
-      throw new WardException(
-          "Biome does not check Angular templates, so a passing biome gate would hide template"
-              + " errors. Lint this Angular project with eslint instead: remove biome from the"
-              + " project, then run init again.");
-    }
+    return NodeGates.languages(project, testGate, linting).presetGates(preset);
   }
 
   /** A JavaScript package without sources of its own, such as a monorepo root, is no project. */
@@ -77,24 +87,17 @@ final class NodeInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
+  public List<String> agentRules(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final Set<String> owned) {
+    return NodeAgentRules.lines(project, gates, preset, owned);
   }
 
   @Override
   public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
     final PackageManifest manifest = facts.manifest();
     return NodeCiSetup.steps(project, manifest.packageManager());
-  }
-
-  static SourceLanguages<NodeTools> languages(
-      final Project project, final String testGate, final NodeLinting linting) {
-    return SourceLanguages.of(
-        Map.<Language, SourceLanguageGates<NodeTools>>of(
-            Language.TYPESCRIPT,
-            new TypeScriptGates(project.framework(), testGate, linting),
-            Language.JAVASCRIPT,
-            new JavaScriptGates(testGate, linting)),
-        project);
   }
 }

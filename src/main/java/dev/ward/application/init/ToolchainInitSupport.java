@@ -1,12 +1,13 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.List;
 
 /** The init choices that depend on a project's toolchain. */
-interface ToolchainInitSupport {
+interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
   /**
    * Returns the gates that run through the toolchain's build tool, with availability resolved;
    * {@code preset} is the selected preset, or {@code null} for a custom selection or a gate list.
@@ -33,7 +34,30 @@ interface ToolchainInitSupport {
   }
 
   /** Returns the presets init offers for the toolchain, in wizard order. */
-  List<QualityPreset> presets();
+  default List<QualityPreset> presets() {
+    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
+  }
+
+  /** Returns the gates of {@code gateIds} that the project's runtime cannot run. */
+  default List<GateOmission> omissions(
+      final Project project, final List<String> gateIds, final InitInputs inputs) {
+    return List.of();
+  }
+
+  /**
+   * Returns {@code gates} with the toolchain's ArchUnit gate running the user's existing {@code
+   * tests}; the default leaves the gates as they are.
+   */
+  default List<InitGateOption> reuseTests(
+      final Project project, final List<InitGateOption> gates, final List<String> tests) {
+    return gates;
+  }
+
+  /** Returns the plan and output notes the toolchain adds for {@code project}. */
+  default List<String> notes(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
+    return List.of();
+  }
 
   /**
    * Returns the CI workflow steps that set up the toolchain, each line ending in a newline; {@code

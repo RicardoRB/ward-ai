@@ -1,7 +1,10 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,5 +145,26 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     final List<String> command = new ArrayList<>(List.of(arguments));
     command.addFirst(executable);
     return new InitGateOption(id, description, command, available, availability + note);
+  }
+
+  /** Returns the Maven or Gradle gate choices with the tool's availability resolved. */
+  static BuildToolGates of(final Project project, final EnvironmentInspection environment) {
+    final boolean gradle = project.buildTool() == BuildTool.GRADLE;
+    final String executable = project.buildExecutable();
+    final String toolName = gradle ? "Gradle" : "Maven";
+    final String systemExecutable = gradle ? "gradle" : "mvn";
+    final boolean toolAvailable =
+        project.wrapperAvailable()
+            || environment.inspect(project.root()).hasExecutable(systemExecutable);
+    final String availability =
+        toolAvailable
+            ? toolName + " command available: " + executable
+            : toolName
+                + " is unavailable; install "
+                + toolName
+                + " or add a "
+                + toolName
+                + " Wrapper before running this gate.";
+    return new BuildToolGates(gradle, toolAvailable, availability, executable);
   }
 }

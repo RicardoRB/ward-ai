@@ -30,7 +30,7 @@ final class InitChanges {
   private final IntegrationInstaller installer;
   private final InitSetupCatalog catalog;
   private final QualityHookGeneration qualityHooks;
-  private final TurborepoMembers turborepo;
+  private final MemberWriter members;
   private final List<IntegrationResult> installed = new ArrayList<>();
   private final List<OwnedSectionChange> sectionChanges = new ArrayList<>();
   private BuildFileChange pomChange;
@@ -50,7 +50,10 @@ final class InitChanges {
     this.installer = installer;
     this.catalog = catalog;
     this.qualityHooks = catalog.qualityHooks();
-    this.turborepo = new TurborepoMembers(files, catalog.inputs);
+    this.members =
+        InitToolchains.find(project)
+            .map(support -> support.memberWriter(files, catalog.inputs))
+            .orElse(MemberWriter.NONE);
   }
 
   void apply(
@@ -66,7 +69,7 @@ final class InitChanges {
         throw new WardException(qualityHookChange.result().message());
       }
     }
-    turborepo.apply(project, gates, preset, replaceScripts, approval);
+    members.apply(project, gates, preset, replaceScripts, approval);
     pomChange = files.buildTools().apply(project, gates, preset, approval);
     ruleFileChange = files.ruleFiles().apply(project, preset, gates);
     if (gates.stream().anyMatch(gate -> ArchitectureGates.IDS.contains(gate.id()))) {
@@ -105,7 +108,7 @@ final class InitChanges {
         appliedPom.tools(),
         architectureTest,
         ruleFileChange == null ? List.of() : ruleFileChange.preserved(),
-        Stream.of(appliedPom.warnings().stream(), warnings.stream(), turborepo.kept().stream())
+        Stream.of(appliedPom.warnings().stream(), warnings.stream(), members.kept().stream())
             .flatMap(stream -> stream)
             .toList(),
         sectionChanges.stream()
@@ -119,7 +122,7 @@ final class InitChanges {
     files.architectureTests().rollback(architectureTest);
     files.ruleFiles().rollback(ruleFileChange);
     files.buildTools().rollback(pomChange);
-    turborepo.rollback();
+    members.rollback();
     qualityHooks.rollback(qualityHookChange);
     installer.rollbackNew(project, integrationIds, installed);
   }
