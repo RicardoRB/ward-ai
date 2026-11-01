@@ -17,7 +17,7 @@ public record GateReportPorts(
     MutationReport stryker,
     MutationReport pit,
     MutationReport mutmut,
-    SwiftGatePorts swift) {
+    PlatformGatePorts swift) {
 
   /** Creates the ports without the Swift ones. */
   public GateReportPorts(
@@ -25,6 +25,6 @@ public record GateReportPorts(
       final MutationReport stryker,
       final MutationReport pit,
       final MutationReport mutmut) {
-    this(directories, stryker, pit, mutmut, SwiftGatePorts.NONE);
+    this(directories, stryker, pit, mutmut, PlatformGatePorts.NONE);
   }
 }

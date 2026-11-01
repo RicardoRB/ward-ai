@@ -34,6 +34,7 @@ public final class CommandTypeInference {
           "openapi-compat",
           "swift-coverage",
           "harmonize",
+          "android-coverage",
           COMMAND);
 
   private static final String MAVEN = "mvn";
@@ -103,7 +104,9 @@ public final class CommandTypeInference {
                   sequence("SwiftLintBinary", "lint"))),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
-          new Rule("xcodebuild-test", sequence("xcodebuild", "test")));
+          new Rule("xcodebuild-test", sequence("xcodebuild", "test")),
+          new Rule("android-lint", sequence("lintDebug")),
+          new Rule("android-unit-test", sequence("testDebugUnitTest")));
 
   /** One row: the type a command gets when {@code matches} accepts it. */
   private record Rule(String type, Predicate<List<String>> matches) {}

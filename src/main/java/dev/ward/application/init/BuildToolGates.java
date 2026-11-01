@@ -1,11 +1,18 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** Gate choices that run through the project's Maven or Gradle executable. */
 record BuildToolGates(boolean gradle, boolean available, String availability, String executable) {
+  /** The line coverage minimum of the Android coverage gate, in percent. */
+  // shortcut: one minimum for both presets; strict should raise it to 85 like Swift.
+  static final int ANDROID_COVERAGE_MINIMUM = 80;
+
+  private static final String MINIMUM = "minimum";
 
   /** Runs the project's tests. */
   InitGateOption tests() {
@@ -57,6 +64,25 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     return option(id, description, "", task(gradleTask, mavenTask));
   }
 
+  /**
+   * Gates for an Android project's modules: Android Lint and the debug unit tests through AGP's
+   * tasks, and coverage at {@link #ANDROID_COVERAGE_MINIMUM} percent.
+   */
+  List<InitGateOption> androidGates() {
+    return List.of(
+        tool(
+            SupportedQualityGates.ANDROID_LINT,
+            "Checks Android sources with Android Lint, debug variant.",
+            "lintDebug",
+            "lintDebug"),
+        tool(
+            SupportedQualityGates.ANDROID_UNIT_TEST,
+            "Runs the debug unit tests.",
+            "testDebugUnitTest",
+            "testDebugUnitTest"),
+        androidCoverage());
+  }
+
   /** Gates that enforce build, license, compatibility, or custom policies, in wizard order. */
   List<InitGateOption> policyGates() {
     return List.of(
@@ -95,6 +121,16 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     return gradle
         ? option("api-compat", description, note, "japicmp")
         : option("api-compat", description, note, "-DskipTests", "package", "japicmp:cmp");
+  }
+
+  private InitGateOption androidCoverage() {
+    return new InitGateOption(
+        SupportedQualityGates.ANDROID_COVERAGE,
+        "Fails below the line coverage minimum of the debug unit tests.",
+        List.of(executable, "createDebugUnitTestCoverageReport"),
+        available,
+        availability,
+        Map.of(MINIMUM, String.valueOf(ANDROID_COVERAGE_MINIMUM)));
   }
 
   private String task(final String gradleTask, final String mavenTask) {

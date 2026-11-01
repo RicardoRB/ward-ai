@@ -55,6 +55,9 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
 | | `harmonize` | Harmonize | Check architecture rules in the generated `.ward/swift-architecture` package. |
+| Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
+| | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
+| | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
 | Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
@@ -296,6 +299,27 @@ profiles = ["pre-push"]
 - A missing, unreadable or empty report is an execution error, never a pass.
 - Coverage of an unconventional layout, such as tests outside a `Tests` directory, counts the test
   files as production code.
+
+
+### Android coverage
+
+An `android-coverage` check needs `minimum`, the lowest line coverage in percent. Its command runs
+`createDebugUnitTestCoverageReport`, which writes the debug unit tests' JaCoCo XML report for each
+Android module, and Ward sums those reports. Init writes it with a minimum of 80.
+
+```toml
+[checks.android-coverage]
+uses = "android-coverage"
+command = ["./gradlew", "createDebugUnitTestCoverageReport"]
+minimum = 80
+profiles = ["pre-push", "ci"]
+```
+
+- A missing report, or one with no executable lines, is an execution error and never a pass.
+- Init turns on the debug unit-test coverage in each Android module script. The `android-lint`
+  and `android-unit-test` gates need no block, since they run AGP's own tasks.
+- The report path, `build/reports/coverage/test/debug/report.xml`, is assumed and not yet checked
+  against a live AGP build.
 
 ### Harmonize architecture rules
 

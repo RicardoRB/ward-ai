@@ -103,6 +103,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
     observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
     observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
+    observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     LOGGER.log(
         Level.INFO,
         () -> "event=environment-inspection status=complete available=" + available.size());

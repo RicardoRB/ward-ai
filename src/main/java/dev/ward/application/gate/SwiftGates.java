@@ -51,13 +51,6 @@ final class SwiftGates {
         check.command().stream().anyMatch(token -> token.endsWith(XCCOV))
             ? reports.swift().xccov()
             : reports.swift().llvmCov();
-    if (check.minimum() == null || report == null) {
-      throw new WardException(
-          "The '" + check.name() + "' check needs a minimum line coverage to check.");
-    }
-    return new CoverageMinimumGate(
-        new CommandQualityGate(check.name(), executor, check.command(), reports.directories()),
-        report,
-        check.minimum());
+    return CoverageGates.minimum(check, executor, reports, report);
   }
 }

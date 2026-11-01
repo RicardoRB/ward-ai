@@ -3,8 +3,9 @@ package dev.ward.config;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.gate.GateReportPorts;
-import dev.ward.application.gate.SwiftGatePorts;
+import dev.ward.application.gate.PlatformGatePorts;
 import dev.ward.domain.gate.ReportDirectories;
+import dev.ward.infrastructure.finding.AndroidJacocoCoverageReport;
 import dev.ward.infrastructure.finding.FileSystemReportDirectories;
 import dev.ward.infrastructure.finding.LlvmCovCoverageReport;
 import dev.ward.infrastructure.finding.MutmutMetaMutationReport;
@@ -28,15 +29,16 @@ final class ReportBindingsModule {
       final StrykerJsonMutationReport stryker,
       final PitXmlMutationReport pit,
       final MutmutMetaMutationReport mutmut,
-      final SwiftGatePorts swift) {
+      final PlatformGatePorts swift) {
     return new GateReportPorts(directories, stryker, pit, mutmut, swift);
   }
 
   @Provides
-  static SwiftGatePorts swiftGatePorts(
+  static PlatformGatePorts platformGatePorts(
       final SimctlSimulators simulators,
       final LlvmCovCoverageReport llvmCov,
-      final XccovCoverageReport xccov) {
-    return new SwiftGatePorts(simulators, llvmCov, xccov);
+      final XccovCoverageReport xccov,
+      final AndroidJacocoCoverageReport android) {
+    return new PlatformGatePorts(simulators, llvmCov, xccov, android);
   }
 }

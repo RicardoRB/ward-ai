@@ -15,6 +15,9 @@ public final class SupportedQualityGates {
   public static final String XCODEBUILD_TEST = "xcodebuild-test";
   public static final String SWIFT_COVERAGE = "swift-coverage";
   public static final String HARMONIZE = "harmonize";
+  public static final String ANDROID_LINT = "android-lint";
+  public static final String ANDROID_UNIT_TEST = "android-unit-test";
+  public static final String ANDROID_COVERAGE = "android-coverage";
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 

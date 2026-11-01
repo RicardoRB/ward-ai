@@ -133,8 +133,11 @@ minimum = 80
 profiles = ["pre-push"]
 ```
 
-`minimum` on any other check, a missing `minimum` on `swift-coverage`, or a value that is not an
-integer from 0 to 100, is a configuration error that names the key.
+An `android-coverage` check requires `minimum` the same way; see
+[Android coverage](/configuration/gates/#android-coverage).
+
+`minimum` on any other check, a missing `minimum` on `swift-coverage` or `android-coverage`, or a
+value that is not an integer from 0 to 100, is a configuration error that names the key.
 
 ## Xcode test platform
 

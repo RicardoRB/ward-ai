@@ -49,7 +49,7 @@ class SwiftGatesTest {
             null,
             null,
             null,
-            new SwiftGatePorts(
+            new PlatformGatePorts(
                 root -> Simulator.ready("device"),
                 (project, stdout) -> LineCoverage.of(1, 1),
                 (project, stdout) -> LineCoverage.of(1, 1))),

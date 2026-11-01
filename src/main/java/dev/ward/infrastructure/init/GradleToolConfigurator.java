@@ -12,6 +12,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.ScriptEdit;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.project.GradleAndroidModules;
 import dev.ward.infrastructure.project.GradleKotlinModules;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -173,6 +174,7 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
             .collect(Collectors.toSet());
     final GradleBuildFileEdit root = GradleBuildFileEdit.read(buildFile);
     final List<Path> kotlinModules = GradleKotlinModules.of(project.root());
+    final List<Path> androidModules = GradleAndroidModules.of(project.root());
     final boolean rootJvm =
         GradleKotlinModules.appliesJava(root.original())
             || GradleKotlinModules.appliesKotlinJvm(root.original());
@@ -189,6 +191,9 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
     final List<GradleBuildFileEdit> modules = new ArrayList<>();
     for (final Path module : kotlinModules) {
       modules.add(GradleScriptPlacement.moduleEdit(module, PLUGINS, moduleGates, preset, versions));
+    }
+    for (final Path module : androidModules) {
+      modules.add(GradleScriptPlacement.androidModuleEdit(module, selected));
     }
     GradleScriptPlacement.logPlacement(project, kotlinModules, rootJvm);
     if (kotlinModules.isEmpty()
