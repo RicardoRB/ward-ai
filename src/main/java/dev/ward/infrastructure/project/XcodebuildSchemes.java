@@ -106,20 +106,17 @@ public final class XcodebuildSchemes implements XcodeSchemes {
   /** Reads the schemes of the workspace, or of the project when there is no workspace. */
   private List<String> schemesOf(final String json) {
     try {
-      final Map<?, ?> list = objectOf(codec.fromJson(json, Object.class));
+      final Object parsed = codec.fromJson(json, Object.class);
+      final Map<?, ?> list = parsed instanceof Map<?, ?> map ? map : Map.of();
       final Object container =
           list.get("workspace") != null ? list.get("workspace") : list.get("project");
-      final Object schemes = objectOf(container).get("schemes");
+      final Object schemes = container instanceof Map<?, ?> named ? named.get("schemes") : null;
       return schemes instanceof List<?> names
           ? names.stream().filter(String.class::isInstance).map(String.class::cast).toList()
           : List.of();
     } catch (JsonCodecException e) {
       throw new WardException("xcodebuild -list printed JSON Ward could not read.", e);
     }
-  }
-
-  private static Map<?, ?> objectOf(final Object value) {
-    return value instanceof Map<?, ?> map ? map : Map.of();
   }
 
   private static List<String> sdkRoots(final String pbxproj) {
