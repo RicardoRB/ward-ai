@@ -151,6 +151,7 @@ class NodeAngularCompatibilityTest {
         root,
         Set.of(),
         node,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

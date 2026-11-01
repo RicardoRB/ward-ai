@@ -114,7 +114,8 @@ class InitJdkOmissionTest {
         List.of(),
         false,
         null,
-        false);
+        false,
+        null);
   }
 
   /** Writes Maven tools with their default versions, and omits {@code format} as on JDK 8. */

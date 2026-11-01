@@ -58,9 +58,11 @@ class BiomeRenderingTest {
   @Test
   void partialBiomeCommandNarrowsToEditedFiles() {
     final PartialCheckDefaults.Table standard =
-        PartialCheckDefaults.forGate(BIOME, project(), QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate(BIOME, project(), QualityPreset.STANDARD, List.of())
+            .orElseThrow();
     final PartialCheckDefaults.Table strict =
-        PartialCheckDefaults.forGate(BIOME, project(), QualityPreset.STRICT).orElseThrow();
+        PartialCheckDefaults.forGate(BIOME, project(), QualityPreset.STRICT, List.of())
+            .orElseThrow();
 
     assertThat(standard.command())
         .containsExactly(
@@ -86,6 +88,7 @@ class BiomeRenderingTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

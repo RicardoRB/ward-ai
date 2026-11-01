@@ -1,0 +1,9 @@
+error: SwiftCompile normal arm64 /repo/Sources/App/Price.swift failed with a nonzero exit code. Command line:     cd /
+    builtin-SwiftPerFileCompile Price.swift
+/repo/Sources/App/Price.swift:1:37: [1;31merror: [1;39mcannot convert return expression of type 'String' to return type 'Int'[0;0m
+[0;36m1 |[0;0m public func price() -> Int { return [4;39m"free"[0;0m }
+  [0;36m|[0;0m                                     `- [1;31merror: [1;39mcannot convert return expression of type 'String' to return type 'Int'[0;0m
+[0;36m2 |[0;0m 
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /repo/.build/out/Intermediates.noindex/Shop.build/Debug/App-t.build/DerivedSources/resource_bundle_accessor.swift /repo/Sources/App/Cart.swift -primary-file
+error: Build failed

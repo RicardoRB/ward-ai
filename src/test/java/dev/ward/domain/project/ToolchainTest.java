@@ -31,7 +31,32 @@ class ToolchainTest {
                 Map.entry(BuildTool.PIP, Toolchain.PYTHON),
                 Map.entry(BuildTool.GO, Toolchain.GO),
                 Map.entry(BuildTool.CARGO, Toolchain.RUST),
-                Map.entry(BuildTool.DOTNET, Toolchain.DOTNET)));
+                Map.entry(BuildTool.DOTNET, Toolchain.DOTNET),
+                Map.entry(BuildTool.SWIFTPM, Toolchain.SWIFT),
+                Map.entry(BuildTool.XCODE, Toolchain.SWIFT),
+                Map.entry(BuildTool.TUIST, Toolchain.SWIFT),
+                Map.entry(BuildTool.XCODEGEN, Toolchain.SWIFT)));
+  }
+
+  @Test
+  void swiftProjectsBuildWithSwiftOrXcodebuild() {
+    final Map<BuildTool, String> executables =
+        Arrays.stream(BuildTool.values())
+            .filter(tool -> tool.toolchain() == Toolchain.SWIFT)
+            .collect(
+                Collectors.toMap(
+                    tool -> tool,
+                    tool ->
+                        new Project(Path.of("app"), Language.SWIFT, tool, Framework.NONE)
+                            .buildExecutable()));
+
+    assertThat(executables)
+        .containsExactlyInAnyOrderEntriesOf(
+            Map.of(
+                BuildTool.SWIFTPM, "swift",
+                BuildTool.XCODE, "xcodebuild",
+                BuildTool.TUIST, "xcodebuild",
+                BuildTool.XCODEGEN, "xcodebuild"));
   }
 
   @Test

@@ -29,7 +29,8 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
-| `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the `archunit` and `dependency-cruiser` gates. |
+| `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the architecture gates: `archunit`, `dependency-cruiser`, `import-linter` and `harmonize`. |
+| `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
 | `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `trivy` or `openspec`. |
@@ -667,6 +668,74 @@ projects are not supported yet, and init stops with an error that names the mana
 - An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
   The root package comes from `[project] name` under `src/`. Init stops when it finds no single
   root package.
+
+## Swift projects
+
+Init sets up SwiftPM packages and Xcode projects that contain Swift sources, with the `standard` or
+`strict` preset. It runs on macOS with Xcode 26.0 or newer. Tuist and XcodeGen projects stop init with an
+error that names the generator.
+
+- **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
+  older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
+  Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
+- **Gates.** `swift-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
+  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
+  `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
+- **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
+  Swift mutation tool is mature enough yet, so Swift strict stops at the checks below.
+- **Proven versions.** CI proves the Swift setup on Xcode 26.0.1 and Xcode 26.6, with SwiftLintPlugins
+  0.65.1 and Harmonize 1.3.0. Init pins those tools for the selected Xcode, within the range Ward's
+  tools cover (Xcode 26.0 up to 28.0). When no pinned version covers the selected Xcode, init leaves out
+  the `swiftlint` or `harmonize` gate and the plan names the Xcode versions Ward supports for it.
+
+  | Gate | `standard` | `strict` |
+  |---|---|---|
+  | `swift-format` | `swift format lint --strict` | same |
+  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), without `trailing_comma` (swift-format owns trailing commas), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
+  | `swift-build` (SwiftPM) | `swift build --build-tests` | adds `-Xswiftc -warnings-as-errors -Xswiftc -strict-concurrency=complete` |
+  | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
+  | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
+  | `swift-coverage` (SwiftPM) | `swift test --show-codecov-path`, `minimum = 80` | same flags as `swift-test`, `minimum = 85` |
+  | `harmonize` (architecture rules) | not selected; opt-in | selected, `swift test --package-path .ward/swift-architecture` |
+
+  The project's `Package.swift`, `project.pbxproj` and build settings are never edited; the compiler
+  flags and build settings are on the command line only.
+- **Xcode scheme and platform.** Init reads the schemes that the project shares, which are the
+  `.xcscheme` files in each `xcshareddata/xcschemes` folder. Schemes Xcode creates for each target
+  are not counted. One shared scheme is used. With
+  several, the wizard asks, or `--scheme <name>` chooses one; `--yes` without `--scheme` fails and
+  names the schemes. The test platform is `iOS Simulator`, or `macOS` when every target builds only
+  for macOS.
+- **Ward's SwiftLint.** SwiftLint is pinned in an ownership-marked `.ward/swift-tools/Package.swift`
+  and resolved with `swift package resolve`. A failed resolve removes `.ward/swift-tools/` and changes
+  nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
+- **Configs.** Init writes `.swiftlint.yml` and `.swift-format` only when the project has none. The
+  `.swift-format` indentation follows the project's sources, so Xcode's 4-space templates pass.
+  Files the project keeps are never changed. Under `strict`, Ward's `.swiftlint.yml` carries the
+  strict rules itself.
+- **Strict over your own `.swiftlint.yml`.** Strict leaves your file byte-for-byte unchanged and
+  writes an ownership-marked `.ward/swiftlint-strict.yml` with the strict rules. The `swiftlint` gate
+  then passes both files, yours first, so your `disabled_rules` and other keys still apply. Running
+  init with `standard` again removes that file.
+- **Architecture rules (`harmonize`).** Selecting `harmonize` asks for the architecture style, as the
+  other architecture gates do; `--architecture` chooses it, and `--yes` uses `layered`. Ward writes an
+  ownership-marked `.ward/swift-architecture/` package that pins [Harmonize](https://github.com/perrystreetsoftware/Harmonize)
+  1.3.0 exactly, with one generated rules test for the style. Harmonize reads the sources with
+  SwiftSyntax and never compiles the app, so `Package.swift` and `project.pbxproj` are not edited and
+  no test target is added. Layers are folders at any depth, matched ignoring case, and a layer
+  folder that does not exist passes. `layered` forbids `controller` code from depending on
+  `repository`; `hexagonal` forbids `domain` and `application` from depending on `adapter` and
+  `infrastructure`; `clean` forbids `domain` and `core` from depending on `controller`, `adapter`
+  and `infrastructure`. A dependency means importing a module with a forbidden layer's name, or
+  naming a type declared under a forbidden folder in an inheritance clause, property, parameter or
+  return type.
+- **Root config.** Harmonize finds the project root by `.harmonize.yaml`, so Ward writes one with its
+  marker, excluding `.ward`, `.build`, `Pods`, `Carthage` and `DerivedData`. A `.harmonize.yaml` you
+  keep is left unchanged, and the plan asks you to add `.ward` to its excludes.
+- **First run.** The first `harmonize` run compiles swift-syntax, which takes about half a minute on a
+  laptop. CI caches `.ward/swift-architecture/.build`, and `.gitignore` names that path.
+- **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
+  JDK, Node, or Python for the Swift job.
 
 ## Tools init can install
 

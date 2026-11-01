@@ -75,6 +75,7 @@ class InitOpenSpecIgnoreWarningTest {
                 List.of(),
                 false,
                 null,
-                false));
+                false,
+                null));
   }
 }

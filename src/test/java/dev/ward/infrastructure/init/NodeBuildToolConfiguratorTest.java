@@ -141,7 +141,8 @@ class NodeBuildToolConfiguratorTest {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     final Throwable thrown =
         catchThrowable(() -> configurator.apply(angular, gates("ng-test", "eslint")));
 
@@ -178,7 +179,8 @@ class NodeBuildToolConfiguratorTest {
         root,
         Set.of(),
         node,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static List<InitGateOption> gates(final String... ids) {

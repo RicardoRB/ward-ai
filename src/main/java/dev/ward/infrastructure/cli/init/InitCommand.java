@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.application.init.InitService;
-import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.domain.init.RawTerminal;
 import dev.ward.domain.init.RawTerminal.RawSession;
 import dev.ward.domain.project.Project;
@@ -41,6 +40,8 @@ public class InitCommand implements Callable<Integer> {
 
   // Picocli assigns annotated fields reflectively, so they cannot be final.
   @Mixin private final GeneratedFileOptions generatedFiles = new GeneratedFileOptions();
+
+  @Mixin private final XcodeSchemeOptions schemeOptions = new XcodeSchemeOptions();
 
   // Picocli assigns annotated fields reflectively, so they cannot be final.
   @Option(
@@ -175,14 +176,17 @@ public class InitCommand implements Callable<Integer> {
     final InitWizard wizard = new InitWizard(prompt, this::openRawTerminal, output(), terminal);
     final List<Project> chosen =
         InitProjectChoice.choose(
-            init.targets(options.directory(), projects == null ? List.of() : projects),
-            options.directory(),
-            terminal && !yesOption,
-            wizard,
-            output());
-    final InitSetupCatalog catalog = init.catalog();
+                init.targets(options.directory(), projects == null ? List.of() : projects),
+                options.directory(),
+                terminal && !yesOption,
+                wizard,
+                output())
+            .stream()
+            .map(project -> project.withXcodeScheme(schemeOptions.scheme()))
+            .toList();
     if (removeQualityHooks) {
-      chosen.forEach(project -> output().println(catalog.removeQualityHooks(project).message()));
+      chosen.forEach(
+          project -> output().println(init.catalog().removeQualityHooks(project).message()));
       return ExitCodes.OK;
     }
     final InitConfirmations confirmations = new InitConfirmations(prompt, output(), terminal);
@@ -225,7 +229,8 @@ public class InitCommand implements Callable<Integer> {
         qualityHooks,
         generatedFiles.ci(),
         generatedFiles.agentRules(),
-        yesOption);
+        yesOption,
+        schemeOptions.scheme());
   }
 
   private Optional<RawSession> openRawTerminal() {

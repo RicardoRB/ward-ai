@@ -31,6 +31,15 @@ class DoctorToolchainTest {
   }
 
   @Test
+  void swiftProjectIsCheckedInsteadOfWarnedAsUnchecked() {
+    final List<Finding> findings =
+        diagnose(new Project(ROOT, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE));
+
+    assertThat(findings).extracting(Finding::name).contains("swift").doesNotContain("swiftpm");
+    assertThat(findings).extracting(Finding::message).noneMatch(m -> m.contains("does not check"));
+  }
+
+  @Test
   void mavenWithoutWrapperOrExecutableIsAnError() {
     final List<Finding> findings =
         diagnose(new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.NONE));

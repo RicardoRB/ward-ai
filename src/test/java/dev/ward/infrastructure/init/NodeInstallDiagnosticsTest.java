@@ -48,7 +48,8 @@ class NodeInstallDiagnosticsTest {
                   root,
                   Set.of(),
                   "24",
-                  TaskRunner.NONE),
+                  TaskRunner.NONE,
+                  null),
               List.of(new InitGateOption("prettier", "Prettier", List.of("npx"), true, "ok")));
     } finally {
       logger.removeHandler(handler);

@@ -11,7 +11,6 @@ import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PomToolConfigurator;
@@ -35,6 +34,8 @@ final class InitCommandFixture {
   private final BuildToolConfiguration buildTools;
   private final String[] executables;
   private final StringWriter output = new StringWriter();
+  private dev.ward.application.init.SwiftPorts swiftPorts =
+      dev.ward.application.init.SwiftPorts.NONE;
 
   InitCommandFixture(final Path root) throws IOException {
     this(root, new PomToolConfigurator());
@@ -89,6 +90,12 @@ final class InitCommandFixture {
     return new InitCommandFixture(root, false, tools, executables);
   }
 
+  /** Gives init the Swift ports a Swift project reads its Xcode schemes and configs through. */
+  InitCommandFixture withSwiftPorts(final dev.ward.application.init.SwiftPorts ports) {
+    this.swiftPorts = ports;
+    return this;
+  }
+
   /** Runs init with piped input. */
   int run(final String input, final String... args) {
     return run(false, input, args);
@@ -109,7 +116,8 @@ final class InitCommandFixture {
                         new FileSystemNodeToolConfigs()),
                     buildTools,
                     new dev.ward.infrastructure.project.FileSystemPythonToolConfigs(),
-                    dev.ward.domain.init.BuildModulePlanning.none()),
+                    new dev.ward.application.init.ToolchainPorts(
+                        swiftPorts, dev.ward.domain.init.BuildModulePlanning.none())),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),
@@ -119,7 +127,7 @@ final class InitCommandFixture {
                     new dev.ward.infrastructure.project.FileSystemPackageManifests(),
                     new FileSystemNodeToolConfigs(),
                     new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
-                new ArchitectureTestGenerator(),
+                ProductionArchitectureRules.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));
     final CommandLine command =

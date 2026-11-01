@@ -52,7 +52,16 @@ class CommandTypeInferenceTest {
         "biome|npx biome check .",
         "openspec|openspec validate --all",
         "openspec|/usr/local/bin/openspec validate --all",
-        "enforcer|./mvnw enforcer:enforce"
+        "enforcer|./mvnw enforcer:enforce",
+        "swift-format|swift format lint --strict --recursive Sources Tests",
+        "swiftlint|swiftlint lint --reporter json",
+        "swiftlint|swift run --package-path .ward/swift-tools SwiftLintBinary lint --reporter json",
+        "swiftlint|.ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint lint --reporter json --quiet",
+        "swift-build|swift build --build-tests",
+        "swift-test|swift test --enable-code-coverage",
+        "swift-test|swift test --show-codecov-path",
+        "xcodebuild-test|xcodebuild test -scheme Shop",
+        "xcodebuild-test|/usr/bin/xcodebuild test -workspace Shop.xcworkspace -scheme Shop"
       })
   void infersTypeFromCommand(final String type, final String command) {
     assertThat(CommandTypeInference.infer(List.of(command.split(" ")))).isEqualTo(type);
@@ -68,7 +77,10 @@ class CommandTypeInferenceTest {
         "npm run lint",
         "./mvnw checkstyle:check spotless:check",
         "uv run mutmut results",
-        "uv run ruff check . uv run mypy src"
+        "uv run ruff check . uv run mypy src",
+        "swift format --in-place Sources",
+        "xcodebuild build -scheme Shop",
+        "xcrun xccov view --report --json .ward/reports/xcode/tests.xcresult"
       })
   void unrecognizedOrAmbiguousCommandsFallBackToCommand(final String command) {
     assertThat(CommandTypeInference.infer(List.of(command.split(" "))))
@@ -79,6 +91,13 @@ class CommandTypeInferenceTest {
   void testRunWithFilterIsNotTests() {
     assertThat(CommandTypeInference.infer(List.of("./mvnw", "-Dtest=Foo", "test")))
         .isNotEqualTo("tests");
+  }
+
+  @Test
+  void swiftCoverageIsNeverInferred() {
+    assertThat(CommandTypeInference.infer(List.of("swift", "test", "--show-codecov-path")))
+        .isNotEqualTo("swift-coverage");
+    assertThat(CommandTypeInference.USES_ONLY).contains("swift-coverage");
   }
 
   @Test

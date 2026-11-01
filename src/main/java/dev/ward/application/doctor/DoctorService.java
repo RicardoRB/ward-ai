@@ -11,6 +11,7 @@ import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.SwiftToolchainInspection;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public final class DoctorService {
   private final TraceabilityPrerequisites traceabilityPrerequisites;
   private final Set<AgentIntegration> integrations;
   private final Optional<BuildToolConfiguration> buildTools;
+  private final Optional<SwiftToolchainInspection> swift;
 
   /** How serious a diagnostic finding is. */
   public enum Status {
@@ -58,13 +60,13 @@ public final class DoctorService {
     this(
         detector,
         environment,
-        new DoctorPorts(configurationReader, traceabilityPrerequisites, null),
+        new DoctorPorts(configurationReader, traceabilityPrerequisites, null, null),
         integrations);
   }
 
   /**
-   * Creates the service that Dagger injects; {@code ports} also read the project's runtime JDK and
-   * the tool versions its build file pins.
+   * Creates the service that Dagger injects; {@code ports} also read the project's runtime JDK, the
+   * tool versions its build file pins, and the Xcode version.
    */
   @Inject
   public DoctorService(
@@ -78,6 +80,7 @@ public final class DoctorService {
     this.traceabilityPrerequisites = ports.traceabilityPrerequisites();
     this.integrations = Set.copyOf(integrations);
     this.buildTools = Optional.ofNullable(ports.buildTools());
+    this.swift = Optional.ofNullable(ports.swift());
   }
 
   /** Creates a service that checks only the project and environment. */
@@ -121,7 +124,11 @@ public final class DoctorService {
                 detected,
                 facts,
                 ToolchainContext.read(
-                    buildTools, configurationReader, root, flag(facts, "configurationPresent"))));
+                    buildTools,
+                    swift,
+                    configurationReader,
+                    root,
+                    flag(facts, "configurationPresent"))));
     findings.add(
         check(
             "configuration",

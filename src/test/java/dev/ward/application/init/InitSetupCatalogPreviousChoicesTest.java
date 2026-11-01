@@ -75,7 +75,8 @@ class InitSetupCatalogPreviousChoicesTest {
             List.of(),
             false,
             null,
-            false));
+            false,
+            null));
 
     assertThat(catalog.previousChoices(project(dir)))
         .hasValue(new PreviousChoices(List.of("tests")));

@@ -23,6 +23,7 @@ class PartialCheckPlanWithoutPathsTest {
                 List.of("src/**/*.java"), List.of(), List.of("{paths}"), null, null),
             null,
             null,
+            null,
             null);
     final GateConfiguration plain = new GateConfiguration("tests", true, List.of("./mvnw", "test"));
 

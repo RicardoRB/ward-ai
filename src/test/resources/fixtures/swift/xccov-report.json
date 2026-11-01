@@ -1,0 +1,41 @@
+{
+  "coveredLines": 40,
+  "executableLines": 60,
+  "lineCoverage": 0.6666666666666666,
+  "targets": [
+    {
+      "buildProductPath": "/Users/ward/Library/Developer/Xcode/DerivedData/Shop-abc/Build/Products/Debug-iphonesimulator/Shop.app/Shop",
+      "coveredLines": 30,
+      "executableLines": 50,
+      "files": [
+        {
+          "coveredLines": 30,
+          "executableLines": 50,
+          "functions": [],
+          "lineCoverage": 0.6,
+          "name": "Cart.swift",
+          "path": "/repo/Shop/Cart.swift"
+        }
+      ],
+      "lineCoverage": 0.6,
+      "name": "Shop.app"
+    },
+    {
+      "buildProductPath": "/Users/ward/Library/Developer/Xcode/DerivedData/Shop-abc/Build/Products/Debug/ShopTests.xctest/Contents/MacOS/ShopTests",
+      "coveredLines": 10,
+      "executableLines": 10,
+      "files": [
+        {
+          "coveredLines": 10,
+          "executableLines": 10,
+          "functions": [],
+          "lineCoverage": 1,
+          "name": "CartTests.swift",
+          "path": "/repo/ShopTests/CartTests.swift"
+        }
+      ],
+      "lineCoverage": 1,
+      "name": "ShopTests"
+    }
+  ]
+}

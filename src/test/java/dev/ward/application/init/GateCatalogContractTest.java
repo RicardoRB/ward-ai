@@ -54,6 +54,54 @@ class GateCatalogContractTest {
   }
 
   @Test
+  void everyOfferedSwiftGateIsDefined() {
+    final InitGeneralCatalog swiftPm = new InitGeneralCatalog(new FakeEnvironmentInspection());
+    final InitGeneralCatalog xcode = new InitGeneralCatalog(swiftInputs());
+    assertThat(
+            Stream.concat(
+                swiftPm.gates(project(BuildTool.SWIFTPM, Language.SWIFT), null).stream(),
+                xcode.gates(project(BuildTool.XCODE, Language.SWIFT), null).stream()))
+        .extracting(InitGateOption::id)
+        .allSatisfy(
+            id ->
+                assertThat(QualityGateDefinitions.find(id))
+                    .as("gate %s has no QualityGateDefinitions row", id)
+                    .isPresent());
+  }
+
+  /** Swift inputs for an Xcode project with one shared scheme and no config of its own. */
+  private static InitInputs swiftInputs() {
+    final dev.ward.domain.project.XcodeSchemes xcode =
+        new dev.ward.domain.project.XcodeSchemes() {
+          @Override
+          public java.util.Optional<String> workspace(final Path directory) {
+            return java.util.Optional.empty();
+          }
+
+          @Override
+          public List<String> schemes(final Path directory) {
+            return List.of("Shop");
+          }
+
+          @Override
+          public boolean macOsOnly(final Path directory) {
+            return false;
+          }
+        };
+    return new InitInputs(
+        new FakeEnvironmentInspection(),
+        directory -> dev.ward.domain.project.PackageManifest.EMPTY,
+        directory -> false,
+        (directory, gate) -> java.util.Optional.empty(),
+        java.util.Optional.empty(),
+        (directory, tool) -> java.util.Optional.empty(),
+        dev.ward.domain.project.WorkspaceMembers.none(),
+        new SwiftPorts(
+            xcode, (directory, name) -> java.util.Optional.empty(), directory -> List.of()),
+        dev.ward.domain.init.BuildModulePlanning.none());
+  }
+
+  @Test
   void everyOfferedGateIsDefined() {
     final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
     assertThat(
@@ -132,6 +180,7 @@ class GateCatalogContractTest {
         root,
         Set.of(),
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.PackageManifest;
@@ -33,7 +34,11 @@ final class CiWorkflowTemplate {
    * @param manifest the Node package manifest, or {@link PackageManifest#EMPTY}
    * @param runtimeJdk the JDK that runs a JVM build, when init could read it
    */
-  record ProjectFacts(PackageManifest manifest, Optional<Integer> runtimeJdk) {}
+  /**
+   * The facts a workflow step depends on: the manifest, the runtime JDK, and whether the Harmonize
+   * architecture rules are selected, which Swift's CI caches the package for.
+   */
+  record ProjectFacts(PackageManifest manifest, Optional<Integer> runtimeJdk, boolean harmonize) {}
 
   /**
    * Returns the workflow for {@code provider}, installing the tools the selected gates run.
@@ -56,7 +61,14 @@ final class CiWorkflowTemplate {
       final String wardVersion,
       final PackageManifest manifest) {
     return render(
-        provider, project, gates, wardVersion, new ProjectFacts(manifest, Optional.empty()));
+        provider,
+        project,
+        gates,
+        wardVersion,
+        new ProjectFacts(
+            manifest,
+            Optional.empty(),
+            gates.stream().anyMatch(gate -> SupportedQualityGates.HARMONIZE.equals(gate.id()))));
   }
 
   /** Returns the workflow for the project's {@code facts}: its manifest and runtime JDK. */
@@ -147,7 +159,9 @@ final class CiWorkflowTemplate {
         + "jobs:\n"
         + "  quality:\n"
         + "    name: Ward ci profile\n"
-        + "    runs-on: ubuntu-24.04\n"
+        + "    runs-on: "
+        + InitToolchains.support(project).runner()
+        + "\n"
         // Shell steps run in the project; uses: steps ignore this, so SARIF paths stay rooted.
         + (nested
             ? "    defaults:\n      run:\n        working-directory: "

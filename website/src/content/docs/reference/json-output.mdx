@@ -47,7 +47,7 @@ diagnostics go to stderr.
 | `failFast` | `true` when the run used `--fail-fast`. Gates that did not run are listed with status `SKIPPED` and summary `not run (fail-fast)`. |
 | `severity` | The `--severity` threshold; see the table below. Defaults to `warning`. |
 | `project` | Enum names such as `JAVA`, `MAVEN`, and `SPRING_BOOT`. |
-| `languageVersion` | The target Node major version, such as `"22"`, for TypeScript and JavaScript projects; see [detect](/commands/detect/#node-version). For Python projects, the target `major.minor` version, such as `"3.12"`; see [detect](/commands/detect/#python-version). Omitted for other projects. |
+| `languageVersion` | The target Node major version, such as `"22"`, for TypeScript and JavaScript projects; see [detect](/commands/detect/#node-version). For Python projects, the target `major.minor` version, such as `"3.12"`; see [detect](/commands/detect/#python-version). For Swift projects, the target Swift `major.minor` version, such as `"6.1"`; see [detect](/commands/detect/#swift-version). Omitted for other projects. |
 | `checks[].type` | The built-in tool type that decides the check's behavior, such as `checkstyle`. `command` means Ward does not recognize the command. Added in the version 2 configuration. |
 | `partial`, `scope` | Present only when `--path` is used. See [Partial checks](#partial-checks). |
 
@@ -74,7 +74,7 @@ Omitted fields are intentional in schema v2.
 
 ## Findings
 
-A failed `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `tsc`, `ruff`, or `mypy` gate lists one entry per visible
+A failed `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-format`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
 violation in `findings`, in the tool's report order, so an agent can go straight to the file and
 line.
 
@@ -97,6 +97,9 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
 - `file` is relative to the project root with `/` separators. `file`, `line`, `column`, and
   `helpUri` are omitted when the tool does not report them; `format` findings name only the file.
 - Gitleaks findings never contain the matched secret.
+- Swift compiler errors from `swift-build` and `xcodebuild-test` have `tool` and `rule` `swiftc`.
+  SwiftLint findings carry SwiftLint's rule ID, such as `force_cast`, and swift-format findings
+  its rule name, such as `Indentation`.
 - When a report is missing, stale, or unreadable, the check keeps its status and simply has no
   findings; use `output` as the fallback.
 

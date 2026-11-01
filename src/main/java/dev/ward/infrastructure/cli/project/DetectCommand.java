@@ -59,14 +59,20 @@ public class DetectCommand implements Callable<Integer> {
     output().printf("Build tool:   %s%n", p.buildTool().displayName());
     output().printf("Framework:    %s%n", p.framework().displayName());
     p.taskRunner().displayName().ifPresent(name -> output().println("Task runner:  " + name));
-    if (p.language() == Language.TYPESCRIPT || p.language() == Language.JAVASCRIPT) {
-      output().printf("Node:         %s%n", p.languageVersion());
-    }
-    if (p.language() == Language.PYTHON) {
-      output().printf("Python:       %s%n", p.languageVersion());
-    }
+    versionLabel(p.language())
+        .ifPresent(label -> output().printf("%-14s%s%n", label + ":", p.languageVersion()));
     output().printf("Project root: %s%n", p.root());
     return ExitCodes.OK;
+  }
+
+  /** Returns the name of the runtime whose version is printed for {@code language}, if any. */
+  private static Optional<String> versionLabel(final Language language) {
+    return switch (language) {
+      case TYPESCRIPT, JAVASCRIPT -> Optional.of("Node");
+      case PYTHON -> Optional.of("Python");
+      case SWIFT -> Optional.of("Swift");
+      default -> Optional.empty();
+    };
   }
 
   private PrintWriter output() {

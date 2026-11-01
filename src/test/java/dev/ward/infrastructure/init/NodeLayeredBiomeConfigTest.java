@@ -104,7 +104,8 @@ class NodeLayeredBiomeConfigTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   private static List<InitGateOption> gates(final String... ids) {

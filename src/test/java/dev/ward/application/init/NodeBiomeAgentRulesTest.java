@@ -27,7 +27,8 @@ class NodeBiomeAgentRulesTest {
           Path.of("shop"),
           Set.of(),
           "24",
-          TaskRunner.NONE);
+          TaskRunner.NONE,
+          null);
   private static final InitGateOption BIOME =
       new InitGateOption("biome", "Biome", List.of("npx", "biome", "ci", "."), true, "ok");
 

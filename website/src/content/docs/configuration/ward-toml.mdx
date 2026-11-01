@@ -122,8 +122,34 @@ minimum = 60
 profiles = ["ci"]
 ```
 
-`minimum` on any other check, or a value that is not an integer from 0 to 100, is a configuration
-error that names the key.
+A `swift-coverage` check requires `minimum`, its lowest line coverage in percent; see
+[Swift coverage](/configuration/gates/#swift-coverage).
+
+```toml
+[checks.coverage]
+uses = "swift-coverage"
+command = ["swift", "test", "--show-codecov-path"]
+minimum = 80
+profiles = ["pre-push"]
+```
+
+`minimum` on any other check, a missing `minimum` on `swift-coverage`, or a value that is not an
+integer from 0 to 100, is a configuration error that names the key.
+
+## Xcode test platform
+
+An `xcodebuild-test` check sets `platform` to `iOS Simulator` or `macOS`, which decides where its
+tests run; see [Xcode tests](/configuration/gates/#xcode-tests).
+
+```toml
+[checks.xcode-tests]
+command = ["xcodebuild", "test", "-scheme", "Shop"]
+platform = "iOS Simulator"
+```
+
+`platform` can be left out when the command already has `-destination`. Any other value, a missing
+`platform` without `-destination`, or `platform` on another check, is a configuration error that
+names the key and the allowed values.
 
 ## Partial checks
 

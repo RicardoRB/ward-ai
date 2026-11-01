@@ -29,7 +29,8 @@ class HookScopeTest {
           REPOSITORY,
           Set.of(),
           "",
-          TaskRunner.NONE);
+          TaskRunner.NONE,
+          null);
   private static final Project ROOT =
       new Project(REPOSITORY, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 

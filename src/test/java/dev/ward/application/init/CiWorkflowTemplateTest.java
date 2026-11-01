@@ -139,6 +139,7 @@ class CiWorkflowTemplateTest {
         repository,
         Set.of(),
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

@@ -104,7 +104,8 @@ class NodeTestCommandsTest {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     return catalog.gates(project, preset).stream()
         .filter(gate -> gate.id().equals(id))
         .findFirst()

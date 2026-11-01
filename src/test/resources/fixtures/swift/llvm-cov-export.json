@@ -1,0 +1,172 @@
+{
+  "data": [
+    {
+      "files": [
+        {
+          "branches": [],
+          "expansions": [],
+          "filename": "/repo/.build/out/Intermediates.noindex/Shop.build/Debug/App-t.build/DerivedSources/resource_bundle_accessor.swift",
+          "mcdc_records": [],
+          "segments": [],
+          "summary": {
+            "branches": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "functions": {
+              "count": 4,
+              "covered": 0,
+              "percent": 0
+            },
+            "instantiations": {
+              "count": 4,
+              "covered": 0,
+              "percent": 0
+            },
+            "lines": {
+              "count": 36,
+              "covered": 0,
+              "percent": 0
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 10,
+              "covered": 0,
+              "notcovered": 10,
+              "percent": 0
+            }
+          }
+        },
+        {
+          "branches": [],
+          "expansions": [],
+          "filename": "/repo/Sources/App/Cart.swift",
+          "mcdc_records": [],
+          "segments": [],
+          "summary": {
+            "branches": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "functions": {
+              "count": 5,
+              "covered": 3,
+              "percent": 60
+            },
+            "instantiations": {
+              "count": 5,
+              "covered": 3,
+              "percent": 60
+            },
+            "lines": {
+              "count": 10,
+              "covered": 5,
+              "percent": 50
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 8,
+              "covered": 3,
+              "notcovered": 5,
+              "percent": 37.5
+            }
+          }
+        },
+        {
+          "branches": [],
+          "expansions": [],
+          "filename": "/repo/Tests/AppTests/CartTests.swift",
+          "mcdc_records": [],
+          "segments": [],
+          "summary": {
+            "branches": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "functions": {
+              "count": 1,
+              "covered": 1,
+              "percent": 100
+            },
+            "instantiations": {
+              "count": 1,
+              "covered": 1,
+              "percent": 100
+            },
+            "lines": {
+              "count": 1,
+              "covered": 1,
+              "percent": 100
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 1,
+              "covered": 1,
+              "notcovered": 0,
+              "percent": 100
+            }
+          }
+        }
+      ],
+      "functions": [],
+      "totals": {
+        "branches": {
+          "count": 0,
+          "covered": 0,
+          "notcovered": 0,
+          "percent": 0
+        },
+        "functions": {
+          "count": 13,
+          "covered": 6,
+          "percent": 46.15384615384615
+        },
+        "instantiations": {
+          "count": 13,
+          "covered": 6,
+          "percent": 46.15384615384615
+        },
+        "lines": {
+          "count": 75,
+          "covered": 22,
+          "percent": 29.333333333333332
+        },
+        "mcdc": {
+          "count": 0,
+          "covered": 0,
+          "notcovered": 0,
+          "percent": 0
+        },
+        "regions": {
+          "count": 34,
+          "covered": 12,
+          "notcovered": 22,
+          "percent": 35.294117647058826
+        }
+      }
+    }
+  ],
+  "type": "llvm.coverage.json.export",
+  "version": "3.0.1"
+}

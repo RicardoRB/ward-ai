@@ -17,7 +17,10 @@ import java.util.Set;
  * @param root the project-relative directory it runs from, or {@code null} for the project root;
  *     only OpenSpec checks read it
  * @param openApi the OpenAPI options of an OpenAPI check, or {@code null} for others
- * @param minimum the minimum score from 0 to 100 of a mutation check, or {@code null} when unset
+ * @param minimum the minimum score from 0 to 100 of a mutation or Swift coverage check, or {@code
+ *     null} when unset
+ * @param platform where an {@code xcodebuild-test} check runs, or {@code null} when its command
+ *     names a destination or the check is of another type
  */
 public record GateConfiguration(
     String name,
@@ -28,7 +31,8 @@ public record GateConfiguration(
     PartialGateConfiguration partial,
     String root,
     OpenApiGateOptions openApi,
-    Integer minimum) {
+    Integer minimum,
+    XcodePlatform platform) {
 
   /** Copies the command and profiles, keeping profile order. */
   public GateConfiguration {
@@ -44,6 +48,7 @@ public record GateConfiguration(
         enabled,
         command,
         Set.of(WardConfiguration.DEFAULT_PROFILE),
+        null,
         null,
         null,
         null,

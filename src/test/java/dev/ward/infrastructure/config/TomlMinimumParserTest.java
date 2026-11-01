@@ -58,6 +58,19 @@ class TomlMinimumParserTest {
   }
 
   @Test
+  void swiftCoverageRequiresItsMinimum() throws IOException {
+    final String coverage =
+        "version = 2\n[checks.coverage]\nuses = \"swift-coverage\"\n"
+            + "command = [\"swift\", \"test\", \"--show-codecov-path\"]\n";
+
+    assertThat(read(reader, dir, coverage + "minimum = 60").checks().get("coverage").minimum())
+        .isEqualTo(MINIMUM);
+    assertThatThrownBy(() -> read(reader, dir, coverage))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.coverage.minimum");
+  }
+
+  @Test
   void boundsAreAccepted() throws IOException {
     assertThat(read(reader, dir, STRYKER + "minimum = 0").checks().get("stryker").minimum())
         .isZero();

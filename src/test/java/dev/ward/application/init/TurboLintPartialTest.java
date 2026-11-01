@@ -9,6 +9,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -25,12 +26,14 @@ class TurboLintPartialTest {
           Path.of("/work/monorepo"),
           Set.of(),
           "24",
-          TaskRunner.TURBO);
+          TaskRunner.TURBO,
+          null);
 
   @Test
   void editInSharedPackageNarrowsTheTurboLintToItsFilter() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("eslint", TURBO_ROOT, QualityPreset.STRICT).orElseThrow();
+        PartialCheckDefaults.forGate("eslint", TURBO_ROOT, QualityPreset.STRICT, List.of())
+            .orElseThrow();
 
     assertThat(table.args()).containsExactly("{paths}");
     assertThat(table.item()).isEqualTo("--filter=...{package}");
@@ -50,7 +53,8 @@ class TurboLintPartialTest {
   @Test
   void rootConfigsAndTurboJsonRunEveryPackage() {
     final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("biome", TURBO_ROOT, QualityPreset.STANDARD).orElseThrow();
+        PartialCheckDefaults.forGate("biome", TURBO_ROOT, QualityPreset.STANDARD, List.of())
+            .orElseThrow();
 
     assertThat(table.full()).contains("turbo.json", "package.json", "biome.json");
   }
@@ -68,10 +72,11 @@ class TurboLintPartialTest {
             Path.of("/work/app"),
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
 
     assertThat(
-            PartialCheckDefaults.forGate("eslint", plain, QualityPreset.STANDARD)
+            PartialCheckDefaults.forGate("eslint", plain, QualityPreset.STANDARD, List.of())
                 .orElseThrow()
                 .command())
         .containsExactly("pnpm", "exec", "eslint", "--format", "json");

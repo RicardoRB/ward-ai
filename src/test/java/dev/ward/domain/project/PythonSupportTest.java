@@ -51,6 +51,7 @@ class PythonSupportTest {
         root,
         Set.of(),
         version,
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

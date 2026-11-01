@@ -14,7 +14,9 @@ final class InitToolchains {
           Toolchain.NODE,
           new NodeInitSupport(),
           Toolchain.PYTHON,
-          new PythonInitSupport());
+          new PythonInitSupport(),
+          Toolchain.SWIFT,
+          new SwiftInitSupport());
 
   private InitToolchains() {}
 
@@ -45,8 +47,8 @@ final class InitToolchains {
 
   /** Returns the message explaining that init cannot configure {@code project}'s toolchain. */
   static String unsupported(final Project project) {
-    return "Ward init supports Maven, Gradle, TypeScript, JavaScript and Python (uv, Poetry, pip)"
-        + " projects; "
+    return "Ward init supports Maven, Gradle, TypeScript, JavaScript, Python (uv, Poetry, pip) and"
+        + " Swift (SwiftPM, Xcode) projects; "
         + project.buildTool().displayName()
         + " projects are not supported yet.";
   }

@@ -23,7 +23,8 @@ class CiWorkflowJdkTest {
                 MAVEN,
                 gates(TESTS),
                 DEV,
-                new CiWorkflowTemplate.ProjectFacts(PackageManifest.EMPTY, Optional.of(JAVA_11)))
+                new CiWorkflowTemplate.ProjectFacts(
+                    PackageManifest.EMPTY, Optional.of(JAVA_11), false))
             .body();
 
     assertThat(body).contains("distribution: temurin\n          java-version: '11'\n");

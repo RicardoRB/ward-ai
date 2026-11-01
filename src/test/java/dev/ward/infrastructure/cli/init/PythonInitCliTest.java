@@ -130,6 +130,8 @@ class PythonInitCliTest {
   private void writeUvProject() throws IOException {
     Files.writeString(root.resolve("pyproject.toml"), PYPROJECT);
     Files.writeString(root.resolve("uv.lock"), "version = 1\n");
+    Files.createDirectories(root.resolve("src/shop"));
+    Files.writeString(root.resolve("src/shop/__init__.py"), "");
   }
 
   private InitCommandFixture python() throws IOException {

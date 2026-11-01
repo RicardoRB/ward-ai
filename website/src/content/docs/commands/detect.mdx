@@ -39,6 +39,10 @@ ward detect [-C <dir>]
 - Python projects are recognized from `pyproject.toml`, `setup.py`, `setup.cfg`, or a file whose
   name matches `requirements*.txt`. A Maven or Gradle build in the same directory keeps its
   precedence.
+- Swift projects are recognized from `Package.swift` (SwiftPM), a `*.xcworkspace` or `*.xcodeproj`
+  directory (Xcode), `Project.swift` or `Workspace.swift` (Tuist), or `project.yml` (XcodeGen). A
+  Maven, Gradle, Node or Python marker in the same directory keeps its precedence. See
+  [Swift build tool](#swift-build-tool).
 
 ### Node package manager
 
@@ -117,6 +121,42 @@ Build tool:   uv
 Framework:    None
 Python:       3.12
 Project root: /path/to/api
+```
+
+### Swift build tool
+
+For Swift, the first rule that matches decides the build tool:
+
+1. Xcode, when the directory holds a `*.xcworkspace` or `*.xcodeproj` directory. An app that also
+   has a local `Package.swift` builds through its project, so Xcode wins over SwiftPM.
+2. SwiftPM, when `Package.swift` exists.
+3. Tuist, when `Project.swift` or `Workspace.swift` exists.
+4. XcodeGen, when `project.yml` exists.
+
+A committed Xcode project wins over a Tuist or XcodeGen file. Tuist and XcodeGen are detected, but
+`ward doctor` warns that Ward does not support them yet. A CocoaPods app (a `Podfile` next to the
+Xcode project) stays an Xcode project; `ward doctor` warns about it.
+
+Repository discovery does not descend into `Pods`, `Carthage` or `DerivedData`, nor into
+directories whose names end in `.xcodeproj`, `.xcworkspace` or `.xcassets`. Hidden directories such
+as `.build` and `.swiftpm` are skipped like every hidden directory.
+
+### Swift version
+
+`detect` prints a `Swift:` line with the target Swift language version as `major.minor`:
+
+1. For SwiftPM, the `swift-tools-version` comment of `Package.swift`, such as
+   `// swift-tools-version: 6.1.2` → `6.1`.
+2. For Xcode, the highest `SWIFT_VERSION` build setting in the `project.pbxproj` of the first
+   `*.xcodeproj`. Ward only reads that file.
+3. `6.2`, the Swift of Xcode 26.0.
+
+```text
+Language:     Swift
+Build tool:   SwiftPM
+Framework:    None
+Swift:        6.1
+Project root: /path/to/package
 ```
 
 ## Modules and aggregators

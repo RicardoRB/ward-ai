@@ -1,0 +1,20 @@
+[
+  {
+    "character" : 24,
+    "file" : "/repo/Sources/App/Lint.swift",
+    "line" : 2,
+    "reason" : "Force casts should be avoided",
+    "rule_id" : "force_cast",
+    "severity" : "Error",
+    "type" : "Force Cast"
+  },
+  {
+    "character" : 1,
+    "file" : "/repo/Sources/App/Lint.swift",
+    "line" : 7,
+    "reason" : "Line should be 120 characters or less; currently it has 123 characters",
+    "rule_id" : "line_length",
+    "severity" : "Warning",
+    "type" : "Line Length"
+  }
+]

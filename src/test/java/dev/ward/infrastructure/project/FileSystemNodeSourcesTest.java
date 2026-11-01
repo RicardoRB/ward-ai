@@ -82,6 +82,14 @@ class FileSystemNodeSourcesTest {
   }
 
   @Test
+  void swiftPackageBelowNodeRootDoesNotCount() throws IOException {
+    tree.write("ios/Package.swift", "// swift-tools-version: 6.0\n");
+    tree.write("ios/Resources/bridge.js", "console.log(1);\n");
+
+    assertThat(sources.hasSources(dir)).isFalse();
+  }
+
+  @Test
   void workspaceMemberSourcesCount() throws IOException {
     tree.write(PACKAGE_JSON, "{\"workspaces\": [\"packages/*\"]}");
     tree.write("packages/ui/package.json", MANIFEST);

@@ -55,7 +55,8 @@ class OmissionNotesTest {
             ROOT,
             Set.of(),
             "25",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     final FakeEnvironmentInspection environment =
         new FakeEnvironmentInspection("mvn") {
           @Override
@@ -99,7 +100,8 @@ class OmissionNotesTest {
             ROOT,
             Set.of(),
             "24",
-            TaskRunner.NONE);
+            TaskRunner.NONE,
+            null);
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(

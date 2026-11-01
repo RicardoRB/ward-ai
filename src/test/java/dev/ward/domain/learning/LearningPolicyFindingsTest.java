@@ -147,4 +147,22 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:F401", "mypy:arg-type");
   }
+
+  @Test
+  void swiftLintRulesAreLearnedButSwiftFormatAndCompilerErrorsAreNot() {
+    final CheckReport report =
+        new CheckReport(
+            PROJECT,
+            List.of(
+                failedResult(
+                    "swiftlint",
+                    finding("swiftlint", "force_cast", "Force casts should be avoided")),
+                failedResult(
+                    "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
+                failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
+
+    final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
+
+    assertThat(outcome.ledger().records()).containsOnlyKeys("swiftlint:force_cast");
+  }
 }

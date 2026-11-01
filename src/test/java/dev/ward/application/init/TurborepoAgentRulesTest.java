@@ -29,7 +29,8 @@ class TurborepoAgentRulesTest {
             Path.of("/work/monorepo"),
             Set.of(),
             "24",
-            TaskRunner.TURBO);
+            TaskRunner.TURBO,
+            null);
     final List<InitGateOption> gates =
         List.of(
             new InitGateOption(

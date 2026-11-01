@@ -28,9 +28,14 @@ class ToolchainArchitectureRulesTest {
   private final ArchitectureTestGenerator jvm = new ArchitectureTestGenerator();
   private final DependencyCruiserConfigGenerator node =
       new DependencyCruiserConfigGenerator(new FileSystemNodeToolConfigs());
+  private final HarmonizeRulesGenerator swift =
+      new HarmonizeRulesGenerator((dir, tool) -> java.util.Optional.empty());
   private final ToolchainArchitectureRules rules =
       new ToolchainArchitectureRules(
-          jvm, node, new ImportLinterConfigGenerator((dir, tool) -> java.util.Optional.empty()));
+          jvm,
+          node,
+          new ImportLinterConfigGenerator((dir, tool) -> java.util.Optional.empty()),
+          swift);
 
   @Test
   void everyToolchainMapsToAGeneratorAndNodeUsesDependencyCruiser() {
@@ -39,6 +44,7 @@ class ToolchainArchitectureRulesTest {
     }
     assertThat(rules.generator(Toolchain.NODE)).isSameAs(node);
     assertThat(rules.generator(Toolchain.JVM)).isSameAs(jvm);
+    assertThat(rules.generator(Toolchain.SWIFT)).isSameAs(swift);
   }
 
   @Test
@@ -77,6 +83,7 @@ class ToolchainArchitectureRulesTest {
         root,
         Set.of(),
         "24",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 }

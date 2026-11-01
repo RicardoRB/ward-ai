@@ -11,22 +11,26 @@ import javax.inject.Inject;
 
 /**
  * Generates a project's architecture rules with the generator of its toolchain: an ArchUnit test
- * for the JVM and a dependency-cruiser config for Node. Other toolchains use the JVM generator.
+ * for the JVM, a dependency-cruiser config for Node, an import-linter config for Python and
+ * Harmonize rules for Swift.
  */
 public final class ToolchainArchitectureRules implements ArchitectureTestGeneration {
   private final ArchitectureTestGenerator jvm;
   private final DependencyCruiserConfigGenerator node;
   private final ImportLinterConfigGenerator python;
+  private final HarmonizeRulesGenerator swift;
 
   /** Creates the router that Dagger injects. */
   @Inject
   public ToolchainArchitectureRules(
       final ArchitectureTestGenerator jvm,
       final DependencyCruiserConfigGenerator node,
-      final ImportLinterConfigGenerator python) {
+      final ImportLinterConfigGenerator python,
+      final HarmonizeRulesGenerator swift) {
     this.jvm = jvm;
     this.node = node;
     this.python = python;
+    this.swift = swift;
   }
 
   @Override
@@ -56,12 +60,15 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
   }
 
   /**
-   * Restores a config that a rewrite replaced. Any other change is undone by the JVM generator,
-   * which deletes a file the change created.
+   * Restores a config that a rewrite replaced. A Swift rules file is undone by the Harmonize
+   * generator, which removes its package. Any other change is undone by the JVM generator, which
+   * deletes a file the change created.
    */
   @Override
   public void rollback(final ArchitectureTestChange change) {
-    if (change != null && change.previous() != null) {
+    if (change != null && HarmonizeRulesGenerator.owns(change.file())) {
+      swift.rollback(change);
+    } else if (change != null && change.previous() != null) {
       node.rollback(change);
     } else {
       jvm.rollback(change);
@@ -73,6 +80,7 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
     return switch (toolchain) {
       case NODE -> node;
       case PYTHON -> python;
+      case SWIFT -> swift;
       case JVM -> jvm;
       default -> jvm;
     };

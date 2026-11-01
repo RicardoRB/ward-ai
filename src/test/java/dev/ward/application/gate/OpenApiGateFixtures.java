@@ -59,6 +59,7 @@ final class OpenApiGateFixtures {
                 null,
                 null,
                 new OpenApiGateOptions(SPEC, null),
+                null,
                 null),
             PROJECT);
   }

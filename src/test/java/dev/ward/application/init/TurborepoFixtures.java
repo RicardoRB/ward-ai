@@ -35,7 +35,8 @@ final class TurborepoFixtures {
         root,
         Set.of(),
         "24",
-        TaskRunner.TURBO);
+        TaskRunner.TURBO,
+        null);
   }
 
   static WorkspaceMember memberOf(
@@ -54,7 +55,8 @@ final class TurborepoFixtures {
             root,
             Set.of(),
             "24",
-            TaskRunner.NONE));
+            TaskRunner.NONE,
+            null));
   }
 
   /**
@@ -73,6 +75,7 @@ final class TurborepoFixtures {
         Optional.empty(),
         (dir, tool) -> Optional.empty(),
         new Members(members),
+        SwiftPorts.NONE,
         dev.ward.domain.init.BuildModulePlanning.none());
   }
 

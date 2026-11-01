@@ -9,7 +9,8 @@ public enum Language {
   PYTHON("Python"),
   GO("Go"),
   RUST("Rust"),
-  CSHARP("C#");
+  CSHARP("C#"),
+  SWIFT("Swift");
 
   private final String displayName;
 

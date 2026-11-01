@@ -70,6 +70,7 @@ class TurborepoRootDependencyTest {
         root,
         Set.of(),
         "24",
-        runner);
+        runner,
+        null);
   }
 }

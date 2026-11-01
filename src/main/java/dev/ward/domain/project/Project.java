@@ -14,7 +14,8 @@ import java.util.Set;
  * @param buildTool its build tool
  * @param framework its framework
  * @param mavenWrapperAvailable whether the build tool's wrapper, such as {@code mvnw}, is present;
- *     for pip, whether the project root has a {@code .venv} that the build runs through
+ *     for pip, whether the project root has a {@code .venv} that the build runs through; for Swift,
+ *     whether the project root has a CocoaPods {@code Podfile}
  * @param publishesArtifacts whether the Maven POM declares {@code <distributionManagement>}, the
  *     signal that a released library baseline exists
  * @param repositoryRoot the Git top-level containing the project, or {@code root} outside a Git
@@ -24,6 +25,8 @@ import java.util.Set;
  *     none is detected
  * @param taskRunner the tool that runs the workspace's per-package tasks, {@link TaskRunner#NONE}
  *     unless a workspace root declares one
+ * @param xcodeScheme the Xcode scheme the user chose for an Xcode project's tests, or {@code null}
+ *     when the project has one scheme or the choice is not needed
  */
 public record Project(
     Path root,
@@ -35,7 +38,8 @@ public record Project(
     Path repositoryRoot,
     Set<Language> languages,
     String languageVersion,
-    TaskRunner taskRunner) {
+    TaskRunner taskRunner,
+    String xcodeScheme) {
   /** Copies {@code languages}, in declaration order, and adds the primary language. */
   public Project {
     final Set<Language> all = EnumSet.of(language);
@@ -69,7 +73,8 @@ public record Project(
         root,
         Set.of(),
         "",
-        TaskRunner.NONE);
+        TaskRunner.NONE,
+        null);
   }
 
   /** Returns this project with {@code runner} as its task runner. */
@@ -84,7 +89,24 @@ public record Project(
         repositoryRoot,
         languages,
         languageVersion,
-        runner);
+        runner,
+        xcodeScheme);
+  }
+
+  /** Returns this project whose Xcode tests run {@code scheme}. */
+  public Project withXcodeScheme(final String scheme) {
+    return new Project(
+        root,
+        language,
+        buildTool,
+        framework,
+        mavenWrapperAvailable,
+        publishesArtifacts,
+        repositoryRoot,
+        languages,
+        languageVersion,
+        taskRunner,
+        scheme);
   }
 
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
@@ -99,7 +121,8 @@ public record Project(
         repository,
         languages,
         languageVersion,
-        taskRunner);
+        taskRunner,
+        xcodeScheme);
   }
 
   /**
@@ -162,15 +185,9 @@ public record Project(
   /** Returns the wrapper-first executable name for this project's build tool. */
   public String buildExecutable() {
     return switch (buildTool) {
-      case MAVEN -> wrapperOr("./mvnw", "mvn");
-      case GRADLE -> wrapperOr("./gradlew", "gradle");
-      case NPM -> "npm";
-      case PNPM -> "pnpm";
-      case YARN -> "yarn";
-      case BUN -> "bun";
-      case UV -> "uv";
-      case POETRY -> "poetry";
-      default -> buildTool.displayName();
+      case MAVEN -> wrapperOr("./mvnw", buildTool.executable());
+      case GRADLE -> wrapperOr("./gradlew", buildTool.executable());
+      default -> buildTool.executable();
     };
   }
 

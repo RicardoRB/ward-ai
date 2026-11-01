@@ -26,7 +26,8 @@ import dev.ward.infrastructure.terminal.PosixRawTerminal;
     includes = {
       BuildToolBindingsModule.class,
       NodeBindingsModule.class,
-      PythonBindingsModule.class
+      PythonBindingsModule.class,
+      SwiftBindingsModule.class
     })
 interface InitBindingsModule {
   @Binds

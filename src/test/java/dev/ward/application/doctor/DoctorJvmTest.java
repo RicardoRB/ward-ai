@@ -132,7 +132,7 @@ class DoctorJvmTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             directory ->
                 new EnvironmentFacts(Set.of("mvn"), Map.of("configurationPresent", "true")),
-            new DoctorPorts(new TomlConfigurationReader(), null, maven),
+            new DoctorPorts(new TomlConfigurationReader(), null, maven, null),
             Set.of())
         .diagnose(root);
   }
