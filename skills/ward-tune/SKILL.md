@@ -65,6 +65,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `import-linter` | Layer and feature contracts in `.importlinter` | [references/import-linter.md](references/import-linter.md) |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `swiftlint`, `swift-format` | SwiftLint rules in `.swiftlint.yml` and the swift-format settings in `.swift-format` | [references/swiftlint.md](references/swiftlint.md) |
+| `harmonize` | Layer rules in the generated `.ward/swift-architecture` package and the root `.harmonize.yaml` | [references/harmonize.md](references/harmonize.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a

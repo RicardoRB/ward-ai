@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Swift's gates on SwiftPM or Xcode: formatting, SwiftLint, the build tool's test gates and
- * coverage. Strict selects the same gates, with stricter commands and a coverage minimum of 85%.
+ * Swift's gates on SwiftPM or Xcode: formatting, SwiftLint, the build tool's test gates, coverage
+ * and the Harmonize architecture rules. Strict selects the same gates, with stricter commands, a
+ * coverage minimum of 85% and the architecture rules.
  */
 final class SwiftGates implements SourceLanguageGates<SwiftTools> {
   private static final String MINIMUM = "minimum";
@@ -26,6 +27,17 @@ final class SwiftGates implements SourceLanguageGates<SwiftTools> {
           SwiftTools.SWIFT_TEST,
           SwiftTools.XCODEBUILD_TEST,
           SwiftTools.SWIFT_COVERAGE);
+
+  /** Strict adds the Harmonize architecture rules to the standard gates. */
+  private static final List<String> STRICT =
+      List.of(
+          SwiftTools.SWIFT_FORMAT,
+          SwiftTools.SWIFTLINT,
+          SwiftTools.SWIFT_BUILD,
+          SwiftTools.SWIFT_TEST,
+          SwiftTools.XCODEBUILD_TEST,
+          SwiftTools.SWIFT_COVERAGE,
+          SwiftTools.HARMONIZE);
 
   @Override
   public List<InitGateOption> analysisGates(final SwiftTools swift) {
@@ -53,12 +65,20 @@ final class SwiftGates implements SourceLanguageGates<SwiftTools> {
             "Fails below the line coverage minimum of the test run.",
             coverageCommand(swift),
             Map.of(MINIMUM, swift.coverageMinimum())));
+    gates.add(
+        option(
+            swift,
+            SwiftTools.HARMONIZE,
+            "Checks architecture rules with Harmonize, generated for the style in"
+                + " .ward/swift-architecture; the first run builds Harmonize and swift-syntax.",
+            SwiftTools.harmonizeCommand(),
+            Map.of()));
     return List.copyOf(gates);
   }
 
   @Override
   public List<String> presetGates(final QualityPreset preset) {
-    return STANDARD;
+    return preset == QualityPreset.STRICT ? STRICT : STANDARD;
   }
 
   /** The build tool's test gates: {@code swift-build} and {@code swift-test}, or Xcode's test. */

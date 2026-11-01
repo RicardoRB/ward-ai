@@ -56,6 +56,50 @@ class SwiftInitCliTest {
   }
 
   @Test
+  void strictSwiftPackageGetsHarmonizeRulesForTheChosenStyle() throws IOException {
+    copyFixture("swift-package", root);
+    final InitCommandFixture init = swiftInit();
+
+    final int exit = init.run("", "--preset", "strict", "--architecture", "hexagonal", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("[checks.harmonize]", "uses = \"harmonize\"");
+    assertThat(
+            Files.readString(
+                root.resolve(".ward/swift-architecture/Tests/ArchitectureRules/LayerRules.swift")))
+        .contains("func domainLayerRespectsRules()", "func applicationLayerRespectsRules()");
+    assertThat(root.resolve(".harmonize.yaml")).exists();
+    assertThat(Files.readString(root.resolve(".gitignore")))
+        .contains(".ward/swift-architecture/.build/");
+  }
+
+  @Test
+  void standardSwiftPackageWithoutHarmonizeWritesNoArchitecturePackage() throws IOException {
+    copyFixture("swift-package", root);
+    final InitCommandFixture init = swiftInit();
+
+    final int exit = init.run("", "--preset", "standard", "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("harmonize");
+    assertThat(root.resolve(".ward/swift-architecture")).doesNotExist();
+    assertThat(root.resolve(".harmonize.yaml")).doesNotExist();
+  }
+
+  private InitCommandFixture swiftInit() throws IOException {
+    final FakeCommandExecutor resolve =
+        new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
+    return InitCommandFixture.repository(
+            root, new SwiftBuildToolConfigurator(resolve, mac()), "swift")
+        .withSwiftPorts(
+            new SwiftPorts(
+                new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
+                new FileSystemSwiftToolConfigs(),
+                new FileSystemSwiftSourceDirectories()));
+  }
+
+  @Test
   void xcodeAppGetsItsSchemeTestGateAndTheSchemeOptionForSeveralSchemes() throws IOException {
     copyFixture("swift-xcode-two-schemes", root);
     final FakeCommandExecutor resolve =

@@ -54,6 +54,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
+| | `harmonize` | Harmonize | Check architecture rules in the generated `.ward/swift-architecture` package. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
 | Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
@@ -295,6 +296,14 @@ profiles = ["pre-push"]
 - A missing, unreadable or empty report is an execution error, never a pass.
 - Coverage of an unconventional layout, such as tests outside a `Tests` directory, counts the test
   files as production code.
+
+### Harmonize architecture rules
+
+`harmonize` runs `swift test --package-path .ward/swift-architecture` from the project root and passes
+when it exits with code 0. `ward init` writes the package and its rules for the chosen style; see the
+Swift projects section of the init command. A failing rule is reported in the Swift test output, which
+Ward does not parse. Init writes `uses = "harmonize"`, because the command alone does not identify the
+gate. The first run compiles Harmonize and swift-syntax, so it is slower than later runs.
 
 ## Stryker mutation score
 

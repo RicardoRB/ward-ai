@@ -13,5 +13,14 @@ final class SwiftToolCatalog {
   /** The exact SwiftLintPlugins version the tools package pins. */
   static final String SWIFTLINT_PLUGINS_VERSION = "0.65.1";
 
+  /**
+   * The Harmonize repository the architecture rules package depends on. Harmonize 1.3.0 is the
+   * newest release at least 14 days old on 2026-11-01 (published 2026-09-16).
+   */
+  static final String HARMONIZE_URL = "https://github.com/perrystreetsoftware/Harmonize.git";
+
+  /** The exact Harmonize version the architecture rules package pins. */
+  static final String HARMONIZE_VERSION = "1.3.0";
+
   private SwiftToolCatalog() {}
 }

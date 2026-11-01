@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.project.Project;
 
 /**
@@ -15,8 +16,11 @@ final class SwiftCiSetup {
 
   private SwiftCiSetup() {}
 
-  /** Returns the cache and resolve steps for {@code project}'s Swift tools. */
-  static String steps(final Project project) {
+  /**
+   * Returns the cache and resolve steps for {@code project}'s Swift tools, plus the Harmonize build
+   * cache when the architecture rules are selected.
+   */
+  static String steps(final Project project, final boolean harmonize) {
     return CiWorkflowTemplate.STEP
         + "Cache Ward's SwiftLint build\n"
         + "        uses: actions/cache@v4\n"
@@ -29,6 +33,21 @@ final class SwiftCiSetup {
         + "') }}\n"
         + CiWorkflowTemplate.STEP
         + "Resolve Ward's SwiftLint tools\n"
-        + "        run: swift package --package-path .ward/swift-tools resolve\n";
+        + "        run: swift package --package-path .ward/swift-tools resolve\n"
+        + (harmonize ? harmonizeCache() : "");
+  }
+
+  /** Caches the Harmonize build, which the first architecture test run compiles. */
+  private static String harmonizeCache() {
+    return CiWorkflowTemplate.STEP
+        + "Cache Harmonize's build\n"
+        + "        uses: actions/cache@v4\n"
+        + "        with:\n"
+        + "          path: "
+        + ArchitectureGates.HARMONIZE_PACKAGE
+        + "/.build\n"
+        + "          key: ${{ runner.os }}-harmonize-${{ hashFiles('"
+        + ArchitectureGates.HARMONIZE_PACKAGE
+        + "/Package.swift') }}\n";
   }
 }

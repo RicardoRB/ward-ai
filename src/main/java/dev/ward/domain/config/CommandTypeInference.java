@@ -33,6 +33,7 @@ public final class CommandTypeInference {
           "openapi-diff",
           "openapi-compat",
           "swift-coverage",
+          "harmonize",
           COMMAND);
 
   private static final String MAVEN = "mvn";

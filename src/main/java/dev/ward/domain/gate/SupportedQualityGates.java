@@ -14,6 +14,7 @@ public final class SupportedQualityGates {
   public static final String MUTMUT = "mutmut";
   public static final String XCODEBUILD_TEST = "xcodebuild-test";
   public static final String SWIFT_COVERAGE = "swift-coverage";
+  public static final String HARMONIZE = "harmonize";
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 

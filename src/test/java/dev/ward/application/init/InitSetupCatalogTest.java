@@ -55,6 +55,7 @@ class InitSetupCatalogTest {
       Set.of(
           "swift-format",
           "swiftlint",
+          "harmonize",
           "swift-build",
           "swift-test",
           "xcodebuild-test",

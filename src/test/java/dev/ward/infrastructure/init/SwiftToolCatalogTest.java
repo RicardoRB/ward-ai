@@ -13,4 +13,11 @@ class SwiftToolCatalogTest {
     assertThat(SwiftToolCatalog.SWIFTLINT_PLUGINS_URL)
         .isEqualTo("https://github.com/SimplyDanny/SwiftLintPlugins");
   }
+
+  @Test
+  void pinsHarmonize130ExactlyFromItsRepository() {
+    assertThat(SwiftToolCatalog.HARMONIZE_VERSION).isEqualTo("1.3.0");
+    assertThat(SwiftToolCatalog.HARMONIZE_URL)
+        .isEqualTo("https://github.com/perrystreetsoftware/Harmonize.git");
+  }
 }

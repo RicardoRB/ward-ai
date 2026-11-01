@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -62,7 +63,10 @@ final class OwnedSections {
               project.root().resolve(".gitignore"),
               GITIGNORE_BEGIN,
               GITIGNORE_END,
-              ".ward/reports/\n.ward/swift-tools/.build/\n",
+              ".ward/reports/\n.ward/swift-tools/.build/\n"
+                  + (gates.stream().anyMatch(gate -> SwiftTools.HARMONIZE.equals(gate.id()))
+                      ? ArchitectureGates.HARMONIZE_PACKAGE + "/.build/\n"
+                      : ""),
               false));
     }
     if (selection.agentRules()) {

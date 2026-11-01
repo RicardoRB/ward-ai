@@ -12,13 +12,15 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the exact Swift gate commands, their platform and minimum, and their order. */
 class SwiftGatesTest {
+  private static final String COVERAGE = "swift-coverage";
+
   @Test
   void swiftPackageGatesRunSwiftPmInOrder() {
     final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD, false));
 
     assertThat(gates.stream().map(InitGateOption::id))
         .containsExactly(
-            "swift-format", "swiftlint", "swift-build", "swift-test", "swift-coverage");
+            "swift-format", "swiftlint", "swift-build", "swift-test", COVERAGE, "harmonize");
     assertThat(command(gates, "swift-format"))
         .containsExactly(
             "swift",
@@ -40,9 +42,8 @@ class SwiftGatesTest {
     assertThat(command(gates, "swift-build")).containsExactly("swift", "build", "--build-tests");
     assertThat(command(gates, "swift-test"))
         .containsExactly("swift", "test", "--enable-code-coverage");
-    assertThat(command(gates, "swift-coverage"))
-        .containsExactly("swift", "test", "--show-codecov-path");
-    assertThat(setting(gates, "swift-coverage", "minimum")).isEqualTo("80");
+    assertThat(command(gates, COVERAGE)).containsExactly("swift", "test", "--show-codecov-path");
+    assertThat(setting(gates, COVERAGE, "minimum")).isEqualTo("80");
   }
 
   @Test
@@ -51,14 +52,14 @@ class SwiftGatesTest {
         gates(SwiftGateFixtures.xcode("iOS Simulator", Optional.empty()));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swift-format", "swiftlint", "xcodebuild-test", "swift-coverage");
+        .containsExactly("swift-format", "swiftlint", "xcodebuild-test", COVERAGE, "harmonize");
     assertThat(command(gates, "xcodebuild-test"))
         .containsExactly("xcodebuild", "test", "-scheme", "Shop", "-enableCodeCoverage", "YES");
     assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("iOS Simulator");
-    assertThat(command(gates, "swift-coverage"))
+    assertThat(command(gates, COVERAGE))
         .containsExactly(
             "xcrun", "xccov", "view", "--report", "--json", ".ward/reports/xcode/tests.xcresult");
-    assertThat(setting(gates, "swift-coverage", "minimum")).isEqualTo("80");
+    assertThat(setting(gates, COVERAGE, "minimum")).isEqualTo("80");
   }
 
   @Test
@@ -80,10 +81,20 @@ class SwiftGatesTest {
   }
 
   @Test
-  void standardPresetNamesEveryGateThatTheToolHasAndStrictNamesTheSameGates() {
-    assertThat(new SwiftGates().presetGates(QualityPreset.STANDARD)).contains("swift-coverage");
+  void standardPresetNamesEveryGateThatTheToolHasAndStrictAddsHarmonize() {
+    assertThat(new SwiftGates().presetGates(QualityPreset.STANDARD))
+        .contains(COVERAGE)
+        .doesNotContain("harmonize");
     assertThat(new SwiftGates().presetGates(QualityPreset.STRICT))
-        .containsExactlyElementsOf(new SwiftGates().presetGates(QualityPreset.STANDARD));
+        .containsExactlyElementsOf(
+            List.of(
+                "swift-format",
+                "swiftlint",
+                "swift-build",
+                "swift-test",
+                "xcodebuild-test",
+                COVERAGE,
+                "harmonize"));
   }
 
   /** Returns the gates the tools select, in order. */

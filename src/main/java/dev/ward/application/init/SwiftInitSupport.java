@@ -50,7 +50,7 @@ final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
-    return SwiftCiSetup.steps(project);
+    return SwiftCiSetup.steps(project, facts.harmonize());
   }
 
   /** Swift builds need macOS, and Xcode 26 is the default on the macos-26 image. */

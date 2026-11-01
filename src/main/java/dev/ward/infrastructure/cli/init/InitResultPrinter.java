@@ -177,8 +177,11 @@ final class InitResultPrinter {
     if (test == null) {
       return;
     }
-    final boolean java = test.file().toString().endsWith(".java");
-    final String tool = java ? "ArchUnit test" : "dependency-cruiser config";
+    final String file = test.file().toString();
+    final String tool =
+        file.endsWith(".java")
+            ? "ArchUnit test"
+            : file.endsWith(".swift") ? "Harmonize rules" : "dependency-cruiser config";
     if (test.created() || test.previous() != null) {
       out.println("Generated " + test.architecture() + " " + tool + ": " + test.file());
     } else {

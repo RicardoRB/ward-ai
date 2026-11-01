@@ -26,7 +26,11 @@ final class SwiftAgentRules {
           "- Xcode tests: `{command}` must pass on the platform in `ward.toml`{warnings}.",
           SwiftTools.SWIFT_COVERAGE,
           "- Coverage: `{command}` must meet the {minimum}% minimum of line coverage; do not lower"
-              + " it.");
+              + " it.",
+          SwiftTools.HARMONIZE,
+          "- Architecture rules (Harmonize): `{command}` must pass. Fix the import or type that"
+              + " crosses a layer; do not edit `.ward/swift-architecture` or `.harmonize.yaml` to"
+              + " weaken a rule.");
 
   private SwiftAgentRules() {}
 

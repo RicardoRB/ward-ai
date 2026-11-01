@@ -60,6 +60,7 @@ public final class QualityGateDefinitions {
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.SWIFT_COVERAGE, "Swift coverage", Phase.LOCAL, false),
+          new Definition(SupportedQualityGates.HARMONIZE, "Harmonize", Phase.LOCAL, false),
           gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
           gate("command", Phase.LOCAL),
           gate("openspec", Phase.CI),

@@ -9,11 +9,11 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 /**
- * Finds a Swift tool's own config in the project root. A {@code .swiftlint.yml} that Ward wrote
- * (its marker is the first line) does not count; any {@code .swift-format} does.
+ * Finds a Swift tool's own config in the project root. A config Ward wrote, whose marker is the
+ * first line (such as {@code .swiftlint.yml} or {@code .harmonize.yaml}), does not count; any
+ * {@code .swift-format} does, since its JSON cannot carry the marker.
  */
 public final class FileSystemSwiftToolConfigs implements SwiftToolConfigs {
-  private static final String SWIFTLINT = ".swiftlint.yml";
   private static final String WARD_MARKER = "# managed-by: ward";
 
   /** Creates the stateless adapter that Dagger injects. */
@@ -28,7 +28,7 @@ public final class FileSystemSwiftToolConfigs implements SwiftToolConfigs {
     if (!Files.isRegularFile(file)) {
       return Optional.empty();
     }
-    return SWIFTLINT.equals(fileName) && wardOwned(file) ? Optional.empty() : Optional.of(file);
+    return wardOwned(file) ? Optional.empty() : Optional.of(file);
   }
 
   private static boolean wardOwned(final Path file) {
