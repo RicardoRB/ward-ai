@@ -47,7 +47,7 @@ class SwiftCoverageGateTest {
     final CoverageReport xccov = recording(xccovReads);
     final GateReportPorts ports =
         new GateReportPorts(
-            ReportDirectories.NONE, null, null, null, new SwiftGatePorts(null, llvmCov, xccov));
+            ReportDirectories.NONE, null, null, null, new PlatformGatePorts(null, llvmCov, xccov));
     final GateConfiguration check =
         new GateConfiguration(
             "coverage",

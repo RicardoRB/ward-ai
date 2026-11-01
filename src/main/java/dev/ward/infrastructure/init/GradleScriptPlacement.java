@@ -77,6 +77,18 @@ final class GradleScriptPlacement {
     return edit;
   }
 
+  /** The edit of one Android module script with the Android gate blocks added. */
+  static GradleBuildFileEdit androidModuleEdit(final Path module, final Set<String> selected) {
+    final Path script =
+        GradleKotlinModules.scriptFile(module)
+            .orElseThrow(
+                () ->
+                    new WardException("Could not configure Gradle tools: a module has no script."));
+    final GradleBuildFileEdit edit = GradleBuildFileEdit.read(script);
+    GradleAndroidBlocks.append(edit, selected);
+    return edit;
+  }
+
   /** The selected gates that go into module scripts; none without Kotlin modules. */
   static Set<String> moduleGates(final Set<String> selected, final List<Path> modules) {
     return modules.isEmpty()

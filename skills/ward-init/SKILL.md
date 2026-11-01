@@ -84,6 +84,10 @@ For a Python project (uv, Poetry or pip), also follow [references/python.md](ref
 it replaces the Java-only inspection steps and lists the Python choices, plan lines and version
 checks.
 
+For an Android project (the Android Gradle Plugin in a build script), also follow
+[references/android.md](references/android.md): it lists the Android gates, the module blocks and
+the SDK and plugin checks doctor makes.
+
 For a Swift project (SwiftPM or Xcode), also follow [references/swift.md](references/swift.md): it
 replaces the Java-only inspection steps, lists the Swift blocking findings and choices, and covers
 the Xcode scheme, which `--scheme` names when the project has several.

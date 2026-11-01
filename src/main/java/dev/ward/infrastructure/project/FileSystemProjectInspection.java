@@ -189,11 +189,15 @@ public final class FileSystemProjectInspection implements ProjectInspection {
 
   /**
    * A framework is detected when a Gradle build script mentions its plugin or dependency group. The
-   * scripts are read as text, so Groovy and Kotlin DSL both match.
+   * scripts are read as text, so Groovy and Kotlin DSL both match. The Android Gradle Plugin in the
+   * root or in a module wins over the groups, since an Android app may depend on a server library.
    */
   private static Framework gradleFramework(final Path dir) {
     final String script =
         GRADLE_BUILD_FILES.stream().map(f -> readText(dir.resolve(f))).reduce("", String::concat);
+    if (GradleAndroidModules.appliesAndroid(script) || !GradleAndroidModules.of(dir).isEmpty()) {
+      return Framework.ANDROID;
+    }
     for (final FrameworkGroup group : FRAMEWORK_GROUPS) {
       if (script.contains(group.groupId())) {
         return group.framework();

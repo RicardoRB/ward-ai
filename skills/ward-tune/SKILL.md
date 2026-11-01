@@ -53,7 +53,7 @@ List the gates with `enabled = true`. This skill tunes these:
 |---|---|---|
 | `checkstyle` | Checkstyle modules and their properties | [references/checkstyle.md](references/checkstyle.md) |
 | `pmd` | PMD rules and categories | [references/pmd.md](references/pmd.md) |
-| `coverage`, `swift-coverage` | JaCoCo minimum ratios, and the Swift coverage minimum | [references/coverage.md](references/coverage.md) |
+| `coverage`, `swift-coverage`, `android-coverage` | JaCoCo minimum ratios, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
 | `dependency-cruiser` | Layer paths, added layers and cycle rules of the import-boundary config | [references/dependency-cruiser.md](references/dependency-cruiser.md) |

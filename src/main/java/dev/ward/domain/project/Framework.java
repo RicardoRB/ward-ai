@@ -23,6 +23,7 @@ public enum Framework {
   DJANGO("Django"),
   FASTAPI("FastAPI"),
   FLASK("Flask"),
+  ANDROID("Android"),
   NONE("None");
 
   private static final Set<Framework> SERVER_FRAMEWORKS =
