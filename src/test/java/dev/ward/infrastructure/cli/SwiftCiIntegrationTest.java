@@ -192,6 +192,12 @@ class SwiftCiIntegrationTest {
       Files.writeString(tool, script);
       tool.toFile().setExecutable(true);
     }
+    // Swift init reads the Xcode version for SwiftPM too, so every run needs an xcodebuild.
+    if (!"xcodebuild".equals(name)) {
+      final Path xcodebuild = bin.resolve("xcodebuild");
+      Files.writeString(xcodebuild, XCODEBUILD_STUB);
+      xcodebuild.toFile().setExecutable(true);
+    }
   }
 
   private Result run(final Path project, final String... args)
