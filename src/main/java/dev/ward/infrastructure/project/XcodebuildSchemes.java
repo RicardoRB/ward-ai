@@ -11,13 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.inject.Inject;
-import org.apache.fory.json.annotation.JsonType;
 
 /**
  * Lists Xcode schemes with {@code xcodebuild -list -json} and reads the macOS-only platform from
@@ -104,16 +103,23 @@ public final class XcodebuildSchemes implements XcodeSchemes {
     return !sdks.isEmpty() && sdks.stream().allMatch(MACOS_SDK::equals);
   }
 
+  /** Reads the schemes of the workspace, or of the project when there is no workspace. */
   private List<String> schemesOf(final String json) {
     try {
-      final XcodeList list = codec.fromJson(json, XcodeList.class);
-      final Container container = list.workspace() != null ? list.workspace() : list.project();
-      return container == null || container.schemes() == null
-          ? List.of()
-          : container.schemes().stream().filter(Objects::nonNull).toList();
+      final Map<?, ?> list = objectOf(codec.fromJson(json, Object.class));
+      final Object container =
+          list.get("workspace") != null ? list.get("workspace") : list.get("project");
+      final Object schemes = objectOf(container).get("schemes");
+      return schemes instanceof List<?> names
+          ? names.stream().filter(String.class::isInstance).map(String.class::cast).toList()
+          : List.of();
     } catch (JsonCodecException e) {
       throw new WardException("xcodebuild -list printed JSON Ward could not read.", e);
     }
+  }
+
+  private static Map<?, ?> objectOf(final Object value) {
+    return value instanceof Map<?, ?> map ? map : Map.of();
   }
 
   private static List<String> sdkRoots(final String pbxproj) {
@@ -148,30 +154,5 @@ public final class XcodebuildSchemes implements XcodeSchemes {
 
   private WardException noXcode() {
     return new WardException("No Xcode project or workspace was found at the project root.");
-  }
-
-  /** The {@code xcodebuild -list -json} output: a workspace or a project, each with schemes. */
-  @JsonType
-  static final class XcodeList {
-    Container workspace;
-    Container project;
-
-    Container workspace() {
-      return workspace;
-    }
-
-    Container project() {
-      return project;
-    }
-  }
-
-  /** One container's schemes, as {@code xcodebuild -list -json} names them. */
-  @JsonType
-  static final class Container {
-    List<String> schemes;
-
-    List<String> schemes() {
-      return schemes;
-    }
   }
 }
