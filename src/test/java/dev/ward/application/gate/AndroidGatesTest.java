@@ -30,6 +30,8 @@ class AndroidGatesTest {
   private static final List<String> COVERAGE =
       List.of("./gradlew", "createDebugUnitTestCoverageReport");
   private static final int MINIMUM = 80;
+  private static final int COVERED = 90;
+  private static final int EXECUTABLE = 100;
 
   @Test
   void lintGateRunsTheDebugLintTaskThroughTheWrapper() {
@@ -55,7 +57,7 @@ class AndroidGatesTest {
   @Test
   void coverageGateReadsTheReportAfterItsCommandPasses() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
-    final CoverageReport report = (project, stdout) -> LineCoverage.of(90, 100);
+    final CoverageReport report = (project, stdout) -> LineCoverage.of(COVERED, EXECUTABLE);
 
     final GateResult result =
         run(executor, SupportedQualityGates.ANDROID_COVERAGE, COVERAGE, MINIMUM, report);
@@ -67,7 +69,7 @@ class AndroidGatesTest {
   @Test
   void coverageGateFailsWhenTheCommandFails() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "", "");
-    final CoverageReport report = (project, stdout) -> LineCoverage.of(90, 100);
+    final CoverageReport report = (project, stdout) -> LineCoverage.of(COVERED, EXECUTABLE);
 
     final GateResult result =
         run(executor, SupportedQualityGates.ANDROID_COVERAGE, COVERAGE, MINIMUM, report);

@@ -16,6 +16,15 @@ import org.junit.jupiter.api.io.TempDir;
 /** The Android coverage report sums the line counters of AGP's debug JaCoCo XML reports. */
 class AndroidJacocoCoverageReportTest {
   private static final String REPORT = "build/reports/coverage/test/debug/report.xml";
+  private static final int APP_COVERED = 30;
+  private static final int APP_MISSED = 10;
+  private static final int APP_EXECUTABLE = APP_COVERED + APP_MISSED;
+  private static final int CORE_COVERED = 20;
+  private static final int CORE_MISSED = 0;
+  private static final int ALL_COVERED = APP_COVERED + CORE_COVERED;
+  private static final int ALL_EXECUTABLE = APP_EXECUTABLE + CORE_COVERED + CORE_MISSED;
+  private static final int ABOVE_APP_RATE = 76;
+  private static final int AT_APP_RATE = 75;
 
   @TempDir Path root;
 
@@ -29,26 +38,26 @@ class AndroidJacocoCoverageReportTest {
 
   @Test
   void readsTheLineCounterOfTheReportTotals() throws IOException {
-    write("app", report(30, 10));
+    write("app", report(APP_COVERED, APP_MISSED));
 
     final LineCoverage coverage = read();
 
     assertThat(coverage.usable()).isTrue();
-    assertThat(coverage.covered()).isEqualTo(30);
-    assertThat(coverage.executable()).isEqualTo(40);
-    assertThat(coverage.below(76)).isTrue();
-    assertThat(coverage.below(75)).isFalse();
+    assertThat(coverage.covered()).isEqualTo(APP_COVERED);
+    assertThat(coverage.executable()).isEqualTo(APP_EXECUTABLE);
+    assertThat(coverage.below(ABOVE_APP_RATE)).isTrue();
+    assertThat(coverage.below(AT_APP_RATE)).isFalse();
   }
 
   @Test
   void sumsEveryModuleWithAReport() throws IOException {
-    write("app", report(30, 10));
-    write("core", report(20, 0));
+    write("app", report(APP_COVERED, APP_MISSED));
+    write("core", report(CORE_COVERED, CORE_MISSED));
 
     final LineCoverage coverage = read();
 
-    assertThat(coverage.covered()).isEqualTo(50);
-    assertThat(coverage.executable()).isEqualTo(60);
+    assertThat(coverage.covered()).isEqualTo(ALL_COVERED);
+    assertThat(coverage.executable()).isEqualTo(ALL_EXECUTABLE);
   }
 
   @Test

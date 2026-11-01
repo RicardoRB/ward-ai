@@ -25,13 +25,14 @@ public class QualityGateFactory {
   private static final String ZAP = "zap";
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
-  private static final Set<String> MUTATION_GATES =
+  private static final Set<String> PLATFORM_GATES =
       Set.of(
           SupportedQualityGates.STRYKER,
           SupportedQualityGates.MUTATION,
-          SupportedQualityGates.MUTMUT);
-  private static final Set<String> SWIFT_GATES =
-      Set.of(SupportedQualityGates.XCODEBUILD_TEST, SupportedQualityGates.SWIFT_COVERAGE);
+          SupportedQualityGates.MUTMUT,
+          SupportedQualityGates.XCODEBUILD_TEST,
+          SupportedQualityGates.SWIFT_COVERAGE,
+          SupportedQualityGates.ANDROID_COVERAGE);
   private static final String STRYKER_REPORT_HINT =
       "Enable Stryker's json reporter in the command, for example with"
           + " --reporters clear-text,progress,json.";
@@ -173,16 +174,23 @@ public class QualityGateFactory {
     if (SupportedQualityGates.openApiIds().contains(type)) {
       return openApiGate(name, check, project);
     }
-    if (MUTATION_GATES.contains(type)) {
-      return mutationGate(check);
-    }
-    if (SWIFT_GATES.contains(type)) {
-      return SwiftGates.create(check, executor, reports);
-    }
-    if (SupportedQualityGates.ANDROID_COVERAGE.equals(type)) {
-      return CoverageGates.minimum(check, executor, reports, reports.swift().android());
+    if (PLATFORM_GATES.contains(type)) {
+      return platformGate(check);
     }
     return new CommandQualityGate(name, executor, check.command(), reportDirectories);
+  }
+
+  /** Builds a mutation, Swift or Android gate, each of which reads its own tool's report. */
+  private QualityGate platformGate(final GateConfiguration check) {
+    if (SupportedQualityGates.ANDROID_COVERAGE.equals(check.type())) {
+      return CoverageGates.minimum(check, executor, reports, reports.swift().android());
+    }
+    if (SupportedQualityGates.STRYKER.equals(check.type())
+        || SupportedQualityGates.MUTATION.equals(check.type())
+        || SupportedQualityGates.MUTMUT.equals(check.type())) {
+      return mutationGate(check);
+    }
+    return SwiftGates.create(check, executor, reports);
   }
 
   /** Builds a Stryker, PIT or mutmut gate that checks its {@code minimum} against its report. */

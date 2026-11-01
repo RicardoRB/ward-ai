@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -54,13 +55,13 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
     long covered = 0;
     long missed = 0;
     for (final Path report : reports) {
-      final long[] counts = lineCounts(report);
-      if (counts == null) {
+      final Optional<LineTotals> totals = lineTotals(report);
+      if (totals.isEmpty()) {
         return LineCoverage.unusable(
             report.getFileName() + " cannot be parsed as a JaCoCo report.");
       }
-      covered += counts[0];
-      missed += counts[1];
+      covered += totals.get().covered();
+      missed += totals.get().missed();
     }
     if (covered + missed == 0) {
       return LineCoverage.unusable(
@@ -70,8 +71,8 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
     return LineCoverage.of(covered, covered + missed);
   }
 
-  /** Returns the covered and missed LINE counters of a report's totals, or null when unreadable. */
-  private static long[] lineCounts(final Path report) {
+  /** The covered and missed LINE counts of a report, or empty when the report is unreadable. */
+  private static Optional<LineTotals> lineTotals(final Path report) {
     try {
       final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -79,27 +80,29 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
       final DocumentBuilder builder = factory.newDocumentBuilder();
       builder.setErrorHandler(null);
       final Document document = builder.parse(report.toFile());
-      return lineCounts(document.getDocumentElement());
+      return Optional.of(lineTotals(document.getDocumentElement()));
     } catch (ParserConfigurationException | SAXException | IOException | NumberFormatException e) {
       LOGGER.log(Level.INFO, "event=findings-parse-failed gate=android-coverage");
-      return null;
+      return Optional.empty();
     }
   }
 
   /** The direct LINE counter of the report element, which holds the totals of every package. */
-  private static long[] lineCounts(final Element report) {
+  private static LineTotals lineTotals(final Element report) {
     final NodeList children = report.getChildNodes();
     for (int i = 0; i < children.getLength(); i++) {
       final Node child = children.item(i);
       if (child instanceof Element counter
           && COUNTER.equals(counter.getTagName())
           && LINE.equals(counter.getAttribute("type"))) {
-        return new long[] {
-          Long.parseLong(counter.getAttribute("covered")),
-          Long.parseLong(counter.getAttribute("missed"))
-        };
+        return new LineTotals(
+            Long.parseLong(counter.getAttribute("covered")),
+            Long.parseLong(counter.getAttribute("missed")));
       }
     }
-    return new long[] {0, 0};
+    return new LineTotals(0, 0);
   }
+
+  /** The covered and missed line counts of one report. */
+  private record LineTotals(long covered, long missed) {}
 }
