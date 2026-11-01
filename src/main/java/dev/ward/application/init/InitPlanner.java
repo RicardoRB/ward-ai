@@ -55,7 +55,7 @@ final class InitPlanner {
     final List<TurborepoPlan.MemberPlan> members =
         TurborepoMembers.plan(project, selection.preset(), catalog.get().inputs);
     changes.addAll(turborepoPlan(project, members, gates, selection.preset(), approved));
-    changes.add(files.buildTools().plan(project, gates, selection.preset(), approved));
+    changes.addAll(buildFiles(project, gates, selection.preset(), approved));
     final List<PlannedFileChange> ruleFiles =
         files.ruleFiles().plan(project, selection.preset(), gates);
     changes.addAll(ruleFiles);
@@ -89,7 +89,7 @@ final class InitPlanner {
     }
     final List<PlannedFileChange> changes = new ArrayList<>();
     for (final TurborepoPlan.MemberPlan member : members) {
-      changes.add(files.buildTools().plan(member.project(), member.gates(), preset, approved));
+      changes.addAll(buildFiles(member.project(), member.gates(), preset, approved));
       changes.addAll(files.ruleFiles().plan(member.project(), preset, member.gates()));
       changes.add(
           new PlannedFileChange(
@@ -106,6 +106,18 @@ final class InitPlanner {
             TurborepoMembers.workspace(project.root(), members, gates).tasks().stream()
                 .map(task -> "add task " + task)
                 .toList()));
+    return changes;
+  }
+
+  /** Lists a project's build file, then each module build script that would change. */
+  private List<PlannedFileChange> buildFiles(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final boolean approved) {
+    final List<PlannedFileChange> changes = new ArrayList<>();
+    changes.add(files.buildTools().plan(project, gates, preset, approved));
+    changes.addAll(catalog.get().inputs.modules().planModules(project, gates, preset, approved));
     return changes;
   }
 

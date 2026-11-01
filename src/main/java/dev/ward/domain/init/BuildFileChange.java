@@ -15,6 +15,7 @@ import java.util.List;
  * @param lockFile the lock file an install rewrote, or {@code null} when none was run
  * @param lockOriginal the lock file content before the install, or {@code null} when it did not
  *     exist
+ * @param moduleScripts the module build scripts the change edited, restored on rollback
  */
 public record BuildFileChange(
     Toolchain toolchain,
@@ -23,11 +24,13 @@ public record BuildFileChange(
     List<String> tools,
     List<String> warnings,
     Path lockFile,
-    String lockOriginal) {
-  /** Copies the lists; missing warnings mean none. */
+    String lockOriginal,
+    List<ScriptEdit> moduleScripts) {
+  /** Copies the lists; missing warnings or module scripts mean none. */
   public BuildFileChange {
     tools = List.copyOf(tools);
     warnings = warnings == null ? List.of() : List.copyOf(warnings);
+    moduleScripts = moduleScripts == null ? List.of() : List.copyOf(moduleScripts);
   }
 
   /** Creates a change that rewrote no lock file. */
@@ -37,7 +40,7 @@ public record BuildFileChange(
       final String originalContent,
       final List<String> tools,
       final List<String> warnings) {
-    this(toolchain, file, originalContent, tools, warnings, null, null);
+    this(toolchain, file, originalContent, tools, warnings, null, null, List.of());
   }
 
   /** Creates a change without warnings. */

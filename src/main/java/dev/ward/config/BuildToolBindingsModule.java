@@ -8,6 +8,7 @@ import dev.ward.application.init.NodeInputs;
 import dev.ward.application.init.SwiftPorts;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityInspection;
 import dev.ward.domain.project.PythonToolConfigs;
@@ -41,13 +42,19 @@ final class BuildToolBindingsModule {
   }
 
   @Provides
+  static BuildModulePlanning buildModulePlanning(final JvmBuildToolConfigurator jvm) {
+    return jvm;
+  }
+
+  @Provides
   static InitPorts initPorts(
       final EnvironmentInspection environment,
       final NodeInputs node,
       final BuildToolConfiguration buildTools,
       final PythonToolConfigs python,
-      final SwiftPorts swift) {
-    return new InitPorts(environment, node, buildTools, python, swift);
+      final SwiftPorts swift,
+      final BuildModulePlanning modulePlanning) {
+    return new InitPorts(environment, node, buildTools, python, swift, modulePlanning);
   }
 
   @Provides

@@ -97,7 +97,8 @@ class GateCatalogContractTest {
         (directory, tool) -> java.util.Optional.empty(),
         dev.ward.domain.project.WorkspaceMembers.none(),
         new SwiftPorts(
-            xcode, (directory, name) -> java.util.Optional.empty(), directory -> List.of()));
+            xcode, (directory, name) -> java.util.Optional.empty(), directory -> List.of()),
+        dev.ward.domain.init.BuildModulePlanning.none());
   }
 
   @Test

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -62,7 +63,8 @@ class SwiftSchemeSelectionTest {
             Optional.empty(),
             (root, tool) -> Optional.empty(),
             WorkspaceMembers.none(),
-            new SwiftPorts(xcode(schemes), (root, name) -> Optional.empty(), root -> List.of()));
+            new SwiftPorts(xcode(schemes), (root, name) -> Optional.empty(), root -> List.of()),
+            BuildModulePlanning.none());
     final Project project = XCODE.withXcodeScheme(scheme.orElse(null));
     final List<InitGateOption> gates =
         InitToolchains.support(project).gates(project, QualityPreset.STANDARD, inputs).analysis();

@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.GateOmission;
 import dev.ward.domain.project.NodeSources;
@@ -25,6 +26,7 @@ import java.util.Optional;
  * @param members lists the packages a Node workspace root holds
  * @param swift reads the Xcode schemes, Swift tool configs and source directories of a Swift
  *     project
+ * @param modules plans the module build scripts a build tool would change
  */
 record InitInputs(
     EnvironmentInspection environment,
@@ -34,7 +36,8 @@ record InitInputs(
     Optional<BuildToolConfiguration> buildTools,
     PythonToolConfigs pythonConfigs,
     WorkspaceMembers members,
-    SwiftPorts swift) {
+    SwiftPorts swift,
+    BuildModulePlanning modules) {
   /** Inputs that read no Python config of their own. */
   InitInputs(
       final EnvironmentInspection environment,
@@ -50,7 +53,8 @@ record InitInputs(
         buildTools,
         (root, tool) -> Optional.empty(),
         WorkspaceMembers.none(),
-        SwiftPorts.NONE);
+        SwiftPorts.NONE,
+        BuildModulePlanning.none());
   }
 
   /** Inputs that do not read the runtime JDK. */
@@ -89,7 +93,8 @@ record InitInputs(
         Optional.empty(),
         (root, tool) -> Optional.empty(),
         node.members(),
-        SwiftPorts.NONE);
+        SwiftPorts.NONE,
+        BuildModulePlanning.none());
   }
 
   /** Inputs that also read the runtime JDK through the build-file adapters of {@code ports}. */
@@ -103,7 +108,8 @@ record InitInputs(
         Optional.of(ports.buildTools()),
         ports.python(),
         node.members(),
-        ports.swift());
+        ports.swift(),
+        ports.modulePlanning());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

@@ -6,6 +6,9 @@ import dev.ward.domain.doctor.ExecutableObservation;
 import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import dev.ward.infrastructure.project.GradleKotlinModules;
+import dev.ward.infrastructure.project.GradleModuleScan;
+import dev.ward.infrastructure.project.MavenJavaModules;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -115,7 +118,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
               ? Path.of(executable)
               : projectRoot.resolve(executable).normalize();
     } else {
-      candidate = findOnPath(executable);
+      candidate = ExecutableLocator.onPath(executable);
     }
     if (candidate == null) {
       return new ExecutableObservation(executable, null, false, false, false);
@@ -160,6 +163,18 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   }
 
   @Override
+  public List<Path> gradleKotlinModules(final Path projectRoot) {
+    return GradleKotlinModules.of(projectRoot);
+  }
+
+  @Override
+  public List<String> skippedJvmModules(final Path projectRoot) {
+    return Files.isRegularFile(projectRoot.resolve("pom.xml"))
+        ? MavenJavaModules.skipped(projectRoot)
+        : GradleModuleScan.skipped(projectRoot);
+  }
+
+  @Override
   public OssIndexSetting ossIndexSetting(final Path projectRoot) {
     return DependencyCheckSettings.read(projectRoot);
   }
@@ -168,18 +183,5 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   private static boolean isSet(final String name) {
     final String value = System.getenv(name);
     return value != null && !value.isBlank();
-  }
-
-  private static Path findOnPath(final String executable) {
-    final String path = System.getenv("PATH");
-    if (path == null) {
-      return null;
-    }
-    return Arrays.stream(path.split(File.pathSeparator))
-        .map(Path::of)
-        .map(directory -> directory.resolve(executable))
-        .filter(Files::exists)
-        .findFirst()
-        .orElse(null);
   }
 }

@@ -62,7 +62,8 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
             edit.missing().stream().map(PythonPackageCatalog.Package::name).toList(),
             List.of(),
             lock,
-            lock != null && Files.isRegularFile(lock) ? read(lock) : null);
+            lock != null && Files.isRegularFile(lock) ? read(lock) : null,
+            List.of());
     write(edit.file(), edit.edited());
     LOGGER.log(Level.INFO, () -> "event=python-dependencies-added count=" + edit.missing().size());
     install(project, change, commands(project, edit));

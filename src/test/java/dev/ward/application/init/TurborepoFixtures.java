@@ -75,7 +75,8 @@ final class TurborepoFixtures {
         Optional.empty(),
         (dir, tool) -> Optional.empty(),
         new Members(members),
-        SwiftPorts.NONE);
+        SwiftPorts.NONE,
+        dev.ward.domain.init.BuildModulePlanning.none());
   }
 
   static InitInputs inputs(

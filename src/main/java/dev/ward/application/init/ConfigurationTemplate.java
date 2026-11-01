@@ -5,8 +5,11 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityGatePhasePolicy;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
@@ -69,7 +72,7 @@ final class ConfigurationTemplate {
       if (openSpecRoot != null && isOpenSpec(gate.id())) {
         content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
       }
-      gate.settings().forEach((key, value) -> setting(content, key, value));
+      gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
       partial(content, gate, project, preset);
     }
     return content.toString();
@@ -121,6 +124,23 @@ final class ConfigurationTemplate {
         .append(" = [")
         .append(String.join(", ", values.stream().map(ConfigurationTemplate::quoted).toList()))
         .append("]\n");
+  }
+
+  /**
+   * The gate's settings, with a Gradle mutation gate's minimum taken from the preset: the Gradle
+   * PIT block sets no threshold, so the summed score is checked here.
+   */
+  private static Map<String, String> gatePreset(
+      final InitGateOption gate, final Project project, final QualityPreset preset) {
+    final Integer threshold = preset == null ? null : preset.rules().mutationThreshold();
+    if (!SupportedQualityGates.MUTATION.equals(gate.id())
+        || project.buildTool() != BuildTool.GRADLE
+        || threshold == null) {
+      return gate.settings();
+    }
+    final Map<String, String> settings = new LinkedHashMap<>(gate.settings());
+    settings.putIfAbsent(MINIMUM, String.valueOf(threshold));
+    return settings;
   }
 
   /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
