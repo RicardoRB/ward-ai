@@ -37,8 +37,12 @@ final class SwiftConfigFiles {
           + "  - Pods\n"
           + "  - Carthage\n"
           + "  - DerivedData\n";
+  // trailing_comma is disabled: swift-format owns formatting and keeps the trailing comma that
+  // SwiftLint's default rule rejects, so under --strict the two would make every package fail.
   private static final String STRICT_RULES =
-      "opt_in_rules:\n"
+      "disabled_rules:\n"
+          + "  - trailing_comma\n"
+          + "opt_in_rules:\n"
           + "  - force_unwrapping\n"
           + "  - implicitly_unwrapped_optional\n"
           + "  - fatal_error_message\n"

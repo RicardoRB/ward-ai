@@ -27,6 +27,7 @@ class SwiftStrictConfigFilesTest {
     assertThat(target.content())
         .startsWith("# managed-by: ward")
         .contains("  - force_unwrapping")
+        .contains("disabled_rules:\n  - trailing_comma\n")
         .contains("cyclomatic_complexity:\n  warning: 10\n");
   }
 
