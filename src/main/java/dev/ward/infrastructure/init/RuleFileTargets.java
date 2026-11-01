@@ -10,6 +10,7 @@ import java.util.List;
  * The rule files one toolchain's project needs. Each toolchain implements it, and the Dagger module
  * registers the implementation under its toolchain, so the preset writer names no toolchain.
  */
+@FunctionalInterface
 public interface RuleFileTargets {
   /**
    * Returns each rule file {@code project} needs for {@code gates}, in the order init writes them.

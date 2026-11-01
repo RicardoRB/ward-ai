@@ -15,6 +15,11 @@ import java.util.Optional;
 public final class RuleFileTargetsFixtures {
   private RuleFileTargetsFixtures() {}
 
+  /** Returns a preset writer whose toolchain targets read no manifest and no tool config. */
+  public static PresetRuleFileWriter writer() {
+    return new PresetRuleFileWriter(defaults());
+  }
+
   /** Returns the Node, Python and Swift targets, reading no manifest and no tool config. */
   public static Map<Toolchain, RuleFileTargets> defaults() {
     return of(root -> PackageManifest.EMPTY, (root, gate) -> Optional.empty());

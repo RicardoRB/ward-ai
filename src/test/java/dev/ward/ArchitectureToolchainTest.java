@@ -5,18 +5,17 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
-import com.tngtech.archunit.junit.AnalyzeClasses;
-import com.tngtech.archunit.junit.ArchTest;
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 
 /**
  * The toolchain subpackages of init: no toolchain depends on another, and the init roots name a
  * toolchain only in the registry or in the composer the infrastructure root needs.
  */
-@AnalyzeClasses(packages = "dev.ward", importOptions = ImportOption.DoNotIncludeTests.class)
-class ArchitectureToolchainTest {
+final class ArchitectureToolchainTest {
   private static final String APPLICATION_INIT = "dev.ward.application.init";
   private static final String INFRASTRUCTURE_INIT = "dev.ward.infrastructure.init";
   private static final List<String> TOOLCHAINS =
@@ -33,14 +32,22 @@ class ArchitectureToolchainTest {
           "CompositeToolInstaller",
           "ToolchainArchitectureRules");
 
-  @ArchTest
-  static void toolchainSubpackagesDoNotDependOnEachOther(final JavaClasses production) {
-    checkToolchainsStayIndependent(production);
+  private ArchitectureToolchainTest() {}
+
+  @Test
+  void toolchainSubpackagesDoNotDependOnEachOther() {
+    checkToolchainsStayIndependent(production());
   }
 
-  @ArchTest
-  static void initRootsReachToolchainsOnlyThroughTheRegistry(final JavaClasses production) {
-    checkRootsReachToolchainsOnlyThroughTheRegistry(production);
+  @Test
+  void initRootsReachToolchainsOnlyThroughTheRegistry() {
+    checkRootsReachToolchainsOnlyThroughTheRegistry(production());
+  }
+
+  private static JavaClasses production() {
+    return new ClassFileImporter()
+        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+        .importPackages("dev.ward");
   }
 
   /** Checks that no toolchain's classes depend on another toolchain's classes. */

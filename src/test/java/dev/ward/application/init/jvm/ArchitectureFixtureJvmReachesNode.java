@@ -6,6 +6,7 @@ import java.util.List;
 
 /** A violating fixture: a JVM toolchain class that depends on the Node toolchain. */
 public final class ArchitectureFixtureJvmReachesNode {
+  /** Returns the Node command the JVM toolchain must not reach. */
   public List<String> command() {
     return NodeTools.command(BuildTool.NPM, "lint");
   }
