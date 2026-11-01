@@ -20,6 +20,7 @@ import org.junit.jupiter.api.io.TempDir;
 class SwiftCiIntegrationTest {
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
   private static final long TIMEOUT_SECONDS = 300;
+  private static final String MACOS_NAME = "Mac OS X";
 
   /** Where {@code swift package resolve} leaves SwiftLint; the gate runs it from there. */
   private static final String SWIFTLINT_BINARY =
@@ -197,6 +198,8 @@ class SwiftCiIntegrationTest {
       throws IOException, InterruptedException {
     final List<String> command = new java.util.ArrayList<>();
     command.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
+    // Swift init refuses non-macOS hosts, so the child reports macOS on any runner.
+    command.add("-Dos.name=" + MACOS_NAME);
     command.add("-cp");
     command.add(System.getProperty("java.class.path"));
     command.add("dev.ward.WardApplication");

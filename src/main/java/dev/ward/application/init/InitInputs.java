@@ -108,8 +108,8 @@ record InitInputs(
         Optional.of(ports.buildTools()),
         ports.python(),
         node.members(),
-        ports.swift(),
-        ports.modulePlanning());
+        ports.toolchains().swift(),
+        ports.toolchains().modulePlanning());
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */

@@ -116,8 +116,8 @@ final class InitCommandFixture {
                         new FileSystemNodeToolConfigs()),
                     buildTools,
                     new dev.ward.infrastructure.project.FileSystemPythonToolConfigs(),
-                    swiftPorts,
-                    dev.ward.domain.init.BuildModulePlanning.none()),
+                    new dev.ward.application.init.ToolchainPorts(
+                        swiftPorts, dev.ward.domain.init.BuildModulePlanning.none())),
                 new QualityHookInstaller(),
                 new TomlConfigurationReader(),
                 "1.2.3"),

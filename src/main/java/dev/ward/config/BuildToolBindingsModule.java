@@ -6,6 +6,7 @@ import dev.ward.application.doctor.DoctorPorts;
 import dev.ward.application.init.InitPorts;
 import dev.ward.application.init.NodeInputs;
 import dev.ward.application.init.SwiftPorts;
+import dev.ward.application.init.ToolchainPorts;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildModulePlanning;
@@ -47,14 +48,19 @@ final class BuildToolBindingsModule {
   }
 
   @Provides
+  static ToolchainPorts toolchainPorts(
+      final SwiftPorts swift, final BuildModulePlanning modulePlanning) {
+    return new ToolchainPorts(swift, modulePlanning);
+  }
+
+  @Provides
   static InitPorts initPorts(
       final EnvironmentInspection environment,
       final NodeInputs node,
       final BuildToolConfiguration buildTools,
       final PythonToolConfigs python,
-      final SwiftPorts swift,
-      final BuildModulePlanning modulePlanning) {
-    return new InitPorts(environment, node, buildTools, python, swift, modulePlanning);
+      final ToolchainPorts toolchains) {
+    return new InitPorts(environment, node, buildTools, python, toolchains);
   }
 
   @Provides
