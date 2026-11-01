@@ -8,7 +8,9 @@ Everything here is read-only until the user approves the plan.
 
 Ward sets up SwiftPM packages and Xcode projects that contain Swift sources, on macOS with Xcode
 26.0 or newer. Ward's pinned SwiftLint runs from its own tools package, so no Swift project file is
-edited.
+edited. CI proves Xcode 26.0.1 and 26.6. When the selected Xcode is outside the range a pinned tool
+covers, init leaves out that tool's gate (`swiftlint` or `harmonize`), and the plan names the Xcode
+versions it supports; tell the user before they approve.
 
 ## Blocking findings
 

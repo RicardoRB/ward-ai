@@ -336,6 +336,84 @@ jobs:
           -Dward.python.matrix.jar=target/ward.jar
           test
 
+  # After the Ward ci profile passes, reads the Xcode and fixture pairs and their runners from the
+  # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
+  # files.
+  swift-matrix-versions:
+    name: Swift matrix versions
+    needs: quality
+    runs-on: ubuntu-24.04
+    outputs:
+      cells: ${{ steps.versions.outputs.cells }}
+      run: ${{ steps.versions.outputs.run }}
+    steps:
+      # Full history so the base branch is available for the documentation-only check.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Read Xcode versions and decide whether the matrix runs
+        id: versions
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -eu
+          cells=$(tail -n +2 src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+            | awk -F, 'NR == FNR { runner[$1] = $2; next } { print $1 "," $2 "," runner[$1] }' \
+                src/test/resources/swift-matrix/xcodes.csv - \
+            | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {xcode: .[0], fixture: .[1], runner: .[2]})')
+          echo "cells=$cells" >> "$GITHUB_OUTPUT"
+          run=true
+          if [ "$EVENT" = pull_request ]; then
+            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
+            # No changed path outside the documentation patterns means the matrix can be skipped.
+            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
+              run=false
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Swift cells: $cells, matrix runs: $run"
+
+  # One job per Xcode and fixture, on the macOS runner that xcodes.csv names for that Xcode.
+  swift-matrix:
+    name: Xcode ${{ matrix.cell.xcode }} ${{ matrix.cell.fixture }} compatibility matrix
+    needs: swift-matrix-versions
+    if: needs.swift-matrix-versions.outputs.run == 'true'
+    runs-on: ${{ matrix.cell.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.swift-matrix-versions.outputs.cells) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      # Keyed on the tool catalog so a pinned version change refetches the packages.
+      - name: Restore SwiftPM cache
+        uses: actions/cache@v5
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: swiftpm-${{ matrix.cell.xcode }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/SwiftToolCatalog.java') }}
+
+      - name: Build Ward
+        run: ./mvnw -B -q package -DskipTests
+
+      - name: Run ${{ matrix.cell.fixture }} cells for Xcode ${{ matrix.cell.xcode }}
+        run: >-
+          ./mvnw -B
+          -Dtest=SwiftCompatibilityMatrixTest
+          -Dward.swift.matrix=${{ matrix.cell.xcode }}
+          -Dward.swift.matrix.fixture=${{ matrix.cell.fixture }}
+          -Dward.swift.matrix.jar=target/ward.jar
+          test
+
   # After the Ward ci profile passes, reads the JDK and Gradle versions from the matrix data and
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   java-matrix-versions:

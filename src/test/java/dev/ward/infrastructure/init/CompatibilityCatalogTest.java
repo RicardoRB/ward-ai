@@ -8,9 +8,13 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** Every pinned tool declares a Python range that the Python matrix cells run. */
+/**
+ * Every pinned Python tool declares a range that the Python matrix cells run, and every Swift tool
+ * row an Xcode range that the Swift matrix cells run.
+ */
 class CompatibilityCatalogTest {
   private static final Path CELLS = Path.of("src/test/resources/python-matrix/cells.csv");
+  private static final Path SWIFT_CELLS = Path.of("src/test/resources/swift-matrix/cells.csv");
   private static final int FIRST_MINOR = 11;
   private static final int LAST_EXCLUSIVE_MINOR = 15;
 
@@ -29,6 +33,25 @@ class CompatibilityCatalogTest {
                 assertThat(versions)
                     .as("matrix cell for %s in %s", tool.name(), tool.pythonRange())
                     .anyMatch(version -> inRange(version, tool.pythonRange())));
+  }
+
+  @Test
+  void everySwiftCatalogRowHasAMatrixCellInItsXcodeRange() throws IOException {
+    final List<String> xcodes =
+        Files.readAllLines(SWIFT_CELLS).stream()
+            .skip(1)
+            .map(line -> line.split(",", -1)[0])
+            .distinct()
+            .toList();
+
+    assertThat(SwiftToolCatalog.rows())
+        .allSatisfy(
+            row ->
+                assertThat(xcodes)
+                    .as(
+                        "matrix cell for %s from Xcode %s up to %s",
+                        row.name(), row.minimumXcode(), row.maximumXcode())
+                    .anyMatch(row::covers));
   }
 
   /**

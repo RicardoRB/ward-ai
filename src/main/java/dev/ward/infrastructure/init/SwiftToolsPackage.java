@@ -21,8 +21,8 @@ final class SwiftToolsPackage {
 
   private SwiftToolsPackage() {}
 
-  /** Returns the manifest that pins {@link SwiftToolCatalog#SWIFTLINT_PLUGINS_VERSION} exactly. */
-  static String manifest() {
+  /** Returns the manifest that pins {@code swiftLintVersion} of SwiftLintPlugins exactly. */
+  static String manifest(final String swiftLintVersion) {
     return "// swift-tools-version: 5.9\n"
         + MARKER
         + "\n"
@@ -37,7 +37,7 @@ final class SwiftToolsPackage {
         + SwiftToolCatalog.SWIFTLINT_PLUGINS_URL
         + "\",\n"
         + "            exact: \""
-        + SwiftToolCatalog.SWIFTLINT_PLUGINS_VERSION
+        + swiftLintVersion
         + "\"\n"
         + "        ),\n"
         + "    ]\n"
