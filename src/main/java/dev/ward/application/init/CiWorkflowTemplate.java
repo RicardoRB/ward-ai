@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
@@ -13,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Renders the GitHub Actions workflow that runs the {@code ci} profile and uploads SARIF. */
-final class CiWorkflowTemplate {
+public final class CiWorkflowTemplate {
   static final String GITHUB = "github";
   static final String DEVELOPMENT_VERSION = "dev";
   static final String BEGIN = "# ward-owned: github-ci v1 begin";
@@ -24,7 +25,7 @@ final class CiWorkflowTemplate {
   private static final String TRIVY_VERSION = "0.76.0";
   private static final String SEMGREP_VERSION = "1.181.0";
   private static final String OPENSPEC_VERSION = "1.14.1";
-  static final String STEP = "      - name: ";
+  public static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
 
@@ -38,14 +39,15 @@ final class CiWorkflowTemplate {
    * The facts a workflow step depends on: the manifest, the runtime JDK, and whether the Harmonize
    * architecture rules are selected, which Swift's CI caches the package for.
    */
-  record ProjectFacts(PackageManifest manifest, Optional<Integer> runtimeJdk, boolean harmonize) {}
+  public record ProjectFacts(
+      PackageManifest manifest, Optional<Integer> runtimeJdk, boolean harmonize) {}
 
   /**
    * Returns the workflow for {@code provider}, installing the tools the selected gates run.
    *
    * @throws WardException if {@code provider} is not supported
    */
-  static OwnedSection render(
+  public static OwnedSection render(
       final String provider,
       final Project project,
       final List<InitGateOption> gates,
@@ -54,7 +56,7 @@ final class CiWorkflowTemplate {
   }
 
   /** Returns the workflow, reading the Node package manager's version from {@code manifest}. */
-  static OwnedSection render(
+  public static OwnedSection render(
       final String provider,
       final Project project,
       final List<InitGateOption> gates,

@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.application.init.InitSetupCatalog;
-import dev.ward.application.init.XcodeSchemeChoices;
+import dev.ward.application.init.swift.XcodeSchemeChoices;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.init.InitGateOption;

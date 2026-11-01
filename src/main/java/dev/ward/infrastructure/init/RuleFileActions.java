@@ -16,12 +16,12 @@ final class RuleFileActions {
   private RuleFileActions() {}
 
   /** What applying one target would do. */
-  record Decision(NodeConfigTarget target, PlannedFileChange.Action action) {}
+  record Decision(ConfigTarget target, PlannedFileChange.Action action) {}
 
   /** Returns the decision for each target, in order. */
-  static List<Decision> decide(final List<NodeConfigTarget> targets) throws IOException {
+  static List<Decision> decide(final List<ConfigTarget> targets) throws IOException {
     final List<Decision> decisions = new ArrayList<>();
-    for (final NodeConfigTarget target : targets) {
+    for (final ConfigTarget target : targets) {
       decisions.add(new Decision(target, decide(target)));
     }
     return decisions;
@@ -39,7 +39,7 @@ final class RuleFileActions {
     }
   }
 
-  private static PlannedFileChange.Action decide(final NodeConfigTarget target) throws IOException {
+  private static PlannedFileChange.Action decide(final ConfigTarget target) throws IOException {
     return switch (target.disposition()) {
       case KEEP -> PlannedFileChange.Action.PRESERVE_USER_OWNED;
       case CONFLICT -> PlannedFileChange.Action.CONFLICT;
@@ -49,7 +49,7 @@ final class RuleFileActions {
   }
 
   /** Decides a target that moves or removes the user's file, which may already be gone. */
-  private static PlannedFileChange.Action movedAction(final NodeConfigTarget target) {
+  private static PlannedFileChange.Action movedAction(final ConfigTarget target) {
     final boolean exists = Files.exists(target.file());
     return switch (target.disposition()) {
       case MOVE -> exists ? PlannedFileChange.Action.CONFLICT : PlannedFileChange.Action.CREATE;
@@ -65,7 +65,7 @@ final class RuleFileActions {
       return PlannedFileChange.Action.CREATE;
     }
     final String existing = Files.readString(file);
-    if (!existing.startsWith(MARKER) && !NodeConfigFiles.owned(existing)) {
+    if (!existing.startsWith(MARKER) && !ConfigFiles.owned(existing)) {
       return PlannedFileChange.Action.PRESERVE_USER_OWNED;
     }
     return existing.equals(content)

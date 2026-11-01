@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.application.init.openspec.OpenSpecDirectories;
 import dev.ward.domain.FakeOpenSpecEnvironment;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.BuildTool;

@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @param <C> what the toolchain builds gates from, such as the build tool and its executable
  */
-interface SourceLanguageGates<C> {
+public interface SourceLanguageGates<C> {
   /** Returns the language's analysis gates, in wizard order, built from {@code toolchain}. */
   List<InitGateOption> analysisGates(C toolchain);
 
