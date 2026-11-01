@@ -76,9 +76,8 @@ final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    lines.addAll(NodeAgentRules.lines(project, gates, preset, owned));
-    lines.addAll(PythonAgentRules.lines(project, gates, preset, owned));
-    lines.addAll(SwiftAgentRules.lines(gates));
+    InitToolchains.all()
+        .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
     // Node projects check Markdown with Prettier, which wants blank lines around the markers.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(

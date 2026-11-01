@@ -1,14 +1,16 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.config.WardException;
+import dev.ward.application.init.PartialCheckDefaults.Table;
+import dev.ward.domain.init.ArchitectureGates;
+import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Init choices for SwiftPM packages and Xcode projects with Swift sources. Tuist and XcodeGen
@@ -17,11 +19,35 @@ import java.util.Optional;
 final class SwiftInitSupport implements ToolchainInitSupport {
   private static final Map<Language, SourceLanguageGates<SwiftTools>> LANGUAGES =
       Map.of(Language.SWIFT, new SwiftGates());
-  private static final int SINGLE_SCHEME = 1;
+
+  @Override
+  public Optional<String> gitignoreEntries(
+      final Project project, final List<InitGateOption> gates) {
+    // Harmonize builds its own package, whose build output is Git-ignored only when it is checked.
+    return Optional.of(
+        ".ward/reports/\n.ward/swift-tools/.build/\n"
+            + (gates.stream().anyMatch(gate -> SwiftTools.HARMONIZE.equals(gate.id()))
+                ? ArchitectureGates.HARMONIZE_PACKAGE + "/.build/\n"
+                : ""));
+  }
+
+  @Override
+  public Set<String> partialGates() {
+    return SwiftPartialTables.GATES;
+  }
+
+  @Override
+  public Optional<Table> partialTable(
+      final String gate,
+      final Project project,
+      final QualityPreset preset,
+      final List<String> command) {
+    return SwiftPartialTables.forGate(gate, project, command);
+  }
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final SwiftTools swift = tools(project, preset, inputs);
+    final SwiftTools swift = SwiftToolSelection.of(project, preset, inputs);
     return new Gates(SourceLanguages.of(LANGUAGES, project).analysisGates(swift), List.of());
   }
 
@@ -44,8 +70,12 @@ final class SwiftInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public List<QualityPreset> presets() {
-    return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);
+  public List<String> agentRules(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final Set<String> owned) {
+    return SwiftAgentRules.lines(gates);
   }
 
   @Override
@@ -57,53 +87,5 @@ final class SwiftInitSupport implements ToolchainInitSupport {
   @Override
   public String runner() {
     return SwiftCiSetup.RUNNER;
-  }
-
-  /** Builds the tools of {@code project} from its executables, Xcode metadata and sources. */
-  private static SwiftTools tools(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final Path root = project.root();
-    final SwiftPorts ports = inputs.swift();
-    final boolean xcode = project.buildTool() == BuildTool.XCODE;
-    return new SwiftTools(
-        project.buildTool(),
-        inputs.environment().inspect(root).hasExecutable(project.buildExecutable()),
-        preset,
-        ports.sources().of(root),
-        xcode ? ports.xcode().workspace(root) : Optional.empty(),
-        xcode
-            ? scheme(ports.xcode().schemes(root), Optional.ofNullable(project.xcodeScheme()))
-            : null,
-        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null,
-        ports.configs().userConfig(root, SwiftTools.SWIFTLINT_CONFIG).isPresent());
-  }
-
-  /**
-   * The scheme {@code requested} names, or the one shared scheme when there is only one. Several
-   * schemes need a choice, and a named scheme must be one of them.
-   */
-  private static String scheme(final List<String> schemes, final Optional<String> requested) {
-    if (requested.isPresent()) {
-      if (!schemes.contains(requested.get())) {
-        throw new WardException(
-            "No Xcode scheme named "
-                + requested.get()
-                + "; the project's schemes are "
-                + String.join(", ", schemes)
-                + ".");
-      }
-      return requested.get();
-    }
-    if (schemes.isEmpty()) {
-      throw new WardException(
-          "No shared Xcode scheme was found; share one in Xcode's scheme settings.");
-    }
-    if (schemes.size() > SINGLE_SCHEME) {
-      throw new WardException(
-          "The project has several Xcode schemes ("
-              + String.join(", ", schemes)
-              + "); choose one with --scheme.");
-    }
-    return schemes.getFirst();
   }
 }
