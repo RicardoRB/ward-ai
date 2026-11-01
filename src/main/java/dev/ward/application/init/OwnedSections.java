@@ -13,7 +13,7 @@ import java.util.List;
  * The Ward-owned sections init writes: the CI workflow and the agent rules a selection asks for,
  * and a Node project's {@code .gitignore} entries.
  */
-final class OwnedSections {
+public final class OwnedSections {
   static final String GITIGNORE_BEGIN = "# ward-owned: gitignore v1 begin";
   static final String GITIGNORE_END = "# ward-owned: gitignore v1 end";
 
@@ -23,7 +23,7 @@ final class OwnedSections {
    * Returns the sections in the order init writes them. {@code userOwnedRuleFiles} are rule files
    * init keeps as the user wrote them.
    */
-  static List<OwnedSection> of(
+  public static List<OwnedSection> of(
       final InitSetupCatalog catalog,
       final Project project,
       final InitSelection selection,

@@ -13,9 +13,10 @@ import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
-import dev.ward.infrastructure.init.PomToolConfigurator;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
+import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemNodeSources;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
@@ -124,9 +125,10 @@ final class InitCommandFixture {
             new InitProjectFiles(
                 buildTools,
                 new PresetRuleFileWriter(
-                    new dev.ward.infrastructure.project.FileSystemPackageManifests(),
-                    new FileSystemNodeToolConfigs(),
-                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
+                    RuleFileTargetsFixtures.of(
+                        new dev.ward.infrastructure.project.FileSystemPackageManifests(),
+                        new FileSystemNodeToolConfigs(),
+                        new dev.ward.infrastructure.project.FileSystemPythonToolConfigs())),
                 ProductionArchitectureRules.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));

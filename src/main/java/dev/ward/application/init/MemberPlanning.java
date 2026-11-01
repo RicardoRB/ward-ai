@@ -10,7 +10,7 @@ import java.util.List;
  * The per-project planning a toolchain's members reuse: the build file and rule files each member
  * would get, as the root's planner computes them.
  */
-interface MemberPlanning {
+public interface MemberPlanning {
   /** Returns the build-file changes of {@code project}, then of each module that would change. */
   List<PlannedFileChange> buildFiles(
       Project project, List<InitGateOption> gates, QualityPreset preset, boolean approved);

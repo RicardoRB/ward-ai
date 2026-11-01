@@ -2,6 +2,8 @@ package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.init.python.PythonPackageCatalog;
+import dev.ward.infrastructure.init.swift.SwiftToolCatalog;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

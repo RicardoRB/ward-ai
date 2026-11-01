@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
-final class ConfigurationTemplate {
+public final class ConfigurationTemplate {
   private static final String MINIMUM = "minimum";
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
@@ -24,7 +24,8 @@ final class ConfigurationTemplate {
 
   private ConfigurationTemplate() {}
 
-  static String render(
+  /** Renders the configuration of {@code project} with {@code gates} under {@code preset}. */
+  public static String render(
       final List<InitGateOption> gates, final QualityPreset preset, final Project project) {
     return render(gates, preset, project, null);
   }

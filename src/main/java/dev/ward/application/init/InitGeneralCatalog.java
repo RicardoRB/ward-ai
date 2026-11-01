@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.openapi.OpenApiPresetGates;
 import dev.ward.domain.agent.SupportedAgents;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
@@ -27,7 +28,7 @@ public class InitGeneralCatalog {
   private final EnvironmentInspection environment;
 
   /** What the toolchain supports read, such as the runtime JDK of a JVM project. */
-  final InitInputs inputs;
+  public final InitInputs inputs;
 
   /** Creates the catalog; {@code environment} resolves which executables are on the path. */
   @Inject
@@ -36,7 +37,7 @@ public class InitGeneralCatalog {
   }
 
   /** Creates the catalog from what the toolchain supports read. */
-  InitGeneralCatalog(final InitInputs inputs) {
+  public InitGeneralCatalog(final InitInputs inputs) {
     this.environment = inputs.environment();
     this.inputs = inputs;
   }

@@ -1,5 +1,9 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.jvm.JvmInitSupport;
+import dev.ward.application.init.node.NodeInitSupport;
+import dev.ward.application.init.python.PythonInitSupport;
+import dev.ward.application.init.swift.SwiftInitSupport;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Project;
@@ -10,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /** The toolchains init can configure, each with its init support. */
-final class InitToolchains {
+public final class InitToolchains {
   // An EnumMap iterates in toolchain order, so shared output lists toolchains the same way each
   // run.
   private static final Map<Toolchain, ToolchainInitSupport> SUPPORTS =
@@ -59,7 +63,7 @@ final class InitToolchains {
    *
    * @throws WardException if init does not support that toolchain
    */
-  static ToolchainInitSupport support(final Project project) {
+  public static ToolchainInitSupport support(final Project project) {
     final ToolchainInitSupport support = SUPPORTS.get(project.toolchain());
     if (support == null) {
       throw new WardException(unsupported(project));

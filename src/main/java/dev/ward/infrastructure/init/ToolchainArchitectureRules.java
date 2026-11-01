@@ -6,6 +6,9 @@ import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.init.node.DependencyCruiserConfigGenerator;
+import dev.ward.infrastructure.init.python.ImportLinterConfigGenerator;
+import dev.ward.infrastructure.init.swift.HarmonizeRulesGenerator;
 import java.util.List;
 import javax.inject.Inject;
 

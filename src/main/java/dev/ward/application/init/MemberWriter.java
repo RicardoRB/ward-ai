@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /** Writes the member projects of a multi-package root, and undoes what it wrote. */
-interface MemberWriter {
+public interface MemberWriter {
   /** The writer of a toolchain without members: it writes nothing and undoes nothing. */
   MemberWriter NONE =
       new MemberWriter() {

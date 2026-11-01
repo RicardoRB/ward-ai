@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.application.init.jvm.JdkCatalogs;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
@@ -18,7 +19,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;

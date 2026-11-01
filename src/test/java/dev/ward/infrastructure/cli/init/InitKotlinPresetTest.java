@@ -3,9 +3,9 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.infrastructure.cli.ExitCodes;
-import dev.ward.infrastructure.init.GradleToolConfigurator;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.gradle.GradleToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

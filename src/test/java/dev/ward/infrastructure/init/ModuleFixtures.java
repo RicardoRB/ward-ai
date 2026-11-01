@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /** The offline Kotlin module fixture, copied into a temporary root for each test. */
-final class ModuleFixtures {
+public final class ModuleFixtures {
   static final Path FIXTURE = Path.of("src/test/resources/fixtures/gradle-kotlin-modules");
 
   private ModuleFixtures() {}
 
   /** Copies the fixture into {@code root} and returns the Kotlin Gradle project there. */
-  static Project copy(final Path root) throws IOException {
+  public static Project copy(final Path root) throws IOException {
     try (Stream<Path> files = Files.walk(FIXTURE)) {
       for (final Path source : files.toList()) {
         final Path target = root.resolve(FIXTURE.relativize(source).toString());
@@ -32,11 +32,13 @@ final class ModuleFixtures {
     return new Project(root, Language.KOTLIN, BuildTool.GRADLE, Framework.NONE);
   }
 
-  static String read(final Path root, final String name) throws IOException {
+  /** Reads the file {@code name} under {@code root}. */
+  public static String read(final Path root, final String name) throws IOException {
     return Files.readString(root.resolve(name));
   }
 
-  static List<InitGateOption> gates(final String... ids) {
+  /** Returns one gate option per id, each run through the Gradle wrapper. */
+  public static List<InitGateOption> gates(final String... ids) {
     return Stream.of(ids)
         .map(id -> new InitGateOption(id, id, List.of("./gradlew", id), true, "available"))
         .toList();
