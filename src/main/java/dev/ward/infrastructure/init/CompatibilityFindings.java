@@ -18,23 +18,25 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /** Resolves compatible catalog versions for the tools a selection needs, from one catalog. */
-final class CompatibilityFindings {
+public final class CompatibilityFindings {
   private final CompatibilityInspection inspection;
   private final Map<String, List<ManagedPluginCandidate>> catalog;
   private final CompatibilityResolver resolver = new CompatibilityResolver();
 
-  CompatibilityFindings(
+  /** Creates the findings that read {@code inspection} and resolve against {@code catalog}. */
+  public CompatibilityFindings(
       final CompatibilityInspection inspection,
       final Map<String, List<ManagedPluginCandidate>> catalog) {
     this.inspection = inspection;
-    this.catalog = catalog;
+    this.catalog = Map.copyOf(catalog);
   }
 
   /**
    * Returns one finding per catalog tool among {@code tools}, failing when any cannot be checked
    * safely. Tools with no version for the runtime JDK are returned as {@code UNAVAILABLE_ON_JDK}.
    */
-  Map<String, CompatibilityFinding> resolve(final Project project, final List<String> tools) {
+  public Map<String, CompatibilityFinding> resolve(
+      final Project project, final List<String> tools) {
     final CompatibilityPlan plan = plan(project, tools);
     if (plan.hasUnresolvableFindings()) {
       throw new WardException(
@@ -56,7 +58,8 @@ final class CompatibilityFindings {
    * Returns the gates of {@code toolsByGate} with a tool that has no version for the runtime JDK. A
    * toolchain that cannot be checked omits nothing here; resolving reports it.
    */
-  List<GateOmission> omissions(final Project project, final Map<String, List<String>> toolsByGate) {
+  public List<GateOmission> omissions(
+      final Project project, final Map<String, List<String>> toolsByGate) {
     if (toolsByGate.isEmpty()) {
       return List.of();
     }
@@ -82,7 +85,7 @@ final class CompatibilityFindings {
    * Returns the gates of {@code toolsByGate} whose pinned catalog version does not run on the
    * runtime JDK. Pins outside the catalog, and an unknown JDK, report nothing.
    */
-  List<GateOmission> unsupportedPins(
+  public List<GateOmission> unsupportedPins(
       final Project project, final Map<String, List<String>> toolsByGate) {
     final CompatibilityProjectSnapshot snapshot = inspection.inspect(project);
     final Optional<Integer> jdk = snapshot.toolchain().runtimeJdk();
@@ -125,7 +128,7 @@ final class CompatibilityFindings {
   }
 
   /** Returns the JDK that runs the project's build, when the build tool reports it. */
-  Optional<Integer> runtimeJdk(final Project project) {
+  public Optional<Integer> runtimeJdk(final Project project) {
     return inspection.inspect(project).toolchain().runtimeJdk();
   }
 

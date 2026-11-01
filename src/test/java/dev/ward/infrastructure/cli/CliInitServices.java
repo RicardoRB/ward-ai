@@ -9,7 +9,7 @@ import dev.ward.infrastructure.agent.OpenCodeIntegration;
 import dev.ward.infrastructure.doctor.SystemEnvironmentInspection;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.util.Set;

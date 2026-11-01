@@ -3,7 +3,7 @@ package dev.ward;
 import dev.ward.domain.init.CompatibilityProjectSnapshot;
 import dev.ward.domain.init.ToolchainSnapshot;
 import dev.ward.domain.project.Framework;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.util.Map;
 import java.util.Optional;
 

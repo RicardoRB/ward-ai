@@ -7,7 +7,7 @@ import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.SwiftToolchainInspection;
 import dev.ward.infrastructure.cli.ExitCodes;
-import dev.ward.infrastructure.init.SwiftBuildToolConfigurator;
+import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.project.FileSystemSwiftSourceDirectories;
 import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;

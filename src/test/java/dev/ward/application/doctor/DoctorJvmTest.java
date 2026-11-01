@@ -10,7 +10,7 @@ import dev.ward.domain.init.CompatibilityProjectSnapshot;
 import dev.ward.domain.init.ToolchainSnapshot;
 import dev.ward.domain.project.Framework;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;

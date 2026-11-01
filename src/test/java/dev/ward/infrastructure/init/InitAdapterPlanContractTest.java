@@ -10,6 +10,8 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.init.gradle.GradleToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +56,7 @@ class InitAdapterPlanContractTest {
 
   @Test
   void ruleFilesMatchPlanIncludingUserOwnedAndOtherPresetFiles() throws IOException {
-    final PresetRuleFileWriter rules = new PresetRuleFileWriter();
+    final PresetRuleFileWriter rules = new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
     rules.apply(maven(), QualityPreset.STANDARD, GATES);
     Files.writeString(root.resolve("config/checkstyle.xml"), "<module name=\"Checker\"/>\n");
 

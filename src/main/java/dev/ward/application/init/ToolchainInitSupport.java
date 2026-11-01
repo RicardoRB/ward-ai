@@ -7,7 +7,7 @@ import dev.ward.domain.project.Project;
 import java.util.List;
 
 /** The init choices that depend on a project's toolchain. */
-interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
+public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
   /**
    * Returns the gates that run through the toolchain's build tool, with availability resolved;
    * {@code preset} is the selected preset, or {@code null} for a custom selection or a gate list.

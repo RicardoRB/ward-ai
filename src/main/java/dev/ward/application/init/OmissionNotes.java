@@ -12,7 +12,7 @@ import java.util.List;
  * The plan and output notes: preset gates the runtime JDK cannot run, and what a framework's type
  * check does not cover.
  */
-final class OmissionNotes {
+public final class OmissionNotes {
   private static final String ANGULAR_NO_COVERAGE =
       "Coverage minimums are not enforced for this Angular project: angular.json sets no"
           + " coverageThresholds, so ng-test checks no coverage. Set coverageThresholds under the"
@@ -29,7 +29,7 @@ final class OmissionNotes {
   private OmissionNotes() {}
 
   /** Returns the notes for {@code project}, and for the gates {@code preset} omits, if any. */
-  static List<String> of(
+  public static List<String> of(
       final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
     final List<String> notes = new ArrayList<>();
     final EnvironmentInspection environment = catalog.inputs.environment();

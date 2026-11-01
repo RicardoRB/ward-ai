@@ -1,10 +1,10 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
-import dev.ward.infrastructure.init.DependencyCruiserConfigGenerator;
-import dev.ward.infrastructure.init.HarmonizeRulesGenerator;
-import dev.ward.infrastructure.init.ImportLinterConfigGenerator;
 import dev.ward.infrastructure.init.ToolchainArchitectureRules;
+import dev.ward.infrastructure.init.node.DependencyCruiserConfigGenerator;
+import dev.ward.infrastructure.init.python.ImportLinterConfigGenerator;
+import dev.ward.infrastructure.init.swift.HarmonizeRulesGenerator;
 import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.FileSystemPythonToolConfigs;
 import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;

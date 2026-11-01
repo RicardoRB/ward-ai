@@ -8,6 +8,8 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import dev.ward.application.agent.fixture.PrivateImplementationCoupling;
 import dev.ward.application.gate.internal.HiddenImplementation;
+import dev.ward.application.init.ArchitectureFixtureRootReachesPython;
+import dev.ward.application.init.jvm.ArchitectureFixtureJvmReachesNode;
 import dev.ward.domain.architecturefixture.DirectFilesystemAccess;
 import dev.ward.domain.architecturefixture.ExternalEffectAccess;
 import dev.ward.domain.architecturefixture.FullyQualifiedAdapterReference;
@@ -40,6 +42,21 @@ class ArchitectureRuleFixturesTest {
                     ArchitectureBoundarySupport::isInnerLayerExternalEffectApi))
         .isInstanceOf(AssertionError.class);
     assertThatThrownBy(() -> assertApplicationEntryPoints(dependencies))
+        .isInstanceOf(AssertionError.class);
+  }
+
+  @Test
+  void toolchainRulesRejectViolatingFixtures() {
+    final JavaClasses jvmToNode =
+        new ClassFileImporter().importClasses(ArchitectureFixtureJvmReachesNode.class);
+    assertThatThrownBy(() -> ArchitectureToolchainTest.checkToolchainsStayIndependent(jvmToNode))
+        .isInstanceOf(AssertionError.class);
+    final JavaClasses rootToPython =
+        new ClassFileImporter().importClasses(ArchitectureFixtureRootReachesPython.class);
+    assertThatThrownBy(
+            () ->
+                ArchitectureToolchainTest.checkRootsReachToolchainsOnlyThroughTheRegistry(
+                    rootToPython))
         .isInstanceOf(AssertionError.class);
   }
 }

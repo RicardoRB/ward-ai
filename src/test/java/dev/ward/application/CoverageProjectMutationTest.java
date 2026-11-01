@@ -21,7 +21,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

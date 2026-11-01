@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.openspec.OpenSpecDirectories;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
@@ -23,7 +24,7 @@ import javax.inject.Named;
 
 /** Stable OpenSpec tool choices and project-aware defaults used by init. */
 public final class InitSetupCatalog extends InitGeneralCatalog {
-  static final List<String> OPENSPEC_VALIDATIONS = List.of("openspec", "openspec-archived");
+  public static final List<String> OPENSPEC_VALIDATIONS = List.of("openspec", "openspec-archived");
   private final EnvironmentInspection environment;
   private static final Logger LOGGER = Logger.getLogger(InitSetupCatalog.class.getName());
 

@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.agent.AgentIntegration;

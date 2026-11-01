@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.application.init.jvm.JvmInitSupport;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
@@ -14,8 +15,8 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
-import dev.ward.infrastructure.init.GradleToolConfigurator;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.gradle.GradleToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

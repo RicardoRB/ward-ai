@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.application.init.jvm.JvmInitSupport;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;

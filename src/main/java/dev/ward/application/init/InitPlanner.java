@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;

@@ -15,7 +15,7 @@ import java.util.Set;
  * this class keeps the tables of the gates every project runs the same way. Each narrowing form was
  * verified against the real tool: a form the tool does not understand analyzes nothing and passes.
  */
-final class PartialCheckDefaults {
+public final class PartialCheckDefaults {
   private static final List<String> WHOLE_PROJECT = List.of("**");
   private static final List<String> PATHS = List.of("{paths}");
 
@@ -37,21 +37,23 @@ final class PartialCheckDefaults {
    * The table's keys; {@code item} and {@code separator} are omitted when {@code null}, and {@code
    * command} when empty.
    */
-  record Table(
+  public record Table(
       List<String> match,
       List<String> full,
       List<String> args,
       String item,
       String separator,
       List<String> command) {
-    Table {
+    /** Copies the lists, so the table keeps none that its caller can still change. */
+    public Table {
       match = List.copyOf(match);
       full = List.copyOf(full);
       args = List.copyOf(args);
       command = List.copyOf(command);
     }
 
-    Table(
+    /** Creates a table that runs no command of its own. */
+    public Table(
         final List<String> match,
         final List<String> full,
         final List<String> args,
@@ -60,7 +62,10 @@ final class PartialCheckDefaults {
       this(match, full, args, item, separator, List.of());
     }
 
-    static Table whole(final List<String> match, final List<String> full) {
+    /**
+     * Returns a table that runs {@code full} and the whole {@code match} set, with no arguments.
+     */
+    public static Table whole(final List<String> match, final List<String> full) {
       return new Table(match, full, List.of(), null, null);
     }
   }
@@ -68,7 +73,7 @@ final class PartialCheckDefaults {
   private PartialCheckDefaults() {}
 
   /** Returns the partial-run table of {@code gate}; {@code command} is the gate's full command. */
-  static Optional<Table> forGate(
+  public static Optional<Table> forGate(
       final String gate,
       final Project project,
       final QualityPreset preset,
