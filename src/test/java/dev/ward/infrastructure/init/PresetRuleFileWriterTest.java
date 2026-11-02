@@ -23,7 +23,8 @@ class PresetRuleFileWriterTest {
     final Project project = new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
     final List<InitGateOption> gates =
         List.of(gate("pmd"), gate("checkstyle"), gate("spotbugs"), gate("enforcer"));
-    final PresetRuleFileWriter writer = new PresetRuleFileWriter();
+    final PresetRuleFileWriter writer =
+        new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
 
     final RuleFileChange change = writer.apply(project, QualityPreset.STANDARD, gates);
     assertThat(Files.readString(root.resolve("config/pmd-ruleset.xml")))
@@ -42,7 +43,8 @@ class PresetRuleFileWriterTest {
     Files.createDirectories(config);
     final Path pmd = config.resolve("pmd-ruleset.xml");
     Files.writeString(pmd, "user-owned");
-    final PresetRuleFileWriter writer = new PresetRuleFileWriter();
+    final PresetRuleFileWriter writer =
+        new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
     final RuleFileChange change =
         writer.apply(
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),

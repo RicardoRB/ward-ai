@@ -1,5 +1,9 @@
 package dev.ward.application.doctor;
 
+import dev.ward.application.doctor.jvm.JvmToolchainFinding;
+import dev.ward.application.doctor.node.NodeToolchainFinding;
+import dev.ward.application.doctor.python.PythonToolchainFinding;
+import dev.ward.application.doctor.swift.SwiftToolchainFinding;
 import dev.ward.domain.project.Toolchain;
 
 /** Chooses the build tool check for a project's toolchain. */

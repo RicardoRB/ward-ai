@@ -1,7 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.domain.gate.CoverageReport;
-import dev.ward.domain.gate.Simulators;
+import dev.ward.domain.gate.swift.Simulators;
 
 /**
  * The ports the platform gates use: the Swift gates on Apple platforms and the Android coverage

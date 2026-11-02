@@ -3,7 +3,7 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.init.InitSetupCatalog;
-import dev.ward.application.init.JdkCatalogs;
+import dev.ward.application.init.jvm.JdkCatalogs;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.BuildFileChange;

@@ -7,7 +7,7 @@ import java.util.List;
 
 /** Reports the build tool findings for projects of one toolchain. */
 @FunctionalInterface
-interface ToolchainFinding {
+public interface ToolchainFinding {
 
   /**
    * Returns the findings for {@code detected}, given what is installed on this machine and what

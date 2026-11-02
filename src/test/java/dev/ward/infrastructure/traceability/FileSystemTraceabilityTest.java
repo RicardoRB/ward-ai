@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.traceability.ScenarioDefinition;
 import dev.ward.domain.traceability.TraceabilityInventory;
+import dev.ward.infrastructure.traceability.jvm.JavaTestMappingInventory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;

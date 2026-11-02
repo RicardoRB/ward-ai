@@ -3,6 +3,7 @@ package dev.ward.infrastructure.project;
 import dev.ward.domain.project.DiscoveredProject;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.project.python.PythonProjectInspection;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /** Walks a repository for project roots, skipping dependencies and grouping build modules. */
-final class RepositoryProjectScan {
+public final class RepositoryProjectScan {
   private static final Set<String> SKIPPED =
       Set.of("node_modules", "target", "build", "dist", "out", "Pods", "Carthage", "DerivedData");
   private static final List<String> SKIPPED_BUNDLES =
@@ -77,7 +78,8 @@ final class RepositoryProjectScan {
     return found.stream().distinct().toList();
   }
 
-  static boolean skipped(final Path dir) {
+  /** Returns whether a directory's name is one that the scan skips. */
+  public static boolean skipped(final Path dir) {
     final Path name = dir.getFileName();
     return name != null && skipped(name.toString());
   }

@@ -7,11 +7,11 @@ import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.process.CommandExecutor;
 
 /** Builds a coverage gate that runs its command, then checks the minimum of a report it reads. */
-final class CoverageGates {
+public final class CoverageGates {
   private CoverageGates() {}
 
   /** Returns the command's gate wrapped to fail below the check's minimum in {@code report}. */
-  static QualityGate minimum(
+  public static QualityGate minimum(
       final GateConfiguration check,
       final CommandExecutor executor,
       final GateReportPorts reports,

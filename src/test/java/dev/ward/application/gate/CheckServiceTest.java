@@ -19,7 +19,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.project.NodeWorkspaceMembers;
+import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;

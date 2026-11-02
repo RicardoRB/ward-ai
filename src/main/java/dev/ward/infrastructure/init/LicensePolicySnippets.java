@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
  * both policies merge common spellings into one name. Most presets deny GPL and AGPL, which keeps
  * unknown projects building; the strict preset allows only listed licenses and fails on the rest.
  */
-final class LicensePolicySnippets {
+public final class LicensePolicySnippets {
   /** Fails on GPL and AGPL dependencies; licenses it does not recognize pass. */
-  static final String DENYLIST =
+  public static final String DENYLIST =
       """
               <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -74,7 +74,7 @@ final class LicensePolicySnippets {
   private LicensePolicySnippets() {}
 
   /** Returns the strict preset's allowlist, or the denylist for any other preset. */
-  static String forPreset(final QualityPreset preset) {
+  public static String forPreset(final QualityPreset preset) {
     return preset == QualityPreset.STRICT ? allowlist() : DENYLIST;
   }
 

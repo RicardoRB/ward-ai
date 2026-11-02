@@ -1,9 +1,9 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.project.NodeSources;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.WorkspaceMembers;
+import dev.ward.domain.project.node.NodeSources;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifests;
 
 /**
  * The ports init reads Node packages through, injected as one binding.

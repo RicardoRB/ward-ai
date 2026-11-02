@@ -11,16 +11,18 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 /** StAX reading with DTDs and external entities disabled, so reports cannot trigger XXE. */
-final class SafeXml {
+public final class SafeXml {
   private SafeXml() {}
 
   /** Receives each start element; the reader is positioned on that element. */
   @FunctionalInterface
-  interface ElementVisitor {
+  public interface ElementVisitor {
+    /** Handles one start element; the reader is positioned on it. */
     void startElement(XMLStreamReader reader) throws XMLStreamException;
   }
 
-  static void read(final Path file, final ElementVisitor visitor) {
+  /** Visits each start element of the XML file. */
+  public static void read(final Path file, final ElementVisitor visitor) {
     try (InputStream input = Files.newInputStream(file)) {
       final XMLStreamReader reader = factory().createXMLStreamReader(input);
       visit(reader, visitor);
@@ -31,7 +33,8 @@ final class SafeXml {
     }
   }
 
-  static void read(final String xml, final ElementVisitor visitor) {
+  /** Visits each start element of the XML text. */
+  public static void read(final String xml, final ElementVisitor visitor) {
     try {
       visit(factory().createXMLStreamReader(new StringReader(xml)), visitor);
     } catch (XMLStreamException exception) {
@@ -60,7 +63,8 @@ final class SafeXml {
     }
   }
 
-  static Integer intAttribute(final XMLStreamReader reader, final String name) {
+  /** Returns the integer value of a named attribute, or null when it is absent or blank. */
+  public static Integer intAttribute(final XMLStreamReader reader, final String name) {
     final String value = reader.getAttributeValue(null, name);
     if (value == null || value.isBlank()) {
       return null;

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Renders the {@code AGENTS.md} section that tells coding agents the limits the selected gates
  * enforce, so they meet them before the first check instead of after it fails.
  */
-final class AgentRulesTemplate {
+public final class AgentRulesTemplate {
   static final String BEGIN = "<!-- ward-owned: agent-rules v1 begin -->";
   static final String END = "<!-- ward-owned: agent-rules v1 end -->";
   static final String CHECKSTYLE_FILE = "config/checkstyle.xml";
@@ -47,7 +47,7 @@ final class AgentRulesTemplate {
    * Returns the section for {@code gates}. Limits come from {@code preset}; a rule file in {@code
    * userOwned} is the user's, so the section points to it instead of quoting preset values.
    */
-  static OwnedSection render(
+  public static OwnedSection render(
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
@@ -76,9 +76,8 @@ final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    lines.addAll(NodeAgentRules.lines(project, gates, preset, owned));
-    lines.addAll(PythonAgentRules.lines(project, gates, preset, owned));
-    lines.addAll(SwiftAgentRules.lines(gates));
+    InitToolchains.all()
+        .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
     // Node projects check Markdown with Prettier, which wants blank lines around the markers.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(

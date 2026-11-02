@@ -4,13 +4,13 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.GateOmission;
-import dev.ward.domain.project.NodeSources;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.domain.project.WorkspaceMembers;
+import dev.ward.domain.project.node.NodeSources;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
+import dev.ward.domain.project.node.PackageManifests;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ import java.util.Optional;
  *     project
  * @param modules plans the module build scripts a build tool would change
  */
-record InitInputs(
+public record InitInputs(
     EnvironmentInspection environment,
     PackageManifests manifests,
     NodeSources sources,
@@ -39,7 +39,7 @@ record InitInputs(
     SwiftPorts swift,
     BuildModulePlanning modules) {
   /** Inputs that read no Python config of their own. */
-  InitInputs(
+  public InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
       final NodeSources sources,
@@ -58,7 +58,7 @@ record InitInputs(
   }
 
   /** Inputs that do not read the runtime JDK. */
-  InitInputs(
+  public InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
       final NodeSources sources,
@@ -67,7 +67,7 @@ record InitInputs(
   }
 
   /** Inputs for projects that keep no Node tool config of their own. */
-  InitInputs(
+  public InitInputs(
       final EnvironmentInspection environment,
       final PackageManifests manifests,
       final NodeSources sources) {
@@ -75,7 +75,7 @@ record InitInputs(
   }
 
   /** Inputs for a catalog that reads no Node package. */
-  static InitInputs withoutManifests(final EnvironmentInspection environment) {
+  public static InitInputs withoutManifests(final EnvironmentInspection environment) {
     return new InitInputs(
         environment,
         root -> PackageManifest.EMPTY,
@@ -84,7 +84,7 @@ record InitInputs(
   }
 
   /** Inputs that read Node packages through {@code node}. */
-  static InitInputs of(final EnvironmentInspection environment, final NodeInputs node) {
+  public static InitInputs of(final EnvironmentInspection environment, final NodeInputs node) {
     return new InitInputs(
         environment,
         node.manifests(),
@@ -113,12 +113,12 @@ record InitInputs(
   }
 
   /** Returns the gates of {@code gateIds} the project's runtime JDK cannot run. */
-  List<GateOmission> omissions(final Project project, final List<String> gateIds) {
+  public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
     return buildTools.map(tools -> tools.omissions(project, gateIds)).orElse(List.of());
   }
 
   /** Returns the JDK that runs the project's build, when it can be read. */
-  Optional<Integer> runtimeJdk(final Project project) {
+  public Optional<Integer> runtimeJdk(final Project project) {
     return buildTools.flatMap(tools -> tools.runtimeJdk(project));
   }
 }

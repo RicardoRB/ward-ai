@@ -4,14 +4,14 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.init.SwiftPorts;
-import dev.ward.domain.project.SwiftSourceDirectories;
-import dev.ward.domain.project.SwiftToolConfigs;
-import dev.ward.domain.project.SwiftToolchainInspection;
-import dev.ward.domain.project.XcodeSchemes;
-import dev.ward.infrastructure.project.FileSystemSwiftSourceDirectories;
-import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;
-import dev.ward.infrastructure.project.ProcessSwiftToolchainInspection;
-import dev.ward.infrastructure.project.XcodebuildSchemes;
+import dev.ward.domain.project.swift.SwiftSourceDirectories;
+import dev.ward.domain.project.swift.SwiftToolConfigs;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.XcodeSchemes;
+import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
+import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
+import dev.ward.infrastructure.project.swift.ProcessSwiftToolchainInspection;
+import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 
 /** Binds the ports doctor and init read Swift projects and their tool chain through. */
 @Module

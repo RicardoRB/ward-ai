@@ -8,7 +8,7 @@ import dev.ward.domain.project.Project;
 import java.util.List;
 
 /** No-op quality-hook adapter retained for lightweight application tests and callers. */
-final class NoQualityHookGeneration implements QualityHookGeneration {
+public final class NoQualityHookGeneration implements QualityHookGeneration {
   @Override
   public QualityHookChange apply(final Project project) {
     throw new IllegalStateException("Quality hooks are unavailable in this runtime.");

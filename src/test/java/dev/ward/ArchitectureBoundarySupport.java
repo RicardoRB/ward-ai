@@ -42,7 +42,7 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
                   "dev.ward.application.traceability.TraceabilityPolicy",
-                  "dev.ward.application.gate.OpenSpecJunitTraceabilityGate")),
+                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate")),
           Map.entry(
               "init",
               Set.of(
@@ -60,9 +60,9 @@ final class ArchitectureBoundarySupport {
               "spec",
               Set.of(
                   "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.gate.OpenSpecPrerequisites",
-                  "dev.ward.application.gate.OpenSpecPrerequisites$Problem",
-                  "dev.ward.application.gate.OpenSpecQualityGate",
+                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites",
+                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites$Problem",
+                  "dev.ward.application.gate.openspec.OpenSpecQualityGate",
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry(
