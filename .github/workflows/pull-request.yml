@@ -23,3 +23,17 @@ jobs:
       # macos-15-intel is the slowest native runner and gates the PR; release still runs it.
       native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
       harness-compatibility: true
+
+  changelog:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check CHANGELOG.md has a section for the pom version
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's:^    <version>\(.*\)</version>$:\1:p' pom.xml | head -1)
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "CHANGELOG.md has no section for $version; add the changelog entries before merging." >&2
+            exit 1
+          fi
