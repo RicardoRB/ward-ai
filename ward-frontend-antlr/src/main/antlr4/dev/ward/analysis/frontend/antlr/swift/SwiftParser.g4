@@ -33,8 +33,11 @@
 // $antlr-format alignTrailingComments true, columnLimit 150, minEmptyLines 1, maxEmptyLinesToKeep 1, reflowComments false, useTab false
 // $antlr-format allowShortRulesOnASingleLine false, allowShortBlocksOnASingleLine true, alignSemicolons hanging, alignColons hanging
 
-grammar Swift;
-// Ward modification of swift/swift3 (BSD-3-Clause, Terence Parr): extended for Swift 5 syntax.
+parser grammar SwiftParser;
+
+options {
+    tokenVocab = SwiftLexer;
+}
 
 top_level
     : statements? EOF
@@ -357,7 +360,6 @@ architecture
 
 // These rules don't work:
 // operating_system : 'macOS' | 'iOS' | 'watchOS' | 'tvOS' ;
-// architecture : 'i386' | 'x86_64' | 'arm' | 'arm64' ;
 
 // GRAMMAR OF A LINE CONTROL STATEMENT
 
@@ -368,6 +370,7 @@ architecture
 //  : '#sourceLocation' '(' 'file:' file_name ',' 'line:' line_number ')'
 //  | '#sourceLocation' '(' ')'
 //  ;
+// architecture : 'i386' | 'x86_64' | 'arm' | 'arm64' ;
 // 
 // This defines a token "file:", but this is valid for swift compiler:
 // '#sourceLocation(file : "", line : 1)' (notice spaces between "file" and ":")
@@ -400,29 +403,6 @@ availability_argument
     : Platform_name_platform_version
     | '*'
     ;
-
-Platform_name_platform_version
-    : Platform_name WS Platform_version
-    ;
-
-fragment Platform_name
-    : 'iOS'
-    | 'iOSApplicationExtension'
-    | 'macOS'
-    | 'macOSApplicationExtension'
-    | 'watchOS'
-    | 'tvOS'
-    ;
-
-fragment Platform_version
-    : Pure_decimal_digits
-    | Pure_decimal_digits '.' Pure_decimal_digits
-    | Pure_decimal_digits '.' Pure_decimal_digits '.' Pure_decimal_digits
-    ;
-
-// Generic Parameters and Arguments
-
-// GRAMMAR OF A GENERIC PARAMETER CLAUSE
 
 generic_parameter_clause
     : '<' generic_parameter_list '>'
@@ -476,11 +456,11 @@ generic_argument
 
 // context-sensitive. Allow < as pre, post, or binary op
 //lt : {_input.LT(1).getText().equals("<")}? operator_ ;
-//gt : {_input.LT(1).getText().equals(">")}? operator_ ;
-// Declarations
 
 // GRAMMAR OF A DECLARATION
 
+//gt : {_input.LT(1).getText().equals(">")}? operator_ ;
+// Declarations
 declaration
     : import_declaration
     | constant_declaration
@@ -1654,10 +1634,10 @@ class_requirement
 // GRAMMAR OF AN IDENTIFIER
 
 // identifier : Identifier | context_sensitive_keyword ;
-//
-// identifier is context sensitive
 
 // var x = 1; funx x() {}; class x {}
+//
+// identifier is context sensitive
 declaration_identifier
     : Identifier
     | keyword_as_identifier_in_declarations
@@ -1669,96 +1649,6 @@ label_identifier
     | keyword_as_identifier_in_labels
     ;
 
-Identifier
-    : Identifier_head Identifier_characters?
-    | '`' Identifier_head Identifier_characters? '`'
-    | Implicit_parameter_name
-    ;
-
-// identifier_list : identifier (',' identifier)* ;
-// 
-// identifier is context sensitive
-// See: closure_parameter_clause_identifier_list
-
-fragment Identifier_head
-    : [a-zA-Z]
-    | '_'
-    | '\u00A8'
-    | '\u00AA'
-    | '\u00AD'
-    | '\u00AF'
-    | [\u00B2-\u00B5]
-    | [\u00B7-\u00BA]
-    | [\u00BC-\u00BE]
-    | [\u00C0-\u00D6]
-    | [\u00D8-\u00F6]
-    | [\u00F8-\u00FF]
-    | [\u0100-\u02FF]
-    | [\u0370-\u167F]
-    | [\u1681-\u180D]
-    | [\u180F-\u1DBF]
-    | [\u1E00-\u1FFF]
-    | [\u200B-\u200D]
-    | [\u202A-\u202E]
-    | [\u203F-\u2040]
-    | '\u2054'
-    | [\u2060-\u206F]
-    | [\u2070-\u20CF]
-    | [\u2100-\u218F]
-    | [\u2460-\u24FF]
-    | [\u2776-\u2793]
-    | [\u2C00-\u2DFF]
-    | [\u2E80-\u2FFF]
-    | [\u3004-\u3007]
-    | [\u3021-\u302F]
-    | [\u3031-\u303F]
-    | [\u3040-\uD7FF]
-    | [\uF900-\uFD3D]
-    | [\uFD40-\uFDCF]
-    | [\uFDF0-\uFE1F]
-    | [\uFE30-\uFE44]
-    | [\uFE47-\uFFFD]
-    /*
- | U+10000-U+1FFFD | U+20000-U+2FFFD | U+30000-U+3FFFD | U+40000-U+4FFFD
- | U+50000-U+5FFFD | U+60000-U+6FFFD | U+70000-U+7FFFD | U+80000-U+8FFFD
- | U+90000-U+9FFFD | U+A0000-U+AFFFD | U+B0000-U+BFFFD | U+C0000-U+CFFFD
- | U+D0000-U+DFFFD or U+E0000-U+EFFFD
-*/
-    ;
-
-fragment Identifier_character
-    : [0-9]
-    | [\u0300-\u036F]
-    | [\u1DC0-\u1DFF]
-    | [\u20D0-\u20FF]
-    | [\uFE20-\uFE2F]
-    | Identifier_head
-    ;
-
-fragment Identifier_characters
-    : Identifier_character+
-    ;
-
-// Keywords reserved in particular contexts: associativity, convenience, dynamic, didSet, final, get, infix, indirect, lazy, left, mutating, none, nonmutating, optional, override, postfix, precedence, prefix, Protocol, required, right, set, Type, unowned, weak, and willSet. Outside the context in which they appear in the grammar, they can be used as identifiers.
-// context_sensitive_keyword :
-//  'associativity' | 'convenience' | 'dynamic' | 'didSet'
-//  | 'final' | 'get' | 'infix' | 'indirect'
-//  | 'lazy' | 'left' | 'mutating' | 'none'
-//  | 'nonmutating' | 'optional' | 'override' | 'postfix'
-//  | 'precedence' | 'prefix' | 'Protocol' | 'required'
-//  | 'right' | 'set' | 'Type' | 'unowned'
-//  | 'weak' | 'willSet'
-//
-// ^- this does not work. "[10].index(of: 10)". "of" is a keyword. "type(of: self)"
-
-// Added by myself.
-// Tested all alphanumeric tokens in playground.
-// E.g. "let mutating = 1".
-// E.g. "func mutating() {}".
-//
-// In source code of swift there are multiple cases of error diag::keyword_cant_be_identifier.
-// Maybe it is not even a single error when keyword can't be identifier.
-//
 keyword_as_identifier_in_declarations
     : 'Protocol'
     | 'Type'
@@ -1980,113 +1870,6 @@ assignment_operator
     : {SwiftSupport.isBinaryOp(_input)}? '='
     ;
 
-DOT
-    : '.'
-    ;
-
-LCURLY
-    : '{'
-    ;
-
-LPAREN
-    : '('
-    ;
-
-LBRACK
-    : '['
-    ;
-
-RCURLY
-    : '}'
-    ;
-
-RPAREN
-    : ')'
-    ;
-
-RBRACK
-    : ']'
-    ;
-
-COMMA
-    : ','
-    ;
-
-COLON
-    : ':'
-    ;
-
-SEMI
-    : ';'
-    ;
-
-LT
-    : '<'
-    ;
-
-GT
-    : '>'
-    ;
-
-UNDERSCORE
-    : '_'
-    ;
-
-BANG
-    : '!'
-    ;
-
-QUESTION
-    : '?'
-    ;
-
-AT
-    : '@'
-    ;
-
-AND
-    : '&'
-    ;
-
-SUB
-    : '-'
-    ;
-
-EQUAL
-    : '='
-    ;
-
-OR
-    : '|'
-    ;
-
-DIV
-    : '/'
-    ;
-
-ADD
-    : '+'
-    ;
-
-MUL
-    : '*'
-    ;
-
-MOD
-    : '%'
-    ;
-
-CARET
-    : '^'
-    ;
-
-TILDE
-    : '~'
-    ;
-
-/** Need to separate this out from Prefix_operator as it's referenced in numeric_literal
- *  as specifically a negation prefix op.
- */
 negate_prefix_operator
     : {SwiftSupport.isPrefixOp(_input)}? '-'
     ;
@@ -2177,32 +1960,6 @@ operator_head
     | Operator_head_other
     ;
 
-Operator_head_other // valid operator chars not used by Swift itself
-    : [\u00A1-\u00A7]
-    | [\u00A9\u00AB]
-    | [\u00AC\u00AE]
-    | [\u00B0-\u00B1\u00B6\u00BB\u00BF\u00D7\u00F7]
-    | [\u2016-\u2017\u2020-\u2027]
-    | [\u2030-\u203E]
-    | [\u2041-\u2053]
-    | [\u2055-\u205E]
-    | [\u2190-\u23FF]
-    | [\u2500-\u2775]
-    | [\u2794-\u2BFF]
-    | [\u2E00-\u2E7F]
-    | [\u3001-\u3003]
-    | [\u3008-\u3030]
-    ;
-
-Operator_following_character
-    : [\u0300-\u036F]
-    | [\u1DC0-\u1DFF]
-    | [\u20D0-\u20FF]
-    | [\uFE00-\uFE0F]
-    | [\uFE20-\uFE2F]
-    //| [\uE0100-\uE01EF]  ANTLR can't do >16bit char
-    ;
-
 dot_operator_head
     : '.'
     ;
@@ -2211,12 +1968,6 @@ dot_operator_character
     : '.'
     | operator_character
     ;
-
-Implicit_parameter_name
-    : '$' Pure_decimal_digits
-    ;
-
-// GRAMMAR OF A LITERAL
 
 literal
     : numeric_literal
@@ -2249,163 +2000,8 @@ integer_literal
     | Hexadecimal_literal
     ;
 
-Binary_literal
-    : '0b' Binary_digit Binary_literal_characters?
-    ;
-
-fragment Binary_digit
-    : [01]
-    ;
-
-fragment Binary_literal_character
-    : Binary_digit
-    | '_'
-    ;
-
-fragment Binary_literal_characters
-    : Binary_literal_character+
-    ;
-
-Octal_literal
-    : '0o' Octal_digit Octal_literal_characters?
-    ;
-
-fragment Octal_digit
-    : [0-7]
-    ;
-
-fragment Octal_literal_character
-    : Octal_digit
-    | '_'
-    ;
-
-fragment Octal_literal_characters
-    : Octal_literal_character+
-    ;
-
-Decimal_literal
-    : [0-9] [0-9_]*
-    ;
-
-Pure_decimal_digits
-    : [0-9]+
-    ;
-
-fragment Decimal_digit
-    : [0-9]
-    ;
-
-fragment Decimal_literal_character
-    : Decimal_digit
-    | '_'
-    ;
-
-fragment Decimal_literal_characters
-    : Decimal_literal_character+
-    ;
-
-Hexadecimal_literal
-    : '0x' Hexadecimal_digit Hexadecimal_literal_characters?
-    ;
-
-fragment Hexadecimal_digit
-    : [0-9a-fA-F]
-    ;
-
-fragment Hexadecimal_literal_character
-    : Hexadecimal_digit
-    | '_'
-    ;
-
-fragment Hexadecimal_literal_characters
-    : Hexadecimal_literal_character+
-    ;
-
-// GRAMMAR OF A FLOATING_POINT LITERAL
-
-Floating_point_literal
-    : Decimal_literal Decimal_fraction? Decimal_exponent?
-    | Hexadecimal_literal Hexadecimal_fraction? Hexadecimal_exponent
-    ;
-
-fragment Decimal_fraction
-    : '.' Decimal_literal
-    ;
-
-fragment Decimal_exponent
-    : Floating_point_e Sign? Decimal_literal
-    ;
-
-fragment Hexadecimal_fraction
-    : '.' Hexadecimal_digit Hexadecimal_literal_characters?
-    ;
-
-fragment Hexadecimal_exponent
-    : Floating_point_p Sign? Decimal_literal
-    ;
-
-fragment Floating_point_e
-    : [eE]
-    ;
-
-fragment Floating_point_p
-    : [pP]
-    ;
-
-fragment Sign
-    : [+\-]
-    ;
-
-// GRAMMAR OF A STRING LITERAL
-
 string_literal
     : Static_string_literal
     | Multiline_string_literal
     | Interpolated_string_literal
-    ;
-
-Multiline_string_literal
-    : '"""' .*? '"""'
-    ;
-
-Static_string_literal
-    : '"' Quoted_text? '"'
-    ;
-
-fragment Quoted_text
-    : Quoted_text_item+
-    ;
-
-fragment Quoted_text_item
-    : Escaped_character
-    | ~["\n\r\\]
-    ;
-
-fragment Escaped_character
-    : '\\' [0\\tnr"']
-    | '\\x' Hexadecimal_digit Hexadecimal_digit
-    | '\\u' '{' Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit '}'
-    | '\\u' '{' Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit Hexadecimal_digit
-        Hexadecimal_digit '}'
-    ;
-
-Interpolated_string_literal
-    : '"' Interpolated_text_item* '"'
-    ;
-
-fragment Interpolated_text_item
-    : '\\(' (Interpolated_string_literal | Interpolated_text_item)+ ')' // nested strings allowed
-    | Quoted_text_item
-    ;
-
-WS
-    : [ \n\r\t\u000B\u000C\u0000]+ -> channel(HIDDEN)
-    ;
-
-Block_comment
-    : '/*' (Block_comment | .)*? '*/' -> channel(HIDDEN)
-    ; // nesting comments allowed
-
-Line_comment
-    : '//' .*? ('\n' | EOF) -> channel(HIDDEN)
     ;

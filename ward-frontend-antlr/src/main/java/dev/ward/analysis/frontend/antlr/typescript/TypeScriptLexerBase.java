@@ -1,18 +1,18 @@
 package dev.ward.analysis.frontend.antlr.typescript;
 
+import dev.ward.analysis.frontend.antlr.WardLexerBase;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.Set;
 import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 
 /**
  * All lexer methods that used in grammar (isStrictMode) should start with Upper Case Char similar
  * to Lexer rules.
  */
-public abstract class TypeScriptLexerBase extends Lexer {
+public abstract class TypeScriptLexerBase extends WardLexerBase {
   /** Token types after which a slash starts a division, so no regex literal can follow. */
   private static final Set<Integer> NO_REGEX_AFTER =
       Set.of(

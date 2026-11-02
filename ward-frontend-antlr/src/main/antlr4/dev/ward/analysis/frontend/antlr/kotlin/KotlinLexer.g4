@@ -17,6 +17,10 @@
 
 lexer grammar KotlinLexer;
 
+options {
+    superClass = dev.ward.analysis.frontend.antlr.WardLexerBase;
+}
+
 import UnicodeClasses;
 
 ShebangLine: '#!' ~[\u000A\u000D]* -> channel(HIDDEN);

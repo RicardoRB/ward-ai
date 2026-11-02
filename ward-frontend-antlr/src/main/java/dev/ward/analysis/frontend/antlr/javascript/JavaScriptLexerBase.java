@@ -1,11 +1,11 @@
 package dev.ward.analysis.frontend.antlr.javascript;
 
+import dev.ward.analysis.frontend.antlr.WardLexerBase;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.Set;
 import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.Token;
  * <p>Method names start with a lower-case letter, as Ward's style requires; the grammar calls them
  * by these names. Adapted from the grammars-v4 JavaScript base class (MIT).
  */
-public abstract class JavaScriptLexerBase extends Lexer {
+public abstract class JavaScriptLexerBase extends WardLexerBase {
 
   /** Token types after which a slash starts a division, so no regex literal can follow. */
   private static final Set<Integer> NO_REGEX_AFTER =

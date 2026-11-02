@@ -1,5 +1,6 @@
 package dev.ward.analysis.frontend.antlr.python;
 
+import dev.ward.analysis.frontend.antlr.WardLexerBase;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -7,11 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
-import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 
 /** Lexer state and helpers used by the Python grammar's actions and predicates. */
-abstract class Python3LexerBase extends Lexer {
+abstract class Python3LexerBase extends WardLexerBase {
   // A queue where extra tokens are pushed on (see the NEWLINE lexer rule).
   private List<Token> tokens = new LinkedList<>();
   // The stack that keeps track of the indentation level.

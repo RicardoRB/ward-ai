@@ -35,6 +35,10 @@
 
 lexer grammar JavaLexer;
 
+options {
+    superClass = dev.ward.analysis.frontend.antlr.WardLexerBase;
+}
+
 // Keywords
 
 ABSTRACT     : 'abstract';
