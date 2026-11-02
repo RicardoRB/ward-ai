@@ -1,0 +1,4 @@
+# Hook and plugin files run code on every agent tool event, so changes need the owner's review.
+/.claude/hooks/        @RicardoRB
+/.claude/settings.json @RicardoRB
+/.opencode/plugins/    @RicardoRB
