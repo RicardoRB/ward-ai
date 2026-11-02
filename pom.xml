@@ -12,6 +12,7 @@
 
     <modules>
         <module>ward-cli</module>
+        <module>ward-analysis-bench</module>
     </modules>
 
     <properties>

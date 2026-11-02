@@ -1,0 +1,14 @@
+language,name,url,commit
+java,ward,https://github.com/RicardoRB/ward-ai.git,e98c6891551c3584cac637a3c2cc9db9833cface
+java,spring-petclinic,https://github.com/spring-projects/spring-petclinic.git,500158f732419217507c7656904b8e6aa1bcc0d6
+java,commons-cli,https://github.com/apache/commons-cli.git,4cbf70cf82ef9dce5edefa1aff78a5f611bd63c1
+java,commons-io,https://github.com/apache/commons-io.git,606e55d6bd716592b65180a8f07277012b53b34c
+node,p-limit,https://github.com/sindresorhus/p-limit.git,a8a6fbec4e0e866d6d779b10889bb4f5567e70eb
+node,date-fns,https://github.com/date-fns/date-fns.git,a9739fb3e5384a810e90d7376446f6d84ecc5029
+node,express,https://github.com/expressjs/express.git,bcc0551cb7a785b7772f77cb59ce55a2bc94975a
+python,click,https://github.com/pallets/click.git,2247b35ea1c47c727d7a06e51fa280e12a863ff6
+python,requests,https://github.com/psf/requests.git,3c7baaa05ab4aa49cc819ce3a819d260de19c157
+python,attrs,https://github.com/python-attrs/attrs.git,9d9f94a043de7fc4012459853a4ed597a5577855
+swift,swift-argument-parser,https://github.com/apple/swift-argument-parser.git,38ca4eceb349155836701b88da3e0986eb9d1e1c
+swift,swift-collections,https://github.com/apple/swift-collections.git,f96b909e1a9e469620bc5037c1e24e00153f376f
+swift,swift-algorithms,https://github.com/apple/swift-algorithms.git,5b7143f8e291dee0e14c118fd0212487f0b37af5
