@@ -72,6 +72,15 @@ jobs:
           java-version: '25'
           cache: maven
 
+      # The native compile gate needs native-image, which only GraalVM ships. Its JAVA_HOME
+      # replaces the Temurin one for the rest of this job; the Maven cache above still applies.
+      - name: Set up GraalVM 25
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          distribution: graalvm-community
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
