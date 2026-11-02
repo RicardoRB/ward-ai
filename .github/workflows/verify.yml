@@ -536,7 +536,7 @@ jobs:
           test native:test
 
       - name: Build native executable
-        run: ./mvnw -B -q -Pnative -DskipTests package native:compile
+        run: ./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile
 
       - name: Drive init through a pseudo-terminal
         if: runner.os != 'Windows'
