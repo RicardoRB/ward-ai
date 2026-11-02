@@ -22,6 +22,7 @@ public final class CommandTypeInference {
   public static final Set<String> USES_ONLY =
       Set.of(
           "archunit",
+          "ward",
           "openspec-archived",
           "openspec-junit-traceability",
           "prettier",

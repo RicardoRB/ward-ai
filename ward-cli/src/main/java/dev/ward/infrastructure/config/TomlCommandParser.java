@@ -14,7 +14,7 @@ final class TomlCommandParser {
 
   private TomlCommandParser() {}
 
-  /** Returns the command; an empty command is allowed only for a traceability check. */
+  /** Returns the command; an empty command is allowed only for a traceability or analysis check. */
   static List<String> parse(final String where, final TomlTable gate, final String uses) {
     if (!gate.contains(COMMAND)) {
       return missing(where, uses);
@@ -27,7 +27,8 @@ final class TomlCommandParser {
   }
 
   private static List<String> missing(final String where, final String uses) {
-    if (SupportedQualityGates.TRACEABILITY.equals(uses)) {
+    if (SupportedQualityGates.TRACEABILITY.equals(uses)
+        || SupportedQualityGates.ANALYSIS.equals(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

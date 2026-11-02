@@ -1,0 +1,6 @@
+[[rules]]
+id = "ward:java/method-length"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+body = "method_declaration"
