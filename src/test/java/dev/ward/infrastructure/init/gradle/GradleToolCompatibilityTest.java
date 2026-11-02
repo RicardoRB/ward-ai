@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.CompatibilityProjectSnapshot;
-import dev.ward.domain.init.GradleToolCatalog;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.ManagedPluginCandidate;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.ToolchainSnapshot;
+import dev.ward.domain.init.gradle.GradleToolCatalog;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;

@@ -5,7 +5,7 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.project.NodeWorkspaceMembers;
+import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 
 /** A {@link CheckService} wired like production around a test {@link CommandExecutor}. */
 public final class CheckServiceFixtures {

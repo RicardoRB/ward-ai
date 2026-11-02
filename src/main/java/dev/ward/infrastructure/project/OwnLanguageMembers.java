@@ -2,6 +2,9 @@ package dev.ward.infrastructure.project;
 
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.project.node.NodeProjectInspection;
+import dev.ward.infrastructure.project.node.NodeWorkspaces;
+import dev.ward.infrastructure.project.python.PythonProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

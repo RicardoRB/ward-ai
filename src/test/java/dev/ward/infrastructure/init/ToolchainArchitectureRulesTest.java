@@ -13,7 +13,7 @@ import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.node.DependencyCruiserConfigGenerator;
 import dev.ward.infrastructure.init.python.ImportLinterConfigGenerator;
 import dev.ward.infrastructure.init.swift.HarmonizeRulesGenerator;
-import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
+import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

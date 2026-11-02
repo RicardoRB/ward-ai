@@ -8,7 +8,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
-import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
+import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

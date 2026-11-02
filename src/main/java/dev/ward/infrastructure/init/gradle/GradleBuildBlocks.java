@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.init.gradle;
 
-import dev.ward.domain.init.GradleToolCatalog;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.gradle.GradleToolCatalog;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

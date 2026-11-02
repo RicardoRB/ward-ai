@@ -7,7 +7,7 @@ import dev.ward.application.init.NodeInputs;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildToolConfiguration;
-import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.Optional;
 
 /** Init catalogs that read the runtime JDK through a given build-tool port. */

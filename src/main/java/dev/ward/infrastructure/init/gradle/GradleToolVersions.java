@@ -2,9 +2,9 @@ package dev.ward.infrastructure.init.gradle;
 
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.CompatibilityOutcome;
-import dev.ward.domain.init.GradleToolCatalog;
-import dev.ward.domain.project.JavaSupport;
+import dev.ward.domain.init.gradle.GradleToolCatalog;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.jvm.JavaSupport;
 import dev.ward.infrastructure.init.CompatibilityFindings;
 import java.util.Collections;
 import java.util.LinkedHashMap;

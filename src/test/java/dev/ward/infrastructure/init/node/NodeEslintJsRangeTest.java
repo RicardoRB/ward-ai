@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

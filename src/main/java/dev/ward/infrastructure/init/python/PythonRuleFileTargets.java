@@ -3,7 +3,7 @@ package dev.ward.infrastructure.init.python;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.RuleFileTargets;
 import java.io.IOException;

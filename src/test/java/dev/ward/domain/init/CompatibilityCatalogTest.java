@@ -2,6 +2,8 @@ package dev.ward.domain.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.init.gradle.GradleToolCatalog;
+import dev.ward.domain.init.maven.ManagedPluginCatalog;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

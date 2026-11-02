@@ -3,7 +3,7 @@ package dev.ward.infrastructure.init.swift;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.init.ConfigTarget;
-import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;
+import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

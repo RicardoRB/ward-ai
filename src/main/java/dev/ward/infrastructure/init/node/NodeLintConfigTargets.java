@@ -2,9 +2,9 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
 import dev.ward.infrastructure.init.ConfigFiles;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.ConfigTarget.Disposition;

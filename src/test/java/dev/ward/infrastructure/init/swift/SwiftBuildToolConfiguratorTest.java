@@ -13,7 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

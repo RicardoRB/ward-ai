@@ -5,7 +5,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

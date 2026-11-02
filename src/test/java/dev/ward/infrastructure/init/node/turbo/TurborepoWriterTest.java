@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.TurboWorkspace;
+import dev.ward.domain.init.node.turbo.TurboWorkspace;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

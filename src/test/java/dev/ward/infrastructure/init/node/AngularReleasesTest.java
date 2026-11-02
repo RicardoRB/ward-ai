@@ -2,7 +2,7 @@ package dev.ward.infrastructure.init.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /** Locates tool reports written during the current gate run and normalises reported paths. */
-final class ReportFiles {
+public final class ReportFiles {
   private static final String FILE_SCHEME = "file://";
   private static final Logger LOGGER = Logger.getLogger(ReportFiles.class.getName());
 
@@ -26,7 +26,7 @@ final class ReportFiles {
    * gateStart}. {@code mavenFile} is a single file; {@code gradleDirectory} holds one XML report
    * per source set.
    */
-  static List<Path> freshReports(
+  public static List<Path> freshReports(
       final Project project,
       final String gateId,
       final Instant gateStart,
@@ -40,7 +40,8 @@ final class ReportFiles {
   }
 
   /** Returns {@code report} when it exists and was modified at or after {@code gateStart}. */
-  static List<Path> fresh(final String gateId, final Instant gateStart, final List<Path> reports) {
+  public static List<Path> fresh(
+      final String gateId, final Instant gateStart, final List<Path> reports) {
     // File systems may store modification times at second precision.
     final Instant threshold = gateStart.truncatedTo(ChronoUnit.SECONDS);
     final List<Path> fresh = new ArrayList<>();
@@ -67,7 +68,7 @@ final class ReportFiles {
    * Returns {@code reported} relative to the project root with {@code /} separators, or as given
    * when it lies outside the root.
    */
-  static String relativize(final Project project, final String reported) {
+  public static String relativize(final Project project, final String reported) {
     if (reported == null || reported.isBlank()) {
       return null;
     }

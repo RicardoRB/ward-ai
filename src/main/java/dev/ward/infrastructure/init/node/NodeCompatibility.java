@@ -2,8 +2,8 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.CompatibilityOutcome;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

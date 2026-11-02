@@ -1,6 +1,6 @@
 package dev.ward.application.spec;
 
-import dev.ward.application.gate.OpenSpecPrerequisites;
+import dev.ward.application.gate.openspec.OpenSpecPrerequisites;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;

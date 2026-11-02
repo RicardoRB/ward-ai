@@ -3,7 +3,7 @@ package dev.ward.infrastructure.init.gradle;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.project.GradleKotlinModules;
+import dev.ward.infrastructure.project.gradle.GradleKotlinModules;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

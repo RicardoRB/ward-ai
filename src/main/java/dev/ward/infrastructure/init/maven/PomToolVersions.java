@@ -2,8 +2,8 @@ package dev.ward.infrastructure.init.maven;
 
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.CompatibilityOutcome;
-import dev.ward.domain.project.JavaSupport;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.jvm.JavaSupport;
 import dev.ward.infrastructure.init.CompatibilityFindings;
 import dev.ward.infrastructure.init.maven.PomTools.Tool;
 import java.util.LinkedHashMap;

@@ -2,7 +2,7 @@ package dev.ward.application.doctor;
 
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.init.BuildToolConfiguration;
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 
 /**

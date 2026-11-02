@@ -2,9 +2,9 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifests;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.RuleFileTargets;
 import java.io.IOException;

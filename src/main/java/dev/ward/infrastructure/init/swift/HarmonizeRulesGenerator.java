@@ -5,7 +5,7 @@ import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.SwiftToolConfigs;
+import dev.ward.domain.project.swift.SwiftToolConfigs;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.JavaPresetGates;
 import dev.ward.ProjectFixtures;
 import dev.ward.application.gate.CommandQualityGate;
-import dev.ward.application.gate.MavenTestGate;
+import dev.ward.application.gate.jvm.MavenTestGate;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.gate.GateResult;

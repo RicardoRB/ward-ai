@@ -10,8 +10,8 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Map;
 

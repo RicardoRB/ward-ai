@@ -2,8 +2,8 @@ package dev.ward.infrastructure.init.swift;
 
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.SwiftSupport;
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftSupport;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;

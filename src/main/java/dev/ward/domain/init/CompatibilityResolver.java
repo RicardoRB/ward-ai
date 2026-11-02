@@ -1,6 +1,6 @@
 package dev.ward.domain.init;
 
-import dev.ward.domain.project.JavaSupport;
+import dev.ward.domain.project.jvm.JavaSupport;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

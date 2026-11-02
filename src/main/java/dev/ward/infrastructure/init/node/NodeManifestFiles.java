@@ -2,8 +2,8 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.PackageManifest;
 import dev.ward.infrastructure.init.ConfigFiles;
 import java.io.IOException;
 import java.nio.file.Files;

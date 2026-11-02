@@ -1,9 +1,9 @@
 package dev.ward.application.init.node;
 
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 
 /**

@@ -6,7 +6,7 @@ import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,6 +1,6 @@
 package dev.ward.infrastructure.init.swift;
 
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import java.util.Optional;
 
 /** Fake Swift toolchains for the tests: a Mac with an Xcode version, or a machine that is not. */

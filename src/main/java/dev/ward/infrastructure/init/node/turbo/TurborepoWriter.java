@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.init.node.turbo;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.TurboWorkspace;
+import dev.ward.domain.init.node.turbo.TurboWorkspace;
 import dev.ward.infrastructure.init.node.PackageJsonEdit;
 import dev.ward.infrastructure.json.JsonMembers;
 import java.io.IOException;

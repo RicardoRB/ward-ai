@@ -5,9 +5,9 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.ArrayList;
 import java.util.List;
 

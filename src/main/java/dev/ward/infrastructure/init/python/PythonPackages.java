@@ -3,7 +3,7 @@ package dev.ward.infrastructure.init.python;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.project.PyprojectDependencies;
+import dev.ward.infrastructure.project.python.PyprojectDependencies;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

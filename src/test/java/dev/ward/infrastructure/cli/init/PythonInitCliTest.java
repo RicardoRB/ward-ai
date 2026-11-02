@@ -7,7 +7,7 @@ import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.node.NodeBuildToolConfigurator;
 import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
-import dev.ward.infrastructure.project.FileSystemPackageManifests;
+import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

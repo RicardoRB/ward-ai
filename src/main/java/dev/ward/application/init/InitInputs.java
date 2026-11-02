@@ -4,13 +4,13 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildModulePlanning;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.GateOmission;
-import dev.ward.domain.project.NodeSources;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.domain.project.WorkspaceMembers;
+import dev.ward.domain.project.node.NodeSources;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
+import dev.ward.domain.project.node.PackageManifests;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import java.util.List;
 import java.util.Optional;
 

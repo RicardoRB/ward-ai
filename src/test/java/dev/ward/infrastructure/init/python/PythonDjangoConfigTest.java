@@ -9,7 +9,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.init.ConfigTarget;
-import dev.ward.infrastructure.project.FileSystemPythonToolConfigs;
+import dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

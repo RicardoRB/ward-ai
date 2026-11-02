@@ -5,7 +5,7 @@ import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildToolConfiguration;
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +17,12 @@ import java.util.Optional;
  * @param swift reads the Xcode version and system, when available
  * @param configuredGates the gates {@code ward.toml} enables, or empty when it cannot be read
  */
-record ToolchainContext(
+public record ToolchainContext(
     Optional<BuildToolConfiguration> buildTools,
     Optional<SwiftToolchainInspection> swift,
     List<String> configuredGates) {
-  ToolchainContext {
+  /** Copies the configured gates so the record cannot change after construction. */
+  public ToolchainContext {
     configuredGates = List.copyOf(configuredGates);
   }
 

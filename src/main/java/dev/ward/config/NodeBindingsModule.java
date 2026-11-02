@@ -4,12 +4,12 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.init.NodeInputs;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.WorkspaceMembers;
-import dev.ward.infrastructure.project.FileSystemNodeSources;
-import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
-import dev.ward.infrastructure.project.NodeWorkspaceMembers;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifests;
+import dev.ward.infrastructure.project.node.FileSystemNodeSources;
+import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
+import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 
 /** Binds the ports init reads Node projects through. */
 @Module

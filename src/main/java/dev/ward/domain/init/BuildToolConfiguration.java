@@ -1,6 +1,8 @@
 package dev.ward.domain.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
+import dev.ward.domain.init.node.turbo.TurboWorkspace;
+import dev.ward.domain.init.node.turbo.TurboWorkspaceChange;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Optional;

@@ -3,7 +3,7 @@ package dev.ward.infrastructure.init.maven;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.gate.QualityGateDefinitions;
-import dev.ward.domain.init.ManagedPluginCatalog;
+import dev.ward.domain.init.maven.ManagedPluginCatalog;
 import org.junit.jupiter.api.Test;
 
 /** Every Maven tool belongs to a defined gate, and every plugin has managed versions. */

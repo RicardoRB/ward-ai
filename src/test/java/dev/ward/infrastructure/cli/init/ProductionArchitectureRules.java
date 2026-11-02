@@ -5,9 +5,9 @@ import dev.ward.infrastructure.init.ToolchainArchitectureRules;
 import dev.ward.infrastructure.init.node.DependencyCruiserConfigGenerator;
 import dev.ward.infrastructure.init.python.ImportLinterConfigGenerator;
 import dev.ward.infrastructure.init.swift.HarmonizeRulesGenerator;
-import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
-import dev.ward.infrastructure.project.FileSystemPythonToolConfigs;
-import dev.ward.infrastructure.project.FileSystemSwiftToolConfigs;
+import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
+import dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs;
+import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 
 /** The architecture rules router with the generators the production wiring injects. */
 final class ProductionArchitectureRules {

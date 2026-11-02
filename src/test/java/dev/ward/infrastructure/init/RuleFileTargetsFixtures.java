@@ -1,10 +1,10 @@
 package dev.ward.infrastructure.init;
 
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
-import dev.ward.domain.project.PackageManifests;
-import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.domain.project.node.NodeToolConfigs;
+import dev.ward.domain.project.node.PackageManifest;
+import dev.ward.domain.project.node.PackageManifests;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import dev.ward.infrastructure.init.node.NodeRuleFileTargets;
 import dev.ward.infrastructure.init.python.PythonRuleFileTargets;
 import dev.ward.infrastructure.init.swift.SwiftRuleFileTargets;

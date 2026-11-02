@@ -15,32 +15,39 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-final class FindingFixtures {
+/** Builds the gate results and projects that the finding tests share. */
+public final class FindingFixtures {
   private static final long CLOCK_SKEW_SECONDS = 5;
 
   private FindingFixtures() {}
 
-  static Project maven(final Path root) {
+  /** Returns a Maven project rooted at {@code root}. */
+  public static Project maven(final Path root) {
     return new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE, true);
   }
 
-  static Project gradle(final Path root) {
+  /** Returns a Gradle project rooted at {@code root}. */
+  public static Project gradle(final Path root) {
     return new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE, true);
   }
 
-  static Project python(final Path root) {
+  /** Returns a Python project rooted at {@code root}. */
+  public static Project python(final Path root) {
     return new Project(root, Language.PYTHON, BuildTool.POETRY, Framework.NONE);
   }
 
-  static Project xcode(final Path root) {
+  /** Returns an Xcode project rooted at {@code root}. */
+  public static Project xcode(final Path root) {
     return new Project(root, Language.SWIFT, BuildTool.XCODE, Framework.NONE);
   }
 
-  static Project typescript(final Path root) {
+  /** Returns a TypeScript project rooted at {@code root}. */
+  public static Project typescript(final Path root) {
     return new Project(root, Language.TYPESCRIPT, BuildTool.PNPM, Framework.NONE);
   }
 
-  static GateResult failed(final String gate, final String stdout) {
+  /** Returns a failed result of {@code gate} whose stdout is {@code stdout}. */
+  public static GateResult failed(final String gate, final String stdout) {
     return GateResult.builder(gate, GateStatus.FAILED)
         .command(List.of("x"))
         .exitCode(1)
@@ -50,7 +57,8 @@ final class FindingFixtures {
         .build();
   }
 
-  static GateResult failedWithStderr(final String gate, final String stderr) {
+  /** Returns a failed result of {@code gate} whose stderr is {@code stderr}. */
+  public static GateResult failedWithStderr(final String gate, final String stderr) {
     return GateResult.builder(gate, GateStatus.FAILED)
         .command(List.of("x"))
         .exitCode(1)
@@ -60,7 +68,8 @@ final class FindingFixtures {
         .build();
   }
 
-  static Path write(final Path file, final String content) {
+  /** Writes {@code content} to {@code file} and returns the file. */
+  public static Path write(final Path file, final String content) {
     try {
       Files.createDirectories(file.getParent());
       return Files.writeString(file, content);
@@ -69,7 +78,8 @@ final class FindingFixtures {
     }
   }
 
-  static void age(final Path file, final Duration age) {
+  /** Sets the last-modified time of {@code file} to {@code age} ago. */
+  public static void age(final Path file, final Duration age) {
     try {
       Files.setLastModifiedTime(file, FileTime.from(Instant.now().minus(age)));
     } catch (IOException exception) {
@@ -78,7 +88,7 @@ final class FindingFixtures {
   }
 
   /** A gate start slightly in the past, so freshly written fixtures count as current. */
-  static Instant justBefore() {
+  public static Instant justBefore() {
     return Instant.now().minusSeconds(CLOCK_SKEW_SECONDS);
   }
 }

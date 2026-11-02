@@ -50,9 +50,9 @@ class PythonStrictRewriteTest {
 
     new PresetRuleFileWriter(
             RuleFileTargetsFixtures.of(
-                manifestRoot -> dev.ward.domain.project.PackageManifest.EMPTY,
+                manifestRoot -> dev.ward.domain.project.node.PackageManifest.EMPTY,
                 (dir, tool) -> java.util.Optional.empty(),
-                new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()))
+                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()))
         .apply(project, QualityPreset.STRICT, gates);
 
     assertThat(Files.exists(root.resolve("mypy.ini"))).isFalse();

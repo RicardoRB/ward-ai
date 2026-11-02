@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.node.PackageManifest;
 import org.junit.jupiter.api.Test;
 
 /** The ESLint config Ward writes for an Angular project, which lints templates too. */

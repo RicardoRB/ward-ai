@@ -1,5 +1,6 @@
 package dev.ward.application.doctor;
 
+import dev.ward.application.doctor.jvm.DependencyCheckDiagnosis;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.AgentIntegration;
 import dev.ward.domain.agent.IntegrationCapability;
@@ -11,7 +12,7 @@ import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import java.nio.file.Path;
 import java.util.ArrayList;

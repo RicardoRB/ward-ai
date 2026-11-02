@@ -11,7 +11,7 @@ import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
-import dev.ward.infrastructure.project.PyprojectDependencies;
+import dev.ward.infrastructure.project.python.PyprojectDependencies;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
