@@ -28,6 +28,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
 | Architecture | `archunit` | ArchUnit | Run architecture rules/tests. |
+| | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
 | Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
@@ -407,6 +408,33 @@ profiles = ["ci"]
   execution error, never a pass. mutmut always writes these results under `mutants/`, so Ward
   reads them there.
 - mutmut's results for source files that were deleted keep counting until mutmut rewrites them.
+
+## Analysis gate
+
+`ward` runs Ward's own analysis rules over the project's source files. It needs no `command`:
+
+```toml
+[checks.ward]
+enabled = true
+uses = "ward"
+profiles = ["pre-push", "ci"]
+```
+
+Each rule has a stable id of the form `ward:<language>/<rule>`. A rule runs only when the language
+frontend provides the capability the rule needs. A rule whose capability is missing is reported as
+not run, and the gate is unavailable rather than passed. A file that cannot be parsed or a rule that
+fails is an execution error, and the gate does not pass. Findings appear in the same check report,
+JSON and SARIF output as the other gates.
+
+Select rules with `rules`. Unknown rule ids and unknown keys are configuration errors:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = ["ward:java/method-length"]
+```
+
+No language rules ship yet, so the gate currently runs no rules.
 
 ## Traceability gate
 

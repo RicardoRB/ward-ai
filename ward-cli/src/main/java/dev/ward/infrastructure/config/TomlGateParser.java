@@ -37,7 +37,8 @@ final class TomlGateParser {
         TomlOpenSpecRoot.parse(where, type, gate),
         TomlOpenApiParser.parse(where, type, gate, enabled),
         TomlMinimumParser.parse(where, type, gate),
-        TomlPlatformParser.parse(where, type, gate, command));
+        TomlPlatformParser.parse(where, type, gate, command),
+        TomlAnalysisParser.parse(where, type, gate));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {

@@ -21,6 +21,8 @@ import java.util.Set;
  *     null} when unset
  * @param platform where an {@code xcodebuild-test} check runs, or {@code null} when its command
  *     names a destination or the check is of another type
+ * @param rules the analysis rule ids a {@code ward} check runs, or empty or {@code null} to run
+ *     every rule; only {@code ward} checks read it
  */
 public record GateConfiguration(
     String name,
@@ -32,12 +34,20 @@ public record GateConfiguration(
     String root,
     OpenApiGateOptions openApi,
     Integer minimum,
-    XcodePlatform platform) {
+    XcodePlatform platform,
+    List<String> rules) {
 
-  /** Copies the command and profiles, keeping profile order. */
+  /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
     command = List.copyOf(command);
     profiles = Collections.unmodifiableSet(new LinkedHashSet<>(profiles));
+    rules = rules == null ? List.of() : List.copyOf(rules);
+  }
+
+  /** Returns a copy of the rule ids; empty when the check selects every rule. */
+  @Override
+  public List<String> rules() {
+    return List.copyOf(rules);
   }
 
   /** Creates a check in the {@code default} profile whose type is its name. */
@@ -48,6 +58,7 @@ public record GateConfiguration(
         enabled,
         command,
         Set.of(WardConfiguration.DEFAULT_PROFILE),
+        null,
         null,
         null,
         null,

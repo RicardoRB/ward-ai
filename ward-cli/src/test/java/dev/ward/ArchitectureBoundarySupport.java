@@ -144,10 +144,15 @@ final class ArchitectureBoundarySupport {
                       "dev.ward.config.TraceabilityBindingsModule",
                       "dev.ward.config.ProvenanceBindingsModule",
                       "dev.ward.config.GateBindingsModule",
+                      "dev.ward.config.GateExtensionBindingsModule",
                       "dev.ward.config.ReportBindingsModule",
                       "dev.ward.config.WardProvidesModule")
                   .contains(name);
-      case "dev.ward.analysis.domain.ir", "dev.ward.analysis.domain.port" -> true;
+      case "dev.ward.analysis.domain.ir",
+          "dev.ward.analysis.domain.port",
+          "dev.ward.analysis.domain.rule",
+          "dev.ward.analysis.application.rule" ->
+          true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default ->

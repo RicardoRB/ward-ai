@@ -53,7 +53,7 @@ final class MutationGateFixtures {
 
   static GateConfiguration gate(final String id, final Integer minimum) {
     return new GateConfiguration(
-        id, id, true, COMMAND, Set.of("ci"), null, null, null, minimum, null);
+        id, id, true, COMMAND, Set.of("ci"), null, null, null, minimum, null, null);
   }
 
   static GateResult run(final int exitCode, final MutationReport report, final Integer minimum) {
