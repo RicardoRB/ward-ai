@@ -25,7 +25,7 @@ final class SkillFixtures {
       throws IOException {
     Files.writeString(
         root.resolve("pom.xml"),
-        "<project>\n  <artifactId>ward-ai</artifactId>\n  <version>"
+        "<project>\n  <artifactId>ward-parent</artifactId>\n  <version>"
             + VERSION
             + "</version>\n</project>\n");
     Files.createDirectories(root.resolve(".claude-plugin"));

@@ -12,10 +12,11 @@ import org.junit.jupiter.api.io.TempDir;
 class AgentSkillsConsistencyTest {
   @Test
   void repositorySkillsMatchTheCli() throws IOException {
-    assertThat(SkillFixtures.consistency(Path.of("")).problems()).isEmpty();
-    assertThat(Path.of("skills/ward-init/SKILL.md")).isRegularFile();
-    assertThat(Path.of("skills/ward-tune/SKILL.md")).isRegularFile();
-    assertThat(Path.of("skills/ward-fix/SKILL.md")).isRegularFile();
+    final Path repository = Path.of(System.getProperty("ward.repository.root", ""));
+    assertThat(SkillFixtures.consistency(repository).problems()).isEmpty();
+    assertThat(repository.resolve("skills/ward-init/SKILL.md")).isRegularFile();
+    assertThat(repository.resolve("skills/ward-tune/SKILL.md")).isRegularFile();
+    assertThat(repository.resolve("skills/ward-fix/SKILL.md")).isRegularFile();
   }
 
   @Test
