@@ -110,10 +110,10 @@ Requires JDK 25. Maven is provided by the repository wrapper.
 git clone https://github.com/RicardoRB/ward-ai.git
 cd ward-ai
 ./mvnw package
-java -jar target/ward.jar --version
+java -jar ward-cli/target/ward.jar --version
 ```
 
-To build the native binary `target/ward`, use GraalVM 25:
+To build the native binary `ward-cli/target/ward`, use GraalVM 25:
 
 ```bash
 ./mvnw -Pnative -DskipTests native:compile

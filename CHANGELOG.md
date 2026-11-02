@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Ward is in alpha, so minor versions may
 still change behavior. Breaking changes are called out under **Changed**.
 
+## [Unreleased]
+
+### Changed
+
+- The Maven build is a parent project (`ward-parent`) with a `ward-cli` module. Build outputs moved to `ward-cli/target/` (`ward.jar`, `ward`, `ward.exe`); the released binaries and jar keep their names.
+
 ## [0.5.0] - 2026-11-02
 
 ### Added

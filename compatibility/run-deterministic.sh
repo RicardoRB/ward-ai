@@ -1,7 +1,7 @@
 #!/bin/sh
 # Runs every deterministic harness compatibility suite against one Ward build.
 # Usage: compatibility/run-deterministic.sh [path/to/ward]
-# Without an argument the newest of target/ward and target/ward.jar is used.
+# Without an argument the newest of ward-cli/target/ward and ward-cli/target/ward.jar is used.
 # No harness runtime, network model access or credentials are needed; a failing suite fails this script.
 set -eu
 

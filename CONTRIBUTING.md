@@ -33,13 +33,13 @@ You need JDK 25. The Maven wrapper is included.
 ./mvnw -q test                        # run all tests
 ./mvnw -Dtest=ClassName#method test   # run one test
 ./mvnw spotless:apply                 # format
-./mvnw package                        # build target/ward.jar
+./mvnw package                        # build ward-cli/target/ward.jar
 ```
 
 Before you open a pull request, run Ward on Ward itself:
 
 ```bash
-java -jar target/ward.jar check --profile pre-push
+java -jar ward-cli/target/ward.jar check --profile pre-push
 ```
 
 Read [AGENTS.md](AGENTS.md) first. It covers the package layout, the patterns to copy, and the

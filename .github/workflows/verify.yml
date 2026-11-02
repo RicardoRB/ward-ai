@@ -124,10 +124,10 @@ jobs:
         run: |
           set -eu
           targets=$(git diff --name-only --diff-filter=ACMR "origin/${BASE_REF}...HEAD" -- \
-              src/main/java/dev/ward/domain src/main/java/dev/ward/application \
-              src/test/java/dev/ward/domain src/test/java/dev/ward/application \
+              ward-cli/src/main/java/dev/ward/domain ward-cli/src/main/java/dev/ward/application \
+              ward-cli/src/test/java/dev/ward/domain ward-cli/src/test/java/dev/ward/application \
             | grep '\.java$' \
-            | sed -E -e 's#^src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
+            | sed -E -e 's#^ward-cli/src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
             | sort -u | paste -sd, - || true)
           echo "Mutation targets: ${targets:-none}"
           echo "PIT_TARGET_CLASSES=${targets:-none.changed}" >> "$GITHUB_ENV"
@@ -165,8 +165,8 @@ jobs:
         with:
           name: quality-reports
           path: |
-            target/site/jacoco/
-            target/pit-reports/
+            ward-cli/target/site/jacoco/
+            ward-cli/target/pit-reports/
             target/ward.sarif
           if-no-files-found: ignore
 
@@ -192,7 +192,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {node: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           run=true
@@ -242,7 +242,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/NodePackageCatalog.java') }}
+          key: npm-${{ hashFiles('ward-cli/src/main/java/dev/ward/infrastructure/init/NodePackageCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -278,7 +278,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {python: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           run=true
@@ -359,9 +359,9 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
             | awk -F, 'NR == FNR { runner[$1] = $2; next } { print $1 "," $2 "," runner[$1] }' \
-                src/test/resources/swift-matrix/xcodes.csv - \
+                ward-cli/src/test/resources/swift-matrix/xcodes.csv - \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {xcode: .[0], fixture: .[1], runner: .[2]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           run=true
@@ -400,7 +400,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/Library/Caches/org.swift.swiftpm
-          key: swiftpm-${{ matrix.cell.xcode }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/SwiftToolCatalog.java') }}
+          key: swiftpm-${{ matrix.cell.xcode }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/infrastructure/init/SwiftToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -436,7 +436,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/java-matrix/jdks.csv \
+          cells=$(tail -n +2 ward-cli/src/test/resources/java-matrix/jdks.csv \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {jdk: .[0], gradle: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           run=true
@@ -489,7 +489,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.m2/wrapper
-          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('src/main/java/dev/ward/domain/init/ManagedPluginCatalog.java', 'src/main/java/dev/ward/domain/init/GradleToolCatalog.java') }}
+          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/domain/init/ManagedPluginCatalog.java', 'ward-cli/src/main/java/dev/ward/domain/init/GradleToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -549,8 +549,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           set -euo pipefail
-          target/ward.exe --version
-          target/ward.exe --help > /dev/null
+          ward-cli/target/ward.exe --version
+          ward-cli/target/ward.exe --help > /dev/null
 
       - name: Set up Bun
         if: inputs.harness-compatibility && runner.os != 'Windows'
@@ -560,4 +560,4 @@ jobs:
 
       - name: Verify agent integrations against the native executable
         if: inputs.harness-compatibility && runner.os != 'Windows'
-        run: compatibility/run-deterministic.sh target/ward
+        run: compatibility/run-deterministic.sh ward-cli/target/ward
