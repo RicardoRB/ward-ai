@@ -14,14 +14,14 @@ class SystemEnvironmentInspectionNativeTest {
   void findsNativeExecutableInModuleTarget(@TempDir final Path root) throws IOException {
     writeExecutable(root.resolve("ward-cli/target/ward"));
 
-    assertThat(SystemEnvironmentInspection.nativeExecutablePresent(root)).isTrue();
+    assertThat(NativeExecutableFact.present(root)).isTrue();
   }
 
   @Test
   void findsNativeExecutableAtRootTarget(@TempDir final Path root) throws IOException {
     writeExecutable(root.resolve("target/ward"));
 
-    assertThat(SystemEnvironmentInspection.nativeExecutablePresent(root)).isTrue();
+    assertThat(NativeExecutableFact.present(root)).isTrue();
   }
 
   @Test
@@ -30,12 +30,12 @@ class SystemEnvironmentInspectionNativeTest {
     Files.createDirectories(binary.getParent());
     Files.writeString(binary, "");
 
-    assertThat(SystemEnvironmentInspection.nativeExecutablePresent(root)).isFalse();
+    assertThat(NativeExecutableFact.present(root)).isFalse();
   }
 
   @Test
   void reportsNoNativeExecutableWhenNeitherLocationExists(@TempDir final Path root) {
-    assertThat(SystemEnvironmentInspection.nativeExecutablePresent(root)).isFalse();
+    assertThat(NativeExecutableFact.present(root)).isFalse();
   }
 
   private static void writeExecutable(final Path binary) throws IOException {

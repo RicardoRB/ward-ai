@@ -101,7 +101,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             Boolean.toString(
                 Files.isRegularFile(projectRoot.resolve(".opencode/commands/ward-check.md"))),
             "nativeExecutablePresent",
-            Boolean.toString(nativeExecutablePresent(Path.of(""))));
+            Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
     observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
     observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
@@ -184,12 +184,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
   }
 
   /** Only presence is recorded; values never leave this method. */
-  /** Development check: a native build lands in the module, or at the root of a Ward checkout. */
-  static boolean nativeExecutablePresent(final Path base) {
-    return Files.isExecutable(base.resolve("target/ward"))
-        || Files.isExecutable(base.resolve("ward-cli/target/ward"));
-  }
-
   private static boolean isSet(final String name) {
     final String value = System.getenv(name);
     return value != null && !value.isBlank();
