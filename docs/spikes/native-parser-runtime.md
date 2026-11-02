@@ -50,7 +50,7 @@ Throughput on real JDK sources (`String.java`, `HashMap.java`, `Collectors.java`
 | Tree-sitter (native, reused parser) | 200 | 111.9 | 18.51 |
 | ANTLR (native, new parser per file) | 3 | 8.5 | 1.41 |
 
-On the two tiny samples, Tree-sitter ran at about 57,000 files/s and ANTLR at about 540 files/s, with ANTLR peaking at about 95 MB of memory. Caveats: ANTLR ran only three iterations on the large set, and it builds the full parse tree in Java while Tree-sitter's measured work is the C parse only. The grammars were tested only on these samples and on real JDK sources, not on a full project. Kotlin has a grammar in `grammars-v4`, but it was not tested. ANTLR does not parse incrementally, which matters for the incremental engine in #179.
+On the two tiny samples, Tree-sitter ran at about 57,000 files/s and ANTLR at about 540 files/s, with ANTLR peaking at about 95 MB of memory. Caveats: ANTLR ran only three iterations on the large set, and it builds the full parse tree in Java while Tree-sitter's measured work is the C parse only. The grammars were tested only on these samples and on real JDK sources, not on a full project. The Kotlin grammar from `grammars-v4` was tested on its 17 example files: 15 parse with no errors, and the two that report errors are invalid Kotlin on purpose (`bad_property.kt`, and `fun_on_same_line.kt`, which puts two declarations on one line without a separator). Kotlin throughput was not measured. ANTLR does not parse incrementally, which matters for the incremental engine in #179.
 
 ## Decisions
 
@@ -130,10 +130,12 @@ If Phase 1 finds that JDT cannot resolve JDK types or parse Java 25 syntax under
 
 **Fallback per language (5.2):** not triggered on macOS, because Tree-sitter runs. If Linux or static linking fails in Phase 1, the fallback is pure-Java parsers: JDT for Java; for TypeScript, a pure-Java parser that Phase 1 must still select, since none is measured here.
 
-**Phase 1 path (proposed).** Start with ANTLR as the first syntax-tree adapter, behind a parser port in the domain layer (port and adapter, as `AGENTS.md` requires). The analysis code depends only on the port, so the adapter can be replaced later without rewriting analysis. Switch to Tree-sitter when at least one of these holds: incremental parsing becomes a requirement; full-project analysis misses the time budget that Phase 1 sets; or the Linux static-linking and symbol-lookup limits are resolved, which would let Tree-sitter ship as a single binary. Until then, ANTLR is the default for Java, TypeScript and Kotlin (Kotlin not yet tested). JDT stays the Java L2 parser either way.
+**Phase 1 path (proposed).** Start with ANTLR as the first syntax-tree adapter, behind a parser port in the domain layer (port and adapter, as `AGENTS.md` requires). The analysis code depends only on the port, so the adapter can be replaced later without rewriting analysis. Switch to Tree-sitter when at least one of these holds: incremental parsing becomes a requirement; full-project analysis misses the time budget that Phase 1 sets; or the Linux static-linking and symbol-lookup limits are resolved, which would let Tree-sitter ship as a single binary. Until then, ANTLR is the default for Java, TypeScript and Kotlin. JDT stays the Java L2 parser either way.
+
+**Fallback per language (5.2).** ANTLR with the `grammars-v4` grammars is the named pure-Java fallback for TypeScript, and the default for Java syntax (JDT stays for bindings). Kotlin is covered by the same grammar family.
 
 ## Open items
 
-- Static grammar linking on Linux (2.4): the archives build, but the grammar entry points are not exported from the binary. macOS static linking is measured.
+- Static grammar linking on Linux (2.4): paused, not pursued further. The archives build, but the grammar entry points are not exported from the binary, likely the same symbol-lookup limit as musl. macOS static linking is measured.
 - JDK type resolution and Java 25 syntax under JDT compliance 1.8 (see decision condition 1).
-- The TypeScript fallback parser is not chosen.
+
