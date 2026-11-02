@@ -1,6 +1,6 @@
 # Spike: native parser runtime
 
-Decision note for [#185](https://github.com/RicardoRB/sentinel-ai/issues/185). Source change: `openspec/changes/spike-native-parser-runtime` (local, gitignored).
+Decision note for [#185](https://github.com/RicardoRB/ward-ai/issues/185). Source change: `openspec/changes/spike-native-parser-runtime` (local, gitignored).
 
 
 ## Context
