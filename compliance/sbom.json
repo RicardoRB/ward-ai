@@ -1,0 +1,797 @@
+{
+  "bomFormat" : "CycloneDX",
+  "specVersion" : "1.6",
+  "version" : 1,
+  "metadata" : {
+    "lifecycles" : [
+      {
+        "phase" : "build"
+      }
+    ],
+    "tools" : {
+      "components" : [
+        {
+          "type" : "library",
+          "author" : "OWASP Foundation",
+          "group" : "org.cyclonedx",
+          "name" : "cyclonedx-maven-plugin",
+          "version" : "2.9.3",
+          "description" : "CycloneDX Maven plugin",
+          "hashes" : [
+            {
+              "alg" : "MD5",
+              "content" : "e7c87ab327b65b23c681fc9dc8bb620b"
+            },
+            {
+              "alg" : "SHA-1",
+              "content" : "fa3f0f04f4d5077b5e085d4d09aa2e68aeba5260"
+            },
+            {
+              "alg" : "SHA-256",
+              "content" : "c452d5eebe28bc86bef2e7c72d129f04f60877bef843eac8120f01fb655be293"
+            },
+            {
+              "alg" : "SHA-512",
+              "content" : "ec0344ed2ffe62d565aaf936a37140d04c7fffa8669a666be0366cd44eec3195232d79841cdec47030b79068216ac7e1a8c805255758e3d418dae32a4b9b9beb"
+            },
+            {
+              "alg" : "SHA-384",
+              "content" : "3df26b2a00d87fe090851975ebcc30217f98634e7c47d07128e148f325ebfe3bc0790b2f52ad4591734b7b0de738f003"
+            },
+            {
+              "alg" : "SHA3-384",
+              "content" : "470c1b4962379b5b6494c75bd1475da3519bbe2543999c95f26b4021164d3d05419b0c3f704443162fe5433a204250e9"
+            },
+            {
+              "alg" : "SHA3-256",
+              "content" : "900e9c4edb18940ed3c4a4ba6946957fa613ef0d4b0c380551638f229206373c"
+            },
+            {
+              "alg" : "SHA3-512",
+              "content" : "5e36433e18ae24f7460902da27818874df5d1d73df1a97e49e7369335f7cc61ca595466a2d37789fba7eaa7f7f251b29216c3d7a78910b2ec38e2ed68ea84876"
+            }
+          ]
+        }
+      ]
+    },
+    "component" : {
+      "type" : "application",
+      "bom-ref" : "pkg:maven/dev.ward/ward-ai@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-ai",
+      "version" : "0.5.0",
+      "description" : "Ward: a quality gate orchestrator for AI coding agents",
+      "purl" : "pkg:maven/dev.ward/ward-ai@0.5.0?type=jar"
+    },
+    "properties" : [
+      {
+        "name" : "maven.goal",
+        "value" : "makeBom"
+      },
+      {
+        "name" : "maven.scopes",
+        "value" : "compile,runtime"
+      },
+      {
+        "name" : "cdx:reproducible",
+        "value" : "enabled"
+      }
+    ]
+  },
+  "components" : [
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "publisher" : "Google, Inc.",
+      "group" : "com.google.dagger",
+      "name" : "dagger",
+      "version" : "2.60.1",
+      "description" : "A fast dependency injector for Android and Java.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "4a352166ba54a7ea7032fe802199895a"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "440df415f28bf80fc0d1f98bcf8765c32e769d68"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "b012d0df527b51bfcd8953d5fcb4d022a45ebe66010d6f181ede68d1572b5cb2"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "7fcc323c176a26243f4d961cef3b272f733eda906d022b9766bc2391f2ac639cc629c411114f077edee9df91be65f3e34fb17085063230c37fa988fcf8d6251d"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "77c726d43f34c41291c876cc3e04ad1c5978c9485dcda904952a4f6e118803601d318663541c4606a391c50398a78c88"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "98cca48f36f3f702763d5a2fc593a2b7f6d0a5e7567b7a6fba5be109b96964d14c2b7c3d1276cc7af340c032aac36f18"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "649adc3e83f8bdcd5a303452c0cfec3554a82de177a9661c7f5ebf025b85460a"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "7e34f7d6e4de75edc9f71d1e063a8cb66b0a9d86885f72724916334bc9505196196292e73eed64c1946e9e910c53ea34b5bde2364ec30d53a5a1d3fd4d66b369"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/google/dagger"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/google/dagger/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/google/dagger/"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "jakarta.inject",
+      "name" : "jakarta.inject-api",
+      "version" : "2.0.1",
+      "description" : "Jakarta Dependency Injection",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "72003bf6efcc8455d414bbd7da86c11c"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4c28afe1991a941d7702fe1362c365f0a8641d1e"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "f186b2ada470abba1cc3b4f8c4373d940fb7c71a051b2c26f7c204ad4dfb69235fbf3f9c33da36d744cb90f52d921c51d76c0ff263bacb35eafb66cab83dc47d"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "405bd297a73901f013d48a0da028d04d400f3e61f4997c0e7297eb08120670a0e242e0002db8f130c33ab16cb02feb2d"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "4db7e54434d0a208c876868f5595b808f2728c0455feaa752ab7b569a2186fc37cb891c9aa0076de3d08f6da6ff06eba"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "3a5aba9f1ff1a130b76af886123eb375fa578498490df3dc60bb7ce7d59e9404"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "00bba8efc2d6e7f0a509b321868d75f1aaf0681a750d089d913bde8424ab7bb88aadf49de6e291e352523e4f8c117b1b48033ff31d4d665dcc43c4c6ea000ba9"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-ee4j/injection-api"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://jakarta.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-ee4j/ee4j/issues"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://dev.eclipse.org/mhonarc/lists/jakarta.ee-community/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-ee4j/injection-api"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "group" : "org.jspecify",
+      "name" : "jspecify",
+      "version" : "1.0.0",
+      "description" : "An artifact of well-named and well-specified annotations to power static analysis checks",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "9133aba420d0ca3b001dbb6ae9992cf6"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "7425a601c1c7ec76645a78d22b8c6a627edee507"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "efded31ef5b342f09422935076e599789076431e93a746685c0607e7de5592719ba6aacde0be670b3f064d1e85630d58d5bce6b34aed2a288fdb34f745efb7bc"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "814f860e5a44ead6c457676841eef471a8b87be31b84c60a8a4477a18a9cbcb6e3c2ae700969d5c5e52309d961e0537a"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c8844e5b71e5ecfbb7366097ce34af2f5863d86d5ccc3f9ec384d8ade4b60ccc8124c7fc88664f1afd2b0962fc8775bf"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "4b4f08ad7606a3ac62997779484919a302267b26d26ee19125f8a7eea60e8a71"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "65c6845ebae981cb81b61107707ced39f5b377dae970b47606ef482aaf10e3729def0da40d9377c43abbfb483a5ceae039b0d51c129c50a6d36ad351a5d6b01e"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://jspecify.org/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/jspecify/jspecify/"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "group" : "javax.inject",
+      "name" : "javax.inject",
+      "version" : "1",
+      "description" : "The javax.inject API",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "289075e48b909e9e74e6c915b3631d2e"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "6975da39a7040257bd51d21a231b76c915872d38"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "e126b7ccf3e42fd1984a0beef1004a7269a337c202e59e04e8e2af714280d2f2d8d2ba5e6f59481b8dcd34aaf35c966a688d0b48ec7e96f102c274dc0d3b381e"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "ac04c9f03ccbe35a25deb8b50280a0ca01dbe6aff0dd795d55af6112bfe3cd5817eb82f32fb18378d86cd64b07597190"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "fca090ecb1edeacb9fe865dc515cd1d109b323cd742d4a9733ff199a96ee96e0db4f924079520b9c189ef750f255475d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "5b0054e39e522de0e0ffc4034d12f72270291fb24d94d5ffc9c4d69c25035fc6"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "fb290f5a70b1efc1dff12f40a0b2d7b94019f66da42e78010c0b8e61f222c4f267b67e356a9e9c346eb801e5515e36243888f280c5cb95c2dd69016a30cadeb9"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://code.google.com/p/atinject/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "http://code.google.com/p/atinject/source/checkout"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "group" : "info.picocli",
+      "name" : "picocli",
+      "version" : "4.7.7",
+      "description" : "Java command line parser with both an annotations API and a programmatic API. Usage help with ANSI styles and colors. Autocomplete. Nested subcommands. Easily included as source to avoid adding a dependency.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "149402d1c0939a9afbf9ed7d6a2ae180"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "82bcae3dc45ddeb08b4954e2f596772a42219715"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "f86e30fffd10d2b13b8caa8d4b237a7ee61f2ffccf5b1941de718b765d235bf8"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "125a8d5cf9dac7f2d67ac82e281d47aab4f15643b4dd5e09199dd5048e385fa74f7f287ebd1162c9f23c488e0d616f1e46591015fe5319c6ad796cc4beddfff6"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "91d445fc22d81964883a8b520771ea62bb6ba0fd4093a5b22ac00b9d025a302e16a2cb52c50bb33b9f29d380990a8a30"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "056eac83d293fa1fea73d5fa79da9216fc2af9c396971f700df3964985660e79ce362211a3de7f38e781ecbe77ef491b"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "916249db6baafc31296ce795a9eae35f7ecd253d15e20e5c37e26fc6c206fd0a"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "38586c496881613573c77b3edf24afc3325726698641cfd7236b197997b8264e8fbfa732731c8ca737b64e03be8ef7d0da9d93ffe300ffa82be0bf4dbe957419"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://picocli.info"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/remkop/picocli/tree/master"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "group" : "org.tomlj",
+      "name" : "tomlj",
+      "version" : "2.2.0",
+      "description" : "A parser and serializer for Tom's Obvious, Minimal Language (TOML). Bundles the ANTLR runtime it needs.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "176322ab9b4a455e04d5337fefa46898"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "021a0249a798b11ea1e1fdb88611074054080345"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "e1fc98734f3b4285b4f87d1f1f473300c83791f2fb406feb86bca67e371896e7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "d9d75c3e362559ce62f585814ad30d3035bc88389b6969b863153651d16d0c1578e89dfacee48240f09d52fcfd24b147c75775e1ac2336890b54814d9e14928c"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "86963a3d1bb6e7d66f7878336de3a87de4eea1cef28cbffd0a57ec6ec787aadc526735335ced3a0f53ff6c8b7c6addbd"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "f870d2b982c0a75e9edbed8f246bfdeb4acd52af7f1053c140e077deda6dd68e4d1ea4e51bca7964135e2e4ea340deeb"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "6ea07bb7748b7d4c5624c8694844fd8a1151668380f43db69dd18183f2a73a55"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "c53e37efa1cd28212eb0cd0c02f59b12d8efa954fc5b18919403016c1ebfb13d712856988c29b9600ebe52dc339d1e5a6221e1f1268063a6207a68b375350573"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/tomlj/tomlj"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/tomlj/tomlj"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "publisher" : "The Apache Software Foundation",
+      "group" : "org.apache.fory",
+      "name" : "fory-json",
+      "version" : "1.7.7",
+      "description" : "Apache Fory JSON serialization.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "c366ceb5805629be0d253335b17ac70f"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "612723eaed3f6483a10c1dc726d55f03b4df19bc"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "d7e39d5a8ed2025fddf3712e2401f042dfdcd6eedc36530909b9d6ce20d92d42"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "fa279be7594c8568d18f31023891c19c081135c76e1dbe3ca55c544449201149652ad55e0e4d43acff3155aacc54443d0783b396d490cfdca598891f9482aabe"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "cfcedaf4a9f7ca723e8c98b70e178207259e99d6fbd8505919f0f6b61a8b7128ce231f1ccdcd50ce2b352d470bd80c5e"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "485af7efd85bcffbff8465dd5b4e380bdd0f7449d4848c698ad1d3b2afdeb0ae9d54ba7043f7c203000497b2928fd69d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "8f97026ac500f99c6d1c728d17ba0a23358f31f1900dbf5c42474de9291ddf9c"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "219c07966ed4e1943286fbf8dd56def1abea36c14f0d64ecaa93e48d1bb493074165a3025602c17bcea79e672a601bf4ea7294c58d292ed319d18ff57a07c9cb"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://fory.apache.org"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://repository.apache.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://mail-archives.apache.org/mod_mbox/www-announce/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/apache/fory"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "publisher" : "The Apache Software Foundation",
+      "group" : "org.apache.fory",
+      "name" : "fory-core",
+      "version" : "1.7.7",
+      "description" : "Apache Fory™ is a blazingly fast multi-language serialization framework powered by jit and zero-copy.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "f5cd33c8cb18271c1042cc6f7f8e8503"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "b60f3addd08a71fd4148e19c6c1012ad82bfe80b"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "d591f46cb03cf411690a4d7257b5bef3d9148cd3dda032a1eb8f1950a92c2061"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "64f46890d13f3e43fcbb7ac429a9a212a1b82d93ffa6ee5ab444de8738cc63385e35bf384193c3c8fc9ce5e0d7042e18309da2e225dc93283da066476c20bb5c"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "349342ae9671dc4a7314951f100f791437c6833334e7424a6d402b16db266020117a797790f8c55b5ec7b51eaaf4b4ce"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c406a7eae4950e27964f70f46f9d95ef29e44e6f91a2fcf5fd86c96ecbd2530104510eb94107e4b75d6e92024e0df79a"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "c5b87f7569aef093ce979f35e714abbc1c07cf71f62ab8f395aa44c86b9dd3db"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "93303b64fb5bf83ee047d8225e28742a3c9e14f1fdd76443ae7d66b8d60aa982b7e532ea6cbcfbcba5326d7bf98cf7effd38fa2a52acbcccaf3e60062b260298"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://fory.apache.org"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://repository.apache.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://mail-archives.apache.org/mod_mbox/www-announce/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/apache/fory"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "group" : "org.codehaus.janino",
+      "name" : "janino",
+      "version" : "3.1.12",
+      "description" : "The \"JANINO\" implementation of the \"commons-compiler\" API: Super-small, super-fast, independent from the JDK's \"tools.jar\".",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "a580a272db2e7ac9fbbec85a0dd8993b"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "ffcd3dfa84057ef76092b6b66c53871a97ae40b8"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "5699878c31e71c9a94cf472f95a2dad52ca7b0449c099276b8bd7e992a43595b"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "f619b3e6c512275b3c18bc9e304c2f5947d7655d1184a77300cffee92980d42f1f43ccb6692ca5e33403127b8e41da594f699ddf07f0e9b0243579a435f12024"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "e03310ad91f4170e2a25d5cd961b30a23d419c791d69014e46120b3d15b7dc8a2d0961bf64ef9a50f9701cfb7481cd49"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "03631bdbafc5e7c159bcedf342e980cdd1d10681e501f1d86584c36ea24e229623f7e45fd3db7f64da365ab8a8ea6386"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "2df577b7a3fe4db4b1f82d2acc27e0e1f6ab713b72fd0dbb40845e1c6290f675"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "6dcb4e2c5ad27c88fc8de89a87692ab6a1f4397db832773df1eadc82e48dc61f4e5b9d41bc6e87578bf262a066718009471346c6f3bcfeccef0539b91099e5da"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://janino-compiler.github.io/janino/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/janino-compiler/janino"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "group" : "org.codehaus.janino",
+      "name" : "commons-compiler",
+      "version" : "3.1.12",
+      "description" : "The \"commons-compiler\" API, including the \"IExpressionEvaluator\", \"IScriptEvaluator\", \"IClassBodyEvaluator\" and \"ISimpleCompiler\" interfaces.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "ef93103e6aa8e9255a38351ebb51ecc2"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0501779107b06a981ff359eab7369ff7a2bf077e"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "17ea25d860225f4b59d0a512b4995f2e4711bdae5e15736cbcd5f6ce4dda8f7c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "cd8eceb3c9cd284f4b380321babb5fa0b07eb44376867f501c7e253bfc96bd8c7f2b60fc049df21ee9a6c09225ada1828c9f8922846d90432f64f4fb104babde"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "df10f62d0ac0d1800dfc4c6b10bfab0d50d1bfc82ffe55df160a023365e52a7f3398d4e3b0ad3a4b81cd76f21b81d421"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "cffe884877272491e807405ce6a424c386942204dba09d7bac2959e7ad3f9ebf8f1e47615230a18ea7df71f361862173"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "f681836833d57e4e78bdef1739b9d40727b4bc247c3fc0e07361924ab710da43"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "685f9517c5b5f2aa7526954592d0a360cf91f747bda633d8401e29f533cd2a2a4121b06d75aeeb2d0ff29d88775da8f81594e1bde348cec65218cb86794b8f6b"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://janino-compiler.github.io/commons-compiler/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/janino-compiler/commons-compiler"
+        }
+      ]
+    }
+  ],
+  "dependencies" : [
+    {
+      "ref" : "pkg:maven/dev.ward/ward-ai@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+        "pkg:maven/javax.inject/javax.inject@1?type=jar",
+        "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+        "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "dependsOn" : [
+        "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+        "pkg:maven/javax.inject/javax.inject@1?type=jar",
+        "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "dependsOn" : [ ]
+    }
+  ]
+}
