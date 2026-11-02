@@ -55,6 +55,17 @@ static-analysis rules. In short:
 2. Keep each pull request to one change, with a [Conventional Commits](https://www.conventionalcommits.org/)
    title (`fix:`, `feat:`, `docs:` …).
 3. Link the issue it closes.
+4. Add a line to the changelog for each user-visible change. The entry goes in the section for the
+   version in `pom.xml`, in [CHANGELOG.md](CHANGELOG.md). A pull request check fails when that section is missing.
+
+## Releases
+
+Releases are tags on `main` (`vX.Y.Z`). The release workflow publishes the tag's `CHANGELOG.md`
+section as the GitHub release notes, followed by the list of merged pull requests. Before tagging:
+
+1. Bump the version in `pom.xml` and `.claude-plugin/plugin.json`.
+2. In `CHANGELOG.md`, rename the section to `## [X.Y.Z] - YYYY-MM-DD`, and add its compare link at the bottom.
+3. Tag `vX.Y.Z` on `main`. The release fails before publishing when `CHANGELOG.md` has no section for the tag.
 
 By contributing you agree that your work is licensed under the [Apache 2.0 License](LICENSE).
 Report vulnerabilities privately through
