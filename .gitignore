@@ -8,8 +8,11 @@ website/node_modules/
 website/dist/
 website/.astro/
 graphify-out/
-.claude/
-.opencode/
+.claude/*
+!.claude/hooks/
+!.claude/settings.json
+.opencode/*
+!.opencode/plugins/
 .junie/
 .codex/
 .cursor/
