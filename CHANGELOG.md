@@ -12,6 +12,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 - The Maven build is a parent project (`ward-parent`) with a `ward-cli` module. Build outputs moved to `ward-cli/target/` (`ward.jar`, `ward`, `ward.exe`); the released binaries and jar keep their names.
 
+### Fixed
+
+- `ward init` on a Maven aggregator without its own sources places the architecture test in the module that owns them.
+
 ## [0.5.0] - 2026-11-02
 
 ### Added
