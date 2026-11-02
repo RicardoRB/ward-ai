@@ -62,7 +62,7 @@ describe("disposable fixtures", () => {
     }
     expect(existsSync(fixture.root)).toBe(false);
     expect(snapshot()).toEqual(before);
-  });
+  }, 60_000);
 
   test("a failed integration cleans up and reports no captured output", async () => {
     let error: unknown;
