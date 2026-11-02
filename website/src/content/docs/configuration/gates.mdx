@@ -301,6 +301,13 @@ profiles = ["pre-push"]
   files as production code.
 
 
+## Android gates
+
+`android-lint` and `android-unit-test` run AGP's debug variant tasks, `lintDebug` and
+`testDebugUnitTest`, through the project's Gradle wrapper. Ward reads no report for them; the Gradle
+exit status decides the gate. They are offered for any project that applies the Android Gradle
+Plugin, and `android-coverage` is described below.
+
 ### Android coverage
 
 An `android-coverage` check needs `minimum`, the lowest line coverage in percent. Its command runs
