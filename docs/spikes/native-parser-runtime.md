@@ -122,7 +122,7 @@ Not done, 2.4: static grammar linking. It needs grammar object files or sources,
 
 **Tree-sitter runs in the native image on macOS.** No fallback is needed on macOS. Grammars are loaded as shared libraries beside the binary. Linux and static linking are not yet measured, so the Phase 1 plan must keep the pure-Java fallback named below until those two are measured.
 
-**Java L2 parser: Eclipse JDT `ASTParser`. Under review after verification (see below).** It needs no JDK on disk at run time, and a self-contained native binary cannot assume one. javac would need a JDK installed beside the binary, which breaks that assumption. The conditions:
+**Java L2 parser: deferred. Phase 1 is syntax-only with ANTLR; bindings are left for a later change.** It needs no JDK on disk at run time, and a self-contained native binary cannot assume one. javac would need a JDK installed beside the binary, which breaks that assumption. The conditions:
 1. Compliance is pinned to Java 8 in the probe. Phase 1 must confirm that Java 25 syntax (records, pattern matching, sealed types) produces the expected AST under that compliance, and that JDK types resolve without a system library.
 2. Only the unsigned copies of the Eclipse jars are built natively, which Phase 1 must reproduce in its build.
 
@@ -130,7 +130,7 @@ If Phase 1 finds that JDT cannot resolve JDK types or parse Java 25 syntax under
 
 **Fallback per language (5.2):** not triggered on macOS, because Tree-sitter runs. If Linux or static linking fails in Phase 1, the fallback is pure-Java parsers: JDT for Java; for TypeScript, a pure-Java parser that Phase 1 must still select, since none is measured here.
 
-**Phase 1 path (proposed).** Start with ANTLR as the first syntax-tree adapter, behind a parser port in the domain layer (port and adapter, as `AGENTS.md` requires). The analysis code depends only on the port, so the adapter can be replaced later without rewriting analysis. Switch to Tree-sitter when at least one of these holds: incremental parsing becomes a requirement; full-project analysis misses the time budget that Phase 1 sets; or the Linux static-linking and symbol-lookup limits are resolved, which would let Tree-sitter ship as a single binary. Until then, ANTLR is the default for Java, TypeScript and Kotlin. JDT stays the Java L2 parser either way.
+**Phase 1 path (proposed).** Start with ANTLR as the first syntax-tree adapter, behind a parser port in the domain layer (port and adapter, as `AGENTS.md` requires). The analysis code depends only on the port, so the adapter can be replaced later without rewriting analysis. Switch to Tree-sitter when at least one of these holds: incremental parsing becomes a requirement; full-project analysis misses the time budget that Phase 1 sets; or the Linux static-linking and symbol-lookup limits are resolved, which would let Tree-sitter ship as a single binary. Until then, ANTLR is the default for Java, TypeScript and Kotlin. Decision: Phase 1 is syntax-only, so no JDK is required on disk. Bindings (JDT or javac) are deferred to a later change, which will decide the JDK-on-disk requirement at that point.
 
 ### JDT verification (run after the decision above)
 
@@ -141,7 +141,7 @@ A Java 25 sample (records, sealed interfaces, pattern `switch`, `var`, text bloc
 | 1.8 (used by the native probe) | none | 39 | Modern syntax is not parsed; records, sealed types and pattern switch fail |
 | 25 | running JVM library | 0 | All types resolve (`String`, `Object`, `List`, the records) |
 
-The Java 8 compliance workaround therefore fails condition 1. Compliance 25 is correct, but it needs a JDK library on disk at run time, which the self-contained native binary cannot assume. The native build with compliance 25 was not run; it already fails at `checkForSystemLibrary` without the JDK. Result: no JDT configuration is verified to satisfy both syntax and self-contained native deployment. JDT is not the Java L2 parser until this is resolved. The options are: accept a JDK on disk for L2 (for JDT or javac, which has the same constraint), or limit Phase 1 to syntax with ANTLR and leave bindings for a later change.
+The Java 8 compliance workaround therefore fails condition 1. Compliance 25 is correct, but it needs a JDK library on disk at run time, which the self-contained native binary cannot assume. The native build with compliance 25 was not run; it already fails at `checkForSystemLibrary` without the JDK. Result: no JDT configuration is verified to satisfy both syntax and self-contained native deployment. JDT is not the Java L2 parser until this is resolved. Chosen option: limit Phase 1 to syntax with ANTLR and leave bindings for a later change.
 
 **Fallback per language (5.2).** ANTLR with the `grammars-v4` grammars is the named pure-Java fallback for TypeScript, and the default for Java syntax (JDT stays for bindings). Kotlin is covered by the same grammar family.
 
