@@ -530,7 +530,7 @@ jobs:
 
       - name: Run terminal tests in a native test image
         run: >-
-          ./mvnw -B -Pnative
+          ./mvnw -B -Pnative -pl ward-cli
           -Dtest='dev/ward/infrastructure/terminal/*Test,dev/ward/infrastructure/terminal/**/*Test'
           -Dsurefire.failIfNoSpecifiedTests=false
           test native:test
