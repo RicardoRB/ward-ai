@@ -55,7 +55,9 @@ final class GrammarSession<L extends Lexer, P extends Parser> implements Languag
         new ParseResult(SyntaxTreeMapper.map(root, parser), errors.findings());
     LOG.fine(
         () ->
-            "parse finished: " + parser.getClass().getSimpleName() + " diagnostics="
+            "parse finished: "
+                + parser.getClass().getSimpleName()
+                + " diagnostics="
                 + result.diagnostics().size());
     return result;
   }

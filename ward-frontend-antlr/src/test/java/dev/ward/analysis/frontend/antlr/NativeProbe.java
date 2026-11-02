@@ -19,6 +19,7 @@ public final class NativeProbe {
   private static final int EXIT_OK = 0;
   private static final int EXIT_FAILED = 1;
   private static final int EXIT_USAGE = 2;
+  private static final int EXPECTED_ARGS = 1;
 
   /** The valid fixture of each language, by file name. */
   private static final List<Fixture> FIXTURES =
@@ -38,11 +39,15 @@ public final class NativeProbe {
    * @param args one argument: the directory that holds the fixture files
    */
   public static void main(final String[] args) {
-    if (args.length != 1) {
-      System.err.println("usage: NativeProbe <fixtures-dir>");
+    if (args.length != EXPECTED_ARGS) {
+      usage(System.err);
       System.exit(EXIT_USAGE);
     }
     System.exit(run(Path.of(args[0]), System.out));
+  }
+
+  private static void usage(final PrintStream out) {
+    out.println("usage: NativeProbe <fixtures-dir>");
   }
 
   static int run(final Path directory, final PrintStream out) {

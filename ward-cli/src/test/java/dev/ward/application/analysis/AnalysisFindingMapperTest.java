@@ -89,8 +89,7 @@ class AnalysisFindingMapperTest {
     final LanguageFrontend frontend =
         unit ->
             new ParseResult(
-                new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of()),
-                List.of());
+                new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of()), List.of());
     final SyntaxNode root =
         frontend.parse(new SourceUnit("a.py", AnalysisLanguage.PYTHON, "x")).tree();
     final List<AnalysisFinding> found =

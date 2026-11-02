@@ -47,16 +47,16 @@ options {
 MultiLineComment  : '/*' .*? '*/'             -> channel(HIDDEN);
 SingleLineComment : '//' ~[\r\n\u2028\u2029]* -> channel(HIDDEN);
 RegularExpressionLiteral:
-    '/' RegularExpressionFirstChar RegularExpressionChar* {this.IsRegexPossible()}? '/' IdentifierPart*
+    '/' RegularExpressionFirstChar RegularExpressionChar* {this.isRegexPossible()}? '/' IdentifierPart*
 ;
 
 OpenBracket                : '[';
 CloseBracket               : ']';
 OpenParen                  : '(';
 CloseParen                 : ')';
-OpenBrace                  : '{' {this.ProcessOpenBrace();};
-TemplateCloseBrace         :     {this.IsInTemplateString()}? '}' -> popMode;
-CloseBrace                 : '}' {this.ProcessCloseBrace();};
+OpenBrace                  : '{' {this.processOpenBrace();};
+TemplateCloseBrace         :     {this.isInTemplateString()}? '}' -> popMode;
+CloseBrace                 : '}' {this.processCloseBrace();};
 SemiColon                  : ';';
 Comma                      : ',';
 Assign                     : '=';
@@ -129,7 +129,7 @@ DecimalLiteral:
 /// Numeric Literals
 
 HexIntegerLiteral    : '0' [xX] [0-9a-fA-F] HexDigit*;
-OctalIntegerLiteral  : '0' [0-7]+ {!this.IsStrictMode()}?;
+OctalIntegerLiteral  : '0' [0-7]+ {!this.isStrictMode()}?;
 OctalIntegerLiteral2 : '0' [oO] [0-7] [_0-7]*;
 BinaryIntegerLiteral : '0' [bB] [01] [_01]*;
 
@@ -233,10 +233,10 @@ Identifier: IdentifierStart IdentifierPart*;
 
 /// String Literals
 StringLiteral:
-    ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
+    ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.processStringLiteral();}
 ;
 
-BackTick: '`' {this.IncreaseTemplateDepth();} -> pushMode(TEMPLATE);
+BackTick: '`' {this.increaseTemplateDepth();} -> pushMode(TEMPLATE);
 
 WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
 
@@ -251,8 +251,8 @@ UnexpectedCharacter : .                     -> channel(ERROR);
 mode TEMPLATE;
 
 TemplateStringEscapeAtom      : '\\' .;
-BackTickInside                : '`'  {this.DecreaseTemplateDepth();} -> type(BackTick), popMode;
-TemplateStringStartExpression : '${' {this.StartTemplateString();} -> pushMode(DEFAULT_MODE);
+BackTickInside                : '`'  {this.decreaseTemplateDepth();} -> type(BackTick), popMode;
+TemplateStringStartExpression : '${' {this.startTemplateString();} -> pushMode(DEFAULT_MODE);
 TemplateStringAtom            : ~[`\\];
 
 // Fragment rules

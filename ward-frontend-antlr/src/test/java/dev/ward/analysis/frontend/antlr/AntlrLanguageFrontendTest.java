@@ -61,9 +61,7 @@ class AntlrLanguageFrontendTest {
         new AntlrLanguageFrontend()
             .parse(
                 new SourceUnit(
-                    BROKEN_JAVA_PATH,
-                    AnalysisLanguage.JAVA,
-                    fixture("java-broken.java")));
+                    BROKEN_JAVA_PATH, AnalysisLanguage.JAVA, fixture("java-broken.java")));
 
     assertThat(result.diagnostics()).isNotEmpty();
     assertThat(result.diagnostics().getFirst().line()).isEqualTo(2);
@@ -92,9 +90,7 @@ class AntlrLanguageFrontendTest {
   void binaryTextReturnsWithoutThrowing() {
     final ParseResult result =
         new AntlrLanguageFrontend()
-            .parse(
-                new SourceUnit(
-                    "B.java", AnalysisLanguage.JAVA, "\u0000\u0001ÿ class \u0007 ￿"));
+            .parse(new SourceUnit("B.java", AnalysisLanguage.JAVA, "\u0000\u0001ÿ class \u0007 ￿"));
 
     assertThat(result.tree()).isNotNull();
     assertThat(result.diagnostics()).isNotEmpty();
@@ -104,9 +100,7 @@ class AntlrLanguageFrontendTest {
   void unterminatedStringReturnsWithoutThrowing() {
     final ParseResult result =
         new AntlrLanguageFrontend()
-            .parse(
-                new SourceUnit(
-                    "S.java", AnalysisLanguage.JAVA, "class S { String s = \"abc"));
+            .parse(new SourceUnit("S.java", AnalysisLanguage.JAVA, "class S { String s = \"abc"));
 
     assertThat(result.diagnostics()).isNotEmpty();
   }
