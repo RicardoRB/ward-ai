@@ -130,6 +130,8 @@ If Phase 1 finds that JDT cannot resolve JDK types or parse Java 25 syntax under
 
 **Fallback per language (5.2):** not triggered on macOS, because Tree-sitter runs. If Linux or static linking fails in Phase 1, the fallback is pure-Java parsers: JDT for Java; for TypeScript, a pure-Java parser that Phase 1 must still select, since none is measured here.
 
+**Phase 1 path (proposed).** Start with ANTLR as the first syntax-tree adapter, behind a parser port in the domain layer (port and adapter, as `AGENTS.md` requires). The analysis code depends only on the port, so the adapter can be replaced later without rewriting analysis. Switch to Tree-sitter when at least one of these holds: incremental parsing becomes a requirement; full-project analysis misses the time budget that Phase 1 sets; or the Linux static-linking and symbol-lookup limits are resolved, which would let Tree-sitter ship as a single binary. Until then, ANTLR is the default for Java, TypeScript and Kotlin (Kotlin not yet tested). JDT stays the Java L2 parser either way.
+
 ## Open items
 
 - Static grammar linking on Linux (2.4): the archives build, but the grammar entry points are not exported from the binary. macOS static linking is measured.
