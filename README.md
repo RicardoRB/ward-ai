@@ -222,7 +222,8 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 ## Project status
 
 **Alpha** (`0.5.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
-Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes.
+Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes. See
+[CHANGELOG.md](CHANGELOG.md) for what changed in each release.
 
 **Roadmap:**
 
