@@ -260,6 +260,7 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Node ${{ matrix.cell.node }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=NodeCompatibilityMatrixTest
           -Dward.node.matrix=${{ matrix.cell.node }}
           -Dward.node.matrix.fixture=${{ matrix.cell.fixture }}
@@ -340,6 +341,7 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Python ${{ matrix.cell.python }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=PythonCompatibilityMatrixTest
           -Dward.python.matrix=${{ matrix.cell.python }}
           -Dward.python.matrix.fixture=${{ matrix.cell.fixture }}
@@ -418,6 +420,7 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Xcode ${{ matrix.cell.xcode }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=SwiftCompatibilityMatrixTest
           -Dward.swift.matrix=${{ matrix.cell.xcode }}
           -Dward.swift.matrix.fixture=${{ matrix.cell.fixture }}
@@ -507,6 +510,7 @@ jobs:
       - name: Run matrix cells for JDK ${{ matrix.cell.jdk }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=JavaCompatibilityMatrixTest
           -Dward.java.matrix=${{ matrix.cell.jdk }}
           -Dward.java.matrix.jar=target/ward.jar
@@ -537,6 +541,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
 
+      # native:test resolves its prefix per module, so ward-cli takes the analysis API from the
+      # local repository instead of the reactor.
+      - name: Install the analysis API for the native build
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api -am
+
       - name: Run terminal tests in a native test image
         run: >-
           ./mvnw -B -Pnative -pl ward-cli
@@ -551,6 +560,7 @@ jobs:
         if: runner.os != 'Windows'
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=NativeInitTerminalSmokeTest
           -Dward.native.binary=target/ward
           test
