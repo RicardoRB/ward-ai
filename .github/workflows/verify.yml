@@ -123,10 +123,11 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: |
           set -eu
-          targets=$(git diff --name-only --diff-filter=ACMR "origin/${BASE_REF}...HEAD" -- \
-              ward-cli/src/main/java/dev/ward/domain ward-cli/src/main/java/dev/ward/application \
-              ward-cli/src/test/java/dev/ward/domain ward-cli/src/test/java/dev/ward/application \
-            | grep '\.java$' \
+          # Renames at 100% similarity are moved files, not edits, so they are skipped. A path
+          # filter would stop Git from pairing a moved file with its old path, so none is used.
+          targets=$(git diff --name-status -M "origin/${BASE_REF}...HEAD" \
+            | awk -F'\t' '$1 ~ /^(A|M)/ || ($1 ~ /^R/ && $1 != "R100") {print $NF}' \
+            | grep -E '^ward-cli/src/(main|test)/java/dev/ward/(domain|application)/.*\.java$' \
             | sed -E -e 's#^ward-cli/src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
             | sort -u | paste -sd, - || true)
           echo "Mutation targets: ${targets:-none}"
