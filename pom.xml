@@ -12,6 +12,7 @@
 
     <modules>
         <module>ward-analysis-api</module>
+        <module>ward-frontend-antlr</module>
         <module>ward-cli</module>
         <module>ward-analysis-bench</module>
     </modules>

@@ -8,8 +8,13 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `ward-frontend-antlr`, an internal analysis module with ANTLR parsers for Java, Kotlin, TypeScript, JavaScript, Python and Swift. Parsers are generated at build time from grammars pinned by commit, and syntax errors are returned as diagnostics next to a partial tree. No CLI behavior changes.
+
 ### Changed
 
+- The analysis API's `LanguageFrontend.parse` returns a `ParseResult` (syntax tree plus diagnostics) instead of a bare `SyntaxNode`. The analysis API is unreleased, so no released behavior changes.
 - The Maven build is a parent project (`ward-parent`) with a `ward-cli` module. Build outputs moved to `ward-cli/target/` (`ward.jar`, `ward`, `ward.exe`); the released binaries and jar keep their names.
 
 ### Fixed
