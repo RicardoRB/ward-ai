@@ -1,0 +1,14 @@
+# Hook and plugin files run code on every agent tool event, so changes need the owner's review.
+/.claude/hooks/        @RicardoRB
+/.claude/settings.json @RicardoRB
+/.opencode/plugins/    @RicardoRB
+# Build and gate definitions run commands on every check and build.
+/ward.toml             @RicardoRB
+/pom.xml               @RicardoRB
+/ward-cli/pom.xml      @RicardoRB
+/config/              @RicardoRB
+# CI workflows and actions can read repository secrets.
+/.github/workflows/    @RicardoRB
+/.github/actions/      @RicardoRB
+# The ownership rules themselves need the owner's review too.
+/.github/CODEOWNERS    @RicardoRB
