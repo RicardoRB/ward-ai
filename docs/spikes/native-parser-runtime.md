@@ -111,7 +111,7 @@ The native-image agent, run on the GraalVM JVM, recorded 11 FFM downcalls (`retu
 
 Linux, done: the same Tree-sitter probe built as a native image in the `ghcr.io/graalvm/native-image-community:25` container (aarch64 Linux, GraalVM 25.0.2) and parsed both samples. The core library was `libtree-sitter.so` 0.26.6 from `io.github.bonede:tree-sitter:0.26.6`, and the grammars were the `aarch64-linux-gnu` shared objects from the same bonede grammar jars. The binary is 16.6 MB. One process run (startup plus one Java parse) took 10 to 12 ms after the first run, which was 50 ms. The Linux build needed the same reachability metadata and `-H:+SharedArenaSupport` as macOS.
 
-Not done, 2.4: static grammar linking. It needs grammar object files or sources, which are not available offline, so only the shared-library option was measured on both platforms. The core library version differs between macOS (0.27.1, Homebrew) and Linux (0.26.6, bonede), so the two platforms are not an exact parity comparison. x86_64 Linux was not built.
+Closed out of scope, 2.4: not needed for Phase 1, which uses ANTLR. Reopen if Tree-sitter becomes the engine parser and a single binary is required. Not done, 2.4: static grammar linking. It needs grammar object files or sources, which are not available offline, so only the shared-library option was measured on both platforms. The core library version differs between macOS (0.27.1, Homebrew) and Linux (0.26.6, bonede), so the two platforms are not an exact parity comparison. x86_64 Linux was not built.
 
 ### Java L2 constraints found
 
