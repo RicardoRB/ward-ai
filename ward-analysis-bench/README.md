@@ -1,0 +1,80 @@
+# ward-analysis-bench
+
+A development-only benchmark of the **native** Ward executable. It records a baseline of today's gates on a
+pinned corpus, so later analysis-engine steps can show their gain or regression. It is not part of any shipped
+artifact: release packaging and the `ward-cli` shaded jar do not reference this module.
+
+## Run it
+
+Build the native executable and the benchmark, then run the command from the repository root:
+
+```bash
+./mvnw -q -Pnative -DskipTests native:compile
+./mvnw -q -pl ward-analysis-bench -am -DskipTests package
+java -jar ward-analysis-bench/target/ward-analysis-bench.jar \
+  --binary ward-cli/target/ward \
+  --manifest ward-analysis-bench/corpus.csv \
+  --out target/analysis-benchmark/result.json \
+  --repeats 5
+```
+
+- `--binary` must be an executable native file. A JVM jar or class file is rejected before anything is measured.
+- `--repeats` sets the repetitions of each cold and warm run (default 5). Edit latency always uses 20 edits.
+- `--cache` (default `target/bench-corpus`) holds the fetched corpus; `--work` (default `target/bench-work`) holds
+  the per-run copies. Both stay under `target/`.
+- A summary is printed to stdout. Progress diagnostics go to stderr.
+
+The exit code is `0` only when every corpus entry and every gate job ran to completion. A job that is killed
+after a 30-minute timeout makes the run incomplete. A gate that exits non-zero because it found issues is
+recorded in `exitCodes`, not treated as a harness failure, because the baseline measures gates as they run today.
+
+## Corpus
+
+`corpus.csv` pins each repository by its full commit SHA (`language,name,url,commit`). Each commit is fetched with
+`git fetch --depth 1 <url> <commit>` and verified with `git rev-parse HEAD`. A repository that cannot be fetched,
+or whose checkout does not match the pinned SHA, stops the run with a message that names the repository and
+commit. The run never substitutes a branch or another commit.
+
+Each entry is initialised with `ward init --preset standard --yes` when it has no `ward.toml`, so every entry runs
+the same gates. The row named `ward` is this repository; its Checkstyle edit-hook job is measured too.
+
+The test fixtures under `ward-cli/src/test/resources/fixtures/` are inside this repository's checkout, but they are
+not yet a separate corpus row, because a row always fetches a whole repository.
+
+## Gate jobs
+
+| Job | Command vector (recorded in the result) | Measured |
+|---|---|---|
+| `ward-check-ci` | `ward check --profile ci` | cold, warm, peak RSS |
+| `ward-check-default` | `ward check --profile default` (the edit hook's profile) | cold, warm, peak RSS, edit latency |
+| `checkstyle-edit-hook` (`ward` entry only) | `./mvnw checkstyle:check` (the edit hook's Checkstyle command in `ward.toml`) | cold, warm, peak RSS, edit latency |
+
+## Metrics
+
+Each job records these fields in the JSON result. Each one is a summary with `count`, `min`, `max`, `median`,
+`spread`, `p50`, and `p95`.
+
+- **cold / warm (`coldMillis`, `warmMillis`)**: wall time of a run in a fresh copy of the corpus with no build
+  output, and of the immediately repeated run in the same copy. Each includes process startup.
+- **peak RSS (`peakRssKb`)**: resident memory summed over the process and all its descendants, sampled every
+  50 ms with `ps`, over both cold and warm runs. Short peaks shorter than the sampling interval can be missed.
+- **edit latency (`editMillis`)**: one source file (the first matching file in sorted order, outside build output)
+  gets a newline appended. The clock runs from starting the job until the process exits, so it includes process
+  startup. Repeated 20 times on a warm copy, which is never restored.
+- **binary size**: `binary.sizeBytes` and `binary.sha256` at the top level, describing the one executable measured.
+- **spread**: `(max - min) / median`. A comparison must exceed the spread of both runs to count as a change.
+
+The result is versioned by `schemaVersion` (currently `1`). It records the manifest commits, the repeat counts,
+the OS and CPU architecture, and each job's command vector. It holds no environment variables and no captured
+process output.
+
+## Variance a comparison must allow
+
+Compare two results only when they use the same manifest commits, the same binary family, and the same OS and
+CPU architecture (`host`). Treat a difference as real only when it is larger than the larger of the two spreads
+for that metric.
+
+Observed spread from the baseline runs on this machine is recorded below. Shared CI runners are noisier than a
+developer laptop, so expect wider spreads there.
+
+<!-- BASELINE-SPREAD: filled in by the first full local run -->
