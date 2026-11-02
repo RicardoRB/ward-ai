@@ -134,6 +134,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <!-- Reviewed exception for the ANTLR listener signature; see the file. -->
+                    <suppressionsLocation>${project.basedir}/config/checkstyle-suppressions.xml</suppressionsLocation>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
