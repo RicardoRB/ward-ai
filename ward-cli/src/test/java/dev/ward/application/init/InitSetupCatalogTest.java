@@ -247,6 +247,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
+                // The analysis gate is written by hand in ward.toml; init does not offer it.
+                .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
                 // Node gates are run by check only; init does not offer them for JVM projects.
                 .filter(id -> !NODE_GATES.contains(id))
                 .filter(id -> !PYTHON_GATES.contains(id))

@@ -63,6 +63,7 @@ public class QualityGateFactory {
   private final MutationReport pitReport;
   private final MutationReport mutmutReport;
   private final GateReportPorts reports;
+  private final AnalysisPorts analysis;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -104,7 +105,8 @@ public class QualityGateFactory {
 
   /**
    * Creates the factory. {@code reports} tells command gates where their tools write reports and
-   * reads mutation reports, and {@code openApiGates} builds the OpenAPI gates.
+   * reads mutation reports, and {@code extensions} builds the OpenAPI gates and the {@code ward}
+   * gate.
    */
   @Inject
   public QualityGateFactory(
@@ -112,7 +114,7 @@ public class QualityGateFactory {
       final EnvironmentInspection environment,
       final TraceabilitySources traceability,
       final GateReportPorts reports,
-      final OpenApiGates openApiGates) {
+      final GateExtensions extensions) {
     this.reportDirectories = reports.directories();
     this.strykerReport = reports.stryker();
     this.pitReport = reports.pit();
@@ -122,7 +124,9 @@ public class QualityGateFactory {
     this.environment = environment;
     this.scenarioInventory = traceability.scenarios();
     this.testMappingInventory = traceability.mappings();
-    this.openApiGates = openApiGates;
+    final GateExtensions parts = extensions == null ? GateExtensions.NONE : extensions;
+    this.openApiGates = parts.openApi();
+    this.analysis = parts.analysis();
   }
 
   /** Creates one gate per configured ID, without project-specific commands. */
@@ -163,6 +167,9 @@ public class QualityGateFactory {
   private QualityGate createGate(final GateConfiguration check, final Project project) {
     final String name = check.name();
     final String type = check.type();
+    if (SupportedQualityGates.ANALYSIS.equals(type)) {
+      return AnalysisGates.create(check, analysis);
+    }
     if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null
           ? new CommandQualityGate(name, executor, check.command())

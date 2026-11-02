@@ -6,6 +6,7 @@ import java.util.Set;
 /** Stable configuration identifiers for the built-in quality gates. */
 public final class SupportedQualityGates {
   public static final String TRACEABILITY = "openspec-junit-traceability";
+  public static final String ANALYSIS = "ward";
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";
   public static final String OPENAPI_COMPAT = "openapi-compat";

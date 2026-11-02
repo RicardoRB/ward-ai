@@ -1,6 +1,7 @@
 {
   "resources": [
     { "glob": "dev/ward/infrastructure/cli/version.properties" },
+    { "glob": "dev/ward/rules/*.toml" },
     { "bundle": "com.sun.org.apache.xerces.internal.impl.msg.XMLMessages" }
   ],
   "foreign": {

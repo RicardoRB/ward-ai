@@ -67,6 +67,7 @@ public final class QualityGateDefinitions {
           new Definition(
               SupportedQualityGates.ANDROID_COVERAGE, "Android coverage", Phase.LOCAL, false),
           gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
+          gate(SupportedQualityGates.ANALYSIS, Phase.LOCAL),
           gate("command", Phase.LOCAL),
           gate("openspec", Phase.CI),
           gate("openspec-archived", Phase.CI));

@@ -54,6 +54,11 @@ uses = "archunit"
 profiles = ["pre-push", "ci"]
 command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
+[checks.ward]
+enabled = true
+uses = "ward"
+profiles = ["pre-push", "ci"]
+
 [checks.enforcer]
 enabled = true
 profiles = ["pre-push", "ci"]
