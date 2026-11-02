@@ -67,7 +67,7 @@ command = "./mvnw pitest:mutationCoverage"
 # Native goals resolve only in ward-cli, which declares the GraalVM plugin.
 [checks.native]
 enabled = true
-profiles = ["ci"]
+profiles = ["pre-push", "ci"]
 command = "./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile"
 
 [checks.gitleaks]
