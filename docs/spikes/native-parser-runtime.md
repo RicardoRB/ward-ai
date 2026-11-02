@@ -20,6 +20,25 @@ This document is the decision note. Its measurement sections are filled during t
 - No production code, no `pom.xml` change on `main`.
 - Kotlin Analysis API and TypeScript Compiler API are out of scope; both run out of process by design.
 
+### Scratch `ward` build (4.2)
+
+A scratch copy of the CLI, built natively from the spike branch with `jtreesitter` 0.26.1, the merged Tree-sitter reachability metadata, `-H:+SharedArenaSupport` and a hidden `--spike-parse` entry point, measured against the baseline `ward` (65,144,808 bytes, `--version` peak footprint 29,016,544 bytes):
+
+| Build | Binary size | Delta vs baseline | `--version` peak footprint |
+|---|---|---|---|
+| Baseline `ward` | 65,144,808 bytes | 0 | 29,016,544 bytes |
+| `ward` + `jtreesitter` (grammars loaded at run time) | 65,326,760 bytes | +181,952 bytes (0.18 MB) | 29,196,792 to 29,229,560 bytes (about +0.2 MB) |
+
+The parser adds about 0.2 MB to the CLI. The Tree-sitter core and both grammars are loaded at run time, so they are not in the binary. Their cost sits beside the binary instead: `libtree-sitter` plus the Java and TypeScript grammar libraries, about 2.0 MB for the two grammars on macOS arm64.
+
+A parse-only run of the same build (Java grammar, one file, before the Dagger graph loads) peaks at about 3.2 MB, so the parse itself is cheap; the cost is in the startup footprint above.
+
+### Static versus shared grammars (2.4)
+
+- **macOS arm64, static:** `libtree_sitter_java.a` and `libtree_sitter_typescript.a` were built with clang and force-loaded into the probe, which resolved the grammars through `dlsym(RTLD_DEFAULT)`. The binary is 18,388,848 bytes, against 16,481,656 bytes for the shared-grammar probe: +1.91 MB in the binary, with no grammar files beside it. Throughput was 67,000 to 70,000 files/s against about 57,000 files/s for shared, and peak RSS was 14.06 MB against 12.96 MB. Shared grammars cost about the same space, but on disk instead of in the binary.
+- **Linux aarch64, static:** not achieved. The grammar archives built and the binary grew by about 2 MB, but the grammar entry points were not exported, and identical binary sizes across three linker-option variants suggest the options did not reach the link. Not resolved.
+
+
 ## Decisions
 
 **D1. Prototype outside `main`.** A throwaway module in a scratch directory parses one Java file and one TypeScript file with `jtreesitter`. It is discarded after measurement. Alternative considered: a branch in the repo. Rejected, because a branch invites accidental merge and the decision is a document, not code.
@@ -100,6 +119,6 @@ If Phase 1 finds that JDT cannot resolve JDK types or parse Java 25 syntax under
 
 ## Open items
 
-- Static grammar linking and its binary-size delta (2.4). Shared-library startup was measured on Linux.
+- Static grammar linking on Linux (2.4): the archives build, but the grammar entry points are not exported from the binary. macOS static linking is measured.
 - JDK type resolution and Java 25 syntax under JDT compliance 1.8 (see decision condition 1).
 - The TypeScript fallback parser is not chosen.
