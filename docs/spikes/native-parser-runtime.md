@@ -39,6 +39,19 @@ A parse-only run of the same build (Java grammar, one file, before the Dagger gr
 - **Linux aarch64, static:** not achieved. The grammar archives built and the binary grew by about 2 MB, but the grammar entry points were not exported, and identical binary sizes across three linker-option variants suggest the options did not reach the link. Not resolved.
 
 
+### Alternative: ANTLR (pure Java)
+
+ANTLR 4.13.2 with the `grammars-v4` Java and TypeScript grammars (plus their base classes) was tested as a pure-Java alternative. It needs no FFM, no reachability metadata and no symbol lookup. It builds as a native image on macOS arm64 (14.9 MB) and Linux aarch64 (15.1 MB) and parses both samples.
+
+Throughput on real JDK sources (`String.java`, `HashMap.java`, `Collectors.java`, `ConcurrentHashMap.java`, 16,000 lines in total, same four files for both):
+
+| Parser | Iterations | Files/s | MB/s |
+|---|---|---|---|
+| Tree-sitter (native, reused parser) | 200 | 111.9 | 18.51 |
+| ANTLR (native, new parser per file) | 3 | 8.5 | 1.41 |
+
+On the two tiny samples, Tree-sitter ran at about 57,000 files/s and ANTLR at about 540 files/s, with ANTLR peaking at about 95 MB of memory. Caveats: ANTLR ran only three iterations on the large set, and it builds the full parse tree in Java while Tree-sitter's measured work is the C parse only. The grammars were tested only on these samples and on real JDK sources, not on a full project. Kotlin has a grammar in `grammars-v4`, but it was not tested. ANTLR does not parse incrementally, which matters for the incremental engine in #179.
+
 ## Decisions
 
 **D1. Prototype outside `main`.** A throwaway module in a scratch directory parses one Java file and one TypeScript file with `jtreesitter`. It is discarded after measurement. Alternative considered: a branch in the repo. Rejected, because a branch invites accidental merge and the decision is a document, not code.
