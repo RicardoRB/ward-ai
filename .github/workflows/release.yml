@@ -69,16 +69,16 @@ jobs:
         include:
           - os: ubuntu-24.04
             platform: linux-x86_64
-            binary: target/ward
+            binary: ward-cli/target/ward
           - os: macos-15-intel
             platform: macos-x86_64
-            binary: target/ward
+            binary: ward-cli/target/ward
           - os: macos-15
             platform: macos-aarch64
-            binary: target/ward
+            binary: ward-cli/target/ward
           - os: windows-latest
             platform: windows-x86_64
-            binary: target/ward.exe
+            binary: ward-cli/target/ward.exe
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5

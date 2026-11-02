@@ -17,7 +17,8 @@ import org.junit.jupiter.api.Test;
  * Schema and version-pinning rules are validated by the opt-in suite under {@code compatibility/}.
  */
 class CompatibilityManifestInventoryTest {
-  private static final Path MANIFEST = Path.of("compatibility", "manifest.json");
+  private static final Path MANIFEST =
+      Path.of(System.getProperty("ward.repository.root", ""), "compatibility", "manifest.json");
   private static final Pattern HARNESS_ID = Pattern.compile("^\\s{6}\"id\": \"([^\"]+)\",$");
 
   @Test

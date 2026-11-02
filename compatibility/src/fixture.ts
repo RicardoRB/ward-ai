@@ -5,7 +5,7 @@ import { REPO_ROOT } from "./manifest";
 import { run, SYSTEM_PATH, type RunResult } from "./process";
 
 /** The trusted offline Maven fixture whose stub mvnw is the only command gates execute. */
-export const TRUSTED_FIXTURE = join(REPO_ROOT, "src/test/resources/fixtures/maven-project");
+export const TRUSTED_FIXTURE = join(REPO_ROOT, "ward-cli/src/test/resources/fixtures/maven-project");
 
 export interface WardLauncher {
   argv: string[];
@@ -20,9 +20,9 @@ export function wardLauncher(env: Record<string, string | undefined>): WardLaunc
   if (explicit) return executable(explicit) ? { argv: [explicit] } : undefined;
   // Use the most recently built launcher so a stale native image never stands in for a newer JAR.
   const candidates: { argv: string[]; built: number }[] = [];
-  const native = join(REPO_ROOT, "target", "ward");
+  const native = join(REPO_ROOT, "ward-cli", "target", "ward");
   if (executable(native)) candidates.push({ argv: [native], built: statSync(native).mtimeMs });
-  const jar = join(REPO_ROOT, "target", "ward.jar");
+  const jar = join(REPO_ROOT, "ward-cli", "target", "ward.jar");
   const java = env.JAVA_HOME ? join(env.JAVA_HOME, "bin", "java") : "/usr/bin/java";
   if (executable(java) && existsSync(jar)) candidates.push({ argv: [java, "-jar", jar], built: statSync(jar).mtimeMs });
   candidates.sort((a, b) => b.built - a.built);

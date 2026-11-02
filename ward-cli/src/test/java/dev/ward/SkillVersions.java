@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /** Versions the agent skills are checked against: the project and the plugin. */
 final class SkillVersions {
   private static final Pattern PROJECT_VERSION =
-      Pattern.compile("<artifactId>ward-ai</artifactId>\\s*<version>([^<]+)</version>");
+      Pattern.compile("<artifactId>ward-parent</artifactId>\\s*<version>([^<]+)</version>");
   private static final Pattern PLUGIN_VERSION = Pattern.compile("\"version\"\\s*:\\s*\"([^\"]+)\"");
 
   private SkillVersions() {}

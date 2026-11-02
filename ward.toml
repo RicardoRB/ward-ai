@@ -11,8 +11,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw spotless:check"
 
 [checks.format.paths]
-match = ["src/**/*.java"]
-full = ["pom.xml"]
+match = ["ward-cli/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
@@ -23,8 +23,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw checkstyle:check"
 
 [checks.checkstyle.paths]
-match = ["src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml"]
+match = ["ward-cli/src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
@@ -35,8 +35,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw pmd:check"
 
 [checks.pmd.paths]
-match = ["src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml"]
+match = ["ward-cli/src/**/*.java"]
+full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml"]
 
 [checks.spotbugs]
 enabled = true
@@ -63,6 +63,12 @@ command = "./mvnw enforcer:enforce"
 enabled = true
 profiles = ["ci"]
 command = "./mvnw pitest:mutationCoverage"
+
+# Native goals resolve only in ward-cli, which declares the GraalVM plugin.
+[checks.native]
+enabled = true
+profiles = ["pre-push", "ci"]
+command = "./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile"
 
 [checks.gitleaks]
 enabled = true

@@ -101,7 +101,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             Boolean.toString(
                 Files.isRegularFile(projectRoot.resolve(".opencode/commands/ward-check.md"))),
             "nativeExecutablePresent",
-            Boolean.toString(Files.isExecutable(Path.of("target/ward"))));
+            Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
     observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
     observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));

@@ -45,7 +45,7 @@ export const MANIFEST_PATH = join(REPO_ROOT, "compatibility", "manifest.json");
 
 const SUPPORTED_AGENTS = join(
   REPO_ROOT,
-  "src/main/java/dev/ward/domain/agent/SupportedAgents.java",
+  "ward-cli/src/main/java/dev/ward/domain/agent/SupportedAgents.java",
 );
 
 // Exact release identities: semantic versions (optionally with a pre-release or build suffix) or

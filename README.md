@@ -238,8 +238,8 @@ Commands run without a shell, but that is **not a sandbox** (see below).
 ## Development
 
 ```bash
-./mvnw package                                # build target/ward.jar (JDK 25)
-./mvnw -Pnative -DskipTests native:compile    # build target/ward (GraalVM 25)
+./mvnw package                                # build ward-cli/target/ward.jar (JDK 25)
+./mvnw -Pnative -DskipTests native:compile    # build ward-cli/target/ward (GraalVM 25)
 ./mvnw -q test                                # run all tests
 ward check --profile pre-push             # required before every pull request
 ```

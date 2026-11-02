@@ -6,6 +6,7 @@ import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
+import dev.ward.infrastructure.init.maven.MavenCodeRoot;
 import dev.ward.infrastructure.init.node.DependencyCruiserConfigGenerator;
 import dev.ward.infrastructure.init.python.ImportLinterConfigGenerator;
 import dev.ward.infrastructure.init.swift.HarmonizeRulesGenerator;
@@ -38,12 +39,12 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
 
   @Override
   public List<String> existingArchUnitTests(final Project project) {
-    return generator(project.toolchain()).existingArchUnitTests(project);
+    return generator(project.toolchain()).existingArchUnitTests(codeProject(project));
   }
 
   @Override
   public ArchitectureTestChange apply(final Project project, final String architecture) {
-    return generator(project.toolchain()).apply(project, architecture);
+    return generator(project.toolchain()).apply(codeProject(project), architecture);
   }
 
   @Override
@@ -51,7 +52,7 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
       final Project project,
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
-    return generator(project.toolchain()).apply(project, architecture, extras);
+    return generator(project.toolchain()).apply(codeProject(project), architecture, extras);
   }
 
   @Override
@@ -59,7 +60,12 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
       final Project project,
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
-    return generator(project.toolchain()).plan(project, architecture, extras);
+    return generator(project.toolchain()).plan(codeProject(project), architecture, extras);
+  }
+
+  /** The project whose sources the rules analyze: a Maven aggregator's owning module, if any. */
+  private static Project codeProject(final Project project) {
+    return MavenCodeRoot.of(project);
   }
 
   /**
