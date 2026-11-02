@@ -8,11 +8,11 @@ command = "./mvnw test"
 [checks.format]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw spotless:check"
+command = "./mvnw -DskipTests package spotless:check"
 
 [checks.format.paths]
-match = ["ward-cli/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
@@ -20,11 +20,11 @@ separator = ","
 [checks.checkstyle]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw checkstyle:check"
+command = "./mvnw -DskipTests package checkstyle:check"
 
 [checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
@@ -32,43 +32,43 @@ separator = ","
 [checks.pmd]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw pmd:check"
+command = "./mvnw -DskipTests package pmd:check"
 
 [checks.pmd.paths]
-match = ["ward-cli/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java"]
+full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml"]
 
 [checks.spotbugs]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw spotbugs:check"
+command = "./mvnw -DskipTests package spotbugs:check"
 
 [checks.coverage]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw jacoco:check"
+command = "./mvnw -DskipTests package jacoco:check"
 
 [checks.archunit]
 enabled = true
 uses = "archunit"
 profiles = ["pre-push", "ci"]
-command = "./mvnw -Dtest=ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw enforcer:enforce"
+command = "./mvnw -DskipTests package enforcer:enforce"
 
 [checks.mutation]
 enabled = true
 profiles = ["ci"]
-command = "./mvnw pitest:mutationCoverage"
+command = "./mvnw -DskipTests package pitest:mutationCoverage"
 
 # Native goals resolve only in ward-cli, which declares the GraalVM plugin.
 [checks.native]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile"
+command = "./mvnw -B -q -Pnative -pl ward-cli -am -DskipTests package native:compile"
 
 [checks.gitleaks]
 enabled = true
@@ -95,7 +95,7 @@ args = ["{paths}"]
 [checks.dependency-check]
 enabled = false
 profiles = ["ci"]
-command = "./mvnw dependency-check:check"
+command = "./mvnw -DskipTests package dependency-check:check"
 
 [checks.trivy]
 enabled = true
@@ -107,7 +107,7 @@ command = "trivy fs --offline-scan --exit-code 1 ."
 enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
-command = "./mvnw license:add-third-party"
+command = "./mvnw -DskipTests package license:add-third-party"
 
 # Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.
 [checks.openspec]

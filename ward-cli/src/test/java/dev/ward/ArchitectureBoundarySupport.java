@@ -55,6 +55,7 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry("doctor", Set.of("dev.ward.application.project.ProjectDetector")),
           Map.entry("project", Set.of()),
+          Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
           Map.entry(
               "spec",
@@ -146,6 +147,7 @@ final class ArchitectureBoundarySupport {
                       "dev.ward.config.ReportBindingsModule",
                       "dev.ward.config.WardProvidesModule")
                   .contains(name);
+      case "dev.ward.analysis.domain.ir", "dev.ward.analysis.domain.port" -> true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default ->

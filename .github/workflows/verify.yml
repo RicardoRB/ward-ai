@@ -136,8 +136,8 @@ jobs:
           # filter would stop Git from pairing a moved file with its old path, so none is used.
           targets=$(git diff --name-status -M "origin/${BASE_REF}...HEAD" \
             | awk -F'\t' '$1 ~ /^(A|M)/ || ($1 ~ /^R/ && $1 != "R100") {print $NF}' \
-            | grep -E '^ward-cli/src/(main|test)/java/dev/ward/(domain|application)/.*\.java$' \
-            | sed -E -e 's#^ward-cli/src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
+            | grep -E '^(ward-cli/src/(main|test)/java/dev/ward/(domain|application)|ward-analysis-api/src/(main|test)/java/dev/ward/analysis/domain)/.*\.java$' \
+            | sed -E -e 's#^(ward-cli|ward-analysis-api)/src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
             | sort -u | paste -sd, - || true)
           echo "Mutation targets: ${targets:-none}"
           echo "PIT_TARGET_CLASSES=${targets:-none.changed}" >> "$GITHUB_ENV"
