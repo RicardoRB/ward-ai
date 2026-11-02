@@ -2,6 +2,8 @@ package dev.ward.infrastructure.finding;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.finding.jvm.CheckstyleXmlFindings;
+import dev.ward.infrastructure.finding.jvm.PmdXmlFindings;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;

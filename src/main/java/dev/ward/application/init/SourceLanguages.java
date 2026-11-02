@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  *
  * @param <C> what the toolchain builds gates from
  */
-final class SourceLanguages<C> {
+public final class SourceLanguages<C> {
   private final List<SourceLanguageGates<C>> languages;
 
   private SourceLanguages(final List<SourceLanguageGates<C>> languages) {
@@ -28,7 +28,7 @@ final class SourceLanguages<C> {
    *
    * @throws WardException if a language has no entry in {@code gates}
    */
-  static <C> SourceLanguages<C> of(
+  public static <C> SourceLanguages<C> of(
       final Map<Language, SourceLanguageGates<C>> gates, final Project project) {
     return new SourceLanguages<>(
         Stream.concat(Stream.of(project.language()), project.languages().stream())
@@ -51,7 +51,7 @@ final class SourceLanguages<C> {
   }
 
   /** Returns the analysis gates of every language, each gate ID once, in first-seen order. */
-  List<InitGateOption> analysisGates(final C toolchain) {
+  public List<InitGateOption> analysisGates(final C toolchain) {
     final Map<String, InitGateOption> byId = new LinkedHashMap<>();
     languages.forEach(
         language ->
@@ -60,7 +60,7 @@ final class SourceLanguages<C> {
   }
 
   /** Returns the gate IDs {@code preset} enables across every language, each once. */
-  List<String> presetGates(final QualityPreset preset) {
+  public List<String> presetGates(final QualityPreset preset) {
     return languages.stream()
         .flatMap(language -> language.presetGates(preset).stream())
         .distinct()

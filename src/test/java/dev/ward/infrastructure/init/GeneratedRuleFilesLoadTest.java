@@ -123,7 +123,7 @@ class GeneratedRuleFilesLoadTest {
 
   private Path generate(final QualityPreset preset) {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
-    new PresetRuleFileWriter()
+    new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults())
         .apply(
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
             preset,

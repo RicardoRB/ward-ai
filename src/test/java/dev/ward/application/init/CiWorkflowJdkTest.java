@@ -4,7 +4,7 @@ import static dev.ward.application.init.CiWorkflowTemplateTest.MAVEN;
 import static dev.ward.application.init.CiWorkflowTemplateTest.gates;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.project.PackageManifest;
+import dev.ward.domain.project.node.PackageManifest;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 

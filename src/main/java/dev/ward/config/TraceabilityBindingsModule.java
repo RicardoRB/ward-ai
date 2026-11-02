@@ -7,7 +7,7 @@ import dev.ward.domain.traceability.TestMappingInventory;
 import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import dev.ward.infrastructure.traceability.FileSystemScenarioInventory;
 import dev.ward.infrastructure.traceability.FileSystemTraceabilityPrerequisites;
-import dev.ward.infrastructure.traceability.JavaTestMappingInventory;
+import dev.ward.infrastructure.traceability.jvm.JavaTestMappingInventory;
 
 @Module
 interface TraceabilityBindingsModule {

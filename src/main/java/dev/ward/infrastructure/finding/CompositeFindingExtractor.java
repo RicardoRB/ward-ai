@@ -5,6 +5,7 @@ import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.WorkspaceMembers;
+import dev.ward.infrastructure.finding.node.turbo.TurborepoFindings;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,11 +32,14 @@ public final class CompositeFindingExtractor implements FindingExtractor {
     this(Stream.concat(toolchains.sources().stream(), Stream.of(gitleaks)).toList(), members);
   }
 
-  CompositeFindingExtractor(final List<GateFindingSource> sources) {
+  /** Creates the extractor for the given sources, without workspace members. */
+  public CompositeFindingExtractor(final List<GateFindingSource> sources) {
     this(sources, WorkspaceMembers.none());
   }
 
-  CompositeFindingExtractor(final List<GateFindingSource> sources, final WorkspaceMembers members) {
+  /** Creates the extractor for the given sources and workspace members. */
+  public CompositeFindingExtractor(
+      final List<GateFindingSource> sources, final WorkspaceMembers members) {
     final Map<String, GateFindingSource> byGate = new LinkedHashMap<>();
     sources.forEach(source -> byGate.put(source.gateId(), source));
     this.sources = Map.copyOf(byGate);

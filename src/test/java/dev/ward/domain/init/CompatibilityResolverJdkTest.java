@@ -4,6 +4,7 @@ import static dev.ward.domain.init.CompatibilityResolverTest.candidate;
 import static dev.ward.domain.init.CompatibilityResolverTest.snapshot;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.init.maven.ManagedPluginCatalog;
 import dev.ward.domain.project.Framework;
 import java.util.List;
 import java.util.Map;

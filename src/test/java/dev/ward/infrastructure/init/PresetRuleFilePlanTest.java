@@ -18,7 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PresetRuleFilePlanTest {
-  private final PresetRuleFileWriter writer = new PresetRuleFileWriter();
+  private final PresetRuleFileWriter writer =
+      new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
 
   @Test
   void missingFilesAreCreatedWithoutTouchingTheProject(@TempDir final Path root) {

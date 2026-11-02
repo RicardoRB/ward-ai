@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.application.init.jvm.JvmInitSupport;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
@@ -14,8 +15,8 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
-import dev.ward.infrastructure.init.GradleToolConfigurator;
-import dev.ward.infrastructure.init.PomToolConfigurator;
+import dev.ward.infrastructure.init.gradle.GradleToolConfigurator;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,8 +72,8 @@ class GateCatalogContractTest {
 
   /** Swift inputs for an Xcode project with one shared scheme and no config of its own. */
   private static InitInputs swiftInputs() {
-    final dev.ward.domain.project.XcodeSchemes xcode =
-        new dev.ward.domain.project.XcodeSchemes() {
+    final dev.ward.domain.project.swift.XcodeSchemes xcode =
+        new dev.ward.domain.project.swift.XcodeSchemes() {
           @Override
           public java.util.Optional<String> workspace(final Path directory) {
             return java.util.Optional.empty();
@@ -90,7 +91,7 @@ class GateCatalogContractTest {
         };
     return new InitInputs(
         new FakeEnvironmentInspection(),
-        directory -> dev.ward.domain.project.PackageManifest.EMPTY,
+        directory -> dev.ward.domain.project.node.PackageManifest.EMPTY,
         directory -> false,
         (directory, gate) -> java.util.Optional.empty(),
         java.util.Optional.empty(),

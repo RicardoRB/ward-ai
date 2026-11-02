@@ -20,7 +20,7 @@ import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.project.NodeWorkspaceMembers;
+import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,5 +1,9 @@
 package dev.ward.infrastructure.finding;
 
+import dev.ward.infrastructure.finding.jvm.JvmFindingSources;
+import dev.ward.infrastructure.finding.node.NodeFindingSources;
+import dev.ward.infrastructure.finding.python.PythonFindingSources;
+import dev.ward.infrastructure.finding.swift.SwiftFindingSources;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;

@@ -24,7 +24,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.config.FilePathExistence;
-import dev.ward.infrastructure.project.NodeWorkspaceMembers;
+import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

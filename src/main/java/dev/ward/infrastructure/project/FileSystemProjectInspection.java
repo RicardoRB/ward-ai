@@ -7,6 +7,11 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.ProjectInspection;
 import dev.ward.domain.project.TaskRunner;
+import dev.ward.infrastructure.project.gradle.GradleAndroidModules;
+import dev.ward.infrastructure.project.jvm.JvmSourceLanguages;
+import dev.ward.infrastructure.project.node.NodeProjectInspection;
+import dev.ward.infrastructure.project.python.PythonProjectInspection;
+import dev.ward.infrastructure.project.swift.SwiftProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +32,7 @@ import org.xml.sax.SAXException;
 /** Filesystem-backed project marker scanning and secure Maven metadata inspection. */
 public final class FileSystemProjectInspection implements ProjectInspection {
   // Build files are searched this many directories below the repository root.
-  static final int MAX_SEARCH_DEPTH = 4;
+  public static final int MAX_SEARCH_DEPTH = 4;
   public static final String POM = "pom.xml";
   static final String GIT = ".git";
 
@@ -101,7 +106,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
     return Files.exists(dir.resolve(GIT)) || Files.exists(dir.resolve(POM));
   }
 
-  static Optional<Project> projectAt(final Path dir) {
+  /** Returns the project whose marker file is in {@code dir}, if there is one. */
+  public static Optional<Project> projectAt(final Path dir) {
     for (final Marker marker : MARKERS) {
       if (Files.isRegularFile(dir.resolve(marker.file()))) {
         return Optional.of(OwnLanguageMembers.ownLanguage(dir, marker.project().apply(dir)));

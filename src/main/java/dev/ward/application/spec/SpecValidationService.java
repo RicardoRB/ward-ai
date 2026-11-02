@@ -1,6 +1,6 @@
 package dev.ward.application.spec;
 
-import dev.ward.application.gate.OpenSpecQualityGate;
+import dev.ward.application.gate.openspec.OpenSpecQualityGate;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.config.GateConfiguration;

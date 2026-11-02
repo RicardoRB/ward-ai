@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.application.init.InitSetupCatalog;
-import dev.ward.application.init.JdkGates;
+import dev.ward.application.init.jvm.JdkGates;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitArchitectureOption;
 import dev.ward.domain.init.InitGateOption;

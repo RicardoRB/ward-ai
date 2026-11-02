@@ -5,14 +5,14 @@ import dagger.Provides;
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.application.gate.PlatformGatePorts;
 import dev.ward.domain.gate.ReportDirectories;
-import dev.ward.infrastructure.finding.AndroidJacocoCoverageReport;
 import dev.ward.infrastructure.finding.FileSystemReportDirectories;
-import dev.ward.infrastructure.finding.LlvmCovCoverageReport;
-import dev.ward.infrastructure.finding.MutmutMetaMutationReport;
-import dev.ward.infrastructure.finding.PitXmlMutationReport;
-import dev.ward.infrastructure.finding.StrykerJsonMutationReport;
-import dev.ward.infrastructure.finding.XccovCoverageReport;
-import dev.ward.infrastructure.gate.SimctlSimulators;
+import dev.ward.infrastructure.finding.jvm.AndroidJacocoCoverageReport;
+import dev.ward.infrastructure.finding.jvm.PitXmlMutationReport;
+import dev.ward.infrastructure.finding.node.StrykerJsonMutationReport;
+import dev.ward.infrastructure.finding.python.MutmutMetaMutationReport;
+import dev.ward.infrastructure.finding.swift.LlvmCovCoverageReport;
+import dev.ward.infrastructure.finding.swift.XccovCoverageReport;
+import dev.ward.infrastructure.gate.swift.SimctlSimulators;
 
 @Module
 final class ReportBindingsModule {

@@ -13,12 +13,13 @@ import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
-import dev.ward.infrastructure.init.PomToolConfigurator;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
-import dev.ward.infrastructure.project.FileSystemNodeSources;
-import dev.ward.infrastructure.project.FileSystemNodeToolConfigs;
+import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.node.FileSystemNodeSources;
+import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -111,11 +112,11 @@ final class InitCommandFixture {
                 new dev.ward.application.init.InitPorts(
                     new FakeEnvironmentInspection(executables),
                     new NodeInputs(
-                        new dev.ward.infrastructure.project.FileSystemPackageManifests(),
+                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
                         new FileSystemNodeSources(),
                         new FileSystemNodeToolConfigs()),
                     buildTools,
-                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs(),
+                    new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs(),
                     new dev.ward.application.init.ToolchainPorts(
                         swiftPorts, dev.ward.domain.init.BuildModulePlanning.none())),
                 new QualityHookInstaller(),
@@ -124,9 +125,10 @@ final class InitCommandFixture {
             new InitProjectFiles(
                 buildTools,
                 new PresetRuleFileWriter(
-                    new dev.ward.infrastructure.project.FileSystemPackageManifests(),
-                    new FileSystemNodeToolConfigs(),
-                    new dev.ward.infrastructure.project.FileSystemPythonToolConfigs()),
+                    RuleFileTargetsFixtures.of(
+                        new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
+                        new FileSystemNodeToolConfigs(),
+                        new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs())),
                 ProductionArchitectureRules.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));

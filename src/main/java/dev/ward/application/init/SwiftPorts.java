@@ -1,9 +1,9 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.project.SwiftSourceDirectories;
-import dev.ward.domain.project.SwiftToolConfigs;
-import dev.ward.domain.project.XcodeSchemes;
+import dev.ward.domain.project.swift.SwiftSourceDirectories;
+import dev.ward.domain.project.swift.SwiftToolConfigs;
+import dev.ward.domain.project.swift.XcodeSchemes;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;

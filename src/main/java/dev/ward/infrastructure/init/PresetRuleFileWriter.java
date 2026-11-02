@@ -6,11 +6,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
-import dev.ward.domain.project.NodeToolConfigs;
-import dev.ward.domain.project.PackageManifest;
-import dev.ward.domain.project.PackageManifests;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.PythonToolConfigs;
 import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.inject.Inject;
 
 /**
@@ -27,36 +22,15 @@ import javax.inject.Inject;
  * and the Node tool configs in the project root.
  */
 public final class PresetRuleFileWriter implements RuleFileGeneration {
-  private final PackageManifests manifests;
-  private final NodeToolConfigs configs;
-  private final PythonToolConfigs pythonConfigs;
-
-  /** Creates a writer for projects without a {@code package.json} or Python config. */
-  public PresetRuleFileWriter() {
-    this(
-        root -> PackageManifest.EMPTY,
-        (root, gate) -> Optional.empty(),
-        (root, tool) -> Optional.empty());
-  }
-
-  /** Creates a writer for projects with no Python tool config of their own to find. */
-  public PresetRuleFileWriter(final PackageManifests manifests, final NodeToolConfigs configs) {
-    this(manifests, configs, (root, tool) -> Optional.empty());
-  }
+  private final Map<Toolchain, RuleFileTargets> toolchains;
 
   /**
-   * Creates the adapter; {@code manifests} tells whether a Node project uses ES modules, {@code
-   * configs} finds the tool configs it keeps itself, and {@code pythonConfigs} does the same for a
-   * Python project.
+   * Creates the writer; {@code toolchains} holds the rule files of each toolchain that has its own,
+   * and any other project, a JVM project, writes its preset rule files.
    */
   @Inject
-  public PresetRuleFileWriter(
-      final PackageManifests manifests,
-      final NodeToolConfigs configs,
-      final PythonToolConfigs pythonConfigs) {
-    this.manifests = manifests;
-    this.configs = configs;
-    this.pythonConfigs = pythonConfigs;
+  public PresetRuleFileWriter(final Map<Toolchain, RuleFileTargets> toolchains) {
+    this.toolchains = Map.copyOf(toolchains);
   }
 
   @Override
@@ -92,7 +66,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     try {
       for (final RuleFileActions.Decision decision :
           RuleFileActions.decide(targets(project, preset, gates))) {
-        final NodeConfigTarget target = decision.target();
+        final ConfigTarget target = decision.target();
         final List<String> details = target.detail() == null ? List.of() : List.of(target.detail());
         plan.add(new PlannedFileChange(target.file(), decision.action(), details));
       }
@@ -106,24 +80,18 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
    * The files the selected gates need. A Node project's targets come from its tool configs; a JVM
    * project writes each preset rule file as Ward's content.
    */
-  private List<NodeConfigTarget> targets(
+  private List<ConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
-    if (project.toolchain() == Toolchain.NODE) {
-      return NodeConfigFiles.targets(
-          project, manifests.read(project.root()), configs, preset, gates);
-    }
-    if (project.toolchain() == Toolchain.PYTHON) {
-      return PythonConfigFiles.targets(project, pythonConfigs, preset, gates);
-    }
-    if (project.toolchain() == Toolchain.SWIFT) {
-      return SwiftConfigFiles.targets(project, preset);
+    final RuleFileTargets toolchain = toolchains.get(project.toolchain());
+    if (toolchain != null) {
+      return toolchain.targets(project, preset, gates);
     }
     return jvmTargets(project, preset, gates).entrySet().stream()
         .map(
             entry ->
-                new NodeConfigTarget(
-                    entry.getKey(), NodeConfigTarget.Disposition.WRITE, entry.getValue(), null))
+                new ConfigTarget(
+                    entry.getKey(), ConfigTarget.Disposition.WRITE, entry.getValue(), null))
         .toList();
   }
 
@@ -164,7 +132,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       final List<Path> preserved,
       final List<String> warnings)
       throws IOException {
-    final NodeConfigTarget target = decision.target();
+    final ConfigTarget target = decision.target();
     final Path file = target.file();
     switch (decision.action()) {
       case PRESERVE_USER_OWNED -> {
@@ -176,7 +144,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       case CREATE, MODIFY -> {
         originals.put(file, Files.exists(file) ? Files.readString(file) : null);
         Files.writeString(file, target.content());
-        if (target.disposition() == NodeConfigTarget.Disposition.MOVE) {
+        if (target.disposition() == ConfigTarget.Disposition.MOVE) {
           preserved.add(file);
         }
       }

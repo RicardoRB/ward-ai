@@ -2,7 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
-import dev.ward.domain.project.PythonToolConfigs;
+import dev.ward.domain.project.python.PythonToolConfigs;
 import java.util.Optional;
 
 /**

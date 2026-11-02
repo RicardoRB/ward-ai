@@ -13,8 +13,9 @@ import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
-import dev.ward.infrastructure.init.PomToolConfigurator;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
+import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +36,7 @@ class InitServicePresetSelectionTest {
           new InitSetupCatalog(new FakeEnvironmentInspection()),
           new InitProjectFiles(
               new PomToolConfigurator(),
-              new PresetRuleFileWriter(),
+              new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
               new ArchitectureTestGenerator(),
               new FileConfigurationStorage()));
 
