@@ -1,0 +1,86 @@
+# Structural rules for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+# Bodies hold the limit as max=<positive integer>; an empty body uses the ESLint core default.
+
+[[rules]]
+id = "ward:typescript/function-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:typescript/parameter-count"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:typescript/complexity"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:typescript/file-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:typescript/naming"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:typescript/nesting-depth"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/function-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/parameter-count"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/complexity"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/file-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/naming"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/nesting-depth"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+body = ""

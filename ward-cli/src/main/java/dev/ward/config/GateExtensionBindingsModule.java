@@ -13,8 +13,8 @@ import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
-import dev.ward.infrastructure.rule.CompositeRuleMatcher;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
 import java.util.Set;
@@ -28,29 +28,31 @@ interface GateExtensionBindingsModule {
   @Binds
   AnalysisSourceUnits analysisSourceUnits(FileSystemSourceUnits implementation);
 
-  /**
-   * Compiles each rule in the format its body is written in: declarative checks or metric rules.
-   */
+  /** Each bundled rule goes to the matcher of its language or body format. */
   @Provides
   static RuleMatcher ruleMatcher() {
-    return new CompositeRuleMatcher();
+    return BundledRuleMatchers.create();
   }
 
   /**
-   * The ward gate reads Java and Python sources through the ANTLR frontend, with syntax rules only.
+   * The ward gate reads Java, Python, TypeScript and JavaScript sources through the ANTLR frontend,
+   * with syntax rules only. Gates run one after another, so one frontend, which is not thread-safe,
+   * serves them all.
    */
   @Provides
   static AnalysisPorts analysisPorts(
       final AnalysisRuleSource rules,
       final RuleMatcher matcher,
       final AnalysisSourceUnits sources) {
-    final FrontendSupport java =
-        new FrontendSupport(
-            AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
-    final FrontendSupport python =
-        new FrontendSupport(
-            AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
-    return new AnalysisPorts(rules, matcher, sources, List.of(java, python));
+    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
+    final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
+    final List<FrontendSupport> frontends =
+        List.of(
+            new FrontendSupport(AnalysisLanguage.JAVA, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax));
+    return new AnalysisPorts(rules, matcher, sources, frontends);
   }
 
   @Provides

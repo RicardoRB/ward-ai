@@ -52,8 +52,6 @@ final class ArchitectureBoundarySupport {
    * parsers, are on this classpath. Its placement is checked by its own module, not by the CLI
    * layers.
    */
-  private static final String ANTLR_FRONTEND_PACKAGE = "dev.ward.analysis.frontend.antlr";
-
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
@@ -72,6 +70,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
           Map.entry("traceability", Set.of()));
+
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
       Map.ofEntries(
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
@@ -173,11 +172,22 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.config" -> isDaggerGenerated(name) || CONFIG_MODULES.contains(name);
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
-      default ->
-          packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?")
-              || packageName.startsWith(ANTLR_FRONTEND_PACKAGE);
+      default -> isLayeredFeaturePackage(packageName) || isGeneratedFrontendPackage(packageName);
     };
+  }
+
+  private static boolean isLayeredFeaturePackage(final String packageName) {
+    return packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
+        || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?");
+  }
+
+  /**
+   * The packages of the frontend module, including its generated parsers, and of the structural
+   * rules, which are the analysis adapters and domain for those rules.
+   */
+  private static boolean isGeneratedFrontendPackage(final String packageName) {
+    return packageName.matches(
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final int JAVA_RULE_COUNT = 13;
+  private static final int BUNDLED_RULES = 12;
+  private static final int RULES_PER_LANGUAGE = 6;
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -62,6 +64,46 @@ class ClasspathRuleSourceTest {
               assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
             });
+  }
+
+  @Test
+  void bundledNodeRulesLoadWithOneRowPerLanguageAndMetric() {
+    final AnalysisRuleLoad load = new ClasspathRuleSource().load();
+
+    assertThat(load.configurationErrors()).isEmpty();
+    final List<RuleDefinition> node =
+        load.rules().stream()
+            .filter(
+                rule ->
+                    rule.language() == AnalysisLanguage.TYPESCRIPT
+                        || rule.language() == AnalysisLanguage.JAVASCRIPT)
+            .toList();
+    assertThat(node).hasSize(BUNDLED_RULES);
+    assertThat(node)
+        .allSatisfy(
+            rule -> {
+              assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
+              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
+              assertThat(rule.body()).isEmpty();
+            });
+    assertThat(node.stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
+    assertThat(node.stream().filter(r -> r.language() == AnalysisLanguage.TYPESCRIPT))
+        .hasSize(RULES_PER_LANGUAGE);
+    assertThat(node.stream().filter(r -> r.language() == AnalysisLanguage.JAVASCRIPT))
+        .hasSize(RULES_PER_LANGUAGE);
+  }
+
+  @Test
+  void rowWhoseIdNamesAnotherLanguageIsRejectedAndTheErrorNamesTheId() {
+    final AnalysisRuleLoad load =
+        new ClasspathRuleSource(List.of("fixtures/rules/wrong-language.toml")).load();
+
+    assertThat(load.rules()).isEmpty();
+    assertThat(load.configurationErrors())
+        .singleElement()
+        .asString()
+        .contains("fixtures/rules/wrong-language.toml")
+        .contains("ward:javascript/naming");
   }
 
   @Test

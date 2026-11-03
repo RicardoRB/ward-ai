@@ -36,6 +36,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/size.toml",
           "rules/java/imports.toml",
           "rules/java/naming.toml",
+          "dev/ward/analysis/lang/node/rules.toml",
           "rules/python-structural.toml");
 
   private static final String RULES = "rules";
@@ -136,16 +137,16 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
               severity,
               text(resource, table, BODY));
     } catch (final IllegalArgumentException exception) {
-      throw RuleFileProblems.problem(resource, "a value is not usable", exception);
+      throw RuleFileProblems.problem(resource, exception.getMessage(), exception);
     }
     checkBody(resource, definition);
     return definition;
   }
 
-  /** Builds the check once so that a body that cannot be used is reported with its file. */
+  /** Builds the rule once so that a body that cannot be used is reported with its file. */
   private static void checkBody(final String resource, final RuleDefinition definition) {
     try {
-      new CompositeRuleMatcher().compile(definition);
+      BundledRuleMatchers.create().compile(definition);
     } catch (final AnalysisFailedException exception) {
       throw RuleFileProblems.problem(
           resource,
