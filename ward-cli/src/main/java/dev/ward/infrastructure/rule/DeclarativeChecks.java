@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
+import dev.ward.analysis.domain.rule.check.CountedKinds;
 import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
@@ -73,7 +74,9 @@ final class DeclarativeChecks {
   private static RuleCheck descendantCount(final TomlParseResult toml) {
     return new DescendantCountCheck(
         TomlValues.strings(toml, KINDS),
-        TomlValues.strings(toml, "counted"),
+        new CountedKinds(
+            TomlValues.strings(toml, "counted"),
+            Optional.ofNullable(toml.getString("unless-sibling"))),
         TomlValues.optionalInteger(toml, "base", 0),
         TomlValues.integer(toml, MAX),
         TomlValues.required(toml, MESSAGE));

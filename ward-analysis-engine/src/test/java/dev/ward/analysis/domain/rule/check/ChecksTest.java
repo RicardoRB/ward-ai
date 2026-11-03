@@ -40,12 +40,20 @@ class ChecksTest {
     assertThat(
             Trees.messages(
                 new DescendantCountCheck(
-                        Set.of(METHOD), Set.of(IF, "'for'"), 1, 2, "{value} > {max}")
+                        Set.of(METHOD),
+                        CountedKinds.of(Set.of(IF, "'for'")),
+                        1,
+                        2,
+                        "{value} > {max}")
                     .matches(method)))
         .containsExactly("4 > 2");
     assertThat(
             new DescendantCountCheck(
-                    Set.of(METHOD), Set.of(IF, "'for'"), 1, Trees.DESCENDANT_LIMIT, "{value}")
+                    Set.of(METHOD),
+                    CountedKinds.of(Set.of(IF, "'for'")),
+                    1,
+                    Trees.DESCENDANT_LIMIT,
+                    "{value}")
                 .matches(method))
         .isEmpty();
   }
@@ -117,5 +125,33 @@ class ChecksTest {
                     "[unclosed",
                     "{value}"))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void descendantCountSkipsAWhileThatClosesADo() {
+    final SyntaxNode loop =
+        Trees.node(
+            "doStatement",
+            0,
+            20,
+            1,
+            Trees.leaf("'do'", "do", 0),
+            Trees.leaf("'while'", "while", 12));
+
+    assertThat(
+            new DescendantCountCheck(
+                    Set.of("doStatement"),
+                    new CountedKinds(Set.of("'while'"), Optional.of("'do'")),
+                    0,
+                    0,
+                    "{value}")
+                .matches(loop))
+        .isEmpty();
+    assertThat(
+            Trees.messages(
+                new DescendantCountCheck(
+                        Set.of("doStatement"), CountedKinds.of(Set.of("'while'")), 0, 0, "{value}")
+                    .matches(loop)))
+        .containsExactly("1");
   }
 }

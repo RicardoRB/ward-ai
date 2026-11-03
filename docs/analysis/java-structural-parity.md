@@ -15,7 +15,7 @@ Checkstyle's `MagicNumber` and PMD's rules without a Ward counterpart are not li
 | `file-length` | `FileLength`: 505 lines | none | 505 lines | none | agree |
 | `method-length` | `MethodLength`: 62 lines | `NcssCount`: 61 (a different metric) | 62 lines | none | agree with Checkstyle |
 | `parameter-count` | `ParameterNumber`: 6 | none | 6 | none | agree |
-| `cyclomatic-complexity` | not flagged (10) | `CyclomaticComplexity`: 10, not flagged | 11, flagged | none | **Ward differs** (see below) |
+| `cyclomatic-complexity` | `CyclomaticComplexity`: 11 (`Dense`) | `CyclomaticComplexity`: 11 (`Dense`) | 11 (`Dense`) | none (`Branchy`, `DoWhileAtLimit` at 10) | agree |
 | `cognitive-complexity` | none | `CognitiveComplexity`: 17 | 17 | none | agree |
 | `star-import` | `AvoidStarImport` | none | flagged | none | agree |
 | `unused-import` | `UnusedImports` | `UnnecessaryImport` | flagged | none | agree |
@@ -29,13 +29,6 @@ Checkstyle's `MagicNumber` and PMD's rules without a Ward counterpart are not li
 No tool flags a passing fixture for any of these rules.
 
 ## Differences
-
-**`cyclomatic-complexity`: Ward counts a `do … while` loop twice.** The `while` that ends a
-`do` statement is counted as a `while` loop as well as the `do`. Checkstyle counts it once, PMD
-reports 10 for the fixture `Branchy.classify`, and so does the McCabe count. Ward reports 11, so a
-method at the limit that contains a `do … while` is reported falsely. The rule counts terminal kinds
-with no way to exclude a `while` that belongs to a `do`. Fixing it needs either a check parameter
-or a parent-aware count; until then, this is a known false positive.
 
 **`method-length` counts body lines.** The rule measures the `methodBody` node, from its opening
 brace to its closing brace. Checkstyle counts the same lines, and gets 62 for the fixture. PMD's
@@ -58,6 +51,10 @@ parses it without an execution error. This is a limit of Checkstyle's parser, no
 
 ## Fixes found by this report
 
+- The `cyclomatic-complexity` rule counted the `while` that closes a `do … while` as a second loop,
+  so a method at the limit was reported falsely. The rule now cancels the count of a `while` beside a
+  `do` (`unless-sibling = "'do'"`). The fixtures `Branchy` (10) and `DoWhileAtLimit` (10) pass, and
+  `Dense` (11) fails.
 - The `file-length` rule counted the end-of-file line: a 505-line file was reported as 506 lines,
   so a file of exactly 500 lines would have failed. A rule that ends at the end of the file now ends
   on the last physical line. Covered by `RuleSpanTest`.
