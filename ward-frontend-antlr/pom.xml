@@ -59,6 +59,11 @@
                         <artifactId>native-maven-plugin</artifactId>
                         <version>${native-build-tools.version}</version>
                         <extensions>true</extensions>
+                        <!-- This module is a library with no main class, so a native build of it fails. The
+                             ward-cli native build covers these classes. Only the developer probe below builds. -->
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
                         <executions>
                             <!-- Developer probe: parses the fixtures in the native image. Not shipped. -->
                             <execution>
@@ -68,6 +73,7 @@
                                     <goal>compile-no-fork</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>false</skip>
                                     <mainClass>dev.ward.analysis.frontend.antlr.NativeProbe</mainClass>
                                     <imageName>ward-frontend-probe</imageName>
                                     <!-- The probe lives in the test tree, so the classpath lists the test classes
