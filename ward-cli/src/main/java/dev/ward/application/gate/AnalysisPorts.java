@@ -11,12 +11,18 @@ import java.util.List;
  * @param matcher builds rules from their bodies
  * @param sources reads the source files
  * @param frontends the language frontends and the capabilities they provide
+ * @param caches opens the result cache of a project
+ * @param codec encodes the cached results
+ * @param engineVersion the Ward version, which invalidates cached results when it changes
  */
 public record AnalysisPorts(
     AnalysisRuleSource rules,
     RuleMatcher matcher,
     AnalysisSourceUnits sources,
-    List<FrontendSupport> frontends) {
+    List<FrontendSupport> frontends,
+    AnalysisCaches caches,
+    AnalysisResultCodec codec,
+    String engineVersion) {
 
   /** Copies the frontends. */
   public AnalysisPorts {

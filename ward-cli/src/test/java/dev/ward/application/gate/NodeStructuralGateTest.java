@@ -19,6 +19,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
+import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -92,7 +93,10 @@ class NodeStructuralGateTest {
         new FileSystemSourceUnits(),
         List.of(
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax)));
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax)),
+        root -> new FileAnalysisCache(root.resolve(".ward/cache/analysis")),
+        AnalysisCacheFixtures.codec(),
+        "test");
   }
 
   private Project project() {

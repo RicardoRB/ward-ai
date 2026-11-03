@@ -1,6 +1,7 @@
 package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
+import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -12,12 +13,6 @@ import java.util.List;
 final class RuleRunCollector {
   private static final Comparator<String> NULLS_FIRST =
       Comparator.nullsFirst(Comparator.naturalOrder());
-  private static final Comparator<AnalysisFinding> FINDING_ORDER =
-      Comparator.comparing(AnalysisFinding::file, NULLS_FIRST)
-          .thenComparing(AnalysisFinding::line, Comparator.nullsFirst(Comparator.naturalOrder()))
-          .thenComparing(AnalysisFinding::column, Comparator.nullsFirst(Comparator.naturalOrder()))
-          .thenComparing(AnalysisFinding::ruleId)
-          .thenComparing(AnalysisFinding::message);
   private static final Comparator<RuleExecutionError> ERROR_ORDER =
       Comparator.comparing(RuleExecutionError::path, NULLS_FIRST)
           .thenComparing(RuleExecutionError::ruleId, NULLS_FIRST)
@@ -41,7 +36,7 @@ final class RuleRunCollector {
 
   RuleRunResult result() {
     return new RuleRunResult(
-        findings.stream().sorted(FINDING_ORDER).toList(),
+        findings.stream().sorted(AnalysisFindingOrder.ORDER).toList(),
         errors.stream().sorted(ERROR_ORDER).toList(),
         notRun.stream().sorted(Comparator.comparing(RuleNotRun::ruleId)).toList());
   }
