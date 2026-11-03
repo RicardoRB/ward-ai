@@ -1,5 +1,7 @@
 package dev.ward.application.gate;
 
+import dev.ward.analysis.application.rule.DependencyAnalysis;
+import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
@@ -7,6 +9,8 @@ import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
+import dev.ward.analysis.domain.port.DependencySupport;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import java.util.ArrayList;
@@ -20,19 +24,25 @@ import java.util.stream.Collectors;
 /**
  * Runs the rules over the units whose results are not stored, and reuses the stored results of the
  * others. Only a run with no execution error and no rule that did not run is stored, so a stored
- * result always came from a complete analysis.
+ * result always came from a complete analysis. Such a run also rewrites the reverse-dependency
+ * index, so a missing or corrupt index is rebuilt.
  */
 final class UnitResultCache {
   private final RuleEngine engine;
   private final AnalysisResultCodec codec;
   private final String engineVersion;
+  private final List<DependencySupport> dependencies;
 
   /** Creates the partition that analyzes missing units with {@code engine}. */
   UnitResultCache(
-      final RuleEngine engine, final AnalysisResultCodec codec, final String engineVersion) {
+      final RuleEngine engine,
+      final AnalysisResultCodec codec,
+      final String engineVersion,
+      final List<DependencySupport> dependencies) {
     this.engine = engine;
     this.codec = codec;
     this.engineVersion = engineVersion;
+    this.dependencies = List.copyOf(dependencies);
   }
 
   /** Returns the findings of every unit, reused or analyzed, in the stable report order. */
@@ -41,6 +51,9 @@ final class UnitResultCache {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
+    final DependencySnapshot snapshot =
+        new DependencyAnalysis(frontends, dependencies)
+            .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
     final List<SourceUnit> misses = new ArrayList<>();
@@ -48,7 +61,7 @@ final class UnitResultCache {
     for (final SourceUnit unit : units) {
       final String ruleSet =
           ruleSets.computeIfAbsent(unit.language(), language -> ruleSet(language, rules));
-      final String key = AnalysisCacheKey.unit(ruleSet, unit);
+      final String key = key(ruleSet, unit, rules, snapshot);
       keys.put(unit, key);
       final Optional<List<AnalysisFinding>> stored = read(cache, key);
       if (stored.isPresent()) {
@@ -57,9 +70,10 @@ final class UnitResultCache {
         misses.add(unit);
       }
     }
-    final RuleRunResult analyzed = engine.run(misses, frontends, rules);
+    final RuleRunResult analyzed = engine.run(misses, frontends, rules, snapshot);
     if (analyzed.executionErrors().isEmpty() && analyzed.notRun().isEmpty()) {
       store(cache, keys, misses, analyzed.findings());
+      cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
     return merged(reused, analyzed);
   }
@@ -67,6 +81,25 @@ final class UnitResultCache {
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {
     return AnalysisCacheKey.ruleSet(
         engineVersion, rules.stream().filter(rule -> rule.language() == language).toList());
+  }
+
+  /** A language whose rules read dependencies keys each unit on the files around it too. */
+  private String key(
+      final String ruleSet,
+      final SourceUnit unit,
+      final List<RuleDefinition> rules,
+      final DependencySnapshot snapshot) {
+    if (!readsDependencies(unit.language(), rules)) {
+      return AnalysisCacheKey.unit(ruleSet, unit);
+    }
+    return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()));
+  }
+
+  private static boolean readsDependencies(
+      final AnalysisLanguage language, final List<RuleDefinition> rules) {
+    return rules.stream()
+        .anyMatch(
+            rule -> rule.language() == language && rule.capability() == RuleCapability.SYMBOLS);
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {

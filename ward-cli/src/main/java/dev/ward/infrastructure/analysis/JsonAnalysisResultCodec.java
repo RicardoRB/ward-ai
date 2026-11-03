@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.analysis;
 
+import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
@@ -18,11 +20,28 @@ import org.apache.fory.json.annotation.JsonType;
 public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
   static final int FORMAT_VERSION = 1;
   private final JsonCodec codec;
+  private final JsonDependencyCodec dependencies;
 
   /** Creates the codec over {@code codec}. */
   @Inject
   public JsonAnalysisResultCodec(final JsonCodec codec) {
     this.codec = codec;
+    this.dependencies = new JsonDependencyCodec(codec);
+  }
+
+  @Override
+  public String encodeSummary(final String key, final FileSummary summary) {
+    return dependencies.encodeSummary(key, summary);
+  }
+
+  @Override
+  public Optional<FileSummary> decodeSummary(final String key, final String value) {
+    return dependencies.decodeSummary(key, value);
+  }
+
+  @Override
+  public String encodeIndex(final DependencyGraph graph) {
+    return dependencies.encodeIndex(graph);
   }
 
   @Override

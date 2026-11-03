@@ -31,6 +31,10 @@ import org.junit.jupiter.api.Test;
 class UnitResultCacheTest {
   private static final Span AT = new Span(3, 5, 3, 9, 20, 24);
   private static final String LENGTH = "ward:java/method-length";
+
+  /** Two unit results and the reverse-dependency index. */
+  private static final int STORED_ENTRIES = 3;
+
   private static final String CLEAN = "src/B.java";
   private static final String FLAGGED = "src/A.java";
   private static final List<SourceUnit> UNITS =
@@ -84,7 +88,8 @@ class UnitResultCacheTest {
   private final List<FrontendSupport> frontends =
       List.of(new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX)));
   private final UnitResultCache results =
-      new UnitResultCache(new RuleEngine(matcher), AnalysisCacheFixtures.codec(), "0.6.0");
+      new UnitResultCache(
+          new RuleEngine(matcher), AnalysisCacheFixtures.codec(), "0.6.0", List.of());
   private final RuleDefinition rule = rule("body");
 
   @Test
@@ -98,7 +103,7 @@ class UnitResultCacheTest {
 
     assertThat(cold.findings()).hasSize(1);
     assertThat(warm.findings()).isEqualTo(cold.findings());
-    assertThat(entries).hasSize(2);
+    assertThat(entries).hasSize(STORED_ENTRIES);
     assertThat(parses.get()).isZero();
   }
 
@@ -148,7 +153,7 @@ class UnitResultCacheTest {
   void cleanRunStoresEveryUnit() {
     results.run(cache, UNITS, frontends, List.of(rule));
 
-    assertThat(entries).hasSize(2);
+    assertThat(entries).hasSize(STORED_ENTRIES);
   }
 
   @Test
