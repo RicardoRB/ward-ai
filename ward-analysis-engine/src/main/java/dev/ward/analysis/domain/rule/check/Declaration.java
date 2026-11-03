@@ -15,8 +15,10 @@ import java.util.Set;
  * @param outer the highest non-root ancestor whose tokens before {@code node} are all modifiers, or
  *     {@code node} itself
  * @param parent the parent of {@code outer}, or {@code null} when {@code outer} is the root
+ * @param leading the modifier texts that open {@code node} itself, for frontends that put a
+ *     declaration's modifiers inside the declaration rather than around it
  */
-record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent) {
+record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent, List<String> leading) {
 
   /**
    * Finds the wrapper of {@code visit}. The root never counts as a wrapper, and a wrapper counts
@@ -32,7 +34,23 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent) {
       index++;
     }
     final SyntaxNode parent = index > 0 ? chain.get(index - 1) : null;
-    return new Declaration(node, chain.get(index), parent);
+    return new Declaration(node, chain.get(index), parent, leadingModifiers(node, modifierKinds));
+  }
+
+  /**
+   * Returns the texts of the modifier children that open {@code node}. Only the leading run of
+   * children counts, so a modifier kind further down the node is not read as a modifier.
+   */
+  private static List<String> leadingModifiers(
+      final SyntaxNode node, final Set<String> modifierKinds) {
+    final List<String> texts = new ArrayList<>();
+    for (final SyntaxNode child : node.children()) {
+      if (!modifierKinds.contains(child.kind())) {
+        break;
+      }
+      SyntaxWalk.leaves(child).forEach(leaf -> texts.add(leaf.fields().get("text")));
+    }
+    return List.copyOf(texts);
   }
 
   /** Tells whether each token of {@code candidate} before {@code node} is a modifier token. */
@@ -53,7 +71,10 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent) {
     return inside || candidate.span().startOffset() >= node.span().startOffset();
   }
 
-  /** Returns the texts of the tokens that precede the node inside its outer wrapper. */
+  /**
+   * Returns the texts of the tokens that precede the node inside its outer wrapper, then the
+   * modifiers that open the node itself.
+   */
   List<String> modifiers() {
     final List<String> texts = new ArrayList<>();
     final long start = node.span().startOffset();
@@ -63,6 +84,7 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent) {
       }
       texts.add(leaf.fields().get("text"));
     }
+    texts.addAll(leading);
     return List.copyOf(texts);
   }
 

@@ -9,24 +9,34 @@ import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.application.gate.AnalysisPorts;
+import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
+import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Named;
 
 /** Binds the adapters of the {@code ward} gate and the optional gate extensions. */
 @Module
 interface GateExtensionBindingsModule {
+  /** Where the {@code ward} gate keeps its per-unit results, under the project root. */
+  String CACHE_DIRECTORY = ".ward/cache/analysis";
+
   @Binds
   AnalysisRuleSource analysisRuleSource(ClasspathRuleSource implementation);
 
   @Binds
   AnalysisSourceUnits analysisSourceUnits(FileSystemSourceUnits implementation);
+
+  @Binds
+  AnalysisResultCodec analysisResultCodec(JsonAnalysisResultCodec implementation);
 
   /** Each bundled rule goes to the matcher of its language or body format. */
   @Provides
@@ -43,7 +53,9 @@ interface GateExtensionBindingsModule {
   static AnalysisPorts analysisPorts(
       final AnalysisRuleSource rules,
       final RuleMatcher matcher,
-      final AnalysisSourceUnits sources) {
+      final AnalysisSourceUnits sources,
+      final AnalysisResultCodec codec,
+      @Named("ward.version") final String wardVersion) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
     final List<FrontendSupport> frontends =
@@ -53,7 +65,14 @@ interface GateExtensionBindingsModule {
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.SWIFT, frontend, syntax));
-    return new AnalysisPorts(rules, matcher, sources, frontends);
+    return new AnalysisPorts(
+        rules,
+        matcher,
+        sources,
+        frontends,
+        projectRoot -> new FileAnalysisCache(projectRoot.resolve(CACHE_DIRECTORY)),
+        codec,
+        wardVersion);
   }
 
   @Provides
