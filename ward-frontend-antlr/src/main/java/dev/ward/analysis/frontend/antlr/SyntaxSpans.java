@@ -9,7 +9,11 @@ final class SyntaxSpans {
 
   private SyntaxSpans() {}
 
-  /** Returns the span from the first to the last token of {@code context}. */
+  /**
+   * Returns the span from the first to the last token of {@code context}. A rule that consumed the
+   * end-of-file token ends on the last physical line of the file, so a file ending in a newline is
+   * not counted one line too long.
+   */
   static Span span(final ParserRuleContext context) {
     final Token start = context.getStart();
     final Token stop = context.getStop();
@@ -18,8 +22,9 @@ final class SyntaxSpans {
     }
     final int startOffset = Math.max(0, start.getStartIndex());
     final int endOffset = Math.max(startOffset, stop.getStopIndex() + 1);
-    final int endLine = stop.getLine();
-    final int endColumn = stop.getCharPositionInLine() + width(stop);
+    final int endLine = endLine(stop, start);
+    final int endColumn =
+        endLine == stop.getLine() ? stop.getCharPositionInLine() + width(stop) : 1;
     if (endLine < start.getLine()
         || endLine == start.getLine() && endColumn < start.getCharPositionInLine() + 1) {
       return zeroWidth(start);
@@ -62,6 +67,15 @@ final class SyntaxSpans {
         endColumn,
         Math.max(0, token.getStartIndex()),
         Math.max(0, token.getStopIndex() + 1));
+  }
+
+  /** The line a rule ends on: the end-of-file token sits on the line after a final newline. */
+  private static int endLine(final Token stop, final Token start) {
+    final boolean afterFinalNewline =
+        stop.getType() == Token.EOF && stop.getCharPositionInLine() == 0;
+    return afterFinalNewline && stop.getLine() > start.getLine()
+        ? stop.getLine() - 1
+        : stop.getLine();
   }
 
   private static Span zeroWidth(final Token start) {
