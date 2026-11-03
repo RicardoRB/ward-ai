@@ -26,6 +26,10 @@ class SwiftMatrixCellsTest {
           "26.0.1,xcode,standard",
           "26.6,swiftpm,strict",
           "26.6,xcode,strict",
+          "27.0,swiftpm,strict",
+          "27.0,xcode,strict",
+          "27.1,swiftpm,strict",
+          "27.1,xcode,strict",
           "27.2,swiftpm,strict",
           "27.2,xcode,strict");
   private static final int XCODE_COLUMN = 0;
