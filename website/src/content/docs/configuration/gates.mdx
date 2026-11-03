@@ -434,7 +434,41 @@ uses = "ward"
 rules = ["ward:java/method-length"]
 ```
 
-No language rules ship yet, so the gate currently runs no rules.
+## Python structural rules
+
+The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
+the ANTLR Python frontend and use fixed limits. Ruff stays the external gate for style and lint.
+
+| Rule | Limit | Severity | Ruff counterpart |
+|---|---|---|---|
+| `ward:python/function-length` | more than 60 lines in a function, from the `def` line | error | none; Ruff's `PLR0915` counts statements, not lines |
+| `ward:python/parameter-count` | more than 5 parameters; `self` and `cls` of a method are not counted | error | `PLR0913` (max-args 5) |
+| `ward:python/complexity` | complexity above 10 | error | `C901` (max-complexity 10) |
+| `ward:python/file-length` | more than 500 lines in a module | error | none |
+| `ward:python/naming` | functions and variables `snake_case`, classes `CapWords`; dunder names skipped | warning | `N802`, `N801`, `N806` (Ruff also checks arguments, which Ward does not) |
+
+Complexity is one plus the decision points in a function: `if`, `elif`, `while`, `for`, `except`,
+`match` cases, comprehension `for` and `if` clauses, each `and` and `or`, and conditional
+expressions. Nested functions, classes and lambdas are measured on their own. Ruff's `C901` follows
+McCabe and does not count boolean operators, so Ward reports some functions that Ruff does not.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:python/function-length",
+  "ward:python/parameter-count",
+  "ward:python/complexity",
+  "ward:python/file-length",
+  "ward:python/naming",
+]
+```
+
+A file with a syntax error is not checked by these rules. It is reported as an execution error, and
+the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
+than `uses`, `enabled`, `profiles` and `rules`.
 
 ## Traceability gate
 

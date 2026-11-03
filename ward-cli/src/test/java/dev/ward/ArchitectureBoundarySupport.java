@@ -122,6 +122,14 @@ final class ArchitectureBoundarySupport {
         .containsExactlyInAnyOrderElementsOf(discoveredFeatures);
   }
 
+  /**
+   * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
+   * ward-cli depends on it to run the {@code ward} gate, so its classes, including the generated
+   * parsers, are on this classpath. Its placement is checked by its own module, not by the CLI
+   * layers.
+   */
+  private static final String ANTLR_FRONTEND_PACKAGE = "dev.ward.analysis.frontend.antlr";
+
   static boolean isAllowedPackage(final JavaClass javaClass, final Set<String> commonCliTypes) {
     final String name = javaClass.getName();
     final String packageName = javaClass.getPackageName();
@@ -151,13 +159,15 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
+          "dev.ward.analysis.domain.rule.metric",
           "dev.ward.analysis.application.rule" ->
           true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default ->
           packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?");
+              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?")
+              || packageName.startsWith(ANTLR_FRONTEND_PACKAGE);
     };
   }
 
