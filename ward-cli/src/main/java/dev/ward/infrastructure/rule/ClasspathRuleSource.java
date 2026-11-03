@@ -37,7 +37,9 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/imports.toml",
           "rules/java/naming.toml",
           "dev/ward/analysis/lang/node/rules.toml",
-          "rules/python-structural.toml");
+          "rules/python-structural.toml",
+          "rules/kotlin/size.toml",
+          "rules/kotlin/naming.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";

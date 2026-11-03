@@ -1,0 +1,48 @@
+# Naming rules for Kotlin. They follow the Kotlin coding conventions: types in PascalCase, functions
+# and properties in camelCase. Constant properties (`const val`) are exempt from the property rule.
+
+[[rules]]
+id = "ward:kotlin/type-name"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["classDeclaration", "objectDeclaration"]
+modifiers = ["modifierList", "annotation"]
+name = "simpleIdentifier"
+skip = ["modifierList", "annotation"]
+pattern = "[A-Z][a-zA-Z0-9]*"
+message = "type name '{value}' must match [A-Z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:kotlin/function-name"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["functionDeclaration"]
+modifiers = ["modifierList", "functionModifierList", "annotation"]
+name = "simpleIdentifier"
+skip = ["modifierList", "functionModifierList", "annotation", "typeParameters", "receiverType", "type", "contextParameters"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "function name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:kotlin/property-name"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["propertyDeclaration"]
+modifiers = ["modifierList", "annotation"]
+excluded = "const"
+name = "simpleIdentifier"
+skip = ["modifierList", "annotation", "type", "typeParameters", "typeConstraints", "getter", "setter"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "property name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''
