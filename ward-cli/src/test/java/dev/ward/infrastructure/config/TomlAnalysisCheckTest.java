@@ -32,6 +32,13 @@ class TomlAnalysisCheckTest {
   }
 
   @Test
+  void rejectsAThresholdKeyForASwiftRule() {
+    assertThatThrownBy(() -> check("function-length = 60"))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.ward.function-length");
+  }
+
+  @Test
   void rejectsRuleIdOutsideTheWardNamespace() {
     assertThatThrownBy(() -> check("rules = [\"checkstyle:Foo\"]"))
         .isInstanceOf(WardException.class)

@@ -578,5 +578,5 @@ Block_comment
     ; // nesting comments allowed
 
 Line_comment
-    : '//' .*? ('\n' | EOF) -> channel(HIDDEN)
+    : '//' ~[\r\n]* -> channel(HIDDEN)
     ;

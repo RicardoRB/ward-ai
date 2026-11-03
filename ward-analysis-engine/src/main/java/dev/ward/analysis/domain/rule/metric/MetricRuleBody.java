@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 final class MetricRuleBody {
   private static final String PAIR_SEPARATOR = ";";
   private static final String VALUE_SEPARATOR = ",";
+  private static final String PATH_ALTERNATIVES = "\\|";
+  private static final String PATH_STEPS = "/";
   private static final int KEY_AND_VALUE = 2;
 
   private final Map<String, String> pairs = new HashMap<>();
@@ -74,14 +76,20 @@ final class MetricRuleBody {
   private MetricRule.MetricRuleKeys keys() {
     return new MetricRule.MetricRuleKeys(
         pairs.getOrDefault("name", ""),
-        path(pairs.getOrDefault("path", "")),
+        paths(pairs.getOrDefault("path", "")),
         set(pairs.get("receivers")),
         set(pairs.get("nested")),
         set(pairs.get("decisions")));
   }
 
-  private static List<String> path(final String value) {
-    return value.isEmpty() ? List.of() : Arrays.asList(value.split("/"));
+  /** Parses {@code a/b|c/d} into the alternative paths, each a list of kinds. */
+  private static List<List<String>> paths(final String value) {
+    if (value.isEmpty()) {
+      return List.of();
+    }
+    return Arrays.stream(value.split(PATH_ALTERNATIVES))
+        .map(alternative -> List.of(alternative.split(PATH_STEPS)))
+        .toList();
   }
 
   private static Set<String> set(final String value) {

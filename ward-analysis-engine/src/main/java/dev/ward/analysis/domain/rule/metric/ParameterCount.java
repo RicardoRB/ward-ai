@@ -23,17 +23,17 @@ final class ParameterCount implements Measure {
 
   private static int parameters(
       final SyntaxNode node, final boolean method, final MetricRule rule) {
-    final List<String> path = rule.keys().parameterPath();
-    if (path.isEmpty()) {
-      return 0;
-    }
-    final List<SyntaxNode> containers = SyntaxTrees.follow(node, path.subList(0, path.size() - 1));
     final List<SyntaxNode> items =
-        containers.stream()
-            .flatMap(
-                container -> SyntaxTrees.children(container, path.get(path.size() - 1)).stream())
-            .toList();
+        rule.keys().parameterPaths().stream().flatMap(path -> items(node, path).stream()).toList();
     return items.size() - receiver(items, method, rule);
+  }
+
+  /** Returns the parameter items that {@code path} reaches from {@code node}. */
+  private static List<SyntaxNode> items(final SyntaxNode node, final List<String> path) {
+    final List<SyntaxNode> containers = SyntaxTrees.follow(node, path.subList(0, path.size() - 1));
+    return containers.stream()
+        .flatMap(container -> SyntaxTrees.children(container, path.get(path.size() - 1)).stream())
+        .toList();
   }
 
   private static int receiver(

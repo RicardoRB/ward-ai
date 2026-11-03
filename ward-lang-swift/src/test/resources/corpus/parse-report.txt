@@ -1,0 +1,8 @@
+async-await.swift	error	6:18
+generics-where.swift	parsed
+macros-outside-grammar.swift	error	2:8
+opaque-existential.swift	parsed
+optional-binding.swift	parsed
+plain-types.swift	parsed
+property-wrappers.swift	parsed
+result-builders.swift	parsed

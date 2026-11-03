@@ -485,6 +485,32 @@ Differences from Checkstyle and PMD, by construction:
 Rule ids and limits are stable across releases. A rule whose id changes is published under a new
 id.
 
+## Kotlin structural rules
+
+The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
+modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
+Java size and naming rules. They are not measured against Detekt or ktlint in this release.
+
+| Rule | Limit or pattern |
+|---|---|
+| `ward:kotlin/file-length` | more than 500 lines |
+| `ward:kotlin/function-length` | function body over 60 lines |
+| `ward:kotlin/parameter-count` | more than 5 value parameters |
+| `ward:kotlin/cyclomatic-complexity` | above 10 |
+| `ward:kotlin/cognitive-complexity` | cognitive complexity above 15 |
+| `ward:kotlin/type-name` | `^[A-Z][a-zA-Z0-9]*$` for classes, interfaces, objects and enums |
+| `ward:kotlin/function-name` | `^[a-z][a-zA-Z0-9]*$` |
+
+Differences from the Java rules, by construction:
+
+- Cyclomatic complexity counts `if` expressions, each `when` entry (an `else` entry counts too), `for`,
+  `while`, `do`, `catch`, each `&&` and `||`. The elvis operator `?:` does not count.
+- Cognitive complexity adds one per `if`, `when`, `for`, `while`, `do` and `catch`, plus its nesting
+  depth, and one per `&&` and `||`. An `else` adds one. An `else if` is not scored as nested, so the
+  chain is checked at the same depth. The rule is not compared with the Java rule's output.
+- `function-length` measures the function body, from its opening brace to its closing brace.
+  Expression-bodied functions are measured by the same limit.
+
 ## Python structural rules
 
 The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
@@ -521,6 +547,49 @@ rules = [
 A file with a syntax error is not checked by these rules. It is reported as an execution error, and
 the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
 than `uses`, `enabled`, `profiles` and `rules`.
+
+## Swift structural rules
+
+The `ward` gate runs six Swift structural rules for `.swift` files. They read the syntax tree from
+the ANTLR Swift frontend and use fixed limits. SwiftLint stays the external gate for style and lint.
+
+| Rule | Limit | Severity | SwiftLint counterpart |
+|---|---|---|---|
+| `ward:swift/function-length` | more than 60 lines in a function, method or initializer, from the declaration line | error | `function_body_length` (warning 50, error 100): Ward counts lines of the whole declaration, header included, and uses a single limit of 60 |
+| `ward:swift/parameter-count` | more than 5 parameters; defaulted and variadic parameters count | error | `function_parameter_count` (warning 5, error 8): Ward has one limit, 5 |
+| `ward:swift/complexity` | complexity above 10 | error | `cyclomatic_complexity` (warning 10, error 20): Ward counts every `case` label, including the first |
+| `ward:swift/file-length` | more than 500 lines in a file | error | `file_length` (warning 400, error 1000): Ward's limit is 500, matching the Python and Java rules |
+| `ward:swift/type-body-length` | more than 300 lines in a `struct`, `class`, `protocol`, `extension` or enum, from the declaration line | error | `type_body_length` (warning 250, error 350): Ward's limit 300 is a Ward choice, not a SwiftLint default |
+| `ward:swift/naming` | types `UpperCamelCase`; functions, variables, constants and enum cases `lowerCamelCase`; leading underscores and backticks ignored | warning | `identifier_name` checks length too (warning min 3 and max 40): Ward does not check length |
+
+Complexity is one plus the decision points of a function or initializer: `if`, `guard`, `else if`,
+`for ... in`, `while`, `repeat ... while`, each `catch`, each `case` label, each `?:`, and each `&&`
+and `||` operator. An `else` adds nothing. Closures are not measured as units: their decisions are
+left out of the enclosing function, as nested functions are, but a closure over the limit is not
+reported on its own.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:swift/function-length",
+  "ward:swift/parameter-count",
+  "ward:swift/complexity",
+  "ward:swift/file-length",
+  "ward:swift/type-body-length",
+  "ward:swift/naming",
+]
+```
+
+The Swift frontend uses a Ward-owned Swift 5 grammar, not the Tree-sitter grammar. A file with a
+syntax error is not checked by these rules; it is reported as an execution error and the gate does
+not pass. To see which sources the grammar parses, compare your files with the parse report in the
+Ward repository (`ward-lang-swift/src/test/resources/corpus/parse-report.txt`). At the time of
+writing, the parse report lists `func run() async {` (first error at 6:18) and a freestanding macro
+declaration (2:8) as errors; the cause is not analyzed here. Thresholds are fixed in this version, as
+for the Python rules.
 
 ## Traceability gate
 
