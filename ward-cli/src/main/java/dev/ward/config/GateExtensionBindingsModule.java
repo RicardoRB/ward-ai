@@ -64,7 +64,8 @@ interface GateExtensionBindingsModule {
             new FrontendSupport(AnalysisLanguage.PYTHON, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, syntax));
+            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, syntax));
     return new AnalysisPorts(
         rules,
         matcher,

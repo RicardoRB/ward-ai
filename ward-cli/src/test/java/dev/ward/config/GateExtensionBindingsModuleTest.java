@@ -33,7 +33,8 @@ class GateExtensionBindingsModuleTest {
             AnalysisLanguage.PYTHON,
             AnalysisLanguage.TYPESCRIPT,
             AnalysisLanguage.JAVASCRIPT,
-            AnalysisLanguage.SWIFT);
+            AnalysisLanguage.SWIFT,
+            AnalysisLanguage.KOTLIN);
   }
 
   private static AnalysisResultCodec codec() {
