@@ -68,7 +68,7 @@ final class SyntaxTreeMapper {
       children.add(node(child));
     }
     final String kind = parser.getRuleNames()[context.getRuleIndex()];
-    return new SyntaxNode(kind, span(context), Map.of(), children);
+    return new SyntaxNode(kind, SyntaxSpans.span(context), Map.of(), children);
   }
 
   private static Token firstToken(final ParseTree node) {
@@ -93,24 +93,7 @@ final class SyntaxTreeMapper {
 
   private static SyntaxNode comment(final Token token) {
     return new SyntaxNode(
-        COMMENT_KIND, commentSpan(token), Map.of("text", token.getText()), List.of());
-  }
-
-  private static Span commentSpan(final Token token) {
-    final String text = token.getText();
-    final int newlines = (int) text.chars().filter(c -> c == '\n').count();
-    final int endLine = token.getLine() + newlines;
-    final int endColumn =
-        newlines == 0
-            ? token.getCharPositionInLine() + text.length()
-            : text.length() - text.lastIndexOf('\n') - 1;
-    return new Span(
-        token.getLine(),
-        token.getCharPositionInLine() + 1,
-        endLine,
-        endColumn,
-        Math.max(0, token.getStartIndex()),
-        Math.max(0, token.getStopIndex() + 1));
+        COMMENT_KIND, SyntaxSpans.comment(token), Map.of("text", token.getText()), List.of());
   }
 
   private static SyntaxNode terminal(final Vocabulary vocabulary, final Token token) {
@@ -118,57 +101,12 @@ final class SyntaxTreeMapper {
   }
 
   private static SyntaxNode terminal(final String kind, final Token token) {
-    final Span span = tokenSpan(token);
+    final Span span = SyntaxSpans.token(token);
     return new SyntaxNode(kind, span, Map.of("text", token.getText()), List.of());
   }
 
   private static String displayName(final Vocabulary vocabulary, final int type) {
     final String name = vocabulary.getDisplayName(type);
     return name == null || name.isEmpty() ? "token" : name;
-  }
-
-  private static Span span(final ParserRuleContext context) {
-    final Token start = context.getStart();
-    final Token stop = context.getStop();
-    if (stop == null || stop.getStopIndex() < start.getStartIndex()) {
-      return zeroWidthSpan(start);
-    }
-    final int startOffset = Math.max(0, start.getStartIndex());
-    final int endOffset = Math.max(startOffset, stop.getStopIndex() + 1);
-    final int endLine = stop.getLine();
-    final int endColumn = stop.getCharPositionInLine() + tokenWidth(stop);
-    if (endLine < start.getLine()
-        || endLine == start.getLine() && endColumn < start.getCharPositionInLine() + 1) {
-      return zeroWidthSpan(start);
-    }
-    return new Span(
-        start.getLine(),
-        start.getCharPositionInLine() + 1,
-        endLine,
-        endColumn,
-        startOffset,
-        endOffset);
-  }
-
-  private static Span tokenSpan(final Token token) {
-    final int startOffset = Math.max(0, token.getStartIndex());
-    final int endOffset = Math.max(startOffset, token.getStopIndex() + 1);
-    return new Span(
-        token.getLine(),
-        token.getCharPositionInLine() + 1,
-        token.getLine(),
-        token.getCharPositionInLine() + tokenWidth(token),
-        startOffset,
-        endOffset);
-  }
-
-  private static Span zeroWidthSpan(final Token start) {
-    final int startOffset = Math.max(0, start.getStartIndex());
-    final int column = start.getCharPositionInLine() + 1;
-    return new Span(start.getLine(), column, start.getLine(), column, startOffset, startOffset);
-  }
-
-  private static int tokenWidth(final Token token) {
-    return Math.max(1, token.getStopIndex() - token.getStartIndex() + 1);
   }
 }

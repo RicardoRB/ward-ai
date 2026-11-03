@@ -50,8 +50,10 @@
 
 
     <profiles>
+        <!-- Named apart from "native": ward-cli depends on this module, so a native build of ward-cli
+             with -am would otherwise also build the developer probe. Run it with -Pfrontend-probe. -->
         <profile>
-            <id>native</id>
+            <id>frontend-probe</id>
             <build>
                 <plugins>
                     <plugin>
