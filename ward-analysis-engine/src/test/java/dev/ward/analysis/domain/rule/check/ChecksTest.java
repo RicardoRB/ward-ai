@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,7 @@ class ChecksTest {
             "ifStatement", 0, 20, 1, Trees.leaf(IF, "if", 0), Trees.leaf(AND, "&&", 3), inner);
     final CognitiveComplexityCheck check =
         new CognitiveComplexityCheck(
-            Set.of("ifStatement"), Set.of(IF), Set.of(AND), 3, "{value} > {max}");
+            Set.of("ifStatement"), CountedKinds.of(Set.of(IF)), Set.of(AND), 3, "{value} > {max}");
 
     // The outer if adds 1, the && adds 1, and the nested if adds 1 plus its nesting of 1.
     assertThat(Trees.messages(check.matches(outer))).containsExactly("4 > 3");
@@ -141,7 +142,7 @@ class ChecksTest {
     assertThat(
             new DescendantCountCheck(
                     Set.of("doStatement"),
-                    new CountedKinds(Set.of("'while'"), Optional.of("'do'")),
+                    new CountedKinds(Set.of("'while'"), Map.of(), Map.of("'while'", "'do'")),
                     0,
                     0,
                     "{value}")

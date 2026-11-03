@@ -48,7 +48,8 @@ body = '''
 check = "descendant-count"
 kinds = ["methodDeclaration", "constructorDeclaration"]
 counted = ["'if'", "'for'", "'while'", "'do'", "'case'", "'catch'", "'?'", "'&&'", "'||'"]
-unless-sibling = "'do'"
+requires-sibling = { "'?'" = "':'" }
+cancelled-by = { "'while'" = "'do'" }
 base = 1
 max = 10
 message = "cyclomatic complexity is {value}; the limit is {max}"
@@ -63,6 +64,8 @@ body = '''
 check = "cognitive-complexity"
 kinds = ["methodDeclaration", "constructorDeclaration"]
 structures = ["'if'", "'for'", "'while'", "'do'", "'switch'", "'catch'", "'?'"]
+requires-sibling = { "'?'" = "':'" }
+cancelled-by = { "'while'" = "'do'" }
 flat = ["'else'", "'&&'", "'||'"]
 max = 15
 message = "cognitive complexity is {value}; the limit is {max}"

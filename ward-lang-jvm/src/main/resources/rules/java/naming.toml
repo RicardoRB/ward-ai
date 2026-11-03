@@ -26,7 +26,7 @@ check = "text-pattern"
 kinds = ["methodDeclaration"]
 modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
 name = "identifier"
-skip = ["annotation"]
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
 pattern = "[a-z][a-zA-Z0-9]*"
 message = "method name '{value}' must match [a-z][a-zA-Z0-9]*"
 '''
@@ -42,7 +42,7 @@ kinds = ["fieldDeclaration"]
 modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
 excluded = "static"
 name = "identifier"
-skip = ["annotation"]
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
 pattern = "[a-z][a-zA-Z0-9]*"
 message = "field name '{value}' must match [a-z][a-zA-Z0-9]*"
 '''
@@ -57,7 +57,7 @@ check = "text-pattern"
 kinds = ["formalParameter"]
 modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
 name = "identifier"
-skip = ["annotation"]
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
 pattern = "[a-z][a-zA-Z0-9]*"
 message = "parameter name '{value}' must match [a-z][a-zA-Z0-9]*"
 '''
@@ -72,7 +72,7 @@ check = "text-pattern"
 kinds = ["localVariableDeclaration"]
 modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
 name = "identifier"
-skip = ["annotation"]
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
 pattern = "[a-z][a-zA-Z0-9]*"
 message = "local variable name '{value}' must match [a-z][a-zA-Z0-9]*"
 '''

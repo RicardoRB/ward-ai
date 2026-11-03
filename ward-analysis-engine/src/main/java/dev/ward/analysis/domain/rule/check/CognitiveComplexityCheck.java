@@ -15,7 +15,7 @@ import java.util.Set;
 public final class CognitiveComplexityCheck implements RuleCheck {
 
   private final Set<String> kinds;
-  private final Set<String> structures;
+  private final CountedKinds structures;
   private final Set<String> flat;
   private final int max;
   private final String message;
@@ -32,12 +32,12 @@ public final class CognitiveComplexityCheck implements RuleCheck {
    */
   public CognitiveComplexityCheck(
       final Set<String> kinds,
-      final Set<String> structures,
+      final CountedKinds structures,
       final Set<String> flat,
       final int max,
       final String message) {
     this.kinds = Set.copyOf(kinds);
-    this.structures = Set.copyOf(structures);
+    this.structures = Objects.requireNonNull(structures, "structures");
     this.flat = Set.copyOf(flat);
     this.max = CheckSupport.nonNegative(max, "max");
     this.message = Objects.requireNonNull(message, "message");
@@ -60,11 +60,11 @@ public final class CognitiveComplexityCheck implements RuleCheck {
   }
 
   private int score(final SyntaxNode node, final int nesting) {
-    final boolean nests = node.children().stream().anyMatch(c -> structures.contains(c.kind()));
+    final boolean nests = node.children().stream().anyMatch(c -> structures.counts(node, c));
     final int inner = nests ? nesting + 1 : nesting;
     int total = 0;
     for (final SyntaxNode child : node.children()) {
-      if (structures.contains(child.kind())) {
+      if (structures.counts(node, child)) {
         total += 1 + nesting;
       } else if (flat.contains(child.kind())) {
         total += 1;

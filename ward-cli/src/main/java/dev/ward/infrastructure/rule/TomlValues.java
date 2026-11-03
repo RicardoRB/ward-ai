@@ -2,11 +2,14 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
+import org.tomlj.TomlTable;
 
 /** Reads typed parameters from a rule body, reporting a missing or wrong-typed value. */
 final class TomlValues {
@@ -72,5 +75,15 @@ final class TomlValues {
       throw new RuleConfigurationException("'" + key + "' must hold only strings", exception);
     }
     throw new RuleConfigurationException("'" + key + "' must hold only strings");
+  }
+
+  /** Reads a table of kind to sibling kind; a missing table is empty. */
+  static Map<String, String> kindMap(final TomlParseResult toml, final String key) {
+    final TomlTable table = toml.getTable(key);
+    final Map<String, String> map = new HashMap<>();
+    if (table != null) {
+      table.toMap().forEach((kind, sibling) -> map.put(kind, String.valueOf(sibling)));
+    }
+    return Map.copyOf(map);
   }
 }

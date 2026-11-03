@@ -61,23 +61,11 @@ public final class DescendantCountCheck implements RuleCheck {
   private int count(final SyntaxNode node) {
     int total = 0;
     for (final SyntaxNode child : node.children()) {
-      if (counts(node, child)) {
+      if (counted.counts(node, child)) {
         total++;
       }
       total += count(child);
     }
     return total;
-  }
-
-  private boolean counts(final SyntaxNode parent, final SyntaxNode child) {
-    return counted.kinds().contains(child.kind()) && !cancelled(parent);
-  }
-
-  /** Tells whether {@code parent} has the sibling kind that cancels a count beside it. */
-  private boolean cancelled(final SyntaxNode parent) {
-    return counted
-        .unlessSibling()
-        .map(kind -> parent.children().stream().anyMatch(c -> kind.equals(c.kind())))
-        .orElse(false);
   }
 }

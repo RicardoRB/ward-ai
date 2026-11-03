@@ -74,18 +74,23 @@ final class DeclarativeChecks {
   private static RuleCheck descendantCount(final TomlParseResult toml) {
     return new DescendantCountCheck(
         TomlValues.strings(toml, KINDS),
-        new CountedKinds(
-            TomlValues.strings(toml, "counted"),
-            Optional.ofNullable(toml.getString("unless-sibling"))),
+        countedKinds(toml, "counted"),
         TomlValues.optionalInteger(toml, "base", 0),
         TomlValues.integer(toml, MAX),
         TomlValues.required(toml, MESSAGE));
   }
 
+  private static CountedKinds countedKinds(final TomlParseResult toml, final String key) {
+    return new CountedKinds(
+        TomlValues.strings(toml, key),
+        TomlValues.kindMap(toml, "requires-sibling"),
+        TomlValues.kindMap(toml, "cancelled-by"));
+  }
+
   private static RuleCheck cognitiveComplexity(final TomlParseResult toml) {
     return new CognitiveComplexityCheck(
         TomlValues.strings(toml, KINDS),
-        TomlValues.strings(toml, "structures"),
+        countedKinds(toml, "structures"),
         TomlValues.strings(toml, "flat"),
         TomlValues.integer(toml, MAX),
         TomlValues.required(toml, MESSAGE));
