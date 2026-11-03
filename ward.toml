@@ -108,7 +108,7 @@ enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
 # Regenerates THIRD-PARTY-LICENSES and the SBOM into ward-cli/target/compliance; the drift check below compares them.
-command = ["./mvnw", "-q", "-pl", "ward-cli", "-Dcompliance.outputDirectory=target/compliance", "license:add-third-party", "cyclonedx:makeBom"]
+command = ["./mvnw", "-q", "-DskipTests", "-pl", "ward-cli", "-am", "package", "org.codehaus.mojo:license-maven-plugin:2.7.1:add-third-party", "org.cyclonedx:cyclonedx-maven-plugin:2.9.3:makeBom", "-Dcompliance.outputDirectory=target/compliance"]
 
 # Fails when the committed compliance files differ from the regenerated ones, and names the stale file.
 [checks.license-drift]
