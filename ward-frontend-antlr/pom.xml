@@ -52,6 +52,11 @@
     <profiles>
         <profile>
             <id>native</id>
+            <properties>
+                <!-- Off by default so the native goals of modules that depend on this one skip it.
+                     Run the probe with -Dward.frontend.probe.skip=false. -->
+                <ward.frontend.probe.skip>true</ward.frontend.probe.skip>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -68,6 +73,7 @@
                                     <goal>compile-no-fork</goal>
                                 </goals>
                                 <configuration>
+                                    <skip>${ward.frontend.probe.skip}</skip>
                                     <mainClass>dev.ward.analysis.frontend.antlr.NativeProbe</mainClass>
                                     <imageName>ward-frontend-probe</imageName>
                                     <!-- The probe lives in the test tree, so the classpath lists the test classes

@@ -14,6 +14,15 @@ import java.util.stream.Collectors;
 final class ArchitectureBoundarySupport {
   // dev.ward.domain.<feature>: the feature is the fourth package segment.
   private static final int FEATURE_SEGMENT = 3;
+
+  /**
+   * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
+   * ward-cli depends on it to run the {@code ward} gate, so its classes, including the generated
+   * parsers, are on this classpath. Its placement is checked by its own module, not by the CLI
+   * layers.
+   */
+  private static final String ANTLR_FRONTEND_PACKAGE = "dev.ward.analysis.frontend.antlr";
+
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
@@ -121,14 +130,6 @@ final class ArchitectureBoundarySupport {
         .as("documented features for %s", layerPrefix)
         .containsExactlyInAnyOrderElementsOf(discoveredFeatures);
   }
-
-  /**
-   * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
-   * ward-cli depends on it to run the {@code ward} gate, so its classes, including the generated
-   * parsers, are on this classpath. Its placement is checked by its own module, not by the CLI
-   * layers.
-   */
-  private static final String ANTLR_FRONTEND_PACKAGE = "dev.ward.analysis.frontend.antlr";
 
   static boolean isAllowedPackage(final JavaClass javaClass, final Set<String> commonCliTypes) {
     final String name = javaClass.getName();
