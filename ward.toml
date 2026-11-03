@@ -107,7 +107,14 @@ command = "trivy fs --offline-scan --exit-code 1 ."
 enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package license:add-third-party"
+# Regenerates THIRD-PARTY-LICENSES and the SBOM into target/compliance; the drift check below compares them.
+command = ["./mvnw", "-q", "-pl", "ward-cli", "-Dcompliance.outputDirectory=target/compliance", "license:add-third-party", "cyclonedx:makeBom"]
+
+# Fails when the committed compliance files differ from the regenerated ones, and names the stale file.
+[checks.license-drift]
+enabled = true
+profiles = ["pre-push", "ci"]
+command = ["git", "diff", "--no-index", "--exit-code", "target/compliance", "compliance"]
 
 # Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.
 [checks.openspec]
