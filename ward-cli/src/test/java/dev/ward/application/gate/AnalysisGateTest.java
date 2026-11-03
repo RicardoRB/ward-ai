@@ -167,7 +167,10 @@ class AnalysisGateTest {
             () -> new AnalysisRuleLoad(rules, List.of()),
             matcher,
             (root, languages) -> units(brokenPath, languages),
-            List.of(new FrontendSupport(AnalysisLanguage.JAVA, frontend, capabilities)));
+            List.of(new FrontendSupport(AnalysisLanguage.JAVA, frontend, capabilities)),
+            root -> AnalysisCacheFixtures.NO_CACHE,
+            AnalysisCacheFixtures.codec(),
+            "test");
     return new AnalysisGate("ward", rules, ports);
   }
 

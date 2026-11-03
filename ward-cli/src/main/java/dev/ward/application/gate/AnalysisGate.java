@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleNotRun;
@@ -33,7 +34,7 @@ public final class AnalysisGate implements QualityGate {
   private final String name;
   private final List<RuleDefinition> rules;
   private final AnalysisPorts ports;
-  private final RuleEngine engine;
+  private final UnitResultCache results;
 
   /** Creates the gate that runs {@code rules} through the adapters in {@code ports}. */
   public AnalysisGate(
@@ -41,7 +42,8 @@ public final class AnalysisGate implements QualityGate {
     this.name = name;
     this.rules = List.copyOf(rules);
     this.ports = ports;
-    this.engine = new RuleEngine(ports.matcher());
+    this.results =
+        new UnitResultCache(new RuleEngine(ports.matcher()), ports.codec(), ports.engineVersion());
   }
 
   @Override
@@ -56,7 +58,8 @@ public final class AnalysisGate implements QualityGate {
             .map(FrontendSupport::language)
             .collect(Collectors.toUnmodifiableSet());
     final List<SourceUnit> units = ports.sources().read(project.root(), languages);
-    return result(engine.run(units, ports.frontends(), rules));
+    final AnalysisCache cache = ports.caches().open(project.root());
+    return result(results.run(cache, units, ports.frontends(), rules));
   }
 
   private GateResult result(final RuleRunResult run) {

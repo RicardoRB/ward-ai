@@ -434,6 +434,14 @@ uses = "ward"
 rules = ["ward:java/method-length"]
 ```
 
+### Result cache
+
+The `ward` gate keeps each source file's results in `.ward/cache/analysis/`, and reuses them on the
+next run when the file, the selected rules, and the Ward version are all unchanged. Cached results
+match a full run exactly. A file that failed to parse or a rule that failed is never cached, so a
+failure is always analyzed again. The directory is git-ignored. Delete `.ward/cache/` to force a full
+run; nothing else depends on it. Entries are not pruned yet, so the directory grows as files change.
+
 ### Java rules
 
 Ward ships thirteen Java rules. They mirror the structural Checkstyle and PMD checks of the strict

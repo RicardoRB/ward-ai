@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -33,6 +34,7 @@ public final class OwnedSections {
     if (selection.ci() != null) {
       sections.add(catalog.ciWorkflow(selection.ci(), project, gates));
     }
+    final String analysisCache = analysisCacheEntries(gates);
     if (project.toolchain() == Toolchain.NODE) {
       sections.add(
           new OwnedSection(
@@ -44,7 +46,8 @@ public final class OwnedSections {
                   + project.taskRunner().gitignoreEntry()
                   + (gates.stream().anyMatch(gate -> "stryker".equals(gate.id()))
                       ? ".stryker-tmp/\nreports/mutation/\n"
-                      : ""),
+                      : "")
+                  + analysisCache,
               false));
     }
     if (project.toolchain() == Toolchain.PYTHON) {
@@ -53,7 +56,7 @@ public final class OwnedSections {
               project.root().resolve(".gitignore"),
               GITIGNORE_BEGIN,
               GITIGNORE_END,
-              ".ward/reports/\nmutants/\n.coverage\n",
+              ".ward/reports/\nmutants/\n.coverage\n" + analysisCache,
               false));
     }
     InitToolchains.find(project)
@@ -65,12 +68,35 @@ public final class OwnedSections {
                         project.root().resolve(".gitignore"),
                         GITIGNORE_BEGIN,
                         GITIGNORE_END,
-                        entries,
+                        entries + analysisCache,
                         false)));
+    if (!analysisCache.isEmpty() && sections.stream().noneMatch(OwnedSections::isGitignore)) {
+      sections.add(
+          new OwnedSection(
+              project.root().resolve(".gitignore"),
+              GITIGNORE_BEGIN,
+              GITIGNORE_END,
+              analysisCache,
+              false));
+    }
     if (selection.agentRules()) {
       sections.add(
           AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));
     }
     return sections;
+  }
+
+  /**
+   * Returns the Git ignore entry for the analysis result cache, or nothing when the project has no
+   * {@code ward} gate. The entry shares the one ignore section that init owns in the file.
+   */
+  private static String analysisCacheEntries(final List<InitGateOption> gates) {
+    return gates.stream().anyMatch(gate -> SupportedQualityGates.ANALYSIS.equals(gate.id()))
+        ? ".ward/cache/\n"
+        : "";
+  }
+
+  private static boolean isGitignore(final OwnedSection section) {
+    return GITIGNORE_BEGIN.equals(section.begin());
   }
 }
