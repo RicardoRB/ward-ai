@@ -49,11 +49,13 @@ class ClasspathRuleSourceTest {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();
-    assertThat(load.rules())
+    final List<RuleDefinition> java =
+        load.rules().stream().filter(rule -> rule.language() == AnalysisLanguage.JAVA).toList();
+    assertThat(java)
         .extracting(RuleDefinition::id)
         .hasSize(JAVA_RULE_COUNT)
         .allMatch(id -> id.startsWith("ward:java/"));
-    assertThat(load.rules())
+    assertThat(java)
         .allSatisfy(
             rule -> {
               assertThat(rule.language()).isEqualTo(AnalysisLanguage.JAVA);

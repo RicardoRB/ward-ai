@@ -67,7 +67,10 @@ class ChecksTest {
             "ifStatement", 0, 20, 1, Trees.leaf(IF, "if", 0), Trees.leaf(AND, "&&", 3), inner);
     final CognitiveComplexityCheck check =
         new CognitiveComplexityCheck(
-            Set.of("ifStatement"), CountedKinds.of(Set.of(IF)), Set.of(AND), 3, "{value} > {max}");
+            Set.of("ifStatement"),
+            new CognitiveTokens(CountedKinds.of(Set.of(IF)), Set.of(AND), Set.of()),
+            3,
+            "{value} > {max}");
 
     // The outer if adds 1, the && adds 1, and the nested if adds 1 plus its nesting of 1.
     assertThat(Trees.messages(check.matches(outer))).containsExactly("4 > 3");

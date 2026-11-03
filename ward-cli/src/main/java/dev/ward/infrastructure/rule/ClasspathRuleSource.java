@@ -3,6 +3,7 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.application.rule.RuleDefinitions;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -31,7 +32,11 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
 
   /** The rule files packaged with Ward, in load order. */
   static final List<String> RULE_FILES =
-      List.of("rules/java/size.toml", "rules/java/imports.toml", "rules/java/naming.toml");
+      List.of(
+          "rules/java/size.toml",
+          "rules/java/imports.toml",
+          "rules/java/naming.toml",
+          "rules/python-structural.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";
@@ -140,8 +145,8 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   /** Builds the check once so that a body that cannot be used is reported with its file. */
   private static void checkBody(final String resource, final RuleDefinition definition) {
     try {
-      DeclarativeChecks.build(definition.body());
-    } catch (final RuleConfigurationException exception) {
+      new CompositeRuleMatcher().compile(definition);
+    } catch (final AnalysisFailedException exception) {
       throw RuleFileProblems.problem(
           resource,
           "rule '" + definition.id() + "' cannot be used: " + exception.getMessage(),

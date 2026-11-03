@@ -14,7 +14,7 @@ import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
-import dev.ward.infrastructure.rule.DeclarativeRuleMatcher;
+import dev.ward.infrastructure.rule.CompositeRuleMatcher;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
 import java.util.Set;
@@ -28,10 +28,17 @@ interface GateExtensionBindingsModule {
   @Binds
   AnalysisSourceUnits analysisSourceUnits(FileSystemSourceUnits implementation);
 
-  @Binds
-  RuleMatcher ruleMatcher(DeclarativeRuleMatcher implementation);
+  /**
+   * Compiles each rule in the format its body is written in: declarative checks or metric rules.
+   */
+  @Provides
+  static RuleMatcher ruleMatcher() {
+    return new CompositeRuleMatcher();
+  }
 
-  /** The ward gate reads Java sources through the ANTLR frontend; no other language ships yet. */
+  /**
+   * The ward gate reads Java and Python sources through the ANTLR frontend, with syntax rules only.
+   */
   @Provides
   static AnalysisPorts analysisPorts(
       final AnalysisRuleSource rules,
@@ -40,7 +47,10 @@ interface GateExtensionBindingsModule {
     final FrontendSupport java =
         new FrontendSupport(
             AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
-    return new AnalysisPorts(rules, matcher, sources, List.of(java));
+    final FrontendSupport python =
+        new FrontendSupport(
+            AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+    return new AnalysisPorts(rules, matcher, sources, List.of(java, python));
   }
 
   @Provides

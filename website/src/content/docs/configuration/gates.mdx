@@ -460,16 +460,54 @@ Differences from Checkstyle and PMD, by construction:
 - `unused-import` is textual. It does not resolve names, so a fully qualified use still counts as
   unused and a same-named identifier from another package counts as a use.
 - `missing-javadoc` checks only the comment immediately before a declaration. It skips `@Override`
-  methods and does not check interface methods.
+  methods, does not check interface members, and skips public types nested in a non-public type, as
+  Checkstyle's scope does.
 - `method-length` and the complexity rules measure methods only. Constructor bodies are not
   measured by `method-length`, and nested classes and lambdas count toward their enclosing method.
 - `cognitive-complexity` follows the published definition in a simplified form: each `&&` and `||`
-  adds one, and `else` adds one without nesting.
+  adds one, an `else if` chain does not nest, and a final `else` adds one.
 - Java comments are read from the syntax tree. Comments that Ward's parser cannot attach to a
   declaration are not documentation for `missing-javadoc`.
 
 Rule ids and limits are stable across releases. A rule whose id changes is published under a new
 id.
+
+## Python structural rules
+
+The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
+the ANTLR Python frontend and use fixed limits. Ruff stays the external gate for style and lint.
+
+| Rule | Limit | Severity | Ruff counterpart |
+|---|---|---|---|
+| `ward:python/function-length` | more than 60 lines in a function, from the `def` line | error | none; Ruff's `PLR0915` counts statements, not lines |
+| `ward:python/parameter-count` | more than 5 parameters; `self` and `cls` of a method are not counted | error | `PLR0913` (max-args 5; whether Ruff counts `self` is not checked here) |
+| `ward:python/complexity` | complexity above 10 | error | `C901` (max-complexity 10) |
+| `ward:python/file-length` | more than 500 lines in a module | error | none |
+| `ward:python/naming` | functions and variables `snake_case`, classes `CapWords`; dunder names skipped | warning | `N802`, `N801`, `N806` (Ruff also checks arguments, which Ward does not) |
+
+Complexity is one plus the decision points in a function: `if`, `elif`, `while`, `for`, `except`,
+`match` cases, comprehension `for` and `if` clauses, each `and` and `or`, and conditional
+expressions. Nested functions, classes and lambdas are measured on their own. Ruff's `C901` follows
+McCabe. How Ruff's `C901` treats boolean operators is not checked against Ruff's documentation here,
+so compare the two counts on your own code before relying on the parity.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:python/function-length",
+  "ward:python/parameter-count",
+  "ward:python/complexity",
+  "ward:python/file-length",
+  "ward:python/naming",
+]
+```
+
+A file with a syntax error is not checked by these rules. It is reported as an execution error, and
+the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
+than `uses`, `enabled`, `profiles` and `rules`.
 
 ## Traceability gate
 

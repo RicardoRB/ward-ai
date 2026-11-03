@@ -542,9 +542,10 @@ jobs:
           cache: maven
 
       # native:test resolves its prefix per module, so ward-cli takes the analysis modules from the
-      # local repository instead of the reactor.
+      # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java
+      # and Python rules, so those are installed too.
       - name: Install the analysis modules for the native build
-        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm -am
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-python -am
 
       - name: Run terminal tests in a native test image
         run: >-

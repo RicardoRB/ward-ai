@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
+import dev.ward.analysis.domain.rule.check.CognitiveTokens;
 import dev.ward.analysis.domain.rule.check.CountedKinds;
 import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
@@ -90,8 +91,10 @@ final class DeclarativeChecks {
   private static RuleCheck cognitiveComplexity(final TomlParseResult toml) {
     return new CognitiveComplexityCheck(
         TomlValues.strings(toml, KINDS),
-        countedKinds(toml, "structures"),
-        TomlValues.strings(toml, "flat"),
+        new CognitiveTokens(
+            countedKinds(toml, "structures"),
+            TomlValues.strings(toml, "flat"),
+            TomlValues.optionalStrings(toml, "chaining")),
         TomlValues.integer(toml, MAX),
         TomlValues.required(toml, MESSAGE));
   }

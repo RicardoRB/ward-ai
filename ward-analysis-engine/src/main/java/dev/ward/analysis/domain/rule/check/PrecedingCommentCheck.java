@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 /**
  * Fails each declaration that passes the filter when no comment sits immediately before its
@@ -43,11 +44,29 @@ public final class PrecedingCommentCheck implements RuleCheck {
       final List<String> modifiers = declaration.modifiers();
       if (CheckSupport.admits(modifiers, filter.required(), filter.excluded())
           && !hasExemptAnnotation(modifiers)
+          && !enclosedByHidden(visit)
           && !documented(declaration)) {
         matches.add(new RuleMatch(visit.node().span(), CheckSupport.fill(message, "", "")));
       }
     }
     return List.copyOf(matches);
+  }
+
+  /**
+   * Tells whether an enclosing type lacks the required modifier. Checkstyle's scope follows the
+   * enclosing types, so a public class inside a package-private one is not public API.
+   */
+  private boolean enclosedByHidden(final SyntaxWalk.Visit visit) {
+    final List<SyntaxNode> ancestors = visit.ancestors();
+    return IntStream.range(0, ancestors.size())
+        .filter(i -> filter.kinds().contains(ancestors.get(i).kind()))
+        .anyMatch(
+            i -> lacksRequired(new SyntaxWalk.Visit(ancestors.get(i), ancestors.subList(0, i))));
+  }
+
+  private boolean lacksRequired(final SyntaxWalk.Visit ancestor) {
+    final List<String> modifiers = Declaration.of(ancestor, filter.modifierKinds()).modifiers();
+    return filter.required().map(required -> !modifiers.contains(required)).orElse(false);
   }
 
   private boolean hasExemptAnnotation(final List<String> modifiers) {
