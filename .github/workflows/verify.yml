@@ -541,10 +541,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
 
-      # native:test resolves its prefix per module, so ward-cli takes the analysis API from the
+      # native:test resolves its prefix per module, so ward-cli takes the analysis modules from the
       # local repository instead of the reactor.
-      - name: Install the analysis API for the native build
-        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine -am
+      - name: Install the analysis modules for the native build
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm -am
 
       - name: Run terminal tests in a native test image
         run: >-
