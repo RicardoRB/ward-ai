@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 class NodeParityDumpTest {
 
   private static final String OUTPUT_PROPERTY = "ward.parity.out";
+  private static final int FIXTURE_COUNT = 36;
   private static final String ROOT = "fixtures/node-structural/";
   private static final List<String> METRICS =
       List.of(
@@ -43,7 +44,7 @@ class NodeParityDumpTest {
     dump(entries, "js-esm", "mjs", AnalysisLanguage.JAVASCRIPT);
     dump(entries, "js-cjs", "cjs", AnalysisLanguage.JAVASCRIPT);
     Files.writeString(Path.of(output), "[\n" + String.join(",\n", entries) + "\n]\n");
-    assertThat(entries).hasSize(36);
+    assertThat(entries).hasSize(FIXTURE_COUNT);
   }
 
   private static void dump(

@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 final class NodeRuleBody {
 
   private static final Pattern MAX = Pattern.compile("max=(\\d+)");
+  private static final int SMALLEST_LIMIT = 1;
 
   private NodeRuleBody() {}
 
@@ -27,7 +28,7 @@ final class NodeRuleBody {
     }
     final Matcher matcher = MAX.matcher(body);
     if (!matcher.matches()) {
-      throw malformed(definition);
+      throw malformed(definition, null);
     }
     return positive(definition, matcher.group(1));
   }
@@ -39,7 +40,7 @@ final class NodeRuleBody {
    */
   static void requireEmpty(final RuleDefinition definition) {
     if (!definition.body().isBlank()) {
-      throw malformed(definition);
+      throw malformed(definition, null);
     }
   }
 
@@ -48,18 +49,24 @@ final class NodeRuleBody {
     try {
       value = Integer.parseInt(digits);
     } catch (final NumberFormatException exception) {
-      throw malformed(definition);
+      throw malformed(definition, exception);
     }
-    if (value < 1) {
-      throw malformed(definition);
+    if (value < SMALLEST_LIMIT) {
+      throw malformed(definition, null);
     }
     return value;
   }
 
-  private static AnalysisFailedException malformed(final RuleDefinition definition) {
-    return new AnalysisFailedException(
-        "rule "
-            + definition.id()
-            + " has a body it cannot read; use max=<positive integer> or leave it empty");
+  private static AnalysisFailedException malformed(
+      final RuleDefinition definition, final Throwable cause) {
+    final AnalysisFailedException failure =
+        new AnalysisFailedException(
+            "rule "
+                + definition.id()
+                + " has a body it cannot read; use max=<positive integer> or leave it empty");
+    if (cause != null) {
+      failure.initCause(cause);
+    }
+    return failure;
   }
 }

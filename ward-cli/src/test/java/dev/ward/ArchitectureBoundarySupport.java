@@ -151,17 +151,26 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
-          "dev.ward.analysis.application.rule",
-          "dev.ward.analysis.domain.node",
-          "dev.ward.analysis.infrastructure.node" ->
+          "dev.ward.analysis.application.rule" ->
           true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
-      default ->
-          packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.analysis\\.frontend\\.antlr(\\..*)?");
+      default -> isLayeredFeaturePackage(packageName) || isGeneratedFrontendPackage(packageName);
     };
+  }
+
+  private static boolean isLayeredFeaturePackage(final String packageName) {
+    return packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
+        || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?");
+  }
+
+  /**
+   * The packages of the frontend module, including its generated parsers, and of the structural
+   * rules, which are the analysis adapters and domain for those rules.
+   */
+  private static boolean isGeneratedFrontendPackage(final String packageName) {
+    return packageName.matches(
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

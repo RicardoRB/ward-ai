@@ -11,6 +11,26 @@ final class SyntaxTrees {
 
   private static final String TEXT = "text";
   private static final String END_OF_FILE = "<EOF>";
+  private static final String IDENTIFIER_TOKEN = "Identifier";
+
+  /** Nodes that start a function. A function also needs one of {@link #HEADER} or {@link #BODY}. */
+  private static final Set<String> FUNCTION =
+      Set.of(
+          "functionDeclaration",
+          "anonymousFunction",
+          "arrowFunctionDeclaration",
+          "methodDefinition",
+          "propertyMemberDeclaration");
+
+  /** Children that hold a function's parameter list. */
+  private static final Set<String> HEADER =
+      Set.of("callSignature", "formalParameterList", "arrowFunctionParameters");
+
+  /** Children that hold a function's body; their statements belong to the function. */
+  private static final Set<String> BODY = Set.of("functionBody", "arrowFunctionBody");
+
+  /** Nodes that hold one formal parameter. */
+  private static final Set<String> PARAMETER = Set.of("parameter", "formalParameterArg");
 
   private SyntaxTrees() {}
 
@@ -26,8 +46,7 @@ final class SyntaxTrees {
    * The grammars omit an empty parameter list, so a body is also a sign of a function.
    */
   static boolean isFunction(final SyntaxNode node) {
-    return NodeKinds.FUNCTION.contains(node.kind())
-        && (hasChildOf(node, NodeKinds.HEADER) || hasChildOf(node, NodeKinds.BODY));
+    return FUNCTION.contains(node.kind()) && (hasChildOf(node, HEADER) || hasChildOf(node, BODY));
   }
 
   /**
@@ -54,18 +73,9 @@ final class SyntaxTrees {
     return count;
   }
 
-  /** Counts the complexity contributions of a function, not counting nested functions. */
-  static int decisionPoints(final SyntaxNode function) {
-    int count = 0;
-    for (final SyntaxNode child : function.children()) {
-      count += decisionsIn(child);
-    }
-    return count;
-  }
-
   /** Returns the first identifier token in source order under {@code node}, or null. */
   static SyntaxNode firstIdentifier(final SyntaxNode node) {
-    if (NodeKinds.IDENTIFIER_TOKEN.equals(node.kind())) {
+    if (IDENTIFIER_TOKEN.equals(node.kind())) {
       return node;
     }
     for (final SyntaxNode child : node.children()) {
@@ -101,42 +111,15 @@ final class SyntaxTrees {
   }
 
   private static int countParameters(final SyntaxNode node) {
-    if (NodeKinds.PARAMETER.contains(node.kind())) {
+    if (PARAMETER.contains(node.kind())) {
       return 1;
     }
-    if (NodeKinds.BODY.contains(node.kind()) || isFunction(node)) {
+    if (BODY.contains(node.kind()) || isFunction(node)) {
       return 0;
     }
     int count = 0;
     for (final SyntaxNode child : node.children()) {
       count += countParameters(child);
-    }
-    return count;
-  }
-
-  private static int decisionsIn(final SyntaxNode node) {
-    if (isFunction(node)) {
-      return 0;
-    }
-    int count = decisionAt(node);
-    for (final SyntaxNode child : node.children()) {
-      count += decisionsIn(child);
-    }
-    return count;
-  }
-
-  private static int decisionAt(final SyntaxNode node) {
-    if (NodeKinds.BRANCH.contains(node.kind())) {
-      return 1;
-    }
-    if (!NodeKinds.EXPRESSION.equals(node.kind())) {
-      return 0;
-    }
-    int count = 0;
-    for (final SyntaxNode child : node.children()) {
-      if (NodeKinds.DECISION_TOKEN.contains(child.kind())) {
-        count++;
-      }
     }
     return count;
   }

@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Reports a declared function, variable or parameter whose name contains an underscore between its
@@ -19,6 +20,10 @@ public record NamingRule(RuleDefinition definition) implements CompiledRule {
 
   private static final String EDGE_UNDERSCORES = "^_+|_+$";
 
+  /** Nodes whose first identifier is a name the rule checks. */
+  private static final Set<String> DECLARATION =
+      Set.of("functionDeclaration", "variableDeclaration", "parameter", "formalParameterArg");
+
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
@@ -27,7 +32,7 @@ public record NamingRule(RuleDefinition definition) implements CompiledRule {
   }
 
   private static void collect(final SyntaxNode node, final List<RuleMatch> matches) {
-    if (NodeKinds.DECLARATION.contains(node.kind())) {
+    if (DECLARATION.contains(node.kind())) {
       addIfUnderscored(SyntaxTrees.firstIdentifier(node), matches);
     }
     for (final SyntaxNode child : node.children()) {

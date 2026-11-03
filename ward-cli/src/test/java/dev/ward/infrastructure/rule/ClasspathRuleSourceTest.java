@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
+  private static final int BUNDLED_RULES = 12;
+  private static final int RULES_PER_LANGUAGE = 6;
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -39,7 +42,7 @@ class ClasspathRuleSourceTest {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();
-    assertThat(load.rules()).hasSize(12);
+    assertThat(load.rules()).hasSize(BUNDLED_RULES);
     assertThat(load.rules())
         .allSatisfy(
             rule -> {
@@ -47,11 +50,11 @@ class ClasspathRuleSourceTest {
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
               assertThat(rule.body()).isEmpty();
             });
-    assertThat(load.rules().stream().map(RuleDefinition::id).distinct()).hasSize(12);
+    assertThat(load.rules().stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
     assertThat(load.rules().stream().filter(r -> r.language() == AnalysisLanguage.TYPESCRIPT))
-        .hasSize(6);
+        .hasSize(RULES_PER_LANGUAGE);
     assertThat(load.rules().stream().filter(r -> r.language() == AnalysisLanguage.JAVASCRIPT))
-        .hasSize(6);
+        .hasSize(RULES_PER_LANGUAGE);
   }
 
   @Test

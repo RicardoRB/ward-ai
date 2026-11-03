@@ -23,7 +23,7 @@ public record ComplexityRule(RuleDefinition definition, int limit) implements Co
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxNode function : SyntaxTrees.functions(root)) {
-      final int complexity = BASE_COMPLEXITY + SyntaxTrees.decisionPoints(function);
+      final int complexity = BASE_COMPLEXITY + Decisions.count(function);
       if (complexity > limit) {
         matches.add(
             new RuleMatch(

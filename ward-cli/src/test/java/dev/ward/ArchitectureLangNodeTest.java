@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 class ArchitectureLangNodeTest {
 
   private static final String TEST_SCOPE = "test";
+  private static final String FRONTEND = "ward-frontend-antlr";
 
   @Test
   void langNodeDependsOnlyOnAnalysisModulesAndTestsOnTheFrontend()
@@ -29,12 +30,12 @@ class ArchitectureLangNodeTest {
     for (final Dependency dependency : model.getDependencies()) {
       final String artifact = dependency.getArtifactId();
       assertThat(artifact).isNotEqualTo("ward-cli");
-      if (artifact.equals("ward-frontend-antlr")) {
+      if (FRONTEND.equals(artifact)) {
         assertThat(dependency.getScope()).as(artifact).isEqualTo(TEST_SCOPE);
       }
     }
     assertThat(model.getDependencies().stream().map(Dependency::getArtifactId))
-        .contains("ward-analysis-api", "ward-analysis-engine", "ward-frontend-antlr")
+        .contains("ward-analysis-api", "ward-analysis-engine", FRONTEND)
         .doesNotContainNull();
   }
 }

@@ -30,9 +30,6 @@ public final class NodeRuleMatcher implements RuleMatcher {
   private static final int FILE_LENGTH_LIMIT = 300;
   private static final int NESTING_DEPTH_LIMIT = 4;
 
-  /** Creates the matcher. It holds no state, so one instance serves every gate run. */
-  public NodeRuleMatcher() {}
-
   @Override
   public CompiledRule compile(final RuleDefinition definition) {
     final String metric = definition.id().substring(definition.id().indexOf('/') + 1);

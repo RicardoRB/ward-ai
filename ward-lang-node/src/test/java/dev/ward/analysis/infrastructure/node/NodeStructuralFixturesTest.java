@@ -46,25 +46,23 @@ class NodeStructuralFixturesTest {
       final String extension,
       final AnalysisLanguage language) {
     for (final String metric : METRICS) {
-      cases.add(Arguments.of(directory, extension, language, metric, "violating", 1));
-      cases.add(Arguments.of(directory, extension, language, metric, "passing", 0));
+      final String base = ROOT + directory + "/" + metric + "-";
+      cases.add(fixture(base + "violating." + extension, language, metric, 1));
+      cases.add(fixture(base + "passing." + extension, language, metric, 0));
     }
   }
 
-  @ParameterizedTest(name = "{3} {4} in {0} gives {5} finding(s)")
+  private static Arguments fixture(
+      final String path, final AnalysisLanguage language, final String metric, final int expected) {
+    return Arguments.of(path, language, metric, expected);
+  }
+
+  @ParameterizedTest(name = "{2} gives {3} finding(s) in {0}")
   @MethodSource("fixtures")
   void fixtureYieldsExpectedFindings(
-      final String directory,
-      final String extension,
-      final AnalysisLanguage language,
-      final String metric,
-      final String kind,
-      final int expected)
+      final String path, final AnalysisLanguage language, final String metric, final int expected)
       throws IOException {
-    final String path = ROOT + directory + "/" + metric + "-" + kind + "." + extension;
-    final String text = read(path);
-
-    final RuleRunResult result = NodeRuleRuns.run(metric, language, "", text);
+    final RuleRunResult result = NodeRuleRuns.run(metric, language, "", read(path));
 
     assertThat(result.executionErrors()).as(path).isEmpty();
     assertThat(result.notRun()).as(path).isEmpty();
