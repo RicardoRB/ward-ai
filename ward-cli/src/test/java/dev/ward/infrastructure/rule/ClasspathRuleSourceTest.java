@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
+  private static final int JAVA_RULE_COUNT = 13;
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -49,7 +51,7 @@ class ClasspathRuleSourceTest {
     assertThat(load.configurationErrors()).isEmpty();
     assertThat(load.rules())
         .extracting(RuleDefinition::id)
-        .hasSize(13)
+        .hasSize(JAVA_RULE_COUNT)
         .allMatch(id -> id.startsWith("ward:java/"));
     assertThat(load.rules())
         .allSatisfy(

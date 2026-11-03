@@ -23,7 +23,7 @@ public final class DeclarativeRuleMatcher implements RuleMatcher {
     try {
       return new CheckedRule(definition, DeclarativeChecks.build(definition.body()));
     } catch (final RuleConfigurationException exception) {
-      throw new AnalysisFailedException(exception.getMessage());
+      throw new AnalysisFailedException(exception.getMessage(), exception);
     }
   }
 }

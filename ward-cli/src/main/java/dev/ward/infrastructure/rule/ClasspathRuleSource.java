@@ -78,15 +78,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
 
   /** Reads one rule file; throws a configuration error that names the file. */
   private static List<RuleDefinition> read(final String resource) {
-    final TomlParseResult toml;
-    try (InputStream stream = ClasspathRuleSource.class.getResourceAsStream("/" + resource)) {
-      if (stream == null) {
-        throw problem(resource, "the file is missing from the Ward distribution");
-      }
-      toml = parse(resource, stream);
-    } catch (final IOException exception) {
-      throw problem(resource, "the file could not be read", exception);
-    }
+    final TomlParseResult toml = parseResource(resource);
     final TomlArray tables = toml.getArray(RULES);
     final List<RuleDefinition> rules = new ArrayList<>();
     for (int index = 0; tables != null && index < tables.size(); index++) {
@@ -95,12 +87,28 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
     return rules;
   }
 
+  private static TomlParseResult parseResource(final String resource) {
+    try (InputStream stream = open(resource)) {
+      return parse(resource, stream);
+    } catch (final IOException exception) {
+      throw RuleFileProblems.problem(resource, "the file could not be read", exception);
+    }
+  }
+
+  private static InputStream open(final String resource) {
+    final InputStream stream = ClasspathRuleSource.class.getResourceAsStream("/" + resource);
+    if (stream == null) {
+      throw RuleFileProblems.problem(resource, "the file is missing from the Ward distribution");
+    }
+    return stream;
+  }
+
   private static TomlParseResult parse(final String resource, final InputStream stream)
       throws IOException {
     try (Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
       final TomlParseResult toml = Toml.parse(reader);
       if (toml.hasErrors()) {
-        throw problem(resource, "it is not valid TOML");
+        throw RuleFileProblems.problem(resource, "it is not valid TOML");
       }
       return toml;
     }
@@ -108,7 +116,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
 
   private static RuleDefinition rule(final String resource, final TomlTable table) {
     if (table == null) {
-      throw problem(resource, "every entry under [[rules]] must be a table");
+      throw RuleFileProblems.problem(resource, "every entry under [[rules]] must be a table");
     }
     final AnalysisLanguage language = constant(resource, table, LANGUAGE, AnalysisLanguage.class);
     final RuleCapability capability = constant(resource, table, CAPABILITY, RuleCapability.class);
@@ -123,7 +131,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
               severity,
               text(resource, table, BODY));
     } catch (final IllegalArgumentException exception) {
-      throw problem(resource, "a value is not usable", exception);
+      throw RuleFileProblems.problem(resource, "a value is not usable", exception);
     }
     checkBody(resource, definition);
     return definition;
@@ -134,7 +142,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
     try {
       DeclarativeChecks.build(definition.body());
     } catch (final RuleConfigurationException exception) {
-      throw problem(
+      throw RuleFileProblems.problem(
           resource,
           "rule '" + definition.id() + "' cannot be used: " + exception.getMessage(),
           exception);
@@ -144,7 +152,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   private static String text(final String resource, final TomlTable table, final String key) {
     final String value = table.getString(key);
     if (value == null) {
-      throw problem(resource, "'" + key + "' must be a string");
+      throw RuleFileProblems.problem(resource, "'" + key + "' must be a string");
     }
     return value;
   }
@@ -155,24 +163,8 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
     try {
       return Enum.valueOf(type, value.toUpperCase(Locale.ROOT));
     } catch (final IllegalArgumentException exception) {
-      throw problem(resource, "'" + key + "' value '" + value + "' is not supported", exception);
+      throw RuleFileProblems.problem(
+          resource, "'" + key + "' value '" + value + "' is not supported", exception);
     }
-  }
-
-  private static RuleConfigurationException problem(final String resource, final String detail) {
-    return new RuleConfigurationException(message(resource, detail));
-  }
-
-  private static RuleConfigurationException problem(
-      final String resource, final String detail, final Throwable cause) {
-    return new RuleConfigurationException(message(resource, detail), cause);
-  }
-
-  private static String message(final String resource, final String detail) {
-    return "Analysis rule file '"
-        + resource
-        + "' cannot be used: "
-        + detail
-        + ". Its rules are skipped.";
   }
 }

@@ -47,7 +47,7 @@ class JavaStructuralRulesTest {
         "parameter-name",
         "local-variable-name"
       })
-  void violatingFixtureReportsItsRule(final String rule) throws Exception {
+  void violatingFixtureReportsItsRule(final String rule) throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, VIOLATING)).isNotEmpty();
   }
 
@@ -68,26 +68,27 @@ class JavaStructuralRulesTest {
         "parameter-name",
         "local-variable-name"
       })
-  void passingFixtureDoesNotReportItsRule(final String rule) throws Exception {
+  void passingFixtureDoesNotReportItsRule(final String rule)
+      throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, PASSING)).isEmpty();
   }
 
   @Test
-  void modernJavaSyntaxRunsWithoutExecutionErrors() throws Exception {
+  void modernJavaSyntaxRunsWithoutExecutionErrors() throws IOException, URISyntaxException {
     final RuleRunResult result = run(units(FIXTURES + "java25"));
 
     assertThat(result.executionErrors()).isEmpty();
   }
 
   @Test
-  void repeatedRunsGiveTheSameFindings() throws Exception {
+  void repeatedRunsGiveTheSameFindings() throws IOException, URISyntaxException {
     final List<SourceUnit> units = units(FIXTURES + "file-length/violating");
 
     assertThat(run(units).findings()).isEqualTo(run(units).findings());
   }
 
   private static List<AnalysisFinding> findingsOf(final String rule, final String set)
-      throws Exception {
+      throws IOException, URISyntaxException {
     final String ruleId = "ward:java/" + rule;
     return run(units(FIXTURES + rule + "/" + set)).findings().stream()
         .filter(finding -> finding.ruleId().equals(ruleId))
@@ -104,7 +105,7 @@ class JavaStructuralRulesTest {
 
   private static List<SourceUnit> units(final String directory)
       throws IOException, URISyntaxException {
-    final URL url = JavaStructuralRulesTest.class.getClassLoader().getResource(directory);
+    final URL url = JavaStructuralRulesTest.class.getResource("/" + directory);
     if (url == null) {
       throw new IOException("missing fixture directory " + directory);
     }

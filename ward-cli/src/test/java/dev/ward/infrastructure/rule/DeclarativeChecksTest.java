@@ -8,15 +8,35 @@ import org.junit.jupiter.api.Test;
 
 class DeclarativeChecksTest {
 
+  private static final String LINES_CHECK =
+      "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = 60\nmessage = \"{value}\"";
+
+  private static final String DESCENDANT_COUNT_CHECK =
+      "check = \"descendant-count\"\nkinds = [\"methodDeclaration\"]\n"
+          + "counted = [\"'if'\"]\nmax = 10\nmessage = \"{value}\"";
+
+  private static final String COGNITIVE_CHECK =
+      "check = \"cognitive-complexity\"\nkinds = [\"methodDeclaration\"]\n"
+          + "structures = [\"'if'\"]\nflat = [\"'&&'\"]\nmax = 15\nmessage = \"{value}\"";
+
+  private static final String TEXT_PATTERN_CHECK =
+      "check = \"text-pattern\"\nkinds = [\"methodDeclaration\"]\n"
+          + "modifiers = [\"modifier\"]\nname = \"identifier\"\n"
+          + "pattern = \"[a-z][a-zA-Z0-9]*\"\nmessage = \"{value}\"";
+
+  private static final String PRECEDING_COMMENT_CHECK =
+      "check = \"preceding-comment\"\nkinds = [\"classDeclaration\"]\n"
+          + "modifiers = [\"modifier\"]\nrequired = \"public\"\nmessage = \"missing\"";
+
   @Test
   void buildsEachKnownCheck() {
-    assertThat(DeclarativeChecks.build(lines())).isNotNull();
-    assertThat(DeclarativeChecks.build(descendantCount())).isNotNull();
-    assertThat(DeclarativeChecks.build(cognitive())).isNotNull();
-    assertThat(DeclarativeChecks.build(textPattern())).isNotNull();
+    assertThat(DeclarativeChecks.build(LINES_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.build(DESCENDANT_COUNT_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.build(COGNITIVE_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.build(TEXT_PATTERN_CHECK)).isNotNull();
     assertThat(DeclarativeChecks.build("check = \"unreferenced-name\"\nmessage = \"{value}\""))
         .isNotNull();
-    assertThat(DeclarativeChecks.build(precedingComment())).isNotNull();
+    assertThat(DeclarativeChecks.build(PRECEDING_COMMENT_CHECK)).isNotNull();
   }
 
   @Test
@@ -56,7 +76,9 @@ class DeclarativeChecksTest {
   @Test
   void malformedRegularExpressionIsAConfigurationError() {
     assertThatThrownBy(
-            () -> DeclarativeChecks.build(textPattern().replace("[a-z][a-zA-Z0-9]*", "[unclosed")))
+            () ->
+                DeclarativeChecks.build(
+                    TEXT_PATTERN_CHECK.replace("[a-z][a-zA-Z0-9]*", "[unclosed")))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("check 'text-pattern' cannot be used");
   }
@@ -75,30 +97,5 @@ class DeclarativeChecksTest {
                 DeclarativeChecks.build("check = \"lines\"\nkinds = [1]\nmax = 1\nmessage = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'kinds' must hold only strings");
-  }
-
-  private static String lines() {
-    return "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = 60\nmessage = \"{value}\"";
-  }
-
-  private static String descendantCount() {
-    return "check = \"descendant-count\"\nkinds = [\"methodDeclaration\"]\n"
-        + "counted = [\"'if'\"]\nmax = 10\nmessage = \"{value}\"";
-  }
-
-  private static String cognitive() {
-    return "check = \"cognitive-complexity\"\nkinds = [\"methodDeclaration\"]\n"
-        + "structures = [\"'if'\"]\nflat = [\"'&&'\"]\nmax = 15\nmessage = \"{value}\"";
-  }
-
-  private static String textPattern() {
-    return "check = \"text-pattern\"\nkinds = [\"methodDeclaration\"]\n"
-        + "modifiers = [\"modifier\"]\nname = \"identifier\"\n"
-        + "pattern = \"[a-z][a-zA-Z0-9]*\"\nmessage = \"{value}\"";
-  }
-
-  private static String precedingComment() {
-    return "check = \"preceding-comment\"\nkinds = [\"classDeclaration\"]\n"
-        + "modifiers = [\"modifier\"]\nrequired = \"public\"\nmessage = \"missing\"";
   }
 }

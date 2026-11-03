@@ -168,7 +168,7 @@ final class ArchitectureBoundarySupport {
    * parsers beneath it. It is allowed here until it moves under {@code infrastructure}.
    */
   static boolean isAnalysisFrontendAdapter(final String packageName) {
-    return packageName.equals("dev.ward.analysis.frontend.antlr")
+    return "dev.ward.analysis.frontend.antlr".equals(packageName)
         || packageName.startsWith("dev.ward.analysis.frontend.antlr.");
   }
 

@@ -73,7 +73,7 @@ record Declaration(SyntaxNode node, SyntaxNode outer, SyntaxNode parent) {
     }
     final List<SyntaxNode> children = parent.children();
     for (int index = 1; index < children.size(); index++) {
-      if (children.get(index) == outer) {
+      if (children.get(index).equals(outer)) {
         return Optional.of(children.get(index - 1));
       }
     }
