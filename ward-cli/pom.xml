@@ -53,6 +53,11 @@
         </dependency>
         <dependency>
             <groupId>dev.ward</groupId>
+            <artifactId>ward-lang-node</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.ward</groupId>
             <artifactId>ward-lang-python</artifactId>
             <version>${project.version}</version>
         </dependency>

@@ -1,0 +1,22 @@
+export function f(a: boolean): void {
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+  if (a) { void 0; }
+}

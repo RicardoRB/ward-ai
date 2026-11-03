@@ -25,3 +25,6 @@ graphify-out/
 .agents/
 skills-lock.json
 .ward/
+
+# Parity harness dependencies, installed by npm ci in ward-lang-node/parity
+ward-lang-node/parity/node_modules/

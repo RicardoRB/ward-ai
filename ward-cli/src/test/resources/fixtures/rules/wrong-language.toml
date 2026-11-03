@@ -1,0 +1,6 @@
+[[rules]]
+id = "ward:javascript/naming"
+language = "typescript"
+capability = "SYNTAX"
+severity = "error"
+body = ""
