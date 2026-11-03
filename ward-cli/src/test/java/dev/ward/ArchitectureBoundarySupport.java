@@ -151,14 +151,25 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
+          "dev.ward.analysis.domain.rule.check",
           "dev.ward.analysis.application.rule" ->
           true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default ->
           packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?");
+              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?")
+              || isAnalysisFrontendAdapter(packageName);
     };
+  }
+
+  /**
+   * The ANTLR language frontend is an outbound adapter in its own module, with its generated
+   * parsers beneath it. It is allowed here until it moves under {@code infrastructure}.
+   */
+  static boolean isAnalysisFrontendAdapter(final String packageName) {
+    return packageName.equals("dev.ward.analysis.frontend.antlr")
+        || packageName.startsWith("dev.ward.analysis.frontend.antlr.");
   }
 
   static boolean isDaggerGenerated(final String name) {
