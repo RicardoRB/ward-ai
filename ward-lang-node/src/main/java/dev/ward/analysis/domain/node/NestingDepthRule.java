@@ -30,7 +30,7 @@ public record NestingDepthRule(RuleDefinition definition, int limit) implements 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxNode function : SyntaxTrees.functions(root)) {
+    for (final SyntaxNode function : SyntaxTrees.functions(SyntaxTrees.withoutErrors(root))) {
       for (final SyntaxNode child : function.children()) {
         scan(child, 0, false, matches);
       }

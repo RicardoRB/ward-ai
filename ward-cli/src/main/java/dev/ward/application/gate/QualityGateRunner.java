@@ -108,12 +108,12 @@ public class QualityGateRunner {
   }
 
   /**
-   * Attaches findings to a failed gate. Extraction problems never change the verdict: they are
-   * logged and the gate keeps no findings.
+   * Attaches findings to a failed gate that does not carry its own. Extraction problems never
+   * change the verdict: they are logged and the gate keeps no findings.
    */
   private GateResult withFindings(
       final Project project, final GateResult result, final Instant gateStart) {
-    if (result.status() != GateStatus.FAILED) {
+    if (result.status() != GateStatus.FAILED || !result.findings().isEmpty()) {
       return result;
     }
     try {

@@ -19,7 +19,7 @@ public record ParameterCountRule(RuleDefinition definition, int limit) implement
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxNode function : SyntaxTrees.functions(root)) {
+    for (final SyntaxNode function : SyntaxTrees.functions(SyntaxTrees.withoutErrors(root))) {
       final int count = SyntaxTrees.parameterCount(function);
       if (count > limit) {
         matches.add(

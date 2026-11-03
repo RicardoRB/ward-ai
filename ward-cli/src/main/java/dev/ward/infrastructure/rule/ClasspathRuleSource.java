@@ -116,7 +116,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
       return new RuleDefinition(
           text(resource, table, ID), language, capability, severity, text(resource, table, BODY));
     } catch (final IllegalArgumentException exception) {
-      throw problem(resource, "a value is not usable", exception);
+      throw problem(resource, exception.getMessage(), exception);
     }
   }
 

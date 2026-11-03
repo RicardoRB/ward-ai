@@ -27,7 +27,7 @@ public record NamingRule(RuleDefinition definition) implements CompiledRule {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    collect(root, matches);
+    collect(SyntaxTrees.withoutErrors(root), matches);
     return matches;
   }
 

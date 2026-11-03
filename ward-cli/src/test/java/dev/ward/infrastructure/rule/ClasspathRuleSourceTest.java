@@ -58,6 +58,19 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
+  void rowWhoseIdNamesAnotherLanguageIsRejectedAndTheErrorNamesTheId() {
+    final AnalysisRuleLoad load =
+        new ClasspathRuleSource(List.of("fixtures/rules/wrong-language.toml")).load();
+
+    assertThat(load.rules()).isEmpty();
+    assertThat(load.configurationErrors())
+        .singleElement()
+        .asString()
+        .contains("fixtures/rules/wrong-language.toml")
+        .contains("ward:javascript/naming");
+  }
+
+  @Test
   void missingFileIsReportedAsConfigurationError() {
     final AnalysisRuleLoad load =
         new ClasspathRuleSource(List.of("fixtures/rules/absent.toml")).load();

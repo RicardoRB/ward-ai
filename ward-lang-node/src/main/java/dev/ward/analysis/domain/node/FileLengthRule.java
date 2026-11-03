@@ -17,7 +17,7 @@ public record FileLengthRule(RuleDefinition definition, int limit) implements Co
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final int lines = SyntaxTrees.lastLine(root);
+    final int lines = SyntaxTrees.lastLine(SyntaxTrees.withoutErrors(root));
     if (lines <= limit) {
       return List.of();
     }

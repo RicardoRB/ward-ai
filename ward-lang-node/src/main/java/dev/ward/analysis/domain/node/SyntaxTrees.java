@@ -12,6 +12,7 @@ final class SyntaxTrees {
   private static final String TEXT = "text";
   private static final String END_OF_FILE = "<EOF>";
   private static final String IDENTIFIER_TOKEN = "Identifier";
+  private static final String ERROR = "error";
 
   /** Nodes that start a function. A function also needs one of {@link #HEADER} or {@link #BODY}. */
   private static final Set<String> FUNCTION =
@@ -85,6 +86,17 @@ final class SyntaxTrees {
       }
     }
     return null;
+  }
+
+  /** Returns the tree without the error nodes the parser inserts where the source is broken. */
+  static SyntaxNode withoutErrors(final SyntaxNode node) {
+    final List<SyntaxNode> children = new ArrayList<>();
+    for (final SyntaxNode child : node.children()) {
+      if (!ERROR.equals(child.kind())) {
+        children.add(withoutErrors(child));
+      }
+    }
+    return new SyntaxNode(node.kind(), node.span(), node.fields(), children);
   }
 
   /** Returns the number of lines a span covers, both ends included. */

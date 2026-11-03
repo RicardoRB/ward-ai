@@ -19,7 +19,7 @@ public record FunctionLengthRule(RuleDefinition definition, int limit) implement
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxNode function : SyntaxTrees.functions(root)) {
+    for (final SyntaxNode function : SyntaxTrees.functions(SyntaxTrees.withoutErrors(root))) {
       final int lines = SyntaxTrees.lines(function.span());
       if (lines > limit) {
         matches.add(
