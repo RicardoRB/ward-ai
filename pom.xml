@@ -19,7 +19,7 @@
         <dagger.version>2.60.1</dagger.version>
         <javax.inject.version>1</javax.inject.version>
         <fory.version>1.7.7</fory.version>
-        <native-build-tools.version>1.1.16</native-build-tools.version>
+        <native-build-tools.version>1.1.18</native-build-tools.version>
         <junit.version>6.1.3</junit.version>
         <assertj.version>3.27.7</assertj.version>
         <!-- Mutate use cases and domain logic; adapters are covered by integration tests. -->
@@ -100,7 +100,7 @@
             <!-- Loads the PMD rule set init generates with the PMD 7 rule references. -->
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-java</artifactId>
-            <version>7.17.0</version>
+            <version>7.29.0</version>
             <scope>test</scope>
             <exclusions>
                 <!-- Saxon is a signed jar; GraalVM cannot build the native test image with its
@@ -183,12 +183,12 @@
         <!-- Pins the default lifecycle plugins for the enforcer requirePluginVersions rule. -->
         <pluginManagement>
             <plugins>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.2.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.4.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.5.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-install-plugin</artifactId><version>3.1.4</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-deploy-plugin</artifactId><version>3.1.4</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-site-plugin</artifactId><version>3.12.1</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.5.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.5.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.5.1</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-install-plugin</artifactId><version>3.2.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-deploy-plugin</artifactId><version>3.2.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-site-plugin</artifactId><version>3.22.0</version></plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -233,7 +233,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
                 <configuration>
                     <!-- Keeps tests offline: the real wiring would otherwise query GitHub for updates. -->
                     <environmentVariables>
@@ -246,7 +246,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.15</version>
+                <version>0.8.16</version>
                 <executions>
                     <!-- Instruments the test run so the coverage gate measures the current tests. -->
                     <execution>
@@ -282,7 +282,7 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>3.10.4</version>
+                <version>3.11.0</version>
                 <configuration>
                     <java>
                         <googleJavaFormat>
@@ -406,7 +406,7 @@
                 <mutationThreshold>60</mutationThreshold>
               </configuration>
             </plugin>
-            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.6.3</version>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.7.0</version>
               <configuration><rules><externalRules><location>${project.basedir}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
             </plugin>
             <plugin>
