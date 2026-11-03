@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.LanguageFrontend;
+import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -146,7 +147,7 @@ class AnalysisGateTest {
           if (unit.path().equals(brokenPath)) {
             throw new AnalysisFailedException("syntax error");
           }
-          return new SyntaxNode("file", AT, Map.of(), List.of());
+          return new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of());
         };
     final RuleMatcher matcher =
         definition ->

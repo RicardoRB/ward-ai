@@ -24,7 +24,7 @@ final class UnitTrees {
 
   private Optional<SyntaxNode> parseOnce(final SourceUnit unit, final RuleRunCollector collector) {
     try {
-      return Optional.of(support.get(unit.language()).frontend().parse(unit));
+      return Optional.of(support.get(unit.language()).frontend().parse(unit).tree());
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(null, unit.path(), "the unit could not be parsed"));

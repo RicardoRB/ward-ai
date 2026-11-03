@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.LanguageFrontend;
+import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
 import java.util.ArrayList;
@@ -86,8 +87,11 @@ class AnalysisFindingMapperTest {
   @Test
   void fakeFrontendFindingsAreMappedInOrder() {
     final LanguageFrontend frontend =
-        unit -> new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of());
-    final SyntaxNode root = frontend.parse(new SourceUnit("a.py", AnalysisLanguage.PYTHON, "x"));
+        unit ->
+            new ParseResult(
+                new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of()), List.of());
+    final SyntaxNode root =
+        frontend.parse(new SourceUnit("a.py", AnalysisLanguage.PYTHON, "x")).tree();
     final List<AnalysisFinding> found =
         List.of(finding("a.py", 1, 1, "z", "m"), finding("a.py", 1, 1, "y", "m"));
 
