@@ -45,8 +45,10 @@ public final class XccovCoverageReport implements CoverageReport {
     try {
       report = codec.fromJson(stdout.substring(start.start()), Report.class);
     } catch (JsonCodecException | IllegalArgumentException exception) {
-      LOGGER.log(
-          Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+      if (LOGGER.isLoggable(Level.INFO)) {
+        LOGGER.log(
+            Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+      }
       return LineCoverage.unusable("xccov's JSON report cannot be parsed.");
     }
     final List<Target> production =

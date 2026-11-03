@@ -99,7 +99,9 @@ public final class StrykerJsonMutationReport implements MutationReport {
     try {
       decoded = codec.fromJson(Files.readString(report), StrykerReport.class);
     } catch (IOException | JsonCodecException | IllegalArgumentException exception) {
-      LOGGER.log(Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.STRYKER);
+      if (LOGGER.isLoggable(Level.INFO)) {
+        LOGGER.log(Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.STRYKER);
+      }
       return MutationCounts.unusable("Stryker's JSON report " + REPORT + " cannot be parsed.");
     }
     return counts(decoded == null ? List.of() : decoded.statuses());

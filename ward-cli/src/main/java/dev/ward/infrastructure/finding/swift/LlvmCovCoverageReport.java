@@ -72,8 +72,10 @@ public final class LlvmCovCoverageReport implements CoverageReport {
     try {
       decoded = codec.fromJson(Files.readString(export), Export.class);
     } catch (IOException | JsonCodecException | IllegalArgumentException exception) {
-      LOGGER.log(
-          Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+      if (LOGGER.isLoggable(Level.INFO)) {
+        LOGGER.log(
+            Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+      }
       return LineCoverage.unusable("The llvm-cov export cannot be parsed.");
     }
     final List<ExportFile> production =
