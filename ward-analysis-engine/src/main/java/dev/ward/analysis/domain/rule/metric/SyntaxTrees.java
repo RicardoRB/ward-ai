@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 /** Reads a syntax tree by node kind. Tokens are the leaves that carry a {@code text} field. */
 final class SyntaxTrees {
   private static final String TEXT = "text";
+  private static final String KIND_SEPARATOR = "\\|";
 
   private SyntaxTrees() {}
 
@@ -29,9 +30,15 @@ final class SyntaxTrees {
     return node.kind().replace("'", "");
   }
 
-  /** Returns the first direct child of {@code node} with {@code kind}. */
-  static Optional<SyntaxNode> child(final SyntaxNode node, final String kind) {
-    return node.children().stream().filter(child -> child.kind().equals(kind)).findFirst();
+  /**
+   * Returns the first direct child of {@code node} whose kind is one of the {@code |}-separated
+   * kinds.
+   */
+  static Optional<SyntaxNode> child(final SyntaxNode node, final String kinds) {
+    final List<String> alternatives = List.of(kinds.split(KIND_SEPARATOR));
+    return node.children().stream()
+        .filter(child -> alternatives.contains(child.kind()))
+        .findFirst();
   }
 
   /** Returns the direct children of {@code node} with {@code kind}. */
@@ -39,7 +46,9 @@ final class SyntaxTrees {
     return node.children().stream().filter(child -> child.kind().equals(kind)).toList();
   }
 
-  /** Returns the declared name held by a child of {@code kind}, or empty when there is none. */
+  /**
+   * Returns the declared name held by a child of one of the {@code kind} alternatives, or empty.
+   */
   static String nameOf(final SyntaxNode node, final String kind) {
     return kind.isEmpty() ? "" : child(node, kind).map(SyntaxTrees::text).orElse("");
   }

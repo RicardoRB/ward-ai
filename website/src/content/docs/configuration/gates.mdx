@@ -509,6 +509,49 @@ A file with a syntax error is not checked by these rules. It is reported as an e
 the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
 than `uses`, `enabled`, `profiles` and `rules`.
 
+## Swift structural rules
+
+The `ward` gate runs six Swift structural rules for `.swift` files. They read the syntax tree from
+the ANTLR Swift frontend and use fixed limits. SwiftLint stays the external gate for style and lint.
+
+| Rule | Limit | Severity | SwiftLint counterpart |
+|---|---|---|---|
+| `ward:swift/function-length` | more than 60 lines in a function, method or initializer, from the declaration line | error | `function_body_length` (warning 50, error 100): Ward counts lines of the whole declaration, header included, and uses a single limit of 60 |
+| `ward:swift/parameter-count` | more than 5 parameters; defaulted and variadic parameters count | error | `function_parameter_count` (warning 5, error 8): Ward has one limit, 5 |
+| `ward:swift/complexity` | complexity above 10 | error | `cyclomatic_complexity` (warning 10, error 20): Ward counts every `case` label, including the first |
+| `ward:swift/file-length` | more than 500 lines in a file | error | `file_length` (warning 400, error 1000): Ward's limit is 500, matching the Python and Java rules |
+| `ward:swift/type-body-length` | more than 300 lines in a `struct`, `class`, `protocol`, `extension` or enum, from the declaration line | error | `type_body_length` (warning 250, error 350): Ward's limit 300 is a Ward choice, not a SwiftLint default |
+| `ward:swift/naming` | types `UpperCamelCase`; functions, variables, constants and enum cases `lowerCamelCase`; leading underscores and backticks ignored | warning | `identifier_name` checks length too (warning min 3 and max 40): Ward does not check length |
+
+Complexity is one plus the decision points of a function or initializer: `if`, `guard`, `else if`,
+`for ... in`, `while`, `repeat ... while`, each `catch`, each `case` label, each `?:`, and each `&&`
+and `||` operator. An `else` adds nothing. Closures are not measured as units: their decisions are
+left out of the enclosing function, as nested functions are, but a closure over the limit is not
+reported on its own.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:swift/function-length",
+  "ward:swift/parameter-count",
+  "ward:swift/complexity",
+  "ward:swift/file-length",
+  "ward:swift/type-body-length",
+  "ward:swift/naming",
+]
+```
+
+The Swift frontend uses a Ward-owned Swift 5 grammar, not the Tree-sitter grammar. A file with a
+syntax error is not checked by these rules; it is reported as an execution error and the gate does
+not pass. To see which sources the grammar parses, compare your files with the parse report in the
+Ward repository (`ward-lang-swift/src/test/resources/corpus/parse-report.txt`). At the time of
+writing, the parse report lists `func run() async {` (first error at 6:18) and a freestanding macro
+declaration (2:8) as errors; the cause is not analyzed here. Thresholds are fixed in this version, as
+for the Python rules.
+
 ## Traceability gate
 
 `openspec-junit-traceability` is the one built-in gate that needs no `command`:

@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Reads metric rule bodies and rejects the ones that are not valid metric rules. */
@@ -40,8 +41,8 @@ final class MetricRuleBodyTest {
             new MetricRule.Target("funcdef", NameStyle.SNAKE),
             new MetricRule.Target("classdef", NameStyle.CAP));
     assertThat(rule.max()).isEqualTo(PARAMETER_LIMIT);
-    assertThat(rule.keys().parameterPath())
-        .containsExactly("parameters", "typedargslist", "tfpdef");
+    assertThat(rule.keys().parameterPaths())
+        .containsExactly(List.of("parameters", "typedargslist", "tfpdef"));
     assertThat(rule.keys().receivers()).containsExactlyInAnyOrder("self", "cls");
     assertThat(rule.keys().nested()).containsExactly("funcdef");
     assertThat(rule.keys().decisions()).containsExactly("if_stmt");
