@@ -56,6 +56,9 @@
                 <!-- Off by default so the native goals of modules that depend on this one skip it.
                      Run the probe with -Dward.frontend.probe.skip=false. -->
                 <ward.frontend.probe.skip>true</ward.frontend.probe.skip>
+                <!-- ward-cli depends on this module, so a native build of ward-cli also reaches it. This module
+                     has no main class; its native image is the probe above, which is skipped by default. -->
+                <skipNativeBuild>true</skipNativeBuild>
             </properties>
             <build>
                 <plugins>
