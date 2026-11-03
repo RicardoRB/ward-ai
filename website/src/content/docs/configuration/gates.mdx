@@ -472,6 +472,28 @@ Differences from Checkstyle and PMD, by construction:
 Rule ids and limits are stable across releases. A rule whose id changes is published under a new
 id.
 
+## Kotlin structural rules
+
+The `ward` gate runs six Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
+modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
+Java size and naming rules. They are not measured against Detekt or ktlint in this release.
+
+| Rule | Limit or pattern |
+|---|---|
+| `ward:kotlin/file-length` | more than 500 lines |
+| `ward:kotlin/function-length` | function body over 60 lines |
+| `ward:kotlin/parameter-count` | more than 5 value parameters |
+| `ward:kotlin/cyclomatic-complexity` | above 10 |
+| `ward:kotlin/type-name` | `^[A-Z][a-zA-Z0-9]*$` for classes, interfaces, objects and enums |
+| `ward:kotlin/function-name` | `^[a-z][a-zA-Z0-9]*$` |
+
+Differences from the Java rules, by construction:
+
+- Complexity counts `if` expressions, each `when` entry (an `else` entry counts too), `for`,
+  `while`, `do`, `catch`, each `&&` and `||`. The elvis operator `?:` does not count.
+- `function-length` measures the function body, from its opening brace to its closing brace.
+  Expression-bodied functions are measured by the same limit.
+
 ## Python structural rules
 
 The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
