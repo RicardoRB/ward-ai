@@ -52,3 +52,19 @@ base = 1
 max = 10
 message = "cyclomatic complexity is {value}; the limit is {max}"
 '''
+
+[[rules]]
+id = "ward:kotlin/cognitive-complexity"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "cognitive-complexity"
+kinds = ["functionDeclaration"]
+structures = ["'if'", "'when'", "'for'", "'while'", "'do'", "'catch'"]
+cancelled-by = { "'while'" = "'do'" }
+flat = ["'&&'", "'||'"]
+chaining = ["'else'"]
+max = 15
+message = "cognitive complexity is {value}; the limit is {max}"
+'''

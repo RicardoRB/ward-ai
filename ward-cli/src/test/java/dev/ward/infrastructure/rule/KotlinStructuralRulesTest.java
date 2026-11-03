@@ -40,7 +40,8 @@ class KotlinStructuralRulesTest {
         "cyclomatic-complexity",
         "type-name",
         "function-name",
-        "property-name"
+        "property-name",
+        "cognitive-complexity"
       })
   void violatingFixtureReportsItsRule(final String rule) throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, VIOLATING)).isNotEmpty();
@@ -55,7 +56,8 @@ class KotlinStructuralRulesTest {
         "cyclomatic-complexity",
         "type-name",
         "function-name",
-        "property-name"
+        "property-name",
+        "cognitive-complexity"
       })
   void passingFixtureDoesNotReportItsRule(final String rule)
       throws IOException, URISyntaxException {
