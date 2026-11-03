@@ -51,7 +51,8 @@ interface GateExtensionBindingsModule {
             new FrontendSupport(AnalysisLanguage.JAVA, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.PYTHON, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax));
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, syntax));
     return new AnalysisPorts(rules, matcher, sources, frontends);
   }
 
