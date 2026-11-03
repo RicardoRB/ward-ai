@@ -15,4 +15,9 @@ public final class AnalysisFailedException extends RuntimeException {
   public AnalysisFailedException(final String message) {
     super(message);
   }
+
+  /** Creates the exception with a developer-facing message and the failure that caused it. */
+  public AnalysisFailedException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }

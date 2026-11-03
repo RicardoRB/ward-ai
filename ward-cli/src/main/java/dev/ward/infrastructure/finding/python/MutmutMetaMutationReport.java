@@ -62,7 +62,10 @@ public final class MutmutMetaMutationReport implements MutationReport {
       try {
         exitCodes = exitCodes(file);
       } catch (IOException | JsonCodecException | IllegalArgumentException exception) {
-        LOGGER.log(Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTMUT);
+        if (LOGGER.isLoggable(Level.INFO)) {
+          LOGGER.log(
+              Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTMUT);
+        }
         return MutationCounts.unusable(
             "mutmut's result file "
                 + RESULTS
@@ -87,8 +90,10 @@ public final class MutmutMetaMutationReport implements MutationReport {
           .sorted()
           .toList();
     } catch (IOException exception) {
-      LOGGER.log(
-          Level.INFO, "event=mutmut-results-unreadable gate=" + SupportedQualityGates.MUTMUT);
+      if (LOGGER.isLoggable(Level.INFO)) {
+        LOGGER.log(
+            Level.INFO, "event=mutmut-results-unreadable gate=" + SupportedQualityGates.MUTMUT);
+      }
       return List.of();
     }
   }

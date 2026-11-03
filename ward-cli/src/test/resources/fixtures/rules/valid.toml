@@ -3,4 +3,9 @@ id = "ward:java/method-length"
 language = "java"
 capability = "SYNTAX"
 severity = "warning"
-body = "method_declaration"
+body = '''
+check = "lines"
+kinds = ["methodBody"]
+max = 60
+message = "method body has {value} lines; the limit is {max}"
+'''

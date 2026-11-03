@@ -1,0 +1,39 @@
+# Import and documentation rules for Java. They mirror Checkstyle's AvoidStarImport, UnusedImports
+# and MissingJavadocType / MissingJavadocMethod with scope public.
+
+[[rules]]
+id = "ward:java/star-import"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "descendant-count"
+kinds = ["importDeclaration"]
+counted = ["'*'"]
+max = 0
+message = "wildcard import is not allowed; import the names it uses"
+'''
+
+[[rules]]
+id = "ward:java/unused-import"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "unreferenced-name"
+message = "import of '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:java/missing-javadoc"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "preceding-comment"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration", "methodDeclaration", "constructorDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+required = "public"
+exempt-annotation = "Override"
+message = "public declaration has no Javadoc comment"
+'''

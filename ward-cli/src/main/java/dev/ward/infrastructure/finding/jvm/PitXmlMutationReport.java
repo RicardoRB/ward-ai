@@ -51,8 +51,10 @@ public final class PitXmlMutationReport implements MutationReport {
         detected += counts[0];
         undetected += counts[1];
       } catch (FindingExtractionException exception) {
-        LOGGER.log(
-            Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTATION);
+        if (LOGGER.isLoggable(Level.INFO)) {
+          LOGGER.log(
+              Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTATION);
+        }
         return MutationCounts.unusable(
             "PIT's XML report "
                 + ReportFiles.relativize(project, report.toString())

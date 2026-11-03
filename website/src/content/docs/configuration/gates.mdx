@@ -434,6 +434,44 @@ uses = "ward"
 rules = ["ward:java/method-length"]
 ```
 
+### Java rules
+
+Ward ships thirteen Java rules. They mirror the structural Checkstyle and PMD checks of the strict
+preset, so a Java project can run them in the same pass as the rest of its gates:
+
+| Rule | Mirrors | Limit or pattern |
+|---|---|---|
+| `ward:java/file-length` | Checkstyle `FileLength` | more than 500 lines |
+| `ward:java/method-length` | Checkstyle `MethodLength` | method body over 60 lines |
+| `ward:java/parameter-count` | Checkstyle `ParameterNumber` | more than 5 parameters |
+| `ward:java/cyclomatic-complexity` | Checkstyle `CyclomaticComplexity` | above 10 |
+| `ward:java/cognitive-complexity` | PMD `CognitiveComplexity` | above 15 |
+| `ward:java/star-import` | Checkstyle `AvoidStarImport` | any `.*` import |
+| `ward:java/unused-import` | Checkstyle `UnusedImports` | a simple name used nowhere else, including Javadoc |
+| `ward:java/missing-javadoc` | Checkstyle `MissingJavadocType` and `MissingJavadocMethod` | public types and methods without Javadoc |
+| `ward:java/type-name` | Checkstyle `TypeName` | `^[A-Z][a-zA-Z0-9]*$` |
+| `ward:java/method-name` | Checkstyle `MethodName` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/member-name` | Checkstyle `MemberName` | non-static fields matching `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/parameter-name` | Checkstyle `ParameterName` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/local-variable-name` | Checkstyle `LocalVariableName` | `^[a-z][a-zA-Z0-9]*$` |
+
+Differences from Checkstyle and PMD, by construction:
+
+- `unused-import` is textual. It does not resolve names, so a fully qualified use still counts as
+  unused and a same-named identifier from another package counts as a use.
+- `missing-javadoc` checks only the comment immediately before a declaration. It skips `@Override`
+  methods, does not check interface members, and skips public types nested in a non-public type, as
+  Checkstyle's scope does.
+- `method-length` and the complexity rules measure methods only. Constructor bodies are not
+  measured by `method-length`, and nested classes and lambdas count toward their enclosing method.
+- `cognitive-complexity` follows the published definition in a simplified form: each `&&` and `||`
+  adds one, an `else if` chain does not nest, and a final `else` adds one.
+- Java comments are read from the syntax tree. Comments that Ward's parser cannot attach to a
+  declaration are not documentation for `missing-javadoc`.
+
+Rule ids and limits are stable across releases. A rule whose id changes is published under a new
+id.
+
 ## Python structural rules
 
 The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from

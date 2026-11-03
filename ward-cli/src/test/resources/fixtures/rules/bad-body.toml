@@ -1,0 +1,9 @@
+[[rules]]
+id = "ward:java/method-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "no-such-check"
+message = "{value}"
+'''

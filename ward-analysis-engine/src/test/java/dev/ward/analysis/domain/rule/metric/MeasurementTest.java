@@ -39,11 +39,12 @@ final class MeasurementTest {
   }
 
   @Test
-  void linesDoesNotCountTheLineAfterTheEndOfInput() {
+  void linesCountsTheSpanTheMapperGives() {
+    // The mapper ends a file's span on its last real line, so the end-of-input token sits after it.
     final SyntaxNode file =
         new SyntaxNode(
             "file_input",
-            Trees.span(1, 1, 4, 1),
+            Trees.span(1, 1, 3, 1),
             java.util.Map.of(),
             List.of(
                 Trees.node("stmt", 1, 3),

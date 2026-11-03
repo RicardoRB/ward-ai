@@ -15,6 +15,37 @@ final class ArchitectureBoundarySupport {
   // dev.ward.domain.<feature>: the feature is the fourth package segment.
   private static final int FEATURE_SEGMENT = 3;
 
+  /** The config package's modules, which wire the Dagger graph and may be placed there. */
+  static final Set<String> CONFIG_MODULES =
+      Set.of(
+          "dev.ward.config.WardComponent",
+          "dev.ward.config.PortBindingsModule",
+          "dev.ward.config.ProcessBindingsModule",
+          "dev.ward.config.ProjectBindingsModule",
+          "dev.ward.config.InitBindingsModule",
+          "dev.ward.config.BuildToolBindingsModule",
+          "dev.ward.config.NodeBindingsModule",
+          "dev.ward.config.PythonBindingsModule",
+          "dev.ward.config.SwiftBindingsModule",
+          "dev.ward.config.CommandBindingsModule",
+          "dev.ward.config.SpecCommandBindingsModule",
+          "dev.ward.config.TraceabilityBindingsModule",
+          "dev.ward.config.ProvenanceBindingsModule",
+          "dev.ward.config.GateBindingsModule",
+          "dev.ward.config.GateExtensionBindingsModule",
+          "dev.ward.config.ReportBindingsModule",
+          "dev.ward.config.WardProvidesModule");
+
+  /** The analysis packages that every layer may hold. */
+  static final Set<String> ANALYSIS_PACKAGES =
+      Set.of(
+          "dev.ward.analysis.domain.ir",
+          "dev.ward.analysis.domain.port",
+          "dev.ward.analysis.domain.rule",
+          "dev.ward.analysis.domain.rule.check",
+          "dev.ward.analysis.domain.rule.metric",
+          "dev.ward.analysis.application.rule");
+
   /**
    * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
    * ward-cli depends on it to run the {@code ward} gate, so its classes, including the generated
@@ -131,37 +162,14 @@ final class ArchitectureBoundarySupport {
   }
 
   static boolean isAllowedPackage(final JavaClass javaClass, final Set<String> commonCliTypes) {
-    final String name = javaClass.getName();
     final String packageName = javaClass.getPackageName();
+    if (ANALYSIS_PACKAGES.contains(packageName)) {
+      return true;
+    }
+    final String name = javaClass.getName();
     return switch (packageName) {
       case "dev.ward" -> "dev.ward.WardApplication".equals(name);
-      case "dev.ward.config" ->
-          isDaggerGenerated(name)
-              || Set.of(
-                      "dev.ward.config.WardComponent",
-                      "dev.ward.config.PortBindingsModule",
-                      "dev.ward.config.ProcessBindingsModule",
-                      "dev.ward.config.ProjectBindingsModule",
-                      "dev.ward.config.InitBindingsModule",
-                      "dev.ward.config.BuildToolBindingsModule",
-                      "dev.ward.config.NodeBindingsModule",
-                      "dev.ward.config.PythonBindingsModule",
-                      "dev.ward.config.SwiftBindingsModule",
-                      "dev.ward.config.CommandBindingsModule",
-                      "dev.ward.config.SpecCommandBindingsModule",
-                      "dev.ward.config.TraceabilityBindingsModule",
-                      "dev.ward.config.ProvenanceBindingsModule",
-                      "dev.ward.config.GateBindingsModule",
-                      "dev.ward.config.GateExtensionBindingsModule",
-                      "dev.ward.config.ReportBindingsModule",
-                      "dev.ward.config.WardProvidesModule")
-                  .contains(name);
-      case "dev.ward.analysis.domain.ir",
-          "dev.ward.analysis.domain.port",
-          "dev.ward.analysis.domain.rule",
-          "dev.ward.analysis.domain.rule.metric",
-          "dev.ward.analysis.application.rule" ->
-          true;
+      case "dev.ward.config" -> isDaggerGenerated(name) || CONFIG_MODULES.contains(name);
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default -> isLayeredFeaturePackage(packageName) || isGeneratedFrontendPackage(packageName);
