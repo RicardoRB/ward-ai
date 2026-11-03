@@ -7,6 +7,7 @@ import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingExtractionException;
 import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.FindingSeverity;
+import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
@@ -25,6 +26,8 @@ import org.junit.jupiter.api.Test;
 
 class QualityGateRunnerFindingsTest {
   private static final int REPORTED = 120;
+  private static final int OWN_LINE = 7;
+  private static final int EXTRACTED_LINE = 99;
 
   private final Project project =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
@@ -60,6 +63,33 @@ class QualityGateRunnerFindingsTest {
         line,
         1,
         null);
+  }
+
+  @Test
+  void keepsFindingsAGateAlreadyCarries() {
+    final QualityGate ownFindings =
+        new QualityGate() {
+          @Override
+          public String name() {
+            return "ward";
+          }
+
+          @Override
+          public GateResult execute(final Project ignored) {
+            return GateResult.builder("ward", GateStatus.FAILED)
+                .duration(Duration.ZERO)
+                .build()
+                .withFindings(GateFindings.of(List.of(finding("ward", OWN_LINE))));
+          }
+        };
+    final FindingExtractor extractor =
+        (ignored, result, gateStart) -> List.of(finding(result.name(), EXTRACTED_LINE));
+
+    final CheckReport report = new QualityGateRunner(extractor).run(project, List.of(ownFindings));
+
+    assertThat(report.results().get(0).findings().items())
+        .singleElement()
+        .satisfies(item -> assertThat(item.line()).isEqualTo(OWN_LINE));
   }
 
   @Test
