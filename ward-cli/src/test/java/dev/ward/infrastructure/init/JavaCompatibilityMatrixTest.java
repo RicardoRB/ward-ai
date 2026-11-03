@@ -86,12 +86,15 @@ class JavaCompatibilityMatrixTest {
         "-qm",
         "init");
 
-    final Map<String, String> clean = statuses(project);
+    final String cleanReport = report(project);
+    final Map<String, String> clean = statuses(cleanReport);
     assertThat(clean.keySet()).as("checked gates").containsExactlyInAnyOrderElementsOf(configured);
-    clean.forEach((gate, status) -> assertThat(status).as("clean gate %s", gate).isEqualTo(PASSED));
+    clean.forEach(
+        (gate, status) ->
+            assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED));
 
     seedViolations(project, buildTool);
-    final Map<String, String> seeded = statuses(project);
+    final Map<String, String> seeded = statuses(report(project));
     configured.stream()
         .filter(gate -> !NOT_SEEDED.contains(gate))
         .forEach(
@@ -103,7 +106,7 @@ class JavaCompatibilityMatrixTest {
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
     JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("compile-error"), project);
-    assertThat(statuses(project).get("compile"))
+    assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);
   }
@@ -175,13 +178,14 @@ class JavaCompatibilityMatrixTest {
     }
   }
 
-  private static Map<String, String> statuses(final Path project)
-      throws IOException, InterruptedException {
+  private static String report(final Path project) throws IOException, InterruptedException {
+    return JavaMatrixProcesses.ward(project, "check", "--profile", "ci", "--format", "json")
+        .stdout();
+  }
+
+  private static Map<String, String> statuses(final String report) {
     final Map<String, String> statuses = new LinkedHashMap<>();
-    final Matcher matcher =
-        CHECK.matcher(
-            JavaMatrixProcesses.ward(project, "check", "--profile", "ci", "--format", "json")
-                .stdout());
+    final Matcher matcher = CHECK.matcher(report);
     while (matcher.find()) {
       statuses.put(matcher.group(1), matcher.group(2));
     }

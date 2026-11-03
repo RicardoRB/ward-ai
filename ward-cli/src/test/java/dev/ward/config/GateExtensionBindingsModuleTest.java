@@ -3,8 +3,10 @@ package dev.ward.config;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
+import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.rule.metric.MetricMatcher;
 import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.AnalysisResultCodec;
@@ -47,6 +49,21 @@ class GateExtensionBindingsModuleTest {
       @Override
       public Optional<List<AnalysisFinding>> decode(final String key, final String value) {
         return Optional.empty();
+      }
+
+      @Override
+      public String encodeSummary(final String key, final FileSummary summary) {
+        return "";
+      }
+
+      @Override
+      public Optional<FileSummary> decodeSummary(final String key, final String value) {
+        return Optional.empty();
+      }
+
+      @Override
+      public String encodeIndex(final DependencyGraph graph) {
+        return "";
       }
     };
   }

@@ -43,7 +43,11 @@ public final class AnalysisGate implements QualityGate {
     this.rules = List.copyOf(rules);
     this.ports = ports;
     this.results =
-        new UnitResultCache(new RuleEngine(ports.matcher()), ports.codec(), ports.engineVersion());
+        new UnitResultCache(
+            new RuleEngine(ports.matcher()),
+            ports.codec(),
+            ports.engineVersion(),
+            ports.dependencies());
   }
 
   @Override

@@ -1,6 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
+import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @param caches opens the result cache of a project
  * @param codec encodes the cached results
  * @param engineVersion the Ward version, which invalidates cached results when it changes
+ * @param dependencies the dependency adapters of the languages that have them; none by default
  */
 public record AnalysisPorts(
     AnalysisRuleSource rules,
@@ -22,10 +24,12 @@ public record AnalysisPorts(
     List<FrontendSupport> frontends,
     AnalysisCaches caches,
     AnalysisResultCodec codec,
-    String engineVersion) {
+    String engineVersion,
+    List<DependencySupport> dependencies) {
 
-  /** Copies the frontends. */
+  /** Copies the frontends and the dependency adapters. */
   public AnalysisPorts {
     frontends = List.copyOf(frontends);
+    dependencies = List.copyOf(dependencies);
   }
 }

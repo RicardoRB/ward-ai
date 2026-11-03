@@ -96,7 +96,8 @@ class NodeStructuralGateTest {
             new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax)),
         root -> new FileAnalysisCache(root.resolve(".ward/cache/analysis")),
         AnalysisCacheFixtures.codec(),
-        "test");
+        "test",
+        List.of());
   }
 
   private Project project() {
