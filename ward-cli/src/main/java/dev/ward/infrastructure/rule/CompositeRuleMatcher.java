@@ -24,6 +24,7 @@ public final class CompositeRuleMatcher implements RuleMatcher {
       try {
         return metric.compile(definition);
       } catch (final AnalysisFailedException metricFailure) {
+        declarativeFailure.addSuppressed(metricFailure);
         throw declarativeFailure;
       }
     }
