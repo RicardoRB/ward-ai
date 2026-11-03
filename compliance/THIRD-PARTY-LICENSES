@@ -1,8 +1,16 @@
-Lists of 10 third-party dependencies.
+Lists of 18 third-party dependencies.
     (Apache-2.0) Dagger (com.google.dagger:dagger:2.60.1 - https://github.com/google/dagger)
+    (Apache-2.0) ward-analysis-api (dev.ward:ward-analysis-api:0.5.0 - no url defined)
+    (Apache-2.0) ward-analysis-api (dev.ward:ward-analysis-engine:0.5.0 - no url defined)
+    (Apache-2.0) ward-frontend-antlr (dev.ward:ward-frontend-antlr:0.5.0 - no url defined)
+    (Apache-2.0) ward-lang-jvm (dev.ward:ward-lang-jvm:0.5.0 - no url defined)
+    (Apache-2.0) ward-lang-node (dev.ward:ward-lang-node:0.5.0 - no url defined)
+    (Apache-2.0) ward-lang-python (dev.ward:ward-lang-python:0.5.0 - no url defined)
+    (Apache-2.0) ward-lang-swift (dev.ward:ward-lang-swift:0.5.0 - no url defined)
     (Apache-2.0) picocli (info.picocli:picocli:4.7.7 - https://picocli.info)
     (Apache-2.0) Jakarta Dependency Injection (jakarta.inject:jakarta.inject-api:2.0.1 - https://github.com/eclipse-ee4j/injection-api)
     (Apache-2.0) javax.inject (javax.inject:javax.inject:1 - http://code.google.com/p/atinject/)
+    (BSD) ANTLR 4 Runtime (org.antlr:antlr4-runtime:4.13.2 - https://www.antlr.org/antlr4-runtime/)
     (Apache-2.0) fory-core (org.apache.fory:fory-core:1.7.7 - https://fory.apache.org)
     (Apache-2.0) fory-json (org.apache.fory:fory-json:1.7.7 - https://fory.apache.org)
     (BSD) commons-compiler (org.codehaus.janino:commons-compiler:3.1.12 - http://janino-compiler.github.io/commons-compiler/)
