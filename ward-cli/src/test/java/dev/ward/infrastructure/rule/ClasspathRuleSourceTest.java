@@ -25,13 +25,39 @@ class ClasspathRuleSourceTest {
         .contains("fixtures/rules/malformed.toml")
         .contains("not valid TOML");
     assertThat(load.rules())
-        .containsExactly(
-            new RuleDefinition(
-                "ward:java/method-length",
-                AnalysisLanguage.JAVA,
-                RuleCapability.SYNTAX,
-                AnalysisSeverity.WARNING,
-                "method_declaration"));
+        .extracting(RuleDefinition::id)
+        .containsExactly("ward:java/method-length");
+  }
+
+  @Test
+  void ruleWithUnknownCheckIsReportedAndSkipped() {
+    final AnalysisRuleLoad load =
+        new ClasspathRuleSource(List.of("fixtures/rules/bad-body.toml")).load();
+
+    assertThat(load.rules()).isEmpty();
+    assertThat(load.configurationErrors())
+        .singleElement()
+        .asString()
+        .contains("fixtures/rules/bad-body.toml")
+        .contains("unknown check 'no-such-check'");
+  }
+
+  @Test
+  void packagedJavaRuleFilesLoadAllThirteenRules() {
+    final AnalysisRuleLoad load = new ClasspathRuleSource().load();
+
+    assertThat(load.configurationErrors()).isEmpty();
+    assertThat(load.rules())
+        .extracting(RuleDefinition::id)
+        .hasSize(13)
+        .allMatch(id -> id.startsWith("ward:java/"));
+    assertThat(load.rules())
+        .allSatisfy(
+            rule -> {
+              assertThat(rule.language()).isEqualTo(AnalysisLanguage.JAVA);
+              assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
+              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
+            });
   }
 
   @Test

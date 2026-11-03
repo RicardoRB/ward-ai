@@ -1,0 +1,68 @@
+# Size and complexity rules for Java. They mirror the strict Checkstyle preset (FileLength,
+# MethodLength, ParameterNumber, CyclomaticComplexity) and the PMD CognitiveComplexity default.
+# The body of each rule is a TOML description of one check; see DeclarativeChecks.
+
+[[rules]]
+id = "ward:java/file-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "lines"
+kinds = ["compilationunit"]
+max = 500
+message = "file has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/method-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "lines"
+kinds = ["methodBody"]
+max = 60
+message = "method body has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/parameter-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "descendant-count"
+kinds = ["formalParameters"]
+counted = ["formalParameter"]
+max = 5
+message = "method declares {value} parameters; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/cyclomatic-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "descendant-count"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+counted = ["'if'", "'for'", "'while'", "'do'", "'case'", "'catch'", "'?'", "'&&'", "'||'"]
+base = 1
+max = 10
+message = "cyclomatic complexity is {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/cognitive-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "cognitive-complexity"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+structures = ["'if'", "'for'", "'while'", "'do'", "'switch'", "'catch'", "'?'"]
+flat = ["'else'", "'&&'", "'||'"]
+max = 15
+message = "cognitive complexity is {value}; the limit is {max}"
+'''

@@ -1,0 +1,78 @@
+# Naming rules for Java. They mirror Checkstyle's TypeName, MethodName, MemberName, ParameterName and
+# LocalVariableName with their default patterns. MemberName covers non-static fields only.
+
+[[rules]]
+id = "ward:java/type-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[A-Z][a-zA-Z0-9]*"
+message = "type name '{value}' must match [A-Z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:java/method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["methodDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "method name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:java/member-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["fieldDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+excluded = "static"
+name = "identifier"
+skip = ["annotation"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "field name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:java/parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["formalParameter"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "parameter name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''
+
+[[rules]]
+id = "ward:java/local-variable-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "text-pattern"
+kinds = ["localVariableDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "local variable name '{value}' must match [a-z][a-zA-Z0-9]*"
+'''

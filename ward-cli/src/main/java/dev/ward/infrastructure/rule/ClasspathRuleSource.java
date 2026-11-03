@@ -29,8 +29,9 @@ import org.tomlj.TomlTable;
  */
 public final class ClasspathRuleSource implements AnalysisRuleSource {
 
-  /** The rule files packaged with Ward. None ship before the language rules of steps 1.4 to 1.8. */
-  static final List<String> RULE_FILES = List.of();
+  /** The rule files packaged with Ward, in load order. */
+  static final List<String> RULE_FILES =
+      List.of("rules/java/size.toml", "rules/java/imports.toml", "rules/java/naming.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";
@@ -112,11 +113,31 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
     final AnalysisLanguage language = constant(resource, table, LANGUAGE, AnalysisLanguage.class);
     final RuleCapability capability = constant(resource, table, CAPABILITY, RuleCapability.class);
     final AnalysisSeverity severity = constant(resource, table, SEVERITY, AnalysisSeverity.class);
+    final RuleDefinition definition;
     try {
-      return new RuleDefinition(
-          text(resource, table, ID), language, capability, severity, text(resource, table, BODY));
+      definition =
+          new RuleDefinition(
+              text(resource, table, ID),
+              language,
+              capability,
+              severity,
+              text(resource, table, BODY));
     } catch (final IllegalArgumentException exception) {
       throw problem(resource, "a value is not usable", exception);
+    }
+    checkBody(resource, definition);
+    return definition;
+  }
+
+  /** Builds the check once so that a body that cannot be used is reported with its file. */
+  private static void checkBody(final String resource, final RuleDefinition definition) {
+    try {
+      DeclarativeChecks.build(definition.body());
+    } catch (final RuleConfigurationException exception) {
+      throw problem(
+          resource,
+          "rule '" + definition.id() + "' cannot be used: " + exception.getMessage(),
+          exception);
     }
   }
 
