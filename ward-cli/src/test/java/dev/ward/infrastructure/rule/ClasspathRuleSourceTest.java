@@ -35,6 +35,26 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
+  void bundledNodeRulesLoadWithOneRowPerLanguageAndMetric() {
+    final AnalysisRuleLoad load = new ClasspathRuleSource().load();
+
+    assertThat(load.configurationErrors()).isEmpty();
+    assertThat(load.rules()).hasSize(12);
+    assertThat(load.rules())
+        .allSatisfy(
+            rule -> {
+              assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
+              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
+              assertThat(rule.body()).isEmpty();
+            });
+    assertThat(load.rules().stream().map(RuleDefinition::id).distinct()).hasSize(12);
+    assertThat(load.rules().stream().filter(r -> r.language() == AnalysisLanguage.TYPESCRIPT))
+        .hasSize(6);
+    assertThat(load.rules().stream().filter(r -> r.language() == AnalysisLanguage.JAVASCRIPT))
+        .hasSize(6);
+  }
+
+  @Test
   void missingFileIsReportedAsConfigurationError() {
     final AnalysisRuleLoad load =
         new ClasspathRuleSource(List.of("fixtures/rules/absent.toml")).load();

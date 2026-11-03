@@ -151,13 +151,16 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
-          "dev.ward.analysis.application.rule" ->
+          "dev.ward.analysis.application.rule",
+          "dev.ward.analysis.domain.node",
+          "dev.ward.analysis.infrastructure.node" ->
           true;
       case "dev.ward.infrastructure.cli" ->
           commonCliTypes.contains(javaClass.getSimpleName()) || isDaggerGenerated(name);
       default ->
           packageName.matches("dev\\.ward\\.(domain|application)\\.[^.]+(\\..*)?")
-              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?");
+              || packageName.matches("dev\\.ward\\.infrastructure\\.[^.]+(\\..*)?")
+              || packageName.matches("dev\\.ward\\.analysis\\.frontend\\.antlr(\\..*)?");
     };
   }
 
