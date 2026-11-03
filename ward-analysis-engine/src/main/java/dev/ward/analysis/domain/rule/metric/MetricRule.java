@@ -24,14 +24,15 @@ record MetricRule(
    * Grammar-specific names that the body supplies, so the matcher does not depend on a language.
    *
    * @param name the child kind that holds the declared identifier
-   * @param parameterPath the kinds from the function node to its parameter items, last is the item
+   * @param parameterPaths the alternative paths from the function node to its parameter items, each
+   *     one's last kind is the item
    * @param receivers the first-parameter names that a method does not count
    * @param nested the node kinds whose decision points belong to their own scope
    * @param decisions the decision node kinds, or {@code parent>token} pairs for tokens
    */
   record MetricRuleKeys(
       String name,
-      List<String> parameterPath,
+      List<List<String>> parameterPaths,
       Set<String> receivers,
       Set<String> nested,
       Set<String> decisions) {}

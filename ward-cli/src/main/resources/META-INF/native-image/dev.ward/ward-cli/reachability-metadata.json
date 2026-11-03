@@ -6,6 +6,7 @@
     { "glob": "rules/kotlin/*.toml" },
     { "glob": "dev/ward/analysis/lang/node/rules.toml" },
     { "glob": "rules/python-structural.toml" },
+    { "glob": "rules/swift-structural.toml" },
     { "bundle": "com.sun.org.apache.xerces.internal.impl.msg.XMLMessages" }
   ],
   "foreign": {

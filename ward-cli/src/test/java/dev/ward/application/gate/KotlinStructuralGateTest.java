@@ -100,7 +100,10 @@ class KotlinStructuralGateTest {
             new FrontendSupport(
                 AnalysisLanguage.KOTLIN,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX))));
+                Set.of(RuleCapability.SYNTAX))),
+        root -> AnalysisCacheFixtures.NO_CACHE,
+        AnalysisCacheFixtures.codec(),
+        "test");
   }
 
   private Project project() {

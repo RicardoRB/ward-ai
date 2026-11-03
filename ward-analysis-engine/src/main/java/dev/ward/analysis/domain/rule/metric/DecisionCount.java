@@ -11,6 +11,7 @@ import java.util.Set;
 final class DecisionCount implements Measure {
 
   private static final int BASE = 1;
+  private static final String TEXT_SEPARATOR = "#";
 
   @Override
   public Optional<Violation> check(
@@ -36,10 +37,14 @@ final class DecisionCount implements Measure {
     return count;
   }
 
-  /** Returns 1 when {@code child} is a decision point, given its parent, otherwise 0. */
+  /**
+   * Returns 1 when {@code child} is a decision point, given its parent, otherwise 0. A decision is
+   * a kind, a {@code parent>token} pair, or a {@code kind#text} pair that matches the child's text.
+   */
   private static int counts(
       final SyntaxNode parent, final SyntaxNode child, final Set<String> decisions) {
-    if (decisions.contains(child.kind())) {
+    if (decisions.contains(child.kind())
+        || decisions.contains(child.kind() + TEXT_SEPARATOR + SyntaxTrees.text(child))) {
       return 1;
     }
     final boolean token = SyntaxTrees.isToken(child);

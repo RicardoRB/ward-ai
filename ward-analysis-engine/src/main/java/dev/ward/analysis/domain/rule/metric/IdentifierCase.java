@@ -12,6 +12,7 @@ import java.util.Optional;
 final class IdentifierCase implements Measure {
 
   private static final String ASSIGN = "=";
+  private static final String BACKTICK = "`";
 
   @Override
   public Optional<Violation> check(
@@ -23,7 +24,7 @@ final class IdentifierCase implements Measure {
     if (declared.isEmpty() || skipped(declared.get())) {
       return Optional.empty();
     }
-    final String bare = declared.get().replaceFirst("^_+", "");
+    final String bare = declared.get().replace(BACKTICK, "").replaceFirst("^_+", "");
     if (target.style().matches(bare)) {
       return Optional.empty();
     }
