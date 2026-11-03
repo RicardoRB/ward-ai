@@ -16,6 +16,7 @@
         <module>ward-analysis-engine</module>
         <module>ward-lang-node</module>
         <module>ward-cli</module>
+        <module>ward-lang-python</module>
         <module>ward-analysis-bench</module>
     </modules>
 

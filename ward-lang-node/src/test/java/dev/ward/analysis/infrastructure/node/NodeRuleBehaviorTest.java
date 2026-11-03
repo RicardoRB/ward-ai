@@ -101,12 +101,14 @@ class NodeRuleBehaviorTest {
   }
 
   @Test
-  void syntaxErrorKeepsThePartialTreeAndDoesNotFailTheRule() {
+  void unitWithSyntaxErrorsIsNotCheckedAndIsReportedAsAnExecutionError() {
     final String source = "function f() {\n  void 0;\n  void 1;\n}\nconst = ;\n";
 
     final RuleRunResult result = NodeRuleRuns.run("function-length", TS, "max=2", source);
 
-    assertThat(result.executionErrors()).isEmpty();
-    assertThat(result.findings()).hasSize(1);
+    assertThat(result.findings()).isEmpty();
+    assertThat(result.executionErrors())
+        .singleElement()
+        .satisfies(error -> assertThat(error.reason()).isEqualTo("the unit has syntax errors"));
   }
 }

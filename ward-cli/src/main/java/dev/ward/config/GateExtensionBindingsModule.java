@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleMatcher;
+import dev.ward.analysis.domain.rule.metric.MetricMatcher;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.analysis.infrastructure.node.NodeRuleMatcher;
 import dev.ward.application.gate.AnalysisPorts;
@@ -16,6 +17,7 @@ import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
+import dev.ward.infrastructure.rule.LanguageRuleMatcher;
 import java.util.List;
 import java.util.Set;
 
@@ -28,16 +30,19 @@ interface GateExtensionBindingsModule {
   @Binds
   AnalysisSourceUnits analysisSourceUnits(FileSystemSourceUnits implementation);
 
-  /** The structural rules of TypeScript and JavaScript; each rule names its own metric. */
+  /**
+   * Builds the declarative rules. TypeScript and JavaScript rules use their structural matcher;
+   * every other language uses the shared metric matcher.
+   */
   @Provides
   static RuleMatcher ruleMatcher() {
-    return new NodeRuleMatcher();
+    return new LanguageRuleMatcher(new NodeRuleMatcher(), new MetricMatcher());
   }
 
   /**
-   * Runs the ANTLR frontend for TypeScript and JavaScript, the two languages with bundled rules.
-   * Gates run one after another, so the frontend, which is not thread-safe, is used by one gate at
-   * a time.
+   * The ward gate reads TypeScript, JavaScript and Python sources through the ANTLR frontend, with
+   * syntax rules only. Gates run one after another, so one frontend, which is not thread-safe,
+   * serves them all.
    */
   @Provides
   static AnalysisPorts analysisPorts(
@@ -48,6 +53,7 @@ interface GateExtensionBindingsModule {
     final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
     final List<FrontendSupport> frontends =
         List.of(
+            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
             new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax));
     return new AnalysisPorts(rules, matcher, sources, frontends);

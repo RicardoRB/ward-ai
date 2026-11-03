@@ -29,8 +29,9 @@ import org.tomlj.TomlTable;
  */
 public final class ClasspathRuleSource implements AnalysisRuleSource {
 
-  /** The rule files packaged with Ward. None ship before the language rules of steps 1.4 to 1.8. */
-  static final List<String> RULE_FILES = List.of("dev/ward/analysis/lang/node/rules.toml");
+  /** The rule files packaged with Ward, one per language that has bundled rules. */
+  static final List<String> RULE_FILES =
+      List.of("dev/ward/analysis/lang/node/rules.toml", "rules/python-structural.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";

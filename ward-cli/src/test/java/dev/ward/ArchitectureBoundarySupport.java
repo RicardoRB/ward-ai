@@ -14,6 +14,13 @@ import java.util.stream.Collectors;
 final class ArchitectureBoundarySupport {
   // dev.ward.domain.<feature>: the feature is the fourth package segment.
   private static final int FEATURE_SEGMENT = 3;
+
+  /**
+   * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
+   * ward-cli depends on it to run the {@code ward} gate, so its classes, including the generated
+   * parsers, are on this classpath. Its placement is checked by its own module, not by the CLI
+   * layers.
+   */
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
@@ -32,6 +39,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
           Map.entry("traceability", Set.of()));
+
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
       Map.ofEntries(
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
@@ -151,6 +159,7 @@ final class ArchitectureBoundarySupport {
       case "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
+          "dev.ward.analysis.domain.rule.metric",
           "dev.ward.analysis.application.rule" ->
           true;
       case "dev.ward.infrastructure.cli" ->
