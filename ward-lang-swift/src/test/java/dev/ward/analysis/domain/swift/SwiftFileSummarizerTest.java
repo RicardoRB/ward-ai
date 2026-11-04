@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftFileSummarizerTest {
@@ -47,6 +48,53 @@ class SwiftFileSummarizerTest {
   @Test
   void aFileWithoutImportsHasNoReferences() {
     assertThat(summarize("struct Empty {}").imports()).isEmpty();
+  }
+
+  @Test
+  void recordsUsedIdentifiersButNotOwnDeclaredNamesOrImports() {
+    final FileSummary summary =
+        summarize(
+            """
+            import Shop
+            public struct Cart {
+                let service: OrderService
+            }
+            """);
+
+    assertThat(names(summary)).containsExactly("name:service", "name:OrderService");
+  }
+
+  @Test
+  void aNameThatAppearsOnlyInACommentIsNotAUse() {
+    final FileSummary summary =
+        summarize(
+            """
+            // OrderService is only mentioned here
+            /* and OrderService here too */
+            struct Cart {}
+            """);
+
+    assertThat(names(summary)).isEmpty();
+  }
+
+  @Test
+  void aNameInAStringLiteralIsNotAUse() {
+    final FileSummary summary =
+        summarize(
+            """
+            struct Cart {
+                let label = "OrderService"
+            }
+            """);
+
+    assertThat(names(summary)).doesNotContain("name:OrderService");
+  }
+
+  private static List<String> names(final FileSummary summary) {
+    return summary.imports().stream()
+        .map(Reference::specifier)
+        .filter(specifier -> specifier.startsWith(SwiftFileSummarizer.NAME_PREFIX))
+        .toList();
   }
 
   private static FileSummary summarize(final String source) {

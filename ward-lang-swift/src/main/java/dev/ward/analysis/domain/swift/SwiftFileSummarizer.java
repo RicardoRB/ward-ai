@@ -3,23 +3,31 @@ package dev.ward.analysis.domain.swift;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.FileSummarizer;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Summarizes a Swift file from its syntax tree: the modules it imports and the types it declares,
- * with nested types qualified by their enclosing type.
+ * Summarizes a Swift file from its syntax tree: the modules it imports, the identifiers it uses and
+ * the types it declares, with nested types qualified by their enclosing type.
  */
 public final class SwiftFileSummarizer implements FileSummarizer {
 
   /** The specifier prefix of an import, so the resolver can tell modules from other references. */
   public static final String MODULE_PREFIX = "module:";
 
+  /** The specifier prefix of a name use, which the resolver matches against declared types. */
+  public static final String NAME_PREFIX = "name:";
+
+  private static final String IDENTIFIER = "Identifier";
   private static final String IMPORT = "import_declaration";
   private static final String IMPORT_PATH = "import_path";
   private static final String IMPORT_IDENTIFIER = "import_path_identifier";
@@ -38,14 +46,41 @@ public final class SwiftFileSummarizer implements FileSummarizer {
 
   /**
    * Summarizes the unit. Imports become {@code module:<Name>} references, and every declared type
-   * is both an export and a declaration, since Swift exports all of them to the module.
+   * is both an export and a declaration, since Swift exports all of them to the module. Each
+   * distinct identifier the file uses becomes a {@code name:<Identifier>} reference, except its own
+   * declared names; comments and string literals hold no identifier nodes, so they add none.
    */
   @Override
   public FileSummary summarize(final SourceUnit unit, final SyntaxNode tree) {
     final List<Reference> imports = new ArrayList<>();
     final List<Symbol> declared = new ArrayList<>();
     collect(tree, "", imports, declared);
+    final Set<String> own =
+        declared.stream().map(symbol -> lastComponent(symbol.name())).collect(Collectors.toSet());
+    final Map<String, Span> names = new LinkedHashMap<>();
+    collectNames(tree, own, names);
+    names.forEach((name, span) -> imports.add(new Reference(NAME_PREFIX + name, span)));
     return new FileSummary(unit.path(), declared, imports, declared);
+  }
+
+  /** Records the first use of each identifier outside imports and the file's own names. */
+  private static void collectNames(
+      final SyntaxNode node, final Set<String> own, final Map<String, Span> names) {
+    if (IMPORT.equals(node.kind())) {
+      return;
+    }
+    final String name = node.fields().get(TEXT);
+    if (IDENTIFIER.equals(node.kind()) && name != null && !own.contains(name)) {
+      names.putIfAbsent(name, node.span());
+    }
+    for (final SyntaxNode child : node.children()) {
+      collectNames(child, own, names);
+    }
+  }
+
+  /** The last dot-separated part of a qualified name: the name a use of the type writes. */
+  static String lastComponent(final String qualified) {
+    return qualified.substring(qualified.lastIndexOf(QUALIFIER) + 1);
   }
 
   private static void collect(
