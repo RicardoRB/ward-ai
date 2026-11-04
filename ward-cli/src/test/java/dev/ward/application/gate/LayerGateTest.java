@@ -8,7 +8,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -67,7 +67,7 @@ class LayerGateTest {
     return LayerPorts.findings(
         new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         boundary,
-        new ProjectDependencyAdapters(List.of(new JavaDependencyAdapters())));
+        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters())));
   }
 
   private void copyFixture() throws IOException {
