@@ -1,6 +1,9 @@
 package dev.ward.infrastructure.init.node;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import java.util.List;
 
 /**
@@ -84,25 +87,26 @@ final class DependencyCruiserConfigSource {
    */
   private record Boundary(String name, String comment, List<String> from, List<String> to) {
     static Boundary of(final String architecture) {
+      final LayerBoundary layers = ArchitectureLayers.forStyle(architecture, Framework.NONE);
       return switch (architecture) {
         case "hexagonal" ->
             new Boundary(
                 "hexagonal-architecture",
                 "domain and application must not depend on adapters or infrastructure.",
-                List.of("domain", "application"),
-                List.of("adapter", "infrastructure"));
+                layers.from(),
+                layers.forbidden());
         case "clean" ->
             new Boundary(
                 "clean-architecture",
                 "domain and core must not depend on controllers, adapters or infrastructure.",
-                List.of("domain", "core"),
-                List.of("controller", "adapter", "infrastructure"));
+                layers.from(),
+                layers.forbidden());
         default ->
             new Boundary(
                 "layered-architecture",
                 "controllers must not depend on repositories.",
-                List.of("controller"),
-                List.of("repository"));
+                layers.from(),
+                layers.forbidden());
       };
     }
 

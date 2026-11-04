@@ -63,13 +63,14 @@ interface GateExtensionBindingsModule {
       @Named("ward.version") final String wardVersion) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
+    final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
     final List<FrontendSupport> frontends =
         List.of(
-            new FrontendSupport(AnalysisLanguage.JAVA, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, syntax),
+            new FrontendSupport(AnalysisLanguage.JAVA, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, symbols),
             new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, syntax));
     return new AnalysisPorts(
         rules,

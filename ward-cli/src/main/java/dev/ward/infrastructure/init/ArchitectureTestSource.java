@@ -1,6 +1,11 @@
 package dev.ward.infrastructure.init;
 
+import static java.util.stream.Collectors.joining;
+
+import dev.ward.analysis.domain.rule.LayerBoundary;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -101,16 +106,13 @@ final class ArchitectureTestSource {
   }
 
   private static List<String> layerRule(final String architecture) {
-    return switch (architecture) {
-      case "hexagonal" ->
-          layerRule(
-              "\"..domain..\", \"..application..\"", "\"..adapter..\", \"..infrastructure..\"");
-      case "clean" ->
-          layerRule(
-              "\"..domain..\", \"..core..\"",
-              "\"..controller..\", \"..adapter..\", \"..infrastructure..\"");
-      default -> layerRule("\"..controller..\"", "\"..repository..\"");
-    };
+    final LayerBoundary layers = ArchitectureLayers.forStyle(architecture, Framework.NONE);
+    return layerRule(packages(layers.from()), packages(layers.forbidden()));
+  }
+
+  /** Renders each layer as the ArchUnit package pattern {@code "..layer.."}, comma-separated. */
+  private static String packages(final List<String> layers) {
+    return layers.stream().map("\"..%s..\""::formatted).collect(joining(", "));
   }
 
   /**

@@ -73,7 +73,8 @@ class SwiftGatesTest {
         "swift-coverage".equals(type) ? MINIMUM : null,
         "xcodebuild-test".equals(type) ? XcodePlatform.MACOS : null,
         null,
-        null);
+        null,
+        List.of());
   }
 
   @Test

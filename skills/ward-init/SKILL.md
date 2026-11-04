@@ -175,6 +175,9 @@ order:
    [references/option-map.md](references/option-map.md#how-presets-and-gates-combine).
 4. **Architecture style** (only when `archunit` is selected and no ArchUnit tests exist). `layered`,
    `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote the packages.
+   Then, when the project's languages are all supported by the `ward` engine, ask which checker
+   enforces the style: `tool` (the default, and the recommendation until the engine's verdict is
+   proven on the project) or `ward` (`--architecture-engine ward`, boundaries in `ward.toml`).
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.

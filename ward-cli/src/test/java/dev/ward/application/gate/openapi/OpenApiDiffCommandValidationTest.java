@@ -95,7 +95,8 @@ class OpenApiDiffCommandValidationTest {
                 null,
                 null,
                 null,
-                null));
+                null,
+                List.of()));
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 
     assertThatThrownBy(() -> factory.create(new WardConfiguration(1, gates)))

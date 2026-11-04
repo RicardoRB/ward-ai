@@ -15,6 +15,7 @@ as a whole is not that yes.
 | Gates | `--gate <id>[,<id>...]` | Gate ids from the gate reference | No |
 | Xcode scheme | `--scheme <name>` | An Xcode scheme of a Swift project with several shared schemes. With `--yes`, a project with several schemes needs this option, and the name must be one of them | No |
 | Architecture style | `--architecture <style>` | `layered`, `hexagonal`, or `clean`. Only when `archunit` (Java) or `dependency-cruiser` (Node) is selected. For `archunit`, it applies only when no ArchUnit tests exist | No |
+| Architecture engine | `--architecture-engine <tool\|ward>` | `tool` (default): the generated external tool checks the style. `ward`: the `ward` gate checks it with `[[checks.ward.layers]]`. Only when a style is chosen and every project language is supported by the engine (Java, Python, TypeScript, JavaScript). Not with strict extras | No |
 | Optional tools | `--tool openspec` | `openspec` | No |
 | OpenSpec validations | `--openspec-validation <id>[,<id>...]` | `openspec`, `openspec-archived`. Only together with `--tool openspec` | No |
 | Agent integrations | `--integration <id>[,<id>...]` | `none`, or any of `claude-code`, `opencode`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, `amp`, `junie` | No |

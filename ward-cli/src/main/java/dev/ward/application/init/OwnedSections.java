@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.gate.SupportedQualityGates;
+import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -30,11 +31,9 @@ public final class OwnedSections {
       final InitSelection selection,
       final List<InitGateOption> gates,
       final List<Path> userOwnedRuleFiles) {
-    final List<OwnedSection> sections = new ArrayList<>();
-    if (selection.ci() != null) {
-      sections.add(catalog.ciWorkflow(selection.ci(), project, gates));
-    }
-    final String analysisCache = analysisCacheEntries(gates);
+    final List<OwnedSection> sections =
+        new ArrayList<>(ciSections(catalog, project, selection, gates));
+    final String analysisCache = analysisCacheEntries(selection, gates);
     if (project.toolchain() == Toolchain.NODE) {
       sections.add(
           new OwnedSection(
@@ -81,17 +80,36 @@ public final class OwnedSections {
     }
     if (selection.agentRules()) {
       sections.add(
-          AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));
+          AgentRulesTemplate.render(
+              project,
+              gates,
+              selection.preset(),
+              userOwnedRuleFiles,
+              selection.architectureEngine() == ArchitectureEngine.WARD));
     }
     return sections;
+  }
+
+  private static List<OwnedSection> ciSections(
+      final InitSetupCatalog catalog,
+      final Project project,
+      final InitSelection selection,
+      final List<InitGateOption> gates) {
+    if (selection.ci() == null) {
+      return List.of();
+    }
+    return List.of(catalog.ciWorkflow(selection.ci(), project, gates));
   }
 
   /**
    * Returns the Git ignore entry for the analysis result cache, or nothing when the project has no
    * {@code ward} gate. The entry shares the one ignore section that init owns in the file.
    */
-  private static String analysisCacheEntries(final List<InitGateOption> gates) {
-    return gates.stream().anyMatch(gate -> SupportedQualityGates.ANALYSIS.equals(gate.id()))
+  private static String analysisCacheEntries(
+      final InitSelection selection, final List<InitGateOption> gates) {
+    final boolean wardEngine = selection.architectureEngine() == ArchitectureEngine.WARD;
+    return wardEngine
+            || gates.stream().anyMatch(gate -> SupportedQualityGates.ANALYSIS.equals(gate.id()))
         ? ".ward/cache/\n"
         : "";
   }

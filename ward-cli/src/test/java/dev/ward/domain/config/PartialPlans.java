@@ -50,7 +50,8 @@ final class PartialPlans {
         null,
         null,
         null,
-        null);
+        null,
+        List.of());
   }
 
   static PartialGateConfiguration partial(

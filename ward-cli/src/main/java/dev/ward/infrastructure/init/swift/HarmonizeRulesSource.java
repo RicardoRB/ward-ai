@@ -1,6 +1,9 @@
 package dev.ward.infrastructure.init.swift;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.domain.init.ArchitectureGates;
+import dev.ward.domain.init.ArchitectureLayers;
+import dev.ward.domain.project.Framework;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +27,6 @@ final class HarmonizeRulesSource {
 
   private static final List<String> EXCLUDES =
       List.of(".ward", ".build", "Pods", "Carthage", "DerivedData");
-
-  private static final List<String> OUTER = List.of("adapter", "infrastructure");
 
   /**
    * The rule shared by every layer test. A file belongs to a layer when one of its folders below
@@ -114,15 +115,10 @@ final class HarmonizeRulesSource {
 
   /** Returns the source layers of {@code style}; an unknown style uses the layered rules. */
   static List<SourceLayer> layers(final String style) {
-    return switch (style) {
-      case "hexagonal" ->
-          List.of(new SourceLayer("domain", OUTER), new SourceLayer("application", OUTER));
-      case "clean" ->
-          List.of(
-              new SourceLayer("domain", List.of("controller", "adapter", "infrastructure")),
-              new SourceLayer("core", List.of("controller", "adapter", "infrastructure")));
-      default -> List.of(new SourceLayer("controller", List.of("repository")));
-    };
+    final LayerBoundary boundary = ArchitectureLayers.forStyle(style, Framework.NONE);
+    return boundary.from().stream()
+        .map(name -> new SourceLayer(name, boundary.forbidden()))
+        .toList();
   }
 
   /** Returns the manifest that pins Harmonize exactly, with Ward's marker. */

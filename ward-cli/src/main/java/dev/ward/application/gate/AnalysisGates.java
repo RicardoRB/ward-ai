@@ -6,9 +6,12 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.QualityGate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** Builds the {@code ward} gate and selects the rules its check names. */
 final class AnalysisGates {
+  private static final Logger LOGGER = Logger.getLogger(AnalysisGates.class.getName());
 
   private AnalysisGates() {}
 
@@ -25,7 +28,20 @@ final class AnalysisGates {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }
     return new AnalysisGate(
-        check.name(), selectRules(check, loaded.rules()), analysis, check.javaClasspath());
+        check.name(), rulesOf(check, loaded.rules()), analysis, check.javaClasspath());
+  }
+
+  /** The selected rules, plus the layer rule when the check configures architecture boundaries. */
+  private static List<RuleDefinition> rulesOf(
+      final GateConfiguration check, final List<RuleDefinition> available) {
+    final List<RuleDefinition> rules = new ArrayList<>(selectRules(check, available));
+    if (!check.layers().isEmpty()) {
+      if (LOGGER.isLoggable(Level.FINE)) {
+        LOGGER.fine("Architecture boundaries configured: " + check.layers().size());
+      }
+      rules.add(LayerRules.definition(check.layers()));
+    }
+    return rules;
   }
 
   /** Returns the rules the check names, in its order, or every loaded rule when it names none. */

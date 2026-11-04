@@ -25,6 +25,7 @@ public final class DependencyGraph {
   private final List<DependencyEdge> edges;
   private final Map<String, List<String>> outgoing;
   private final Map<String, List<String>> incoming;
+  private final Map<String, List<DependencyEdge>> outgoingEdges;
 
   /**
    * Builds the graph from {@code edges}.
@@ -35,6 +36,10 @@ public final class DependencyGraph {
     this.edges = edges.stream().sorted(ORDER).toList();
     this.outgoing = adjacency(DependencyEdge::from, DependencyEdge::to);
     this.incoming = adjacency(DependencyEdge::to, DependencyEdge::from);
+    this.outgoingEdges =
+        this.edges.stream()
+            .collect(
+                Collectors.groupingBy(DependencyEdge::from, TreeMap::new, Collectors.toList()));
   }
 
   /** Returns every edge, sorted by source, target and reference. */
@@ -45,6 +50,11 @@ public final class DependencyGraph {
   /** Returns the sorted paths that {@code path} depends on directly. */
   public List<String> dependenciesOf(final String path) {
     return outgoing.getOrDefault(path, List.of());
+  }
+
+  /** Returns the edges that leave {@code path}, in the graph's order, with their references. */
+  public List<DependencyEdge> outgoingEdgesOf(final String path) {
+    return outgoingEdges.getOrDefault(path, List.of());
   }
 
   /** Returns the sorted paths that depend on {@code path} directly. */

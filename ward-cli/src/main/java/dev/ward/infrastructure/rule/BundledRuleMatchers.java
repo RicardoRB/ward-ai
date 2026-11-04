@@ -14,6 +14,7 @@ public final class BundledRuleMatchers {
 
   /** Creates the matcher for the bundled rules. */
   public static RuleMatcher create() {
-    return new LanguageRuleMatcher(new NodeRuleMatcher(), new CompositeRuleMatcher());
+    return new LayerRuleMatcher(
+        new LanguageRuleMatcher(new NodeRuleMatcher(), new CompositeRuleMatcher()));
   }
 }

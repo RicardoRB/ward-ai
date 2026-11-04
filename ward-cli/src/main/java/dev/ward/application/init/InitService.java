@@ -195,7 +195,11 @@ public class InitService {
     final Path file = project.root().resolve("ward.toml");
     final String content =
         ConfigurationTemplate.render(
-            gates, selection.preset(), project, catalog.get().openSpecDirectories().root(project));
+            gates,
+            selection.preset(),
+            project,
+            catalog.get().openSpecDirectories().root(project),
+            EngineLayers.of(selection, project));
     final boolean created;
     if (overwrite) {
       files.configuration().replace(file, content);

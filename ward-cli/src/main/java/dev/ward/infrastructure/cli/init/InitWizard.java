@@ -29,9 +29,9 @@ final class InitWizard {
           + " project to configure.";
 
   final LinePrompt prompt;
-  private final Answering answering;
+  final Answering answering;
   private final Supplier<Optional<RawSession>> rawTerminal;
-  private final PrintWriter out;
+  final PrintWriter out;
 
   InitWizard(
       final LinePrompt prompt,
