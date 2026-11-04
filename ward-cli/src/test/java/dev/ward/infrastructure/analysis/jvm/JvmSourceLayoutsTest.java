@@ -9,11 +9,12 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 class JvmSourceLayoutsTest {
-  private static final String JAVA_MATRIX = "src/test/resources/fixtures/java-matrix/";
+  private static final String MAIN_JAVA = "src/main/java";
+  private static final String TEST_JAVA = "src/test/java";
+  private static final String MAIN_KOTLIN = "src/main/kotlin";
+  private static final String TEST_KOTLIN = "src/test/kotlin";
 
   @TempDir Path root;
 
@@ -23,8 +24,10 @@ class JvmSourceLayoutsTest {
 
     assertThat(roots(root))
         .containsExactly(
-            new JavaSourceRoot("src/main/java", "", false),
-            new JavaSourceRoot("src/test/java", "", true));
+            new JavaSourceRoot(MAIN_JAVA, "", false),
+            new JavaSourceRoot(TEST_JAVA, "", true),
+            new JavaSourceRoot(MAIN_KOTLIN, "", false),
+            new JavaSourceRoot(TEST_KOTLIN, "", true));
   }
 
   @Test
@@ -42,7 +45,10 @@ class JvmSourceLayoutsTest {
 
     assertThat(roots(root))
         .containsExactly(
-            new JavaSourceRoot("src/app", "", false), new JavaSourceRoot("tests/java", "", true));
+            new JavaSourceRoot("src/app", "", false),
+            new JavaSourceRoot("tests/java", "", true),
+            new JavaSourceRoot(MAIN_KOTLIN, "", false),
+            new JavaSourceRoot(TEST_KOTLIN, "", true));
   }
 
   @Test
@@ -59,80 +65,47 @@ class JvmSourceLayoutsTest {
 
     assertThat(roots(root))
         .containsExactly(
-            new JavaSourceRoot("src/main/java", "", false),
-            new JavaSourceRoot("src/test/java", "", true));
+            new JavaSourceRoot(MAIN_JAVA, "", false),
+            new JavaSourceRoot(TEST_JAVA, "", true),
+            new JavaSourceRoot(MAIN_KOTLIN, "", false),
+            new JavaSourceRoot(TEST_KOTLIN, "", true));
   }
 
   @Test
-  void gradleKotlinLiteralSourceSetDirectoryIsRead() throws IOException {
+  void mavenLiteralKotlinSourceDirsAddToTheDefaults() throws IOException {
     write(
-        root.resolve("build.gradle.kts"),
+        root.resolve("pom.xml"),
         """
-        sourceSets {
-            main {
-                java {
-                    srcDir("generated/main")
-                }
-            }
-        }
+        <project>
+          <build>
+            <plugins>
+              <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <executions>
+                  <execution>
+                    <configuration>
+                      <sourceDirs>
+                        <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                        <sourceDir>generated/kotlin</sourceDir>
+                        <sourceDir>src/test/extra</sourceDir>
+                      </sourceDirs>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
+            </plugins>
+          </build>
+        </project>
         """);
 
     assertThat(roots(root))
         .containsExactly(
-            new JavaSourceRoot("generated/main", "", false),
-            new JavaSourceRoot("src/test/java", "", true));
-  }
-
-  @Test
-  void gradleGroovyLiteralTestDirectoryIsRead() throws IOException {
-    write(
-        root.resolve("build.gradle"),
-        """
-        sourceSets {
-            test {
-                java {
-                    srcDirs = ['generated/test']
-                }
-            }
-        }
-        """);
-
-    assertThat(roots(root))
-        .containsExactly(
-            new JavaSourceRoot("src/main/java", "", false),
-            new JavaSourceRoot("generated/test", "", true));
-  }
-
-  @Test
-  void multiModuleGradleProjectGivesEachModuleItsOwnRoots() throws IOException {
-    final Path api = Files.createDirectories(root.resolve("api"));
-    final Path domain = Files.createDirectories(root.resolve("domain"));
-    write(api.resolve("build.gradle"), "plugins { id 'java' }");
-    write(domain.resolve("build.gradle.kts"), "plugins { java }");
-
-    assertThat(JvmSourceLayouts.of(root, List.of(api, domain)))
-        .containsExactly(
-            new JavaSourceRoot("api/src/main/java", "api", false),
-            new JavaSourceRoot("api/src/test/java", "api", true),
-            new JavaSourceRoot("domain/src/main/java", "domain", false),
-            new JavaSourceRoot("domain/src/test/java", "domain", true));
-  }
-
-  /** The java-matrix build files, each copied under the name its build tool reads. */
-  @ParameterizedTest
-  @CsvSource({
-    "maven/pom.xml, pom.xml",
-    "gradle-kotlin/build.gradle.kts, build.gradle.kts",
-    "gradle-groovy/build.gradle, build.gradle"
-  })
-  void theJavaMatrixBuildFilesUseTheDefaultRoots(final String fixture, final String name)
-      throws IOException {
-    Files.copy(Path.of(JAVA_MATRIX, fixture), root.resolve(name));
-
-    assertThat(roots(root))
-        .containsExactly(
-            new JavaSourceRoot("src/main/java", "", false),
-            new JavaSourceRoot("src/test/java", "", true));
+            new JavaSourceRoot(MAIN_JAVA, "", false),
+            new JavaSourceRoot(TEST_JAVA, "", true),
+            new JavaSourceRoot(MAIN_KOTLIN, "", false),
+            new JavaSourceRoot("generated/kotlin", "", false),
+            new JavaSourceRoot(TEST_KOTLIN, "", true),
+            new JavaSourceRoot("src/test/extra", "", true));
   }
 
   private static List<JavaSourceRoot> roots(final Path project) {

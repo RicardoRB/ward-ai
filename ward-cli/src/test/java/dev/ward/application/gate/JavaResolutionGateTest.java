@@ -13,7 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
@@ -129,7 +129,7 @@ class JavaResolutionGateTest {
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
             AnalysisCacheFixtures.codec(),
             "test",
-            new JavaDependencyAdapters()),
+            new JvmDependencyAdapters()),
         javaClasspath);
   }
 

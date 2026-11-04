@@ -12,14 +12,14 @@ import java.util.Set;
  * The types each project file declares, keyed by qualified name, and which files may see which. A
  * file outside every source root is a main source of its own module.
  */
-final class JavaSourceIndex {
+final class JvmSourceIndex {
   private static final JavaSourceRoot UNROOTED = new JavaSourceRoot("", "", false);
 
   private final Map<String, Set<String>> declaringFiles = new HashMap<>();
   private final List<JavaSourceRoot> roots;
 
   /** Indexes the declarations of {@code summaries} under the source {@code roots}. */
-  JavaSourceIndex(final List<FileSummary> summaries, final List<JavaSourceRoot> roots) {
+  JvmSourceIndex(final List<FileSummary> summaries, final List<JavaSourceRoot> roots) {
     this.roots =
         roots.stream()
             .sorted(

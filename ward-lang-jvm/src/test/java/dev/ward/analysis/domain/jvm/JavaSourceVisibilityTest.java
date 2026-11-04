@@ -45,7 +45,7 @@ class JavaSourceVisibilityTest {
     final String domainPrice = "domain/src/main/java/shop/domain/Price.java";
     final String apiFixtures = "api/src/test/java/a/Fixtures.java";
     final List<DependencyEdge> edges =
-        new JavaDependencyResolver(modules)
+        new JvmDependencyResolver(modules)
             .resolve(
                 List.of(
                     file(
