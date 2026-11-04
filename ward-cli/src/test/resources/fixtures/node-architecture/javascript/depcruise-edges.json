@@ -1,0 +1,22 @@
+[
+  [
+    "src/application/place.js",
+    "src/domain/order.js"
+  ],
+  [
+    "src/controller/users.js",
+    "src/application/place.js"
+  ],
+  [
+    "src/infrastructure/db.js",
+    "src/application/place.js"
+  ],
+  [
+    "violations/cycle/src/cycle-a.js",
+    "violations/cycle/src/cycle-b.js"
+  ],
+  [
+    "violations/cycle/src/cycle-b.js",
+    "violations/cycle/src/cycle-a.js"
+  ]
+]
