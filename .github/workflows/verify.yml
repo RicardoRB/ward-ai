@@ -1,9 +1,11 @@
 name: Verify
 
 # Shared by pull requests and releases. JVM tests cannot see native-image-only failures (for
-# example, classes defined at run time), so after the JVM quality gates pass, each runner runs the
+# example, classes defined at run time), so alongside the JVM quality gates, each runner runs the
 # terminal tests inside a native test image, builds the native executable, and drives its raw-key
-# init wizard through a pseudo-terminal (POSIX) or smoke-runs it (Windows).
+# init wizard through a pseudo-terminal (POSIX) or smoke-runs it (Windows). The native checks and
+# the compatibility matrices start with the quality gates instead of after them, which roughly halves
+# the run; a failing gate no longer stops them.
 on:
   workflow_call:
     inputs:
@@ -180,11 +182,11 @@ jobs:
             target/ward.sarif
           if-no-files-found: ignore
 
-  # After the Ward ci profile passes, reads the Node and fixture pairs from the matrix data and skips
+  # Reads the Node and fixture pairs from the matrix data and skips
   # the matrix for pull requests that change only website, openspec or Markdown files.
   node-matrix-versions:
     name: Node matrix versions
-    needs: [quality, changes]
+    needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
@@ -251,11 +253,11 @@ jobs:
           -Dward.node.matrix.jar=target/ward.jar
           test
 
-  # After the Ward ci profile passes, reads the Python and fixture pairs from the matrix data and
+  # Reads the Python and fixture pairs from the matrix data and
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   python-matrix-versions:
     name: Python matrix versions
-    needs: [quality, changes]
+    needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
@@ -316,12 +318,12 @@ jobs:
           -Dward.python.matrix.jar=target/ward.jar
           test
 
-  # After the Ward ci profile passes, reads the Xcode and fixture pairs and their runners from the
+  # Reads the Xcode and fixture pairs and their runners from the
   # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
   # files.
   swift-matrix-versions:
     name: Swift matrix versions
-    needs: [quality, changes]
+    needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
@@ -379,11 +381,11 @@ jobs:
           -Dward.swift.matrix.jar=target/ward.jar
           test
 
-  # After the Ward ci profile passes, reads the JDK and Gradle versions from the matrix data and
+  # Reads the JDK and Gradle versions from the matrix data and
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   java-matrix-versions:
     name: Java matrix versions
-    needs: [quality, changes]
+    needs: changes
     if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
@@ -455,8 +457,8 @@ jobs:
 
   native:
     name: Native checks (${{ matrix.os }})
-    needs: [quality, changes]
-    if: ${{ success() && needs.changes.outputs.code == 'true' }}
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     strategy:
       fail-fast: false
       matrix:
