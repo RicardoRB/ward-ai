@@ -14,8 +14,10 @@ import org.tomlj.TomlTable;
  */
 final class TomlAnalysisParser {
   private static final String RULES = "rules";
+  private static final String JAVA_CLASSPATH = "java-classpath";
   private static final String RULE_PREFIX = "ward:";
-  private static final Set<String> KEYS = Set.of("uses", "enabled", "profiles", RULES);
+  private static final Set<String> KEYS =
+      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH);
 
   private TomlAnalysisParser() {}
 
@@ -26,6 +28,22 @@ final class TomlAnalysisParser {
     }
     rejectUnknownKeys(where, gate);
     return gate.contains(RULES) ? rules(where + "." + RULES, gate.getArray(RULES)) : List.of();
+  }
+
+  /**
+   * Returns the project-relative classpath file that enables Java binding resolution, or {@code
+   * null} when the check does not set it.
+   */
+  static String javaClasspath(final String where, final String type, final TomlTable gate) {
+    if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(JAVA_CLASSPATH)) {
+      return null;
+    }
+    final String path = gate.getString(JAVA_CLASSPATH);
+    if (path == null || path.isBlank()) {
+      throw new WardException(
+          "'" + where + "." + JAVA_CLASSPATH + "' must be the path of a classpath file");
+    }
+    return path;
   }
 
   private static void rejectUnknownKeys(final String where, final TomlTable gate) {

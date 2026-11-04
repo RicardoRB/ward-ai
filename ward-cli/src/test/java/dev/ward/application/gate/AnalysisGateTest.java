@@ -171,7 +171,7 @@ class AnalysisGateTest {
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
             "test",
-            List.of());
+            (root, classpath) -> List.of());
     return new AnalysisGate("ward", rules, ports);
   }
 

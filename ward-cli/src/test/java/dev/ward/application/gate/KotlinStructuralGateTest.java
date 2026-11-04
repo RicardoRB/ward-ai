@@ -87,7 +87,18 @@ class KotlinStructuralGateTest {
   private static QualityGate gate(final List<String> rules) {
     final GateConfiguration check =
         new GateConfiguration(
-            "structure", "ward", true, List.of(), Set.of(), null, null, null, null, null, rules);
+            "structure",
+            "ward",
+            true,
+            List.of(),
+            Set.of(),
+            null,
+            null,
+            null,
+            null,
+            null,
+            rules,
+            null);
     return AnalysisGates.create(check, ports());
   }
 
@@ -104,7 +115,7 @@ class KotlinStructuralGateTest {
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
-        List.of());
+        (root, classpath) -> List.of());
   }
 
   private Project project() {

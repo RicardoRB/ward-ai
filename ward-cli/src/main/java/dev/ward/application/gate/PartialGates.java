@@ -101,7 +101,8 @@ final class PartialGates {
         gate.openApi(),
         gate.minimum(),
         gate.platform(),
-        gate.rules());
+        gate.rules(),
+        null);
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {
