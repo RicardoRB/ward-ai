@@ -20,13 +20,16 @@ permissions:
   contents: read
 
 env:
+  # Maven 3.9 reads MAVEN_ARGS; -ntp keeps artifact downloads out of the job logs.
+  MAVEN_ARGS: -ntp
   GITLEAKS_VERSION: 8.30.1
   TRIVY_VERSION: 0.76.0
   SEMGREP_VERSION: 1.181.0
   OPENSPEC_VERSION: 1.14.1
 
 jobs:
-  # Pull requests that change only website, openspec or Markdown files skip the native checks.
+  # Pull requests that change only website, openspec or Markdown files skip the native checks and
+  # the compatibility matrices.
   changes:
     name: Code changes
     runs-on: ubuntu-24.04
@@ -71,6 +74,7 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: pom.xml
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -100,12 +104,18 @@ jobs:
           pip install "semgrep==${SEMGREP_VERSION}"
           npm install -g "@fission-ai/openspec@${OPENSPEC_VERSION}"
 
-      # Restore and save separately so the cache is kept even when a gate fails.
+      - name: Read the date for the trivy cache key
+        id: today
+        run: echo "date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      # Restore and save separately so the cache is kept even when a gate fails. The Trivy database
+      # updates daily, so one cache per day is enough.
       - name: Restore trivy cache
+        id: trivy-cache
         uses: actions/cache/restore@v5
         with:
           path: ~/.cache/trivy
-          key: trivy-${{ github.run_id }}
+          key: trivy-${{ steps.today.outputs.date }}
           restore-keys: trivy-
 
       - name: Install Ward
@@ -149,11 +159,11 @@ jobs:
           category: ward
 
       - name: Save trivy cache
-        if: always()
+        if: always() && steps.trivy-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
         with:
           path: ~/.cache/trivy
-          key: trivy-${{ github.run_id }}
+          key: trivy-${{ steps.today.outputs.date }}
 
       - name: Generate coverage report
         if: always()
@@ -174,43 +184,27 @@ jobs:
   # the matrix for pull requests that change only website, openspec or Markdown files.
   node-matrix-versions:
     name: Node matrix versions
-    needs: quality
+    needs: [quality, changes]
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
-      run: ${{ steps.versions.outputs.run }}
     steps:
-      # Full history so the base branch is available for the documentation-only check.
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
-      - name: Read Node versions and decide whether the matrix runs
+      - name: Read Node versions
         id: versions
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          EVENT: ${{ github.event_name }}
         run: |
           set -eu
           cells=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {node: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
-          run=true
-          if [ "$EVENT" = pull_request ]; then
-            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-            # No changed path outside the documentation patterns means the matrix can be skipped.
-            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
-              run=false
-            fi
-          fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "Node cells: $cells, matrix runs: $run"
+          echo "Node cells: $cells"
 
   # One job per Node version and fixture. Each runs only the rows with that Node value and fixture.
   node-matrix:
     name: Node ${{ matrix.cell.node }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: node-matrix-versions
-    if: needs.node-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -225,6 +219,7 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: pom.xml
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -242,7 +237,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.npm
-          key: npm-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/NodePackageCatalog.java') }}
+          key: npm-${{ matrix.cell.fixture }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/node/NodePackageCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -260,43 +255,27 @@ jobs:
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   python-matrix-versions:
     name: Python matrix versions
-    needs: quality
+    needs: [quality, changes]
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
-      run: ${{ steps.versions.outputs.run }}
     steps:
-      # Full history so the base branch is available for the documentation-only check.
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
-      - name: Read Python versions and decide whether the matrix runs
+      - name: Read Python versions
         id: versions
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          EVENT: ${{ github.event_name }}
         run: |
           set -eu
           cells=$(tail -n +2 src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {python: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
-          run=true
-          if [ "$EVENT" = pull_request ]; then
-            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-            # No changed path outside the documentation patterns means the matrix can be skipped.
-            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
-              run=false
-            fi
-          fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "Python cells: $cells, matrix runs: $run"
+          echo "Python cells: $cells"
 
   # One job per Python version and fixture. Each runs only the rows with that version and fixture.
   python-matrix:
     name: Python ${{ matrix.cell.python }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: python-matrix-versions
-    if: needs.python-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -311,6 +290,7 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: pom.xml
 
       # The runner's interpreter is the cell's version, so uv and Poetry pick it up on the PATH.
       - name: Set up Python
@@ -341,22 +321,16 @@ jobs:
   # files.
   swift-matrix-versions:
     name: Swift matrix versions
-    needs: quality
+    needs: [quality, changes]
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
-      run: ${{ steps.versions.outputs.run }}
     steps:
-      # Full history so the base branch is available for the documentation-only check.
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
-      - name: Read Xcode versions and decide whether the matrix runs
+      - name: Read Xcode versions
         id: versions
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          EVENT: ${{ github.event_name }}
         run: |
           set -eu
           cells=$(tail -n +2 src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
@@ -364,22 +338,12 @@ jobs:
                 src/test/resources/swift-matrix/xcodes.csv - \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {xcode: .[0], fixture: .[1], runner: .[2]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
-          run=true
-          if [ "$EVENT" = pull_request ]; then
-            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-            # No changed path outside the documentation patterns means the matrix can be skipped.
-            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
-              run=false
-            fi
-          fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "Swift cells: $cells, matrix runs: $run"
+          echo "Swift cells: $cells"
 
   # One job per Xcode and fixture, on the macOS runner that xcodes.csv names for that Xcode.
   swift-matrix:
     name: Xcode ${{ matrix.cell.xcode }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: swift-matrix-versions
-    if: needs.swift-matrix-versions.outputs.run == 'true'
     runs-on: ${{ matrix.cell.runner }}
     strategy:
       fail-fast: false
@@ -394,13 +358,14 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: pom.xml
 
       # Keyed on the tool catalog so a pinned version change refetches the packages.
       - name: Restore SwiftPM cache
         uses: actions/cache@v5
         with:
           path: ~/Library/Caches/org.swift.swiftpm
-          key: swiftpm-${{ matrix.cell.xcode }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/SwiftToolCatalog.java') }}
+          key: swiftpm-${{ matrix.cell.xcode }}-${{ matrix.cell.fixture }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/swift/SwiftToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -418,43 +383,27 @@ jobs:
   # skips the matrix for pull requests that change only website, openspec or Markdown files.
   java-matrix-versions:
     name: Java matrix versions
-    needs: quality
+    needs: [quality, changes]
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
-      run: ${{ steps.versions.outputs.run }}
     steps:
-      # Full history so the base branch is available for the documentation-only check.
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
-      - name: Read JDK versions and decide whether the matrix runs
+      - name: Read JDK versions
         id: versions
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          EVENT: ${{ github.event_name }}
         run: |
           set -eu
           cells=$(tail -n +2 src/test/resources/java-matrix/jdks.csv \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {jdk: .[0], gradle: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
-          run=true
-          if [ "$EVENT" = pull_request ]; then
-            changed=$(git diff --name-only "origin/${BASE_REF}...HEAD")
-            # No changed path outside the documentation patterns means the matrix can be skipped.
-            if ! printf '%s\n' "$changed" | grep -qEv '^(website/|openspec/|.*\.md$)'; then
-              run=false
-            fi
-          fi
-          echo "run=$run" >> "$GITHUB_OUTPUT"
-          echo "JDK cells: $cells, matrix runs: $run"
+          echo "JDK cells: $cells"
 
   # One job per JDK. Ward runs on JDK 25; Maven, Gradle and every gate run on the cell's JDK.
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
     needs: java-matrix-versions
-    if: needs.java-matrix-versions.outputs.run == 'true'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -477,6 +426,7 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: pom.xml
 
       - name: Set up Gradle ${{ matrix.cell.gradle }}
         uses: gradle/actions/setup-gradle@v5
@@ -489,7 +439,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.m2/wrapper
-          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('src/main/java/dev/ward/domain/init/ManagedPluginCatalog.java', 'src/main/java/dev/ward/domain/init/GradleToolCatalog.java') }}
+          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('src/main/java/dev/ward/domain/init/maven/ManagedPluginCatalog.java', 'src/main/java/dev/ward/domain/init/gradle/GradleToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
