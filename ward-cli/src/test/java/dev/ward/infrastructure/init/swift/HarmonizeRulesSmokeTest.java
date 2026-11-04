@@ -11,6 +11,8 @@ import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -45,13 +47,18 @@ class HarmonizeRulesSmokeTest {
     final Project project = new Project(work, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
     new HarmonizeRulesGenerator(new FileSystemSwiftToolConfigs()).apply(project, style, NO_EXTRAS);
 
+    final Map<String, String> allowedFiles = SwiftArchitectureFiles.fixture(style);
     final Run allowed = swiftTest();
     assertThat(allowed.exitCode()).as(allowed.output()).isZero();
+    assertThat(SwiftLayerVerdicts.failingLayers(style, allowedFiles)).isEmpty();
 
-    write(source, forbidden);
+    final Map<String, String> violatingFiles = new TreeMap<>(allowedFiles);
+    violatingFiles.putAll(SwiftArchitectureFiles.violation(source, forbidden));
+    write(violatingFiles);
     final Run violating = swiftTest();
     assertThat(violating.exitCode()).as(violating.output()).isNotZero();
     assertThat(violating.output()).contains("must not depend on");
+    assertThat(SwiftLayerVerdicts.failingLayers(style, violatingFiles)).containsExactly(source);
   }
 
   private void copyFixture(final String style) throws IOException {
@@ -68,16 +75,13 @@ class HarmonizeRulesSmokeTest {
     }
   }
 
-  /** Adds a file in {@code source} that names a type declared under {@code forbidden}. */
-  private void write(final String source, final String forbidden) throws IOException {
-    final Path folder = work.resolve("App");
-    Files.createDirectories(folder.resolve(forbidden));
-    Files.writeString(
-        folder.resolve(forbidden).resolve("ViolationRecord.swift"), "struct ViolationRecord {}\n");
-    Files.createDirectories(folder.resolve(source));
-    Files.writeString(
-        folder.resolve(source).resolve("Violation.swift"),
-        "struct Violation {\n    let record: ViolationRecord\n}\n");
+  /** Writes the files of a violating layout, by path relative to the project root. */
+  private void write(final Map<String, String> files) throws IOException {
+    for (final Map.Entry<String, String> file : files.entrySet()) {
+      final Path path = work.resolve(file.getKey());
+      Files.createDirectories(path.getParent());
+      Files.writeString(path, file.getValue());
+    }
   }
 
   private Run swiftTest() throws IOException, InterruptedException {

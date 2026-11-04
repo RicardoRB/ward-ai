@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.swift;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Reference;
+import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.port.DependencyResolver;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.stream.Collectors;
 
 /**
  * Resolves Swift imports to the files of the project modules they name. An import is an edge to
- * every file of the module, because Swift imports a whole module.
+ * every file of the module, because Swift imports a whole module. A name use is an edge to each
+ * other file of the same module that declares a type with that name.
  */
 public final class SwiftModuleResolver implements DependencyResolver {
 
@@ -37,13 +39,49 @@ public final class SwiftModuleResolver implements DependencyResolver {
                     summary -> layout.moduleOf(summary.path()),
                     TreeMap::new,
                     Collectors.mapping(FileSummary::path, Collectors.toList())));
+    final Map<String, Map<String, List<String>>> typesByModule = typesByModule(summaries);
     final List<DependencyEdge> edges = new ArrayList<>();
     for (final FileSummary summary : summaries) {
       for (final Reference reference : summary.imports()) {
-        addEdges(summary.path(), reference, filesByModule, edges);
+        if (reference.specifier().startsWith(SwiftFileSummarizer.NAME_PREFIX)) {
+          addNameEdges(summary.path(), reference, typesByModule, edges);
+        } else {
+          addEdges(summary.path(), reference, filesByModule, edges);
+        }
       }
     }
     return edges;
+  }
+
+  /** Indexes the files that declare each type name, by the module that owns them. */
+  private Map<String, Map<String, List<String>>> typesByModule(final List<FileSummary> summaries) {
+    final Map<String, Map<String, List<String>>> index = new TreeMap<>();
+    for (final FileSummary summary : summaries) {
+      final Map<String, List<String>> types =
+          index.computeIfAbsent(layout.moduleOf(summary.path()), module -> new TreeMap<>());
+      for (final Symbol symbol : summary.declared()) {
+        types
+            .computeIfAbsent(
+                SwiftFileSummarizer.lastComponent(symbol.name()), name -> new ArrayList<>())
+            .add(summary.path());
+      }
+    }
+    return index;
+  }
+
+  private void addNameEdges(
+      final String from,
+      final Reference reference,
+      final Map<String, Map<String, List<String>>> typesByModule,
+      final List<DependencyEdge> edges) {
+    final String name = reference.specifier().substring(SwiftFileSummarizer.NAME_PREFIX.length());
+    final Map<String, List<String>> types =
+        typesByModule.getOrDefault(layout.moduleOf(from), Map.of());
+    for (final String to : types.getOrDefault(name, List.of())) {
+      if (!to.equals(from)) {
+        edges.add(new DependencyEdge(from, to, reference));
+      }
+    }
   }
 
   private void addEdges(

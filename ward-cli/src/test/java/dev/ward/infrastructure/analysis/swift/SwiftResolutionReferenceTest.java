@@ -27,7 +27,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
-/** Checks the module pairs of the graph against the target dependencies the fixtures declare. */
+/**
+ * Checks the cross-module pairs of the graph against the target dependencies the fixtures declare.
+ * Edges inside one module, from type-name uses, are not target dependencies and are left out.
+ */
 class SwiftResolutionReferenceTest {
 
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
@@ -51,6 +54,15 @@ class SwiftResolutionReferenceTest {
   }
 
   @Test
+  void aNestedTypeUseInsideTheModuleResolvesToItsDeclaringFile() throws IOException {
+    final Path root = FIXTURES.resolve("swift-resolution");
+    final DependencySnapshot snapshot = analyze(root, SwiftLayouts.read(root));
+
+    assertThat(snapshot.graph().dependenciesOf("Modules/Shop/Checkout.swift"))
+        .containsExactly("Modules/Shop/Cart.swift");
+  }
+
+  @Test
   void xcodeAppEdgesCollapseToItsProjectTargetDependencies() throws IOException {
     assertModulePairsMatchDeclared("swift-xcode-app");
   }
@@ -67,6 +79,7 @@ class SwiftResolutionReferenceTest {
 
     final Set<String> resolved =
         snapshot.graph().edges().stream()
+            .filter(edge -> !layout.moduleOf(edge.from()).equals(layout.moduleOf(edge.to())))
             .map(edge -> layout.moduleOf(edge.from()) + ARROW + layout.moduleOf(edge.to()))
             .collect(Collectors.toSet());
     final Set<String> declared =

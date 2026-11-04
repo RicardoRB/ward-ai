@@ -1,5 +1,6 @@
 import Foundation
 
 public enum Checkout {
-    case placed
+    // a Cart.Line is priced when the order is placed
+    case placed(Cart.Line)
 }
