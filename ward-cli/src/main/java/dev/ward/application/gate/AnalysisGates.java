@@ -24,7 +24,8 @@ final class AnalysisGates {
     if (!loaded.configurationErrors().isEmpty()) {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }
-    return new AnalysisGate(check.name(), selectRules(check, loaded.rules()), analysis);
+    return new AnalysisGate(
+        check.name(), selectRules(check, loaded.rules()), analysis, check.javaClasspath());
   }
 
   /** Returns the rules the check names, in its order, or every loaded rule when it names none. */

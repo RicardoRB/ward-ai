@@ -14,6 +14,22 @@
     <name>ward-cli</name>
     <description>Ward command-line interface: a quality gate orchestrator for AI coding agents</description>
 
+    <!-- Pins the Eclipse platform artifacts that JDT brings in, so their versions converge (enforcer). -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.platform</groupId>
+                <artifactId>org.eclipse.osgi</artifactId>
+                <version>3.24.300</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.platform</groupId>
+                <artifactId>org.eclipse.equinox.common</artifactId>
+                <version>3.21.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.google.dagger</groupId>
@@ -55,6 +71,12 @@
             <groupId>dev.ward</groupId>
             <artifactId>ward-lang-jvm</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <!-- Opt-in binding resolution of Java sources (EPL-2.0): used only when a ward gate sets java-classpath. -->
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.core</artifactId>
+            <version>3.47.0</version>
         </dependency>
         <dependency>
             <groupId>dev.ward</groupId>

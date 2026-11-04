@@ -188,7 +188,7 @@ final class ArchitectureBoundarySupport {
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.swift|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.swift|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

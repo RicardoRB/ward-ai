@@ -52,6 +52,24 @@ class TomlAnalysisCheckTest {
         .hasMessageContaining("must not be empty");
   }
 
+  @Test
+  void parsesTheJavaClasspathFile() {
+    assertThat(check("java-classpath = \"build/classpath.txt\"").javaClasspath())
+        .isEqualTo("build/classpath.txt");
+  }
+
+  @Test
+  void checkWithoutJavaClasspathHasNone() {
+    assertThat(check("").javaClasspath()).isNull();
+  }
+
+  @Test
+  void rejectsBlankJavaClasspath() {
+    assertThatThrownBy(() -> check("java-classpath = \"  \""))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.ward.java-classpath");
+  }
+
   private static GateConfiguration check(final String extra) {
     final String toml = "version = 2\n[checks.ward]\nuses = \"ward\"\n" + extra + "\n";
     return new TomlConfigurationReader().parse(Toml.parse(toml)).checks().get("ward");
