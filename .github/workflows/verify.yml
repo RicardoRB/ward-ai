@@ -75,8 +75,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: pom.xml
+
+      # Its own key: the shorter matrix jobs finish first and would save setup-java's shared key
+      # without the gate plugins (PMD, SpotBugs, PIT, ...). Saved separately so a failing gate keeps it.
+      - name: Restore Maven cache
+        id: maven-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-quality-${{ hashFiles('pom.xml') }}
+          restore-keys: maven-quality-
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -170,6 +180,15 @@ jobs:
       - name: Generate coverage report
         if: always()
         run: ./mvnw -B -q jacoco:report
+
+      - name: Save Maven cache
+        if: always() && steps.maven-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-quality-${{ hashFiles('pom.xml') }}
 
       - name: Upload reports
         if: always()
