@@ -2,16 +2,25 @@ package dev.ward.infrastructure.init.python;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.application.gate.LayerPorts;
+import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
+import dev.ward.domain.project.Language;
+import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -37,6 +46,15 @@ class PythonCompatibilityMatrixTest {
   private static final String JAR_PROPERTY = "ward.python.matrix.jar";
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/python-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/python-matrix/violations");
+
+  /** The files the ward engine's layer rule flags in each fixture's seeded violations. */
+  private static final Map<String, Set<String>> ENGINE_LAYER_VIOLATIONS =
+      Map.of(
+          "basic-uv", Set.of("src/shop/controller/api.py"),
+          "basic-poetry", Set.of("src/shop/controller/api.py"),
+          "basic-pip", Set.of("src/shop/controller/api.py"),
+          "fastapi-uv", Set.of("app/routers/cross.py"));
+
   private static final Set<String> NOT_VIOLATED = Set.of("coverage", "mutmut");
   private static final String PIP = "pip";
   private static final int PACKAGES_COLUMN = 4;
@@ -77,7 +95,11 @@ class PythonCompatibilityMatrixTest {
         .as("gates that fail on the clean project")
         .isEmpty();
 
+    assertThat(engineLayerFiles(project, fixture)).as("engine layer findings, clean").isEmpty();
     copyTree(VIOLATIONS.resolve(fixture), project);
+    assertThat(engineLayerFiles(project, fixture))
+        .as("engine layer findings, seeded")
+        .isEqualTo(ENGINE_LAYER_VIOLATIONS.getOrDefault(fixture, Set.of()));
     final Map<String, String> violated =
         checks(run(env, project, "check", "--profile", "ci", "--format", "json"));
     clean.keySet().stream()
@@ -87,6 +109,18 @@ class PythonCompatibilityMatrixTest {
                 assertThat(violated.get(gate))
                     .as("seeded violation for gate %s", gate)
                     .isEqualTo("FAILED"));
+  }
+
+  /** The layer files the ward engine flags in {@code project}, for the layered style. */
+  private static Set<String> engineLayerFiles(final Path project, final String fixture) {
+    final Framework framework = fixture.startsWith("fastapi") ? Framework.FASTAPI : Framework.NONE;
+    return LayerPorts.layerFiles(
+            new Project(project, Language.PYTHON, BuildTool.UV, framework),
+            "layered",
+            new ProjectDependencyAdapters(List.of(new PythonDependencyAdapters())))
+        .stream()
+        .map(file -> file.toLowerCase(Locale.ROOT))
+        .collect(Collectors.toSet());
   }
 
   /**

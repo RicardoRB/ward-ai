@@ -87,6 +87,29 @@ class SwiftInitCliTest {
     assertThat(root.resolve(".harmonize.yaml")).doesNotExist();
   }
 
+  @Test
+  void strictSwiftPackageWithTheWardEngineWritesBoundariesAndNoHarmonizeRules() throws IOException {
+    copyFixture("swift-package", root);
+    final InitCommandFixture init = swiftInit();
+
+    final int exit =
+        init.run(
+            "",
+            "--preset",
+            "strict",
+            "--architecture",
+            "hexagonal",
+            "--architecture-engine",
+            "ward",
+            "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("[[checks.ward.layers]]")
+        .doesNotContain("[checks.harmonize]");
+    assertThat(root.resolve(".ward/swift-architecture")).doesNotExist();
+  }
+
   private InitCommandFixture swiftInit() throws IOException {
     final FakeCommandExecutor resolve =
         new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));

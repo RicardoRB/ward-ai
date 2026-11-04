@@ -2,18 +2,26 @@ package dev.ward.infrastructure.init.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.application.gate.LayerPorts;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
@@ -33,6 +41,15 @@ class HarmonizeRulesSmokeTest {
   private static final QualityPreset.ArchitectureExtras NO_EXTRAS =
       new QualityPreset.ArchitectureExtras(false, false, false);
 
+  private static final String MANIFEST =
+      "// swift-tools-version: 5.9\n"
+          + "import PackageDescription\n"
+          + "\n"
+          + "let package = Package(\n"
+          + "    name: \"App\",\n"
+          + "    targets: [.target(name: \"App\", path: \"App\")]\n"
+          + ")\n";
+
   @TempDir Path work;
 
   @ParameterizedTest
@@ -44,6 +61,7 @@ class HarmonizeRulesSmokeTest {
   void allowedLayoutPassesAndForbiddenDependencyFails(
       final String style, final String source, final String forbidden) throws Exception {
     copyFixture(style);
+    Files.writeString(work.resolve("Package.swift"), MANIFEST);
     final Project project = new Project(work, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
     new HarmonizeRulesGenerator(new FileSystemSwiftToolConfigs()).apply(project, style, NO_EXTRAS);
 
@@ -51,6 +69,7 @@ class HarmonizeRulesSmokeTest {
     final Run allowed = swiftTest();
     assertThat(allowed.exitCode()).as(allowed.output()).isZero();
     assertThat(SwiftLayerVerdicts.failingLayers(style, allowedFiles)).isEmpty();
+    assertThat(engineFiles(project, style)).isEmpty();
 
     final Map<String, String> violatingFiles = new TreeMap<>(allowedFiles);
     violatingFiles.putAll(SwiftArchitectureFiles.violation(source, forbidden));
@@ -59,6 +78,21 @@ class HarmonizeRulesSmokeTest {
     assertThat(violating.exitCode()).as(violating.output()).isNotZero();
     assertThat(violating.output()).contains("must not depend on");
     assertThat(SwiftLayerVerdicts.failingLayers(style, violatingFiles)).containsExactly(source);
+    assertThat(engineFiles(project, style)).containsExactly("app/" + source + "/violation.swift");
+  }
+
+  /**
+   * The files the ward engine flags for {@code style} on the project, as the Harmonize rules see
+   * them.
+   */
+  private static Set<String> engineFiles(final Project project, final String style) {
+    return LayerPorts.findings(
+            project,
+            ArchitectureLayers.forStyle(style, Framework.NONE),
+            new ProjectDependencyAdapters(List.of(new SwiftDependencyAdapters())))
+        .stream()
+        .map(finding -> finding.file().toLowerCase(Locale.ROOT))
+        .collect(Collectors.toSet());
   }
 
   private void copyFixture(final String style) throws IOException {
