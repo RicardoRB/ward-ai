@@ -104,8 +104,16 @@ jobs:
           set -eu
           curl -sSfL --retry 5 --retry-all-errors "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
             | sudo tar -xz -C /usr/local/bin gitleaks
-          curl -sSfL --retry 5 --retry-all-errors "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" \
-            | sudo tar -xz -C /usr/local/bin trivy
+          # The install script's raw.githubusercontent.com fetch fails intermittently on runners;
+          # download the release asset with retries and verify it against the release checksums.
+          trivy_dir="$RUNNER_TEMP/trivy"
+          trivy_asset="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          trivy_base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+          mkdir -p "$trivy_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/$trivy_asset" "$trivy_base/$trivy_asset"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/checksums.txt" "$trivy_base/trivy_${TRIVY_VERSION}_checksums.txt"
+          (cd "$trivy_dir" && grep " $trivy_asset\$" checksums.txt | sha256sum -c -)
+          sudo tar -xzf "$trivy_dir/$trivy_asset" -C /usr/local/bin trivy
           pip install "semgrep==${SEMGREP_VERSION}"
           npm install -g "@fission-ai/openspec@${OPENSPEC_VERSION}"
 
@@ -533,10 +541,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up GraalVM 25.5
+      - name: Set up GraalVM 25
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '25.5.5.0.3'
           java-version: '25'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}

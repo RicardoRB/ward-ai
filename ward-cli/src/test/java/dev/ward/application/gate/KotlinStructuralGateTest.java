@@ -103,7 +103,8 @@ class KotlinStructuralGateTest {
                 Set.of(RuleCapability.SYNTAX))),
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
-        "test");
+        "test",
+        List.of());
   }
 
   private Project project() {

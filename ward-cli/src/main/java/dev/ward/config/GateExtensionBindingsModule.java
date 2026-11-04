@@ -73,7 +73,8 @@ interface GateExtensionBindingsModule {
         frontends,
         projectRoot -> new FileAnalysisCache(projectRoot.resolve(CACHE_DIRECTORY)),
         codec,
-        wardVersion);
+        wardVersion,
+        List.of());
   }
 
   @Provides

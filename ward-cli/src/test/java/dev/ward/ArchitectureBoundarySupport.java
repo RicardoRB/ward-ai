@@ -39,6 +39,7 @@ final class ArchitectureBoundarySupport {
   /** The analysis packages that every layer may hold. */
   static final Set<String> ANALYSIS_PACKAGES =
       Set.of(
+          "dev.ward.analysis.domain.graph",
           "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",

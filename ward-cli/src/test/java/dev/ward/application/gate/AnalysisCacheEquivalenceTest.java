@@ -39,7 +39,8 @@ class AnalysisCacheEquivalenceTest {
   private static final List<String> TEXTS =
       List.of("class A {}", "long body", "short", "BROKEN", "a much longer text", "x");
   private static final UnitResultCache RESULTS =
-      new UnitResultCache(new RuleEngine(matcher()), AnalysisCacheFixtures.codec(), "0.6.0");
+      new UnitResultCache(
+          new RuleEngine(matcher()), AnalysisCacheFixtures.codec(), "0.6.0", List.of());
   private static final List<FrontendSupport> FRONTENDS =
       List.of(
           new FrontendSupport(AnalysisLanguage.JAVA, frontend(), Set.of(RuleCapability.SYNTAX)));

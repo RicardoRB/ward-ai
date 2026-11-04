@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
+import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
@@ -43,14 +44,33 @@ public final class RuleEngine {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
-    final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
-    final UnitTrees trees = new UnitTrees(support);
-    final RuleRunCollector collector = new RuleRunCollector();
-    for (final RuleDefinition rule : rules) {
-      runRule(rule, units, support, trees, collector);
-    }
-    return collector.result();
+    return run(units, frontends, rules, DependencySnapshot.EMPTY);
   }
+
+  /**
+   * Runs {@code rules} over {@code units}, giving the rules that read capability {@code SYMBOLS}
+   * the dependencies of each unit from {@code snapshot}.
+   */
+  public RuleRunResult run(
+      final List<SourceUnit> units,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules,
+      final DependencySnapshot snapshot) {
+    final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
+    final RunState state =
+        new RunState(support, new UnitTrees(support), new RuleRunCollector(), snapshot);
+    for (final RuleDefinition rule : rules) {
+      runRule(rule, units, state);
+    }
+    return state.collector().result();
+  }
+
+  /** What one run shares between its rules. */
+  private record RunState(
+      Map<AnalysisLanguage, FrontendSupport> support,
+      UnitTrees trees,
+      RuleRunCollector collector,
+      DependencySnapshot snapshot) {}
 
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
       final List<FrontendSupport> frontends) {
@@ -59,22 +79,18 @@ public final class RuleEngine {
   }
 
   private void runRule(
-      final RuleDefinition definition,
-      final List<SourceUnit> units,
-      final Map<AnalysisLanguage, FrontendSupport> support,
-      final UnitTrees trees,
-      final RuleRunCollector collector) {
-    if (!provided(definition, support).contains(definition.capability())) {
-      collector.notRun(new RuleNotRun(definition.id(), definition.capability()));
+      final RuleDefinition definition, final List<SourceUnit> units, final RunState state) {
+    if (!provided(definition, state.support()).contains(definition.capability())) {
+      state.collector().notRun(new RuleNotRun(definition.id(), definition.capability()));
       return;
     }
-    final Optional<CompiledRule> rule = compile(definition, collector);
+    final Optional<CompiledRule> rule = compile(definition, state.collector());
     if (rule.isEmpty()) {
       return;
     }
     for (final SourceUnit unit : units) {
       if (unit.language() == definition.language()) {
-        runOnUnit(rule.get(), unit, trees, collector);
+        runOnUnit(rule.get(), unit, state);
       }
     }
   }
@@ -97,22 +113,29 @@ public final class RuleEngine {
   }
 
   private static void runOnUnit(
-      final CompiledRule rule,
-      final SourceUnit unit,
-      final UnitTrees trees,
-      final RuleRunCollector collector) {
-    final Optional<SyntaxNode> root = trees.parse(unit, collector);
+      final CompiledRule rule, final SourceUnit unit, final RunState state) {
+    final RuleRunCollector collector = state.collector();
+    final Optional<SyntaxNode> root = state.trees().parse(unit, collector);
     if (root.isEmpty()) {
       return;
     }
     try {
-      for (final RuleMatch match : rule.matches(root.get())) {
+      for (final RuleMatch match : rule.matches(root.get(), view(rule, unit, state))) {
         collector.finding(finding(rule.definition(), unit, match));
       }
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run"));
     }
+  }
+
+  /** Only a rule that reads capability {@code SYMBOLS} sees the files around the unit. */
+  private static DependencyView view(
+      final CompiledRule rule, final SourceUnit unit, final RunState state) {
+    if (rule.definition().capability() != RuleCapability.SYMBOLS) {
+      return DependencyView.NONE;
+    }
+    return state.snapshot().view(unit.path());
   }
 
   private static AnalysisFinding finding(

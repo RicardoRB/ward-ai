@@ -170,7 +170,8 @@ class AnalysisGateTest {
             List.of(new FrontendSupport(AnalysisLanguage.JAVA, frontend, capabilities)),
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
-            "test");
+            "test",
+            List.of());
     return new AnalysisGate("ward", rules, ports);
   }
 
