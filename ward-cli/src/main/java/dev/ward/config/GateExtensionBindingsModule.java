@@ -18,6 +18,7 @@ import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
+import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
@@ -81,6 +82,7 @@ interface GateExtensionBindingsModule {
         new ProjectDependencyAdapters(
             List.of(
                 new NodeDependencyAdapters(),
+                new PythonDependencyAdapters(),
                 new SwiftDependencyAdapters(),
                 new JavaDependencyAdapters())));
   }

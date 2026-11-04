@@ -149,7 +149,7 @@ public final class PythonProjectInspection {
   }
 
   /** Parses pyproject.toml leniently: a missing, unreadable or malformed file is an empty table. */
-  static TomlTable pyproject(final Path dir) {
+  public static TomlTable pyproject(final Path dir) {
     final Path file = dir.resolve(PYPROJECT);
     if (!Files.isRegularFile(file)) {
       return Toml.parse("");

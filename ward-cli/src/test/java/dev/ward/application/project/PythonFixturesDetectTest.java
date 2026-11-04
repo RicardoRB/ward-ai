@@ -14,6 +14,18 @@ class PythonFixturesDetectTest {
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
 
   @Test
+  void uvWorkspaceFixtureDetectsAsAUvPythonProject() {
+    final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
+
+    assertThat(detector.detect(FIXTURES.resolve("python-uv-workspace")))
+        .hasValueSatisfying(
+            project -> {
+              assertThat(project.buildTool()).isEqualTo(BuildTool.UV);
+              assertThat(project.language()).isEqualTo(Language.PYTHON);
+            });
+  }
+
+  @Test
   void uvPoetryPipAndRequirementsFixturesDetectTheirManager() {
     final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
 

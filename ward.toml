@@ -11,8 +11,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw -DskipTests package spotless:check"
 
 [checks.format.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
@@ -23,8 +23,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw -DskipTests package checkstyle:check"
 
 [checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
@@ -35,8 +35,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw -DskipTests package pmd:check"
 
 [checks.pmd.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
+full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
 
 [checks.spotbugs]
 enabled = true
@@ -52,7 +52,7 @@ command = "./mvnw -DskipTests package jacoco:check"
 enabled = true
 uses = "archunit"
 profiles = ["pre-push", "ci"]
-command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureTestGeneratorTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
 enabled = true
