@@ -14,7 +14,8 @@ import java.util.List;
  * @param caches opens the result cache of a project
  * @param codec encodes the cached results
  * @param engineVersion the Ward version, which invalidates cached results when it changes
- * @param dependencies builds the dependency adapters of each project
+ * @param dependencies builds the dependency adapters of each run; {@link DependencyAdapters#none()}
+ *     when no language resolves dependencies
  */
 public record AnalysisPorts(
     AnalysisRuleSource rules,

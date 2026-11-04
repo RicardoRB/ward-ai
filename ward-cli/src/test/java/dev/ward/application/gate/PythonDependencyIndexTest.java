@@ -10,7 +10,7 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.metric.MetricMatcher;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,12 +51,13 @@ final class PythonDependencyIndexTest {
         new FrontendSupport(
             AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
 
+    final List<SourceUnit> units = pythonUnits();
     new UnitResultCache(
             new RuleEngine(new MetricMatcher()),
             AnalysisCacheFixtures.codec(),
             "test",
-            new ProjectDependencyAdapters().forProject(WORKSPACE))
-        .run(cache, pythonUnits(), List.of(python), List.of());
+            new PythonDependencyAdapters().forProject(WORKSPACE, units))
+        .run(cache, units, List.of(python), List.of());
 
     assertThat(entries.values())
         .anyMatch(value -> value.contains(IMPORTER) && value.contains(IMPORTED));

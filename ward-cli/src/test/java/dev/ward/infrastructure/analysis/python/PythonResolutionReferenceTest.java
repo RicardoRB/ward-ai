@@ -8,8 +8,8 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.python.PythonProjectLayout;
+import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -58,8 +58,10 @@ final class PythonResolutionReferenceTest {
   private static Set<String> wardEdges(final Path fixture, final List<String> roots)
       throws IOException {
     final PythonProjectLayout layout = PythonLayouts.read(fixture);
-    final DependencySupport python = pythonSupport(fixture);
-    final List<DependencyEdge> edges = python.resolver().resolve(summaries(fixture, python));
+    final List<SourceUnit> units = pythonUnits(fixture);
+    final DependencySupport python =
+        new PythonDependencyAdapters().forProject(fixture, units).get(0);
+    final List<DependencyEdge> edges = python.resolver().resolve(summaries(units, python));
     final Set<String> keys = new TreeSet<>();
     for (final DependencyEdge edge : edges) {
       if (inRoots(edge.from(), layout, roots) && inRoots(edge.to(), layout, roots)) {
@@ -69,31 +71,25 @@ final class PythonResolutionReferenceTest {
     return keys;
   }
 
-  private static DependencySupport pythonSupport(final Path fixture) {
-    return new ProjectDependencyAdapters()
-        .forProject(fixture).stream()
-            .filter(support -> support.language() == AnalysisLanguage.PYTHON)
-            .findFirst()
-            .orElseThrow();
-  }
-
-  /** Summarizes every Python file under the fixture, as the analysis does for a project. */
-  private static List<FileSummary> summaries(final Path fixture, final DependencySupport python)
-      throws IOException {
-    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
+  /** The Python sources of the fixture as analysis units, with paths relative to the fixture. */
+  private static List<SourceUnit> pythonUnits(final Path fixture) throws IOException {
     return pythonFiles(fixture).stream()
-        .map(file -> summary(fixture, file, python, frontend))
+        .map(
+            file ->
+                new SourceUnit(
+                    fixture.relativize(file).toString().replace('\\', '/'),
+                    AnalysisLanguage.PYTHON,
+                    read(file)))
         .toList();
   }
 
-  private static FileSummary summary(
-      final Path fixture,
-      final Path file,
-      final DependencySupport python,
-      final AntlrLanguageFrontend frontend) {
-    final String path = fixture.relativize(file).toString().replace('\\', '/');
-    final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.PYTHON, read(file));
-    return python.summarizer().summarize(unit, frontend.parse(unit).tree());
+  /** Summarizes every unit, as the analysis does for a project. */
+  private static List<FileSummary> summaries(
+      final List<SourceUnit> units, final DependencySupport python) {
+    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
+    return units.stream()
+        .map(unit -> python.summarizer().summarize(unit, frontend.parse(unit).tree()))
+        .toList();
   }
 
   private static String read(final Path file) {

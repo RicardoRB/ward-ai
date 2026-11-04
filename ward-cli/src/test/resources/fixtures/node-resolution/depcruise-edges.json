@@ -1,0 +1,34 @@
+[
+  [
+    "src/app.ts",
+    "packages/lib/src/feature/one.ts"
+  ],
+  [
+    "src/app.ts",
+    "packages/lib/src/index.ts"
+  ],
+  [
+    "src/app.ts",
+    "src/data/index.ts"
+  ],
+  [
+    "src/app.ts",
+    "src/domain/order.ts"
+  ],
+  [
+    "src/app.ts",
+    "src/types.ts"
+  ],
+  [
+    "src/app.ts",
+    "src/util.ts"
+  ],
+  [
+    "src/legacy.js",
+    "src/data/index.ts"
+  ],
+  [
+    "src/legacy.js",
+    "src/lazy.js"
+  ]
+]
