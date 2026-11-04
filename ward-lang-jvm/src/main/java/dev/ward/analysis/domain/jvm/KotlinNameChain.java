@@ -80,13 +80,19 @@ final class KotlinNameChain {
     if (text.isEmpty()) {
       return false;
     }
-    if (!expectIdentifier) {
-      if (DOT.equals(text)) {
-        expectIdentifier = true;
-        return false;
-      }
-      return true;
+    return expectIdentifier ? acceptIdentifier(text) : acceptSeparator(text);
+  }
+
+  /** After a name only a dot continues it. */
+  private boolean acceptSeparator(final String text) {
+    if (DOT.equals(text)) {
+      expectIdentifier = true;
+      return false;
     }
+    return true;
+  }
+
+  private boolean acceptIdentifier(final String text) {
     if (segments.isEmpty() && AT.equals(text)) {
       return false;
     }

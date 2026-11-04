@@ -8,6 +8,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,8 @@ class KotlinResolutionReferenceTest {
 
   private static void run(final List<String> command) throws IOException, InterruptedException {
     final Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-    final String output = new String(process.getInputStream().readAllBytes());
+    final String output =
+        new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     assertThat(process.waitFor(COMPILE_TIMEOUT_MINUTES, TimeUnit.MINUTES)).isTrue();
     assertThat(process.exitValue()).as("kotlinc output:%n%s", output).isZero();
   }
