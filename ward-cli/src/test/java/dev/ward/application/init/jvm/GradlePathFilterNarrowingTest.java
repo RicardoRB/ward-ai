@@ -50,6 +50,7 @@ class GradlePathFilterNarrowingTest {
             null,
             null,
             null,
+            null,
             null);
 
     final PartialCheckPlan plan =

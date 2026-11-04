@@ -14,6 +14,7 @@ import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
@@ -82,7 +83,8 @@ interface GateExtensionBindingsModule {
             List.of(
                 new NodeDependencyAdapters(),
                 new PythonDependencyAdapters(),
-                new SwiftDependencyAdapters())));
+                new SwiftDependencyAdapters(),
+                new JavaDependencyAdapters())));
   }
 
   @Provides

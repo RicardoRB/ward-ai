@@ -66,7 +66,10 @@ final class ArchitectureToolchainTest {
               "DoctorService", "the doctor facade, which runs the JVM dependency-check diagnosis"),
           Map.entry(
               "SystemEnvironmentInspection",
-              "reads each toolchain's environment facts for the doctor"));
+              "reads each toolchain's environment facts for the doctor"),
+          Map.entry(
+              "JavaDependencyAdapters",
+              "builds the Java dependency adapter from the Maven and Gradle module layout"));
 
   /**
    * The feature roots: each feature's classes outside its subpackages. The CLI adapters under

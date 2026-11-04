@@ -18,9 +18,34 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <description>Ward Java analysis rules: declarative rule files for the structural checks of Java sources</description>
+    <description>Ward Java analysis: declarative rule files for the structural checks of Java sources, and the module and package resolution of Java imports</description>
 
-    <!-- Rule data only: the rule files are classpath resources that ward-cli loads. -->
+    <dependencies>
+        <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-analysis-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Tests parse real Java sources; the module itself only reads the shared syntax tree. -->
+        <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-frontend-antlr</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Rule data and the Java summarizer and resolver: the rule files are classpath resources that ward-cli loads. -->
 
     <build>
         <plugins>

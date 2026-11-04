@@ -20,6 +20,7 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,13 +35,28 @@ public final class AnalysisGate implements QualityGate {
   private final String name;
   private final List<RuleDefinition> rules;
   private final AnalysisPorts ports;
+  private final String javaClasspath;
 
   /** Creates the gate that runs {@code rules} through the adapters in {@code ports}. */
   public AnalysisGate(
       final String name, final List<RuleDefinition> rules, final AnalysisPorts ports) {
+    this(name, rules, ports, null);
+  }
+
+  /**
+   * Creates the gate that runs {@code rules} through the adapters in {@code ports}, resolving Java
+   * bindings with the classpath file {@code javaClasspath}, relative to the project root, or
+   * without them when it is {@code null}.
+   */
+  public AnalysisGate(
+      final String name,
+      final List<RuleDefinition> rules,
+      final AnalysisPorts ports,
+      final String javaClasspath) {
     this.name = name;
     this.rules = List.copyOf(rules);
     this.ports = ports;
+    this.javaClasspath = javaClasspath;
   }
 
   @Override
@@ -61,7 +77,9 @@ public final class AnalysisGate implements QualityGate {
             new RuleEngine(ports.matcher()),
             ports.codec(),
             ports.engineVersion(),
-            ports.dependencies().forProject(project.root(), units));
+            ports
+                .dependencies()
+                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
     return result(results.run(cache, units, ports.frontends(), rules));
   }
 

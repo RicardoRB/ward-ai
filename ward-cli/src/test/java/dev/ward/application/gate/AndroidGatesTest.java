@@ -92,7 +92,18 @@ class AndroidGatesTest {
             new PlatformGatePorts(null, null, null, report));
     final GateConfiguration check =
         new GateConfiguration(
-            "check", type, true, command, Set.of("ci"), null, null, null, minimum, null, null);
+            "check",
+            type,
+            true,
+            command,
+            Set.of("ci"),
+            null,
+            null,
+            null,
+            minimum,
+            null,
+            null,
+            null);
     return new QualityGateFactory(executor, null, new TraceabilitySources(null, null), ports, null)
         .create(new WardConfiguration(1, Map.of("check", check)))
         .getFirst()

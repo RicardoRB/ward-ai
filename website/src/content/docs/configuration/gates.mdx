@@ -434,6 +434,48 @@ uses = "ward"
 rules = ["ward:java/method-length"]
 ```
 
+### Java dependency edges
+
+The `ward` gate also resolves Java imports and type names to the project's own source files. An
+`import shop.domain.Price;`, a same-package name, a fully qualified name or a nested type each
+produce an edge to the file that declares the type, with Java's name lookup order. Ward reads the
+source roots of each Maven and Gradle module from its build file and does not run the build. Types
+from the JDK or from jars produce no edge.
+
+Names in the source are enough for most code. A type that only type inference shows, such as the
+type of a `var`, of a chained call or of a lambda parameter, needs the classpath of the project.
+Name a file that lists the classpath entries with `java-classpath`, relative to the project root.
+The file holds entries separated by the platform path separator or by newlines. Ward reads the file
+and does not write it. A missing or unreadable file is a configuration error that names the key and
+the file:
+
+```toml
+[checks.ward]
+uses = "ward"
+java-classpath = "target/classpath.txt"
+```
+
+Write the file with the build tool, for example with Maven:
+
+```bash
+./mvnw dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
+```
+
+With Gradle, add a task to the build script that writes the test compile classpath:
+
+```kotlin
+tasks.register("writeClasspath") {
+    doLast {
+        layout.buildDirectory.file("classpath.txt").get().asFile
+            .writeText(sourceSets.test.get().compileClasspath.asPath)
+    }
+}
+```
+
+Then run `./gradlew writeClasspath` and set `java-classpath = "build/classpath.txt"`. Binding
+resolution uses Eclipse JDT, which is part of the `ward` binary. It parses every Java file on each
+run, so it is slower than the default; the result cache still reuses unchanged results.
+
 ### Result cache
 
 The `ward` gate keeps each source file's results in `.ward/cache/analysis/`, and reuses them on the
