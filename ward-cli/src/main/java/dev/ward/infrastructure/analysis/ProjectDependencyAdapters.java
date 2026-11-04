@@ -1,26 +1,32 @@
 package dev.ward.infrastructure.analysis;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.DependencySupport;
-import dev.ward.analysis.domain.swift.SwiftFileSummarizer;
-import dev.ward.analysis.domain.swift.SwiftModuleResolver;
-import dev.ward.analysis.domain.swift.SwiftProjectLayout;
 import dev.ward.application.gate.DependencyAdapters;
-import dev.ward.infrastructure.analysis.swift.SwiftLayouts;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
-/** Builds the dependency adapters of each project from the layout files found at its root. */
+/** Combines the dependency adapters of every language that resolves dependencies. */
 public final class ProjectDependencyAdapters implements DependencyAdapters {
 
+  private final List<DependencyAdapters> languages;
+
+  /**
+   * Creates the combined adapters over {@code languages}, in order.
+   *
+   * @throws NullPointerException if a language adapter is missing
+   */
+  public ProjectDependencyAdapters(final List<DependencyAdapters> languages) {
+    this.languages = List.copyOf(languages);
+  }
+
   @Override
-  public List<DependencySupport> forProject(final Path projectRoot) {
-    if (!SwiftLayouts.isSwiftProject(projectRoot)) {
-      return List.of();
+  public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
+    final List<DependencySupport> supports = new ArrayList<>();
+    for (final DependencyAdapters language : languages) {
+      supports.addAll(language.forProject(projectRoot, units));
     }
-    final SwiftProjectLayout layout = SwiftLayouts.read(projectRoot);
-    return List.of(
-        new DependencySupport(
-            AnalysisLanguage.SWIFT, new SwiftFileSummarizer(), new SwiftModuleResolver(layout)));
+    return List.copyOf(supports);
   }
 }

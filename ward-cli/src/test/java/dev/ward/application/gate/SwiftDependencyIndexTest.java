@@ -8,7 +8,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,7 +35,7 @@ class SwiftDependencyIndexTest {
             new RuleEngine(BundledRuleMatchers.create()),
             AnalysisCacheFixtures.codec(),
             VERSION,
-            new ProjectDependencyAdapters().forProject(SWIFT_RESOLUTION));
+            new SwiftDependencyAdapters().forProject(SWIFT_RESOLUTION, units(SWIFT_RESOLUTION)));
 
     results.run(
         AnalysisCacheFixtures.memory(entries),

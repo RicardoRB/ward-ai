@@ -58,8 +58,7 @@ final class ArchitectureToolchainTest {
           Map.entry("BuildToolFindings", "routes each toolchain to its doctor findings"),
           Map.entry(
               "ProjectDependencyAdapters",
-              "builds each project's dependency adapters, reading the Swift module layout of its"
-                  + " SwiftPM or Xcode project"),
+              "combines the Node and Swift dependency adapters, each reading its project layout"),
           Map.entry(
               "QualityGateFactory",
               "maps each gate id to its implementation, including the Maven and Swift gates"),

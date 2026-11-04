@@ -97,7 +97,7 @@ class NodeStructuralGateTest {
         root -> new FileAnalysisCache(root.resolve(".ward/cache/analysis")),
         AnalysisCacheFixtures.codec(),
         "test",
-        root -> List.of());
+        DependencyAdapters.none());
   }
 
   private Project project() {
