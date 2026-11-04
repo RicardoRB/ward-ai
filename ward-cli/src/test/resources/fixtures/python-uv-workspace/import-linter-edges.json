@@ -1,0 +1,13 @@
+{
+  "generator": "import-linter 2.15 / grimp 3.18",
+  "roots": [
+    "billing",
+    "shop"
+  ],
+  "edges": [
+    [
+      "packages/shop/src/shop/checkout.py",
+      "packages/billing/src/billing/invoice.py"
+    ]
+  ]
+}
