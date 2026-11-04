@@ -9,7 +9,7 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.nio.file.Path;
 import java.util.List;
@@ -17,23 +17,35 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
-/** The edges of the ward graph that the Java adapters build for a project, as text. */
+/** The edges of the ward graph that the JVM adapters build for a project, as text. */
 final class WardJavaEdges {
   private static final String ARROW = " -> ";
 
   private WardJavaEdges() {}
 
-  /** Returns the {@code from -> to} edges of {@code project} with the optional classpath. */
+  /** Returns the {@code from -> to} edges of {@code project} for Java sources and the classpath. */
   static Set<String> of(final Path project, final Optional<String> classpath) {
+    return of(project, Set.of(AnalysisLanguage.JAVA), classpath);
+  }
+
+  /**
+   * Returns the edges of {@code project} for the given JVM languages, with the optional classpath.
+   */
+  static Set<String> of(
+      final Path project, final Set<AnalysisLanguage> languages, final Optional<String> classpath) {
     final List<SourceUnit> units =
-        new FileSystemSourceUnits().read(project, Set.of(AnalysisLanguage.JAVA)).stream().toList();
-    final FrontendSupport frontend =
-        new FrontendSupport(
-            AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+        new FileSystemSourceUnits().read(project, languages).stream().toList();
+    final List<FrontendSupport> frontends =
+        languages.stream()
+            .map(
+                language ->
+                    new FrontendSupport(
+                        language, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX)))
+            .toList();
     final List<DependencyEdge> edges =
         new DependencyAnalysis(
-                List.of(frontend),
-                new JavaDependencyAdapters().forProject(project.toAbsolutePath(), units, classpath))
+                frontends,
+                new JvmDependencyAdapters().forProject(project.toAbsolutePath(), units, classpath))
             .analyze(units, NO_SUMMARIES)
             .graph()
             .edges();

@@ -68,8 +68,8 @@ final class ArchitectureToolchainTest {
               "SystemEnvironmentInspection",
               "reads each toolchain's environment facts for the doctor"),
           Map.entry(
-              "JavaDependencyAdapters",
-              "builds the Java dependency adapter from the Maven and Gradle module layout"));
+              "JvmDependencyAdapters",
+              "builds the JVM dependency adapters from the Maven and Gradle module layout"));
 
   /**
    * The feature roots: each feature's classes outside its subpackages. The CLI adapters under

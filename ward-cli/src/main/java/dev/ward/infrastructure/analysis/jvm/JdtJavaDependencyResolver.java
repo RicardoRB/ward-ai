@@ -5,8 +5,8 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.Symbol;
-import dev.ward.analysis.domain.jvm.JavaDependencyResolver;
 import dev.ward.analysis.domain.jvm.JavaSourceRoot;
+import dev.ward.analysis.domain.jvm.JvmDependencyResolver;
 import dev.ward.analysis.domain.port.DependencyResolver;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -40,6 +40,7 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
   private static final Logger LOGGER = Logger.getLogger(JdtJavaDependencyResolver.class.getName());
   private static final String BINDING = "binding:";
   private static final String COMPLIANCE = "25";
+  private static final String JAVA_SUFFIX = ".java";
 
   private final Path projectRoot;
   private final List<String> classpath;
@@ -81,7 +82,7 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
 
   @Override
   public List<DependencyEdge> resolve(final List<FileSummary> summaries) {
-    final List<DependencyEdge> named = new JavaDependencyResolver(roots).resolve(summaries);
+    final List<DependencyEdge> named = new JvmDependencyResolver(roots).resolve(summaries);
     final Map<String, String> declaringFile = declaringFiles(summaries);
     final List<DependencyEdge> inferred = bindingEdges(summaries, declaringFile);
     final Map<List<String>, DependencyEdge> union = new LinkedHashMap<>();
@@ -117,7 +118,11 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
   private List<DependencyEdge> bindingEdges(
       final List<FileSummary> summaries, final Map<String, String> declaringFile) {
     final String[] paths =
-        summaries.stream().map(FileSummary::path).map(this::absolute).toArray(String[]::new);
+        summaries.stream()
+            .map(FileSummary::path)
+            .filter(path -> path.endsWith(JAVA_SUFFIX))
+            .map(this::absolute)
+            .toArray(String[]::new);
     final List<DependencyEdge> edges = new ArrayList<>();
     parser()
         .createASTs(

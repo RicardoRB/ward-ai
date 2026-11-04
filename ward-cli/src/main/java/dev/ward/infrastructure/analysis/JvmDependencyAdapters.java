@@ -2,9 +2,10 @@ package dev.ward.infrastructure.analysis;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.jvm.JavaDependencyResolver;
 import dev.ward.analysis.domain.jvm.JavaFileSummarizer;
 import dev.ward.analysis.domain.jvm.JavaSourceRoot;
+import dev.ward.analysis.domain.jvm.JvmDependencyResolver;
+import dev.ward.analysis.domain.jvm.KotlinFileSummarizer;
 import dev.ward.analysis.domain.port.DependencyResolver;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.application.gate.DependencyAdapters;
@@ -21,14 +22,15 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 /**
- * Builds the Java dependency adapter of a run: the edges of the names in the sources, plus the
- * binding edges when the check names a classpath file. A run without Java sources gets none.
+ * Builds the JVM dependency adapters of a run: the edges of the names in the Java and Kotlin
+ * sources, plus the binding edges when the check names a classpath file. Both languages share one
+ * resolver, so they see each other's declarations. A run without Java or Kotlin sources gets none.
  */
-public final class JavaDependencyAdapters implements DependencyAdapters {
+public final class JvmDependencyAdapters implements DependencyAdapters {
 
   /** Creates the adapter factory; it holds no state, so one instance serves every project. */
   @Inject
-  public JavaDependencyAdapters() {}
+  public JvmDependencyAdapters() {}
 
   @Override
   public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
@@ -38,7 +40,7 @@ public final class JavaDependencyAdapters implements DependencyAdapters {
   @Override
   public List<DependencySupport> forProject(
       final Path projectRoot, final List<SourceUnit> units, final Optional<String> javaClasspath) {
-    if (units.stream().noneMatch(unit -> unit.language() == AnalysisLanguage.JAVA)) {
+    if (units.stream().noneMatch(JvmDependencyAdapters::isJvm)) {
       return List.of();
     }
     final Path root = projectRoot.toAbsolutePath().normalize();
@@ -51,9 +53,14 @@ public final class JavaDependencyAdapters implements DependencyAdapters {
                         root,
                         JdtJavaDependencyResolver.classpathEntries(classpathFile(root, name)),
                         roots))
-            .orElseGet(() -> new JavaDependencyResolver(roots));
+            .orElseGet(() -> new JvmDependencyResolver(roots));
     return List.of(
-        new DependencySupport(AnalysisLanguage.JAVA, new JavaFileSummarizer(), resolver));
+        new DependencySupport(AnalysisLanguage.JAVA, new JavaFileSummarizer(), resolver),
+        new DependencySupport(AnalysisLanguage.KOTLIN, new KotlinFileSummarizer(), resolver));
+  }
+
+  private static boolean isJvm(final SourceUnit unit) {
+    return unit.language() == AnalysisLanguage.JAVA || unit.language() == AnalysisLanguage.KOTLIN;
   }
 
   /**

@@ -117,6 +117,30 @@ jobs:
           pip install "semgrep==${SEMGREP_VERSION}"
           npm install -g "@fission-ai/openspec@${OPENSPEC_VERSION}"
 
+      # The Kotlin reference test compiles the mixed fixture with the pinned kotlinc release. The
+      # archive is checked against its SHA-256 before it is unpacked.
+      - name: Install Kotlin compiler
+        env:
+          KOTLIN_VERSION: 2.2.21
+          KOTLIN_SHA256: a623871f1cd9c938946948b70ef9170879f0758043885bbd30c32f024e511714
+        run: |
+          set -eu
+          kotlin_dir="$RUNNER_TEMP/kotlin"
+          mkdir -p "$kotlin_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$kotlin_dir/kotlin-compiler.zip" \
+            "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
+          echo "${KOTLIN_SHA256}  $kotlin_dir/kotlin-compiler.zip" | sha256sum -c -
+          unzip -q "$kotlin_dir/kotlin-compiler.zip" -d "$kotlin_dir"
+          echo "WARD_KOTLINC=$kotlin_dir/kotlinc/bin/kotlinc" >> "$GITHUB_ENV"
+
+      - name: Run the Kotlin resolution reference test
+        run: >-
+          ./mvnw -B -q -pl ward-cli -am
+          -Dtest=KotlinResolutionReferenceTest
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dward.kotlinc.binary="$WARD_KOTLINC"
+          test
+
       # Restore and save separately so the cache is kept even when a gate fails.
       - name: Restore trivy cache
         uses: actions/cache/restore@v5
