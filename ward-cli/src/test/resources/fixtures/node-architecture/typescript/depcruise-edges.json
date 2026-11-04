@@ -1,0 +1,22 @@
+[
+  [
+    "src/application/place.ts",
+    "src/domain/order.ts"
+  ],
+  [
+    "src/controller/users.ts",
+    "src/application/place.ts"
+  ],
+  [
+    "src/infrastructure/db.ts",
+    "src/application/place.ts"
+  ],
+  [
+    "violations/cycle/src/cycle-a.ts",
+    "violations/cycle/src/cycle-b.ts"
+  ],
+  [
+    "violations/cycle/src/cycle-b.ts",
+    "violations/cycle/src/cycle-a.ts"
+  ]
+]

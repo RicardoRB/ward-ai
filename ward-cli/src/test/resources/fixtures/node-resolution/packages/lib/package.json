@@ -1,0 +1,14 @@
+{
+  "name": "lib",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./feature/*": {
+      "types": "./src/feature/*.ts",
+      "default": "./src/feature/*.ts"
+    }
+  }
+}

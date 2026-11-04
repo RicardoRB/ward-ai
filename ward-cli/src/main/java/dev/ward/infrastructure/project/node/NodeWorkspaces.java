@@ -55,6 +55,11 @@ public final class NodeWorkspaces {
     }
   }
 
+  /** Returns the workspace member directories of {@code root} that hold a package or config. */
+  public static List<Path> members(final Path root) {
+    return memberDirectories(root, NodeProjectInspection.manifest(root));
+  }
+
   /** Returns the member directories of {@code root} that hold package.json or tsconfig.json. */
   static List<Path> memberDirectories(final Path root, final Map<?, ?> manifest) {
     return directories(root, manifest, false);
