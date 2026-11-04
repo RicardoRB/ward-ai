@@ -1,0 +1,34 @@
+name: Main
+
+# Pull requests can restore caches only from their own ref and from main. Running the same checks on
+# main saves every cache (Maven, GraalVM, tools, matrices) under the keys pull requests look up, so a
+# new pull request starts warm and saves nothing new unless it changes a key.
+on:
+  push:
+    branches: [main]
+    # The same documentation paths that let pull requests skip the native checks and matrices; they
+    # change no cache key, so a docs-only merge has nothing to warm.
+    paths-ignore:
+      - 'website/**'
+      - 'openspec/**'
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # A called job cannot exceed its caller's grant; verify.yml asks for security-events.
+    permissions:
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/verify.yml
+    with:
+      # The same runners as pull requests, so the caches they restore exist.
+      native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
+      harness-compatibility: true
