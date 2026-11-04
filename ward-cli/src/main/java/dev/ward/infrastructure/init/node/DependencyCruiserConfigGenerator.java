@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
@@ -83,13 +84,16 @@ public final class DependencyCruiserConfigGenerator implements ArchitectureTestG
     }
     final Path file = project.root().resolve(FILE);
     if (!Files.exists(file)) {
-      return new PlannedFileChange(file, PlannedFileChange.Action.CREATE, List.of(architecture));
+      return new PlannedFileChange(
+          file,
+          PlannedFileChange.Action.CREATE,
+          List.of(architecture == null ? ArchitectureLayers.EXTRAS_ONLY_NOTE : architecture));
     }
     final boolean same = read(file).equals(content(project, architecture, extras));
     return new PlannedFileChange(
         file,
         same ? PlannedFileChange.Action.UNCHANGED : PlannedFileChange.Action.MODIFY,
-        List.of(architecture));
+        List.of(architecture == null ? ArchitectureLayers.EXTRAS_ONLY_NOTE : architecture));
   }
 
   @Override

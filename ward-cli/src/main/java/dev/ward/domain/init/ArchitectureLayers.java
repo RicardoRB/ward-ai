@@ -12,6 +12,9 @@ import java.util.stream.Stream;
  * read this table, so they cannot drift apart.
  */
 public final class ArchitectureLayers {
+  /** The plan note of a tool that generates only strict extras, because ward checks the layers. */
+  public static final String EXTRAS_ONLY_NOTE = "strict extras only (layers checked by ward)";
+
   private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
   private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
 

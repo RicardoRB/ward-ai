@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
@@ -119,7 +120,10 @@ public final class ArchitectureTestGenerator implements ArchitectureTestGenerati
     return new PlannedFileChange(
         test,
         Files.exists(test) ? PlannedFileChange.Action.UNCHANGED : PlannedFileChange.Action.CREATE,
-        List.of(architecture + " architecture"));
+        List.of(
+            architecture == null
+                ? ArchitectureLayers.EXTRAS_ONLY_NOTE
+                : architecture + " architecture"));
   }
 
   /** Where the generated test lives; shared by apply and plan. */

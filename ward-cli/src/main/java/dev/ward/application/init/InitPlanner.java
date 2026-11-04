@@ -3,7 +3,6 @@ package dev.ward.application.init;
 import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
@@ -139,7 +138,7 @@ final class InitPlanner {
   private List<PlannedFileChange> architectureFiles(
       final Project project, final InitSelection selection, final List<String> existing) {
     if (Collections.disjoint(selection.gates(), ArchitectureGates.IDS)
-        || selection.architectureEngine() == ArchitectureEngine.WARD) {
+        || !ArchitectureToolPlan.generatesTool(project, selection)) {
       return List.of();
     }
     if (!existing.isEmpty()) {
@@ -154,10 +153,8 @@ final class InitPlanner {
             .architectureTests()
             .plan(
                 project,
-                selection.architecture() == null ? "layered" : selection.architecture(),
-                selection.preset() == null
-                    ? new QualityPreset.ArchitectureExtras(false, false, false)
-                    : selection.preset().rules().architectureExtras()));
+                ArchitectureToolPlan.style(selection),
+                ArchitectureToolPlan.extras(selection)));
   }
 
   private PlannedFileChange configuration(

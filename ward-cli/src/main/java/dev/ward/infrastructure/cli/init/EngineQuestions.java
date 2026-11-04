@@ -3,7 +3,6 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
-import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.Collections;
 import java.util.List;
@@ -35,13 +34,12 @@ final class EngineQuestions {
   /**
    * Returns the checker of the style {@code architecture} for {@code gates} under {@code preset}.
    */
-  ArchitectureEngine resolve(
-      final String architecture, final List<String> gates, final QualityPreset preset) {
+  ArchitectureEngine resolve(final String architecture, final List<String> gates) {
     final List<String> chosen = gates == null ? List.of() : gates;
     if (requested != null) {
       final ArchitectureEngine engine = parse(requested);
       if (engine == ArchitectureEngine.WARD) {
-        requireEngineSupport(preset);
+        requireEngineSupport();
       }
       return engine;
     }
@@ -68,11 +66,8 @@ final class EngineQuestions {
                         + "."));
   }
 
-  /**
-   * Refuses {@code ward} for a project whose language the engine cannot resolve, and for strict
-   * extras, which the engine does not check and so stay on the external tool.
-   */
-  private void requireEngineSupport(final QualityPreset preset) {
+  /** Refuses {@code ward} for a project whose language the engine cannot resolve. */
+  private void requireEngineSupport() {
     ArchitectureEngine.unsupportedLanguage(project.languages())
         .ifPresent(
             language -> {
@@ -82,11 +77,5 @@ final class EngineQuestions {
                       + " yet: it resolves no dependencies for that language. Use"
                       + " --architecture-engine tool.");
             });
-    if (preset != null && preset.rules().architectureExtras().any()) {
-      throw new WardException(
-          "The ward engine cannot keep strict architecture extras (cycles, field injection,"
-              + " standard streams) on the external tool yet. Use the standard preset or"
-              + " --architecture-engine tool.");
-    }
   }
 }

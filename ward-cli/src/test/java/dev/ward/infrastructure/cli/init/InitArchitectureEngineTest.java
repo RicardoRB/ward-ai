@@ -9,6 +9,7 @@ import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -91,6 +92,44 @@ class InitArchitectureEngineTest {
     assertThat(exit).isNotEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("cannot check Kotlin");
     assertThat(root.resolve("ward.toml")).doesNotExist();
+  }
+
+  @Test
+  void wardWithStrictExtrasKeepsTheExtrasInTheArchUnitTestAndDropsItsLayerRule()
+      throws IOException {
+    mavenProject();
+    final InitCommandFixture init = init();
+
+    final int exit =
+        init.run(
+            "",
+            "--preset",
+            "strict",
+            "--integration",
+            "none",
+            "--architecture",
+            "hexagonal",
+            "--architecture-engine",
+            "ward",
+            "--gate",
+            "archunit",
+            "--yes");
+
+    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(Files.readString(root.resolve("ward.toml"))).contains("[[checks.ward.layers]]");
+    final String archUnit;
+    try (Stream<Path> files = Files.walk(root.resolve("src/test/java"))) {
+      archUnit =
+          Files.readString(
+              files
+                  .filter(file -> "ArchitectureTest.java".equals(file.getFileName().toString()))
+                  .findFirst()
+                  .orElseThrow());
+    }
+    assertThat(archUnit)
+        .contains("noCycles")
+        .contains("strict architecture extras")
+        .doesNotContain("..domain..", "..adapter..");
   }
 
   private void mavenProject() throws IOException {

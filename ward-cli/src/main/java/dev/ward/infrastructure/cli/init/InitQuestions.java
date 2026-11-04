@@ -86,7 +86,7 @@ final class InitQuestions {
                 progress,
                 useDefaults,
                 project)
-            .resolve(architecture, gates, preset);
+            .resolve(architecture, gates);
     final ToolQuestions.Selection tools =
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
             .resolve(catalog, project, gates);

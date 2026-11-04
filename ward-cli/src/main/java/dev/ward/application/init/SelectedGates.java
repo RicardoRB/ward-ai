@@ -39,7 +39,7 @@ final class SelectedGates {
                     .stream(),
                 selection.openSpecValidations().stream())
             .distinct()
-            .filter(id -> !checkedByWard(selection, id))
+            .filter(id -> !checkedByWard(project, selection, id))
             .map(
                 id ->
                     catalog.openSpecValidations().contains(id)
@@ -56,9 +56,11 @@ final class SelectedGates {
    * Whether {@code id} is an architecture tool that the {@code ward} engine replaces: its layer
    * rule is then written as {@code [[checks.ward.layers]]}, not as a tool gate.
    */
-  private static boolean checkedByWard(final InitSelection selection, final String id) {
-    return selection.architectureEngine() == ArchitectureEngine.WARD
-        && ArchitectureGates.IDS.contains(id);
+  private static boolean checkedByWard(
+      final Project project, final InitSelection selection, final String id) {
+    return ArchitectureGates.IDS.contains(id)
+        && selection.architectureEngine() == ArchitectureEngine.WARD
+        && !ArchitectureToolPlan.wardLeavesExtras(project, selection);
   }
 
   /** Returns the offered gate {@code id}, with the command {@code preset} configures. */
