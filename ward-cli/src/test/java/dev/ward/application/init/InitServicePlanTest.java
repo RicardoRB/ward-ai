@@ -87,6 +87,7 @@ class InitServicePlanTest {
             false,
             null,
             false,
+            null,
             null);
 
     assertThat(pom(dir, service.plan(dir, format, false)).details())
@@ -146,6 +147,7 @@ class InitServicePlanTest {
         hooks,
         null,
         false,
+        null,
         null);
   }
 

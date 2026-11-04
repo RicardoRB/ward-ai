@@ -52,6 +52,20 @@ public final class AgentRulesTemplate {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final List<Path> userOwned) {
+    return render(project, gates, preset, userOwned, false);
+  }
+
+  /**
+   * Returns the section as {@link #render(Project, List, QualityPreset, List)} does, and when
+   * {@code wardArchitecture} is set, names the {@code ward:architecture/layers} rule that enforces
+   * the style.
+   */
+  public static OwnedSection render(
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset,
+      final List<Path> userOwned,
+      final boolean wardArchitecture) {
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final Set<String> owned =
         userOwned.stream()
@@ -75,6 +89,11 @@ public final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.PYTHON
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
+    }
+    if (wardArchitecture) {
+      lines.add(
+          "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"
+              + " `ward.toml`; do not remove them or add exemptions.");
     }
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));

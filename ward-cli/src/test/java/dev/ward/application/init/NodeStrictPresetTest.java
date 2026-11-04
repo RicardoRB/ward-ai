@@ -83,6 +83,7 @@ class NodeStrictPresetTest {
             false,
             null,
             false,
+            null,
             null);
 
     assertThat(

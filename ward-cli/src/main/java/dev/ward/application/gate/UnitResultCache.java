@@ -80,7 +80,7 @@ final class UnitResultCache {
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {
     return AnalysisCacheKey.ruleSet(
-        engineVersion, rules.stream().filter(rule -> rule.language() == language).toList());
+        engineVersion, rules.stream().filter(rule -> rule.covers(language)).toList());
   }
 
   /** A language whose rules read dependencies keys each unit on the files around it too. */
@@ -98,8 +98,7 @@ final class UnitResultCache {
   private static boolean readsDependencies(
       final AnalysisLanguage language, final List<RuleDefinition> rules) {
     return rules.stream()
-        .anyMatch(
-            rule -> rule.language() == language && rule.capability() == RuleCapability.SYMBOLS);
+        .anyMatch(rule -> rule.covers(language) && rule.capability() == RuleCapability.SYMBOLS);
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {

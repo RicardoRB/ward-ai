@@ -1,7 +1,9 @@
 package dev.ward.application.init;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
+import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
@@ -71,7 +73,12 @@ final class InitPlanner {
     final List<PlannedGateInstallation> gateInstallations = gateInstallations(project, gates);
     final List<PlannedFileChange> changes = new ArrayList<>();
     changes.add(
-        configuration(project, project.root().resolve("ward.toml"), gates, selection.preset()));
+        configuration(
+            project,
+            project.root().resolve("ward.toml"),
+            gates,
+            selection.preset(),
+            EngineLayers.of(selection, project)));
     changes.addAll(installer.plan(project, selection.integrations()));
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
@@ -131,7 +138,8 @@ final class InitPlanner {
 
   private List<PlannedFileChange> architectureFiles(
       final Project project, final InitSelection selection, final List<String> existing) {
-    if (Collections.disjoint(selection.gates(), ArchitectureGates.IDS)) {
+    if (Collections.disjoint(selection.gates(), ArchitectureGates.IDS)
+        || selection.architectureEngine() == ArchitectureEngine.WARD) {
       return List.of();
     }
     if (!existing.isEmpty()) {
@@ -156,7 +164,8 @@ final class InitPlanner {
       final Project project,
       final Path file,
       final List<InitGateOption> gates,
-      final QualityPreset preset) {
+      final QualityPreset preset,
+      final List<LayerBoundary> layers) {
     final Optional<String> existing = files.configuration().read(file);
     final List<String> notes = OmissionNotes.of(catalog.get(), project, preset);
     if (existing.isEmpty()) {
@@ -165,7 +174,11 @@ final class InitPlanner {
     return new PlannedFileChange(
         file,
         ConfigurationTemplate.render(
-                    gates, preset, project, catalog.get().openSpecDirectories().root(project))
+                    gates,
+                    preset,
+                    project,
+                    catalog.get().openSpecDirectories().root(project),
+                    layers)
                 .equals(existing.get())
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,

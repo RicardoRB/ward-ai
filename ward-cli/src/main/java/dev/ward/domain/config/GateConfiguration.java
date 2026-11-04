@@ -1,5 +1,6 @@
 package dev.ward.domain.config;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.Set;
  *     every rule; only {@code ward} checks read it
  * @param javaClasspath the project-relative classpath file that enables Java binding resolution, or
  *     {@code null} when unset; only {@code ward} checks read it
+ * @param layers the architecture boundaries a {@code ward} check enforces with {@code
+ *     ward:architecture/layers}; empty when unset, and only {@code ward} checks read it
  */
 public record GateConfiguration(
     String name,
@@ -38,19 +41,15 @@ public record GateConfiguration(
     Integer minimum,
     XcodePlatform platform,
     List<String> rules,
-    String javaClasspath) {
+    String javaClasspath,
+    List<LayerBoundary> layers) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
     command = List.copyOf(command);
     profiles = Collections.unmodifiableSet(new LinkedHashSet<>(profiles));
     rules = rules == null ? List.of() : List.copyOf(rules);
-  }
-
-  /** Returns a copy of the rule ids; empty when the check selects every rule. */
-  @Override
-  public List<String> rules() {
-    return List.copyOf(rules);
+    layers = layers == null ? List.of() : List.copyOf(layers);
   }
 
   /** Creates a check in the {@code default} profile whose type is its name. */
@@ -67,6 +66,7 @@ public record GateConfiguration(
         null,
         null,
         null,
-        null);
+        null,
+        List.of());
   }
 }

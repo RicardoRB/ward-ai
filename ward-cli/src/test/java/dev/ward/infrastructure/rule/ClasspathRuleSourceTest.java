@@ -52,7 +52,7 @@ class ClasspathRuleSourceTest {
 
     assertThat(load.configurationErrors()).isEmpty();
     final List<RuleDefinition> java =
-        load.rules().stream().filter(rule -> rule.language() == AnalysisLanguage.JAVA).toList();
+        load.rules().stream().filter(rule -> rule.covers(AnalysisLanguage.JAVA)).toList();
     assertThat(java)
         .extracting(RuleDefinition::id)
         .hasSize(JAVA_RULE_COUNT)
@@ -60,7 +60,7 @@ class ClasspathRuleSourceTest {
     assertThat(java)
         .allSatisfy(
             rule -> {
-              assertThat(rule.language()).isEqualTo(AnalysisLanguage.JAVA);
+              assertThat(rule.languages()).containsExactly(AnalysisLanguage.JAVA);
               assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
             });
@@ -75,8 +75,8 @@ class ClasspathRuleSourceTest {
         load.rules().stream()
             .filter(
                 rule ->
-                    rule.language() == AnalysisLanguage.TYPESCRIPT
-                        || rule.language() == AnalysisLanguage.JAVASCRIPT)
+                    rule.covers(AnalysisLanguage.TYPESCRIPT)
+                        || rule.covers(AnalysisLanguage.JAVASCRIPT))
             .toList();
     assertThat(node).hasSize(BUNDLED_RULES);
     assertThat(node)
@@ -87,9 +87,9 @@ class ClasspathRuleSourceTest {
               assertThat(rule.body()).isEmpty();
             });
     assertThat(node.stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
-    assertThat(node.stream().filter(r -> r.language() == AnalysisLanguage.TYPESCRIPT))
+    assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.TYPESCRIPT)))
         .hasSize(RULES_PER_LANGUAGE);
-    assertThat(node.stream().filter(r -> r.language() == AnalysisLanguage.JAVASCRIPT))
+    assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.JAVASCRIPT)))
         .hasSize(RULES_PER_LANGUAGE);
   }
 

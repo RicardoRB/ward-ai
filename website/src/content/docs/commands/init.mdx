@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--architecture-engine <tool|ward>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -30,6 +30,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
 | `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the architecture gates: `archunit`, `dependency-cruiser`, `import-linter` and `harmonize`. |
+| `--architecture-engine <tool\|ward>` | Which checker enforces the style. `tool` (default) generates the external tool. `ward` writes the style's boundaries as `[[checks.ward.layers]]` and generates no layer tool. `ward` is refused for a project with a language the engine does not resolve (Kotlin, Swift for now), and with strict extras, which stay on the external tool. Unknown values are rejected. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |

@@ -3,6 +3,7 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.application.init.PreviousChoices;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
@@ -78,6 +79,14 @@ final class InitQuestions {
             ? Objects.requireNonNullElse(answers.gates(), List.<String>of())
             : useDefaults ? List.of() : gates;
     final String architecture = architecture(chosenGates, gates);
+    final ArchitectureEngine engine =
+        new EngineQuestions(
+                answers.architectureEngine(),
+                new ArchitectureEngineQuestion(wizard.answering, wizard.prompt, wizard.out),
+                progress,
+                useDefaults,
+                project)
+            .resolve(architecture, gates, preset);
     final ToolQuestions.Selection tools =
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
             .resolve(catalog, project, gates);
@@ -95,7 +104,8 @@ final class InitQuestions {
         answers.ci(),
         answers.agentRules(),
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
-            .scheme(catalog, project));
+            .scheme(catalog, project),
+        engine);
   }
 
   private QualityPreset preset(final boolean gatesGiven) {
@@ -222,7 +232,8 @@ final class InitQuestions {
       String ci,
       boolean agentRules,
       boolean yes,
-      String scheme) {
+      String scheme,
+      String architectureEngine) {
     boolean setupGiven() {
       return preset != null || gates != null || integrations != null;
     }

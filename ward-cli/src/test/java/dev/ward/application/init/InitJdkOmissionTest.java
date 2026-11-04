@@ -116,6 +116,7 @@ class InitJdkOmissionTest {
         false,
         null,
         false,
+        null,
         null);
   }
 

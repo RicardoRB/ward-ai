@@ -32,7 +32,9 @@ public record DependencySnapshot(DependencyGraph graph, Map<String, FileSummary>
   /** Returns the view of the file at {@code path}: its direct dependencies and dependents. */
   public DependencyView view(final String path) {
     return new DependencyView(
-        summariesOf(graph.dependenciesOf(path)), summariesOf(graph.dependentsOf(path)));
+        summariesOf(graph.dependenciesOf(path)),
+        summariesOf(graph.dependentsOf(path)),
+        graph.outgoingEdgesOf(path));
   }
 
   private List<FileSummary> summariesOf(final List<String> paths) {

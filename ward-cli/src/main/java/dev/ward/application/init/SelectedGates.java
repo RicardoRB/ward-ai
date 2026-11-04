@@ -1,6 +1,8 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.ArchitectureEngine;
+import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
@@ -37,6 +39,7 @@ final class SelectedGates {
                     .stream(),
                 selection.openSpecValidations().stream())
             .distinct()
+            .filter(id -> !checkedByWard(selection, id))
             .map(
                 id ->
                     catalog.openSpecValidations().contains(id)
@@ -47,6 +50,15 @@ final class SelectedGates {
       throw new WardException("Select at least one quality gate.");
     }
     return offlineTrivy(gates, project);
+  }
+
+  /**
+   * Whether {@code id} is an architecture tool that the {@code ward} engine replaces: its layer
+   * rule is then written as {@code [[checks.ward.layers]]}, not as a tool gate.
+   */
+  private static boolean checkedByWard(final InitSelection selection, final String id) {
+    return selection.architectureEngine() == ArchitectureEngine.WARD
+        && ArchitectureGates.IDS.contains(id);
   }
 
   /** Returns the offered gate {@code id}, with the command {@code preset} configures. */

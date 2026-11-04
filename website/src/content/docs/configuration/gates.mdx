@@ -588,7 +588,27 @@ rules = [
 
 A file with a syntax error is not checked by these rules. It is reported as an execution error, and
 the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
-than `uses`, `enabled`, `profiles` and `rules`.
+than `uses`, `enabled`, `profiles`, `rules`, `java-classpath` and `layers`.
+
+## Layer boundaries
+
+Each `[[checks.ward.layers]]` table forbids dependencies between layers. A file is in a layer when a
+directory in its path has the layer's name, and the rule `ward:architecture/layers` reports every
+dependency from a `from` layer to a `forbidden` layer, at the import that creates it:
+
+```toml
+[checks.ward]
+uses = "ward"
+
+[[checks.ward.layers]]
+from = ["domain", "application"]
+forbidden = ["adapter", "infrastructure"]
+```
+
+Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript and
+JavaScript. Java and Swift test sources are not checked. Swift is not yet covered, because its type
+name edges are not in this release. `ward init --architecture-engine ward` writes this table for the
+chosen style.
 
 ## Swift structural rules
 

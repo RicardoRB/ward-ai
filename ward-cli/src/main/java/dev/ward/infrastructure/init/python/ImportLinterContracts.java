@@ -1,5 +1,7 @@
 package dev.ward.infrastructure.init.python;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
+import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
@@ -13,12 +15,7 @@ import java.util.Set;
  */
 final class ImportLinterContracts {
   private static final String MARKER = "# managed-by: ward\n";
-  private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
-  private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
   private static final int MIN_FEATURES = 2;
-
-  /** The layers of a style: sources may not import the forbidden layers. */
-  private record Layers(List<String> sources, List<String> forbidden) {}
 
   private ImportLinterContracts() {}
 
@@ -28,15 +25,15 @@ final class ImportLinterContracts {
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
     final List<String> roots = PythonPackages.roots(project);
-    final Layers layers = layers(architecture, project.framework());
-    final Set<String> names = Set.copyOf(concat(layers.sources(), layers.forbidden()));
+    final LayerBoundary layers = ArchitectureLayers.forStyle(architecture, project.framework());
+    final Set<String> names = Set.copyOf(concat(layers.from(), layers.forbidden()));
     return MARKER
         + "[importlinter]\n"
         + rootLines(project, roots)
         + "\n[importlinter:contract:layers]\nname = "
         + architecture
         + " layers\ntype = forbidden\nsource_modules =\n"
-        + modules(project, roots, layers.sources())
+        + modules(project, roots, layers.from())
         + "forbidden_modules =\n"
         + modules(project, roots, layers.forbidden())
         + (extras.cycles() ? independence(project, roots, names) : "");
@@ -104,27 +101,6 @@ final class ImportLinterContracts {
     return Files.isRegularFile(base.resolve(layer).resolve("__init__.py"))
         ? "    " + rootPackage + "." + layer + "\n"
         : "";
-  }
-
-  /** Returns a style's layers, with FastAPI's router and repository package names when FastAPI. */
-  private static Layers layers(final String architecture, final Framework framework) {
-    final Layers base = baseLayers(architecture);
-    if (framework != Framework.FASTAPI) {
-      return base;
-    }
-    return new Layers(
-        concat(base.sources(), FASTAPI_CONTROLLERS),
-        concat(base.forbidden(), FASTAPI_REPOSITORIES));
-  }
-
-  private static Layers baseLayers(final String architecture) {
-    return switch (architecture) {
-      case "hexagonal" ->
-          new Layers(List.of("domain", "application"), List.of("adapter", "infrastructure"));
-      case "clean" ->
-          new Layers(List.of("domain", "core"), List.of("controller", "adapter", "infrastructure"));
-      default -> new Layers(List.of("controller"), List.of("repository"));
-    };
   }
 
   private static List<String> concat(final List<String> first, final List<String> second) {

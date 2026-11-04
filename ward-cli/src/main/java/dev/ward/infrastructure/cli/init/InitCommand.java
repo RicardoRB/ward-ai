@@ -76,13 +76,6 @@ public class InitCommand implements Callable<Integer> {
       description = "Explicitly consent to install a selected project tool or gate executable.")
   private List<String> installTools;
 
-  @Option(
-      names = "--architecture",
-      description =
-          "Architecture style for ArchUnit tests or the dependency-cruiser config: layered,"
-              + " hexagonal, or clean.")
-  private String architecture;
-
   @Option(names = "--preset", description = "Quality preset: standard or strict.")
   private String preset;
 
@@ -222,7 +215,7 @@ public class InitCommand implements Callable<Integer> {
         preset,
         integrations,
         gates,
-        architecture,
+        generatedFiles.architectureOrNull(),
         tools,
         openSpecValidations,
         installTools,
@@ -230,7 +223,8 @@ public class InitCommand implements Callable<Integer> {
         generatedFiles.ci(),
         generatedFiles.agentRules(),
         yesOption,
-        schemeOptions.scheme());
+        schemeOptions.scheme(),
+        generatedFiles.architectureEngineOrNull());
   }
 
   private Optional<RawSession> openRawTerminal() {

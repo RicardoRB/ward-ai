@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.config;
 
+import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.ArrayList;
@@ -15,9 +16,13 @@ import org.tomlj.TomlTable;
 final class TomlAnalysisParser {
   private static final String RULES = "rules";
   private static final String JAVA_CLASSPATH = "java-classpath";
+  private static final String LAYERS = "layers";
+  private static final String FROM = "from";
+  private static final String FORBIDDEN = "forbidden";
+  private static final Set<String> BOUNDARY_KEYS = Set.of(FROM, FORBIDDEN);
   private static final String RULE_PREFIX = "ward:";
   private static final Set<String> KEYS =
-      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH);
+      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH, LAYERS);
 
   private TomlAnalysisParser() {}
 
@@ -44,6 +49,64 @@ final class TomlAnalysisParser {
           "'" + where + "." + JAVA_CLASSPATH + "' must be the path of a classpath file");
     }
     return path;
+  }
+
+  /**
+   * Returns the architecture boundaries of a {@code ward} check, or an empty list when it sets
+   * none. Each {@code [[checks.<name>.layers]]} table has a non-empty {@code from} and {@code
+   * forbidden} list of plain directory names.
+   */
+  static List<LayerBoundary> layers(final String where, final String type, final TomlTable gate) {
+    if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(LAYERS)) {
+      return List.of();
+    }
+    final TomlArray tables = gate.getArray(LAYERS);
+    if (tables == null) {
+      throw new WardException("'" + where + "." + LAYERS + "' must be an array of tables");
+    }
+    final List<LayerBoundary> boundaries = new ArrayList<>();
+    for (int index = 0; index < tables.size(); index++) {
+      boundaries.add(boundary(where + "." + LAYERS, tables.getTable(index)));
+    }
+    return List.copyOf(boundaries);
+  }
+
+  private static LayerBoundary boundary(final String key, final TomlTable table) {
+    if (table == null) {
+      throw new WardException("'" + key + "' must be an array of tables");
+    }
+    for (final String name : table.keySet()) {
+      if (!BOUNDARY_KEYS.contains(name)) {
+        throw new WardException(
+            "'"
+                + key
+                + "."
+                + name
+                + "' is not a key of a layer boundary. Supported keys: "
+                + BOUNDARY_KEYS);
+      }
+    }
+    try {
+      return new LayerBoundary(names(key, table, FROM), names(key, table, FORBIDDEN));
+    } catch (final IllegalArgumentException exception) {
+      throw new WardException("'" + key + "': " + exception.getMessage(), exception);
+    }
+  }
+
+  private static List<String> names(final String key, final TomlTable table, final String name) {
+    final TomlArray array = table.getArray(name);
+    if (array == null || array.isEmpty()) {
+      throw new WardException(
+          "'" + key + "." + name + "' must be a non-empty array of layer names");
+    }
+    final List<String> names = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      if (!array.isString(index)) {
+        throw new WardException("'" + key + "." + name + "' must contain only layer names");
+      }
+      names.add(array.getString(index));
+    }
+    return List.copyOf(names);
   }
 
   private static void rejectUnknownKeys(final String where, final TomlTable gate) {

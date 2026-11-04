@@ -113,7 +113,13 @@ public enum QualityPreset {
    * @param noStandardStreams whether writing to System.out and System.err is forbidden
    */
   public record ArchitectureExtras(
-      boolean cycles, boolean noFieldInjection, boolean noStandardStreams) {}
+      boolean cycles, boolean noFieldInjection, boolean noStandardStreams) {
+
+    /** Returns whether any extra rule is on. */
+    public boolean any() {
+      return cycles || noFieldInjection || noStandardStreams;
+    }
+  }
 
   /** The tool rules a preset writes into rule files and the build. */
   public record PresetRules(

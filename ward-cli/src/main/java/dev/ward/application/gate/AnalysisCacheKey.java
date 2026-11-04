@@ -32,7 +32,7 @@ final class AnalysisCacheKey {
         .forEach(
             rule -> {
               parts.add(rule.id());
-              parts.add(rule.language().name());
+              parts.add(rule.languages().stream().map(Enum::name).sorted().toList().toString());
               parts.add(rule.capability().name());
               parts.add(rule.severity().name());
               parts.add(rule.body());

@@ -39,7 +39,16 @@ class RuleDefinitionsTest {
         .allSatisfy(
             rule ->
                 assertThat(rule.id())
-                    .startsWith("ward:" + rule.language().name().toLowerCase(Locale.ROOT)));
+                    .startsWith(
+                        "ward:"
+                            + (rule.languages().size() > 1
+                                ? RuleDefinition.CROSS_LANGUAGE
+                                : rule.languages()
+                                    .iterator()
+                                    .next()
+                                    .name()
+                                    .toLowerCase(Locale.ROOT))
+                            + "/"));
   }
 
   private static RuleDefinition rule(final String id) {

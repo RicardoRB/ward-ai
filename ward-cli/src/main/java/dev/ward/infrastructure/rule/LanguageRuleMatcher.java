@@ -30,6 +30,6 @@ public final class LanguageRuleMatcher implements RuleMatcher {
   }
 
   private RuleMatcher matcherFor(final RuleDefinition definition) {
-    return STRUCTURAL.contains(definition.language()) ? structural : shared;
+    return definition.languages().stream().allMatch(STRUCTURAL::contains) ? structural : shared;
   }
 }

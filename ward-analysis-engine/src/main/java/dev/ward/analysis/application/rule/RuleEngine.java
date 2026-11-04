@@ -1,9 +1,7 @@
 package dev.ward.analysis.application.rule;
 
-import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
@@ -18,8 +16,6 @@ import dev.ward.analysis.domain.rule.RuleRunResult;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -75,12 +71,13 @@ public final class RuleEngine {
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
       final List<FrontendSupport> frontends) {
     return frontends.stream()
-        .collect(Collectors.toMap(FrontendSupport::language, Function.identity()));
+        .collect(Collectors.toMap(FrontendSupport::language, frontend -> frontend));
   }
 
   private void runRule(
       final RuleDefinition definition, final List<SourceUnit> units, final RunState state) {
-    if (!provided(definition, state.support()).contains(definition.capability())) {
+    final List<AnalysisLanguage> runnable = runnable(definition, state.support());
+    if (!runnable.containsAll(definition.languages())) {
       state.collector().notRun(new RuleNotRun(definition.id(), definition.capability()));
       return;
     }
@@ -89,16 +86,22 @@ public final class RuleEngine {
       return;
     }
     for (final SourceUnit unit : units) {
-      if (unit.language() == definition.language()) {
+      if (runnable.contains(unit.language())) {
         runOnUnit(rule.get(), unit, state);
       }
     }
   }
 
-  private static Set<RuleCapability> provided(
+  /** The languages of {@code definition} whose frontend provides the rule's capability. */
+  private static List<AnalysisLanguage> runnable(
       final RuleDefinition definition, final Map<AnalysisLanguage, FrontendSupport> support) {
-    final FrontendSupport frontend = support.get(definition.language());
-    return frontend == null ? Set.of() : frontend.capabilities();
+    return definition.languages().stream()
+        .filter(language -> provides(support.get(language), definition.capability()))
+        .toList();
+  }
+
+  private static boolean provides(final FrontendSupport frontend, final RuleCapability capability) {
+    return frontend != null && frontend.capabilities().contains(capability);
   }
 
   private Optional<CompiledRule> compile(
@@ -121,7 +124,7 @@ public final class RuleEngine {
     }
     try {
       for (final RuleMatch match : rule.matches(root.get(), view(rule, unit, state))) {
-        collector.finding(finding(rule.definition(), unit, match));
+        collector.finding(RuleFindings.of(rule.definition(), unit, match));
       }
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
@@ -136,18 +139,5 @@ public final class RuleEngine {
       return DependencyView.NONE;
     }
     return state.snapshot().view(unit.path());
-  }
-
-  private static AnalysisFinding finding(
-      final RuleDefinition definition, final SourceUnit unit, final RuleMatch match) {
-    final Span span = match.span();
-    return new AnalysisFinding(
-        definition.id(),
-        definition.severity(),
-        match.message(),
-        unit.path(),
-        span == null ? null : span.startLine(),
-        span == null ? null : span.startColumn(),
-        null);
   }
 }

@@ -27,9 +27,10 @@ class InitProgressTest {
   void archunitAddsTheArchitectureStep() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    assertThat(init.run("3\n1\n9\n1\n\n\n")).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(init.run("3\n1\n9\n1\n\n\n\n")).as(init.output()).isEqualTo(ExitCodes.OK);
 
-    assertThat(init.output()).contains("Step 3 of 5", "Step 4 of 6", "Step 5 of 6", "Step 6 of 6");
+    assertThat(init.output())
+        .contains("Step 3 of 5", "Step 4 of 6", "Step 5 of 7", "Step 6 of 7", "Step 7 of 7");
   }
 
   @Test
