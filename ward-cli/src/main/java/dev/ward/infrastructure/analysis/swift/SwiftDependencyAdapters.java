@@ -10,7 +10,9 @@ import dev.ward.application.gate.DependencyAdapters;
 import java.nio.file.Path;
 import java.util.List;
 
-/** Builds the Swift dependency adapter of a project from its SwiftPM manifest and Xcode projects. */
+/**
+ * Builds the Swift dependency adapter of a project from its SwiftPM manifest and Xcode projects.
+ */
 public final class SwiftDependencyAdapters implements DependencyAdapters {
 
   @Override
