@@ -9,7 +9,7 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.nio.file.Path;
 import java.util.List;
@@ -33,8 +33,7 @@ final class WardJavaEdges {
     final List<DependencyEdge> edges =
         new DependencyAnalysis(
                 List.of(frontend),
-                new ProjectDependencyAdapters()
-                    .forProject(project.toAbsolutePath(), units, classpath))
+                new JavaDependencyAdapters().forProject(project.toAbsolutePath(), units, classpath))
             .analyze(units, NO_SUMMARIES)
             .graph()
             .edges();

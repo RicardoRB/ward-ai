@@ -10,7 +10,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,8 +107,7 @@ class JavaDependencyFuzzTest {
             AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
     return new DependencyAnalysis(
         List.of(frontend),
-        new ProjectDependencyAdapters()
-            .forProject(FIXTURE.toAbsolutePath(), units, Optional.empty()));
+        new JavaDependencyAdapters().forProject(FIXTURE.toAbsolutePath(), units, Optional.empty()));
   }
 
   private static List<SourceUnit> units(final Map<String, String> texts) {

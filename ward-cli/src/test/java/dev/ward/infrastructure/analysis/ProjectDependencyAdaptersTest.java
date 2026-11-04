@@ -12,15 +12,15 @@ class ProjectDependencyAdaptersTest {
 
   @Test
   void everyToolchainHasLayoutReaderOrNoSupport() {
-    final Set<Toolchain> classified = EnumSet.copyOf(ProjectDependencyAdapters.WITH_LAYOUT_READER);
-    classified.addAll(ProjectDependencyAdapters.WITHOUT_SUPPORT);
+    final Set<Toolchain> classified = EnumSet.copyOf(ToolchainSupport.WITH_LAYOUT_READER);
+    classified.addAll(ToolchainSupport.WITHOUT_SUPPORT);
 
     assertThat(classified).containsExactlyInAnyOrder(Toolchain.values());
   }
 
   @Test
   void aToolchainIsClassifiedOnlyOnce() {
-    assertThat(ProjectDependencyAdapters.WITH_LAYOUT_READER)
-        .doesNotContainAnyElementsOf(ProjectDependencyAdapters.WITHOUT_SUPPORT);
+    assertThat(ToolchainSupport.WITH_LAYOUT_READER)
+        .doesNotContainAnyElementsOf(ToolchainSupport.WITHOUT_SUPPORT);
   }
 }
