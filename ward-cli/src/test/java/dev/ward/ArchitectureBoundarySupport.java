@@ -184,12 +184,12 @@ final class ArchitectureBoundarySupport {
 
   /**
    * The packages of the frontend module, including its generated parsers, and of the structural
-   * rules and dependency summarizers of the Node and Python languages, which are the analysis
-   * adapters and domain for those rules.
+   * rules and dependency summarizers of the Node, Python and Swift languages, which are the
+   * analysis adapters and domain for those rules.
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.python|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.python|domain\\.swift|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

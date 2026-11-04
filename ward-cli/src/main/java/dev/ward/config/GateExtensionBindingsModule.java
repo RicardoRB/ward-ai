@@ -14,10 +14,11 @@ import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.GateExtensions;
 import dev.ward.application.gate.openapi.OpenApiGates;
-import dev.ward.infrastructure.analysis.CompositeDependencyAdapters;
+import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
+import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
@@ -77,8 +78,11 @@ interface GateExtensionBindingsModule {
         projectRoot -> new FileAnalysisCache(projectRoot.resolve(CACHE_DIRECTORY)),
         codec,
         wardVersion,
-        new CompositeDependencyAdapters(
-            List.of(new NodeDependencyAdapters(), new PythonDependencyAdapters())));
+        new ProjectDependencyAdapters(
+            List.of(
+                new NodeDependencyAdapters(),
+                new PythonDependencyAdapters(),
+                new SwiftDependencyAdapters())));
   }
 
   @Provides
