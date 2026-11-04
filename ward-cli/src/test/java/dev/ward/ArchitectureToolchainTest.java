@@ -57,6 +57,10 @@ final class ArchitectureToolchainTest {
               "routes each gate to its finding source, wrapping Turborepo workspaces"),
           Map.entry("BuildToolFindings", "routes each toolchain to its doctor findings"),
           Map.entry(
+              "ProjectDependencyAdapters",
+              "builds each project's dependency adapters, reading the Swift module layout of its"
+                  + " SwiftPM or Xcode project"),
+          Map.entry(
               "QualityGateFactory",
               "maps each gate id to its implementation, including the Maven and Swift gates"),
           Map.entry(

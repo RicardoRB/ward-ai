@@ -104,7 +104,7 @@ class KotlinStructuralGateTest {
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
-        List.of());
+        root -> List.of());
   }
 
   private Project project() {
