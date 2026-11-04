@@ -77,7 +77,9 @@ public final class AnalysisGate implements QualityGate {
             new RuleEngine(ports.matcher()),
             ports.codec(),
             ports.engineVersion(),
-            ports.dependencies().forProject(project.root(), Optional.ofNullable(javaClasspath)));
+            ports
+                .dependencies()
+                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
     return result(results.run(cache, units, ports.frontends(), rules));
   }
 

@@ -86,13 +86,13 @@ class JavaDependencyFuzzTest {
   }
 
   private static DependencyGraph graph(final AnalysisCache cache, final List<SourceUnit> units) {
-    return analysis()
+    return analysis(units)
         .analyze(units, new AnalysisSummaryCache(cache, AnalysisCacheFixtures.codec(), VERSION))
         .graph();
   }
 
   private static DependencyGraph coldGraph(final List<SourceUnit> units) {
-    return analysis()
+    return analysis(units)
         .analyze(
             units,
             new AnalysisSummaryCache(
@@ -101,13 +101,14 @@ class JavaDependencyFuzzTest {
   }
 
   /** The Java frontend and the Java adapters, which read the fixture's own source roots. */
-  private static DependencyAnalysis analysis() {
+  private static DependencyAnalysis analysis(final List<SourceUnit> units) {
     final FrontendSupport frontend =
         new FrontendSupport(
             AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
     return new DependencyAnalysis(
         List.of(frontend),
-        new ProjectDependencyAdapters().forProject(FIXTURE.toAbsolutePath(), Optional.empty()));
+        new ProjectDependencyAdapters()
+            .forProject(FIXTURE.toAbsolutePath(), units, Optional.empty()));
   }
 
   private static List<SourceUnit> units(final Map<String, String> texts) {

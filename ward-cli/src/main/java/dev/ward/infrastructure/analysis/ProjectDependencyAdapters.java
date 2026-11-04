@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.analysis;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.JavaDependencyResolver;
 import dev.ward.analysis.domain.jvm.JavaFileSummarizer;
 import dev.ward.analysis.domain.jvm.JavaSourceRoot;
@@ -11,6 +12,7 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.analysis.jvm.JdtJavaDependencyResolver;
 import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
+import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.infrastructure.project.gradle.GradleKotlinModules;
 import dev.ward.infrastructure.project.maven.MavenJavaModules;
 import java.nio.file.Files;
@@ -31,32 +33,40 @@ import javax.inject.Inject;
 public final class ProjectDependencyAdapters implements DependencyAdapters {
 
   /** The toolchains whose layout reader builds a dependency adapter. */
-  static final Set<Toolchain> WITH_LAYOUT_READER = EnumSet.of(Toolchain.JVM);
+  static final Set<Toolchain> WITH_LAYOUT_READER = EnumSet.of(Toolchain.JVM, Toolchain.NODE);
 
   /** The toolchains that have no dependency adapter yet, so they contribute no edges. */
   static final Set<Toolchain> WITHOUT_SUPPORT =
-      EnumSet.of(
-          Toolchain.NODE,
-          Toolchain.PYTHON,
-          Toolchain.GO,
-          Toolchain.RUST,
-          Toolchain.DOTNET,
-          Toolchain.SWIFT);
+      EnumSet.of(Toolchain.PYTHON, Toolchain.GO, Toolchain.RUST, Toolchain.DOTNET, Toolchain.SWIFT);
+
+  private final DependencyAdapters node = new NodeDependencyAdapters();
 
   /** Creates the adapter factory; it holds no state, so one instance serves every project. */
   @Inject
   public ProjectDependencyAdapters() {}
 
+  @Override
+  public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
+    return forProject(projectRoot, units, Optional.empty());
+  }
+
   /**
-   * Returns the Java adapter, built from the source roots of the project's modules. With a
-   * classpath file the adapter also resolves bindings, which needs the classpath; without it the
-   * edges come from the names in the source alone. Java is the only toolchain with a layout reader
-   * so far.
+   * Returns the TypeScript and JavaScript adapters of the run and the Java adapter. With a
+   * classpath file the Java adapter also resolves bindings, which needs the classpath; without it
+   * the edges come from the names in the source alone.
    */
   @Override
   public List<DependencySupport> forProject(
-      final Path projectRoot, final Optional<String> javaClasspath) {
-    final Path root = projectRoot.toAbsolutePath().normalize();
+      final Path projectRoot, final List<SourceUnit> units, final Optional<String> javaClasspath) {
+    final List<DependencySupport> supports = new ArrayList<>(node.forProject(projectRoot, units));
+    if (units.stream().anyMatch(unit -> unit.language() == AnalysisLanguage.JAVA)) {
+      supports.add(javaSupport(projectRoot.toAbsolutePath().normalize(), javaClasspath));
+    }
+    return List.copyOf(supports);
+  }
+
+  private static DependencySupport javaSupport(
+      final Path root, final Optional<String> javaClasspath) {
     final List<JavaSourceRoot> roots = JvmSourceLayouts.of(root, jvmModules(root));
     final DependencyResolver resolver =
         javaClasspath
@@ -67,8 +77,7 @@ public final class ProjectDependencyAdapters implements DependencyAdapters {
                         JdtJavaDependencyResolver.classpathEntries(classpathFile(root, name)),
                         roots))
             .orElseGet(() -> new JavaDependencyResolver(roots));
-    return List.of(
-        new DependencySupport(AnalysisLanguage.JAVA, new JavaFileSummarizer(), resolver));
+    return new DependencySupport(AnalysisLanguage.JAVA, new JavaFileSummarizer(), resolver);
   }
 
   /**

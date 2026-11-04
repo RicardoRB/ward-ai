@@ -33,7 +33,8 @@ final class WardJavaEdges {
     final List<DependencyEdge> edges =
         new DependencyAnalysis(
                 List.of(frontend),
-                new ProjectDependencyAdapters().forProject(project.toAbsolutePath(), classpath))
+                new ProjectDependencyAdapters()
+                    .forProject(project.toAbsolutePath(), units, classpath))
             .analyze(units, NO_SUMMARIES)
             .graph()
             .edges();

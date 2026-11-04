@@ -154,7 +154,7 @@ public final class NodeProjectInspection {
   }
 
   /** Decodes package.json leniently: a missing, unreadable or malformed file is an empty map. */
-  static Map<?, ?> manifest(final Path dir) {
+  public static Map<?, ?> manifest(final Path dir) {
     final Path file = dir.resolve(PACKAGE_JSON);
     if (!Files.isRegularFile(file)) {
       return Map.of();
