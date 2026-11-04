@@ -9,7 +9,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.analysis.JavaDependencyAdapters;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import java.io.IOException;
@@ -57,7 +57,7 @@ class MatrixLayerParityTest {
             flagged(
                 project,
                 ArchitectureLayers.forStyle("layered", Framework.NONE),
-                new JavaDependencyAdapters()))
+                new JvmDependencyAdapters()))
         .containsExactly("src/main/java/demo/controller/DirectController.java");
   }
 
