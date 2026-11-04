@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.python.PythonProjectLayout;
-import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import java.io.IOException;
 import java.io.UncheckedIOException;
