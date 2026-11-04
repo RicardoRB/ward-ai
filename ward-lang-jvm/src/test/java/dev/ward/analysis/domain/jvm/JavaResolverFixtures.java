@@ -35,7 +35,7 @@ final class JavaResolverFixtures {
 
   /** Resolves the summaries with the default source roots. */
   static List<DependencyEdge> resolve(final FileSummary... summaries) {
-    return new JavaDependencyResolver(ROOTS).resolve(List.of(summaries));
+    return new JvmDependencyResolver(ROOTS).resolve(List.of(summaries));
   }
 
   /** The sorted targets of the edges leaving {@code from}. */

@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
+import dev.ward.analysis.domain.port.DependencyResolver;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.port.ParseResult;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,18 +50,19 @@ public final class DependencyAnalysis {
       summarize(unit, cache).ifPresent(summary -> summaries.put(unit.path(), summary));
     }
     final List<DependencyEdge> edges = new ArrayList<>();
-    for (final DependencySupport support : dependencies) {
-      edges.addAll(support.resolver().resolve(summariesOf(units, support, summaries)));
+    for (final Map.Entry<DependencyResolver, Set<AnalysisLanguage>> group :
+        ResolverGroups.of(dependencies).entrySet()) {
+      edges.addAll(group.getKey().resolve(summariesOf(units, group.getValue(), summaries)));
     }
     return new DependencySnapshot(new DependencyGraph(edges), summaries);
   }
 
   private static List<FileSummary> summariesOf(
       final List<SourceUnit> units,
-      final DependencySupport support,
+      final Set<AnalysisLanguage> languages,
       final Map<String, FileSummary> summaries) {
     return units.stream()
-        .filter(unit -> unit.language() == support.language())
+        .filter(unit -> languages.contains(unit.language()))
         .map(unit -> summaries.get(unit.path()))
         .filter(Objects::nonNull)
         .toList();

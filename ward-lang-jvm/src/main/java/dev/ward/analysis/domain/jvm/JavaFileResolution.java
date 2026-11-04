@@ -21,14 +21,14 @@ final class JavaFileResolution {
   private static final String STATIC = "static";
   private static final String NAME = "name";
 
-  private final JavaSourceIndex index;
+  private final JvmSourceIndex index;
   private final FileSummary summary;
   private String packageName = "";
   private final Map<String, String> singleTypeImports = new HashMap<>();
   private final List<String> onDemandImports = new ArrayList<>();
   private final Set<String> declaredSimpleNames = new HashSet<>();
 
-  JavaFileResolution(final JavaSourceIndex index, final FileSummary summary) {
+  JavaFileResolution(final JvmSourceIndex index, final FileSummary summary) {
     this.index = index;
     this.summary = summary;
     readImports();

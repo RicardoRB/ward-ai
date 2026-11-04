@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Name lookup in Java's order: imports, the file itself, the package, then on-demand imports. */
-class JavaDependencyResolverTest {
+class JvmDependencyResolverTest {
   private static final String PACKAGE_SERVICE = "package:shop.service";
   private static final String PACKAGE_A = "package:a";
   private static final String MAIN = "src/main/java/";
