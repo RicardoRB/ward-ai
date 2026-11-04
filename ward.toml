@@ -52,7 +52,7 @@ command = "./mvnw -DskipTests package jacoco:check"
 enabled = true
 uses = "archunit"
 profiles = ["pre-push", "ci"]
-command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
 enabled = true
