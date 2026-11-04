@@ -28,6 +28,19 @@ final class DependencyCruiserConfigSource {
           },
       """;
   private static final String TYPESCRIPT_OPTIONS = "    tsPreCompilationDeps: true,\n";
+  private static final String EXTRAS_TEMPLATE =
+      """
+      export default {
+        forbidden: [
+      @NO_CIRCULAR@  ],
+        options: {
+          doNotFollow: { path: "node_modules" },
+          exclude: {
+            path: "@EXCLUDE@",
+          },
+      @OPTIONS@  },
+      };
+      """;
   private static final String TSCONFIG_OPTION = "    tsConfig: { fileName: \"tsconfig.json\" },\n";
   private static final String TEMPLATE =
       """
@@ -62,6 +75,13 @@ final class DependencyCruiserConfigSource {
       final QualityPreset.ArchitectureExtras extras,
       final boolean typescript,
       final boolean tsConfig) {
+    if (architecture == null) {
+      return MARKER
+          + EXTRAS_TEMPLATE
+              .replace("@NO_CIRCULAR@", NO_CIRCULAR)
+              .replace("@EXCLUDE@", EXCLUDE)
+              .replace("@OPTIONS@", typescriptOptions(typescript, tsConfig));
+    }
     final Boundary boundary = Boundary.of(architecture);
     return MARKER
         + TEMPLATE

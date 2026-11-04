@@ -39,8 +39,8 @@ class ArchitectureLayersTest {
   }
 
   @Test
-  void engineLanguagesExcludeSwiftUntilItsTypeNameEdgesLand() {
+  void engineLanguagesIncludeSwiftWithItsTypeNameEdges() {
     assertThat(ArchitectureLayers.ENGINE_LANGUAGES)
-        .doesNotContain(dev.ward.analysis.domain.ir.AnalysisLanguage.SWIFT);
+        .contains(dev.ward.analysis.domain.ir.AnalysisLanguage.SWIFT);
   }
 }

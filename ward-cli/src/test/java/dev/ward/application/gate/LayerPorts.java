@@ -13,14 +13,15 @@ import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Runs {@code ward:architecture/layers} through the ward gate, for the layer gate tests. */
-final class LayerPorts {
+public final class LayerPorts {
 
   private LayerPorts() {}
 
   /** Returns the layer findings of {@code boundary} over {@code project}, resolving edges. */
-  static List<Finding> findings(
+  public static List<Finding> findings(
       final Project project,
       final LayerBoundary boundary,
       final ProjectDependencyAdapters dependencies) {
@@ -38,6 +39,17 @@ final class LayerPorts {
         .execute(project).findings().items().stream()
             .filter(finding -> "ward:architecture/layers".equals(finding.ruleId()))
             .toList();
+  }
+
+  /**
+   * The files that {@code ward:architecture/layers} flags in {@code project}, for {@code style}.
+   */
+  public static Set<String> layerFiles(
+      final Project project, final String style, final ProjectDependencyAdapters dependencies) {
+    return findings(project, ArchitectureLayers.forStyle(style, project.framework()), dependencies)
+        .stream()
+        .map(Finding::file)
+        .collect(Collectors.toSet());
   }
 
   /** Every language of the layer rule has a frontend that provides symbols, as in the gate. */

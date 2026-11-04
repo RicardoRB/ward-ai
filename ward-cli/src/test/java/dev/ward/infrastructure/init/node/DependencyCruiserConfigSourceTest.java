@@ -33,6 +33,15 @@ class DependencyCruiserConfigSourceTest {
   }
 
   @Test
+  void extrasOnlyKeepsNoCircularAndNoBoundary() {
+    final String config = DependencyCruiserConfigSource.render(null, STRICT, false, false);
+
+    assertThat(config)
+        .contains("no-circular")
+        .doesNotContain("layered-architecture", "from: { path");
+  }
+
+  @Test
   void strictAddsNoCircularAndStandardDoesNot() {
     assertThat(DependencyCruiserConfigSource.render("layered", STRICT, false, false))
         .contains("name: \"no-circular\"");

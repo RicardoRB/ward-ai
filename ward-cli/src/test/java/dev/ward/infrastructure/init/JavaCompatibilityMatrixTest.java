@@ -2,6 +2,13 @@ package dev.ward.infrastructure.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.application.gate.LayerPorts;
+import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
+import dev.ward.domain.project.Language;
+import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
+import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +43,11 @@ class JavaCompatibilityMatrixTest {
   static final String JDK_PROPERTY = "ward.java.matrix";
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/java-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/java-matrix/violations");
+
+  /** The controller that imports a repository directly, which the layered style forbids. */
+  private static final String ENGINE_LAYER_VIOLATION =
+      "src/main/java/demo/controller/DirectController.java";
+
   private static final String MAVEN = "maven";
   private static final String POM = "pom.xml";
   private static final String PASSED = "PASSED";
@@ -93,8 +105,14 @@ class JavaCompatibilityMatrixTest {
         (gate, status) ->
             assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED));
 
+    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+        .as("engine layer findings, clean")
+        .isEmpty();
     seedViolations(project, buildTool);
     final Map<String, String> seeded = statuses(report(project));
+    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+        .as("engine layer findings, seeded")
+        .containsExactly(ENGINE_LAYER_VIOLATION);
     configured.stream()
         .filter(gate -> !NOT_SEEDED.contains(gate))
         .forEach(
@@ -164,6 +182,14 @@ class JavaCompatibilityMatrixTest {
       gates.add(matcher.group(1));
     }
     return gates;
+  }
+
+  private static Project javaProject(final Path project) {
+    return new Project(project, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
+  }
+
+  private static ProjectDependencyAdapters javaDependencies() {
+    return new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters()));
   }
 
   /** Adds the common violations, and for Maven a dynamic dependency version for Enforcer. */

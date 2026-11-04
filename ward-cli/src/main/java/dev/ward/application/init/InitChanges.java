@@ -72,16 +72,15 @@ final class InitChanges {
     members.apply(project, gates, preset, replaceScripts, approval);
     pomChange = files.buildTools().apply(project, gates, preset, approval);
     ruleFileChange = files.ruleFiles().apply(project, preset, gates);
-    if (gates.stream().anyMatch(gate -> ArchitectureGates.IDS.contains(gate.id()))) {
+    if (gates.stream().anyMatch(gate -> ArchitectureGates.IDS.contains(gate.id()))
+        && ArchitectureToolPlan.generatesTool(project, selection)) {
       architectureTest =
           files
               .architectureTests()
               .apply(
                   project,
-                  selection.architecture() == null ? "layered" : selection.architecture(),
-                  preset == null
-                      ? new QualityPreset.ArchitectureExtras(false, false, false)
-                      : preset.rules().architectureExtras());
+                  ArchitectureToolPlan.style(selection),
+                  ArchitectureToolPlan.extras(selection));
     }
     for (final OwnedSection section :
         OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved())) {

@@ -25,18 +25,31 @@ final class ImportLinterContracts {
       final String architecture,
       final QualityPreset.ArchitectureExtras extras) {
     final List<String> roots = PythonPackages.roots(project);
-    final LayerBoundary layers = ArchitectureLayers.forStyle(architecture, project.framework());
-    final Set<String> names = Set.copyOf(concat(layers.from(), layers.forbidden()));
+    final LayerBoundary layers =
+        architecture == null
+            ? null
+            : ArchitectureLayers.forStyle(architecture, project.framework());
+    final Set<String> names =
+        layers == null ? Set.of() : Set.copyOf(concat(layers.from(), layers.forbidden()));
     return MARKER
         + "[importlinter]\n"
         + rootLines(project, roots)
-        + "\n[importlinter:contract:layers]\nname = "
+        + (layers == null ? "" : layersContract(project, roots, architecture, layers))
+        + (extras.cycles() ? independence(project, roots, names) : "");
+  }
+
+  /** The layers contract: the style's sources may not import its forbidden layers. */
+  private static String layersContract(
+      final Project project,
+      final List<String> roots,
+      final String architecture,
+      final LayerBoundary layers) {
+    return "\n[importlinter:contract:layers]\nname = "
         + architecture
         + " layers\ntype = forbidden\nsource_modules =\n"
         + modules(project, roots, layers.from())
         + "forbidden_modules =\n"
-        + modules(project, roots, layers.forbidden())
-        + (extras.cycles() ? independence(project, roots, names) : "");
+        + modules(project, roots, layers.forbidden());
   }
 
   /**
