@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.swift;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Reference;
-import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.port.DependencyResolver;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,16 +56,24 @@ public final class SwiftModuleResolver implements DependencyResolver {
   private Map<String, Map<String, List<String>>> typesByModule(final List<FileSummary> summaries) {
     final Map<String, Map<String, List<String>>> index = new TreeMap<>();
     for (final FileSummary summary : summaries) {
-      final Map<String, List<String>> types =
-          index.computeIfAbsent(layout.moduleOf(summary.path()), module -> new TreeMap<>());
-      for (final Symbol symbol : summary.declared()) {
-        types
-            .computeIfAbsent(
-                SwiftFileSummarizer.lastComponent(symbol.name()), name -> new ArrayList<>())
-            .add(summary.path());
-      }
+      addDeclarations(index, layout.moduleOf(summary.path()), summary);
     }
     return index;
+  }
+
+  private static void addDeclarations(
+      final Map<String, Map<String, List<String>>> index,
+      final String module,
+      final FileSummary summary) {
+    final Map<String, List<String>> types = index.computeIfAbsent(module, key -> new TreeMap<>());
+    summary
+        .declared()
+        .forEach(
+            symbol ->
+                types
+                    .computeIfAbsent(
+                        SwiftFileSummarizer.lastComponent(symbol.name()), name -> new ArrayList<>())
+                    .add(summary.path()));
   }
 
   private void addNameEdges(
