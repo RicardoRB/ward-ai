@@ -77,7 +77,7 @@ jobs:
       - name: Set up GraalVM 25
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '25'
+          version: '25.5'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -544,7 +544,7 @@ jobs:
       - name: Set up GraalVM 25
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '25'
+          version: '25.5'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
