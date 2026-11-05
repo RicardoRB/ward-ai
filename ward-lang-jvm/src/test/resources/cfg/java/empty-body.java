@@ -1,0 +1,4 @@
+class EmptyBody {
+  void run() {
+  }
+}
