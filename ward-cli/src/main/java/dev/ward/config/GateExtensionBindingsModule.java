@@ -5,6 +5,8 @@ import dagger.Module;
 import dagger.Provides;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.jvm.JavaControlFlow;
+import dev.ward.analysis.domain.node.NodeControlFlow;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
@@ -64,12 +66,14 @@ interface GateExtensionBindingsModule {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
     final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
+    final Set<RuleCapability> flow =
+        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.CFG);
     final List<FrontendSupport> frontends =
         List.of(
-            new FrontendSupport(AnalysisLanguage.JAVA, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.JAVA, frontend, flow, new JavaControlFlow()),
             new FrontendSupport(AnalysisLanguage.PYTHON, frontend, symbols),
-            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, symbols),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, symbols),
+            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, flow, new NodeControlFlow()),
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, flow, new NodeControlFlow()),
             new FrontendSupport(AnalysisLanguage.SWIFT, frontend, symbols),
             new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, syntax));
     return new AnalysisPorts(
