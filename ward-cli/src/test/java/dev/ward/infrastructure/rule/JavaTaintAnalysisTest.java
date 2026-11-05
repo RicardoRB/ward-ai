@@ -41,6 +41,12 @@ class JavaTaintAnalysisTest {
     assertThat(run("String a = source(); String b = clean(a); sink(b);")).isEmpty();
   }
 
+  /** A sanitizer written inside the sink's argument makes the read in it clean. */
+  @Test
+  void sanitizerInsideSinkArgumentIsNotReported() {
+    assertThat(run("String a = source(); sink(clean(a));")).isEmpty();
+  }
+
   /** Scenario: Sanitized on one branch only. The unsanitized branch still reaches the sink. */
   @Test
   void sanitizedOnOneBranchIsReportedThroughTheOtherBranch() {

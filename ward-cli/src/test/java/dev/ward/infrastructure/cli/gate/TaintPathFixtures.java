@@ -3,7 +3,7 @@ package dev.ward.infrastructure.cli.gate;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.application.analysis.AnalysisFindingMapper;
+import dev.ward.application.gate.AnalysisFindingMapper;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;

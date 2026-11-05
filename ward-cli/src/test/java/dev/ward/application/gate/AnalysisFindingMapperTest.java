@@ -1,4 +1,4 @@
-package dev.ward.application.analysis;
+package dev.ward.application.gate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
