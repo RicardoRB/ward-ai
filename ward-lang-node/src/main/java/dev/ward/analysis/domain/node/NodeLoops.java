@@ -20,12 +20,17 @@ final class NodeLoops {
   private final ControlFlowBuilder flow;
   private final NodeBranches branches;
   private final NodeStatements statements;
+  private final NodeAccesses accesses;
 
   NodeLoops(
-      final ControlFlowBuilder flow, final NodeBranches branches, final NodeStatements statements) {
+      final ControlFlowBuilder flow,
+      final NodeBranches branches,
+      final NodeStatements statements,
+      final NodeAccesses accesses) {
     this.flow = flow;
     this.branches = branches;
     this.statements = statements;
+    this.accesses = accesses;
   }
 
   /** Lowers an iteration statement, dispatching on its first keyword. */
@@ -93,7 +98,9 @@ final class NodeLoops {
     flow.moveTo(headerBlock);
     flow.branch(bodyBlock, after);
     flow.moveTo(bodyBlock);
-    NodeSteps.add(flow, NodeForHeaders.bindingOf(header), false);
+    final SyntaxNode binding = NodeForHeaders.bindingOf(header);
+    NodeSteps.add(flow, binding, false);
+    flow.record(accesses.loopBinding(binding));
     loopBody(label, body, bodyBlock, after, headerBlock);
   }
 

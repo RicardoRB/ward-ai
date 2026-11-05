@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.ir;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Renders a control-flow graph as text, one line per block, so golden fixtures and debugging share
@@ -11,6 +12,13 @@ import java.util.Locale;
 public final class ControlFlowDump {
 
   private static final String ARROW = " -> ";
+  private static final Map<AccessKind, String> ACCESS_CODES =
+      Map.of(
+          AccessKind.DECLARE, "d",
+          AccessKind.WRITE, "w",
+          AccessKind.PARAMETER, "p",
+          AccessKind.READ, "r",
+          AccessKind.CAPTURE, "c");
 
   private ControlFlowDump() {}
 
@@ -29,8 +37,26 @@ public final class ControlFlowDump {
         appendSuccessors(out, block);
       }
       out.append('\n');
+      appendAccesses(out, block);
     }
     return out.toString();
+  }
+
+  /** Adds one indented line per block that has variable accesses: {@code r:x w:x c:x d:x}. */
+  private static void appendAccesses(final StringBuilder out, final BasicBlock block) {
+    if (block.accesses().isEmpty()) {
+      return;
+    }
+    out.append("  ");
+    boolean first = true;
+    for (final VariableAccess access : block.accesses()) {
+      if (!first) {
+        out.append(' ');
+      }
+      first = false;
+      out.append(ACCESS_CODES.get(access.kind())).append(':').append(access.name());
+    }
+    out.append('\n');
   }
 
   private static String tag(final ControlFlowGraph graph, final BasicBlock block) {

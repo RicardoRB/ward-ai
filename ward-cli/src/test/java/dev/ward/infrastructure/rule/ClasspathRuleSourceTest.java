@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 13;
-  private static final int BUNDLED_RULES = 12;
-  private static final int RULES_PER_LANGUAGE = 6;
+  private static final int JAVA_RULE_COUNT = 14;
+  private static final int BUNDLED_RULES = 14;
+  private static final int RULES_PER_LANGUAGE = 7;
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -47,7 +47,7 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
-  void packagedJavaRuleFilesLoadAllThirteenRules() {
+  void packagedJavaRuleFilesLoadAllFourteenRules() {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();
@@ -61,7 +61,7 @@ class ClasspathRuleSourceTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.languages()).containsExactly(AnalysisLanguage.JAVA);
-              assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
+              assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
             });
   }
@@ -82,7 +82,7 @@ class ClasspathRuleSourceTest {
     assertThat(node)
         .allSatisfy(
             rule -> {
-              assertThat(rule.capability()).isEqualTo(RuleCapability.SYNTAX);
+              assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
               assertThat(rule.body()).isEmpty();
             });
@@ -127,5 +127,12 @@ class ClasspathRuleSourceTest {
 
     assertThat(load.rules()).hasSize(1);
     assertThat(load.configurationErrors()).singleElement().asString().contains("more than once");
+  }
+
+  /** Every rule reads syntax except the data-flow rule, which reads the control-flow graphs. */
+  private static RuleCapability capabilityOf(final RuleDefinition rule) {
+    return rule.id().endsWith("/unused-assignment")
+        ? RuleCapability.DATAFLOW
+        : RuleCapability.SYNTAX;
   }
 }

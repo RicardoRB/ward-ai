@@ -12,7 +12,8 @@ class ControlFlowRoutingTest {
 
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
   private static final int OUTER_HANDLER = 2;
-  private static final int INNER_FINALLY = 3;
+  private static final int CALL_BLOCK = 3;
+  private static final int INNER_FINALLY = 4;
   private static final int LOOP_FINALLY = 4;
 
   @Test
@@ -41,7 +42,7 @@ class ControlFlowRoutingTest {
     builder.tries().popTry();
     final ControlFlowGraph graph = builder.build("m", SPAN);
 
-    assertThat(hasEdge(graph, 0, INNER_FINALLY, FlowEdgeKind.EXCEPTION)).isTrue();
+    assertThat(hasEdge(graph, CALL_BLOCK, INNER_FINALLY, FlowEdgeKind.EXCEPTION)).isTrue();
     assertThat(hasEdge(graph, INNER_FINALLY, OUTER_HANDLER, FlowEdgeKind.EXCEPTION)).isTrue();
   }
 

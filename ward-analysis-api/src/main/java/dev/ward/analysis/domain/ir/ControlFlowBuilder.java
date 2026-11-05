@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.ir;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Builds the blocks of one body while a language lowering walks its syntax tree. Blocks are
@@ -19,11 +20,23 @@ public final class ControlFlowBuilder {
 
   private final List<List<SyntaxNode>> nodes = new ArrayList<>();
   private final List<List<FlowEdge>> edges = new ArrayList<>();
+  private final List<List<VariableAccess>> accesses = new ArrayList<>();
+  private final VariableAccesses finder;
   private final ControlFlowFrames frames = new ControlFlowFrames(this);
   private int current;
 
-  /** Starts a body with its entry and exit blocks; the entry is the current block. */
+  /** Starts a body that records no variable accesses. */
   public ControlFlowBuilder() {
+    this(VariableAccesses.NONE);
+  }
+
+  /**
+   * Starts a body with its entry and exit blocks; the entry is the current block.
+   *
+   * @param finder finds the variable accesses of each node added
+   */
+  public ControlFlowBuilder(final VariableAccesses finder) {
+    this.finder = Objects.requireNonNull(finder, "finder");
     newBlock();
     newBlock();
     current = ENTRY;
@@ -37,6 +50,7 @@ public final class ControlFlowBuilder {
   public int newBlock() {
     nodes.add(new ArrayList<>());
     edges.add(new ArrayList<>());
+    accesses.add(new ArrayList<>());
     return nodes.size() - 1;
   }
 
@@ -67,9 +81,20 @@ public final class ControlFlowBuilder {
    */
   public void add(final SyntaxNode node, final boolean mayThrow) {
     nodes.get(current).add(node);
+    accesses.get(current).addAll(finder.of(node));
     if (mayThrow && frames.catchesRaise()) {
       frames.propagate(current, FlowEdgeKind.EXCEPTION);
     }
+  }
+
+  /**
+   * Appends variable accesses to the current block, after the nodes already added. A lowering uses
+   * this for accesses that no node carries, such as the parameters at the entry of a body.
+   *
+   * @param found the accesses, in evaluation order
+   */
+  public void record(final List<VariableAccess> found) {
+    accesses.get(current).addAll(found);
   }
 
   /**
@@ -110,7 +135,7 @@ public final class ControlFlowBuilder {
   public ControlFlowGraph build(final String body, final Span span) {
     edge(current, EXIT, FlowEdgeKind.NORMAL);
     return new ControlFlowGraph(
-        body, span, ControlFlowCompaction.compact(nodes, edges), ENTRY, EXIT);
+        body, span, ControlFlowCompaction.compact(nodes, edges, accesses), ENTRY, EXIT);
   }
 
   /**

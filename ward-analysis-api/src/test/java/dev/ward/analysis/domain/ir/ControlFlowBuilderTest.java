@@ -58,11 +58,12 @@ class ControlFlowBuilderTest {
     assertThat(ControlFlowDump.render(builder.build("m", SPAN)))
         .isEqualTo(
             "graph m\n"
-                + "B0 [call@1] -> B2:exception B4\n"
+                + "B0 [entry] -> B2:exception B3\n"
                 + "B1 [exit]\n"
-                + "B2 [empty] -> B3 B1:exception\n"
-                + "B3 [empty] -> B4\n"
-                + "B4 [empty] -> B1\n");
+                + "B2 [empty] -> B4 B1:exception\n"
+                + "B3 [call@1] -> B2:exception B5\n"
+                + "B4 [empty] -> B5\n"
+                + "B5 [empty] -> B1\n");
   }
 
   @Test

@@ -1,0 +1,11 @@
+# Data-flow rules for Java. They read the control-flow graphs of each body and its variable accesses.
+
+[[rules]]
+id = "ward:java/unused-assignment"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+body = '''
+check = "unused-assignment"
+message = "the value assigned to '{value}' is never read"
+'''

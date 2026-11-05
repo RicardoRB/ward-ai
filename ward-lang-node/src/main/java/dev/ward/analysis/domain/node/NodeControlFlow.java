@@ -146,7 +146,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
           program.span(),
           () ->
               new NodeBodyLowering()
-                  .lowerStatements(MODULE, NodeFlowSyntax.statements(program), program.span()));
+                  .lowerStatements(
+                      MODULE, null, NodeFlowSyntax.statements(program), program.span()));
     }
 
     private void lowerFunction(final SyntaxNode function, final String hint) {
@@ -161,7 +162,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
         final SyntaxNode expression =
             NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), SINGLE_EXPRESSION);
         if (expression != null) {
-          return new NodeBodyLowering().lowerExpression(name, expression, function.span());
+          return new NodeBodyLowering()
+              .lowerExpression(name, function, expression, function.span());
         }
         return lowerStatements(
             name, function, NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), FUNCTION_BODY));
@@ -172,7 +174,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
     private static ControlFlowGraph lowerStatements(
         final String name, final SyntaxNode function, final SyntaxNode body) {
       return new NodeBodyLowering()
-          .lowerStatements(name, NodeFlowSyntax.statements(body), function.span());
+          .lowerStatements(name, function, NodeFlowSyntax.statements(body), function.span());
     }
 
     private void lower(final String name, final Span span, final Lowering lowering) {

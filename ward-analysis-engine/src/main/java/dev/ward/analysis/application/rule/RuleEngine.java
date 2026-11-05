@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
-import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -123,9 +122,11 @@ public final class RuleEngine {
       return;
     }
     try {
-      for (final RuleMatch match : rule.matches(root.get(), view(rule, unit, state))) {
-        collector.finding(RuleFindings.of(rule.definition(), unit, match));
-      }
+      rule.matches(
+              root.get(),
+              view(rule, unit, state),
+              state.trees().flows(rule, unit, root.get(), collector))
+          .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run"));

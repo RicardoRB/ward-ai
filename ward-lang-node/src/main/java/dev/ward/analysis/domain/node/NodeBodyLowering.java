@@ -46,11 +46,12 @@ final class NodeBodyLowering implements NodeStatements {
   private static final Set<String> PLAIN =
       Set.of("yieldStatement", "debuggerStatement", "withStatement");
 
-  private final ControlFlowBuilder flow = new ControlFlowBuilder();
-  private final NodeBranches branches = new NodeBranches(flow);
-  private final NodeLoops loops = new NodeLoops(flow, branches, this);
+  private final NodeAccesses accesses = new NodeAccesses();
+  private final ControlFlowBuilder flow = new ControlFlowBuilder(accesses);
+  private final NodeBranches branches = new NodeBranches(flow, accesses);
+  private final NodeLoops loops = new NodeLoops(flow, branches, this, accesses);
   private final NodeSwitches switches = new NodeSwitches(flow, this);
-  private final NodeTries tries = new NodeTries(flow, this);
+  private final NodeTries tries = new NodeTries(flow, this, accesses);
   private final NodeJumps jumps = new NodeJumps(flow, branches);
 
   /**
@@ -63,7 +64,11 @@ final class NodeBodyLowering implements NodeStatements {
    * @throws IllegalStateException if the body holds a construct this lowering does not handle
    */
   ControlFlowGraph lowerStatements(
-      final String body, final List<SyntaxNode> statements, final Span span) {
+      final String body,
+      final SyntaxNode function,
+      final List<SyntaxNode> statements,
+      final Span span) {
+    flow.record(accesses.parameters(function));
     for (final SyntaxNode statement : statements) {
       statement(statement, null);
     }
@@ -74,12 +79,14 @@ final class NodeBodyLowering implements NodeStatements {
    * Lowers an arrow function whose body is one expression.
    *
    * @param body the name of the body
+   * @param function the arrow function, whose parameters the body declares
    * @param expression the expression that is the body
    * @param span where the body is in the source
    * @return the graph of the body
    */
   ControlFlowGraph lowerExpression(
-      final String body, final SyntaxNode expression, final Span span) {
+      final String body, final SyntaxNode function, final SyntaxNode expression, final Span span) {
+    flow.record(accesses.parameters(function));
     branches.emitValue(expression);
     return flow.build(body, span);
   }
@@ -94,9 +101,11 @@ final class NodeBodyLowering implements NodeStatements {
 
   @Override
   public void blockStatements(final SyntaxNode block) {
+    accesses.enterScope();
     for (final SyntaxNode statement : NodeFlowSyntax.statements(block)) {
       statement(statement, null);
     }
+    accesses.exitScope();
   }
 
   /** Lowers the statements that split the graph into several blocks. */
@@ -107,7 +116,12 @@ final class NodeBodyLowering implements NodeStatements {
         yield true;
       }
       case IF_STATEMENT -> ifStatement(NodeFlowSyntax.parts(part));
-      case ITERATION -> loops.iteration(NodeFlowSyntax.parts(part), label);
+      case ITERATION -> {
+        accesses.enterScope();
+        final boolean lowered = loops.iteration(NodeFlowSyntax.parts(part), label);
+        accesses.exitScope();
+        yield lowered;
+      }
       case "tryStatement" -> tries.tryStatement(NodeFlowSyntax.parts(part));
       case "switchStatement" -> switches.switchOn(NodeFlowSyntax.parts(part));
       case LABELLED -> labelled(part);

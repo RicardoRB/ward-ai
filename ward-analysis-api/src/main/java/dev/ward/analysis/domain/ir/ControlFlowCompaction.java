@@ -17,10 +17,13 @@ final class ControlFlowCompaction {
    *
    * @param nodes the nodes of each block, indexed by the original block id
    * @param edges the outgoing edges of each block, indexed by the original block id
+   * @param accesses the variable accesses of each block, indexed by the original block id
    * @return the kept blocks, renumbered from zero in their original order
    */
   static List<BasicBlock> compact(
-      final List<List<SyntaxNode>> nodes, final List<List<FlowEdge>> edges) {
+      final List<List<SyntaxNode>> nodes,
+      final List<List<FlowEdge>> edges,
+      final List<List<VariableAccess>> accesses) {
     final boolean[] reached = reachableFromEntry(edges);
     final int[] newId = new int[nodes.size()];
     int next = 0;
@@ -40,7 +43,9 @@ final class ControlFlowCompaction {
     final List<BasicBlock> blocks = new ArrayList<>();
     for (int id = 0; id < nodes.size(); id++) {
       if (newId[id] >= 0) {
-        blocks.add(new BasicBlock(newId[id], nodes.get(id), renumber(edges.get(id), newId)));
+        blocks.add(
+            new BasicBlock(
+                newId[id], nodes.get(id), renumber(edges.get(id), newId), accesses.get(id)));
       }
     }
     return blocks;

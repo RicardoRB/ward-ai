@@ -10,6 +10,8 @@ import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
+import dev.ward.analysis.domain.rule.check.CheckedRule;
+import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 
 /**
  * Builds the structural rules of TypeScript and JavaScript from their rule definitions. The id
@@ -23,6 +25,8 @@ public final class NodeRuleMatcher implements RuleMatcher {
   private static final String FILE_LENGTH = "file-length";
   private static final String NAMING = "naming";
   private static final String NESTING_DEPTH = "nesting-depth";
+  private static final String UNUSED_ASSIGNMENT = "unused-assignment";
+  private static final String UNUSED_MESSAGE = "the value assigned to '{value}' is never read";
 
   private static final int FUNCTION_LENGTH_LIMIT = 50;
   private static final int PARAMETER_COUNT_LIMIT = 3;
@@ -43,10 +47,16 @@ public final class NodeRuleMatcher implements RuleMatcher {
       case FILE_LENGTH ->
           new FileLengthRule(definition, NodeRuleBody.limit(definition, FILE_LENGTH_LIMIT));
       case NAMING -> naming(definition);
+      case UNUSED_ASSIGNMENT -> unusedAssignment(definition);
       case NESTING_DEPTH ->
           new NestingDepthRule(definition, NodeRuleBody.limit(definition, NESTING_DEPTH_LIMIT));
       default -> throw new AnalysisFailedException("no structural rule is named " + metric);
     };
+  }
+
+  private static CompiledRule unusedAssignment(final RuleDefinition definition) {
+    NodeRuleBody.requireEmpty(definition);
+    return new CheckedRule(definition, new UnusedAssignmentCheck(UNUSED_MESSAGE));
   }
 
   private static CompiledRule naming(final RuleDefinition definition) {
