@@ -40,7 +40,7 @@ public abstract class TypeScriptParserBase extends Parser {
   }
 
   protected boolean notLineTerminator() {
-    return !here(TypeScriptParser.LineTerminator);
+    return !lineTerminatorAhead();
   }
 
   protected boolean notOpenBraceAndNotFunctionAndNotInterface() {
@@ -52,25 +52,6 @@ public abstract class TypeScriptParserBase extends Parser {
 
   protected boolean closeBrace() {
     return _input.LT(1).getType() == TypeScriptParser.CloseBrace;
-  }
-
-  /**
-   * Returns {@code true} iff on the current index of the parser's token stream a token of the given
-   * {@code type} exists on the {@code HIDDEN} channel.
-   *
-   * @param type the type of the token on the {@code HIDDEN} channel to check.
-   * @return {@code true} iff on the current index of the parser's token stream a token of the given
-   *     {@code type} exists on the {@code HIDDEN} channel.
-   */
-  private boolean here(final int type) {
-
-    // Get the token ahead of the current index.
-    final int possibleIndexEosToken = this.getCurrentToken().getTokenIndex() - 1;
-    final Token ahead = _input.get(possibleIndexEosToken);
-
-    // Check if the token resides on the HIDDEN channel and if it's of the
-    // provided type.
-    return (ahead.getChannel() == Lexer.HIDDEN) && (ahead.getType() == type);
   }
 
   /**
