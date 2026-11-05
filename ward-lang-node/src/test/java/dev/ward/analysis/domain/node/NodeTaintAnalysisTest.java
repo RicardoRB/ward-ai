@@ -3,13 +3,9 @@ package dev.ward.analysis.domain.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.flow.taint.TaintAnalysis;
-import dev.ward.analysis.domain.flow.taint.TaintEntry;
 import dev.ward.analysis.domain.flow.taint.TaintFinding;
-import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -19,31 +15,6 @@ import org.junit.jupiter.params.provider.EnumSource;
  */
 class NodeTaintAnalysisTest {
 
-  private static final TaintSpec SPEC =
-      new TaintSpec(
-          List.of(
-              new TaintEntry(
-                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of()),
-              new TaintEntry(
-                  FlowSiteKind.MEMBER_READ,
-                  "query",
-                  Optional.empty(),
-                  Optional.of("req"),
-                  List.of()),
-              new TaintEntry(
-                  FlowSiteKind.PARAMETER,
-                  "Untrusted",
-                  Optional.empty(),
-                  Optional.empty(),
-                  List.of())),
-          List.of(
-              new TaintEntry(
-                  FlowSiteKind.CALL, "sink", Optional.empty(), Optional.of("db"), List.of(0))),
-          List.of(
-              new TaintEntry(
-                  FlowSiteKind.CALL, "clean", Optional.empty(), Optional.of("san"), List.of())),
-          List.of());
-
   /** Scenario: Direct flow. */
   @ParameterizedTest
   @EnumSource(
@@ -51,7 +22,7 @@ class NodeTaintAnalysisTest {
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void directFlowIsOneFindingWithTwoSteps(final AnalysisLanguage language) {
     final List<TaintFinding> found =
-        run(language, "function run() { const id = source(); db.sink(id); }");
+        run(language, "function run() { const id = source(); sink(id); }");
     assertThat(found).hasSize(1);
     assertThat(NodeTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: source", "sink: sink argument 0");
@@ -64,7 +35,7 @@ class NodeTaintAnalysisTest {
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void flowThroughAssignmentsHasThreeSteps(final AnalysisLanguage language) {
     final List<TaintFinding> found =
-        run(language, "function run() { const a = source(); const b = 'x' + a; db.sink(b); }");
+        run(language, "function run() { const a = source(); const b = 'x' + a; sink(b); }");
     assertThat(found).hasSize(1);
     assertThat(NodeTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: source", "assigned to b", "sink: sink argument 0");
@@ -76,7 +47,7 @@ class NodeTaintAnalysisTest {
       value = AnalysisLanguage.class,
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void overwrittenBeforeSinkIsNotReported(final AnalysisLanguage language) {
-    assertThat(run(language, "function run() { let v = source(); v = 'safe'; db.sink(v); }"))
+    assertThat(run(language, "function run() { let v = source(); v = 'safe'; sink(v); }"))
         .isEmpty();
   }
 
@@ -89,7 +60,7 @@ class NodeTaintAnalysisTest {
     assertThat(
             run(
                 language,
-                "function run() { const a = source(); const b = san.clean(a); db.sink(b); }"))
+                "function run() { const a = source(); const b = san.clean(a); sink(b); }"))
         .isEmpty();
   }
 
@@ -103,7 +74,7 @@ class NodeTaintAnalysisTest {
         run(
             language,
             "function run() { let a = source(); let b = a;"
-                + " if (a) { b = san.clean(a); } db.sink(b); }");
+                + " if (a) { b = san.clean(a); } sink(b); }");
     assertThat(found).hasSize(1);
     assertThat(NodeTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: source", "assigned to b", "sink: sink argument 0");
@@ -115,8 +86,7 @@ class NodeTaintAnalysisTest {
       value = AnalysisLanguage.class,
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void taintInAnUnguardedArgumentIsNotReported(final AnalysisLanguage language) {
-    assertThat(run(language, "function run() { const a = source(); db.sink('safe', a); }"))
-        .isEmpty();
+    assertThat(run(language, "function run() { const a = source(); sink('safe', a); }")).isEmpty();
   }
 
   /** Scenario: Member read. The path starts at the member read. */
@@ -126,7 +96,7 @@ class NodeTaintAnalysisTest {
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void memberReadStartsThePath(final AnalysisLanguage language) {
     final List<TaintFinding> found =
-        run(language, "function run() { const q = req.query; db.sink(q); }");
+        run(language, "function run() { const q = req.query; sink(q); }");
     assertThat(found).hasSize(1);
     assertThat(NodeTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: query", "sink: sink argument 0");
@@ -138,7 +108,7 @@ class NodeTaintAnalysisTest {
       value = AnalysisLanguage.class,
       names = {"TYPESCRIPT", "JAVASCRIPT"})
   void repeatedRunsGiveIdenticalPaths(final AnalysisLanguage language) {
-    final String body = "function run() { const a = source(); const b = 'x' + a; db.sink(b); }";
+    final String body = "function run() { const a = source(); const b = 'x' + a; sink(b); }";
     assertThat(run(language, body)).isEqualTo(run(language, body));
   }
 
@@ -149,15 +119,17 @@ class NodeTaintAnalysisTest {
       names = {"TYPESCRIPT"})
   void annotatedParameterStartsThePath(final AnalysisLanguage language) {
     final String source =
-        "class Handler {\n  handle(@Untrusted input: string) {\n    db.sink(input);\n  }\n}\n";
+        "class Handler {\n  handle(@Untrusted input: string) {\n    sink(input);\n  }\n}\n";
     final List<TaintFinding> found =
-        TaintAnalysis.run(NodeTaintFixtures.graph(language, source, "handle"), SPEC);
+        TaintAnalysis.run(
+            NodeTaintFixtures.graph(language, source, "handle"), NodeTaintFixtures.SPEC);
     assertThat(found).hasSize(1);
     assertThat(NodeTaintFixtures.messages(found.get(0).path()))
         .containsExactly("source: Untrusted", "sink: sink argument 0");
   }
 
   private static List<TaintFinding> run(final AnalysisLanguage language, final String source) {
-    return TaintAnalysis.run(NodeTaintFixtures.graph(language, source, "run"), SPEC);
+    return TaintAnalysis.run(
+        NodeTaintFixtures.graph(language, source, "run"), NodeTaintFixtures.SPEC);
   }
 }

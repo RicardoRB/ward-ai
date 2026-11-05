@@ -1,15 +1,45 @@
 package dev.ward.analysis.domain.node;
 
+import dev.ward.analysis.domain.flow.taint.TaintEntry;
+import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
+import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import java.util.List;
+import java.util.Optional;
 
 /** Lowers TypeScript and JavaScript sources for the taint tests, and reads their paths. */
 final class NodeTaintFixtures {
+
+  /** The fake specification: an unqualified sink, a qualified sanitizer and the sources. */
+  static final TaintSpec SPEC =
+      new TaintSpec(
+          List.of(
+              new TaintEntry(
+                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of()),
+              new TaintEntry(
+                  FlowSiteKind.MEMBER_READ,
+                  "query",
+                  Optional.empty(),
+                  Optional.of("req"),
+                  List.of()),
+              new TaintEntry(
+                  FlowSiteKind.PARAMETER,
+                  "Untrusted",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of())),
+          List.of(
+              new TaintEntry(
+                  FlowSiteKind.CALL, "sink", Optional.empty(), Optional.empty(), List.of(0))),
+          List.of(
+              new TaintEntry(
+                  FlowSiteKind.CALL, "clean", Optional.empty(), Optional.of("san"), List.of())),
+          List.of());
 
   private NodeTaintFixtures() {}
 

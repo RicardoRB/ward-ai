@@ -55,6 +55,10 @@ final class NodeFlowSites implements FlowSites {
     }
     if (SINGLE.equals(node.kind())) {
       expression(node, found);
+    } else if (NodeStatementCalls.isExpressionStatement(node)) {
+      NodeStatementCalls.callOf(node)
+          .ifPresentOrElse(
+              call -> call(call.callee(), call.arguments(), found), () -> children(node, found));
     } else {
       children(node, found);
       if (VARIABLE_DECLARATION.equals(node.kind())) {
@@ -73,7 +77,7 @@ final class NodeFlowSites implements FlowSites {
   private void expression(final SyntaxNode node, final List<FlowSite> found) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
     if (parts.size() == 2 && ARGUMENTS.equals(parts.get(1).kind())) {
-      call(parts.get(0), parts.get(1), found);
+      call(parts.get(0), argumentValues(parts.get(1)), found);
     } else if (isMember(parts)) {
       walk(parts.get(0), found);
       found.add(siteOf(FlowSiteKind.MEMBER_READ, node, parts, List.of()));
@@ -84,8 +88,7 @@ final class NodeFlowSites implements FlowSites {
 
   /** The callee's receiver and the arguments come first, so inner sites are listed before. */
   private void call(
-      final SyntaxNode callee, final SyntaxNode arguments, final List<FlowSite> found) {
-    final List<SyntaxNode> values = argumentValues(arguments);
+      final SyntaxNode callee, final List<SyntaxNode> values, final List<FlowSite> found) {
     final List<SyntaxNode> calleeParts = NodeFlowSyntax.parts(callee);
     if (isMember(calleeParts)) {
       walk(calleeParts.get(0), found);
