@@ -92,7 +92,7 @@ class TypeSidecarOptionalityTest {
 
               @Override
               public List<RuleMatch> matches(final SyntaxNode root) {
-                return definition.id().equals(SYNTAX)
+                return SYNTAX.equals(definition.id())
                     ? List.of(new RuleMatch(AT, "too long"))
                     : List.of();
               }
