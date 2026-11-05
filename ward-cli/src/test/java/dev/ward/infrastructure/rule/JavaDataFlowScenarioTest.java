@@ -2,7 +2,9 @@ package dev.ward.infrastructure.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** The Java data-flow scenarios of the intraprocedural spec, on lowered Java sources. */
@@ -73,5 +75,24 @@ final class JavaDataFlowScenarioTest {
         DataFlowFixtures.reachingWrites(DataFlowFixtures.java(source, "A#f(0)"), "e"),
         "e",
         "use(e)");
+  }
+
+  /**
+   * A deliberate divergence from PMD: PMD 7.29.0 does not report the dead initializer of a switch
+   * whose case and default both assign, while the same shape with if/else is reported. Ward reports
+   * it, because the initializer is overwritten on every path. This test keeps that behaviour, which
+   * the PMD reference fixtures do not cover.
+   */
+  @Test
+  void deliberatelyDivergesFromPmdAndReportsTheDeadInitializerOfASwitchWithAnAssigningDefault() {
+    final String source =
+        "class A { int f(int k) { int x = 0; switch (k) { case 1: x = 1; break; default: x = 2; } return x; } }";
+
+    final List<AnalysisFinding> findings =
+        DataFlowFixtures.unusedFindings(AnalysisLanguage.JAVA, source);
+
+    assertThat(findings).hasSize(1);
+    assertThat(findings.get(0).message()).isEqualTo("the value assigned to 'x' is never read");
+    assertThat(findings.get(0).line()).isEqualTo(1);
   }
 }
