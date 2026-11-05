@@ -56,7 +56,13 @@ Each check with a [`paths` table](/configuration/ward-toml/#partial-checks) is h
 |---|---|
 | Include none relevant to the check | Is skipped and does not affect the verdict |
 | Include relevant files, and the check declares `args` | Runs on the edited files only |
+| Include relevant files, and the check is the `ward` analysis (`uses = "ward"`) | Runs on the whole project's analysis, and reports only the findings of the edited files and of the files whose edges touch them |
 | Include one of the check's `full` files | Runs in full |
+
+The `ward` check always analyzes the whole project through its incremental cache, so an unchanged
+file is not re-analyzed. A narrowed `ward` check reports the structural findings of the edited files,
+and the dependency findings of the edited files and of the files that depend on them. Each of its
+findings is one a full run reports too, and an analysis error anywhere in the project still fails it.
 
 Checks without a `paths` table run in full. Skipped checks are listed as
 `– Checkstyle — Not affected by the edited files`. The JSON report adds the edited paths and each

@@ -43,7 +43,9 @@ final class PartialGates {
               }
             });
     final Iterator<QualityGate> created =
-        factory.create(new WardConfiguration(selected.version(), executed), project).iterator();
+        factory
+            .create(new WardConfiguration(selected.version(), executed), project, focus(plan))
+            .iterator();
     final List<QualityGate> gates = new ArrayList<>(selected.checks().size());
     selected
         .checks()
@@ -76,6 +78,19 @@ final class PartialGates {
             .map(result -> result.withScope(scope(plan.gates().get(result.name()))))
             .toList();
     return report.withResults(results).withPartialPaths(reported(report.project().root(), paths));
+  }
+
+  /** The changed paths of each gate the plan narrows to paths rather than to arguments. */
+  private static Map<String, List<String>> focus(final PartialCheckPlan plan) {
+    final Map<String, List<String>> focus = new LinkedHashMap<>();
+    plan.gates()
+        .forEach(
+            (name, gate) -> {
+              if (!gate.focus().isEmpty()) {
+                focus.put(name, gate.focus());
+              }
+            });
+    return focus;
   }
 
   private static boolean skipped(

@@ -19,8 +19,39 @@ public final class PartialCheckDefaults {
   private static final List<String> WHOLE_PROJECT = List.of("**");
   private static final List<String> PATHS = List.of("{paths}");
 
+  /**
+   * The {@code ward} analysis reads every language it has a frontend for, and its configuration and
+   * build files decide what it analyzes, so those files run it in full.
+   */
+  private static final Table WARD =
+      new Table(
+          List.of(
+              "**/*.java",
+              "**/*.kt",
+              "**/*.ts",
+              "**/*.tsx",
+              "**/*.js",
+              "**/*.jsx",
+              "**/*.mjs",
+              "**/*.cjs",
+              "**/*.py",
+              "**/*.swift"),
+          List.of(
+              "ward.toml",
+              "pom.xml",
+              "build.gradle*",
+              "settings.gradle*",
+              "package.json",
+              "pyproject.toml",
+              "Package.swift"),
+          List.of(),
+          null,
+          null);
+
   private static final Map<String, Table> NEUTRAL_TABLES =
       Map.of(
+          SupportedQualityGates.ANALYSIS,
+          WARD,
           "semgrep",
           new Table(WHOLE_PROJECT, List.of(".semgrep*"), PATHS, null, null),
           // Its history scan misses uncommitted and staged edits, so edited files are scanned

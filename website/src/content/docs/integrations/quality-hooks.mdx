@@ -10,7 +10,7 @@ ward init --integration none --gate format,tests --quality-hooks
 ```
 
 - `.git/hooks/pre-commit` runs `ward check --profile pre-commit --format json` after the shebang and before existing hook logic. It passes each staged file as `--path` (added, copied, modified, or renamed; deleted files are left out), so gates with a [`partial` table](/configuration/gates/#partial-checks) check only the commit's files, and `gitleaks` scans the staged files instead of the history. When nothing qualifies, as for a commit that only deletes files, every gate runs in full. A file staged in part is checked as it is in the working tree.
-- `.git/hooks/pre-push` runs `ward check --profile pre-push --format json` after the shebang and before existing hook logic.
+- `.git/hooks/pre-push` runs `ward check --profile pre-push --format json` after the shebang and before existing hook logic. It passes each file changed between the branch's upstream and `HEAD` (`@{upstream}...HEAD`; added, copied, modified, or renamed) as `--path`, so gates with a [`partial` table](/configuration/gates/#partial-checks) check only the pushed files. Without an upstream, as on a new branch's first push, or when the range changes no file, every gate runs in full. The `ward` check follows the same rule. File names reach Ward unchanged, so names with accents or spaces are checked.
 - Compilation is intentionally part of `pre-push` (and `ci`), not `pre-commit`; the fast commit hook avoids paying for a compile on every edit.
 - Hooks report results as JSON on stdout so a coding agent that commits or pushes can read which findings to fix.
 - A failed check returns non-zero and blocks the commit or push.
@@ -66,7 +66,7 @@ fi
 - `pre-commit` runs only when the commit stages a file under the project, and passes the staged
   paths relative to the project.
 - `pre-push` compares `HEAD` with the branch's upstream and runs only when the project changed.
-  Without an upstream, as on a branch's first push, it always runs. The section never reads the
+  Without an upstream, as on a branch's first push, it always runs in full. The section never reads the
   ref list Git passes on stdin, so hook content after it still receives that list.
 - A project whose root is the repository root keeps the original unkeyed section, which runs on
   every commit and push.

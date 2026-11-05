@@ -20,6 +20,15 @@ final class AnalysisGates {
    * named rule id is unknown.
    */
   static QualityGate create(final GateConfiguration check, final AnalysisPorts analysis) {
+    return create(check, analysis, List.of());
+  }
+
+  /**
+   * Builds the gate for {@code check} that reports only the findings touching {@code focus}, the
+   * root-relative changed paths, or every finding when {@code focus} is empty.
+   */
+  static QualityGate create(
+      final GateConfiguration check, final AnalysisPorts analysis, final List<String> focus) {
     if (analysis == null) {
       throw new WardException("Analysis gate dependencies are unavailable.");
     }
@@ -28,7 +37,7 @@ final class AnalysisGates {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }
     return new AnalysisGate(
-        check.name(), rulesOf(check, loaded.rules()), analysis, check.javaClasspath());
+        check.name(), rulesOf(check, loaded.rules()), analysis, check.javaClasspath(), focus);
   }
 
   /** The selected rules, plus the layer rule when the check configures architecture boundaries. */

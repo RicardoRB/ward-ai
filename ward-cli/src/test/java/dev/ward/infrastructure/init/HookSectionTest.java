@@ -23,14 +23,14 @@ class HookSectionTest {
   }
 
   @Test
-  void rootPrePushChecksTheWholeProject() {
+  void rootPrePushPassesTheFilesOfThePushedRange() {
     assertThat(new HookSection("").render("pre-push"))
-        .isEqualTo(
-            "# ward-owned: quality-hooks v1 begin\n"
-                + "if ! ward check --profile pre-push --format json; then\n"
-                + "  exit 1\n"
-                + "fi\n"
-                + "# ward-owned: quality-hooks v1 end\n");
+        .startsWith("# ward-owned: quality-hooks v1 begin\nif ! (\n  set --\n")
+        .contains(
+            "git -c core.quotePath=false diff --name-only --diff-filter=ACMR --relative"
+                + " '@{upstream}...HEAD' 2>/dev/null)",
+            "  ward check --profile pre-push --format json \"$@\"\n)")
+        .endsWith("); then\n  exit 1\nfi\n# ward-owned: quality-hooks v1 end\n");
   }
 
   @Test
@@ -58,7 +58,7 @@ class HookSectionTest {
             "if ! git rev-parse --verify --quiet '@{upstream}' >/dev/null"
                 + " || ! git diff --quiet '@{upstream}...HEAD' -- 'apps/api'; then",
             "ward check --profile pre-push --format json")
-        .doesNotContain("read ", "cat");
+        .doesNotContain("cat ");
   }
 
   @Test
