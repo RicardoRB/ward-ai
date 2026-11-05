@@ -1,0 +1,511 @@
+# Untrusted input of Java web code: Servlet request getters and Spring MVC handler parameters.
+# A getter matches by its receiver type; the qualifier fallback below matches an unresolved
+# receiver only, so a variable named request of another type is not a source when its type is known.
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "javax.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "jakarta.servlet.ServletRequest"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getParameterValues"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getParameterMap"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getHeader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getHeaders"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getQueryString"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getCookies"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getReader"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getRequestURI"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "javax.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "call"
+name = "getPathInfo"
+receiver = "jakarta.servlet.http.HttpServletRequest"
+qualifier = "req"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.RequestParam"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.PathVariable"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.RequestHeader"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.RequestBody"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.CookieValue"
+
+[[sources]]
+kind = "parameter"
+name = "org.springframework.web.bind.annotation.ModelAttribute"

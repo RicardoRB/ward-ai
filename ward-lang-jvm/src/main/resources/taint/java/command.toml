@@ -1,0 +1,48 @@
+# Command sinks: the program and arguments that Runtime.exec and ProcessBuilder run. ProcessBuilder
+# takes its command as varargs, so the first four positions are guarded.
+[[sinks]]
+kind = "call"
+name = "exec"
+receiver = "java.lang.Runtime"
+arguments = [0]
+
+# Runtime.getRuntime().exec(...) has no receiver type, since its qualifier is a call, so it is
+# matched by the text of that qualifier.
+[[sinks]]
+kind = "call"
+name = "exec"
+receiver = "java.lang.Runtime"
+qualifier = "Runtime.getRuntime()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.lang.ProcessBuilder"
+arguments = [0, 1, 2, 3]
+
+[[sinks]]
+kind = "call"
+name = "command"
+receiver = "java.lang.ProcessBuilder"
+arguments = [0, 1, 2, 3]
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"

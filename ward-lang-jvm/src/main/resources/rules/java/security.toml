@@ -1,0 +1,35 @@
+# Injection rules for Java. Each follows untrusted input from a web request, or a Spring handler
+# parameter, to a sink within one method, using the taint specifications under taint/java.
+
+[[rules]]
+id = "ward:java/sql-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/sql.toml"]
+message = "untrusted data from {source} reaches the SQL query of {sink}"
+'''
+
+[[rules]]
+id = "ward:java/command-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/command.toml"]
+message = "untrusted data from {source} reaches the command of {sink}"
+'''
+
+[[rules]]
+id = "ward:java/path-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/path.toml"]
+message = "untrusted data from {source} reaches the file path of {sink}"
+'''

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 14;
+  private static final int JAVA_RULE_COUNT = 17;
   private static final int BUNDLED_RULES = 14;
   private static final int RULES_PER_LANGUAGE = 7;
 
@@ -47,7 +47,7 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
-  void packagedJavaRuleFilesLoadAllFourteenRules() {
+  void packagedJavaRuleFilesLoadAllSeventeenRules() {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();
@@ -130,8 +130,12 @@ class ClasspathRuleSourceTest {
   }
 
   /** Every rule reads syntax except the data-flow rule, which reads the control-flow graphs. */
+  private static boolean isJavaInjection(final String id) {
+    return id.startsWith("ward:java/") && id.endsWith("-injection");
+  }
+
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
-    return rule.id().endsWith("/unused-assignment")
+    return rule.id().endsWith("/unused-assignment") || isJavaInjection(rule.id())
         ? RuleCapability.DATAFLOW
         : RuleCapability.SYNTAX;
   }
