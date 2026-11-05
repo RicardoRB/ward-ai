@@ -9,8 +9,8 @@ import java.util.Set;
 
 /**
  * Sends each rule to the matcher of its language. TypeScript and JavaScript rules go to the
- * structural matcher, which names the metric in the id; a rule it cannot use, such as a taint check,
- * goes to the shared matcher. Every other language uses the shared matcher.
+ * structural matcher, which names the metric in the id; a rule it cannot use, such as a taint
+ * check, goes to the shared matcher. Every other language uses the shared matcher.
  */
 public final class LanguageRuleMatcher implements RuleMatcher {
 
@@ -34,17 +34,12 @@ public final class LanguageRuleMatcher implements RuleMatcher {
     try {
       return structural.compile(definition);
     } catch (final AnalysisFailedException structuralFailure) {
-      return compileShared(definition, structuralFailure);
-    }
-  }
-
-  private CompiledRule compileShared(
-      final RuleDefinition definition, final AnalysisFailedException structuralFailure) {
-    try {
-      return shared.compile(definition);
-    } catch (final AnalysisFailedException sharedFailure) {
-      structuralFailure.addSuppressed(sharedFailure);
-      throw structuralFailure;
+      try {
+        return shared.compile(definition);
+      } catch (final AnalysisFailedException sharedFailure) {
+        structuralFailure.addSuppressed(sharedFailure);
+        throw structuralFailure;
+      }
     }
   }
 

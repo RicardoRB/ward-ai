@@ -27,10 +27,11 @@ final class NodeSecurityRules {
    */
   static List<AnalysisFinding> run(final SourceUnit unit) {
     final List<RuleDefinition> rules =
-        new ClasspathRuleSource().load().rules().stream()
-            .filter(rule -> rule.id().matches(SECURITY_IDS))
-            .filter(rule -> rule.languages().contains(unit.language()))
-            .toList();
+        new ClasspathRuleSource()
+            .load().rules().stream()
+                .filter(rule -> rule.id().matches(SECURITY_IDS))
+                .filter(rule -> rule.languages().contains(unit.language()))
+                .toList();
     final FrontendSupport support =
         new FrontendSupport(
             unit.language(),

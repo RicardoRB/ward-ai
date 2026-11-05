@@ -26,11 +26,20 @@ class NodeAccuracyCorpusTest {
       Path.of(System.getProperty("ward.repository.root"), "ward-analysis-bench/accuracy/node");
   private static final int LABEL_FIELDS = 3;
 
+  private static final Counts COMMAND_TS = new Counts(3, 0, 1, 4);
+  private static final Counts COMMAND_JS = new Counts(3, 0, 1, 4);
+  private static final Counts PATH_TS = new Counts(3, 0, 1, 4);
+  private static final Counts PATH_JS = new Counts(3, 0, 1, 4);
+  private static final Counts XSS_TS = new Counts(3, 0, 1, 4);
+  private static final Counts XSS_JS = new Counts(4, 0, 0, 4);
+
   /** One row of {@code labels.csv}. */
   private record Label(String file, String rule, boolean vulnerable) {}
 
   /** The confusion counts of one rule over the files that name it. */
   private record Counts(int truePositive, int falsePositive, int falseNegative, int trueNegative) {
+
+    static final Counts NONE = new Counts(0, 0, 0, 0);
 
     Counts with(final boolean vulnerable, final boolean predicted) {
       if (vulnerable) {
@@ -49,18 +58,18 @@ class NodeAccuracyCorpusTest {
   void countsOfEveryRuleMatchTheLabeledCorpus() throws IOException {
     final Map<String, Counts> counts = new TreeMap<>();
     for (final Label label : labels()) {
-      final Counts before = counts.getOrDefault(label.rule(), new Counts(0, 0, 0, 0));
+      final Counts before = counts.getOrDefault(label.rule(), Counts.NONE);
       counts.put(label.rule(), before.with(label.vulnerable(), predicts(label)));
     }
     assertThat(counts)
         .containsExactlyInAnyOrderEntriesOf(
             Map.of(
-                "ward:typescript/command-injection", new Counts(3, 0, 1, 4),
-                "ward:javascript/command-injection", new Counts(3, 0, 1, 4),
-                "ward:typescript/path-traversal", new Counts(3, 0, 1, 4),
-                "ward:javascript/path-traversal", new Counts(3, 0, 1, 4),
-                "ward:typescript/xss", new Counts(3, 0, 1, 4),
-                "ward:javascript/xss", new Counts(4, 0, 0, 4)));
+                "ward:typescript/command-injection", COMMAND_TS,
+                "ward:javascript/command-injection", COMMAND_JS,
+                "ward:typescript/path-traversal", PATH_TS,
+                "ward:javascript/path-traversal", PATH_JS,
+                "ward:typescript/xss", XSS_TS,
+                "ward:javascript/xss", XSS_JS));
   }
 
   private static boolean predicts(final Label label) throws IOException {
@@ -76,7 +85,7 @@ class NodeAccuracyCorpusTest {
     final List<Label> labels = new ArrayList<>();
     for (final String line : Files.readAllLines(CORPUS.resolve("labels.csv"))) {
       final String[] fields = line.split(",");
-      if (fields.length == LABEL_FIELDS && !fields[0].equals("file")) {
+      if (fields.length == LABEL_FIELDS && !"file".equals(fields[0])) {
         labels.add(new Label(fields[0], fields[1], Boolean.parseBoolean(fields[2])));
       }
     }

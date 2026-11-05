@@ -22,9 +22,8 @@ import org.tomlj.TomlTable;
  * Loads taint specification files from the classpath and validates each entry. A file is TOML with
  * the tables {@code sources}, {@code sinks}, {@code sanitizers} and {@code propagators}; each entry
  * has a {@code kind} (call, member, member-write for sinks, or parameter), a {@code name}, and
- * optionally a {@code receiver}
- * type and a {@code qualifier}. A sink entry also names its {@code arguments}, and a propagator may
- * name its {@code from} inputs.
+ * optionally a {@code receiver} type and a {@code qualifier}. A sink entry also names its {@code
+ * arguments}, and a propagator may name its {@code from} inputs.
  */
 final class TaintSpecFiles {
 

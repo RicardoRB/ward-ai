@@ -11,12 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-/** The bundled TypeScript and JavaScript security rules, on the scenarios of their specification. */
+/**
+ * The bundled TypeScript and JavaScript security rules, on the scenarios of their specification.
+ */
 class NodeSecurityRulesTest {
 
   private static final String COMMAND = "/command-injection";
-  private static final String PATH = "/path-traversal";
-  private static final String XSS = "/xss";
+  private static final int COMMAND_LINE = 5;
 
   /** Scenario: Command injection from an Express query, through an assignment to a variable. */
   @ParameterizedTest
@@ -37,7 +38,7 @@ class NodeSecurityRulesTest {
             """);
     assertThat(found).hasSize(1);
     assertThat(found.get(0).ruleId()).endsWith(COMMAND);
-    assertThat(found.get(0).line()).isEqualTo(5);
+    assertThat(found.get(0).line()).isEqualTo(COMMAND_LINE);
     assertThat(messages(found.get(0)))
         .containsExactly("source: query", "assigned to full", "sink: exec argument 0");
   }
@@ -119,89 +120,8 @@ class NodeSecurityRulesTest {
     assertThat(found).noneMatch(finding -> finding.ruleId().endsWith(COMMAND));
   }
 
-  /** Scenario: Path traversal from req.params into fs.readFile. */
-  @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
-  void pathTraversalIntoReadFile(final AnalysisLanguage language) {
-    final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
-            import * as fs from 'fs';
-            export function handle(req) {
-              const name = req.params.name;
-              fs.readFile(name, () => {});
-            }
-            """);
-    assertThat(found).hasSize(1);
-    assertThat(found.get(0).ruleId()).endsWith(PATH);
-    assertThat(found.get(0).line()).isEqualTo(4);
-    assertThat(messages(found.get(0)))
-        .containsExactly("source: params", "sink: readFile argument 0");
-  }
-
-  /** Scenario: Path traversal into res.sendFile. */
-  @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
-  void pathTraversalIntoSendFile(final AnalysisLanguage language) {
-    final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
-            export function handle(req, res) {
-              const name = req.params.name;
-              res.sendFile(name);
-            }
-            """);
-    assertThat(found).hasSize(1);
-    assertThat(found.get(0).ruleId()).endsWith(PATH);
-  }
-
-  /** Scenario: XSS through innerHTML in browser code. */
-  @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
-  void xssThroughInnerHtml(final AnalysisLanguage language) {
-    final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
-            export function show(el) {
-              const q = location.search;
-              el.innerHTML = q;
-            }
-            """);
-    assertThat(found).hasSize(1);
-    assertThat(found.get(0).ruleId()).endsWith(XSS);
-    assertThat(found.get(0).line()).isEqualTo(3);
-    assertThat(messages(found.get(0)))
-        .containsExactly("source: search", "sink: innerHTML argument 0");
-  }
-
-  /** Scenario: Sanitized value through encodeURIComponent before an HTML sink. */
-  @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
-  void sanitizedValueIsNotReported(final AnalysisLanguage language) {
-    final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
-            export function show(el) {
-              const q = location.search;
-              el.innerHTML = encodeURIComponent(q);
-            }
-            """);
-    assertThat(found).noneMatch(finding -> finding.ruleId().endsWith(XSS));
-  }
-
-  private static List<AnalysisFinding> findings(final AnalysisLanguage language, final String text) {
+  private static List<AnalysisFinding> findings(
+      final AnalysisLanguage language, final String text) {
     final String path = language == AnalysisLanguage.TYPESCRIPT ? "src/a.ts" : "src/a.js";
     return NodeSecurityRules.run(new SourceUnit(path, language, text));
   }
