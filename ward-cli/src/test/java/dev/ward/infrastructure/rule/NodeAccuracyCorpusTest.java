@@ -16,14 +16,14 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
 /**
- * Measures the bundled Node security rules on the labeled corpus {@code accuracy/node/}. A file
+ * Measures the bundled Node security rules on the labeled corpus {@code ward-analysis-bench/src/test/resources/accuracy/node/}. A file
  * counts for a rule when the rule is named in its label row: the rule is predicted when it reports
  * at least one finding in the file, and the label says whether the file is vulnerable.
  */
 class NodeAccuracyCorpusTest {
 
   private static final Path CORPUS =
-      Path.of(System.getProperty("ward.repository.root"), "ward-analysis-bench/accuracy/node");
+      Path.of(System.getProperty("ward.repository.root"), "ward-analysis-bench/src/test/resources/accuracy/node");
   private static final int LABEL_FIELDS = 3;
 
   private static final Counts COMMAND_TS = new Counts(3, 0, 1, 4);
