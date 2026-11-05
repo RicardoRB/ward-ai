@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
@@ -78,7 +79,7 @@ final class AccuracyRun {
   }
 
   private CorpusAccuracy checkedIn(final Path corpus) {
-    final String name = corpus.getFileName().toString();
+    final String name = Objects.requireNonNull(corpus.getFileName()).toString();
     final List<AccuracyLabel> labels = LabelCsv.read(corpus.resolve(LABELS_FILE));
     return score(name, CorpusAccuracy.CHECKED_IN, corpus, labels);
   }

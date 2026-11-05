@@ -10,7 +10,6 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleRunResult;
-import dev.ward.application.analysis.AnalysisFindingMapper;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
 import dev.ward.domain.gate.GateFindings;

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -124,7 +125,7 @@ final class CorpusShard {
 
   private static void copy(final Path source, final Path target) {
     try {
-      Files.createDirectories(target.getParent());
+      Files.createDirectories(Objects.requireNonNull(target.getParent()));
       Files.copy(source, target);
     } catch (IOException e) {
       throw new UncheckedIOException("Could not copy " + source, e);

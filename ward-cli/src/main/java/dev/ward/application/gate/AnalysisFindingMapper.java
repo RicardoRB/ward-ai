@@ -1,4 +1,4 @@
-package dev.ward.application.analysis;
+package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
