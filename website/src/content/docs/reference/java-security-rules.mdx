@@ -71,16 +71,16 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
 ## Measured accuracy
 
 Accuracy is measured with `ward-analysis-bench --accuracy`, on the checked-in corpus
-`ward-analysis-bench/accuracy/java` (48 labeled cases, 16 per rule, 8 vulnerable and 8 safe) and on
+`ward-analysis-bench/src/test/resources/accuracy/java` (48 labeled cases, 16 per rule, 8 vulnerable and 8 safe) and on
 the OWASP Benchmark 1.2beta at a pinned commit. The numbers are as measured and were not tuned to
 either corpus. Counts are per file and rule.
 
 | Corpus | Rule | tp | fp | fn | precision | recall |
 |---|---|---:|---:|---:|---:|---:|
-| `accuracy/java` | `ward:java/command-injection` | 6 | 1 | 2 | 0.857 | 0.750 |
-| `accuracy/java` | `ward:java/path-injection` | 6 | 0 | 2 | 1.000 | 0.750 |
-| `accuracy/java` | `ward:java/sql-injection` | 6 | 2 | 2 | 0.750 | 0.750 |
-| `accuracy/java` | total | 18 | 3 | 6 | 0.857 | 0.750 |
+| `src/test/resources/accuracy/java` | `ward:java/command-injection` | 6 | 1 | 2 | 0.857 | 0.750 |
+| `src/test/resources/accuracy/java` | `ward:java/path-injection` | 6 | 0 | 2 | 1.000 | 0.750 |
+| `src/test/resources/accuracy/java` | `ward:java/sql-injection` | 6 | 2 | 2 | 0.750 | 0.750 |
+| `src/test/resources/accuracy/java` | total | 18 | 3 | 6 | 0.857 | 0.750 |
 | OWASP Benchmark 1.2beta | `ward:java/command-injection` | 38 | 31 | 88 | 0.551 | 0.302 |
 | OWASP Benchmark 1.2beta | `ward:java/path-injection` | 70 | 57 | 63 | 0.551 | 0.526 |
 | OWASP Benchmark 1.2beta | `ward:java/sql-injection` | 108 | 75 | 164 | 0.590 | 0.397 |

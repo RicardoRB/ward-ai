@@ -36,7 +36,7 @@ Ward runs. It replaces `--manifest` and takes the same `--binary` and `--out` op
 ```bash
 java -jar ward-analysis-bench/target/ward-analysis-bench.jar \
   --binary ward-cli/target/ward \
-  --accuracy ward-analysis-bench/accuracy \
+  --accuracy ward-analysis-bench/src/test/resources/accuracy \
   --out target/analysis-benchmark/accuracy.json
 ```
 
@@ -47,7 +47,7 @@ version 2 with `"mode": "accuracy"`; the speed result has `"mode": "speed"`, and
 results have no `mode` key.
 
 The corpora, their label format and the pinned OWASP Benchmark are described in
-[`accuracy/README.md`](accuracy/README.md). The GPL OWASP code is fetched at run time into the
+[`src/test/resources/accuracy/README.md`](src/test/resources/accuracy/README.md). The GPL OWASP code is fetched at run time into the
 cache and is never checked in or shipped. The accuracy mode is not measured for speed, so a JVM
 build of Ward works as `--binary` too.
 

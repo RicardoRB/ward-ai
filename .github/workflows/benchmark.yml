@@ -50,7 +50,7 @@ jobs:
         run: >-
           java -jar ward-analysis-bench/target/ward-analysis-bench.jar
           --binary ward-cli/target/ward
-          --accuracy ward-analysis-bench/accuracy
+          --accuracy ward-analysis-bench/src/test/resources/accuracy
           --out target/analysis-benchmark/accuracy.json
 
       - name: Archive the results
