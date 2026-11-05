@@ -62,7 +62,8 @@ class QualityGateRunnerFindingsTest {
         "A.java",
         line,
         1,
-        null);
+        null,
+        List.of());
   }
 
   @Test

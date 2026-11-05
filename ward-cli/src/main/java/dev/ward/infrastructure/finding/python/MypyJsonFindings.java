@@ -77,7 +77,8 @@ public final class MypyJsonFindings implements GateFindingSource {
         positive(diagnostic.line),
         // mypy's JSON column is 0-based, unlike its text output.
         diagnostic.column == null ? null : positive(diagnostic.column + 1),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final Integer value) {

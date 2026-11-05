@@ -47,12 +47,31 @@ final class NodeBodyLowering implements NodeStatements {
       Set.of("yieldStatement", "debuggerStatement", "withStatement");
 
   private final NodeAccesses accesses = new NodeAccesses();
-  private final ControlFlowBuilder flow = new ControlFlowBuilder(accesses);
-  private final NodeBranches branches = new NodeBranches(flow, accesses);
-  private final NodeLoops loops = new NodeLoops(flow, branches, this, accesses);
-  private final NodeSwitches switches = new NodeSwitches(flow, this);
-  private final NodeTries tries = new NodeTries(flow, this, accesses);
-  private final NodeJumps jumps = new NodeJumps(flow, branches);
+  private final NodeFlowSites sites;
+  private final NodeParameterSites parameterSites;
+  private final ControlFlowBuilder flow;
+  private final NodeBranches branches;
+  private final NodeLoops loops;
+  private final NodeSwitches switches;
+  private final NodeTries tries;
+  private final NodeJumps jumps;
+
+  /**
+   * Starts the lowering of one body.
+   *
+   * @param imports the named imports of the file the body is in
+   */
+  NodeBodyLowering(final NodeImports imports) {
+    final NodeTypes types = new NodeTypes(imports);
+    this.sites = new NodeFlowSites(types, accesses::isSkipped);
+    this.parameterSites = new NodeParameterSites(types);
+    this.flow = new ControlFlowBuilder(accesses, sites);
+    this.branches = new NodeBranches(flow, accesses);
+    this.loops = new NodeLoops(flow, branches, this, accesses);
+    this.switches = new NodeSwitches(flow, this);
+    this.tries = new NodeTries(flow, this, accesses);
+    this.jumps = new NodeJumps(flow, branches);
+  }
 
   /**
    * Lowers a body made of statements.
@@ -68,7 +87,7 @@ final class NodeBodyLowering implements NodeStatements {
       final SyntaxNode function,
       final List<SyntaxNode> statements,
       final Span span) {
-    flow.record(accesses.parameters(function));
+    flow.record(accesses.parameters(function), parameterSites.of(function));
     for (final SyntaxNode statement : statements) {
       statement(statement, null);
     }
@@ -86,7 +105,7 @@ final class NodeBodyLowering implements NodeStatements {
    */
   ControlFlowGraph lowerExpression(
       final String body, final SyntaxNode function, final SyntaxNode expression, final Span span) {
-    flow.record(accesses.parameters(function));
+    flow.record(accesses.parameters(function), parameterSites.of(function));
     branches.emitValue(expression);
     return flow.build(body, span);
   }

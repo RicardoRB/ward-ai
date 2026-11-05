@@ -26,7 +26,8 @@ diagnostics go to stderr.
     "stdout": "string?", "stderr": "string?", "summary": "string", "output": "string?",
     "findings": [{
       "tool": "string", "rule": "string", "severity": "error|warning|note", "message": "string",
-      "file": "string", "line": "number", "column": "number", "helpUri": "string"
+      "file": "string", "line": "number", "column": "number", "helpUri": "string",
+      "path": [{ "file": "string", "line": "number", "column": "number", "message": "string" }]
     }],
     "findingsTotal": "number", "findingsHidden": "number", "findingsTruncated": "boolean",
     "scope": "skipped|narrowed|full",
@@ -96,6 +97,10 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
   `findingsTruncated` is `true` when entries were left out.
 - `file` is relative to the project root with `/` separators. `file`, `line`, `column`, and
   `helpUri` are omitted when the tool does not report them; `format` findings name only the file.
+- A taint finding has `path`: its steps in order, from the source to the sink. Each step has the
+  `file`, `line`, `column`, and `message` of one point, such as the source call, a write that
+  carried the value on, and the sink call. A finding without a path has no `path` field. Paths are
+  written by the taint rules; see [writing taint specs](/reference/taint-specs/).
 - Gitleaks findings never contain the matched secret.
 - Swift compiler errors from `swift-build` and `xcodebuild-test` have `tool` and `rule` `swiftc`.
   SwiftLint findings carry SwiftLint's rule ID, such as `force_cast`, and swift-format findings

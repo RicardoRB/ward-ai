@@ -63,7 +63,8 @@ public final class CheckstyleXmlFindings implements GateFindingSource {
                       file[0],
                       SafeXml.intAttribute(reader, "line"),
                       SafeXml.intAttribute(reader, "column"),
-                      helpUri(source)));
+                      helpUri(source),
+                      List.of()));
             }
             default -> {
               // Other elements carry no violation data.

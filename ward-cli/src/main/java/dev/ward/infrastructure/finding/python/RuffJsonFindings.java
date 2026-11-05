@@ -79,7 +79,8 @@ public final class RuffJsonFindings implements GateFindingSource {
         ReportFiles.relativize(project, violation.filename),
         violation.location == null ? null : positive(violation.location.row),
         violation.location == null ? null : positive(violation.location.column),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final Integer value) {

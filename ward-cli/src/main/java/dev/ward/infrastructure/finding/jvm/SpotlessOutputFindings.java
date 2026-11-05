@@ -64,7 +64,16 @@ public final class SpotlessOutputFindings implements GateFindingSource {
         .map(
             file ->
                 new Finding(
-                    GATE, "spotless", GATE, FindingSeverity.ERROR, message, file, null, null, null))
+                    GATE,
+                    "spotless",
+                    GATE,
+                    FindingSeverity.ERROR,
+                    message,
+                    file,
+                    null,
+                    null,
+                    null,
+                    List.of()))
         .toList();
   }
 

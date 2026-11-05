@@ -79,7 +79,8 @@ public final class SwiftLintJsonFindings implements GateFindingSource {
         ReportFiles.relativize(project, violation.file),
         positive(violation.line),
         positive(violation.character),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final Integer value) {

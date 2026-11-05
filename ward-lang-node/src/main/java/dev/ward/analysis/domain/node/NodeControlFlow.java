@@ -67,7 +67,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
    */
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
-    final Collector collector = new Collector(unit);
+    final Collector collector = new Collector(unit, NodeImports.of(tree));
     if (PROGRAM.equals(tree.kind()) && hasTopLevelCode(tree)) {
       collector.lowerModule(tree);
     }
@@ -119,11 +119,13 @@ public final class NodeControlFlow implements ControlFlowLowering {
   private static final class Collector {
 
     private final SourceUnit unit;
+    private final NodeImports imports;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
     private final List<AnalysisFinding> failures = new ArrayList<>();
 
-    Collector(final SourceUnit unit) {
+    Collector(final SourceUnit unit, final NodeImports imports) {
       this.unit = unit;
+      this.imports = imports;
     }
 
     void visit(final SyntaxNode node, final String hint) {
@@ -145,7 +147,7 @@ public final class NodeControlFlow implements ControlFlowLowering {
           MODULE,
           program.span(),
           () ->
-              new NodeBodyLowering()
+              new NodeBodyLowering(imports)
                   .lowerStatements(
                       MODULE, null, NodeFlowSyntax.statements(program), program.span()));
     }
@@ -156,13 +158,13 @@ public final class NodeControlFlow implements ControlFlowLowering {
       lower(name, function.span(), () -> lowerBody(name, function, body));
     }
 
-    private static ControlFlowGraph lowerBody(
+    private ControlFlowGraph lowerBody(
         final String name, final SyntaxNode function, final SyntaxNode body) {
       if (ARROW_BODY.equals(body.kind())) {
         final SyntaxNode expression =
             NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), SINGLE_EXPRESSION);
         if (expression != null) {
-          return new NodeBodyLowering()
+          return new NodeBodyLowering(imports)
               .lowerExpression(name, function, expression, function.span());
         }
         return lowerStatements(
@@ -171,9 +173,9 @@ public final class NodeControlFlow implements ControlFlowLowering {
       return lowerStatements(name, function, body);
     }
 
-    private static ControlFlowGraph lowerStatements(
+    private ControlFlowGraph lowerStatements(
         final String name, final SyntaxNode function, final SyntaxNode body) {
-      return new NodeBodyLowering()
+      return new NodeBodyLowering(imports)
           .lowerStatements(name, function, NodeFlowSyntax.statements(body), function.span());
     }
 
@@ -189,7 +191,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
                 unit.path(),
                 span.startLine(),
                 span.startColumn(),
-                null));
+                null,
+                List.of()));
       }
     }
 

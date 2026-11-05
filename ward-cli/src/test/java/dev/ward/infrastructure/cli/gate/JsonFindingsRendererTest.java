@@ -39,7 +39,8 @@ class JsonFindingsRendererTest {
         "src/main/java/Foo.java",
         line,
         FINDING_COLUMN,
-        "https://checkstyle.org/checks/javadoc/missingjavadocmethod.html");
+        "https://checkstyle.org/checks/javadoc/missingjavadocmethod.html",
+        List.of());
   }
 
   private static GateResult result(final String name, final GateStatus status, final String out) {

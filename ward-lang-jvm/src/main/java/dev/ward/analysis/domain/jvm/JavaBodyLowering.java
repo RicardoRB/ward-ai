@@ -37,12 +37,28 @@ final class JavaBodyLowering implements JavaStatements {
   private static final Set<String> LOOP_KEYWORDS = Set.of("for", "while", "do");
 
   private final JavaAccesses accesses = new JavaAccesses();
-  private final ControlFlowBuilder flow = new ControlFlowBuilder(accesses);
-  private final JavaBranches branches = new JavaBranches(flow, accesses);
-  private final JavaLoops loops = new JavaLoops(flow, branches, this);
-  private final JavaSwitches switches = new JavaSwitches(flow, this);
-  private final JavaTries tries = new JavaTries(flow, this, accesses);
-  private final JavaJumps jumps = new JavaJumps(flow, branches);
+  private final JavaFlowSites sites;
+  private final ControlFlowBuilder flow;
+  private final JavaBranches branches;
+  private final JavaLoops loops;
+  private final JavaSwitches switches;
+  private final JavaTries tries;
+  private final JavaJumps jumps;
+
+  /**
+   * Starts the lowering of one body.
+   *
+   * @param types the imports and package of the file the body is in
+   */
+  JavaBodyLowering(final JavaTypeNames types) {
+    this.sites = new JavaFlowSites(types, accesses::isSkipped);
+    this.flow = new ControlFlowBuilder(accesses, sites);
+    this.branches = new JavaBranches(flow, accesses);
+    this.loops = new JavaLoops(flow, branches, this);
+    this.switches = new JavaSwitches(flow, this);
+    this.tries = new JavaTries(flow, this, accesses);
+    this.jumps = new JavaJumps(flow, branches);
+  }
 
   /**
    * Lowers one body.
@@ -56,7 +72,8 @@ final class JavaBodyLowering implements JavaStatements {
    */
   ControlFlowGraph lower(
       final String body, final SyntaxNode parameters, final SyntaxNode node, final Span span) {
-    flow.record(accesses.parameters(parameters));
+    flow.record(
+        accesses.parameters(parameters), parameters == null ? List.of() : sites.of(parameters));
     if (BLOCK.equals(node.kind())) {
       blockStatements(node);
     } else {

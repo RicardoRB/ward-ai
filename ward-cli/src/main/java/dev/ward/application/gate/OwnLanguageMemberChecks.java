@@ -120,7 +120,8 @@ final class OwnLanguageMemberChecks {
         label + "/" + finding.file(),
         finding.line(),
         finding.column(),
-        finding.helpUri());
+        finding.helpUri(),
+        List.of());
   }
 
   private static String label(final Path root, final Path member) {

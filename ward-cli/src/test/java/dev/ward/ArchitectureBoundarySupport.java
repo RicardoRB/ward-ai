@@ -47,6 +47,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.analysis.domain.rule.check",
           "dev.ward.analysis.domain.rule.metric",
           "dev.ward.analysis.domain.flow",
+          "dev.ward.analysis.domain.flow.taint",
           "dev.ward.analysis.application.rule");
 
   /**

@@ -100,7 +100,7 @@ final class NodeLoops {
     flow.moveTo(bodyBlock);
     final SyntaxNode binding = NodeForHeaders.bindingOf(header);
     NodeSteps.add(flow, binding, false);
-    flow.record(accesses.loopBinding(binding));
+    flow.record(accesses.loopBinding(binding), List.of());
     loopBody(label, body, bodyBlock, after, headerBlock);
   }
 

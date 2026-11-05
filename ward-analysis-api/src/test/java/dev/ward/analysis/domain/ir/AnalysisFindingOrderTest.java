@@ -27,7 +27,8 @@ class AnalysisFindingOrderTest {
   void findingsWithoutALocationSortFirst() {
     final AnalysisFinding located = finding("ward:java/a", "a.java", 1, 1, "m");
     final AnalysisFinding unlocated =
-        new AnalysisFinding("ward:java/a", AnalysisSeverity.ERROR, "m", null, null, null, null);
+        new AnalysisFinding(
+            "ward:java/a", AnalysisSeverity.ERROR, "m", null, null, null, null, List.of());
     final List<AnalysisFinding> findings = new ArrayList<>(List.of(located, unlocated));
 
     findings.sort(AnalysisFindingOrder.ORDER);
@@ -41,6 +42,7 @@ class AnalysisFindingOrderTest {
       final int line,
       final int column,
       final String message) {
-    return new AnalysisFinding(ruleId, AnalysisSeverity.ERROR, message, file, line, column, null);
+    return new AnalysisFinding(
+        ruleId, AnalysisSeverity.ERROR, message, file, line, column, null, List.of());
   }
 }

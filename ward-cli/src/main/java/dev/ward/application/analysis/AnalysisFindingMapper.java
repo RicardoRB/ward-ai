@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
+import dev.ward.domain.gate.FindingStep;
 import java.util.Comparator;
 import java.util.List;
 
@@ -44,7 +45,20 @@ public final class AnalysisFindingMapper {
         finding.file(),
         finding.line(),
         finding.column(),
-        finding.helpUri());
+        finding.helpUri(),
+        pathOf(finding));
+  }
+
+  private static List<FindingStep> pathOf(final AnalysisFinding finding) {
+    return finding.path().stream()
+        .map(
+            step ->
+                new FindingStep(
+                    finding.file(),
+                    step.span().startLine(),
+                    step.span().startColumn(),
+                    step.message()))
+        .toList();
   }
 
   private static FindingSeverity severityOf(final AnalysisSeverity severity) {

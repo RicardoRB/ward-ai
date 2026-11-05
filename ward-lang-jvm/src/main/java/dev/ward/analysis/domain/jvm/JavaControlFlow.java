@@ -36,7 +36,7 @@ public final class JavaControlFlow implements ControlFlowLowering {
    */
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
-    final Collector collector = new Collector(unit);
+    final Collector collector = new Collector(unit, JavaTypeNames.of(tree));
     collector.visit(tree, "");
     return new ControlFlowResult(collector.graphs, collector.failures);
   }
@@ -45,11 +45,13 @@ public final class JavaControlFlow implements ControlFlowLowering {
   private static final class Collector {
 
     private final SourceUnit unit;
+    private final JavaTypeNames types;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
     private final List<AnalysisFinding> failures = new ArrayList<>();
 
-    Collector(final SourceUnit unit) {
+    Collector(final SourceUnit unit, final JavaTypeNames types) {
       this.unit = unit;
+      this.types = types;
     }
 
     void visit(final SyntaxNode node, final String owner) {
@@ -124,7 +126,7 @@ public final class JavaControlFlow implements ControlFlowLowering {
 
     private void lower(final String name, final SyntaxNode parameters, final SyntaxNode node) {
       try {
-        graphs.add(new JavaBodyLowering().lower(name, parameters, node, node.span()));
+        graphs.add(new JavaBodyLowering(types).lower(name, parameters, node, node.span()));
       } catch (IllegalStateException failure) {
         failures.add(
             new AnalysisFinding(
@@ -134,7 +136,8 @@ public final class JavaControlFlow implements ControlFlowLowering {
                 unit.path(),
                 node.span().startLine(),
                 node.span().startColumn(),
-                null));
+                null,
+                List.of()));
       }
     }
 

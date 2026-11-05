@@ -58,7 +58,8 @@ public final class TscOutputFindings implements GateFindingSource {
         ReportFiles.relativize(project, diagnostic.group("file")),
         positive(diagnostic.group("line")),
         positive(diagnostic.group("column")),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final String value) {

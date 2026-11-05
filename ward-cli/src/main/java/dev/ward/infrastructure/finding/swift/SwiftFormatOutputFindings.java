@@ -52,6 +52,7 @@ public final class SwiftFormatOutputFindings implements GateFindingSource {
         ReportFiles.relativize(project, diagnostic.group("file")),
         SwiftCompilerOutputFindings.positive(diagnostic.group("line")),
         SwiftCompilerOutputFindings.positive(diagnostic.group("column")),
-        null);
+        null,
+        List.of());
   }
 }

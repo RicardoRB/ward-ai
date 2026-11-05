@@ -1,0 +1,26 @@
+# A fake taint specification for tests. It names no real library: the sources, sinks and
+# sanitizers only exist in the fixtures under test.
+
+[[sources]]
+kind = "call"
+name = "source"
+
+[[sources]]
+kind = "member"
+name = "query"
+qualifier = "req"
+
+[[sinks]]
+kind = "call"
+name = "sink"
+qualifier = "db"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "clean"
+
+[[propagators]]
+kind = "call"
+name = "append"
+from = ["receiver", 0]

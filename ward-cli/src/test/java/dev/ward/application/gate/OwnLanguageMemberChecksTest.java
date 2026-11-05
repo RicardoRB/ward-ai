@@ -34,7 +34,8 @@ class OwnLanguageMemberChecksTest {
             FILE,
             1,
             null,
-            null);
+            null,
+            List.of());
     final CheckReport member =
         new CheckReport(
             new Project(ROOT.resolve("apps/api"), Language.JAVA, BuildTool.MAVEN, Framework.NONE),

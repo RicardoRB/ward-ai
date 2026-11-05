@@ -55,7 +55,8 @@ class SarifNestedLocationsTest {
             file,
             LINE,
             null,
-            null);
+            null,
+            List.of());
     final GateResult result =
         GateResult.builder("pmd", GateStatus.FAILED)
             .command(List.of("x"))

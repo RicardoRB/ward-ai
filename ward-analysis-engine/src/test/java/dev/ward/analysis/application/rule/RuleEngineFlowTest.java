@@ -67,7 +67,8 @@ class RuleEngineFlowTest {
             "src/X.java",
             1,
             1,
-            null);
+            null,
+            List.of());
     final CountingLowering lowering =
         new CountingLowering(List.of(graph("fine")), List.of(failure));
     final RuleRunResult result =
@@ -81,8 +82,33 @@ class RuleEngineFlowTest {
         .contains("control flow not lowered for broken");
   }
 
+  /** Scenario: the taint check sees the graphs only for a rule that declares data flow. */
+  @Test
+  void taintCheckSeesTheGraphsOnlyForADataflowRule() {
+    final CountingLowering lowering =
+        new CountingLowering(List.of(RuleEngineTaintFixtures.graph()), List.of());
+    final RuleMatcher matcher = RuleEngineTaintFixtures.matcher();
+
+    final RuleRunResult flow =
+        run(matcher, lowering, List.of(rule("ward:java/taint", RuleCapability.DATAFLOW)));
+    assertThat(flow.findings())
+        .extracting(AnalysisFinding::message)
+        .containsExactly("untrusted source reaches sink");
+
+    final RuleRunResult syntax =
+        run(matcher, lowering, List.of(rule("ward:java/taint", RuleCapability.SYNTAX)));
+    assertThat(syntax.findings()).isEmpty();
+  }
+
   private static RuleRunResult run(
       final CountingLowering lowering, final List<RuleDefinition> rules) {
+    return run(new GraphMatcher(), lowering, rules);
+  }
+
+  private static RuleRunResult run(
+      final RuleMatcher matcher,
+      final CountingLowering lowering,
+      final List<RuleDefinition> rules) {
     final LanguageFrontend frontend =
         (unit) -> new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of());
     final FrontendSupport java =
@@ -91,7 +117,7 @@ class RuleEngineFlowTest {
             frontend,
             Set.of(RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW),
             lowering);
-    return new RuleEngine(new GraphMatcher())
+    return new RuleEngine(matcher)
         .run(List.of(RuleEngineFixtures.unit("src/X.java")), List.of(java), rules);
   }
 

@@ -80,7 +80,8 @@ public final class JavacOutputFindings implements GateFindingSource {
         ReportFiles.relativize(project, location.file()),
         positive(location.line()),
         positive(location.column()),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final String value) {

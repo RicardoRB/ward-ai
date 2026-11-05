@@ -75,7 +75,8 @@ public final class PmdXmlFindings implements GateFindingSource {
         file,
         line,
         column,
-        helpUri == null || helpUri.isBlank() ? null : helpUri);
+        helpUri == null || helpUri.isBlank() ? null : helpUri,
+        List.of());
   }
 
   private static FindingSeverity severity(final Integer priority) {
