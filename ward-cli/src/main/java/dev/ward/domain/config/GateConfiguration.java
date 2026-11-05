@@ -60,39 +60,6 @@ public record GateConfiguration(
     independence = independence == null ? List.of() : copyTables(independence);
   }
 
-  /** Creates a check that sets no architecture cycle or independence tables. */
-  public GateConfiguration(
-      final String name,
-      final String type,
-      final boolean enabled,
-      final List<String> command,
-      final Set<String> profiles,
-      final PartialGateConfiguration partial,
-      final String root,
-      final OpenApiGateOptions openApi,
-      final Integer minimum,
-      final XcodePlatform platform,
-      final List<String> rules,
-      final String javaClasspath,
-      final List<LayerBoundary> layers) {
-    this(
-        name,
-        type,
-        enabled,
-        command,
-        profiles,
-        partial,
-        root,
-        openApi,
-        minimum,
-        platform,
-        rules,
-        javaClasspath,
-        layers,
-        null,
-        null);
-  }
-
   private static List<List<String>> copyTables(final List<List<String>> tables) {
     return tables.stream().map(List::copyOf).toList();
   }
@@ -112,6 +79,8 @@ public record GateConfiguration(
         null,
         null,
         null,
-        List.of());
+        List.of(),
+        null,
+        null);
   }
 }

@@ -3,6 +3,7 @@ package dev.ward.infrastructure.config;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.tomlj.TomlArray;
@@ -10,8 +11,8 @@ import org.tomlj.TomlTable;
 
 /**
  * Parses the architecture tables of a {@code ward} check: {@code [checks.<name>.cycles]} with the
- * source {@code roots} whose slices must not form cycles, and {@code [[checks.<name>.independence]]}
- * with the {@code modules} that must not depend on each other.
+ * source {@code roots} whose slices must not form cycles, and {@code
+ * [[checks.<name>.independence]]} with the {@code modules} that must not depend on each other.
  */
 final class TomlArchitectureParser {
   static final String CYCLES = "cycles";
@@ -22,6 +23,8 @@ final class TomlArchitectureParser {
   private static final String MODULES = "modules";
   private static final int MIN_MODULES = 2;
   private static final String PATH_SEPARATOR = "/";
+  private static final String PROJECT_ROOT = ".";
+  private static final String PARENT = "..";
 
   private TomlArchitectureParser() {}
 
@@ -76,11 +79,18 @@ final class TomlArchitectureParser {
     }
   }
 
-  /** Returns the project-relative directories of {@code array}, at least {@code minimum} of them. */
-  private static List<String> directories(final String key, final TomlArray array, final int minimum) {
+  /**
+   * Returns the project-relative directories of {@code array}, at least {@code minimum} of them.
+   */
+  private static List<String> directories(
+      final String key, final TomlArray array, final int minimum) {
     if (array == null || array.size() < minimum) {
       throw new WardException(
-          "'" + key + "' must be an array of at least " + minimum + " project-relative directories");
+          "'"
+              + key
+              + "' must be an array of at least "
+              + minimum
+              + " project-relative directories");
     }
     final List<String> directories = new ArrayList<>();
     for (int index = 0; index < array.size(); index++) {
@@ -92,21 +102,36 @@ final class TomlArchitectureParser {
     return List.copyOf(directories);
   }
 
-  /** Normalizes separators and trailing slashes, and rejects a path that is not inside the project. */
+  /**
+   * Normalizes separators and trailing slashes, and rejects a path that is not inside the project.
+   */
   private static String directory(final String key, final String text) {
-    String path = text.replace('\\', '/');
-    while (path.startsWith("./")) {
-      path = path.substring(2);
-    }
-    while (path.endsWith(PATH_SEPARATOR)) {
-      path = path.substring(0, path.length() - 1);
-    }
-    if (path.isEmpty() || path.startsWith(PATH_SEPARATOR) || path.equals(".")
-        || path.contains(",") || path.contains(";") || path.contains("/../") || path.startsWith("../")
-        || path.endsWith("/..")) {
+    final String path = withoutTrailingSlashes(text.replace('\\', '/'));
+    if (!isInsideProject(path)) {
       throw new WardException(
           "'" + key + "' names '" + text + "', which is not a project-relative directory");
     }
     return path;
+  }
+
+  private static String withoutTrailingSlashes(final String text) {
+    String path = text;
+    while (path.startsWith("./")) {
+      path = path.substring(2);
+    }
+    while (path.endsWith(PATH_SEPARATOR) && path.length() > 1) {
+      path = path.substring(0, path.length() - 1);
+    }
+    return path;
+  }
+
+  /** Whether {@code path} names a directory inside the project; {@code .} is the project itself. */
+  private static boolean isInsideProject(final String path) {
+    return PROJECT_ROOT.equals(path)
+        || !path.isEmpty()
+            && !path.startsWith(PATH_SEPARATOR)
+            && !path.contains(",")
+            && !path.contains(";")
+            && Arrays.stream(path.split(PATH_SEPARATOR, -1)).noneMatch(PARENT::equals);
   }
 }

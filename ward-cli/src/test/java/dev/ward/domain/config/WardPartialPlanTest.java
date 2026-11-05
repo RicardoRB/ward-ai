@@ -62,7 +62,9 @@ class WardPartialPlanTest {
             null,
             null,
             null,
-            List.of());
+            List.of(),
+            null,
+            null);
     return PartialCheckPlan.create(
             PartialPlans.ROOT,
             Map.of(WARD, gate),

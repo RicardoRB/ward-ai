@@ -144,6 +144,7 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
     public int startOffset;
     public int endOffset;
     public String message;
+    public String file;
 
     static StepDto from(final FlowStep step) {
       final StepDto dto = new StepDto();
@@ -155,6 +156,7 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
       dto.startOffset = span.startOffset();
       dto.endOffset = span.endOffset();
       dto.message = step.message();
+      dto.file = step.file();
       return dto;
     }
 
@@ -163,7 +165,9 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
         throw new IllegalArgumentException("Cached path step is incomplete");
       }
       return new FlowStep(
-          new Span(startLine, startColumn, endLine, endColumn, startOffset, endOffset), message);
+          new Span(startLine, startColumn, endLine, endColumn, startOffset, endOffset),
+          message,
+          file);
     }
   }
 }

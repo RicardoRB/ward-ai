@@ -121,16 +121,25 @@ class ToolEngineInitGoldenTest {
     if (!"pom.xml".equals(String.valueOf(file.getFileName()))) {
       return text.getBytes(StandardCharsets.UTF_8);
     }
+    return sortLimits(text).getBytes(StandardCharsets.UTF_8);
+  }
+
+  private static String sortLimits(final String text) {
     final Matcher limits = LIMITS.matcher(text);
     final StringBuilder sorted = new StringBuilder();
     while (limits.find()) {
-      final List<String> items = new ArrayList<>(List.of(limits.group(1).split("(?=<limit>)")));
-      items.removeIf(String::isEmpty);
-      items.sort(null);
-      limits.appendReplacement(sorted, Matcher.quoteReplacement("<limits>" + String.join("", items) + "</limits>"));
+      limits.appendReplacement(
+          sorted, Matcher.quoteReplacement("<limits>" + limitItems(limits.group(1)) + "</limits>"));
     }
     limits.appendTail(sorted);
-    return sorted.toString().getBytes(StandardCharsets.UTF_8);
+    return sorted.toString();
+  }
+
+  private static String limitItems(final String group) {
+    final List<String> items = new ArrayList<>(List.of(group.split("(?=<limit>)")));
+    items.removeIf(String::isEmpty);
+    items.sort(null);
+    return String.join("", items);
   }
 
   private void mavenProject() throws IOException {

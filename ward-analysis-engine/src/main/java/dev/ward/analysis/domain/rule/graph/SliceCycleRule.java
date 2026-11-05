@@ -72,10 +72,19 @@ public final class SliceCycleRule implements GraphRule {
       final Optional<String> from = membership.sliceOf(edge.from());
       final Optional<String> to = membership.sliceOf(edge.to());
       if (from.isPresent() && to.isPresent() && !from.equals(to)) {
-        witnesses.computeIfAbsent(from.get(), slice -> new TreeMap<>()).putIfAbsent(to.get(), edge);
+        record(witnesses, from.get(), to.get(), edge);
       }
     }
     return witnesses;
+  }
+
+  /** Keeps {@code edge} as the witness of {@code from} to {@code to} unless one is kept already. */
+  private static void record(
+      final Map<String, SortedMap<String, DependencyEdge>> witnesses,
+      final String from,
+      final String to,
+      final DependencyEdge edge) {
+    witnesses.computeIfAbsent(from, slice -> new TreeMap<>()).putIfAbsent(to, edge);
   }
 
   /** The slice graph: every slice is a key, with the slices it depends on. */
@@ -101,7 +110,9 @@ public final class SliceCycleRule implements GraphRule {
       final DependencyEdge edge = witnesses.get(ring.get(index)).get(ring.get(index + 1));
       steps.add(
           new FlowStep(
-              edge.reference().span(), ring.get(index) + " depends on " + ring.get(index + 1)));
+              edge.reference().span(),
+              ring.get(index) + " depends on " + ring.get(index + 1),
+              edge.from()));
     }
     final DependencyEdge first = witnesses.get(start).get(ring.get(1));
     return new GraphMatch(

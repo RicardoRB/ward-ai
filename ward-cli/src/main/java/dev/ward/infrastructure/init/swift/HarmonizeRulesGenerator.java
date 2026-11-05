@@ -5,8 +5,8 @@ import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.analysis.swift.SwiftLayouts;
 import dev.ward.domain.project.swift.SwiftToolConfigs;
+import dev.ward.infrastructure.analysis.swift.SwiftLayouts;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -96,7 +96,9 @@ public final class HarmonizeRulesGenerator implements ArchitectureTestGeneration
     }
   }
 
-  /** The source directories of the project's Swift targets, from its manifest and Xcode projects. */
+  /**
+   * The source directories of the project's Swift targets, from its manifest and Xcode projects.
+   */
   @Override
   public List<String> cycleRoots(final Project project) {
     return SwiftLayouts.read(project.root()).targets().stream()

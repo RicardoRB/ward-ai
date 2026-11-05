@@ -11,6 +11,7 @@ import java.util.List;
 public final class GraphRuleBody {
   private static final String TABLE_SEPARATOR = ";";
   private static final String NAME_SEPARATOR = ",";
+  private static final int MIN_MODULES = 2;
 
   private GraphRuleBody() {}
 
@@ -49,7 +50,7 @@ public final class GraphRuleBody {
     final List<List<String>> tables = new ArrayList<>();
     for (final String text : body.split(TABLE_SEPARATOR, -1)) {
       final List<String> modules = names(text);
-      if (modules.size() < 2) {
+      if (modules.size() < MIN_MODULES) {
         throw new IllegalArgumentException("an independence table needs two modules");
       }
       tables.add(modules);

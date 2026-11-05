@@ -118,7 +118,9 @@ final class PartialGates {
         gate.platform(),
         gate.rules(),
         null,
-        List.of());
+        List.of(),
+        null,
+        null);
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {

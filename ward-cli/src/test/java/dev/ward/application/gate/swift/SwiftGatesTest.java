@@ -74,7 +74,9 @@ class SwiftGatesTest {
         "xcodebuild-test".equals(type) ? XcodePlatform.MACOS : null,
         null,
         null,
-        List.of());
+        List.of(),
+        null,
+        null);
   }
 
   @Test

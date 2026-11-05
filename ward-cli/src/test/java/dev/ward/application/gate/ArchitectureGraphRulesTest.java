@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 class ArchitectureGraphRulesTest {
 
   private static final String ROOT = "src/main/java/com/acme";
+  private static final int IMPORT_LINE = 7;
+  private static final int SECOND_LINE = 5;
 
   @Test
   void reportsASliceCycleAsAnErrorFindingWithItsPath() {
@@ -25,7 +27,7 @@ class ArchitectureGraphRulesTest {
         new DependencyGraph(
             List.of(
                 edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", 3),
-                edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", 5)));
+                edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE)));
 
     final List<AnalysisFinding> findings =
         ArchitectureGraphRules.findings(
@@ -36,14 +38,15 @@ class ArchitectureGraphRulesTest {
     assertThat(finding.ruleId()).isEqualTo(SliceCycleRule.ID);
     assertThat(finding.severity()).isEqualTo(AnalysisSeverity.ERROR);
     assertThat(finding.file()).isEqualTo(ROOT + "/billing/Invoice.java");
-    assertThat(finding.line()).isEqualTo(5);
+    assertThat(finding.line()).isEqualTo(SECOND_LINE);
     assertThat(finding.path()).hasSize(2);
   }
 
   @Test
   void reportsAnIndependenceImportAtItsLine() {
     final DependencyGraph graph =
-        new DependencyGraph(List.of(edge("shop/orders/A.java", "shop/billing/B.java", 7)));
+        new DependencyGraph(
+            List.of(edge("shop/orders/A.java", "shop/billing/B.java", IMPORT_LINE)));
 
     final List<AnalysisFinding> findings =
         ArchitectureGraphRules.findings(
@@ -56,7 +59,7 @@ class ArchitectureGraphRulesTest {
     assertThat(findings.getFirst().ruleId()).isEqualTo(IndependenceRule.ID);
     assertThat(findings.getFirst().message())
         .isEqualTo("shop/orders must not depend on shop/billing");
-    assertThat(findings.getFirst().line()).isEqualTo(7);
+    assertThat(findings.getFirst().line()).isEqualTo(IMPORT_LINE);
   }
 
   @Test

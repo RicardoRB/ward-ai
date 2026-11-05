@@ -91,7 +91,9 @@ class FocusEquivalenceTest {
             null,
             List.of("ward:java/type-name", "ward:java/member-name", "ward:kotlin/type-name"),
             null,
-            List.of());
+            List.of(),
+            null,
+            null);
     return AnalysisGates.create(check, ports(), focus);
   }
 

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 class SliceCycleRuleTest {
 
   private static final String ROOT = "src/main/java/com/acme";
+  private static final int FIRST_LINE = 3;
+  private static final int SECOND_LINE = 5;
 
   private static SliceCycleRule rule() {
     return new SliceCycleRule(
@@ -25,8 +27,8 @@ class SliceCycleRuleTest {
   void reportsTwoSlicesThatDependOnEachOtherOnceWithAPathOfTwoSteps() {
     final DependencyGraph graph =
         graph(
-            edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", 3),
-            edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", 5));
+            edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", FIRST_LINE),
+            edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE));
 
     final List<GraphMatch> matches = rule().matches(graph);
 
@@ -37,6 +39,10 @@ class SliceCycleRuleTest {
     assertThat(matches.getFirst().match().path()).hasSize(2);
     assertThat(matches.getFirst().match().path().getFirst().message())
         .isEqualTo("billing depends on orders");
+    assertThat(matches.getFirst().match().path().getFirst().file())
+        .isEqualTo(ROOT + "/billing/Invoice.java");
+    assertThat(matches.getFirst().match().path().get(1).file())
+        .isEqualTo(ROOT + "/orders/Order.java");
   }
 
   @Test
@@ -80,8 +86,8 @@ class SliceCycleRuleTest {
   @Test
   void reportsTheSameFindingsWhateverTheEdgeOrder() {
     final List<DependencyEdge> edges = new ArrayList<>();
-    edges.add(edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", 3));
-    edges.add(edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", 5));
+    edges.add(edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", FIRST_LINE));
+    edges.add(edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE));
     final List<GraphMatch> forward = rule().matches(new DependencyGraph(edges));
     Collections.reverse(edges);
 

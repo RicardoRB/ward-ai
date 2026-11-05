@@ -40,8 +40,7 @@ final class ArchitectureGraphRules {
         .filter(GraphRules::isGraphRule)
         .flatMap(
             rule ->
-                GraphRules.compile(rule).matches(graph).stream()
-                    .map(match -> finding(rule, match)))
+                GraphRules.compile(rule).matches(graph).stream().map(match -> finding(rule, match)))
         .toList();
   }
 

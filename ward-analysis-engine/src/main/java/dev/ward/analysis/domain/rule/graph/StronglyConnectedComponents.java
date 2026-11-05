@@ -62,11 +62,13 @@ final class StronglyConnectedComponents {
   }
 
   private void follow(final Deque<Frame> calls, final Frame frame, final String next) {
-    if (!index.containsKey(next)) {
+    if (index.containsKey(next)) {
+      if (onStack.contains(next)) {
+        lowLink.merge(frame.node(), index.get(next), Math::min);
+      }
+    } else {
       open(next);
       calls.push(new Frame(next, successors.get(next).iterator()));
-    } else if (onStack.contains(next)) {
-      lowLink.merge(frame.node(), index.get(next), Math::min);
     }
   }
 

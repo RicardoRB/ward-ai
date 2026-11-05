@@ -93,7 +93,9 @@ class NodeStructuralGateTest {
             null,
             rules,
             null,
-            List.of());
+            List.of(),
+            null,
+            null);
     return AnalysisGates.create(check, ports());
   }
 

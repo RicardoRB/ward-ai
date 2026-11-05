@@ -24,6 +24,11 @@ record EngineArchitecture(
   /** The tables of a selection that the ward engine does not check. */
   static final EngineArchitecture NONE = new EngineArchitecture(List.of(), List.of(), List.of());
 
+  /** Whether the ward engine writes any of the tables. */
+  boolean any() {
+    return !layers.isEmpty() || !cycleRoots.isEmpty() || !independence.isEmpty();
+  }
+
   /** Copies the lists. */
   EngineArchitecture {
     layers = List.copyOf(layers);
@@ -32,8 +37,8 @@ record EngineArchitecture(
   }
 
   /**
-   * Returns the tables of {@code selection} for {@code project}, asking {@code tests} for the source
-   * roots and modules of its toolchain.
+   * Returns the tables of {@code selection} for {@code project}, asking {@code tests} for the
+   * source roots and modules of its toolchain.
    */
   static EngineArchitecture of(
       final InitSelection selection,

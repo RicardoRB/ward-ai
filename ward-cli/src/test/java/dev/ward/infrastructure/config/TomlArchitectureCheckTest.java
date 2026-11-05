@@ -70,9 +70,7 @@ class TomlArchitectureCheckTest {
   @Test
   void rejectsUnknownIndependenceKey() {
     assertThatThrownBy(
-            () ->
-                check(
-                    "[[checks.ward.independence]]\nmodules = [\"a\", \"b\"]\nsoft = true"))
+            () -> check("[[checks.ward.independence]]\nmodules = [\"a\", \"b\"]\nsoft = true"))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.ward.independence.soft");
   }

@@ -89,9 +89,7 @@ public final class ConfigurationTemplate {
       gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
       partial(content, gate, project, preset);
     }
-    if (!architecture.layers().isEmpty()
-        || !architecture.cycleRoots().isEmpty()
-        || !architecture.independence().isEmpty()) {
+    if (architecture.any()) {
       WardGateTemplate.append(content, architecture);
     }
     return content.toString();

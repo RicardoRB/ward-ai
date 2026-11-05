@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class IndependenceRuleTest {
 
+  private static final int IMPORT_LINE = 7;
   private static final List<List<String>> TABLE = List.of(List.of("shop/orders", "shop/billing"));
 
   private static IndependenceRule rule() {
@@ -19,11 +20,13 @@ class IndependenceRuleTest {
   @Test
   void reportsAnImportBetweenTwoListedModulesAtTheImport() {
     final List<GraphMatch> matches =
-        rule().matches(graph(edge("shop/orders/Order.java", "shop/billing/Invoice.java", 7)));
+        rule()
+            .matches(
+                graph(edge("shop/orders/Order.java", "shop/billing/Invoice.java", IMPORT_LINE)));
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().file()).isEqualTo("shop/orders/Order.java");
-    assertThat(matches.getFirst().match().span().startLine()).isEqualTo(7);
+    assertThat(matches.getFirst().match().span().startLine()).isEqualTo(IMPORT_LINE);
     assertThat(matches.getFirst().match().message())
         .isEqualTo("shop/orders must not depend on shop/billing");
     assertThat(matches.getFirst().match().path()).isEmpty();

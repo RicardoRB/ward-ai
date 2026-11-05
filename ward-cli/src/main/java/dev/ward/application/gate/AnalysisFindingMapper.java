@@ -62,7 +62,7 @@ public final class AnalysisFindingMapper {
         .map(
             step ->
                 new FindingStep(
-                    finding.file(),
+                    step.file() == null ? finding.file() : step.file(),
                     step.span().startLine(),
                     step.span().startColumn(),
                     step.message()))
