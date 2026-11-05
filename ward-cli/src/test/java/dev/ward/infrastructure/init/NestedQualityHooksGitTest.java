@@ -7,13 +7,9 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -28,13 +24,15 @@ class NestedQualityHooksGitTest {
 
   @TempDir Path repository;
   @TempDir Path bin;
+  private GitHookRepository hooks;
 
   private final QualityHookInstaller installer = new QualityHookInstaller();
   private Project api;
 
   @BeforeEach
   void repositoryWithNestedProject() throws IOException, InterruptedException {
-    git("init", "-q");
+    hooks = new GitHookRepository(repository, bin);
+    hooks.git("init", "-q");
     final Path root = Files.createDirectories(repository.resolve("apps/api"));
     Files.writeString(root.resolve("pom.xml"), POM);
     api = new FileSystemProjectInspection().detect(root).orElseThrow();
@@ -59,7 +57,7 @@ class NestedQualityHooksGitTest {
 
   @Test
   void configuredHooksPathReceivesTheSections() throws IOException, InterruptedException {
-    git("config", "core.hooksPath", ".githooks");
+    hooks.git("config", "core.hooksPath", ".githooks");
 
     installer.apply(api);
 
@@ -70,26 +68,26 @@ class NestedQualityHooksGitTest {
 
   @Test
   void preCommitSkipsCommitsThatDoNotTouchTheProject() throws IOException, InterruptedException {
-    final Path calls = stubWard();
+    final Path calls = hooks.stubWard();
     installer.apply(api);
     Files.createDirectories(repository.resolve("apps/web"));
     Files.writeString(repository.resolve("apps/web/page.tsx"), "export {}\n");
-    git("add", "apps/web/page.tsx");
+    hooks.git("add", "apps/web/page.tsx");
 
-    assertThat(runHook("pre-commit")).isZero();
+    assertThat(hooks.runHook("pre-commit")).isZero();
     assertThat(calls).doesNotExist();
   }
 
   @Test
   void preCommitRunsFromTheProjectWhenItIsStaged() throws IOException, InterruptedException {
-    final Path calls = stubWard();
+    final Path calls = hooks.stubWard();
     installer.apply(api);
-    git("add", "apps/api/pom.xml");
+    hooks.git("add", "apps/api/pom.xml");
 
-    assertThat(runHook("pre-commit")).isZero();
+    assertThat(hooks.runHook("pre-commit")).isZero();
     assertThat(Files.readString(calls).strip())
         .isEqualTo(
-            real(repository.resolve("apps/api"))
+            GitHookRepository.real(repository.resolve("apps/api"))
                 + " check --profile pre-commit --format json --path=pom.xml");
   }
 
@@ -103,9 +101,9 @@ class NestedQualityHooksGitTest {
     installer.apply(api);
     Files.createDirectories(repository.resolve("apps/api/src"));
     Files.writeString(repository.resolve("apps/api/src/Más datos.java"), "class A {}\n");
-    git("add", "apps/api/pom.xml", "apps/api/src/Más datos.java");
+    hooks.git("add", "apps/api/pom.xml", "apps/api/src/Más datos.java");
 
-    assertThat(runHook("pre-commit")).isZero();
+    assertThat(hooks.runHook("pre-commit")).isZero();
     assertThat(Files.readAllLines(arguments))
         .containsExactly(
             "check",
@@ -117,42 +115,49 @@ class NestedQualityHooksGitTest {
             "--path=src/Más datos.java");
   }
 
-  /** A stub {@code ward} on the PATH that records its working directory and arguments. */
-  private Path stubWard() throws IOException {
-    final Path calls = bin.resolve("calls");
-    final Path ward = bin.resolve("ward");
-    Files.writeString(ward, "#!/bin/sh\necho \"$(pwd -P) $*\" >> '" + calls + "'\n");
-    Files.setPosixFilePermissions(ward, PosixFilePermissions.fromString("rwxr-xr-x"));
-    return calls;
+  @Test
+  void prePushPassesTheFilesChangedSinceTheUpstream() throws IOException, InterruptedException {
+    commitBaseWithUpstream();
+    Files.createDirectories(repository.resolve("apps/api/src"));
+    Files.writeString(repository.resolve("apps/api/src/Más datos.java"), "class A {}\n");
+    hooks.git("add", "-A");
+    hooks.git("commit", "-q", "-m", "change");
+    final Path calls = hooks.stubWard();
+    installer.apply(api);
+
+    assertThat(hooks.runHook("pre-push")).isZero();
+    assertThat(Files.readString(calls).strip())
+        .isEqualTo(
+            GitHookRepository.real(repository.resolve("apps/api"))
+                + " check --profile pre-push --format json --path=src/Más datos.java");
   }
 
-  private int runHook(final String name) throws IOException, InterruptedException {
-    final ProcessBuilder builder =
-        new ProcessBuilder(real(repository.resolve(".git/hooks").resolve(name)).toString())
-            .directory(repository.toFile())
-            .redirectErrorStream(true);
-    final Map<String, String> environment = builder.environment();
-    environment.put("PATH", bin + ":" + environment.getOrDefault("PATH", "/usr/bin:/bin"));
-    final Process process = builder.start();
-    process.getInputStream().readAllBytes();
-    return process.waitFor();
+  @Test
+  void prePushRunsInFullWithoutAnUpstream() throws IOException, InterruptedException {
+    hooks.git("config", "user.email", "ward@example.com");
+    hooks.git("config", "user.name", "ward");
+    hooks.git("add", "-A");
+    hooks.git("commit", "-q", "-m", "base");
+    final Path calls = hooks.stubWard();
+    installer.apply(api);
+
+    assertThat(hooks.runHook("pre-push")).isZero();
+    assertThat(Files.readString(calls).strip())
+        .isEqualTo(
+            GitHookRepository.real(repository.resolve("apps/api"))
+                + " check --profile pre-push --format json");
   }
 
-  private void git(final String... args) throws IOException, InterruptedException {
-    final List<String> command = new ArrayList<>(List.of("git"));
-    command.addAll(List.of(args));
-    final Process process =
-        new ProcessBuilder(command)
-            .directory(repository.toFile())
-            .redirectErrorStream(true)
-            .start();
-    final String output =
-        new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-    assertThat(process.waitFor()).as(output).isZero();
-  }
-
-  private static Path real(final Path path) throws IOException {
-    final Path parent = path.getParent().toRealPath();
-    return parent.resolve(path.getFileName());
+  /** Commits the project, and makes that commit the upstream of the current {@code main} branch. */
+  private void commitBaseWithUpstream() throws IOException, InterruptedException {
+    hooks.git("symbolic-ref", "HEAD", "refs/heads/main");
+    hooks.git("config", "user.email", "ward@example.com");
+    hooks.git("config", "user.name", "ward");
+    hooks.git("add", "-A");
+    hooks.git("commit", "-q", "-m", "base");
+    hooks.git("remote", "add", "origin", "https://example.invalid/ward.git");
+    hooks.git("update-ref", "refs/remotes/origin/main", "HEAD");
+    hooks.git("config", "branch.main.remote", "origin");
+    hooks.git("config", "branch.main.merge", "refs/heads/main");
   }
 }

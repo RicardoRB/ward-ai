@@ -21,8 +21,9 @@ final class TomlAnalysisParser {
   private static final String FORBIDDEN = "forbidden";
   private static final Set<String> BOUNDARY_KEYS = Set.of(FROM, FORBIDDEN);
   private static final String RULE_PREFIX = "ward:";
+  private static final String PATHS = "paths";
   private static final Set<String> KEYS =
-      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH, LAYERS);
+      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH, LAYERS, PATHS);
 
   private TomlAnalysisParser() {}
 

@@ -59,6 +59,19 @@ final class BenchmarkRunner {
                 new GateJob(
                     "ward-check-default",
                     List.of(GateJob.WARD, "check", "--profile", "default"),
+                    true),
+                new GateJob(
+                    "ward-gate-edit",
+                    List.of(
+                        GateJob.WARD,
+                        "check",
+                        "--profile",
+                        WardProbe.CHECK,
+                        "--format",
+                        "json",
+                        "--path",
+                        GateJob.EDITED),
+                    true,
                     true)));
     if (WARD_ENTRY.equals(entry.name())) {
       jobs.add(new GateJob("checkstyle-edit-hook", List.of("./mvnw", "checkstyle:check"), true));
@@ -96,8 +109,9 @@ final class BenchmarkRunner {
       final Path copy = jobRoot.resolve("run-" + repeat);
       FileTrees.delete(copy);
       FileTrees.copy(checkout, copy);
-      cold.add(runner.run(job.executable(binary), copy));
-      warm.add(runner.run(job.executable(binary), copy));
+      prepare(job, copy);
+      cold.add(runner.run(vector(job, entry, copy), copy));
+      warm.add(runner.run(vector(job, entry, copy), copy));
       FileTrees.delete(copy);
     }
     final Edits edits =
@@ -117,6 +131,22 @@ final class BenchmarkRunner {
         edits == null ? null : edits.latency());
   }
 
+  /** Adds the probe check to a copy of a probe job; other jobs run the copy as it is. */
+  private static void prepare(final GateJob job, final Path copy) {
+    if (job.wardProbe()) {
+      WardProbe.install(copy);
+    }
+  }
+
+  /** The job's vector for {@code copy}: a probe names the source file the edit touches. */
+  private List<String> vector(final GateJob job, final CorpusEntry entry, final Path copy) {
+    if (!job.wardProbe()) {
+      return job.executable(binary);
+    }
+    final Path target = SourceEdits.target(copy, entry.language());
+    return job.executable(binary, copy.relativize(target).toString().replace('\\', '/'));
+  }
+
   private static List<Double> peakRss(
       final List<CommandResult> cold, final List<CommandResult> warm) {
     return java.util.stream.Stream.concat(cold.stream(), warm.stream())
@@ -132,11 +162,12 @@ final class BenchmarkRunner {
       final CorpusEntry entry, final Path checkout, final GateJob job, final Path copy) {
     FileTrees.delete(copy);
     FileTrees.copy(checkout, copy);
-    runner.run(job.executable(binary), copy);
+    prepare(job, copy);
+    runner.run(vector(job, entry, copy), copy);
     final List<CommandResult> edits = new ArrayList<>();
     for (int edit = 1; edit <= EDIT_REPEATS; edit++) {
       SourceEdits.appendNewline(SourceEdits.target(copy, entry.language()));
-      edits.add(runner.run(job.executable(binary), copy));
+      edits.add(runner.run(vector(job, entry, copy), copy));
     }
     FileTrees.delete(copy);
     final boolean completed = edits.stream().allMatch(result -> !result.timedOut());

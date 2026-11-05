@@ -168,6 +168,10 @@ An optional `[checks.<name>.paths]` table controls how a check responds to an ed
 | `command` | Optional. The base command a narrowed check runs, with `args` appended, instead of the check's `command`. Use it when the full command ends with a target that would still be analyzed, such as `prettier --check .`. |
 | `separator` | Optional. Joins the rendered paths into one argument. |
 
+An analysis check (`uses = "ward"`) needs no `args`. When an edited path matches its `match` patterns, the
+check runs narrowed to that path: it reports the findings of the edited files and of the files that depend on
+them, and keeps its cache for the rest of the project. `full` still runs the whole check.
+
 ```toml
 [checks.checkstyle.paths]
 match = ["src/**/*.java"]
