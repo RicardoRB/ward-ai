@@ -47,7 +47,8 @@ public final class TypeSidecarRun implements AutoCloseable {
     final Set<RuleCapability> capabilities = EnumSet.noneOf(RuleCapability.class);
     capabilities.addAll(support.capabilities());
     capabilities.add(RuleCapability.TYPES);
-    return new FrontendSupport(support.language(), support.frontend(), capabilities);
+    return new FrontendSupport(
+        support.language(), support.frontend(), capabilities, support.lowering());
   }
 
   private static boolean needsTypes(
