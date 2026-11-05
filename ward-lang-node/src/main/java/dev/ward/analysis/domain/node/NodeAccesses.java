@@ -30,7 +30,7 @@ final class NodeAccesses implements VariableAccesses {
   private static final Set<String> NAMELESS = Set.of(PROPERTY_NAME, LABELLED, BREAK, CONTINUE);
 
   /** Nodes that bind a name of their own, so the body is walked for captures of outer names. */
-  private static final Set<String> CAPTURERS =
+  static final Set<String> CAPTURERS =
       Set.of(
           "functionDeclaration",
           "anonymousFunction",
@@ -63,6 +63,16 @@ final class NodeAccesses implements VariableAccesses {
    */
   void skip(final SyntaxNode node) {
     skipped.add(node);
+  }
+
+  /**
+   * Reports whether a node was excluded with {@link #skip(SyntaxNode)}.
+   *
+   * @param node the node to check
+   * @return true when the node was lowered separately
+   */
+  boolean isSkipped(final SyntaxNode node) {
+    return skipped.contains(node);
   }
 
   /**

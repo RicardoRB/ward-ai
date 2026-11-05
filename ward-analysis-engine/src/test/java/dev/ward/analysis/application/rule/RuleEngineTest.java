@@ -55,7 +55,8 @@ class RuleEngineTest {
                 UNIT_A,
                 AT_2_5.startLine(),
                 AT_2_5.startColumn(),
-                null));
+                null,
+                List.of()));
     assertThat(result.notRun()).isEmpty();
     assertThat(result.executionErrors()).isEmpty();
   }
@@ -183,7 +184,14 @@ class RuleEngineTest {
     assertThat(result.findings())
         .containsExactly(
             new AnalysisFinding(
-                JAVA_LENGTH, AnalysisSeverity.WARNING, "file-level", UNIT_A, null, null, null));
+                JAVA_LENGTH,
+                AnalysisSeverity.WARNING,
+                "file-level",
+                UNIT_A,
+                null,
+                null,
+                null,
+                List.of()));
   }
 
   private RuleEngine engine(final Map<String, MatchFunction> behaviors) {

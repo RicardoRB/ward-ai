@@ -10,19 +10,40 @@ import java.util.Objects;
  * @param nodes the statement and condition syntax nodes in evaluation order
  * @param successors the outgoing edges, in the order they were added
  * @param accesses the variable accesses of the nodes, in evaluation order
+ * @param sites the flow sites of the nodes, in evaluation order
  */
 public record BasicBlock(
-    int id, List<SyntaxNode> nodes, List<FlowEdge> successors, List<VariableAccess> accesses) {
+    int id,
+    List<SyntaxNode> nodes,
+    List<FlowEdge> successors,
+    List<VariableAccess> accesses,
+    List<FlowSite> sites) {
 
   /**
-   * Creates a block without variable accesses.
+   * Creates a block without flow sites.
+   *
+   * @param id the index of the block in its graph
+   * @param nodes the statement and condition syntax nodes in evaluation order
+   * @param successors the outgoing edges, in the order they were added
+   * @param accesses the variable accesses of the nodes, in evaluation order
+   */
+  public BasicBlock(
+      final int id,
+      final List<SyntaxNode> nodes,
+      final List<FlowEdge> successors,
+      final List<VariableAccess> accesses) {
+    this(id, nodes, successors, accesses, List.of());
+  }
+
+  /**
+   * Creates a block without variable accesses or flow sites.
    *
    * @param id the index of the block in its graph
    * @param nodes the statement and condition syntax nodes in evaluation order
    * @param successors the outgoing edges, in the order they were added
    */
   public BasicBlock(final int id, final List<SyntaxNode> nodes, final List<FlowEdge> successors) {
-    this(id, nodes, successors, List.of());
+    this(id, nodes, successors, List.of(), List.of());
   }
 
   /**
@@ -38,5 +59,6 @@ public record BasicBlock(
     nodes = List.copyOf(Objects.requireNonNull(nodes, "nodes"));
     successors = List.copyOf(Objects.requireNonNull(successors, "successors"));
     accesses = List.copyOf(Objects.requireNonNull(accesses, "accesses"));
+    sites = List.copyOf(Objects.requireNonNull(sites, "sites"));
   }
 }

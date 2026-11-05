@@ -9,11 +9,15 @@ import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
+import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.tomlj.Toml;
+import org.tomlj.TomlArray;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
 
@@ -31,6 +35,7 @@ final class DeclarativeChecks {
   private static final String MODIFIERS = "modifiers";
   private static final String REQUIRED = "required";
   private static final String EXCLUDED = "excluded";
+  private static final String SPECS = "specs";
 
   private DeclarativeChecks() {}
 
@@ -68,10 +73,35 @@ final class DeclarativeChecks {
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));
+      default -> dataFlowCheck(name, toml);
+    };
+  }
+
+  /** The checks that read data flow, and the remaining syntax checks. */
+  private static RuleCheck dataFlowCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
       case "unused-assignment" -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE));
+      case "taint" ->
+          new TaintCheck(TaintSpecFiles.load(specPaths(toml)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
       default -> throw new RuleConfigurationException("unknown check '" + name + "'");
     };
+  }
+
+  /** Returns the classpath paths of the specification files a taint rule names, in order. */
+  private static List<String> specPaths(final TomlParseResult toml) {
+    final TomlArray array = toml.getArray(SPECS);
+    if (array == null || array.isEmpty()) {
+      throw new IllegalArgumentException("specs must name at least one specification file");
+    }
+    final List<String> paths = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      if (!array.isString(index)) {
+        throw new IllegalArgumentException("specs must hold file names");
+      }
+      paths.add(array.getString(index));
+    }
+    return paths;
   }
 
   private static RuleCheck descendantCount(final TomlParseResult toml) {

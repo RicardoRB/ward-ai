@@ -1,0 +1,107 @@
+---
+title: Writing taint specs
+description: How a taint rule finds untrusted values that reach sensitive operations, and how to write its specification files.
+---
+
+A taint rule reports when a value from an untrusted **source** reaches a **sink** argument inside
+one function. Sources, sinks and sanitizers are written as data in TOML files, so a rule names the
+files it uses and the engine never needs code for each library.
+
+A rule body names its specification files and a message:
+
+```toml
+check = "taint"
+specs = ["taint/java/sql.toml"]
+message = "untrusted data from {source} reaches {sink}"
+```
+
+`specs` lists classpath paths. A file that is missing, is not TOML, or has a malformed entry is a
+configuration error that names the file and the entry, and the other rules still run. The rule runs
+on the data-flow graphs, so it needs the `DATAFLOW` capability.
+
+## The file
+
+A specification file has four tables. Each is an array of tables, and each entry describes one
+site:
+
+```toml
+[[sources]]
+kind = "call"
+name = "getParameter"
+receiver = "javax.servlet.http.HttpServletRequest"
+
+[[sinks]]
+kind = "call"
+name = "executeQuery"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "encodeForHTML"
+
+[[propagators]]
+kind = "call"
+name = "append"
+from = ["receiver", 0]
+```
+
+- `kind` is `call`, `member` or `parameter`. Sources take all three; sinks, sanitizers and
+  propagators take `call`.
+- `name` is the called name, the property name of a member read, or, for a parameter, the
+  annotation or decorator name.
+- `receiver` is a fully qualified type. It is matched against the receiver type that the file
+  resolves for the call.
+- `qualifier` is the receiver text as written, such as `req`.
+- `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
+  Other entries cannot name arguments.
+- `from` on a propagator lists its inputs, as argument positions or `"receiver"`. It is checked but
+  does not narrow the analysis yet.
+
+Unknown keys and unknown tables are errors, so a misspelt key cannot silently match nothing.
+
+## Matching
+
+- The `name` must be equal. A parameter entry matches an annotation of the same name.
+- When the entry has a `receiver` and the site has a receiver type, the two types must be equal.
+- A site with no resolved receiver type matches a `receiver` entry only when the entry also names a
+  `qualifier` and the qualifier text is equal. An unresolved receiver never matches by accident.
+- An entry with only a `qualifier` matches when the qualifier text is equal. An entry with neither
+  matches by name.
+
+Receiver types are resolved from declarations and imports in the file. In Java, a declared variable
+resolves through its declared type and the file's imports, and a plain type name such as `Runtime`
+resolves the same way. In TypeScript and JavaScript, a name resolves only when it is a named import
+(`import { Pool } from 'pg'` gives `pg.Pool`) or is declared with that import as its type or as the
+class of its `new` expression. Everything else has no receiver type.
+
+## What counts as a flow
+
+Taint follows the data-flow writes of each function, along normal, branch and exception edges:
+
+- A source call or member read taints the variable it is assigned to in the same statement.
+- A write whose statement reads a tainted variable is tainted too, unless the read sits inside the
+  argument of a sanitizer call.
+- A sanitizer's result is clean.
+- A later write that replaces the variable before the sink makes the earlier value unreachable, so
+  it does not report.
+- A sink argument that reads a tainted variable, or that contains a source call directly, is a
+  finding.
+
+Taint does not cross function calls. Each statement is one unit, so a statement that reads a tainted
+value and also an unrelated value taints what it writes. This favours reporting over missing a
+flow.
+
+## Paths
+
+Each finding carries its path: the source, each write that carried the value on, and the sink, in
+that order. The path is deterministic for the same source and specifications. It appears as the
+`path` field in [JSON output](/reference/json-output/) and as `codeFlows` in SARIF output.
+
+## Limits
+
+- A taint rule works within one function. Values passed to another function, or read from a field
+  or property of an object, are not followed.
+- Implicit flows through control conditions are not reported.
+- A variable's receiver type comes from the last declaration of its name in the function, which can
+  differ from the declaration in scope when block-scoped names are reused.

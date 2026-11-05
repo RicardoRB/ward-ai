@@ -36,7 +36,16 @@ class LearningPolicyTestSupport {
 
   Finding finding(final String tool, final String rule, final String message) {
     return new Finding(
-        tool, tool, rule, FindingSeverity.ERROR, message, "src/Main.java", 1, null, null);
+        tool,
+        tool,
+        rule,
+        FindingSeverity.ERROR,
+        message,
+        "src/Main.java",
+        1,
+        null,
+        null,
+        List.of());
   }
 
   GateResult failedResult(final String gate, final Finding... findings) {

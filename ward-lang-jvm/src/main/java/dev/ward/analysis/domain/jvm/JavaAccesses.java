@@ -50,6 +50,16 @@ final class JavaAccesses implements VariableAccesses {
   }
 
   /**
+   * Reports whether a node was excluded with {@link #skip(SyntaxNode)}.
+   *
+   * @param node the node to check
+   * @return true when the node was lowered separately
+   */
+  boolean isSkipped(final SyntaxNode node) {
+    return skipped.contains(node);
+  }
+
+  /**
    * Declares a catch parameter and returns its write: the exception is its initial value, so it is
    * a write at the declaration, as an initializer is.
    *

@@ -2,6 +2,7 @@ package dev.ward.infrastructure.cli.gate;
 
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.Finding;
+import dev.ward.domain.gate.FindingStep;
 import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
@@ -230,13 +231,28 @@ public class SarifReportRenderer {
    * @param level the SARIF level
    * @param message the result message
    * @param locations where it applies; empty for gate-level results
+   * @param codeFlows the path of the finding; empty when it has none
    */
   @JsonType
   public record ResultDto(
-      String ruleId, String level, MessageDto message, List<LocationDto> locations) {
-    /** Copies the locations. */
+      String ruleId,
+      String level,
+      MessageDto message,
+      List<LocationDto> locations,
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows) {
+    /** Copies the locations and code flows. */
     public ResultDto {
       locations = List.copyOf(locations);
+      codeFlows = List.copyOf(codeFlows);
+    }
+
+    /** Creates a result without a code flow. */
+    public ResultDto(
+        final String ruleId,
+        final String level,
+        final MessageDto message,
+        final List<LocationDto> locations) {
+      this(ruleId, level, message, locations, List.of());
     }
 
     static ResultDto from(final Finding finding, final String prefix) {
@@ -254,13 +270,67 @@ public class SarifReportRenderer {
           finding.ruleId(),
           finding.severity().label(),
           new MessageDto(finding.message()),
-          locations);
+          locations,
+          codeFlows(finding, prefix));
+    }
+
+    /** One code flow whose single thread lists the path steps in order. */
+    private static List<CodeFlowDto> codeFlows(final Finding finding, final String prefix) {
+      if (finding.path().isEmpty()) {
+        return List.of();
+      }
+      final List<FlowLocationDto> steps =
+          finding.path().stream().map(step -> flowLocation(step, prefix)).toList();
+      return List.of(new CodeFlowDto(List.of(new ThreadFlowDto(steps))));
+    }
+
+    private static FlowLocationDto flowLocation(final FindingStep step, final String prefix) {
+      return new FlowLocationDto(
+          new PhysicalLocationDto(
+              new ArtifactLocationDto(uri(step.file(), prefix)),
+              new RegionDto(step.line(), step.column())),
+          new MessageDto(step.message()));
     }
 
     private static String uri(final String file, final String prefix) {
       return file.startsWith("/") ? "file://" + file : prefix + file;
     }
   }
+
+  /**
+   * A SARIF code flow.
+   *
+   * @param threadFlows the threads of the flow
+   */
+  @JsonType
+  public record CodeFlowDto(List<ThreadFlowDto> threadFlows) {
+    /** Copies the thread flows. */
+    public CodeFlowDto {
+      threadFlows = List.copyOf(threadFlows);
+    }
+  }
+
+  /**
+   * A SARIF thread flow.
+   *
+   * @param locations the steps in order
+   */
+  @JsonType
+  public record ThreadFlowDto(List<FlowLocationDto> locations) {
+    /** Copies the locations. */
+    public ThreadFlowDto {
+      locations = List.copyOf(locations);
+    }
+  }
+
+  /**
+   * A SARIF thread-flow location: one step with its message.
+   *
+   * @param physicalLocation the file and region of the step
+   * @param message what happens at the step
+   */
+  @JsonType
+  public record FlowLocationDto(PhysicalLocationDto physicalLocation, MessageDto message) {}
 
   /**
    * A SARIF location.

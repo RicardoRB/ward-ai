@@ -22,6 +22,7 @@ final class RuleFindings {
         unit.path(),
         span == null ? null : span.startLine(),
         span == null ? null : span.startColumn(),
-        null);
+        null,
+        match.path());
   }
 }

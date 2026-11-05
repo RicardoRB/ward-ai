@@ -86,7 +86,8 @@ public final class BiomeCheckstyleFindings implements GateFindingSource {
             file,
             SafeXml.intAttribute(reader, "line"),
             SafeXml.intAttribute(reader, "column"),
-            null));
+            null,
+            List.of()));
   }
 
   private static Optional<FindingSeverity> severity(final String value) {

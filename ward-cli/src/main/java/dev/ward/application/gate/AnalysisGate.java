@@ -152,7 +152,8 @@ public final class AnalysisGate implements QualityGate {
         finding.file(),
         finding.line(),
         finding.column(),
-        finding.helpUri());
+        finding.helpUri(),
+        List.of());
   }
 
   /** Unanalyzed code is never a pass: errors, then rules that cannot run, then the findings. */

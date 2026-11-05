@@ -55,7 +55,14 @@ final class RuleEngineDiagnosticsTest {
 
   private static AnalysisFinding diagnostic() {
     return new AnalysisFinding(
-        "ward:python/syntax", AnalysisSeverity.ERROR, "syntax error", "broken.py", 1, 1, null);
+        "ward:python/syntax",
+        AnalysisSeverity.ERROR,
+        "syntax error",
+        "broken.py",
+        1,
+        1,
+        null,
+        List.of());
   }
 
   /** A rule that reports one match on every tree it sees. */

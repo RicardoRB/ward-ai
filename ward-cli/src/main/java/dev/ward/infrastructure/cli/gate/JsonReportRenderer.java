@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
+import org.apache.fory.json.annotation.JsonProperty;
 import org.apache.fory.json.annotation.JsonType;
 
 /** Renders a check report as the versioned JSON document {@code check --format json} prints. */
@@ -281,6 +282,9 @@ public class JsonReportRenderer {
     public Integer column;
     public String helpUri;
 
+    @JsonProperty(include = JsonProperty.Include.NON_EMPTY)
+    public List<PathStepDto> path;
+
     static FindingDto from(final Finding finding) {
       final FindingDto dto = new FindingDto();
       dto.tool = finding.tool();
@@ -291,6 +295,7 @@ public class JsonReportRenderer {
       dto.line = finding.line();
       dto.column = finding.column();
       dto.helpUri = finding.helpUri();
+      dto.path = PathStepDto.allOf(finding.path());
       return dto;
     }
   }

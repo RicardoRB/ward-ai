@@ -87,7 +87,8 @@ class DependencyAnalysisTest {
                         null,
                         null,
                         null,
-                        null)));
+                        null,
+                        List.of())));
     final DependencySnapshot snapshot =
         new DependencyAnalysis(
                 List.of(

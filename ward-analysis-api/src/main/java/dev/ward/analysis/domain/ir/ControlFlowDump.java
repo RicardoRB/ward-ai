@@ -20,6 +20,12 @@ public final class ControlFlowDump {
           AccessKind.READ, "r",
           AccessKind.CAPTURE, "c");
 
+  private static final Map<FlowSiteKind, String> SITE_CODES =
+      Map.of(
+          FlowSiteKind.CALL, "call",
+          FlowSiteKind.MEMBER_READ, "member",
+          FlowSiteKind.PARAMETER, "param");
+
   private ControlFlowDump() {}
 
   /**
@@ -38,8 +44,23 @@ public final class ControlFlowDump {
       }
       out.append('\n');
       appendAccesses(out, block);
+      appendSites(out, block);
     }
     return out.toString();
+  }
+
+  private static void appendSites(final StringBuilder out, final BasicBlock block) {
+    for (final FlowSite site : block.sites()) {
+      out.append("  s:").append(SITE_CODES.get(site.kind())).append(' ').append(site.name());
+      if (!site.qualifier().isEmpty()) {
+        out.append('@').append(site.qualifier());
+      }
+      site.receiverType().ifPresent(type -> out.append(':').append(type));
+      if (!site.annotations().isEmpty()) {
+        out.append(" @").append(String.join(" @", site.annotations()));
+      }
+      out.append('(').append(site.arguments().size()).append(")\n");
+    }
   }
 
   /** Adds one indented line per block that has variable accesses: {@code r:x w:x c:x d:x}. */

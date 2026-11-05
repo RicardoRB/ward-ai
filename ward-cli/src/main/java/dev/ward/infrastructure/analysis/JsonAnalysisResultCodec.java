@@ -4,6 +4,8 @@ import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.FileSummary;
+import dev.ward.analysis.domain.ir.FlowStep;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
@@ -18,7 +20,7 @@ import org.apache.fory.json.annotation.JsonType;
  * miss.
  */
 public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
-  static final int FORMAT_VERSION = 1;
+  static final int FORMAT_VERSION = 2;
   private final JsonCodec codec;
   private final JsonDependencyCodec dependencies;
 
@@ -101,6 +103,7 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
     public Integer line;
     public Integer column;
     public String helpUri;
+    public List<StepDto> path;
 
     static FindingDto from(final AnalysisFinding finding) {
       final FindingDto dto = new FindingDto();
@@ -111,6 +114,7 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
       dto.line = finding.line();
       dto.column = finding.column();
       dto.helpUri = finding.helpUri();
+      dto.path = finding.path().stream().map(StepDto::from).toList();
       return dto;
     }
 
@@ -119,7 +123,47 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
         throw new IllegalArgumentException("Cached finding is incomplete");
       }
       return new AnalysisFinding(
-          ruleId, AnalysisSeverity.valueOf(severity), message, file, line, column, helpUri);
+          ruleId,
+          AnalysisSeverity.valueOf(severity),
+          message,
+          file,
+          line,
+          column,
+          helpUri,
+          path == null ? List.of() : path.stream().map(StepDto::toStep).toList());
+    }
+  }
+
+  /** One step of a cached path, with its full span so that it restores exactly. */
+  @JsonType
+  public static final class StepDto {
+    public int startLine;
+    public int startColumn;
+    public int endLine;
+    public int endColumn;
+    public int startOffset;
+    public int endOffset;
+    public String message;
+
+    static StepDto from(final FlowStep step) {
+      final StepDto dto = new StepDto();
+      final Span span = step.span();
+      dto.startLine = span.startLine();
+      dto.startColumn = span.startColumn();
+      dto.endLine = span.endLine();
+      dto.endColumn = span.endColumn();
+      dto.startOffset = span.startOffset();
+      dto.endOffset = span.endOffset();
+      dto.message = step.message();
+      return dto;
+    }
+
+    FlowStep toStep() {
+      if (message == null) {
+        throw new IllegalArgumentException("Cached path step is incomplete");
+      }
+      return new FlowStep(
+          new Span(startLine, startColumn, endLine, endColumn, startOffset, endOffset), message);
     }
   }
 }

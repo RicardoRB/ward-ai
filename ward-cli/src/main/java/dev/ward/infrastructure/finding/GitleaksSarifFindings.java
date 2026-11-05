@@ -73,7 +73,8 @@ public final class GitleaksSarifFindings implements GateFindingSource {
         ReportFiles.relativize(project, location.uri()),
         location.line(),
         location.column(),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final Integer value) {

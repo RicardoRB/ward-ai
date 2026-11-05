@@ -52,7 +52,8 @@ class SarifReportRendererTest {
         "src/main/java/Foo.java",
         line,
         null,
-        "https://docs.pmd-code.org/" + rule);
+        "https://docs.pmd-code.org/" + rule,
+        List.of());
   }
 
   private JsonTree render(final GateResult... results) {
@@ -147,7 +148,16 @@ class SarifReportRendererTest {
   void fileLevelAndOutsideFindingsAndToolNames() {
     final Finding format =
         new Finding(
-            "format", "spotless", "format", FindingSeverity.ERROR, "m", "A.java", null, null, null);
+            "format",
+            "spotless",
+            "format",
+            FindingSeverity.ERROR,
+            "m",
+            "A.java",
+            null,
+            null,
+            null,
+            List.of());
     final Finding outside =
         new Finding(
             "compile",
@@ -158,7 +168,8 @@ class SarifReportRendererTest {
             "/x/B.java",
             OUTSIDE_LINE,
             OUTSIDE_COLUMN,
-            null);
+            null,
+            List.of());
 
     final JsonTree log =
         render(

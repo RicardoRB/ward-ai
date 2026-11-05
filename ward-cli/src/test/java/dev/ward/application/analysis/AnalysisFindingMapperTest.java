@@ -31,7 +31,14 @@ class AnalysisFindingMapperTest {
   void carriesGateToolAndLocation() {
     final AnalysisFinding source =
         new AnalysisFinding(
-            "rule.one", AnalysisSeverity.WARNING, "msg", "a/B.java", 4, 2, "https://help");
+            "rule.one",
+            AnalysisSeverity.WARNING,
+            "msg",
+            "a/B.java",
+            4,
+            2,
+            "https://help",
+            List.of());
 
     final Finding mapped = mapper.map("gate-x", "engine", List.of(source)).getFirst();
 
@@ -49,7 +56,10 @@ class AnalysisFindingMapperTest {
   void mapsEverySeverityConstant() {
     final List<AnalysisFinding> sources =
         Arrays.stream(AnalysisSeverity.values())
-            .map(severity -> new AnalysisFinding("r", severity, "m", "a.java", LINE, COLUMN, null))
+            .map(
+                severity ->
+                    new AnalysisFinding(
+                        "r", severity, "m", "a.java", LINE, COLUMN, null, List.of()))
             .toList();
 
     assertThat(mapper.map("g", "t", sources))
@@ -105,6 +115,7 @@ class AnalysisFindingMapperTest {
       final Integer column,
       final String rule,
       final String message) {
-    return new AnalysisFinding(rule, AnalysisSeverity.ERROR, message, file, line, column, null);
+    return new AnalysisFinding(
+        rule, AnalysisSeverity.ERROR, message, file, line, column, null, List.of());
   }
 }

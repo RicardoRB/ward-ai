@@ -60,7 +60,8 @@ final class SwiftCompilerOutputFindings implements GateFindingSource {
         ReportFiles.relativize(project, error.group("file")),
         positive(error.group("line")),
         positive(error.group("column")),
-        null);
+        null,
+        List.of());
   }
 
   static Integer positive(final String value) {

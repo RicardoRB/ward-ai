@@ -83,7 +83,8 @@ public final class EslintJsonFindings implements GateFindingSource {
         ReportFiles.relativize(project, file.filePath),
         positive(message.line),
         positive(message.column),
-        null);
+        null,
+        List.of());
   }
 
   private static Integer positive(final Integer value) {

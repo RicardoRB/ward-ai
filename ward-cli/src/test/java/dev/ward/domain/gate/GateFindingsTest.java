@@ -23,7 +23,8 @@ class GateFindingsTest {
         "src/main/java/Foo.java",
         line,
         null,
-        null);
+        null,
+        List.of());
   }
 
   @Test
@@ -95,7 +96,8 @@ class GateFindingsTest {
         "Foo.java",
         line,
         null,
-        null);
+        null,
+        List.of());
   }
 
   @Test
@@ -110,7 +112,8 @@ class GateFindingsTest {
             "src/main/java/Foo.java",
             null,
             null,
-            null);
+            null,
+            List.of());
 
     assertThat(finding.located()).isTrue();
     assertThat(finding.line()).isNull();
@@ -123,14 +126,43 @@ class GateFindingsTest {
     assertThatThrownBy(
             () ->
                 new Finding(
-                    "pmd", "pmd", "X", FindingSeverity.NOTE, "m", "Foo.java", 0, null, null))
+                    "pmd",
+                    "pmd",
+                    "X",
+                    FindingSeverity.NOTE,
+                    "m",
+                    "Foo.java",
+                    0,
+                    null,
+                    null,
+                    List.of()))
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () -> new Finding("pmd", "pmd", "X", FindingSeverity.NOTE, "m", "Foo.java", 1, 0, null))
+            () ->
+                new Finding(
+                    "pmd",
+                    "pmd",
+                    "X",
+                    FindingSeverity.NOTE,
+                    "m",
+                    "Foo.java",
+                    1,
+                    0,
+                    null,
+                    List.of()))
         .isInstanceOf(IllegalArgumentException.class);
     assertThat(
             new Finding(
-                    "tests", "tests", "tests", FindingSeverity.WARNING, "m", null, null, null, null)
+                    "tests",
+                    "tests",
+                    "tests",
+                    FindingSeverity.WARNING,
+                    "m",
+                    null,
+                    null,
+                    null,
+                    null,
+                    List.of())
                 .located())
         .isFalse();
   }

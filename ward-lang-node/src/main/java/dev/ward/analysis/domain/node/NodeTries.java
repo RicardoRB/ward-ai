@@ -31,7 +31,7 @@ final class NodeTries {
     if (catchClause != null) {
       flow.tries().beginCatch();
       accesses.enterScope();
-      flow.record(accesses.catchParameter(catchParameter(catchClause)));
+      flow.record(accesses.catchParameter(catchParameter(catchClause)), List.of());
       statements.blockStatements(NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(catchClause), BLOCK));
       accesses.exitScope();
       flow.tries().endCatch();

@@ -21,22 +21,35 @@ public final class ControlFlowBuilder {
   private final List<List<SyntaxNode>> nodes = new ArrayList<>();
   private final List<List<FlowEdge>> edges = new ArrayList<>();
   private final List<List<VariableAccess>> accesses = new ArrayList<>();
+  private final List<List<FlowSite>> sites = new ArrayList<>();
   private final VariableAccesses finder;
+  private final FlowSites recorder;
   private final ControlFlowFrames frames = new ControlFlowFrames(this);
   private int current;
 
-  /** Starts a body that records no variable accesses. */
+  /** Starts a body that records no variable accesses or flow sites. */
   public ControlFlowBuilder() {
-    this(VariableAccesses.NONE);
+    this(VariableAccesses.NONE, FlowSites.NONE);
+  }
+
+  /**
+   * Starts a body that records no flow sites.
+   *
+   * @param finder finds the variable accesses of each node added
+   */
+  public ControlFlowBuilder(final VariableAccesses finder) {
+    this(finder, FlowSites.NONE);
   }
 
   /**
    * Starts a body with its entry and exit blocks; the entry is the current block.
    *
    * @param finder finds the variable accesses of each node added
+   * @param recorder finds the flow sites of each node added
    */
-  public ControlFlowBuilder(final VariableAccesses finder) {
+  public ControlFlowBuilder(final VariableAccesses finder, final FlowSites recorder) {
     this.finder = Objects.requireNonNull(finder, "finder");
+    this.recorder = Objects.requireNonNull(recorder, "recorder");
     newBlock();
     newBlock();
     current = ENTRY;
@@ -51,6 +64,7 @@ public final class ControlFlowBuilder {
     nodes.add(new ArrayList<>());
     edges.add(new ArrayList<>());
     accesses.add(new ArrayList<>());
+    sites.add(new ArrayList<>());
     return nodes.size() - 1;
   }
 
@@ -82,19 +96,23 @@ public final class ControlFlowBuilder {
   public void add(final SyntaxNode node, final boolean mayThrow) {
     nodes.get(current).add(node);
     accesses.get(current).addAll(finder.of(node));
+    sites.get(current).addAll(recorder.of(node));
     if (mayThrow && frames.catchesRaise()) {
       frames.propagate(current, FlowEdgeKind.EXCEPTION);
     }
   }
 
   /**
-   * Appends variable accesses to the current block, after the nodes already added. A lowering uses
-   * this for accesses that no node carries, such as the parameters at the entry of a body.
+   * Appends variable accesses and flow sites to the current block, after the nodes already added. A
+   * lowering uses this for accesses and sites that no node carries, such as the parameters at the
+   * entry of a body.
    *
    * @param found the accesses, in evaluation order
+   * @param recorded the flow sites, in evaluation order
    */
-  public void record(final List<VariableAccess> found) {
+  public void record(final List<VariableAccess> found, final List<FlowSite> recorded) {
     accesses.get(current).addAll(found);
+    sites.get(current).addAll(recorded);
   }
 
   /**
@@ -135,7 +153,7 @@ public final class ControlFlowBuilder {
   public ControlFlowGraph build(final String body, final Span span) {
     edge(current, EXIT, FlowEdgeKind.NORMAL);
     return new ControlFlowGraph(
-        body, span, ControlFlowCompaction.compact(nodes, edges, accesses), ENTRY, EXIT);
+        body, span, ControlFlowCompaction.compact(nodes, edges, accesses, sites), ENTRY, EXIT);
   }
 
   /**

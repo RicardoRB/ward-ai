@@ -64,7 +64,8 @@ final class JavaTries {
   /** Lowers a catch clause: its parameter is written on entry, and it is scoped to the clause. */
   private void catchClause(final SyntaxNode catchClause) {
     accesses.enterScope();
-    flow.record(accesses.catchParameter(JavaFlowSyntax.firstOf(parts(catchClause), IDENTIFIER)));
+    flow.record(
+        accesses.catchParameter(JavaFlowSyntax.firstOf(parts(catchClause), IDENTIFIER)), List.of());
     statements.blockStatements(requireBlock(JavaFlowSyntax.firstOf(parts(catchClause), BLOCK)));
     accesses.exitScope();
   }

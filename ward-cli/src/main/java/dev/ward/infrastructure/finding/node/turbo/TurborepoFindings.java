@@ -98,7 +98,8 @@ public final class TurborepoFindings implements GateFindingSource {
         prefix + "/" + file,
         finding.line(),
         finding.column(),
-        finding.helpUri());
+        finding.helpUri(),
+        List.of());
   }
 
   private static String output(final GateResult result) {

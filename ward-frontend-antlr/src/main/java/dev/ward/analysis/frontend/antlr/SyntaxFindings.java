@@ -40,7 +40,8 @@ public final class SyntaxFindings {
             path,
             Math.max(1, line),
             Math.max(1, column),
-            null));
+            null,
+            List.of()));
   }
 
   /**
