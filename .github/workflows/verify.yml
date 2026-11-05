@@ -576,12 +576,12 @@ jobs:
       - name: Build native executable
         run: ./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile
 
-      - name: Drive init through a pseudo-terminal
+      - name: Drive init through a pseudo-terminal and run the ward gate
         if: runner.os != 'Windows'
         run: >-
           ./mvnw -B
           -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=NativeInitTerminalSmokeTest
+          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest
           -Dward.native.binary=target/ward
           test
 
