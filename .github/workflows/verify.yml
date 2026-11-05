@@ -17,6 +17,10 @@ on:
         description: Also run the deterministic agent-harness suites against the native executable.
         type: boolean
         default: false
+      compatibility-matrices:
+        description: Run the Node, Python, Swift and Java compatibility matrices. Pull requests into main run them; other pull requests skip them.
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -248,7 +252,7 @@ jobs:
   node-matrix-versions:
     name: Node matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -268,6 +272,7 @@ jobs:
   node-matrix:
     name: Node ${{ matrix.cell.node }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: node-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -322,7 +327,7 @@ jobs:
   python-matrix-versions:
     name: Python matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -342,6 +347,7 @@ jobs:
   python-matrix:
     name: Python ${{ matrix.cell.python }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: python-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -391,7 +397,7 @@ jobs:
   swift-matrix-versions:
     name: Swift matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -413,6 +419,7 @@ jobs:
   swift-matrix:
     name: Xcode ${{ matrix.cell.xcode }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: swift-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ${{ matrix.cell.runner }}
     strategy:
       fail-fast: false
@@ -456,7 +463,7 @@ jobs:
   java-matrix-versions:
     name: Java matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -476,6 +483,7 @@ jobs:
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
     needs: java-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false

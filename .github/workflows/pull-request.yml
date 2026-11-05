@@ -23,6 +23,8 @@ jobs:
       # macos-15-intel is the slowest native runner and gates the PR; release still runs it.
       native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
       harness-compatibility: true
+      # Matrices run only for pull requests into main; release-branch pull requests skip them.
+      compatibility-matrices: ${{ github.base_ref == 'main' }}
 
   changelog:
     runs-on: ubuntu-24.04
