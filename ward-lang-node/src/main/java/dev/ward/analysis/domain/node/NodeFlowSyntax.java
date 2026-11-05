@@ -76,6 +76,27 @@ final class NodeFlowSyntax {
     return out.toString();
   }
 
+  /** Returns the tokens of a node joined by single spaces, so that the words of it stay apart. */
+  static String spaced(final SyntaxNode node) {
+    final List<String> tokens = new ArrayList<>();
+    collectTokens(node, tokens);
+    return String.join(" ", tokens);
+  }
+
+  private static void collectTokens(final SyntaxNode node, final List<String> tokens) {
+    if (COMMENT.equals(node.kind())) {
+      return;
+    }
+    if (node.children().isEmpty()) {
+      final String token = node.fields().getOrDefault(TEXT, "");
+      if (!token.isEmpty()) {
+        tokens.add(token);
+      }
+    } else {
+      node.children().forEach(child -> collectTokens(child, tokens));
+    }
+  }
+
   /** Returns the first identifier token under a node, or null. */
   static SyntaxNode firstIdentifier(final SyntaxNode node) {
     if (IDENTIFIER_TOKEN.equals(node.kind())) {

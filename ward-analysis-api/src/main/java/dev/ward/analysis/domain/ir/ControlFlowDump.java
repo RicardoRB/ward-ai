@@ -24,6 +24,7 @@ public final class ControlFlowDump {
       Map.of(
           FlowSiteKind.CALL, "call",
           FlowSiteKind.MEMBER_READ, "member",
+          FlowSiteKind.MEMBER_WRITE, "write",
           FlowSiteKind.PARAMETER, "param");
 
   private ControlFlowDump() {}

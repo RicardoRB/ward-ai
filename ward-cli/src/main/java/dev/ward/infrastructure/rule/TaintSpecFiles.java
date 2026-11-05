@@ -21,7 +21,8 @@ import org.tomlj.TomlTable;
 /**
  * Loads taint specification files from the classpath and validates each entry. A file is TOML with
  * the tables {@code sources}, {@code sinks}, {@code sanitizers} and {@code propagators}; each entry
- * has a {@code kind} (call, member or parameter), a {@code name}, and optionally a {@code receiver}
+ * has a {@code kind} (call, member, member-write for sinks, or parameter), a {@code name}, and
+ * optionally a {@code receiver}
  * type and a {@code qualifier}. A sink entry also names its {@code arguments}, and a propagator may
  * name its {@code from} inputs.
  */
@@ -44,8 +45,10 @@ final class TaintSpecFiles {
       Map.of(
           "call", FlowSiteKind.CALL,
           "member", FlowSiteKind.MEMBER_READ,
+          "member-write", FlowSiteKind.MEMBER_WRITE,
           "parameter", FlowSiteKind.PARAMETER);
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter");
+  private static final Set<String> SINK_KINDS = Set.of("call", "member-write");
   private static final Set<String> CALL_KIND = Set.of("call");
 
   private TaintSpecFiles() {}
@@ -92,7 +95,7 @@ final class TaintSpecFiles {
     }
     return new TaintSpec(
         entries(file, toml, SOURCES, SOURCE_KINDS),
-        entries(file, toml, SINKS, CALL_KIND),
+        entries(file, toml, SINKS, SINK_KINDS),
         entries(file, toml, SANITIZERS, CALL_KIND),
         entries(file, toml, PROPAGATORS, CALL_KIND));
   }

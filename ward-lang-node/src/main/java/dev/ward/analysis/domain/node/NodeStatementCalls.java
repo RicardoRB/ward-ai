@@ -4,6 +4,8 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Recognises a call statement that the TypeScript grammar parses as a variable statement. For
@@ -20,9 +22,16 @@ final class NodeStatementCalls {
   private static final String CLOSE = ")";
   private static final int DECLARATION_PARTS = 2;
   private static final int SINGLE_DECLARATION = 1;
+  private static final int ASSIGNMENT_PARTS = 3;
+  private static final Pattern BRACKET_KEY = Pattern.compile("\\[(['\"])([\\w$]+)\\1]");
 
   /** A call read from a statement: its callee and its argument nodes, in order. */
   record Call(SyntaxNode callee, List<SyntaxNode> arguments) {}
+
+  /**
+   * A bracket write read from a statement: the qualifier as written, the string key and the value.
+   */
+  record BracketWrite(String qualifier, String key, SyntaxNode value) {}
 
   private NodeStatementCalls() {}
 
@@ -47,6 +56,40 @@ final class NodeStatementCalls {
       return Optional.empty();
     }
     return Optional.of(new Call(parts.get(0), sequenceValues(parts.get(1))));
+  }
+
+  /**
+   * Recognises {@code a['b'] = v;} at the start of a statement. The grammar parses it as a
+   * declaration of {@code a} whose initializer is {@code ['b'] = v}.
+   *
+   * @param statement a variable statement node
+   * @return the write, or empty when the statement is not a bracket write
+   */
+  static Optional<BracketWrite> bracketWriteOf(final SyntaxNode statement) {
+    if (!isExpressionStatement(statement)) {
+      return Optional.empty();
+    }
+    final SyntaxNode list = NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(statement), VARIABLE_LIST);
+    final List<SyntaxNode> declarations =
+        NodeFlowSyntax.allOf(NodeFlowSyntax.parts(list), VARIABLE_DECLARATION);
+    if (declarations.size() != SINGLE_DECLARATION) {
+      return Optional.empty();
+    }
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(declarations.get(0));
+    if (parts.size() != DECLARATION_PARTS) {
+      return Optional.empty();
+    }
+    final List<SyntaxNode> assignment = NodeFlowSyntax.parts(parts.get(1));
+    if (assignment.size() != ASSIGNMENT_PARTS
+        || !"=".equals(NodeFlowSyntax.text(assignment.get(1)))) {
+      return Optional.empty();
+    }
+    final Matcher key = BRACKET_KEY.matcher(NodeFlowSyntax.text(assignment.get(0)));
+    if (!key.matches()) {
+      return Optional.empty();
+    }
+    return Optional.of(
+        new BracketWrite(NodeFlowSyntax.text(parts.get(0)), key.group(2), assignment.get(2)));
   }
 
   /** Reports whether a variable statement has no declaring modifier, so it is an expression. */
