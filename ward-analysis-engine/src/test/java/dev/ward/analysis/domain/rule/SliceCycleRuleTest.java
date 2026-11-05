@@ -1,8 +1,8 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
-import static dev.ward.analysis.domain.rule.graph.GraphRuleFixtures.definition;
-import static dev.ward.analysis.domain.rule.graph.GraphRuleFixtures.edge;
-import static dev.ward.analysis.domain.rule.graph.GraphRuleFixtures.graph;
+import static dev.ward.analysis.domain.rule.GraphRuleFixtures.definition;
+import static dev.ward.analysis.domain.rule.GraphRuleFixtures.edge;
+import static dev.ward.analysis.domain.rule.GraphRuleFixtures.graph;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;

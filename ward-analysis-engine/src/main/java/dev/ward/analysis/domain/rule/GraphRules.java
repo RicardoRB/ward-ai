@@ -1,6 +1,5 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
-import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
 
 /** Builds the graph rule that a definition names, for the rule ids the graph rules own. */

@@ -1,6 +1,5 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
-import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.Objects;
 
 /**

@@ -1,4 +1,4 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
 import java.util.Comparator;
 import java.util.List;

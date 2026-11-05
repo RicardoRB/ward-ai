@@ -1,9 +1,7 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.DependencyEdge;
-import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

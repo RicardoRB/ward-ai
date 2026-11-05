@@ -1,4 +1,4 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -6,8 +6,6 @@ import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.rule.RuleCapability;
-import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
 import java.util.Set;
 

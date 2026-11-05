@@ -1,7 +1,6 @@
-package dev.ward.analysis.domain.rule.graph;
+package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
-import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
 
 /**

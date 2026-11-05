@@ -4,13 +4,13 @@ import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.rule.GraphMatch;
+import dev.ward.analysis.domain.rule.GraphRuleBody;
+import dev.ward.analysis.domain.rule.GraphRules;
+import dev.ward.analysis.domain.rule.IndependenceRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.graph.GraphMatch;
-import dev.ward.analysis.domain.rule.graph.GraphRuleBody;
-import dev.ward.analysis.domain.rule.graph.GraphRules;
-import dev.ward.analysis.domain.rule.graph.IndependenceRule;
-import dev.ward.analysis.domain.rule.graph.SliceCycleRule;
+import dev.ward.analysis.domain.rule.SliceCycleRule;
 import dev.ward.domain.init.ArchitectureLayers;
 import java.util.List;
 

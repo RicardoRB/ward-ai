@@ -2,7 +2,9 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.rule.LayerBoundary;
+import dev.ward.analysis.domain.rule.LayerDependencyRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
+import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.init.ArchitectureLayers;
@@ -26,6 +28,22 @@ public final class LayerPorts {
       final Project project,
       final LayerBoundary boundary,
       final ProjectDependencyAdapters dependencies) {
+    return ruleFindings(
+        project,
+        List.of(LayerRules.definition(List.of(boundary))),
+        dependencies,
+        LayerDependencyRule.ID);
+  }
+
+  /**
+   * Returns the findings of rule {@code ruleId} when the gate runs {@code rules} over {@code
+   * project}.
+   */
+  public static List<Finding> ruleFindings(
+      final Project project,
+      final List<RuleDefinition> rules,
+      final ProjectDependencyAdapters dependencies,
+      final String ruleId) {
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
@@ -37,9 +55,9 @@ public final class LayerPorts {
             "test",
             dependencies,
             unused -> Map.of());
-    return new AnalysisGate("ward", List.of(LayerRules.definition(List.of(boundary))), ports, null)
+    return new AnalysisGate("ward", rules, ports, null)
         .execute(project).findings().items().stream()
-            .filter(finding -> "ward:architecture/layers".equals(finding.ruleId()))
+            .filter(finding -> ruleId.equals(finding.ruleId()))
             .toList();
   }
 

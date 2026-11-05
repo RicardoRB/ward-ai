@@ -8,9 +8,9 @@ import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.rule.IndependenceRule;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.graph.IndependenceRule;
-import dev.ward.analysis.domain.rule.graph.SliceCycleRule;
+import dev.ward.analysis.domain.rule.SliceCycleRule;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
