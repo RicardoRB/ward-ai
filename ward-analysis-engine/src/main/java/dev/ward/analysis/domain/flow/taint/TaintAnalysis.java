@@ -56,7 +56,7 @@ public final class TaintAnalysis {
       final Map<AccessSite, Taint> origins) {
     final List<TaintFinding> found = new ArrayList<>();
     final Optional<TaintEntry> sink =
-        site.kind() == FlowSiteKind.CALL ? TaintSpans.sinkOf(site, spec) : Optional.empty();
+        isSinkKind(site.kind()) ? TaintSpans.sinkOf(site, spec) : Optional.empty();
     if (sink.isEmpty()) {
       return found;
     }
@@ -80,6 +80,11 @@ public final class TaintAnalysis {
       final TaintSpec spec) {
     return directSource(block, argument, spec)
         .or(() -> fromReads(block, argument, reaching, origins, spec));
+  }
+
+  /** A call, or a property write whose argument 0 is the assigned value, can be a sink. */
+  private static boolean isSinkKind(final FlowSiteKind kind) {
+    return kind == FlowSiteKind.CALL || kind == FlowSiteKind.MEMBER_WRITE;
   }
 
   private static TaintFinding finding(final FlowSite site, final int index, final Taint taint) {

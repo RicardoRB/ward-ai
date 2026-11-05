@@ -61,8 +61,8 @@ final class NodeTypes {
   }
 
   /**
-   * Returns the receiver type of a qualifier: the import its declared type names, or the import the
-   * name itself names.
+   * Returns the receiver type of a qualifier: the import its declared type names, or the module the
+   * name, or the first segment of a dotted name, is bound to.
    *
    * @param qualifier the qualifier text as written
    * @return the module type, or empty when the qualifier is unknown
@@ -72,7 +72,23 @@ final class NodeTypes {
       return Optional.empty();
     }
     final String written = declared.getOrDefault(qualifier, qualifier);
-    return Optional.ofNullable(imports.typeOf(written));
+    return Optional.ofNullable(imports.typeOf(written)).or(() -> imports.moduleOf(root(written)));
+  }
+
+  /** The module of an unqualified callee that an import or {@code require()} binds, if any. */
+  Optional<String> calleeReceiver(final String name) {
+    return imports.moduleOf(name);
+  }
+
+  /** The name that a call through a local name calls: the imported name, or the name itself. */
+  String calleeName(final String name) {
+    return imports.calledName(name);
+  }
+
+  /** The first segment of a dotted qualifier, so {@code fs.promises} is the module {@code fs}. */
+  private static String root(final String dotted) {
+    final int dot = dotted.indexOf('.');
+    return dot < 0 ? dotted : dotted.substring(0, dot);
   }
 
   /** The class of a {@code new X(...)} initializer, when the declaration has one. */

@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.node;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowSites;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +19,12 @@ final class NodeFlowSites implements FlowSites {
 
   private static final String SINGLE = "singleExpression";
   private static final String ARGUMENTS = "arguments";
-  private static final String ARGUMENT = "argument";
-  private static final String ARGUMENT_LIST = "argumentList";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
+  private static final String CONSTRUCTOR = "<init>";
   private static final Set<String> MEMBER_TOKENS = Set.of(".", "?.");
+  private static final Set<String> ASSIGNMENTS = Set.of("=", "+=");
   private static final int MEMBER_PARTS = 3;
+  private static final int ASSIGNMENT_PARTS = 3;
 
   private final NodeTypes types;
   private final Predicate<SyntaxNode> skipped;
@@ -56,15 +56,40 @@ final class NodeFlowSites implements FlowSites {
     if (SINGLE.equals(node.kind())) {
       expression(node, found);
     } else if (NodeStatementCalls.isExpressionStatement(node)) {
-      NodeStatementCalls.callOf(node)
-          .ifPresentOrElse(
-              call -> call(call.callee(), call.arguments(), found), () -> children(node, found));
+      statement(node, found);
     } else {
       children(node, found);
       if (VARIABLE_DECLARATION.equals(node.kind())) {
         types.declareVariable(node);
       }
     }
+  }
+
+  /**
+   * A statement the grammar parses as a declaration may be a call, or a bracket write such as
+   * {@code a['b'] = v}, which is recorded as a member write after the sites in its value.
+   */
+  private void statement(final SyntaxNode node, final List<FlowSite> found) {
+    final Optional<NodeStatementCalls.Call> call = NodeStatementCalls.callOf(node);
+    if (call.isPresent()) {
+      call(call.get().callee(), call.get().arguments(), found);
+      return;
+    }
+    children(node, found);
+    NodeStatementCalls.bracketWriteOf(node)
+        .ifPresent(
+            write -> {
+              final String qualifier = write.qualifier();
+              found.add(
+                  new FlowSite(
+                      FlowSiteKind.MEMBER_WRITE,
+                      write.key(),
+                      qualifier,
+                      types.receiverType(qualifier),
+                      List.of(),
+                      NodeCallShapes.spans(List.of(write.value())),
+                      node.span()));
+            });
   }
 
   private void children(final SyntaxNode node, final List<FlowSite> found) {
@@ -77,13 +102,57 @@ final class NodeFlowSites implements FlowSites {
   private void expression(final SyntaxNode node, final List<FlowSite> found) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
     if (parts.size() == 2 && ARGUMENTS.equals(parts.get(1).kind())) {
-      call(parts.get(0), argumentValues(parts.get(1)), found);
+      call(parts.get(0), NodeCallShapes.argumentValues(parts.get(1)), found);
+    } else if (parts.size() == 2 && NodeCallShapes.isParenthesized(parts.get(1))) {
+      call(parts.get(0), NodeCallShapes.parenthesizedValues(parts.get(1)), found);
     } else if (isMember(parts)) {
       walk(parts.get(0), found);
       found.add(siteOf(FlowSiteKind.MEMBER_READ, node, parts, List.of()));
+    } else if (NodeCallShapes.isNew(parts)) {
+      children(node, found);
+      found.add(constructor(node, parts));
     } else {
       children(node, found);
+      writeOf(node, parts).ifPresent(found::add);
     }
+  }
+
+  /** A {@code new X(args)} expression is a call named {@code <init>} on {@code X}. */
+  private FlowSite constructor(final SyntaxNode node, final List<SyntaxNode> parts) {
+    final String qualifier = NodeFlowSyntax.text(parts.get(1));
+    return new FlowSite(
+        FlowSiteKind.CALL,
+        CONSTRUCTOR,
+        qualifier,
+        types.receiverType(qualifier),
+        List.of(),
+        NodeCallShapes.spans(NodeCallShapes.argumentValues(parts.get(2))),
+        node.span());
+  }
+
+  /**
+   * An assignment to a property, {@code a.b = v} or {@code a['b'] = v}, is a member write whose
+   * argument 0 is the value. The site is listed after the sites inside the value.
+   */
+  private Optional<FlowSite> writeOf(final SyntaxNode node, final List<SyntaxNode> parts) {
+    if (parts.size() != ASSIGNMENT_PARTS
+        || !ASSIGNMENTS.contains(NodeFlowSyntax.text(parts.get(1)))) {
+      return Optional.empty();
+    }
+    final List<SyntaxNode> target = NodeFlowSyntax.parts(parts.get(0));
+    return NodeCallShapes.writtenName(target)
+        .map(
+            name -> {
+              final String qualifier = NodeFlowSyntax.text(target.get(0));
+              return new FlowSite(
+                  FlowSiteKind.MEMBER_WRITE,
+                  name,
+                  qualifier,
+                  types.receiverType(qualifier),
+                  List.of(),
+                  NodeCallShapes.spans(List.of(parts.get(2))),
+                  node.span());
+            });
   }
 
   /** The callee's receiver and the arguments come first, so inner sites are listed before. */
@@ -97,14 +166,15 @@ final class NodeFlowSites implements FlowSites {
     if (isMember(calleeParts)) {
       found.add(siteOf(FlowSiteKind.CALL, callee, calleeParts, values));
     } else {
+      final String written = NodeFlowSyntax.text(callee);
       found.add(
           new FlowSite(
               FlowSiteKind.CALL,
-              NodeFlowSyntax.text(callee),
+              types.calleeName(written),
               "",
-              Optional.empty(),
+              types.calleeReceiver(written),
               List.of(),
-              spans(values),
+              NodeCallShapes.spans(values),
               callee.span()));
     }
   }
@@ -121,12 +191,12 @@ final class NodeFlowSites implements FlowSites {
         qualifier,
         types.receiverType(qualifier),
         List.of(),
-        spans(values),
+        NodeCallShapes.spans(values),
         node.span());
   }
 
   /** A dotted name ends in a member name, with a member token before it. */
-  private static boolean isMember(final List<SyntaxNode> parts) {
+  static boolean isMember(final List<SyntaxNode> parts) {
     if (parts.size() < MEMBER_PARTS) {
       return false;
     }
@@ -136,28 +206,5 @@ final class NodeFlowSites implements FlowSites {
     }
     return MEMBER_TOKENS.contains(tokens.toString())
         && NodeSyntax.isName(parts.get(parts.size() - 1).kind());
-  }
-
-  /**
-   * The argument nodes of a call, which sit directly under the arguments or in an argument list.
-   */
-  private static List<SyntaxNode> argumentValues(final SyntaxNode arguments) {
-    final List<SyntaxNode> values = new ArrayList<>();
-    collectArguments(arguments, values);
-    return values;
-  }
-
-  private static void collectArguments(final SyntaxNode node, final List<SyntaxNode> values) {
-    for (final SyntaxNode child : node.children()) {
-      if (ARGUMENT.equals(child.kind())) {
-        values.add(child);
-      } else if (ARGUMENT_LIST.equals(child.kind())) {
-        collectArguments(child, values);
-      }
-    }
-  }
-
-  private static List<Span> spans(final List<SyntaxNode> nodes) {
-    return nodes.stream().map(SyntaxNode::span).toList();
   }
 }

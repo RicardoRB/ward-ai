@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final int JAVA_RULE_COUNT = 17;
-  private static final int BUNDLED_RULES = 14;
-  private static final int RULES_PER_LANGUAGE = 7;
+  private static final int BUNDLED_RULES = 20;
+  private static final int RULES_PER_LANGUAGE = 10;
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -84,7 +84,8 @@ class ClasspathRuleSourceTest {
             rule -> {
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
-              assertThat(rule.body()).isEmpty();
+              assertThat(rule.body().isEmpty() || rule.body().contains("check = \"taint\""))
+                  .isTrue();
             });
     assertThat(node.stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
     assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.TYPESCRIPT)))
@@ -135,7 +136,9 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
-    return rule.id().endsWith("/unused-assignment") || isJavaInjection(rule.id())
+    return rule.id().endsWith("/unused-assignment")
+            || isJavaInjection(rule.id())
+            || rule.body().contains("check = \"taint\"")
         ? RuleCapability.DATAFLOW
         : RuleCapability.SYNTAX;
   }

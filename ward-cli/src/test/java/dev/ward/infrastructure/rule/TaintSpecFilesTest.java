@@ -25,6 +25,24 @@ class TaintSpecFilesTest {
     assertThat(spec.propagators()).hasSize(1);
   }
 
+  /** A member-write sink is accepted, and as a source it is a configuration error. */
+  @Test
+  void memberWriteIsAcceptedAsASinkOnly() {
+    final TaintSpec spec =
+        TaintSpecFiles.parse(
+            "taint/x/spec.toml",
+            "[[sinks]]\nkind = \"member-write\"\nname = \"innerHTML\"\narguments = [0]\n");
+    assertThat(spec.sinks().get(0).kind()).isEqualTo(FlowSiteKind.MEMBER_WRITE);
+    assertThatThrownBy(
+            () ->
+                TaintSpecFiles.parse(
+                    "taint/x/spec.toml",
+                    "[[sources]]\nkind = \"member-write\"\nname = \"innerHTML\"\n"))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining("entry 1 of [sources] in taint/x/spec.toml")
+        .hasMessageContaining("member-write");
+  }
+
   @Test
   void invalidTomlIsRejected() {
     assertThatThrownBy(() -> TaintSpecFiles.parse("taint/x/spec.toml", "[[sources\n"))
