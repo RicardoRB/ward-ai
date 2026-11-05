@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -51,7 +52,8 @@ class NodeDependencyGateTest {
             projectRoot -> new FileAnalysisCache(cacheRoot),
             AnalysisCacheFixtures.codec(),
             "0.6.0",
-            new NodeDependencyAdapters());
+            new NodeDependencyAdapters(),
+            unused -> Map.of());
     final Project project = new Project(root, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE);
 
     final GateResult result = new AnalysisGate("ward", List.of(), ports).execute(project);

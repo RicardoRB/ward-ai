@@ -2,13 +2,13 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TypeSidecarRun;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
-import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
@@ -98,8 +98,11 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
-    final UnitResultCache.CachedRun run = results.analyze(cache, units, ports.frontends(), rules);
-    return result(focused(run));
+    try (TypeSidecarRun types = new TypeSidecarRun(ports.typeSidecars().apply(project.root()))) {
+      final UnitResultCache.CachedRun run =
+          results.analyze(cache, units, types.withTypes(ports.frontends(), rules), rules);
+      return result(focused(run));
+    }
   }
 
   /**
@@ -157,7 +160,7 @@ public final class AnalysisGate implements QualityGate {
     if (!run.executionErrors().isEmpty()) {
       return GateStatus.EXECUTION_ERROR;
     }
-    if (!run.notRun().isEmpty()) {
+    if (!run.notRunFailingGate().isEmpty()) {
       return GateStatus.UNAVAILABLE;
     }
     return errors > 0 ? GateStatus.FAILED : GateStatus.PASSED;
@@ -167,8 +170,8 @@ public final class AnalysisGate implements QualityGate {
     if (!run.executionErrors().isEmpty()) {
       return run.executionErrors().size() + " analysis error(s)";
     }
-    if (!run.notRun().isEmpty()) {
-      return run.notRun().size() + " rule(s) not run";
+    if (!run.notRunFailingGate().isEmpty()) {
+      return run.notRunFailingGate().size() + " rule(s) not run";
     }
     return rules.size() + " rule(s), " + findings.size() + " finding(s)";
   }
@@ -179,9 +182,10 @@ public final class AnalysisGate implements QualityGate {
     for (final RuleExecutionError error : run.executionErrors()) {
       lines.add(errorLine(error));
     }
-    for (final RuleNotRun skipped : run.notRun()) {
-      lines.add(skipped.ruleId() + " not run: its frontend lacks " + skipped.missing());
-    }
+    run.notRun()
+        .forEach(
+            skipped ->
+                lines.add(skipped.ruleId() + " not run: its frontend lacks " + skipped.missing()));
     return String.join("\n", lines);
   }
 

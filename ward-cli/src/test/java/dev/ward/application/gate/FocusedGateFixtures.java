@@ -80,7 +80,8 @@ final class FocusedGateFixtures {
             root -> AnalysisCacheFixtures.NO_CACHE,
             AnalysisCacheFixtures.codec(),
             "test",
-            (root, units) -> List.of(support));
+            (root, units) -> List.of(support),
+            unused -> Map.of());
     return new AnalysisGate("ward", RULES, ports, null, focus);
   }
 

@@ -15,6 +15,7 @@ import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.DeclarativeRuleMatcher;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,6 +52,7 @@ final class WardAnalysisFixtures {
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
-        DependencyAdapters.none());
+        DependencyAdapters.none(),
+        unused -> Map.of());
   }
 }

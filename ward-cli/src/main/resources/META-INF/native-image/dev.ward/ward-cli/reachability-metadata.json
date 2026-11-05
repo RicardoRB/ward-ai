@@ -16,6 +16,9 @@
       "glob": "dev/ward/analysis/lang/node/rules.toml"
     },
     {
+      "glob": "dev/ward/sidecar/*"
+    },
+    {
       "glob": "rules/python-structural.toml"
     },
     {
