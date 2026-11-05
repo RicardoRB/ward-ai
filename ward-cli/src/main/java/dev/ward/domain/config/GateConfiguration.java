@@ -60,6 +60,11 @@ public record GateConfiguration(
     independence = independence == null ? List.of() : copyTables(independence);
   }
 
+  /** Returns the module lists of the independence tables, copied so the record keeps its own. */
+  public List<List<String>> independence() {
+    return copyTables(independence);
+  }
+
   private static List<List<String>> copyTables(final List<List<String>> tables) {
     return tables.stream().map(List::copyOf).toList();
   }

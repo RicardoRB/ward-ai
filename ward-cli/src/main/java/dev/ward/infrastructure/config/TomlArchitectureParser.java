@@ -33,10 +33,10 @@ final class TomlArchitectureParser {
     if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(CYCLES)) {
       return List.of();
     }
-    if (!gate.isTable(CYCLES)) {
+    final TomlTable table = gate.getTable(CYCLES);
+    if (table == null) {
       throw new WardException("'" + where + "." + CYCLES + "' must be a table with roots");
     }
-    final TomlTable table = gate.getTable(CYCLES);
     rejectUnknownKeys(where + "." + CYCLES, table, CYCLE_KEYS);
     return directories(where + "." + CYCLES + "." + ROOTS, table.getArray(ROOTS), 1);
   }
