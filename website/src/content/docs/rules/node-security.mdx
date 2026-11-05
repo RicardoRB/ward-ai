@@ -1,0 +1,70 @@
+---
+title: TypeScript and JavaScript security rules
+description: The injection and XSS rules for TypeScript and JavaScript, what each reports, and where its analysis stops.
+---
+
+Ward bundles three taint rules for TypeScript and JavaScript. Each one follows untrusted input
+from a source to a sink inside one function and reports the flow with its path.
+
+| Rule | Reports |
+|---|---|
+| `ward:typescript/command-injection`, `ward:javascript/command-injection` | Untrusted data that reaches the command of a `child_process` call. |
+| `ward:typescript/path-traversal`, `ward:javascript/path-traversal` | Untrusted data that reaches the file path of an `fs` call or an Express `sendFile` or `download`. |
+| `ward:typescript/xss`, `ward:javascript/xss` | Untrusted data that reaches an HTML sink: `res.send`, `res.write`, `document.write`, `insertAdjacentHTML`, `eval`, `new Function`, or an `innerHTML` or `outerHTML` assignment. |
+
+All three have severity `error`. The rules are bundled, so they run with no configuration beyond
+selecting the gate.
+
+## Sources
+
+- Express request members `query`, `params`, `body`, `headers`, `cookies`, `path`, `originalUrl`
+  and `url`, on a variable named `req` or `request`, or on a parameter typed `Request` from
+  `express`.
+- `process.argv`.
+- Browser inputs: `location.search`, `location.hash`, `location.href`, `document.URL`,
+  `document.referrer` and `document.cookie`.
+
+## Sinks
+
+- Command: `exec`, `execSync`, `spawn`, `spawnSync`, `execFile`, `execFileSync` and `fork` from
+  `child_process`, argument 0.
+- Path: `readFile`, `writeFile`, `appendFile`, `createReadStream`, `open`, `unlink`, `readdir`,
+  `rm`, `stat` and their synchronous forms, from `fs` and `fs/promises`, argument 0. Express
+  `sendFile` and `download`, argument 0.
+- XSS: `send`, `write` and `end` on `res` or `response`; `write` and `writeln` on `document`;
+  `insertAdjacentHTML`, argument 1; `eval`, argument 0; `new Function`, any argument; and
+  assignments to `innerHTML` and `outerHTML`.
+
+## Sanitizers
+
+- Command and path: `Number`, `parseInt` and `parseFloat`.
+- Path: `path.basename`.
+- XSS: `encodeURIComponent`, `encodeURI`, `Number`, `parseInt`, `parseFloat`, and `escape` or
+  `escapeHtml` from `escape-html`.
+
+`path.join` and `path.resolve` are not sanitizers: they keep the untrusted segment in the result.
+
+## How a module is recognised
+
+A call is matched by its receiver type. The receiver is the module that the name is bound to by an
+`import` or a `require()`: named, aliased, default and namespace imports all count, and so does a
+destructured `require()`. A `node:` prefix is removed, so `node:child_process` is `child_process`,
+and `fs.promises` resolves to `fs`. A call on a name that some other module provides is not a sink.
+
+## Limits
+
+- The flow stays inside one function. A value passed to a helper function is not followed, so a
+  sink reached through a helper is not reported.
+- A value stored on an object and read back, such as `o.cmd = req.query.cmd; exec(o.cmd)`, is not
+  reported.
+- Template engines (EJS, Pug, Handlebars), React and Angular sinks, SQL and NoSQL injection are not
+  covered.
+- The qualifier fallbacks `req`, `res` and `response` match by name, so a renamed parameter that
+  has no `Request` type is missed, and an unrelated object with the same name can match.
+
+## Measured accuracy
+
+The rules are measured on a labeled corpus in `ward-analysis-bench/accuracy/node/`. Each file
+holds one case and is labeled for one rule.
+
+The accuracy table is added to this page once the accuracy mode of the bench measures the corpus.

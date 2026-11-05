@@ -138,6 +138,8 @@ class NodeSecurityRulesTest {
     assertThat(found).hasSize(1);
     assertThat(found.get(0).ruleId()).endsWith(PATH);
     assertThat(found.get(0).line()).isEqualTo(4);
+    assertThat(messages(found.get(0)))
+        .containsExactly("source: params", "sink: readFile argument 0");
   }
 
   /** Scenario: Path traversal into res.sendFile. */
@@ -177,6 +179,8 @@ class NodeSecurityRulesTest {
     assertThat(found).hasSize(1);
     assertThat(found.get(0).ruleId()).endsWith(XSS);
     assertThat(found.get(0).line()).isEqualTo(3);
+    assertThat(messages(found.get(0)))
+        .containsExactly("source: search", "sink: innerHTML argument 0");
   }
 
   /** Scenario: Sanitized value through encodeURIComponent before an HTML sink. */

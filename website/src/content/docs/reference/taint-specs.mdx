@@ -46,8 +46,11 @@ name = "append"
 from = ["receiver", 0]
 ```
 
-- `kind` is `call`, `member` or `parameter`. Sources take all three; sinks, sanitizers and
-  propagators take `call`.
+- `kind` is `call`, `member` or `parameter`. Sources take all three; sanitizers and propagators
+  take `call`. Sinks take `call` and `member-write`.
+- `member-write` is an assignment to a property, such as `el.innerHTML = html`. Its `name` is the
+  property, its `qualifier` is the object as written, and argument 0 is the assigned value. A
+  `member-write` source is a configuration error.
 - `name` is the called name, the property name of a member read, or, for a parameter, the
   annotation or decorator name.
 - `receiver` is a fully qualified type. It is matched against the receiver type that the file
