@@ -129,7 +129,8 @@ class JavaResolutionGateTest {
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
             AnalysisCacheFixtures.codec(),
             "test",
-            new JvmDependencyAdapters()),
+            new JvmDependencyAdapters(),
+            unused -> Map.of()),
         javaClasspath);
   }
 
