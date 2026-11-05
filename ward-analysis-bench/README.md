@@ -28,29 +28,6 @@ The exit code is `0` only when every corpus entry and every gate job ran to comp
 after a 30-minute timeout makes the run incomplete. A gate that exits non-zero because it found issues is
 recorded in `exitCodes`, not treated as a harness failure, because the baseline measures gates as they run today.
 
-## Accuracy
-
-`--accuracy <dir>` measures how often Ward's rules report real vulnerabilities, instead of how fast
-Ward runs. It replaces `--manifest` and takes the same `--binary` and `--out` options:
-
-```bash
-java -jar ward-analysis-bench/target/ward-analysis-bench.jar \
-  --binary ward-cli/target/ward \
-  --accuracy ward-analysis-bench/src/test/resources/accuracy \
-  --out target/analysis-benchmark/accuracy.json
-```
-
-The mode runs `ward check --format json` on each labeled corpus under `<dir>` and writes, per
-corpus and in total, the true positives, false positives, false negatives, precision and recall of
-each rule. Precision and recall are `null` when their denominator is zero. The result has schema
-version 2 with `"mode": "accuracy"`; the speed result has `"mode": "speed"`, and version 1 speed
-results have no `mode` key.
-
-The corpora, their label format and the pinned OWASP Benchmark are described in
-[`src/test/resources/accuracy/README.md`](src/test/resources/accuracy/README.md). The GPL OWASP code is fetched at run time into the
-cache and is never checked in or shipped. The accuracy mode is not measured for speed, so a JVM
-build of Ward works as `--binary` too.
-
 ## Corpus
 
 `corpus.csv` pins each repository by its full commit SHA (`language,name,url,commit`). Each commit is fetched with

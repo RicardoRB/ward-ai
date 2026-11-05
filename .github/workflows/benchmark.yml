@@ -46,19 +46,10 @@ jobs:
           --manifest ward-analysis-bench/corpus.csv
           --out target/analysis-benchmark/result.json
 
-      - name: Run the accuracy mode
-        run: >-
-          java -jar ward-analysis-bench/target/ward-analysis-bench.jar
-          --binary ward-cli/target/ward
-          --accuracy ward-analysis-bench/src/test/resources/accuracy
-          --out target/analysis-benchmark/accuracy.json
-
-      - name: Archive the results
+      - name: Archive the result
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: analysis-benchmark
-          path: |
-            target/analysis-benchmark/result.json
-            target/analysis-benchmark/accuracy.json
+          path: target/analysis-benchmark/result.json
           if-no-files-found: warn

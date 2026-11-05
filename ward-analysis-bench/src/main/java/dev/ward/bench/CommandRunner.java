@@ -13,10 +13,4 @@ interface CommandRunner {
 
   /** Runs the command and returns its standard output; fails when the command exits non-zero. */
   String capture(List<String> command, Path directory);
-
-  /**
-   * Runs the command and returns its exit code and standard output, whatever the exit code is. Ward
-   * exits non-zero when it finds problems, so the accuracy mode reads the output of a failing run.
-   */
-  CommandOutput output(List<String> command, Path directory);
 }

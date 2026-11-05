@@ -1,6 +1,6 @@
 ---
 title: Java security rules
-description: The bundled Java injection rules, the untrusted sources, sensitive sinks and sanitizers they use, their limits, and their measured accuracy.
+description: The bundled Java injection rules, the untrusted sources, sensitive sinks and sanitizers they use, and their limits.
 ---
 
 Ward ships three Java rules that report untrusted input which reaches a sensitive operation inside
@@ -55,8 +55,7 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
 ## Limits
 
 - A rule works within one method. A tainted value passed to a helper method, or stored in a field
-  and read in another method, is not followed. Those cases are missed, and the accuracy below counts
-  them.
+  and read in another method, is not followed. Those cases are missed.
 - The receiver type of a call comes from a declared local, parameter or type name in the file. A
   call on the result of another call, such as `dataSource.getConnection().prepareStatement(...)`, has
   no receiver type and is not matched, except `Runtime.getRuntime().exec`.
@@ -67,26 +66,3 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
   constants from a tainted choice.
 - A custom check such as `replaceAll("[^0-9]", "")` is not a sanitizer, so it is still reported.
 - Interprocedural flow, XSS, LDAP, XPath and the other injection classes are not covered.
-
-## Measured accuracy
-
-Accuracy is measured with `ward-analysis-bench --accuracy`, on the checked-in corpus
-`ward-analysis-bench/src/test/resources/accuracy/java` (48 labeled cases, 16 per rule, 8 vulnerable and 8 safe) and on
-the OWASP Benchmark 1.2beta at a pinned commit. The numbers are as measured and were not tuned to
-either corpus. Counts are per file and rule.
-
-| Corpus | Rule | tp | fp | fn | precision | recall |
-|---|---|---:|---:|---:|---:|---:|
-| `src/test/resources/accuracy/java` | `ward:java/command-injection` | 6 | 1 | 2 | 0.857 | 0.750 |
-| `src/test/resources/accuracy/java` | `ward:java/path-injection` | 6 | 0 | 2 | 1.000 | 0.750 |
-| `src/test/resources/accuracy/java` | `ward:java/sql-injection` | 6 | 2 | 2 | 0.750 | 0.750 |
-| `src/test/resources/accuracy/java` | total | 18 | 3 | 6 | 0.857 | 0.750 |
-| OWASP Benchmark 1.2beta | `ward:java/command-injection` | 38 | 31 | 88 | 0.551 | 0.302 |
-| OWASP Benchmark 1.2beta | `ward:java/path-injection` | 70 | 57 | 63 | 0.551 | 0.526 |
-| OWASP Benchmark 1.2beta | `ward:java/sql-injection` | 108 | 75 | 164 | 0.590 | 0.397 |
-| OWASP Benchmark 1.2beta | total | 216 | 163 | 315 | 0.570 | 0.407 |
-
-The checked-in corpus holds the cases the rules are designed for and the known misses: a sink in a
-helper method and a tainted field, each labeled vulnerable. Its safe cases include the false
-positives that a custom check and a whitelist cause. The OWASP Benchmark is a separate, larger
-corpus that Ward does not tune to. Its precision and recall are reported as measured.

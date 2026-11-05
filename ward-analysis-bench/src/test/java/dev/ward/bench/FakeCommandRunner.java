@@ -16,8 +16,6 @@ final class FakeCommandRunner implements CommandRunner {
   String head = "";
   int fetchExitCode;
   boolean timeoutEveryRun;
-  int outputExitCode;
-  String wardOutput = "";
 
   @Override
   public CommandResult run(final List<String> command, final Path directory) {
@@ -34,12 +32,6 @@ final class FakeCommandRunner implements CommandRunner {
   public String capture(final List<String> command, Path directory) {
     commands.add(List.copyOf(command));
     return head + "\n";
-  }
-
-  @Override
-  public CommandOutput output(final List<String> command, final Path directory) {
-    commands.add(List.copyOf(command));
-    return new CommandOutput(outputExitCode, wardOutput);
   }
 
   private static void writeSource(final Path directory) {
