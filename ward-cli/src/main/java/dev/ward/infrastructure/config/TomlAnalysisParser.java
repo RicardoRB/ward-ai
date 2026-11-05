@@ -23,7 +23,16 @@ final class TomlAnalysisParser {
   private static final String RULE_PREFIX = "ward:";
   private static final String PATHS = "paths";
   private static final Set<String> KEYS =
-      Set.of("uses", "enabled", "profiles", RULES, JAVA_CLASSPATH, LAYERS, PATHS);
+      Set.of(
+          "uses",
+          "enabled",
+          "profiles",
+          RULES,
+          JAVA_CLASSPATH,
+          LAYERS,
+          PATHS,
+          TomlArchitectureParser.CYCLES,
+          TomlArchitectureParser.INDEPENDENCE);
 
   private TomlAnalysisParser() {}
 

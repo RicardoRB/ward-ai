@@ -40,7 +40,10 @@ final class AnalysisGates {
         check.name(), rulesOf(check, loaded.rules()), analysis, check.javaClasspath(), focus);
   }
 
-  /** The selected rules, plus the layer rule when the check configures architecture boundaries. */
+  /**
+   * The selected rules, plus the layer rule when the check configures architecture boundaries, and
+   * the cycle and independence rules when it configures their tables.
+   */
   private static List<RuleDefinition> rulesOf(
       final GateConfiguration check, final List<RuleDefinition> available) {
     final List<RuleDefinition> rules = new ArrayList<>(selectRules(check, available));
@@ -49,6 +52,12 @@ final class AnalysisGates {
         LOGGER.fine("Architecture boundaries configured: " + check.layers().size());
       }
       rules.add(LayerRules.definition(check.layers()));
+    }
+    if (!check.cycleRoots().isEmpty()) {
+      rules.add(ArchitectureGraphRules.cycles(check.cycleRoots()));
+    }
+    if (!check.independence().isEmpty()) {
+      rules.add(ArchitectureGraphRules.independence(check.independence()));
     }
     return rules;
   }

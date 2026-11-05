@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.graph.GraphRules;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -64,6 +65,8 @@ final class UnitResultCache {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
+    final List<RuleDefinition> unitRules =
+        rules.stream().filter(rule -> !GraphRules.isGraphRule(rule)).toList();
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
@@ -73,8 +76,8 @@ final class UnitResultCache {
     final Map<AnalysisLanguage, String> ruleSets = new EnumMap<>(AnalysisLanguage.class);
     for (final SourceUnit unit : units) {
       final String ruleSet =
-          ruleSets.computeIfAbsent(unit.language(), language -> ruleSet(language, rules));
-      final String key = key(ruleSet, unit, rules, snapshot);
+          ruleSets.computeIfAbsent(unit.language(), language -> ruleSet(language, unitRules));
+      final String key = key(ruleSet, unit, unitRules, snapshot);
       keys.put(unit, key);
       final Optional<List<AnalysisFinding>> stored = read(cache, key);
       if (stored.isPresent()) {
@@ -83,12 +86,14 @@ final class UnitResultCache {
         misses.add(unit);
       }
     }
-    final RuleRunResult analyzed = engine.run(misses, frontends, rules, snapshot);
+    final RuleRunResult analyzed = engine.run(misses, frontends, unitRules, snapshot);
     if (analyzed.executionErrors().isEmpty() && analyzed.notRun().isEmpty()) {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
-    return new CachedRun(merged(reused, analyzed), snapshot.graph());
+    final List<AnalysisFinding> graphFindings =
+        ArchitectureGraphRules.findings(rules, snapshot.graph());
+    return new CachedRun(merged(reused, analyzed, graphFindings), snapshot.graph());
   }
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {
@@ -133,9 +138,12 @@ final class UnitResultCache {
   }
 
   private static RuleRunResult merged(
-      final List<AnalysisFinding> reused, final RuleRunResult analyzed) {
+      final List<AnalysisFinding> reused,
+      final RuleRunResult analyzed,
+      final List<AnalysisFinding> graphFindings) {
     final List<AnalysisFinding> all = new ArrayList<>(reused);
     all.addAll(analyzed.findings());
+    all.addAll(graphFindings);
     all.sort(AnalysisFindingOrder.ORDER);
     return new RuleRunResult(all, analyzed.executionErrors(), analyzed.notRun());
   }
