@@ -18,6 +18,7 @@ final class NodeDeclarations {
   private static final String IDENTIFIER = "identifier";
   private static final String FUNCTION_DECLARATION = "functionDeclaration";
   private static final String EQUALS = "=";
+  private static final int BINDING_PARTS = 3;
 
   private final NodeScopes scopes;
   private final NodeWalker walker;
@@ -53,7 +54,7 @@ final class NodeDeclarations {
   void keywordExpression(final List<SyntaxNode> parts, final List<VariableAccess> found) {
     final SyntaxNode binding = parts.get(1);
     final List<SyntaxNode> bound = NodeFlowSyntax.parts(binding);
-    if (bound.size() == 3 && NodeSyntax.isAssignment(bound.get(1))) {
+    if (bound.size() == BINDING_PARTS && NodeSyntax.isAssignment(bound.get(1))) {
       walker.walk(bound.get(2), found);
       for (final SyntaxNode name : NodeBindings.bindings(bound.get(0))) {
         found.add(scopes.declare(name, AccessKind.DECLARE));

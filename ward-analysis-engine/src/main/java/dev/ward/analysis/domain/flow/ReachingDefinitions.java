@@ -56,12 +56,12 @@ public final class ReachingDefinitions {
 
   /** Returns the writes of the graph, in block order. */
   public List<AccessSite> definitions() {
-    return definitions;
+    return List.copyOf(definitions);
   }
 
   /** Returns the reads of the graph, in block order: each read and each capture. */
   public List<AccessSite> uses() {
-    return uses;
+    return List.copyOf(uses);
   }
 
   /**
