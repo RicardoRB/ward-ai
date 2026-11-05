@@ -177,7 +177,8 @@ order:
    `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote the packages.
    Then, when the project's languages are all supported by the `ward` engine, ask which checker
    enforces the style: `tool` (the default, and the recommendation until the engine's verdict is
-   proven on the project) or `ward` (`--architecture-engine ward`, boundaries in `ward.toml`).
+   proven on the project) or `ward` (`--architecture-engine ward`, boundaries, slice cycles and
+   feature independence in `ward.toml`; the strict cycle rules are then not generated externally).
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.

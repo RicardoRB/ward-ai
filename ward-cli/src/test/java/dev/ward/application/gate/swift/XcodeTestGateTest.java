@@ -87,7 +87,9 @@ class XcodeTestGateTest {
             platform,
             null,
             null,
-            List.of());
+            List.of(),
+            null,
+            null);
     return new QualityGateFactory(executor, null, new TraceabilitySources(null, null), ports, null)
         .create(new WardConfiguration(1, Map.of("xcode", check)))
         .getFirst()

@@ -135,7 +135,9 @@ class OpenApiLintGateTest {
                         null,
                         null,
                         null,
-                        List.of()),
+                        List.of(),
+                        null,
+                        null),
                     OpenApiGateFixtures.PROJECT))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-lint.spec");

@@ -11,9 +11,11 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Added
 
 - `ward-frontend-antlr`, an internal analysis module with ANTLR parsers for Java, Kotlin, TypeScript, JavaScript, Python and Swift. Parsers are generated at build time from grammars pinned by commit, and syntax errors are returned as diagnostics next to a partial tree. No CLI behavior changes.
+- `ward:architecture/cycles` and `ward:architecture/independence`, the slice cycle and feature independence rules of the `ward` gate, configured by `[checks.ward.cycles]` and `[[checks.ward.independence]]`. One meaning for Java, Python, TypeScript, JavaScript and Swift: a cycle is reported between two or more slices, the first directory under a source root (#246).
 
 ### Changed
 
+- `ward init --preset strict --architecture-engine ward` writes the cycle and independence tables instead of ArchUnit's cycle rule, dependency-cruiser's `no-circular` and Import Linter's independence contract. Inside one slice, file cycles are no longer reported under the `ward` engine. `--architecture-engine tool` output is unchanged (#246).
 - The analysis API's `LanguageFrontend.parse` returns a `ParseResult` (syntax tree plus diagnostics) instead of a bare `SyntaxNode`. The analysis API is unreleased, so no released behavior changes.
 - The Maven build is a parent project (`ward-parent`) with a `ward-cli` module. Build outputs moved to `ward-cli/target/` (`ward.jar`, `ward`, `ward.exe`); the released binaries and jar keep their names.
 

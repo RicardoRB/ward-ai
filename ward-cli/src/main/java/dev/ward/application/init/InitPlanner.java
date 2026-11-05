@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.ArchitectureGates;
@@ -77,7 +76,7 @@ final class InitPlanner {
             project.root().resolve("ward.toml"),
             gates,
             selection.preset(),
-            EngineLayers.of(selection, project)));
+            EngineArchitecture.of(selection, project, files.architectureTests())));
     changes.addAll(installer.plan(project, selection.integrations()));
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
@@ -154,7 +153,7 @@ final class InitPlanner {
             .plan(
                 project,
                 ArchitectureToolPlan.style(selection),
-                ArchitectureToolPlan.extras(selection)));
+                ArchitectureToolPlan.extras(project, selection)));
   }
 
   private PlannedFileChange configuration(
@@ -162,7 +161,7 @@ final class InitPlanner {
       final Path file,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final List<LayerBoundary> layers) {
+      final EngineArchitecture architecture) {
     final Optional<String> existing = files.configuration().read(file);
     final List<String> notes = OmissionNotes.of(catalog.get(), project, preset);
     if (existing.isEmpty()) {
@@ -175,7 +174,7 @@ final class InitPlanner {
                     preset,
                     project,
                     catalog.get().openSpecDirectories().root(project),
-                    layers)
+                    architecture)
                 .equals(existing.get())
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,

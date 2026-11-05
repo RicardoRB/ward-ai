@@ -72,6 +72,18 @@ public final class ImportLinterConfigGenerator implements ArchitectureTestGenera
   }
 
   @Override
+  public List<String> cycleRoots(final Project project) {
+    return PythonPackages.roots(project).stream()
+        .map(root -> PythonFeatures.directory(project, root))
+        .toList();
+  }
+
+  @Override
+  public List<String> independenceModules(final Project project, final String style) {
+    return PythonFeatures.directories(project, style);
+  }
+
+  @Override
   public PlannedFileChange plan(
       final Project project,
       final String architecture,

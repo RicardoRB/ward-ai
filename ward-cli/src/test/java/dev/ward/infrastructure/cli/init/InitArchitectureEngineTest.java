@@ -127,9 +127,11 @@ class InitArchitectureEngineTest {
                   .orElseThrow());
     }
     assertThat(archUnit)
-        .contains("noCycles")
+        .doesNotContain("noCycles")
         .contains("strict architecture extras")
         .doesNotContain("..domain..", "..adapter..");
+    assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("[checks.ward.cycles]", "roots = [\"src/main/java/shop\"]");
   }
 
   private void mavenProject() throws IOException {

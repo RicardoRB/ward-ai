@@ -65,7 +65,9 @@ final class MutationGateFixtures {
         null,
         null,
         null,
-        List.of());
+        List.of(),
+        null,
+        null);
   }
 
   static GateResult run(final int exitCode, final MutationReport report, final Integer minimum) {

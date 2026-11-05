@@ -199,7 +199,7 @@ public class InitService {
             selection.preset(),
             project,
             catalog.get().openSpecDirectories().root(project),
-            EngineLayers.of(selection, project));
+            EngineArchitecture.of(selection, project, files.architectureTests()));
     final boolean created;
     if (overwrite) {
       files.configuration().replace(file, content);

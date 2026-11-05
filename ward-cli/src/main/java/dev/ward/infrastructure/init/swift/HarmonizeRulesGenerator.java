@@ -6,6 +6,7 @@ import dev.ward.domain.init.ArchitectureTestGeneration;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.swift.SwiftToolConfigs;
+import dev.ward.infrastructure.analysis.swift.SwiftLayouts;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -93,6 +94,18 @@ public final class HarmonizeRulesGenerator implements ArchitectureTestGeneration
     } else if (change.previous() != null) {
       HarmonizeRulesFiles.write(change.file(), change.previous());
     }
+  }
+
+  /**
+   * The source directories of the project's Swift targets, from its manifest and Xcode projects.
+   */
+  @Override
+  public List<String> cycleRoots(final Project project) {
+    return SwiftLayouts.read(project.root()).targets().stream()
+        .flatMap(target -> target.directories().stream())
+        .distinct()
+        .sorted()
+        .toList();
   }
 
   /** Whether {@code file} is a rules file this generator wrote, by its Swift file name. */

@@ -15,7 +15,6 @@ import java.util.Set;
  */
 final class ImportLinterContracts {
   private static final String MARKER = "# managed-by: ward\n";
-  private static final int MIN_FEATURES = 2;
 
   private ImportLinterContracts() {}
 
@@ -29,8 +28,7 @@ final class ImportLinterContracts {
         architecture == null
             ? null
             : ArchitectureLayers.forStyle(architecture, project.framework());
-    final Set<String> names =
-        layers == null ? Set.of() : Set.copyOf(concat(layers.from(), layers.forbidden()));
+    final Set<String> names = layers == null ? Set.of() : PythonFeatures.names(layers);
     return MARKER
         + "[importlinter]\n"
         + rootLines(project, roots)
@@ -64,24 +62,13 @@ final class ImportLinterContracts {
   }
 
   /**
-   * Returns the independence contract between the features: the Django apps, or the root's feature
-   * packages. Empty when there are fewer than {@code MIN_FEATURES}.
+   * Returns the independence contract between the features, or empty when there are fewer than
+   * {@code MIN_FEATURES}.
    */
   private static String independence(
       final Project project, final List<String> roots, final Set<String> layers) {
-    final List<String> features =
-        switch (project.framework()) {
-          case DJANGO -> PythonPackages.djangoApps(project);
-          case FLASK ->
-              FlaskPackages.blueprints(project, roots.getFirst()).stream()
-                  .map(feature -> roots.getFirst() + "." + feature)
-                  .toList();
-          default ->
-              PythonPackages.features(project, roots.getFirst(), layers).stream()
-                  .map(feature -> roots.getFirst() + "." + feature)
-                  .toList();
-        };
-    if (features.size() < MIN_FEATURES) {
+    final List<String> features = PythonFeatures.modules(project, roots, layers);
+    if (features.size() < PythonFeatures.MIN_FEATURES) {
       return "";
     }
     return "\n[importlinter:contract:features]\nname = Features are independent\n"
@@ -114,9 +101,5 @@ final class ImportLinterContracts {
     return Files.isRegularFile(base.resolve(layer).resolve("__init__.py"))
         ? "    " + rootPackage + "." + layer + "\n"
         : "";
-  }
-
-  private static List<String> concat(final List<String> first, final List<String> second) {
-    return java.util.stream.Stream.concat(first.stream(), second.stream()).toList();
   }
 }

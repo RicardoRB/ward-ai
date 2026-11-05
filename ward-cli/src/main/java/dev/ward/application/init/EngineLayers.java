@@ -27,8 +27,11 @@ final class EngineLayers {
         || Collections.disjoint(selection.gates(), ArchitectureGates.IDS)) {
       return List.of();
     }
-    final String style =
-        selection.architecture() == null ? DEFAULT_STYLE : selection.architecture();
-    return List.of(ArchitectureLayers.forStyle(style, project.framework()));
+    return List.of(ArchitectureLayers.forStyle(style(selection), project.framework()));
+  }
+
+  /** The style the selection checks: the chosen one, or the default when none is chosen. */
+  static String style(final InitSelection selection) {
+    return selection.architecture() == null ? DEFAULT_STYLE : selection.architecture();
   }
 }

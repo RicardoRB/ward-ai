@@ -28,6 +28,10 @@ import java.util.Set;
  *     {@code null} when unset; only {@code ward} checks read it
  * @param layers the architecture boundaries a {@code ward} check enforces with {@code
  *     ward:architecture/layers}; empty when unset, and only {@code ward} checks read it
+ * @param cycleRoots the project-relative source roots whose slices {@code ward:architecture/cycles}
+ *     checks for cycles; empty when unset, and only {@code ward} checks read it
+ * @param independence the module lists of the {@code [[checks.ward.independence]]} tables, each
+ *     checked by {@code ward:architecture/independence}; empty when unset
  */
 public record GateConfiguration(
     String name,
@@ -42,7 +46,9 @@ public record GateConfiguration(
     XcodePlatform platform,
     List<String> rules,
     String javaClasspath,
-    List<LayerBoundary> layers) {
+    List<LayerBoundary> layers,
+    List<String> cycleRoots,
+    List<List<String>> independence) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -50,6 +56,17 @@ public record GateConfiguration(
     profiles = Collections.unmodifiableSet(new LinkedHashSet<>(profiles));
     rules = rules == null ? List.of() : List.copyOf(rules);
     layers = layers == null ? List.of() : List.copyOf(layers);
+    cycleRoots = cycleRoots == null ? List.of() : List.copyOf(cycleRoots);
+    independence = independence == null ? List.of() : copyTables(independence);
+  }
+
+  /** Returns the module lists of the independence tables, copied so the record keeps its own. */
+  public List<List<String>> independence() {
+    return copyTables(independence);
+  }
+
+  private static List<List<String>> copyTables(final List<List<String>> tables) {
+    return tables.stream().map(List::copyOf).toList();
   }
 
   /** Creates a check in the {@code default} profile whose type is its name. */
@@ -67,6 +84,8 @@ public record GateConfiguration(
         null,
         null,
         null,
-        List.of());
+        List.of(),
+        null,
+        null);
   }
 }

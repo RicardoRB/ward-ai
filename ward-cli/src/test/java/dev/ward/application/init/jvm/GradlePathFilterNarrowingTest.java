@@ -52,7 +52,9 @@ class GradlePathFilterNarrowingTest {
             null,
             null,
             null,
-            List.of());
+            List.of(),
+            null,
+            null);
 
     final PartialCheckPlan plan =
         PartialCheckPlan.create(
