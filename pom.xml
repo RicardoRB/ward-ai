@@ -126,6 +126,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.6.1</version>
                     <configuration>
+                        <!-- One test JVM per core; each class still runs alone in its fork. -->
+                        <forkCount>1C</forkCount>
+                        <reuseForks>true</reuseForks>
                         <!-- Keeps tests offline: the real wiring would otherwise query GitHub for updates. -->
                         <environmentVariables>
                             <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
@@ -209,6 +212,8 @@
                             <ruleset>${maven.multiModuleProjectDirectory}/config/pmd-ruleset.xml</ruleset>
                         </rulesets>
                         <includeTests>true</includeTests>
+                        <!-- Re-analyzes only changed files; the edit hook runs PMD on every edit. -->
+                        <analysisCache>true</analysisCache>
                         <failOnViolation>true</failOnViolation>
                         <printFailingErrors>true</printFailingErrors>
                     </configuration>

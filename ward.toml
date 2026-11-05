@@ -8,7 +8,7 @@ command = "./mvnw test"
 [checks.format]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw -DskipTests package spotless:check"
+command = "./mvnw spotless:check"
 
 [checks.format.paths]
 match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
@@ -20,7 +20,7 @@ separator = ","
 [checks.checkstyle]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw -DskipTests package checkstyle:check"
+command = "./mvnw checkstyle:check"
 
 [checks.checkstyle.paths]
 match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
@@ -51,7 +51,8 @@ command = "./mvnw -DskipTests package jacoco:check"
 [checks.archunit]
 enabled = true
 uses = "archunit"
-profiles = ["pre-push", "ci"]
+# Not in pre-push: the tests gate already runs these classes.
+profiles = ["ci"]
 command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
