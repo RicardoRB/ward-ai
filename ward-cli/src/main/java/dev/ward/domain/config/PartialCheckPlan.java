@@ -1,5 +1,6 @@
 package dev.ward.domain.config;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -20,11 +21,20 @@ public final class PartialCheckPlan {
     NARROW
   }
 
-  /** The decision for one gate; {@code args} are appended to its command when narrowed. */
-  public record GatePlan(String gate, Scope scope, List<String> args) {
-    /** Copies the arguments. */
+  /**
+   * The decision for one gate; {@code args} are appended to its command when narrowed, and {@code
+   * focus} lists the root-relative changed paths an in-process gate narrows to.
+   */
+  public record GatePlan(String gate, Scope scope, List<String> args, List<String> focus) {
+    /** Copies the arguments and the focus paths. */
     public GatePlan {
       args = List.copyOf(args);
+      focus = List.copyOf(focus);
+    }
+
+    /** A decision without focus paths. */
+    public GatePlan(final String gate, final Scope scope, final List<String> args) {
+      this(gate, scope, args, List.of());
     }
   }
 
@@ -94,6 +104,10 @@ public final class PartialCheckPlan {
     }
     if (relevant.isEmpty()) {
       return new GatePlan(name, Scope.SKIP, List.of());
+    }
+    if (SupportedQualityGates.ANALYSIS.equals(configuration.type())) {
+      return new GatePlan(
+          name, Scope.NARROW, List.of(), relevant.stream().map(EditedPath::relative).toList());
     }
     final List<EditedPath> existing = relevant.stream().filter(EditedPath::exists).toList();
     final List<String> items = PartialArguments.items(partial.item(), existing, packages);

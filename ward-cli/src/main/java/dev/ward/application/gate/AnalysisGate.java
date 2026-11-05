@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,12 +32,14 @@ import java.util.stream.Stream;
  * findings and execution errors become the gate result that the other gates report beside.
  */
 public final class AnalysisGate implements QualityGate {
+  private static final Logger LOGGER = Logger.getLogger(AnalysisGate.class.getName());
   private static final String TOOL = "ward";
 
   private final String name;
   private final List<RuleDefinition> rules;
   private final AnalysisPorts ports;
   private final String javaClasspath;
+  private final List<String> focus;
 
   /** Creates the gate that runs {@code rules} through the adapters in {@code ports}. */
   public AnalysisGate(
@@ -53,10 +57,24 @@ public final class AnalysisGate implements QualityGate {
       final List<RuleDefinition> rules,
       final AnalysisPorts ports,
       final String javaClasspath) {
+    this(name, rules, ports, javaClasspath, List.of());
+  }
+
+  /**
+   * Creates the gate like the constructor without {@code focus}, and reports only the findings that
+   * touch the root-relative changed paths in {@code focus}. An empty focus reports every finding.
+   */
+  public AnalysisGate(
+      final String name,
+      final List<RuleDefinition> rules,
+      final AnalysisPorts ports,
+      final String javaClasspath,
+      final List<String> focus) {
     this.name = name;
     this.rules = List.copyOf(rules);
     this.ports = ports;
     this.javaClasspath = javaClasspath;
+    this.focus = List.copyOf(focus);
   }
 
   @Override
@@ -80,7 +98,32 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
-    return result(results.run(cache, units, ports.frontends(), rules));
+    final UnitResultCache.CachedRun run = results.analyze(cache, units, ports.frontends(), rules);
+    return result(focused(run));
+  }
+
+  /**
+   * Keeps the findings that touch the focus. Execution errors and rules that did not run stay, so
+   * unanalyzed code is still never a pass, even when it lies outside the changed files.
+   */
+  private RuleRunResult focused(final UnitResultCache.CachedRun cached) {
+    final RuleRunResult run = cached.result();
+    if (focus.isEmpty()) {
+      return run;
+    }
+    final List<AnalysisFinding> kept =
+        new AnalysisFocus(focus, rules, cached.graph()).keep(run.findings());
+    if (LOGGER.isLoggable(Level.FINE)) {
+      LOGGER.fine(
+          () ->
+              "event=ward-focus focus="
+                  + focus.size()
+                  + " findings="
+                  + run.findings().size()
+                  + " reported="
+                  + kept.size());
+    }
+    return new RuleRunResult(kept, run.executionErrors(), run.notRun());
   }
 
   private GateResult result(final RuleRunResult run) {

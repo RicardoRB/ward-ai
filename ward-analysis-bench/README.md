@@ -48,6 +48,12 @@ not yet a separate corpus row, because a row always fetches a whole repository.
 | `ward-check-ci` | `ward check --profile ci` | cold, warm, peak RSS |
 | `ward-check-default` | `ward check --profile default` (the edit hook's profile) | cold, warm, peak RSS, edit latency |
 | `checkstyle-edit-hook` (`ward` entry only) | `./mvnw checkstyle:check` (the edit hook's Checkstyle command in `ward.toml`) | cold, warm, peak RSS, edit latency |
+| `ward-gate-edit` (every entry) | `ward check --profile ward-gate-edit --format json --path {edited}` | cold, warm, peak RSS, edit latency |
+
+`{edited}` is the project-relative path of the source file that the edit touches. The benchmark adds a `ward`
+check, `ward-gate-edit`, to each working copy's `ward.toml`, in a profile of its own, with a `paths` table that
+matches the sources of every analysis language. So the job runs the `ward` gate narrowed to the edited file, as
+the `edit` profile does after an agent edit. The copy is never the checkout.
 
 ## Metrics
 
@@ -76,5 +82,19 @@ for that metric.
 
 Observed spread from the baseline runs on this machine is recorded below. Shared CI runners are noisier than a
 developer laptop, so expect wider spreads there.
+
+### Edit-latency budget for the `ward` gate
+
+The `ward` gate in the edit profile must not cost more per edit than the external Checkstyle edit hook it sits beside.
+On the same run and host, the budget is:
+
+- `ward-gate-edit` p95 edit latency ≤ `checkstyle-edit-hook` p95 edit latency (both on the `ward` entry).
+
+A relative budget holds across machines, because both sides pay the same process startup on the same host.
+The measured numbers and the verdict are recorded below. If the budget is missed, the narrowed run switches to
+the focus files plus their reverse dependents from the stored index, as described in the `add-incremental-edit-profile`
+design (Risks), and the run is measured again.
+
+<!-- BUDGET-RESULT: not yet measured; filled in from a native run of ward-gate-edit and checkstyle-edit-hook -->
 
 <!-- BASELINE-SPREAD: filled in by the first full local run -->

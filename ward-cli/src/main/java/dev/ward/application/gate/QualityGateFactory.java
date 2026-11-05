@@ -141,14 +141,30 @@ public class QualityGateFactory {
    * @throws WardException if a check's type is unknown
    */
   public List<QualityGate> create(final WardConfiguration configuration, final Project project) {
-    configuration.checks().values().forEach(QualityGateFactory::requireSupportedType);
-    return configuration.checks().values().stream().map(check -> typed(check, project)).toList();
+    return create(configuration, project, Map.of());
   }
 
-  private QualityGate typed(final GateConfiguration check, final Project project) {
-    final QualityGate gate =
-        check.enabled() ? createGate(check, project) : new SkippedQualityGate(check.name());
-    return new TypedQualityGate(check.type(), gate);
+  /**
+   * Creates the gates like {@link #create(WardConfiguration, Project)}, and narrows each {@code
+   * ward} gate named in {@code focus} to its root-relative changed paths. A gate not named in it
+   * runs in full.
+   *
+   * @throws WardException if a check's type is unknown
+   */
+  public List<QualityGate> create(
+      final WardConfiguration configuration,
+      final Project project,
+      final Map<String, List<String>> focus) {
+    configuration.checks().values().forEach(QualityGateFactory::requireSupportedType);
+    return configuration.checks().values().stream()
+        .<QualityGate>map(
+            check ->
+                new TypedQualityGate(
+                    check.type(),
+                    check.enabled()
+                        ? createGate(check, project, focus.getOrDefault(check.name(), List.of()))
+                        : new SkippedQualityGate(check.name())))
+        .toList();
   }
 
   private static void requireSupportedType(final GateConfiguration check) {
@@ -164,11 +180,12 @@ public class QualityGateFactory {
     }
   }
 
-  private QualityGate createGate(final GateConfiguration check, final Project project) {
+  private QualityGate createGate(
+      final GateConfiguration check, final Project project, final List<String> focus) {
     final String name = check.name();
     final String type = check.type();
     if (SupportedQualityGates.ANALYSIS.equals(type)) {
-      return AnalysisGates.create(check, analysis);
+      return AnalysisGates.create(check, analysis, focus);
     }
     if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null

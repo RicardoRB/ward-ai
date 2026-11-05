@@ -4,6 +4,7 @@ import dev.ward.analysis.application.rule.DependencyAnalysis;
 import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -45,8 +46,20 @@ final class UnitResultCache {
     this.dependencies = List.copyOf(dependencies);
   }
 
+  /** The findings of a run, in the stable report order, and the dependency graph it resolved. */
+  record CachedRun(RuleRunResult result, DependencyGraph graph) {}
+
   /** Returns the findings of every unit, reused or analyzed, in the stable report order. */
   RuleRunResult run(
+      final AnalysisCache cache,
+      final List<SourceUnit> units,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules) {
+    return analyze(cache, units, frontends, rules).result();
+  }
+
+  /** Like {@link #run}, and also returns the dependency graph of the whole run. */
+  CachedRun analyze(
       final AnalysisCache cache,
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
@@ -75,7 +88,7 @@ final class UnitResultCache {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
-    return merged(reused, analyzed);
+    return new CachedRun(merged(reused, analyzed), snapshot.graph());
   }
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {

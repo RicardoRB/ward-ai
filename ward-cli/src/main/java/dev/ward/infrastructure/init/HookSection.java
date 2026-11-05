@@ -31,6 +31,22 @@ record HookSection(String projectPath) {
       )""";
 
   /**
+   * Passes each file changed between the upstream and {@code HEAD} as {@code --path}. Without an
+   * upstream the diff fails, prints nothing, and the push runs in full.
+   */
+  private static final String PUSHED_PATHS =
+      """
+      (
+        set --
+        while IFS= read -r ward_path; do
+          if [ -n "$ward_path" ]; then set -- "$@" "--path=$ward_path"; fi
+        done <<WARD_PUSHED
+      $(git -c core.quotePath=false diff --name-only --diff-filter=ACMR --relative '@{upstream}...HEAD' 2>/dev/null)
+      WARD_PUSHED
+        ward check --profile pre-push --format json "$@"
+      )""";
+
+  /**
    * Creates the section.
    *
    * @throws WardException if the path cannot be written safely inside single quotes
@@ -74,11 +90,9 @@ record HookSection(String projectPath) {
         + "\n";
   }
 
-  /** The check command; pre-commit narrows it to the staged files. */
+  /** The check command; pre-commit narrows it to the staged files, pre-push to the pushed range. */
   private static String check(final String profile) {
-    return PRE_PUSH.equals(profile)
-        ? "ward check --profile " + profile + " --format json"
-        : STAGED_PATHS;
+    return PRE_PUSH.equals(profile) ? PUSHED_PATHS : STAGED_PATHS;
   }
 
   /**

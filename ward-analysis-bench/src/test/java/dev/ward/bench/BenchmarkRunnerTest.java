@@ -76,4 +76,19 @@ class BenchmarkRunnerTest {
         .extracting(GateJob::name)
         .doesNotContain("checkstyle-edit-hook");
   }
+
+  @Test
+  void wardProbeJobRunsForEveryEntryAndNamesTheEditedFile() {
+    final CorpusEntry ward = new CorpusEntry("java", "ward", URL, SHA);
+
+    assertThat(BenchmarkRunner.jobsFor(ward))
+        .filteredOn(GateJob::wardProbe)
+        .singleElement()
+        .satisfies(
+            job -> {
+              assertThat(job.name()).isEqualTo("ward-gate-edit");
+              assertThat(job.recordedCommand()).endsWith("--path", GateJob.EDITED);
+            });
+    assertThat(BenchmarkRunner.jobsFor(PETCLINIC)).extracting(GateJob::wardProbe).contains(true);
+  }
 }
