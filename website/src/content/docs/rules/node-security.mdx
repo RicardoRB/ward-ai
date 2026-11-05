@@ -61,10 +61,3 @@ and `fs.promises` resolves to `fs`. A call on a name that some other module prov
   covered.
 - The qualifier fallbacks `req`, `res` and `response` match by name, so a renamed parameter that
   has no `Request` type is missed, and an unrelated object with the same name can match.
-
-## Measured accuracy
-
-The rules are measured on a labeled corpus in `ward-analysis-bench/src/test/resources/accuracy/node/`. Each file
-holds one case and is labeled for one rule.
-
-The accuracy table is added to this page once the accuracy mode of the bench measures the corpus.
