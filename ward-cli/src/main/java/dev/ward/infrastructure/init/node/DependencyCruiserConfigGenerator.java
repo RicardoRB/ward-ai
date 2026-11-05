@@ -40,6 +40,12 @@ public final class DependencyCruiserConfigGenerator implements ArchitectureTestG
     return List.of();
   }
 
+  /** The source folder when the project has one, else the project root itself. */
+  @Override
+  public List<String> cycleRoots(final Project project) {
+    return Files.isDirectory(project.root().resolve("src")) ? List.of("src") : List.of(".");
+  }
+
   @Override
   public ArchitectureTestChange apply(final Project project, final String architecture) {
     return apply(project, architecture, NO_EXTRAS);

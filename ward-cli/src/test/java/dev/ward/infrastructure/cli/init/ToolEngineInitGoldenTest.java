@@ -12,7 +12,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HexFormat;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,7 @@ class ToolEngineInitGoldenTest {
   private static final String GOLDEN_DIR = "src/test/resources/golden/init-tool/";
   private static final String MAVEN_STRICT = "maven-strict-hexagonal.txt";
   private static final String MAVEN_STANDARD = "maven-standard-layered.txt";
+  private static final Pattern LIMITS = Pattern.compile("<limits>(.*?)</limits>");
 
   @TempDir Path root;
 
@@ -101,10 +106,31 @@ class ToolEngineInitGoldenTest {
   private static String sha256(final Path file) {
     try {
       final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-      return HexFormat.of().formatHex(digest.digest(Files.readAllBytes(file)));
+      return HexFormat.of().formatHex(digest.digest(bytes(file)));
     } catch (final IOException | NoSuchAlgorithmException exception) {
       throw new IllegalStateException("could not hash " + file, exception);
     }
+  }
+
+  /**
+   * The file's bytes. shortcut: the JaCoCo limits of the pom come from an unordered set, so their
+   * order changes between JVM runs; their order is sorted here, and the limits themselves are kept.
+   */
+  private static byte[] bytes(final Path file) throws IOException {
+    final String text = Files.readString(file, StandardCharsets.UTF_8);
+    if (!"pom.xml".equals(String.valueOf(file.getFileName()))) {
+      return text.getBytes(StandardCharsets.UTF_8);
+    }
+    final Matcher limits = LIMITS.matcher(text);
+    final StringBuilder sorted = new StringBuilder();
+    while (limits.find()) {
+      final List<String> items = new ArrayList<>(List.of(limits.group(1).split("(?=<limit>)")));
+      items.removeIf(String::isEmpty);
+      items.sort(null);
+      limits.appendReplacement(sorted, Matcher.quoteReplacement("<limits>" + String.join("", items) + "</limits>"));
+    }
+    limits.appendTail(sorted);
+    return sorted.toString().getBytes(StandardCharsets.UTF_8);
   }
 
   private void mavenProject() throws IOException {

@@ -26,7 +26,7 @@ class InitWardExtrasTest {
   @TempDir Path project;
 
   @Test
-  void typeScriptStrictWardKeepsOnlyNoCircularInTheDependencyCruiserConfig()
+  void typeScriptStrictWardWritesTheCycleRootsAndNoDependencyCruiserConfig()
       throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
 
@@ -46,14 +46,14 @@ class InitWardExtrasTest {
             "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
-    assertThat(fixture.read("ward.toml")).contains("[[checks.ward.layers]]");
-    assertThat(fixture.read(DEPENDENCY_CRUISER_CONFIG))
-        .contains("no-circular")
-        .doesNotContain("hexagonal-architecture");
+    assertThat(fixture.read("ward.toml"))
+        .contains("[[checks.ward.layers]]", "[checks.ward.cycles]", "roots = [\"src\"]")
+        .doesNotContain("[checks.dependency-cruiser]");
+    assertThat(project.resolve(DEPENDENCY_CRUISER_CONFIG)).doesNotExist();
   }
 
   @Test
-  void pythonStrictWardKeepsOnlyTheIndependenceContract() throws IOException {
+  void pythonStrictWardWritesTheCycleAndIndependenceTables() throws IOException {
     final Path python = Files.createDirectories(project.resolve("py"));
     writeUvProject(python);
     final InitCommandFixture init =
@@ -76,9 +76,10 @@ class InitWardExtrasTest {
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(Files.readString(python.resolve(".importlinter")))
-        .contains("type = independence")
-        .doesNotContain("layers");
+    assertThat(python.resolve(".importlinter")).doesNotExist();
+    assertThat(Files.readString(python.resolve("ward.toml")))
+        .contains("[checks.ward.cycles]", "[[checks.ward.independence]]")
+        .doesNotContain("[checks.import-linter]");
   }
 
   @Test
@@ -117,7 +118,9 @@ class InitWardExtrasTest {
                   .findFirst()
                   .orElseThrow());
     }
-    assertThat(archUnit).contains("noCycles").doesNotContain("..domain..", "..adapter..");
+    assertThat(archUnit).doesNotContain("noCycles").doesNotContain("..domain..", "..adapter..");
+    assertThat(Files.readString(project.resolve("ward.toml")))
+        .contains("[checks.ward.cycles]", "roots = [\"src/main/java/shop\"]");
   }
 
   @Test
@@ -145,8 +148,9 @@ class InitWardExtrasTest {
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains(ArchitectureLayers.EXTRAS_ONLY_NOTE);
+    assertThat(init.output()).doesNotContain(ArchitectureLayers.EXTRAS_ONLY_NOTE);
     assertThat(python.resolve(".importlinter")).doesNotExist();
+    assertThat(python.resolve("ward.toml")).doesNotExist();
   }
 
   private static void writeUvProject(final Path root) throws IOException {

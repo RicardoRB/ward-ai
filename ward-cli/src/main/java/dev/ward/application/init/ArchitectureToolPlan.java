@@ -27,7 +27,7 @@ final class ArchitectureToolPlan {
    */
   static boolean wardLeavesExtras(final Project project, final InitSelection selection) {
     return selection.architectureEngine() == ArchitectureEngine.WARD
-        && extras(selection).any()
+        && extras(project, selection).any()
         && project.toolchain() != Toolchain.SWIFT;
   }
 
@@ -39,10 +39,24 @@ final class ArchitectureToolPlan {
     return selection.architecture() == null ? "layered" : selection.architecture();
   }
 
-  /** The strict extras of the selection's preset; none without a preset. */
-  static QualityPreset.ArchitectureExtras extras(final InitSelection selection) {
-    return selection.preset() == null
-        ? new QualityPreset.ArchitectureExtras(false, false, false)
-        : selection.preset().rules().architectureExtras();
+  /**
+   * The strict extras the external tool generates; none without a preset. Under the ward engine the
+   * cycle check belongs to the engine, and the ArchUnit coding rules are the only extras left, so
+   * they stay with the JVM tool and no other toolchain keeps any.
+   */
+  static QualityPreset.ArchitectureExtras extras(
+      final Project project, final InitSelection selection) {
+    final QualityPreset.ArchitectureExtras preset =
+        selection.preset() == null
+            ? new QualityPreset.ArchitectureExtras(false, false, false)
+            : selection.preset().rules().architectureExtras();
+    if (selection.architectureEngine() != ArchitectureEngine.WARD) {
+      return preset;
+    }
+    if (project.toolchain() != Toolchain.JVM) {
+      return new QualityPreset.ArchitectureExtras(false, false, false);
+    }
+    return new QualityPreset.ArchitectureExtras(
+        false, preset.noFieldInjection(), preset.noStandardStreams());
   }
 }

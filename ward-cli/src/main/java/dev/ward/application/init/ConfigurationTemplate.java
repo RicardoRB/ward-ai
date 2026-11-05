@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.analysis.domain.rule.LayerBoundary;
 import dev.ward.domain.config.CommandTypeInference;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
@@ -40,19 +39,19 @@ public final class ConfigurationTemplate {
       final QualityPreset preset,
       final Project project,
       final String openSpecRoot) {
-    return render(gates, preset, project, openSpecRoot, List.of());
+    return render(gates, preset, project, openSpecRoot, EngineArchitecture.NONE);
   }
 
   /**
    * Renders the configuration as {@link #render(List, QualityPreset, Project, String)} does, and
-   * when {@code layers} is not empty, adds the {@code ward} gate that enforces those boundaries.
+   * when {@code architecture} names any table, adds the {@code ward} gate that enforces them.
    */
   static String render(
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Project project,
       final String openSpecRoot,
-      final List<LayerBoundary> layers) {
+      final EngineArchitecture architecture) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
@@ -90,8 +89,10 @@ public final class ConfigurationTemplate {
       gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
       partial(content, gate, project, preset);
     }
-    if (!layers.isEmpty()) {
-      WardGateTemplate.append(content, layers);
+    if (!architecture.layers().isEmpty()
+        || !architecture.cycleRoots().isEmpty()
+        || !architecture.independence().isEmpty()) {
+      WardGateTemplate.append(content, architecture);
     }
     return content.toString();
   }

@@ -29,8 +29,7 @@ final class ImportLinterContracts {
         architecture == null
             ? null
             : ArchitectureLayers.forStyle(architecture, project.framework());
-    final Set<String> names =
-        layers == null ? Set.of() : Set.copyOf(concat(layers.from(), layers.forbidden()));
+    final Set<String> names = layers == null ? Set.of() : names(layers);
     return MARKER
         + "[importlinter]\n"
         + rootLines(project, roots)
@@ -64,29 +63,74 @@ final class ImportLinterContracts {
   }
 
   /**
-   * Returns the independence contract between the features: the Django apps, or the root's feature
-   * packages. Empty when there are fewer than {@code MIN_FEATURES}.
+   * Returns the independence contract between the features, or empty when there are fewer than
+   * {@code MIN_FEATURES}.
    */
   private static String independence(
       final Project project, final List<String> roots, final Set<String> layers) {
-    final List<String> features =
-        switch (project.framework()) {
-          case DJANGO -> PythonPackages.djangoApps(project);
-          case FLASK ->
-              FlaskPackages.blueprints(project, roots.getFirst()).stream()
-                  .map(feature -> roots.getFirst() + "." + feature)
-                  .toList();
-          default ->
-              PythonPackages.features(project, roots.getFirst(), layers).stream()
-                  .map(feature -> roots.getFirst() + "." + feature)
-                  .toList();
-        };
+    final List<String> features = featureModules(project, roots, layers);
     if (features.size() < MIN_FEATURES) {
       return "";
     }
     return "\n[importlinter:contract:features]\nname = Features are independent\n"
         + "type = independence\nmodules =\n"
         + features.stream().map(feature -> "    " + feature + "\n").reduce("", String::concat);
+  }
+
+  /**
+   * Returns the module names of the features: the Django apps, the Flask blueprints or the root's
+   * feature packages, excluding the layers of the style.
+   */
+  private static List<String> featureModules(
+      final Project project, final List<String> roots, final Set<String> layers) {
+    return switch (project.framework()) {
+      case DJANGO -> PythonPackages.djangoApps(project);
+      case FLASK ->
+          FlaskPackages.blueprints(project, roots.getFirst()).stream()
+              .map(feature -> roots.getFirst() + "." + feature)
+              .toList();
+      default ->
+          PythonPackages.features(project, roots.getFirst(), layers).stream()
+              .map(feature -> roots.getFirst() + "." + feature)
+              .toList();
+    };
+  }
+
+  /**
+   * Returns the directories of the features that the independence contract lists for {@code
+   * architecture}, for the ward engine's independence table. Empty when there are fewer than
+   * {@code MIN_FEATURES}.
+   */
+  static List<String> independenceDirectories(final Project project, final String architecture) {
+    final List<String> roots = PythonPackages.roots(project);
+    final Set<String> layers =
+        architecture == null
+            ? Set.of()
+            : names(ArchitectureLayers.forStyle(architecture, project.framework()));
+    final List<String> features = featureModules(project, roots, layers);
+    if (features.size() < MIN_FEATURES) {
+      return List.of();
+    }
+    if (project.framework() == Framework.DJANGO) {
+      return features;
+    }
+    final String base = directory(project, roots.getFirst());
+    final int prefix = roots.getFirst().length() + 1;
+    return features.stream().map(module -> base + "/" + module.substring(prefix)).toList();
+  }
+
+  /** The project-relative directory of the root package {@code rootPackage}. */
+  static String directory(final Project project, final String rootPackage) {
+    return project
+        .root()
+        .relativize(PythonPackages.packageDirectory(project.root(), rootPackage))
+        .toString()
+        .replace('\\', '/');
+  }
+
+  /** The layer names of a style: the names of its source and forbidden layers. */
+  private static Set<String> names(final LayerBoundary layers) {
+    return Set.copyOf(concat(layers.from(), layers.forbidden()));
   }
 
   /** Returns each layer of each root as a module expression, at any depth below the root. */

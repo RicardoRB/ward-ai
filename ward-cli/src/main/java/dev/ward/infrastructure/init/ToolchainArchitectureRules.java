@@ -63,6 +63,16 @@ public final class ToolchainArchitectureRules implements ArchitectureTestGenerat
     return generator(project.toolchain()).plan(codeProject(project), architecture, extras);
   }
 
+  @Override
+  public List<String> cycleRoots(final Project project) {
+    return generator(project.toolchain()).cycleRoots(codeProject(project));
+  }
+
+  @Override
+  public List<String> independenceModules(final Project project, final String style) {
+    return generator(project.toolchain()).independenceModules(codeProject(project), style);
+  }
+
   /** The project whose sources the rules analyze: a Maven aggregator's owning module, if any. */
   private static Project codeProject(final Project project) {
     return MavenCodeRoot.of(project);

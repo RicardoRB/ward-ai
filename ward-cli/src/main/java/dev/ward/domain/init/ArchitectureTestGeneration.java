@@ -28,4 +28,20 @@ public interface ArchitectureTestGeneration {
 
   /** Removes a test that {@code change} created and leaves reused tests untouched. */
   void rollback(ArchitectureTestChange change);
+
+  /**
+   * Returns the project-relative source roots whose slices the {@code ward} engine checks for
+   * cycles; none when the toolchain gives no roots.
+   */
+  default List<String> cycleRoots(final Project project) {
+    return List.of();
+  }
+
+  /**
+   * Returns the project-relative module directories that the {@code ward} engine's independence
+   * table lists for {@code style}; none when the toolchain has no features to keep apart.
+   */
+  default List<String> independenceModules(final Project project, final String style) {
+    return List.of();
+  }
 }

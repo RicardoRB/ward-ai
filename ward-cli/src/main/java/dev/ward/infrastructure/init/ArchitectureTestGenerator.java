@@ -126,6 +126,11 @@ public final class ArchitectureTestGenerator implements ArchitectureTestGenerati
                 : architecture + " architecture"));
   }
 
+  @Override
+  public List<String> cycleRoots(final Project project) {
+    return List.of("src/main/java/" + detectBasePackage(project.root()).replace('.', '/'));
+  }
+
   /** Where the generated test lives; shared by apply and plan. */
   private static Path target(final Path projectRoot, final String basePackage) {
     return projectRoot

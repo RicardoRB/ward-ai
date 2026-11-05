@@ -80,7 +80,7 @@ final class InitChanges {
               .apply(
                   project,
                   ArchitectureToolPlan.style(selection),
-                  ArchitectureToolPlan.extras(selection));
+                  ArchitectureToolPlan.extras(project, selection));
     }
     for (final OwnedSection section :
         OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved())) {
