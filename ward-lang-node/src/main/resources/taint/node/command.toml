@@ -1,0 +1,57 @@
+# Command sinks: child_process functions run their first argument as a command.
+
+[[sinks]]
+kind = "call"
+name = "exec"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execSync"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "spawn"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "spawnSync"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execFile"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execFileSync"
+receiver = "child_process"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fork"
+receiver = "child_process"
+arguments = [0]
+
+# Numeric conversions cannot carry markup or a path separator.
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"

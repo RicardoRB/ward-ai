@@ -79,7 +79,7 @@ public final class TaintAnalysis {
       final Map<AccessSite, Taint> origins,
       final TaintSpec spec) {
     return directSource(block, argument, spec)
-        .or(() -> fromReads(block, argument, reaching, origins));
+        .or(() -> fromReads(block, argument, reaching, origins, spec));
   }
 
   /** A call, or a property write whose argument 0 is the assigned value, can be a sink. */
@@ -105,16 +105,21 @@ public final class TaintAnalysis {
                 new Taint(site.name(), List.of(new FlowStep(site.span(), SOURCE + site.name()))));
   }
 
-  /** A read in the guarded argument that sees a tainted write. */
+  /**
+   * A read in the guarded argument that sees a tainted write. A read inside a sanitizer's argument
+   * is clean, so it is not a source of taint for the sink.
+   */
   private static Optional<Taint> fromReads(
       final BasicBlock block,
       final Span argument,
       final ReachingDefinitions reaching,
-      final Map<AccessSite, Taint> origins) {
+      final Map<AccessSite, Taint> origins,
+      final TaintSpec spec) {
     for (final AccessSite use : reaching.uses()) {
       if (use.block() == block.id()
           && isRead(use.access())
-          && TaintSpans.contains(argument, use.access().span())) {
+          && TaintSpans.contains(argument, use.access().span())
+          && !TaintSpans.sanitized(block, use.access().span(), spec)) {
         final Optional<Taint> taint =
             reaching.reaching(use).stream().map(origins::get).filter(t -> t != null).findFirst();
         if (taint.isPresent()) {

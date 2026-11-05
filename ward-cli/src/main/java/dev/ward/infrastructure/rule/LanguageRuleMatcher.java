@@ -1,14 +1,16 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import java.util.Set;
 
 /**
- * Sends each rule to the matcher of its language. TypeScript and JavaScript rules name their metric
- * in the id, so they go to the structural matcher; every other language uses the shared matcher.
+ * Sends each rule to the matcher of its language. TypeScript and JavaScript rules go to the
+ * structural matcher, which names the metric in the id; a rule it cannot use, such as a taint check,
+ * goes to the shared matcher. Every other language uses the shared matcher.
  */
 public final class LanguageRuleMatcher implements RuleMatcher {
 
@@ -26,10 +28,27 @@ public final class LanguageRuleMatcher implements RuleMatcher {
 
   @Override
   public CompiledRule compile(final RuleDefinition definition) {
-    return matcherFor(definition).compile(definition);
+    if (!isStructural(definition)) {
+      return shared.compile(definition);
+    }
+    try {
+      return structural.compile(definition);
+    } catch (final AnalysisFailedException structuralFailure) {
+      return compileShared(definition, structuralFailure);
+    }
   }
 
-  private RuleMatcher matcherFor(final RuleDefinition definition) {
-    return definition.languages().stream().allMatch(STRUCTURAL::contains) ? structural : shared;
+  private CompiledRule compileShared(
+      final RuleDefinition definition, final AnalysisFailedException structuralFailure) {
+    try {
+      return shared.compile(definition);
+    } catch (final AnalysisFailedException sharedFailure) {
+      structuralFailure.addSuppressed(sharedFailure);
+      throw structuralFailure;
+    }
+  }
+
+  private static boolean isStructural(final RuleDefinition definition) {
+    return definition.languages().stream().allMatch(STRUCTURAL::contains);
   }
 }
