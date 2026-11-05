@@ -63,6 +63,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `import-linter` | Layer and feature contracts in `.importlinter` | [references/import-linter.md](references/import-linter.md) |
+| `ward` | `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init --architecture-engine ward`; the slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `swiftlint`, `swift-format` | SwiftLint rules in `.swiftlint.yml` and the swift-format settings in `.swift-format` | [references/swiftlint.md](references/swiftlint.md) |
 | `harmonize` | Layer rules in the generated `.ward/swift-architecture` package and the root `.harmonize.yaml` | [references/harmonize.md](references/harmonize.md) |

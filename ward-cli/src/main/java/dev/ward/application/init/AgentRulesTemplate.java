@@ -57,8 +57,8 @@ public final class AgentRulesTemplate {
 
   /**
    * Returns the section as {@link #render(Project, List, QualityPreset, List)} does, and when
-   * {@code wardArchitecture} is set, names the {@code ward:architecture/layers} rule that enforces
-   * the style.
+   * {@code wardArchitecture} is set, names the {@code ward:architecture} rules that enforce the
+   * style, the cycles and the independence the {@code ward} engine checks.
    */
   public static OwnedSection render(
       final Project project,
@@ -94,6 +94,11 @@ public final class AgentRulesTemplate {
       lines.add(
           "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"
               + " `ward.toml`; do not remove them or add exemptions.");
+      lines.add(
+          "- Architecture: when `ward.toml` configures `[checks.ward.cycles]` or"
+              + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
+              + " `ward:architecture/independence` enforce them; do not remove them or add"
+              + " exemptions.");
     }
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));

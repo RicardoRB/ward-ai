@@ -613,7 +613,7 @@ rules = [
 
 A file with a syntax error is not checked by these rules. It is reported as an execution error, and
 the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
-than `uses`, `enabled`, `profiles`, `rules`, `java-classpath` and `layers`.
+than `uses`, `enabled`, `profiles`, `rules`, `java-classpath`, `layers`, `cycles` and `independence`.
 
 ## Layer boundaries
 
@@ -634,6 +634,37 @@ Both lists are non-empty and name plain directory names. The rule covers Java, P
 JavaScript. Java and Swift test sources are not checked. Swift is not yet covered, because its type
 name edges are not in this release. `ward init --architecture-engine ward` writes this table for the
 chosen style.
+
+## Slice cycles and feature independence
+
+`[checks.ward.cycles]` names the source roots whose slices must not form a dependency cycle. A slice
+is the first directory below the longest root that holds a file. A file directly in a root, or
+outside every root, belongs to no slice. The rule `ward:architecture/cycles` reports each group of
+two or more slices that depend on each other in a cycle, once, at an import that leaves the group's
+alphabetically first slice. Its path lists one step per slice dependency of the shortest cycle
+through that slice. Cycles inside one slice are not reported, so a file cycle within one folder is
+not a finding under this rule.
+
+```toml
+[checks.ward.cycles]
+roots = ["src/main/java/com/acme"]
+```
+
+`[[checks.ward.independence]]` lists module directories that must not depend on each other. The rule
+`ward:architecture/independence` reports every import from a file in one listed module to a file in
+another listed module of the same table, at the line of the import. Code that both modules share
+outside the list is allowed.
+
+```toml
+[[checks.ward.independence]]
+modules = ["shop/orders", "shop/billing"]
+```
+
+Both lists are validated: `roots` is non-empty and holds project-relative directories, and each
+`modules` list has at least two entries. `ward init --preset strict --architecture-engine ward`
+writes these tables. The external rules they replace are then not generated: ArchUnit's
+`beFreeOfCycles`, dependency-cruiser's `no-circular`, and Import Linter's independence contract. With
+`--architecture-engine tool`, init writes none of these tables.
 
 ## Swift structural rules
 
