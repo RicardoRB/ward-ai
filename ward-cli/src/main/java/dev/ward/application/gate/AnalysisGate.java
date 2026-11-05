@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
-import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
@@ -183,9 +182,10 @@ public final class AnalysisGate implements QualityGate {
     for (final RuleExecutionError error : run.executionErrors()) {
       lines.add(errorLine(error));
     }
-    for (final RuleNotRun skipped : run.notRun()) {
-      lines.add(skipped.ruleId() + " not run: its frontend lacks " + skipped.missing());
-    }
+    run.notRun()
+        .forEach(
+            skipped ->
+                lines.add(skipped.ruleId() + " not run: its frontend lacks " + skipped.missing()));
     return String.join("\n", lines);
   }
 
