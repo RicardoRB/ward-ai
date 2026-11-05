@@ -11,6 +11,8 @@ class AccuracyScoreTest {
 
   private static final String RULE = "ward:java/sql-injection";
   private static final String OTHER = "ward:java/command-injection";
+  private static final double HALF = 0.5;
+  private static final int PREDICTED = 3;
 
   @Test
   void countsEachFileOnceAndTheLabelsDecideTheClass() {
@@ -30,8 +32,8 @@ class AccuracyScoreTest {
     assertThat(score.truePositives()).isEqualTo(1);
     assertThat(score.falsePositives()).isEqualTo(2);
     assertThat(score.falseNegatives()).isEqualTo(1);
-    assertThat(score.precision()).isEqualTo(1.0 / 3);
-    assertThat(score.recall()).isEqualTo(0.5);
+    assertThat(score.precision()).isEqualTo(1.0 / PREDICTED);
+    assertThat(score.recall()).isEqualTo(HALF);
   }
 
   @Test
@@ -71,8 +73,8 @@ class AccuracyScoreTest {
   void sumAddsTheCountsOfTheRule() {
     final RuleScore sum =
         RuleScore.sum(
-            RuleScore.TOTAL, List.of(new RuleScore(RULE, 1, 2, 3), new RuleScore(OTHER, 4, 5, 6)));
+            RuleScore.TOTAL, List.of(new RuleScore(RULE, 1, 2, 0), new RuleScore(OTHER, 1, 0, 2)));
 
-    assertThat(sum).isEqualTo(new RuleScore(RuleScore.TOTAL, 5, 7, 9));
+    assertThat(sum).isEqualTo(new RuleScore(RuleScore.TOTAL, 2, 2, 2));
   }
 }

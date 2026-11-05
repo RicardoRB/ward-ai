@@ -14,12 +14,22 @@ final class MiniJson {
   private static final int HEX_DIGITS = 4;
   private static final int HEX_RADIX = 16;
   private static final String NUMBER_CHARS = "+-.eE0123456789";
+  private static final String UNICODE = "u";
+  private static final Map<Character, Character> ESCAPES =
+      Map.of(
+          '"', '"',
+          '\\', '\\',
+          '/', '/',
+          'b', '\b',
+          'f', '\f',
+          'n', '\n',
+          'r', '\r',
+          't', '\t');
 
-  private final String text;
-  private int position;
+  private final JsonCursor cursor;
 
   private MiniJson(final String text) {
-    this.text = text;
+    this.cursor = new JsonCursor(text);
   }
 
   /**
@@ -32,16 +42,14 @@ final class MiniJson {
   static Object parse(final String text) {
     final MiniJson reader = new MiniJson(text);
     final Object value = reader.value();
-    reader.skipSpace();
-    if (reader.position != text.length()) {
-      throw reader.error("text after the document");
+    if (!reader.cursor.atEnd()) {
+      throw reader.cursor.error("text after the document");
     }
     return value;
   }
 
   private Object value() {
-    skipSpace();
-    return switch (peek()) {
+    return switch (cursor.peekOr('\0')) {
       case '{' -> object();
       case '[' -> array();
       case '"' -> string();
@@ -54,134 +62,77 @@ final class MiniJson {
 
   private Map<String, Object> object() {
     final Map<String, Object> members = new LinkedHashMap<>();
-    expect('{');
-    skipSpace();
-    if (peekIs('}')) {
-      position++;
+    cursor.expect('{');
+    if (cursor.consume('}')) {
       return members;
     }
     do {
-      skipSpace();
       final String key = string();
-      skipSpace();
-      expect(':');
+      cursor.expect(':');
       members.put(key, value());
-      skipSpace();
-    } while (consume(','));
-    expect('}');
+    } while (cursor.consume(','));
+    cursor.expect('}');
     return members;
   }
 
   private List<Object> array() {
     final List<Object> items = new ArrayList<>();
-    expect('[');
-    skipSpace();
-    if (peekIs(']')) {
-      position++;
+    cursor.expect('[');
+    if (cursor.consume(']')) {
       return items;
     }
     do {
       items.add(value());
-      skipSpace();
-    } while (consume(','));
-    expect(']');
+    } while (cursor.consume(','));
+    cursor.expect(']');
     return items;
   }
 
   private String string() {
-    expect('"');
+    cursor.expect('"');
     final StringBuilder out = new StringBuilder();
-    while (position < text.length()) {
-      final char c = text.charAt(position++);
-      if (c == '"') {
-        return out.toString();
-      }
+    char c = cursor.next();
+    while (c != '"') {
       out.append(c == '\\' ? escape() : c);
+      c = cursor.next();
     }
-    throw error("unterminated string");
+    return out.toString();
   }
 
   private char escape() {
-    final char c = next();
-    return switch (c) {
-      case '"', '\\', '/' -> c;
-      case 'b' -> '\b';
-      case 'f' -> '\f';
-      case 'n' -> '\n';
-      case 'r' -> '\r';
-      case 't' -> '\t';
-      case 'u' -> unicode();
-      default -> throw error("unknown escape");
-    };
+    final char c = cursor.next();
+    if (UNICODE.charAt(0) == c) {
+      return unicode();
+    }
+    final Character simple = ESCAPES.get(c);
+    if (simple == null) {
+      throw cursor.error("unknown escape");
+    }
+    return simple;
   }
 
   private char unicode() {
-    if (position + HEX_DIGITS > text.length()) {
-      throw error("short unicode escape");
+    final int start = cursor.position();
+    for (int digit = 0; digit < HEX_DIGITS; digit++) {
+      cursor.next();
     }
-    final int code = Integer.parseInt(text.substring(position, position + HEX_DIGITS), HEX_RADIX);
-    position += HEX_DIGITS;
-    return (char) code;
+    return (char) Integer.parseInt(cursor.slice(start), HEX_RADIX);
   }
 
   private Object literal(final String word, final Object value) {
-    if (!text.startsWith(word, position)) {
-      throw error("unknown literal");
+    for (final char expected : word.toCharArray()) {
+      if (cursor.next() != expected) {
+        throw cursor.error("unknown literal");
+      }
     }
-    position += word.length();
     return value;
   }
 
   private Double number() {
-    final int start = position;
-    while (position < text.length() && NUMBER_CHARS.indexOf(text.charAt(position)) >= 0) {
-      position++;
+    final int start = cursor.position();
+    if (cursor.skipWhile(NUMBER_CHARS) == 0) {
+      throw cursor.error("expected a value");
     }
-    if (start == position) {
-      throw error("expected a value");
-    }
-    return Double.valueOf(text.substring(start, position));
-  }
-
-  private void skipSpace() {
-    while (position < text.length() && Character.isWhitespace(text.charAt(position))) {
-      position++;
-    }
-  }
-
-  private char peek() {
-    if (position >= text.length()) {
-      throw error("unexpected end of document");
-    }
-    return text.charAt(position);
-  }
-
-  private boolean peekIs(final char expected) {
-    return position < text.length() && text.charAt(position) == expected;
-  }
-
-  private boolean consume(final char expected) {
-    skipSpace();
-    if (peekIs(expected)) {
-      position++;
-      return true;
-    }
-    return false;
-  }
-
-  private void expect(final char expected) {
-    if (!consume(expected)) {
-      throw error("expected '" + expected + "'");
-    }
-  }
-
-  private char next() {
-    final char c = peek();
-    position++;
-    return c;
-  }
-
-  private IllegalArgumentException error(final String problem) {
-    return new IllegalArgumentException("Invalid JSON at offset " + position + ": " + problem);
+    return Double.valueOf(cursor.slice(start));
   }
 }

@@ -9,13 +9,9 @@ import java.util.Comparator;
  * @param file the path of the file, relative to the scanned project
  * @param rule the rule id, such as {@code ward:java/sql-injection}
  */
-record WardFinding(String file, String rule) implements Comparable<WardFinding> {
+record WardFinding(String file, String rule) {
 
-  private static final Comparator<WardFinding> ORDER =
+  /** The order of the findings in a set: by rule, then by file. */
+  static final Comparator<WardFinding> ORDER =
       Comparator.comparing(WardFinding::rule).thenComparing(WardFinding::file);
-
-  @Override
-  public int compareTo(final WardFinding other) {
-    return ORDER.compare(this, other);
-  }
 }

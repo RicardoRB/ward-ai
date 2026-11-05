@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 /** Reads the JSON the harness needs: nested objects, arrays, escapes and literals. */
 class MiniJsonTest {
 
+  private static final double NEGATIVE = 25.0;
+
   @Test
   void readsNestedValuesAndEscapes() {
     final Map<?, ?> root =
@@ -17,7 +19,7 @@ class MiniJsonTest {
             MiniJson.parse(
                 " {\"a\": [1, -2.5e1, true, false, null], \"b\": {\"c\": \"x\\\"y\\u0041\\n\"}} ");
 
-    assertThat(root.get("a")).isEqualTo(Arrays.asList(1.0, -25.0, true, false, null));
+    assertThat(root.get("a")).isEqualTo(Arrays.asList(1.0, -NEGATIVE, true, false, null));
     assertThat(root.get("b")).isEqualTo(Map.of("c", "x\"yA\n"));
   }
 

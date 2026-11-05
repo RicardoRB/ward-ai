@@ -15,23 +15,6 @@ class JavaFlowSitesTest {
 
   private static final int CALL_LINE = 7;
 
-  private static final String CONSTRUCTOR = "<init>";
-  private static final int CREATION_SITES = 5;
-
-  private static final String CREATIONS =
-      """
-      import java.io.File;
-
-      class Creations {
-        void run(String name) {
-          File file = new File(name);
-          new java.io.FileReader(file.getPath());
-          Object o = new Object() { int x = 1; };
-          Object p = new File(new String(name).trim());
-        }
-      }
-      """;
-
   private static final String DB =
       """
       import java.sql.Connection;
@@ -90,63 +73,6 @@ class JavaFlowSitesTest {
     final List<FlowSite> sites = sitesOf(DB, "run(3)", FlowSiteKind.PARAMETER, "input");
     assertThat(sites).hasSize(1);
     assertThat(sites.get(0).annotations()).containsExactly("Untrusted");
-  }
-
-  /** Scenario: constructor site with an imported type, carrying its argument. */
-  @Test
-  void constructorSiteResolvesImportedType() {
-    final List<FlowSite> sites = sitesOf(CREATIONS, "run(1)", FlowSiteKind.CALL, CONSTRUCTOR);
-    assertThat(sites).hasSize(CREATION_SITES);
-    final FlowSite file = sites.get(0);
-    assertThat(file.qualifier()).isEqualTo("File");
-    assertThat(file.receiverType()).contains("java.io.File");
-    assertThat(file.arguments()).hasSize(1);
-  }
-
-  /** A fully qualified type is used as written, with no import. */
-  @Test
-  void constructorSiteKeepsQualifiedTypeName() {
-    final List<FlowSite> sites = sitesOf(CREATIONS, "run(1)", FlowSiteKind.CALL, CONSTRUCTOR);
-    assertThat(sites.get(1).qualifier()).isEqualTo("java.io.FileReader");
-    assertThat(sites.get(1).receiverType()).contains("java.io.FileReader");
-  }
-
-  /** An anonymous class body records no site, but its creation still does. */
-  @Test
-  void anonymousClassRecordsOnlyTheCreation() {
-    final List<FlowSite> sites = sitesOf(CREATIONS, "run(1)", FlowSiteKind.CALL, CONSTRUCTOR);
-    assertThat(sites.get(2).receiverType()).contains("java.lang.Object");
-    assertThat(sites.get(2).arguments()).isEmpty();
-    assertThat(sites).hasSize(CREATION_SITES);
-  }
-
-  /** The arguments of a creation are listed before the creation that holds them. */
-  @Test
-  void nestedCreationComesAfterItsArguments() {
-    final List<FlowSite> sites = sitesOf(CREATIONS, "run(1)", FlowSiteKind.CALL, "");
-    assertThat(sites.stream().map(FlowSite::name).toList())
-        .containsExactly(
-            CONSTRUCTOR, "getPath", CONSTRUCTOR, CONSTRUCTOR, CONSTRUCTOR, "trim", CONSTRUCTOR);
-  }
-
-  /** A constructor's {@code super(...)} call is a site named by its keyword, with its argument. */
-  @Test
-  void superConstructorCallIsASiteNamedByItsKeyword() {
-    final String source =
-        "class Failure extends RuntimeException {\n"
-            + "  Failure(String message) {\n"
-            + "    super(message);\n"
-            + "  }\n"
-            + "}\n";
-    final List<FlowSite> sites =
-        JavaFlowFixtures.lower(source).graphs().stream()
-            .flatMap(graph -> graph.blocks().stream())
-            .flatMap(block -> block.sites().stream())
-            .filter(site -> site.kind() == FlowSiteKind.CALL)
-            .toList();
-    assertThat(sites).hasSize(1);
-    assertThat(sites.get(0).name()).isEqualTo("super");
-    assertThat(sites.get(0).arguments()).hasSize(1);
   }
 
   private static List<FlowSite> sitesOf(

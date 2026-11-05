@@ -22,11 +22,11 @@ class AccuracyReportTest {
                 new CorpusAccuracy(
                     "two",
                     "0123",
-                    List.of(new RuleScore(PATH, 2, 1, 0), new RuleScore(SQL, 0, 1, 2)))));
+                    List.of(new RuleScore(PATH, 1, 1, 0), new RuleScore(SQL, 0, 1, 1)))));
 
     assertThat(result.rules())
-        .containsExactly(new RuleScore(PATH, 2, 1, 0), new RuleScore(SQL, 1, 1, 3));
-    assertThat(result.total()).isEqualTo(new RuleScore(RuleScore.TOTAL, 3, 2, 3));
+        .containsExactly(new RuleScore(PATH, 1, 1, 0), new RuleScore(SQL, 1, 1, 2));
+    assertThat(result.total()).isEqualTo(new RuleScore(RuleScore.TOTAL, 2, 2, 2));
   }
 
   @Test

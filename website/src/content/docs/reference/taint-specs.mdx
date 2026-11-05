@@ -52,6 +52,8 @@ from = ["receiver", 0]
   annotation or decorator name.
 - `receiver` is a fully qualified type. It is matched against the receiver type that the file
   resolves for the call.
+  In Java, a constructor call such as `new File(name)` is a `call` named `<init>` whose receiver is
+  the created type, so `name = "<init>"` with `receiver = "java.io.File"` guards that constructor.
 - `qualifier` is the receiver text as written, such as `req`.
 - `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
   Other entries cannot name arguments.

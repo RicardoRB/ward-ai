@@ -106,9 +106,10 @@ final class AccuracyRun {
             .collect(Collectors.toSet());
     final List<String> files = CorpusShard.files(source);
     final List<String> sources = CorpusShard.sourceFiles(files, extensions);
-    final Set<WardFinding> findings = new TreeSet<>();
+    final Layout layout = new Layout(name, source, files, sources);
+    final Set<WardFinding> findings = new TreeSet<>(WardFinding.ORDER);
     for (final List<String> shard : CorpusShard.of(sources)) {
-      findings.addAll(findings(name, source, files, shard, sources, rules));
+      findings.addAll(findings(layout, shard, rules));
     }
     final List<RuleScore> scores =
         rules.stream().map(rule -> AccuracyScore.score(rule, labels, findings)).toList();
@@ -128,24 +129,24 @@ final class AccuracyRun {
 
   /** Runs Ward on one shard and reads its findings. */
   private Set<WardFinding> findings(
-      final String name,
-      final Path source,
-      final List<String> files,
-      final List<String> shard,
-      final List<String> sources,
-      final List<String> rules) {
-    final Path work = workRoot.resolve(name).resolve("shard-" + sources.indexOf(shard.get(0)));
+      final Layout layout, final List<String> shard, final List<String> rules) {
+    final Path work =
+        workRoot.resolve(layout.name()).resolve("shard-" + layout.sources().indexOf(shard.get(0)));
     FileTrees.delete(work);
-    CorpusShard.populate(source, work, files, Set.copyOf(shard), Set.copyOf(sources));
+    CorpusShard.populate(
+        layout.root(), work, layout.files(), Set.copyOf(shard), Set.copyOf(layout.sources()));
     writeConfig(work, rules);
     final CommandOutput output =
         runner.output(
             List.of(binary.toString(), "check", "--format", "json", "--profile", PROFILE), work);
     if (output.stdout().isBlank()) {
-      throw new IllegalStateException("Ward printed no JSON for corpus " + name);
+      throw new IllegalStateException("Ward printed no JSON for corpus " + layout.name());
     }
     return WardFindings.read(output.stdout());
   }
+
+  /** The files of one corpus: its root, every file, and its source files. */
+  private record Layout(String name, Path root, List<String> files, List<String> sources) {}
 
   /** Writes the minimal configuration: one ward check that runs the given rules only. */
   static void writeConfig(final Path work, final List<String> rules) {

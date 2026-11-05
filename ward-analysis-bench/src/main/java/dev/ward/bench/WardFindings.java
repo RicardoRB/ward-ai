@@ -36,7 +36,7 @@ final class WardFindings {
     if (!document.containsKey(CHECKS)) {
       throw new IllegalStateException("The ward run produced no checks: " + document.get(ERROR));
     }
-    final Set<WardFinding> found = new TreeSet<>();
+    final Set<WardFinding> found = new TreeSet<>(WardFinding.ORDER);
     for (final Object check : list(document.get(CHECKS))) {
       readCheck(object(check), found);
     }

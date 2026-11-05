@@ -1,7 +1,6 @@
 package dev.ward.bench;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,20 +23,20 @@ final class AccuracyJson {
     root.put("corpora", corpora(result.corpora()));
     root.put("rules", rows(result.rules()));
     root.put("total", row(result.total()));
-    return ResultJson.toJson(root);
+    return JsonDocument.toJson(root);
   }
 
   private static List<Object> corpora(final List<CorpusAccuracy> corpora) {
-    final List<Object> rows = new ArrayList<>();
-    for (final CorpusAccuracy corpus : corpora) {
-      final Map<String, Object> entry = new LinkedHashMap<>();
-      entry.put("name", corpus.name());
-      entry.put("commit", corpus.commit());
-      entry.put("rules", rows(corpus.rules()));
-      entry.put("total", row(corpus.total()));
-      rows.add(entry);
-    }
-    return rows;
+    return corpora.stream().map(AccuracyJson::corpus).map(entry -> (Object) entry).toList();
+  }
+
+  private static Map<String, Object> corpus(final CorpusAccuracy corpus) {
+    final Map<String, Object> entry = new LinkedHashMap<>();
+    entry.put("name", corpus.name());
+    entry.put("commit", corpus.commit());
+    entry.put("rules", rows(corpus.rules()));
+    entry.put("total", row(corpus.total()));
+    return entry;
   }
 
   private static List<Object> rows(final List<RuleScore> scores) {
