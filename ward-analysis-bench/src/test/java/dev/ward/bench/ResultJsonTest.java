@@ -39,7 +39,7 @@ class ResultJsonTest {
 
     final String json = ResultJson.render(result, Instant.parse("2026-11-02T00:00:00Z"));
 
-    assertThat(json).contains("\"schemaVersion\": 1");
+    assertThat(json).contains("\"schemaVersion\": 2").contains("\"mode\": \"speed\"");
     assertThat(json).contains("\"commit\": \"" + SHA + "\"");
     assertThat(json).contains("\"command\": [\n");
     assertThat(json).contains("\"ward\"");

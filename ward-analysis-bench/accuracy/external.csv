@@ -1,0 +1,2 @@
+name,url,commit,labels,format,root
+owasp-benchmark,https://github.com/OWASP-Benchmark/BenchmarkJava.git,2734ae486356765ea4e45393a28e20bcb5047f8c,expectedresults-1.2beta.csv,owasp-benchmark,src/main/java/org/owasp/benchmark/testcode

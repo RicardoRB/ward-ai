@@ -59,6 +59,21 @@ final class ProcessCommandRunner implements CommandRunner {
     }
   }
 
+  @Override
+  public CommandOutput output(final List<String> command, final Path directory) {
+    final Process process = start(command, directory, ProcessBuilder.Redirect.PIPE);
+    try {
+      final byte[] output = process.getInputStream().readAllBytes();
+      final int exitCode = process.waitFor();
+      return new CommandOutput(exitCode, new String(output, StandardCharsets.UTF_8));
+    } catch (IOException e) {
+      throw new UncheckedIOException("Could not read output of " + command.get(0), e);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new IllegalStateException("Command was interrupted", e);
+    }
+  }
+
   private static long treeRssKb(final long pid) {
     return ProcessTreeRss.sum(pid, processTable());
   }

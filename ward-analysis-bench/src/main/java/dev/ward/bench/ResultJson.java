@@ -1,17 +1,20 @@
 package dev.ward.bench;
 
 import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Renders a {@link BenchmarkResult} as schema version 1 JSON. The output holds no environment
- * variables and no captured process output.
+ * Renders a {@link BenchmarkResult} as a speed document of schema version 2. Version 1 documents
+ * have no {@code mode} key and are speed documents too. The output holds no environment variables
+ * and no captured process output.
  */
 final class ResultJson {
 
-  static final int SCHEMA_VERSION = 1;
+  static final int SCHEMA_VERSION = 2;
+  static final String SPEED_MODE = "speed";
   private static final String INDENT = "  ";
   private static final char SPACE = ' ';
 
@@ -20,6 +23,7 @@ final class ResultJson {
   static String render(final BenchmarkResult result, final Instant generatedAt) {
     final Map<String, Object> root = new LinkedHashMap<>();
     root.put("schemaVersion", SCHEMA_VERSION);
+    root.put("mode", SPEED_MODE);
     root.put("generatedAt", generatedAt.toString());
     root.put("completed", result.completed());
     root.put(
@@ -30,6 +34,11 @@ final class ResultJson {
     root.put("repeats", Map.of("full", result.fullRepeats(), "edit", result.editRepeats()));
     root.put("manifest", manifest(result));
     root.put("entries", entries(result));
+    return toJson(root);
+  }
+
+  /** Renders a map of maps, lists, strings, numbers and nulls as one JSON document. */
+  static String toJson(final Map<String, Object> root) {
     final StringBuilder json = new StringBuilder();
     write(json, root, 0);
     return json.append('\n').toString();
@@ -90,7 +99,13 @@ final class ResultJson {
     if (value instanceof Map<?, ?> map) {
       writeContainer(
           json,
-          map.entrySet().stream().map(e -> Map.entry(e.getKey().toString(), e.getValue())).toList(),
+          map.entrySet().stream()
+              .map(
+                  e ->
+                      (Map.Entry<String, Object>)
+                          new AbstractMap.SimpleImmutableEntry<>(
+                              e.getKey().toString(), e.getValue()))
+              .toList(),
           depth,
           '{',
           '}');

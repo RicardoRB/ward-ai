@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <!-- A labeled corpus for ward-analysis-bench's accuracy mode. It has no dependencies: the
+       sources only need to be read, not compiled. -->
+  <groupId>dev.ward.bench</groupId>
+  <artifactId>accuracy-java</artifactId>
+  <version>1.0.0</version>
+</project>

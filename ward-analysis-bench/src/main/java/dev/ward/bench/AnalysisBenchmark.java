@@ -21,8 +21,10 @@ public final class AnalysisBenchmark {
 
   private static final Logger LOG = Logger.getLogger(AnalysisBenchmark.class.getName());
   private static final String USAGE =
-      "Usage: --binary <ward native executable> --manifest <corpus.csv>"
-          + " --out <result.json> [--repeats <n>] [--cache <dir>] [--work <dir>]";
+      "Usage: --binary <ward executable> --out <result.json>"
+          + " (--manifest <corpus.csv> [--repeats <n>] | --accuracy <dir>)"
+          + " [--cache <dir>] [--work <dir>]";
+  private static final String ACCURACY = "accuracy";
   private static final int DEFAULT_REPEATS = 5;
   private static final int MIN_REPEATS = 1;
   private static final int OPTION_PAIR = 2;
@@ -47,13 +49,19 @@ public final class AnalysisBenchmark {
     }
     try {
       return benchmark(options, out);
-    } catch (IllegalArgumentException | IllegalStateException | UncheckedIOException e) {
+    } catch (IllegalArgumentException
+        | IllegalStateException
+        | UncheckedIOException
+        | CorpusFetchException e) {
       LOG.severe(() -> "Benchmark stopped: " + e.getMessage());
       return EXIT_INCOMPLETE;
     }
   }
 
   private static int benchmark(final Map<String, String> options, final PrintStream out) {
+    if (options.containsKey(ACCURACY)) {
+      return accuracy(options, out);
+    }
     final Path binary = Path.of(options.get("binary")).toAbsolutePath();
     final NativeExecutable executable = NativeExecutable.verify(binary);
     final List<CorpusEntry> entries = CorpusManifest.read(Path.of(options.get("manifest")));
@@ -70,6 +78,25 @@ public final class AnalysisBenchmark {
     write(Path.of(options.get("out")), ResultJson.render(result, Instant.now()));
     out.print(Summary.render(result));
     return result.completed() ? EXIT_COMPLETED : EXIT_INCOMPLETE;
+  }
+
+  /** Scores the labeled corpora with the given Ward executable; it measures no speed. */
+  private static int accuracy(final Map<String, String> options, final PrintStream out) {
+    final Path binary = Path.of(options.get("binary")).toAbsolutePath();
+    if (!Files.isRegularFile(binary) || !Files.isExecutable(binary)) {
+      throw new IllegalArgumentException("--binary must name an executable: " + binary);
+    }
+    final ProcessCommandRunner runner = new ProcessCommandRunner();
+    final AccuracyRun run =
+        new AccuracyRun(
+            runner,
+            binary,
+            Path.of(options.getOrDefault("cache", DEFAULT_CACHE.toString())).toAbsolutePath(),
+            Path.of(options.getOrDefault("work", DEFAULT_WORK.toString())).toAbsolutePath());
+    final AccuracyResult result = run.run(Path.of(options.get(ACCURACY)).toAbsolutePath());
+    write(Path.of(options.get("out")), AccuracyJson.render(result, Instant.now()));
+    out.print(AccuracySummary.render(result));
+    return EXIT_COMPLETED;
   }
 
   private static int repeats(final Map<String, String> options) {
@@ -102,9 +129,8 @@ public final class AnalysisBenchmark {
       }
       options.put(args[i].substring(2), args[i + 1]);
     }
-    if (!options.containsKey("binary")
-        || !options.containsKey("manifest")
-        || !options.containsKey("out")) {
+    final boolean corpus = options.containsKey("manifest") || options.containsKey(ACCURACY);
+    if (!options.containsKey("binary") || !options.containsKey("out") || !corpus) {
       return Map.of();
     }
     return options;
