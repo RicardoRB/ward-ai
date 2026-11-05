@@ -121,7 +121,7 @@ final class JavaFlowSites implements FlowSites {
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
-            JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(call)),
+            calledName(call),
             qualifier,
             receiverType(qualifier),
             List.of(),
@@ -137,6 +137,15 @@ final class JavaFlowSites implements FlowSites {
       final SyntaxNode node, final SyntaxNode creator, final List<FlowSite> found) {
     children(creator, found);
     JavaCreationSites.of(types, node, creator).ifPresent(found::add);
+  }
+
+  /**
+   * The name of a call. {@code this(...)} and {@code super(...)} have no identifier, so their name
+   * is the keyword that starts them.
+   */
+  private static String calledName(final SyntaxNode call) {
+    final SyntaxNode identifier = JavaSyntaxNames.identifierOf(call);
+    return JavaFlowSyntax.text(identifier != null ? identifier : JavaFlowSyntax.parts(call).get(0));
   }
 
   /** Records the declared types of the variables of a declaration, after its initializers. */

@@ -129,6 +129,26 @@ class JavaFlowSitesTest {
             CONSTRUCTOR, "getPath", CONSTRUCTOR, CONSTRUCTOR, CONSTRUCTOR, "trim", CONSTRUCTOR);
   }
 
+  /** A constructor's {@code super(...)} call is a site named by its keyword, with its argument. */
+  @Test
+  void superConstructorCallIsASiteNamedByItsKeyword() {
+    final String source =
+        "class Failure extends RuntimeException {\n"
+            + "  Failure(String message) {\n"
+            + "    super(message);\n"
+            + "  }\n"
+            + "}\n";
+    final List<FlowSite> sites =
+        JavaFlowFixtures.lower(source).graphs().stream()
+            .flatMap(graph -> graph.blocks().stream())
+            .flatMap(block -> block.sites().stream())
+            .filter(site -> site.kind() == FlowSiteKind.CALL)
+            .toList();
+    assertThat(sites).hasSize(1);
+    assertThat(sites.get(0).name()).isEqualTo("super");
+    assertThat(sites.get(0).arguments()).hasSize(1);
+  }
+
   private static List<FlowSite> sitesOf(
       final String source, final String body, final FlowSiteKind kind, final String name) {
     final ControlFlowResult result = JavaFlowFixtures.lower(source);

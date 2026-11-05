@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.application.analysis.AnalysisFindingMapper;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
 import dev.ward.domain.gate.GateFindings;
@@ -130,7 +131,10 @@ public final class AnalysisGate implements QualityGate {
   }
 
   private GateResult result(final RuleRunResult run) {
-    final List<Finding> findings = run.findings().stream().map(this::finding).toList();
+    final List<Finding> findings =
+        run.findings().stream()
+            .map(finding -> AnalysisFindingMapper.toFinding(name, TOOL, finding))
+            .toList();
     final int errors = countOf(findings, FindingSeverity.ERROR);
     final int warnings = countOf(findings, FindingSeverity.WARNING);
     return GateResult.builder(name, status(run, errors))
@@ -140,20 +144,6 @@ public final class AnalysisGate implements QualityGate {
         .warnings(warnings)
         .build()
         .withFindings(GateFindings.of(findings));
-  }
-
-  private Finding finding(final AnalysisFinding finding) {
-    return new Finding(
-        name,
-        TOOL,
-        finding.ruleId(),
-        FindingSeverity.valueOf(finding.severity().name()),
-        finding.message(),
-        finding.file(),
-        finding.line(),
-        finding.column(),
-        finding.helpUri(),
-        List.of());
   }
 
   /** Unanalyzed code is never a pass: errors, then rules that cannot run, then the findings. */
