@@ -107,7 +107,7 @@ public final class TaintAnalysis {
 
   /**
    * A read in the guarded argument that sees a tainted write. A read inside a sanitizer's argument
-   * is clean, so it is not a source of taint for the sink.
+   * is clean, as it is for a write.
    */
   private static Optional<Taint> fromReads(
       final BasicBlock block,

@@ -42,6 +42,9 @@ final class JavaTypeNames {
           "RuntimeException",
           "Throwable",
           "Error",
+          "IllegalArgumentException",
+          "IllegalStateException",
+          "NullPointerException",
           "ProcessBuilder");
   private static final Set<String> PRIMITIVES =
       Set.of("boolean", "byte", "char", "short", "int", "long", "float", "double", "void");

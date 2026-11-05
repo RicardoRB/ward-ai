@@ -1,4 +1,4 @@
-package dev.ward.application.analysis;
+package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
@@ -34,7 +34,15 @@ public final class AnalysisFindingMapper {
         .toList();
   }
 
-  private static Finding toFinding(
+  /**
+   * Maps one engine finding to a gate finding, with its taint path when it has one.
+   *
+   * @param gateId the gate that produced the finding
+   * @param tool the tool that produced the finding
+   * @param finding the engine finding
+   * @return the gate finding
+   */
+  public static Finding toFinding(
       final String gateId, final String tool, final AnalysisFinding finding) {
     return new Finding(
         gateId,

@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.jvm;
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowSites;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,8 +14,9 @@ import java.util.function.Predicate;
 
 /**
  * Finds the flow sites of one Java body: calls and member reads, with the receiver type of their
- * qualifier, and the parameters that carry an annotation. Inner sites come before the sites that
- * contain them, and a lambda or class body is another body, so it is not entered.
+ * qualifier, the object creations, which are calls named {@code <init>} on the created type, and
+ * the parameters that carry an annotation. Inner sites come before the sites that contain them, and
+ * a lambda or class body is another body, so it is not entered.
  *
  * <p>shortcut: a variable's type is the last declaration of its name seen in the body, not the one
  * in scope, so block-scoped names that are reused with different types may resolve wrongly; upgrade
@@ -36,8 +36,6 @@ final class JavaFlowSites implements FlowSites {
   private static final String FORMAL_PARAMETERS = "formalParameters";
   private static final String LAMBDA_PARAMETERS = "lambdaParameters";
   private static final String LOCAL_VARIABLE = "localVariableDeclaration";
-  private static final String ARGUMENTS = "arguments";
-  private static final String EXPRESSION_LIST = "expressionList";
   private static final Set<String> OPAQUE = Set.of("lambdaExpression", "classBody");
 
   private final JavaTypeNames types;
@@ -86,6 +84,10 @@ final class JavaFlowSites implements FlowSites {
   /** A dotted expression is a member read, or a call when the member is a method call. */
   private void expression(final SyntaxNode node, final List<FlowSite> found) {
     final List<SyntaxNode> parts = JavaFlowSyntax.parts(node);
+    if (JavaCreationSites.isCreation(parts)) {
+      creation(node, parts.get(1), found);
+      return;
+    }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
       children(node, found);
       return;
@@ -114,30 +116,36 @@ final class JavaFlowSites implements FlowSites {
 
   /** The arguments come first, so a call inside an argument is listed before this call. */
   private void call(final SyntaxNode call, final String qualifier, final List<FlowSite> found) {
-    final List<SyntaxNode> arguments = arguments(call);
+    final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     arguments.forEach(argument -> walk(argument, found));
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
-            JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(call)),
+            calledName(call),
             qualifier,
             receiverType(qualifier),
             List.of(),
-            spans(arguments),
+            JavaCallArguments.spans(arguments),
             call.span()));
   }
 
-  private static List<SyntaxNode> arguments(final SyntaxNode call) {
-    final SyntaxNode arguments = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(call), ARGUMENTS);
-    final SyntaxNode list =
-        arguments == null
-            ? null
-            : JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(arguments), EXPRESSION_LIST);
-    return list == null ? List.of() : JavaFlowSyntax.allOf(JavaFlowSyntax.parts(list), EXPRESSION);
+  /**
+   * Records {@code new T(args)} as a call named {@code <init>}. The arguments come first, so they
+   * are listed before the creation; an array creation or an anonymous class body records no site.
+   */
+  private void creation(
+      final SyntaxNode node, final SyntaxNode creator, final List<FlowSite> found) {
+    children(creator, found);
+    JavaCreationSites.of(types, node, creator).ifPresent(found::add);
   }
 
-  private static List<Span> spans(final List<SyntaxNode> nodes) {
-    return nodes.stream().map(SyntaxNode::span).toList();
+  /**
+   * The name of a call. {@code this(...)} and {@code super(...)} have no identifier, so their name
+   * is the keyword that starts them.
+   */
+  private static String calledName(final SyntaxNode call) {
+    final SyntaxNode identifier = JavaSyntaxNames.identifierOf(call);
+    return JavaFlowSyntax.text(identifier != null ? identifier : JavaFlowSyntax.parts(call).get(0));
   }
 
   /** Records the declared types of the variables of a declaration, after its initializers. */
