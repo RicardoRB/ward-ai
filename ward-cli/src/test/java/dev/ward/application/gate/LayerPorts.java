@@ -12,6 +12,7 @@ import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,8 @@ public final class LayerPorts {
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
             AnalysisCacheFixtures.codec(),
             "test",
-            dependencies);
+            dependencies,
+            unused -> Map.of());
     return new AnalysisGate("ward", List.of(LayerRules.definition(List.of(boundary))), ports, null)
         .execute(project).findings().items().stream()
             .filter(finding -> "ward:architecture/layers".equals(finding.ruleId()))

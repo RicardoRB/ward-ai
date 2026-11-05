@@ -2,10 +2,12 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TypeSidecarRun;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleNotRun;
@@ -80,7 +82,9 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
-    return result(results.run(cache, units, ports.frontends(), rules));
+    try (TypeSidecarRun types = new TypeSidecarRun(ports.typeSidecars().apply(project.root()))) {
+      return result(results.run(cache, units, types.withTypes(ports.frontends(), rules), rules));
+    }
   }
 
   private GateResult result(final RuleRunResult run) {
@@ -114,7 +118,7 @@ public final class AnalysisGate implements QualityGate {
     if (!run.executionErrors().isEmpty()) {
       return GateStatus.EXECUTION_ERROR;
     }
-    if (!run.notRun().isEmpty()) {
+    if (!unavailableRules(run).isEmpty()) {
       return GateStatus.UNAVAILABLE;
     }
     return errors > 0 ? GateStatus.FAILED : GateStatus.PASSED;
@@ -124,10 +128,20 @@ public final class AnalysisGate implements QualityGate {
     if (!run.executionErrors().isEmpty()) {
       return run.executionErrors().size() + " analysis error(s)";
     }
-    if (!run.notRun().isEmpty()) {
-      return run.notRun().size() + " rule(s) not run";
+    if (!unavailableRules(run).isEmpty()) {
+      return unavailableRules(run).size() + " rule(s) not run";
     }
     return rules.size() + " rule(s), " + findings.size() + " finding(s)";
+  }
+
+  /**
+   * The rules that did not run for a reason that fails the gate. A rule that needs types is skipped
+   * without failing it, since type sidecars are optional.
+   */
+  private static List<RuleNotRun> unavailableRules(final RuleRunResult run) {
+    return run.notRun().stream()
+        .filter(skipped -> skipped.missing() != RuleCapability.TYPES)
+        .toList();
   }
 
   /** One line per unit or rule that did not run, without source text. */

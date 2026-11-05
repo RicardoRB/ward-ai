@@ -85,7 +85,8 @@ interface GateExtensionBindingsModule {
                 new NodeDependencyAdapters(),
                 new PythonDependencyAdapters(),
                 new SwiftDependencyAdapters(),
-                new JvmDependencyAdapters())));
+                new JvmDependencyAdapters())),
+        projectRoot -> TypeSidecarBindings.forProject(projectRoot, wardVersion));
   }
 
   @Provides

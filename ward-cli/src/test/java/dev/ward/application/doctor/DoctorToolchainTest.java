@@ -1,6 +1,7 @@
 package dev.ward.application.doctor;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import dev.ward.application.doctor.DoctorService.Finding;
 import dev.ward.application.doctor.DoctorService.Status;
@@ -47,10 +48,36 @@ class DoctorToolchainTest {
     assertThat(findings).contains(new Finding("maven", Status.ERROR, "System Maven is required."));
   }
 
-  private static List<Finding> diagnose(final Project project) {
+  @Test
+  void missingTypescriptIsAnOptionalWarningOnNodeProjects() {
+    final List<Finding> findings =
+        diagnose(
+            new Project(ROOT, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE), "node", "npm");
+
+    assertThat(findings)
+        .extracting(Finding::name, Finding::status)
+        .contains(tuple("typescript-type-sidecar", Status.WARNING));
+  }
+
+  @Test
+  void missingJavacIsAnOptionalWarningOnJavaProjects() {
+    final List<Finding> findings =
+        diagnose(
+            new Project(ROOT, Language.JAVA, BuildTool.GRADLE, Framework.NONE), "gradle", "java");
+
+    assertThat(findings)
+        .extracting(Finding::name, Finding::status)
+        .contains(tuple("java-type-sidecar", Status.WARNING));
+  }
+
+  private static List<Finding> diagnose(final Project project, final String... executables) {
     return new DoctorService(
             new ProjectDetector(new FixedProjectInspection(project)),
-            new FakeEnvironmentInspection())
+            new FakeEnvironmentInspection(executables))
         .diagnose(ROOT);
+  }
+
+  private static List<Finding> diagnose(final Project project) {
+    return diagnose(project, new String[0]);
   }
 }
