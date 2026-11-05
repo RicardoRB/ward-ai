@@ -36,23 +36,27 @@ final class JavaBodyLowering implements JavaStatements {
   private static final int PARTS_WITHOUT_ELSE = 5;
   private static final Set<String> LOOP_KEYWORDS = Set.of("for", "while", "do");
 
-  private final ControlFlowBuilder flow = new ControlFlowBuilder();
-  private final JavaBranches branches = new JavaBranches(flow);
+  private final JavaAccesses accesses = new JavaAccesses();
+  private final ControlFlowBuilder flow = new ControlFlowBuilder(accesses);
+  private final JavaBranches branches = new JavaBranches(flow, accesses);
   private final JavaLoops loops = new JavaLoops(flow, branches, this);
   private final JavaSwitches switches = new JavaSwitches(flow, this);
-  private final JavaTries tries = new JavaTries(flow, this);
+  private final JavaTries tries = new JavaTries(flow, this, accesses);
   private final JavaJumps jumps = new JavaJumps(flow, branches);
 
   /**
    * Lowers one body.
    *
    * @param body the name of the body
+   * @param parameters the formal or lambda parameters of the body, or null when it has none
    * @param node the block of the body, or the expression of a lambda with an expression body
    * @param span where the body is in the source
    * @return the graph of the body
    * @throws IllegalStateException if the body holds a construct this lowering does not handle
    */
-  ControlFlowGraph lower(final String body, final SyntaxNode node, final Span span) {
+  ControlFlowGraph lower(
+      final String body, final SyntaxNode parameters, final SyntaxNode node, final Span span) {
+    flow.record(accesses.parameters(parameters));
     if (BLOCK.equals(node.kind())) {
       blockStatements(node);
     } else {
@@ -63,9 +67,11 @@ final class JavaBodyLowering implements JavaStatements {
 
   @Override
   public void blockStatements(final SyntaxNode block) {
+    accesses.enterScope();
     for (final SyntaxNode statement : JavaFlowSyntax.allOf(parts(block), BLOCK_STATEMENT)) {
       blockStatement(statement);
     }
+    accesses.exitScope();
   }
 
   @Override
@@ -101,10 +107,20 @@ final class JavaBodyLowering implements JavaStatements {
   private boolean compound(final String keyword, final List<SyntaxNode> parts, final String label) {
     return switch (keyword) {
       case KEYWORD_IF -> ifStatement(parts);
-      case "for" -> loops.forStatement(parts, label);
+      case "for" -> {
+        accesses.enterScope();
+        final boolean lowered = loops.forStatement(parts, label);
+        accesses.exitScope();
+        yield lowered;
+      }
       case "while" -> loops.whileStatement(parts, label);
       case "do" -> loops.doStatement(parts, label);
-      case "try" -> tries.tryStatement(parts);
+      case "try" -> {
+        accesses.enterScope();
+        final boolean lowered = tries.tryStatement(parts);
+        accesses.exitScope();
+        yield lowered;
+      }
       case "switch" -> switches.switchOn(parts);
       case "synchronized" -> tries.synchronizedStatement(parts);
       default -> false;

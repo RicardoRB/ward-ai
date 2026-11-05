@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
+import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import java.util.Optional;
 import org.tomlj.Toml;
 import org.tomlj.TomlInvalidTypeException;
@@ -67,6 +68,7 @@ final class DeclarativeChecks {
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));
+      case "unused-assignment" -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
       default -> throw new RuleConfigurationException("unknown check '" + name + "'");
     };

@@ -527,6 +527,31 @@ Differences from Checkstyle and PMD, by construction:
 Rule ids and limits are stable across releases. A rule whose id changes is published under a new
 id.
 
+### Data-flow rules
+
+Data-flow rules read the control flow of each function and how it uses its local variables and
+parameters. They run in the `ward` gate with the other rules:
+
+| Rule | Mirrors | Reports |
+|---|---|---|
+| `ward:java/unused-assignment` | PMD `UnusedAssignment` | a write to a local variable or parameter that no read can observe |
+| `ward:typescript/unused-assignment` | none | the same check, for TypeScript |
+| `ward:javascript/unused-assignment` | none | the same check, for JavaScript |
+
+Differences from PMD and by construction:
+
+- A write is reported when a later write can replace it on some path, or when it is an assignment to
+  a name that is not exempt. The names `_`, and names that start with `ignored` or `unused`, are
+  exempt for the last assignment only. An initializer or an incoming parameter value that nothing
+  replaces is not reported, as in PMD.
+- A variable that a nested function, lambda or arrow function reads or writes is never reported.
+- Fields, object properties and array elements are not tracked, and neither are variables of another
+  function.
+- The analysis is intraprocedural. It does not follow values across calls and does not compute
+  constant values.
+- A `finally` block is entered from every exit of its `try`, so a value can seem to reach a read
+  along a path that the language cannot take. Such a write is not reported.
+
 ## Kotlin structural rules
 
 The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin

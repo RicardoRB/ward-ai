@@ -11,6 +11,7 @@ import java.util.List;
 final class JavaTries {
 
   private static final String BLOCK = "block";
+  private static final String IDENTIFIER = "identifier";
   private static final String CATCH_CLAUSE = "catchClause";
   private static final String FINALLY_BLOCK = "finallyBlock";
   private static final String RESOURCE_SPECIFICATION = "resourceSpecification";
@@ -21,8 +22,11 @@ final class JavaTries {
 
   private final ControlFlowBuilder flow;
   private final JavaStatements statements;
+  private final JavaAccesses accesses;
 
-  JavaTries(final ControlFlowBuilder flow, final JavaStatements statements) {
+  JavaTries(
+      final ControlFlowBuilder flow, final JavaStatements statements, final JavaAccesses accesses) {
+    this.accesses = accesses;
     this.flow = flow;
     this.statements = statements;
   }
@@ -39,7 +43,7 @@ final class JavaTries {
     flow.tries().endTryBody();
     for (final SyntaxNode catchClause : catches) {
       flow.tries().beginCatch();
-      statements.blockStatements(requireBlock(JavaFlowSyntax.firstOf(parts(catchClause), BLOCK)));
+      catchClause(catchClause);
       flow.tries().endCatch();
     }
     flow.tries().beginFinally();
@@ -55,6 +59,14 @@ final class JavaTries {
     flow.add(lock, mayThrow(lock));
     statements.blockStatements(requireBlock(parts.get(BODY_INDEX)));
     return true;
+  }
+
+  /** Lowers a catch clause: its parameter is written on entry, and it is scoped to the clause. */
+  private void catchClause(final SyntaxNode catchClause) {
+    accesses.enterScope();
+    flow.record(accesses.catchParameter(JavaFlowSyntax.firstOf(parts(catchClause), IDENTIFIER)));
+    statements.blockStatements(requireBlock(JavaFlowSyntax.firstOf(parts(catchClause), BLOCK)));
+    accesses.exitScope();
   }
 
   /** Adds each try-with-resources resource as a node inside the handler scope. */

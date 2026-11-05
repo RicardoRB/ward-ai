@@ -67,7 +67,11 @@ interface GateExtensionBindingsModule {
     final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
     final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
     final Set<RuleCapability> flow =
-        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.CFG);
+        Set.of(
+            RuleCapability.SYNTAX,
+            RuleCapability.SYMBOLS,
+            RuleCapability.CFG,
+            RuleCapability.DATAFLOW);
     final List<FrontendSupport> frontends =
         List.of(
             new FrontendSupport(AnalysisLanguage.JAVA, frontend, flow, new JavaControlFlow()),

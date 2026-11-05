@@ -28,4 +28,17 @@ public interface CompiledRule {
   default List<RuleMatch> matches(final SyntaxNode root, final DependencyView dependencies) {
     return matches(root);
   }
+
+  /**
+   * Returns the matches of this rule in the tree rooted at {@code root}, given the files around it
+   * and the control-flow graphs of the unit. A rule that reads no graphs needs only {@link
+   * #matches(SyntaxNode, DependencyView)}, which this default method delegates to.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
+    return matches(root, dependencies);
+  }
 }

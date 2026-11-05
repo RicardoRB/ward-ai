@@ -28,6 +28,15 @@ public final class ControlFlowTries {
     final int handler = hasCatches ? builder.newBlock() : ControlFlowFrames.NO_BLOCK;
     final int finallyEntry = hasFinally ? builder.newBlock() : ControlFlowFrames.NO_BLOCK;
     frames.push(Frame.tryFrame(handler, finallyEntry));
+    if (handler != ControlFlowFrames.NO_BLOCK) {
+      // The body may raise before its first statement, so a catch is reachable from the block
+      // before the try, which ends before the body's first statement. The body starts a block of
+      // its own for that reason.
+      final int body = builder.newBlock();
+      builder.edge(builder.current(), handler, FlowEdgeKind.EXCEPTION);
+      builder.edge(builder.current(), body, FlowEdgeKind.NORMAL);
+      builder.moveTo(body);
+    }
   }
 
   /** Ends the try body, which is the current block. Catch clauses, if any, come next. */

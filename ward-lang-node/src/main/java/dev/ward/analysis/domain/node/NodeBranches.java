@@ -17,9 +17,11 @@ final class NodeBranches {
   private static final int TERNARY_ELSE_INDEX = 4;
 
   private final ControlFlowBuilder flow;
+  private final NodeAccesses accesses;
 
-  NodeBranches(final ControlFlowBuilder flow) {
+  NodeBranches(final ControlFlowBuilder flow, final NodeAccesses accesses) {
     this.flow = flow;
+    this.accesses = accesses;
   }
 
   /**
@@ -36,6 +38,7 @@ final class NodeBranches {
       return;
     }
     emitValue(split);
+    accesses.skip(split);
     if (wholeStatement || !split.equals(value)) {
       NodeSteps.add(flow, statement, NodeExpressions.mayThrow(statement));
     }
@@ -63,6 +66,7 @@ final class NodeBranches {
       final SyntaxNode value = NodeFlowSyntax.unwrap(assigned);
       if (NodeExpressions.isLogical(value) || NodeExpressions.isTernary(value)) {
         emitValue(value);
+        accesses.skip(value);
       }
     }
     NodeSteps.add(flow, part, NodeExpressions.mayThrow(part));

@@ -16,9 +16,11 @@ final class JavaBranches {
   private static final int TERNARY_ELSE_INDEX = 4;
 
   private final ControlFlowBuilder flow;
+  private final JavaAccesses accesses;
 
-  JavaBranches(final ControlFlowBuilder flow) {
+  JavaBranches(final ControlFlowBuilder flow, final JavaAccesses accesses) {
     this.flow = flow;
+    this.accesses = accesses;
   }
 
   /**
@@ -35,6 +37,7 @@ final class JavaBranches {
       return;
     }
     emitValue(split);
+    accesses.skip(split);
     if (wholeStatement || !split.equals(value)) {
       flow.add(statement, JavaFlowSyntax.mayThrow(statement));
     }

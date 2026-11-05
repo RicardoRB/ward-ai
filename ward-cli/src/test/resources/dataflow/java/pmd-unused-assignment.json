@@ -1,0 +1,92 @@
+[
+  {
+    "file": "Bindings.java",
+    "line": 18,
+    "variable": "s"
+  },
+  {
+    "file": "Bindings.java",
+    "line": 34,
+    "variable": "e"
+  },
+  {
+    "file": "Bindings.java",
+    "line": 35,
+    "variable": "e"
+  },
+  {
+    "file": "Branches.java",
+    "line": 5,
+    "variable": "x"
+  },
+  {
+    "file": "Branches.java",
+    "line": 25,
+    "variable": "z"
+  },
+  {
+    "file": "Exempt.java",
+    "line": 9,
+    "variable": "ignoredValue"
+  },
+  {
+    "file": "Increments.java",
+    "line": 7,
+    "variable": "k"
+  },
+  {
+    "file": "Lambdas.java",
+    "line": 17,
+    "variable": "d"
+  },
+  {
+    "file": "Lambdas.java",
+    "line": 18,
+    "variable": "d"
+  },
+  {
+    "file": "Loops.java",
+    "line": 13,
+    "variable": "last"
+  },
+  {
+    "file": "Loops.java",
+    "line": 16,
+    "variable": "last"
+  },
+  {
+    "file": "Overwritten.java",
+    "line": 9,
+    "variable": "x"
+  },
+  {
+    "file": "Overwritten.java",
+    "line": 15,
+    "variable": "result"
+  },
+  {
+    "file": "Overwritten.java",
+    "line": 16,
+    "variable": "result"
+  },
+  {
+    "file": "Parameters.java",
+    "line": 4,
+    "variable": "a"
+  },
+  {
+    "file": "Parameters.java",
+    "line": 9,
+    "variable": "a"
+  },
+  {
+    "file": "Parameters.java",
+    "line": 10,
+    "variable": "a"
+  },
+  {
+    "file": "Tries.java",
+    "line": 9,
+    "variable": "x"
+  }
+]

@@ -84,3 +84,17 @@ language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
 body = ""
+
+[[rules]]
+id = "ward:typescript/unused-assignment"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+body = ""
+
+[[rules]]
+id = "ward:javascript/unused-assignment"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+body = ""

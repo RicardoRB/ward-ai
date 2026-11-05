@@ -83,14 +83,20 @@ public final class JavaControlFlow implements ControlFlowLowering {
         final String name =
             JavaFlowSyntax.text(JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), IDENTIFIER));
         final String params = parameters(node);
-        lower(scope + "#" + name + "(" + params + ")", block);
+        lower(
+            scope + "#" + name + "(" + params + ")",
+            JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
+            block);
       }
     }
 
     private void lowerConstructor(final SyntaxNode node, final String scope) {
       final SyntaxNode block = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), BLOCK);
       if (block != null) {
-        lower(scope + "#<init>(" + parameters(node) + ")", block);
+        lower(
+            scope + "#<init>(" + parameters(node) + ")",
+            JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
+            block);
       }
     }
 
@@ -100,7 +106,7 @@ public final class JavaControlFlow implements ControlFlowLowering {
         final boolean isStatic =
             JavaFlowSyntax.parts(node).stream()
                 .anyMatch(part -> "static".equals(JavaFlowSyntax.text(part)));
-        lower(scope + (isStatic ? "#<clinit>(0)" : "#<init>(0)"), block);
+        lower(scope + (isStatic ? "#<clinit>(0)" : "#<init>(0)"), null, block);
       }
     }
 
@@ -110,13 +116,15 @@ public final class JavaControlFlow implements ControlFlowLowering {
       if (lambdaBody != null) {
         final SyntaxNode body = JavaFlowSyntax.parts(lambdaBody).get(0);
         final Span span = body.span();
-        lower("<lambda>@" + span.startLine() + ":" + span.startColumn(), body);
+        final SyntaxNode parameters =
+            JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "lambdaParameters");
+        lower("<lambda>@" + span.startLine() + ":" + span.startColumn(), parameters, body);
       }
     }
 
-    private void lower(final String name, final SyntaxNode node) {
+    private void lower(final String name, final SyntaxNode parameters, final SyntaxNode node) {
       try {
-        graphs.add(new JavaBodyLowering().lower(name, node, node.span()));
+        graphs.add(new JavaBodyLowering().lower(name, parameters, node, node.span()));
       } catch (IllegalStateException failure) {
         failures.add(
             new AnalysisFinding(
