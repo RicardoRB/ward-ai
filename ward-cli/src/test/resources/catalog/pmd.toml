@@ -3,8 +3,8 @@
 [[rule]]
 name = "abstract-class-without-abstract-method"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the abstract modifier of each member, which the generic checks do not read" }
 pmd = ["AbstractClassWithoutAbstractMethod"]
 
 [[rule]]
@@ -17,15 +17,15 @@ pmd = ["AbstractClassWithoutAnyMethod"]
 [[rule]]
 name = "accessor-class-generation"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "Java 11 nestmates removed the synthetic accessor classes this rule reports; no supported target emits them" }
 pmd = ["AccessorClassGeneration"]
 
 [[rule]]
 name = "accessor-method-generation"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "Java 11 nestmates removed the synthetic accessor methods this rule reports; no supported target emits them" }
 pmd = ["AccessorMethodGeneration"]
 
 [[rule]]
@@ -45,8 +45,8 @@ pmd = ["AppendCharacterWithChar"]
 [[rule]]
 name = "array-is-stored-directly"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs data flow from a parameter into a field; no data-flow check of that shape exists yet" }
 pmd = ["ArrayIsStoredDirectly"]
 
 [[rule]]
@@ -58,9 +58,7 @@ pmd = ["AssertEqualsArgumentOrder"]
 
 [[rule]]
 name = "assert-statement-in-test"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AssertStatementInTest"]
 
 [[rule]]
@@ -198,9 +196,7 @@ pmd = ["AvoidLiteralsInIfCondition"]
 
 [[rule]]
 name = "avoid-message-digest-field"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidMessageDigestField"]
 
 [[rule]]
@@ -212,23 +208,21 @@ pmd = ["AvoidMultipleUnaryOperators"]
 
 [[rule]]
 name = "avoid-print-stack-trace"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidPrintStackTrace"]
 
 [[rule]]
 name = "avoid-reassigning-catch-variables"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the writes to a catch parameter; no data-flow check reads them yet" }
 pmd = ["AvoidReassigningCatchVariables"]
 
 [[rule]]
 name = "avoid-reassigning-loop-variables"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the writes to a loop variable inside its body; no data-flow check reads them yet" }
 pmd = ["AvoidReassigningLoopVariables"]
 
 [[rule]]
@@ -240,9 +234,7 @@ pmd = ["AvoidRethrowingException"]
 
 [[rule]]
 name = "avoid-string-buffer-field"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidStringBufferField"]
 
 [[rule]]
@@ -289,9 +281,7 @@ pmd = ["AvoidUncheckedExceptionsInSignatures"]
 
 [[rule]]
 name = "avoid-using-hard-coded-ip"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidUsingHardCodedIP"]
 
 [[rule]]
@@ -367,8 +357,8 @@ pmd = ["CallSuperLast"]
 [[rule]]
 name = "check-result-set"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the static type of the receiver and whether the result is used" }
 pmd = ["CheckResultSet"]
 
 [[rule]]
@@ -486,9 +476,7 @@ pmd = ["ConsecutiveLiteralAppends"]
 
 [[rule]]
 name = "constants-in-interface"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ConstantsInInterface"]
 
 [[rule]]
@@ -522,8 +510,8 @@ pmd = ["DataClass"]
 [[rule]]
 name = "default-label-not-last-in-switch"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the order of case groups within one switch, which the generic order check cannot rank" }
 pmd = ["DefaultLabelNotLastInSwitch"]
 
 [[rule]]
@@ -621,8 +609,8 @@ pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 [[rule]]
 name = "enum-comparison"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the static type of the receiver to know it is an enum" }
 pmd = ["EnumComparison"]
 
 [[rule]]
@@ -664,8 +652,8 @@ pmd = ["ExcessivePublicCount"]
 [[rule]]
 name = "exhaustive-switch-has-default"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the type of the switch selector to know it is an enum or sealed type" }
 pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
@@ -721,8 +709,8 @@ pmd = ["FinalizeShouldBeProtected"]
 [[rule]]
 name = "for-loop-can-be-foreach"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs data flow showing the index is only used to read the elements" }
 pmd = ["ForLoopCanBeForeach"]
 
 [[rule]]
@@ -734,9 +722,7 @@ pmd = ["ForLoopShouldBeWhileLoop"]
 
 [[rule]]
 name = "for-loop-variable-count"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ForLoopVariableCount"]
 
 [[rule]]
@@ -749,8 +735,8 @@ pmd = ["GodClass"]
 [[rule]]
 name = "guard-log-statement"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the logger type and the guard conditions the rule recognizes" }
 pmd = ["GuardLogStatement"]
 
 [[rule]]
@@ -791,8 +777,8 @@ pmd = ["ImmutableField"]
 [[rule]]
 name = "implicit-functional-interface"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the number of abstract methods of each interface, which the generic count reads by kind only" }
 pmd = ["ImplicitFunctionalInterface"]
 
 [[rule]]
@@ -860,9 +846,7 @@ pmd = ["InvalidLogMessageFormat"]
 
 [[rule]]
 name = "j-unit4-suites-should-use-suite-annotation"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["JUnit4SuitesShouldUseSuiteAnnotation"]
 
 [[rule]]
@@ -874,9 +858,7 @@ pmd = ["JUnitJupiterTestNoPrivateModifier"]
 
 [[rule]]
 name = "j-unit-jupiter-test-should-be-package-private"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["JUnitJupiterTestShouldBePackagePrivate"]
 
 [[rule]]
@@ -895,9 +877,7 @@ pmd = ["JUnitStaticSuite"]
 
 [[rule]]
 name = "j-unit-use-expected"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["JUnitUseExpected"]
 
 [[rule]]
@@ -909,9 +889,7 @@ pmd = ["JumbledIncrementer"]
 
 [[rule]]
 name = "labeled-statement"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["LabeledStatement"]
 
 [[rule]]
@@ -937,9 +915,7 @@ pmd = ["LinguisticNaming"]
 
 [[rule]]
 name = "literals-first-in-comparisons"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["LiteralsFirstInComparisons"]
 
 [[rule]]
@@ -986,9 +962,7 @@ pmd = ["LongVariable"]
 
 [[rule]]
 name = "loose-coupling"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["LooseCoupling"]
 
 [[rule]]
@@ -1008,8 +982,8 @@ pmd = ["MDBAndSessionBeanNamingConvention"]
 [[rule]]
 name = "method-returns-internal-array"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the binding of a returned name to a field" }
 pmd = ["MethodReturnsInternalArray"]
 
 [[rule]]
@@ -1071,8 +1045,8 @@ pmd = ["NonCaseLabelInSwitch"]
 [[rule]]
 name = "non-exhaustive-switch"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the type of the switch selector to know which constants must be covered" }
 pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]
@@ -1102,13 +1076,6 @@ category = "errorprone"
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["NullAssignment"]
-
-[[rule]]
-name = "on-demand-import"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
-pmd = ["OnDemandImport"]
 
 [[rule]]
 name = "optimizable-to-array-call"
@@ -1148,15 +1115,13 @@ pmd = ["PrematureDeclaration"]
 [[rule]]
 name = "preserve-stack-trace"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the binding of the catch parameter to the exception that is thrown" }
 pmd = ["PreserveStackTrace"]
 
 [[rule]]
 name = "primitive-wrapper-instantiation"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["PrimitiveWrapperInstantiation"]
 
 [[rule]]
@@ -1190,9 +1155,7 @@ pmd = ["PublicMemberInNonPublicType"]
 
 [[rule]]
 name = "reliance-on-default-charset"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["RelianceOnDefaultCharset"]
 
 [[rule]]
@@ -1211,16 +1174,12 @@ pmd = ["RemoteSessionInterfaceNamingConvention"]
 
 [[rule]]
 name = "replace-enumeration-with-iterator"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ReplaceEnumerationWithIterator"]
 
 [[rule]]
 name = "replace-hashtable-with-map"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ReplaceHashtableWithMap"]
 
 [[rule]]
@@ -1239,9 +1198,7 @@ pmd = ["ReplaceJavaUtilDate"]
 
 [[rule]]
 name = "replace-java-util-vector"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilVector"]
 
 [[rule]]
@@ -1295,9 +1252,7 @@ pmd = ["SimpleDateFormatNeedsLocale"]
 
 [[rule]]
 name = "simplifiable-test-assertion"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["SimplifiableTestAssertion"]
 
 [[rule]]
@@ -1393,9 +1348,7 @@ pmd = ["SwitchDensity"]
 
 [[rule]]
 name = "system-println"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["SystemPrintln"]
 
 [[rule]]
@@ -1436,8 +1389,8 @@ pmd = ["TooManyStaticImports"]
 [[rule]]
 name = "type-name-mismatch"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the declared type name compared with the file name, which no text check can do" }
 pmd = ["TypeNameMismatch"]
 
 [[rule]]
@@ -1470,44 +1423,42 @@ pmd = ["UnconditionalIfStatement"]
 
 [[rule]]
 name = "unit-test-assertions-should-include-message"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestAssertionsShouldIncludeMessage"]
 
 [[rule]]
 name = "unit-test-contains-too-many-asserts"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the number of assertion calls in each method; the count check counts node kinds, not calls by name" }
 pmd = ["UnitTestContainsTooManyAsserts"]
 
 [[rule]]
 name = "unit-test-should-include-assert"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs whether a method body contains an assertion; the text checks cannot ask for a match inside a node" }
 pmd = ["UnitTestShouldIncludeAssert"]
 
 [[rule]]
 name = "unit-test-should-use-after-annotation"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
 pmd = ["UnitTestShouldUseAfterAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-before-annotation"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
 pmd = ["UnitTestShouldUseBeforeAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-test-annotation"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
 pmd = ["UnitTestShouldUseTestAnnotation"]
 
 [[rule]]
@@ -1582,16 +1533,14 @@ pmd = ["UnnecessaryReturn"]
 
 [[rule]]
 name = "unnecessary-varargs-array-creation"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnnecessaryVarargsArrayCreation"]
 
 [[rule]]
 name = "unnecessary-warning-suppression"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "reports suppressions that no other rule needs, so it depends on the results of the other rules" }
 pmd = ["UnnecessaryWarningSuppression"]
 
 [[rule]]
@@ -1611,15 +1560,15 @@ pmd = ["UnsynchronizedStaticFormatter"]
 [[rule]]
 name = "unused-formal-parameter"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the references to each parameter, a symbol-level check" }
 pmd = ["UnusedFormalParameter"]
 
 [[rule]]
 name = "unused-label"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the references to each label, a symbol-level check" }
 pmd = ["UnusedLabel"]
 errorprone = ["UnusedLabel"]
 
@@ -1633,8 +1582,8 @@ pmd = ["UnusedNullCheckInEquals"]
 [[rule]]
 name = "unused-private-method"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the references to each private method, a symbol-level check" }
 pmd = ["UnusedPrivateMethod"]
 
 [[rule]]
@@ -1653,9 +1602,7 @@ pmd = ["UseArraysAsList"]
 
 [[rule]]
 name = "use-collection-is-empty"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseCollectionIsEmpty"]
 
 [[rule]]
@@ -1682,8 +1629,8 @@ pmd = ["UseDiamondOperator"]
 [[rule]]
 name = "use-enum-collections"
 category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "not-applicable" }
+not-applicable = { java = "needs the type argument of each collection to know it is an enum" }
 pmd = ["UseEnumCollections"]
 
 [[rule]]
@@ -1744,9 +1691,7 @@ pmd = ["UseShortArrayInitializer"]
 
 [[rule]]
 name = "use-standard-charsets"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseStandardCharsets"]
 
 [[rule]]
@@ -1765,9 +1710,7 @@ pmd = ["UseStringBufferLength"]
 
 [[rule]]
 name = "use-try-with-resources"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseTryWithResources"]
 
 [[rule]]
@@ -1779,9 +1722,7 @@ pmd = ["UseUnderscoresInNumericLiterals"]
 
 [[rule]]
 name = "use-varargs"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseVarargs"]
 
 [[rule]]
@@ -1814,9 +1755,7 @@ pmd = ["VariableCanBeInlined"]
 
 [[rule]]
 name = "while-loop-with-literal-boolean"
-category = "bestpractices"
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["WhileLoopWithLiteralBoolean"]
 
 [[rule]]

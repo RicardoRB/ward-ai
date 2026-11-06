@@ -1,0 +1,383 @@
+# Best-practice rules for Java, mirroring PMD 7's bestpractices category. Each rule is a generic check
+# over the syntax tree; a few are approximations that match on the text of a node, noted in the PR.
+
+[[rules]]
+id = "ward:java/assert-statement-in-test"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^assert\b'
+message = "assert statement; use an assertion method of the test framework"
+'''
+
+[[rules]]
+id = "ward:java/avoid-message-digest-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+text = '\bMessageDigest\b'
+message = "field of type MessageDigest; create the digest where it is used"
+'''
+
+[[rules]]
+id = "ward:java/avoid-print-stack-trace"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^printStackTrace\(\)$'
+message = "printStackTrace() writes to standard error; log the exception with its logger"
+'''
+
+[[rules]]
+id = "ward:java/avoid-string-buffer-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+text = '\bStringBuffer\b'
+message = "field of type StringBuffer; use a local builder instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-using-hard-coded-ip"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^"(\d{1,3}\.){3}\d{1,3}"$'
+message = "string {value} looks like a hard-coded IP address; read it from configuration"
+'''
+
+[[rules]]
+id = "ward:java/constants-in-interface"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+inside = ["interfaceDeclaration"]
+message = "constant declared in an interface; move it to a class or an enum"
+'''
+
+[[rules]]
+id = "ward:java/labeled-statement"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^\w+\s*:'
+message = "labeled statement; restructure the loop without a label"
+'''
+
+[[rules]]
+id = "ward:java/literals-first-in-comparisons"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.+\.equals\("[^"]*"\)$'
+message = "compare with the literal as the receiver: \"literal\".equals(value)"
+'''
+
+[[rules]]
+id = "ward:java/loose-coupling"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType"]
+text = '^(java\.util\.)?(ArrayList|LinkedList|HashMap|HashSet|TreeMap|TreeSet|LinkedHashMap|LinkedHashSet|Vector|Hashtable|ConcurrentHashMap|CopyOnWriteArrayList)(<|$)'
+message = "declared as the implementation type; declare it as its interface"
+'''
+
+[[rules]]
+id = "ward:java/primitive-wrapper-instantiation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["creator"]
+text = '^(new\s+)?(Boolean|Byte|Character|Double|Float|Integer|Long|Short)\('
+message = "wrapper created with a constructor; use valueOf or the literal instead"
+'''
+
+[[rules]]
+id = "ward:java/reliance-on-default-charset"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["creator", "methodCall"]
+text = '^(new\s+)?((InputStreamReader|OutputStreamWriter|FileReader|FileWriter)\((?![^()]*,)|getBytes\(\)$)'
+message = "relies on the default charset; pass an explicit charset"
+'''
+
+[[rules]]
+id = "ward:java/replace-enumeration-with-iterator"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType"]
+text = '^(java\.util\.)?Enumeration(<|$)'
+message = "Enumeration is a legacy interface; use Iterator"
+'''
+
+[[rules]]
+id = "ward:java/replace-hashtable-with-map"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType", "creator"]
+text = '^(new\s+)?(java\.util\.)?Hashtable\b'
+message = "Hashtable is synchronized and legacy; use Map"
+'''
+
+[[rules]]
+id = "ward:java/replace-java-util-vector"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType", "creator"]
+text = '^(new\s+)?(java\.util\.)?Vector\b'
+message = "Vector is synchronized and legacy; use List"
+'''
+
+[[rules]]
+id = "ward:java/simplifiable-test-assertion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(assertTrue\(.*(==|!=)|assertFalse\(.*(==|!=)|assertTrue\(!|assertFalse\(!|assertEquals\((true|false),)'
+message = "assertion can be simplified to a more specific assertion"
+'''
+
+[[rules]]
+id = "ward:java/system-println"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^System\.(out|err)\.(print|println|printf)\('
+message = "console output; log through the logger instead"
+'''
+
+[[rules]]
+id = "ward:java/unit-test-assertions-should-include-message"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(assertTrue|assertFalse|assertNull|assertNotNull)\([^,]*\)$|^(assertEquals|assertNotEquals|assertSame|assertNotSame)\([^,]*,[^,]*\)$'
+message = "assertion has no failure message"
+'''
+
+[[rules]]
+id = "ward:java/use-collection-is-empty"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.size\(\)\s*(==\s*0|!=\s*0|>\s*0|>=\s*1|<\s*1|<=\s*0)$'
+message = "size() compared with zero; use isEmpty() or !isEmpty()"
+'''
+
+[[rules]]
+id = "ward:java/use-standard-charsets"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^"(UTF-8|UTF8|ISO-8859-1|US-ASCII|UTF-16|UTF-16BE|UTF-16LE)"$'
+message = "charset name {value} as a string; use StandardCharsets"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-varargs-array-creation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["creator"]
+inside = ["arguments"]
+text = '\[\]\s*\{'
+message = "array created for a call argument; pass the elements as varargs"
+'''
+
+[[rules]]
+id = "ward:java/use-try-with-resources"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["finallyBlock"]
+text = '\.close\(\)'
+message = "resource closed in finally; use try-with-resources"
+'''
+
+[[rules]]
+id = "ward:java/use-varargs"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["formalParameter"]
+text = '\w\s*\[\]\s*\w+$'
+message = "array parameter {value}; declare it as varargs when it is the last parameter"
+'''
+
+[[rules]]
+id = "ward:java/while-loop-with-literal-boolean"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^while\s*\(\s*(true|false)\s*\)'
+message = "while loop with a literal condition"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-suites-should-use-suite-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^Test\s+suite\s*\('
+message = "JUnit 3 suite() method; declare the suite with @RunWith(Suite.class)"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-use-expected"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^try\b[\s\S]*\bfail\s*\('
+message = "test checks for an exception with try and fail(); use the expected attribute of @Test"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-jupiter-test-should-be-package-private"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^@Test\b[^{]*\bpublic\s'
+message = "test method is public; JUnit Jupiter test methods are package-private"
+'''
+
+[[rules]]
+id = "ward:java/for-loop-variable-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.maximum-variables = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "count"
+kinds = ["forControl"]
+counted = ["variableDeclarator"]
+max = 1
+message = "for loop declares {value} variables; the limit is {max}"
+'''

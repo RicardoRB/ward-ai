@@ -39,6 +39,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/naming.toml",
           "rules/java/dataflow.toml",
           "rules/java/security.toml",
+          "rules/java/bestpractices.toml",
           "dev/ward/analysis/lang/node/rules.toml",
           "rules/python-structural.toml",
           "rules/swift-structural.toml",
