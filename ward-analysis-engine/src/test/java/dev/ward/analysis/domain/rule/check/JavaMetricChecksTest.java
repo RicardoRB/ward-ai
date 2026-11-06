@@ -2,11 +2,9 @@ package dev.ward.analysis.domain.rule.check;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -14,169 +12,178 @@ import org.junit.jupiter.api.Test;
 class JavaMetricChecksTest {
 
   private static final String MESSAGE = "{value} over {max}";
+  private static final String BLOCK = "block";
+  private static final String CREATED_NAME = "createdName";
+  private static final String PATTERN_NONE = "^$";
+  private static final String HTTP = "http";
+  private static final int LINE_LIMIT = 20;
+  private static final int TAB_WIDTH = 8;
+  private static final int LONG_LINE = 30;
+  private static final int NARROW_TAB = 4;
+  private static final int TAB_LIMIT_LOW = 4;
+  private static final int TAB_LIMIT_HIGH = 5;
+  private static final int BODY_LAST_LINE = 5;
+  private static final int LOW_LIMIT = 1;
+  private static final int MID_LIMIT = 2;
+  private static final int NPATH_TWO_IFS = 3;
+  private static final int NPATH_FOUR = 4;
+  private static final int NCSS_WIDE = 100;
+  private static final int NCSS_TWO = 2;
+  private static final int NCSS_THREE = 3;
+  private static final int NCSS_LAST_LINE = 4;
+  private static final int CREATION_LAST_LINE = 12;
+  private static final int BODY_LINES = 10;
+  private static final int ANON_LIMIT = 5;
+  private static final int MEMBER_LAST_LINE = 4;
+  private static final int COUPLING_HIGH = 2;
 
   @Test
   void lineLengthReportsOnlyLinesOverTheLimitThatTheIgnorePatternDoesNotFind() {
-    final String text = "short\n" + "x".repeat(30) + "\n// https://" + "y".repeat(30);
+    final String text = "short\n" + "x".repeat(LONG_LINE) + "\n// https://" + "y".repeat(LONG_LINE);
     final List<RuleMatch> matches =
-        new LineLengthCheck(20, 8, "http", MESSAGE)
-            .check(leafFree(), new SourceFile("F.java", text));
+        new LineLengthCheck(LINE_LIMIT, TAB_WIDTH, HTTP, MESSAGE)
+            .check(MetricTrees.tree("compilationUnit", 1, 1), new SourceFile("F.java", text));
 
-    assertThat(matches).hasSize(1);
+    assertThat(matches).hasSize(LOW_LIMIT);
     assertThat(matches.get(0).span().startLine()).isEqualTo(2);
   }
 
   @Test
   void lineLengthExpandsTabsToTheTabWidth() {
-    final String text = "\tx";
+    final SourceFile file = new SourceFile("F.java", "\tx");
+    final SyntaxNode root = MetricTrees.tree("compilationUnit", 1, 1);
+
     assertThat(
-            new LineLengthCheck(4, 4, "^$", MESSAGE)
-                .check(leafFree(), new SourceFile("F.java", text)))
-        .hasSize(1);
+            new LineLengthCheck(TAB_LIMIT_LOW, NARROW_TAB, PATTERN_NONE, MESSAGE).check(root, file))
+        .hasSize(LOW_LIMIT);
     assertThat(
-            new LineLengthCheck(5, 4, "^$", MESSAGE)
-                .check(leafFree(), new SourceFile("F.java", text)))
+            new LineLengthCheck(TAB_LIMIT_HIGH, NARROW_TAB, PATTERN_NONE, MESSAGE)
+                .check(root, file))
         .isEmpty();
   }
 
   @Test
   void linesWithoutEmptyLinesCountOnlyLinesThatStartCode() {
-    final SyntaxNode body = tree("methodBody", 1, 5, token("'{'", 1), token("'}'", 5));
+    final SyntaxNode body =
+        MetricTrees.tree(
+            MetricTrees.METHOD_BODY,
+            1,
+            BODY_LAST_LINE,
+            MetricTrees.token("'{'", 1),
+            MetricTrees.token("'}'", BODY_LAST_LINE));
 
-    assertThat(new LinesCheck(Set.of("methodBody"), 2, MESSAGE, false).matches(body)).isEmpty();
-    assertThat(new LinesCheck(Set.of("methodBody"), 2, MESSAGE, true).matches(body)).hasSize(1);
+    assertThat(
+            new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, false)
+                .matches(body))
+        .isEmpty();
+    assertThat(
+            new LinesCheck(Set.of(MetricTrees.METHOD_BODY), MID_LIMIT, MESSAGE, true).matches(body))
+        .hasSize(LOW_LIMIT);
   }
 
   @Test
   void booleanOperatorsCountOnlyOutermostChains() {
     final SyntaxNode chain =
-        tree(
-            "expression",
+        MetricTrees.tree(
+            MetricTrees.EXPRESSION,
             1,
             1,
-            tree("expression", 1, 1),
-            token("'&&'", 1),
-            tree(
-                "expression",
+            MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1),
+            MetricTrees.token("'&&'", 1),
+            MetricTrees.tree(
+                MetricTrees.EXPRESSION,
                 1,
                 1,
-                tree("expression", 1, 1),
-                token("'||'", 1),
-                tree("expression", 1, 1)));
+                MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1),
+                MetricTrees.token("'||'", 1),
+                MetricTrees.tree(MetricTrees.EXPRESSION, 1, 1)));
 
-    assertThat(new BooleanOperatorCheck(1, MESSAGE).matches(chain)).hasSize(1);
-    assertThat(new BooleanOperatorCheck(2, MESSAGE).matches(chain)).isEmpty();
+    assertThat(new BooleanOperatorCheck(LOW_LIMIT, MESSAGE).matches(chain)).hasSize(LOW_LIMIT);
+    assertThat(new BooleanOperatorCheck(MID_LIMIT, MESSAGE).matches(chain)).isEmpty();
   }
 
   @Test
   void npathMultipliesSequentialIfStatements() {
     final SyntaxNode method =
-        tree(
+        MetricTrees.tree(
             "methodDeclaration",
             1,
-            3,
-            tree("methodBody", 1, 3, tree("block", 1, 3, ifBlock(), ifBlock())));
+            NPATH_TWO_IFS,
+            MetricTrees.tree(
+                MetricTrees.METHOD_BODY,
+                1,
+                NPATH_TWO_IFS,
+                MetricTrees.tree(
+                    BLOCK, 1, NPATH_TWO_IFS, MetricTrees.ifBlock(), MetricTrees.ifBlock())));
 
-    assertThat(new NPathCheck(3, MESSAGE).matches(method)).hasSize(1);
-    assertThat(new NPathCheck(4, MESSAGE).matches(method)).isEmpty();
+    assertThat(new NPathCheck(NPATH_TWO_IFS, MESSAGE).matches(method)).hasSize(LOW_LIMIT);
+    assertThat(new NPathCheck(NPATH_FOUR, MESSAGE).matches(method)).isEmpty();
   }
 
   @Test
   void ncssCountsStatementsOfAMethodAndAddsOne() {
-    final SyntaxNode method = tree("methodDeclaration", 1, 4, statement(), statement());
+    final SyntaxNode method =
+        MetricTrees.tree(
+            "methodDeclaration",
+            1,
+            NCSS_LAST_LINE,
+            MetricTrees.statement(),
+            MetricTrees.statement());
 
-    assertThat(new NcssCheck(2, 100, 100, MESSAGE).matches(method)).hasSize(1);
-    assertThat(new NcssCheck(3, 100, 100, MESSAGE).matches(method)).isEmpty();
+    assertThat(new NcssCheck(NCSS_TWO, NCSS_WIDE, NCSS_WIDE, MESSAGE).matches(method))
+        .hasSize(LOW_LIMIT);
+    assertThat(new NcssCheck(NCSS_THREE, NCSS_WIDE, NCSS_WIDE, MESSAGE).matches(method)).isEmpty();
   }
 
   @Test
   void methodCountReportsTotalAndEachVisibilityOverItsLimit() {
     final SyntaxNode body =
-        tree("classBody", 1, 4, member(token("private", 1)), member(token("public", 2)));
+        MetricTrees.tree(
+            "classBody",
+            1,
+            MEMBER_LAST_LINE,
+            MetricTrees.member(MetricTrees.token("private", 1)),
+            MetricTrees.member(MetricTrees.token("public", 2)));
 
-    final MethodCountCheck.Limits strict = new MethodCountCheck.Limits(1, 0, 5, 5, 5);
-    assertThat(new MethodCountCheck(strict, MESSAGE).matches(body)).hasSize(2);
-    final MethodCountCheck.Limits loose = new MethodCountCheck.Limits(2, 1, 5, 5, 5);
+    final MethodCountCheck.Limits strict =
+        new MethodCountCheck.Limits(LOW_LIMIT, 0, NCSS_THREE, NCSS_THREE, NCSS_THREE);
+    assertThat(new MethodCountCheck(strict, MESSAGE).matches(body)).hasSize(COUPLING_HIGH);
+    final MethodCountCheck.Limits loose =
+        new MethodCountCheck.Limits(COUPLING_HIGH, LOW_LIMIT, NCSS_THREE, NCSS_THREE, NCSS_THREE);
     assertThat(new MethodCountCheck(loose, MESSAGE).matches(body)).isEmpty();
   }
 
   @Test
   void classCouplingCountsDistinctSimpleNamesThatAreNotExcluded() {
     final SyntaxNode klass =
-        tree(
+        MetricTrees.tree(
             "classDeclaration",
             1,
             1,
-            created("ArrayList<String>"),
-            created("java.util.Map"),
-            created("Foo"));
+            MetricTrees.created("ArrayList<String>"),
+            MetricTrees.created("java.util.Map"),
+            MetricTrees.created("Foo"));
 
     assertThat(
-            new ClassCouplingCheck(Set.of("createdName"), Set.of("Map"), 1, MESSAGE).matches(klass))
-        .hasSize(1);
+            new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), LOW_LIMIT, MESSAGE)
+                .matches(klass))
+        .hasSize(LOW_LIMIT);
     assertThat(
-            new ClassCouplingCheck(Set.of("createdName"), Set.of("Map"), 2, MESSAGE).matches(klass))
+            new ClassCouplingCheck(Set.of(CREATED_NAME), Set.of("Map"), COUPLING_HIGH, MESSAGE)
+                .matches(klass))
         .isEmpty();
   }
 
   @Test
   void anonymousLinesMeasureOnlyTheBodyOfACreation() {
-    final SyntaxNode creation = tree("classCreatorRest", 1, 12, tree("classBody", 1, 10));
-
-    assertThat(new AnonymousLinesCheck(5, MESSAGE).matches(creation)).hasSize(1);
-    assertThat(new AnonymousLinesCheck(10, MESSAGE).matches(creation)).isEmpty();
-  }
-
-  private static SyntaxNode leafFree() {
-    return tree("compilationUnit", 1, 1);
-  }
-
-  private static SyntaxNode ifBlock() {
-    return tree(
-        "blockStatement",
-        1,
-        1,
-        tree(
-            "statement",
+    final SyntaxNode creation =
+        MetricTrees.tree(
+            "classCreatorRest",
             1,
-            1,
-            token("'if'", 1),
-            tree("expression", 1, 1),
-            tree("statement", 1, 1, tree("expression", 1, 1))));
-  }
+            CREATION_LAST_LINE,
+            MetricTrees.tree("classBody", 1, BODY_LINES));
 
-  private static SyntaxNode statement() {
-    return tree("statement", 1, 1, tree("expression", 1, 1));
-  }
-
-  private static SyntaxNode member(final SyntaxNode modifier) {
-    return tree(
-        "classBodyDeclaration",
-        1,
-        1,
-        tree("modifier", 1, 1, modifier),
-        tree("memberDeclaration", 1, 1, tree("methodDeclaration", 1, 1)));
-  }
-
-  private static SyntaxNode created(final String text) {
-    return new SyntaxNode(
-        "createdName", span(1, 1), Map.of(), List.of(token("identifier", text, 1)));
-  }
-
-  private static SyntaxNode token(final String text, final int line) {
-    return token(text, text, line);
-  }
-
-  private static SyntaxNode token(final String kind, final String text, final int line) {
-    return new SyntaxNode(kind, span(line, line), Map.of("text", text), List.of());
-  }
-
-  private static SyntaxNode tree(
-      final String kind, final int startLine, final int endLine, final SyntaxNode... children) {
-    return new SyntaxNode(kind, span(startLine, endLine), Map.of(), List.of(children));
-  }
-
-  private static Span span(final int startLine, final int endLine) {
-    return new Span(startLine, 1, endLine, 1, 0, 0);
+    assertThat(new AnonymousLinesCheck(ANON_LIMIT, MESSAGE).matches(creation)).hasSize(LOW_LIMIT);
+    assertThat(new AnonymousLinesCheck(BODY_LINES, MESSAGE).matches(creation)).isEmpty();
   }
 }
