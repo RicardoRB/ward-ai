@@ -3,8 +3,9 @@
 [[rule]]
 name = "abstract-class-without-abstract-method"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the abstract modifier of each member, which the generic checks do not read" }
+# Not applicable (review): needs the abstract modifier of each member, which the generic checks do not read
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["AbstractClassWithoutAbstractMethod"]
 
 [[rule]]
@@ -17,15 +18,17 @@ pmd = ["AbstractClassWithoutAnyMethod"]
 [[rule]]
 name = "accessor-class-generation"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "Java 11 nestmates removed the synthetic accessor classes this rule reports; no supported target emits them" }
+# Not applicable (review): Java 11 nestmates removed the synthetic accessor classes this rule reports; no supported target emits them
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["AccessorClassGeneration"]
 
 [[rule]]
 name = "accessor-method-generation"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "Java 11 nestmates removed the synthetic accessor methods this rule reports; no supported target emits them" }
+# Not applicable (review): Java 11 nestmates removed the synthetic accessor methods this rule reports; no supported target emits them
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["AccessorMethodGeneration"]
 
 [[rule]]
@@ -45,8 +48,9 @@ pmd = ["AppendCharacterWithChar"]
 [[rule]]
 name = "array-is-stored-directly"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs data flow from a parameter into a field; no data-flow check of that shape exists yet" }
+# Not applicable (review): needs data flow from a parameter into a field; no data-flow check of that shape exists yet
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["ArrayIsStoredDirectly"]
 
 [[rule]]
@@ -214,15 +218,17 @@ pmd = ["AvoidPrintStackTrace"]
 [[rule]]
 name = "avoid-reassigning-catch-variables"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the writes to a catch parameter; no data-flow check reads them yet" }
+# Not applicable (review): needs the writes to a catch parameter; no data-flow check reads them yet
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["AvoidReassigningCatchVariables"]
 
 [[rule]]
 name = "avoid-reassigning-loop-variables"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the writes to a loop variable inside its body; no data-flow check reads them yet" }
+# Not applicable (review): needs the writes to a loop variable inside its body; no data-flow check reads them yet
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["AvoidReassigningLoopVariables"]
 
 [[rule]]
@@ -357,8 +363,9 @@ pmd = ["CallSuperLast"]
 [[rule]]
 name = "check-result-set"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the static type of the receiver and whether the result is used" }
+# Not applicable (review): needs the static type of the receiver and whether the result is used
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["CheckResultSet"]
 
 [[rule]]
@@ -510,8 +517,9 @@ pmd = ["DataClass"]
 [[rule]]
 name = "default-label-not-last-in-switch"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the order of case groups within one switch, which the generic order check cannot rank" }
+# Not applicable (review): needs the order of case groups within one switch, which the generic order check cannot rank
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["DefaultLabelNotLastInSwitch"]
 
 [[rule]]
@@ -609,8 +617,9 @@ pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 [[rule]]
 name = "enum-comparison"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the static type of the receiver to know it is an enum" }
+# Not applicable (review): needs the static type of the receiver to know it is an enum
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["EnumComparison"]
 
 [[rule]]
@@ -652,8 +661,9 @@ pmd = ["ExcessivePublicCount"]
 [[rule]]
 name = "exhaustive-switch-has-default"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the type of the switch selector to know it is an enum or sealed type" }
+# Not applicable (review): needs the type of the switch selector to know it is an enum or sealed type
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
@@ -709,8 +719,9 @@ pmd = ["FinalizeShouldBeProtected"]
 [[rule]]
 name = "for-loop-can-be-foreach"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs data flow showing the index is only used to read the elements" }
+# Not applicable (review): needs data flow showing the index is only used to read the elements
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["ForLoopCanBeForeach"]
 
 [[rule]]
@@ -735,8 +746,9 @@ pmd = ["GodClass"]
 [[rule]]
 name = "guard-log-statement"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the logger type and the guard conditions the rule recognizes" }
+# Not applicable (review): needs the logger type and the guard conditions the rule recognizes
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["GuardLogStatement"]
 
 [[rule]]
@@ -777,8 +789,9 @@ pmd = ["ImmutableField"]
 [[rule]]
 name = "implicit-functional-interface"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the number of abstract methods of each interface, which the generic count reads by kind only" }
+# Not applicable (review): needs the number of abstract methods of each interface, which the generic count reads by kind only
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["ImplicitFunctionalInterface"]
 
 [[rule]]
@@ -982,8 +995,9 @@ pmd = ["MDBAndSessionBeanNamingConvention"]
 [[rule]]
 name = "method-returns-internal-array"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the binding of a returned name to a field" }
+# Not applicable (review): needs the binding of a returned name to a field
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["MethodReturnsInternalArray"]
 
 [[rule]]
@@ -1045,8 +1059,9 @@ pmd = ["NonCaseLabelInSwitch"]
 [[rule]]
 name = "non-exhaustive-switch"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the type of the switch selector to know which constants must be covered" }
+# Not applicable (review): needs the type of the switch selector to know which constants must be covered
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]
@@ -1115,8 +1130,9 @@ pmd = ["PrematureDeclaration"]
 [[rule]]
 name = "preserve-stack-trace"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the binding of the catch parameter to the exception that is thrown" }
+# Not applicable (review): needs the binding of the catch parameter to the exception that is thrown
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["PreserveStackTrace"]
 
 [[rule]]
@@ -1389,8 +1405,9 @@ pmd = ["TooManyStaticImports"]
 [[rule]]
 name = "type-name-mismatch"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the declared type name compared with the file name, which no text check can do" }
+# Not applicable (review): needs the declared type name compared with the file name, which no text check can do
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["TypeNameMismatch"]
 
 [[rule]]
@@ -1429,36 +1446,41 @@ pmd = ["UnitTestAssertionsShouldIncludeMessage"]
 [[rule]]
 name = "unit-test-contains-too-many-asserts"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the number of assertion calls in each method; the count check counts node kinds, not calls by name" }
+# Not applicable (review): needs the number of assertion calls in each method; the count check counts node kinds, not calls by name
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnitTestContainsTooManyAsserts"]
 
 [[rule]]
 name = "unit-test-should-include-assert"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs whether a method body contains an assertion; the text checks cannot ask for a match inside a node" }
+# Not applicable (review): needs whether a method body contains an assertion; the text checks cannot ask for a match inside a node
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnitTestShouldIncludeAssert"]
 
 [[rule]]
 name = "unit-test-should-use-after-annotation"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
+# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnitTestShouldUseAfterAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-before-annotation"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
+# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnitTestShouldUseBeforeAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-test-annotation"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the annotations of each method; the generic filters do not read annotations" }
+# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnitTestShouldUseTestAnnotation"]
 
 [[rule]]
@@ -1539,8 +1561,9 @@ pmd = ["UnnecessaryVarargsArrayCreation"]
 [[rule]]
 name = "unnecessary-warning-suppression"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "reports suppressions that no other rule needs, so it depends on the results of the other rules" }
+# Not applicable (review): reports suppressions that no other rule needs, so it depends on the results of the other rules
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnnecessaryWarningSuppression"]
 
 [[rule]]
@@ -1560,15 +1583,17 @@ pmd = ["UnsynchronizedStaticFormatter"]
 [[rule]]
 name = "unused-formal-parameter"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the references to each parameter, a symbol-level check" }
+# Not applicable (review): needs the references to each parameter, a symbol-level check
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnusedFormalParameter"]
 
 [[rule]]
 name = "unused-label"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the references to each label, a symbol-level check" }
+# Not applicable (review): needs the references to each label, a symbol-level check
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnusedLabel"]
 errorprone = ["UnusedLabel"]
 
@@ -1582,8 +1607,9 @@ pmd = ["UnusedNullCheckInEquals"]
 [[rule]]
 name = "unused-private-method"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the references to each private method, a symbol-level check" }
+# Not applicable (review): needs the references to each private method, a symbol-level check
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UnusedPrivateMethod"]
 
 [[rule]]
@@ -1629,8 +1655,9 @@ pmd = ["UseDiamondOperator"]
 [[rule]]
 name = "use-enum-collections"
 category = "bestpractices"
-status = { java = "not-applicable" }
-not-applicable = { java = "needs the type argument of each collection to know it is an enum" }
+# Not applicable (review): needs the type argument of each collection to know it is an enum
+status = { java = "planned" }
+issues = { java = "#308" }
 pmd = ["UseEnumCollections"]
 
 [[rule]]

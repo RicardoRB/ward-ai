@@ -11,7 +11,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^assert\b'
+with-child = ["'assert'"]
 message = "assert statement; use an assertion method of the test framework"
 '''
 
@@ -24,8 +24,9 @@ category = "bestpractices"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["fieldDeclaration"]
-text = '\bMessageDigest\b'
+kinds = ["typeType"]
+parent = ["fieldDeclaration"]
+text = '^(java\.security\.)?MessageDigest(<.*)?$'
 message = "field of type MessageDigest; create the digest where it is used"
 '''
 
@@ -52,8 +53,9 @@ category = "bestpractices"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["fieldDeclaration"]
-text = '\bStringBuffer\b'
+kinds = ["typeType"]
+parent = ["fieldDeclaration"]
+text = '^(java\.lang\.)?StringBuffer(<.*)?$'
 message = "field of type StringBuffer; use a local builder instead"
 '''
 
@@ -80,7 +82,7 @@ category = "bestpractices"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["fieldDeclaration"]
+kinds = ["constDeclaration"]
 inside = ["interfaceDeclaration"]
 message = "constant declared in an interface; move it to a class or an enum"
 '''
@@ -334,7 +336,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^Test\s+suite\s*\('
+text = '^Testsuite\('
 message = "JUnit 3 suite() method; declare the suite with @RunWith(Suite.class)"
 '''
 
@@ -362,7 +364,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classBodyDeclaration"]
-text = '^@Test\b[^{]*\bpublic\s'
+text = '^@Test(\([^)]*\))?public'
 message = "test method is public; JUnit Jupiter test methods are package-private"
 '''
 
