@@ -1,0 +1,119 @@
+# One example rule per generic check kind, for Java. They are test data: no bundled rule file lists
+# them, so they never run on a user's project. The grammar node names are the ANTLR Java rule names.
+
+[[rules]]
+id = "ward:java/example-constant-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+modifiers = ["static", "final"]
+name = "identifier"
+skip = ["annotation", "typeType"]
+pattern = "[A-Z][A-Z0-9_]*"
+message = "constant '{value}' must match [A-Z][A-Z0-9_]*"
+'''
+
+[[rules]]
+id = "ward:java/example-inline-conditional"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+with-child = ["'?'"]
+message = "avoid the inline conditional"
+'''
+
+[[rules]]
+id = "ward:java/example-switch-default"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "required-node"
+kinds = ["statement>'switch'"]
+descendant = ["'default'"]
+skip = ["blockStatement"]
+message = "switch needs a default label"
+'''
+
+[[rules]]
+id = "ward:java/example-method-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "count"
+kinds = ["classBody"]
+counted = ["methodDeclaration"]
+skip = ["classBody"]
+max = 2
+message = "class has {value} methods; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/example-nested-if"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "depth"
+kinds = ["statement>'if'"]
+reset = ["methodDeclaration"]
+max = 1
+message = "if is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/example-todo-comment"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: {value}"
+'''
+
+[[rules]]
+id = "ward:java/example-modifier-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "order"
+kinds = ["classBodyDeclaration"]
+order = ["public", "protected", "private", "abstract", "static", "final"]
+message = "modifier '{value}' is out of order"
+'''
+
+[[rules]]
+id = "ward:java/example-magic-number"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "literal"
+kinds = ["integerLiteral"]
+ignore = ["-1", "0", "1", "2"]
+ignore-contexts = ["fieldDeclaration"]
+message = "'{value}' is a magic number"
+'''
+
+[[rules]]
+id = "ward:java/example-redundant-import"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "duplicate"
+kinds = ["compilationunit"]
+items = ["importDeclaration"]
+key = "qualifiedName"
+message = "duplicate import {value}"
+'''

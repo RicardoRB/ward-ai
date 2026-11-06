@@ -1,5 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +44,12 @@ final class CheckSupport {
     final boolean hasRequired = required.map(modifiers::contains).orElse(true);
     final boolean hasExcluded = excluded.map(modifiers::contains).orElse(false);
     return hasRequired && !hasExcluded;
+  }
+
+  /**
+   * Returns the match at {@code span} with {@code message}; a loop calls this, not the constructor.
+   */
+  static RuleMatch at(final Span span, final String message) {
+    return new RuleMatch(span, message);
   }
 }

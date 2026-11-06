@@ -1,0 +1,8 @@
+# How Java spells the modifiers that rule filters name (`modifiers`, `not-modifiers`). A modifier
+# name without an entry under [texts] means the token of that name.
+kinds = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+
+[texts]
+static = ["static"]
+final = ["final"]
+abstract = ["abstract"]

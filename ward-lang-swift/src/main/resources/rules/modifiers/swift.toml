@@ -1,0 +1,8 @@
+# How Swift spells the modifiers that rule filters name. `class` on a member makes it type-level
+# like `static`.
+kinds = ["declaration_modifier", "declaration_modifiers", "attributes"]
+
+[texts]
+static = ["static", "class"]
+final = ["final"]
+abstract = []

@@ -1,0 +1,8 @@
+# How Python spells the modifiers that rule filters name. Python has no modifier keywords; a
+# decorator stands in for the few that exist.
+kinds = ["decorator"]
+
+[texts]
+static = ["staticmethod"]
+abstract = ["abstractmethod"]
+final = ["final"]

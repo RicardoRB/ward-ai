@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
@@ -39,5 +40,14 @@ public final class CheckedRule implements CompiledRule {
   public List<RuleMatch> matches(
       final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
     return check.matches(root, flow);
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final SourceUnit unit) {
+    return check.matches(root, flow, unit);
   }
 }
