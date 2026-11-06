@@ -18,6 +18,7 @@ import java.util.Optional;
 final class PythonExpressionTypes {
 
   private static final int MAX_DEPTH = 8;
+  private static final int TYPED_PARAMETER_PARTS = 3;
   private static final String AWAIT = "await";
   private static final String ATTRIBUTE = ".";
   private static final String CALL_OPEN = "(";
@@ -205,7 +206,7 @@ final class PythonExpressionTypes {
         PythonTypeKinds.DICTORSETMAKER.equals(parts.get(1).kind())
             && parts.get(1).children().stream()
                 .map(PythonSyntax::text)
-                .anyMatch(text -> text.equals(":") || text.equals(KEYWORD_MARKERS));
+                .anyMatch(text -> ":".equals(text) || KEYWORD_MARKERS.equals(text));
     return builtinValue(mapping ? DICT : SET);
   }
 
@@ -282,14 +283,16 @@ final class PythonExpressionTypes {
       final SyntaxNode definition, final String module, final boolean method) {
     final PythonAnnotationTypes annotations =
         new PythonAnnotationTypes(node -> stubName(module, node));
-    final List<SyntaxNode> items = parameterItems(definition);
-    if (items == null) {
+    final Optional<List<SyntaxNode>> parsed = parameterItems(definition);
+    if (parsed.isEmpty()) {
       return List.of();
     }
+    final List<SyntaxNode> items = parsed.get();
     final List<TypeRef> types = new ArrayList<>();
-    for (int index = method ? 1 : 0; index < items.size(); index++) {
-      final SyntaxNode item = items.get(index);
-      if (!PythonTypeKinds.TFPDEF.equals(item.kind()) || item.children().size() != 3) {
+    for (int position = method ? 1 : 0; position < items.size(); position++) {
+      final SyntaxNode item = items.get(position);
+      if (!PythonTypeKinds.TFPDEF.equals(item.kind())
+          || item.children().size() != TYPED_PARAMETER_PARTS) {
         return List.of();
       }
       final Optional<TypeRef> type = annotations.of(item.children().get(2));
@@ -301,8 +304,8 @@ final class PythonExpressionTypes {
     return types;
   }
 
-  /** The typed parameters of {@code definition}, or {@code null} for a signature with markers. */
-  private static List<SyntaxNode> parameterItems(final SyntaxNode definition) {
+  /** The typed parameters of {@code definition}, or empty for a signature with markers. */
+  private static Optional<List<SyntaxNode>> parameterItems(final SyntaxNode definition) {
     final List<SyntaxNode> items = new ArrayList<>();
     final Optional<SyntaxNode> list =
         PythonSyntax.children(definition, PythonTypeKinds.PARAMETERS).stream()
@@ -311,20 +314,20 @@ final class PythonExpressionTypes {
                     PythonSyntax.children(parameters, PythonTypeKinds.TYPEDARGSLIST).stream())
             .findFirst();
     if (list.isEmpty()) {
-      return items;
+      return Optional.of(items);
     }
     for (final SyntaxNode item : list.get().children()) {
       final String text = PythonSyntax.text(item);
       if (UNPACK_MARKERS.equals(text)
           || KEYWORD_MARKERS.equals(text)
           || POSITIONAL_ONLY.equals(text)) {
-        return null;
+        return Optional.empty();
       }
       if (PythonTypeKinds.TFPDEF.equals(item.kind())) {
         items.add(item);
       }
     }
-    return items;
+    return Optional.of(items);
   }
 
   private Subject sourceReturn(final SyntaxNode definition) {
@@ -393,7 +396,7 @@ final class PythonExpressionTypes {
       return Subject.klass(name);
     }
     return stubs
-        .function(PythonStubs.BUILTINS, name)
+        .function(PythonQualifiedNames.BUILTINS, name)
         .map(function -> Subject.stubFunction(function, null))
         .orElse(Subject.UNKNOWN);
   }
@@ -441,7 +444,7 @@ final class PythonExpressionTypes {
   /** Resolves a name in a stub: a class of the same module, or a built-in class. */
   private Optional<TypeRef> stubName(final String module, final SyntaxNode name) {
     final String text = PythonNames.identifier(name);
-    final String qualified = PythonStubs.qualify(module, text);
+    final String qualified = PythonQualifiedNames.qualify(module, text);
     if (stubs.isClass(qualified)) {
       return Optional.of(TypeRef.of(qualified));
     }

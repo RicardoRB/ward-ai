@@ -109,7 +109,7 @@ public final class PythonStubFiles {
     }
     try (Stream<Path> entries = Files.list(lib)) {
       return entries
-          .filter(entry -> entry.getFileName().toString().startsWith(PYTHON_DIRECTORY))
+          .filter(entry -> String.valueOf(entry.getFileName()).startsWith(PYTHON_DIRECTORY))
           .map(entry -> entry.resolve(SITE_PACKAGES))
           .sorted()
           .toList();
