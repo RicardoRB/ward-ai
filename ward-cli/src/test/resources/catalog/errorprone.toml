@@ -157,8 +157,8 @@ errorprone = ["AssertEqualsArgumentOrderChecker"]
 [[rule]]
 name = "assert-false"
 category = "severity-warning"
-status = { java = "planned", python = "planned" }
-issues = { java = "#320", python = "#332" }
+status = { java = "planned", python = "implemented" }
+issues = { java = "#320" }
 errorprone = ["AssertFalse"]
 ruff = ["B011"]
 

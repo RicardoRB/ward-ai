@@ -1,0 +1,29 @@
+# Ruff's pylint error rules (PLE) that a line pattern decides.
+
+[[rules]]
+id = "ward:python/bidirectional-unicode"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\\u202A-\\u202E\\u2066-\\u2069]"
+message = "bidirectional control character can hide code; remove it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-zero-width-space"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\u200B"
+message = "zero-width space in the source; remove it"
+'''
