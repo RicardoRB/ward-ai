@@ -103,7 +103,7 @@ class DoctorSwiftTest {
     return new DoctorService(
             new ProjectDetector(new FixedProjectInspection(project)),
             new FakeEnvironmentInspection(executables),
-            new DoctorPorts(null, null, null, swift),
+            new DoctorPorts(null, null, null, swift, null),
             Set.of())
         .diagnose(ROOT);
   }

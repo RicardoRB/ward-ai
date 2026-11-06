@@ -7,6 +7,9 @@ id = "ward:kotlin/file-length"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "lines"
 kinds = ["kotlinFile"]
@@ -19,6 +22,9 @@ id = "ward:kotlin/function-length"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "lines"
 kinds = ["functionBody"]
@@ -31,6 +37,9 @@ id = "ward:kotlin/parameter-count"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "descendant-count"
 kinds = ["functionValueParameters"]
@@ -44,6 +53,9 @@ id = "ward:kotlin/cyclomatic-complexity"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "descendant-count"
 kinds = ["functionDeclaration"]
@@ -58,6 +70,9 @@ id = "ward:kotlin/cognitive-complexity"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "cognitive-complexity"
 kinds = ["functionDeclaration"]

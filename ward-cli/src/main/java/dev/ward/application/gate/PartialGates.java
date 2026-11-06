@@ -120,6 +120,7 @@ final class PartialGates {
         null,
         List.of(),
         null,
+        null,
         null);
   }
 

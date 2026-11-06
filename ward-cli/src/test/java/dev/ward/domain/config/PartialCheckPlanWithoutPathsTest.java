@@ -29,6 +29,7 @@ class PartialCheckPlanWithoutPathsTest {
             null,
             List.of(),
             null,
+            null,
             null);
     final GateConfiguration plain = new GateConfiguration("tests", true, List.of("./mvnw", "test"));
 

@@ -1,6 +1,7 @@
 package dev.ward.application.doctor;
 
 import dev.ward.application.doctor.jvm.DependencyCheckDiagnosis;
+import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.AgentIntegration;
 import dev.ward.domain.agent.IntegrationCapability;
@@ -31,6 +32,7 @@ public final class DoctorService {
   private final Set<AgentIntegration> integrations;
   private final Optional<BuildToolConfiguration> buildTools;
   private final Optional<SwiftToolchainInspection> swift;
+  private final AnalysisRuleSource rules;
 
   /** How serious a diagnostic finding is. */
   public enum Status {
@@ -61,7 +63,7 @@ public final class DoctorService {
     this(
         detector,
         environment,
-        new DoctorPorts(configurationReader, traceabilityPrerequisites, null, null),
+        new DoctorPorts(configurationReader, traceabilityPrerequisites, null, null, null),
         integrations);
   }
 
@@ -82,6 +84,7 @@ public final class DoctorService {
     this.integrations = Set.copyOf(integrations);
     this.buildTools = Optional.ofNullable(ports.buildTools());
     this.swift = Optional.ofNullable(ports.swift());
+    this.rules = ports.rules();
   }
 
   /** Creates a service that checks only the project and environment. */
@@ -149,6 +152,9 @@ public final class DoctorService {
     diagnoseNvdApiKey(root, facts, findings);
     diagnoseTraceability(root, findings);
     CheckTypeFindings.diagnose(configurationReader, root, facts, findings);
+    if (flag(facts, "configurationPresent")) {
+      RuleConfigurationFindings.diagnose(configurationReader, rules, root, findings);
+    }
     return findings;
   }
 

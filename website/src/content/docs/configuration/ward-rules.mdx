@@ -1,0 +1,96 @@
+---
+title: ward-rules.toml
+description: Select, tune and exclude paths for the rules of the ward gate in one file, with no suppressions.
+---
+
+`ward-rules.toml` configures every rule that the [`ward` gate](/configuration/gates/#analysis-gate)
+runs: which rules are selected, their options, their severity and the paths they leave out. It is
+optional and sits at the project root. `ward.toml` keeps the gate-level settings (profiles, layers,
+cycles, independence).
+
+Without the file the `ward` check selects rules as before: the ids in its `rules` list, or all of
+them. With the file, the `rules` list in `ward.toml` is a configuration error that names both files;
+move the ids to `include` below. To keep the file elsewhere, set `rules-file` in the check; the path
+must stay inside the project:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules-file = "config/ward-rules.toml"
+```
+
+## Example
+
+```toml
+version = 1
+
+[select]
+preset = "standard"                 # none | standard | strict (default: standard)
+languages = ["java", "typescript"]  # default: every language
+categories = ["naming", "sizes"]    # default: every category
+include = ["ward:java/missing-javadoc"]
+exclude = ["ward:java/star-import"]
+
+[rules."ward:java/method-length"]
+max = 80
+severity = "warning"                # error | warning
+exclude-paths = ["src/generated/**"]
+
+[rules."ward:java/type-name"]
+pattern = "[A-Z][A-Za-z0-9]*"
+```
+
+## Selection
+
+Ward starts from the rules of the preset, keeps only the listed `languages` and `categories`, adds
+the ids in `include` and removes the ids in `exclude`.
+
+| Preset | Rules |
+|---|---|
+| `standard` (default) | The structural, naming, import, documentation and data-flow rules Ward ships today. |
+| `strict` | Every rule of `standard`, and the stricter ones as they are added. |
+| `none` | No rule; build the set from `include`. |
+
+A rule belongs to one category, named after Checkstyle's groups: `sizes`, `metrics`, `naming`,
+`imports`, `javadoc`, `coding`, `misc` or `linter`. A `[rules."<id>"]` table for a rule that is not
+selected is a configuration error, so a tuned rule is never silently off.
+
+## Rule tables
+
+Every rule accepts `severity` (`error` or `warning`) and `exclude-paths` (globs relative to the
+project root, applied to that rule only; other rules still check those files). The other keys are
+the rule's options. A rule has only the options it declares, and the default of each option is the
+limit it uses without the file:
+
+| Rule | Option | Type | Default |
+|---|---|---|---|
+| `file-length`, `*-length`, `parameter-count`, `*-complexity`, `complexity`, `nesting-depth` (every language) | `max` | integer | the limit in the [gates reference](/configuration/gates/) |
+| `type-name`, `method-name`, `member-name`, `parameter-name`, `local-variable-name` (Java); `type-name`, `function-name`, `property-name` (Kotlin) | `pattern` | regular expression | the Checkstyle default |
+
+Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
+`enum`. A `regex` is compiled when the file is read.
+
+## Validation
+
+Every problem is reported, not only the first, and each names the file, the table and the key:
+
+```text
+ward-rules.toml: [rules."ward:java/method-length"] max: expected an integer >= 1, got "sixty"
+ward-rules.toml: [rules."ward:java/nope"]: unknown rule id
+```
+
+Unknown rule ids, unknown options, wrong types, values out of range, unknown enum values, and
+invalid globs or regular expressions are all errors. The `ward` gate then fails with an execution
+error and runs no rule, and [`ward doctor`](/commands/doctor/) reports the same problems.
+
+## No suppressions
+
+Ward has no inline ignore comment, no annotation and no suppression file. `@SuppressWarnings`,
+`// NOSONAR`, `# noqa`, `// eslint-disable` and similar markers have no effect on `ward` rules. To
+stop a finding, change an option, lower the severity, exclude paths for that rule, or deselect the
+rule, all in this file.
+
+## Cache
+
+The result cache key includes each rule's resolved options and severity, so changing a value re-runs
+the rule and gives the same result as a cold run. `exclude-paths` is applied after the cache.
