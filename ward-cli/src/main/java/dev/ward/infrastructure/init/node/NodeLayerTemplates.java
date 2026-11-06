@@ -34,7 +34,8 @@ final class NodeLayerTemplates {
       );
       """;
 
-  // The formatter is off in the layer too: ward-format formats, so biome ci reports no format finding.
+  // The formatter is off in the layer too: ward-format formats, so biome ci reports no format
+  // finding.
   private static final String BIOME_LAYER_STANDARD =
       """
       {

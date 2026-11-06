@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The tool configs init writes in a Swift project root: {@code .swiftlint.yml}. A config the project
- * keeps is never changed. Strict over a project's own {@code .swiftlint.yml} writes {@code
+ * The tool configs init writes in a Swift project root: {@code .swiftlint.yml}. A config the
+ * project keeps is never changed. Strict over a project's own {@code .swiftlint.yml} writes {@code
  * .ward/swiftlint-strict.yml} instead, which the SwiftLint command passes after the user's file.
  */
 public final class SwiftConfigFiles {

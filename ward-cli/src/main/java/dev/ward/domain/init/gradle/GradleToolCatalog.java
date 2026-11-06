@@ -37,10 +37,6 @@ public final class GradleToolCatalog {
   private static final int JDK_8 = 8;
   private static final int JDK_10 = 10;
   private static final int JDK_11 = 11;
-  private static final int JDK_16 = 16;
-  private static final int JDK_17 = 17;
-  private static final int JDK_20 = 20;
-  private static final int JDK_21 = 21;
   private static final int JDK_25 = 25;
   private static final String ANY_GRADLE = "6.1.1";
 

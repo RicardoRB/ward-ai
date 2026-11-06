@@ -160,8 +160,7 @@ final class PomTools {
 
   /** The engine each plugin carries, keyed by plugin artifact, with its default version. */
   static final Map<String, Engine> ENGINES =
-      Map.of(
-          CHECKSTYLE, new Engine("checkstyle", "10.20.2"));
+      Map.of(CHECKSTYLE, new Engine("checkstyle", "10.20.2"));
 
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =

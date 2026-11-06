@@ -43,10 +43,7 @@ public final class NodeConfigTemplates {
         },
         {
           rules: {
-            "@typescript-eslint/no-extraneous-class": [
-              "error",
-              { allowWithDecorator: true },
-            ],
+            "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true }],
           },
         },
         {

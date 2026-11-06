@@ -1,7 +1,6 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.AgentRulesTemplate;
-import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Language;

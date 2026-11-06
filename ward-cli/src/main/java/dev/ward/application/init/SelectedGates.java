@@ -35,13 +35,13 @@ final class SelectedGates {
     final List<String> ids =
         Stream.concat(
                 Stream.concat(
-                        (selection.preset() == null
-                                ? selection.gates()
-                                : PresetGateOrder.orderSelected(
-                                    catalog.presetGates(project, selection.preset()),
-                                    selection.gates()))
-                            .stream(),
-                        selection.openSpecValidations().stream()),
+                    (selection.preset() == null
+                            ? selection.gates()
+                            : PresetGateOrder.orderSelected(
+                                catalog.presetGates(project, selection.preset()),
+                                selection.gates()))
+                        .stream(),
+                    selection.openSpecValidations().stream()),
                 Stream.of(FormatGates.WARD_FORMAT))
             .distinct()
             .toList();

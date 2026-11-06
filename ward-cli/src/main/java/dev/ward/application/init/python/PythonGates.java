@@ -13,8 +13,7 @@ import java.util.Map;
  * and audit. Strict adds mutation testing and the stricter rules on top of the standard gates.
  */
 final class PythonGates implements SourceLanguageGates<PythonTools> {
-  private static final List<String> STANDARD =
-      List.of("ruff", "mypy", "pytest", "coverage");
+  private static final List<String> STANDARD = List.of("ruff", "mypy", "pytest", "coverage");
   private static final List<String> STRICT =
       List.of("ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
 
