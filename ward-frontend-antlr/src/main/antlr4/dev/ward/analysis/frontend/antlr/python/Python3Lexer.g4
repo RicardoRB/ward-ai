@@ -84,6 +84,7 @@ IN         : 'in';
 IS         : 'is';
 LAMBDA     : 'lambda';
 MATCH      : 'match';
+TYPE       : 'type';
 NONE       : 'None';
 NONLOCAL   : 'nonlocal';
 NOT        : 'not';
@@ -106,7 +107,11 @@ NAME: ID_START ID_CONTINUE*;
 /// stringliteral   ::=  [stringprefix](shortstring | longstring)
 /// stringprefix    ::=  "r" | "u" | "R" | "U" | "f" | "F"
 ///                      | "fr" | "Fr" | "fR" | "FR" | "rf" | "rF" | "Rf" | "RF"
-STRING_LITERAL: ( [rR] | [uU] | [fF] | ( [fF] [rR]) | ( [rR] [fF]))? ( SHORT_STRING | LONG_STRING);
+STRING_LITERAL: ( [rR] | [uU])? ( SHORT_STRING | LONG_STRING);
+
+/// f-strings and t-strings (PEP 701, PEP 750): the body is scanned by the lexer base, so a replacement
+/// field may reuse the enclosing quote.
+TEMPLATE_STRING_LITERAL: ( [fFtT] | ( [fFtT] [rR]) | ( [rR] [fFtT]) ) ( '"""' | '\'\'\'' | '"' | '\'' ) { scanTemplateString(); } -> type(STRING);
 
 /// bytesliteral   ::=  bytesprefix(shortbytes | longbytes)
 /// bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB"

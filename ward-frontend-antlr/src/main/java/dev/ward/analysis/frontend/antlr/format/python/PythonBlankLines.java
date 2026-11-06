@@ -7,7 +7,8 @@ import java.util.OptionalInt;
 /**
  * Sets the blank lines around definitions: two before a top-level {@code def} or {@code class} and
  * after its body, one before a method, none between a decorator and its definition or after a block
- * opener. Every other blank run keeps its size, capped by the blank line option.
+ * opener. A blank run inside a body is capped at one line; every other blank run keeps its size,
+ * capped by the blank line option.
  */
 final class PythonBlankLines {
 
@@ -33,7 +34,8 @@ final class PythonBlankLines {
         run.add(chunk);
         continue;
       }
-      final OptionalInt target = target(previous, chunk, topDef, maxBlank);
+      final OptionalInt target =
+          bodyTarget(run, chunk, target(previous, chunk, topDef, maxBlank));
       out.addAll(target.isPresent() ? withBlanks(run, target.getAsInt()) : run);
       run.clear();
       out.add(chunk);
@@ -42,6 +44,19 @@ final class PythonBlankLines {
     }
     out.addAll(withoutTrailingBlanks(run));
     return out;
+  }
+
+  /** Caps a blank run inside a body at one line, unless a definition rule already sets it. */
+  private static OptionalInt bodyTarget(
+      final List<PythonChunk> run, final PythonChunk chunk, final OptionalInt target) {
+    if (target.isPresent() || chunk.depth() == 0 || blankCount(run) <= METHOD_BLANKS) {
+      return target;
+    }
+    return OptionalInt.of(METHOD_BLANKS);
+  }
+
+  private static int blankCount(final List<PythonChunk> run) {
+    return run.stream().filter(PythonChunk::isBlank).mapToInt(PythonChunk::count).sum();
   }
 
   private static OptionalInt target(

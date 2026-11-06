@@ -18,9 +18,11 @@ import dev.ward.analysis.frontend.antlr.typescript.TypeScriptLexer;
 import dev.ward.analysis.frontend.antlr.typescript.TypeScriptParser;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Function;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * The ANTLR frontend for every {@link AnalysisLanguage}. Each language keeps one lexer and one
@@ -55,9 +57,13 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
   }
 
   private static LanguageFrontend javaSession() {
+    return new JavaSession(javaUnitSession(JavaParser::compilationunit), javaUnitSession(JavaParser::compactCompilationUnit));
+  }
+
+  private static LanguageFrontend javaUnitSession(final Function<JavaParser, ParserRuleContext> start) {
     final JavaLexer lexer = new JavaLexer(empty());
     final JavaParser parser = new JavaParser(new CommonTokenStream(lexer));
-    return new GrammarSession<>(lexer, parser, JavaParser::compilationunit);
+    return new GrammarSession<>(lexer, parser, start);
   }
 
   private static LanguageFrontend kotlinSession() {

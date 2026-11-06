@@ -42,8 +42,14 @@ options {
 }
 
 compilationunit
-    : packageDeclaration? (importDeclaration | ';')* (typeDeclaration | classBodyDeclaration | ';')* EOF
+    : packageDeclaration? (importDeclaration | ';')* (typeDeclaration | ';')* EOF
     | modularCompulationUnit EOF
+    ;
+
+// A compact source file (JEP 512) may declare members outside any class. Parsed by its own start
+// rule, so the regular compilation unit keeps its prediction and diagnostics.
+compactCompilationUnit
+    : packageDeclaration? (importDeclaration | ';')* (typeDeclaration | classBodyDeclaration | ';')* EOF
     ;
 
 modularCompulationUnit
