@@ -30,8 +30,7 @@ swiftlint = ["array_init"]
 [[rule]]
 name = "async-without-await"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["async_without_await"]
 
 [[rule]]
@@ -302,8 +301,7 @@ swiftlint = ["empty_string"]
 [[rule]]
 name = "empty-xctest-method"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["empty_xctest_method"]
 
 [[rule]]
@@ -707,8 +705,7 @@ swiftlint = ["non_overridable_class_declaration"]
 [[rule]]
 name = "notification-center-detachment"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["notification_center_detachment"]
 
 [[rule]]
@@ -1063,8 +1060,7 @@ swiftlint = ["self_binding"]
 [[rule]]
 name = "self-in-property-initialization"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["self_in_property_initialization"]
 
 [[rule]]
@@ -1241,8 +1237,7 @@ swiftlint = ["unneeded_synthesized_initializer"]
 [[rule]]
 name = "unneeded-throws-rethrows"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unneeded_throws_rethrows"]
 
 [[rule]]
@@ -1261,15 +1256,13 @@ swiftlint = ["untyped_error_in_catch"]
 [[rule]]
 name = "unused-closure-parameter"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unused_closure_parameter"]
 
 [[rule]]
 name = "unused-control-flow-label"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unused_control_flow_label"]
 
 [[rule]]
