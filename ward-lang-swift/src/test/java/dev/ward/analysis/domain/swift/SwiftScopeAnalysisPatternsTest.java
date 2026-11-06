@@ -15,6 +15,7 @@ class SwiftScopeAnalysisPatternsTest {
 
   private static final int LINE_1 = 1;
   private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
   private static final int LINE_4 = 4;
 
   private static NameReference only(final UnitScopes scopes, final String name, final int line) {
@@ -34,6 +35,23 @@ class SwiftScopeAnalysisPatternsTest {
         SwiftScopeFixtures.scopes("func f() { do { try g() } catch { print(error) } }\n");
 
     assertThat(only(scopes, "error", LINE_1).resolved()).isPresent();
+  }
+
+  @Test
+  void ifLetShorthandBindsTheSameName() {
+    final UnitScopes scopes =
+        SwiftScopeFixtures.scopes("func f(x: Int?) {\nif let x {\nprint(x)\n}\n}\n");
+
+    assertThat(only(scopes, "x", LINE_3).resolved()).isPresent();
+  }
+
+  @Test
+  void macroParametersStayInsideTheMacro() {
+    final UnitScopes scopes =
+        SwiftScopeFixtures.scopes(
+            "macro m(_ value: Int) = #externalMacro(module: \"M\", type: \"S\")\nfunc g() { print(value) }\n");
+
+    assertThat(only(scopes, "value", LINE_2).resolved()).isEmpty();
   }
 
   @Test
