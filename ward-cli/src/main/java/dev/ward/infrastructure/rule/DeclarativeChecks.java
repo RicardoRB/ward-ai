@@ -7,25 +7,17 @@ import dev.ward.analysis.domain.rule.check.CognitiveTokens;
 import dev.ward.analysis.domain.rule.check.CountedKinds;
 import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
-import dev.ward.analysis.domain.rule.check.DotFormatCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
-import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
-import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
-import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
-import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
-import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
-import dev.ward.analysis.domain.scope.ScopeKind;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
 
@@ -110,47 +102,13 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
-      case "outside-scope" -> outsideScope(toml);
-      case "redefinition" -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE));
-      case "star-import-usage" -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE));
-      case "percent-format" -> percentFormat(toml);
-      case "dot-format" -> dotFormat(toml);
-      case "logging-args" -> loggingArgs(toml);
       default ->
-          ImportChecks.isImportCheck(name)
-              ? ImportChecks.build(name, toml)
-              : ReviewChecks.build(name, toml);
+          ScopeAndFormatChecks.isCheck(name)
+              ? ScopeAndFormatChecks.build(name, toml)
+              : ImportChecks.isImportCheck(name)
+                  ? ImportChecks.build(name, toml)
+                  : ReviewChecks.build(name, toml);
     };
-  }
-
-  private static RuleCheck percentFormat(final TomlParseResult toml) {
-    final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
-    return new PercentFormatCheck(
-        PercentFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck dotFormat(final TomlParseResult toml) {
-    final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
-    return new DotFormatCheck(
-        DotFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck loggingArgs(final TomlParseResult toml) {
-    final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
-    return new LoggingArgsCheck(
-        LoggingArgsCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck outsideScope(final TomlParseResult toml) {
-    final Set<ScopeKind> within =
-        TomlValues.strings(toml, "within").stream()
-            .map(ScopeKind::valueOf)
-            .collect(Collectors.toUnmodifiableSet());
-    return new OutsideScopeCheck(
-        TomlValues.strings(toml, KINDS), within, TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck descendantCount(final TomlParseResult toml) {

@@ -6,9 +6,14 @@ import java.util.Optional;
 
 /**
  * The shape of the right operand of a {@code %} operator when it is a literal: a tuple with a known
- * number of items, or a dictionary with its string keys. Any other operand has no shape.
+ * number of items, a dictionary with its string keys, or a single string. Any other operand has no
+ * shape.
+ *
+ * @param kind the kind of operand
+ * @param count the number of items of a tuple
+ * @param keys the string keys of a dictionary, or empty when a key is not a string literal
  */
-final class PercentArgument {
+record PercentArgument(Kind kind, int count, Optional<List<String>> keys) {
 
   /** The kinds of operand that the checks tell apart. */
   enum Kind {
@@ -21,18 +26,14 @@ final class PercentArgument {
   private static final char OPEN_PAREN = '(';
   private static final char CLOSE_PAREN = ')';
   private static final char OPEN_BRACE = '{';
-  private static final char CLOSE_BRACE = '}';
   private static final char SEPARATOR = ',';
   private static final char KEY_SEPARATOR = ':';
+  private static final char SINGLE_QUOTE = '\'';
+  private static final char DOUBLE_QUOTE = '"';
 
-  private final Kind kind;
-  private final int count;
-  private final Optional<List<String>> keys;
-
-  private PercentArgument(final Kind kind, final int count, final Optional<List<String>> keys) {
-    this.kind = kind;
-    this.count = count;
-    this.keys = keys;
+  /** Copies the keys. */
+  PercentArgument {
+    keys = keys.map(List::copyOf);
   }
 
   /** Reads the operand from its text, with the whitespace the tree text does not keep. */
@@ -47,73 +48,6 @@ final class PercentArgument {
       return dict(text.substring(1, text.length() - 1));
     }
     return other();
-  }
-
-  /** The kind of operand. */
-  Kind kind() {
-    return kind;
-  }
-
-  /** The number of items of a tuple. */
-  int count() {
-    return count;
-  }
-
-  /** The string keys of a dictionary, or empty when a key is not a string literal. */
-  Optional<List<String>> keys() {
-    return keys;
-  }
-
-  private static PercentArgument other() {
-    return new PercentArgument(Kind.OTHER, 0, Optional.empty());
-  }
-
-  private static boolean enclosedBy(final String text, final char open) {
-    final char close = open == OPEN_PAREN ? CLOSE_PAREN : CLOSE_BRACE;
-    return text.length() >= 2
-        && text.charAt(0) == open
-        && matchingClose(text, 0) == text.length() - 1
-        && text.charAt(text.length() - 1) == close;
-  }
-
-  private static PercentArgument tuple(final String inner) {
-    if (inner.isEmpty()) {
-      return new PercentArgument(Kind.TUPLE, 0, Optional.empty());
-    }
-    final List<String> items = split(inner, SEPARATOR);
-    final boolean trailingComma = inner.endsWith(",");
-    if (!trailingComma && items.size() == 1
-        || items.stream().anyMatch(item -> item.startsWith("*"))) {
-      return other();
-    }
-    return new PercentArgument(
-        Kind.TUPLE, trailingComma ? items.size() - 1 : items.size(), Optional.empty());
-  }
-
-  private static PercentArgument dict(final String inner) {
-    final List<String> keys = new ArrayList<>();
-    for (final String item : split(inner, SEPARATOR)) {
-      if (item.isEmpty()) {
-        continue;
-      }
-      final String key = keyOf(item);
-      if (!isStringLiteral(key)) {
-        return new PercentArgument(Kind.DICT, 0, Optional.empty());
-      }
-      keys.add(key.substring(1, key.length() - 1));
-    }
-    return new PercentArgument(Kind.DICT, 0, Optional.of(List.copyOf(keys)));
-  }
-
-  private static String keyOf(final String item) {
-    final List<String> parts = split(item, KEY_SEPARATOR);
-    return parts.get(0);
-  }
-
-  private static boolean isStringLiteral(final String text) {
-    return text.length() >= 2
-        && (text.charAt(0) == '"' || text.charAt(0) == '\'')
-        && text.charAt(text.length() - 1) == text.charAt(0);
   }
 
   /** Splits {@code text} at {@code separator} outside brackets and string literals. */
@@ -132,15 +66,65 @@ final class PercentArgument {
     return parts;
   }
 
-  private static int matchingClose(final String text, final int open) {
+  private static PercentArgument other() {
+    return new PercentArgument(Kind.OTHER, 0, Optional.empty());
+  }
+
+  private static boolean enclosedBy(final String text, final char open) {
+    final char close = open == OPEN_PAREN ? CLOSE_PAREN : '}';
+    return text.length() >= 2
+        && text.charAt(0) == open
+        && matchingClose(text) == text.length() - 1
+        && text.charAt(text.length() - 1) == close;
+  }
+
+  private static int matchingClose(final String text) {
     final Nesting nesting = new Nesting();
-    for (int index = open; index < text.length(); index++) {
+    for (int index = 0; index < text.length(); index++) {
       nesting.topLevel(text.charAt(index));
-      if (nesting.depth() == 0 && index > open) {
+      if (nesting.depth() == 0) {
         return index;
       }
     }
     return -1;
+  }
+
+  private static PercentArgument tuple(final String inner) {
+    if (inner.isEmpty()) {
+      return new PercentArgument(Kind.TUPLE, 0, Optional.empty());
+    }
+    final List<String> items = split(inner, SEPARATOR);
+    final boolean trailingComma = inner.endsWith(",");
+    if (isNotTuple(items, trailingComma)) {
+      return other();
+    }
+    final int count = trailingComma ? items.size() - 1 : items.size();
+    return new PercentArgument(Kind.TUPLE, count, Optional.empty());
+  }
+
+  private static boolean isNotTuple(final List<String> items, final boolean trailingComma) {
+    return (!trailingComma && items.size() == 1)
+        || items.stream().anyMatch(item -> item.startsWith("*"));
+  }
+
+  private static PercentArgument dict(final String inner) {
+    final List<String> keys = new ArrayList<>();
+    for (final String item : split(inner, SEPARATOR)) {
+      if (!item.isEmpty()) {
+        final String key = split(item, KEY_SEPARATOR).get(0);
+        if (!isStringLiteral(key)) {
+          return new PercentArgument(Kind.DICT, 0, Optional.empty());
+        }
+        keys.add(key.substring(1, key.length() - 1));
+      }
+    }
+    return new PercentArgument(Kind.DICT, 0, Optional.of(keys));
+  }
+
+  private static boolean isStringLiteral(final String text) {
+    return text.length() >= 2
+        && (text.charAt(0) == DOUBLE_QUOTE || text.charAt(0) == SINGLE_QUOTE)
+        && text.charAt(text.length() - 1) == text.charAt(0);
   }
 
   /** Tracks brackets and string literals while a text is read from left to right. */
@@ -155,16 +139,22 @@ final class PercentArgument {
     /** Reads one character and returns whether it is outside every bracket and literal. */
     boolean topLevel(final char current) {
       final boolean outside = quote == 0 && depth == 0;
-      if (quote != 0) {
-        quote = current == quote ? 0 : quote;
-      } else if (current == '"' || current == '\'') {
+      if (quote == 0) {
+        open(current);
+      } else if (current == quote) {
+        quote = 0;
+      }
+      return outside;
+    }
+
+    private void open(final char current) {
+      if (current == DOUBLE_QUOTE || current == SINGLE_QUOTE) {
         quote = current;
       } else if (OPENERS.indexOf(current) >= 0) {
         depth++;
       } else if (CLOSERS.indexOf(current) >= 0) {
         depth--;
       }
-      return outside;
     }
 
     int depth() {

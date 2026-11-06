@@ -62,7 +62,7 @@ public final class PercentFormatCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, EXPRESSION)) {
       operation(visit.node())
-          .filter(this::violates)
+          .filter(operation -> operation.violates(problem))
           .ifPresent(operation -> found.add(new RuleMatch(visit.node().span(), message)));
     }
     return List.copyOf(found);
@@ -100,72 +100,65 @@ public final class PercentFormatCheck implements RuleCheck {
     return content.indexOf(quote) >= 0 ? Optional.empty() : Optional.of(content);
   }
 
-  private boolean violates(final Operation operation) {
-    final PercentFormatString format = operation.format();
-    final PercentArgument argument = operation.argument();
-    return switch (problem) {
-      case INVALID -> format.incomplete();
-      case UNSUPPORTED -> format.unsupported().isPresent();
-      case MIXED -> mixed(format);
-      case EXPECTED_MAPPING -> expectedMapping(format, argument);
-      case STAR_MAPPING -> starMapping(format, argument);
-      case COUNT -> count(format, argument);
-      case UNUSED_KEYS -> unusedKeys(operation);
-      case MISSING_KEYS -> missingKeys(operation);
-      case TYPE_MISMATCH -> typeMismatch(format, argument);
-    };
-  }
-
-  private static boolean expectedMapping(
-      final PercentFormatString format, final PercentArgument argument) {
-    return hasNamed(format) && argument.kind() == PercentArgument.Kind.TUPLE;
-  }
-
-  private static boolean starMapping(
-      final PercentFormatString format, final PercentArgument argument) {
-    return format.star() && argument.kind() == PercentArgument.Kind.DICT;
-  }
-
-  private static boolean count(final PercentFormatString format, final PercentArgument argument) {
-    return !hasNamed(format) && countMismatch(format, argument);
-  }
-
-  private static boolean typeMismatch(
-      final PercentFormatString format, final PercentArgument argument) {
-    return format.numeric() && argument.kind() == PercentArgument.Kind.STRING;
-  }
-
-  private static boolean hasNamed(final PercentFormatString format) {
-    return !format.named().isEmpty();
-  }
-
-  private static boolean mixed(final PercentFormatString format) {
-    return hasNamed(format) && format.positional() > 0;
-  }
-
-  private static boolean countMismatch(
-      final PercentFormatString format, final PercentArgument argument) {
-    return argument.kind() == PercentArgument.Kind.TUPLE && format.positional() != argument.count();
-  }
-
-  private static boolean unusedKeys(final Operation operation) {
-    final List<String> named = operation.format().named();
-    return operation
-        .argument()
-        .keys()
-        .map(keys -> keys.stream().anyMatch(key -> !named.contains(key)))
-        .orElse(false);
-  }
-
-  private static boolean missingKeys(final Operation operation) {
-    return hasNamed(operation.format())
-        && operation
-            .argument()
-            .keys()
-            .map(keys -> !keys.containsAll(operation.format().named()))
-            .orElse(false);
-  }
-
   /** One {@code %} expression: its format and its right operand. */
-  private record Operation(PercentFormatString format, PercentArgument argument) {}
+  private record Operation(PercentFormatString format, PercentArgument argument) {
+
+    boolean violates(final Problem kind) {
+      return switch (kind) {
+        case INVALID -> format.incomplete();
+        case UNSUPPORTED -> format.unsupported().isPresent();
+        case STAR_MAPPING -> starMapping();
+        case TYPE_MISMATCH -> typeMismatch();
+        default -> violatesWithArguments(kind);
+      };
+    }
+
+    private boolean violatesWithArguments(final Problem kind) {
+      return switch (kind) {
+        case MIXED -> mixed();
+        case EXPECTED_MAPPING -> expectedMapping();
+        case COUNT -> count();
+        case UNUSED_KEYS -> unusedKeys();
+        default -> missingKeys();
+      };
+    }
+
+    private boolean mixed() {
+      return hasNamed() && format.positional() > 0;
+    }
+
+    private boolean expectedMapping() {
+      return hasNamed() && argument.kind() == PercentArgument.Kind.TUPLE;
+    }
+
+    private boolean starMapping() {
+      return format.star() && argument.kind() == PercentArgument.Kind.DICT;
+    }
+
+    private boolean count() {
+      return !hasNamed()
+          && argument.kind() == PercentArgument.Kind.TUPLE
+          && format.positional() != argument.count();
+    }
+
+    private boolean typeMismatch() {
+      return format.numeric() && argument.kind() == PercentArgument.Kind.STRING;
+    }
+
+    private boolean hasNamed() {
+      return !format.named().isEmpty();
+    }
+
+    private boolean unusedKeys() {
+      return argument
+          .keys()
+          .map(keys -> keys.stream().anyMatch(key -> !format.named().contains(key)))
+          .orElse(false);
+    }
+
+    private boolean missingKeys() {
+      return hasNamed()
+          && argument.keys().map(keys -> !keys.containsAll(format.named())).orElse(false);
+    }
+  }
 }

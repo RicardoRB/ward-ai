@@ -17,11 +17,7 @@ import java.util.TreeSet;
  * @param specs the format specs of the top-level fields, without the colon
  */
 record DotFormatString(
-    Set<String> names,
-    Set<Integer> manual,
-    int automatic,
-    boolean invalid,
-    List<String> specs) {
+    Set<String> names, Set<Integer> manual, int automatic, boolean invalid, List<String> specs) {
 
   /** Copies the collections. */
   DotFormatString {
