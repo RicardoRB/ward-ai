@@ -39,10 +39,7 @@ public final class JavaTypeSidecar implements TypeSidecar {
     this.wardVersion = wardVersion;
   }
 
-  /**
-   * Without a {@code java-classpath} file the sidecar does not start: library types would not
-   * resolve.
-   */
+  /** Starts without a classpath: library types then resolve as unknown. */
   @Override
   public Optional<TypeFacts> start() {
     return start(Optional.empty());
@@ -50,24 +47,26 @@ public final class JavaTypeSidecar implements TypeSidecar {
 
   @Override
   public Optional<TypeFacts> start(final Optional<Path> classpathFile) {
-    if (classpathFile.isEmpty()) {
-      LOGGER.log(Level.INFO, "event=type-sidecar-unavailable language=java category=no-classpath");
-      return Optional.empty();
+    String classpath = "";
+    if (classpathFile.isPresent()) {
+      try {
+        classpath = Files.readString(classpathFile.get());
+      } catch (IOException unreadable) {
+        LOGGER.log(Level.WARNING, "event=type-sidecar-classpath-unreadable language=java");
+        return start(Optional.empty());
+      }
     }
-    final String classpath;
-    try {
-      classpath = Files.readString(classpathFile.get());
-    } catch (IOException unreadable) {
-      LOGGER.log(Level.WARNING, "event=type-sidecar-unavailable language=java category=classpath");
-      return Optional.empty();
-    }
+    return launch(classpathFile, classpath);
+  }
+
+  private Optional<TypeFacts> launch(final Optional<Path> classpathFile, final String classpath) {
     final Optional<Path> script = SidecarScripts.extract(projectRoot, wardVersion, SCRIPT);
     if (script.isEmpty()) {
       return Optional.empty();
     }
     final List<String> command = new ArrayList<>(List.of("java", script.get().toString()));
     command.add(projectRoot.toString());
-    command.add(CLASSPATH_FLAG + classpathArgument(classpathFile.get()));
+    command.add(CLASSPATH_FLAG + classpathFile.map(this::classpathArgument).orElse(""));
     for (final JavaSourceRoot root : JvmSourceLayouts.of(projectRoot, List.of(projectRoot))) {
       command.add(projectRoot.resolve(root.directory()).toString());
     }

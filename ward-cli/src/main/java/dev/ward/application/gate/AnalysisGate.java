@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 public final class AnalysisGate implements QualityGate {
   private static final Logger LOGGER = Logger.getLogger(AnalysisGate.class.getName());
   private static final String TYPES_UNAVAILABLE =
-      "the type sidecar is unavailable (Java needs a JDK with javac and a java-classpath file;"
+      "the type sidecar is unavailable (Java needs a JDK with javac;"
           + " TypeScript needs node and the project's typescript package)";
   private static final String TOOL = "ward";
 

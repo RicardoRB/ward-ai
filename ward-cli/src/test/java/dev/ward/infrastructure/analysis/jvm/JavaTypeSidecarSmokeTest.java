@@ -46,7 +46,7 @@ class JavaTypeSidecarSmokeTest {
 
     final JavaTypeSidecar sidecar = new JavaTypeSidecar(project, "smoke");
     try {
-      final Optional<TypeFacts> resolver = sidecar.start(classpathFile());
+      final Optional<TypeFacts> resolver = sidecar.start();
       assertThat(resolver).isPresent();
       final ExpressionTypes answer =
           resolver

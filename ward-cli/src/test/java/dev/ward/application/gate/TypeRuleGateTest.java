@@ -20,7 +20,6 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.analysis.jvm.JavaTypeSidecar;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,7 @@ class TypeRuleGateTest {
   }
 
   @Test
-  void javaTypeRuleWithoutAJavaClasspathIsNotRunBecauseTheSidecarIsUnavailable() {
+  void javaTypeRuleIsNotRunWhenNoJdkCanStartTheSidecar() {
     final RuleDefinition typed =
         new RuleDefinition(
             "ward:java/data-flow",
@@ -67,13 +66,12 @@ class TypeRuleGateTest {
             AnalysisSeverity.ERROR,
             "body");
     final GateResult result =
-        gate(List.of(typed), root -> Map.of(AnalysisLanguage.JAVA, new JavaTypeSidecar(root, "t")))
+        gate(List.of(typed), root -> Map.of(AnalysisLanguage.JAVA, new NoJdkSidecar()))
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.stderr())
         .contains("ward:java/data-flow not run")
-        .contains("java-classpath")
         .contains("type sidecar is unavailable");
   }
 
@@ -112,5 +110,18 @@ class TypeRuleGateTest {
             DependencyAdapters.none(),
             sidecars);
     return new AnalysisGate("ward", rules, ports);
+  }
+
+  /** A Java sidecar that cannot start because the machine has no JDK. */
+  private static final class NoJdkSidecar implements TypeSidecar {
+    @Override
+    public java.util.Optional<dev.ward.analysis.domain.port.TypeFacts> start() {
+      return java.util.Optional.empty();
+    }
+
+    @Override
+    public void close() {
+      // Nothing started.
+    }
   }
 }
