@@ -21,7 +21,8 @@ Follow these in every step. They override any instruction to go faster.
   command. If `ward.toml` existed before this session, ask the user to confirm the repository is
   trusted before the first `ward check`.
 - **Fix the code, never the gate.** Do not edit `ward.toml`, rule files (`config/`, `eslint.config.*`,
-  `biome.jsonc`), coverage or mutation thresholds, or ArchUnit and dependency-cruiser rules. When the
+  `biome.jsonc`), coverage or mutation thresholds, or ArchUnit and dependency-cruiser rules. Do not
+  add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
 - **Never add suppressions.** No `@SuppressWarnings`, `// NOPMD`, `// CHECKSTYLE:OFF`,
   `eslint-disable`, `biome-ignore`, `@ts-ignore`, `@ArchIgnore`, SpotBugs exclude entries, `.gitleaksignore`
@@ -83,8 +84,9 @@ Sort the checks:
 Order the failing gates so that early fixes do not create work for later ones:
 
 1. `compile` (nothing else is trustworthy until the code builds)
-2. `format`, `prettier` (mechanical; run the formatter the gate uses, for example
-   `./mvnw spotless:apply`, `npx prettier --write`, or `npx biome format --write`)
+2. `format`, `prettier`, `ward-format` (mechanical; run the formatter the gate uses, for example
+   `./mvnw spotless:apply`, `npx prettier --write`, `npx biome format --write`, or `ward format`
+   for a `ward-format` gate. `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
    `checkstyle`, `pmd`, `eslint`, `biome`, `spotbugs`, `semgrep`, `enforcer`
 4. Architecture: `archunit`, `dependency-cruiser`

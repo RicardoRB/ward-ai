@@ -3,6 +3,7 @@ package dev.ward.infrastructure.cli;
 import dev.ward.infrastructure.cli.agent.HookCommand;
 import dev.ward.infrastructure.cli.agent.IntegrateCommand;
 import dev.ward.infrastructure.cli.doctor.DoctorCommand;
+import dev.ward.infrastructure.cli.format.FormatCommand;
 import dev.ward.infrastructure.cli.gate.CheckCommand;
 import dev.ward.infrastructure.cli.init.InitCommand;
 import dev.ward.infrastructure.cli.loop.LoopCommand;
@@ -32,6 +33,7 @@ import picocli.CommandLine.Spec;
       HookCommand.class,
       SpecCommand.class,
       DoctorCommand.class,
+      FormatCommand.class,
       LoopCommand.class
     },
     footer = {"", "Exit codes: 0 = ok, 1 = failed, 2 = error"})

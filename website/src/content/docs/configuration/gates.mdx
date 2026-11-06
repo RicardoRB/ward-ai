@@ -409,6 +409,26 @@ profiles = ["ci"]
   reads them there.
 - mutmut's results for source files that were deleted keep counting until mutmut rewrites them.
 
+## Format gate
+
+`uses = "ward-format"` runs Ward's native formatter over the project's engine-language sources and
+reports each file it would change. It is a `FAST` gate, so it runs on every edit.
+
+```toml
+[checks.ward-format]
+uses = "ward-format"
+profiles = ["default", "edit", "pre-push", "ci"]
+```
+
+The gate needs no `command`. It reports one error per unformatted file, at the first line that
+differs, with the rule `ward-format` and the message `file is not formatted`. A file the formatter
+refuses, or one whose `.editorconfig` is invalid, is an execution error, never a pass. The gate never
+changes a file: run [`ward format`](/commands/format/) to fix the reported files.
+
+On a partial run, such as the `edit` profile after one file changed, the gate checks only the changed
+files when its `paths` table matches them, as the analysis gate does. Results for files that are
+already formatted are cached by content and settings, so unchanged files cost nothing on the next run.
+
 ## Analysis gate
 
 `ward` runs Ward's own analysis rules over the project's source files. It needs no `command`:

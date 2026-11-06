@@ -254,6 +254,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))
+                // The ward-format gate is offered with --format-engine ward (#269), not by default.
+                .filter(id -> !SupportedQualityGates.FORMAT.equals(id))
                 // Android gates are offered only for Android projects.
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());

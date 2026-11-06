@@ -1,0 +1,70 @@
+---
+title: format
+description: Format the project's source files in Ward style, with no external formatter.
+---
+
+`ward format` rewrites the source files of the project's engine languages (Java, Kotlin, TypeScript,
+JavaScript, Python and Swift) in Ward style. It needs only the `ward` binary.
+
+```sh
+ward format [--check] [--format text|json] [-C <dir>] [<path>...]
+```
+
+With no path, it formats every selected file in the project. With paths, it formats only those
+files, or every file below a folder. Relative paths resolve against `-C`, as if `ward` ran there.
+
+## Options
+
+| Option | What it does |
+|---|---|
+| `--check` | Write nothing. Exit `1` when a file needs formatting, and name each one. |
+| `--format text\|json` | Output format (default `text`). With `json`, stdout holds only the JSON report. |
+| `-C`, `--directory <dir>` | Format the project in `<dir>` instead of the current directory. |
+
+## Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Nothing needed formatting, or every file was written. |
+| `1` | With `--check`: at least one file needs formatting. |
+| `2` | A file was refused or could not be read or written, a path matched no formattable file, or the `.editorconfig` configuration is invalid. |
+
+A refused file is never written. Ward refuses a file when its formatted output would not parse, would
+change a token or the syntax tree, or would not format to itself again. A file with a syntax error
+is refused too, so it stays as it is.
+
+## Output
+
+Text output names each changed file, and each refused or failed file on stderr with its first
+differing line:
+
+```text
+needs formatting src/main/java/shop/Order.java
+refused tools/report.py:1: input has a syntax error
+```
+
+JSON output lists one entry per file:
+
+```json
+{
+  "files": [
+    { "path": "src/main/java/shop/Order.java", "status": "needs-formatting", "line": 3, "reason": "file is not formatted" }
+  ],
+  "error": null
+}
+```
+
+`status` is `unchanged`, `needs-formatting`, `written`, `refused` or `failed`. When the run stops on
+a configuration error, `files` is empty and `error` names the `.editorconfig` file, section and key.
+
+## Settings
+
+Ward reads the formatting options from the project's `.editorconfig` files, the same files your
+editor reads. See [EditorConfig](/configuration/editorconfig/) for the keys. A project without an
+`.editorconfig` gets Ward's defaults: a line width of 100, four-space indents for Java, Kotlin,
+Python and Swift, and two-space indents for TypeScript and JavaScript.
+
+## Formatting in `ward check`
+
+The [`ward-format` gate](/configuration/gates/#format-gate) runs the same formatter in `ward check`,
+and reports each unformatted file as an error. It never writes a file; run `ward format` to fix them.

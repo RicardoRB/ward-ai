@@ -25,10 +25,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 class FormatterFixturesTest {
 
   private static final String FIXTURE_ROOT = "/format";
-  private static final FormatterRegistry REGISTRY =
-      new FormatterRegistry(Map.of(AnalysisLanguage.JAVA, new FakeJavaFormatter()));
   private static final Map<AnalysisLanguage, FormatSyntax> SYNTAX =
       Map.of(AnalysisLanguage.JAVA, new FakeFormatSyntax());
+  private static final FormatterRegistry REGISTRY =
+      new FormatterRegistry(
+          Map.of(
+              AnalysisLanguage.JAVA,
+              new FormatterEntry(new FakeJavaFormatter(), SYNTAX.get(AnalysisLanguage.JAVA))));
 
   @ParameterizedTest(name = "{0} {1}")
   @MethodSource("cases")
@@ -40,7 +43,7 @@ class FormatterFixturesTest {
     final Path expectedFile = caseDir.resolve("expected." + extension);
     final Optional<String> expected =
         Files.exists(expectedFile) ? Optional.of(Files.readString(expectedFile)) : Optional.empty();
-    final SourceFormatter formatter = REGISTRY.find(language).orElseThrow();
+    final SourceFormatter formatter = REGISTRY.find(language).orElseThrow().formatter();
     final FormatFixtureChecks checks =
         new FormatFixtureChecks(
             formatter,
