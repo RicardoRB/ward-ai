@@ -14,9 +14,9 @@ import java.util.Map;
  */
 final class PythonGates implements SourceLanguageGates<PythonTools> {
   private static final List<String> STANDARD =
-      List.of("ruff-format", "ruff", "mypy", "pytest", "coverage");
+      List.of("ruff", "mypy", "pytest", "coverage");
   private static final List<String> STRICT =
-      List.of("ruff-format", "ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
+      List.of("ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
 
   @Override
   public List<InitGateOption> analysisGates(final PythonTools python) {
@@ -28,11 +28,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
               "Runs Django's system checks, failing on warnings.",
               python.command("python", "manage.py", "check", "--fail-level", "WARNING")));
     }
-    gates.add(
-        python.option(
-            "ruff-format",
-            "Checks formatting with ruff format.",
-            python.command("ruff", "format", "--check", ".")));
     gates.add(
         python.option(
             "ruff",

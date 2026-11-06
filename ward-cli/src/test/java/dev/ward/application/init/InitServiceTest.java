@@ -97,7 +97,6 @@ class InitServiceTest {
             null,
             false,
             null,
-            null,
             null));
 
     final String configuration = Files.readString(dir.resolve(WARD_TOML));

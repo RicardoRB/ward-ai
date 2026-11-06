@@ -19,23 +19,9 @@ final class PomTools {
   private static final String DEPENDENCY_CHECK = "dependency-check-maven";
   private static final String PIT = "pitest-maven";
   private static final String ENFORCER = "maven-enforcer-plugin";
-  private static final String SPOTLESS = "spotless-maven-plugin";
   private static final String LICENSE = "license-maven-plugin";
   private static final String JAPICMP = "japicmp-maven-plugin";
 
-  private static final String SPOTLESS_PLUGIN =
-      """
-              <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>3.10.3</version>
-                <configuration>
-                  <java>
-                    <googleJavaFormat><version>ENGINE_VERSION</version></googleJavaFormat>
-                  </java>
-                </configuration>
-              </plugin>
-            """;
   private static final String JAPICMP_PLUGIN =
       """
               <plugin>
@@ -175,8 +161,7 @@ final class PomTools {
   /** The engine each plugin carries, keyed by plugin artifact, with its default version. */
   static final Map<String, Engine> ENGINES =
       Map.of(
-          CHECKSTYLE, new Engine("checkstyle", "10.20.2"),
-          SPOTLESS, new Engine("google-java-format", "1.36.1"));
+          CHECKSTYLE, new Engine("checkstyle", "10.20.2"));
 
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
@@ -195,7 +180,6 @@ final class PomTools {
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
           Tool.modulePlugin(
               "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),
-          Tool.modulePlugin("format", SPOTLESS, SPOTLESS_PLUGIN),
           Tool.plugin(
               "license", LICENSE, LicensePolicySnippets.DENYLIST, LicensePolicySnippets::forPreset),
           Tool.plugin("api-compat", JAPICMP, JAPICMP_PLUGIN));

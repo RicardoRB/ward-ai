@@ -10,9 +10,6 @@ import java.util.Map;
  * see the Java compatibility matrix.
  */
 public final class GradleToolCatalog {
-  /** The Spotless plugin id. */
-  public static final String SPOTLESS = "com.diffplug.spotless";
-
   /** The SpotBugs plugin id. */
   public static final String SPOTBUGS = "com.github.spotbugs";
 
@@ -34,9 +31,6 @@ public final class GradleToolCatalog {
   /** The PIT engine. */
   public static final String PITEST_ENGINE = "pitest";
 
-  /** The formatter Spotless runs. */
-  public static final String FORMATTER = "google-java-format";
-
   /** The ArchUnit test dependency. */
   public static final String ARCHUNIT = "archunit";
 
@@ -52,13 +46,6 @@ public final class GradleToolCatalog {
 
   private static final List<ManagedPluginCandidate> ROWS =
       List.of(
-          row(SPOTLESS, "6.13.0", JDK_8, JDK_10, ANY_GRADLE),
-          row(SPOTLESS, "7.2.1", JDK_11, JDK_16, ANY_GRADLE),
-          row(SPOTLESS, "8.10.4", JDK_17, JDK_25, "8.1"),
-          row(FORMATTER, "1.7", JDK_8, JDK_10, ANY_GRADLE),
-          row(FORMATTER, "1.24.0", JDK_11, JDK_16, ANY_GRADLE),
-          row(FORMATTER, "1.28.0", JDK_17, JDK_20, ANY_GRADLE),
-          row(FORMATTER, "1.36.1", JDK_21, JDK_25, ANY_GRADLE),
           row(CHECKSTYLE_ENGINE, "9.3", JDK_8, JDK_10, ANY_GRADLE),
           row(CHECKSTYLE_ENGINE, "10.20.2", JDK_11, JDK_25, ANY_GRADLE),
           row(PMD_ENGINE, "7.17.0", JDK_8, JDK_25, "8.6"),

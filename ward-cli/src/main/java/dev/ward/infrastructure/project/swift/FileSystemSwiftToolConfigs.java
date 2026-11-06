@@ -10,8 +10,8 @@ import javax.inject.Inject;
 
 /**
  * Finds a Swift tool's own config in the project root. A config Ward wrote, whose marker is the
- * first line (such as {@code .swiftlint.yml} or {@code .harmonize.yaml}), does not count; any
- * {@code .swift-format} does, since its JSON cannot carry the marker.
+ * first line (such as {@code .swiftlint.yml} or {@code .harmonize.yaml}), does not count; a JSON
+ * config does, since its JSON cannot carry the marker.
  */
 public final class FileSystemSwiftToolConfigs implements SwiftToolConfigs {
   private static final String WARD_MARKER = "# managed-by: ward";

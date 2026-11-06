@@ -24,16 +24,13 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/**
- * {@code --format-engine ward}: ward-format replaces the external formatters and writes
- * .editorconfig.
- */
-class InitFormatEngineTest {
+/** Init writes the {@code ward-format} gate and, without one, the {@code .editorconfig} it reads. */
+class InitWardFormatTest {
 
   @TempDir Path root;
 
   @Test
-  void mavenWardEngineReplacesSpotlessWithWardFormatAndWritesEditorConfig() throws IOException {
+  void mavenInitWritesWardFormatAndTheEditorConfigWithoutSpotless() throws IOException {
     mavenProject();
 
     final InitCommandFixture init = init();
@@ -44,8 +41,6 @@ class InitFormatEngineTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
@@ -60,7 +55,7 @@ class InitFormatEngineTest {
   }
 
   @Test
-  void gradleWardEngineGeneratesNoSpotlessPluginOrGate() throws IOException {
+  void gradleInitWritesNoSpotlessPluginOrGate() throws IOException {
     Files.writeString(root.resolve("build.gradle.kts"), "plugins { java }\n");
     Files.createDirectories(root.resolve("src/main/java/shop"));
     Files.writeString(root.resolve("src/main/java/shop/App.java"), "package shop;\nclass App {}\n");
@@ -73,8 +68,6 @@ class InitFormatEngineTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
@@ -99,8 +92,6 @@ class InitFormatEngineTest {
         "standard",
         "--integration",
         "none",
-        "--format-engine",
-        "ward",
         "--dry-run",
         "--yes");
     assertThat(preview.output()).contains("Ward formats with this .editorconfig");
@@ -114,8 +105,6 @@ class InitFormatEngineTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
@@ -124,29 +113,7 @@ class InitFormatEngineTest {
   }
 
   @Test
-  void anUnknownFormatEngineIsRejectedBeforeAnyChange() throws IOException {
-    mavenProject();
-
-    final InitCommandFixture init = init();
-    final int exit =
-        init.run(
-            "",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--format-engine",
-            "other",
-            "--yes");
-
-    assertThat(exit).isNotEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("Supported engines: tool, ward");
-    assertThat(root.resolve("ward.toml")).doesNotExist();
-    assertThat(root.resolve(".editorconfig")).doesNotExist();
-  }
-
-  @Test
-  void swiftWardEngineReplacesSwiftFormatAndKeepsTheSwiftFormatConfigAbsent() throws IOException {
+  void swiftInitWritesNoSwiftFormatConfig() throws IOException {
     copyFixture("swift-package", root);
     final FakeCommandExecutor resolve =
         new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
@@ -158,7 +125,7 @@ class InitFormatEngineTest {
                     new FileSystemSwiftToolConfigs(),
                     new FileSystemSwiftSourceDirectories()));
 
-    final int exit = init.run("", "--preset", "standard", "--format-engine", "ward", "--yes");
+    final int exit = init.run("", "--preset", "standard", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))

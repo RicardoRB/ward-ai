@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * The bodies of the Node tool configs init writes, without their ownership marker. Objects are
- * fully expanded, so Prettier keeps them as written.
+ * fully expanded, so the formatter keeps them as written.
  */
 public final class NodeConfigTemplates {
   private static final String LINE = "LINE";
@@ -131,20 +131,13 @@ public final class NodeConfigTemplates {
       };
       """;
 
-  // The bodies biome format writes with spaces, so Biome reports no format finding in them.
-
-  /** The Biome formatter line of the generated configs, and its form when Ward formats instead. */
-  static final String BIOME_FORMATTER = "\"formatter\": { \"indentStyle\": \"space\" }";
-
-  static final String BIOME_FORMATTER_OFF = "\"formatter\": { \"enabled\": false }";
-
-  /** The same override in a layer, which extends the user's config and so adds a comma. */
-  static final String BIOME_FORMATTER_OFF_LAYER = "," + "\n  " + BIOME_FORMATTER_OFF;
+  /** The formatter override in a layer, which extends the user's config and so adds a comma. */
+  static final String BIOME_FORMATTER_OFF_LAYER = ",\n  \"formatter\": { \"enabled\": false }";
 
   private static final String BIOME_STANDARD =
       """
       {
-        "formatter": { "indentStyle": "space" },
+        "formatter": { "enabled": false },
         "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
         "linter": { "enabled": true, "rules": { "recommended": true } }
       }
@@ -153,7 +146,7 @@ public final class NodeConfigTemplates {
   private static final String BIOME_STRICT =
       """
       {
-        "formatter": { "indentStyle": "space" },
+        "formatter": { "enabled": false },
         "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
         "linter": {
           "enabled": true,
@@ -201,12 +194,11 @@ public final class NodeConfigTemplates {
 
   /**
    * Returns Ward's biome.jsonc. Strict adds the rules that its preset needs; the standard body also
-   * keeps Biome out of Git-ignored output such as Ward's coverage reports.
+   * keeps Biome out of Git-ignored output such as Ward's coverage reports. The formatter is off:
+   * {@code ward-format} formats.
    */
-  /** Returns Ward's biome.jsonc, with the formatter turned off when {@code formatterOff} is set. */
-  static String biome(final QualityPreset preset, final boolean formatterOff) {
-    final String config = preset == QualityPreset.STRICT ? BIOME_STRICT : BIOME_STANDARD;
-    return formatterOff ? config.replace(BIOME_FORMATTER, BIOME_FORMATTER_OFF) : config;
+  static String biome(final QualityPreset preset) {
+    return preset == QualityPreset.STRICT ? BIOME_STRICT : BIOME_STANDARD;
   }
 
   /**

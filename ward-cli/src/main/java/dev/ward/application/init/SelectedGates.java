@@ -12,6 +12,7 @@ import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -32,18 +33,18 @@ final class SelectedGates {
       final InitSelection selection,
       final String openSpecExecutable) {
     final List<String> ids =
-        FormatEngineGates.apply(
-            Stream.concat(
-                    (selection.preset() == null
-                            ? selection.gates()
-                            : PresetGateOrder.orderSelected(
-                                catalog.presetGates(project, selection.preset()),
-                                selection.gates()))
-                        .stream(),
-                    selection.openSpecValidations().stream())
-                .distinct()
-                .toList(),
-            selection.formatEngine());
+        Stream.concat(
+                Stream.concat(
+                        (selection.preset() == null
+                                ? selection.gates()
+                                : PresetGateOrder.orderSelected(
+                                    catalog.presetGates(project, selection.preset()),
+                                    selection.gates()))
+                            .stream(),
+                        selection.openSpecValidations().stream()),
+                Stream.of(FormatGates.WARD_FORMAT))
+            .distinct()
+            .toList();
     final List<InitGateOption> gates =
         ids.stream()
             .filter(id -> !checkedByWard(project, selection, id))
@@ -55,6 +56,17 @@ final class SelectedGates {
     return offlineTrivy(gates, project);
   }
 
+  /** The {@code ward-format} gate: it has no command, because Ward runs it in-process. */
+  private static InitGateOption wardFormat() {
+    return new InitGateOption(
+        FormatGates.WARD_FORMAT,
+        "Checks formatting with Ward's native formatter, configured by .editorconfig.",
+        List.of(),
+        true,
+        null,
+        Map.of());
+  }
+
   /** Returns the configured gate for {@code id}, with the {@code ward-format} gate built here. */
   private static InitGateOption option(
       final InitSetupCatalog catalog,
@@ -63,7 +75,7 @@ final class SelectedGates {
       final String openSpecExecutable,
       final String id) {
     if (FormatGates.WARD_FORMAT.equals(id)) {
-      return FormatEngineGates.wardFormat();
+      return wardFormat();
     }
     return catalog.openSpecValidations().contains(id)
         ? catalog.openSpecValidation(project, id, openSpecExecutable)

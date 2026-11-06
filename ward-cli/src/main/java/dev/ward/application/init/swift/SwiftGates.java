@@ -22,7 +22,6 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
    */
   private static final List<String> STANDARD =
       List.of(
-          SwiftTools.SWIFT_FORMAT,
           SwiftTools.SWIFTLINT,
           SwiftTools.SWIFT_BUILD,
           SwiftTools.SWIFT_TEST,
@@ -32,7 +31,6 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
   /** Strict adds the Harmonize architecture rules to the standard gates. */
   private static final List<String> STRICT =
       List.of(
-          SwiftTools.SWIFT_FORMAT,
           SwiftTools.SWIFTLINT,
           SwiftTools.SWIFT_BUILD,
           SwiftTools.SWIFT_TEST,
@@ -43,13 +41,6 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
   @Override
   public List<InitGateOption> analysisGates(final SwiftTools swift) {
     final List<InitGateOption> gates = new ArrayList<>();
-    gates.add(
-        option(
-            swift,
-            SwiftTools.SWIFT_FORMAT,
-            "Checks formatting with swift-format, strict and recursive over the source directories.",
-            swift.swiftFormatCommand(),
-            Map.of()));
     gates.add(
         option(
             swift,

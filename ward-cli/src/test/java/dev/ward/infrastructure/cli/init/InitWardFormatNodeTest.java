@@ -10,13 +10,13 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
-/** {@code --format-engine ward} on Node: Prettier is replaced, and Biome keeps linting only. */
+/** Node init: Biome keeps linting with its formatter off, and {@code ward-format} checks formatting. */
 @DisabledOnOs(OS.WINDOWS)
-class InitFormatEngineNodeTest {
+class InitWardFormatNodeTest {
   @TempDir Path project;
 
   @Test
-  void prettierIsReplacedByWardFormatAndTheSourcesGetTwoSpaceIndents()
+  void nodeInitWritesWardFormatAndNoPrettierGate()
       throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
 
@@ -27,8 +27,6 @@ class InitFormatEngineNodeTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
@@ -59,8 +57,6 @@ class InitFormatEngineNodeTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--agent-rules",
             "--yes");
 

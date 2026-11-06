@@ -34,7 +34,7 @@ final class NodeLayerTemplates {
       );
       """;
 
-  // Biome's own format, so biome ci reports no problem in the layer file.
+  // The formatter is off in the layer too: ward-format formats, so biome ci reports no format finding.
   private static final String BIOME_LAYER_STANDARD =
       """
       {
@@ -83,14 +83,9 @@ final class NodeLayerTemplates {
    * strict rules here, so they win over the base's settings.
    */
   static String biome(final QualityPreset preset, final String base) {
-    return biome(preset, base, false);
-  }
-
-  /** Returns the Biome layer, which turns the formatter off when {@code formatterOff} is set. */
-  static String biome(final QualityPreset preset, final String base, final boolean formatterOff) {
     final String layer = preset == QualityPreset.STRICT ? BIOME_LAYER_STRICT : BIOME_LAYER_STANDARD;
     return layer
         .replace("{base}", base)
-        .replace("{formatter}", formatterOff ? NodeConfigTemplates.BIOME_FORMATTER_OFF_LAYER : "");
+        .replace("{formatter}", NodeConfigTemplates.BIOME_FORMATTER_OFF_LAYER);
   }
 }

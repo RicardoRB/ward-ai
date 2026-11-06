@@ -82,7 +82,6 @@ public final class NodePackageCatalog {
                   "8.71.1",
                   "^18.18.0 || ^20.9.0 || >=21.1.0",
                   ">=4.8.4 <6.1.0")),
-          entry(new Package("prettier", "3.9.10", ">=14", null)),
           entry(new Package(TURBO, TURBO_VERSION, ">=18", null)),
           entry(new Package(BIOME_PACKAGE, BIOME_VERSION, BIOME_NODE, null)),
           entry(new Package("vitest", VITEST_VERSION, VITEST_NODE, null)),
@@ -111,7 +110,6 @@ public final class NodePackageCatalog {
       Map.ofEntries(
           Map.entry("tsc", List.of(TYPESCRIPT)),
           Map.entry(ESLINT, List.of(ESLINT, ESLINT_JS, TYPESCRIPT_ESLINT, TYPESCRIPT)),
-          Map.entry("prettier", List.of("prettier")),
           Map.entry("vitest", List.of("vitest", "@vitest/coverage-v8")),
           Map.entry(NG_TEST, List.of(COVERAGE_V8)),
           Map.entry("jest", List.of()),

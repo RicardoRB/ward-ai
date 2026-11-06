@@ -11,13 +11,13 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
-/** {@code --format-engine ward} on Python: ruff-format is replaced and ruff keeps linting. */
+/** Python init: {@code ward-format} checks formatting and ruff keeps linting. */
 @DisabledOnOs(OS.WINDOWS)
-class InitFormatEnginePythonTest {
+class InitWardFormatPythonTest {
   @TempDir Path project;
 
   @Test
-  void ruffFormatIsReplacedByWardFormatAndRuffKeepsLinting()
+  void pythonInitWritesWardFormatAndNoRuffFormatGate()
       throws IOException, InterruptedException {
     copyFixture("python-uv", project);
 
@@ -29,8 +29,6 @@ class InitFormatEnginePythonTest {
             "standard",
             "--integration",
             "none",
-            "--format-engine",
-            "ward",
             "--yes");
 
     assertThat(init.exit()).as(init.stdout() + init.stderr()).isZero();

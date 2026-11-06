@@ -51,7 +51,6 @@ class SwiftInitFilesTest {
             null,
             false,
             null,
-            null,
             null);
 
     assertThat(

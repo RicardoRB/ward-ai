@@ -39,8 +39,6 @@ class GradleToolCompatibilityTest {
 
   private static final List<String> STRICT_TOOLS =
       List.of(
-          GradleToolCatalog.SPOTLESS,
-          GradleToolCatalog.FORMATTER,
           GradleToolCatalog.CHECKSTYLE_ENGINE,
           GradleToolCatalog.PMD_ENGINE,
           GradleToolCatalog.SPOTBUGS,

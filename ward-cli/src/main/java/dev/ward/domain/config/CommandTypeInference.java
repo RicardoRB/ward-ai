@@ -26,7 +26,6 @@ public final class CommandTypeInference {
           "openspec-archived",
           "openspec-junit-traceability",
           "ward-format",
-          "prettier",
           "ng-test",
           "api-compat",
           "license",
@@ -48,13 +47,6 @@ public final class CommandTypeInference {
 
   private static final List<Rule> RULES =
       List.of(
-          new Rule(
-              "format",
-              anyOf(
-                  sequence("spotless:check"),
-                  sequence("spotlessCheck"),
-                  sequence("prettier", "--check"),
-                  sequence("biome", "format"))),
           new Rule("checkstyle", anyOf(sequence("checkstyle:check"), sequence("checkstyle*"))),
           new Rule("pmd", anyOf(sequence("pmd:check"), sequence("pmd*"))),
           new Rule("spotbugs", anyOf(sequence("spotbugs:check"), sequence("spotbugs*"))),
@@ -89,7 +81,6 @@ public final class CommandTypeInference {
           new Rule(
               "dependency-cruiser", anyOf(sequence("depcruise"), sequence("dependency-cruiser"))),
           new Rule("openspec", sequence("openspec", "validate")),
-          new Rule("ruff-format", sequence("ruff", "format")),
           new Rule("ruff", sequence("ruff", "check")),
           new Rule("mypy", sequence("mypy")),
           new Rule("pytest", sequence("pytest")),
@@ -97,7 +88,6 @@ public final class CommandTypeInference {
           new Rule("import-linter", sequence("lint-imports")),
           new Rule("django-check", sequence("manage.py", "check")),
           new Rule("pip-audit", sequence("pip-audit")),
-          new Rule("swift-format", sequence("swift", "format", "lint")),
           new Rule(
               "swiftlint",
               anyOf(

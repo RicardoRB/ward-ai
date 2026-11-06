@@ -19,8 +19,6 @@ public final class ManagedPluginCatalog {
   private static final int JDK_21 = 21;
   private static final int JDK_25 = 25;
   private static final String MAVEN = "3.6";
-  private static final String SPOTLESS = "spotless-maven-plugin";
-  private static final String FORMATTER = "google-java-format";
   private static final String SPOTBUGS = "spotbugs-maven-plugin";
   private static final String PIT = "pitest-maven";
 
@@ -36,13 +34,6 @@ public final class ManagedPluginCatalog {
           row(PIT, "1.17.4", JDK_8, JDK_10),
           row(PIT, "1.30.1", JDK_11, JDK_25),
           row("maven-enforcer-plugin", "3.5.0", JDK_8, JDK_25),
-          row(SPOTLESS, "2.30.0", JDK_8, JDK_10),
-          row(SPOTLESS, "2.46.1", JDK_11, JDK_16),
-          row(SPOTLESS, "3.10.3", JDK_17, JDK_25),
-          row(FORMATTER, "1.7", JDK_8, JDK_10),
-          row(FORMATTER, "1.24.0", JDK_11, JDK_16),
-          row(FORMATTER, "1.28.0", JDK_17, JDK_20),
-          row(FORMATTER, "1.36.1", JDK_21, JDK_25),
           row("archunit-junit5", "1.5.1", JDK_8, JDK_25),
           row("sonar-maven-plugin", "3.11.0.3922", JDK_8, JDK_10),
           row("sonar-maven-plugin", "5.1.0.4751", JDK_11, JDK_25),

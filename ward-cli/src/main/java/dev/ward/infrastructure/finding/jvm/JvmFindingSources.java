@@ -13,9 +13,8 @@ public final class JvmFindingSources {
   public JvmFindingSources(
       final CheckstyleXmlFindings checkstyle,
       final PmdXmlFindings pmd,
-      final JavacOutputFindings javac,
-      final SpotlessOutputFindings spotless) {
-    this.sources = List.of(checkstyle, pmd, javac, spotless);
+      final JavacOutputFindings javac) {
+    this.sources = List.of(checkstyle, pmd, javac);
   }
 
   /** Returns the finding sources of the JVM gates. */

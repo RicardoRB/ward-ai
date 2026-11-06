@@ -41,7 +41,7 @@ public final class OwnedSections {
               project.root().resolve(".gitignore"),
               GITIGNORE_BEGIN,
               GITIGNORE_END,
-              // Prettier skips Git-ignored files, so coverage and Stryker reports are not checked.
+              // Ward's formatter skips Git-ignored files, so coverage and Stryker reports are not checked.
               ".ward/reports/\ncoverage/\n"
                   + project.taskRunner().gitignoreEntry()
                   + (gates.stream().anyMatch(gate -> "stryker".equals(gate.id()))
