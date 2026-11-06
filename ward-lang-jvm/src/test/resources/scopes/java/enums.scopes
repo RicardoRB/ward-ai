@@ -1,0 +1,33 @@
+module
+  class Color @1:6
+  class Shape @15:11
+  class Point @23:8
+  class @1:1 open
+    constant RED @2:3 [const]
+    constant GREEN @2:11 [const]
+    constant code @4:21 [const]
+    function code @10:7
+    function @6:3
+      parameter code @6:13
+      block @6:19
+    function @10:3
+      block @10:14
+  class @15:1 open
+    constant SIDES @16:7 [const]
+    function sides @18:15
+    function @18:11
+      block @18:23
+  class @23:1 open
+    variable x @23:18 [const]
+    variable y @23:25 [const]
+    function sum @24:7
+    function @24:3
+      block @24:13
+references
+  7:17 code read -> function parameter code @6:13
+  11:12 code read -> class function code @10:7
+  11:19 RED read -> class constant RED @2:3
+  16:7 SIDES write -> class constant SIDES @16:7
+  19:12 SIDES read -> class constant SIDES @16:7
+  25:12 x read -> class variable x @23:18
+  25:16 y read -> class variable y @23:25

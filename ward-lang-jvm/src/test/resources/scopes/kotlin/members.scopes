@@ -1,0 +1,64 @@
+module
+  import C @3:12 from a.b.C
+  import E @4:17 from a.b.D
+  class Counter @6:7
+  class Registry @30:8
+  function top @34:5
+  constant topLevel @36:5
+  class @6:1 open
+    constant start @6:19
+    parameter step @6:31
+    variable count @7:9
+    constant label @8:9
+    function bump @12:9
+    function @8:23
+      variable field @8:23
+    function @10:5
+      parameter q @10:17
+    function @12:5
+      parameter by @12:14
+      block @12:32
+        constant local @13:13
+        variable mutable @14:13
+        constant unusedLocal @21:13
+        block @15:9
+          variable i @15:14 [destructured]
+          block @15:26
+        block @18:9
+          variable key @18:15 [destructured]
+          variable value @18:20 [destructured]
+          block @18:37
+    class @25:5
+      constant LIMIT @26:19 [const]
+  class @30:1
+    constant items @31:9
+  function @34:1
+    parameter a @34:9
+references
+  7:9 count write -> class variable count @7:9
+  7:17 start read -> class constant start @6:19
+  8:37 field read -> function variable field @8:23
+  10:32 q read -> function parameter q @10:17
+  13:13 local write -> block constant local @13:13
+  13:21 by read -> function parameter by @12:14
+  13:26 count read -> class variable count @7:9
+  14:13 mutable write -> block variable mutable @14:13
+  15:14 i write -> block variable i @15:14
+  15:22 by read -> function parameter by @12:14
+  16:13 mutable read -> block variable mutable @14:13
+  16:13 mutable write -> block variable mutable @14:13
+  16:24 i read -> block variable i @15:14
+  18:15 key write -> block variable key @18:15
+  18:20 value write -> block variable value @18:20
+  18:30 table read -> unresolved open
+  19:13 use read -> unresolved open
+  19:17 key read -> block variable key @18:15
+  21:13 unusedLocal write -> block constant unusedLocal @21:13
+  22:16 local read -> block constant local @13:13
+  22:24 missing read -> unresolved open
+  26:19 LIMIT write -> class constant LIMIT @26:19
+  31:9 items write -> class constant items @31:9
+  31:17 listOf read -> unresolved
+  34:19 a read -> function parameter a @34:9
+  36:5 topLevel write -> module constant topLevel @36:5
+  36:16 top read -> module function top @34:5
