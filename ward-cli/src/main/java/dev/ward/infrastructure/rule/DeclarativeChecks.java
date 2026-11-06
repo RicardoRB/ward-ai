@@ -2,13 +2,17 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
+import dev.ward.analysis.domain.rule.check.AbstractClassWithoutAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveTokens;
 import dev.ward.analysis.domain.rule.check.CountedKinds;
 import dev.ward.analysis.domain.rule.check.DeclarationFilter;
+import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
+import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
+import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
@@ -123,6 +127,21 @@ final class DeclarativeChecks {
               TomlValues.required(toml, "method"),
               TomlValues.strings(toml, "annotations"),
               TomlValues.required(toml, MESSAGE));
+      default -> declarationCheck(name, toml);
+    };
+  }
+
+  /** The checks over switch labels, abstract classes, interfaces and catch blocks. */
+  private static RuleCheck declarationCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "default-label-not-last" ->
+          new DefaultLabelNotLastCheck(TomlValues.required(toml, MESSAGE));
+      case "abstract-class-without-abstract-method" ->
+          new AbstractClassWithoutAbstractMethodCheck(TomlValues.required(toml, MESSAGE));
+      case "implicit-functional-interface" ->
+          new ImplicitFunctionalInterfaceCheck(TomlValues.required(toml, MESSAGE));
+      case "preserve-stack-trace" ->
+          new PreserveStackTraceCheck(TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

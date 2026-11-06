@@ -449,3 +449,65 @@ method = "tearDown"
 annotations = ["After", "AfterEach", "AfterAll"]
 message = "'{value}' is not annotated @After, @AfterEach or @AfterAll"
 '''
+
+[[rules]]
+id = "ward:java/unit-test-should-use-before-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unit-test-lifecycle"
+method = "setUp"
+annotations = ["Before", "BeforeEach", "BeforeAll"]
+message = "'{value}' is not annotated @Before, @BeforeEach or @BeforeAll"
+'''
+
+[[rules]]
+id = "ward:java/default-label-not-last-in-switch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "default-label-not-last"
+message = "default label is followed by another label; move it to the end of the switch"
+'''
+
+[[rules]]
+id = "ward:java/abstract-class-without-abstract-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "abstract-class-without-abstract-method"
+message = "abstract class declares no abstract method; remove the abstract modifier or add one"
+'''
+
+[[rules]]
+id = "ward:java/implicit-functional-interface"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "implicit-functional-interface"
+message = "interface has one abstract method; annotate it @FunctionalInterface or add methods"
+'''
+
+[[rules]]
+id = "ward:java/preserve-stack-trace"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "preserve-stack-trace"
+message = "exception is thrown without the caught exception as its cause"
+'''

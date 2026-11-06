@@ -2,10 +2,7 @@
 
 [[rule]]
 name = "abstract-class-without-abstract-method"
-category = "bestpractices"
-# Not applicable (review): needs the abstract modifier of each member, which the generic checks do not read
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AbstractClassWithoutAbstractMethod"]
 
 [[rule]]
@@ -516,10 +513,7 @@ pmd = ["DataClass"]
 
 [[rule]]
 name = "default-label-not-last-in-switch"
-category = "bestpractices"
-# Not applicable (review): needs the order of case groups within one switch, which the generic order check cannot rank
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["DefaultLabelNotLastInSwitch"]
 
 [[rule]]
@@ -788,10 +782,7 @@ pmd = ["ImmutableField"]
 
 [[rule]]
 name = "implicit-functional-interface"
-category = "bestpractices"
-# Not applicable (review): needs the number of abstract methods of each interface, which the generic count reads by kind only
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ImplicitFunctionalInterface"]
 
 [[rule]]
@@ -1129,10 +1120,7 @@ pmd = ["PrematureDeclaration"]
 
 [[rule]]
 name = "preserve-stack-trace"
-category = "bestpractices"
-# Not applicable (review): needs the binding of the catch parameter to the exception that is thrown
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["PreserveStackTrace"]
 
 [[rule]]
@@ -1460,10 +1448,7 @@ pmd = ["UnitTestShouldUseAfterAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-before-annotation"
-category = "bestpractices"
-# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestShouldUseBeforeAnnotation"]
 
 [[rule]]
