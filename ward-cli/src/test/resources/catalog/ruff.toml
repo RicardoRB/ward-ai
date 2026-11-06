@@ -470,9 +470,7 @@ ruff = ["B023"]
 
 [[rule]]
 name = "abstract-base-class-without-abstract-method"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B024"]
 
 [[rule]]
@@ -506,9 +504,7 @@ ruff = ["B029"]
 
 [[rule]]
 name = "except-with-non-exception-classes"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B030"]
 
 [[rule]]
@@ -540,16 +536,12 @@ ruff = ["B034"]
 
 [[rule]]
 name = "static-key-dict-comprehension"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B035"]
 
 [[rule]]
 name = "mutable-contextvar-default"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B039"]
 
 [[rule]]
@@ -1513,9 +1505,7 @@ ruff = ["F541"]
 
 [[rule]]
 name = "multi-value-repeated-key-literal"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F601"]
 
 [[rule]]
@@ -1534,9 +1524,7 @@ ruff = ["F621"]
 
 [[rule]]
 name = "multiple-starred-expressions"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F622"]
 
 [[rule]]
@@ -1553,9 +1541,7 @@ ruff = ["F632"]
 
 [[rule]]
 name = "invalid-print-syntax"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F633"]
 
 [[rule]]
@@ -2652,9 +2638,7 @@ ruff = ["PLE0237"]
 
 [[rule]]
 name = "duplicate-bases"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE0241"]
 pylint = ["duplicate-bases"]
 
@@ -2718,9 +2702,7 @@ pylint = ["invalid-all-object"]
 
 [[rule]]
 name = "invalid-all-format"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE0605"]
 pylint = ["invalid-all-format"]
 
@@ -2835,49 +2817,37 @@ ruff = ["PLE1700"]
 
 [[rule]]
 name = "bidirectional-unicode"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2502"]
 pylint = ["bidirectional-unicode"]
 
 [[rule]]
 name = "invalid-character-backspace"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2510"]
 pylint = ["invalid-character-backspace"]
 
 [[rule]]
 name = "invalid-character-sub"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2512"]
 pylint = ["invalid-character-sub"]
 
 [[rule]]
 name = "invalid-character-esc"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2513"]
 pylint = ["invalid-character-esc"]
 
 [[rule]]
 name = "invalid-character-nul"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2514"]
 pylint = ["invalid-character-nul"]
 
 [[rule]]
 name = "invalid-character-zero-width-space"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE2515"]
 pylint = ["invalid-character-zero-width-space"]
 
@@ -5473,9 +5443,7 @@ ruff = ["SLOT002"]
 
 [[rule]]
 name = "debugger"
-category = "flake8-debugger"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["T100"]
 
 [[rule]]
@@ -6041,79 +6009,57 @@ ruff = ["W505"]
 
 [[rule]]
 name = "invalid-escape-sequence"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["W605"]
 
 [[rule]]
 name = "sys-version-slice3"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT101"]
 
 [[rule]]
 name = "sys-version2"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT102"]
 
 [[rule]]
 name = "sys-version-cmp-str3"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT103"]
 
 [[rule]]
 name = "sys-version-info0-eq3"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT201"]
 
 [[rule]]
 name = "six-py3"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT202"]
 
 [[rule]]
 name = "sys-version-info1-cmp-int"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT203"]
 
 [[rule]]
 name = "sys-version-info-minor-cmp-int"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT204"]
 
 [[rule]]
 name = "sys-version0"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT301"]
 
 [[rule]]
 name = "sys-version-cmp-str10"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT302"]
 
 [[rule]]
 name = "sys-version-slice1"
-category = "flake8-2020"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["YTT303"]
 
 [[rule]]

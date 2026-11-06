@@ -1,0 +1,186 @@
+# Performance rules for Swift, mirroring SwiftLint's performance rules. Each rule is a generic
+# check over the syntax tree and matches the compact text of a node (its tokens without spaces).
+# Positions are the start of the matched node, which can differ from SwiftLint's marker.
+
+[[rules]]
+id = "ward:swift/contains-over-filter-count"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.filter(\(where:[^)]*\)|\{.*\})\.count(==|!=|>)0'
+message = "use contains(where:) instead of filter(where:).count compared with zero"
+'''
+
+[[rules]]
+id = "ward:swift/contains-over-filter-is-empty"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.filter(\(where:[^)]*\)|\{.*\})\.isEmpty'
+message = "use !contains(where:) instead of filter(where:).isEmpty"
+'''
+
+[[rules]]
+id = "ward:swift/contains-over-first-not-nil"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.(first|firstIndex)(\(where:[^)]*\)|\{.*\})\)?(!=|==)nil'
+message = "use contains(where:) instead of comparing first(where:) with nil"
+'''
+
+[[rules]]
+id = "ward:swift/contains-over-range-nil-comparison"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.range\(of:[^)]*\)(!=|==)nil'
+message = "use contains(_:) instead of comparing range(of:) with nil"
+'''
+
+[[rules]]
+id = "ward:swift/empty-collection-literal"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["binary_expression"]
+text = '^(==|!=)(\[\]|\[:\])$'
+message = "compare with isEmpty instead of an empty collection literal"
+'''
+
+[[rules]]
+id = "ward:swift/empty-string"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["binary_expression"]
+text = '^(==|!=)""$'
+message = "compare with isEmpty instead of an empty string literal"
+'''
+
+[[rules]]
+id = "ward:swift/first-where"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.filter(\(where:[^)]*\)|\{[^}]*\})\.first(?![A-Za-z_(])'
+message = "use first(where:) instead of filter followed by first"
+'''
+
+[[rules]]
+id = "ward:swift/last-where"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.filter(\(where:[^)]*\)|\{[^}]*\})\.last(?![A-Za-z_(])'
+message = "use last(where:) instead of filter followed by last"
+'''
+
+[[rules]]
+id = "ward:swift/flatmap-over-map-reduce"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.map(\{.*\}|\([^)]*\))\.reduce\(\[\],\+\)'
+message = "use flatMap instead of map followed by reduce([], +)"
+'''
+
+[[rules]]
+id = "ward:swift/reduce-boolean"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.reduce\((true|false)[,)]'
+message = "use allSatisfy or contains instead of reduce with a boolean"
+'''
+
+[[rules]]
+id = "ward:swift/reduce-into"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.reduce\(("[^"]*"|\[\]|\[:\]|(Array|Set|Dictionary)<[^>]*>\(\))[,)]'
+message = "use reduce(into:_:) for a copy-on-write accumulator"
+'''
+
+[[rules]]
+id = "ward:swift/sorted-first-last"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.sorted(\(by:[^)]*\)|\{.*\}|\(\))?\.(first|last)(?![A-Za-z_(])'
+message = "use min() or max() instead of sorting to get the first or last element"
+'''
+
+[[rules]]
+id = "ward:swift/final-test-case"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_declaration"]
+not-modifiers = ["final"]
+text = '^class\w+:[^{]*XCTestCase[^{]*\{'
+message = "test case class should be final"
+'''

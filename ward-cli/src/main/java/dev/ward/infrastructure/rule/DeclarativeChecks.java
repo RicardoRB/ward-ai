@@ -98,7 +98,7 @@ final class DeclarativeChecks {
       default ->
           ImportChecks.isImportCheck(name)
               ? ImportChecks.build(name, toml)
-              : MetricChecks.build(name, toml);
+              : ReviewChecks.build(name, toml);
     };
   }
 

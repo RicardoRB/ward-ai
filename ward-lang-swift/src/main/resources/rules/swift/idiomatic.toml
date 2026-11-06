@@ -1,0 +1,622 @@
+# Idiomatic rules for Swift, mirroring SwiftLint's idiomatic rules that match a node or a line of
+# source text. Each rule is a generic check; a rule matches the compact text of a node (its tokens
+# without spaces), so a pattern can match across the spacing of the source.
+
+[[rules]]
+id = "ward:swift/block-based-kvo"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression", "function_declaration"]
+text = '(^[\w.]*\.addObserver\(.*forKeyPath|funcobserveValue\(forKeyPath)'
+message = "use the block based KVO API with a key path instead of forKeyPath"
+'''
+
+[[rules]]
+id = "ward:swift/discouraged-assert"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^assert\(false[,)]'
+message = "use assertionFailure() or preconditionFailure() instead of assert(false)"
+'''
+
+[[rules]]
+id = "ward:swift/discouraged-none-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enum_case_name"]
+text = '^none$'
+message = "enum case named none can conflict with Optional.none"
+'''
+
+[[rules]]
+id = "ward:swift/discouraged-optional-boolean"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["type_"]
+text = '^Bool\?$'
+message = "prefer a non-optional Bool"
+'''
+
+[[rules]]
+id = "ward:swift/discouraged-optional-collection"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["type_"]
+text = '^(\[[^\]]*\]|Array<[^>]*>|Dictionary<[^>]*>|Set<[^>]*>)\?$'
+message = "prefer an empty collection over an optional collection"
+'''
+
+[[rules]]
+id = "ward:swift/fallthrough"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fallthrough_statement"]
+message = "fallthrough should be avoided"
+'''
+
+[[rules]]
+id = "ward:swift/fatal-error-message"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^fatalError\(\)$'
+message = "a fatalError call should have a message"
+'''
+
+[[rules]]
+id = "ward:swift/force-cast"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["type_casting_operator"]
+with-child = ["'!'"]
+message = "force cast; use a conditional cast instead"
+'''
+
+[[rules]]
+id = "ward:swift/force-try"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["try_operator"]
+with-child = ["'!'"]
+message = "force try; handle the error with do-catch or try?"
+'''
+
+[[rules]]
+id = "ward:swift/is-disjoint"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.intersection\([^)]*\)\.isEmpty'
+message = "use isDisjoint(with:) instead of intersection(_:).isEmpty"
+'''
+
+[[rules]]
+id = "ward:swift/joined-default-parameter"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.joined\(separator:""\)'
+message = "the default separator is empty; omit the separator argument"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-cggeometry-functions"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^CGRect(Contains(Point|Rect)|Get(Height|Max[XY]|Mid[XY]|Min[XY]|Width)|Inset|Integral|Intersection|IntersectsRect|Is(Empty|Infinite|Null)|Offset|Standardize|Union)\('
+message = "use the CGRect property or method instead of the legacy function"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-constant"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["declaration_identifier"]
+text = '^M_PI$'
+message = "use .pi instead of the legacy constant"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-constructor"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(CG(Point|Rect|Size|Vector)Make|NSEdgeInsetsMake|NSMake(Point|Range|Rect|Size)|UIEdgeInsetsMake|UIOffsetMake)\('
+message = "use the initializer of the type instead of the legacy constructor"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-hashing"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = 'varhashValue(?![A-Za-z0-9_])'
+message = "implement hash(into:) instead of hashValue"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-multiple"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '%\w+(==|!=)0(?!\w)'
+message = "use isMultiple(of:) instead of the remainder operator"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-nsgeometry-functions"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^NS(ContainsRect|EdgeInsetsEqual|EqualPoints|EqualRects|EqualSizes|Height|InsetRect|IntegralRect|IntersectionRect|IntersectsRect|IsEmptyRect|Max[XY]|Mid[XY]|Min[XY]|OffsetRect|PointInRect|UnionRect|Width)\('
+message = "use the NSRect property or method instead of the legacy function"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-random"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(arc4random|arc4random_uniform|drand48)\('
+message = "use type.random(in:) instead of the legacy random function"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-swiftui-aspect-ratio"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = 'aspectRatio\(contentMode:(ContentMode)?\.(fit|fill)\)'
+message = "use scaledToFit() or scaledToFill() instead of aspectRatio(contentMode:)"
+'''
+
+[[rules]]
+id = "ward:swift/legacy-uigraphics-function"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^UIGraphics(BeginImageContext(WithOptions)?|EndImageContext|GetImageFromCurrentImageContext)\('
+message = "use UIGraphicsImageRenderer instead of the legacy function"
+'''
+
+[[rules]]
+id = "ward:swift/nimble-operator"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^expect\(.*\)\.(to|toNot|notTo)\(equal\('
+message = "use the Nimble operator overload instead of the matcher function"
+'''
+
+[[rules]]
+id = "ward:swift/no-extension-access-modifier"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["extension_declaration"]
+text = '^(?:@\w+)*(?:private|fileprivate|internal|public|open)extension'
+message = "prefer to put the access modifier on each member, not on the extension"
+'''
+
+[[rules]]
+id = "ward:swift/no-fallthrough-only"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["switch_case"]
+text = '^(case[^:]*|default):fallthrough$'
+message = "fallthrough can only be used when the case has another statement"
+'''
+
+[[rules]]
+id = "ward:swift/prefer-asset-symbols"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(UIImage|NSImage|UIColor|NSColor|Color)\(named:'
+message = "prefer an asset symbol over a string-based image or color initializer"
+'''
+
+[[rules]]
+id = "ward:swift/prefer-nimble"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^XCTAssert\w*\('
+message = "prefer a Nimble matcher over XCTAssert"
+'''
+
+[[rules]]
+id = "ward:swift/prefer-type-checking"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = 'as\?[\w.<>\[\]?]*\)?!=nil'
+message = "prefer an is check to comparing a conditional cast with nil"
+'''
+
+[[rules]]
+id = "ward:swift/prefer-zero-over-explicit-init"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(CGPoint\(x:0,y:0\)|CGSize\(width:0,height:0\)|CGRect\(x:0,y:0,width:0,height:0\)|CGVector\(dx:0,dy:0\))$'
+message = "use .zero instead of an explicit initializer with zero values"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-nil-coalescing"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["binary_expression"]
+text = '^\?\?nil$'
+message = "the nil-coalescing operator with nil on the right is redundant"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-objc-attribute"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration", "variable_declaration"]
+text = '^@objc(\(\w+\))?@IB(Action|Outlet|Inspectable|Designable)'
+message = "@objc is redundant on an Interface Builder declaration"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-set-access-control"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^(private|fileprivate|internal|public)\1\(set\)'
+message = "the setter access level is the same as the property access level"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-string-enum-value"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raw_value_style_enum_case"]
+text = '^([A-Za-z_]\w*)="\1"$'
+message = "the string value is the same as the case name; omit it"
+'''
+
+[[rules]]
+id = "ward:swift/shorthand-optional-binding"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["optional_binding_condition"]
+text = '^(let|var)(\w+)=\2$'
+message = "use the shorthand syntax for optional binding"
+'''
+
+[[rules]]
+id = "ward:swift/strict-fileprivate"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["declaration_modifier"]
+text = '^fileprivate$'
+message = "fileprivate should be avoided"
+'''
+
+[[rules]]
+id = "ward:swift/syntactic-sugar"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["type_identifier"]
+text = '^(Array|Dictionary|Optional)<'
+message = "use the shorthand syntax for the generic type"
+'''
+
+[[rules]]
+id = "ward:swift/toggle-bool"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([\w.]+)=!\1$'
+message = "use toggle() instead of assigning the negation"
+'''
+
+[[rules]]
+id = "ward:swift/trailing-semicolon"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = ';\s*$'
+message = "line should not end with a semicolon"
+'''
+
+[[rules]]
+id = "ward:swift/unavailable-function"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^(?!.*unavailable)func.*\{fatalError\([^)]*\)\}$'
+message = "an unimplemented function should be marked unavailable"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-break-in-switch"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["switch_case"]
+text = '^(case[^:]*|default):.+(?<![A-Za-z0-9_])break$'
+message = "break is unneeded as the last statement of a case"
+'''
+
+[[rules]]
+id = "ward:swift/unused-enumerated"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_in_statement"]
+text = '^for\((_,\w+|\w+,_)\)in.*\.enumerated\(\)'
+message = "the index or the item is not used; drop .enumerated()"
+'''
+
+[[rules]]
+id = "ward:swift/untyped-error-in-catch"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catch_clause"]
+text = '^catch(let|var)(?!\w+as)\w+\{'
+message = "catch declares an error variable without a type cast"
+'''
+
+[[rules]]
+id = "ward:swift/xctfail-message"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^XCTFail\(\)$'
+message = "XCTFail should include a description of the assertion"
+'''
+
+[[rules]]
+id = "ward:swift/explicit-enum-raw-value"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "required-node"
+kinds = ["raw_value_style_enum_case"]
+child = ["raw_value_assignment"]
+message = "enum case should be explicitly assigned its raw value"
+'''
+
+[[rules]]
+id = "ward:swift/explicit-top-level-acl"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration", "function_declaration", "variable_declaration", "constant_declaration", "typealias_declaration"]
+inside = ["top_level"]
+not-inside = ["class_body", "struct_body", "protocol_body", "extension_body", "code_block", "union_style_enum", "raw_value_style_enum", "closure_expression"]
+text = '^(?!(@\w+|static|final|class|dynamic|override|lazy|weak|unowned|required|convenience|mutating|nonmutating)*(private|fileprivate|internal|public|open))'
+message = "top-level declaration should specify its access level explicitly"
+'''
+
+[[rules]]
+id = "ward:swift/static-operator"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+inside = ["top_level"]
+not-inside = ["class_body", "struct_body", "extension_body", "protocol_body", "union_style_enum", "raw_value_style_enum"]
+text = '^func[^\w(]'
+message = "operator should be declared as a static function in its type"
+'''
