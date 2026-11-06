@@ -55,7 +55,7 @@ packageDeclaration
     ;
 
 importDeclaration
-    : IMPORT STATIC? qualifiedName ('.' '*')? ';'
+    : IMPORT (STATIC | MODULE)? qualifiedName ('.' '*')? ';'
     ;
 
 typeDeclaration

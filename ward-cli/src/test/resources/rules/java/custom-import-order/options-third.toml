@@ -1,0 +1,2 @@
+custom-import-order-rules = "STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE"
+third-party-package-regexp = "^org\\..*"

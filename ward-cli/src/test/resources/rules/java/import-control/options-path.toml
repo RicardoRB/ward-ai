@@ -1,0 +1,2 @@
+rules = ["allow java.util.*"]
+path = "^src/.*"
