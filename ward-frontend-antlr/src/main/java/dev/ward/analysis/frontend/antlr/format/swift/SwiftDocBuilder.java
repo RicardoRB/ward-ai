@@ -153,6 +153,7 @@ final class SwiftDocBuilder {
   }
 
   private Document gapDoc(final int index) {
+    final Token before = index >= 2 ? tokens.get(index - 2) : null;
     final Token previous = tokens.get(index - 1);
     final Token token = tokens.get(index);
     final String between = SwiftGaps.between(source, previous, token);
@@ -161,9 +162,9 @@ final class SwiftDocBuilder {
       return SwiftGaps.newlines(newlines, maxBlankLines);
     }
     if (top().getKind() == Kind.GROUP) {
-      return SwiftGaps.groupGap(previous, token, between, top().getParts().isEmpty());
+      return SwiftGaps.groupGap(before, previous, token, between, top().getParts().isEmpty());
     }
-    return SwiftGaps.space(previous, token, between);
+    return SwiftGaps.space(before, previous, token, between);
   }
 
   private boolean isLabel(final int index) {
