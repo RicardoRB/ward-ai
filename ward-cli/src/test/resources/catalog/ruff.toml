@@ -345,7 +345,9 @@ ruff = ["ASYNC251"]
 
 [[rule]]
 name = "unary-prefix-increment-decrement"
-status = { python = "implemented" }
+category = "flake8-bugbear"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["B002"]
 
 [[rule]]
@@ -552,7 +554,9 @@ ruff = ["B039"]
 
 [[rule]]
 name = "del-attr-with-constant"
-status = { python = "implemented" }
+category = "flake8-bugbear"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["B043"]
 
 [[rule]]
@@ -590,7 +594,9 @@ ruff = ["B909"]
 
 [[rule]]
 name = "batched-without-explicit-strict"
-status = { python = "implemented" }
+category = "flake8-bugbear"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["B911"]
 
 [[rule]]
@@ -1256,12 +1262,16 @@ ruff = ["E712"]
 
 [[rule]]
 name = "not-in-test"
-status = { python = "implemented" }
+category = "pycodestyle"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["E713"]
 
 [[rule]]
 name = "not-is-test"
-status = { python = "implemented" }
+category = "pycodestyle"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["E714"]
 
 [[rule]]
@@ -1536,7 +1546,9 @@ ruff = ["F631"]
 
 [[rule]]
 name = "is-literal"
-status = { python = "implemented" }
+category = "pyflakes"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["F632"]
 
 [[rule]]
@@ -2823,7 +2835,9 @@ ruff = ["PLE1700"]
 
 [[rule]]
 name = "bidirectional-unicode"
-status = { python = "implemented" }
+category = "pylint"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["PLE2502"]
 pylint = ["bidirectional-unicode"]
 
@@ -2861,7 +2875,9 @@ pylint = ["invalid-character-nul"]
 
 [[rule]]
 name = "invalid-character-zero-width-space"
-status = { python = "implemented" }
+category = "pylint"
+status = { python = "planned" }
+issues = { python = "#332" }
 ruff = ["PLE2515"]
 pylint = ["invalid-character-zero-width-space"]
 

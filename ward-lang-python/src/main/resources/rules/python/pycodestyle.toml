@@ -45,34 +45,6 @@ message = "comparison to True or False should use the value or 'is'"
 '''
 
 [[rules]]
-id = "ward:python/not-in-test"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["not_test"]
-text = '^not\s+[^()]*\bin\b'
-message = "use 'not in' instead of 'not ... in'"
-'''
-
-[[rules]]
-id = "ward:python/not-is-test"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["not_test"]
-text = '^not\s+[^()]*\bis\b'
-message = "use 'is not' instead of 'not ... is'"
-'''
-
-[[rules]]
 id = "ward:python/type-comparison"
 language = "python"
 capability = "SYNTAX"
@@ -110,7 +82,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = '^[A-Za-z_]\w*\s*=\s*lambda\b'
+text = '^[A-Za-z_]\w*=lambda'
 message = "do not assign a lambda; use def"
 '''
 
@@ -138,7 +110,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classdef"]
-text = '^class\s+(l|O|I)\b'
+text = '^class(l|O|I)(?!\w)'
 message = "ambiguous class name; rename it"
 '''
 
@@ -152,6 +124,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["funcdef"]
-text = '^def\s+(l|O|I)\s*\('
+text = '^def(l|O|I)\('
 message = "ambiguous function name; rename it"
 '''

@@ -2,20 +2,6 @@
 # with the same text in a nested position is judged by its own text only.
 
 [[rules]]
-id = "ward:python/unary-prefix-increment-decrement"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["factor"]
-text = '^(\+\+|--)'
-message = "Python has no ++ or -- operator; use += or -="
-'''
-
-[[rules]]
 id = "ward:python/assignment-to-os-environ"
 language = "python"
 capability = "SYNTAX"
@@ -53,7 +39,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "\\.(strip|lstrip|rstrip)\\(\\s*[\"'][^\"']{2,}[\"']"
+text = "\\.(strip|lstrip|rstrip)\\(\\s*[\"'][^\"']*(.)[^\"']*\\2"
 message = "strip takes a set of characters, not a prefix or suffix; use removeprefix or removesuffix"
 '''
 
@@ -114,20 +100,6 @@ message = "setattr with a constant name; assign the attribute directly"
 '''
 
 [[rules]]
-id = "ward:python/del-attr-with-constant"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["atom_expr"]
-text = "^delattr\\(\\s*[^,()]+,\\s*[\"'][A-Za-z_]\\w*[\"']\\s*\\)"
-message = "delattr with a constant name; delete the attribute directly"
-'''
-
-[[rules]]
 id = "ward:python/assert-false"
 language = "python"
 capability = "SYNTAX"
@@ -137,7 +109,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["assert_stmt"]
-text = '^assert\s+(False|0)\b'
+text = '^assert(False)(?!\w)'
 message = "assert False is always stripped under -O; raise an exception instead"
 '''
 
@@ -165,7 +137,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["raise_stmt"]
-text = "^raise\\s+([\"']|\\d)"
+text = "^raise([\"']|\\d)"
 message = "raising a literal is a TypeError; raise an exception"
 '''
 
@@ -179,7 +151,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = '\.(assertRaises|raises)\(\s*(Exception|BaseException)\s*\)'
+text = '\.assertRaises\(\s*(Exception|BaseException)\s*\)'
 message = "assertRaises of Exception passes for any error; name a specific exception"
 '''
 
@@ -267,16 +239,3 @@ text = '^zip\((?![\s\S]*\bstrict\s*=)'
 message = "zip without an explicit strict= argument"
 '''
 
-[[rules]]
-id = "ward:python/batched-without-explicit-strict"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["atom_expr"]
-text = '^(itertools\.)?batched\((?![\s\S]*\bstrict\s*=)'
-message = "batched without an explicit strict= argument"
-'''

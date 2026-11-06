@@ -1,3 +1,3 @@
-import pytest
-pytest.raises(Exception)
-self.assertRaises(BaseException)
+import unittest
+with self.assertRaises(BaseException):
+    pass

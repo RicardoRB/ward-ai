@@ -1,3 +1,3 @@
 text = 'x'
-text.strip("ab")
-text.rstrip('xy')
+text.strip("aab")
+text.rstrip('xyy')

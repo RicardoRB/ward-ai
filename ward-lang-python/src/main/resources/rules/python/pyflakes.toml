@@ -11,7 +11,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["import_from"]
-text = '^from\s+__future__\s+import\s+(?!(annotations|generator_stop|nested_scopes|generators|division|absolute_import|with_statement|print_function|unicode_literals|barry_as_FLUFL)\b)'
+text = '^from__future__import(?!(annotations|generator_stop|nested_scopes|generators|division|absolute_import|with_statement|print_function|unicode_literals|barry_as_FLUFL))'
 message = "__future__ import of a feature that Python does not define"
 '''
 
@@ -44,20 +44,6 @@ message = "assert on a non-empty tuple is always true"
 '''
 
 [[rules]]
-id = "ward:python/is-literal"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["comparison"]
-text = "\\bis\\s+(not\\s+)?([\"']|-?\\d)"
-message = "'is' comparison with a literal; use == instead"
-'''
-
-[[rules]]
 id = "ward:python/if-tuple"
 language = "python"
 capability = "SYNTAX"
@@ -81,6 +67,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["raise_stmt"]
-text = '^raise\s+NotImplemented(\(\))?\s*$'
+text = '^raiseNotImplemented(\(\))?$'
 message = "NotImplemented is not an exception; raise NotImplementedError"
 '''
