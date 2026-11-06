@@ -19,6 +19,14 @@ class BundledRuleOptionsTest {
   private static final long NON_DEFAULT = 7;
   private static final String PATTERN = "[a-z]+";
 
+  /** Sample values of the string options whose values name a grammar, not free text. */
+  private static final Map<String, String> STRING_SAMPLES =
+      Map.of("custom-import-order-rules", "THIRD_PARTY_PACKAGE###STATIC", "option", "bottom");
+
+  /** Sample values of the string-list options whose entries name a grammar. */
+  private static final Map<String, List<String>> LIST_SAMPLES =
+      Map.of("rules", List.of("allow java.util.*"));
+
   @Test
   void everyBundledRuleLoads() {
     assertThat(LOAD.configurationErrors()).isEmpty();
@@ -56,7 +64,8 @@ class BundledRuleOptionsTest {
       case INTEGER -> Math.max(option.min(), 0) + NON_DEFAULT;
       case REGEX -> PATTERN;
       case BOOLEAN -> Boolean.FALSE;
-      case STRING_LIST -> List.of("Sample");
+      case STRING -> STRING_SAMPLES.getOrDefault(option.name(), "Sample");
+      case STRING_LIST -> LIST_SAMPLES.getOrDefault(option.name(), List.of("Sample"));
       default -> throw new IllegalStateException("no sample for " + option.type());
     };
   }

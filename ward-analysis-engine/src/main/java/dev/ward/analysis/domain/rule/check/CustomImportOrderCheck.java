@@ -150,8 +150,13 @@ public final class CustomImportOrderCheck implements RuleCheck {
 
   private boolean matches(final String token, final ImportDeclaration declaration) {
     final String name = declaration.name();
+    if (STATIC.equals(token)) {
+      return declaration.isStatic();
+    }
+    if (declaration.isStatic()) {
+      return false;
+    }
     return switch (token) {
-      case STATIC -> declaration.isStatic();
       case SPECIAL -> find(rules.special(), name);
       case STANDARD -> find(rules.standard(), name);
       case THIRD_PARTY -> find(rules.thirdParty(), name);

@@ -1,0 +1,2 @@
+illegal-pkgs = []
+illegal-classes = ["java.util.List"]

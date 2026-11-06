@@ -1,0 +1,1 @@
+illegal-pkgs = ["java.util"]

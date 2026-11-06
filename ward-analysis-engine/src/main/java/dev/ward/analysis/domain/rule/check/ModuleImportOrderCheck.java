@@ -45,13 +45,14 @@ public final class ModuleImportOrderCheck implements RuleCheck {
 
   private List<RuleMatch> check(final SyntaxNode root, final List<String> lines) {
     final List<RuleMatch> matches = new ArrayList<>();
+    final List<ImportDeclaration> all = ImportDeclaration.all(root);
+    final int lastType = lastTypeIndex(all);
     ImportDeclaration previous = null;
     ImportDeclaration previousModule = null;
     boolean sawType = false;
-    boolean sawModule = false;
-    for (final ImportDeclaration declaration : ImportDeclaration.all(root)) {
-      final boolean misplaced =
-          top ? declaration.isModule() && sawType : !declaration.isModule() && sawModule;
+    for (int index = 0; index < all.size(); index++) {
+      final ImportDeclaration declaration = all.get(index);
+      final boolean misplaced = declaration.isModule() && (top ? sawType : index < lastType);
       final boolean unsorted =
           declaration.isModule()
               && previousModule != null
@@ -64,11 +65,21 @@ public final class ModuleImportOrderCheck implements RuleCheck {
                 declaration.span(), CheckSupport.fill(message, declaration.name(), "")));
       }
       sawType |= !declaration.isModule();
-      sawModule |= declaration.isModule();
       previousModule = declaration.isModule() ? declaration : previousModule;
       previous = declaration;
     }
     return List.copyOf(matches);
+  }
+
+  /** Returns the index of the last type or static import, or -1 when there is none. */
+  private static int lastTypeIndex(final List<ImportDeclaration> all) {
+    int last = -1;
+    for (int index = 0; index < all.size(); index++) {
+      if (!all.get(index).isModule()) {
+        last = index;
+      }
+    }
+    return last;
   }
 
   private boolean splitUnseparated(
