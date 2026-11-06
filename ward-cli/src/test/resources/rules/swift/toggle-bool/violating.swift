@@ -1,0 +1,3 @@
+func flip() {
+    flag = !flag
+}
