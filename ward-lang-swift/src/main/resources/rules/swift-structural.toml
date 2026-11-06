@@ -6,6 +6,9 @@ id = "ward:swift/function-length"
 language = "swift"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = "measure=lines; node=function_declaration,initializer_declaration; max=60; name=function_name|initializer_head; message=function {name} spans {value} lines, the limit is {max}"
 
 [[rules]]
@@ -13,6 +16,9 @@ id = "ward:swift/parameter-count"
 language = "swift"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = "measure=parameters; node=function_declaration,initializer_declaration; max=5; name=function_name|initializer_head; path=function_signature/parameter_clause/parameter_list/parameter|parameter_clause/parameter_list/parameter; message=function {name} has {value} parameters, the limit is {max}"
 
 [[rules]]
@@ -20,6 +26,9 @@ id = "ward:swift/complexity"
 language = "swift"
 capability = "SYNTAX"
 severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = "measure=decision-points; node=function_declaration,initializer_declaration; max=10; name=function_name|initializer_head; nested=function_declaration,initializer_declaration,closure_expression; decisions=if_statement,guard_statement,for_in_statement,while_statement,repeat_while_statement,catch_clause,case_label,conditional_operator,binary_operator#&&,binary_operator#||; message=function {name} has complexity {value}, the limit is {max}"
 
 [[rules]]
@@ -27,6 +36,9 @@ id = "ward:swift/file-length"
 language = "swift"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = "measure=lines; node=top_level; max=500; message=file has {value} lines, the limit is {max}"
 
 [[rules]]
@@ -34,6 +46,9 @@ id = "ward:swift/type-body-length"
 language = "swift"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = "measure=lines; node=struct_declaration,class_declaration,protocol_declaration,extension_declaration,union_style_enum,raw_value_style_enum; max=300; name=struct_name|class_name|protocol_name|enum_name|type_identifier; message=type {name} body spans {value} lines, the limit is {max}"
 
 [[rules]]
@@ -41,4 +56,6 @@ id = "ward:swift/naming"
 language = "swift"
 capability = "SYNTAX"
 severity = "warning"
+category = "naming"
+presets = ["standard", "strict"]
 body = "measure=identifier-case; node=struct_declaration:cap,class_declaration:cap,protocol_declaration:cap,union_style_enum:cap,raw_value_style_enum:cap,function_declaration:camel,identifier_pattern:camel,enum_case_name:camel; name=struct_name|class_name|protocol_name|enum_name|function_name|declaration_identifier; message={name} should be {expected}"

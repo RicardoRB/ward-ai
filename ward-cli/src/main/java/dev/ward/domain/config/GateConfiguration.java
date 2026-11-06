@@ -32,6 +32,8 @@ import java.util.Set;
  *     checks for cycles; empty when unset, and only {@code ward} checks read it
  * @param independence the module lists of the {@code [[checks.ward.independence]]} tables, each
  *     checked by {@code ward:architecture/independence}; empty when unset
+ * @param rulesFile the project-relative path of the rule configuration file, or {@code null} for
+ *     {@code ward-rules.toml}; only {@code ward} checks read it
  */
 public record GateConfiguration(
     String name,
@@ -48,7 +50,8 @@ public record GateConfiguration(
     String javaClasspath,
     List<LayerBoundary> layers,
     List<String> cycleRoots,
-    List<List<String>> independence) {
+    List<List<String>> independence,
+    String rulesFile) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -85,6 +88,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null);
   }

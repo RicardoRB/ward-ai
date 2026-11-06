@@ -106,6 +106,7 @@ class AndroidGatesTest {
             null,
             List.of(),
             null,
+            null,
             null);
     return new QualityGateFactory(executor, null, new TraceabilitySources(null, null), ports, null)
         .create(new WardConfiguration(1, Map.of("check", check)))

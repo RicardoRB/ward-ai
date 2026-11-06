@@ -67,6 +67,7 @@ final class MutationGateFixtures {
         null,
         List.of(),
         null,
+        null,
         null);
   }
 

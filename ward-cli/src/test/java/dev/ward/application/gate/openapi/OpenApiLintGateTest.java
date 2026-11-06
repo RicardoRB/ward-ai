@@ -137,6 +137,7 @@ class OpenApiLintGateTest {
                         null,
                         List.of(),
                         null,
+                        null,
                         null),
                     OpenApiGateFixtures.PROJECT))
         .isInstanceOf(WardException.class)

@@ -7,6 +7,9 @@ id = "ward:java/file-length"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "lines"
 kinds = ["compilationunit"]
@@ -19,6 +22,9 @@ id = "ward:java/method-length"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "lines"
 kinds = ["methodBody"]
@@ -31,6 +37,9 @@ id = "ward:java/parameter-count"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "descendant-count"
 kinds = ["formalParameters"]
@@ -44,6 +53,9 @@ id = "ward:java/cyclomatic-complexity"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "descendant-count"
 kinds = ["methodDeclaration", "constructorDeclaration"]
@@ -60,6 +72,9 @@ id = "ward:java/cognitive-complexity"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = '''
 check = "cognitive-complexity"
 kinds = ["methodDeclaration", "constructorDeclaration"]

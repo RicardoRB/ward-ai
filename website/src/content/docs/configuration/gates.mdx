@@ -454,6 +454,11 @@ uses = "ward"
 rules = ["ward:java/method-length"]
 ```
 
+To choose rules by preset, language or category, tune their limits and severity, and leave paths
+out, create a [`ward-rules.toml`](/configuration/ward-rules/). When that file exists, the `rules`
+list in `ward.toml` is a configuration error. `rules-file = "config/ward-rules.toml"` points the
+check at another file inside the project.
+
 ### Java dependency edges
 
 The `ward` gate also resolves Java imports and type names to the project's own source files. An
@@ -499,7 +504,8 @@ run, so it is slower than the default; the result cache still reuses unchanged r
 ### Result cache
 
 The `ward` gate keeps each source file's results in `.ward/cache/analysis/`, and reuses them on the
-next run when the file, the selected rules, and the Ward version are all unchanged. Cached results
+next run when the file, the selected rules with their options and severity, and the Ward version are
+all unchanged. Cached results
 match a full run exactly. A file that failed to parse or a rule that failed is never cached, so a
 failure is always analyzed again. The directory is git-ignored. Delete `.ward/cache/` to force a full
 run; nothing else depends on it. Entries are not pruned yet, so the directory grows as files change.
@@ -632,8 +638,9 @@ rules = [
 ```
 
 A file with a syntax error is not checked by these rules. It is reported as an execution error, and
-the gate does not pass. Thresholds are fixed in this version: a `ward` check rejects any key other
-than `uses`, `enabled`, `profiles`, `rules`, `java-classpath`, `layers`, `cycles` and `independence`.
+the gate does not pass. Limits are not keys of the check: a `ward` check accepts only `uses`,
+`enabled`, `profiles`, `rules`, `rules-file`, `java-classpath`, `layers`, `cycles` and
+`independence`. Tune a limit in [`ward-rules.toml`](/configuration/ward-rules/).
 
 ## Layer boundaries
 
@@ -726,8 +733,8 @@ syntax error is not checked by these rules; it is reported as an execution error
 not pass. To see which sources the grammar parses, compare your files with the parse report in the
 Ward repository (`ward-lang-swift/src/test/resources/corpus/parse-report.txt`). At the time of
 writing, the parse report lists `func run() async {` (first error at 6:18) and a freestanding macro
-declaration (2:8) as errors; the cause is not analyzed here. Thresholds are fixed in this version, as
-for the Python rules.
+declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
+[`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
 
 ## Traceability gate
 

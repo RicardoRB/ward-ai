@@ -2,8 +2,10 @@ package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,13 +23,20 @@ import java.util.regex.Pattern;
  * @param capability the one capability the rule requires from its frontend
  * @param severity the severity of the rule's findings
  * @param body the declarative rule text, in the format the matcher understands
+ * @param category the group of the rule, such as {@code sizes}, {@code naming} or {@code linter};
+ *     empty for a rule that is in no group, such as one built from {@code ward.toml}
+ * @param presets the presets that select the rule; empty when only {@code include} selects it
+ * @param options the options {@code ward-rules.toml} may set; see {@link RuleOption}
  */
 public record RuleDefinition(
     String id,
     Set<AnalysisLanguage> languages,
     RuleCapability capability,
     AnalysisSeverity severity,
-    String body) {
+    String body,
+    String category,
+    Set<RulePreset> presets,
+    List<RuleOption> options) {
 
   private static final int SINGLE_LANGUAGE = 1;
 
@@ -35,6 +44,16 @@ public record RuleDefinition(
   public static final String CROSS_LANGUAGE = "architecture";
 
   private static final Pattern ID = Pattern.compile("ward:([a-z]+)/([a-z][a-z0-9-]*)");
+
+  /** Creates a rule with no category, preset or option. */
+  public RuleDefinition(
+      final String id,
+      final Set<AnalysisLanguage> languages,
+      final RuleCapability capability,
+      final AnalysisSeverity severity,
+      final String body) {
+    this(id, languages, capability, severity, body, "", Set.of(), List.of());
+  }
 
   /**
    * Creates a rule that covers one language.
@@ -64,6 +83,7 @@ public record RuleDefinition(
     Objects.requireNonNull(capability, "capability");
     Objects.requireNonNull(severity, "severity");
     Objects.requireNonNull(body, "body");
+    Objects.requireNonNull(category, "category");
     if (languages.isEmpty()) {
       throw new IllegalArgumentException("rule '" + id + "' must name at least one language");
     }
@@ -74,6 +94,13 @@ public record RuleDefinition(
           "rule id must be ward:" + prefix + "/<rule>, found '" + id + "'");
     }
     languages = Set.copyOf(languages);
+    presets = Set.copyOf(presets);
+    options = List.copyOf(options);
+  }
+
+  /** Returns the option called {@code name}, or empty when the rule does not declare it. */
+  public Optional<RuleOption> option(final String name) {
+    return options.stream().filter(option -> option.name().equals(name)).findFirst();
   }
 
   /** Returns whether this rule applies to {@code language}. */

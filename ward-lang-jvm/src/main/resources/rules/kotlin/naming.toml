@@ -6,6 +6,9 @@ id = "ward:kotlin/type-name"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 kinds = ["classDeclaration", "objectDeclaration"]
@@ -13,7 +16,7 @@ modifiers = ["modifierList", "annotation"]
 name = "simpleIdentifier"
 skip = ["modifierList", "annotation"]
 pattern = "[A-Z][a-zA-Z0-9]*"
-message = "type name '{value}' must match [A-Z][a-zA-Z0-9]*"
+message = "type name '{value}' does not match the name pattern of this rule"
 '''
 
 [[rules]]
@@ -21,6 +24,9 @@ id = "ward:kotlin/function-name"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 kinds = ["functionDeclaration"]
@@ -28,7 +34,7 @@ modifiers = ["modifierList", "functionModifierList", "annotation"]
 name = "simpleIdentifier"
 skip = ["modifierList", "functionModifierList", "annotation", "typeParameters", "receiverType", "type", "contextParameters"]
 pattern = "[a-z][a-zA-Z0-9]*"
-message = "function name '{value}' must match [a-z][a-zA-Z0-9]*"
+message = "function name '{value}' does not match the name pattern of this rule"
 '''
 
 [[rules]]
@@ -36,6 +42,9 @@ id = "ward:kotlin/property-name"
 language = "kotlin"
 capability = "SYNTAX"
 severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
 body = '''
 check = "text-pattern"
 kinds = ["propertyDeclaration"]
@@ -44,5 +53,5 @@ excluded = "const"
 name = "simpleIdentifier"
 skip = ["modifierList", "annotation", "type", "typeParameters", "typeConstraints", "getter", "setter"]
 pattern = "[a-z][a-zA-Z0-9]*"
-message = "property name '{value}' must match [a-z][a-zA-Z0-9]*"
+message = "property name '{value}' does not match the name pattern of this rule"
 '''
