@@ -5,11 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RulePreset;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.CatalogStatus;
-import dev.ward.analysis.domain.rule.catalog.LanguageStatus;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
-import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +25,7 @@ class RuleCatalogContractTest {
   private static final int LAST_TOOL_ISSUE = 341;
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
-  private final List<RuleDefinition> definitions = new ClasspathRuleSource().load().rules();
+  private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
 
   @Test
   void everyRuleDefinitionThatShipsBelongsToExactlyOneImplementedRow() {

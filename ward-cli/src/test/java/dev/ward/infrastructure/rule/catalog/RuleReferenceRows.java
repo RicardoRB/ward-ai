@@ -4,8 +4,6 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOption;
 import dev.ward.analysis.domain.rule.RulePreset;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.LanguageStatus;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

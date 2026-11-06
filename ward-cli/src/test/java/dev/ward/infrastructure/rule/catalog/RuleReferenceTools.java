@@ -1,9 +1,5 @@
 package dev.ward.infrastructure.rule.catalog;
 
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.CatalogStatus;
-import dev.ward.analysis.domain.rule.catalog.CatalogTools;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

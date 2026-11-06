@@ -3,9 +3,6 @@ package dev.ward.infrastructure.rule.catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
-import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -90,7 +87,7 @@ class RuleReferenceTest {
   }
 
   private static Map<String, String> generate(final RuleCatalog catalog) {
-    final List<RuleDefinition> definitions = new ClasspathRuleSource().load().rules();
+    final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
     return RuleReference.pages(catalog, definitions, UpstreamLists.outOfScope());
   }
 

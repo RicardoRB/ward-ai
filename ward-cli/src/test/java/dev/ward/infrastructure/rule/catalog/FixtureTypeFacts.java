@@ -1,30 +1,30 @@
 package dev.ward.infrastructure.rule.catalog;
 
+import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
+import dev.ward.infrastructure.analysis.TypeFactsFixture;
 import java.nio.file.Path;
 import java.util.Optional;
 
 /**
- * The hook through which a fixture can give a rule type facts. A rule that needs types puts a
- * {@code types.json} beside its fixtures; the loader of the type-facts step (#307, pull request
- * #350) reads it and answers the type queries of that rule. That loader is not merged yet, so a
- * fixture with a {@code types.json} fails here with a message that says what to connect, instead of
- * running the rule without types and reporting a pass it did not earn.
+ * Gives a fixture its type facts. A rule that needs types puts a {@code types.json} beside its
+ * fixtures; {@link TypeFactsFixture} (#350) reads it, and the facts are answered for every unit and
+ * span the rule asks about, with no sidecar, classpath or {@code node_modules}. Without a {@code
+ * types.json} the facts are unknown, so a rule that needs types reports not run, never a pass.
  */
 final class FixtureTypeFacts {
 
   private FixtureTypeFacts() {}
 
   /**
-   * Checks that the rule's {@code types.json}, when present, can be used.
+   * Returns the facts of the fixture folder.
    *
    * @param typesJson the file beside the fixtures, if any
-   * @return the problem to report, or empty when there is nothing to load
+   * @throws IllegalArgumentException if the file is not valid fixture facts
    */
-  static Optional<String> problem(final Optional<Path> typesJson) {
-    return typesJson.map(
-        file ->
-            file
-                + " holds type facts, but the types.json loader of #350 is not on this branch."
-                + " Replace this hook with that loader when #350 merges.");
+  static TypeFacts of(final Optional<Path> typesJson) {
+    final UnitTypeFacts facts =
+        typesJson.map(TypeFactsFixture::read).orElseGet(UnitTypeFacts::none);
+    return (unit, spans, kinds) -> facts;
   }
 }

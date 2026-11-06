@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.JavaControlFlow;
 import dev.ward.analysis.domain.node.NodeControlFlow;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -51,9 +52,12 @@ final class RuleFixtureRunner {
 
   /**
    * Returns the findings of {@code rule} on {@code text}, after checking that the engine ran the
-   * rule without an error.
+   * rule without an error. {@code typeFacts} are the facts of the fixture's {@code types.json}; the
+   * engine takes no type facts yet, so they reach a rule once the first type-aware rule lands (see
+   * {@link FixtureTypeFacts}).
    */
-  List<AnalysisFinding> run(final RuleDefinition rule, final String path, final String text) {
+  List<AnalysisFinding> run(
+      final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())

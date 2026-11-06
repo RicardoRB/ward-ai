@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /** Proves that the fixture comparison can fail, and says what differs when it does. */
@@ -65,13 +64,6 @@ class FixtureComparisonTest {
             List.of(finding(OTHER_LINE, 1), finding(LINE, COLUMN)));
 
     assertThat(problems).hasSize(1).first().asString().contains("reports [5:1, 2:3]");
-  }
-
-  @Test
-  void aTypeFactsFileIsReportedUntilTheLoaderExists() {
-    assertThat(FixtureTypeFacts.problem(Optional.empty())).isEmpty();
-    assertThat(FixtureTypeFacts.problem(Optional.of(java.nio.file.Path.of("types.json"))))
-        .hasValueSatisfying(message -> assertThat(message).contains("#350"));
   }
 
   private static AnalysisFinding finding(final int line, final int column) {

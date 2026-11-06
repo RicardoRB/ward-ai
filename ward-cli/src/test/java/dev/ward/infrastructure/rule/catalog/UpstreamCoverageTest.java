@@ -2,8 +2,6 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;

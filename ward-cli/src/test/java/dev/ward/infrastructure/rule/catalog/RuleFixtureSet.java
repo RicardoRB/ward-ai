@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.rule.catalog;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;

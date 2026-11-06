@@ -1,7 +1,5 @@
 package dev.ward.infrastructure.rule.catalog;
 
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

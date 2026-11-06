@@ -73,6 +73,25 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 | `ward:javascript/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
 | `ward:python/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
 | `ward:swift/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:java/example-constant-name` | naming | standard, strict | `pattern` | none |
+| `ward:java/example-inline-conditional` | coding | standard, strict | `text` | none |
+| `ward:java/example-switch-default` | coding | standard, strict | none | none |
+| `ward:java/example-method-count` | sizes | standard, strict | `max` | none |
+| `ward:java/example-nested-if` | sizes | standard, strict | `max` | none |
+| `ward:python/example-nested-if` | sizes | standard, strict | `max` | none |
+| `ward:java/example-todo-comment` | comments | standard, strict | `pattern`, `limit` | none |
+| `ward:java/example-modifier-order` | modifiers | standard, strict | `order` | none |
+| `ward:java/example-magic-number` | coding | standard, strict | `ignore`, `ignore-contexts`, `max-repeats` | none |
+| `ward:python/example-magic-number` | coding | standard, strict | `ignore`, `ignore-contexts`, `max-repeats` | none |
+| `ward:java/example-redundant-import` | imports | standard, strict | none | none |
+| `ward:java/example-overload-order` | coding | standard, strict | none | none |
+| `ward:python/example-function-name` | naming | standard, strict | `pattern` | none |
+| `ward:python/example-wildcard-import` | coding | standard, strict | `text` | none |
+| `ward:python/example-try-needs-except` | coding | standard, strict | none | none |
+| `ward:python/example-return-count` | sizes | standard, strict | `max` | none |
+| `ward:python/example-trailing-whitespace` | whitespace | standard, strict | `pattern`, `limit` | none |
+| `ward:python/example-block-order` | coding | standard, strict | `order` | none |
+| `ward:python/example-duplicate-import` | imports | standard, strict | none | none |
 | `ward:java/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
 | `ward:kotlin/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
 | `ward:typescript/naming` | naming | standard, strict | none | ESLint `camelcase` |
@@ -117,6 +136,7 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 - [detekt](/reference/rules/detekt/) (179 rules)
 - [errorprone](/reference/rules/errorprone/) (641 rules)
 - [eslint](/reference/rules/eslint/) (174 rules)
+- [examples](/reference/rules/examples/) (17 rules)
 - [gitleaks](/reference/rules/gitleaks/) (222 rules)
 - [knip](/reference/rules/knip/) (17 rules)
 - [ktlint](/reference/rules/ktlint/) (13 rules)

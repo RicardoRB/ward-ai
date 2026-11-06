@@ -4,9 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RulePreset;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.CatalogStatus;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;

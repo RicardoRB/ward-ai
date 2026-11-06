@@ -4,11 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.catalog.CatalogRow;
-import dev.ward.analysis.domain.rule.catalog.CatalogStatus;
-import dev.ward.analysis.domain.rule.catalog.RuleCatalog;
-import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,8 +27,8 @@ class RuleCatalogFixturesTest {
 
   private static final RuleCatalog CATALOG = new RuleCatalogReader().load();
   private static final Map<String, RuleDefinition> RULES =
-      new ClasspathRuleSource()
-          .load().rules().stream().collect(Collectors.toMap(RuleDefinition::id, rule -> rule));
+      CatalogRuleDefinitions.all().stream()
+          .collect(Collectors.toMap(RuleDefinition::id, rule -> rule));
 
   /** One implemented pair, named by its rule id so that a failure names it. */
   record Pair(CatalogRow row, AnalysisLanguage language) {
@@ -55,14 +52,15 @@ class RuleCatalogFixturesTest {
     final RuleFixtureSet fixtures =
         RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language());
     assertThat(fixtures.complete()).as("fixtures of %s in %s", id, fixtures.directory()).isTrue();
-    assertThat(FixtureTypeFacts.problem(fixtures.typeFacts())).isEmpty();
+    final TypeFacts typeFacts = FixtureTypeFacts.of(fixtures.typeFacts());
     final RuleFixtureRunner runner = new RuleFixtureRunner();
     final List<String> problems = new ArrayList<>();
     for (final String caseName : fixtures.cases()) {
       problems.addAll(
-          check(runner, rule, fixtures.violating(caseName), fixtures.expected(caseName)));
+          check(
+              runner, rule, fixtures.violating(caseName), fixtures.expected(caseName), typeFacts));
       if (Files.isRegularFile(fixtures.passing(caseName))) {
-        problems.addAll(check(runner, rule, fixtures.passing(caseName), List.of()));
+        problems.addAll(check(runner, rule, fixtures.passing(caseName), List.of(), typeFacts));
       }
     }
     assertThat(problems).isEmpty();
@@ -91,10 +89,11 @@ class RuleCatalogFixturesTest {
       final RuleFixtureRunner runner,
       final RuleDefinition rule,
       final Path file,
-      final List<String> expected)
+      final List<String> expected,
+      final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, file.getFileName().toString(), Files.readString(file));
+        runner.run(rule, file.getFileName().toString(), Files.readString(file), typeFacts);
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),

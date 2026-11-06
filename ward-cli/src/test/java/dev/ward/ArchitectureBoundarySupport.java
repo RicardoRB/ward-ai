@@ -47,7 +47,6 @@ final class ArchitectureBoundarySupport {
           "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
           "dev.ward.analysis.domain.rule",
-          "dev.ward.analysis.domain.rule.catalog",
           "dev.ward.analysis.domain.rule.check",
           "dev.ward.analysis.domain.rule.metric",
           "dev.ward.analysis.domain.flow",
