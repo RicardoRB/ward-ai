@@ -61,9 +61,14 @@ class InitFormatEngineNodeTest {
             "none",
             "--format-engine",
             "ward",
+            "--agent-rules",
             "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
+    assertThat(fixture.read("AGENTS.md"))
+        .contains("fix edited lint findings with `biome check --write`")
+        .contains("Formatting runs through `ward format`, not Biome.")
+        .doesNotContain("format and fix edited files with `biome check --write`");
     assertThat(fixture.read("ward.toml"))
         .contains("[checks.biome]", "[checks.ward-format]")
         .doesNotContain("[checks.prettier]");
