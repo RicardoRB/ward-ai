@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveTokens;
@@ -13,11 +14,8 @@ import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import org.tomlj.Toml;
-import org.tomlj.TomlArray;
+import java.util.Set;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
 
@@ -46,13 +44,23 @@ final class DeclarativeChecks {
    *     has a missing or unusable parameter
    */
   static RuleCheck build(final String body) {
-    final TomlParseResult toml = Toml.parse(body);
-    if (toml.hasErrors()) {
-      throw new RuleConfigurationException("the rule body is not valid TOML");
-    }
+    return build(body, Set.of());
+  }
+
+  /**
+   * Builds the check of {@code body} for a rule that covers {@code languages}. A generic check
+   * reads its modifier names through the table of the language when the rule covers just one.
+   *
+   * @throws RuleConfigurationException as {@link #build(String)}
+   */
+  static RuleCheck build(final String body, final Set<AnalysisLanguage> languages) {
+    final TomlParseResult toml = TomlValues.parse(body);
     final String name = TomlValues.required(toml, CHECK);
     try {
-      return create(name, toml);
+      final Optional<GenericKind> generic = GenericKind.select(name, toml);
+      return generic.isPresent()
+          ? GenericChecks.build(generic.get(), toml, ModifierTables.forLanguages(languages))
+          : create(name, toml);
     } catch (final IllegalArgumentException exception) {
       throw new RuleConfigurationException(
           "check '" + name + "' cannot be used: " + exception.getMessage(), exception);
@@ -82,26 +90,11 @@ final class DeclarativeChecks {
     return switch (name) {
       case "unused-assignment" -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE));
       case "taint" ->
-          new TaintCheck(TaintSpecFiles.load(specPaths(toml)), TomlValues.required(toml, MESSAGE));
+          new TaintCheck(
+              TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
       default -> throw new RuleConfigurationException("unknown check '" + name + "'");
     };
-  }
-
-  /** Returns the classpath paths of the specification files a taint rule names, in order. */
-  private static List<String> specPaths(final TomlParseResult toml) {
-    final TomlArray array = toml.getArray(SPECS);
-    if (array == null || array.isEmpty()) {
-      throw new IllegalArgumentException("specs must name at least one specification file");
-    }
-    final List<String> paths = new ArrayList<>();
-    for (int index = 0; index < array.size(); index++) {
-      if (!array.isString(index)) {
-        throw new IllegalArgumentException("specs must hold file names");
-      }
-      paths.add(array.getString(index));
-    }
-    return paths;
   }
 
   private static RuleCheck descendantCount(final TomlParseResult toml) {

@@ -7,8 +7,10 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
+import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
@@ -33,6 +35,9 @@ import java.util.stream.Stream;
  */
 public final class AnalysisGate implements QualityGate {
   private static final Logger LOGGER = Logger.getLogger(AnalysisGate.class.getName());
+  private static final String TYPES_UNAVAILABLE =
+      "the type sidecar is unavailable (Java needs a JDK with javac;"
+          + " TypeScript needs node and the project's typescript package)";
   private static final String TOOL = "ward";
 
   private final String name;
@@ -116,7 +121,10 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
-    try (TypeSidecarRun types = new TypeSidecarRun(ports.typeSidecars().apply(project.root()))) {
+    try (TypeSidecarRun types =
+        new TypeSidecarRun(
+            ports.typeSidecars().apply(project.root()),
+            Optional.ofNullable(javaClasspath).map(project.root()::resolve))) {
       final UnitResultCache.CachedRun run =
           results.analyze(cache, units, types.withTypes(ports.frontends(), rules), rules);
       return result(focused(ExcludedFindings.drop(run, set), rules), rules);
@@ -199,11 +207,14 @@ public final class AnalysisGate implements QualityGate {
     for (final RuleExecutionError error : run.executionErrors()) {
       lines.add(errorLine(error));
     }
-    run.notRun()
-        .forEach(
-            skipped ->
-                lines.add(skipped.ruleId() + " not run: its frontend lacks " + skipped.missing()));
+    run.notRun().forEach(skipped -> lines.add(skipped.ruleId() + " not run: " + reason(skipped)));
     return String.join("\n", lines);
+  }
+
+  private static String reason(final RuleNotRun skipped) {
+    return skipped.missing() == RuleCapability.TYPES
+        ? TYPES_UNAVAILABLE
+        : "its frontend lacks " + skipped.missing();
   }
 
   private static String errorLine(final RuleExecutionError error) {

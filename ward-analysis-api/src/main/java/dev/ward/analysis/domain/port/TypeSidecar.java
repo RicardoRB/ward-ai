@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.port;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -9,10 +10,18 @@ import java.util.Optional;
 public interface TypeSidecar {
 
   /**
-   * Starts the sidecar and returns its resolver, or empty when it cannot start or answer within its
+   * Starts the sidecar and returns its facts, or empty when it cannot start or answer within its
    * limits.
    */
-  Optional<TypeResolver> start();
+  Optional<TypeFacts> start();
+
+  /**
+   * Starts the sidecar for a project whose Java classpath file is {@code classpathFile}, if it has
+   * one. Sidecars that do not use a classpath start as {@link #start()} does.
+   */
+  default Optional<TypeFacts> start(final Optional<Path> classpathFile) {
+    return start();
+  }
 
   /** Stops the sidecar if it runs. Calling it again has no effect. */
   void close();

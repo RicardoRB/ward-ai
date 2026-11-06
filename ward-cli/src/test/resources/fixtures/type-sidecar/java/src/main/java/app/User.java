@@ -13,6 +13,12 @@ public class User {
     return name;
   }
 
+  @Override public String toString() { return name; }
+
+  public void read() throws java.io.IOException {}
+
+  public static final String KIND = "user";
+
   public int port() {
     return 8080;
   }
@@ -22,5 +28,6 @@ public class User {
     int port = port();
     Missing unknown = null;
     List<String> tags = List.of(value);
+    boolean same = value.equals("x");
   }
 }

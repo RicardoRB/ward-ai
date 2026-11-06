@@ -1,17 +1,25 @@
 /*
- * Ward type sidecar for Java. Answers the static type of expression spans with javac's Trees API.
+ * Ward type sidecar for Java. Answers type facts for spans with javac's Trees API.
  *
  * Run by the project's java in source-launch mode:
- *   java WardJavaTypes.java <projectRoot> <sourceRoot>...
+ *   java WardJavaTypes.java <projectRoot> --classpath=<entries> <sourceRoot>...
  *
- * Protocol, one JSON object per line: a request {"path","text","spans":[[start,end],...]} gets the
- * response {"types":{"start:end":"fully.qualified.Type"}}. Spans with no answer are left out. A
+ * Protocol, one JSON object per line: a request {"path","text","spans":[[start,end],...],"kinds":
+ * ["type","shape","call","annotations","overrides","throws","constant"]} gets the response
+ * {"facts":{"start:end":{"type":{"name":"java.lang.String"},...}}}. Facts that do not resolve are
+ * left out, and so are spans with none. A
  * malformed request ends the process with status 2. Diagnostics go to stderr only, never the source.
- * Libraries are not on the class path, so their types come back as error types and are omitted.
+ * A library that is not on the class path comes back as an error type and is omitted.
  */
 
+import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ExpressionTree;
+import com.sun.source.tree.LiteralTree;
+import com.sun.source.tree.MethodInvocationTree;
+import com.sun.source.tree.MethodTree;
+import com.sun.source.tree.NewClassTree;
+import com.sun.source.tree.VariableTree;
 import com.sun.source.util.JavacTask;
 import com.sun.source.util.SourcePositions;
 import com.sun.source.util.TreePath;
@@ -27,12 +35,25 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
@@ -56,7 +77,12 @@ public final class WardJavaTypes {
       System.exit(NO_COMPILER);
     }
     final List<Path> sourceRoots = new ArrayList<>();
+    String classpath = "";
     for (int index = 1; index < args.length; index++) {
+      if (args[index].startsWith("--classpath=")) {
+        classpath = args[index].substring("--classpath=".length());
+        continue;
+      }
       final Path root = Path.of(args[index]);
       if (Files.isDirectory(root)) {
         sourceRoots.add(root);
@@ -74,72 +100,340 @@ public final class WardJavaTypes {
         System.exit(MALFORMED_REQUEST);
         return;
       }
-      responses.write(response(compiler, sourceRoots, request));
+      responses.write(response(compiler, sourceRoots, classpath, request));
       responses.write('\n');
       responses.flush();
       line = requests.readLine();
     }
   }
 
-  /** Types the spans of one request; a file that does not compile still answers what it can. */
+  /** Answers the facts of one request; a file that does not compile still answers what it can. */
   private static String response(
-      final JavaCompiler compiler, final List<Path> sourceRoots, final Map<String, Object> request) {
-    final Map<String, String> types = new LinkedHashMap<>();
+      final JavaCompiler compiler,
+      final List<Path> sourceRoots,
+      final String classpath,
+      final Map<String, Object> request) {
+    final Map<String, String> facts = new LinkedHashMap<>();
     final String path = String.valueOf(request.getOrDefault("path", ""));
     final String text = String.valueOf(request.getOrDefault("text", ""));
     final List<int[]> spans = spans(request);
-    if (!spans.isEmpty()) {
+    final List<String> kinds = kinds(request);
+    if (!spans.isEmpty() && !kinds.isEmpty()) {
       try {
-        typeSpans(compiler, sourceRoots, path, text, spans, types);
+        factSpans(compiler, sourceRoots, classpath, path, text, spans, kinds, facts);
       } catch (IOException | URISyntaxException | RuntimeException failure) {
         System.err.println("type analysis failed for one file");
       }
     }
-    final StringBuilder json = new StringBuilder("{\"types\":{");
+    final StringBuilder json = new StringBuilder("{\"facts\":{");
     boolean first = true;
-    for (final Map.Entry<String, String> entry : types.entrySet()) {
-      json.append(first ? "" : ",").append(quote(entry.getKey())).append(':').append(quote(entry.getValue()));
+    for (final Map.Entry<String, String> entry : facts.entrySet()) {
+      json.append(first ? "" : ",").append(quote(entry.getKey())).append(':').append(entry.getValue());
       first = false;
     }
     return json.append("}}").toString();
   }
 
-  private static void typeSpans(
+  private static void factSpans(
       final JavaCompiler compiler,
       final List<Path> sourceRoots,
+      final String classpath,
       final String path,
       final String text,
       final List<int[]> spans,
-      final Map<String, String> types)
+      final List<String> kinds,
+      final Map<String, String> facts)
       throws IOException, URISyntaxException {
     final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
     try (StandardJavaFileManager files = compiler.getStandardFileManager(diagnostics, null, StandardCharsets.UTF_8)) {
       files.setLocationFromPaths(StandardLocation.SOURCE_PATH, sourceRoots);
-      files.setLocationFromPaths(StandardLocation.CLASS_PATH, List.of());
+      final List<Path> entries = new ArrayList<>();
+      for (final String entry : classpath.split(java.io.File.pathSeparator)) {
+        if (!entry.isBlank()) {
+          entries.add(Path.of(entry));
+        }
+      }
+      files.setLocationFromPaths(StandardLocation.CLASS_PATH, entries);
       final JavaFileObject source = new Source(path, text);
       final JavacTask task =
           (JavacTask)
               compiler.getTask(null, files, diagnostics, List.of("-proc:none", "-implicit:none"), null, List.of(source));
       final Iterable<? extends CompilationUnitTree> units = task.parse();
       task.analyze();
-      final Trees trees = Trees.instance(task);
-      final Types model = task.getTypes();
+      final Model model = new Model(Trees.instance(task), task.getTypes(), task.getElements());
       for (final CompilationUnitTree unit : units) {
-        final List<Candidate> candidates = candidates(trees, unit);
+        final List<Candidate> candidates = candidates(model.trees(), unit);
         for (final int[] span : spans) {
           final Candidate best = innermost(candidates, span[0], span[1]);
-          if (best != null) {
-            final String name = typeName(model, trees.getTypeMirror(best.path()));
-            if (name != null) {
-              types.put(span[0] + ":" + span[1], name);
-            }
+          final String found = best == null ? null : model.factsOf(best.path(), kinds);
+          if (found != null) {
+            facts.put(span[0] + ":" + span[1], found);
           }
         }
       }
     }
   }
 
-  /** An expression with its source range, collected once per unit. */
+  /** The compiler models of one analysis, with the fact builders. */
+  private record Model(Trees trees, Types types, Elements elements) {
+
+    /** The JSON object of the requested facts at {@code path}, or null when none resolved. */
+    String factsOf(final TreePath path, final List<String> kinds) {
+      final Map<String, String> fields = new LinkedHashMap<>();
+      final Element element = elementOf(path);
+      final TypeMirror mirror = path.getLeaf() instanceof ExpressionTree ? trees.getTypeMirror(path) : null;
+      if (kinds.contains("type")) {
+        put(fields, "type", typeRef(mirror));
+      }
+      if (kinds.contains("shape")) {
+        put(fields, "shape", shape(element, mirror));
+      }
+      if (kinds.contains("call") && element instanceof ExecutableElement method && isInvocation(path)) {
+        put(fields, "call", call(method));
+      }
+      if (kinds.contains("annotations") && element != null) {
+        fields.put("annotations", stringArray(annotationNames(element)));
+        fields.put("scopes", stringArray(scopeNames(element)));
+      }
+      if (element instanceof ExecutableElement method) {
+        if (kinds.contains("overrides") && path.getLeaf() instanceof MethodTree) {
+          put(fields, "overrides", array(overrides(method)));
+        }
+        if (kinds.contains("throws")) {
+          put(fields, "thrown", array(thrown(method)));
+        }
+      }
+      if (kinds.contains("constant")) {
+        put(fields, "constant", constant(path.getLeaf(), element));
+      }
+      if (fields.isEmpty()) {
+        return null;
+      }
+      final StringBuilder json = new StringBuilder("{");
+      boolean first = true;
+      for (final Map.Entry<String, String> field : fields.entrySet()) {
+        json.append(first ? "" : ",").append(quote(field.getKey())).append(':').append(field.getValue());
+        first = false;
+      }
+      return json.append('}').toString();
+    }
+
+    private Element elementOf(final TreePath path) {
+      final com.sun.source.tree.Tree leaf = path.getLeaf();
+      if (leaf instanceof ExpressionTree || leaf instanceof ClassTree || leaf instanceof MethodTree || leaf instanceof VariableTree) {
+        return trees.getElement(path);
+      }
+      return null;
+    }
+
+    private static boolean isInvocation(final TreePath path) {
+      return path.getLeaf() instanceof MethodInvocationTree || path.getLeaf() instanceof NewClassTree;
+    }
+
+    private static void put(final Map<String, String> fields, final String name, final String value) {
+      if (value != null) {
+        fields.put(name, value);
+      }
+    }
+
+    /** A type reference; null when the type is unknown to the compiler. */
+    String typeRef(final TypeMirror mirror) {
+      if (mirror == null || mirror.getKind() == TypeKind.ERROR || mirror.getKind() == TypeKind.NONE) {
+        return null;
+      }
+      int depth = 0;
+      TypeMirror base = mirror;
+      while (base.getKind() == TypeKind.ARRAY) {
+        base = ((ArrayType) base).getComponentType();
+        depth++;
+      }
+      final String name;
+      final String arguments;
+      if (base.getKind().isPrimitive() || base.getKind() == TypeKind.VOID) {
+        name = base.toString();
+        arguments = null;
+      } else if (base.getKind() == TypeKind.ERROR) {
+        return null;
+      } else if (base instanceof DeclaredType declared && declared.asElement() instanceof TypeElement type) {
+        name = type.getQualifiedName().toString();
+        arguments = typeArguments(declared);
+      } else if (base.getKind() == TypeKind.TYPEVAR || base.getKind() == TypeKind.WILDCARD || base.getKind() == TypeKind.INTERSECTION) {
+        final TypeMirror erased = types.erasure(base);
+        return erased.getKind() == base.getKind() ? null : typeRef(depth == 0 ? erased : types.getArrayType(erased));
+      } else {
+        return null;
+      }
+      final StringBuilder json = new StringBuilder("{\"name\":").append(quote(name));
+      if (arguments != null) {
+        json.append(",\"args\":").append(arguments);
+      }
+      if (depth > 0) {
+        json.append(",\"array\":").append(depth);
+      }
+      if (base.getKind().isPrimitive() || base.getKind() == TypeKind.VOID) {
+        json.append(",\"primitive\":true");
+      }
+      return json.append('}').toString();
+    }
+
+    /** The arguments as a JSON array, or null when there are none or one does not resolve. */
+    private String typeArguments(final DeclaredType declared) {
+      final List<String> arguments = new ArrayList<>();
+      for (final TypeMirror argument : declared.getTypeArguments()) {
+        final String ref = typeRef(argument);
+        if (ref == null) {
+          return null;
+        }
+        arguments.add(ref);
+      }
+      return arguments.isEmpty() ? null : array(arguments);
+    }
+
+    private String shape(final Element element, final TypeMirror mirror) {
+      final Element declared = element instanceof TypeElement ? element : mirror instanceof DeclaredType type ? type.asElement() : null;
+      if (!(declared instanceof TypeElement type)) {
+        return null;
+      }
+      final String kind =
+          switch (type.getKind()) {
+            case INTERFACE -> "interface";
+            case ENUM -> "enum";
+            case RECORD -> "record";
+            case ANNOTATION_TYPE -> "annotation";
+            default -> "class";
+          };
+      final List<String> supertypes = new ArrayList<>();
+      for (final TypeMirror supertype : types.directSupertypes(type.asType())) {
+        final String ref = typeRef(supertype);
+        if (ref != null) {
+          supertypes.add(ref);
+        }
+      }
+      final Set<Modifier> modifiers = type.getModifiers();
+      return "{\"kind\":" + quote(kind)
+          + ",\"abstract\":" + modifiers.contains(Modifier.ABSTRACT)
+          + ",\"final\":" + modifiers.contains(Modifier.FINAL)
+          + ",\"sealed\":" + modifiers.contains(Modifier.SEALED)
+          + ",\"supertypes\":" + array(supertypes) + "}";
+    }
+
+    private String call(final ExecutableElement method) {
+      if (!(method.getEnclosingElement() instanceof TypeElement owner)) {
+        return null;
+      }
+      final List<String> parameters = new ArrayList<>();
+      for (final VariableElement parameter : method.getParameters()) {
+        final String ref = typeRef(types.erasure(parameter.asType()));
+        if (ref == null) {
+          return null;
+        }
+        parameters.add(ref);
+      }
+      final String returns = typeRef(method.getReturnType());
+      return "{\"declaring\":" + typeRef(types.erasure(owner.asType()))
+          + ",\"name\":" + quote(method.getSimpleName().toString())
+          + ",\"params\":" + array(parameters)
+          + (returns == null ? "" : ",\"returns\":" + returns)
+          + ",\"static\":" + method.getModifiers().contains(Modifier.STATIC)
+          + ",\"varargs\":" + method.isVarArgs() + "}";
+    }
+
+    private static List<String> annotationNames(final Element element) {
+      final List<String> names = new ArrayList<>();
+      for (final AnnotationMirror annotation : element.getAnnotationMirrors()) {
+        names.add(annotation.getAnnotationType().toString());
+      }
+      return names;
+    }
+
+    /** The annotations of the enclosing declarations, nearest first. */
+    private static List<String> scopeNames(final Element element) {
+      final List<String> names = new ArrayList<>();
+      for (Element scope = element.getEnclosingElement(); scope != null; scope = scope.getEnclosingElement()) {
+        names.addAll(annotationNames(scope));
+      }
+      return names;
+    }
+
+    private List<String> overrides(final ExecutableElement method) {
+      final List<String> overridden = new ArrayList<>();
+      if (method.getEnclosingElement() instanceof TypeElement owner) {
+        final Deque<TypeMirror> pending = new ArrayDeque<>(types.directSupertypes(owner.asType()));
+        final Set<String> seen = new HashSet<>();
+        while (!pending.isEmpty()) {
+          final TypeMirror supertype = pending.pop();
+          if (supertype instanceof DeclaredType declared && declared.asElement() instanceof TypeElement parent && seen.add(parent.getQualifiedName().toString())) {
+            for (final Element member : parent.getEnclosedElements()) {
+              if (member instanceof ExecutableElement candidate && elements.overrides(method, candidate, owner)) {
+                final String target = call(candidate);
+                if (target != null) {
+                  overridden.add(target);
+                }
+              }
+            }
+            pending.addAll(types.directSupertypes(supertype));
+          }
+        }
+      }
+      return overridden;
+    }
+
+    /** The checked exceptions the method declares: Throwable but neither RuntimeException nor Error. */
+    private List<String> thrown(final ExecutableElement method) {
+      final TypeMirror runtime = elements.getTypeElement("java.lang.RuntimeException").asType();
+      final TypeMirror error = elements.getTypeElement("java.lang.Error").asType();
+      final List<String> checked = new ArrayList<>();
+      for (final TypeMirror thrown : method.getThrownTypes()) {
+        if (!types.isSubtype(thrown, runtime) && !types.isSubtype(thrown, error)) {
+          final String ref = typeRef(types.erasure(thrown));
+          if (ref != null) {
+            checked.add(ref);
+          }
+        }
+      }
+      return checked;
+    }
+
+    /** A literal or a constant variable's value as JSON; integral values are numbers. */
+    private static String constant(final com.sun.source.tree.Tree leaf, final Element element) {
+      Object value = null;
+      if (leaf instanceof LiteralTree literal) {
+        value = literal.getValue();
+      } else if (element instanceof VariableElement variable) {
+        value = variable.getConstantValue();
+      }
+      if (value instanceof String || value instanceof Character) {
+        return quote(value.toString());
+      }
+      if (value instanceof Boolean || value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long) {
+        return value.toString();
+      }
+      if (value instanceof Float || value instanceof Double) {
+        return Double.toString(((Number) value).doubleValue());
+      }
+      return null;
+    }
+  }
+
+  private static String array(final List<String> rawItems) {
+    return "[" + String.join(",", rawItems) + "]";
+  }
+
+  private static String stringArray(final List<String> items) {
+    final List<String> quoted = new ArrayList<>();
+    items.forEach(item -> quoted.add(quote(item)));
+    return array(quoted);
+  }
+
+  private static List<String> kinds(final Map<String, Object> request) {
+    final List<String> kinds = new ArrayList<>();
+    if (request.get("kinds") instanceof List<?> list) {
+      list.forEach(kind -> kinds.add(String.valueOf(kind)));
+    }
+    return kinds;
+  }
+
+  /** A tree with its source range, collected once per unit. */
   private record Candidate(int start, int end, int depth, TreePath path) {}
 
   private static List<Candidate> candidates(final Trees trees, final CompilationUnitTree unit) {
@@ -148,7 +442,7 @@ public final class WardJavaTypes {
     new TreePathScanner<Void, Void>() {
       @Override
       public Void scan(final com.sun.source.tree.Tree tree, final Void unused) {
-        if (tree instanceof ExpressionTree) {
+        if (tree instanceof ExpressionTree || tree instanceof ClassTree || tree instanceof MethodTree || tree instanceof VariableTree) {
           final int start = (int) positions.getStartPosition(unit, tree);
           final int end = (int) positions.getEndPosition(unit, tree);
           final TreePath path = new TreePath(getCurrentPath(), tree);
@@ -170,7 +464,7 @@ public final class WardJavaTypes {
     return depth;
   }
 
-  /** The smallest expression that contains the span; deeper nodes win a tie. */
+  /** The smallest tree that contains the span; deeper nodes win a tie. */
   private static Candidate innermost(final List<Candidate> candidates, final int start, final int end) {
     Candidate best = null;
     for (final Candidate candidate : candidates) {
@@ -183,15 +477,6 @@ public final class WardJavaTypes {
 
   private static int width(final Candidate candidate) {
     return candidate.end() - candidate.start();
-  }
-
-  /** The erased, fully qualified name, or null when the type is unknown to the compiler. */
-  private static String typeName(final Types model, final TypeMirror mirror) {
-    if (mirror == null || mirror.getKind() == TypeKind.ERROR || mirror.getKind() == TypeKind.NONE || mirror.getKind() == TypeKind.VOID) {
-      return null;
-    }
-    final String name = model.erasure(mirror).toString();
-    return name.contains("<any>") ? null : name;
   }
 
   private static List<int[]> spans(final Map<String, Object> request) {

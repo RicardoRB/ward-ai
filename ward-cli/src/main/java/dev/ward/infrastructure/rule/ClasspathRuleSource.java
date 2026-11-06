@@ -61,7 +61,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   }
 
   /** Creates the source that loads the given classpath resources, in order. */
-  ClasspathRuleSource(final List<String> resources) {
+  public ClasspathRuleSource(final List<String> resources) {
     this.resources = List.copyOf(resources);
   }
 

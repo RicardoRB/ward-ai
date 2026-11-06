@@ -5,9 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A recursive-descent reader for the JSON shapes the type sidecar protocol uses. */
 /** A recursive-descent reader for objects, arrays, strings, numbers and literals. */
 final class TypeSidecarJsonReader {
+  private static final String NUMBER_CHARACTERS = "0123456789.eE+-";
   private static final int HEX_RADIX = 16;
   private static final int HEX_WIDTH = 4;
 
@@ -107,6 +107,14 @@ final class TypeSidecarJsonReader {
   }
 
   private Object literal() {
+    if (text.charAt(position) == '-' || Character.isDigit(text.charAt(position))) {
+      final int start = position;
+      position++;
+      while (position < text.length() && NUMBER_CHARACTERS.indexOf(text.charAt(position)) >= 0) {
+        position++;
+      }
+      return JsonValues.parseNumber(text.substring(start, position));
+    }
     for (final String word : List.of("true", "false", "null")) {
       if (text.startsWith(word, position)) {
         position += word.length();

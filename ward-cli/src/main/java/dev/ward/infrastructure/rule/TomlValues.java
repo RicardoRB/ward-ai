@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
@@ -15,6 +16,19 @@ import org.tomlj.TomlTable;
 final class TomlValues {
 
   private TomlValues() {}
+
+  /**
+   * Parses a rule body.
+   *
+   * @throws RuleConfigurationException if the body is not valid TOML
+   */
+  static TomlParseResult parse(final String body) {
+    final TomlParseResult toml = Toml.parse(body);
+    if (toml.hasErrors()) {
+      throw new RuleConfigurationException("the rule body is not valid TOML");
+    }
+    return toml;
+  }
 
   static String required(final TomlParseResult toml, final String key) {
     final String value = toml.getString(key);

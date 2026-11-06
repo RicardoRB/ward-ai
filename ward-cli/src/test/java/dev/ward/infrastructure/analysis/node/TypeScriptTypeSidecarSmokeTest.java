@@ -7,10 +7,14 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.ExpressionTypes;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.types.FactKind;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
+import dev.ward.infrastructure.analysis.TypeFactsFixture;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -41,7 +45,7 @@ class TypeScriptTypeSidecarSmokeTest {
 
     final TypeScriptTypeSidecar sidecar = new TypeScriptTypeSidecar(project, "smoke");
     try {
-      final Optional<TypeResolver> resolver = sidecar.start();
+      final Optional<TypeFacts> resolver = sidecar.start();
       assertThat(resolver).isPresent();
       final ExpressionTypes answer =
           resolver
@@ -50,6 +54,43 @@ class TypeScriptTypeSidecarSmokeTest {
                   new SourceUnit(PATH, AnalysisLanguage.TYPESCRIPT, text),
                   List.of(port, unresolved));
       assertThat(answer.types()).containsEntry(port, "number").doesNotContainKey(unresolved);
+    } finally {
+      sidecar.close();
+    }
+  }
+
+  @Test
+  void answersTheSameFactsAsTheFixtureJson() throws IOException {
+    final String installed = System.getProperty("ward.sidecar.typescript");
+    assumeTrue(installed != null && !installed.isBlank(), "set -Dward.sidecar.typescript=<dir>");
+    copyFixture();
+    Files.createSymbolicLink(
+        project.resolve("node_modules"), Path.of(installed).resolve("node_modules"));
+    final String text = Files.readString(project.resolve(PATH));
+    final UnitTypeFacts expected = TypeFactsFixture.read(FIXTURE.resolve("types.json"));
+    final Span max = span(text, "Math.max(1, 2)");
+    final Span base = span(text, "abstract class Base {\n  abstract run(): number;\n}");
+    final Span impl =
+        span(
+            text,
+            text.substring(text.indexOf("class Impl"), text.indexOf("const biggest")).strip());
+    final Span run = span(text, "run(): number {\n    return 1;\n  }");
+
+    final TypeScriptTypeSidecar sidecar = new TypeScriptTypeSidecar(project, "smoke");
+    try {
+      final UnitTypeFacts actual =
+          sidecar
+              .start()
+              .orElseThrow()
+              .factsOf(
+                  new SourceUnit(PATH, AnalysisLanguage.TYPESCRIPT, text),
+                  List.of(max, base, impl, run),
+                  EnumSet.allOf(FactKind.class));
+      assertThat(actual.typeOf(max)).isEqualTo(expected.typeOf(max)).isPresent();
+      assertThat(actual.callTarget(max)).isEqualTo(expected.callTarget(max)).isPresent();
+      assertThat(actual.shapeOf(base)).isEqualTo(expected.shapeOf(base)).isPresent();
+      assertThat(actual.shapeOf(impl)).isEqualTo(expected.shapeOf(impl)).isPresent();
+      assertThat(actual.at(run).overrides()).isEqualTo(expected.at(run).overrides()).isNotEmpty();
     } finally {
       sidecar.close();
     }

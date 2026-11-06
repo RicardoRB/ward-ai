@@ -21,7 +21,8 @@ public final class DeclarativeRuleMatcher implements RuleMatcher {
   @Override
   public CompiledRule compile(final RuleDefinition definition) {
     try {
-      return new CheckedRule(definition, DeclarativeChecks.build(definition.body()));
+      return new CheckedRule(
+          definition, DeclarativeChecks.build(definition.body(), definition.languages()));
     } catch (final RuleConfigurationException exception) {
       throw new AnalysisFailedException(exception.getMessage(), exception);
     }

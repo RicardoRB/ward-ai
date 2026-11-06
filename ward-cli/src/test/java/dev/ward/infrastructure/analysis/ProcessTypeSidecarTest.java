@@ -6,7 +6,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.ExpressionTypes;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -18,14 +18,15 @@ import org.junit.jupiter.api.io.TempDir;
 class ProcessTypeSidecarTest {
   private static final Span AT = new Span(1, 1, 1, 4, 0, 3);
   private static final SourceUnit UNIT = new SourceUnit("A.java", AnalysisLanguage.JAVA, "int");
-  private static final String PROBE_ANSWER = "{\\\"types\\\":{}}";
-  private static final String TYPED_ANSWER = "{\\\"types\\\":{\\\"0:3\\\":\\\"int\\\"}}";
+  private static final String PROBE_ANSWER = "{\\\"facts\\\":{}}";
+  private static final String TYPED_ANSWER =
+      "{\\\"facts\\\":{\\\"0:3\\\":{\\\"type\\\":{\\\"name\\\":\\\"int\\\",\\\"primitive\\\":true}}}}";
 
   @TempDir Path root;
 
   @Test
   void answersSpansWithTheTypesTheProcessReturns() {
-    final Optional<TypeResolver> resolver =
+    final Optional<TypeFacts> resolver =
         sidecar(
                 "read probe; echo \""
                     + PROBE_ANSWER
@@ -54,7 +55,7 @@ class ProcessTypeSidecarTest {
 
   @Test
   void aMalformedAnswerEndsTheSidecarForTheRun() {
-    final TypeResolver resolver =
+    final TypeFacts resolver =
         sidecar(
                 "read probe; echo \""
                     + PROBE_ANSWER
@@ -68,7 +69,7 @@ class ProcessTypeSidecarTest {
 
   @Test
   void aProcessThatExitsMidRunGivesNoLaterAnswers() {
-    final TypeResolver resolver =
+    final TypeFacts resolver =
         sidecar("read probe; echo \"" + PROBE_ANSWER + "\"").start().orElseThrow();
 
     assertThat(resolver.typesOf(UNIT, List.of(AT)).types()).isEmpty();

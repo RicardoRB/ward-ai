@@ -6,4 +6,13 @@ interface Config {
 const config: Config = { port: 8080, name: "x" };
 const port: number = config.port;
 const missing = nope.value;
-export { port, missing };
+abstract class Base {
+  abstract run(): number;
+}
+class Impl extends Base {
+  run(): number {
+    return 1;
+  }
+}
+const biggest = Math.max(1, 2);
+export { port, missing, Impl, biggest };

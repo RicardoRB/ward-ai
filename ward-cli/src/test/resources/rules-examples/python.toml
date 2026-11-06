@@ -1,0 +1,143 @@
+# One example rule per generic check kind, for Python. Test data, like java.toml. The grammar node
+# names are the ANTLR Python 3 rule names.
+
+[[rules]]
+id = "ward:python/example-function-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["funcdef"]
+name = "name"
+pattern = "[a-z_][a-z0-9_]*"
+message = "function '{value}' must be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/example-wildcard-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["import_from"]
+text = "\\*$"
+message = "do not import *"
+'''
+
+[[rules]]
+id = "ward:python/example-try-needs-except"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["try_stmt"]
+child = ["except_clause"]
+message = "try needs an except clause"
+'''
+
+[[rules]]
+id = "ward:python/example-return-count"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "count"
+kinds = ["funcdef"]
+counted = ["return_stmt"]
+skip = ["funcdef"]
+max = 2
+message = "function has {value} returns; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/example-nested-if"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["if_stmt"]
+reset = ["funcdef"]
+max = 1
+message = "if is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/example-trailing-whitespace"
+language = "python"
+capability = "SYNTAX"
+severity = "warning"
+category = "whitespace"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+options.limit = { type = "integer", min = 0 }
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[ \\t]+$"
+message = "trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:python/example-block-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.order = { type = "string-list" }
+body = '''
+check = "order"
+kinds = ["block"]
+order = ["stmt>simple_stmts", "stmt>compound_stmt"]
+message = "simple statements come before compound ones"
+'''
+
+[[rules]]
+id = "ward:python/example-magic-number"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.ignore = { type = "string-list" }
+options.ignore-contexts = { type = "string-list" }
+options.max-repeats = { type = "integer", min = -1 }
+body = '''
+check = "literal"
+kinds = ["NUMBER"]
+ignore = ["0", "1"]
+message = "'{value}' is a magic number"
+'''
+
+[[rules]]
+id = "ward:python/example-duplicate-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["file_input"]
+items = ["stmt"]
+key = "import_name"
+message = "duplicate import {value}"
+'''
