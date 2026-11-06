@@ -1,0 +1,97 @@
+---
+title: EditorConfig
+description: The .editorconfig keys that Ward reads for native formatting, standard and ward_-prefixed.
+---
+
+Ward reads formatting options from the `.editorconfig` files of your project, the same files that
+editors and IDEs already apply while you type. Keys in the EditorConfig standard keep their meaning,
+and Ward's own options use a `ward_` prefix in the same files, so editors and Ward share one source
+of formatting truth. Keys that Ward does not use, such as `ij_*` or `ktlint_*`, are ignored.
+
+The keys take effect with the native formatters (`ward format` and the `ward-format` gate).
+
+## Where Ward looks
+
+For each file, Ward reads the `.editorconfig` in the file's folder and in each parent folder, up to
+the project root. Lookup never goes above the project root, so a file in your home folder cannot
+change results between a laptop and CI.
+
+- A section applies when its glob matches the file. A glob without a slash (`*.java`) matches the
+  file name in any folder. A glob with a slash is relative to the `.editorconfig` that holds it.
+- A later section overrides an earlier one in the same file.
+- A closer `.editorconfig` overrides a farther one.
+- `root = true` stops the lookup at that file.
+- `unset` removes a value that an earlier section set.
+
+Globs support `*`, `**`, `?`, `[abc]`, `[!abc]`, `{a,b}` and `{1..3}`.
+
+## Standard keys
+
+Each language formatter declares the shared options `line-width`, `indent-style`, `indent-width` and `max-blank-lines` with its own defaults, and Ward passes only the ones it declares. The values above are the defaults that apply when no `.editorconfig` sets the key.
+
+| Key | Values | Default |
+| --- | --- | --- |
+| `indent_style` | `space`, `tab` | `space` |
+| `indent_size` | a number, or `tab` (use `tab_width`) | the language formatter's declared `indent-width` |
+| `tab_width` | a number | the indent width |
+| `end_of_line` | `lf`, `crlf` | unset: each file keeps its own line endings |
+| `insert_final_newline` | `true`, `false` | `true` |
+| `max_line_length` | a number, or `off` (no limit) | the formatter's declared `line-width` |
+| `charset` | `utf-8`, `utf-8-bom` | the file's own byte-order mark; `utf-8-bom` keeps or adds one |
+
+`end_of_line = cr` and other values Ward cannot honor are configuration errors. `max_line_length = off` reaches the formatter as `line-width` = `Integer.MAX_VALUE`.
+
+## Ward keys
+
+| Key | Values | Default |
+| --- | --- | --- |
+| `ward_format` | `true`, `false` (`false` excludes the matching files) | `true` |
+| `ward_max_blank_lines` | a whole number | the formatter's declared `max-blank-lines` |
+
+Each language formatter also declares its own `ward_` keys. A key is plain kebab-case in the
+formatter (for example `continuation-indent-size`), and the EditorConfig key replaces each `-` with
+`_` (`ward_continuation_indent_size`). A `ward_` key applies only to the languages whose formatter
+declares it.
+
+## Errors
+
+Ward reports an error, and formats nothing, when a matching section sets:
+
+- an unknown `ward_` key, such as `ward_quote_style`, or a `ward_` key that another language declares
+  but this file's language does not;
+- a value of the wrong type, such as `ward_format = maybe`;
+- a value outside the supported set, such as `end_of_line = cr`.
+
+The message names the `.editorconfig` file, the section and the key.
+
+## Example
+
+```ini
+root = true
+
+[*]
+max_line_length = 120
+insert_final_newline = true
+ward_max_blank_lines = 1
+
+[*.{java,kt,kts,py,swift}]
+indent_style = space
+indent_size = 4
+
+[*.java]
+ward_continuation_indent_size = 8
+
+[*.{ts,tsx,js,jsx,mjs,cjs}]
+indent_size = 2
+
+[src/generated/**]
+ward_format = false
+```
+
+With this file, Java lines are wrapped at 120 columns and indented by 4 spaces, with continuation lines
+indented by 8. TypeScript uses 2 spaces. Files under `src/generated/` are not formatted.
+
+## Limits
+
+Ward matches the EditorConfig keys it knows and ignores everything else, so a typo in a standard key
+such as `indent_sise` is not reported. Only `ward_` keys are validated.
