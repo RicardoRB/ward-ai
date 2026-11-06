@@ -1,10 +1,7 @@
 package dev.ward.analysis.domain.python;
 
-import dev.ward.analysis.domain.ir.Span;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -17,15 +14,8 @@ import java.util.regex.Pattern;
  */
 final class PythonFStrings {
 
-  /** A name read in an f-string, with where it starts and ends in the token text. */
-  record Use(String name, int from, int to) {}
-
   private static final Pattern PREFIX = Pattern.compile("^[rRbBuU]*[fF][rRbBuU]*['\"]");
-  private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_][A-Za-z0-9_]*");
-  private static final Set<String> KEYWORDS =
-      Set.of(
-          "and", "or", "not", "in", "is", "if", "else", "for", "lambda", "None", "True", "False",
-          "await", "yield");
+  private static final int NONE = Integer.MAX_VALUE;
   private static final char OPEN = '{';
   private static final char CLOSE = '}';
 
@@ -57,7 +47,7 @@ final class PythonFStrings {
   private static int field(final String token, final int start, final List<Use> uses) {
     int depth = 1;
     int index = start;
-    int expressionEnd = -1;
+    int expressionEnd = NONE;
     while (index < token.length() && depth > 0) {
       final char current = token.charAt(index);
       if (isQuote(current)) {
@@ -65,18 +55,14 @@ final class PythonFStrings {
         continue;
       }
       depth += depthChange(current);
-      if (current != OPEN
-          && current != CLOSE
-          && depth == 1
-          && expressionEnd < 0
-          && isSpecStart(token, index)) {
+      if (depth == 1 && expressionEnd == NONE && isSpecStart(token, index)) {
         expressionEnd = index;
       }
       index++;
     }
     final int end = index - 1;
-    identifiers(token, start, expressionEnd < 0 ? end : expressionEnd, uses);
-    if (expressionEnd >= 0) {
+    PythonFStringNames.identifiers(token, start, Math.min(expressionEnd, end), uses);
+    if (expressionEnd < end) {
       nestedFields(token, expressionEnd, end, uses);
     }
     return index;
@@ -130,61 +116,6 @@ final class PythonFStrings {
     return index + 1;
   }
 
-  private static void identifiers(
-      final String token, final int from, final int to, final List<Use> uses) {
-    final String text = token.substring(from, Math.max(from, to));
-    final Matcher matcher = IDENTIFIER.matcher(text);
-    while (matcher.find()) {
-      final int begin = matcher.start();
-      if (!isQuoted(text, begin) && !isAttribute(text, begin) && !isKeyword(matcher.group())) {
-        uses.add(new Use(matcher.group(), from + begin, from + matcher.end()));
-      }
-    }
-  }
-
-  private static boolean isKeyword(final String name) {
-    return KEYWORDS.contains(name);
-  }
-
-  private static boolean isAttribute(final String text, final int begin) {
-    return begin > 0 && text.charAt(begin - 1) == '.';
-  }
-
-  private static boolean isQuoted(final String text, final int index) {
-    boolean inside = false;
-    char quote = 0;
-    for (int position = 0; position < index; position++) {
-      final char current = text.charAt(position);
-      if (inside && current == quote) {
-        inside = false;
-      } else if (!inside && (current == '\'' || current == '"')) {
-        inside = true;
-        quote = current;
-      }
-    }
-    return inside;
-  }
-
-  /** The span of {@code from..to} of the token text, inside the token's own span. */
-  static Span within(final Span token, final String text, final int from, final int to) {
-    final int[] start = position(token, text, from);
-    final int[] end = position(token, text, to);
-    return new Span(
-        start[0], start[1], end[0], end[1], token.startOffset() + from, token.startOffset() + to);
-  }
-
-  /** The line and column of the character at {@code index} of the token text. */
-  private static int[] position(final Span token, final String text, final int index) {
-    int line = token.startLine();
-    int column = token.startColumn();
-    for (int position = 0; position < index; position++) {
-      if (text.charAt(position) == '\n') {
-        line++;
-        column = 1;
-      } else {
-        column++;
-      }
-    }
-    return new int[] {line, column};
-  }
+  /** A name read in an f-string, with where it starts and ends in the token text. */
+  record Use(String name, int from, int to) {}
 }

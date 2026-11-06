@@ -107,7 +107,7 @@ class SwiftScopeAnalysisTest {
 
     assertThat(scopes.references())
         .filteredOn(
-            reference -> reference.name().equals("n") && reference.span().startLine() == LINE_2)
+            reference -> "n".equals(reference.name()) && reference.span().startLine() == LINE_2)
         .extracting(NameReference::access)
         .containsExactlyInAnyOrder(ReferenceAccess.READ, ReferenceAccess.WRITE);
   }

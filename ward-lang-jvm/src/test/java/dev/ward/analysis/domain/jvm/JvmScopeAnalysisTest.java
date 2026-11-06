@@ -56,7 +56,7 @@ class JvmScopeAnalysisTest {
 
     assertThat(scopes.references())
         .filteredOn(
-            reference -> reference.name().equals("x") && reference.access() == ReferenceAccess.READ)
+            reference -> "x".equals(reference.name()) && reference.access() == ReferenceAccess.READ)
         .extracting(reference -> reference.resolved().isPresent())
         .containsExactly(true, false);
   }
@@ -95,7 +95,7 @@ class JvmScopeAnalysisTest {
             org.assertj.core.groups.Tuple.tuple("List", BindingKind.IMPORT),
             org.assertj.core.groups.Tuple.tuple("A", BindingKind.CLASS));
     assertThat(scopes.bindings())
-        .filteredOn(binding -> binding.name().equals("s"))
+        .filteredOn(binding -> "s".equals(binding.name()))
         .allSatisfy(binding -> assertThat(binding.has(BindingFlag.DESTRUCTURED)).isTrue());
   }
 
@@ -106,7 +106,7 @@ class JvmScopeAnalysisTest {
             "fun f(xs: List<Int>) { xs.map { it + 1 }; xs.map { y -> y + z } }\n");
 
     assertThat(scopes.references())
-        .filteredOn(reference -> reference.name().equals("it"))
+        .filteredOn(reference -> "it".equals(reference.name()))
         .allSatisfy(reference -> assertThat(reference.resolved()).isPresent());
     assertThat(scopes.unresolved()).extracting(NameReference::name).containsExactly("z");
   }
@@ -118,7 +118,7 @@ class JvmScopeAnalysisTest {
 
     assertThat(scopes.references()).extracting(NameReference::name).doesNotContain("other");
     assertThat(scopes.references())
-        .filteredOn(reference -> reference.name().equals("a"))
+        .filteredOn(reference -> "a".equals(reference.name()))
         .allSatisfy(reference -> assertThat(reference.resolved()).isPresent());
   }
 

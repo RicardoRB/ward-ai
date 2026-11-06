@@ -35,6 +35,12 @@ final class PythonNames {
       Set.of("testlist_star_expr", "testlist", "exprlist", "testlist_comp");
   private static final String COMMA = ",";
 
+  /** The kind of a name node. */
+  static final String NAME = "name";
+
+  /** The kind of an expression node. */
+  static final String TEST = "test";
+
   private PythonNames() {}
 
   /** Descends through the nodes that wrap a single operand. */
@@ -49,7 +55,7 @@ final class PythonNames {
   /** The {@code name} node that {@code node} is made of alone, if it is a plain name. */
   static Optional<SyntaxNode> plainName(final SyntaxNode node) {
     final SyntaxNode inner = unwrap(node);
-    return "name".equals(inner.kind()) ? Optional.of(inner) : Optional.empty();
+    return NAME.equals(inner.kind()) ? Optional.of(inner) : Optional.empty();
   }
 
   /** Reports whether {@code node} is a comma-separated list of targets or operands. */
@@ -67,6 +73,16 @@ final class PythonNames {
   /** The text of the identifier a {@code name} node holds. */
   static String identifier(final SyntaxNode name) {
     return PythonSyntax.dottedName(name);
+  }
+
+  /** The index of the first part whose text is {@code text}, or -1. */
+  static int indexOf(final List<SyntaxNode> parts, final String text) {
+    for (int index = 0; index < parts.size(); index++) {
+      if (text.equals(PythonSyntax.text(parts.get(index)))) {
+        return index;
+      }
+    }
+    return -1;
   }
 
   /** The child of {@code node} at {@code index}, or empty when it has fewer children. */
