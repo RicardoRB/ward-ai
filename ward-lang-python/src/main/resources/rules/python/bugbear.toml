@@ -1,0 +1,241 @@
+# Ruff's flake8-bugbear rules (B) for Python. Each is a text check on one kind of node, so a call
+# with the same text in a nested position is judged by its own text only.
+
+[[rules]]
+id = "ward:python/assignment-to-os-environ"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^os\.environ\s*=(?!=)'
+message = "assigning os.environ replaces the environment; set a key instead"
+'''
+
+[[rules]]
+id = "ward:python/unreliable-callable-check"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(hasattr|getattr)\\(\\s*[^,()]+,\\s*[\"']__call__[\"']"
+message = "checking __call__ does not tell whether an object is callable; use callable()"
+'''
+
+[[rules]]
+id = "ward:python/strip-with-multi-characters"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.(strip|lstrip|rstrip)\\(\\s*[\"'][^\"']*(.)[^\"']*\\2"
+message = "strip takes a set of characters, not a prefix or suffix; use removeprefix or removesuffix"
+'''
+
+[[rules]]
+id = "ward:python/mutable-argument-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["parameters"]
+text = '=\s*[\[{]'
+message = "mutable default argument is shared between calls; default to None"
+'''
+
+[[rules]]
+id = "ward:python/function-call-in-default-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["parameters"]
+text = '=\s*(?!tuple\(|frozenset\()[A-Za-z_][\w.]*\('
+message = "function call in a default argument runs once, at definition time"
+'''
+
+[[rules]]
+id = "ward:python/get-attr-with-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^getattr\\(\\s*[^,()]+,\\s*[\"'][A-Za-z_]\\w*[\"']\\s*\\)"
+message = "getattr with a constant name; use the attribute directly"
+'''
+
+[[rules]]
+id = "ward:python/set-attr-with-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^setattr\\(\\s*[^,()]+,\\s*[\"'][A-Za-z_]\\w*[\"']\\s*,"
+message = "setattr with a constant name; assign the attribute directly"
+'''
+
+[[rules]]
+id = "ward:python/assert-false"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assert_stmt"]
+text = '^assert(False)(?!\w)'
+message = "assert False is always stripped under -O; raise an exception instead"
+'''
+
+[[rules]]
+id = "ward:python/redundant-tuple-in-exception-handler"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\s*\(\s*[^,()]+,\s*\)'
+message = "a one-element tuple in an except clause; drop the parentheses"
+'''
+
+[[rules]]
+id = "ward:python/raise-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise([\"']|\\d)"
+message = "raising a literal is a TypeError; raise an exception"
+'''
+
+[[rules]]
+id = "ward:python/assert-raises-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '\.assertRaises\(\s*(Exception|BaseException)\s*\)'
+message = "assertRaises of Exception passes for any error; name a specific exception"
+'''
+
+[[rules]]
+id = "ward:python/useless-contextlib-suppress"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(contextlib\.)?suppress\(\s*\)'
+message = "contextlib.suppress without exceptions suppresses nothing"
+'''
+
+[[rules]]
+id = "ward:python/star-arg-unpacking-after-keyword-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["arglist"]
+text = '\b\w+\s*=[^,]*,\s*\*[^*]'
+message = "*args after a keyword argument; move the keyword argument last"
+'''
+
+[[rules]]
+id = "ward:python/no-explicit-stacklevel"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^warnings\.warn\((?![\s\S]*stacklevel)'
+message = "warnings.warn without stacklevel points at the wrong caller"
+'''
+
+[[rules]]
+id = "ward:python/except-with-empty-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\s*\(\s*\)'
+message = "an empty tuple in an except clause catches nothing"
+'''
+
+[[rules]]
+id = "ward:python/re-sub-positional-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^re\.(sub|subn)\((?![\s\S]*\b(count|flags)\s*=)(?:[^,()]+,){3}'
+message = "pass count and flags to re.sub as keyword arguments"
+'''
+
+[[rules]]
+id = "ward:python/zip-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^zip\((?![\s\S]*\bstrict\s*=)'
+message = "zip without an explicit strict= argument"
+'''
+
