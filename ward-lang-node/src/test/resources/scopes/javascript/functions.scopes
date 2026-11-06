@@ -1,0 +1,84 @@
+module
+  constant arrow @1:7 [const,lexical]
+  constant named @2:7 [const,lexical]
+  constant single @3:7 [const,lexical]
+  constant obj @13:7 [const,lexical]
+  lambda @1:15
+    parameter x @1:16
+    parameter y @1:21 [destructured]
+    parameter renamed @1:27 [destructured]
+    parameter first @1:43 [destructured]
+    parameter others @1:53 [destructured]
+  function @2:15
+    function inner @2:24
+    parameter n @2:30
+  lambda @3:16
+    parameter v @3:16
+  block @4:5
+  block @6:3
+    parameter error @6:10
+    block @6:17
+  block @9:1
+    constant item @9:12 [const,lexical,destructured]
+    block @9:26
+  block @10:1
+    variable i @10:10 [lexical]
+    block @10:29
+  block @11:1
+    block @11:21
+  block @12:15
+    variable scoped @12:29 [lexical]
+  function @13:49
+  function @13:75
+  block @15:8
+    block @15:17
+references
+  1:7 arrow write -> module constant arrow @1:7
+  1:16 x write -> lambda parameter x @1:16
+  1:21 y write -> lambda parameter y @1:21
+  1:27 renamed write -> lambda parameter renamed @1:27
+  1:43 first write -> lambda parameter first @1:43
+  1:53 others write -> lambda parameter others @1:53
+  1:65 x read -> lambda parameter x @1:16
+  1:69 y read -> lambda parameter y @1:21
+  1:73 renamed read -> lambda parameter renamed @1:27
+  1:83 first read -> lambda parameter first @1:43
+  1:91 others read -> lambda parameter others @1:53
+  2:7 named write -> module constant named @2:7
+  2:30 n write -> function parameter n @2:30
+  2:42 n read -> function parameter n @2:30
+  2:46 inner read -> function function inner @2:24
+  2:52 n read -> function parameter n @2:30
+  3:7 single write -> module constant single @3:7
+  3:16 v write -> lambda parameter v @3:16
+  3:21 v read -> lambda parameter v @3:16
+  5:3 risky read -> unresolved
+  6:10 error write -> block parameter error @6:10
+  7:3 console read -> unresolved
+  7:15 error read -> block parameter error @6:10
+  9:12 item write -> block constant item @9:12
+  9:20 list read -> unresolved
+  9:28 item read -> block constant item @9:12
+  10:10 i write -> block variable i @10:10
+  10:17 i read -> block variable i @10:10
+  10:24 i read -> block variable i @10:10
+  10:24 i write -> block variable i @10:10
+  10:31 i read -> block variable i @10:10
+  11:6 key write -> unresolved
+  11:13 object read -> unresolved
+  12:9 kind read -> unresolved
+  12:29 scoped write -> block variable scoped @12:29
+  12:57 scoped read -> block variable scoped @12:29
+  13:7 obj write -> module constant obj @13:7
+  13:20 value read -> unresolved
+  13:27 short read -> unresolved
+  13:35 computed read -> unresolved
+  13:67 key read -> unresolved
+  14:1 obj read -> module constant obj @13:7
+  14:19 obj read -> module constant obj @13:7
+  16:1 counter read -> unresolved
+  16:1 counter write -> unresolved
+  17:2 swapA write -> unresolved
+  17:9 swapB write -> unresolved
+  17:19 swapB read -> unresolved
+  17:26 swapA read -> unresolved

@@ -1,0 +1,6 @@
+module open
+  function f @3:5
+  function @3:1
+references
+  3:11 println read -> unresolved open
+  3:19 name read -> unresolved open
