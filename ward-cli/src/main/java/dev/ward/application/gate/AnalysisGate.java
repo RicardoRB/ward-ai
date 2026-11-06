@@ -7,27 +7,17 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleExecutionError;
-import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
-import dev.ward.domain.gate.Finding;
-import dev.ward.domain.gate.FindingSeverity;
-import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
-import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The {@code ward} gate: runs the selected analysis rules over the project's source units. Its
@@ -35,10 +25,6 @@ import java.util.stream.Stream;
  */
 public final class AnalysisGate implements QualityGate {
   private static final Logger LOGGER = Logger.getLogger(AnalysisGate.class.getName());
-  private static final String TYPES_UNAVAILABLE =
-      "the type sidecar is unavailable (Java needs a JDK with javac;"
-          + " TypeScript needs node and the project's typescript package)";
-  private static final String TOOL = "ward";
 
   private final String name;
   private final RuleSetup setup;
@@ -104,7 +90,7 @@ public final class AnalysisGate implements QualityGate {
   public GateResult execute(final Project project) {
     final RuleSet set = setup.resolve(project.root());
     if (!set.problems().isEmpty()) {
-      return configurationError(set.problems());
+      return AnalysisGateResults.configurationError(name, set.problems());
     }
     final List<RuleDefinition> rules = set.rules();
     final Set<AnalysisLanguage> languages =
@@ -127,7 +113,8 @@ public final class AnalysisGate implements QualityGate {
             Optional.ofNullable(javaClasspath).map(project.root()::resolve))) {
       final UnitResultCache.CachedRun run =
           results.analyze(cache, units, types.withTypes(ports.frontends(), rules), rules);
-      return result(focused(ExcludedFindings.drop(run, set), rules), rules);
+      return AnalysisGateResults.result(
+          name, focused(ExcludedFindings.drop(run, set), rules), rules);
     }
   }
 
@@ -154,79 +141,5 @@ public final class AnalysisGate implements QualityGate {
                   + kept.size());
     }
     return new RuleRunResult(kept, run.executionErrors(), run.notRun());
-  }
-
-  private GateResult configurationError(final List<String> problems) {
-    return GateResult.builder(name, GateStatus.EXECUTION_ERROR)
-        .summary(problems.size() + " rule configuration error(s)")
-        .stderr(String.join("\n", problems))
-        .build();
-  }
-
-  private GateResult result(final RuleRunResult run, final List<RuleDefinition> rules) {
-    final List<Finding> findings =
-        run.findings().stream()
-            .map(finding -> AnalysisFindingMapper.toFinding(name, TOOL, finding))
-            .toList();
-    final int errors = countOf(findings, FindingSeverity.ERROR);
-    final int warnings = countOf(findings, FindingSeverity.WARNING);
-    return GateResult.builder(name, status(run, errors))
-        .summary(summary(run, findings, rules))
-        .stderr(details(run))
-        .errors(errors)
-        .warnings(warnings)
-        .build()
-        .withFindings(GateFindings.of(findings));
-  }
-
-  /** Unanalyzed code is never a pass: errors, then rules that cannot run, then the findings. */
-  private static GateStatus status(final RuleRunResult run, final int errors) {
-    if (!run.executionErrors().isEmpty()) {
-      return GateStatus.EXECUTION_ERROR;
-    }
-    if (!run.notRunFailingGate().isEmpty()) {
-      return GateStatus.UNAVAILABLE;
-    }
-    return errors > 0 ? GateStatus.FAILED : GateStatus.PASSED;
-  }
-
-  private static String summary(
-      final RuleRunResult run, final List<Finding> findings, final List<RuleDefinition> rules) {
-    if (!run.executionErrors().isEmpty()) {
-      return run.executionErrors().size() + " analysis error(s)";
-    }
-    if (!run.notRunFailingGate().isEmpty()) {
-      return run.notRunFailingGate().size() + " rule(s) not run";
-    }
-    return rules.size() + " rule(s), " + findings.size() + " finding(s)";
-  }
-
-  /** One line per unit or rule that did not run, without source text. */
-  private static String details(final RuleRunResult run) {
-    final List<String> lines = new ArrayList<>();
-    for (final RuleExecutionError error : run.executionErrors()) {
-      lines.add(errorLine(error));
-    }
-    run.notRun().forEach(skipped -> lines.add(skipped.ruleId() + " not run: " + reason(skipped)));
-    return String.join("\n", lines);
-  }
-
-  private static String reason(final RuleNotRun skipped) {
-    return skipped.missing() == RuleCapability.TYPES
-        ? TYPES_UNAVAILABLE
-        : "its frontend lacks " + skipped.missing();
-  }
-
-  private static String errorLine(final RuleExecutionError error) {
-    final String subject =
-        Stream.of(error.path(), error.ruleId())
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining(" "));
-    return subject + ": " + error.reason();
-  }
-
-  private static int countOf(final List<Finding> findings, final FindingSeverity severity) {
-    return Math.toIntExact(
-        findings.stream().filter(finding -> finding.severity() == severity).count());
   }
 }
