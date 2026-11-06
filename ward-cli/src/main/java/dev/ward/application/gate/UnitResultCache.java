@@ -12,7 +12,6 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.rule.GraphRules;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import java.util.ArrayList;
@@ -116,7 +115,7 @@ final class UnitResultCache {
   private static boolean readsDependencies(
       final AnalysisLanguage language, final List<RuleDefinition> rules) {
     return rules.stream()
-        .anyMatch(rule -> rule.covers(language) && rule.capability() == RuleCapability.SYMBOLS);
+        .anyMatch(rule -> rule.covers(language) && rule.capability().readsDependencies());
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {

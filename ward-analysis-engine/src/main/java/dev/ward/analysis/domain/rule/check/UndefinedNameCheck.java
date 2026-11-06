@@ -17,7 +17,8 @@ import java.util.Set;
  * Reports each name that no scope declares and no built-in provides, like pyflakes {@code F821} and
  * ESLint {@code no-undef}. A name in an {@linkplain dev.ward.analysis.domain.scope.Scope#open()
  * open} scope is left alone, and so is a Java, Kotlin or Swift name that starts with an upper-case
- * letter, which may be a type of the same package or module that this file does not declare.
+ * letter, which may be a type that a wildcard import brings in, or that a file around this one in
+ * the same package or module declares.
  */
 public final class UndefinedNameCheck implements RuleCheck {
 
@@ -58,14 +59,19 @@ public final class UndefinedNameCheck implements RuleCheck {
     final boolean packageTypes = PACKAGE_TYPES.contains(unit.language());
     final List<RuleMatch> found = new ArrayList<>();
     for (final NameReference reference : scopes.unresolved()) {
-      if (!scopes.isOpen(reference) && !(packageTypes && isTypeLike(reference.name()))) {
+      if (!scopes.isOpen(reference)
+          && !(packageTypes && visibleInPackage(reference.name(), view))) {
         found.add(new RuleMatch(reference.span(), message.replace(NAME, reference.name())));
       }
     }
     return found;
   }
 
-  private static boolean isTypeLike(final String name) {
-    return Character.isUpperCase(name.charAt(0));
+  /**
+   * A name that may be a type of the package or a declaration of a file around this one. Upper-case
+   * names stand for types the file's wildcard imports may bring in.
+   */
+  private static boolean visibleInPackage(final String name, final ScopeView view) {
+    return Character.isUpperCase(name.charAt(0)) || view.projectNames().contains(name);
   }
 }

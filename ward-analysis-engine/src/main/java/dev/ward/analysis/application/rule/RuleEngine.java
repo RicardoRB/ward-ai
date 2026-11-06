@@ -139,8 +139,7 @@ public final class RuleEngine {
   /** Only a rule that reads {@code SYMBOLS} or {@code SCOPES} sees the files around the unit. */
   private static DependencyView view(
       final CompiledRule rule, final SourceUnit unit, final RunState state) {
-    final RuleCapability capability = rule.definition().capability();
-    if (capability != RuleCapability.SYMBOLS && capability != RuleCapability.SCOPES) {
+    if (!rule.definition().capability().readsDependencies()) {
       return DependencyView.NONE;
     }
     return state.snapshot().view(unit.path());

@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.scope.ImportOrigin;
 import dev.ward.analysis.domain.scope.NoScopes;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -22,13 +23,19 @@ import java.util.Set;
  *
  * @param scopes the scopes of the unit, without built-ins
  * @param imports the import bindings that resolved to a project file, by binding
+ * @param projectNames the simple names the unit's dependencies declare, which a Java, Kotlin or
+ *     Swift file sees without an import because they share its package or module
  * @param analysis the language's scope analysis, which knows its built-ins
  */
 public record ScopeView(
-    UnitScopes scopes, Map<Binding, ResolvedImport> imports, ScopeAnalysis analysis) {
+    UnitScopes scopes,
+    Map<Binding, ResolvedImport> imports,
+    Set<String> projectNames,
+    ScopeAnalysis analysis) {
 
   /** The view of a rule that reads no scopes. */
-  public static final ScopeView NONE = new ScopeView(UnitScopes.EMPTY, Map.of(), NoScopes.INSTANCE);
+  public static final ScopeView NONE =
+      new ScopeView(UnitScopes.EMPTY, Map.of(), Set.of(), NoScopes.INSTANCE);
 
   /**
    * Copies the imports.
@@ -37,6 +44,7 @@ public record ScopeView(
    */
   public ScopeView {
     imports = Map.copyOf(imports);
+    projectNames = Set.copyOf(projectNames);
     java.util.Objects.requireNonNull(scopes, "scopes");
     java.util.Objects.requireNonNull(analysis, "analysis");
   }
@@ -65,7 +73,16 @@ public record ScopeView(
             .ifPresent(edge -> resolved.put(binding, resolve(binding, edge, dependencies)));
       }
     }
-    return new ScopeView(scopes, resolved, analysis);
+    final Set<String> names = new HashSet<>();
+    dependencies
+        .dependencies()
+        .forEach(summary -> summary.declared().forEach(symbol -> names.add(simple(symbol))));
+    return new ScopeView(scopes, resolved, names, analysis);
+  }
+
+  private static String simple(final Symbol symbol) {
+    final String name = symbol.name();
+    return name.substring(name.lastIndexOf('.') + 1);
   }
 
   /** The edge from the import that declares {@code binding}, preferring the one for its member. */

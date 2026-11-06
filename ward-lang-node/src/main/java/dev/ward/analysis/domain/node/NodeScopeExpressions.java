@@ -135,8 +135,9 @@ final class NodeScopeExpressions {
 
   /**
    * Handles a declaration statement without {@code var}, {@code let} or {@code const}. The
-   * TypeScript grammar reads {@code type A = B} and {@code export { a }} this way, so a leading
-   * {@code type} declares a type and any other name is read.
+   * TypeScript grammar reads {@code type A = B}, {@code x = 1} and {@code export { a }} this way,
+   * so a leading {@code type} declares a type, a name with a value is written and any other name is
+   * read.
    */
   void undeclared(final SyntaxNode statement) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(statement);
@@ -148,10 +149,20 @@ final class NodeScopeExpressions {
       final List<SyntaxNode> inner = NodeFlowSyntax.parts(declaration);
       if (isTypeAlias(inner)) {
         declareAlias(inner.get(1));
+      } else if (isAssignment(inner)) {
+        names.target(inner.get(0), false);
+        inner.stream().skip(1).forEach(visit);
       } else {
         inner.forEach(part -> readAll(part));
       }
     }
+  }
+
+  /** {@code name = value} as a statement: the grammar reads it as a declaration without keyword. */
+  private static boolean isAssignment(final List<SyntaxNode> inner) {
+    return inner.size() >= 2
+        && NodeScopeNames.nameOf(inner.get(0)) != null
+        && "singleExpression".equals(inner.get(inner.size() - 1).kind());
   }
 
   private static boolean isTypeAlias(final List<SyntaxNode> inner) {

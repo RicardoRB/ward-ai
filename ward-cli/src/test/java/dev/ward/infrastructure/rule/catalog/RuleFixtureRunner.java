@@ -7,16 +7,13 @@ import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.jvm.JavaControlFlow;
-import dev.ward.analysis.domain.node.NodeControlFlow;
 import dev.ward.analysis.domain.port.TypeFacts;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
+import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -25,29 +22,11 @@ import java.util.Set;
  */
 final class RuleFixtureRunner {
 
-  private static final Set<RuleCapability> SYNTAX = Set.of(RuleCapability.SYNTAX);
-  private static final Set<RuleCapability> SYMBOLS =
-      Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
-  private static final Set<RuleCapability> FLOW =
-      Set.of(
-          RuleCapability.SYNTAX,
-          RuleCapability.SYMBOLS,
-          RuleCapability.CFG,
-          RuleCapability.DATAFLOW);
-
   private final List<FrontendSupport> frontends;
 
   /** Creates a runner whose frontends match the {@code ward} gate. */
   RuleFixtureRunner() {
-    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
-    frontends =
-        List.of(
-            new FrontendSupport(AnalysisLanguage.JAVA, frontend, FLOW, new JavaControlFlow()),
-            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, SYMBOLS),
-            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, FLOW, new NodeControlFlow()),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, FLOW, new NodeControlFlow()),
-            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, SYMBOLS),
-            new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, SYNTAX));
+    frontends = GateFrontends.create(new AntlrLanguageFrontend());
   }
 
   /**
