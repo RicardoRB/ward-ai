@@ -34,6 +34,7 @@ final class DeclarativeChecks {
   private static final String REQUIRED = "required";
   private static final String EXCLUDED = "excluded";
   private static final String SPECS = "specs";
+  private static final String COUNT_EMPTY = "count-empty";
 
   private DeclarativeChecks() {}
 
@@ -76,7 +77,8 @@ final class DeclarativeChecks {
           new LinesCheck(
               TomlValues.strings(toml, KINDS),
               TomlValues.integer(toml, MAX),
-              TomlValues.required(toml, MESSAGE));
+              TomlValues.required(toml, MESSAGE),
+              Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true));
       case "descendant-count" -> descendantCount(toml);
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
@@ -93,7 +95,7 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
-      default -> throw new RuleConfigurationException("unknown check '" + name + "'");
+      default -> MetricChecks.build(name, toml);
     };
   }
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.tomlj.Toml;
+import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -117,12 +118,16 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
       final TomlParseResult toml = Toml.parse(Files.readString(file, StandardCharsets.UTF_8));
       final Map<String, Object> values = new LinkedHashMap<>();
       for (final String key : toml.keySet()) {
-        values.put(key, toml.get(key));
+        values.put(key, plain(toml.get(key)));
       }
       return values;
     } catch (final IOException exception) {
       throw new UncheckedIOException("missing " + file, exception);
     }
+  }
+
+  private static Object plain(final Object value) {
+    return value instanceof TomlArray array ? array.toList() : value;
   }
 
   /** Returns the type facts file of the rule, when it has one. */

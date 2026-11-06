@@ -1,0 +1,55 @@
+class Violating {
+  void run() {
+    int v1 = 1;
+    int v2 = 2;
+    int v3 = 3;
+    int v4 = 4;
+    int v5 = 5;
+    int v6 = 6;
+    int v7 = 7;
+    int v8 = 8;
+    int v9 = 9;
+    int v10 = 10;
+    int v11 = 11;
+    int v12 = 12;
+    int v13 = 13;
+    int v14 = 14;
+    int v15 = 15;
+    int v16 = 16;
+    int v17 = 17;
+    int v18 = 18;
+    int v19 = 19;
+    int v20 = 20;
+    int v21 = 21;
+    int v22 = 22;
+    int v23 = 23;
+    int v24 = 24;
+    int v25 = 25;
+    int v26 = 26;
+    int v27 = 27;
+    int v28 = 28;
+    int v29 = 29;
+    int v30 = 30;
+    int v31 = 31;
+    int v32 = 32;
+    int v33 = 33;
+    int v34 = 34;
+    int v35 = 35;
+    int v36 = 36;
+    int v37 = 37;
+    int v38 = 38;
+    int v39 = 39;
+    int v40 = 40;
+    int v41 = 41;
+    int v42 = 42;
+    int v43 = 43;
+    int v44 = 44;
+    int v45 = 45;
+    int v46 = 46;
+    int v47 = 47;
+    int v48 = 48;
+    int v49 = 49;
+    int v50 = 50;
+    int v51 = 51;
+  }
+}
