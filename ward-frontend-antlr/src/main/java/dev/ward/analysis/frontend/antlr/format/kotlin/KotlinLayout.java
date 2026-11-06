@@ -5,8 +5,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
+import java.util.OptionalInt;
 import org.antlr.v4.runtime.Token;
 
 /**
@@ -26,13 +26,11 @@ final class KotlinLayout {
   private final int[] codePoints;
   private final int maxBlankLines;
   private final int continuationLevels;
-  private final Set<Integer> argumentLists;
-  private final Map<Integer, Integer> continuations;
-  private final Set<Integer> superColons;
+  private final KotlinTreeWalk walk;
   private final Deque<List<Document>> lists = new ArrayDeque<>();
   private final Deque<Opener> openers = new ArrayDeque<>();
   private int level;
-  private Token before;
+  private Optional<Token> before = Optional.empty();
 
   /**
    * Creates a layout for one parse.
@@ -47,9 +45,7 @@ final class KotlinLayout {
     this.codePoints = parse.codePoints();
     this.maxBlankLines = maxBlankLines;
     this.continuationLevels = continuationLevels;
-    this.argumentLists = parse.walk().argumentLists();
-    this.continuations = parse.walk().continuations();
-    this.superColons = parse.walk().superColons();
+    this.walk = parse.walk();
   }
 
   /**
@@ -61,7 +57,7 @@ final class KotlinLayout {
     final List<Token> items = parse.items();
     lists.push(new ArrayList<>());
     for (int i = 0; i < items.size(); i++) {
-      before = i < 2 ? null : items.get(i - 2);
+      before = i < 2 ? Optional.empty() : Optional.of(items.get(i - 2));
       place(i == 0 ? null : items.get(i - 1), items.get(i));
     }
     if (!items.isEmpty()) {
@@ -94,11 +90,11 @@ final class KotlinLayout {
   }
 
   private void startContinuation(final Token prev, final Token token) {
-    final Integer end = continuations.get(prev.getTokenIndex());
-    if (end == null || KotlinTokens.gap(codePoints, prev, token).indexOf(NEWLINE) < 0) {
+    final OptionalInt end = walk.continuationEnd(prev.getTokenIndex());
+    if (end.isEmpty() || KotlinTokens.gap(codePoints, prev, token).indexOf(NEWLINE) < 0) {
       return;
     }
-    openers.push(new Opener(continuationLevels, false, end));
+    openers.push(new Opener(continuationLevels, false, end.getAsInt()));
     level += continuationLevels;
   }
 
@@ -116,7 +112,7 @@ final class KotlinLayout {
   }
 
   private void openBracket(final Token token) {
-    final boolean group = argumentLists.contains(token.getTokenIndex());
+    final boolean group = walk.opensArgumentList(token.getTokenIndex());
     final int contribution = group ? continuationLevels : OUTER_CONTRIBUTION;
     openers.push(new Opener(contribution, group, NO_END));
     level += contribution;
@@ -148,7 +144,7 @@ final class KotlinLayout {
    */
   private void separateInArguments(final Token prev, final Token next, final int depth) {
     if (KotlinTokens.isLineComment(prev)) {
-      lists.peek().add(indentTo(depth, Document.hardLine()));
+      lists.peek().add(KotlinBreaks.at(depth, Document.hardLine()));
     } else if (KotlinTokens.isOpener(prev)
         || KotlinTokens.isComma(prev)
         || KotlinTokens.isCloser(next)) {
@@ -156,7 +152,7 @@ final class KotlinLayout {
         return;
       }
       final boolean flat = KotlinTokens.isComma(prev) && !KotlinTokens.isCloser(next);
-      lists.peek().add(indentTo(depth, flat ? Document.line() : Document.softLine()));
+      lists.peek().add(KotlinBreaks.at(depth, flat ? Document.line() : Document.softLine()));
     } else {
       addSpacing(prev, next);
     }
@@ -173,13 +169,13 @@ final class KotlinLayout {
     for (int i = 0; i < blankLines; i++) {
       lists.peek().add(Document.hardLine());
     }
-    lists.peek().add(indentTo(depth, Document.hardLine()));
+    lists.peek().add(KotlinBreaks.at(depth, Document.hardLine()));
   }
 
   /** Adds the space the token pair asks for; a kept space is one space, and no gap stays none. */
   private void addSpacing(final Token prev, final Token next) {
     final KotlinTokens.Spacing spacing =
-        superColons.contains(next.getTokenIndex())
+        walk.isSuperColon(next.getTokenIndex())
             ? KotlinTokens.Spacing.SPACE
             : KotlinTokens.spacing(before, prev, next);
     final boolean kept =
@@ -187,14 +183,6 @@ final class KotlinLayout {
     if (spacing == KotlinTokens.Spacing.SPACE || kept) {
       lists.peek().add(Document.text(SPACE));
     }
-  }
-
-  private static Document indentTo(final int depth, final Document line) {
-    Document indented = line;
-    for (int i = 0; i < depth; i++) {
-      indented = Document.indent(indented);
-    }
-    return indented;
   }
 
   /**

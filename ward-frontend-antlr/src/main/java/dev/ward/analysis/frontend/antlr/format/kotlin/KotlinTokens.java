@@ -1,6 +1,7 @@
 package dev.ward.analysis.frontend.antlr.format.kotlin;
 
 import dev.ward.analysis.frontend.antlr.kotlin.KotlinLexer;
+import java.util.Optional;
 import java.util.Set;
 import org.antlr.v4.runtime.Token;
 
@@ -127,38 +128,57 @@ final class KotlinTokens {
    * Decides the space between two tokens on one line from their types. A rule is a token pair, so a
    * rewrite never changes a token: only the space between tokens.
    *
-   * @param before the token before {@code prev}, or null at the start
+   * @param before the token before {@code prev}, when there is one
    * @param prev the token before the gap
    * @param next the token after the gap
    * @return the spacing for the gap
    */
-  static Spacing spacing(final Token before, final Token prev, final Token next) {
-    final int p = prev.getType();
-    final int n = next.getType();
-    if (p == KotlinLexer.COLON && before != null && USE_SITE_TARGETS.contains(before.getType())) {
+  static Spacing spacing(final Optional<Token> before, final Token prev, final Token next) {
+    if (noSpaceBefore(before, prev, next) || noSpaceAfter(prev, next)) {
       return Spacing.NONE;
     }
-    if (NO_SPACE_BEFORE.contains(n)
-        || (n == KotlinLexer.EXCL && (OPERAND_ENDS.contains(p) || p == KotlinLexer.EXCL))) {
-      return Spacing.NONE;
-    }
-    if (NO_SPACE_AFTER.contains(p) || (n == KotlinLexer.LPAREN && OPERAND_ENDS.contains(p))) {
-      return Spacing.NONE;
-    }
-    if (SPACE_AFTER.contains(p) || n == KotlinLexer.LCURL) {
+    if (spaceRequired(prev, next)) {
       return Spacing.SPACE;
     }
-    if (n == KotlinLexer.LPAREN && KEYWORDS_BEFORE_PAREN.contains(p)) {
-      return Spacing.SPACE;
-    }
-    if (UNARY_PREFIX.contains(p) && !isOperandEnd(before)) {
+    if (isUnaryPrefix(before, prev)) {
       return Spacing.NONE;
     }
-    return BINARY.contains(p) || BINARY.contains(n) ? Spacing.SPACE : Spacing.KEEP;
+    return BINARY.contains(prev.getType()) || BINARY.contains(next.getType())
+        ? Spacing.SPACE
+        : Spacing.KEEP;
   }
 
-  private static boolean isOperandEnd(final Token token) {
-    return token != null && OPERAND_ENDS.contains(token.getType());
+  private static boolean noSpaceBefore(
+      final Optional<Token> before, final Token prev, final Token next) {
+    final int p = prev.getType();
+    final int n = next.getType();
+    final boolean postfixBang =
+        n == KotlinLexer.EXCL && (OPERAND_ENDS.contains(p) || p == KotlinLexer.EXCL);
+    final boolean useSiteColon =
+        p == KotlinLexer.COLON
+            && before.map(Token::getType).filter(USE_SITE_TARGETS::contains).isPresent();
+    return NO_SPACE_BEFORE.contains(n) || postfixBang || useSiteColon;
+  }
+
+  private static boolean noSpaceAfter(final Token prev, final Token next) {
+    final int p = prev.getType();
+    final boolean callParen = next.getType() == KotlinLexer.LPAREN && OPERAND_ENDS.contains(p);
+    return NO_SPACE_AFTER.contains(p) || callParen;
+  }
+
+  private static boolean spaceRequired(final Token prev, final Token next) {
+    final int p = prev.getType();
+    final int n = next.getType();
+    final boolean keywordParen = n == KotlinLexer.LPAREN && KEYWORDS_BEFORE_PAREN.contains(p);
+    return SPACE_AFTER.contains(p) || n == KotlinLexer.LCURL || keywordParen;
+  }
+
+  private static boolean isUnaryPrefix(final Optional<Token> before, final Token prev) {
+    return UNARY_PREFIX.contains(prev.getType()) && !isOperandEnd(before);
+  }
+
+  private static boolean isOperandEnd(final Optional<Token> token) {
+    return token.map(Token::getType).filter(OPERAND_ENDS::contains).isPresent();
   }
 
   /**

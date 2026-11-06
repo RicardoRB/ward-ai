@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.Set;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -47,32 +48,35 @@ final class KotlinTreeWalk {
   }
 
   /**
-   * Returns the token indexes of the parentheses that open argument or parameter lists.
+   * Tells whether a parenthesis opens an argument or parameter list.
    *
-   * @return the indexes
+   * @param tokenIndex the parenthesis's token index
+   * @return true for an argument list
    */
-  Set<Integer> argumentLists() {
-    return Set.copyOf(argumentLists);
+  boolean opensArgumentList(final int tokenIndex) {
+    return argumentLists.contains(tokenIndex);
   }
 
   /**
-   * Returns the colons that introduce the supertypes of a class or object, which take a space
-   * before them.
+   * Tells whether a colon introduces the supertypes of a class or object, which take a space before
+   * them.
    *
-   * @return the token indexes
+   * @param tokenIndex the colon's token index
+   * @return true for a supertype colon
    */
-  Set<Integer> superColons() {
-    return Set.copyOf(superColons);
+  boolean isSuperColon(final int tokenIndex) {
+    return superColons.contains(tokenIndex);
   }
 
   /**
-   * Returns the expressions that follow an assignment sign: each sign's token index maps to the
-   * token index of the expression's last token.
+   * Returns the last token index of the expression that follows an assignment sign.
    *
-   * @return the map
+   * @param signIndex the assignment sign's token index
+   * @return the expression's last token index, when the sign is followed by an expression
    */
-  Map<Integer, Integer> continuations() {
-    return Map.copyOf(continuations);
+  OptionalInt continuationEnd(final int signIndex) {
+    final Integer end = continuations.get(signIndex);
+    return end == null ? OptionalInt.empty() : OptionalInt.of(end);
   }
 
   private void visit(final ParserRuleContext context) {
