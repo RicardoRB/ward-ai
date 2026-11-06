@@ -67,7 +67,6 @@ class BundledRuleOptionsTest {
       case STRING -> STRING_SAMPLES.getOrDefault(option.name(), "Sample");
       case STRING_LIST -> LIST_SAMPLES.getOrDefault(option.name(), List.of("Sample"));
       case ENUM -> option.values().get(0);
-      default -> throw new IllegalStateException("no sample for " + option.type());
     };
   }
 }
