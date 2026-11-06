@@ -46,6 +46,8 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/python/bugbear.toml",
           "rules/python/pyflakes.toml",
           "rules/python/pylint.toml",
+          "rules/python/flake8-2020.toml",
+          "rules/python/flake8-debugger.toml",
           "rules/swift-structural.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/naming.toml");

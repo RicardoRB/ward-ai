@@ -70,3 +70,45 @@ kinds = ["raise_stmt"]
 text = '^raiseNotImplemented(\(\))?$'
 message = "NotImplemented is not an exception; raise NotImplementedError"
 '''
+
+[[rules]]
+id = "ward:python/multi-value-repeated-key-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "\\{(?:[^{}]*,)*?(\"[^\"]*\"|'[^']*'):(?:[^{}]*,)*?\\1:"
+message = "dictionary key repeated; the first value is lost"
+'''
+
+[[rules]]
+id = "ward:python/invalid-print-syntax"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^print>>'
+message = "print >> is invalid with the print function"
+'''
+
+[[rules]]
+id = "ward:python/multiple-starred-expressions"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^\*[^=]*\*[^=]*='
+message = "two starred expressions in an assignment"
+'''
