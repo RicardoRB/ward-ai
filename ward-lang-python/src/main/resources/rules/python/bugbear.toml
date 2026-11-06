@@ -267,3 +267,31 @@ kinds = ["atom"]
 text = "^\\{([\"'\\d]|True|False|None)[^:]*:[\\s\\S]*for\\w+in"
 message = "dict comprehension with a constant key repeats one key; use a literal value or a loop"
 '''
+
+[[rules]]
+id = "ward:python/abstract-base-class-without-abstract-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class[^(]*\((?:[^()]*,)?(?:ABC|abc\.ABC)(?:,[^()]*)?\):(?![\s\S]*abstractmethod)'
+message = "abstract base class without an abstract method"
+'''
+
+[[rules]]
+id = "ward:python/mutable-contextvar-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(contextvars\.)?ContextVar\([\s\S]*default=[\[{]'
+message = "mutable default for a ContextVar is shared by every context"
+'''
