@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.infrastructure.analysis.jvm.JavaTypeSidecar;
 import dev.ward.infrastructure.analysis.node.TypeScriptTypeSidecar;
+import dev.ward.infrastructure.analysis.swift.NativeSwiftTypes;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ final class TypeSidecarBindings {
         AnalysisLanguage.TYPESCRIPT,
         new TypeScriptTypeSidecar(projectRoot, wardVersion),
         AnalysisLanguage.JAVASCRIPT,
-        new TypeScriptTypeSidecar(projectRoot, wardVersion));
+        new TypeScriptTypeSidecar(projectRoot, wardVersion),
+        AnalysisLanguage.SWIFT,
+        new NativeSwiftTypes(projectRoot));
   }
 }
