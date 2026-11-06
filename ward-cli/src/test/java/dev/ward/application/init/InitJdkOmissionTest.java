@@ -17,8 +17,7 @@ import dev.ward.domain.init.InitResult;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
-import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.InitFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
@@ -31,12 +30,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Init on a runtime JDK that cannot run the {@code format} gate's tool. */
+/** Init on a runtime JDK that cannot run a gate's tool. */
 class InitJdkOmissionTest {
   private static final String POM = "<project><modelVersion>4.0.0</modelVersion></project>";
   private static final String REASON =
-      "spotless-maven-plugin needs JDK 11+; this project builds on JDK 8";
-  private static final String NOTE = "format omitted: " + REASON;
+      "maven-checkstyle-plugin needs JDK 11+; this project builds on JDK 8";
+  private static final String NOTE = "checkstyle omitted: " + REASON;
 
   @TempDir Path root;
   private InitService service;
@@ -45,31 +44,20 @@ class InitJdkOmissionTest {
   @BeforeEach
   void setUp() throws IOException {
     Files.writeString(root.resolve("pom.xml"), POM);
-    catalog = JdkCatalogs.reading(new FormatOmittedOnJdk8());
+    catalog = JdkCatalogs.reading(new CheckstyleOmittedOnJdk8());
     service =
         new InitService(
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             catalog,
-            new InitProjectFiles(
-                new FormatOmittedOnJdk8(),
-                new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()));
+            InitFixtures.projectFiles(new CheckstyleOmittedOnJdk8(), new NoRuleFileGeneration()));
   }
 
   @Test
   void strictOnAJdkThatCannotRunOneGateKeepsTheOtherGatesInOrder() {
     assertThat(catalog.presetGates(service.project(root), QualityPreset.STRICT))
         .containsExactly(
-            "compile",
-            "tests",
-            "checkstyle",
-            "pmd",
-            "spotbugs",
-            "coverage",
-            "archunit",
-            "enforcer",
-            "mutation");
+            "compile", "tests", "pmd", "spotbugs", "coverage", "archunit", "enforcer", "mutation");
   }
 
   @Test
@@ -88,18 +76,19 @@ class InitJdkOmissionTest {
     final InitResult result = service.initialize(root, strict(), false, false, finding -> true);
 
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[checks.checkstyle]").doesNotContain("[checks.format]");
+    assertThat(configuration).contains("[checks.pmd]").doesNotContain("[checks.checkstyle]");
     assertThat(result.pomWarnings()).contains(NOTE);
   }
 
   @Test
   void explicitlyRequestedGateWithNoVersionForTheRuntimeJdkFailsBeforeAnyWrite()
       throws IOException {
-    final InitSelection selection = new InitSelection(List.of("none"), List.of("format", "pmd"));
+    final InitSelection selection =
+        new InitSelection(List.of("none"), List.of("checkstyle", "pmd"));
 
     assertThatThrownBy(() -> service.initialize(root, selection, false, false, finding -> true))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("'format'", "JDK 8", "JDK 11+");
+        .hasMessageContaining("'checkstyle'", "JDK 8", "JDK 11+");
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(POM);
     assertThat(root.resolve("ward.toml")).doesNotExist();
   }
@@ -117,12 +106,11 @@ class InitJdkOmissionTest {
         null,
         false,
         null,
-        null,
         null);
   }
 
-  /** Writes Maven tools with their default versions, and omits {@code format} as on JDK 8. */
-  private static final class FormatOmittedOnJdk8 implements BuildToolConfiguration {
+  /** Writes Maven tools with their default versions, and omits {@code checkstyle} as on JDK 8. */
+  private static final class CheckstyleOmittedOnJdk8 implements BuildToolConfiguration {
     private final PomToolConfigurator maven = new PomToolConfigurator();
 
     @Override
@@ -150,7 +138,9 @@ class InitJdkOmissionTest {
 
     @Override
     public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
-      return gateIds.contains("format") ? List.of(new GateOmission("format", REASON)) : List.of();
+      return gateIds.contains("checkstyle")
+          ? List.of(new GateOmission("checkstyle", REASON))
+          : List.of();
     }
 
     @Override

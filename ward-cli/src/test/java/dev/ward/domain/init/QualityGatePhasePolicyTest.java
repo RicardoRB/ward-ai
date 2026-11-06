@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class QualityGatePhasePolicyTest {
   @Test
   void assignsFastGatesToDefaultAndAllLocalPhases() {
-    assertThat(QualityGatePhasePolicy.profilesFor("format"))
+    assertThat(QualityGatePhasePolicy.profilesFor("ward-format"))
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("compile")).containsExactly("pre-push", "ci");
     assertThat(QualityGatePhasePolicy.profilesFor("checkstyle"))

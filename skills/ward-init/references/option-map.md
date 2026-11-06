@@ -16,7 +16,6 @@ as a whole is not that yes.
 | Xcode scheme | `--scheme <name>` | An Xcode scheme of a Swift project with several shared schemes. With `--yes`, a project with several schemes needs this option, and the name must be one of them | No |
 | Architecture style | `--architecture <style>` | `layered`, `hexagonal`, or `clean`. Only when `archunit` (Java) or `dependency-cruiser` (Node) is selected. For `archunit`, it applies only when no ArchUnit tests exist | No |
 | Architecture engine | `--architecture-engine <tool\|ward>` | `tool` (default): the generated external tool checks the style. `ward`: the `ward` gate checks it with `[[checks.ward.layers]]`, the strict cycle check with `[checks.ward.cycles]` (slice cycles, one meaning for every language), and Python's feature independence with `[[checks.ward.independence]]`. The external tools for those rules are not generated. Only when a style is chosen and every project language is supported by the engine (Java, Python, TypeScript, JavaScript, Swift). Strict extras that the engine does not own (ArchUnit field injection and standard streams on Java) stay on the external tool, which then generates only those rules | No |
-| Format engine | `--format-engine <tool\|ward>` | `tool` (default): the external formatters (Spotless, Prettier, Biome's formatter, `ruff-format`, `swift-format`) check formatting. `ward`: the `ward-format` gate replaces them, Biome keeps linting with its formatter off, and an `.editorconfig` with Ward's defaults is written only when the project has none; an existing one is kept unchanged and Ward formats with it. | No |
 | Optional tools | `--tool openspec` | `openspec` | No |
 | OpenSpec validations | `--openspec-validation <id>[,<id>...]` | `openspec`, `openspec-archived`. Only together with `--tool openspec` | No |
 | Agent integrations | `--integration <id>[,<id>...]` | `none`, or any of `claude-code`, `opencode`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, `amp`, `junie` | No |
@@ -58,7 +57,7 @@ ward init --dry-run --preset strict --architecture hexagonal --integration claud
 Custom selection without `pmd`, installing Semgrep after the user said yes to that install:
 
 ```sh
-ward init --dry-run --gate compile,tests,format,checkstyle,coverage,semgrep --install-tool semgrep --integration none
+ward init --dry-run --gate compile,tests,checkstyle,coverage,semgrep --install-tool semgrep --integration none
 ```
 
 Reconfiguring an existing setup after the user agreed to replace `ward.toml`:

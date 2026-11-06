@@ -28,15 +28,6 @@ public final class PythonInitSupport implements ToolchainInitSupport {
   // Their commands end with the target, so the narrowed command replaces it, as for Node.
   private static final Map<String, BiFunction<Project, QualityPreset, Table>> TABLES =
       Map.of(
-          "ruff-format",
-          (project, preset) ->
-              new Table(
-                  PYTHON_SOURCES,
-                  List.of("ruff.toml", ".ruff.toml", "pyproject.toml"),
-                  PATHS,
-                  null,
-                  null,
-                  PythonTools.command(project.buildTool(), "ruff", "format", "--check")),
           "ruff",
           (project, preset) ->
               new Table(

@@ -27,7 +27,6 @@ class InitSetupCatalogTest {
       Set.of(
           "tsc",
           "eslint",
-          "prettier",
           "biome",
           "vitest",
           "jest",
@@ -42,15 +41,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of(
-          "ruff-format",
-          "ruff",
-          "mypy",
-          "pytest",
-          "mutmut",
-          "import-linter",
-          "pip-audit",
-          "django-check");
+      Set.of("ruff", "mypy", "pytest", "mutmut", "import-linter", "pip-audit", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(
@@ -59,7 +50,6 @@ class InitSetupCatalogTest {
           SupportedQualityGates.ANDROID_COVERAGE);
   private static final Set<String> SWIFT_GATES =
       Set.of(
-          "swift-format",
           "swiftlint",
           "harmonize",
           "swift-build",
@@ -118,7 +108,7 @@ class InitSetupCatalogTest {
     assertThat(catalog.presets(maven))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
     assertThat(JavaPresetGates.STANDARD)
-        .containsExactly(COMPILE, TESTS, "format", "checkstyle", "pmd", "spotbugs", "coverage");
+        .containsExactly(COMPILE, TESTS, "checkstyle", "pmd", "spotbugs", "coverage");
     assertThat(QualityPreset.STRICT.rules().jacocoMinimums())
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
@@ -216,7 +206,6 @@ class InitSetupCatalogTest {
 
     assertThat(catalog.gate(project, TESTS).command()).containsExactly("./gradlew", "test");
     assertThat(catalog.gate(project, COMPILE).command()).containsExactly("./gradlew", "classes");
-    assertThat(catalog.gate(project, "format").command()).endsWith("spotlessCheck");
     assertThat(catalog.gate(project, TESTS).availabilityMessage())
         .contains("Gradle command available: ./gradlew");
   }
@@ -254,7 +243,7 @@ class InitSetupCatalogTest {
                 .filter(id -> !PYTHON_GATES.contains(id))
                 // Swift init arrives later; check runs Swift gates only.
                 .filter(id -> !SWIFT_GATES.contains(id))
-                // The ward-format gate is offered with --format-engine ward (#269), not by default.
+                // The ward-format gate is in every selection, not offered as a choice.
                 .filter(id -> !SupportedQualityGates.FORMAT.equals(id))
                 // Android gates are offered only for Android projects.
                 .filter(id -> !ANDROID_GATES.contains(id))
@@ -288,7 +277,6 @@ class InitSetupCatalogTest {
             "--report-path",
             "target/gitleaks.sarif");
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
-    assertThat(catalog.gate(project, "format").command()).endsWith("spotless:check");
     assertThat(catalog.gate(project, "semgrep").availabilityMessage()).isNotBlank();
   }
 }

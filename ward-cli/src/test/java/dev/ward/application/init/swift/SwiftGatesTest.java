@@ -19,19 +19,7 @@ class SwiftGatesTest {
     final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD, false));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly(
-            "swift-format", "swiftlint", "swift-build", "swift-test", COVERAGE, "harmonize");
-    assertThat(command(gates, "swift-format"))
-        .containsExactly(
-            "swift",
-            "format",
-            "lint",
-            "--strict",
-            "--recursive",
-            "--parallel",
-            "Package.swift",
-            "Sources",
-            "Tests");
+        .containsExactly("swiftlint", "swift-build", "swift-test", COVERAGE, "harmonize");
     assertThat(command(gates, "swiftlint"))
         .containsExactly(
             ".ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint",
@@ -52,7 +40,7 @@ class SwiftGatesTest {
         gates(SwiftGateFixtures.xcode("iOS Simulator", Optional.empty()));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swift-format", "swiftlint", "xcodebuild-test", COVERAGE, "harmonize");
+        .containsExactly("swiftlint", "xcodebuild-test", COVERAGE, "harmonize");
     assertThat(command(gates, "xcodebuild-test"))
         .containsExactly("xcodebuild", "test", "-scheme", "Shop", "-enableCodeCoverage", "YES");
     assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("iOS Simulator");
@@ -88,7 +76,6 @@ class SwiftGatesTest {
     assertThat(new SwiftGates().presetGates(QualityPreset.STRICT))
         .containsExactlyElementsOf(
             List.of(
-                "swift-format",
                 "swiftlint",
                 "swift-build",
                 "swift-test",

@@ -13,16 +13,7 @@ class PythonGatesTest {
 
   @ParameterizedTest
   @ValueSource(
-      strings = {
-        "ruff-format",
-        "ruff",
-        "mypy",
-        "pytest",
-        "coverage",
-        "mutmut",
-        "import-linter",
-        "pip-audit"
-      })
+      strings = {"ruff", "mypy", "pytest", "coverage", "mutmut", "import-linter", "pip-audit"})
   void pythonTypeIsAcceptedAndBuilt(final String type) {
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 

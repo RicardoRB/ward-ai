@@ -55,13 +55,13 @@ ArchUnit, rule files under `config/`).
     `scripts`.
     npm skips `prepare` when install scripts are disabled (for example `ignore-scripts=true` in an
     `.npmrc`), so run `svelte-kit sync` before `ward check` in that setup.
-  - `eslint`, `@eslint/js`, `globals`, `prettier`, `typescript-eslint`: declared packages keep
+  - `eslint`, `@eslint/js`, `globals`, `typescript-eslint`: declared packages keep
     their version. A declared `eslint` outside `>=9.22.0 <11.0.0` is an `INCOMPATIBLE` finding
     (see Compatibility checks); tested versions are 9.22.0 and 10.13.0.
   - `@biomejs/biome`: a project that declares it, or that has a user-owned Biome config, uses Biome
     for linting and formatting (see Biome below). Note its declared range; init checks it against
     `>=2.3.0 <3.0.0`.
-- **Configs.** List `eslint.config.*`, `.eslintrc*`, `.prettierrc*`, `prettier.config.*`,
+- **Configs.** List `eslint.config.*`, `.eslintrc*`,
   `vitest.config.*`, `vite.config.*`, `jest.config.*` (and a `"jest"` key in `package.json`),
   `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, `biome.json`, `biome.jsonc`,
   `.biome.json`, `.biome.jsonc`, and `bunfig.toml` in the project root. A file whose first line is
@@ -79,7 +79,7 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
 ## Choices
 
 - **Preset.** `standard`, `strict`, or a custom selection.
-  - `standard`: for TypeScript it selects `tsc`, the test gate, `prettier`, and `eslint`; for
+  - `standard`: for TypeScript it selects `tsc`, the test gate, and `eslint`; for
     JavaScript the same without `tsc`, which is not offered. The test gate fails below 70% line
     coverage.
   - `strict`: the same gates plus `stryker` in `ci` and `dependency-cruiser` in `pre-push` and `ci`.
@@ -94,11 +94,11 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
     it is, and the plan warns that the preset's rules are not applied to it. Offer `ward-tune` for
     that.
 - **Biome.** A Biome project (see Declared tools and Configs) gets one `biome` gate in place of
-  `prettier` and `eslint`, in the same profiles and presets. The gate runs
+  `eslint`, in the same profiles and presets. Biome's formatter is off: `ward-format` formats. The gate runs
   `biome ci --colors=off --reporter=checkstyle .`, and under `strict` it adds `--error-on-warnings`,
   so warnings fail it. Init asks no question about Biome. A project's own ESLint config
   (`eslint.config.*` or `.eslintrc*`) still gets the `eslint` gate, which runs that config
-  unchanged. Recommend the Biome gate as-is; do not offer to migrate ESLint or Prettier to Biome.
+  unchanged. Recommend the Biome gate as-is; do not offer to migrate ESLint to Biome.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
   Stryker runner plugin), `semgrep` (ruleset `p/typescript`, or `p/javascript` for JavaScript;
   needs network access), `gitleaks`, `trivy`, and `zap`. `dependency-cruiser` checks import
@@ -151,8 +151,8 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner, no E
   `strict`, a `biome.json` or `biome.jsonc` is moved to `biome.base.*`, and Ward's `biome.jsonc`
   extends it. `keep biome.json` under `standard` means the user's config is reused unchanged, with
   a warning that the preset's Biome rules are not applied to it.
-- A Biome project gets no `eslint.config.*` and no Prettier config from init, and the plan does
-  not list `prettier`. The project's own `.prettierrc*`, if any, stays in place without a gate.
+- A Biome project gets no `eslint.config.*` from init. Formatting is `ward-format`'s, so no
+  formatter gate is added for a project's own Prettier config, if any, and init leaves it in place.
 - Edge case: Ward's `biome.jsonc` reads the ignore file (`vcs.useIgnoreFile`). In a directory
   that is not a Git repository and has no `.gitignore`, Biome reports a configuration error and
   the `biome` gate fails. Add a `.gitignore` first, or set up the repository.

@@ -1,8 +1,10 @@
-import Testing
+import XCTest
 @testable import Shop
 
-@Test func addsAnItem() {
-    var cart = Cart()
-    cart.add("Book")
-    #expect(cart.items == ["Book"])
+class ShopTests: XCTestCase {
+    func testAddsAnItem() {
+        var cart = Cart()
+        cart.add("Book")
+        XCTAssertEqual(cart.items, ["Book"])
+    }
 }

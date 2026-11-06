@@ -6,12 +6,11 @@ import java.util.List;
 /** The Java gate sets the quality-presets spec defines, for tests that expect them. */
 public final class JavaPresetGates {
   public static final List<String> STANDARD =
-      List.of("compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage");
+      List.of("compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage");
   public static final List<String> STRICT =
       List.of(
           "compile",
           "tests",
-          "format",
           "checkstyle",
           "pmd",
           "spotbugs",

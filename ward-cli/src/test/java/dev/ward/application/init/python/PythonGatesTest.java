@@ -21,8 +21,6 @@ class PythonGatesTest {
   void uvRunsEveryToolThroughTheWardGroup() {
     final List<InitGateOption> gates = gates(BuildTool.UV, QualityPreset.STANDARD, false);
 
-    assertThat(command(gates, "ruff-format"))
-        .containsExactly("uv", RUN, "--group", "ward", "ruff", "format", "--check", ".");
     assertThat(command(gates, "ruff"))
         .containsExactly(
             "uv", RUN, "--group", "ward", "ruff", "check", ".", "--output-format", "json");
@@ -58,7 +56,7 @@ class PythonGatesTest {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STANDARD))
-        .containsExactly("ruff-format", "ruff", "mypy", "pytest", "coverage");
+        .containsExactly("ruff", "mypy", "pytest", "coverage");
     assertThat(gates(BuildTool.UV, QualityPreset.STANDARD, false).stream().map(InitGateOption::id))
         .contains("pip-audit", "mutmut", "import-linter");
   }
@@ -68,8 +66,7 @@ class PythonGatesTest {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STRICT))
-        .containsExactly(
-            "ruff-format", "ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
+        .containsExactly("ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STRICT, false), "mutmut", "minimum"))
         .isEqualTo("60");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STANDARD, false), "mutmut", "minimum"))

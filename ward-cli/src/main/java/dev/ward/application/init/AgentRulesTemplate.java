@@ -108,7 +108,7 @@ public final class AgentRulesTemplate {
     }
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
-    // Node projects check Markdown with Prettier, which wants blank lines around the markers.
+    // Node projects keep blank lines around the markers, as their Markdown did under Prettier.
     final String padding = project.toolchain() == Toolchain.NODE ? "\n" : "";
     return new OwnedSection(
         project.root().resolve("AGENTS.md"),

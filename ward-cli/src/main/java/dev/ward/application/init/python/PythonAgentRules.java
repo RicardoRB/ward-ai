@@ -30,8 +30,6 @@ final class PythonAgentRules {
         Map.of(
             "django-check",
             "- Django: `{command}` must report no issues; fix the settings or model that fails.",
-            "ruff-format",
-            "- Ruff formatter: `{command}` must pass; format edited files with `ruff format`.",
             "ruff",
             "- Ruff: `{command}` must report no findings. Fix the code; do not add `# noqa`"
                 + " comments or `per-file-ignores`.",

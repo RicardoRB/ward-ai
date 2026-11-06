@@ -12,7 +12,7 @@ import java.util.Set;
 /** The partial-run tables of the Maven and Gradle gates that can be scoped to edited files. */
 final class JvmPartialTables {
   /** The gates that have a partial table. */
-  static final Set<String> GATES = Set.of("checkstyle", "pmd", "format");
+  static final Set<String> GATES = Set.of("checkstyle", "pmd");
 
   private static final List<String> JAVA_SOURCES = List.of("src/**/*.java");
   private static final List<String> MAVEN_BUILD = List.of("pom.xml");
@@ -30,7 +30,6 @@ final class JvmPartialTables {
     return switch (gate) {
       case "checkstyle" -> Optional.of(checkstyle(gradle, preset, build));
       case "pmd" -> Optional.of(pmd(gradle, preset, build));
-      case "format" -> Optional.of(format(gradle, build));
       default -> Optional.empty();
     };
   }
@@ -53,19 +52,6 @@ final class JvmPartialTables {
     return gradle
         ? gradleFiltered(preset, config)
         : PartialCheckDefaults.Table.whole(JAVA_SOURCES, config);
-  }
-
-  /**
-   * Spotless matches {@code spotlessFiles} against absolute paths. Gradle's single-file mode
-   * applies formatting instead of checking it, so Gradle runs in full.
-   */
-  private static PartialCheckDefaults.Table format(final boolean gradle, final List<String> build) {
-    final List<String> config = gradle ? List.of(build.getFirst()) : build;
-    if (gradle) {
-      return PartialCheckDefaults.Table.whole(JAVA_SOURCES, config);
-    }
-    return new PartialCheckDefaults.Table(
-        JAVA_SOURCES, config, List.of("-DspotlessFiles={paths}"), ".*/{path}", COMMA);
   }
 
   /** Only the Gradle blocks init writes with a preset read {@code wardPaths}. */

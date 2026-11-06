@@ -71,10 +71,7 @@ public final class NodeLintConfigTargets {
 
   /** Returns the Biome files for {@code project}: a generated, a kept or a layered config. */
   public static List<ConfigTarget> biome(
-      final Project project,
-      final NodeToolConfigs configs,
-      final QualityPreset preset,
-      final boolean formatterOff)
+      final Project project, final NodeToolConfigs configs, final QualityPreset preset)
       throws IOException {
     final List<ConfigTarget> targets = new ArrayList<>();
     final Path root = project.root();
@@ -85,7 +82,7 @@ public final class NodeLintConfigTargets {
           ConfigTarget.write(
               ward.get(),
               ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-                  + NodeLayerTemplates.biome(preset, nameOf(root, base.get()), formatterOff)));
+                  + NodeLayerTemplates.biome(preset, nameOf(root, base.get()))));
       return targets;
     }
     final Optional<Path> user = configs.userConfig(root, NodeConfigFiles.BIOME);
@@ -94,12 +91,12 @@ public final class NodeLintConfigTargets {
           ConfigTarget.write(
               root.resolve(BIOME_ROOT),
               ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-                  + NodeConfigTemplates.biome(preset, formatterOff)));
+                  + NodeConfigTemplates.biome(preset)));
       return targets;
     }
     // A dot-file config is never moved: Ward keeps it in place under every preset.
     if (preset == QualityPreset.STRICT && !nameOf(root, user.get()).startsWith(".")) {
-      targets.addAll(layerBiome(root, user.get(), base, preset, formatterOff));
+      targets.addAll(layerBiome(root, user.get(), base, preset));
       return targets;
     }
     targets.add(ConfigTarget.keep(user.get(), notApplied(preset, "Biome", root, user.get())));
@@ -135,11 +132,7 @@ public final class NodeLintConfigTargets {
 
   /** Moves a Biome config to its base file, and writes Ward's {@code biome.jsonc} in its place. */
   private static List<ConfigTarget> layerBiome(
-      final Path root,
-      final Path user,
-      final Optional<Path> base,
-      final QualityPreset preset,
-      final boolean formatterOff)
+      final Path root, final Path user, final Optional<Path> base, final QualityPreset preset)
       throws IOException {
     if (base.isPresent()) {
       return List.of(ConfigTarget.conflict(base.get()));
@@ -150,7 +143,7 @@ public final class NodeLintConfigTargets {
         baseFile,
         root.resolve(BIOME_ROOT),
         ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-            + NodeLayerTemplates.biome(preset, nameOf(root, baseFile), formatterOff));
+            + NodeLayerTemplates.biome(preset, nameOf(root, baseFile)));
   }
 
   /**

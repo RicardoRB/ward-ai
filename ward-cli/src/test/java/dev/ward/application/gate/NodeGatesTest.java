@@ -56,15 +56,7 @@ class NodeGatesTest {
   @Test
   void everyNodeGateIdentifierIsAccepted() {
     final Map<String, List<String>> commands = new LinkedHashMap<>();
-    List.of(
-            "tsc",
-            "eslint",
-            "prettier",
-            "vitest",
-            "jest",
-            "bun-test",
-            "stryker",
-            "dependency-cruiser")
+    List.of("tsc", "eslint", "vitest", "jest", "bun-test", "stryker", "dependency-cruiser")
         .forEach(id -> commands.put(id, List.of(id)));
 
     final List<QualityGate> gates =
@@ -79,7 +71,7 @@ class NodeGatesTest {
 
     final GateResult result =
         new QualityGateFactory(executor)
-            .create(config(Map.of("prettier", List.of("npx", "prettier", "--check", "."))))
+            .create(config(Map.of("tsc", List.of("npx", "tsc", "--noEmit"))))
             .getFirst()
             .execute(PROJECT);
 
@@ -93,13 +85,6 @@ class NodeGatesTest {
     assertThatThrownBy(() -> factory.create(config(Map.of("nope", List.of("x")))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            "tsc",
-            "eslint",
-            "prettier",
-            "vitest",
-            "jest",
-            "bun-test",
-            "stryker",
-            "dependency-cruiser");
+            "tsc", "eslint", "vitest", "jest", "bun-test", "stryker", "dependency-cruiser");
   }
 }

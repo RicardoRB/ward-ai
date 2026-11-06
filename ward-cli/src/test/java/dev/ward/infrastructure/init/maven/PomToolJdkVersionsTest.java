@@ -1,15 +1,22 @@
 package dev.ward.infrastructure.init.maven;
 
-import static dev.ward.infrastructure.init.maven.PomToolConfiguratorCompatibilityTest.snapshot;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.BuildFileChange;
+import dev.ward.domain.init.CompatibilityProjectSnapshot;
+import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.ToolchainSnapshot;
+import dev.ward.domain.project.BuildTool;
+import dev.ward.domain.project.Framework;
+import dev.ward.domain.project.Language;
+import dev.ward.domain.project.Project;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -21,15 +28,7 @@ class PomToolJdkVersionsTest {
   private static final int JAVA_25 = 25;
   private static final int JAVA_27 = 27;
   private static final List<String> STRICT_GATES =
-      List.of(
-          "format",
-          "checkstyle",
-          "pmd",
-          "spotbugs",
-          "coverage",
-          "archunit",
-          "enforcer",
-          "mutation");
+      List.of("checkstyle", "pmd", "spotbugs", "coverage", "archunit", "enforcer", "mutation");
 
   @Test
   void jdk8StrictProjectGetsTheJdk8Rows(@TempDir final Path root) throws IOException {
@@ -40,8 +39,6 @@ class PomToolJdkVersionsTest {
             "<artifactId>checkstyle</artifactId><version>9.3</version>",
             "<artifactId>spotbugs-maven-plugin</artifactId><version>4" + ".8.6.6</version>",
             "<version>1.17.4</version>",
-            "<version>2.30.0</version>",
-            "<googleJavaFormat><version>1.7</version></googleJavaFormat>",
             "<version>1.5.1</version>")
         .doesNotContain("ENGINE_VERSION");
   }
@@ -57,8 +54,6 @@ class PomToolJdkVersionsTest {
             "<artifactId>checkstyle</artifactId><version>10.20.2</version>",
             "<artifactId>spotbugs-maven-plugin</artifactId><version>4" + ".9.7.0</version>",
             "<version>1.30.1</version>",
-            "<version>3.10.3</version>",
-            "<googleJavaFormat><version>1.36.1</version></googleJavaFormat>",
             "<artifactId>archunit-junit5</artifactId>",
             "<version>1.5.1</version>");
   }
@@ -68,12 +63,12 @@ class PomToolJdkVersionsTest {
       @TempDir final Path jdk25, @TempDir final Path jdk27) throws IOException {
     final PomToolConfigurator configurator =
         new PomToolConfigurator(ignored -> snapshot(JAVA_27, Map.of()));
-    PomToolConfiguratorCompatibilityTest.writePom(jdk27, EMPTY_POM);
+    writePom(jdk27, EMPTY_POM);
 
     final BuildFileChange change =
         configurator.apply(
-            PomToolConfiguratorCompatibilityTest.project(jdk27),
-            STRICT_GATES.stream().map(PomToolConfiguratorCompatibilityTest::gate).toList(),
+            project(jdk27),
+            STRICT_GATES.stream().map(PomToolJdkVersionsTest::gate).toList(),
             QualityPreset.STRICT,
             finding -> true);
 
@@ -85,14 +80,34 @@ class PomToolJdkVersionsTest {
   }
 
   private static String strictPom(final Path root, final int jdk) throws IOException {
-    PomToolConfiguratorCompatibilityTest.writePom(
-        root, "<project><modelVersion>4.0.0</modelVersion></project>");
+    writePom(root, "<project><modelVersion>4.0.0</modelVersion></project>");
     new PomToolConfigurator(ignored -> snapshot(jdk, Map.of()))
         .apply(
-            PomToolConfiguratorCompatibilityTest.project(root),
-            STRICT_GATES.stream().map(PomToolConfiguratorCompatibilityTest::gate).toList(),
+            project(root),
+            STRICT_GATES.stream().map(PomToolJdkVersionsTest::gate).toList(),
             QualityPreset.STRICT,
             finding -> true);
     return Files.readString(root.resolve(POM));
+  }
+
+  private static CompatibilityProjectSnapshot snapshot(
+      final int javaVersion, final Map<String, String> plugins) {
+    return new CompatibilityProjectSnapshot(
+        new Project(Path.of("."), Language.JAVA, BuildTool.MAVEN, Framework.NONE),
+        new ToolchainSnapshot(
+            Optional.of(javaVersion), Optional.empty(), Optional.of("3.9.0"), Framework.NONE),
+        plugins);
+  }
+
+  private static Project project(final Path root) {
+    return new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
+  }
+
+  private static InitGateOption gate(final String id) {
+    return new InitGateOption(id, id, List.of("mvn", id), true, "available");
+  }
+
+  private static void writePom(final Path root, final String content) throws IOException {
+    Files.writeString(root.resolve(POM), content);
   }
 }

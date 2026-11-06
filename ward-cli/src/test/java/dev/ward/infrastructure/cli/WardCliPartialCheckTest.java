@@ -25,7 +25,6 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
         """
         version = 2
         [checks.format]
-        uses = "format"
         profiles = ["default", "edit"]
         command = "./mvnw spotless:check"
         [checks.checkstyle]

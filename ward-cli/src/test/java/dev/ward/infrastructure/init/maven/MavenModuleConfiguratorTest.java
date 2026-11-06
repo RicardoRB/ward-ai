@@ -119,7 +119,7 @@ class MavenModuleConfiguratorTest {
 
     assertThat(maven)
         .containsExactlyInAnyOrder(
-            "checkstyle", "pmd", "format", "enforcer", "spotbugs", "coverage", "mutation");
+            "checkstyle", "pmd", "enforcer", "spotbugs", "coverage", "mutation");
     assertThat(maven).containsExactlyInAnyOrderElementsOf(GradleBuildBlocks.moduleGates());
   }
 

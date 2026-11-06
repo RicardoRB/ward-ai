@@ -63,7 +63,7 @@ uses = "zap"
 
   @Test
   void checkWithoutLearnAfterCreatesNoWardDirectory() {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     out.getBuffer().setLength(0);
 
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.OK);
@@ -72,7 +72,7 @@ uses = "zap"
 
   @Test
   void learnAfterBelowOneIsAUsageError() {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     out.getBuffer().setLength(0);
 
     assertThat(run(CHECK, LEARN_AFTER, "0", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);

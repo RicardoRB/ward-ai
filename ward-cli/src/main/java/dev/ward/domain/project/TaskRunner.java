@@ -47,7 +47,7 @@ public enum TaskRunner {
 
   /**
    * Returns the Git ignore line for the cache directory the runner leaves in the root, which Git
-   * and Prettier then skip; empty when the runner leaves none.
+   * and the formatter then skip; empty when the runner leaves none.
    */
   public String gitignoreEntry() {
     return cacheDirectory == null ? "" : cacheDirectory + "\n";

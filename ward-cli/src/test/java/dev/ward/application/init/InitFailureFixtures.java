@@ -14,6 +14,7 @@ import dev.ward.domain.init.RuleFileGeneration;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Path;
 import java.util.List;
@@ -33,7 +34,8 @@ final class InitFailureFixtures {
             unchangedPom(),
             failingRules(),
             new ArchitectureTestGenerator(),
-            storageThatFailsToRestore(root.resolve("ward.toml"))));
+            storageThatFailsToRestore(root.resolve("ward.toml")),
+            new OwnedSectionWriter()));
   }
 
   private static ConfigurationStorage storageThatFailsToRestore(final Path configuration) {
