@@ -1374,3 +1374,107 @@ with-child = ["arguments"]
 text = '^[\w$.]+\.apply\((undefined|null),'
 message = "use the spread operator instead of .apply()"
 '''
+
+[[rules]]
+id = "ward:typescript/no-const-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:javascript/no-const-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:typescript/no-func-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-func-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-class-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:javascript/no-class-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:typescript/no-import-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-import-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''

@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
+import dev.ward.analysis.domain.rule.check.ReassignedBindingCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
@@ -81,7 +82,16 @@ final class DeclarativeChecks {
               TomlValues.integer(toml, MAX),
               TomlValues.required(toml, MESSAGE),
               Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true));
-      case "descendant-count" -> descendantCount(toml);
+      case "descendant-count" ->
+          new DescendantCountCheck(
+              TomlValues.strings(toml, KINDS),
+              new CountedKinds(
+                  TomlValues.strings(toml, "counted"),
+                  TomlValues.kindMap(toml, "requires-sibling"),
+                  TomlValues.kindMap(toml, "cancelled-by")),
+              TomlValues.optionalInteger(toml, "base", 0),
+              TomlValues.integer(toml, MAX),
+              TomlValues.required(toml, MESSAGE));
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));
@@ -98,6 +108,9 @@ final class DeclarativeChecks {
               TomlValues.required(toml, MESSAGE),
               Set.copyOf(TomlValues.optionalStrings(toml, "env")));
       case "unused-binding" -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE));
+      case "reassigned-binding" ->
+          ReassignedBindingCheck.of(
+              TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE));
       case "taint" ->
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
@@ -109,27 +122,14 @@ final class DeclarativeChecks {
     };
   }
 
-  private static RuleCheck descendantCount(final TomlParseResult toml) {
-    return new DescendantCountCheck(
-        TomlValues.strings(toml, KINDS),
-        countedKinds(toml, "counted"),
-        TomlValues.optionalInteger(toml, "base", 0),
-        TomlValues.integer(toml, MAX),
-        TomlValues.required(toml, MESSAGE));
-  }
-
-  private static CountedKinds countedKinds(final TomlParseResult toml, final String key) {
-    return new CountedKinds(
-        TomlValues.strings(toml, key),
-        TomlValues.kindMap(toml, "requires-sibling"),
-        TomlValues.kindMap(toml, "cancelled-by"));
-  }
-
   private static RuleCheck cognitiveComplexity(final TomlParseResult toml) {
     return new CognitiveComplexityCheck(
         TomlValues.strings(toml, KINDS),
         new CognitiveTokens(
-            countedKinds(toml, "structures"),
+            new CountedKinds(
+                TomlValues.strings(toml, "structures"),
+                TomlValues.kindMap(toml, "requires-sibling"),
+                TomlValues.kindMap(toml, "cancelled-by")),
             TomlValues.strings(toml, "flat"),
             TomlValues.optionalStrings(toml, "chaining")),
         TomlValues.integer(toml, MAX),

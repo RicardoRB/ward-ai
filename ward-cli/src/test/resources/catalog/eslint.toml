@@ -247,9 +247,7 @@ eslint = ["no-case-declarations"]
 
 [[rule]]
 name = "no-class-assign"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-class-assign"]
 biome = ["noClassAssign"]
 
@@ -269,9 +267,7 @@ biome = ["noConsole"]
 
 [[rule]]
 name = "no-const-assign"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-const-assign"]
 biome = ["noConstAssign"]
 
@@ -450,9 +446,7 @@ eslint = ["no-extra-label"]
 
 [[rule]]
 name = "no-func-assign"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-func-assign"]
 
 [[rule]]
@@ -487,9 +481,7 @@ biome = ["noImpliedEval"]
 
 [[rule]]
 name = "no-import-assign"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-import-assign"]
 biome = ["noImportAssign"]
 
