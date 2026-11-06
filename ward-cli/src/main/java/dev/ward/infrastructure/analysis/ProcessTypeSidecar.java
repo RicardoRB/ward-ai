@@ -1,10 +1,12 @@
 package dev.ward.infrastructure.analysis;
 
-import dev.ward.analysis.domain.ir.ExpressionTypes;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.port.TypeSidecar;
+import dev.ward.analysis.domain.types.FactKind;
+import dev.ward.analysis.domain.types.SpanFacts;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +31,7 @@ import java.util.logging.Logger;
  * one response at a time. Any timeout, malformed line or exit marks it unavailable for the run; it
  * is never restarted. Its stderr is discarded, so no source text reaches the log.
  */
-public final class ProcessTypeSidecar implements TypeSidecar {
+public final class ProcessTypeSidecar implements TypeSidecar, TypeFacts {
   private static final Logger LOGGER = Logger.getLogger(ProcessTypeSidecar.class.getName());
 
   /** How long the sidecar may take to start and answer the probe request. */
@@ -62,16 +65,16 @@ public final class ProcessTypeSidecar implements TypeSidecar {
   }
 
   @Override
-  public Optional<TypeResolver> start() {
+  public Optional<TypeFacts> start() {
     if (!spawn()) {
       return Optional.empty();
     }
-    final String probe = TypeSidecarJson.request("", "", List.of());
+    final String probe = TypeSidecarJson.request("", "", List.of(), Set.of());
     if (exchange(probe, START_TIMEOUT, "start").isEmpty()) {
       return Optional.empty();
     }
     usable = true;
-    return Optional.of(this::typesOf);
+    return Optional.of(this);
   }
 
   private boolean spawn() {
@@ -114,7 +117,7 @@ public final class ProcessTypeSidecar implements TypeSidecar {
    * Sends one request line and waits up to {@code timeout} for its response. Empty when the answer
    * does not arrive, the process has exited, or the response is malformed.
    */
-  private Optional<Map<String, String>> exchange(
+  private Optional<Map<String, SpanFacts>> exchange(
       final String request, final Duration timeout, final String phase) {
     try {
       requests.write(request);
@@ -126,7 +129,7 @@ public final class ProcessTypeSidecar implements TypeSidecar {
       } else if (line.isEmpty()) {
         unavailable(phase + "-exit");
       } else {
-        return Optional.of(TypeSidecarJson.types(line.get()));
+        return Optional.of(TypeSidecarJson.facts(line.get()));
       }
     } catch (IOException writeFailure) {
       unavailable(phase + "-write-failure");
@@ -139,29 +142,31 @@ public final class ProcessTypeSidecar implements TypeSidecar {
     return Optional.empty();
   }
 
-  private ExpressionTypes typesOf(final SourceUnit unit, final List<Span> spans) {
-    if (!usable || spans.isEmpty()) {
-      return ExpressionTypes.none();
+  @Override
+  public UnitTypeFacts factsOf(
+      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+    if (!usable || spans.isEmpty() || kinds.isEmpty()) {
+      return UnitTypeFacts.none();
     }
     final Map<String, Span> byKey = new HashMap<>();
     spans.forEach(span -> byKey.put(TypeSidecarJson.key(span), span));
-    final String request = TypeSidecarJson.request(unit.path(), unit.text(), spans);
-    final Optional<Map<String, String>> answer = exchange(request, REQUEST_TIMEOUT, "request");
+    final String request = TypeSidecarJson.request(unit.path(), unit.text(), spans, kinds);
+    final Optional<Map<String, SpanFacts>> answer = exchange(request, REQUEST_TIMEOUT, "request");
     if (answer.isEmpty()) {
       usable = false;
-      return ExpressionTypes.none();
+      return UnitTypeFacts.none();
     }
-    final Map<Span, String> types = new HashMap<>();
+    final Map<String, SpanFacts> facts = new HashMap<>();
     answer
         .get()
         .forEach(
-            (key, type) -> {
+            (key, found) -> {
               final Span span = byKey.get(key);
               if (span != null) {
-                types.put(span, type);
+                facts.put(UnitTypeFacts.key(span), found);
               }
             });
-    return new ExpressionTypes(types);
+    return new UnitTypeFacts(facts);
   }
 
   /** Stops the process; calling it again, or before a start, does nothing. */

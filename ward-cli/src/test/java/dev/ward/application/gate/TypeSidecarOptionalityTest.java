@@ -5,18 +5,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
-import dev.ward.analysis.domain.ir.ExpressionTypes;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.ParseResult;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.RuleMatcher;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
@@ -131,10 +131,10 @@ class TypeSidecarOptionalityTest {
     }
 
     @Override
-    public Optional<TypeResolver> start() {
+    public Optional<TypeFacts> start() {
       starts++;
       return startable
-          ? Optional.of((SourceUnit unit, List<Span> spans) -> ExpressionTypes.none())
+          ? Optional.of((unit, spans, kinds) -> UnitTypeFacts.none())
           : Optional.empty();
     }
 

@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.ParseResult;
+import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -19,6 +20,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.analysis.jvm.JavaTypeSidecar;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +52,38 @@ class TypeRuleGateTest {
     final GateResult result = gate(List.of(syntax, typed)).execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
-    assertThat(result.stderr()).contains("ward:java/data-flow not run").contains("TYPES");
+    assertThat(result.stderr())
+        .contains("ward:java/data-flow not run")
+        .contains("type sidecar is unavailable");
+  }
+
+  @Test
+  void javaTypeRuleWithoutAJavaClasspathIsNotRunBecauseTheSidecarIsUnavailable() {
+    final RuleDefinition typed =
+        new RuleDefinition(
+            "ward:java/data-flow",
+            Set.of(AnalysisLanguage.JAVA),
+            RuleCapability.TYPES,
+            AnalysisSeverity.ERROR,
+            "body");
+    final GateResult result =
+        gate(List.of(typed), root -> Map.of(AnalysisLanguage.JAVA, new JavaTypeSidecar(root, "t")))
+            .execute(PROJECT);
+
+    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.stderr())
+        .contains("ward:java/data-flow not run")
+        .contains("java-classpath")
+        .contains("type sidecar is unavailable");
   }
 
   private static AnalysisGate gate(final List<RuleDefinition> rules) {
+    return gate(rules, unused -> Map.of());
+  }
+
+  private static AnalysisGate gate(
+      final List<RuleDefinition> rules,
+      final java.util.function.Function<Path, Map<AnalysisLanguage, TypeSidecar>> sidecars) {
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(rules, List.of()),
@@ -80,7 +110,7 @@ class TypeRuleGateTest {
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            unused -> Map.of());
+            sidecars);
     return new AnalysisGate("ward", rules, ports);
   }
 }

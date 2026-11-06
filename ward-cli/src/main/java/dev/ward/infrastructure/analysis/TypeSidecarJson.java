@@ -1,14 +1,17 @@
 package dev.ward.infrastructure.analysis;
 
 import dev.ward.analysis.domain.ir.Span;
-import java.util.LinkedHashMap;
+import dev.ward.analysis.domain.types.FactKind;
+import dev.ward.analysis.domain.types.SpanFacts;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The JSON lines of the type sidecar protocol: a request carries a file's text and span offsets,
- * and a response maps {@code "start:end"} to a type name. Only the shapes the protocol uses are
- * read, so the reader stays small and needs no library.
+ * and a response maps {@code "start:end"} to the facts found for it. Only the shapes the protocol
+ * uses are read, so the reader stays small and needs no library.
  */
 final class TypeSidecarJson {
   private static final int FIRST_PRINTABLE = 0x20;
@@ -19,7 +22,8 @@ final class TypeSidecarJson {
   private TypeSidecarJson() {}
 
   /** Encodes one request line for {@code spans} of the file at {@code path} with {@code text}. */
-  static String request(final String path, final String text, final List<Span> spans) {
+  static String request(
+      final String path, final String text, final List<Span> spans, final Set<FactKind> kinds) {
     final StringBuilder line =
         new StringBuilder(REQUEST_CAPACITY)
             .append("{\"path\":")
@@ -36,7 +40,12 @@ final class TypeSidecarJson {
           .append(span.endOffset())
           .append(']');
     }
-    return line.append("]}").toString();
+    final String names =
+        kinds.stream()
+            .map(kind -> quote(kind.wireName()))
+            .sorted()
+            .collect(Collectors.joining(","));
+    return line.append("],\"kinds\":[").append(names).append("]}").toString();
   }
 
   /** Returns the key a span carries on the wire, {@code "start:end"} by character offset. */
@@ -45,24 +54,16 @@ final class TypeSidecarJson {
   }
 
   /**
-   * Reads the {@code types} object of a response line.
+   * Reads the {@code facts} object of a response line, keyed as the sidecar keyed it.
    *
-   * @throws IllegalArgumentException if the line is not a response with string type names
+   * @throws IllegalArgumentException if the line is not a response with well-formed facts
    */
-  static Map<String, String> types(final String line) {
+  static Map<String, SpanFacts> facts(final String line) {
     final Object root = new TypeSidecarJsonReader(line).read();
-    if (!(root instanceof Map<?, ?> object) || !(object.get("types") instanceof Map<?, ?> types)) {
+    if (!(root instanceof Map<?, ?> object) || !(object.get("facts") instanceof Map<?, ?> facts)) {
       throw new IllegalArgumentException("not a type response");
     }
-    final Map<String, String> result = new LinkedHashMap<>();
-    types.forEach(
-        (key, value) -> {
-          if (!(key instanceof String name) || !(value instanceof String type)) {
-            throw new IllegalArgumentException("type entries must be strings");
-          }
-          result.put(name, type);
-        });
-    return result;
+    return TypeFactsJson.spanFacts(facts);
   }
 
   /** Encodes {@code value} as a JSON string literal. */

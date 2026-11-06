@@ -22,6 +22,6 @@ public final class JavaTypeSidecarFinding {
     return new Finding(
         NAME,
         Status.WARNING,
-        "optional: type-aware Java rules are skipped until a JDK with javac is on PATH.");
+        "optional: type-aware Java rules are not run until a JDK with javac is on PATH (they also need a java-classpath file).");
   }
 }
