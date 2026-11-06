@@ -68,6 +68,14 @@ final class Session {
     return variables.getOrDefault(identifier.span().startOffset(), Optional.empty());
   }
 
+  /** Returns whether the binding names a value, not a type, an import or a function. */
+  static boolean isValue(final Binding binding) {
+    return switch (binding.kind()) {
+      case VARIABLE, PARAMETER, CONSTANT -> true;
+      default -> false;
+    };
+  }
+
   boolean isDeclaration(final SyntaxNode identifier) {
     return declared.contains(identifier.span().startOffset());
   }

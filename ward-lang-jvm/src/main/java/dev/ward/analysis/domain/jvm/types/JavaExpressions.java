@@ -154,7 +154,7 @@ final class JavaExpressions {
   Typed name(final SyntaxNode identifier, final Ctx ctx) {
     final String name = Syntax.text(identifier);
     final Optional<Binding> binding = session.binding(identifier);
-    if (binding.isPresent()) {
+    if (binding.isPresent() && Session.isValue(binding.get())) {
       final Optional<Optional<JType>> declared = session.variableAt(binding.get());
       return declared.map(Typed::of).orElse(Typed.UNKNOWN);
     }

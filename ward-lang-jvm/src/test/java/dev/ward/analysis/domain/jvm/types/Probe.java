@@ -25,6 +25,10 @@ final class Probe {
   private final SourceUnit unit;
 
   Probe(final String text, final Map<String, String> others) {
+    this(text, others, AnalysisLanguage.JAVA);
+  }
+
+  Probe(final String text, final Map<String, String> others, final AnalysisLanguage language) {
     this.text = text;
     this.others.putAll(others);
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
@@ -47,13 +51,19 @@ final class Probe {
         new NativeJvmTypeFacts(
             new JvmClasses(library, sources, frontend),
             frontend,
-            Map.of(AnalysisLanguage.JAVA, new JavaScopeAnalysis(environments -> Set.of())));
+            Map.of(
+                AnalysisLanguage.JAVA, new JavaScopeAnalysis(environments -> Set.of()),
+                AnalysisLanguage.KOTLIN, new dev.ward.analysis.domain.jvm.KotlinScopeAnalysis(environments -> Set.of())));
     this.nativeFacts = native1;
-    this.unit = new SourceUnit("src/App.java", AnalysisLanguage.JAVA, text);
+    this.unit = new SourceUnit("src/App." + (language == AnalysisLanguage.KOTLIN ? "kt" : "java"), language, text);
   }
 
   UnitTypeFacts at(final Span span) {
     return nativeFacts.factsOf(unit, List.of(span), EnumSet.allOf(FactKind.class));
+  }
+
+  static Probe kotlin(final String text) {
+    return new Probe(text, Map.of(), AnalysisLanguage.KOTLIN);
   }
 
   static Probe of(final String text) {

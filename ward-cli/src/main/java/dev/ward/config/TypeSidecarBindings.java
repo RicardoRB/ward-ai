@@ -2,7 +2,7 @@ package dev.ward.config;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeSidecar;
-import dev.ward.infrastructure.analysis.jvm.JavaTypeSidecar;
+import dev.ward.infrastructure.analysis.jvm.NativeJvmTypes;
 import dev.ward.infrastructure.analysis.node.TypeScriptTypeSidecar;
 import java.nio.file.Path;
 import java.util.Map;
@@ -17,9 +17,12 @@ final class TypeSidecarBindings {
    */
   static Map<AnalysisLanguage, TypeSidecar> forProject(
       final Path projectRoot, final String wardVersion) {
+    final NativeJvmTypes jvm = new NativeJvmTypes(projectRoot);
     return Map.of(
         AnalysisLanguage.JAVA,
-        new JavaTypeSidecar(projectRoot, wardVersion),
+        jvm,
+        AnalysisLanguage.KOTLIN,
+        jvm,
         AnalysisLanguage.TYPESCRIPT,
         new TypeScriptTypeSidecar(projectRoot, wardVersion),
         AnalysisLanguage.JAVASCRIPT,
