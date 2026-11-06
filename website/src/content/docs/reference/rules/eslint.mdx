@@ -183,3 +183,52 @@ description: Rules of the catalog file eslint and their counterparts.
 | `valid-typeof` | problem | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `valid-typeof` |
 | `vars-on-top` | linter | n/a | n/a | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | n/a | n/a | ESLint `vars-on-top` |
 | `yoda` | linter | n/a | n/a | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | n/a | n/a | ESLint `yoda` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:typescript/no-async-promise-executor` | problem | standard, strict | none | ESLint `no-async-promise-executor`; Biome `noAsyncPromiseExecutor` |
+| `ward:javascript/no-async-promise-executor` | problem | standard, strict | none | ESLint `no-async-promise-executor`; Biome `noAsyncPromiseExecutor` |
+| `ward:typescript/no-compare-neg-zero` | problem | standard, strict | none | ESLint `no-compare-neg-zero`; Biome `noCompareNegZero` |
+| `ward:javascript/no-compare-neg-zero` | problem | standard, strict | none | ESLint `no-compare-neg-zero`; Biome `noCompareNegZero` |
+| `ward:typescript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex` |
+| `ward:javascript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex` |
+| `ward:typescript/no-debugger` | problem | standard, strict | none | ESLint `no-debugger`; Biome `noDebugger` |
+| `ward:javascript/no-debugger` | problem | standard, strict | none | ESLint `no-debugger`; Biome `noDebugger` |
+| `ward:typescript/no-delete-var` | suggestion | standard, strict | none | ESLint `no-delete-var` |
+| `ward:javascript/no-delete-var` | suggestion | standard, strict | none | ESLint `no-delete-var` |
+| `ward:typescript/no-dupe-keys` | problem | standard, strict | none | ESLint `no-dupe-keys` |
+| `ward:javascript/no-dupe-keys` | problem | standard, strict | none | ESLint `no-dupe-keys` |
+| `ward:typescript/no-duplicate-case` | problem | standard, strict | none | ESLint `no-duplicate-case`; Biome `noDuplicateCase` |
+| `ward:javascript/no-duplicate-case` | problem | standard, strict | none | ESLint `no-duplicate-case`; Biome `noDuplicateCase` |
+| `ward:typescript/no-empty-character-class` | problem | standard, strict | none | ESLint `no-empty-character-class` |
+| `ward:javascript/no-empty-character-class` | problem | standard, strict | none | ESLint `no-empty-character-class` |
+| `ward:typescript/no-empty-static-block` | suggestion | standard, strict | none | ESLint `no-empty-static-block` |
+| `ward:javascript/no-empty-static-block` | suggestion | standard, strict | none | ESLint `no-empty-static-block` |
+| `ward:javascript/no-global-assign` | suggestion | standard, strict | none | ESLint `no-global-assign`; Biome `noGlobalAssign` |
+| `ward:typescript/no-new-native-nonconstructor` | problem | standard, strict | none | ESLint `no-new-native-nonconstructor` |
+| `ward:javascript/no-new-native-nonconstructor` | problem | standard, strict | none | ESLint `no-new-native-nonconstructor` |
+| `ward:typescript/no-obj-calls` | problem | standard, strict | none | ESLint `no-obj-calls` |
+| `ward:javascript/no-obj-calls` | problem | standard, strict | none | ESLint `no-obj-calls` |
+| `ward:javascript/no-octal` | suggestion | standard, strict | none | ESLint `no-octal` |
+| `ward:typescript/no-prototype-builtins` | problem | standard, strict | none | ESLint `no-prototype-builtins`; Biome `noPrototypeBuiltins` |
+| `ward:javascript/no-prototype-builtins` | problem | standard, strict | none | ESLint `no-prototype-builtins`; Biome `noPrototypeBuiltins` |
+| `ward:typescript/no-regex-spaces` | suggestion | standard, strict | none | ESLint `no-regex-spaces` |
+| `ward:javascript/no-regex-spaces` | suggestion | standard, strict | none | ESLint `no-regex-spaces` |
+| `ward:typescript/no-self-assign` | problem | standard, strict | none | ESLint `no-self-assign`; Biome `noSelfAssign` |
+| `ward:javascript/no-self-assign` | problem | standard, strict | none | ESLint `no-self-assign`; Biome `noSelfAssign` |
+| `ward:typescript/no-shadow-restricted-names` | suggestion | standard, strict | none | ESLint `no-shadow-restricted-names`; Biome `noShadowRestrictedNames` |
+| `ward:javascript/no-shadow-restricted-names` | suggestion | standard, strict | none | ESLint `no-shadow-restricted-names`; Biome `noShadowRestrictedNames` |
+| `ward:typescript/no-sparse-arrays` | problem | standard, strict | none | ESLint `no-sparse-arrays` |
+| `ward:javascript/no-sparse-arrays` | problem | standard, strict | none | ESLint `no-sparse-arrays` |
+| `ward:typescript/no-unsafe-finally` | problem | standard, strict | none | ESLint `no-unsafe-finally`; Biome `noUnsafeFinally` |
+| `ward:javascript/no-unsafe-finally` | problem | standard, strict | none | ESLint `no-unsafe-finally`; Biome `noUnsafeFinally` |
+| `ward:typescript/no-useless-catch` | suggestion | standard, strict | none | ESLint `no-useless-catch`; Biome `noUselessCatch` |
+| `ward:javascript/no-useless-catch` | suggestion | standard, strict | none | ESLint `no-useless-catch`; Biome `noUselessCatch` |
+| `ward:typescript/no-with` | suggestion | standard, strict | none | ESLint `no-with`; Biome `noWith` |
+| `ward:javascript/no-with` | suggestion | standard, strict | none | ESLint `no-with`; Biome `noWith` |
+| `ward:typescript/require-yield` | suggestion | standard, strict | none | ESLint `require-yield` |
+| `ward:javascript/require-yield` | suggestion | standard, strict | none | ESLint `require-yield` |
+| `ward:typescript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan` |
+| `ward:javascript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan` |

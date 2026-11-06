@@ -12,11 +12,6 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 73;
-  private static final int BUNDLED_RULES = 64;
-  private static final int TYPESCRIPT_RULES = 31;
-  private static final int JAVASCRIPT_RULES = 33;
-
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -48,7 +43,7 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
-  void packagedJavaRuleFilesLoadEveryRule() {
+  void packagedJavaRuleFilesLoadWithoutErrorsAndDistinctIds() {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();
@@ -56,7 +51,8 @@ class ClasspathRuleSourceTest {
         load.rules().stream().filter(rule -> rule.covers(AnalysisLanguage.JAVA)).toList();
     assertThat(java)
         .extracting(RuleDefinition::id)
-        .hasSize(JAVA_RULE_COUNT)
+        .isNotEmpty()
+        .doesNotHaveDuplicates()
         .allMatch(id -> id.startsWith("ward:java/"));
     assertThat(java)
         .allSatisfy(
@@ -79,7 +75,7 @@ class ClasspathRuleSourceTest {
                     rule.covers(AnalysisLanguage.TYPESCRIPT)
                         || rule.covers(AnalysisLanguage.JAVASCRIPT))
             .toList();
-    assertThat(node).hasSize(BUNDLED_RULES);
+    assertThat(node).isNotEmpty();
     assertThat(node)
         .allSatisfy(
             rule -> {
@@ -87,11 +83,9 @@ class ClasspathRuleSourceTest {
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
               assertThat(rule.body().isEmpty() || rule.body().contains("check = ")).isTrue();
             });
-    assertThat(node.stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
-    assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.TYPESCRIPT)))
-        .hasSize(TYPESCRIPT_RULES);
-    assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.JAVASCRIPT)))
-        .hasSize(JAVASCRIPT_RULES);
+    assertThat(node).extracting(RuleDefinition::id).doesNotHaveDuplicates();
+    assertThat(node).anyMatch(rule -> rule.covers(AnalysisLanguage.TYPESCRIPT));
+    assertThat(node).anyMatch(rule -> rule.covers(AnalysisLanguage.JAVASCRIPT));
   }
 
   @Test

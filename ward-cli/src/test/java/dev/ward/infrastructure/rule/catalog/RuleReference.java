@@ -35,7 +35,7 @@ final class RuleReference {
                 Collectors.groupingBy(
                     RuleReference::pageName, LinkedHashMap::new, Collectors.toList()));
     final Map<String, String> pages = new LinkedHashMap<>();
-    pages.put(INDEX, index(catalog, definitions, byFile, outOfScope));
+    pages.put(INDEX, index(byFile));
     byFile.forEach(
         (name, rows) ->
             pages.put("reference/rules/" + name + ".mdx", filePage(name, rows, definitions)));
@@ -47,11 +47,7 @@ final class RuleReference {
     return source.substring(source.lastIndexOf('/') + 1, source.length() - ".toml".length());
   }
 
-  private static String index(
-      final RuleCatalog catalog,
-      final List<RuleDefinition> definitions,
-      final Map<String, List<CatalogRow>> byFile,
-      final Map<String, Map<String, String>> outOfScope) {
+  private static String index(final Map<String, List<CatalogRow>> byFile) {
     final List<String> lines = new ArrayList<>();
     lines.addAll(
         frontMatter(
@@ -68,30 +64,21 @@ final class RuleReference {
             + RuleReferenceRows.ISSUES
             + "348) implements it, and `n/a` when the concept does not apply to the language.");
     lines.add("");
-    lines.add("## Rules per tool");
+    lines.add("## Tools");
     lines.add("");
-    lines.add("| Tool | Pinned version | Implemented | Planned | Out of scope |");
-    lines.add("|---|---|---|---|---|");
+    lines.add("| Tool | Pinned version |");
+    lines.add("|---|---|");
     for (final String tool : CatalogTools.ALL) {
-      lines.add(RuleReferenceTools.toolRow(tool, catalog, outOfScope));
-    }
-    lines.add("");
-    lines.add("## Implemented rules");
-    lines.add("");
-    lines.add("| Rule | Category | Presets | Options | Counterparts |");
-    lines.add("|---|---|---|---|---|");
-    for (final CatalogRow row : catalog.rows()) {
-      for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
-        lines.add(RuleReferenceRows.implementedRow(row, language, definitions));
-      }
+      lines.add(RuleReferenceTools.versionRow(tool));
     }
     lines.add("");
     lines.add("## Catalog pages");
     lines.add("");
-    byFile.forEach(
-        (name, rows) ->
-            lines.add(
-                "- [" + name + "](/reference/rules/" + name + "/) (" + rows.size() + " rules)"));
+    lines.add(
+        "Each page lists the rules of one catalog file, the Ward rules implemented for them, and");
+    lines.add("their counterparts in each tool.");
+    lines.add("");
+    byFile.keySet().forEach(name -> lines.add("- [" + name + "](/reference/rules/" + name + "/)"));
     return String.join("\n", lines) + "\n";
   }
 
@@ -108,7 +95,27 @@ final class RuleReference {
     for (final CatalogRow row : rows) {
       lines.add(RuleReferenceRows.fileRow(row, definitions));
     }
+    final List<String> implemented = implementedRows(rows, definitions);
+    if (!implemented.isEmpty()) {
+      lines.add("");
+      lines.add("## Implemented rules");
+      lines.add("");
+      lines.add("| Rule | Category | Presets | Options | Counterparts |");
+      lines.add("|---|---|---|---|---|");
+      lines.addAll(implemented);
+    }
     return String.join("\n", lines) + "\n";
+  }
+
+  private static List<String> implementedRows(
+      final List<CatalogRow> rows, final List<RuleDefinition> definitions) {
+    final List<String> lines = new ArrayList<>();
+    for (final CatalogRow row : rows) {
+      for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
+        lines.add(RuleReferenceRows.implementedRow(row, language, definitions));
+      }
+    }
+    return lines;
   }
 
   private static List<String> frontMatter(final String title, final String description) {

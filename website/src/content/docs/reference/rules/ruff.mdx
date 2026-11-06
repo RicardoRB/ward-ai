@@ -884,3 +884,38 @@ description: Rules of the catalog file ruff and their counterparts.
 | `shared-clock-mock` | preview | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `shared-clock-mock` |
 | `tarfile-ignore-zeros-true` | preview | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `tarfile-ignore-zeros-true` |
 | `unnecessary-regular-expression-compile` | preview | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `unnecessary-regular-expression-compile` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:python/assignment-to-os-environ` | coding | standard, strict | none | Ruff `B003` |
+| `ward:python/unreliable-callable-check` | coding | standard, strict | none | Ruff `B004` |
+| `ward:python/strip-with-multi-characters` | coding | standard, strict | none | Ruff `B005` |
+| `ward:python/mutable-argument-default` | coding | standard, strict | none | Ruff `B006` |
+| `ward:python/function-call-in-default-argument` | coding | standard, strict | none | Ruff `B008` |
+| `ward:python/get-attr-with-constant` | coding | standard, strict | none | Ruff `B009` |
+| `ward:python/set-attr-with-constant` | coding | standard, strict | none | Ruff `B010` |
+| `ward:python/redundant-tuple-in-exception-handler` | coding | standard, strict | none | Ruff `B013` |
+| `ward:python/raise-literal` | coding | standard, strict | none | Ruff `B016` |
+| `ward:python/assert-raises-exception` | coding | standard, strict | none | Ruff `B017` |
+| `ward:python/useless-contextlib-suppress` | coding | standard, strict | none | Ruff `B022` |
+| `ward:python/star-arg-unpacking-after-keyword-arg` | coding | standard, strict | none | Ruff `B026` |
+| `ward:python/no-explicit-stacklevel` | coding | standard, strict | none | Ruff `B028` |
+| `ward:python/except-with-empty-tuple` | coding | standard, strict | none | Ruff `B029` |
+| `ward:python/re-sub-positional-args` | coding | standard, strict | none | Ruff `B034` |
+| `ward:python/zip-without-explicit-strict` | coding | standard, strict | none | Ruff `B905` |
+| `ward:python/multiple-imports-on-one-line` | imports | standard, strict | none | Ruff `E401` |
+| `ward:python/none-comparison` | coding | standard, strict | none | Ruff `E711` |
+| `ward:python/true-false-comparison` | coding | standard, strict | none | Ruff `E712` |
+| `ward:python/type-comparison` | coding | standard, strict | none | Ruff `E721` |
+| `ward:python/bare-except` | coding | standard, strict | none | Ruff `E722`; Pylint `bare-except` |
+| `ward:python/lambda-assignment` | coding | standard, strict | none | Ruff `E731` |
+| `ward:python/ambiguous-variable-name` | naming | standard, strict | none | Ruff `E741` |
+| `ward:python/ambiguous-class-name` | naming | standard, strict | none | Ruff `E742` |
+| `ward:python/ambiguous-function-name` | naming | standard, strict | none | Ruff `E743` |
+| `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
+| `ward:python/f-string-missing-placeholders` | coding | standard, strict | none | Ruff `F541` |
+| `ward:python/assert-tuple` | coding | standard, strict | none | Ruff `F631` |
+| `ward:python/if-tuple` | coding | standard, strict | none | Ruff `F634` |
+| `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |

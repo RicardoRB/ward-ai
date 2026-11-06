@@ -44,3 +44,9 @@ description: Rules of the catalog file checkstyle-javadoc and their counterparts
 | `single-line-javadoc` | javadoc | [#291](https://github.com/RicardoRB/ward-ai/issues/291) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | n/a | n/a | Checkstyle `SingleLineJavadoc` |
 | `summary-javadoc` | javadoc | [#291](https://github.com/RicardoRB/ward-ai/issues/291) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `SummaryJavadoc` |
 | `write-tag` | javadoc | [#292](https://github.com/RicardoRB/ward-ai/issues/292) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | n/a | n/a | Checkstyle `WriteTag` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/missing-javadoc` | javadoc | standard, strict | none | Checkstyle `MissingJavadocMethod`; PMD `CommentRequired`; Error Prone `MissingJavadoc`; Ruff `D102`, `D103`; SwiftLint `missing_docs`; detekt `UndocumentedPublicFunction` |
