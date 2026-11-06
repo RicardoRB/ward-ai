@@ -57,12 +57,17 @@ class RuleCatalogFixturesTest {
     final RuleFixtureRunner runner = new RuleFixtureRunner();
     final List<String> problems = new ArrayList<>();
     for (final String caseName : fixtures.cases()) {
-      final RuleDefinition tuned = RuleOptions.apply(rule, fixtures.options(caseName));
+      final RuleDefinition configured = RuleOptions.apply(rule, fixtures.options(caseName));
       problems.addAll(
           check(
-              runner, tuned, fixtures.violating(caseName), fixtures.expected(caseName), typeFacts));
+              runner,
+              configured,
+              fixtures.violating(caseName),
+              fixtures.expected(caseName),
+              typeFacts));
       if (Files.isRegularFile(fixtures.passing(caseName))) {
-        problems.addAll(check(runner, tuned, fixtures.passing(caseName), List.of(), typeFacts));
+        problems.addAll(
+            check(runner, configured, fixtures.passing(caseName), List.of(), typeFacts));
       }
     }
     assertThat(problems).isEmpty();

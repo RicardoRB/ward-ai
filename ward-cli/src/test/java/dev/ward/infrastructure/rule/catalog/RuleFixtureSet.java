@@ -106,8 +106,8 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
   }
 
   /**
-   * Returns the option values of {@code caseName}, read from {@code options<suffix>.toml}; empty
-   * when the case runs with the rule's defaults.
+   * Returns the option values of {@code caseName} from its {@code options-<case>.toml}, as {@link
+   * dev.ward.analysis.domain.rule.RuleOptions#apply} takes them; empty when the case has none.
    */
   Map<String, Object> options(final String caseName) {
     final Path file = directory.resolve("options" + suffix(caseName) + ".toml");
@@ -117,7 +117,9 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
     try {
       final TomlParseResult toml = Toml.parse(Files.readString(file, StandardCharsets.UTF_8));
       final Map<String, Object> values = new LinkedHashMap<>();
-      toml.keySet().forEach(key -> values.put(key, plain(toml.get(key))));
+      for (final String key : toml.keySet()) {
+        values.put(key, plain(toml.get(key)));
+      }
       return values;
     } catch (final IOException exception) {
       throw new UncheckedIOException("missing " + file, exception);

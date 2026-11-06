@@ -15,6 +15,7 @@ status = { java = "implemented", kotlin = "planned", typescript = "planned", jav
 issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 ids = { java = "ward:java/star-import" }
 detekt = ["WildcardImport"]
+pmd = ["OnDemandImport"]
 checkstyle = ["AvoidStarImport"]
 ktlint = ["no-wildcard-imports"]
 ruff = ["F403"]
