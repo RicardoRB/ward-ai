@@ -42,7 +42,7 @@ options {
 }
 
 compilationunit
-    : packageDeclaration? (importDeclaration | ';')* (typeDeclaration | ';')* EOF
+    : packageDeclaration? (importDeclaration | ';')* (typeDeclaration | classBodyDeclaration | ';')* EOF
     | modularCompulationUnit EOF
     ;
 
@@ -681,7 +681,7 @@ expression
     ;
 
 pattern
-    : variableModifier* typeType annotation* variableDeclarators
+    : variableModifier* (typeType | VAR) annotation* variableDeclarators
     | typeType '(' componentPatternList? ')'
     ;
 
