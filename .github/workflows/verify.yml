@@ -581,7 +581,7 @@ jobs:
         run: >-
           ./mvnw -B
           -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest
+          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest,NativeFormatSmokeTest
           -Dward.native.binary=target/ward
           test
 

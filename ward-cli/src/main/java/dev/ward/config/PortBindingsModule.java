@@ -11,6 +11,8 @@ import dagger.Module;
       ProvenanceBindingsModule.class,
       GateBindingsModule.class,
       GateExtensionBindingsModule.class,
+      GateExtensionsModule.class,
+      FormatterBindingsModule.class,
       ReportBindingsModule.class
     })
 interface PortBindingsModule {}

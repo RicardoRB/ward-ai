@@ -2,6 +2,7 @@ package dev.ward.domain.format;
 
 import dev.ward.analysis.domain.format.FormatOptions;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  * The resolved formatting settings of one file.
@@ -22,5 +23,14 @@ public record FormatSettings(
   public FormatSettings {
     Objects.requireNonNull(layout, "layout");
     Objects.requireNonNull(options, "options");
+  }
+
+  /**
+   * Describes every setting that changes the output, in a fixed order, for the analysis cache key.
+   *
+   * @return the description
+   */
+  public String fingerprint() {
+    return enabled + "|" + new TreeMap<>(options.values()) + "|" + maxBlankLines + "|" + layout;
   }
 }

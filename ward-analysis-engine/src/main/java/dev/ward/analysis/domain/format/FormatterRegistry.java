@@ -8,21 +8,21 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-/** The formatter for each language, immutable after construction. */
+/** The formatter and its parser for each language, immutable after construction. */
 public final class FormatterRegistry {
 
-  private final Map<AnalysisLanguage, SourceFormatter> formatters;
+  private final Map<AnalysisLanguage, FormatterEntry> formatters;
 
   /**
-   * Copies the formatters, keyed by the language each one handles.
+   * Copies the entries, keyed by the language each formatter handles.
    *
-   * @param formatters the formatters by language
+   * @param formatters the formatters and parsers by language
    * @throws NullPointerException if the map or a key or value is missing
    * @throws IllegalArgumentException if a formatter handles a different language than its key
    */
-  public FormatterRegistry(final Map<AnalysisLanguage, SourceFormatter> formatters) {
-    final Map<AnalysisLanguage, SourceFormatter> copy = new EnumMap<>(AnalysisLanguage.class);
-    for (final Map.Entry<AnalysisLanguage, SourceFormatter> entry : formatters.entrySet()) {
+  public FormatterRegistry(final Map<AnalysisLanguage, FormatterEntry> formatters) {
+    final Map<AnalysisLanguage, FormatterEntry> copy = new EnumMap<>(AnalysisLanguage.class);
+    for (final Map.Entry<AnalysisLanguage, FormatterEntry> entry : formatters.entrySet()) {
       copy.put(entry.getKey(), checkLanguage(entry.getKey(), entry.getValue()));
     }
     this.formatters = Collections.unmodifiableMap(copy);
@@ -34,7 +34,7 @@ public final class FormatterRegistry {
    * @param language the language
    * @return the formatter, or empty when the language has none
    */
-  public Optional<SourceFormatter> find(final AnalysisLanguage language) {
+  public Optional<FormatterEntry> find(final AnalysisLanguage language) {
     return Optional.ofNullable(formatters.get(Objects.requireNonNull(language, "language")));
   }
 
@@ -47,14 +47,14 @@ public final class FormatterRegistry {
     return formatters.keySet();
   }
 
-  private static SourceFormatter checkLanguage(
-      final AnalysisLanguage key, final SourceFormatter formatter) {
+  private static FormatterEntry checkLanguage(
+      final AnalysisLanguage key, final FormatterEntry entry) {
     Objects.requireNonNull(key, "language");
-    Objects.requireNonNull(formatter, "formatter");
-    if (formatter.language() != key) {
+    Objects.requireNonNull(entry, "entry");
+    if (entry.formatter().language() != key) {
       throw new IllegalArgumentException(
-          "formatter for " + key + " handles " + formatter.language());
+          "formatter for " + key + " handles " + entry.formatter().language());
     }
-    return formatter;
+    return entry;
   }
 }

@@ -34,6 +34,8 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
+          "dev.ward.config.GateExtensionsModule",
+          "dev.ward.config.FormatterBindingsModule",
           "dev.ward.config.ReportBindingsModule",
           "dev.ward.config.WardProvidesModule");
 
@@ -80,6 +82,7 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
       Map.ofEntries(
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
+          Map.entry("format", Set.of()),
           Map.entry(
               "gate",
               Set.of(
@@ -87,7 +90,10 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
                   "dev.ward.application.traceability.TraceabilityPolicy",
-                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate")),
+                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
+                  "dev.ward.application.format.FormatService",
+                  "dev.ward.application.format.FormatFileOutcome",
+                  "dev.ward.application.format.FormatFileOutcome$Verdict")),
           Map.entry(
               "init",
               Set.of(

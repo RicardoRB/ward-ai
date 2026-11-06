@@ -2,8 +2,6 @@ package dev.ward.application.gate;
 
 import dev.ward.application.gate.jvm.MavenTestGate;
 import dev.ward.application.gate.openapi.OpenApiCommandValidation;
-import dev.ward.application.gate.openapi.OpenApiGates;
-import dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate;
 import dev.ward.application.gate.openspec.OpenSpecQualityGate;
 import dev.ward.application.gate.swift.SwiftGates;
 import dev.ward.domain.config.GateConfiguration;
@@ -29,6 +27,8 @@ import javax.inject.Inject;
 /** Resolves the typed built-in gate registry in stable configuration order. */
 public class QualityGateFactory {
   private static final String ZAP = "zap";
+  private static final Set<String> IN_PROCESS_GATES =
+      Set.of(SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -55,15 +55,13 @@ public class QualityGateFactory {
 
   private final CommandExecutor executor;
   private final EnvironmentInspection environment;
-  private final ScenarioInventory scenarioInventory;
-  private final TestMappingInventory testMappingInventory;
+  private final TraceabilitySources traceability;
   private final ReportDirectories reportDirectories;
-  private final OpenApiGates openApiGates;
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
   private final MutationReport mutmutReport;
   private final GateReportPorts reports;
-  private final AnalysisPorts analysis;
+  private final GateExtensions extensions;
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
@@ -122,11 +120,8 @@ public class QualityGateFactory {
     this.reports = reports;
     this.executor = executor;
     this.environment = environment;
-    this.scenarioInventory = traceability.scenarios();
-    this.testMappingInventory = traceability.mappings();
-    final GateExtensions parts = extensions == null ? GateExtensions.NONE : extensions;
-    this.openApiGates = parts.openApi();
-    this.analysis = parts.analysis();
+    this.traceability = traceability;
+    this.extensions = extensions == null ? GateExtensions.NONE : extensions;
   }
 
   /** Creates one gate per configured ID, without project-specific commands. */
@@ -184,8 +179,8 @@ public class QualityGateFactory {
       final GateConfiguration check, final Project project, final List<String> focus) {
     final String name = check.name();
     final String type = check.type();
-    if (SupportedQualityGates.ANALYSIS.equals(type)) {
-      return AnalysisGates.create(check, analysis, focus);
+    if (IN_PROCESS_GATES.contains(type)) {
+      return inProcessGate(check, focus);
     }
     if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null
@@ -195,8 +190,8 @@ public class QualityGateFactory {
     if (MavenTestGate.NAME.equals(type)) {
       return new MavenTestGate(executor, testsCommand(check.command(), project));
     }
-    if (OpenSpecJunitTraceabilityGate.NAME.equals(type)) {
-      return traceabilityGate();
+    if (SupportedQualityGates.TRACEABILITY.equals(type)) {
+      return traceability.gate();
     }
     if (ZAP.equals(type)) {
       ZapTargetValidation.require(name, check.command());
@@ -243,20 +238,26 @@ public class QualityGateFactory {
         command, report, check.minimum(), MUTATION_REPORT_HINTS.get(check.type()));
   }
 
+  /**
+   * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
+   */
+  private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (!SupportedQualityGates.FORMAT.equals(check.type())) {
+      return AnalysisGates.create(check, extensions.analysis(), focus);
+    }
+    if (extensions.format() == null) {
+      throw new WardException("Format gate dependencies are unavailable.");
+    }
+    return extensions.format().create(check.name(), focus);
+  }
+
   private QualityGate openApiGate(
       final String name, final GateConfiguration check, final Project project) {
-    if (openApiGates == null) {
+    if (extensions.openApi() == null) {
       OpenApiCommandValidation.require(name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
-    return openApiGates.create(name, check, project);
-  }
-
-  private QualityGate traceabilityGate() {
-    if (scenarioInventory == null || testMappingInventory == null) {
-      throw new WardException("Traceability gate dependencies are unavailable.");
-    }
-    return new OpenSpecJunitTraceabilityGate(scenarioInventory, testMappingInventory);
+    return extensions.openApi().create(name, check, project);
   }
 
   private static List<String> testsCommand(final List<String> configured, final Project project) {

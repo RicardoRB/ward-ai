@@ -14,8 +14,6 @@ import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
-import dev.ward.application.gate.GateExtensions;
-import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
@@ -95,10 +93,5 @@ interface GateExtensionBindingsModule {
                 new SwiftDependencyAdapters(),
                 new JvmDependencyAdapters())),
         projectRoot -> TypeSidecarBindings.forProject(projectRoot, wardVersion));
-  }
-
-  @Provides
-  static GateExtensions gateExtensions(final OpenApiGates openApi, final AnalysisPorts analysis) {
-    return new GateExtensions(openApi, analysis);
   }
 }
