@@ -18,6 +18,8 @@ import java.util.Optional;
 final class PythonExpressionTypes {
 
   private static final int MAX_DEPTH = 8;
+  private static final int SINGLE_PART = 1;
+  private static final int PAIR_PARTS = 2;
   private static final int TYPED_PARAMETER_PARTS = 3;
   private static final String AWAIT = "await";
   private static final String ATTRIBUTE = ".";
@@ -164,7 +166,7 @@ final class PythonExpressionTypes {
 
   private Subject atom(final SyntaxNode node, final int depth) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 1) {
+    if (parts.size() == SINGLE_PART) {
       return evaluate(parts.get(0), depth + 1);
     }
     if (parts.stream().allMatch(part -> PythonTypeKinds.STRING.equals(part.kind()))) {
@@ -181,7 +183,7 @@ final class PythonExpressionTypes {
   }
 
   private Subject parenthesized(final List<SyntaxNode> parts, final int depth) {
-    if (parts.size() == 2) {
+    if (parts.size() == PAIR_PARTS) {
       return builtinValue(TUPLE);
     }
     final SyntaxNode inner = parts.get(1);
@@ -199,7 +201,7 @@ final class PythonExpressionTypes {
   }
 
   private Subject braces(final List<SyntaxNode> parts) {
-    if (parts.size() == 2) {
+    if (parts.size() == PAIR_PARTS) {
       return builtinValue(DICT);
     }
     final boolean mapping =

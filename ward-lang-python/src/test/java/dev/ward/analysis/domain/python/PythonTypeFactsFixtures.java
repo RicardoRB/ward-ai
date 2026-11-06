@@ -26,6 +26,8 @@ final class PythonTypeFactsFixtures {
   private static final String STUB_PREFIX = "/dev/ward/analysis/lang/python/stubs/";
   private static final String FILE = "m.py";
 
+  private static final Set<String> EXPRESSION_KINDS =
+      Set.of("atom_expr", "atom", "NUMBER", "STRING", "NAME");
   private static final AntlrLanguageFrontend FRONTEND = new AntlrLanguageFrontend();
 
   private PythonTypeFactsFixtures() {}
@@ -77,9 +79,6 @@ final class PythonTypeFactsFixtures {
         .orElseThrow(() -> new AssertionError("no node for " + snippet))
         .span();
   }
-
-  private static final Set<String> EXPRESSION_KINDS =
-      Set.of("atom_expr", "atom", "NUMBER", "STRING", "NAME");
 
   private static Optional<SyntaxNode> find(final SyntaxNode node, final int start, final int end) {
     if (node.span().startOffset() == start

@@ -27,7 +27,6 @@ record PythonDeclarations(
 
   private static final String COMMENT = PythonTypeKinds.COMMENT;
   private static final String EQUALS = "=";
-  private static final String COLON = ":";
   private static final int ANNOTATION_INDEX = 2;
   private static final int PARAMETER_PARTS = 3;
   private static final int ASSIGNMENT_PARTS = 3;

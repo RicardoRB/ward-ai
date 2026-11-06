@@ -38,4 +38,17 @@ class PythonStubTypeFactsTest {
   private static String type(final String source, final String snippet) {
     return facts(source, snippet, TYPE).type().name();
   }
+
+  @Test
+  void projectStubGivesTheReturnTypeOfAnImportedFunction() {
+    assertThat(facts("import helpers\nx = helpers.make()\n", "helpers.make()", TYPE).type().name())
+        .isEqualTo("str");
+  }
+
+  @Test
+  void projectStubGivesTheReturnTypeOfAMethodOfAnImportedClass() {
+    final String source = "from helpers import Pool\ndef f(p: Pool):\n    p.size()\n";
+
+    assertThat(facts(source, "p.size()", TYPE).type().name()).isEqualTo("int");
+  }
 }

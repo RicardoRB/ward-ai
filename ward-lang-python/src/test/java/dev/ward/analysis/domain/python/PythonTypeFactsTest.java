@@ -4,6 +4,7 @@ import static dev.ward.analysis.domain.python.PythonTypeFactsFixtures.facts;
 import static dev.ward.analysis.domain.python.PythonTypeFactsFixtures.stubs;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.Map;
@@ -20,7 +21,7 @@ class PythonTypeFactsTest {
   void annotatedParameterCallTargetResolvesToBuiltinListAppend() {
     final String source = "def f(items: list[str]):\n    items.append(1)\n";
 
-    final var target = facts(source, "items.append(1)", CALL).call();
+    final CallTarget target = facts(source, "items.append(1)", CALL).call();
 
     assertThat(target.declaringType().name()).isEqualTo("list");
     assertThat(target.name()).isEqualTo("append");
@@ -29,7 +30,7 @@ class PythonTypeFactsTest {
 
   @Test
   void annotatedParameterTypeKeepsItsArguments() {
-    final var type = facts("def f(items: list[str]):\n    items\n", "items", TYPE).type();
+    final TypeRef type = facts("def f(items: list[str]):\n    items\n", "items", TYPE).type();
 
     assertThat(type.name()).isEqualTo("list");
     assertThat(type.arguments()).containsExactly(TypeRef.of("str"));
@@ -37,7 +38,7 @@ class PythonTypeFactsTest {
 
   @Test
   void localInitializedOnceIsInferredFromItsInitializer() {
-    final var target = facts("s = []\ns.append(1)\n", "s.append(1)", CALL).call();
+    final CallTarget target = facts("s = []\ns.append(1)\n", "s.append(1)", CALL).call();
 
     assertThat(target.declaringType().name()).isEqualTo("list");
   }
@@ -67,21 +68,8 @@ class PythonTypeFactsTest {
   }
 
   @Test
-  void projectStubGivesTheReturnTypeOfAnImportedFunction() {
-    assertThat(facts("import helpers\nx = helpers.make()\n", "helpers.make()", TYPE).type().name())
-        .isEqualTo("str");
-  }
-
-  @Test
-  void projectStubGivesTheReturnTypeOfAMethodOfAnImportedClass() {
-    final String source = "from helpers import Pool\ndef f(p: Pool):\n    p.size()\n";
-
-    assertThat(facts(source, "p.size()", TYPE).type().name()).isEqualTo("int");
-  }
-
-  @Test
   void bundledStandardModuleStubGivesTheCallTarget() {
-    final var target = facts("import json\njson.dumps(1)\n", "json.dumps(1)", CALL).call();
+    final CallTarget target = facts("import json\njson.dumps(1)\n", "json.dumps(1)", CALL).call();
 
     assertThat(target.declaringType().name()).isEqualTo("json");
     assertThat(target.name()).isEqualTo("dumps");
@@ -90,7 +78,7 @@ class PythonTypeFactsTest {
 
   @Test
   void stubDeclaredTwiceIsUnknown() {
-    final var stubs = stubs(Map.of("twice", "def f() -> int: ...\ndef f() -> str: ...\n"));
+    final PythonStubs stubs = stubs(Map.of("twice", "def f() -> int: ...\ndef f() -> str: ...\n"));
 
     assertThat(facts(stubs, "import twice\ntwice.f()\n", "twice.f()", TYPE).type()).isNull();
   }
