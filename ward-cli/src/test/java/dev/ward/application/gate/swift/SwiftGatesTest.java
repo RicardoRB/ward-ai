@@ -76,6 +76,7 @@ class SwiftGatesTest {
         null,
         List.of(),
         null,
+        null,
         null);
   }
 

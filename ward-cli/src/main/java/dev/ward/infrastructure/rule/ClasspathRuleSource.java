@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import javax.inject.Inject;
 import org.tomlj.Toml;
 import org.tomlj.TomlArray;
@@ -137,10 +138,13 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
       definition =
           new RuleDefinition(
               text(resource, table, ID),
-              language,
+              Set.of(language),
               capability,
               severity,
-              text(resource, table, BODY));
+              text(resource, table, BODY),
+              RuleRowMetadata.category(table),
+              RuleRowMetadata.presets(table),
+              RuleRowMetadata.options(table));
     } catch (final IllegalArgumentException exception) {
       throw RuleFileProblems.problem(resource, exception.getMessage(), exception);
     }

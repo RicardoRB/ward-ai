@@ -6,6 +6,9 @@ id = "ward:typescript/function-length"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -13,6 +16,9 @@ id = "ward:typescript/parameter-count"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = ""
 
 [[rules]]
@@ -20,6 +26,9 @@ id = "ward:typescript/complexity"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -27,6 +36,9 @@ id = "ward:typescript/file-length"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -34,6 +46,8 @@ id = "ward:typescript/naming"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -41,6 +55,9 @@ id = "ward:typescript/nesting-depth"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -48,6 +65,9 @@ id = "ward:javascript/function-length"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -55,6 +75,9 @@ id = "ward:javascript/parameter-count"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = ""
 
 [[rules]]
@@ -62,6 +85,9 @@ id = "ward:javascript/complexity"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -69,6 +95,9 @@ id = "ward:javascript/file-length"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -76,6 +105,8 @@ id = "ward:javascript/naming"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -83,6 +114,9 @@ id = "ward:javascript/nesting-depth"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
 body = ""
 
 [[rules]]
@@ -90,6 +124,8 @@ id = "ward:typescript/unused-assignment"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -97,6 +133,8 @@ id = "ward:javascript/unused-assignment"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
 body = ""
 
 [[rules]]
@@ -104,6 +142,8 @@ id = "ward:typescript/command-injection"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/command.toml"]
@@ -115,6 +155,8 @@ id = "ward:javascript/command-injection"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/command.toml"]
@@ -126,6 +168,8 @@ id = "ward:typescript/path-traversal"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/path.toml"]
@@ -137,6 +181,8 @@ id = "ward:javascript/path-traversal"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/path.toml"]
@@ -148,6 +194,8 @@ id = "ward:typescript/xss"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
@@ -159,6 +207,8 @@ id = "ward:javascript/xss"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
 body = '''
 check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/xss.toml"]

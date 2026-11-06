@@ -25,6 +25,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.ProjectBindingsModule",
           "dev.ward.config.InitBindingsModule",
           "dev.ward.config.BuildToolBindingsModule",
+          "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
@@ -104,7 +105,13 @@ final class ArchitectureBoundarySupport {
               Set.of(
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectNotFoundException")),
-          Map.entry("doctor", Set.of("dev.ward.application.project.ProjectDetector")),
+          Map.entry(
+              "doctor",
+              Set.of(
+                  "dev.ward.application.project.ProjectDetector",
+                  "dev.ward.application.gate.AnalysisRuleSource",
+                  "dev.ward.application.gate.RuleConfigurationCheck",
+                  "dev.ward.application.gate.RuleSet")),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),

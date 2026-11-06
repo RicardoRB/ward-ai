@@ -21,9 +21,9 @@ import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
-import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
+import dev.ward.infrastructure.rule.ProjectRuleSource;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Named;
@@ -35,7 +35,7 @@ interface GateExtensionBindingsModule {
   String CACHE_DIRECTORY = ".ward/cache/analysis";
 
   @Binds
-  AnalysisRuleSource analysisRuleSource(ClasspathRuleSource implementation);
+  AnalysisRuleSource analysisRuleSource(ProjectRuleSource implementation);
 
   @Binds
   AnalysisSourceUnits analysisSourceUnits(FileSystemSourceUnits implementation);

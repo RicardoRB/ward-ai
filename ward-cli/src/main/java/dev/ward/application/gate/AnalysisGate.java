@@ -36,7 +36,7 @@ public final class AnalysisGate implements QualityGate {
   private static final String TOOL = "ward";
 
   private final String name;
-  private final List<RuleDefinition> rules;
+  private final RuleSetup setup;
   private final AnalysisPorts ports;
   private final String javaClasspath;
   private final List<String> focus;
@@ -70,8 +70,21 @@ public final class AnalysisGate implements QualityGate {
       final AnalysisPorts ports,
       final String javaClasspath,
       final List<String> focus) {
+    this(name, root -> RuleSet.of(rules), ports, javaClasspath, focus);
+  }
+
+  /**
+   * Creates the gate that chooses its rules with {@code setup} once the project root is known. A
+   * set with problems ends the run with an execution error, and no rule runs.
+   */
+  public AnalysisGate(
+      final String name,
+      final RuleSetup setup,
+      final AnalysisPorts ports,
+      final String javaClasspath,
+      final List<String> focus) {
     this.name = name;
-    this.rules = List.copyOf(rules);
+    this.setup = setup;
     this.ports = ports;
     this.javaClasspath = javaClasspath;
     this.focus = List.copyOf(focus);
@@ -84,6 +97,11 @@ public final class AnalysisGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project) {
+    final RuleSet set = setup.resolve(project.root());
+    if (!set.problems().isEmpty()) {
+      return configurationError(set.problems());
+    }
+    final List<RuleDefinition> rules = set.rules();
     final Set<AnalysisLanguage> languages =
         ports.frontends().stream()
             .map(FrontendSupport::language)
@@ -101,7 +119,7 @@ public final class AnalysisGate implements QualityGate {
     try (TypeSidecarRun types = new TypeSidecarRun(ports.typeSidecars().apply(project.root()))) {
       final UnitResultCache.CachedRun run =
           results.analyze(cache, units, types.withTypes(ports.frontends(), rules), rules);
-      return result(focused(run));
+      return result(focused(ExcludedFindings.drop(run, set), rules), rules);
     }
   }
 
@@ -109,7 +127,8 @@ public final class AnalysisGate implements QualityGate {
    * Keeps the findings that touch the focus. Execution errors and rules that did not run stay, so
    * unanalyzed code is still never a pass, even when it lies outside the changed files.
    */
-  private RuleRunResult focused(final UnitResultCache.CachedRun cached) {
+  private RuleRunResult focused(
+      final UnitResultCache.CachedRun cached, final List<RuleDefinition> rules) {
     final RuleRunResult run = cached.result();
     if (focus.isEmpty()) {
       return run;
@@ -129,7 +148,14 @@ public final class AnalysisGate implements QualityGate {
     return new RuleRunResult(kept, run.executionErrors(), run.notRun());
   }
 
-  private GateResult result(final RuleRunResult run) {
+  private GateResult configurationError(final List<String> problems) {
+    return GateResult.builder(name, GateStatus.EXECUTION_ERROR)
+        .summary(problems.size() + " rule configuration error(s)")
+        .stderr(String.join("\n", problems))
+        .build();
+  }
+
+  private GateResult result(final RuleRunResult run, final List<RuleDefinition> rules) {
     final List<Finding> findings =
         run.findings().stream()
             .map(finding -> AnalysisFindingMapper.toFinding(name, TOOL, finding))
@@ -137,7 +163,7 @@ public final class AnalysisGate implements QualityGate {
     final int errors = countOf(findings, FindingSeverity.ERROR);
     final int warnings = countOf(findings, FindingSeverity.WARNING);
     return GateResult.builder(name, status(run, errors))
-        .summary(summary(run, findings))
+        .summary(summary(run, findings, rules))
         .stderr(details(run))
         .errors(errors)
         .warnings(warnings)
@@ -156,7 +182,8 @@ public final class AnalysisGate implements QualityGate {
     return errors > 0 ? GateStatus.FAILED : GateStatus.PASSED;
   }
 
-  private String summary(final RuleRunResult run, final List<Finding> findings) {
+  private static String summary(
+      final RuleRunResult run, final List<Finding> findings, final List<RuleDefinition> rules) {
     if (!run.executionErrors().isEmpty()) {
       return run.executionErrors().size() + " analysis error(s)";
     }

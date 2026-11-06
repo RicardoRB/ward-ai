@@ -64,6 +64,7 @@ class WardPartialPlanTest {
             null,
             List.of(),
             null,
+            null,
             null);
     return PartialCheckPlan.create(
             PartialPlans.ROOT,
