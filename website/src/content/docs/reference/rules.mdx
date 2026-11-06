@@ -11,7 +11,7 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 
 | Tool | Pinned version | Implemented | Planned | Out of scope |
 |---|---|---|---|---|
-| Checkstyle | 14.3.0 | 12 | 195 | 40 |
+| Checkstyle | 14.3.0 | 29 | 178 | 40 |
 | PMD | 7.29.0 | 10 | 293 | 23 |
 | SpotBugs | 4.9.7 | 7 | 499 | 0 |
 | Error Prone | 2.52.0 | 2 | 649 | 0 |
@@ -21,11 +21,11 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 | typescript-eslint | 8.72.1 | 0 | 127 | 9 |
 | angular-eslint | 22.6.0 | 0 | 51 | 42 |
 | Biome | 2.5.15 | 1 | 466 | 90 |
-| Ruff | 0.17.4 | 10 | 890 | 57 |
+| Ruff | 0.17.4 | 11 | 889 | 57 |
 | Pylint | 4.1.3 | 2 | 414 | 21 |
 | SwiftLint | 0.65.1 | 8 | 216 | 33 |
-| detekt | 1.23.8 | 11 | 199 | 0 |
-| ktlint | 1.8.0 | 4 | 20 | 75 |
+| detekt | 1.23.8 | 13 | 197 | 0 |
+| ktlint | 1.8.0 | 6 | 18 | 75 |
 | Android Lint | 32.5.1 | 0 | 496 | 13 |
 | knip | 6.44.1 | 0 | 17 | 0 |
 | vulture | 2.16 | 0 | 8 | 0 |
@@ -47,12 +47,29 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 | `ward:javascript/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
 | `ward:python/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
 | `ward:swift/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:java/abbreviation-as-word-in-name` | naming | standard, strict | `pattern` | Checkstyle `AbbreviationAsWordInName` |
+| `ward:java/abstract-class-name` | naming | standard, strict | `pattern` | Checkstyle `AbstractClassName`; Ruff `N818` |
+| `ward:java/catch-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `CatchParameterName` |
+| `ward:java/class-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ClassTypeParameterName` |
+| `ward:java/constant-name` | naming | standard, strict | `pattern` | Checkstyle `ConstantName`; detekt `TopLevelPropertyNaming`; ktlint `property-naming` |
+| `ward:java/google-method-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleMethodName` |
+| `ward:java/google-non-constant-field-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleNonConstantFieldName` |
+| `ward:java/illegal-identifier-name` | naming | standard, strict | `pattern` | Checkstyle `IllegalIdentifierName` |
+| `ward:java/interface-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `InterfaceTypeParameterName` |
+| `ward:java/lambda-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `LambdaParameterName` |
+| `ward:java/local-final-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalFinalVariableName` |
 | `ward:java/local-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalVariableName`; PMD `LocalVariableNamingConventions`; Ruff `N806` |
 | `ward:java/member-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
 | `ward:kotlin/property-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
 | `ward:java/method-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
 | `ward:kotlin/function-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
+| `ward:java/method-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `MethodTypeParameterName` |
+| `ward:java/package-name` | naming | standard, strict | `pattern` | Checkstyle `PackageName`; detekt `PackageNaming`; ktlint `package-name` |
 | `ward:java/parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ParameterName`; PMD `FormalParameterNamingConventions`; Error Prone `ParameterName`; Ruff `N803`; detekt `FunctionParameterNaming` |
+| `ward:java/pattern-variable-name` | naming | standard, strict | `pattern` | Checkstyle `PatternVariableName` |
+| `ward:java/record-component-name` | naming | standard, strict | `pattern` | Checkstyle `RecordComponentName` |
+| `ward:java/record-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `RecordTypeParameterName` |
+| `ward:java/static-variable-name` | naming | standard, strict | `pattern` | Checkstyle `StaticVariableName` |
 | `ward:java/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
 | `ward:kotlin/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
 | `ward:java/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |

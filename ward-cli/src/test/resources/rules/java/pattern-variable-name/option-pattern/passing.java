@@ -1,5 +1,8 @@
 class Patterns {
-  boolean check(Object o) {
-    return o instanceof String s && s.isEmpty();
+  int check(Object o) {
+    return switch (o) {
+      case String s -> 1;
+      default -> 0;
+    };
   }
 }

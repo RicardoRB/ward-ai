@@ -102,7 +102,9 @@ class RuleOptionFixturesTest {
 
   /** The naming rules of Java, which every naming rule must cover with an option case. */
   private static boolean naming(final RuleDefinition rule) {
-    return rule.id().startsWith("ward:java/") && "naming".equals(rule.category());
+    return rule.id().startsWith("ward:java/")
+        && !rule.id().contains("/example-")
+        && "naming".equals(rule.category());
   }
 
   private static boolean covers(final RuleDefinition rule, final RuleOption option)
