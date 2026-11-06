@@ -35,28 +35,9 @@ final class RuleReferenceTools {
 
   private RuleReferenceTools() {}
 
-  /** Returns the row of the per-tool count table. */
-  static String toolRow(
-      final String tool,
-      final RuleCatalog catalog,
-      final Map<String, Map<String, String>> outOfScope) {
-    long implemented = 0;
-    long planned = 0;
-    for (final CatalogRow row : catalog.rows()) {
-      final int count = row.counterparts().getOrDefault(tool, List.of()).size();
-      if (row.languages(CatalogStatus.IMPLEMENTED).isEmpty()) {
-        planned += count;
-      } else {
-        implemented += count;
-      }
-    }
-    return String.join(
-        " | ",
-        "| " + TOOL_NAMES.get(tool),
-        UpstreamLists.version(tool),
-        String.valueOf(implemented),
-        String.valueOf(planned),
-        outOfScope.getOrDefault(tool, Map.of()).size() + " |");
+  /** Returns the row of the tool table: the tool's name and its pinned version. */
+  static String versionRow(final String tool) {
+    return "| " + TOOL_NAMES.get(tool) + " | " + UpstreamLists.version(tool) + " |";
   }
 
   static String counterparts(final CatalogRow row) {

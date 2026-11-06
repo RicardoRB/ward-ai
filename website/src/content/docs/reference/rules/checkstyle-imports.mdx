@@ -21,3 +21,10 @@ description: Rules of the catalog file checkstyle-imports and their counterparts
 | `redundant-import` | imports | [#285](https://github.com/RicardoRB/ward-ai/issues/285) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `RedundantImport` |
 | `unnecessary-fully-qualified-type` | imports | [#285](https://github.com/RicardoRB/ward-ai/issues/285) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `UnnecessaryFullyQualifiedType` |
 | `unused-imports` | imports | implemented | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `UnusedImports`; PMD `UnnecessaryImport`; Biome `noUnusedImports`; Ruff `F401`; SwiftLint `unused_import`; detekt `UnusedImports`; ktlint `no-unused-imports` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/star-import` | imports | standard, strict | none | Checkstyle `AvoidStarImport`; PMD `OnDemandImport`; Ruff `F403`; detekt `WildcardImport`; ktlint `no-wildcard-imports` |
+| `ward:java/unused-import` | imports | standard, strict | none | Checkstyle `UnusedImports`; PMD `UnnecessaryImport`; Biome `noUnusedImports`; Ruff `F401`; SwiftLint `unused_import`; detekt `UnusedImports`; ktlint `no-unused-imports` |

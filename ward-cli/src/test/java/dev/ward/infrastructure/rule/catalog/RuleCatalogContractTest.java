@@ -50,8 +50,8 @@ class RuleCatalogContractTest {
   @Test
   void everyImplementedPairHasACategoryPresetsFixturesAndAReferenceEntry() {
     final String reference =
-        RuleReference.pages(catalog, definitions, UpstreamLists.outOfScope())
-            .get(RuleReference.INDEX);
+        String.join(
+            "\n", RuleReference.pages(catalog, definitions, UpstreamLists.outOfScope()).values());
     final Map<String, RuleDefinition> byId = new HashMap<>();
     definitions.forEach(rule -> byId.put(rule.id(), rule));
     for (final CatalogRow row : catalog.rows()) {

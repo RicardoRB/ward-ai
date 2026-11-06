@@ -31,3 +31,33 @@ description: Rules of the catalog file checkstyle-naming and their counterparts.
 | `record-type-parameter-name` | naming | implemented | n/a | n/a | n/a | n/a | n/a | Checkstyle `RecordTypeParameterName` |
 | `static-variable-name` | naming | implemented | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `StaticVariableName` |
 | `type-name` | naming | implemented | implemented | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/abbreviation-as-word-in-name` | naming | standard, strict | `pattern` | Checkstyle `AbbreviationAsWordInName` |
+| `ward:java/abstract-class-name` | naming | standard, strict | `pattern` | Checkstyle `AbstractClassName`; Ruff `N818` |
+| `ward:java/catch-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `CatchParameterName` |
+| `ward:java/class-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ClassTypeParameterName` |
+| `ward:java/constant-name` | naming | standard, strict | `pattern` | Checkstyle `ConstantName`; detekt `TopLevelPropertyNaming`; ktlint `property-naming` |
+| `ward:java/google-method-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleMethodName` |
+| `ward:java/google-non-constant-field-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleNonConstantFieldName` |
+| `ward:java/illegal-identifier-name` | naming | standard, strict | `pattern` | Checkstyle `IllegalIdentifierName` |
+| `ward:java/interface-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `InterfaceTypeParameterName` |
+| `ward:java/lambda-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `LambdaParameterName` |
+| `ward:java/local-final-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalFinalVariableName` |
+| `ward:java/local-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalVariableName`; PMD `LocalVariableNamingConventions`; Ruff `N806` |
+| `ward:java/member-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
+| `ward:kotlin/property-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
+| `ward:java/method-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
+| `ward:kotlin/function-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
+| `ward:java/method-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `MethodTypeParameterName` |
+| `ward:java/package-name` | naming | standard, strict | `pattern` | Checkstyle `PackageName`; detekt `PackageNaming`; ktlint `package-name` |
+| `ward:java/parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ParameterName`; PMD `FormalParameterNamingConventions`; Error Prone `ParameterName`; Ruff `N803`; detekt `FunctionParameterNaming` |
+| `ward:java/pattern-variable-name` | naming | standard, strict | `pattern` | Checkstyle `PatternVariableName` |
+| `ward:java/record-component-name` | naming | standard, strict | `pattern` | Checkstyle `RecordComponentName` |
+| `ward:java/record-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `RecordTypeParameterName` |
+| `ward:java/static-variable-name` | naming | standard, strict | `pattern` | Checkstyle `StaticVariableName` |
+| `ward:java/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
+| `ward:kotlin/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |

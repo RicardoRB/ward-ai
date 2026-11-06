@@ -18,3 +18,29 @@ description: Rules of the catalog file ward-own and their counterparts.
 | `command-injection` | misc | implemented | n/a | implemented | implemented | n/a | n/a | none |
 | `path-traversal` | misc | implemented | n/a | implemented | implemented | n/a | n/a | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
 | `xss` | misc | n/a | n/a | implemented | implemented | n/a | n/a | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
+| `ward:kotlin/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
+| `ward:typescript/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:javascript/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:python/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:swift/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:typescript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
+| `ward:javascript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
+| `ward:swift/type-body-length` | sizes | standard, strict | `max` | SwiftLint `type_body_length` |
+| `ward:java/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:typescript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:javascript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:java/sql-injection` | misc | standard, strict | none | SpotBugs `SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE`, `SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING` |
+| `ward:java/command-injection` | misc | standard, strict | none | none |
+| `ward:typescript/command-injection` | misc | standard, strict | none | none |
+| `ward:javascript/command-injection` | misc | standard, strict | none | none |
+| `ward:java/path-injection` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:typescript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:javascript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:typescript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+| `ward:javascript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |

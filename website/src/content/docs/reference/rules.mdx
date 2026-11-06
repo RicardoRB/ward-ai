@@ -7,278 +7,70 @@ description: Every Ward rule, the rules it replaces in other tools, and what is 
 
 One catalog maps every rule of the tools that Ward replaces to a Ward rule, or lists it as out of scope with a reason. A rule is `implemented` when a rule definition ships for the language, `planned` when a later step of roadmap [#306](https://github.com/RicardoRB/ward-ai/issues/306) or [#348](https://github.com/RicardoRB/ward-ai/issues/348) implements it, and `n/a` when the concept does not apply to the language.
 
-## Rules per tool
+## Tools
 
-| Tool | Pinned version | Implemented | Planned | Out of scope |
-|---|---|---|---|---|
-| Checkstyle | 14.3.0 | 41 | 166 | 40 |
-| PMD | 7.29.0 | 41 | 262 | 23 |
-| SpotBugs | 4.9.7 | 7 | 499 | 0 |
-| Error Prone | 2.52.0 | 3 | 648 | 0 |
-| NullAway | 0.14.3 | 0 | 29 | 0 |
-| Semgrep | 1.181.0 | 0 | 134 | 0 |
-| ESLint | 10.12.0 | 31 | 168 | 93 |
-| typescript-eslint | 8.72.1 | 0 | 127 | 9 |
-| angular-eslint | 22.6.0 | 0 | 51 | 42 |
-| Biome | 2.5.15 | 12 | 455 | 90 |
-| Ruff | 0.17.4 | 43 | 857 | 57 |
-| Pylint | 4.1.3 | 4 | 412 | 21 |
-| SwiftLint | 0.65.1 | 9 | 215 | 33 |
-| detekt | 1.23.8 | 14 | 196 | 0 |
-| ktlint | 1.8.0 | 7 | 17 | 75 |
-| Android Lint | 32.5.1 | 0 | 496 | 13 |
-| knip | 6.44.1 | 0 | 17 | 0 |
-| vulture | 2.16 | 0 | 8 | 0 |
-| Periphery | 3.8.0 | 0 | 5 | 0 |
-| PMD CPD | 7.29.0 | 0 | 1 | 7 |
-| jscpd | 5.4.2 | 0 | 1 | 4 |
-| Gitleaks | 8.30.1 | 0 | 222 | 0 |
-
-## Implemented rules
-
-| Rule | Category | Presets | Options | Counterparts |
-|---|---|---|---|---|
-| `ward:java/star-import` | imports | standard, strict | none | Checkstyle `AvoidStarImport`; PMD `OnDemandImport`; Ruff `F403`; detekt `WildcardImport`; ktlint `no-wildcard-imports` |
-| `ward:java/unused-import` | imports | standard, strict | none | Checkstyle `UnusedImports`; PMD `UnnecessaryImport`; Biome `noUnusedImports`; Ruff `F401`; SwiftLint `unused_import`; detekt `UnusedImports`; ktlint `no-unused-imports` |
-| `ward:java/missing-javadoc` | javadoc | standard, strict | none | Checkstyle `MissingJavadocMethod`; PMD `CommentRequired`; Error Prone `MissingJavadoc`; Ruff `D102`, `D103`; SwiftLint `missing_docs`; detekt `UndocumentedPublicFunction` |
-| `ward:java/boolean-expression-complexity` | metrics | strict | `max` | Checkstyle `BooleanExpressionComplexity` |
-| `ward:java/class-data-abstraction-coupling` | metrics | strict | `max`, `excluded-classes` | Checkstyle `ClassDataAbstractionCoupling` |
-| `ward:java/class-fan-out-complexity` | metrics | strict | `max`, `excluded-classes` | Checkstyle `ClassFanOutComplexity`; PMD `CouplingBetweenObjects` |
-| `ward:java/cyclomatic-complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:kotlin/cyclomatic-complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:typescript/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:javascript/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:python/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:swift/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
-| `ward:java/java-ncss` | metrics | strict | `method-maximum`, `class-maximum`, `file-maximum` | Checkstyle `JavaNCSS`; PMD `NcssCount` |
-| `ward:java/n-path-complexity` | metrics | strict | `max` | Checkstyle `NPathComplexity`; PMD `NPathComplexity` |
-| `ward:java/abbreviation-as-word-in-name` | naming | standard, strict | `pattern` | Checkstyle `AbbreviationAsWordInName` |
-| `ward:java/abstract-class-name` | naming | standard, strict | `pattern` | Checkstyle `AbstractClassName`; Ruff `N818` |
-| `ward:java/catch-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `CatchParameterName` |
-| `ward:java/class-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ClassTypeParameterName` |
-| `ward:java/constant-name` | naming | standard, strict | `pattern` | Checkstyle `ConstantName`; detekt `TopLevelPropertyNaming`; ktlint `property-naming` |
-| `ward:java/google-method-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleMethodName` |
-| `ward:java/google-non-constant-field-name` | naming | standard, strict | `pattern` | Checkstyle `GoogleNonConstantFieldName` |
-| `ward:java/illegal-identifier-name` | naming | standard, strict | `pattern` | Checkstyle `IllegalIdentifierName` |
-| `ward:java/interface-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `InterfaceTypeParameterName` |
-| `ward:java/lambda-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `LambdaParameterName` |
-| `ward:java/local-final-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalFinalVariableName` |
-| `ward:java/local-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalVariableName`; PMD `LocalVariableNamingConventions`; Ruff `N806` |
-| `ward:java/member-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
-| `ward:kotlin/property-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
-| `ward:java/method-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
-| `ward:kotlin/function-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
-| `ward:java/method-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `MethodTypeParameterName` |
-| `ward:java/package-name` | naming | standard, strict | `pattern` | Checkstyle `PackageName`; detekt `PackageNaming`; ktlint `package-name` |
-| `ward:java/parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ParameterName`; PMD `FormalParameterNamingConventions`; Error Prone `ParameterName`; Ruff `N803`; detekt `FunctionParameterNaming` |
-| `ward:java/pattern-variable-name` | naming | standard, strict | `pattern` | Checkstyle `PatternVariableName` |
-| `ward:java/record-component-name` | naming | standard, strict | `pattern` | Checkstyle `RecordComponentName` |
-| `ward:java/record-type-parameter-name` | naming | standard, strict | `pattern` | Checkstyle `RecordTypeParameterName` |
-| `ward:java/static-variable-name` | naming | standard, strict | `pattern` | Checkstyle `StaticVariableName` |
-| `ward:java/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
-| `ward:kotlin/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
-| `ward:java/anon-inner-length` | sizes | strict | `max` | Checkstyle `AnonInnerLength` |
-| `ward:java/executable-statement-count` | sizes | strict | `max` | Checkstyle `ExecutableStatementCount` |
-| `ward:java/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:kotlin/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:typescript/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:javascript/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:python/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:swift/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
-| `ward:java/lambda-body-length` | sizes | strict | `max` | Checkstyle `LambdaBodyLength` |
-| `ward:java/line-length` | sizes | standard, strict | `max`, `tab-width`, `ignore-pattern` | Checkstyle `LineLength`; ESLint `max-len`; Ruff `E501`; Pylint `line-too-long`; SwiftLint `line_length`; detekt `MaxLineLength`; ktlint `max-line-length` |
-| `ward:java/method-count` | sizes | strict | `max-total`, `max-private`, `max-package`, `max-protected`, `max-public` | Checkstyle `MethodCount` |
-| `ward:java/method-length` | sizes | standard, strict | `max`, `count-empty` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:kotlin/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:typescript/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:javascript/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:python/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:swift/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
-| `ward:java/outer-type-number` | sizes | strict | `max` | Checkstyle `OuterTypeNumber` |
-| `ward:java/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:kotlin/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:typescript/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:javascript/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:python/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:swift/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
-| `ward:java/record-component-number` | sizes | strict | `max` | Checkstyle `RecordComponentNumber` |
-| `ward:python/assert-false` | coding | standard, strict | none | Error Prone `AssertFalse`; Ruff `B011` |
-| `ward:typescript/no-async-promise-executor` | problem | standard, strict | none | ESLint `no-async-promise-executor`; Biome `noAsyncPromiseExecutor` |
-| `ward:javascript/no-async-promise-executor` | problem | standard, strict | none | ESLint `no-async-promise-executor`; Biome `noAsyncPromiseExecutor` |
-| `ward:typescript/no-compare-neg-zero` | problem | standard, strict | none | ESLint `no-compare-neg-zero`; Biome `noCompareNegZero` |
-| `ward:javascript/no-compare-neg-zero` | problem | standard, strict | none | ESLint `no-compare-neg-zero`; Biome `noCompareNegZero` |
-| `ward:typescript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex` |
-| `ward:javascript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex` |
-| `ward:typescript/no-debugger` | problem | standard, strict | none | ESLint `no-debugger`; Biome `noDebugger` |
-| `ward:javascript/no-debugger` | problem | standard, strict | none | ESLint `no-debugger`; Biome `noDebugger` |
-| `ward:typescript/no-delete-var` | suggestion | standard, strict | none | ESLint `no-delete-var` |
-| `ward:javascript/no-delete-var` | suggestion | standard, strict | none | ESLint `no-delete-var` |
-| `ward:typescript/no-dupe-keys` | problem | standard, strict | none | ESLint `no-dupe-keys` |
-| `ward:javascript/no-dupe-keys` | problem | standard, strict | none | ESLint `no-dupe-keys` |
-| `ward:typescript/no-duplicate-case` | problem | standard, strict | none | ESLint `no-duplicate-case`; Biome `noDuplicateCase` |
-| `ward:javascript/no-duplicate-case` | problem | standard, strict | none | ESLint `no-duplicate-case`; Biome `noDuplicateCase` |
-| `ward:typescript/no-empty-character-class` | problem | standard, strict | none | ESLint `no-empty-character-class` |
-| `ward:javascript/no-empty-character-class` | problem | standard, strict | none | ESLint `no-empty-character-class` |
-| `ward:typescript/no-empty-static-block` | suggestion | standard, strict | none | ESLint `no-empty-static-block` |
-| `ward:javascript/no-empty-static-block` | suggestion | standard, strict | none | ESLint `no-empty-static-block` |
-| `ward:javascript/no-global-assign` | suggestion | standard, strict | none | ESLint `no-global-assign`; Biome `noGlobalAssign` |
-| `ward:typescript/no-new-native-nonconstructor` | problem | standard, strict | none | ESLint `no-new-native-nonconstructor` |
-| `ward:javascript/no-new-native-nonconstructor` | problem | standard, strict | none | ESLint `no-new-native-nonconstructor` |
-| `ward:typescript/no-obj-calls` | problem | standard, strict | none | ESLint `no-obj-calls` |
-| `ward:javascript/no-obj-calls` | problem | standard, strict | none | ESLint `no-obj-calls` |
-| `ward:javascript/no-octal` | suggestion | standard, strict | none | ESLint `no-octal` |
-| `ward:typescript/no-prototype-builtins` | problem | standard, strict | none | ESLint `no-prototype-builtins`; Biome `noPrototypeBuiltins` |
-| `ward:javascript/no-prototype-builtins` | problem | standard, strict | none | ESLint `no-prototype-builtins`; Biome `noPrototypeBuiltins` |
-| `ward:typescript/no-regex-spaces` | suggestion | standard, strict | none | ESLint `no-regex-spaces` |
-| `ward:javascript/no-regex-spaces` | suggestion | standard, strict | none | ESLint `no-regex-spaces` |
-| `ward:typescript/no-self-assign` | problem | standard, strict | none | ESLint `no-self-assign`; Biome `noSelfAssign` |
-| `ward:javascript/no-self-assign` | problem | standard, strict | none | ESLint `no-self-assign`; Biome `noSelfAssign` |
-| `ward:typescript/no-shadow-restricted-names` | suggestion | standard, strict | none | ESLint `no-shadow-restricted-names`; Biome `noShadowRestrictedNames` |
-| `ward:javascript/no-shadow-restricted-names` | suggestion | standard, strict | none | ESLint `no-shadow-restricted-names`; Biome `noShadowRestrictedNames` |
-| `ward:typescript/no-sparse-arrays` | problem | standard, strict | none | ESLint `no-sparse-arrays` |
-| `ward:javascript/no-sparse-arrays` | problem | standard, strict | none | ESLint `no-sparse-arrays` |
-| `ward:typescript/no-unsafe-finally` | problem | standard, strict | none | ESLint `no-unsafe-finally`; Biome `noUnsafeFinally` |
-| `ward:javascript/no-unsafe-finally` | problem | standard, strict | none | ESLint `no-unsafe-finally`; Biome `noUnsafeFinally` |
-| `ward:typescript/no-useless-catch` | suggestion | standard, strict | none | ESLint `no-useless-catch`; Biome `noUselessCatch` |
-| `ward:javascript/no-useless-catch` | suggestion | standard, strict | none | ESLint `no-useless-catch`; Biome `noUselessCatch` |
-| `ward:typescript/no-with` | suggestion | standard, strict | none | ESLint `no-with`; Biome `noWith` |
-| `ward:javascript/no-with` | suggestion | standard, strict | none | ESLint `no-with`; Biome `noWith` |
-| `ward:typescript/require-yield` | suggestion | standard, strict | none | ESLint `require-yield` |
-| `ward:javascript/require-yield` | suggestion | standard, strict | none | ESLint `require-yield` |
-| `ward:typescript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan` |
-| `ward:javascript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan` |
-| `ward:java/example-constant-name` | naming | standard, strict | `pattern` | none |
-| `ward:java/example-inline-conditional` | coding | standard, strict | `text` | none |
-| `ward:java/example-switch-default` | coding | standard, strict | none | none |
-| `ward:java/example-method-count` | sizes | standard, strict | `max` | none |
-| `ward:java/example-nested-if` | sizes | standard, strict | `max` | none |
-| `ward:python/example-nested-if` | sizes | standard, strict | `max` | none |
-| `ward:java/example-todo-comment` | comments | standard, strict | `pattern`, `limit` | none |
-| `ward:java/example-modifier-order` | modifiers | standard, strict | `order` | none |
-| `ward:java/example-magic-number` | coding | standard, strict | `ignore`, `ignore-contexts`, `max-repeats` | none |
-| `ward:python/example-magic-number` | coding | standard, strict | `ignore`, `ignore-contexts`, `max-repeats` | none |
-| `ward:java/example-redundant-import` | imports | standard, strict | none | none |
-| `ward:java/example-overload-order` | coding | standard, strict | none | none |
-| `ward:python/example-function-name` | naming | standard, strict | `pattern` | none |
-| `ward:python/example-wildcard-import` | coding | standard, strict | `text` | none |
-| `ward:python/example-try-needs-except` | coding | standard, strict | none | none |
-| `ward:python/example-return-count` | sizes | standard, strict | `max` | none |
-| `ward:python/example-trailing-whitespace` | whitespace | standard, strict | `pattern`, `limit` | none |
-| `ward:python/example-block-order` | coding | standard, strict | `order` | none |
-| `ward:python/example-duplicate-import` | imports | standard, strict | none | none |
-| `ward:java/assert-statement-in-test` | bestpractices | standard, strict | none | PMD `AssertStatementInTest` |
-| `ward:java/avoid-message-digest-field` | bestpractices | standard, strict | none | PMD `AvoidMessageDigestField` |
-| `ward:java/avoid-print-stack-trace` | bestpractices | standard, strict | none | PMD `AvoidPrintStackTrace` |
-| `ward:java/avoid-string-buffer-field` | bestpractices | standard, strict | none | PMD `AvoidStringBufferField` |
-| `ward:java/avoid-using-hard-coded-ip` | bestpractices | standard, strict | none | PMD `AvoidUsingHardCodedIP` |
-| `ward:java/constants-in-interface` | bestpractices | standard, strict | none | PMD `ConstantsInInterface` |
-| `ward:java/for-loop-variable-count` | bestpractices | standard, strict | `maximum-variables` | PMD `ForLoopVariableCount` |
-| `ward:java/j-unit4-suites-should-use-suite-annotation` | bestpractices | standard, strict | none | PMD `JUnit4SuitesShouldUseSuiteAnnotation` |
-| `ward:java/j-unit-jupiter-test-should-be-package-private` | bestpractices | standard, strict | none | PMD `JUnitJupiterTestShouldBePackagePrivate` |
-| `ward:java/j-unit-use-expected` | bestpractices | standard, strict | none | PMD `JUnitUseExpected` |
-| `ward:java/labeled-statement` | bestpractices | standard, strict | none | PMD `LabeledStatement` |
-| `ward:java/literals-first-in-comparisons` | bestpractices | standard, strict | none | PMD `LiteralsFirstInComparisons` |
-| `ward:java/loose-coupling` | bestpractices | standard, strict | none | PMD `LooseCoupling` |
-| `ward:java/primitive-wrapper-instantiation` | bestpractices | standard, strict | none | PMD `PrimitiveWrapperInstantiation` |
-| `ward:java/reliance-on-default-charset` | bestpractices | standard, strict | none | PMD `RelianceOnDefaultCharset` |
-| `ward:java/replace-enumeration-with-iterator` | bestpractices | standard, strict | none | PMD `ReplaceEnumerationWithIterator` |
-| `ward:java/replace-hashtable-with-map` | bestpractices | standard, strict | none | PMD `ReplaceHashtableWithMap` |
-| `ward:java/replace-java-util-vector` | bestpractices | standard, strict | none | PMD `ReplaceJavaUtilVector` |
-| `ward:java/simplifiable-test-assertion` | bestpractices | standard, strict | none | PMD `SimplifiableTestAssertion` |
-| `ward:java/system-println` | bestpractices | standard, strict | none | PMD `SystemPrintln` |
-| `ward:java/unit-test-assertions-should-include-message` | bestpractices | standard, strict | none | PMD `UnitTestAssertionsShouldIncludeMessage` |
-| `ward:java/unnecessary-varargs-array-creation` | bestpractices | standard, strict | none | PMD `UnnecessaryVarargsArrayCreation` |
-| `ward:java/use-collection-is-empty` | bestpractices | standard, strict | none | PMD `UseCollectionIsEmpty` |
-| `ward:java/use-standard-charsets` | bestpractices | standard, strict | none | PMD `UseStandardCharsets` |
-| `ward:java/use-try-with-resources` | bestpractices | standard, strict | none | PMD `UseTryWithResources` |
-| `ward:java/use-varargs` | bestpractices | standard, strict | none | PMD `UseVarargs` |
-| `ward:java/while-loop-with-literal-boolean` | bestpractices | standard, strict | none | PMD `WhileLoopWithLiteralBoolean` |
-| `ward:python/assignment-to-os-environ` | coding | standard, strict | none | Ruff `B003` |
-| `ward:python/unreliable-callable-check` | coding | standard, strict | none | Ruff `B004` |
-| `ward:python/strip-with-multi-characters` | coding | standard, strict | none | Ruff `B005` |
-| `ward:python/mutable-argument-default` | coding | standard, strict | none | Ruff `B006` |
-| `ward:python/function-call-in-default-argument` | coding | standard, strict | none | Ruff `B008` |
-| `ward:python/get-attr-with-constant` | coding | standard, strict | none | Ruff `B009` |
-| `ward:python/set-attr-with-constant` | coding | standard, strict | none | Ruff `B010` |
-| `ward:python/redundant-tuple-in-exception-handler` | coding | standard, strict | none | Ruff `B013` |
-| `ward:python/raise-literal` | coding | standard, strict | none | Ruff `B016` |
-| `ward:python/assert-raises-exception` | coding | standard, strict | none | Ruff `B017` |
-| `ward:python/useless-contextlib-suppress` | coding | standard, strict | none | Ruff `B022` |
-| `ward:python/star-arg-unpacking-after-keyword-arg` | coding | standard, strict | none | Ruff `B026` |
-| `ward:python/no-explicit-stacklevel` | coding | standard, strict | none | Ruff `B028` |
-| `ward:python/except-with-empty-tuple` | coding | standard, strict | none | Ruff `B029` |
-| `ward:python/re-sub-positional-args` | coding | standard, strict | none | Ruff `B034` |
-| `ward:python/zip-without-explicit-strict` | coding | standard, strict | none | Ruff `B905` |
-| `ward:python/multiple-imports-on-one-line` | imports | standard, strict | none | Ruff `E401` |
-| `ward:python/none-comparison` | coding | standard, strict | none | Ruff `E711` |
-| `ward:python/true-false-comparison` | coding | standard, strict | none | Ruff `E712` |
-| `ward:python/type-comparison` | coding | standard, strict | none | Ruff `E721` |
-| `ward:python/bare-except` | coding | standard, strict | none | Ruff `E722`; Pylint `bare-except` |
-| `ward:python/lambda-assignment` | coding | standard, strict | none | Ruff `E731` |
-| `ward:python/ambiguous-variable-name` | naming | standard, strict | none | Ruff `E741` |
-| `ward:python/ambiguous-class-name` | naming | standard, strict | none | Ruff `E742` |
-| `ward:python/ambiguous-function-name` | naming | standard, strict | none | Ruff `E743` |
-| `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
-| `ward:python/f-string-missing-placeholders` | coding | standard, strict | none | Ruff `F541` |
-| `ward:python/assert-tuple` | coding | standard, strict | none | Ruff `F631` |
-| `ward:python/if-tuple` | coding | standard, strict | none | Ruff `F634` |
-| `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
-| `ward:java/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
-| `ward:kotlin/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
-| `ward:typescript/naming` | naming | standard, strict | none | ESLint `camelcase` |
-| `ward:javascript/naming` | naming | standard, strict | none | ESLint `camelcase` |
-| `ward:python/naming` | naming | standard, strict | none | ESLint `camelcase` |
-| `ward:swift/naming` | naming | standard, strict | none | ESLint `camelcase` |
-| `ward:typescript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
-| `ward:javascript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
-| `ward:swift/type-body-length` | sizes | standard, strict | `max` | SwiftLint `type_body_length` |
-| `ward:java/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
-| `ward:typescript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
-| `ward:javascript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
-| `ward:java/sql-injection` | misc | standard, strict | none | SpotBugs `SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE`, `SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING` |
-| `ward:java/command-injection` | misc | standard, strict | none | none |
-| `ward:typescript/command-injection` | misc | standard, strict | none | none |
-| `ward:javascript/command-injection` | misc | standard, strict | none | none |
-| `ward:java/path-injection` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
-| `ward:typescript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
-| `ward:javascript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
-| `ward:typescript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
-| `ward:javascript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+| Tool | Pinned version |
+|---|---|
+| Checkstyle | 14.3.0 |
+| PMD | 7.29.0 |
+| SpotBugs | 4.9.7 |
+| Error Prone | 2.52.0 |
+| NullAway | 0.14.3 |
+| Semgrep | 1.181.0 |
+| ESLint | 10.12.0 |
+| typescript-eslint | 8.72.1 |
+| angular-eslint | 22.6.0 |
+| Biome | 2.5.15 |
+| Ruff | 0.17.4 |
+| Pylint | 4.1.3 |
+| SwiftLint | 0.65.1 |
+| detekt | 1.23.8 |
+| ktlint | 1.8.0 |
+| Android Lint | 32.5.1 |
+| knip | 6.44.1 |
+| vulture | 2.16 |
+| Periphery | 3.8.0 |
+| PMD CPD | 7.29.0 |
+| jscpd | 5.4.2 |
+| Gitleaks | 8.30.1 |
 
 ## Catalog pages
 
-- [android-lint](/reference/rules/android-lint/) (493 rules)
-- [angular-eslint](/reference/rules/angular-eslint/) (51 rules)
-- [biome](/reference/rules/biome/) (392 rules)
-- [checkstyle-annotation](/reference/rules/checkstyle-annotation/) (9 rules)
-- [checkstyle-blocks](/reference/rules/checkstyle-blocks/) (7 rules)
-- [checkstyle-coding](/reference/rules/checkstyle-coding/) (68 rules)
-- [checkstyle-design](/reference/rules/checkstyle-design/) (10 rules)
-- [checkstyle-header](/reference/rules/checkstyle-header/) (3 rules)
-- [checkstyle-imports](/reference/rules/checkstyle-imports/) (12 rules)
-- [checkstyle-javadoc](/reference/rules/checkstyle-javadoc/) (35 rules)
-- [checkstyle-metrics](/reference/rules/checkstyle-metrics/) (6 rules)
-- [checkstyle-misc](/reference/rules/checkstyle-misc/) (15 rules)
-- [checkstyle-modifier](/reference/rules/checkstyle-modifier/) (5 rules)
-- [checkstyle-naming](/reference/rules/checkstyle-naming/) (22 rules)
-- [checkstyle-regexp](/reference/rules/checkstyle-regexp/) (5 rules)
-- [checkstyle-sizes](/reference/rules/checkstyle-sizes/) (10 rules)
-- [cpd](/reference/rules/cpd/) (1 rules)
-- [detekt](/reference/rules/detekt/) (179 rules)
-- [errorprone](/reference/rules/errorprone/) (641 rules)
-- [eslint](/reference/rules/eslint/) (174 rules)
-- [examples](/reference/rules/examples/) (17 rules)
-- [gitleaks](/reference/rules/gitleaks/) (222 rules)
-- [knip](/reference/rules/knip/) (17 rules)
-- [ktlint](/reference/rules/ktlint/) (13 rules)
-- [nullaway](/reference/rules/nullaway/) (29 rules)
-- [periphery](/reference/rules/periphery/) (4 rules)
-- [pmd](/reference/rules/pmd/) (259 rules)
-- [pylint](/reference/rules/pylint/) (320 rules)
-- [ruff](/reference/rules/ruff/) (875 rules)
-- [semgrep](/reference/rules/semgrep/) (130 rules)
-- [spotbugs](/reference/rules/spotbugs/) (496 rules)
-- [swiftlint](/reference/rules/swiftlint/) (206 rules)
-- [typescript-eslint](/reference/rules/typescript-eslint/) (105 rules)
-- [vulture](/reference/rules/vulture/) (4 rules)
-- [ward-own](/reference/rules/ward-own/) (9 rules)
+Each page lists the rules of one catalog file, the Ward rules implemented for them, and
+their counterparts in each tool.
+
+- [android-lint](/reference/rules/android-lint/)
+- [angular-eslint](/reference/rules/angular-eslint/)
+- [biome](/reference/rules/biome/)
+- [checkstyle-annotation](/reference/rules/checkstyle-annotation/)
+- [checkstyle-blocks](/reference/rules/checkstyle-blocks/)
+- [checkstyle-coding](/reference/rules/checkstyle-coding/)
+- [checkstyle-design](/reference/rules/checkstyle-design/)
+- [checkstyle-header](/reference/rules/checkstyle-header/)
+- [checkstyle-imports](/reference/rules/checkstyle-imports/)
+- [checkstyle-javadoc](/reference/rules/checkstyle-javadoc/)
+- [checkstyle-metrics](/reference/rules/checkstyle-metrics/)
+- [checkstyle-misc](/reference/rules/checkstyle-misc/)
+- [checkstyle-modifier](/reference/rules/checkstyle-modifier/)
+- [checkstyle-naming](/reference/rules/checkstyle-naming/)
+- [checkstyle-regexp](/reference/rules/checkstyle-regexp/)
+- [checkstyle-sizes](/reference/rules/checkstyle-sizes/)
+- [cpd](/reference/rules/cpd/)
+- [detekt](/reference/rules/detekt/)
+- [errorprone](/reference/rules/errorprone/)
+- [eslint](/reference/rules/eslint/)
+- [examples](/reference/rules/examples/)
+- [gitleaks](/reference/rules/gitleaks/)
+- [knip](/reference/rules/knip/)
+- [ktlint](/reference/rules/ktlint/)
+- [nullaway](/reference/rules/nullaway/)
+- [periphery](/reference/rules/periphery/)
+- [pmd](/reference/rules/pmd/)
+- [pylint](/reference/rules/pylint/)
+- [ruff](/reference/rules/ruff/)
+- [semgrep](/reference/rules/semgrep/)
+- [spotbugs](/reference/rules/spotbugs/)
+- [swiftlint](/reference/rules/swiftlint/)
+- [typescript-eslint](/reference/rules/typescript-eslint/)
+- [vulture](/reference/rules/vulture/)
+- [ward-own](/reference/rules/ward-own/)
