@@ -1,0 +1,11 @@
+# vulture 2.16 report kinds (id = error code).
+# Generated with: uvx --from vulture==2.16 python -c "import vulture.core as c; print(c.ERROR_CODES)".
+# format: <rule id><TAB><group>
+V101	attribute
+V102	class
+V103	function
+V104	import
+V105	method
+V106	property
+V107	variable
+V201	unreachable_code

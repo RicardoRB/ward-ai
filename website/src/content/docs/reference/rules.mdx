@@ -1,0 +1,133 @@
+---
+title: Rule reference
+description: Every Ward rule, the rules it replaces in other tools, and what is planned.
+---
+
+{/* Generated from the rule catalog by RuleReferenceTest. Do not edit by hand. */}
+
+One catalog maps every rule of the tools that Ward replaces to a Ward rule, or lists it as out of scope with a reason. A rule is `implemented` when a rule definition ships for the language, `planned` when a later step of roadmap [#306](https://github.com/RicardoRB/ward-ai/issues/306) or [#348](https://github.com/RicardoRB/ward-ai/issues/348) implements it, and `n/a` when the concept does not apply to the language.
+
+## Rules per tool
+
+| Tool | Pinned version | Implemented | Planned | Out of scope |
+|---|---|---|---|---|
+| Checkstyle | 14.3.0 | 12 | 195 | 40 |
+| PMD | 7.29.0 | 10 | 293 | 23 |
+| SpotBugs | 4.9.7 | 7 | 499 | 0 |
+| Error Prone | 2.52.0 | 2 | 649 | 0 |
+| NullAway | 0.14.3 | 0 | 29 | 0 |
+| Semgrep | 1.181.0 | 0 | 134 | 0 |
+| ESLint | 10.12.0 | 7 | 192 | 93 |
+| typescript-eslint | 8.72.1 | 0 | 127 | 9 |
+| angular-eslint | 22.6.0 | 0 | 51 | 42 |
+| Biome | 2.5.15 | 1 | 466 | 90 |
+| Ruff | 0.17.4 | 10 | 890 | 57 |
+| Pylint | 4.1.3 | 2 | 414 | 21 |
+| SwiftLint | 0.65.1 | 8 | 216 | 33 |
+| detekt | 1.23.8 | 11 | 199 | 0 |
+| ktlint | 1.8.0 | 4 | 20 | 75 |
+| Android Lint | 32.5.1 | 0 | 496 | 13 |
+| knip | 6.44.1 | 0 | 17 | 0 |
+| vulture | 2.16 | 0 | 8 | 0 |
+| Periphery | 3.8.0 | 0 | 5 | 0 |
+| PMD CPD | 7.29.0 | 0 | 1 | 7 |
+| jscpd | 5.4.2 | 0 | 1 | 4 |
+| Gitleaks | 8.30.1 | 0 | 222 | 0 |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/star-import` | imports | standard, strict | none | Checkstyle `AvoidStarImport`; Ruff `F403`; detekt `WildcardImport`; ktlint `no-wildcard-imports` |
+| `ward:java/unused-import` | imports | standard, strict | none | Checkstyle `UnusedImports`; PMD `UnnecessaryImport`; Biome `noUnusedImports`; Ruff `F401`; SwiftLint `unused_import`; detekt `UnusedImports`; ktlint `no-unused-imports` |
+| `ward:java/missing-javadoc` | javadoc | standard, strict | none | Checkstyle `MissingJavadocMethod`; PMD `CommentRequired`; Error Prone `MissingJavadoc`; Ruff `D102`, `D103`; SwiftLint `missing_docs`; detekt `UndocumentedPublicFunction` |
+| `ward:java/cyclomatic-complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:kotlin/cyclomatic-complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:typescript/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:javascript/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:python/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:swift/complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
+| `ward:java/local-variable-name` | naming | standard, strict | `pattern` | Checkstyle `LocalVariableName`; PMD `LocalVariableNamingConventions`; Ruff `N806` |
+| `ward:java/member-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
+| `ward:kotlin/property-name` | naming | standard, strict | `pattern` | Checkstyle `MemberName`; PMD `FieldNamingConventions`; detekt `VariableNaming` |
+| `ward:java/method-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
+| `ward:kotlin/function-name` | naming | standard, strict | `pattern` | Checkstyle `MethodName`; PMD `MethodNamingConventions`; Ruff `N802`; detekt `FunctionNaming`; ktlint `function-naming` |
+| `ward:java/parameter-name` | naming | standard, strict | `pattern` | Checkstyle `ParameterName`; PMD `FormalParameterNamingConventions`; Error Prone `ParameterName`; Ruff `N803`; detekt `FunctionParameterNaming` |
+| `ward:java/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
+| `ward:kotlin/type-name` | naming | standard, strict | `pattern` | Checkstyle `TypeName`; PMD `ClassNamingConventions`; Ruff `N801`; SwiftLint `type_name`; detekt `ClassNaming`; ktlint `class-naming` |
+| `ward:java/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:kotlin/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:typescript/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:javascript/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:python/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:swift/file-length` | sizes | standard, strict | `max` | Checkstyle `FileLength`; ESLint `max-lines`; Pylint `too-many-lines`; SwiftLint `file_length` |
+| `ward:java/method-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:kotlin/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:typescript/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:javascript/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:python/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:swift/function-length` | sizes | standard, strict | `max` | Checkstyle `MethodLength`; ESLint `max-lines-per-function`; SwiftLint `function_body_length`; detekt `LongMethod` |
+| `ward:java/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:kotlin/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:typescript/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:javascript/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:python/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:swift/parameter-count` | sizes | standard, strict | `max` | Checkstyle `ParameterNumber`; ESLint `max-params`; Ruff `PLR0913`; Pylint `too-many-arguments`; SwiftLint `function_parameter_count`; detekt `LongParameterList` |
+| `ward:java/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
+| `ward:kotlin/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
+| `ward:typescript/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:javascript/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:python/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:swift/naming` | naming | standard, strict | none | ESLint `camelcase` |
+| `ward:typescript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
+| `ward:javascript/nesting-depth` | coding | standard, strict | `max` | ESLint `max-depth`; detekt `NestedBlockDepth` |
+| `ward:swift/type-body-length` | sizes | standard, strict | `max` | SwiftLint `type_body_length` |
+| `ward:java/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:typescript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:javascript/unused-assignment` | coding | standard, strict | none | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `ward:java/sql-injection` | misc | standard, strict | none | SpotBugs `SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE`, `SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING` |
+| `ward:java/command-injection` | misc | standard, strict | none | none |
+| `ward:typescript/command-injection` | misc | standard, strict | none | none |
+| `ward:javascript/command-injection` | misc | standard, strict | none | none |
+| `ward:java/path-injection` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:typescript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:javascript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `ward:typescript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+| `ward:javascript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+
+## Catalog pages
+
+- [android-lint](/reference/rules/android-lint/) (493 rules)
+- [angular-eslint](/reference/rules/angular-eslint/) (51 rules)
+- [biome](/reference/rules/biome/) (392 rules)
+- [checkstyle-annotation](/reference/rules/checkstyle-annotation/) (9 rules)
+- [checkstyle-blocks](/reference/rules/checkstyle-blocks/) (7 rules)
+- [checkstyle-coding](/reference/rules/checkstyle-coding/) (68 rules)
+- [checkstyle-design](/reference/rules/checkstyle-design/) (10 rules)
+- [checkstyle-header](/reference/rules/checkstyle-header/) (3 rules)
+- [checkstyle-imports](/reference/rules/checkstyle-imports/) (12 rules)
+- [checkstyle-javadoc](/reference/rules/checkstyle-javadoc/) (35 rules)
+- [checkstyle-metrics](/reference/rules/checkstyle-metrics/) (6 rules)
+- [checkstyle-misc](/reference/rules/checkstyle-misc/) (15 rules)
+- [checkstyle-modifier](/reference/rules/checkstyle-modifier/) (5 rules)
+- [checkstyle-naming](/reference/rules/checkstyle-naming/) (22 rules)
+- [checkstyle-regexp](/reference/rules/checkstyle-regexp/) (5 rules)
+- [checkstyle-sizes](/reference/rules/checkstyle-sizes/) (10 rules)
+- [cpd](/reference/rules/cpd/) (1 rules)
+- [detekt](/reference/rules/detekt/) (179 rules)
+- [errorprone](/reference/rules/errorprone/) (641 rules)
+- [eslint](/reference/rules/eslint/) (174 rules)
+- [gitleaks](/reference/rules/gitleaks/) (222 rules)
+- [knip](/reference/rules/knip/) (17 rules)
+- [ktlint](/reference/rules/ktlint/) (13 rules)
+- [nullaway](/reference/rules/nullaway/) (29 rules)
+- [periphery](/reference/rules/periphery/) (4 rules)
+- [pmd](/reference/rules/pmd/) (260 rules)
+- [pylint](/reference/rules/pylint/) (320 rules)
+- [ruff](/reference/rules/ruff/) (875 rules)
+- [semgrep](/reference/rules/semgrep/) (130 rules)
+- [spotbugs](/reference/rules/spotbugs/) (496 rules)
+- [swiftlint](/reference/rules/swiftlint/) (206 rules)
+- [typescript-eslint](/reference/rules/typescript-eslint/) (105 rules)
+- [vulture](/reference/rules/vulture/) (4 rules)
+- [ward-own](/reference/rules/ward-own/) (9 rules)

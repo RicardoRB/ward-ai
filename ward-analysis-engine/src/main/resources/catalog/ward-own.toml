@@ -1,0 +1,48 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "cognitive-complexity"
+status = { java = "implemented", kotlin = "implemented" }
+pmd = ["CognitiveComplexity"]
+
+[[rule]]
+name = "naming"
+status = { typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
+eslint = ["camelcase"]
+
+[[rule]]
+name = "nesting-depth"
+status = { typescript = "implemented", javascript = "implemented" }
+detekt = ["NestedBlockDepth"]
+eslint = ["max-depth"]
+
+[[rule]]
+name = "type-body-length"
+status = { swift = "implemented" }
+swiftlint = ["type_body_length"]
+
+[[rule]]
+name = "unused-assignment"
+status = { java = "implemented", typescript = "implemented", javascript = "implemented" }
+pmd = ["UnusedAssignment"]
+eslint = ["no-useless-assignment"]
+
+[[rule]]
+name = "sql-injection"
+status = { java = "implemented" }
+spotbugs = ["SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"]
+
+[[rule]]
+name = "command-injection"
+status = { java = "implemented", typescript = "implemented", javascript = "implemented" }
+
+[[rule]]
+name = "path-traversal"
+status = { java = "implemented", typescript = "implemented", javascript = "implemented" }
+ids = { java = "ward:java/path-injection" }
+spotbugs = ["PT_ABSOLUTE_PATH_TRAVERSAL", "PT_RELATIVE_PATH_TRAVERSAL"]
+
+[[rule]]
+name = "xss"
+status = { typescript = "implemented", javascript = "implemented" }
+spotbugs = ["XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER", "XSS_REQUEST_PARAMETER_TO_JSP_WRITER", "XSS_REQUEST_PARAMETER_TO_SEND_ERROR"]

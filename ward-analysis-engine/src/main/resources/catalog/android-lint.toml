@@ -1,0 +1,3453 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "aapt-crash"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AaptCrash"]
+
+[[rule]]
+name = "accepts-user-certificates"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AcceptsUserCertificates"]
+
+[[rule]]
+name = "accessibility-focus"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AccessibilityFocus"]
+
+[[rule]]
+name = "accessibility-scroll-actions"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AccessibilityScrollActions"]
+
+[[rule]]
+name = "accessibility-window-state-changed-event"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AccessibilityWindowStateChangedEvent"]
+
+[[rule]]
+name = "accidental-octal"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AccidentalOctal"]
+
+[[rule]]
+name = "activity-icon-color"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ActivityIconColor"]
+
+[[rule]]
+name = "adapter-view-children"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AdapterViewChildren"]
+
+[[rule]]
+name = "add-javascript-interface"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AddJavascriptInterface"]
+
+[[rule]]
+name = "aligned16-kb"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Aligned16KB"]
+
+[[rule]]
+name = "all-caps"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AllCaps"]
+
+[[rule]]
+name = "allow-all-hostname-verifier"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AllowAllHostnameVerifier"]
+
+[[rule]]
+name = "always-show-action"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AlwaysShowAction"]
+
+[[rule]]
+name = "android-gradle-plugin-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AndroidGradlePluginVersion"]
+
+[[rule]]
+name = "animator-keep"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AnimatorKeep"]
+
+[[rule]]
+name = "annotate-version-check"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AnnotateVersionCheck"]
+
+[[rule]]
+name = "annotation-processor-on-compile-path"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AnnotationProcessorOnCompilePath"]
+
+[[rule]]
+name = "app-bundle-locale-changes"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppBundleLocaleChanges"]
+
+[[rule]]
+name = "app-compat-custom-view"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppCompatCustomView"]
+
+[[rule]]
+name = "app-compat-method"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppCompatMethod"]
+
+[[rule]]
+name = "app-compat-resource"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppCompatResource"]
+
+[[rule]]
+name = "app-indexing-service"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppIndexingService"]
+
+[[rule]]
+name = "app-link-split-to-web-and-custom"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppLinkSplitToWebAndCustom"]
+
+[[rule]]
+name = "app-link-uri-relative-filter-group-error"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppLinkUriRelativeFilterGroupError"]
+
+[[rule]]
+name = "app-link-url-error"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppLinkUrlError"]
+
+[[rule]]
+name = "app-link-warning"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppLinkWarning"]
+
+[[rule]]
+name = "app-links-auto-verify"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AppLinksAutoVerify"]
+
+[[rule]]
+name = "apply-shared-pref"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ApplySharedPref"]
+
+[[rule]]
+name = "assertion-side-effect"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AssertionSideEffect"]
+
+[[rule]]
+name = "auth-leak"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["AuthLeak"]
+
+[[rule]]
+name = "autofill"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Autofill"]
+
+[[rule]]
+name = "back-button"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BackButton"]
+
+[[rule]]
+name = "bad-hostname-verifier"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BadHostnameVerifier"]
+
+[[rule]]
+name = "battery-life"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BatteryLife"]
+
+[[rule]]
+name = "bidi-spoofing"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BidiSpoofing"]
+
+[[rule]]
+name = "binder-get-calling-in-main-thread"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BinderGetCallingInMainThread"]
+
+[[rule]]
+name = "blocked-private-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BlockedPrivateApi"]
+
+[[rule]]
+name = "bom-without-platform"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BomWithoutPlatform"]
+
+[[rule]]
+name = "bottom-app-bar"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BottomAppBar"]
+
+[[rule]]
+name = "broken-iterator"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BrokenIterator"]
+
+[[rule]]
+name = "build-list-adds"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["BuildListAdds"]
+
+[[rule]]
+name = "button-case"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ButtonCase"]
+
+[[rule]]
+name = "button-order"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ButtonOrder"]
+
+[[rule]]
+name = "button-style"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ButtonStyle"]
+
+[[rule]]
+name = "byte-order-mark"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ByteOrderMark"]
+
+[[rule]]
+name = "canvas-size"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CanvasSize"]
+
+[[rule]]
+name = "check-result"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CheckResult"]
+
+[[rule]]
+name = "child-in-non-view-group"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ChildInNonViewGroup"]
+
+[[rule]]
+name = "chrome-os-abi-support"
+category = "correctness-chrome-os"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ChromeOsAbiSupport"]
+
+[[rule]]
+name = "chrome-os-on-configuration-changed"
+category = "correctness-chrome-os"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ChromeOsOnConfigurationChanged"]
+
+[[rule]]
+name = "clickable-view-accessibility"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ClickableViewAccessibility"]
+
+[[rule]]
+name = "coarse-fine-location"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CoarseFineLocation"]
+
+[[rule]]
+name = "commit-pref-edits"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CommitPrefEdits"]
+
+[[rule]]
+name = "commit-transaction"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CommitTransaction"]
+
+[[rule]]
+name = "constant-locale"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ConstantLocale"]
+
+[[rule]]
+name = "content-description"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ContentDescription"]
+
+[[rule]]
+name = "convert-to-webp"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ConvertToWebp"]
+
+[[rule]]
+name = "core-lib-desugaring-v1"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CoreLibDesugaringV1"]
+
+[[rule]]
+name = "cred-man-missing-dal"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CredManMissingDal"]
+
+[[rule]]
+name = "credential-dependency"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CredentialDependency"]
+
+[[rule]]
+name = "credential-manager-misuse"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CredentialManagerMisuse"]
+
+[[rule]]
+name = "credential-manager-sign-in-with-google"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CredentialManagerSignInWithGoogle"]
+
+[[rule]]
+name = "custom-permission-typo"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CustomPermissionTypo"]
+
+[[rule]]
+name = "custom-splash-screen"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CustomSplashScreen"]
+
+[[rule]]
+name = "custom-view-styleable"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CustomViewStyleable"]
+
+[[rule]]
+name = "custom-x509-trust-manager"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CustomX509TrustManager"]
+
+[[rule]]
+name = "cut-paste-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["CutPasteId"]
+
+[[rule]]
+name = "dalvik-override"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DalvikOverride"]
+
+[[rule]]
+name = "data-binding-without-kapt"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DataBindingWithoutKapt"]
+
+[[rule]]
+name = "data-extraction-rules"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DataExtractionRules"]
+
+[[rule]]
+name = "default-encoding"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DefaultEncoding"]
+
+[[rule]]
+name = "default-uncaught-exception-delegation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DefaultUncaughtExceptionDelegation"]
+
+[[rule]]
+name = "deleted-provider"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DeletedProvider"]
+
+[[rule]]
+name = "deprecated"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Deprecated"]
+
+[[rule]]
+name = "deprecated-provider"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DeprecatedProvider"]
+
+[[rule]]
+name = "deprecated-since-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DeprecatedSinceApi"]
+
+[[rule]]
+name = "dev-mode-obsolete"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DevModeObsolete"]
+
+[[rule]]
+name = "device-admin"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DeviceAdmin"]
+
+[[rule]]
+name = "diff-util-equals"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DiffUtilEquals"]
+
+[[rule]]
+name = "disable-baseline-alignment"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DisableBaselineAlignment"]
+
+[[rule]]
+name = "discouraged-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DiscouragedApi"]
+
+[[rule]]
+name = "discouraged-private-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DiscouragedPrivateApi"]
+
+[[rule]]
+name = "draw-allocation"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DrawAllocation"]
+
+[[rule]]
+name = "duplicate-activity"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateActivity"]
+
+[[rule]]
+name = "duplicate-definition"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateDefinition"]
+
+[[rule]]
+name = "duplicate-divider"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateDivider"]
+
+[[rule]]
+name = "duplicate-ids"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateIds"]
+
+[[rule]]
+name = "duplicate-included-ids"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateIncludedIds"]
+
+[[rule]]
+name = "duplicate-platform-classes"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicatePlatformClasses"]
+
+[[rule]]
+name = "duplicate-strings"
+category = "performance-application-size"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateStrings"]
+
+[[rule]]
+name = "duplicate-uses-feature"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["DuplicateUsesFeature"]
+
+[[rule]]
+name = "easter-egg"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EasterEgg"]
+
+[[rule]]
+name = "edited-target-sdk-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EditedTargetSdkVersion"]
+
+[[rule]]
+name = "ellipsize-max-lines"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EllipsizeMaxLines"]
+
+[[rule]]
+name = "empty-super-call"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EmptySuperCall"]
+
+[[rule]]
+name = "enforce-utf8"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EnforceUTF8"]
+
+[[rule]]
+name = "enqueue-work"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["EnqueueWork"]
+
+[[rule]]
+name = "exact-alarm"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExactAlarm"]
+
+[[rule]]
+name = "exif-interface"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExifInterface"]
+
+[[rule]]
+name = "expensive-assertion"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExpensiveAssertion"]
+
+[[rule]]
+name = "expired-target-sdk-version"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExpiredTargetSdkVersion"]
+
+[[rule]]
+name = "expiring-target-sdk-version"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExpiringTargetSdkVersion"]
+
+[[rule]]
+name = "exported-content-provider"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExportedContentProvider"]
+
+[[rule]]
+name = "exported-preference-activity"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExportedPreferenceActivity"]
+
+[[rule]]
+name = "exported-receiver"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExportedReceiver"]
+
+[[rule]]
+name = "exported-service"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExportedService"]
+
+[[rule]]
+name = "extra-text"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExtraText"]
+
+[[rule]]
+name = "extra-translation"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ExtraTranslation"]
+
+[[rule]]
+name = "file-ends-with-ext"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["FileEndsWithExt"]
+
+[[rule]]
+name = "find-view-by-id-cast"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["FindViewByIdCast"]
+
+[[rule]]
+name = "font-validation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["FontValidation"]
+
+[[rule]]
+name = "foreground-service-permission"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ForegroundServicePermission"]
+
+[[rule]]
+name = "foreground-service-type"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ForegroundServiceType"]
+
+[[rule]]
+name = "full-backup-content"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["FullBackupContent"]
+
+[[rule]]
+name = "gesture-back-navigation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GestureBackNavigation"]
+
+[[rule]]
+name = "get-content-description-override"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GetContentDescriptionOverride"]
+
+[[rule]]
+name = "get-instance"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GetInstance"]
+
+[[rule]]
+name = "get-locales"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GetLocales"]
+
+[[rule]]
+name = "gif-usage"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GifUsage"]
+
+[[rule]]
+name = "global-option-in-consumer-rules"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GlobalOptionInConsumerRules"]
+
+[[rule]]
+name = "gradle-compatible"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleCompatible"]
+
+[[rule]]
+name = "gradle-dependency"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleDependency"]
+
+[[rule]]
+name = "gradle-deprecated"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleDeprecated"]
+
+[[rule]]
+name = "gradle-deprecated-configuration"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleDeprecatedConfiguration"]
+
+[[rule]]
+name = "gradle-dynamic-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleDynamicVersion"]
+
+[[rule]]
+name = "gradle-getter"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleGetter"]
+
+[[rule]]
+name = "gradle-ide-error"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleIdeError"]
+
+[[rule]]
+name = "gradle-overrides"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradleOverrides"]
+
+[[rule]]
+name = "gradle-path"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradlePath"]
+
+[[rule]]
+name = "gradle-plugin-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GradlePluginVersion"]
+
+[[rule]]
+name = "grant-all-uris"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GrantAllUris"]
+
+[[rule]]
+name = "grid-layout"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["GridLayout"]
+
+[[rule]]
+name = "half-float"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HalfFloat"]
+
+[[rule]]
+name = "handler-leak"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HandlerLeak"]
+
+[[rule]]
+name = "hardcoded-debug-mode"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HardcodedDebugMode"]
+
+[[rule]]
+name = "hardcoded-text"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HardcodedText"]
+
+[[rule]]
+name = "hardware-ids"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HardwareIds"]
+
+[[rule]]
+name = "high-app-version-code"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HighAppVersionCode"]
+
+[[rule]]
+name = "high-sampling-rate"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["HighSamplingRate"]
+
+[[rule]]
+name = "icon-colors"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconColors"]
+
+[[rule]]
+name = "icon-densities"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconDensities"]
+
+[[rule]]
+name = "icon-dip-size"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconDipSize"]
+
+[[rule]]
+name = "icon-duplicates"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconDuplicates"]
+
+[[rule]]
+name = "icon-duplicates-config"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconDuplicatesConfig"]
+
+[[rule]]
+name = "icon-expected-size"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconExpectedSize"]
+
+[[rule]]
+name = "icon-extension"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconExtension"]
+
+[[rule]]
+name = "icon-launcher-shape"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconLauncherShape"]
+
+[[rule]]
+name = "icon-location"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconLocation"]
+
+[[rule]]
+name = "icon-missing-density-folder"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconMissingDensityFolder"]
+
+[[rule]]
+name = "icon-mixed-nine-patch"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconMixedNinePatch"]
+
+[[rule]]
+name = "icon-no-dpi"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconNoDpi"]
+
+[[rule]]
+name = "icon-xml-and-png"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IconXmlAndPng"]
+
+[[rule]]
+name = "ignore-without-reason"
+category = "testing"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IgnoreWithoutReason"]
+
+[[rule]]
+name = "illegal-resource-ref"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IllegalResourceRef"]
+
+[[rule]]
+name = "implicit-sam-instance"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ImplicitSamInstance"]
+
+[[rule]]
+name = "implied-quantity"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ImpliedQuantity"]
+
+[[rule]]
+name = "implied-touchscreen-hardware"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ImpliedTouchscreenHardware"]
+
+[[rule]]
+name = "in-or-mm-usage"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InOrMmUsage"]
+
+[[rule]]
+name = "include-layout-param"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IncludeLayoutParam"]
+
+[[rule]]
+name = "incompatible-media-browser-service-compat-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IncompatibleMediaBrowserServiceCompatVersion"]
+
+[[rule]]
+name = "inconsistent-arrays"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InconsistentArrays"]
+
+[[rule]]
+name = "inconsistent-layout"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InconsistentLayout"]
+
+[[rule]]
+name = "inefficient-weight"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InefficientWeight"]
+
+[[rule]]
+name = "inflate-params"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InflateParams"]
+
+[[rule]]
+name = "inlined-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InlinedApi"]
+
+[[rule]]
+name = "innerclass-separator"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InnerclassSeparator"]
+
+[[rule]]
+name = "insecure-base-configuration"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InsecureBaseConfiguration"]
+
+[[rule]]
+name = "instant-app-call"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InstantAppCall"]
+
+[[rule]]
+name = "instant-app-deprecation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InstantAppDeprecation"]
+
+[[rule]]
+name = "instantiatable"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Instantiatable"]
+
+[[rule]]
+name = "intent-filter-exported-receiver"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IntentFilterExportedReceiver"]
+
+[[rule]]
+name = "intent-filter-unique-data-attributes"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IntentFilterUniqueDataAttributes"]
+
+[[rule]]
+name = "intent-reset"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IntentReset"]
+
+[[rule]]
+name = "intent-with-null-action-launch"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["IntentWithNullActionLaunch"]
+
+[[rule]]
+name = "internal-inset-resource"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InternalInsetResource"]
+
+[[rule]]
+name = "invalid-analytics-name"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidAnalyticsName"]
+
+[[rule]]
+name = "invalid-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidId"]
+
+[[rule]]
+name = "invalid-ime-action-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidImeActionId"]
+
+[[rule]]
+name = "invalid-manifest-attribute"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidManifestAttribute"]
+
+[[rule]]
+name = "invalid-navigation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidNavigation"]
+
+[[rule]]
+name = "invalid-package"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidPackage"]
+
+[[rule]]
+name = "invalid-permission"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidPermission"]
+
+[[rule]]
+name = "invalid-purpose-string"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidPurposeString"]
+
+[[rule]]
+name = "invalid-resource-folder"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidResourceFolder"]
+
+[[rule]]
+name = "invalid-uses-tag-attribute"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidUsesTagAttribute"]
+
+[[rule]]
+name = "invalid-vector-path"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidVectorPath"]
+
+[[rule]]
+name = "invalid-wake-lock-tag"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidWakeLockTag"]
+
+[[rule]]
+name = "invalid-wear-feature-attribute"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["InvalidWearFeatureAttribute"]
+
+[[rule]]
+name = "java-plugin-language-level"
+category = "interoperability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["JavaPluginLanguageLevel"]
+
+[[rule]]
+name = "javascript-interface"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["JavascriptInterface"]
+
+[[rule]]
+name = "jcenter-repository-obsolete"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["JcenterRepositoryObsolete"]
+
+[[rule]]
+name = "job-scheduler-service"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["JobSchedulerService"]
+
+[[rule]]
+name = "kapt-usage-instead-of-ksp"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KaptUsageInsteadOfKsp"]
+
+[[rule]]
+name = "keyboard-inaccessible-widget"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KeyboardInaccessibleWidget"]
+
+[[rule]]
+name = "known-permission-error"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KnownPermissionError"]
+
+[[rule]]
+name = "kotlin-nullness-annotation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KotlinNullnessAnnotation"]
+
+[[rule]]
+name = "kotlin-property-access"
+category = "interoperability-kotlin-interoperability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KotlinPropertyAccess"]
+
+[[rule]]
+name = "ktx-extension-available"
+category = "productivity"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["KtxExtensionAvailable"]
+
+[[rule]]
+name = "label-for"
+category = "accessibility"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LabelFor"]
+
+[[rule]]
+name = "lambda-last"
+category = "interoperability-kotlin-interoperability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LambdaLast"]
+
+[[rule]]
+name = "launch-activity-from-notification"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LaunchActivityFromNotification"]
+
+[[rule]]
+name = "leanback-uses-wifi"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LeanbackUsesWifi"]
+
+[[rule]]
+name = "library-custom-view"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LibraryCustomView"]
+
+[[rule]]
+name = "lifecycle-annotation-processor-with-java8"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LifecycleAnnotationProcessorWithJava8"]
+
+[[rule]]
+name = "local-suppress"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LocalSuppress"]
+
+[[rule]]
+name = "locale-folder"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LocaleFolder"]
+
+[[rule]]
+name = "locked-orientation-activity"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LockedOrientationActivity"]
+
+[[rule]]
+name = "log-conditional"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LogConditional"]
+
+[[rule]]
+name = "log-tag-mismatch"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LogTagMismatch"]
+
+[[rule]]
+name = "long-log-tag"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["LongLogTag"]
+
+[[rule]]
+name = "mangled-crlf"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MangledCRLF"]
+
+[[rule]]
+name = "manifest-order"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ManifestOrder"]
+
+[[rule]]
+name = "manifest-resource"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ManifestResource"]
+
+[[rule]]
+name = "manifest-typo"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ManifestTypo"]
+
+[[rule]]
+name = "member-extension-conflict"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MemberExtensionConflict"]
+
+[[rule]]
+name = "menu-title"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MenuTitle"]
+
+[[rule]]
+name = "merge-marker"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MergeMarker"]
+
+[[rule]]
+name = "merge-root-frame"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MergeRootFrame"]
+
+[[rule]]
+name = "min-sdk-too-low"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MinSdkTooLow"]
+
+[[rule]]
+name = "mipmap-icons"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MipmapIcons"]
+
+[[rule]]
+name = "missing-application-icon"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingApplicationIcon"]
+
+[[rule]]
+name = "missing-backup-pin"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingBackupPin"]
+
+[[rule]]
+name = "missing-class"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingClass"]
+
+[[rule]]
+name = "missing-constraints"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingConstraints"]
+
+[[rule]]
+name = "missing-default-resource"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingDefaultResource"]
+
+[[rule]]
+name = "missing-firebase-instance-token-refresh"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingFirebaseInstanceTokenRefresh"]
+
+[[rule]]
+name = "missing-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingId"]
+
+[[rule]]
+name = "missing-inflated-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingInflatedId"]
+
+[[rule]]
+name = "missing-intent-filter-for-media-search"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingIntentFilterForMediaSearch"]
+
+[[rule]]
+name = "missing-leanback-launcher"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingLeanbackLauncher"]
+
+[[rule]]
+name = "missing-leanback-support"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingLeanbackSupport"]
+
+[[rule]]
+name = "missing-media-browser-service-intent-filter"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingMediaBrowserServiceIntentFilter"]
+
+[[rule]]
+name = "missing-on-play-from-search"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingOnPlayFromSearch"]
+
+[[rule]]
+name = "missing-permission"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingPermission"]
+
+[[rule]]
+name = "missing-prefix"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingPrefix"]
+
+[[rule]]
+name = "missing-purpose"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingPurpose"]
+
+[[rule]]
+name = "missing-quantity"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingQuantity"]
+
+[[rule]]
+name = "missing-resources-properties"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingResourcesProperties"]
+
+[[rule]]
+name = "missing-translation"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingTranslation"]
+
+[[rule]]
+name = "missing-tv-banner"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingTvBanner"]
+
+[[rule]]
+name = "missing-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MissingVersion"]
+
+[[rule]]
+name = "mock-location"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MockLocation"]
+
+[[rule]]
+name = "monochrome-launcher-icon"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MonochromeLauncherIcon"]
+
+[[rule]]
+name = "motion-layout-invalid-scene-file-reference"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MotionLayoutInvalidSceneFileReference"]
+
+[[rule]]
+name = "motion-layout-missing-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MotionLayoutMissingId"]
+
+[[rule]]
+name = "motion-scene-file-validation-error"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MotionSceneFileValidationError"]
+
+[[rule]]
+name = "multiple-uses-sdk"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MultipleUsesSdk"]
+
+[[rule]]
+name = "mutable-implicit-pending-intent"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MutableImplicitPendingIntent"]
+
+[[rule]]
+name = "mutating-shared-prefs"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["MutatingSharedPrefs"]
+
+[[rule]]
+name = "namespace-typo"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NamespaceTypo"]
+
+[[rule]]
+name = "negative-margin"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NegativeMargin"]
+
+[[rule]]
+name = "nested-scrolling"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NestedScrolling"]
+
+[[rule]]
+name = "nested-weights"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NestedWeights"]
+
+[[rule]]
+name = "network-security-config"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NetworkSecurityConfig"]
+
+[[rule]]
+name = "new-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NewApi"]
+
+[[rule]]
+name = "newer-version-available"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NewerVersionAvailable"]
+
+[[rule]]
+name = "nfc-tech-whitespace"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NfcTechWhitespace"]
+
+[[rule]]
+name = "nio-desugaring"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NioDesugaring"]
+
+[[rule]]
+name = "no-hard-keywords"
+category = "interoperability-kotlin-interoperability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NoHardKeywords"]
+
+[[rule]]
+name = "no-op"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NoOp"]
+
+[[rule]]
+name = "non-constant-resource-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NonConstantResourceId"]
+
+[[rule]]
+name = "non-resizeable-activity"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NonResizeableActivity"]
+
+[[rule]]
+name = "not-constructor"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotConstructor"]
+
+[[rule]]
+name = "not-interpolated"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotInterpolated"]
+
+[[rule]]
+name = "not-sibling"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotSibling"]
+
+[[rule]]
+name = "notification-icon-compatibility"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotificationIconCompatibility"]
+
+[[rule]]
+name = "notification-id0"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotificationId0"]
+
+[[rule]]
+name = "notification-permission"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotificationPermission"]
+
+[[rule]]
+name = "notification-trampoline"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotificationTrampoline"]
+
+[[rule]]
+name = "notify-data-set-changed"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["NotifyDataSetChanged"]
+
+[[rule]]
+name = "object-animator-binding"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ObjectAnimatorBinding"]
+
+[[rule]]
+name = "obsolete-layout-param"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ObsoleteLayoutParam"]
+
+[[rule]]
+name = "obsolete-sdk-int"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ObsoleteSdkInt"]
+
+[[rule]]
+name = "old-target-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["OldTargetApi"]
+
+[[rule]]
+name = "on-click"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["OnClick"]
+
+[[rule]]
+name = "open-for-testing"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["OpenForTesting"]
+
+[[rule]]
+name = "orientation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Orientation"]
+
+[[rule]]
+name = "outdated-library"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["OutdatedLibrary"]
+
+[[rule]]
+name = "overdraw"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Overdraw"]
+
+[[rule]]
+name = "override-abstract"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["OverrideAbstract"]
+
+[[rule]]
+name = "packaged-private-key"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PackagedPrivateKey"]
+
+[[rule]]
+name = "parcel-class-loader"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ParcelClassLoader"]
+
+[[rule]]
+name = "parcel-creator"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ParcelCreator"]
+
+[[rule]]
+name = "pending-bindings"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PendingBindings"]
+
+[[rule]]
+name = "permission-implies-unsupported-chrome-os-hardware"
+category = "correctness-chrome-os"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PermissionImpliesUnsupportedChromeOsHardware"]
+
+[[rule]]
+name = "permission-implies-unsupported-hardware"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PermissionImpliesUnsupportedHardware"]
+
+[[rule]]
+name = "permission-naming-convention"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PermissionNamingConvention"]
+
+[[rule]]
+name = "picture-in-picture-issue"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PictureInPictureIssue"]
+
+[[rule]]
+name = "pin-set-expiry"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PinSetExpiry"]
+
+[[rule]]
+name = "play-sdk-index-deprecated"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PlaySdkIndexDeprecated"]
+
+[[rule]]
+name = "play-sdk-index-generic-issues"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PlaySdkIndexGenericIssues"]
+
+[[rule]]
+name = "play-sdk-index-non-compliant"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PlaySdkIndexNonCompliant"]
+
+[[rule]]
+name = "play-sdk-index-vulnerability"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PlaySdkIndexVulnerability"]
+
+[[rule]]
+name = "plurals-candidate"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PluralsCandidate"]
+
+[[rule]]
+name = "privacy-sandbox-blocked-call"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PrivacySandboxBlockedCall"]
+
+[[rule]]
+name = "private-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PrivateApi"]
+
+[[rule]]
+name = "private-resource"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PrivateResource"]
+
+[[rule]]
+name = "proguard"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Proguard"]
+
+[[rule]]
+name = "proguard-android-txt-usage"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ProguardAndroidTxtUsage"]
+
+[[rule]]
+name = "proguard-split"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ProguardSplit"]
+
+[[rule]]
+name = "property-escape"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PropertyEscape"]
+
+[[rule]]
+name = "protected-permissions"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ProtectedPermissions"]
+
+[[rule]]
+name = "provider-read-permission-only"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ProviderReadPermissionOnly"]
+
+[[rule]]
+name = "proxy-password"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ProxyPassword"]
+
+[[rule]]
+name = "public-key-credential"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PublicKeyCredential"]
+
+[[rule]]
+name = "px-usage"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["PxUsage"]
+
+[[rule]]
+name = "query-all-packages-permission"
+category = "compliance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["QueryAllPackagesPermission"]
+
+[[rule]]
+name = "query-permissions-needed"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["QueryPermissionsNeeded"]
+
+[[rule]]
+name = "r8-gradual-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["R8GradualApi"]
+
+[[rule]]
+name = "range"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Range"]
+
+[[rule]]
+name = "recycle"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Recycle"]
+
+[[rule]]
+name = "recycler-view"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RecyclerView"]
+
+[[rule]]
+name = "redundant-label"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RedundantLabel"]
+
+[[rule]]
+name = "redundant-namespace"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RedundantNamespace"]
+
+[[rule]]
+name = "reference-type"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ReferenceType"]
+
+[[rule]]
+name = "reflection-annotation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ReflectionAnnotation"]
+
+[[rule]]
+name = "registered"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Registered"]
+
+[[rule]]
+name = "relative-overlap"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RelativeOverlap"]
+
+[[rule]]
+name = "remote-view-layout"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RemoteViewLayout"]
+
+[[rule]]
+name = "report-shortcut-usage"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ReportShortcutUsage"]
+
+[[rule]]
+name = "required-size"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RequiredSize"]
+
+[[rule]]
+name = "requires-feature"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RequiresFeature"]
+
+[[rule]]
+name = "requires-window-sdk"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RequiresWindowSdk"]
+
+[[rule]]
+name = "res-auto"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ResAuto"]
+
+[[rule]]
+name = "reserved-system-permission"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ReservedSystemPermission"]
+
+[[rule]]
+name = "resource-as-color"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ResourceAsColor"]
+
+[[rule]]
+name = "resource-cycle"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ResourceCycle"]
+
+[[rule]]
+name = "resource-name"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ResourceName"]
+
+[[rule]]
+name = "resource-type"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ResourceType"]
+
+[[rule]]
+name = "return-this"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ReturnThis"]
+
+[[rule]]
+name = "risky-library"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RiskyLibrary"]
+
+[[rule]]
+name = "rtl-compat"
+category = "internationalization-bidirectional-text"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RtlCompat"]
+
+[[rule]]
+name = "rtl-enabled"
+category = "internationalization-bidirectional-text"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RtlEnabled"]
+
+[[rule]]
+name = "rtl-hardcoded"
+category = "internationalization-bidirectional-text"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RtlHardcoded"]
+
+[[rule]]
+name = "rtl-symmetry"
+category = "internationalization-bidirectional-text"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["RtlSymmetry"]
+
+[[rule]]
+name = "sq-lite-string"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SQLiteString"]
+
+[[rule]]
+name = "ssl-certificate-socket-factory-create-socket"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SSLCertificateSocketFactoryCreateSocket"]
+
+[[rule]]
+name = "ssl-certificate-socket-factory-get-insecure"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SSLCertificateSocketFactoryGetInsecure"]
+
+[[rule]]
+name = "schedule-exact-alarm"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ScheduleExactAlarm"]
+
+[[rule]]
+name = "scoped-storage"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ScopedStorage"]
+
+[[rule]]
+name = "scroll-view-count"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ScrollViewCount"]
+
+[[rule]]
+name = "scroll-view-size"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ScrollViewSize"]
+
+[[rule]]
+name = "sd-card-path"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SdCardPath"]
+
+[[rule]]
+name = "secret-in-source"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SecretInSource"]
+
+[[rule]]
+name = "secure-random"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SecureRandom"]
+
+[[rule]]
+name = "selectable-text"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SelectableText"]
+
+[[rule]]
+name = "selected-photo-access"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SelectedPhotoAccess"]
+
+[[rule]]
+name = "service-cast"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ServiceCast"]
+
+[[rule]]
+name = "set-and-clear-communication-device"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SetAndClearCommunicationDevice"]
+
+[[rule]]
+name = "set-java-script-enabled"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SetJavaScriptEnabled"]
+
+[[rule]]
+name = "set-text-i18n"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SetTextI18n"]
+
+[[rule]]
+name = "set-world-readable"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SetWorldReadable"]
+
+[[rule]]
+name = "set-world-writable"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SetWorldWritable"]
+
+[[rule]]
+name = "shift-flags"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ShiftFlags"]
+
+[[rule]]
+name = "short-alarm"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ShortAlarm"]
+
+[[rule]]
+name = "show-toast"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ShowToast"]
+
+[[rule]]
+name = "signature-or-system-permissions"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SignatureOrSystemPermissions"]
+
+[[rule]]
+name = "similar-gradle-dependency"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SimilarGradleDependency"]
+
+[[rule]]
+name = "simple-date-format"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SimpleDateFormat"]
+
+[[rule]]
+name = "slices"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Slices"]
+
+[[rule]]
+name = "small-sp"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SmallSp"]
+
+[[rule]]
+name = "soon-blocked-private-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SoonBlockedPrivateApi"]
+
+[[rule]]
+name = "source-locked-orientation-activity"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SourceLockedOrientationActivity"]
+
+[[rule]]
+name = "sp-usage"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SpUsage"]
+
+[[rule]]
+name = "square-and-round-tile-previews"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SquareAndRoundTilePreviews"]
+
+[[rule]]
+name = "start-activity-and-collapse-deprecated"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StartActivityAndCollapseDeprecated"]
+
+[[rule]]
+name = "state-list-reachable"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StateListReachable"]
+
+[[rule]]
+name = "static-field-leak"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StaticFieldLeak"]
+
+[[rule]]
+name = "stop-ship"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StopShip"]
+
+[[rule]]
+name = "string-escaping"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringEscaping"]
+
+[[rule]]
+name = "string-format-count"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringFormatCount"]
+
+[[rule]]
+name = "string-format-invalid"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringFormatInvalid"]
+
+[[rule]]
+name = "string-format-matches"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringFormatMatches"]
+
+[[rule]]
+name = "string-format-trivial"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringFormatTrivial"]
+
+[[rule]]
+name = "string-should-be-int"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["StringShouldBeInt"]
+
+[[rule]]
+name = "support-annotation-usage"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SupportAnnotationUsage"]
+
+[[rule]]
+name = "suspicious0dp"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Suspicious0dp"]
+
+[[rule]]
+name = "suspicious-import"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SuspiciousImport"]
+
+[[rule]]
+name = "suspicious-indentation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SuspiciousIndentation"]
+
+[[rule]]
+name = "switch-int-def"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SwitchIntDef"]
+
+[[rule]]
+name = "synthetic-accessor"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SyntheticAccessor"]
+
+[[rule]]
+name = "system-permission-typo"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["SystemPermissionTypo"]
+
+[[rule]]
+name = "test-app-link"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TestAppLink"]
+
+[[rule]]
+name = "text-concat-space"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TextConcatSpace"]
+
+[[rule]]
+name = "text-fields"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TextFields"]
+
+[[rule]]
+name = "text-view-edits"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TextViewEdits"]
+
+[[rule]]
+name = "thread-constraint"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ThreadConstraint"]
+
+[[rule]]
+name = "tile-preview-image-format"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TilePreviewImageFormat"]
+
+[[rule]]
+name = "tile-provider-permissions"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TileProviderPermissions"]
+
+[[rule]]
+name = "too-deep-layout"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TooDeepLayout"]
+
+[[rule]]
+name = "too-many-views"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TooManyViews"]
+
+[[rule]]
+name = "translucent-orientation"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TranslucentOrientation"]
+
+[[rule]]
+name = "trim-lambda"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TrimLambda"]
+
+[[rule]]
+name = "truly-random"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TrulyRandom"]
+
+[[rule]]
+name = "trust-all-x509-trust-manager"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TrustAllX509TrustManager"]
+
+[[rule]]
+name = "typography-dashes"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TypographyDashes"]
+
+[[rule]]
+name = "typography-ellipsis"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TypographyEllipsis"]
+
+[[rule]]
+name = "typography-fractions"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TypographyFractions"]
+
+[[rule]]
+name = "typography-other"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TypographyOther"]
+
+[[rule]]
+name = "typography-quotes"
+category = "usability-typography"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["TypographyQuotes"]
+
+[[rule]]
+name = "typos"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Typos"]
+
+[[rule]]
+name = "unclosed-trace"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnclosedTrace"]
+
+[[rule]]
+name = "unique-constants"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UniqueConstants"]
+
+[[rule]]
+name = "unique-permission"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UniquePermission"]
+
+[[rule]]
+name = "unknown-id"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnknownId"]
+
+[[rule]]
+name = "unknown-id-in-layout"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnknownIdInLayout"]
+
+[[rule]]
+name = "unknown-nullness"
+category = "interoperability-kotlin-interoperability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnknownNullness"]
+
+[[rule]]
+name = "unlocalized-sms"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnlocalizedSms"]
+
+[[rule]]
+name = "unnecessary-array-init"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnnecessaryArrayInit"]
+
+[[rule]]
+name = "unnecessary-required-feature"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnnecessaryRequiredFeature"]
+
+[[rule]]
+name = "unprotected-sms-broadcast-receiver"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnprotectedSMSBroadcastReceiver"]
+
+[[rule]]
+name = "unsafe-dynamically-loaded-code"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsafeDynamicallyLoadedCode"]
+
+[[rule]]
+name = "unsafe-implicit-intent-launch"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsafeImplicitIntentLaunch"]
+
+[[rule]]
+name = "unsafe-intent-launch"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsafeIntentLaunch"]
+
+[[rule]]
+name = "unsafe-native-code-location"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsafeNativeCodeLocation"]
+
+[[rule]]
+name = "unsafe-protected-broadcast-receiver"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsafeProtectedBroadcastReceiver"]
+
+[[rule]]
+name = "unsanitized-filename-from-content-provider"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsanitizedFilenameFromContentProvider"]
+
+[[rule]]
+name = "unspecified-immutable-flag"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnspecifiedImmutableFlag"]
+
+[[rule]]
+name = "unspecified-register-receiver-flag"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnspecifiedRegisterReceiverFlag"]
+
+[[rule]]
+name = "unsupported-chrome-os-camera-system-feature"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsupportedChromeOsCameraSystemFeature"]
+
+[[rule]]
+name = "unsupported-chrome-os-hardware"
+category = "correctness-chrome-os"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsupportedChromeOsHardware"]
+
+[[rule]]
+name = "unsupported-tv-hardware"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnsupportedTvHardware"]
+
+[[rule]]
+name = "untranslatable"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Untranslatable"]
+
+[[rule]]
+name = "unused-attribute"
+category = "correctness"
+status = { java = "planned", kotlin = "planned", python = "planned" }
+issues = { java = "#325", kotlin = "#325", python = "#337" }
+android-lint = ["UnusedAttribute"]
+vulture = ["V101"]
+
+[[rule]]
+name = "unused-ids"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnusedIds"]
+
+[[rule]]
+name = "unused-namespace"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnusedNamespace"]
+
+[[rule]]
+name = "unused-quantity"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnusedQuantity"]
+
+[[rule]]
+name = "unused-resources"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnusedResources"]
+
+[[rule]]
+name = "unused-translation"
+category = "correctness-messages"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UnusedTranslation"]
+
+[[rule]]
+name = "usable-space"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UsableSpace"]
+
+[[rule]]
+name = "use-alpha2"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseAlpha2"]
+
+[[rule]]
+name = "use-check-permission"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseCheckPermission"]
+
+[[rule]]
+name = "use-compound-drawables"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseCompoundDrawables"]
+
+[[rule]]
+name = "use-ktx"
+category = "productivity"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseKtx"]
+
+[[rule]]
+name = "use-of-bundled-google-play-services"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseOfBundledGooglePlayServices"]
+
+[[rule]]
+name = "use-requires-api"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseRequiresApi"]
+
+[[rule]]
+name = "use-sdk-suppress"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseSdkSuppress"]
+
+[[rule]]
+name = "use-sparse-arrays"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseSparseArrays"]
+
+[[rule]]
+name = "use-toml-instead"
+category = "productivity"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseTomlInstead"]
+
+[[rule]]
+name = "use-value-of"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UseValueOf"]
+
+[[rule]]
+name = "useless-leaf"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UselessLeaf"]
+
+[[rule]]
+name = "useless-parent"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UselessParent"]
+
+[[rule]]
+name = "using-c2-dm"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UsingC2DM"]
+
+[[rule]]
+name = "using-http"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["UsingHttp"]
+
+[[rule]]
+name = "valid-actions-xml"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ValidActionsXml"]
+
+[[rule]]
+name = "valid-fragment"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ValidFragment"]
+
+[[rule]]
+name = "valid-restrictions"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ValidRestrictions"]
+
+[[rule]]
+name = "vector-drawable-compat"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["VectorDrawableCompat"]
+
+[[rule]]
+name = "vector-path"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["VectorPath"]
+
+[[rule]]
+name = "vector-raster"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["VectorRaster"]
+
+[[rule]]
+name = "view-binding-type"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ViewBindingType"]
+
+[[rule]]
+name = "view-constructor"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ViewConstructor"]
+
+[[rule]]
+name = "view-holder"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["ViewHolder"]
+
+[[rule]]
+name = "visible-for-tests"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["VisibleForTests"]
+
+[[rule]]
+name = "vulnerable-cordova-version"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["VulnerableCordovaVersion"]
+
+[[rule]]
+name = "wakelock"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["Wakelock"]
+
+[[rule]]
+name = "wakelock-timeout"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WakelockTimeout"]
+
+[[rule]]
+name = "watch-face-editor"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WatchFaceEditor"]
+
+[[rule]]
+name = "watch-face-for-android-x"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WatchFaceForAndroidX"]
+
+[[rule]]
+name = "watch-face-format-declares-has-no-code"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WatchFaceFormatDeclaresHasNoCode"]
+
+[[rule]]
+name = "watch-face-format-invalid-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WatchFaceFormatInvalidVersion"]
+
+[[rule]]
+name = "watch-face-format-missing-version"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WatchFaceFormatMissingVersion"]
+
+[[rule]]
+name = "wear-back-navigation"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearBackNavigation"]
+
+[[rule]]
+name = "wear-material-theme"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearMaterialTheme"]
+
+[[rule]]
+name = "wear-password-input"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearPasswordInput"]
+
+[[rule]]
+name = "wear-recents"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearRecents"]
+
+[[rule]]
+name = "wear-splash-screen"
+category = "usability"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearSplashScreen"]
+
+[[rule]]
+name = "wear-standalone-app-flag"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearStandaloneAppFlag"]
+
+[[rule]]
+name = "wearable-action-duplicate"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearableActionDuplicate"]
+
+[[rule]]
+name = "wearable-bind-listener"
+category = "performance"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearableBindListener"]
+
+[[rule]]
+name = "wearable-configuration-action"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WearableConfigurationAction"]
+
+[[rule]]
+name = "web-view-api-availability"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WebViewApiAvailability"]
+
+[[rule]]
+name = "web-view-client-on-received-ssl-error"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WebViewClientOnReceivedSslError"]
+
+[[rule]]
+name = "web-view-layout"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WebViewLayout"]
+
+[[rule]]
+name = "webp-unsupported"
+category = "usability-icons"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WebpUnsupported"]
+
+[[rule]]
+name = "week-based-year"
+category = "internationalization"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WeekBasedYear"]
+
+[[rule]]
+name = "wifi-manager-leak"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WifiManagerLeak"]
+
+[[rule]]
+name = "wifi-manager-potential-leak"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WifiManagerPotentialLeak"]
+
+[[rule]]
+name = "world-readable-files"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WorldReadableFiles"]
+
+[[rule]]
+name = "world-writeable-files"
+category = "security"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WorldWriteableFiles"]
+
+[[rule]]
+name = "wrong-call"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongCall"]
+
+[[rule]]
+name = "wrong-case"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongCase"]
+
+[[rule]]
+name = "wrong-comment-type"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongCommentType"]
+
+[[rule]]
+name = "wrong-constant"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongConstant"]
+
+[[rule]]
+name = "wrong-folder"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongFolder"]
+
+[[rule]]
+name = "wrong-gradle-method"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongGradleMethod"]
+
+[[rule]]
+name = "wrong-manifest-parent"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongManifestParent"]
+
+[[rule]]
+name = "wrong-region"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongRegion"]
+
+[[rule]]
+name = "wrong-sdk-int"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongSdkInt"]
+
+[[rule]]
+name = "wrong-thread"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongThread"]
+
+[[rule]]
+name = "wrong-thread-interprocedural"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongThreadInterprocedural"]
+
+[[rule]]
+name = "wrong-view-cast"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["WrongViewCast"]
+
+[[rule]]
+name = "xml-escape-needed"
+category = "correctness"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#325", kotlin = "#325" }
+android-lint = ["XmlEscapeNeeded"]

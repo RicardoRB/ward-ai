@@ -1,0 +1,78 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "annotation-location"
+category = "annotation"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["AnnotationLocation"]
+
+[[rule]]
+name = "annotation-on-same-line"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["AnnotationOnSameLine"]
+
+[[rule]]
+name = "annotation-use-style"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["AnnotationUseStyle"]
+
+[[rule]]
+name = "missing-deprecated"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["MissingDeprecated"]
+
+[[rule]]
+name = "missing-override"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+pmd = ["MissingOverride"]
+checkstyle = ["MissingOverride"]
+errorprone = ["MissingOverride"]
+
+[[rule]]
+name = "missing-override-on-record-accessor"
+category = "annotation"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#286" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["MissingOverrideOnRecordAccessor"]
+
+[[rule]]
+name = "openjdk-annotation-location"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#286" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["OpenjdkAnnotationLocation"]
+
+[[rule]]
+name = "package-annotation"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#286" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["PackageAnnotation"]
+
+[[rule]]
+name = "suppress-warnings"
+category = "annotation"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["SuppressWarnings"]

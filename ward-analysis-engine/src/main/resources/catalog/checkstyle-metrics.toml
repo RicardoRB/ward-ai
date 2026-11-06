@@ -1,0 +1,57 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "boolean-expression-complexity"
+category = "metrics"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#284", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["BooleanExpressionComplexity"]
+
+[[rule]]
+name = "class-data-abstraction-coupling"
+category = "metrics"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#284", kotlin = "#294" }
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+checkstyle = ["ClassDataAbstractionCoupling"]
+
+[[rule]]
+name = "class-fan-out-complexity"
+category = "metrics"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#284", kotlin = "#294" }
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+pmd = ["CouplingBetweenObjects"]
+checkstyle = ["ClassFanOutComplexity"]
+
+[[rule]]
+name = "cyclomatic-complexity"
+status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
+ids = { typescript = "ward:typescript/complexity", javascript = "ward:javascript/complexity", python = "ward:python/complexity", swift = "ward:swift/complexity" }
+detekt = ["CyclomaticComplexMethod"]
+pmd = ["CyclomaticComplexity"]
+checkstyle = ["CyclomaticComplexity"]
+eslint = ["complexity"]
+swiftlint = ["cyclomatic_complexity"]
+ruff = ["C901"]
+
+[[rule]]
+name = "java-ncss"
+category = "metrics"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#284", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+pmd = ["NcssCount"]
+checkstyle = ["JavaNCSS"]
+
+[[rule]]
+name = "n-path-complexity"
+category = "metrics"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#284", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+pmd = ["NPathComplexity"]
+checkstyle = ["NPathComplexity"]

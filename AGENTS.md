@@ -69,6 +69,13 @@ Tests:
 - Commands from `ward.toml` run from the project root as argument vectors, never through a shell.
 - When implementing or changing operational behavior, add useful JUL diagnostics at meaningful decision and execution boundaries when logs would aid troubleshooting. Keep logs invocation-scoped, stderr-only, and safe: never log secrets, prompts, configuration or environment contents, raw argument vectors, or captured process output.
 
+## Rule catalog
+
+- `ward-analysis-engine/src/main/resources/catalog/*.toml` holds one `[[rule]]` row per Ward rule concept, split by Checkstyle category or tool and listed in `catalog/files.txt`. A row gives its status per language (`implemented`, `planned` with `issues`, or `not-applicable` with a reason in `not-applicable`), `ids` for ids that differ from `ward:<language>/<name>`, and its counterpart rule ids per tool. Implemented rows take category and presets from the rule definition. A rule of a replaced tool is in exactly one row, or in `ward-cli/src/test/resources/catalog/upstream/<tool>-out-of-scope.toml` with a reason.
+- `ward-cli/src/test/resources/catalog/upstream/<tool>-<version>.txt` pins each tool's rule ids; the header names the command that generated it. After a tool upgrade regenerate the list; `UpstreamCoverageTest` then names every new rule to classify.
+- Implementing a planned rule: add the rule definition, set the row's language to `implemented` (drop its `issues` entry), and add `ward-cli/src/test/resources/rules/<language>/<rule-name>/{violating.<ext>,expected.txt,passing.<ext>}`. `expected.txt` has one `line:column` per finding. `RuleCatalogFixturesTest` runs every implemented pair; a rule that needs types adds a `types.json` (see `FixtureTypeFacts`).
+- The rule reference under `website/src/content/docs/reference/` is generated. After changing a row or a rule definition run `./mvnw -Dtest=RuleReferenceTest -Dward.rules.reference.write=true test` and commit the pages; `RuleReferenceTest` fails on drift.
+
 ## Quality Gate Rules
 
 Gates in `ward.toml`; edit hooks run the `default` profile (format, checkstyle, pmd, gitleaks) on edited files. Checkstyle and PMD also cover tests.

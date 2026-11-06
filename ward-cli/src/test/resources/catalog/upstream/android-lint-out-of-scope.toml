@@ -1,0 +1,19 @@
+# Rules of android-lint-32.5.1 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "lint tool infrastructure, not a check of user code"
+rules = [
+  "KotlincFE10",
+  "LintDocExample",
+  "LintImplBadUrl",
+  "LintImplDollarEscapes",
+  "LintImplIdFormat",
+  "LintImplPsiEquals",
+  "LintImplTextFormat",
+  "LintImplTrimIndent",
+  "LintImplUnexpectedDomain",
+  "LintImplUseKotlin",
+  "LintImplUseUast",
+  "UElementAsPsi",
+  "UastImplementation",
+]

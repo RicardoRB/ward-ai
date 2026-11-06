@@ -1,0 +1,29 @@
+# Rules of pmd-7.29.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "deprecated upstream"
+rules = [
+  "AvoidCatchingNPE",
+  "AvoidCatchingThrowable",
+  "AvoidLosingExceptionInformation",
+  "AvoidProtectedFieldInFinalClass",
+  "AvoidProtectedMethodInFinalClassNotExtending",
+  "CheckSkipResult",
+  "DefaultLabelNotLastInSwitchStmt",
+  "GenericsNaming",
+  "JUnit4TestShouldUseAfterAnnotation",
+  "JUnit4TestShouldUseBeforeAnnotation",
+  "JUnit4TestShouldUseTestAnnotation",
+  "JUnit5TestShouldBePackagePrivate",
+  "JUnitAssertionsShouldIncludeMessage",
+  "JUnitTestContainsTooManyAsserts",
+  "JUnitTestsShouldIncludeAssert",
+  "NonCaseLabelInSwitchStatement",
+  "ReplaceVectorWithList",
+  "TooFewBranchesForASwitchStatement",
+  "UnnecessaryLocalBeforeReturn",
+  "UseArrayListInsteadOfVector",
+  "UseObjectForClearerAPI",
+  "UselessOperationOnImmutable",
+  "UselessPureMethodCall",
+]

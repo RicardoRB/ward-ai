@@ -1,0 +1,1555 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "r-1password-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["1password-secret-key"]
+
+[[rule]]
+name = "r-1password-service-account-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["1password-service-account-token"]
+
+[[rule]]
+name = "adafruit-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["adafruit-api-key"]
+
+[[rule]]
+name = "adobe-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["adobe-client-id"]
+
+[[rule]]
+name = "adobe-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["adobe-client-secret"]
+
+[[rule]]
+name = "age-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["age-secret-key"]
+
+[[rule]]
+name = "airtable-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["airtable-api-key"]
+
+[[rule]]
+name = "airtable-personnal-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["airtable-personnal-access-token"]
+
+[[rule]]
+name = "algolia-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["algolia-api-key"]
+
+[[rule]]
+name = "alibaba-access-key-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["alibaba-access-key-id"]
+
+[[rule]]
+name = "alibaba-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["alibaba-secret-key"]
+
+[[rule]]
+name = "anthropic-admin-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["anthropic-admin-api-key"]
+
+[[rule]]
+name = "anthropic-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["anthropic-api-key"]
+
+[[rule]]
+name = "artifactory-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["artifactory-api-key"]
+
+[[rule]]
+name = "artifactory-reference-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["artifactory-reference-token"]
+
+[[rule]]
+name = "asana-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["asana-client-id"]
+
+[[rule]]
+name = "asana-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["asana-client-secret"]
+
+[[rule]]
+name = "atlassian-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["atlassian-api-token"]
+
+[[rule]]
+name = "authress-service-client-access-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["authress-service-client-access-key"]
+
+[[rule]]
+name = "aws-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["aws-access-token"]
+
+[[rule]]
+name = "aws-amazon-bedrock-api-key-long-lived"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["aws-amazon-bedrock-api-key-long-lived"]
+
+[[rule]]
+name = "aws-amazon-bedrock-api-key-short-lived"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["aws-amazon-bedrock-api-key-short-lived"]
+
+[[rule]]
+name = "azure-ad-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["azure-ad-client-secret"]
+
+[[rule]]
+name = "beamer-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["beamer-api-token"]
+
+[[rule]]
+name = "bitbucket-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["bitbucket-client-id"]
+
+[[rule]]
+name = "bitbucket-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["bitbucket-client-secret"]
+
+[[rule]]
+name = "bittrex-access-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["bittrex-access-key"]
+
+[[rule]]
+name = "bittrex-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["bittrex-secret-key"]
+
+[[rule]]
+name = "cisco-meraki-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["cisco-meraki-api-key"]
+
+[[rule]]
+name = "clickhouse-cloud-api-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["clickhouse-cloud-api-secret-key"]
+
+[[rule]]
+name = "clojars-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["clojars-api-token"]
+
+[[rule]]
+name = "cloudflare-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["cloudflare-api-key"]
+
+[[rule]]
+name = "cloudflare-global-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["cloudflare-global-api-key"]
+
+[[rule]]
+name = "cloudflare-origin-ca-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["cloudflare-origin-ca-key"]
+
+[[rule]]
+name = "codecov-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["codecov-access-token"]
+
+[[rule]]
+name = "cohere-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["cohere-api-token"]
+
+[[rule]]
+name = "coinbase-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["coinbase-access-token"]
+
+[[rule]]
+name = "confluent-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["confluent-access-token"]
+
+[[rule]]
+name = "confluent-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["confluent-secret-key"]
+
+[[rule]]
+name = "contentful-delivery-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["contentful-delivery-api-token"]
+
+[[rule]]
+name = "curl-auth-header"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["curl-auth-header"]
+
+[[rule]]
+name = "curl-auth-user"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["curl-auth-user"]
+
+[[rule]]
+name = "databricks-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["databricks-api-token"]
+
+[[rule]]
+name = "datadog-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["datadog-access-token"]
+
+[[rule]]
+name = "defined-networking-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["defined-networking-api-token"]
+
+[[rule]]
+name = "digitalocean-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["digitalocean-access-token"]
+
+[[rule]]
+name = "digitalocean-pat"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["digitalocean-pat"]
+
+[[rule]]
+name = "digitalocean-refresh-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["digitalocean-refresh-token"]
+
+[[rule]]
+name = "discord-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["discord-api-token"]
+
+[[rule]]
+name = "discord-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["discord-client-id"]
+
+[[rule]]
+name = "discord-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["discord-client-secret"]
+
+[[rule]]
+name = "doppler-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["doppler-api-token"]
+
+[[rule]]
+name = "droneci-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["droneci-access-token"]
+
+[[rule]]
+name = "dropbox-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["dropbox-api-token"]
+
+[[rule]]
+name = "dropbox-long-lived-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["dropbox-long-lived-api-token"]
+
+[[rule]]
+name = "dropbox-short-lived-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["dropbox-short-lived-api-token"]
+
+[[rule]]
+name = "duffel-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["duffel-api-token"]
+
+[[rule]]
+name = "dynatrace-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["dynatrace-api-token"]
+
+[[rule]]
+name = "easypost-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["easypost-api-token"]
+
+[[rule]]
+name = "easypost-test-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["easypost-test-api-token"]
+
+[[rule]]
+name = "etsy-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["etsy-access-token"]
+
+[[rule]]
+name = "facebook-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["facebook-access-token"]
+
+[[rule]]
+name = "facebook-page-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["facebook-page-access-token"]
+
+[[rule]]
+name = "facebook-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["facebook-secret"]
+
+[[rule]]
+name = "fastly-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["fastly-api-token"]
+
+[[rule]]
+name = "finicity-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["finicity-api-token"]
+
+[[rule]]
+name = "finicity-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["finicity-client-secret"]
+
+[[rule]]
+name = "finnhub-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["finnhub-access-token"]
+
+[[rule]]
+name = "flickr-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["flickr-access-token"]
+
+[[rule]]
+name = "flutterwave-encryption-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["flutterwave-encryption-key"]
+
+[[rule]]
+name = "flutterwave-public-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["flutterwave-public-key"]
+
+[[rule]]
+name = "flutterwave-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["flutterwave-secret-key"]
+
+[[rule]]
+name = "flyio-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["flyio-access-token"]
+
+[[rule]]
+name = "frameio-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["frameio-api-token"]
+
+[[rule]]
+name = "freemius-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["freemius-secret-key"]
+
+[[rule]]
+name = "freshbooks-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["freshbooks-access-token"]
+
+[[rule]]
+name = "gcp-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gcp-api-key"]
+
+[[rule]]
+name = "generic-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["generic-api-key"]
+
+[[rule]]
+name = "github-app-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["github-app-token"]
+
+[[rule]]
+name = "github-fine-grained-pat"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["github-fine-grained-pat"]
+
+[[rule]]
+name = "github-oauth"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["github-oauth"]
+
+[[rule]]
+name = "github-pat"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["github-pat"]
+
+[[rule]]
+name = "github-refresh-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["github-refresh-token"]
+
+[[rule]]
+name = "gitlab-cicd-job-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-cicd-job-token"]
+
+[[rule]]
+name = "gitlab-deploy-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-deploy-token"]
+
+[[rule]]
+name = "gitlab-feature-flag-client-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-feature-flag-client-token"]
+
+[[rule]]
+name = "gitlab-feed-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-feed-token"]
+
+[[rule]]
+name = "gitlab-incoming-mail-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-incoming-mail-token"]
+
+[[rule]]
+name = "gitlab-kubernetes-agent-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-kubernetes-agent-token"]
+
+[[rule]]
+name = "gitlab-oauth-app-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-oauth-app-secret"]
+
+[[rule]]
+name = "gitlab-pat"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-pat"]
+
+[[rule]]
+name = "gitlab-pat-routable"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-pat-routable"]
+
+[[rule]]
+name = "gitlab-ptt"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-ptt"]
+
+[[rule]]
+name = "gitlab-rrt"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-rrt"]
+
+[[rule]]
+name = "gitlab-runner-authentication-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-runner-authentication-token"]
+
+[[rule]]
+name = "gitlab-runner-authentication-token-routable"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-runner-authentication-token-routable"]
+
+[[rule]]
+name = "gitlab-scim-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-scim-token"]
+
+[[rule]]
+name = "gitlab-session-cookie"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitlab-session-cookie"]
+
+[[rule]]
+name = "gitter-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gitter-access-token"]
+
+[[rule]]
+name = "gocardless-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["gocardless-api-token"]
+
+[[rule]]
+name = "grafana-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["grafana-api-key"]
+
+[[rule]]
+name = "grafana-cloud-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["grafana-cloud-api-token"]
+
+[[rule]]
+name = "grafana-service-account-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["grafana-service-account-token"]
+
+[[rule]]
+name = "harness-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["harness-api-key"]
+
+[[rule]]
+name = "hashicorp-tf-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["hashicorp-tf-api-token"]
+
+[[rule]]
+name = "hashicorp-tf-password"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["hashicorp-tf-password"]
+
+[[rule]]
+name = "heroku-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["heroku-api-key"]
+
+[[rule]]
+name = "heroku-api-key-v2"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["heroku-api-key-v2"]
+
+[[rule]]
+name = "hubspot-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["hubspot-api-key"]
+
+[[rule]]
+name = "huggingface-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["huggingface-access-token"]
+
+[[rule]]
+name = "huggingface-organization-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["huggingface-organization-api-token"]
+
+[[rule]]
+name = "infracost-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["infracost-api-token"]
+
+[[rule]]
+name = "intercom-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["intercom-api-key"]
+
+[[rule]]
+name = "intra42-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["intra42-client-secret"]
+
+[[rule]]
+name = "jfrog-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["jfrog-api-key"]
+
+[[rule]]
+name = "jfrog-identity-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["jfrog-identity-token"]
+
+[[rule]]
+name = "jwt"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["jwt"]
+
+[[rule]]
+name = "jwt-base64"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["jwt-base64"]
+
+[[rule]]
+name = "kraken-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["kraken-access-token"]
+
+[[rule]]
+name = "kubernetes-secret-yaml"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["kubernetes-secret-yaml"]
+
+[[rule]]
+name = "kucoin-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["kucoin-access-token"]
+
+[[rule]]
+name = "kucoin-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["kucoin-secret-key"]
+
+[[rule]]
+name = "launchdarkly-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["launchdarkly-access-token"]
+
+[[rule]]
+name = "linear-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["linear-api-key"]
+
+[[rule]]
+name = "linear-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["linear-client-secret"]
+
+[[rule]]
+name = "linkedin-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["linkedin-client-id"]
+
+[[rule]]
+name = "linkedin-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["linkedin-client-secret"]
+
+[[rule]]
+name = "lob-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["lob-api-key"]
+
+[[rule]]
+name = "lob-pub-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["lob-pub-api-key"]
+
+[[rule]]
+name = "looker-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["looker-client-id"]
+
+[[rule]]
+name = "looker-client-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["looker-client-secret"]
+
+[[rule]]
+name = "mailchimp-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mailchimp-api-key"]
+
+[[rule]]
+name = "mailgun-private-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mailgun-private-api-token"]
+
+[[rule]]
+name = "mailgun-pub-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mailgun-pub-key"]
+
+[[rule]]
+name = "mailgun-signing-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mailgun-signing-key"]
+
+[[rule]]
+name = "mapbox-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mapbox-api-token"]
+
+[[rule]]
+name = "mattermost-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["mattermost-access-token"]
+
+[[rule]]
+name = "maxmind-license-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["maxmind-license-key"]
+
+[[rule]]
+name = "messagebird-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["messagebird-api-token"]
+
+[[rule]]
+name = "messagebird-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["messagebird-client-id"]
+
+[[rule]]
+name = "microsoft-teams-webhook"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["microsoft-teams-webhook"]
+
+[[rule]]
+name = "netlify-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["netlify-access-token"]
+
+[[rule]]
+name = "new-relic-browser-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["new-relic-browser-api-token"]
+
+[[rule]]
+name = "new-relic-insert-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["new-relic-insert-key"]
+
+[[rule]]
+name = "new-relic-user-api-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["new-relic-user-api-id"]
+
+[[rule]]
+name = "new-relic-user-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["new-relic-user-api-key"]
+
+[[rule]]
+name = "notion-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["notion-api-token"]
+
+[[rule]]
+name = "npm-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["npm-access-token"]
+
+[[rule]]
+name = "nuget-config-password"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["nuget-config-password"]
+
+[[rule]]
+name = "nytimes-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["nytimes-access-token"]
+
+[[rule]]
+name = "octopus-deploy-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["octopus-deploy-api-key"]
+
+[[rule]]
+name = "okta-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["okta-access-token"]
+
+[[rule]]
+name = "openai-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["openai-api-key"]
+
+[[rule]]
+name = "openshift-user-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["openshift-user-token"]
+
+[[rule]]
+name = "perplexity-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["perplexity-api-key"]
+
+[[rule]]
+name = "pkcs12-file"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["pkcs12-file"]
+
+[[rule]]
+name = "plaid-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["plaid-api-token"]
+
+[[rule]]
+name = "plaid-client-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["plaid-client-id"]
+
+[[rule]]
+name = "plaid-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["plaid-secret-key"]
+
+[[rule]]
+name = "planetscale-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["planetscale-api-token"]
+
+[[rule]]
+name = "planetscale-oauth-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["planetscale-oauth-token"]
+
+[[rule]]
+name = "planetscale-password"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["planetscale-password"]
+
+[[rule]]
+name = "postman-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["postman-api-token"]
+
+[[rule]]
+name = "prefect-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["prefect-api-token"]
+
+[[rule]]
+name = "private-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["private-key"]
+
+[[rule]]
+name = "privateai-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["privateai-api-token"]
+
+[[rule]]
+name = "pulumi-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["pulumi-api-token"]
+
+[[rule]]
+name = "pypi-upload-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["pypi-upload-token"]
+
+[[rule]]
+name = "rapidapi-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["rapidapi-access-token"]
+
+[[rule]]
+name = "readme-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["readme-api-token"]
+
+[[rule]]
+name = "rubygems-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["rubygems-api-token"]
+
+[[rule]]
+name = "scalingo-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["scalingo-api-token"]
+
+[[rule]]
+name = "sendbird-access-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sendbird-access-id"]
+
+[[rule]]
+name = "sendbird-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sendbird-access-token"]
+
+[[rule]]
+name = "sendgrid-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sendgrid-api-token"]
+
+[[rule]]
+name = "sendinblue-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sendinblue-api-token"]
+
+[[rule]]
+name = "sentry-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sentry-access-token"]
+
+[[rule]]
+name = "sentry-org-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sentry-org-token"]
+
+[[rule]]
+name = "sentry-user-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sentry-user-token"]
+
+[[rule]]
+name = "settlemint-application-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["settlemint-application-access-token"]
+
+[[rule]]
+name = "settlemint-personal-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["settlemint-personal-access-token"]
+
+[[rule]]
+name = "settlemint-service-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["settlemint-service-access-token"]
+
+[[rule]]
+name = "shippo-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["shippo-api-token"]
+
+[[rule]]
+name = "shopify-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["shopify-access-token"]
+
+[[rule]]
+name = "shopify-custom-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["shopify-custom-access-token"]
+
+[[rule]]
+name = "shopify-private-app-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["shopify-private-app-access-token"]
+
+[[rule]]
+name = "shopify-shared-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["shopify-shared-secret"]
+
+[[rule]]
+name = "sidekiq-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sidekiq-secret"]
+
+[[rule]]
+name = "sidekiq-sensitive-url"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sidekiq-sensitive-url"]
+
+[[rule]]
+name = "slack-app-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-app-token"]
+
+[[rule]]
+name = "slack-bot-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-bot-token"]
+
+[[rule]]
+name = "slack-config-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-config-access-token"]
+
+[[rule]]
+name = "slack-config-refresh-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-config-refresh-token"]
+
+[[rule]]
+name = "slack-legacy-bot-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-legacy-bot-token"]
+
+[[rule]]
+name = "slack-legacy-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-legacy-token"]
+
+[[rule]]
+name = "slack-legacy-workspace-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-legacy-workspace-token"]
+
+[[rule]]
+name = "slack-user-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-user-token"]
+
+[[rule]]
+name = "slack-webhook-url"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["slack-webhook-url"]
+
+[[rule]]
+name = "snyk-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["snyk-api-token"]
+
+[[rule]]
+name = "sonar-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sonar-api-token"]
+
+[[rule]]
+name = "sourcegraph-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sourcegraph-access-token"]
+
+[[rule]]
+name = "square-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["square-access-token"]
+
+[[rule]]
+name = "squarespace-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["squarespace-access-token"]
+
+[[rule]]
+name = "stripe-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["stripe-access-token"]
+
+[[rule]]
+name = "sumologic-access-id"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sumologic-access-id"]
+
+[[rule]]
+name = "sumologic-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["sumologic-access-token"]
+
+[[rule]]
+name = "telegram-bot-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["telegram-bot-api-token"]
+
+[[rule]]
+name = "travisci-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["travisci-access-token"]
+
+[[rule]]
+name = "twilio-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twilio-api-key"]
+
+[[rule]]
+name = "twitch-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitch-api-token"]
+
+[[rule]]
+name = "twitter-access-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitter-access-secret"]
+
+[[rule]]
+name = "twitter-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitter-access-token"]
+
+[[rule]]
+name = "twitter-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitter-api-key"]
+
+[[rule]]
+name = "twitter-api-secret"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitter-api-secret"]
+
+[[rule]]
+name = "twitter-bearer-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["twitter-bearer-token"]
+
+[[rule]]
+name = "typeform-api-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["typeform-api-token"]
+
+[[rule]]
+name = "vault-batch-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["vault-batch-token"]
+
+[[rule]]
+name = "vault-service-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["vault-service-token"]
+
+[[rule]]
+name = "yandex-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["yandex-access-token"]
+
+[[rule]]
+name = "yandex-api-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["yandex-api-key"]
+
+[[rule]]
+name = "yandex-aws-access-token"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["yandex-aws-access-token"]
+
+[[rule]]
+name = "zendesk-secret-key"
+category = "secrets"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#341", kotlin = "#341", typescript = "#341", javascript = "#341", python = "#341", swift = "#341" }
+gitleaks = ["zendesk-secret-key"]

@@ -1,0 +1,10 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "duplicate-code"
+category = "duplicate-code"
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#340", kotlin = "#340", typescript = "#340", javascript = "#340", python = "#340", swift = "#340" }
+jscpd = ["duplicate-code"]
+cpd = ["duplicate-tokens"]
+pylint = ["duplicate-code"]

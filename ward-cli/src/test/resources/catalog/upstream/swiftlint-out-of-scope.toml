@@ -1,0 +1,54 @@
+# Rules of swiftlint-0.65.1 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "formatting: covered by ward format"
+rules = [
+  "attribute_name_spacing",
+  "closing_brace",
+  "closure_end_indentation",
+  "closure_spacing",
+  "collection_alignment",
+  "colon",
+  "comma",
+  "empty_parentheses_with_trailing_closure",
+  "indentation_width",
+  "leading_whitespace",
+  "literal_expression_end_indentation",
+  "multiline_arguments",
+  "multiline_arguments_brackets",
+  "multiline_function_chains",
+  "multiline_literal_brackets",
+  "multiline_parameters",
+  "multiline_parameters_brackets",
+  "no_space_in_method_call",
+  "opening_brace",
+  "return_arrow_whitespace",
+  "statement_position",
+  "switch_case_alignment",
+  "trailing_comma",
+  "trailing_newline",
+  "trailing_whitespace",
+  "unneeded_parentheses_in_closure_argument",
+  "vertical_whitespace",
+  "vertical_whitespace_between_cases",
+  "vertical_whitespace_closing_braces",
+  "vertical_whitespace_opening_braces",
+]
+
+[[group]]
+reason = "user-defined custom rules are Ward rules in ward-rules.toml"
+rules = [
+  "custom_rules",
+]
+
+[[group]]
+reason = "suppression: Ward has no inline suppressions"
+rules = [
+  "superfluous_disable_command",
+]
+
+[[group]]
+reason = "run configuration of SwiftLint, not a rule"
+rules = [
+  "warning_threshold",
+]

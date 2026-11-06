@@ -1,0 +1,29 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "assign-only-property"
+category = "dead-code"
+status = { swift = "planned" }
+issues = { swift = "#339" }
+periphery = ["assign-only-property"]
+
+[[rule]]
+name = "redundant-protocol"
+category = "dead-code"
+status = { swift = "planned" }
+issues = { swift = "#339" }
+periphery = ["redundant-protocol"]
+
+[[rule]]
+name = "redundant-public-accessibility"
+category = "dead-code"
+status = { swift = "planned" }
+issues = { swift = "#339" }
+periphery = ["redundant-public-accessibility"]
+
+[[rule]]
+name = "superfluous-ignore-command"
+category = "dead-code"
+status = { swift = "planned" }
+issues = { swift = "#339" }
+periphery = ["superfluous-ignore-command"]
