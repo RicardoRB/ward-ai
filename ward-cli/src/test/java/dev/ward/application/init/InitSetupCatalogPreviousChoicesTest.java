@@ -77,6 +77,7 @@ class InitSetupCatalogPreviousChoicesTest {
             null,
             false,
             null,
+            null,
             null));
 
     assertThat(catalog.previousChoices(project(dir)))

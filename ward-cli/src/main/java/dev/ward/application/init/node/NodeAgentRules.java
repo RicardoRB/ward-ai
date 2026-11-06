@@ -1,6 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.AgentRulesTemplate;
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Language;
@@ -25,6 +26,30 @@ public final class NodeAgentRules {
   private NodeAgentRules() {}
 
   /**
+   * Returns the Biome line. Under the {@code ward} format engine Biome only fixes lint findings,
+   * and formatting runs through {@code ward format}; the tool engine keeps Biome's own formatting.
+   */
+  private static String biomeRow(
+      final Project project,
+      final QualityPreset preset,
+      final Set<String> owned,
+      final boolean wardFormat) {
+    final String rules = "- Biome: " + biomeRules(project, preset, owned);
+    if (wardFormat) {
+      return rules
+          + "; fix edited lint findings with `biome check --write`, and the gate runs `{command}`."
+          + " Formatting runs through `ward format`, not Biome.";
+    }
+    return rules
+        + "; format and fix edited files with `biome check --write`, and the gate runs"
+        + " `{command}`.";
+  }
+
+  private static boolean wardFormat(final List<InitGateOption> gates) {
+    return gates.stream().anyMatch(gate -> FormatGates.WARD_FORMAT.equals(gate.id()));
+  }
+
+  /**
    * Returns one line per selected Node tool gate, naming its command; the minimums are the ones the
    * test runner and Stryker configs or commands enforce.
    */
@@ -45,10 +70,7 @@ public final class NodeAgentRules {
             "- Prettier: format edited files with Prettier and the project's config; the gate"
                 + " runs `{command}`.",
             "biome",
-            "- Biome: "
-                + biomeRules(project, preset, owned)
-                + "; format and fix edited files with `biome check --write`, and the gate runs"
-                + " `{command}`.",
+            biomeRow(project, preset, owned, wardFormat(gates)),
             NodeTools.VITEST,
             "- Tests (Vitest): `{command}`, " + coverage + tests,
             NodeTools.JEST,

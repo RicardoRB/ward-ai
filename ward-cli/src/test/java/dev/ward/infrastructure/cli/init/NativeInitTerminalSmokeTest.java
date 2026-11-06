@@ -103,7 +103,7 @@ class NativeInitTerminalSmokeTest {
                 "create     ward.toml",
                 "create     .git/hooks/pre-commit",
                 "Step 1 of 5",
-                "Step 5 of 5",
+                "Step 6 of 6",
                 "Enter=1]")
             .doesNotContain("\033[2J");
         terminal.write("\n".getBytes(StandardCharsets.US_ASCII));
@@ -142,6 +142,8 @@ class NativeInitTerminalSmokeTest {
     terminal.awaitOutput(process, "> [x] 6) pmd", KEY_TIMEOUT);
     terminal.write(" ".getBytes(StandardCharsets.US_ASCII));
     terminal.awaitOutput(process, "> [ ] 6) pmd", KEY_TIMEOUT);
+    terminal.write(ENTER);
+    terminal.awaitOutput(process, "Choose a formatter [1-2, Enter=1]", PROMPT_TIMEOUT);
     terminal.write(ENTER);
     terminal.awaitOutput(process, "Select optional tools", PROMPT_TIMEOUT);
     terminal.write(ENTER);

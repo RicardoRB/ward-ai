@@ -5,7 +5,8 @@ import java.util.List;
 /**
  * Validated choices made by an initialization request. {@code ci} names the CI provider whose
  * workflow init writes, or is {@code null} for none; {@code agentRules} writes the gate rules into
- * {@code AGENTS.md}; {@code architectureEngine} says which checker enforces the style.
+ * {@code AGENTS.md}; {@code architectureEngine} says which checker enforces the style, and {@code
+ * formatEngine} which formatter.
  */
 public record InitSelection(
     List<String> integrations,
@@ -19,13 +20,15 @@ public record InitSelection(
     String ci,
     boolean agentRules,
     String scheme,
-    ArchitectureEngine architectureEngine) {
+    ArchitectureEngine architectureEngine,
+    FormatEngine formatEngine) {
   /**
    * Copies the lists; missing optional lists mean empty, and a missing engine means the external
    * tool.
    */
   public InitSelection {
     architectureEngine = architectureEngine == null ? ArchitectureEngine.TOOL : architectureEngine;
+    formatEngine = formatEngine == null ? FormatEngine.TOOL : formatEngine;
     integrations = List.copyOf(integrations);
     gates = List.copyOf(gates);
     tools = tools == null ? List.of() : List.copyOf(tools);
@@ -48,7 +51,8 @@ public record InitSelection(
         null,
         false,
         null,
-        ArchitectureEngine.TOOL);
+        ArchitectureEngine.TOOL,
+        FormatEngine.TOOL);
   }
 
   /** Selects {@code integrations} and one gate. */
@@ -65,7 +69,8 @@ public record InitSelection(
         null,
         false,
         null,
-        ArchitectureEngine.TOOL);
+        ArchitectureEngine.TOOL,
+        FormatEngine.TOOL);
   }
 
   /** Selects {@code integrations} and {@code gates}, without preset, tools, or hooks. */
@@ -82,7 +87,8 @@ public record InitSelection(
         null,
         false,
         null,
-        ArchitectureEngine.TOOL);
+        ArchitectureEngine.TOOL,
+        FormatEngine.TOOL);
   }
 
   /** Selects {@code integrations} and {@code gates} with an architecture style. */
@@ -100,7 +106,8 @@ public record InitSelection(
         null,
         false,
         null,
-        ArchitectureEngine.TOOL);
+        ArchitectureEngine.TOOL,
+        FormatEngine.TOOL);
   }
 
   /** Selects {@code integrations} and {@code gates} with an architecture style and preset. */
@@ -121,6 +128,7 @@ public record InitSelection(
         null,
         false,
         null,
-        ArchitectureEngine.TOOL);
+        ArchitectureEngine.TOOL,
+        FormatEngine.TOOL);
   }
 }

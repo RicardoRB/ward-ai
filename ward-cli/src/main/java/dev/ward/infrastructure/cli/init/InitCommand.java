@@ -224,7 +224,8 @@ public class InitCommand implements Callable<Integer> {
         generatedFiles.agentRules(),
         yesOption,
         schemeOptions.scheme(),
-        generatedFiles.architectureEngineOrNull());
+        generatedFiles.architectureEngineOrNull(),
+        generatedFiles.formatEngineOrNull());
   }
 
   private Optional<RawSession> openRawTerminal() {

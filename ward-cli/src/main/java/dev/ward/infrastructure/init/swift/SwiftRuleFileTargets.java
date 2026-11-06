@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init.swift;
 
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
@@ -19,6 +20,8 @@ public final class SwiftRuleFileTargets implements RuleFileTargets {
   public List<ConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
-    return SwiftConfigFiles.targets(project, preset);
+    final boolean wardFormat =
+        gates.stream().anyMatch(gate -> FormatGates.WARD_FORMAT.equals(gate.id()));
+    return SwiftConfigFiles.targets(project, preset, !wardFormat);
   }
 }

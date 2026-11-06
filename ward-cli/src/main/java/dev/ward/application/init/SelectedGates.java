@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
@@ -30,26 +31,43 @@ final class SelectedGates {
       final Project project,
       final InitSelection selection,
       final String openSpecExecutable) {
+    final List<String> ids =
+        FormatEngineGates.apply(
+            Stream.concat(
+                    (selection.preset() == null
+                            ? selection.gates()
+                            : PresetGateOrder.orderSelected(
+                                catalog.presetGates(project, selection.preset()),
+                                selection.gates()))
+                        .stream(),
+                    selection.openSpecValidations().stream())
+                .distinct()
+                .toList(),
+            selection.formatEngine());
     final List<InitGateOption> gates =
-        Stream.concat(
-                (selection.preset() == null
-                        ? selection.gates()
-                        : PresetGateOrder.orderSelected(
-                            catalog.presetGates(project, selection.preset()), selection.gates()))
-                    .stream(),
-                selection.openSpecValidations().stream())
-            .distinct()
+        ids.stream()
             .filter(id -> !checkedByWard(project, selection, id))
-            .map(
-                id ->
-                    catalog.openSpecValidations().contains(id)
-                        ? catalog.openSpecValidation(project, id, openSpecExecutable)
-                        : configured(catalog, project, id, selection.preset()))
+            .map(id -> option(catalog, project, selection, openSpecExecutable, id))
             .toList();
     if (gates.isEmpty() && selection.tools().isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
     return offlineTrivy(gates, project);
+  }
+
+  /** Returns the configured gate for {@code id}, with the {@code ward-format} gate built here. */
+  private static InitGateOption option(
+      final InitSetupCatalog catalog,
+      final Project project,
+      final InitSelection selection,
+      final String openSpecExecutable,
+      final String id) {
+    if (FormatGates.WARD_FORMAT.equals(id)) {
+      return FormatEngineGates.wardFormat();
+    }
+    return catalog.openSpecValidations().contains(id)
+        ? catalog.openSpecValidation(project, id, openSpecExecutable)
+        : configured(catalog, project, id, selection.preset());
   }
 
   /**
