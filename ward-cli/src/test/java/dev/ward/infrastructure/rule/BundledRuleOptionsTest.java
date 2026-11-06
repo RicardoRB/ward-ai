@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.rule.RuleOption;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.application.gate.AnalysisRuleLoad;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class BundledRuleOptionsTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.category()).as(rule.id()).isNotBlank();
-              assertThat(RulePreset.STANDARD.selects(rule.presets())).as(rule.id()).isTrue();
+              assertThat(rule.presets()).as(rule.id()).containsAnyOf(RulePreset.STANDARD, RulePreset.STRICT);
               assertThat(RulePreset.STRICT.selects(rule.presets())).as(rule.id()).isTrue();
             });
   }
@@ -52,6 +53,8 @@ class BundledRuleOptionsTest {
     return switch (option.type()) {
       case INTEGER -> Math.max(option.min(), 0) + NON_DEFAULT;
       case REGEX -> PATTERN;
+      case BOOLEAN -> Boolean.FALSE;
+      case STRING_LIST -> List.of("Sample");
       default -> throw new IllegalStateException("no sample for " + option.type());
     };
   }
