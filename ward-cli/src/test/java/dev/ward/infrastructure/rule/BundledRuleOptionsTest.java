@@ -57,6 +57,7 @@ class BundledRuleOptionsTest {
       case REGEX -> PATTERN;
       case BOOLEAN -> Boolean.FALSE;
       case STRING_LIST -> List.of("Sample");
+      case ENUM -> option.values().get(0);
       default -> throw new IllegalStateException("no sample for " + option.type());
     };
   }

@@ -95,7 +95,7 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
-      default -> MetricChecks.build(name, toml);
+      default -> ReviewChecks.build(name, toml);
     };
   }
 
