@@ -130,6 +130,9 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
+    if (rule.body().contains("check = \"reassigned-binding\"")) {
+      return RuleCapability.SCOPES;
+    }
     return rule.id().endsWith("/unused-assignment")
             || isJavaInjection(rule.id())
             || rule.body().contains("check = \"taint\"")
