@@ -37,16 +37,16 @@ final class PercentArgument {
 
   /** Reads the operand from its text, with the whitespace the tree text does not keep. */
   static PercentArgument of(final String text) {
-    if (text.length() >= 2 && (text.charAt(0) == '"' || text.charAt(0) == '\'')) {
+    if (isStringLiteral(text)) {
       return new PercentArgument(Kind.STRING, 0, Optional.empty());
     }
-    if (text.length() >= 2 && text.charAt(0) == OPEN_PAREN && closesAtEnd(text)) {
+    if (enclosedBy(text, OPEN_PAREN)) {
       return tuple(text.substring(1, text.length() - 1));
     }
-    if (text.length() >= 2 && text.charAt(0) == OPEN_BRACE && closesAtEnd(text)) {
+    if (enclosedBy(text, OPEN_BRACE)) {
       return dict(text.substring(1, text.length() - 1));
     }
-    return new PercentArgument(Kind.OTHER, 0, Optional.empty());
+    return other();
   }
 
   /** The kind of operand. */
@@ -64,10 +64,16 @@ final class PercentArgument {
     return keys;
   }
 
-  private static boolean closesAtEnd(final String text) {
-    final char open = text.charAt(0);
+  private static PercentArgument other() {
+    return new PercentArgument(Kind.OTHER, 0, Optional.empty());
+  }
+
+  private static boolean enclosedBy(final String text, final char open) {
     final char close = open == OPEN_PAREN ? CLOSE_PAREN : CLOSE_BRACE;
-    return matchingClose(text, 0) == text.length() - 1 && text.charAt(text.length() - 1) == close;
+    return text.length() >= 2
+        && text.charAt(0) == open
+        && matchingClose(text, 0) == text.length() - 1
+        && text.charAt(text.length() - 1) == close;
   }
 
   private static PercentArgument tuple(final String inner) {
@@ -75,14 +81,13 @@ final class PercentArgument {
       return new PercentArgument(Kind.TUPLE, 0, Optional.empty());
     }
     final List<String> items = split(inner, SEPARATOR);
-    if (inner.endsWith(",") || items.size() > 1) {
-      final boolean star = items.stream().anyMatch(item -> item.startsWith("*"));
-      final int count = inner.endsWith(",") ? items.size() - 1 : items.size();
-      return star
-          ? new PercentArgument(Kind.OTHER, 0, Optional.empty())
-          : new PercentArgument(Kind.TUPLE, count, Optional.empty());
+    final boolean trailingComma = inner.endsWith(",");
+    if (!trailingComma && items.size() == 1
+        || items.stream().anyMatch(item -> item.startsWith("*"))) {
+      return other();
     }
-    return new PercentArgument(Kind.OTHER, 0, Optional.empty());
+    return new PercentArgument(
+        Kind.TUPLE, trailingComma ? items.size() - 1 : items.size(), Optional.empty());
   }
 
   private static PercentArgument dict(final String inner) {
@@ -114,20 +119,11 @@ final class PercentArgument {
   /** Splits {@code text} at {@code separator} outside brackets and string literals. */
   static List<String> split(final String text, final char separator) {
     final List<String> parts = new ArrayList<>();
-    int depth = 0;
-    char quote = 0;
+    final Nesting nesting = new Nesting();
     int start = 0;
     for (int index = 0; index < text.length(); index++) {
       final char current = text.charAt(index);
-      if (quote != 0) {
-        quote = current == quote ? 0 : quote;
-      } else if (current == '"' || current == '\'') {
-        quote = current;
-      } else if (current == OPEN_PAREN || current == OPEN_BRACE || current == '[') {
-        depth++;
-      } else if (current == CLOSE_PAREN || current == CLOSE_BRACE || current == ']') {
-        depth--;
-      } else if (current == separator && depth == 0) {
+      if (nesting.topLevel(current) && current == separator) {
         parts.add(text.substring(start, index));
         start = index + 1;
       }
@@ -137,23 +133,42 @@ final class PercentArgument {
   }
 
   private static int matchingClose(final String text, final int open) {
-    int depth = 0;
-    char quote = 0;
+    final Nesting nesting = new Nesting();
     for (int index = open; index < text.length(); index++) {
-      final char current = text.charAt(index);
+      nesting.topLevel(text.charAt(index));
+      if (nesting.depth() == 0 && index > open) {
+        return index;
+      }
+    }
+    return -1;
+  }
+
+  /** Tracks brackets and string literals while a text is read from left to right. */
+  private static final class Nesting {
+
+    private static final String OPENERS = "({[";
+    private static final String CLOSERS = ")}]";
+
+    private int depth;
+    private char quote;
+
+    /** Reads one character and returns whether it is outside every bracket and literal. */
+    boolean topLevel(final char current) {
+      final boolean outside = quote == 0 && depth == 0;
       if (quote != 0) {
         quote = current == quote ? 0 : quote;
       } else if (current == '"' || current == '\'') {
         quote = current;
-      } else if (current == OPEN_PAREN || current == OPEN_BRACE || current == '[') {
+      } else if (OPENERS.indexOf(current) >= 0) {
         depth++;
-      } else if (current == CLOSE_PAREN || current == CLOSE_BRACE || current == ']') {
+      } else if (CLOSERS.indexOf(current) >= 0) {
         depth--;
-        if (depth == 0) {
-          return index;
-        }
       }
+      return outside;
     }
-    return -1;
+
+    int depth() {
+      return depth;
+    }
   }
 }

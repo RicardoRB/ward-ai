@@ -38,6 +38,8 @@ public final class PercentFormatCheck implements RuleCheck {
   }
 
   private static final Set<String> EXPRESSION = Set.of("expr");
+  private static final int OPERANDS = 3;
+  private static final int OPERATOR_INDEX = 1;
   private static final String OPERATOR = "%";
   private static final String PREFIX_CHARS = "rRbBuU";
 
@@ -68,7 +70,8 @@ public final class PercentFormatCheck implements RuleCheck {
 
   private Optional<Operation> operation(final SyntaxNode node) {
     final List<SyntaxNode> children = node.children();
-    if (children.size() != 3 || !OPERATOR.equals(SyntaxWalk.text(children.get(1)))) {
+    if (children.size() != OPERANDS
+        || !OPERATOR.equals(SyntaxWalk.text(children.get(OPERATOR_INDEX)))) {
       return Optional.empty();
     }
     return literalContent(SyntaxWalk.text(children.get(0)))
@@ -100,18 +103,44 @@ public final class PercentFormatCheck implements RuleCheck {
   private boolean violates(final Operation operation) {
     final PercentFormatString format = operation.format();
     final PercentArgument argument = operation.argument();
-    final boolean named = !format.named().isEmpty();
     return switch (problem) {
       case INVALID -> format.incomplete();
       case UNSUPPORTED -> format.unsupported().isPresent();
-      case MIXED -> named && format.positional() > 0;
-      case EXPECTED_MAPPING -> named && argument.kind() == PercentArgument.Kind.TUPLE;
-      case STAR_MAPPING -> format.star() && argument.kind() == PercentArgument.Kind.DICT;
-      case COUNT -> !named && countMismatch(format, argument);
-      case UNUSED_KEYS -> named && unusedKeys(operation);
-      case MISSING_KEYS -> named && missingKeys(operation);
-      case TYPE_MISMATCH -> format.numeric() && argument.kind() == PercentArgument.Kind.STRING;
+      case MIXED -> mixed(format);
+      case EXPECTED_MAPPING -> expectedMapping(format, argument);
+      case STAR_MAPPING -> starMapping(format, argument);
+      case COUNT -> count(format, argument);
+      case UNUSED_KEYS -> unusedKeys(operation);
+      case MISSING_KEYS -> missingKeys(operation);
+      case TYPE_MISMATCH -> typeMismatch(format, argument);
     };
+  }
+
+  private static boolean expectedMapping(
+      final PercentFormatString format, final PercentArgument argument) {
+    return hasNamed(format) && argument.kind() == PercentArgument.Kind.TUPLE;
+  }
+
+  private static boolean starMapping(
+      final PercentFormatString format, final PercentArgument argument) {
+    return format.star() && argument.kind() == PercentArgument.Kind.DICT;
+  }
+
+  private static boolean count(final PercentFormatString format, final PercentArgument argument) {
+    return !hasNamed(format) && countMismatch(format, argument);
+  }
+
+  private static boolean typeMismatch(
+      final PercentFormatString format, final PercentArgument argument) {
+    return format.numeric() && argument.kind() == PercentArgument.Kind.STRING;
+  }
+
+  private static boolean hasNamed(final PercentFormatString format) {
+    return !format.named().isEmpty();
+  }
+
+  private static boolean mixed(final PercentFormatString format) {
+    return hasNamed(format) && format.positional() > 0;
   }
 
   private static boolean countMismatch(
@@ -129,8 +158,12 @@ public final class PercentFormatCheck implements RuleCheck {
   }
 
   private static boolean missingKeys(final Operation operation) {
-    final List<String> named = operation.format().named();
-    return operation.argument().keys().map(keys -> !keys.containsAll(named)).orElse(false);
+    return hasNamed(operation.format())
+        && operation
+            .argument()
+            .keys()
+            .map(keys -> !keys.containsAll(operation.format().named()))
+            .orElse(false);
   }
 
   /** One {@code %} expression: its format and its right operand. */
