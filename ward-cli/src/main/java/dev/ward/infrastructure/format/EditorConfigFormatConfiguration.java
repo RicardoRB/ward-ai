@@ -40,8 +40,7 @@ public final class EditorConfigFormatConfiguration implements FormatConfiguratio
       final String relativePath,
       final AnalysisLanguage language,
       final List<FormatOption> declared) {
-    return EditorConfigSettings.resolve(
-        relativePath, language, declared, applicableFiles(relativePath));
+    return EditorConfigSettings.resolve(relativePath, declared, applicableFiles(relativePath));
   }
 
   /**

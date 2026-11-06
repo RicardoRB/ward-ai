@@ -2,8 +2,6 @@ package dev.ward.infrastructure.format;
 
 import dev.ward.analysis.domain.format.FormatOption;
 import dev.ward.analysis.domain.format.FormatOptions;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.domain.format.FormatDefaults;
 import dev.ward.domain.format.FormatSettings;
 import dev.ward.infrastructure.format.EditorConfigValues.Setting;
 import java.util.LinkedHashMap;
@@ -11,12 +9,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Merges the matching sections of the applicable files, later sections and closer files winning,
- * and turns the merged values into {@link FormatSettings}. Unknown {@code ward_} keys are errors;
- * other keys that Ward does not use are ignored.
+ * and turns the merged values into {@link FormatSettings}. Options come from the formatter's
+ * declarations: each declared option takes its {@code .editorconfig} value, or its declared
+ * default. Unknown {@code ward_} keys are errors; other keys that Ward does not use are ignored.
  */
 final class EditorConfigSettings {
 
@@ -33,14 +31,12 @@ final class EditorConfigSettings {
    * Resolves the settings of one file.
    *
    * @param relativePath the file path relative to the project root
-   * @param language the language of the file
-   * @param declared the options the language's formatter declares
+   * @param declared the options the language's formatter declares, including the shared ones
    * @param files the applicable files, farthest first
    * @return the settings
    */
   static FormatSettings resolve(
       final String relativePath,
-      final AnalysisLanguage language,
       final List<FormatOption> declared,
       final List<EditorConfigFile> files) {
     final Map<String, FormatOption> wardOptions = wardOptions(declared);
@@ -53,11 +49,18 @@ final class EditorConfigSettings {
         }
       }
     }
+    final FormatOptions defaults = FormatOptions.defaults(declared);
     return new FormatSettings(
         EditorConfigValues.flag(effective, WARD_FORMAT, true),
-        EditorConfigLayout.layout(effective, language),
+        EditorConfigLayout.layout(effective, defaults),
         EditorConfigValues.numberOr(
-            effective, WARD_MAX_BLANK_LINES, NO_BLANK_LINES, FormatDefaults.MAX_BLANK_LINES),
+            effective,
+            WARD_MAX_BLANK_LINES,
+            NO_BLANK_LINES,
+            EditorConfigLayout.declaredInt(
+                defaults,
+                EditorConfigLayout.MAX_BLANK_LINES_OPTION,
+                EditorConfigLayout.FALLBACK_MAX_BLANK_LINES)),
         options(effective, declared));
   }
 
@@ -92,7 +95,7 @@ final class EditorConfigSettings {
   }
 
   /**
-   * Tells whether Ward reads a key: a standard key, a shared {@code ward_} key or a declared one.
+   * Tells whether Ward reads a key: a standard key, a shared {@code ward_} key or a language key.
    */
   private static boolean isKnown(final String key, final Map<String, FormatOption> wardOptions) {
     return wardOptions.containsKey(key)
@@ -108,42 +111,40 @@ final class EditorConfigSettings {
     }
   }
 
+  /**
+   * The language keys only; the shared options map to standard keys and {@code ward_} shared keys.
+   */
   private static Map<String, FormatOption> wardOptions(final List<FormatOption> declared) {
     final Map<String, FormatOption> keyed = new LinkedHashMap<>();
     for (final FormatOption option : declared) {
-      keyed.put(wardKey(option), option);
+      if (!EditorConfigOptions.isShared(option.key())) {
+        keyed.put(WARD_PREFIX + option.key().replace('-', '_'), option);
+      }
     }
     return keyed;
   }
 
+  /**
+   * Builds the option values for the declared options. A declared option that the configuration
+   * does not set takes its declared default, and an undeclared shared option is not passed.
+   */
   private static FormatOptions options(
       final Map<String, Setting> effective, final List<FormatOption> declared) {
     final Map<String, String> values = new LinkedHashMap<>();
     for (final FormatOption option : declared) {
-      final String key = wardKey(option);
+      final String key = EditorConfigOptions.sourceKey(option.key(), effective);
       final Setting setting = effective.get(key);
       if (setting == null) {
         values.put(option.key(), option.defaultValue());
-      } else if (option.accepts(setting.value())) {
-        values.put(option.key(), setting.value());
       } else {
-        throw setting.invalid(key, optionReason(option));
+        final String text = EditorConfigOptions.optionValue(option, setting.value());
+        if (!option.accepts(text)) {
+          throw setting.invalid(key, EditorConfigOptions.optionReason(option));
+        }
+        values.put(option.key(), text);
       }
     }
     return new FormatOptions(values);
-  }
-
-  /** Maps a plain kebab-case option key to its {@code ward_} EditorConfig key. */
-  private static String wardKey(final FormatOption option) {
-    return WARD_PREFIX + option.key().replace('-', '_');
-  }
-
-  private static String optionReason(final FormatOption option) {
-    if (option.allowedValues().isEmpty()) {
-      return "expected a " + option.type().name().toLowerCase(Locale.ROOT) + " value";
-    }
-    return "supported values are "
-        + option.allowedValues().stream().collect(Collectors.joining(", "));
   }
 
   /**

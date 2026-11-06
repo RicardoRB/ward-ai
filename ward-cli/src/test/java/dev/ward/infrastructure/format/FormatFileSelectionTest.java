@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.format.FormatOption;
-import dev.ward.analysis.domain.format.FormatOptionType;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.domain.format.FormatConfigurationException;
 import dev.ward.domain.format.FormatTarget;
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 class FormatFileSelectionTest {
 
-  private static final List<FormatOption> NO_OPTIONS = List.of();
   private static final int WIDE_WIDTH = 120;
 
   @TempDir Path project;
@@ -38,10 +36,10 @@ class FormatFileSelectionTest {
     final List<FormatTarget> targets =
         select(
             Map.of(
-                AnalysisLanguage.JAVA, NO_OPTIONS,
-                AnalysisLanguage.TYPESCRIPT, NO_OPTIONS,
-                AnalysisLanguage.JAVASCRIPT, NO_OPTIONS,
-                AnalysisLanguage.KOTLIN, NO_OPTIONS));
+                AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.JAVASCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                AnalysisLanguage.KOTLIN, EditorConfigTestSupport.TYPESCRIPT_OPTIONS));
 
     assertThat(targets)
         .extracting(FormatTarget::relativePath)
@@ -52,7 +50,8 @@ class FormatFileSelectionTest {
   void onlyLanguagesWithAFormatterAreSelected() throws IOException {
     write("src/App.java", "class App {}");
     write("web/app.ts", "const a = 1;");
-    assertThat(select(Map.of(AnalysisLanguage.TYPESCRIPT, NO_OPTIONS)))
+    assertThat(
+            select(Map.of(AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
         .extracting(FormatTarget::relativePath)
         .containsExactly("web/app.ts");
   }
@@ -63,7 +62,7 @@ class FormatFileSelectionTest {
     write("src/generated/Api.java", "class Api {}");
     write("src/Main.java", "class Main {}");
 
-    assertThat(select(Map.of(AnalysisLanguage.JAVA, NO_OPTIONS)))
+    assertThat(select(Map.of(AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
         .extracting(FormatTarget::relativePath)
         .containsExactly("src/Main.java");
   }
@@ -72,7 +71,9 @@ class FormatFileSelectionTest {
   void selectedTargetsCarryTheirResolvedSettings() throws IOException {
     write(".editorconfig", "[*.java]\nmax_line_length = 120\n");
     write("App.java", "class App {}");
-    final FormatTarget target = select(Map.of(AnalysisLanguage.JAVA, NO_OPTIONS)).getFirst();
+    final FormatTarget target =
+        select(Map.of(AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS))
+            .getFirst();
     assertThat(target.settings().layout().maxLineLength()).isEqualTo(OptionalInt.of(WIDE_WIDTH));
     assertThat(target.language()).isEqualTo(AnalysisLanguage.JAVA);
   }
@@ -86,16 +87,14 @@ class FormatFileSelectionTest {
             () ->
                 select(
                     Map.of(
-                        AnalysisLanguage.JAVA, NO_OPTIONS,
-                        AnalysisLanguage.TYPESCRIPT, NO_OPTIONS)))
+                        AnalysisLanguage.JAVA, EditorConfigTestSupport.TYPESCRIPT_OPTIONS,
+                        AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("end_of_line");
   }
 
   @Test
   void declaredKeyOfOneLanguageDoesNotApplyToAnother() throws IOException {
-    final FormatOption option =
-        new FormatOption("continuation-indent-size", FormatOptionType.INTEGER, "8", List.of());
     write(".editorconfig", "[*]\nward_continuation_indent_size = 4\n");
     write("App.java", "class App {}");
     write("app.ts", "const a = 1;");
@@ -104,9 +103,9 @@ class FormatFileSelectionTest {
                 select(
                     Map.of(
                         AnalysisLanguage.JAVA,
-                        List.of(option),
+                        EditorConfigTestSupport.JAVA_OPTIONS,
                         AnalysisLanguage.TYPESCRIPT,
-                        NO_OPTIONS)))
+                        EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("ward_continuation_indent_size");
   }

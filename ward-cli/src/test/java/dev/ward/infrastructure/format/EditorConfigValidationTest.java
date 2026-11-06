@@ -21,7 +21,7 @@ class EditorConfigValidationTest extends EditorConfigTestSupport {
                 .options()
                 .get("continuation-indent-size"))
         .isEqualTo(String.valueOf(CONTINUATION_VALUE));
-    assertThatThrownBy(() -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, NO_OPTIONS))
+    assertThatThrownBy(() -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS))
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining(".editorconfig")
         .hasMessageContaining("section [*]")
@@ -70,7 +70,8 @@ class EditorConfigValidationTest extends EditorConfigTestSupport {
         new FormatOption(
             "quote-style", FormatOptionType.TEXT, "double", List.of("double", "single"));
     write("[*]\nward_quote_style = backtick\n");
-    assertThatThrownBy(() -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, List.of(style)))
+    assertThatThrownBy(
+            () -> resolve("app.ts", AnalysisLanguage.TYPESCRIPT, with(TYPESCRIPT_OPTIONS, style)))
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining("double, single");
   }

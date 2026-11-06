@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.domain.format.FormatConfiguration;
-import dev.ward.domain.format.FormatDefaults;
 import dev.ward.domain.format.FormatLayout;
 import dev.ward.domain.format.FormatLayout.IndentStyle;
 import dev.ward.domain.format.FormatSettings;
@@ -20,24 +19,25 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
   void noEditorConfigUsesBuiltInDefaults() throws IOException {
     final FormatSettings java = resolve("App.java", AnalysisLanguage.JAVA, JAVA_OPTIONS);
     assertThat(java.enabled()).isTrue();
-    assertThat(java.layout().maxLineLength()).isEqualTo(OptionalInt.of(FormatDefaults.LINE_WIDTH));
+    assertThat(java.layout().maxLineLength()).isEqualTo(OptionalInt.of(DEFAULT_LINE_WIDTH));
     assertThat(java.layout().indentStyle()).isEqualTo(IndentStyle.SPACES);
     assertThat(java.layout().indentSize()).isEqualTo(JAVA_INDENT);
     assertThat(java.layout().tabWidth()).isEqualTo(JAVA_INDENT);
     assertThat(java.layout().insertFinalNewline()).isTrue();
-    assertThat(java.maxBlankLines()).isEqualTo(FormatDefaults.MAX_BLANK_LINES);
+    assertThat(java.maxBlankLines()).isEqualTo(DEFAULT_MAX_BLANK_LINES);
     assertThat(java.options().get("continuation-indent-size")).isEqualTo("8");
 
-    final FormatSettings typescript = resolve("app.ts", AnalysisLanguage.TYPESCRIPT, NO_OPTIONS);
-    assertThat(typescript.layout().maxLineLength())
-        .isEqualTo(OptionalInt.of(FormatDefaults.LINE_WIDTH));
+    final FormatSettings typescript =
+        resolve("app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS);
+    assertThat(typescript.layout().maxLineLength()).isEqualTo(OptionalInt.of(DEFAULT_LINE_WIDTH));
     assertThat(typescript.layout().indentSize()).isEqualTo(TYPESCRIPT_INDENT);
   }
 
   @Test
   void laterSectionOverridesEarlierAndGlobSectionsApplyPerFile() throws IOException {
     write(".editorconfig", "[*]\nmax_line_length = 120\n[*.py]\nmax_line_length = 88\n");
-    assertThat(resolve("app.py", AnalysisLanguage.PYTHON, NO_OPTIONS).layout().maxLineLength())
+    assertThat(
+            resolve("app.py", AnalysisLanguage.PYTHON, TYPESCRIPT_OPTIONS).layout().maxLineLength())
         .isEqualTo(OptionalInt.of(PYTHON_WIDTH));
     assertThat(resolve("App.java", AnalysisLanguage.JAVA, JAVA_OPTIONS).layout().maxLineLength())
         .isEqualTo(OptionalInt.of(WIDE_WIDTH));
@@ -54,9 +54,15 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
   void nestedFileOverridesRootFile() throws IOException {
     write("[*.ts]\nindent_size = 4\n");
     write("web/.editorconfig", "[*.ts]\nindent_size = 2\n");
-    assertThat(resolve("web/app.ts", AnalysisLanguage.TYPESCRIPT, NO_OPTIONS).layout().indentSize())
+    assertThat(
+            resolve("web/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
+                .layout()
+                .indentSize())
         .isEqualTo(TYPESCRIPT_INDENT);
-    assertThat(resolve("api/app.ts", AnalysisLanguage.TYPESCRIPT, NO_OPTIONS).layout().indentSize())
+    assertThat(
+            resolve("api/app.ts", AnalysisLanguage.TYPESCRIPT, TYPESCRIPT_OPTIONS)
+                .layout()
+                .indentSize())
         .isEqualTo(JAVA_INDENT);
   }
 
@@ -91,6 +97,6 @@ class EditorConfigPrecedenceTest extends EditorConfigTestSupport {
   void unsetRemovesAnEarlierValue() throws IOException {
     write("[*]\nmax_line_length = 60\n[*.java]\nmax_line_length = unset\n");
     assertThat(resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS).layout().maxLineLength())
-        .isEqualTo(OptionalInt.of(FormatDefaults.LINE_WIDTH));
+        .isEqualTo(OptionalInt.of(DEFAULT_LINE_WIDTH));
   }
 }
