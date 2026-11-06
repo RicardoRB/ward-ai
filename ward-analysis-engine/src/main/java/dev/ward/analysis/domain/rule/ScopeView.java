@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.scope.Binding;
@@ -67,16 +68,17 @@ public record ScopeView(
     return new ScopeView(scopes, resolved, analysis);
   }
 
-  /** The edge from the import statement that declares {@code binding}, preferring its member. */
+  /** The edge from the import that declares {@code binding}, preferring the one for its member. */
   private static Optional<DependencyEdge> edgeOf(
       final Binding binding, final DependencyView dependencies) {
-    final int offset = binding.declaration().startOffset();
-    final String member = binding.origin().map(ImportOrigin::member).orElse("");
+    final ImportOrigin origin = binding.origin().orElseThrow();
     DependencyEdge fallback = null;
     for (final DependencyEdge edge : dependencies.outgoing()) {
-      final var span = edge.reference().span();
-      if (span.startOffset() <= offset && offset < span.endOffset()) {
-        if (!member.isEmpty() && edge.reference().specifier().endsWith(":" + member)) {
+      final Span span = edge.reference().span();
+      if (span.startOffset() < origin.site().endOffset()
+          && origin.site().startOffset() < span.endOffset()) {
+        if (!origin.member().isEmpty()
+            && edge.reference().specifier().endsWith(":" + origin.member())) {
           return Optional.of(edge);
         }
         fallback = fallback == null ? edge : fallback;

@@ -149,7 +149,7 @@ final class PythonBindings {
     final List<SyntaxNode> aliased = PythonSyntax.children(alias, NAME);
     final SyntaxNode bound =
         aliased.isEmpty() ? PythonSyntax.children(module, NAME).get(0) : aliased.get(0);
-    declareImport(bound, PythonSyntax.dottedName(module), "");
+    declareImport(bound, PythonSyntax.dottedName(module), "", alias.span());
   }
 
   private void importFrom(final SyntaxNode statement) {
@@ -160,13 +160,13 @@ final class PythonBindings {
     }
     PythonSyntax.children(statement, "import_as_names").stream()
         .flatMap(names -> PythonSyntax.children(names, "import_as_name").stream())
-        .forEach(alias -> fromAlias(alias, module));
+        .forEach(alias -> fromAlias(alias, module, statement.span()));
   }
 
-  private void fromAlias(final SyntaxNode alias, final String module) {
+  private void fromAlias(final SyntaxNode alias, final String module, final Span site) {
     final List<SyntaxNode> names = PythonSyntax.children(alias, NAME);
     final String member = PythonNames.identifier(names.get(0));
-    declareImport(names.get(names.size() - 1), module, member);
+    declareImport(names.get(names.size() - 1), module, member, site);
   }
 
   /** The module of a {@code from} import as written, with its leading dots. */
@@ -185,10 +185,12 @@ final class PythonBindings {
     return module.toString();
   }
 
-  private void declareImport(final SyntaxNode bound, final String module, final String member) {
+  private void declareImport(
+      final SyntaxNode bound, final String module, final String member, final Span site) {
     final String identifier = PythonNames.identifier(bound);
     final Span span = bound.span();
-    builder.declareImport(identifier, span, new ImportOrigin(module, member), flags(identifier));
+    builder.declareImport(
+        identifier, span, new ImportOrigin(module, member, site), flags(identifier));
     builder.reference(identifier, span, ReferenceAccess.WRITE);
   }
 
