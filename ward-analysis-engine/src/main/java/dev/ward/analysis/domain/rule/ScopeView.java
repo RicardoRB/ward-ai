@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * The scopes of one source unit for a rule that reads capability {@code SCOPES}, with the project
@@ -118,6 +119,8 @@ public record ScopeView(
   private static Optional<Symbol> declared(final FileSummary summary, final String member) {
     return member.isEmpty()
         ? Optional.empty()
-        : summary.declared().stream().filter(symbol -> symbol.name().equals(member)).findFirst();
+        : Stream.concat(summary.declared().stream(), summary.exports().stream())
+            .filter(symbol -> symbol.name().equals(member))
+            .findFirst();
   }
 }

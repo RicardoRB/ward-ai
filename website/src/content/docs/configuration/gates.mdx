@@ -578,6 +578,39 @@ Differences from PMD and by construction:
 - A `finally` block is entered from every exit of its `try`, so a value can seem to reach a read
   along a path that the language cannot take. Such a write is not reported.
 
+### Scope rules
+
+Rules with the `SCOPES` capability know which declaration each name refers to. Ward builds the
+scopes of a file once, whatever the number of rules that read them, and follows each language's own
+scoping rules:
+
+| Language | Scoping rules the analysis follows |
+|---|---|
+| Python | local, enclosing function, module, built-in (LEGB); `global` and `nonlocal`; class bodies that their methods skip; comprehension scopes; `del`; names in a literal `__all__` are exported |
+| JavaScript and TypeScript | `var` and function declarations hoisted to the function; `let`, `const` and classes in their block with a temporal dead zone; `catch` and parameter scopes; type-only imports and declarations in TypeScript |
+| Java and Kotlin | members, locals, parameters, lambdas, inner and anonymous classes, static imports; Kotlin companion objects and `it` |
+| Swift | members, locals, closures, `guard let` and `if let` bindings, `switch` pattern bindings |
+
+A name that no scope declares and no built-in provides is *unresolved*. Where the analysis cannot
+see every name, it marks the scope *open*, and a rule that reports undefined names stays silent in
+it. A scope is open after a Python `from m import *`, a call of `exec`, `eval`, `locals` or `vars`,
+a JavaScript `with` or `eval`, a Java static wildcard import, and in a class that extends or
+implements something, an enum, a Kotlin extension function or receiver lambda, and a Swift
+extension. A Java, Kotlin or Swift name that starts with an upper-case letter, or that a file of
+the same package or module declares, is also left alone, because the type may come from there.
+
+Built-in names are the Python builtins, the globals of the `es2024` JavaScript environment plus
+those of `browser` and `node` by default, `java.lang`, the Kotlin standard library's default
+imports and the Swift standard library. A rule that reads JavaScript or TypeScript globals declares
+an `env` option, a list of environments added to `es2024`.
+
+A name imported from a project module resolves through the dependency graph to the file and the
+symbol it declares; an import from outside the project stays an import binding with no
+declaration.
+
+Ward ships no rule on this capability yet. The rules of the roadmap for undefined names, unused
+variables, redefinitions and shadowing build on it.
+
 ## Kotlin structural rules
 
 The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin

@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ final class UnitTrees {
   private final Map<AnalysisLanguage, FrontendSupport> support;
   private final Map<SourceUnit, Optional<SyntaxNode>> parsed = new HashMap<>();
   private final Map<SourceUnit, FlowView> lowered = new IdentityHashMap<>();
+  private final Map<SourceUnit, UnitScopes> scoped = new IdentityHashMap<>();
 
   UnitTrees(final Map<AnalysisLanguage, FrontendSupport> support) {
     this.support = support;
@@ -90,8 +92,8 @@ final class UnitTrees {
   }
 
   /**
-   * The scopes a rule reads: none unless the rule reads capability {@code SCOPES}. The language's
-   * analysis shares one build per unit across rules.
+   * The scopes a rule reads: none unless the rule reads capability {@code SCOPES}. A unit's scopes
+   * are built once per run, however many rules read them.
    */
   ScopeView scopes(
       final CompiledRule rule,
@@ -104,7 +106,8 @@ final class UnitTrees {
     }
     final ScopeAnalysis analysis = support.get(unit.language()).scopes();
     try {
-      return ScopeView.of(analysis.analyze(unit, root), dependencies, analysis);
+      final UnitScopes built = scoped.computeIfAbsent(unit, key -> analysis.analyze(key, root));
+      return ScopeView.of(built, dependencies, analysis);
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
           new RuleExecutionError(
