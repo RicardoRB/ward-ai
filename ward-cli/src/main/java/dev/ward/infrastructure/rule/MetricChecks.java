@@ -76,5 +76,4 @@ final class MetricChecks {
       default -> throw new RuleConfigurationException("unknown check '" + name + "'");
     };
   }
-
 }
