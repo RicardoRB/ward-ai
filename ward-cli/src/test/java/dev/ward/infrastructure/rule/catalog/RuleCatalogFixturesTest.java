@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleOptions;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,11 +57,17 @@ class RuleCatalogFixturesTest {
     final RuleFixtureRunner runner = new RuleFixtureRunner();
     final List<String> problems = new ArrayList<>();
     for (final String caseName : fixtures.cases()) {
+      final RuleDefinition configured = RuleOptions.apply(rule, fixtures.options(caseName));
       problems.addAll(
           check(
-              runner, rule, fixtures.violating(caseName), fixtures.expected(caseName), typeFacts));
+              runner,
+              configured,
+              fixtures.violating(caseName),
+              fixtures.expected(caseName),
+              typeFacts));
       if (Files.isRegularFile(fixtures.passing(caseName))) {
-        problems.addAll(check(runner, rule, fixtures.passing(caseName), List.of(), typeFacts));
+        problems.addAll(
+            check(runner, configured, fixtures.passing(caseName), List.of(), typeFacts));
       }
     }
     assertThat(problems).isEmpty();
