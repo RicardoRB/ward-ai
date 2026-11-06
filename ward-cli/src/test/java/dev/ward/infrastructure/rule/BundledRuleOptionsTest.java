@@ -31,7 +31,9 @@ class BundledRuleOptionsTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.category()).as(rule.id()).isNotBlank();
-              assertThat(rule.presets()).as(rule.id()).containsAnyOf(RulePreset.STANDARD, RulePreset.STRICT);
+              assertThat(rule.presets())
+                  .as(rule.id())
+                  .containsAnyOf(RulePreset.STANDARD, RulePreset.STRICT);
               assertThat(RulePreset.STRICT.selects(rule.presets())).as(rule.id()).isTrue();
             });
   }
