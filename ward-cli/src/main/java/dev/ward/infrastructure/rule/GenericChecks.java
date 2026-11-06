@@ -14,11 +14,9 @@ import dev.ward.analysis.domain.rule.check.RequiredNodeCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.Sources;
 import dev.ward.analysis.domain.rule.check.TextMatchCheck;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -60,7 +58,7 @@ final class GenericChecks {
               message);
       case FORBIDDEN_NODE -> new ForbiddenNodeCheck(filter, condition(toml), message);
       case REQUIRED_NODE -> new RequiredNodeCheck(filter, requirement(toml), message);
-      case ORDER -> new OrderCheck(filter, list(toml, "order"), message);
+      case ORDER -> order(filter, toml, message);
       case DUPLICATE ->
           new DuplicateCheck(
               filter,
@@ -101,6 +99,18 @@ final class GenericChecks {
               message);
       default -> throw new RuleConfigurationException("unknown check '" + kind.id() + "'");
     };
+  }
+
+  private static OrderCheck order(
+      final NodeFilter filter, final TomlParseResult toml, final String message) {
+    return new OrderCheck(
+        filter,
+        TomlLists.optional(toml, "order"),
+        Optional.ofNullable(toml.getString("group-by"))
+            .map(
+                name ->
+                    new OrderCheck.GroupBy(name, TomlValues.optionalStrings(toml, "group-skip"))),
+        message);
   }
 
   private static NodeFilter filter(final TomlParseResult toml, final ModifierTable table) {
@@ -150,18 +160,5 @@ final class GenericChecks {
           throw new RuleConfigurationException(
               "target must be lines, comments, strings, filename or header");
     };
-  }
-
-  /** Reads an ordered list; unlike a set it keeps the order and the repeats. */
-  private static List<String> list(final TomlParseResult toml, final String key) {
-    final TomlArray array = toml.getArray(key);
-    if (array == null) {
-      throw new RuleConfigurationException("'" + key + "' must be a list of strings");
-    }
-    final List<String> values = new ArrayList<>();
-    for (int index = 0; index < array.size(); index++) {
-      values.add(TomlValues.stringAt(array, index, key));
-    }
-    return List.copyOf(values);
   }
 }

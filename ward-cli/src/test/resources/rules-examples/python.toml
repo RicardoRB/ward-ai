@@ -6,6 +6,9 @@ id = "ward:python/example-function-name"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
 kinds = ["funcdef"]
@@ -19,6 +22,9 @@ id = "ward:python/example-wildcard-import"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
 body = '''
 check = "forbidden-node"
 kinds = ["import_from"]
@@ -31,6 +37,8 @@ id = "ward:python/example-try-needs-except"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
 body = '''
 check = "required-node"
 kinds = ["try_stmt"]
@@ -43,6 +51,9 @@ id = "ward:python/example-return-count"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "count"
 kinds = ["funcdef"]
@@ -57,6 +68,9 @@ id = "ward:python/example-nested-if"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "depth"
 kinds = ["if_stmt"]
@@ -70,6 +84,10 @@ id = "ward:python/example-trailing-whitespace"
 language = "python"
 capability = "SYNTAX"
 severity = "warning"
+category = "whitespace"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+options.limit = { type = "integer", min = 0 }
 body = '''
 check = "text-pattern"
 target = "lines"
@@ -82,6 +100,9 @@ id = "ward:python/example-block-order"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.order = { type = "string-list" }
 body = '''
 check = "order"
 kinds = ["block"]
@@ -94,6 +115,11 @@ id = "ward:python/example-magic-number"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.ignore = { type = "string-list" }
+options.ignore-contexts = { type = "string-list" }
+options.max-repeats = { type = "integer", min = -1 }
 body = '''
 check = "literal"
 kinds = ["NUMBER"]
@@ -106,6 +132,8 @@ id = "ward:python/example-duplicate-import"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
 body = '''
 check = "duplicate"
 kinds = ["file_input"]

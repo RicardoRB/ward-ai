@@ -6,6 +6,9 @@ id = "ward:java/example-constant-name"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
 kinds = ["fieldDeclaration"]
@@ -21,6 +24,9 @@ id = "ward:java/example-inline-conditional"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.text = { type = "regex" }
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
@@ -33,6 +39,8 @@ id = "ward:java/example-switch-default"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
 body = '''
 check = "required-node"
 kinds = ["statement>'switch'"]
@@ -46,6 +54,9 @@ id = "ward:java/example-method-count"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "count"
 kinds = ["classBody"]
@@ -60,6 +71,9 @@ id = "ward:java/example-nested-if"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
 body = '''
 check = "depth"
 kinds = ["statement>'if'"]
@@ -73,6 +87,10 @@ id = "ward:java/example-todo-comment"
 language = "java"
 capability = "SYNTAX"
 severity = "warning"
+category = "comments"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+options.limit = { type = "integer", min = 0 }
 body = '''
 check = "text-pattern"
 target = "comments"
@@ -85,6 +103,9 @@ id = "ward:java/example-modifier-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "modifiers"
+presets = ["standard", "strict"]
+options.order = { type = "string-list" }
 body = '''
 check = "order"
 kinds = ["classBodyDeclaration"]
@@ -97,6 +118,11 @@ id = "ward:java/example-magic-number"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.ignore = { type = "string-list" }
+options.ignore-contexts = { type = "string-list" }
+options.max-repeats = { type = "integer", min = -1 }
 body = '''
 check = "literal"
 kinds = ["integerLiteral"]
@@ -110,10 +136,28 @@ id = "ward:java/example-redundant-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
 body = '''
 check = "duplicate"
 kinds = ["compilationunit"]
 items = ["importDeclaration"]
 key = "qualifiedName"
 message = "duplicate import {value}"
+'''
+
+[[rules]]
+id = "ward:java/example-overload-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "order"
+kinds = ["classBody"]
+order = ["classBodyDeclaration>memberDeclaration"]
+group-by = "identifier"
+group-skip = ["modifier", "annotation", "typeTypeOrVoid", "typeType", "formalParameters", "methodBody"]
+message = "overload '{value}' must stay with the other methods of that name"
 '''

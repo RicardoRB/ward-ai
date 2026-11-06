@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.RuleOptionType;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -15,24 +16,29 @@ enum GenericKind {
   IDENTIFIER_PATTERN(
       "identifier-pattern",
       List.of("name", "skip", "pattern"),
-      List.of(option("pattern", "string"))),
+      List.of(option("pattern", RuleOptionType.REGEX))),
   FORBIDDEN_NODE(
-      "forbidden-node", List.of("text", "with-child", "parent"), List.of(option("text", "string"))),
+      "forbidden-node",
+      List.of("text", "with-child", "parent"),
+      List.of(option("text", RuleOptionType.REGEX))),
   REQUIRED_NODE("required-node", List.of("child", "descendant", "skip", "sibling"), List.of()),
-  COUNT("count", List.of("counted", "skip", "max"), List.of(option("max", "integer"))),
-  DEPTH("depth", List.of("reset", "max"), List.of(option("max", "integer"))),
+  COUNT("count", List.of("counted", "skip", "max"), List.of(option("max", RuleOptionType.INTEGER))),
+  DEPTH("depth", List.of("reset", "max"), List.of(option("max", RuleOptionType.INTEGER))),
   TEXT_PATTERN(
       "text-pattern",
       List.of("target", "pattern", "required", "limit", "header-lines"),
-      List.of(option("pattern", "string"), option("limit", "integer"))),
-  ORDER("order", List.of("order"), List.of(option("order", "string-list"))),
+      List.of(option("pattern", RuleOptionType.REGEX), option("limit", RuleOptionType.INTEGER))),
+  ORDER(
+      "order",
+      List.of("order", "group-by", "group-skip"),
+      List.of(option("order", RuleOptionType.STRING_LIST))),
   LITERAL(
       "literal",
       List.of("ignore", "ignore-contexts", "max-repeats"),
       List.of(
-          option("ignore", "string-list"),
-          option("ignore-contexts", "string-list"),
-          option("max-repeats", "integer"))),
+          option("ignore", RuleOptionType.STRING_LIST),
+          option("ignore-contexts", RuleOptionType.STRING_LIST),
+          option("max-repeats", RuleOptionType.INTEGER))),
   DUPLICATE("duplicate", List.of("items", "key"), List.of());
 
   /** The keys every generic kind accepts: the node kinds, the shared filters and the message. */
@@ -58,9 +64,9 @@ enum GenericKind {
   }
 
   /** The name and type of a user option. */
-  record Option(String name, String type) {}
+  record Option(String name, RuleOptionType type) {}
 
-  private static Option option(final String name, final String type) {
+  private static Option option(final String name, final RuleOptionType type) {
     return new Option(name, type);
   }
 

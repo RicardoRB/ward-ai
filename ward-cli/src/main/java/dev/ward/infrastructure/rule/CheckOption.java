@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.RuleOptionType;
 import java.util.Objects;
 
 /**
@@ -7,10 +8,10 @@ import java.util.Objects;
  * its value in the body (empty when the body does not set it).
  *
  * @param name the parameter name in the body, for example {@code max}
- * @param type {@code string}, {@code integer} or {@code string-list}
+ * @param type as {@code ward-rules.toml} declares it
  * @param defaultValue the value the body sets, as text; a list is comma-separated
  */
-public record CheckOption(String name, String type, String defaultValue) {
+public record CheckOption(String name, RuleOptionType type, String defaultValue) {
 
   /**
    * Validates the fields.

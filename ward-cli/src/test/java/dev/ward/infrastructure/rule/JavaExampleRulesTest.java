@@ -85,7 +85,23 @@ class JavaExampleRulesTest {
 
   @Test
   void everyExampleRuleLoads() {
-    assertThat(ExampleRuns.rules("java")).hasSize(GenericKind.values().length);
+    assertThat(ExampleRuns.rules("java")).hasSize(GenericKind.values().length + 1);
     assertThat(ExampleRuns.rules("python")).hasSize(GenericKind.values().length);
+  }
+
+  @Test
+  void anOverloadSeparatedFromItsNameIsReported() {
+    final String source = "class A {\n  void a() {}\n  void b() {}\n  void a(int x) {}\n}\n";
+
+    assertThat(
+            ExampleRuns.lines(
+                ExampleRuns.run(AnalysisLanguage.JAVA, "java", source), JAVA + "overload-order"))
+        .containsExactlyElementsOf(ExampleRuns.at(source, "void a(int"));
+    final String grouped = "class A {\n  void a() {}\n  void a(int x) {}\n  void b() {}\n}\n";
+
+    assertThat(
+            ExampleRuns.lines(
+                ExampleRuns.run(AnalysisLanguage.JAVA, "java", grouped), JAVA + "overload-order"))
+        .isEmpty();
   }
 }

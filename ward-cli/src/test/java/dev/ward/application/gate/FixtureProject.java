@@ -30,9 +30,15 @@ final class FixtureProject {
   private static final String RULES_FILE = "ward-rules.toml";
 
   private final Path root;
+  private final ClasspathRuleSource packaged;
 
   FixtureProject(final Path root) {
+    this(root, new ClasspathRuleSource());
+  }
+
+  FixtureProject(final Path root, final ClasspathRuleSource packaged) {
     this.root = root;
+    this.packaged = packaged;
   }
 
   Path root() {
@@ -76,7 +82,7 @@ final class FixtureProject {
             rulesFile);
     final AnalysisPorts ports =
         new AnalysisPorts(
-            new ProjectRuleSource(new ClasspathRuleSource()),
+            new ProjectRuleSource(packaged),
             new DeclarativeRuleMatcher(),
             new FileSystemSourceUnits(),
             List.of(

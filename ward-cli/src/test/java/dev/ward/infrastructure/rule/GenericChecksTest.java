@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
+import dev.ward.analysis.domain.rule.RuleOptionType;
 import dev.ward.analysis.domain.rule.check.ModifierTable;
 import dev.ward.application.gate.AnalysisRuleLoad;
 import java.util.List;
@@ -108,16 +109,16 @@ class GenericChecksTest {
   @Test
   void eachKindListsItsUserOptionsWithTheBodysValues() {
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.COUNT)))
-        .containsExactly(new CheckOption("max", "integer", "1"));
+        .containsExactly(new CheckOption("max", RuleOptionType.INTEGER, "1"));
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.ORDER)))
-        .containsExactly(new CheckOption("order", "string-list", "b,c"));
+        .containsExactly(new CheckOption("order", RuleOptionType.STRING_LIST, "b,c"));
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.IDENTIFIER_PATTERN)))
-        .containsExactly(new CheckOption("pattern", "string", "x"));
+        .containsExactly(new CheckOption("pattern", RuleOptionType.REGEX, "x"));
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.LITERAL)))
         .containsExactly(
-            new CheckOption("ignore", "string-list", "0"),
-            new CheckOption("ignore-contexts", "string-list", ""),
-            new CheckOption("max-repeats", "integer", ""));
+            new CheckOption("ignore", RuleOptionType.STRING_LIST, "0"),
+            new CheckOption("ignore-contexts", RuleOptionType.STRING_LIST, ""),
+            new CheckOption("max-repeats", RuleOptionType.INTEGER, ""));
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.DUPLICATE))).isEmpty();
   }
 
