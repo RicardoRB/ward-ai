@@ -21,11 +21,15 @@ import org.antlr.v4.runtime.Token;
  */
 public final class PythonFormatter implements SourceFormatter {
 
-  private static final String INDENT_SIZE = "indent-size";
-  private static final String MAX_LINE_LENGTH = "max-line-length";
+  private static final String INDENT_WIDTH = "indent-width";
+  private static final String INDENT_STYLE = "indent-style";
+  private static final String LINE_WIDTH = "line-width";
   private static final String MAX_BLANK_LINES = "max-blank-lines";
-  private static final String DEFAULT_INDENT_SIZE = "4";
-  private static final String DEFAULT_MAX_LINE_LENGTH = "100";
+  private static final String DEFAULT_INDENT_WIDTH = "4";
+  private static final String DEFAULT_LINE_WIDTH = "100";
+  private static final String SPACE = "space";
+  private static final String TAB = "tab";
+  private static final String TAB_UNIT = "\t";
   private static final String DEFAULT_MAX_BLANK_LINES = "1";
   private static final String NEWLINE = "\n";
 
@@ -37,9 +41,9 @@ public final class PythonFormatter implements SourceFormatter {
   @Override
   public List<FormatOption> options() {
     return List.of(
-        new FormatOption(INDENT_SIZE, FormatOptionType.INTEGER, DEFAULT_INDENT_SIZE, List.of()),
-        new FormatOption(
-            MAX_LINE_LENGTH, FormatOptionType.INTEGER, DEFAULT_MAX_LINE_LENGTH, List.of()),
+        new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, DEFAULT_INDENT_WIDTH, List.of()),
+        new FormatOption(INDENT_STYLE, FormatOptionType.TEXT, SPACE, List.of(SPACE, TAB)),
+        new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, DEFAULT_LINE_WIDTH, List.of()),
         new FormatOption(
             MAX_BLANK_LINES, FormatOptionType.INTEGER, DEFAULT_MAX_BLANK_LINES, List.of()));
   }
@@ -52,14 +56,19 @@ public final class PythonFormatter implements SourceFormatter {
     if (unknown.isPresent()) {
       return new FormatResult.Refused("unknown character", unknown.get().getLine());
     }
-    final int indentWidth = options.integer(INDENT_SIZE);
     final int maxBlank = options.integer(MAX_BLANK_LINES);
+    final boolean tabs = TAB.equals(options.get(INDENT_STYLE));
+    final int indentWidth = options.integer(INDENT_WIDTH);
     final PrintStyle style =
         new PrintStyle(
-            options.integer(MAX_LINE_LENGTH), IndentStyle.SPACE, indentWidth, EndOfLine.LF);
+            options.integer(LINE_WIDTH),
+            tabs ? IndentStyle.TAB : IndentStyle.SPACE,
+            indentWidth,
+            EndOfLine.LF);
+    final String indentUnit = tabs ? TAB_UNIT : " ".repeat(indentWidth);
     final List<PythonChunk> chunks =
         PythonBlankLines.apply(
-            new PythonChunker(source, indentWidth, maxBlank).run(PythonEntries.of(source, tokens)),
+            new PythonChunker(source, indentUnit, maxBlank).run(PythonEntries.of(source, tokens)),
             maxBlank);
     final String formatted = render(chunks, new DocPrinter(style));
     return formatted.equals(source)

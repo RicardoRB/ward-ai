@@ -21,7 +21,7 @@ final class PythonLine {
 
   private final String source;
   private final int depth;
-  private final int indentWidth;
+  private final String indentUnit;
   private final Deque<PythonFrame> frames = new ArrayDeque<>();
   private final List<PythonEntry> tokens = new ArrayList<>();
   private boolean needBreak;
@@ -53,12 +53,12 @@ final class PythonLine {
    *
    * @param source the whole source text, for the characters between tokens
    * @param depth the indentation level of the line
-   * @param indentWidth the spaces of one indentation level
+   * @param indentUnit the text of one indentation level
    */
-  PythonLine(final String source, final int depth, final int indentWidth) {
+  PythonLine(final String source, final int depth, final String indentUnit) {
     this.source = source;
     this.depth = depth;
-    this.indentWidth = indentWidth;
+    this.indentUnit = indentUnit;
     frames.push(PythonFrame.root());
   }
 
@@ -126,7 +126,7 @@ final class PythonLine {
     for (int level = 0; level < depth; level++) {
       body = Document.indent(body);
     }
-    final Document indented = Document.concat(Document.text(" ".repeat(depth * indentWidth)), body);
+    final Document indented = Document.concat(Document.text(indentUnit.repeat(depth)), body);
     final String second = tokens.size() > 1 ? tokens.get(1).text() : "";
     return PythonChunk.code(
         depth, tokens.getFirst().text(), second, COLON.equals(tokens.getLast().text()), indented);

@@ -31,7 +31,15 @@ class PythonFormatterFixturesTest {
   private static final int MINIMUM_CASES = 12;
   private static final FormatOptions OPTIONS =
       new FormatOptions(
-          Map.of("indent-size", "4", "max-line-length", "100", "max-blank-lines", "2"));
+          Map.of(
+              "indent-width",
+              "4",
+              "indent-style",
+              "space",
+              "line-width",
+              "100",
+              "max-blank-lines",
+              "2"));
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("cases")

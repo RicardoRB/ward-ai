@@ -13,7 +13,7 @@ final class PythonChunker {
 
   private final String source;
   private final String[] lines;
-  private final int indentWidth;
+  private final String indentUnit;
   private final int maxBlank;
   private final List<PythonChunk> chunks = new ArrayList<>();
   private final List<Integer> columns = new ArrayList<>();
@@ -32,13 +32,13 @@ final class PythonChunker {
    * Creates a chunker for one source text.
    *
    * @param source the source text, with {@code \n} line endings
-   * @param indentWidth the spaces of one indentation level
+   * @param indentUnit the text of one indentation level
    * @param maxBlank the most blank lines kept in a row
    */
-  PythonChunker(final String source, final int indentWidth, final int maxBlank) {
+  PythonChunker(final String source, final String indentUnit, final int maxBlank) {
     this.source = source;
     this.lines = source.split("\n", -1);
-    this.indentWidth = indentWidth;
+    this.indentUnit = indentUnit;
     this.maxBlank = maxBlank;
     columns.add(0);
   }
@@ -97,8 +97,7 @@ final class PythonChunker {
     for (final Pending waiting : pending) {
       final int depth = depthOf(waiting.column());
       final String text = chunks.get(waiting.index()).text();
-      chunks.set(
-          waiting.index(), PythonChunk.comment(depth, " ".repeat(depth * indentWidth) + text));
+      chunks.set(waiting.index(), PythonChunk.comment(depth, indentUnit.repeat(depth) + text));
     }
     pending.clear();
   }
@@ -111,7 +110,7 @@ final class PythonChunker {
         indentPending = false;
       }
       resolvePending();
-      line = new PythonLine(source, columns.size() - 1, indentWidth);
+      line = new PythonLine(source, columns.size() - 1, indentUnit);
       lineOpen = true;
     }
     line.addToken(entry);

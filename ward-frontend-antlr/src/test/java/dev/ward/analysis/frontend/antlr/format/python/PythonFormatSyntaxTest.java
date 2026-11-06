@@ -18,7 +18,15 @@ class PythonFormatSyntaxTest {
 
   private static final FormatOptions OPTIONS =
       new FormatOptions(
-          Map.of("indent-size", "4", "max-line-length", "100", "max-blank-lines", "1"));
+          Map.of(
+              "indent-width",
+              "4",
+              "indent-style",
+              "space",
+              "line-width",
+              "100",
+              "max-blank-lines",
+              "1"));
 
   @Test
   void reportsTheLineOfTheFirstSyntaxError() {
