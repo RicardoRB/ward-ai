@@ -57,10 +57,13 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
   }
 
   private static LanguageFrontend javaSession() {
-    return new JavaSession(javaUnitSession(JavaParser::compilationunit), javaUnitSession(JavaParser::compactCompilationUnit));
+    return new JavaSession(
+        javaUnitSession(JavaParser::compilationunit),
+        javaUnitSession(JavaParser::compactCompilationUnit));
   }
 
-  private static LanguageFrontend javaUnitSession(final Function<JavaParser, ParserRuleContext> start) {
+  private static LanguageFrontend javaUnitSession(
+      final Function<JavaParser, ParserRuleContext> start) {
     final JavaLexer lexer = new JavaLexer(empty());
     final JavaParser parser = new JavaParser(new CommonTokenStream(lexer));
     return new GrammarSession<>(lexer, parser, start);

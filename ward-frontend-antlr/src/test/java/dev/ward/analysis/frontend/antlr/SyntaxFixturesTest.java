@@ -39,8 +39,8 @@ class SyntaxFixturesTest {
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")
-  void fixtureParsesWithoutDiagnostics(final String name, final AnalysisLanguage language, final Path file)
-      throws IOException {
+  void fixtureParsesWithoutDiagnostics(
+      final String name, final AnalysisLanguage language, final Path file) throws IOException {
     final ParseResult result = FRONTEND.parse(unit(language, file));
 
     assertThat(result.diagnostics()).isEmpty();
@@ -74,7 +74,10 @@ class SyntaxFixturesTest {
       try (Stream<Path> files = Files.list(dir)) {
         files
             .sorted()
-            .forEach(file -> all.add(Arguments.of(folder(language) + "/" + file.getFileName(), language, file)));
+            .forEach(
+                file ->
+                    all.add(
+                        Arguments.of(folder(language) + "/" + file.getFileName(), language, file)));
       }
     }
     return all.stream();
@@ -90,7 +93,8 @@ class SyntaxFixturesTest {
     throw new AssertionError("refused: " + ((FormatResult.Refused) result).reason());
   }
 
-  private static SourceUnit unit(final AnalysisLanguage language, final Path file) throws IOException {
+  private static SourceUnit unit(final AnalysisLanguage language, final Path file)
+      throws IOException {
     return new SourceUnit(file.getFileName().toString(), language, Files.readString(file));
   }
 

@@ -5,8 +5,8 @@ import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.port.ParseResult;
 
 /**
- * Parses Java as a compilation unit, and as a compact source file (JEP 512) only when the unit
- * does not parse, so regular files keep their diagnostics.
+ * Parses Java as a compilation unit, and as a compact source file (JEP 512) only when the unit does
+ * not parse, so regular files keep their diagnostics.
  */
 final class JavaSession implements LanguageFrontend {
 

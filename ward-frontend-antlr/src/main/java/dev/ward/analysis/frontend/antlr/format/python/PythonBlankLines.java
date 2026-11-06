@@ -34,8 +34,7 @@ final class PythonBlankLines {
         run.add(chunk);
         continue;
       }
-      final OptionalInt target =
-          bodyTarget(run, chunk, target(previous, chunk, topDef, maxBlank));
+      final OptionalInt target = bodyTarget(run, chunk, target(previous, chunk, topDef, maxBlank));
       out.addAll(target.isPresent() ? withBlanks(run, target.getAsInt()) : run);
       run.clear();
       out.add(chunk);

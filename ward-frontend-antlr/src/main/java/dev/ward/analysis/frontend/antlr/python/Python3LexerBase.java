@@ -157,7 +157,9 @@ abstract class Python3LexerBase extends WardLexerBase {
 
   private void scanTemplateBody(final int quote, final boolean triple) {
     int next = _input.LA(1);
-    while (next != IntStream.EOF && !closesAt(next, quote, triple) && (triple || !isLineBreak(next))) {
+    while (next != IntStream.EOF
+        && !closesAt(next, quote, triple)
+        && (triple || !isLineBreak(next))) {
       if (next == BACKSLASH) {
         consumeChars(ESCAPE_LENGTH);
       } else if (next == OPEN_BRACE) {
@@ -172,7 +174,9 @@ abstract class Python3LexerBase extends WardLexerBase {
     }
   }
 
-  /** Consumes an escaped brace, or a replacement field whose opening brace is the next character. */
+  /**
+   * Consumes an escaped brace, or a replacement field whose opening brace is the next character.
+   */
   private void scanBrace() {
     consumeChars(1);
     if (_input.LA(1) == OPEN_BRACE) {
@@ -212,7 +216,9 @@ abstract class Python3LexerBase extends WardLexerBase {
     final boolean triple = _input.LA(2) == quote && _input.LA(3) == quote;
     consumeChars(quoteLength(triple));
     int next = _input.LA(1);
-    while (next != IntStream.EOF && !closesAt(next, quote, triple) && (triple || !isLineBreak(next))) {
+    while (next != IntStream.EOF
+        && !closesAt(next, quote, triple)
+        && (triple || !isLineBreak(next))) {
       consumeChars(next == BACKSLASH ? ESCAPE_LENGTH : 1);
       next = _input.LA(1);
     }
@@ -221,7 +227,9 @@ abstract class Python3LexerBase extends WardLexerBase {
     }
   }
 
-  /** Whether the character at the cursor, {@code next}, closes a string opened with {@code quote}. */
+  /**
+   * Whether the character at the cursor, {@code next}, closes a string opened with {@code quote}.
+   */
   private boolean closesAt(final int next, final int quote, final boolean triple) {
     return next == quote && (!triple || _input.LA(2) == quote && _input.LA(3) == quote);
   }
