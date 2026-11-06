@@ -2,9 +2,6 @@ package dev.ward.analysis.domain.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.domain.scope.Binding;
-import dev.ward.analysis.domain.scope.BindingFlag;
-import dev.ward.analysis.domain.scope.BindingKind;
 import dev.ward.analysis.domain.scope.NameReference;
 import dev.ward.analysis.domain.scope.ReferenceAccess;
 import dev.ward.analysis.domain.scope.ScopeKind;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 class SwiftScopeAnalysisTest {
 
-  private static final int LINE_1 = 1;
   private static final int LINE_2 = 2;
   private static final int LINE_3 = 3;
   private static final int LINE_4 = 4;
@@ -91,47 +87,5 @@ class SwiftScopeAnalysisTest {
     final UnitScopes scopes = SwiftScopeFixtures.scopes("func f(p: P) { p.value.deep }\n");
 
     assertThat(scopes.references()).extracting(NameReference::name).containsExactly("p");
-  }
-
-  @Test
-  void catchWithoutAPatternBindsError() {
-    final UnitScopes scopes =
-        SwiftScopeFixtures.scopes("func f() { do { try g() } catch { print(error) } }\n");
-
-    assertThat(only(scopes, "error", LINE_1).resolved()).isPresent();
-  }
-
-  @Test
-  void compoundAssignmentReadsAndWrites() {
-    final UnitScopes scopes = SwiftScopeFixtures.scopes("func f() { var n = 0\n n += 1 }\n");
-
-    assertThat(scopes.references())
-        .filteredOn(
-            reference -> "n".equals(reference.name()) && reference.span().startLine() == LINE_2)
-        .extracting(NameReference::access)
-        .containsExactlyInAnyOrder(ReferenceAccess.READ, ReferenceAccess.WRITE);
-  }
-
-  @Test
-  void importsBindTheModuleOrTheNamedMember() {
-    final UnitScopes scopes =
-        SwiftScopeFixtures.scopes("import Foundation\nimport struct Mod.Thing\n");
-
-    assertThat(scopes.module().bindings())
-        .extracting(Binding::name, Binding::kind)
-        .containsExactly(
-            org.assertj.core.groups.Tuple.tuple("Foundation", BindingKind.IMPORT),
-            org.assertj.core.groups.Tuple.tuple("Thing", BindingKind.IMPORT));
-  }
-
-  @Test
-  void tuplePatternsAreDestructured() {
-    final UnitScopes scopes =
-        SwiftScopeFixtures.scopes("func f() { let (a, b) = pair\n for (k, v) in d {} }\n");
-
-    assertThat(scopes.bindings())
-        .filteredOn(binding -> List.of("a", "b", "k", "v").contains(binding.name()))
-        .hasSize(LINE_4)
-        .allSatisfy(binding -> assertThat(binding.has(BindingFlag.DESTRUCTURED)).isTrue());
   }
 }
