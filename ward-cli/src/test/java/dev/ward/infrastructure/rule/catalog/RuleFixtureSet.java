@@ -9,10 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.tomlj.Toml;
+import org.tomlj.TomlParseResult;
 
 /**
  * The fixtures of one implemented rule in one language: the directory {@code
@@ -96,6 +99,27 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
       return Files.readAllLines(file, StandardCharsets.UTF_8).stream()
           .filter(line -> !line.isBlank())
           .toList();
+    } catch (final IOException exception) {
+      throw new UncheckedIOException("missing " + file, exception);
+    }
+  }
+
+  /**
+   * Returns the option values of {@code caseName} from its {@code options-<case>.toml}, as {@link
+   * dev.ward.analysis.domain.rule.RuleOptions#apply} takes them; empty when the case has none.
+   */
+  Map<String, Object> options(final String caseName) {
+    final Path file = directory.resolve("options" + suffix(caseName) + ".toml");
+    if (!Files.isRegularFile(file)) {
+      return Map.of();
+    }
+    try {
+      final TomlParseResult toml = Toml.parse(Files.readString(file, StandardCharsets.UTF_8));
+      final Map<String, Object> values = new LinkedHashMap<>();
+      for (final String key : toml.keySet()) {
+        values.put(key, toml.get(key));
+      }
+      return values;
     } catch (final IOException exception) {
       throw new UncheckedIOException("missing " + file, exception);
     }
