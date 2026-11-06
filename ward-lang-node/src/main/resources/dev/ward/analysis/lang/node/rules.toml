@@ -1491,3 +1491,27 @@ check = "undefined-name"
 env = ["es2024"]
 message = "'{value}' is not defined"
 '''
+
+[[rules]]
+id = "ward:typescript/no-unreachable"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unreachable"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''

@@ -849,9 +849,7 @@ eslint = ["no-unneeded-ternary"]
 
 [[rule]]
 name = "no-unreachable"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-unreachable"]
 biome = ["noUnreachable"]
 

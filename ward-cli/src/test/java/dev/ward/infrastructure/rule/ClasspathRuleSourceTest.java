@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
+  private static final List<String> SCOPE_CHECKS =
+      List.of("reassigned-binding", "undefined-name", "unused-binding");
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -129,10 +132,10 @@ class ClasspathRuleSourceTest {
     return id.startsWith("ward:java/") && id.endsWith("-injection");
   }
 
-  private static final List<String> SCOPE_CHECKS =
-      List.of("reassigned-binding", "undefined-name", "unused-binding");
-
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
+    if (rule.body().contains("check = \"unreachable-code\"")) {
+      return RuleCapability.CFG;
+    }
     if (SCOPE_CHECKS.stream()
         .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
       return RuleCapability.SCOPES;

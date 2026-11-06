@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
+import dev.ward.analysis.domain.rule.check.UnreachableCodeCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
@@ -108,6 +109,7 @@ final class DeclarativeChecks {
               TomlValues.required(toml, MESSAGE),
               Set.copyOf(TomlValues.optionalStrings(toml, "env")));
       case "unused-binding" -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE));
+      case "unreachable-code" -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE));
       case "reassigned-binding" ->
           ReassignedBindingCheck.of(
               TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE));
