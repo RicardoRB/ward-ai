@@ -1,0 +1,103 @@
+# Lint rules for Swift, part 3 of SwiftLint's rules that match one node's compact text. Each rule
+# is a generic check. A pattern can match across spacing and can miss a name that shares a word with
+# another token, since the compact text has no separators.
+
+[[rules]]
+id = "ward:swift/async-without-await"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^(?!.*await)(?=[^{]*(?<![A-Za-z0-9_])async(?![A-Za-z0-9_]))[^{]*\{'
+message = "declaration is async but does not use await"
+'''
+
+[[rules]]
+id = "ward:swift/unused-control-flow-label"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["labeled_statement"]
+text = '^(\w+):(?!.*(break|continue)\1(?![A-Za-z0-9_]))'
+message = "control flow label is never used by break or continue"
+'''
+
+[[rules]]
+id = "ward:swift/unused-closure-parameter"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["closure_expression"]
+text = '^\{([a-zA-Z]\w*)in(?!.*\1)'
+message = "unused closure parameter; replace it with _"
+'''
+
+[[rules]]
+id = "ward:swift/self-in-property-initialization"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+not-inside = ["code_block", "closure_expression"]
+text = '^(?!.*lazy)[^{]*=.*self\.'
+message = "self is used in a property initializer; make the property lazy"
+'''
+
+[[rules]]
+id = "ward:swift/notification-center-detachment"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+not-inside = ["deinitializer_declaration"]
+text = '\.removeObserver\(self[,)]'
+message = "an object should only remove itself as an observer in deinit"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-throws-rethrows"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^[^{]*(throws|rethrows)(?![A-Za-z0-9_])[^{]*\{(?!.*(try|throw))'
+message = "function is marked throws or rethrows but never throws"
+'''
+
+[[rules]]
+id = "ward:swift/empty-xctest-method"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^functest\w*\(\)\{\}$'
+message = "empty test method should be removed or filled in"
+'''
