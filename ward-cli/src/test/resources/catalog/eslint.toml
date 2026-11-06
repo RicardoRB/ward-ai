@@ -203,17 +203,13 @@ eslint = ["new-cap"]
 
 [[rule]]
 name = "no-alert"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-alert"]
 biome = ["noAlert"]
 
 [[rule]]
 name = "no-array-constructor"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 typescript-eslint = ["no-array-constructor"]
 eslint = ["no-array-constructor"]
 
@@ -239,9 +235,7 @@ eslint = ["no-bitwise"]
 
 [[rule]]
 name = "no-caller"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-caller"]
 
 [[rule]]
@@ -330,9 +324,7 @@ eslint = ["no-delete-var"]
 
 [[rule]]
 name = "no-div-regex"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-div-regex"]
 biome = ["noDivRegex"]
 
@@ -419,9 +411,7 @@ eslint = ["no-eq-null"]
 
 [[rule]]
 name = "no-eval"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-eval"]
 
 [[rule]]
@@ -433,9 +423,7 @@ eslint = ["no-ex-assign"]
 
 [[rule]]
 name = "no-extend-native"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-extend-native"]
 biome = ["noExtendNative"]
 
@@ -538,9 +526,7 @@ biome = ["noIrregularWhitespace"]
 
 [[rule]]
 name = "no-iterator"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-iterator"]
 
 [[rule]]
@@ -627,9 +613,7 @@ eslint = ["no-new"]
 
 [[rule]]
 name = "no-new-func"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-new-func"]
 
 [[rule]]
@@ -639,9 +623,7 @@ eslint = ["no-new-native-nonconstructor"]
 
 [[rule]]
 name = "no-new-wrappers"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-new-wrappers"]
 
 [[rule]]
@@ -694,9 +676,7 @@ eslint = ["no-promise-executor-return"]
 
 [[rule]]
 name = "no-proto"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-proto"]
 biome = ["noProto"]
 
@@ -759,9 +739,7 @@ biome = ["noReturnAssign"]
 
 [[rule]]
 name = "no-script-url"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-script-url"]
 biome = ["noScriptUrl"]
 
@@ -773,9 +751,7 @@ biome = ["noSelfAssign"]
 
 [[rule]]
 name = "no-self-compare"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-self-compare"]
 biome = ["noSelfCompare"]
 
@@ -822,9 +798,7 @@ eslint = ["no-this-before-super"]
 
 [[rule]]
 name = "no-throw-literal"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-throw-literal"]
 
 [[rule]]
@@ -843,9 +817,7 @@ eslint = ["no-undef"]
 
 [[rule]]
 name = "no-undef-init"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-undef-init"]
 
 [[rule]]
@@ -964,9 +936,7 @@ eslint = ["no-useless-backreference"]
 
 [[rule]]
 name = "no-useless-call"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-useless-call"]
 
 [[rule]]
@@ -1102,9 +1072,7 @@ eslint = ["prefer-numeric-literals"]
 
 [[rule]]
 name = "prefer-object-has-own"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["prefer-object-has-own"]
 
 [[rule]]
@@ -1138,9 +1106,7 @@ eslint = ["prefer-rest-params"]
 
 [[rule]]
 name = "prefer-spread"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["prefer-spread"]
 
 [[rule]]
@@ -1214,9 +1180,7 @@ eslint = ["strict"]
 
 [[rule]]
 name = "symbol-description"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["symbol-description"]
 
 [[rule]]

@@ -1,0 +1,1 @@
+const url = "javascript:alert(1)";
