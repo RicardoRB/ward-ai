@@ -16,6 +16,9 @@
       "glob": "dev/ward/analysis/lang/node/rules.toml"
     },
     {
+      "glob": "dev/ward/analysis/lang/python/stubs/*.pyi"
+    },
+    {
       "glob": "dev/ward/sidecar/*"
     },
     {
