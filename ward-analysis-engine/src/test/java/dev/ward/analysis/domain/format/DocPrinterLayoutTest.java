@@ -105,4 +105,34 @@ class DocPrinterLayoutTest {
     assertThatThrownBy(() -> new PrintStyle(0, IndentStyle.SPACE, FOUR, EndOfLine.LF))
         .isInstanceOf(IllegalArgumentException.class);
   }
+
+  @Test
+  void ifBreakPrintsItsFlatAlternativeWhenTheGroupStaysFlat() {
+    final Document list =
+        Document.group(
+            Document.concat(
+                Document.text("["),
+                Document.text("1"),
+                Document.ifBreak(Document.text(","), Document.text("")),
+                Document.text("]")));
+
+    assertThat(print(list, WIDE)).isEqualTo("[1]");
+  }
+
+  @Test
+  void ifBreakPrintsItsBrokenAlternativeWhenTheGroupBreaks() {
+    final Document list =
+        Document.group(
+            Document.concat(
+                Document.text("["),
+                Document.indent(
+                    Document.concat(
+                        Document.softLine(),
+                        Document.text("1"),
+                        Document.ifBreak(Document.text(","), Document.text("")))),
+                Document.hardLine(),
+                Document.text("]")));
+
+    assertThat(print(list, WIDE)).isEqualTo("[\n    1,\n]");
+  }
 }

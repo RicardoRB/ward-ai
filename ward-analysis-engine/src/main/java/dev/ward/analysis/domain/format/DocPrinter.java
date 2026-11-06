@@ -55,6 +55,9 @@ public final class DocPrinter {
     if (document instanceof Document.Group group) {
       return forcesBreak(group.body());
     }
+    if (document instanceof Document.IfBreak ifBreak) {
+      return forcesBreak(ifBreak.broken()) || forcesBreak(ifBreak.flat());
+    }
     return document instanceof Document.Concat concat
         && concat.parts().stream().anyMatch(DocPrinter::forcesBreak);
   }
@@ -99,6 +102,8 @@ public final class DocPrinter {
         pending.push(new Command(command.level() + 1, command.flat(), indent.body()));
       } else if (document instanceof Document.Group group) {
         placeGroup(command, group);
+      } else if (document instanceof Document.IfBreak ifBreak) {
+        pending.push(new Command(command.level(), command.flat(), chosen(command, ifBreak)));
       }
     }
 
@@ -161,8 +166,15 @@ public final class DocPrinter {
       } else if (document instanceof Document.Group group) {
         final boolean flat = next.flat() && !forcesBreak(group.body());
         expanding.push(new Command(next.level(), flat, group.body()));
+      } else if (document instanceof Document.IfBreak ifBreak) {
+        expanding.push(new Command(next.level(), next.flat(), chosen(next, ifBreak)));
       }
       return 0;
+    }
+
+    /** The alternative an if-break prints for the command: flat when the group is flat. */
+    private static Document chosen(final Command command, final Document.IfBreak ifBreak) {
+      return command.flat() ? ifBreak.flat() : ifBreak.broken();
     }
 
     /** Tells whether a command ends the line when measured: a break, or text with a newline. */
