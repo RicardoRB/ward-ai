@@ -133,6 +133,14 @@ public final class NodeConfigTemplates {
 
   // The bodies biome format writes with spaces, so Biome reports no format finding in them.
 
+  /** The Biome formatter line of the generated configs, and its form when Ward formats instead. */
+  static final String BIOME_FORMATTER = "\"formatter\": { \"indentStyle\": \"space\" }";
+
+  static final String BIOME_FORMATTER_OFF = "\"formatter\": { \"enabled\": false }";
+
+  /** The same override in a layer, which extends the user's config and so adds a comma. */
+  static final String BIOME_FORMATTER_OFF_LAYER = "," + "\n  " + BIOME_FORMATTER_OFF;
+
   private static final String BIOME_STANDARD =
       """
       {
@@ -195,8 +203,10 @@ public final class NodeConfigTemplates {
    * Returns Ward's biome.jsonc. Strict adds the rules that its preset needs; the standard body also
    * keeps Biome out of Git-ignored output such as Ward's coverage reports.
    */
-  static String biome(final QualityPreset preset) {
-    return preset == QualityPreset.STRICT ? BIOME_STRICT : BIOME_STANDARD;
+  /** Returns Ward's biome.jsonc, with the formatter turned off when {@code formatterOff} is set. */
+  static String biome(final QualityPreset preset, final boolean formatterOff) {
+    final String config = preset == QualityPreset.STRICT ? BIOME_STRICT : BIOME_STANDARD;
+    return formatterOff ? config.replace(BIOME_FORMATTER, BIOME_FORMATTER_OFF) : config;
   }
 
   /**

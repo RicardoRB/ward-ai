@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.gate.SupportedQualityGates;
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.HashSet;
@@ -109,6 +110,13 @@ public final class PartialCheckDefaults {
       final Project project,
       final QualityPreset preset,
       final List<String> command) {
+    if (FormatGates.WARD_FORMAT.equals(gate)) {
+      final List<String> match = EditorConfigTemplate.sourceGlobs(project.languages());
+      return match.isEmpty()
+          ? Optional.empty()
+          : Optional.of(
+              new Table(match, List.of(EditorConfigTemplate.FILE_NAME), List.of(), null, null));
+    }
     return InitToolchains.find(project)
         .flatMap(support -> support.partialTable(gate, project, preset, command))
         .or(() -> Optional.ofNullable(NEUTRAL_TABLES.get(gate)));

@@ -10,6 +10,7 @@ import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The Ward-owned sections init writes: the CI workflow and the agent rules a selection asks for,
@@ -88,6 +89,25 @@ public final class OwnedSections {
               selection.architectureEngine() == ArchitectureEngine.WARD));
     }
     return sections;
+  }
+
+  /**
+   * Returns {@code sections} with the project's {@code .editorconfig} appended when {@code
+   * ward-format} writes it: {@code existing} is that file's content, empty when absent.
+   */
+  public static List<OwnedSection> withEditorConfig(
+      final List<OwnedSection> sections,
+      final Project project,
+      final List<InitGateOption> gates,
+      final Optional<String> existing) {
+    final List<OwnedSection> all = new ArrayList<>(sections);
+    EditorConfigTemplate.section(project, gates, existing).ifPresent(all::add);
+    return List.copyOf(all);
+  }
+
+  /** Returns the project's {@code .editorconfig}, which the {@code ward} engine may write. */
+  public static Path editorConfigPath(final Project project) {
+    return EditorConfigTemplate.path(project);
   }
 
   private static List<OwnedSection> ciSections(

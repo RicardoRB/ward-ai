@@ -37,7 +37,8 @@ class InitProgressTest {
   void integrationOptionLeavesFourStepsOnATerminal() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "1\n\n\nn\n\n", "--integration", "none");
+    final int exit =
+        init.run(true, "1\n\n\nn\n\n", "--integration", "none", "--format-engine", "tool");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Step 1 of 4", "Step 4 of 4").doesNotContain("Step 5");

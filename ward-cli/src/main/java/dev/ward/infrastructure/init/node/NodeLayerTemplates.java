@@ -38,14 +38,14 @@ final class NodeLayerTemplates {
   private static final String BIOME_LAYER_STANDARD =
       """
       {
-        "extends": ["./{base}"]
+        "extends": ["./{base}"]{formatter}
       }
       """;
 
   private static final String BIOME_LAYER_STRICT =
       """
       {
-        "extends": ["./{base}"],
+        "extends": ["./{base}"]{formatter},
         "linter": {
           "rules": {
             "suspicious": { "noExplicitAny": "error" },
@@ -83,7 +83,14 @@ final class NodeLayerTemplates {
    * strict rules here, so they win over the base's settings.
    */
   static String biome(final QualityPreset preset, final String base) {
+    return biome(preset, base, false);
+  }
+
+  /** Returns the Biome layer, which turns the formatter off when {@code formatterOff} is set. */
+  static String biome(final QualityPreset preset, final String base, final boolean formatterOff) {
     final String layer = preset == QualityPreset.STRICT ? BIOME_LAYER_STRICT : BIOME_LAYER_STANDARD;
-    return layer.replace("{base}", base);
+    return layer
+        .replace("{base}", base)
+        .replace("{formatter}", formatterOff ? NodeConfigTemplates.BIOME_FORMATTER_OFF_LAYER : "");
   }
 }

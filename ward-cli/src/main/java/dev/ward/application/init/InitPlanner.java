@@ -3,10 +3,12 @@ package dev.ward.application.init;
 import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.ArchitectureGates;
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OpenSpecDistribution;
+import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
@@ -93,14 +95,7 @@ final class InitPlanner {
         files.ruleFiles().plan(project, selection.preset(), gates);
     changes.addAll(ruleFiles);
     changes.addAll(architectureFiles(project, selection, existingArchUnitTests));
-    final List<Path> userOwned =
-        ruleFiles.stream()
-            .filter(file -> file.action() == PlannedFileChange.Action.PRESERVE_USER_OWNED)
-            .map(PlannedFileChange::file)
-            .toList();
-    OwnedSections.of(catalog.get(), project, selection, gates, userOwned).stream()
-        .map(files.sections()::plan)
-        .forEach(changes::add);
+    changes.addAll(ownedSectionChanges(project, selection, gates, ruleFiles));
     return new InitPlan(
         changes,
         installs
@@ -154,6 +149,53 @@ final class InitPlanner {
                 project,
                 ArchitectureToolPlan.style(selection),
                 ArchitectureToolPlan.extras(project, selection)));
+  }
+
+  /**
+   * Plans the Ward-owned sections, and the {@code .editorconfig} that {@code ward-format} writes
+   * when the project has none. Rule files that the user owns are kept as they are.
+   */
+  private List<PlannedFileChange> ownedSectionChanges(
+      final Project project,
+      final InitSelection selection,
+      final List<InitGateOption> gates,
+      final List<PlannedFileChange> ruleFiles) {
+    final List<Path> userOwned =
+        ruleFiles.stream()
+            .filter(file -> file.action() == PlannedFileChange.Action.PRESERVE_USER_OWNED)
+            .map(PlannedFileChange::file)
+            .toList();
+    final List<OwnedSection> sections =
+        OwnedSections.withEditorConfig(
+            OwnedSections.of(catalog.get(), project, selection, gates, userOwned),
+            project,
+            gates,
+            files.configuration().read(OwnedSections.editorConfigPath(project)));
+    final List<PlannedFileChange> changes = new ArrayList<>();
+    sections.stream().map(files.sections()::plan).forEach(changes::add);
+    changes.addAll(existingEditorConfig(project, gates));
+    return changes;
+  }
+
+  /**
+   * Names the project's own {@code .editorconfig} in the preview when {@code ward-format} formats
+   * with it: init leaves that file byte for byte, so it is planned as unchanged.
+   */
+  private List<PlannedFileChange> existingEditorConfig(
+      final Project project, final List<InitGateOption> gates) {
+    final Path file = EditorConfigTemplate.path(project);
+    if (gates.stream().noneMatch(gate -> FormatGates.WARD_FORMAT.equals(gate.id()))
+        || files.configuration().read(file).isEmpty()) {
+      return List.of();
+    }
+    // Kept rather than unchanged, so the preview, which hides unchanged files, still shows it.
+    return List.of(
+        new PlannedFileChange(
+            file,
+            PlannedFileChange.Action.PRESERVE_USER_OWNED,
+            List.of(
+                "Ward formats with this .editorconfig; init leaves it byte for byte, and keys it"
+                    + " leaves unset use Ward's defaults.")));
   }
 
   private PlannedFileChange configuration(

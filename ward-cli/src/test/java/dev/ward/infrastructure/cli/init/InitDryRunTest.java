@@ -96,7 +96,9 @@ class InitDryRunTest {
             "--integration",
             "none",
             "--gate",
-            "format");
+            "format",
+            "--format-engine",
+            "tool");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())

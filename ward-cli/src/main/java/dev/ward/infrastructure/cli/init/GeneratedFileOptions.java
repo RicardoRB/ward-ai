@@ -2,6 +2,7 @@ package dev.ward.infrastructure.cli.init;
 
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.ArchitectureEngine;
+import dev.ward.domain.init.FormatEngine;
 import picocli.CommandLine.Option;
 
 /**
@@ -41,6 +42,13 @@ public class GeneratedFileOptions {
               + " default) or ward (the ward engine, with layer boundaries in ward.toml).")
   private String architectureEngine;
 
+  @Option(
+      names = "--format-engine",
+      description =
+          "Which formatter checks the source files: tool (the external formatters, default) or"
+              + " ward (the native formatter, with the layout in .editorconfig).")
+  private String formatEngine;
+
   /** Returns the CI provider, or {@code null} when no workflow is requested. */
   String ci() {
     return ci;
@@ -75,6 +83,26 @@ public class GeneratedFileOptions {
                         + architectureEngine
                         + "'. Supported engines: "
                         + ArchitectureEngine.SUPPORTED
+                        + "."))
+        .id();
+  }
+
+  /**
+   * Returns the formatter the user named, validated, or {@code null} when none was given. An
+   * unknown value is rejected here, before any file is written.
+   */
+  String formatEngineOrNull() {
+    if (formatEngine == null) {
+      return null;
+    }
+    return FormatEngine.parse(formatEngine)
+        .orElseThrow(
+            () ->
+                new WardException(
+                    "Unknown format engine '"
+                        + formatEngine
+                        + "'. Supported engines: "
+                        + FormatEngine.SUPPORTED
                         + "."))
         .id();
   }

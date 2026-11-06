@@ -10,6 +10,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Added
 
+- `ward init --format-engine ward|tool` (default `tool`). `ward` replaces Spotless, Prettier, Biome's formatter (Biome keeps linting), `ruff-format` and `swift-format` with the `ward-format` gate, writes an ownership-marked `.editorconfig` with Ward's defaults when the project has none, and keeps an existing one byte for byte. The `tool` output is unchanged.
 - `ward-frontend-antlr`, an internal analysis module with ANTLR parsers for Java, Kotlin, TypeScript, JavaScript, Python and Swift. Parsers are generated at build time from grammars pinned by commit, and syntax errors are returned as diagnostics next to a partial tree. No CLI behavior changes.
 - `ward:architecture/cycles` and `ward:architecture/independence`, the slice cycle and feature independence rules of the `ward` gate, configured by `[checks.ward.cycles]` and `[[checks.ward.independence]]`. One meaning for Java, Python, TypeScript, JavaScript and Swift: a cycle is reported between two or more slices, the first directory under a source root (#246).
 

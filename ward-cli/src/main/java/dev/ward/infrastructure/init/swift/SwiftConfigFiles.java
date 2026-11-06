@@ -57,6 +57,16 @@ public final class SwiftConfigFiles {
 
   /** Returns each config file of a Swift project, in the order init writes them. */
   public static List<ConfigTarget> targets(final Project project, final QualityPreset preset) {
+    return targets(project, preset, true);
+  }
+
+  /**
+   * Returns the config files as {@link #targets(Project, QualityPreset)} does. {@code swiftFormat}
+   * is false when the {@code ward} format engine replaces swift-format, so no {@code .swift-format}
+   * is written.
+   */
+  static List<ConfigTarget> targets(
+      final Project project, final QualityPreset preset, final boolean swiftFormat) {
     final Path root = project.root();
     final FileSystemSwiftToolConfigs configs = new FileSystemSwiftToolConfigs();
     final boolean strict = preset == QualityPreset.STRICT;
@@ -67,6 +77,9 @@ public final class SwiftConfigFiles {
             ? ConfigTarget.keep(root.resolve(SWIFTLINT), "kept: your .swiftlint.yml")
             : ConfigTarget.write(root.resolve(SWIFTLINT), swiftLintConfig(strict)));
     strictLayer(root, strict && ownSwiftLint).ifPresent(targets::add);
+    if (!swiftFormat) {
+      return List.copyOf(targets);
+    }
     targets.add(
         configs.userConfig(root, SWIFT_FORMAT).isPresent()
             ? ConfigTarget.keep(root.resolve(SWIFT_FORMAT), "kept: your .swift-format")

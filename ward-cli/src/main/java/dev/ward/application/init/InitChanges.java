@@ -83,7 +83,11 @@ final class InitChanges {
                   ArchitectureToolPlan.extras(project, selection));
     }
     for (final OwnedSection section :
-        OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved())) {
+        OwnedSections.withEditorConfig(
+            OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
+            project,
+            gates,
+            files.configuration().read(OwnedSections.editorConfigPath(project)))) {
       sectionChanges.add(files.sections().apply(section));
     }
   }

@@ -179,6 +179,10 @@ order:
    enforces the style: `tool` (the default, and the recommendation until the engine's verdict is
    proven on the project) or `ward` (`--architecture-engine ward`, boundaries, slice cycles and
    feature independence in `ward.toml`; the strict cycle rules are then not generated externally).
+   When a selected gate formats the sources (`format`, `prettier`, `biome`, `ruff-format` or
+   `swift-format`), also ask which formatter checks them: `tool` (the default) or `ward`
+   (`--format-engine ward`, the `ward-format` gate in place of the external formatters, and an
+   `.editorconfig` with Ward's defaults only when the project has none).
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.

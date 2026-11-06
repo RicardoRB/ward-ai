@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.QualityPreset;
@@ -99,6 +100,11 @@ public final class AgentRulesTemplate {
               + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
               + " `ward:architecture/independence` enforce them; do not remove them or add"
               + " exemptions.");
+    }
+    if (ids.contains(FormatGates.WARD_FORMAT)) {
+      lines.add(
+          "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
+              + " comes from `.editorconfig`.");
     }
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));

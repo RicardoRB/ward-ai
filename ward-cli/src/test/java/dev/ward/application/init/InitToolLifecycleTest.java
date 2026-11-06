@@ -69,6 +69,7 @@ class InitToolLifecycleTest {
                 null,
                 false,
                 null,
+                null,
                 null));
 
     assertThat(installer.installed).containsExactly("semgrep");
@@ -101,6 +102,7 @@ class InitToolLifecycleTest {
         false,
         null,
         false,
+        null,
         null,
         null);
   }

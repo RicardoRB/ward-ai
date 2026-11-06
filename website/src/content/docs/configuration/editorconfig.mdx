@@ -41,6 +41,10 @@ Each language formatter declares the shared options `line-width`, `indent-style`
 
 `end_of_line = cr` and other values Ward cannot honor are configuration errors. `max_line_length = off` reaches the formatter as `line-width` = `Integer.MAX_VALUE`.
 
+## Written by init
+
+`ward init --format-engine ward` writes an `.editorconfig` at the project root only when the project has none. It sets `root = true` and Ward's defaults for the detected languages: `max_line_length = 100`, `indent_style = space`, `insert_final_newline = true`, `ward_max_blank_lines = 1`, four spaces for Java, Kotlin, Python and Swift, two spaces for TypeScript and JavaScript, and `ward_continuation_indent_size = 8` for Java and Kotlin. The section is ownership-marked. Init never merges into an existing `.editorconfig`: the file is left byte for byte unchanged, and the preview says that Ward formats with it.
+
 ## Ward keys
 
 | Key | Values | Default |
