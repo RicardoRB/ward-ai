@@ -26,9 +26,12 @@ final class EditorConfigTemplate {
   private static final int INDENT_FOUR = 4;
   private static final int INDENT_TWO = 2;
   private static final int CONTINUATION = 8;
-  private static final Set<String> FOUR_SPACE = Set.of("java", "kt", "kts", "py", "swift");
+  private static final Set<String> FOUR_SPACE = Set.of("java", "kt", "kts", "swift");
   private static final Set<String> TWO_SPACE = Set.of("ts", "tsx", "js", "jsx", "mjs", "cjs");
   private static final Set<String> JVM_JAVA = Set.of("java", "kt", "kts");
+  private static final Set<String> PYTHON_ONLY = Set.of("py");
+  // PEP 8 and Black put two blank lines before a top-level def, which the shared limit of one cuts.
+  private static final String PYTHON_SETTINGS = "indent_size = 4\nward_max_blank_lines = 2";
 
   private EditorConfigTemplate() {}
 
@@ -62,6 +65,7 @@ final class EditorConfigTemplate {
     if (languages.contains(Language.JAVA) || languages.contains(Language.KOTLIN)) {
       group(body, extensions, JVM_JAVA, "ward_continuation_indent_size = " + CONTINUATION);
     }
+    group(body, extensions, PYTHON_ONLY, PYTHON_SETTINGS);
     return body.toString();
   }
 

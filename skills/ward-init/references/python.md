@@ -27,7 +27,6 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
 
 | Gate | Runs | Standard |
 |---|---|---|
-| `ruff-format` | `ruff format --check .` | yes |
 | `ruff` | `ruff check . --output-format json` | yes |
 | `mypy` | `mypy . -O json` | yes |
 | `pytest` | `coverage run -m pytest` | yes |

@@ -17,15 +17,6 @@ final class SwiftPartialTables {
   // SwiftLint takes the gate's own command, so a strict edit hook lints as strictly as pre-push.
   private static final Map<String, BiFunction<Project, List<String>, Table>> TABLES =
       Map.of(
-          "swift-format",
-          (project, command) ->
-              new Table(
-                  SWIFT_SOURCES,
-                  List.of(".swift-format"),
-                  PATHS,
-                  null,
-                  null,
-                  List.of("swift", "format", "lint", "--strict")),
           "swiftlint",
           (project, command) ->
               new Table(

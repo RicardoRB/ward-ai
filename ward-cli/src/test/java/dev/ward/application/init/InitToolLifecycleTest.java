@@ -12,6 +12,7 @@ import dev.ward.domain.init.ToolInstallationResult;
 import dev.ward.domain.init.ToolInstaller;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -69,7 +70,6 @@ class InitToolLifecycleTest {
                 null,
                 false,
                 null,
-                null,
                 null));
 
     assertThat(installer.installed).containsExactly("semgrep");
@@ -103,7 +103,6 @@ class InitToolLifecycleTest {
         null,
         false,
         null,
-        null,
         null);
   }
 
@@ -116,7 +115,8 @@ class InitToolLifecycleTest {
             new PomToolConfigurator(),
             new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
             new ArchitectureTestGenerator(),
-            new FileConfigurationStorage()),
+            new FileConfigurationStorage(),
+            new OwnedSectionWriter()),
         installer);
   }
 

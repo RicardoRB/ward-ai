@@ -27,7 +27,6 @@ class CheckServicePartialCommandTest {
         """
         version = 2
         [checks.prettier]
-        uses = "prettier"
         profiles = ["default", "edit"]
         command = ["npx", "prettier", "--check", "."]
         [checks.prettier.paths]

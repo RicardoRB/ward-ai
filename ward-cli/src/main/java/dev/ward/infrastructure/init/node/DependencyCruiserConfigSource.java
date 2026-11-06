@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * Renders Ward's dependency-cruiser config for an architecture style. Its forbidden dependency is
  * the one the generated ArchUnit test forbids for the same style, so both gates agree. The text is
- * laid out the way Prettier formats it at its default width, so the project's {@code prettier} gate
- * passes on the generated file.
+ * laid out the way Ward's formatter writes it, so the {@code ward-format} gate passes on the
+ * generated file.
  */
 final class DependencyCruiserConfigSource {
   /** The ownership marker, which tells a rewrite that the config is Ward's own. */

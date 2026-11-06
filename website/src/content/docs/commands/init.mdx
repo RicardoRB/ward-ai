@@ -31,7 +31,6 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
 | `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the architecture gates: `archunit`, `dependency-cruiser`, `import-linter` and `harmonize`. |
 | `--architecture-engine <tool\|ward>` | Which checker enforces the style. `tool` (default) generates the external tool. `ward` writes the style's boundaries as `[[checks.ward.layers]]`, the strict cycle check as `[checks.ward.cycles]` and, for Python, the feature independence as `[[checks.ward.independence]]`, and generates no layer or cycle tool. Strict extras that the engine does not own (ArchUnit field injection and standard streams on Java) stay on the external tool, which then generates only those rules. `ward` is refused for a project with a language the engine does not resolve (Kotlin, Swift for now),. Unknown values are rejected. |
-| `--format-engine <tool\|ward>` | Which formatter checks the source files. `tool` (default) generates the external formatters: Spotless, Prettier, Biome's formatter, `ruff-format` and `swift-format`. `ward` replaces them with the `ward-format` gate, which checks formatting with Ward's native formatter, adds `[checks.ward-format]` to the profiles that held the external formatter, and writes an `.editorconfig` with Ward's defaults when the project has none. An existing `.editorconfig` is kept byte for byte, and Ward formats with it. Biome stays as the lint gate with its formatter turned off. Prompted when a formatter gate is selected. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
@@ -89,7 +88,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `format`, `checkstyle`, `pmd`, `gitleaks`, `prettier`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `checkstyle`, `pmd`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -97,7 +96,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 ## What init changes in your build
 
-For `format`, `enforcer`, `license`, `api-compat`, and `pmd`, init adds missing plugins using
+For `enforcer`, `license`, `api-compat`, and `pmd`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -110,7 +109,7 @@ Ward's embedded Java compatibility catalog.
 ### Multi-module Java builds
 
 In a multi-module Maven build, init places the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT),
-`checkstyle`, `pmd`, `format` (Spotless) and `enforcer` gates in each module that has Java sources, so
+`checkstyle`, `pmd`, and `enforcer` gates in each module that has Java sources, so
 each module's configuration and report live with its code. Other gates stay in the aggregator. The
 module-placed gates are the same for Gradle and Maven.
 
@@ -133,7 +132,7 @@ multi-module directory.
 
 When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
 example `kotlin("jvm")`, `org.jetbrains.kotlin.jvm`, or a catalog `alias` for `kotlin.jvm`), init
-writes the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT), `checkstyle`, `pmd`, `format` (Spotless)
+writes the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT), `checkstyle`, `pmd`,
 and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
 stay in the root script.
 
@@ -176,8 +175,6 @@ Each version was run on a real JDK in Ward's compatibility matrix:
 | Checkstyle engine | 9.3 | 10.20.2 | 10.20.2 | 10.20.2 | 10.20.2 |
 | SpotBugs (Maven plugin / Gradle engine) | 4.8.6.6 / 4.8.6 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 |
 | PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
-| Spotless (Maven / Gradle) | 2.30.0 / 6.13.0 | 2.46.1 / 7.2.1 | 3.10.3 / 8.10.4 | 3.10.3 / 8.10.4 | 3.10.3 / 8.10.4 |
-| google-java-format | 1.7 | 1.24.0 | 1.28.0 | 1.36.1 | 1.36.1 |
 
 PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, ArchUnit 1.5.1, and Enforcer 3.5.0 use the same
 version on every JDK.
@@ -187,7 +184,7 @@ JDK, init leaves that gate out and configures the others. The plan, `--dry-run`,
 output name it:
 
 ```text
-format omitted: spotless-maven-plugin needs JDK 8+; this project builds on JDK 7
+checkstyle omitted: maven-checkstyle-plugin needs JDK 8+; this project builds on JDK 7
 ```
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
@@ -244,7 +241,6 @@ Init then appends blocks that make the plugins use what it generated:
   `pmd { ruleSetFiles = files('config/pmd-ruleset.xml'); ruleSets = [] }`, both limited to the
   `main` source set, as the Maven plugins are. Each is followed by a `tasks.named` block that limits
   the task to the files in the `wardPaths` property when a partial check sets it.
-- `spotless { java { googleJavaFormat() } }` for `format`, unless a `spotless { }` block exists.
 - `jacocoTestCoverageVerification` with the preset's minimums, or `LINE` `0.80` without a preset.
   The `coverage` gate runs this task, which fails below a minimum.
 - `pitest { pitestVersion = '1.30.1'; junit5PluginVersion = '1.2.3' }` for `mutation`, plus the
@@ -261,7 +257,7 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, and `biome`. The check after each agent edit, and
+  `checkstyle`, `pmd`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
   the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
@@ -396,21 +392,20 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `jest` | `npx jest --coverage` | `pre-push`, `ci` |
 | `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
 | `stryker` | `npx stryker run` | `ci` |
-| `prettier` | `npx prettier --check .` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `biome` | `npx biome ci --colors=off --reporter=checkstyle .` (`--error-on-warnings` under `strict`) | `default`, `pre-commit`, `pre-push`, `ci` |
 | `dependency-cruiser` | `npx depcruise . --config <file> --output-type err` | `pre-push`, `ci` |
 | `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
 - JavaScript gets the same gates except `tsc`.
-- A project that uses Biome gets the `biome` gate instead of `prettier`; see [Biome](#biome).
+- A project that uses Biome gets the `biome` gate instead of `eslint`; see [Biome](#biome).
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
 - `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
 
 | | `standard` | `strict` |
 |---|---|---|
-| Gates | `tsc` (TypeScript only), the test runner, `prettier` and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` and `dependency-cruiser` |
+| Gates | `tsc` (TypeScript only), the test runner, and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` and `dependency-cruiser` |
 | Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
 | ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
 | Mutation score | none | at least 60%, in `ci` |
@@ -438,12 +433,11 @@ range, or skip the gate.
 Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own
 `biome.json`, `biome.jsonc`, `.biome.json`, or `.biome.jsonc`. It asks no question about Biome.
 
-- A Biome project gets one `biome` gate, which lints and checks formatting in one run. It replaces
-  `prettier` and, unless the project has its own ESLint config, `eslint`. With `strict`, warnings
-  fail the gate too (`--error-on-warnings`).
+- A Biome project gets one `biome` gate, which lints in one run; Biome's formatter is off, and
+  `ward-format` checks formatting. It replaces `eslint` unless the project has its own ESLint config.
+  With `strict`, warnings fail the gate too (`--error-on-warnings`).
 - A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
-  that config unchanged. Init writes no ESLint or Prettier config for a Biome project, and a
-  Prettier config the project has stays in place without a gate.
+  that config unchanged. Init writes no ESLint config for a Biome project.
 - Under `strict`, a project's own `biome.json` or `biome.jsonc` is layered (see
   [Layered configs](#layered-configs)). A `.biome.json` or `.biome.jsonc` is kept with a warning.
   Under `standard`, a project's own Biome config is kept unchanged and listed as user-owned, with a
@@ -528,7 +522,6 @@ root config in its place:
 | `eslint` | 10.12.0 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
 | `@eslint/js` | 10.0.1 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
 | `typescript-eslint` | 8.71.1 | `^18.18.0 \|\| ^20.9.0 \|\| >=21.1.0`, TypeScript `>=4.8.4 <6.1.0` |
-| `prettier` | 3.9.10 | `>=14` |
 | `@biomejs/biome` | 2.5.15 | `>=14.21.3` (declared versions must be `>=2.3.0 <3.0.0`) |
 | `vitest`, `@vitest/coverage-v8` | 4.1.11 for a project that declares Vite `^6`, `^7`, or `^8`, else 4.0.18 (see below) | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` |
 | `typescript` | 6.0.3 | `>=14.17` |
@@ -631,8 +624,8 @@ Before writing, init checks each package it would add against the project's Node
   with a `// managed-by: ward preset=<id>` marker; see [Biome](#biome).
 - **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
   the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
-  Prettier and Biome skip Git-ignored files, so they do not check these reports.
-- **`ward.toml`** gets `paths` tables for `eslint` and `prettier`: an edit hook runs them on the
+  `ward-format` and Biome skip Git-ignored files, so they do not check these reports.
+- **`ward.toml`** gets `paths` tables for `eslint`: an edit hook runs it on the
   edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
   `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
 
@@ -644,7 +637,8 @@ projects are not supported yet, and init stops with an error that names the mana
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
   `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
-  `standard` selects `ruff-format`, `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%).
+  `standard` selects `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
+  checks formatting.
   `pip-audit` is opt-in.
 - Ward writes `ruff.toml`, `mypy.ini`, and `.coveragerc` only where the project has none. A config the
   project keeps is never changed; its coverage threshold goes on the command instead.
@@ -694,7 +688,7 @@ error that names the generator.
 - **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
   older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
   Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
-- **Gates.** `swift-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
+- **Gates.** `ward-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
   and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
   `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
 - **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
@@ -706,8 +700,7 @@ error that names the generator.
 
   | Gate | `standard` | `strict` |
   |---|---|---|
-  | `swift-format` | `swift format lint --strict` | same |
-  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), without `trailing_comma` (swift-format owns trailing commas), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
+  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), without `trailing_comma` (Ward's formatter keeps trailing commas), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
   | `swift-build` (SwiftPM) | `swift build --build-tests` | adds `-Xswiftc -warnings-as-errors -Xswiftc -strict-concurrency=complete` |
   | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
   | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
@@ -725,8 +718,9 @@ error that names the generator.
 - **Ward's SwiftLint.** SwiftLint is pinned in an ownership-marked `.ward/swift-tools/Package.swift`
   and resolved with `swift package resolve`. A failed resolve removes `.ward/swift-tools/` and changes
   nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
-- **Configs.** Init writes `.swiftlint.yml` and `.swift-format` only when the project has none. The
-  `.swift-format` indentation follows the project's sources, so Xcode's 4-space templates pass.
+- **Configs.** Init writes `.swiftlint.yml` only when the project has none, and `.editorconfig` when
+  the project has none. The `.editorconfig` indentation follows the project's sources, so Xcode's
+  4-space templates pass.
   Files the project keeps are never changed. Under `strict`, Ward's `.swiftlint.yml` carries the
   strict rules itself.
 - **Strict over your own `.swiftlint.yml`.** Strict leaves your file byte-for-byte unchanged and
@@ -820,7 +814,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
 enforcer rules.
 
-- For TypeScript it names the `tsc`, Biome (or ESLint and Prettier), and test commands, the 70% line coverage
+- For TypeScript it names the `tsc`, Biome (or ESLint), and test commands, the 70% line coverage
   minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under
   `strict`), and the ESLint config in use, and no Java tool.
 - For JavaScript it names the same without `tsc`.
@@ -956,7 +950,7 @@ Ward will make these changes:
   create     ward.toml
   modify     pom.xml
                + maven-pmd-plugin 3.28.0
-               ~ spotless-maven-plugin 1.0.0 -> 3.10.3 (requires approval)
+               ~ maven-checkstyle-plugin 1.0.0 -> 3.6.0 (requires approval)
   create     config/pmd-ruleset.xml
   keep       config/checkstyle.xml  (user-owned, not changed)
   create     .git/hooks/pre-commit

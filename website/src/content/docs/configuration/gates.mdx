@@ -21,7 +21,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `pmd` | PMD | Find common Java design and implementation problems. |
 | | `spotbugs` | SpotBugs | Run static analysis for potential bugs. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
-| | `format` | Spotless / google-java-format | Check source formatting. |
+| | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
 | | `gitleaks` | Gitleaks | Detect committed secrets. |
 | | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
@@ -37,19 +37,16 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `eslint` | ESLint | Lint TypeScript and JavaScript sources. |
-| | `prettier` | Prettier | Check source formatting. |
-| | `biome` | Biome | Lint and check formatting of sources in one run; replaces `prettier` and `eslint` where the project uses Biome. |
+| | `biome` | Biome | Lint sources in one run with Biome's formatter off; replaces `eslint` where the project uses Biome. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
-| Python | `ruff-format` | Ruff formatter | Check source formatting. |
 | | `ruff` | Ruff | Lint Python sources. |
 | | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `import-linter` | Import Linter | Check import contracts. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
-| Swift | `swift-format` | swift-format | Check source formatting with `swift format lint`. |
 | | `swiftlint` | SwiftLint | Lint Swift sources. |
 | | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
@@ -80,10 +77,10 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
 | Preset | Gates | Minimums |
 |---|---|---|
-| `standard` | compile, tests, format, Checkstyle, PMD, SpotBugs, coverage | 70% line coverage |
+| `standard` | compile, tests, Checkstyle, PMD, SpotBugs, coverage, and `ward-format` | 70% line coverage |
 | `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
-| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
-| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
+| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
+| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
 | `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
 
@@ -134,12 +131,12 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## TypeScript and JavaScript gates
 
-`tsc`, `eslint`, `prettier`, `biome`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
+`tsc`, `eslint`, `biome`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
 run their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
-- For a TypeScript project, `ward init` offers `tsc`, `eslint`, `prettier`, the project's test
+- For a TypeScript project, `ward init` offers `tsc`, `eslint`, the project's test
   runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
   package manager's runner; see [Node projects](/commands/init/#node-projects).
 - For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
@@ -152,7 +149,7 @@ run their `command` from the project root, exactly as written, and pass when it 
   ignores `.astro/` (Astro) or `.svelte-kit/` (Svelte).
 - For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
   `p/javascript` ruleset.
-- In a project that uses Biome, init offers `biome` in place of `prettier`, and offers `eslint` only
+- In a project that uses Biome, init offers `biome` in place of `eslint`, and offers `eslint` only
   with the project's own ESLint config. The `biome` command is
   `<runner> biome ci --colors=off --reporter=checkstyle .`; under `strict` it adds
   `--error-on-warnings`. See [Node projects](/commands/init/#biome).
@@ -194,14 +191,13 @@ command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-o
 
 ## Python gates
 
-`ruff-format`, `ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
+`ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
 their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `uv run` or `poetry run`, so the project's own environment runs the tool.
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
-  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `ruff format` is `ruff-format`,
-  `coverage report` is `coverage`, `mutmut run` is `mutmut`, `lint-imports` is `import-linter`, and
+  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `coverage report` is `coverage`, `mutmut run` is `mutmut`, `lint-imports` is `import-linter`, and
   `pytest` is `pytest`, including `coverage run -m pytest`.
 - `ruff` and `mypy` findings are read from their output; see
   [structured findings](#structured-findings).
@@ -218,17 +214,17 @@ profiles = ["pre-push"]
 
 ## Swift gates
 
-`swift-format`, `swiftlint`, `swift-build` and `swift-test` run their `command` from the project
+`swiftlint`, `swift-build` and `swift-test` run their `command` from the project
 root, exactly as written, and pass when it exits with code 0. `xcodebuild-test` and
 `swift-coverage` add the steps below.
 
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears:
-  `swift format lint` is `swift-format`; `swiftlint lint`, or any path ending in `/swiftlint lint`
+  `swiftlint lint`, or any path ending in `/swiftlint lint`
   such as the binary that `swift package resolve` leaves for Ward's SwiftLint tools package, is
   `swiftlint`; `swift build` is `swift-build`; `swift test` is
   `swift-test`; and `xcodebuild test` is `xcodebuild-test`. `swift-coverage` is never inferred,
   so write `uses = "swift-coverage"`.
-- `swiftlint`, `swift-format`, `swift-build` and `xcodebuild-test` findings are read from their
+- `swiftlint`, `swift-build` and `xcodebuild-test` findings are read from their
   output; see [structured findings](#structured-findings).
 
 ```toml
@@ -920,7 +916,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-format`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -930,12 +926,11 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `pmd` | XML report | `target/pmd.xml` | `build/reports/pmd/*.xml` | |
 | `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
 | `compile` | javac messages in the output | | | |
-| `format` | Spotless file list in the output (file only, no line) | | | |
+| `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
 | `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
-| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`, and `format` findings have no line. | | | |
+| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
 | `swiftlint` | SwiftLint JSON on standard output; the command must pass `--reporter json` | | | |
-| `swift-format` | `file:line:column: error: [Rule] message` lines on standard error | | | |
 | `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
@@ -959,7 +954,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `biome`,
+for `checkstyle`, `pmd`, `semgrep`, `gitleaks`, `eslint`, `biome`,
 `openapi-lint`, and `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
@@ -971,15 +966,14 @@ edit, and for the files a commit stages, a gate:
 |---|---|---|
 | `checkstyle` | `-Dcheckstyle.includes=**/<file name>` | `-PwardPaths=<paths>`, with a preset |
 | `pmd` | full, with PMD's analysis cache | `-PwardPaths=<paths>`, with a preset |
-| `format` | `-DspotlessFiles=.*/<path>`, a regular expression matched against the absolute path | full |
 | `semgrep` | each path as its own argument | each path as its own argument |
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
-In a TypeScript or JavaScript project, `eslint` and `prettier` take edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
+In a TypeScript or JavaScript project, `eslint` takes edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
 `.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
 command without its `.` target, so a narrowed check runs, for example,
-`npx prettier --check src/app.ts`. An edit of their configs or `package.json` runs them in full.
+`npx eslint src/app.ts`. An edit of its config or `package.json` runs it in full.
 `biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
 Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
 and `ci`.
@@ -995,8 +989,6 @@ Gradle notes:
   when the property is set, so `checkstyleMain` and `pmdMain` still check the whole `main` source set
   otherwise.
 - Without a preset there is no filter, and those gates run in full.
-- Gradle's single-file Spotless mode applies formatting instead of checking it, so Gradle `format`
-  runs in full.
 
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always

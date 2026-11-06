@@ -12,21 +12,10 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** The edit hooks narrow swift-format and swiftlint to the edited Swift files, not the tests. */
+/** The edit hook narrows swiftlint to the edited Swift files, not the tests. */
 class SwiftPartialChecksTest {
   private static final Project SWIFT_PM =
       new Project(Path.of("/shop"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
-
-  @Test
-  void swiftFormatNarrowsToEditedSwiftFiles() {
-    final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("swift-format", SWIFT_PM, QualityPreset.STANDARD, List.of())
-            .orElseThrow();
-
-    assertThat(table.match()).containsExactly("**/*.swift");
-    assertThat(table.command()).containsExactly("swift", "format", "lint", "--strict");
-    assertThat(table.args()).containsExactly("{paths}");
-  }
 
   @Test
   void swiftLintNarrowsToEditedSwiftFiles() {

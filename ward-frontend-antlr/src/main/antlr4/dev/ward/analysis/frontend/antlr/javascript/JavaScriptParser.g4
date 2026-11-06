@@ -366,6 +366,7 @@ singleExpression
     | New singleExpression                                                 # NewExpression
     | singleExpression '?.'? arguments                                     # ArgumentsExpression
     | New '.' identifier                                                   # MetaExpression // new.target
+    | Import '.' identifier                                                # MetaExpression // import.meta
     | singleExpression {this.notLineTerminator()}? '++'                    # PostIncrementExpression
     | singleExpression {this.notLineTerminator()}? '--'                    # PostDecreaseExpression
     | Delete singleExpression                                              # DeleteExpression

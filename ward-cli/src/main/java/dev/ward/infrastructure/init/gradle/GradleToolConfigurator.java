@@ -35,7 +35,6 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
   /** Plugins in declaration order; a versioned plugin takes its version from the catalog. */
   private static final List<GradlePlugin> PLUGINS =
       List.of(
-          new GradlePlugin("format", GradleToolCatalog.SPOTLESS, true, true),
           new GradlePlugin("checkstyle", "checkstyle", false, true),
           new GradlePlugin("pmd", "pmd", false, true),
           new GradlePlugin("spotbugs", GradleToolCatalog.SPOTBUGS, true, true),

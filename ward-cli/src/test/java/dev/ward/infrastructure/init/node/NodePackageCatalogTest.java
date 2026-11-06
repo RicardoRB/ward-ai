@@ -81,11 +81,14 @@ class NodePackageCatalogTest {
   @Test
   void declaredPackagesAreNotAddedAgain() {
     final PackageManifest manifest =
-        new PackageManifest(Map.of("prettier", "^3.3.0", "typescript", "~5.9.3"), null, null);
+        new PackageManifest(
+            Map.of("vitest", "^4.0.0", "@vitest/coverage-v8", "^4.0.0", "typescript", "~5.9.3"),
+            null,
+            null);
 
     assertThat(
             NodePackageCatalog.missing(
-                Language.TYPESCRIPT, List.of(gate("prettier"), gate("tsc")), manifest))
+                Language.TYPESCRIPT, List.of(gate("vitest"), gate("tsc")), manifest))
         .isEmpty();
     assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate(ESLINT)), manifest))
         .extracting(NodePackageCatalog.Package::name)
@@ -96,11 +99,9 @@ class NodePackageCatalogTest {
   void javaScriptEslintAddsGlobalsAndNoTypeScriptPackages() {
     assertThat(
             NodePackageCatalog.missing(
-                Language.JAVASCRIPT,
-                List.of(gate(ESLINT), gate("prettier")),
-                PackageManifest.EMPTY))
+                Language.JAVASCRIPT, List.of(gate(ESLINT)), PackageManifest.EMPTY))
         .extracting(NodePackageCatalog.Package::name)
-        .containsExactly(ESLINT, "@eslint/js", "globals", "prettier");
+        .containsExactly(ESLINT, "@eslint/js", "globals");
   }
 
   private Set<String> gateIds(

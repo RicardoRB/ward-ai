@@ -39,6 +39,6 @@ class SwiftCiSetupTest {
   }
 
   private static List<InitGateOption> gates() {
-    return List.of(new InitGateOption("swift-format", List.of("swift"), true, "ok"));
+    return List.of(new InitGateOption("swiftlint", List.of("swift"), true, "ok"));
   }
 }

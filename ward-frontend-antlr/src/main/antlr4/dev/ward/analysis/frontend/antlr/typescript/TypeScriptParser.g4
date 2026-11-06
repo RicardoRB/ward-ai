@@ -108,6 +108,7 @@ primaryType
     | This                                       # ThisPrimType
     | typeReference Is primaryType               # RedefinitionOfType
     | KeyOf primaryType                          # KeyOfType
+    | ReadOnly primaryType                       # ReadonlyPrimType
     ;
 
 predefinedType
@@ -303,7 +304,7 @@ enumMember
 // A.8 Namespaces
 
 namespaceDeclaration
-    : Declare? Namespace namespaceName '{' statementList? '}'
+    : Declare? (Namespace namespaceName | Module (StringLiteral | namespaceName)) '{' statementList? '}'
     ;
 
 namespaceName

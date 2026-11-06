@@ -22,7 +22,13 @@ class InitKotlinPresetTest {
     final String javaToml = wardToml(java, "src/main/java");
 
     assertThat(javaToml).contains("[checks.checkstyle]", "[checks.mutation]");
-    assertThat(wardToml(kotlin, "src/main/kotlin")).isEqualTo(javaToml);
+    assertThat(withoutFormatSources(wardToml(kotlin, "src/main/kotlin")))
+        .isEqualTo(withoutFormatSources(javaToml));
+  }
+
+  /** Drops the ward-format source globs, which name each language's own extensions. */
+  private static String withoutFormatSources(final String toml) {
+    return toml.replaceAll("(?s)\\n\\[checks\\.ward-format\\.paths\\].*?(?=\\n\\n|\\z)", "");
   }
 
   private static String wardToml(final Path root, final String sources) throws IOException {

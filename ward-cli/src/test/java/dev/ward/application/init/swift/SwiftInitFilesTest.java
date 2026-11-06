@@ -51,7 +51,6 @@ class SwiftInitFilesTest {
             null,
             false,
             null,
-            null,
             null);
 
     assertThat(
@@ -65,15 +64,12 @@ class SwiftInitFilesTest {
   void agentRulesNameTheSuppressionsAndTheEightyPercentMinimum() {
     final List<String> lines = SwiftAgentRules.lines(swiftGates());
 
-    assertThat(String.join("\n", lines))
-        .contains("// swiftlint:disable")
-        .contains("// swift-format-ignore")
-        .contains("80% minimum");
+    assertThat(String.join("\n", lines)).contains("// swiftlint:disable").contains("80% minimum");
   }
 
   private static List<InitGateOption> swiftGates() {
     return List.of(
-        new InitGateOption("swift-format", List.of("swift", "format", "lint"), true, "ok"),
+        new InitGateOption("swiftlint", List.of("swiftlint", "lint"), true, "ok"),
         new InitGateOption(
             "swift-coverage",
             "Fails below the line coverage minimum.",

@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.CompatibilityProjectSnapshot;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.init.ToolchainSnapshot;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -15,14 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PomToolConfiguratorValidationTest {
-  private static final int JAVA_17 = 17;
 
   /** Well-formed apart from an undefined entity, so only the pre-write check can reject it. */
   private static final String UNDEFINED_ENTITY_POM =
@@ -40,31 +34,6 @@ class PomToolConfiguratorValidationTest {
         .isInstanceOf(WardException.class)
         .hasMessageContaining("while adding maven-pmd-plugin")
         .hasMessageContaining("not well-formed XML (line 2");
-    assertThat(Files.readAllBytes(pom)).isEqualTo(original);
-  }
-
-  @Test
-  void compatibilityPathValidatesBeforeWriting(@TempDir final Path root) throws IOException {
-    final Path pom = root.resolve("pom.xml");
-    Files.writeString(pom, UNDEFINED_ENTITY_POM);
-    final byte[] original = Files.readAllBytes(pom);
-    final PomToolConfigurator configurator =
-        new PomToolConfigurator(
-            ignored ->
-                new CompatibilityProjectSnapshot(
-                    project(Path.of(".")),
-                    new ToolchainSnapshot(
-                        Optional.of(JAVA_17),
-                        Optional.empty(),
-                        Optional.of("3.9.0"),
-                        Framework.NONE),
-                    Map.of()));
-    final Predicate<Object> approveAll = ignored -> true;
-
-    assertThatThrownBy(
-            () -> configurator.apply(project(root), List.of(gate("format")), null, approveAll))
-        .isInstanceOf(WardException.class)
-        .hasMessageContaining("while adding spotless-maven-plugin");
     assertThat(Files.readAllBytes(pom)).isEqualTo(original);
   }
 

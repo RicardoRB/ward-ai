@@ -20,18 +20,6 @@ class PythonPartialChecksTest {
       new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.NONE);
 
   @Test
-  void ruffFormatNarrowsToEditedPythonFiles() {
-    final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("ruff-format", UV, QualityPreset.STANDARD, List.of())
-            .orElseThrow();
-
-    assertThat(table.match()).containsExactly("**/*.py", "**/*.pyi");
-    assertThat(table.command())
-        .containsExactly("uv", "run", "--group", "ward", "ruff", "format", "--check");
-    assertThat(table.args()).containsExactly("{paths}");
-  }
-
-  @Test
   void ruffNarrowsToEditedPythonFiles() {
     final PartialCheckDefaults.Table table =
         PartialCheckDefaults.forGate("ruff", UV, QualityPreset.STANDARD, List.of()).orElseThrow();

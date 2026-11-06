@@ -127,7 +127,6 @@ uses = "compile"
 uses = "gitleaks"
                 command = ["./missing-gitleaks", "detect", "--redact"]
                 [checks.format]
-uses = "format"
                 command = "./mvnw test"
                 [checks.enforcer]
 uses = "enforcer"
@@ -141,14 +140,14 @@ uses = "enforcer"
     assertThat(json.get(CHECKS).size()).isEqualTo(CONFIGURED_GATES);
     assertThat(json.get(CHECKS).get(0).get("name").asString()).isEqualTo("gitleaks");
     assertThat(json.get(CHECKS).get(0).get(STATUS).asString()).isNotEqualTo("PASSED");
-    assertThat(json.get(CHECKS).get(1).get("name").asString()).isEqualTo("format");
+    assertThat(json.get(CHECKS).get(1).get("name").asString()).isEqualTo("tests");
     assertThat(json.get(CHECKS).get(1).get(STATUS).asString()).isEqualTo("PASSED");
     assertThat(json.get(CHECKS).get(2).get("name").asString()).isEqualTo("enforcer");
     assertThat(json.get(CHECKS).get(2).get(STATUS).asString()).isEqualTo("PASSED");
 
     out.getBuffer().setLength(0);
     run(CHECK, "-C", project.toString());
-    assertThat(out.toString()).contains("gitleaks", "format", "enforcer");
+    assertThat(out.toString()).contains("gitleaks", "tests", "enforcer");
   }
 
   @Test

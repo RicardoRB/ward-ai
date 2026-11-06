@@ -12,6 +12,7 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -43,7 +44,8 @@ class InitPomValidationRollbackTest {
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
                 new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()));
+                new FileConfigurationStorage(),
+                new OwnedSectionWriter()));
 
     assertThatThrownBy(
             () -> service.initialize(root, new InitSelection(List.of("opencode"), List.of("pmd"))))

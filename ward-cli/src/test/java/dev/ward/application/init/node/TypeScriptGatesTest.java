@@ -49,8 +49,6 @@ class TypeScriptGatesTest {
   void pnpmAndNpmCommandsMatchTheSpecification() {
     assertThat(gate(BuildTool.PNPM, NO_RUNNER, "eslint").command())
         .containsExactly("pnpm", "exec", "eslint", ".", "--format", "json");
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, "prettier").command())
-        .containsExactly("npx", "prettier", "--check", ".");
   }
 
   @Test
@@ -74,7 +72,7 @@ class TypeScriptGatesTest {
             : new PackageManifest(Map.of(declared, "^1.0.0"), null, null);
 
     assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
-        .containsExactly("tsc", gate, "prettier", "eslint");
+        .containsExactly("tsc", gate, "eslint");
     assertThat(catalog(manifest).gates(project(manager), null))
         .extracting(InitGateOption::id)
         .contains(gate);
@@ -83,7 +81,7 @@ class TypeScriptGatesTest {
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("tsc", "vitest", "prettier", "eslint", "stryker", "dependency-cruiser");
+        .containsExactly("tsc", "vitest", "eslint", "stryker", "dependency-cruiser");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
@@ -100,10 +98,9 @@ class TypeScriptGatesTest {
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
-    assertThat(gates).containsOnlyKeys("tsc", "vitest", "prettier", "eslint");
+    assertThat(gates).containsOnlyKeys("tsc", "vitest", "eslint");
     final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(gates.get("eslint").profiles()).isEqualTo(fast);
-    assertThat(gates.get("prettier").profiles()).isEqualTo(fast);
     assertThat(gates.get("tsc").profiles()).isEqualTo(Set.of("pre-push", "ci"));
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }

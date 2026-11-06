@@ -3,13 +3,11 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.JavaPresetGates;
-import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.InitService;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
-import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.InitFixtures;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -32,7 +30,7 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
 class InitWizardLineModeTest {
-  // format, checkstyle, and pmd each add a [checks.<id>.paths] table.
+  // ward-format, checkstyle, and pmd each add a [checks.<id>.paths] table.
   private static final int STANDARD_PARTIAL_TABLES = 3;
   @TempDir Path root;
 
@@ -136,7 +134,7 @@ class InitWizardLineModeTest {
       assertThat(configuration).contains("[checks." + gate + "]");
     }
     assertThat(configuration.split("\\[checks\\.", -1))
-        .hasSize(JavaPresetGates.STANDARD.size() + STANDARD_PARTIAL_TABLES + 1);
+        .hasSize(JavaPresetGates.STANDARD.size() + 1 + STANDARD_PARTIAL_TABLES + 1);
   }
 
   @Test
@@ -164,11 +162,7 @@ class InitWizardLineModeTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            new InitProjectFiles(
-                new PomToolConfigurator(),
-                RuleFileTargetsFixtures.writer(),
-                new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()));
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
     final CommandLine command = new CommandLine(new InitCommand(service, input));
     command.setOut(new PrintWriter(output, true));
     command.setErr(new PrintWriter(output, true));
