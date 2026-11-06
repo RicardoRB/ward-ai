@@ -46,7 +46,7 @@ public final class FileSystemSourceFiles implements SourceReader, SourceSink {
               .onUnmappableCharacter(CodingErrorAction.REPORT)
               .decode(ByteBuffer.wrap(bytes, offset, bytes.length - offset))
               .toString();
-      return new SourceText(text, bom);
+      return new SourceText(text, bom, Files.isSymbolicLink(file));
     } catch (final CharacterCodingException exception) {
       throw new WardException("Could not read " + file + " as UTF-8.", exception);
     } catch (final IOException exception) {
@@ -56,6 +56,9 @@ public final class FileSystemSourceFiles implements SourceReader, SourceSink {
 
   @Override
   public void persist(final Path file, final String text, final boolean byteOrderMark) {
+    if (Files.isSymbolicLink(file)) {
+      throw new WardException(file + ": symbolic link, not rewritten");
+    }
     final Path temporary = temporaryBeside(file);
     try {
       Files.write(temporary, content(text, byteOrderMark));

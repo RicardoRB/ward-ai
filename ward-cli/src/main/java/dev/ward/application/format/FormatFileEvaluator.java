@@ -28,6 +28,9 @@ public final class FormatFileEvaluator {
   /** The message of a finding for a file that the formatter would change. */
   static final String NOT_FORMATTED = "file is not formatted";
 
+  /** The reason a symbolic link is refused: the link is never replaced by a regular file. */
+  static final String SYMBOLIC_LINK = "symbolic link, not rewritten";
+
   private static final Logger LOGGER = Logger.getLogger(FormatFileEvaluator.class.getName());
   private static final String CLEAN = "clean";
   private static final String LF = "\n";
@@ -101,6 +104,9 @@ public final class FormatFileEvaluator {
     final int line = FormatLayouts.firstDifferentLine(original.text(), laid);
     if (!write) {
       return new FormatFileOutcome(path, Verdict.NEEDS_FORMATTING, line, NOT_FORMATTED);
+    }
+    if (original.symbolicLink()) {
+      return new FormatFileOutcome(path, Verdict.REFUSED, line, SYMBOLIC_LINK);
     }
     sink.persist(root.resolve(path), laid, bom);
     return new FormatFileOutcome(path, Verdict.WRITTEN, line, "");

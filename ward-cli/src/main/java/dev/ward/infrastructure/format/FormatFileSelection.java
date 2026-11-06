@@ -94,7 +94,7 @@ public final class FormatFileSelection {
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes) {
       final AnalysisLanguage language = FileSystemSourceUnits.language(nameOf(file));
-      if (language != null && languages.contains(language) && attributes.isRegularFile()) {
+      if (language != null && languages.contains(language) && Files.isRegularFile(file)) {
         found.put(root.relativize(file).toString().replace('\\', '/'), language);
       }
       return FileVisitResult.CONTINUE;

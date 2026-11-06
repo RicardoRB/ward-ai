@@ -28,7 +28,7 @@ class FileSystemSourceFilesTest {
     final Path file = folder.resolve(FILE_NAME);
     Files.write(file, withMark("a"));
 
-    assertThat(new FileSystemSourceFiles().read(file)).isEqualTo(new SourceText("a", true));
+    assertThat(new FileSystemSourceFiles().read(file)).isEqualTo(new SourceText("a", true, false));
   }
 
   @Test
@@ -74,5 +74,23 @@ class FileSystemSourceFilesTest {
     System.arraycopy(BOM, 0, bytes, 0, BOM.length);
     System.arraycopy(body, 0, bytes, BOM.length, body.length);
     return bytes;
+  }
+
+  @Test
+  @DisabledOnOs(OS.WINDOWS)
+  void aSymbolicLinkIsReportedAndNeverRewritten() throws IOException {
+    final Path target = folder.resolve("real.java");
+    Files.writeString(target, "class A{}\n");
+    final Path link = folder.resolve("link.java");
+    Files.createSymbolicLink(link, target);
+    final FileSystemSourceFiles files = new FileSystemSourceFiles();
+
+    assertThat(files.read(link).symbolicLink()).isTrue();
+    assertThat(files.read(target).symbolicLink()).isFalse();
+    assertThatThrownBy(() -> files.persist(link, "class B{}\n", false))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("symbolic link, not rewritten");
+    assertThat(Files.isSymbolicLink(link)).isTrue();
+    assertThat(Files.readString(target)).isEqualTo("class A{}\n");
   }
 }
