@@ -1,25 +1,24 @@
 package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.Symbol;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /** Reads the exported names of one file, and the top-level declarations, from its tokens. */
 final class NodeExportScan {
   static final String STAR_EXPORT = "*:";
+  private static final String EXPORT_MODULE_ITEMS = "exportModuleItems";
+  private static final String EXPORT_ALIAS_NAME = "exportAliasName";
 
   private static final String IMPORT = "import";
   private static final String AS = "as";
-  private static final String TYPE_WORD = "type";
   private static final String DEFAULT = "default";
-  private static final String COMMA = ",";
   private static final String DOT = ".";
   private static final String MODULE = "module";
   private static final String EXPORTS = "exports";
-  private static final String OPEN_BRACE = "{";
-  private static final String CLOSE_BRACE = "}";
   private static final String STRING = "StringLiteral";
   private static final String IDENTIFIER = "Identifier";
   private static final Set<String> SKIPPED_MODIFIERS = Set.of("declare", "async", "abstract");
@@ -35,8 +34,11 @@ final class NodeExportScan {
     this.tokens = tokens;
   }
 
+  /** The exported names, in source order. */
   List<Symbol> exports() {
-    return List.copyOf(exports);
+    return exports.stream()
+        .sorted(Comparator.comparingInt(symbol -> symbol.span().startOffset()))
+        .toList();
   }
 
   List<Symbol> declared() {
@@ -45,7 +47,6 @@ final class NodeExportScan {
 
   /** Records the names of the export statement that starts at {@code exportIndex}. */
   void statement(final int exportIndex) {
-    addExportList(exportIndex);
     addExportDeclaration(exportIndex);
   }
 
@@ -75,33 +76,26 @@ final class NodeExportScan {
     }
   }
 
-  /** Adds the names of {@code export { a, b as c }}, with or without a {@code from}. */
-  private void addExportList(final int exportIndex) {
-    int open = exportIndex + 1;
-    if (tokens.isKeyword(open, TYPE_WORD)) {
-      open++;
+  /** Adds the exported name of each item of an export list, read from the syntax tree. */
+  void exportLists(final SyntaxNode node) {
+    if (EXPORT_MODULE_ITEMS.equals(node.kind())) {
+      node.children().stream()
+          .filter(item -> EXPORT_ALIAS_NAME.equals(item.kind()))
+          .forEach(item -> addExportedName(NodeLeaves.of(item)));
     }
-    if (!tokens.isPunctuation(open, OPEN_BRACE)) {
-      return;
-    }
-    Optional<Integer> last = Optional.empty();
-    for (int j = open + 1; j < tokens.size() && !CLOSE_BRACE.equals(tokens.text(j)); j++) {
-      if (COMMA.equals(tokens.text(j))) {
-        addIfPresent(last);
-        last = Optional.empty();
-      } else {
-        last = Optional.of(j);
-      }
-    }
-    addIfPresent(last);
+    node.children().forEach(this::exportLists);
   }
 
-  private void addIfPresent(final Optional<Integer> token) {
-    token
-        .filter(j -> IDENTIFIER.equals(tokens.kind(j)) || STRING.equals(tokens.kind(j)))
-        .ifPresent(
-            j ->
-                exports.add(new Symbol(NodeTokens.unquote(tokens.text(j)), tokens.leaf(j).span())));
+  /** Adds the last name of an item: its alias when it has one, its name otherwise. */
+  private void addExportedName(final List<SyntaxNode> leaves) {
+    final SyntaxNode last = leaves.get(leaves.size() - 1);
+    if (IDENTIFIER.equals(last.kind()) || STRING.equals(last.kind())) {
+      exports.add(new Symbol(NodeTokens.unquote(text(last)), last.span()));
+    }
+  }
+
+  private static String text(final SyntaxNode leaf) {
+    return leaf.fields().getOrDefault("text", "");
   }
 
   /** Adds {@code export default} and the name of an exported declaration. */

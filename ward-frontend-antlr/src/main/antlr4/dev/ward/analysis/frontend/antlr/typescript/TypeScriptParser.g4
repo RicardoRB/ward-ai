@@ -382,6 +382,7 @@ statement
     | namespaceDeclaration //ADDED
     | variableStatement
     | importStatement
+    | importEqualsDeclaration
     | exportStatement
     | emptyStatement_
     | abstractDeclaration //ADDED
@@ -838,6 +839,10 @@ singleExpression
 // `satisfies` is not a reserved word, so it is matched by its text
 satisfiesClause
     : {this.n("satisfies")}? identifier type_
+    ;
+// `import x = require('m')` and `import x = A.B`
+importEqualsDeclaration
+    : Import identifier '=' (Require '(' StringLiteral ')' | namespaceName) eos
     ;
 // `import.meta`: the `meta` property of the module
 importMetaExpression
