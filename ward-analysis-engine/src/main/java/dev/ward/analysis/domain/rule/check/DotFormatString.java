@@ -1,5 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -18,6 +20,7 @@ final class DotFormatString {
   private static final char INDEX = '[';
 
   private final Set<String> names = new TreeSet<>();
+  private final List<String> specs = new ArrayList<>();
   private final Set<Integer> manual = new TreeSet<>();
   private int automatic;
   private boolean invalid;
@@ -44,6 +47,11 @@ final class DotFormatString {
   /** The manual field indices. */
   Set<Integer> manual() {
     return Set.copyOf(manual);
+  }
+
+  /** The format specs of the fields, in order, without the colon. */
+  List<String> specs() {
+    return List.copyOf(specs);
   }
 
   /** The named fields. */
@@ -84,6 +92,7 @@ final class DotFormatString {
     final String head = split < 0 ? content : content.substring(0, split);
     name(head);
     if (split >= 0 && content.charAt(split) == SPEC) {
+      specs.add(content.substring(split + 1));
       scan(content.substring(split + 1));
     }
     return close + 1;

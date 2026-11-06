@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
+import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
 import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
@@ -114,6 +115,7 @@ final class DeclarativeChecks {
       case "star-import-usage" -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE));
       case "percent-format" -> percentFormat(toml);
       case "dot-format" -> dotFormat(toml);
+      case "logging-args" -> loggingArgs(toml);
       default ->
           ImportChecks.isImportCheck(name)
               ? ImportChecks.build(name, toml)
@@ -133,6 +135,13 @@ final class DeclarativeChecks {
         TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
     return new DotFormatCheck(
         DotFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck loggingArgs(final TomlParseResult toml) {
+    final String problem =
+        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
+    return new LoggingArgsCheck(
+        LoggingArgsCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {

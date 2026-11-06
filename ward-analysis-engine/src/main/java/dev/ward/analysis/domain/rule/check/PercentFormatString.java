@@ -14,11 +14,13 @@ final class PercentFormatString {
   private static final String CONVERSIONS = "diouxXeEfFgGcrsa";
   private static final String FLAGS = "#0- +";
   private static final String LENGTHS = "hlL";
+  private static final String NUMERIC = "diouxXeEfFgG";
 
   private final List<String> named = new ArrayList<>();
   private int positional;
   private boolean star;
   private boolean incomplete;
+  private boolean numeric;
   private Optional<Character> unsupported = Optional.empty();
 
   private PercentFormatString() {}
@@ -46,6 +48,11 @@ final class PercentFormatString {
   /** Whether a {@code *} width or precision takes an argument. */
   boolean star() {
     return star;
+  }
+
+  /** Whether a conversion takes a number. */
+  boolean numeric() {
+    return numeric;
   }
 
   /** Whether the string ends inside a conversion. */
@@ -95,6 +102,7 @@ final class PercentFormatString {
     if (!isNamed(text, start)) {
       positional++;
     }
+    numeric = numeric || NUMERIC.indexOf(conversion) >= 0;
     return index + 1;
   }
 

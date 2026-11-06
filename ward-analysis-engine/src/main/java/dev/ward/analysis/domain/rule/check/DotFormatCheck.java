@@ -26,11 +26,14 @@ public final class DotFormatCheck implements RuleCheck {
     /** A field whose argument is not passed. */
     MISSING,
     /** Automatic and manual numbering in one string. */
-    MIXED
+    MIXED,
+    /** A format spec that ends in a type character no format accepts. */
+    BAD_CHARACTER
   }
 
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final String FORMAT_CALL = ".format(";
+  private static final String TYPE_CHARACTERS = "bcdeEfFgGnosxX%";
   private static final String STAR = "*";
   private static final String DOUBLE_STAR = "**";
 
@@ -124,7 +127,14 @@ public final class DotFormatCheck implements RuleCheck {
       case UNUSED_POSITIONAL -> arguments.positional() > usedPositional(format);
       case MISSING -> missing(format, arguments);
       case MIXED -> format.automatic() > 0 && !format.manual().isEmpty();
+      case BAD_CHARACTER -> format.specs().stream().anyMatch(DotFormatCheck::badType);
     };
+  }
+
+  private static boolean badType(final String spec) {
+    return !spec.isEmpty()
+        && Character.isLetter(spec.charAt(spec.length() - 1))
+        && TYPE_CHARACTERS.indexOf(spec.charAt(spec.length() - 1)) < 0;
   }
 
   private static int usedPositional(final DotFormatString format) {

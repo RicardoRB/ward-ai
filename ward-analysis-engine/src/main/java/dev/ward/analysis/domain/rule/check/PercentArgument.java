@@ -14,6 +14,7 @@ final class PercentArgument {
   enum Kind {
     TUPLE,
     DICT,
+    STRING,
     OTHER
   }
 
@@ -36,6 +37,9 @@ final class PercentArgument {
 
   /** Reads the operand from its text, with the whitespace the tree text does not keep. */
   static PercentArgument of(final String text) {
+    if (text.length() >= 2 && (text.charAt(0) == '"' || text.charAt(0) == '\'')) {
+      return new PercentArgument(Kind.STRING, 0, Optional.empty());
+    }
     if (text.length() >= 2 && text.charAt(0) == OPEN_PAREN && closesAtEnd(text)) {
       return tuple(text.substring(1, text.length() - 1));
     }

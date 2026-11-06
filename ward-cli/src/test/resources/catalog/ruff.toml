@@ -2711,40 +2711,30 @@ pylint = ["await-outside-async"]
 
 [[rule]]
 name = "logging-too-many-args"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1205"]
 pylint = ["logging-too-many-args"]
 
 [[rule]]
 name = "logging-too-few-args"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1206"]
 pylint = ["logging-too-few-args"]
 
 [[rule]]
 name = "bad-string-format-character"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1300"]
 
 [[rule]]
 name = "bad-string-format-type"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1307"]
 pylint = ["bad-string-format-type"]
 
 [[rule]]
 name = "bad-str-strip-call"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1310"]
 pylint = ["bad-str-strip-call"]
 

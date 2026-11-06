@@ -32,7 +32,9 @@ public final class PercentFormatCheck implements RuleCheck {
     /** Dictionary keys that no named conversion uses. */
     UNUSED_KEYS,
     /** Named conversions whose key the dictionary does not have. */
-    MISSING_KEYS
+    MISSING_KEYS,
+    /** A numeric conversion with a string literal operand. */
+    TYPE_MISMATCH
   }
 
   private static final Set<String> EXPRESSION = Set.of("expr");
@@ -108,6 +110,7 @@ public final class PercentFormatCheck implements RuleCheck {
       case COUNT -> !named && countMismatch(format, argument);
       case UNUSED_KEYS -> named && unusedKeys(operation);
       case MISSING_KEYS -> named && missingKeys(operation);
+      case TYPE_MISMATCH -> format.numeric() && argument.kind() == PercentArgument.Kind.STRING;
     };
   }
 
