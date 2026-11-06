@@ -15,6 +15,10 @@ import org.junit.jupiter.api.Test;
 
 class NodeScopeAnalysisTest {
 
+  private static final int LINE_1 = 1;
+  private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
+
   private static NameReference only(
       final UnitScopes scopes, final String name, final int line, final ReferenceAccess access) {
     final List<NameReference> found =
@@ -31,7 +35,7 @@ class NodeScopeAnalysisTest {
   void aBlockReadBeforeItsLetResolvesToTheBlockBindingInTheDeadZone() {
     final UnitScopes scopes = NodeScopeFixtures.javascript("{\n  x;\n  let x = 1;\n}\n");
 
-    final NameReference read = only(scopes, "x", 2, ReferenceAccess.READ);
+    final NameReference read = only(scopes, "x", LINE_2, ReferenceAccess.READ);
 
     assertThat(read.beforeDeclaration()).isTrue();
     assertThat(scopes.scopes().get(read.resolved().orElseThrow().scope()).kind())
@@ -44,8 +48,8 @@ class NodeScopeAnalysisTest {
         NodeScopeFixtures.javascript(
             "function f() {\n  if (a) { var v = 1; let l = 2; }\n  return v + l;\n}\n");
 
-    assertThat(only(scopes, "v", 3, ReferenceAccess.READ).resolved()).isPresent();
-    assertThat(only(scopes, "l", 3, ReferenceAccess.READ).resolved()).isEmpty();
+    assertThat(only(scopes, "v", LINE_3, ReferenceAccess.READ).resolved()).isPresent();
+    assertThat(only(scopes, "l", LINE_3, ReferenceAccess.READ).resolved()).isEmpty();
   }
 
   @Test
@@ -53,8 +57,8 @@ class NodeScopeAnalysisTest {
     final UnitScopes scopes =
         NodeScopeFixtures.javascript("run();\nfunction run() {}\nuse;\nlet use = 1;\n");
 
-    assertThat(only(scopes, "run", 1, ReferenceAccess.READ).beforeDeclaration()).isFalse();
-    assertThat(only(scopes, "use", 3, ReferenceAccess.READ).beforeDeclaration()).isTrue();
+    assertThat(only(scopes, "run", LINE_1, ReferenceAccess.READ).beforeDeclaration()).isFalse();
+    assertThat(only(scopes, "use", LINE_3, ReferenceAccess.READ).beforeDeclaration()).isTrue();
   }
 
   @Test
@@ -62,8 +66,8 @@ class NodeScopeAnalysisTest {
     final UnitScopes scopes =
         NodeScopeFixtures.javascript("const f = function inner() { return inner; };\ninner;\n");
 
-    assertThat(only(scopes, "inner", 1, ReferenceAccess.READ).resolved()).isPresent();
-    assertThat(only(scopes, "inner", 2, ReferenceAccess.READ).resolved()).isEmpty();
+    assertThat(only(scopes, "inner", LINE_1, ReferenceAccess.READ).resolved()).isPresent();
+    assertThat(only(scopes, "inner", LINE_2, ReferenceAccess.READ).resolved()).isEmpty();
   }
 
   @Test
@@ -102,15 +106,15 @@ class NodeScopeAnalysisTest {
   void aCatchParameterBelongsToTheCatchScope() {
     final UnitScopes scopes = NodeScopeFixtures.javascript("try {} catch (e) { e; }\ne;\n");
 
-    assertThat(only(scopes, "e", 1, ReferenceAccess.READ).resolved()).isPresent();
-    assertThat(only(scopes, "e", 2, ReferenceAccess.READ).resolved()).isEmpty();
+    assertThat(only(scopes, "e", LINE_1, ReferenceAccess.READ).resolved()).isPresent();
+    assertThat(only(scopes, "e", LINE_2, ReferenceAccess.READ).resolved()).isEmpty();
   }
 
   @Test
   void evalOpensTheScope() {
     final UnitScopes scopes = NodeScopeFixtures.javascript("function f() { eval(s); return g; }\n");
 
-    assertThat(scopes.isOpen(only(scopes, "g", 1, ReferenceAccess.READ))).isTrue();
+    assertThat(scopes.isOpen(only(scopes, "g", LINE_1, ReferenceAccess.READ))).isTrue();
   }
 
   @Test

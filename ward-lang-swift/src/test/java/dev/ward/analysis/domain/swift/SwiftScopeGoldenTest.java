@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.scope.ScopeDump;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +29,7 @@ class SwiftScopeGoldenTest {
   @ParameterizedTest
   @MethodSource("fixtures")
   void dumpMatchesTheGolden(final Path fixture) throws IOException {
-    final String dump = SwiftScopeFixtures.scopes(Files.readString(fixture)).dump();
+    final String dump = ScopeDump.of(SwiftScopeFixtures.scopes(Files.readString(fixture)));
     final Path golden = Path.of(fixture.toString().replaceAll("\\.swift$", ".scopes"));
 
     if (Boolean.getBoolean(UPDATE_PROPERTY)) {

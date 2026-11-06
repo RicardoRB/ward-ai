@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Test;
 
 class JvmScopeAnalysisTest {
 
+  private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
+  private static final int LINE_4 = 4;
+
   private static NameReference only(final UnitScopes scopes, final String name, final int line) {
     final List<NameReference> found =
         scopes.references().stream()
@@ -37,8 +41,8 @@ class JvmScopeAnalysisTest {
             }
             """);
 
-    final Binding inMethod = only(scopes, "x", 3).resolved().orElseThrow();
-    final Binding inOther = only(scopes, "x", 4).resolved().orElseThrow();
+    final Binding inMethod = only(scopes, "x", LINE_3).resolved().orElseThrow();
+    final Binding inOther = only(scopes, "x", LINE_4).resolved().orElseThrow();
 
     assertThat(scopes.scopes().get(inMethod.scope()).kind()).isEqualTo(ScopeKind.BLOCK);
     assertThat(scopes.scopes().get(inOther.scope()).kind()).isEqualTo(ScopeKind.CLASS);
@@ -76,7 +80,7 @@ class JvmScopeAnalysisTest {
         JvmScopeFixtures.java(
             "import static java.lang.Math.*;\nclass A { int m() { return max(1, 2) + z; } }\n");
 
-    assertThat(scopes.isOpen(only(scopes, "z", 2))).isTrue();
+    assertThat(scopes.isOpen(only(scopes, "z", LINE_2))).isTrue();
   }
 
   @Test
@@ -124,7 +128,7 @@ class JvmScopeAnalysisTest {
         JvmScopeFixtures.kotlin(
             "class A {\n  fun m() = LIMIT\n  companion object { const val LIMIT = 1 }\n}\n");
 
-    assertThat(scopes.isOpen(only(scopes, "LIMIT", 2))).isTrue();
+    assertThat(scopes.isOpen(only(scopes, "LIMIT", LINE_2))).isTrue();
   }
 
   @Test

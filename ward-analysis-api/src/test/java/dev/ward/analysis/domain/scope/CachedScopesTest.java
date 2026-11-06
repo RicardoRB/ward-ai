@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 class CachedScopesTest {
 
+  private static final int CALLS = 3;
+
   private static final SyntaxNode TREE =
       new SyntaxNode("root", new Span(1, 1, 1, 1, 0, 0), Map.of(), List.of());
 
@@ -56,7 +58,7 @@ class CachedScopesTest {
     cached.analyze(new SourceUnit("a.py", AnalysisLanguage.PYTHON, "x = 2\n"), TREE);
     cached.analyze(new SourceUnit("b.py", AnalysisLanguage.PYTHON, "x = 1\n"), TREE);
 
-    assertThat(delegate.calls).hasValue(3);
+    assertThat(delegate.calls).hasValue(CALLS);
   }
 
   @Test

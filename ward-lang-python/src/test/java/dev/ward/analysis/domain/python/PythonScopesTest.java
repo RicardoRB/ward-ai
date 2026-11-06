@@ -14,6 +14,11 @@ import org.junit.jupiter.api.Test;
 
 class PythonScopesTest {
 
+  private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
+  private static final int LINE_4 = 4;
+  private static final int LINE_5 = 5;
+
   private static NameReference only(final UnitScopes scopes, final String name, final int line) {
     final List<NameReference> found =
         scopes.references().stream()
@@ -37,7 +42,7 @@ class PythonScopesTest {
                 return inner
             """);
 
-    final NameReference write = only(scopes, "count", 5);
+    final NameReference write = only(scopes, "count", LINE_5);
 
     assertThat(write.access()).isEqualTo(ReferenceAccess.WRITE);
     assertThat(write.resolved()).isPresent();
@@ -57,7 +62,7 @@ class PythonScopesTest {
             print(flag)
             """);
 
-    final Binding flag = only(scopes, "flag", 4).resolved().orElseThrow();
+    final Binding flag = only(scopes, "flag", LINE_4).resolved().orElseThrow();
 
     assertThat(scopes.scopes().get(flag.scope()).kind()).isEqualTo(ScopeKind.MODULE);
     assertThat(scopes.module().bindings()).extracting(Binding::name).contains("flag");
@@ -75,8 +80,8 @@ class PythonScopesTest {
                     return x
             """);
 
-    assertThat(only(scopes, "x", 3).resolved()).isPresent();
-    assertThat(only(scopes, "x", 5).resolved()).isEmpty();
+    assertThat(only(scopes, "x", LINE_3).resolved()).isPresent();
+    assertThat(only(scopes, "x", LINE_5).resolved()).isEmpty();
   }
 
   @Test
@@ -84,8 +89,8 @@ class PythonScopesTest {
     final UnitScopes scopes =
         PythonScopeFixtures.scopes("xs = [1]\nys = [n for n in xs]\nprint(n)\n");
 
-    assertThat(only(scopes, "n", 3).resolved()).isEmpty();
-    assertThat(only(scopes, "xs", 2).resolved()).isPresent();
+    assertThat(only(scopes, "n", LINE_3).resolved()).isEmpty();
+    assertThat(only(scopes, "xs", LINE_2).resolved()).isPresent();
     assertThat(scopes.scopes()).extracting("kind").contains(ScopeKind.COMPREHENSION);
   }
 
@@ -93,7 +98,7 @@ class PythonScopesTest {
   void starImportOpensTheModuleScope() {
     final UnitScopes scopes = PythonScopeFixtures.scopes("from os import *\nprint(path)\n");
 
-    final NameReference path = only(scopes, "path", 2);
+    final NameReference path = only(scopes, "path", LINE_2);
 
     assertThat(path.resolved()).isEmpty();
     assertThat(scopes.isOpen(path)).isTrue();
@@ -111,8 +116,8 @@ class PythonScopesTest {
                 return y
             """);
 
-    assertThat(scopes.isOpen(only(scopes, "x", 3))).isTrue();
-    assertThat(scopes.isOpen(only(scopes, "y", 5))).isFalse();
+    assertThat(scopes.isOpen(only(scopes, "x", LINE_3))).isTrue();
+    assertThat(scopes.isOpen(only(scopes, "y", LINE_5))).isFalse();
   }
 
   @Test
@@ -155,7 +160,7 @@ class PythonScopesTest {
                 x = 2
             """);
 
-    final NameReference read = only(scopes, "x", 3);
+    final NameReference read = only(scopes, "x", LINE_3);
 
     assertThat(read.beforeDeclaration()).isTrue();
     assertThat(scopes.scopes().get(read.resolved().orElseThrow().scope()).kind())

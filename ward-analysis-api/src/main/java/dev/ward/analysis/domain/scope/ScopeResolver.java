@@ -9,9 +9,6 @@ import java.util.Optional;
  */
 final class ScopeResolver {
 
-  /** What a lookup found: the binding, and whether it is declared after the use. */
-  record Found(Binding binding, boolean before) {}
-
   private final List<Scope> scopes;
   private final ClassScopes classScopes;
 
@@ -104,4 +101,7 @@ final class ScopeResolver {
     }
     return Scope.NO_PARENT;
   }
+
+  /** What a lookup found: the binding, and whether it is declared after the use. */
+  record Found(Binding binding, boolean before) {}
 }

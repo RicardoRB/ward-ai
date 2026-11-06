@@ -14,6 +14,11 @@ import org.junit.jupiter.api.Test;
 
 class SwiftScopeAnalysisTest {
 
+  private static final int LINE_1 = 1;
+  private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
+  private static final int LINE_4 = 4;
+
   private static NameReference only(final UnitScopes scopes, final String name, final int line) {
     final List<NameReference> found =
         scopes.references().stream()
@@ -30,10 +35,11 @@ class SwiftScopeAnalysisTest {
     final UnitScopes scopes =
         SwiftScopeFixtures.scopes("func f() {\n  let g = { (n: Int) -> Int in n + 1 }\n  n\n}\n");
 
-    assertThat(only(scopes, "n", 2).resolved()).isPresent();
-    assertThat(scopes.scopes().get(only(scopes, "n", 2).resolved().orElseThrow().scope()).kind())
+    assertThat(only(scopes, "n", LINE_2).resolved()).isPresent();
+    assertThat(
+            scopes.scopes().get(only(scopes, "n", LINE_2).resolved().orElseThrow().scope()).kind())
         .isEqualTo(ScopeKind.LAMBDA);
-    assertThat(only(scopes, "n", 3).resolved()).isEmpty();
+    assertThat(only(scopes, "n", LINE_3).resolved()).isEmpty();
   }
 
   @Test
@@ -56,8 +62,8 @@ class SwiftScopeAnalysisTest {
             }
             """);
 
-    assertThat(only(scopes, "x", 4).resolved()).isPresent();
-    assertThat(only(scopes, "y", 4).resolved()).isEmpty();
+    assertThat(only(scopes, "x", LINE_4).resolved()).isPresent();
+    assertThat(only(scopes, "y", LINE_4).resolved()).isEmpty();
   }
 
   @Test
@@ -66,8 +72,8 @@ class SwiftScopeAnalysisTest {
         SwiftScopeFixtures.scopes(
             "func f(t: Int) {\n  switch t {\n  case let v: print(v)\n  default: print(v)\n  }\n}\n");
 
-    assertThat(only(scopes, "v", 3).resolved()).isPresent();
-    assertThat(only(scopes, "v", 4).resolved()).isEmpty();
+    assertThat(only(scopes, "v", LINE_3).resolved()).isPresent();
+    assertThat(only(scopes, "v", LINE_4).resolved()).isEmpty();
   }
 
   @Test
@@ -76,8 +82,8 @@ class SwiftScopeAnalysisTest {
         SwiftScopeFixtures.scopes(
             "struct S { var a = 1\n func m() { a }\n}\nclass C: Base { func m() { b } }\n");
 
-    assertThat(only(scopes, "a", 2).resolved()).isPresent();
-    assertThat(scopes.isOpen(only(scopes, "b", 4))).isTrue();
+    assertThat(only(scopes, "a", LINE_2).resolved()).isPresent();
+    assertThat(scopes.isOpen(only(scopes, "b", LINE_4))).isTrue();
   }
 
   @Test
@@ -92,7 +98,7 @@ class SwiftScopeAnalysisTest {
     final UnitScopes scopes =
         SwiftScopeFixtures.scopes("func f() { do { try g() } catch { print(error) } }\n");
 
-    assertThat(only(scopes, "error", 1).resolved()).isPresent();
+    assertThat(only(scopes, "error", LINE_1).resolved()).isPresent();
   }
 
   @Test
@@ -100,7 +106,8 @@ class SwiftScopeAnalysisTest {
     final UnitScopes scopes = SwiftScopeFixtures.scopes("func f() { var n = 0\n n += 1 }\n");
 
     assertThat(scopes.references())
-        .filteredOn(reference -> reference.name().equals("n") && reference.span().startLine() == 2)
+        .filteredOn(
+            reference -> reference.name().equals("n") && reference.span().startLine() == LINE_2)
         .extracting(NameReference::access)
         .containsExactlyInAnyOrder(ReferenceAccess.READ, ReferenceAccess.WRITE);
   }
@@ -124,7 +131,7 @@ class SwiftScopeAnalysisTest {
 
     assertThat(scopes.bindings())
         .filteredOn(binding -> List.of("a", "b", "k", "v").contains(binding.name()))
-        .hasSize(4)
+        .hasSize(LINE_4)
         .allSatisfy(binding -> assertThat(binding.has(BindingFlag.DESTRUCTURED)).isTrue());
   }
 }

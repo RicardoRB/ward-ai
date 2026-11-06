@@ -25,6 +25,8 @@ import java.util.function.Consumer;
  */
 final class KotlinScopeWalk {
 
+  private static final int TRIPLE = 3;
+
   private static final Set<String> CHAIN =
       Set.of(
           "expression",
@@ -359,7 +361,7 @@ final class KotlinScopeWalk {
 
   private void assignment(final SyntaxNode node) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 3 && "assignmentOperator".equals(parts.get(1).kind())) {
+    if (parts.size() == TRIPLE && "assignmentOperator".equals(parts.get(1).kind())) {
       target(parts.get(0), !"=".equals(text(parts.get(1))));
       visit(parts.get(2));
     } else {

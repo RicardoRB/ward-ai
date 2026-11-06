@@ -79,7 +79,6 @@ final class SwiftScopeWalk {
     handlers.put("optional_binding_condition", this::optionalBinding);
     handlers.put("for_in_statement", this::forIn);
     handlers.put("catch_clause", this::catchClause);
-    handlers.put("case_label", this::caseLabel);
     handlers.put("closure_expression", this::closure);
     handlers.put("closure_parameter_name", this::closureParameter);
     handlers.put("closure_parameter_clause_identifier_list", this::closureIdentifiers);
@@ -299,7 +298,6 @@ final class SwiftScopeWalk {
       }
     }
     final SyntaxNode closure = findKind(statement, "closure_expression");
-    child(closure, "statements");
     if (closure != null) {
       closure.children().stream().filter(c -> "statements".equals(c.kind())).forEach(this::visit);
     }
@@ -345,10 +343,6 @@ final class SwiftScopeWalk {
     }
     generic(node);
     builder.close();
-  }
-
-  private void caseLabel(final SyntaxNode node) {
-    generic(node);
   }
 
   /** Walks a pattern: names are declared when {@code binding}, and read otherwise. */

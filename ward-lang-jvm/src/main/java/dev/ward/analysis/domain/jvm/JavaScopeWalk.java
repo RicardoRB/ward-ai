@@ -23,6 +23,8 @@ import java.util.function.Consumer;
  */
 final class JavaScopeWalk {
 
+  private static final int TRIPLE = 3;
+
   private static final Set<String> TYPE_DECLARATIONS =
       Set.of("classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration");
   private static final Set<String> METHODS =
@@ -319,12 +321,12 @@ final class JavaScopeWalk {
 
   private void expression(final SyntaxNode node) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 3 && ASSIGNMENTS.contains(text(parts.get(1)))) {
+    if (parts.size() == TRIPLE && ASSIGNMENTS.contains(text(parts.get(1)))) {
       target(parts.get(0), !"=".equals(text(parts.get(1))));
       visit(parts.get(2));
     } else if (parts.size() == 2 && updates(parts)) {
       target(EXPRESSION.equals(parts.get(0).kind()) ? parts.get(0) : parts.get(1), true);
-    } else if (parts.size() == 3 && "instanceof".equals(text(parts.get(1)))) {
+    } else if (parts.size() == TRIPLE && "instanceof".equals(text(parts.get(1)))) {
       visit(parts.get(0));
       patternBinding(parts.get(2));
     } else {

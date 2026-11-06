@@ -18,15 +18,17 @@ import java.util.stream.Collectors;
  *   4:3 a read -> function f(parameter a @3:7)
  * </pre>
  */
-final class ScopeDump {
+public final class ScopeDump {
 
   private static final String INDENT = "  ";
+  private static final int DUMP_CAPACITY = 256;
 
   private ScopeDump() {}
 
-  static String of(final UnitScopes unit) {
-    final StringBuilder out = new StringBuilder();
-    scope(unit, unit.builtin(), 0, out);
+  /** Returns the text dump of {@code unit}. */
+  public static String of(final UnitScopes unit) {
+    final StringBuilder out = new StringBuilder(DUMP_CAPACITY);
+    scope(unit, unit.scopes().get(UnitScopes.BUILTIN_ID), 0, out);
     out.append("references\n");
     for (final NameReference reference : unit.references()) {
       out.append(INDENT)

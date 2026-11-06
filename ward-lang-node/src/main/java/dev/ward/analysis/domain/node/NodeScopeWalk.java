@@ -228,8 +228,7 @@ final class NodeScopeWalk {
 
   private void functionLike(final SyntaxNode node) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
-    if (NodeFlowSyntax.firstOf(parts, "functionBody") == null
-        && NodeFlowSyntax.firstOf(parts, "arrowFunctionBody") == null) {
+    if (!hasBody(parts)) {
       expressionFunction = "anonymousFunction".equals(node.kind());
       generic(node);
       expressionFunction = false;
@@ -241,15 +240,22 @@ final class NodeScopeWalk {
     if (declaration && name != null) {
       declareFunctionName(name);
     }
-    final boolean arrow =
-        "arrowFunctionDeclaration".equals(node.kind())
-            || NodeFlowSyntax.firstOf(parts, "arrowFunctionParameters") != null;
-    builder.open(arrow ? ScopeKind.LAMBDA : ScopeKind.FUNCTION, node.span());
+    builder.open(isArrow(node, parts) ? ScopeKind.LAMBDA : ScopeKind.FUNCTION, node.span());
     if (!declaration && name != null && DECLARATIONS.contains(node.kind())) {
       builder.declare(NodeFlowSyntax.text(name), BindingKind.FUNCTION, name.span(), Set.of());
     }
     generic(node);
     builder.close();
+  }
+
+  private static boolean hasBody(final List<SyntaxNode> parts) {
+    return NodeFlowSyntax.firstOf(parts, "functionBody") != null
+        || NodeFlowSyntax.firstOf(parts, "arrowFunctionBody") != null;
+  }
+
+  private static boolean isArrow(final SyntaxNode node, final List<SyntaxNode> parts) {
+    return "arrowFunctionDeclaration".equals(node.kind())
+        || NodeFlowSyntax.firstOf(parts, "arrowFunctionParameters") != null;
   }
 
   private void declareFunctionName(final SyntaxNode name) {

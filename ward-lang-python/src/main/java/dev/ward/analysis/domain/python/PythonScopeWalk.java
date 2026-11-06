@@ -22,6 +22,8 @@ import java.util.function.Consumer;
  */
 final class PythonScopeWalk {
 
+  private static final int TRIPLE = 3;
+
   /** Names that can create or read names the walk cannot see. */
   private static final Set<String> OPENS_SCOPE = Set.of("exec", "eval", "locals", "vars");
 
@@ -186,7 +188,7 @@ final class PythonScopeWalk {
 
   private void argument(final SyntaxNode node) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 3 && "=".equals(PythonSyntax.text(parts.get(1)))) {
+    if (parts.size() == TRIPLE && "=".equals(PythonSyntax.text(parts.get(1)))) {
       visit(parts.get(2));
     } else {
       generic(node);

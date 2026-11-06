@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.scope.ScopeDump;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +35,7 @@ class JvmScopeGoldenTest {
   void dumpMatchesTheGolden(final Path fixture) throws IOException {
     final AnalysisLanguage language =
         fixture.toString().endsWith(".kt") ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA;
-    final String dump = JvmScopeFixtures.scopes(language, Files.readString(fixture)).dump();
+    final String dump = ScopeDump.of(JvmScopeFixtures.scopes(language, Files.readString(fixture)));
     final Path golden = Path.of(fixture.toString().replaceAll("\\.(java|kt)$", ".scopes"));
 
     if (Boolean.getBoolean(UPDATE_PROPERTY)) {

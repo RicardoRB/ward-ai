@@ -60,15 +60,16 @@ final class PythonFStrings {
     int expressionEnd = -1;
     while (index < token.length() && depth > 0) {
       final char current = token.charAt(index);
-      if (current == '\'' || current == '"') {
+      if (isQuote(current)) {
         index = skipString(token, index);
         continue;
       }
-      if (current == OPEN) {
-        depth++;
-      } else if (current == CLOSE) {
-        depth--;
-      } else if (depth == 1 && expressionEnd < 0 && isSpecStart(token, index)) {
+      depth += depthChange(current);
+      if (current != OPEN
+          && current != CLOSE
+          && depth == 1
+          && expressionEnd < 0
+          && isSpecStart(token, index)) {
         expressionEnd = index;
       }
       index++;
@@ -79,6 +80,17 @@ final class PythonFStrings {
       nestedFields(token, expressionEnd, end, uses);
     }
     return index;
+  }
+
+  private static boolean isQuote(final char current) {
+    return current == '\'' || current == '"';
+  }
+
+  private static int depthChange(final char current) {
+    if (current == OPEN) {
+      return 1;
+    }
+    return current == CLOSE ? -1 : 0;
   }
 
   /** A format spec may hold replacement fields of its own, such as {@code {x:>{width}}}. */

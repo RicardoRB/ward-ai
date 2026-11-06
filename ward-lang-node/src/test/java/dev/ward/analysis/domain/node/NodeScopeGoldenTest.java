@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.scope.ScopeDump;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,7 +37,7 @@ class NodeScopeGoldenTest {
         fixture.toString().endsWith(".ts")
             ? AnalysisLanguage.TYPESCRIPT
             : AnalysisLanguage.JAVASCRIPT;
-    final String dump = NodeScopeFixtures.scopes(language, Files.readString(fixture)).dump();
+    final String dump = ScopeDump.of(NodeScopeFixtures.scopes(language, Files.readString(fixture)));
     final Path golden = Path.of(fixture.toString().replaceAll("\\.(js|ts)$", ".scopes"));
 
     if (Boolean.getBoolean(UPDATE_PROPERTY)) {

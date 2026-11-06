@@ -16,6 +16,8 @@ import java.util.function.Consumer;
  */
 final class NodeScopeExpressions {
 
+  private static final int TRIPLE = 3;
+
   private static final Set<String> MEMBER_OPERATORS = Set.of(".", "?.");
   private static final Set<String> UPDATE_OPERATORS = Set.of("++", "--");
   private static final String EQUALS = "=";
@@ -42,12 +44,13 @@ final class NodeScopeExpressions {
       } else {
         read(name);
       }
-    } else if (parts.size() == 3 && isAssignment(parts.get(1))) {
+    } else if (parts.size() == TRIPLE && isAssignment(parts.get(1))) {
       names.target(parts.get(0), !EQUALS.equals(NodeFlowSyntax.text(parts.get(1))));
       visit.accept(parts.get(2));
     } else if (parts.size() == 2 && updates(parts)) {
       names.target(parts.get(0).children().isEmpty() ? parts.get(1) : parts.get(0), true);
-    } else if (parts.size() == 3 && MEMBER_OPERATORS.contains(NodeFlowSyntax.text(parts.get(1)))) {
+    } else if (parts.size() == TRIPLE
+        && MEMBER_OPERATORS.contains(NodeFlowSyntax.text(parts.get(1)))) {
       visit.accept(parts.get(0));
     } else {
       parts.forEach(visit);

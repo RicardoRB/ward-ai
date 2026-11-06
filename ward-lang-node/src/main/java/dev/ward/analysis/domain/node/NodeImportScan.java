@@ -70,24 +70,15 @@ final class NodeImportScan {
     }
     final boolean typeOnly = isTypeKeyword(index);
     index += typeOnly ? 1 : 0;
+    if (isWord(index) && EQUALS.equals(tokens.text(index + 1))) {
+      requireForm(start, index);
+      return;
+    }
     final List<SyntaxNode> names = new ArrayList<>();
     final List<String> members = new ArrayList<>();
     final List<Boolean> types = new ArrayList<>();
-    if (isWord(index) && DEFAULT_FOLLOWERS.contains(tokens.text(index + 1))) {
-      if (EQUALS.equals(tokens.text(index + 1))) {
-        requireForm(start, index);
-        return;
-      }
-      names.add(tokens.leaf(index));
-      members.add("default");
-      types.add(typeOnly);
-      index++;
-      index += COMMA.equals(tokens.text(index)) ? 1 : 0;
-    }
-    index = clause(index, names, members, types);
-    while (index < tokens.size() && !STRING.equals(tokens.kind(index))) {
-      index++;
-    }
+    index = defaultImport(index, typeOnly, names, members, types);
+    index = literalAfter(clause(index, names, members, types));
     if (index >= tokens.size()) {
       return;
     }
@@ -99,6 +90,30 @@ final class NodeImportScan {
           new Binding(
               names.get(slot), members.get(slot), specifier, typeOnly || types.get(slot), site));
     }
+  }
+
+  /** Reads a default import name and the comma after it; returns the index after them. */
+  private int defaultImport(
+      final int start,
+      final boolean typeOnly,
+      final List<SyntaxNode> names,
+      final List<String> members,
+      final List<Boolean> types) {
+    if (!isWord(start) || !DEFAULT_FOLLOWERS.contains(tokens.text(start + 1))) {
+      return start;
+    }
+    names.add(tokens.leaf(start));
+    members.add("default");
+    types.add(typeOnly);
+    return COMMA.equals(tokens.text(start + 1)) ? start + 2 : start + 1;
+  }
+
+  private int literalAfter(final int from) {
+    int index = from;
+    while (index < tokens.size() && !STRING.equals(tokens.kind(index))) {
+      index++;
+    }
+    return index;
   }
 
   private boolean isTypeKeyword(final int index) {

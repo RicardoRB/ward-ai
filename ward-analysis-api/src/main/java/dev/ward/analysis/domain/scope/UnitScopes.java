@@ -1,13 +1,12 @@
 package dev.ward.analysis.domain.scope;
 
 import dev.ward.analysis.domain.ir.Span;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The scopes of one source unit, the bindings each declares and every name reference with the
@@ -22,7 +21,7 @@ public final class UnitScopes {
   /** The id of the module scope. */
   public static final int MODULE_ID = 1;
 
-  private static final Span NOWHERE = new Span(1, 1, 1, 1, 0, 0);
+  static final Span NOWHERE = new Span(1, 1, 1, 1, 0, 0);
 
   /** The scopes of a unit that has none: an empty built-in scope around an empty module. */
   public static final UnitScopes EMPTY =
@@ -34,7 +33,7 @@ public final class UnitScopes {
 
   private final List<Scope> scopes;
   private final List<NameReference> references;
-  private final Map<Binding, List<NameReference>> uses = new HashMap<>();
+  private final Map<Binding, List<NameReference>> uses;
 
   /**
    * Creates the scopes of a unit.
@@ -47,13 +46,10 @@ public final class UnitScopes {
   public UnitScopes(final List<Scope> scopes, final List<NameReference> references) {
     this.scopes = List.copyOf(Objects.requireNonNull(scopes, "scopes"));
     this.references = List.copyOf(Objects.requireNonNull(references, "references"));
-    for (final NameReference reference : this.references) {
-      reference.resolved().ifPresent(binding -> use(binding, reference));
-    }
-  }
-
-  private void use(final Binding binding, final NameReference reference) {
-    uses.computeIfAbsent(binding, key -> new ArrayList<>()).add(reference);
+    this.uses =
+        this.references.stream()
+            .filter(reference -> reference.resolved().isPresent())
+            .collect(Collectors.groupingBy(reference -> reference.resolved().get()));
   }
 
   /** Returns every scope; the id of a scope is its index. */
@@ -64,11 +60,6 @@ public final class UnitScopes {
   /** Returns every name reference, in source order. */
   public List<NameReference> references() {
     return references;
-  }
-
-  /** Returns the built-in scope, which is empty until {@link #withBuiltins(Set)} fills it. */
-  public Scope builtin() {
-    return scopes.get(BUILTIN_ID);
   }
 
   /** Returns the scope of the whole file. */
@@ -124,40 +115,6 @@ public final class UnitScopes {
    * reference to one of them resolved to it.
    */
   public UnitScopes withBuiltins(final Set<String> names) {
-    final List<Binding> builtins =
-        names.stream()
-            .sorted()
-            .map(
-                name ->
-                    new Binding(
-                        name, BindingKind.BUILTIN, NOWHERE, Set.of(), BUILTIN_ID, Optional.empty()))
-            .toList();
-    final Map<String, Binding> byName = new HashMap<>();
-    builtins.forEach(binding -> byName.put(binding.name(), binding));
-    final List<Scope> replaced = new ArrayList<>(scopes);
-    final Scope root = scopes.get(BUILTIN_ID);
-    replaced.set(
-        BUILTIN_ID,
-        new Scope(root.id(), root.kind(), root.parent(), root.span(), builtins, root.open()));
-    return new UnitScopes(replaced, references.stream().map(r -> bind(r, byName)).toList());
-  }
-
-  private static NameReference bind(final NameReference reference, final Map<String, Binding> by) {
-    final Binding builtin = by.get(reference.name());
-    if (reference.resolved().isPresent() || builtin == null) {
-      return reference;
-    }
-    return new NameReference(
-        reference.name(),
-        reference.span(),
-        reference.access(),
-        reference.scope(),
-        Optional.of(builtin),
-        false);
-  }
-
-  /** Returns the text dump of the scopes that golden tests compare; see {@link ScopeDump}. */
-  public String dump() {
-    return ScopeDump.of(this);
+    return ScopeBuiltins.apply(this, names);
   }
 }

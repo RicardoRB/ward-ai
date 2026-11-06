@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
  */
 final class NodeScopeNames {
 
+  private static final int TRIPLE = 3;
+
   private static final Pattern WORD = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final Set<String> WRAPPERS =
       Set.of(
@@ -35,7 +37,6 @@ final class NodeScopeNames {
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String COLON = ":";
   private static final String EQUALS = "=";
-  private static final String SPREAD = "...";
 
   private final ScopeBuilder builder;
   private final Consumer<SyntaxNode> expression;
@@ -107,7 +108,7 @@ final class NodeScopeNames {
   private static boolean isAssignmentWithDefault(final SyntaxNode node) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
     return "singleExpression".equals(node.kind())
-        && parts.size() == 3
+        && parts.size() == TRIPLE
         && EQUALS.equals(NodeFlowSyntax.text(parts.get(1)));
   }
 
@@ -140,7 +141,7 @@ final class NodeScopeNames {
         builder.reference(text, inner.span(), ReferenceAccess.READ);
       }
       builder.reference(text, inner.span(), ReferenceAccess.WRITE);
-    } else if (isContainer(inner) || "objectLiteral".equals(inner.kind())) {
+    } else if (isContainer(inner)) {
       NodeFlowSyntax.parts(inner).forEach(part -> target(part, compound));
     } else if (PROPERTY_ASSIGNMENT.equals(inner.kind()) && hasToken(inner, COLON)) {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
@@ -150,11 +151,7 @@ final class NodeScopeNames {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
       target(parts.get(0), compound);
       expression.accept(parts.get(2));
-    } else if (SPREAD.equals(NodeFlowSyntax.text(inner)) || "elementList".equals(inner.kind())) {
-      NodeFlowSyntax.parts(inner).forEach(part -> target(part, compound));
-    } else if (inner.children().isEmpty()) {
-      return;
-    } else {
+    } else if (!inner.children().isEmpty()) {
       expression.accept(inner);
     }
   }

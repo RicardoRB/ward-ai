@@ -89,7 +89,8 @@ class ScopeViewTest {
   @Test
   void theViewOfARuleThatReadsNoScopesIsEmpty() {
     assertThat(ScopeView.NONE.scopes().references()).isEmpty();
-    assertThat(ScopeView.NONE.scopes(Set.of()).builtin().bindings()).isEmpty();
+    assertThat(ScopeView.NONE.scopes(Set.of()).scopes().get(UnitScopes.BUILTIN_ID).bindings())
+        .isEmpty();
   }
 
   @Test

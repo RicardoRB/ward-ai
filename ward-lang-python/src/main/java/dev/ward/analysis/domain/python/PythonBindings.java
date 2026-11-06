@@ -24,6 +24,8 @@ import java.util.function.Consumer;
  */
 final class PythonBindings {
 
+  private static final int TRIPLE = 3;
+
   private static final String STAR = "*";
   private static final String DOT = ".";
   private static final String AS = "as";
@@ -61,7 +63,7 @@ final class PythonBindings {
 
   private static boolean isBracketed(final SyntaxNode atom) {
     return "atom".equals(atom.kind())
-        && atom.children().size() == 3
+        && atom.children().size() == TRIPLE
         && ("(".equals(PythonSyntax.text(atom.children().get(0)))
             || "[".equals(PythonSyntax.text(atom.children().get(0))));
   }

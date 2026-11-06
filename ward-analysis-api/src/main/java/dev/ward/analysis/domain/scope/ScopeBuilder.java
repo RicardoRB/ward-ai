@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.scope;
 import dev.ward.analysis.domain.ir.Span;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
@@ -14,16 +15,9 @@ import java.util.Set;
  * declaration, as hoisting and closures allow. The walker opens a scope, declares into it, and
  * closes it again; the built-in scope and the module scope exist from the start.
  */
-public final class ScopeBuilder {
-
-  private record Pending(String name, Span span, ReferenceAccess access, int scope) {}
+public final class ScopeBuilder extends ScopeDeclarations {
 
   private final ClassScopes classScopes;
-  private final List<Span> spans = new ArrayList<>();
-  private final List<ScopeKind> kinds = new ArrayList<>();
-  private final List<Integer> parents = new ArrayList<>();
-  private final List<List<Binding>> bindings = new ArrayList<>();
-  private final List<Boolean> open = new ArrayList<>();
   private final List<Pending> pending = new ArrayList<>();
   private final Deque<Integer> stack = new ArrayDeque<>();
 
@@ -34,19 +28,11 @@ public final class ScopeBuilder {
    * @param classScopes whether code in a class body's functions sees the class's names
    */
   public ScopeBuilder(final Span unit, final ClassScopes classScopes) {
+    super();
     this.classScopes = classScopes;
     add(ScopeKind.BUILTIN, Scope.NO_PARENT, unit);
     add(ScopeKind.MODULE, UnitScopes.BUILTIN_ID, unit);
     stack.push(UnitScopes.MODULE_ID);
-  }
-
-  private int add(final ScopeKind kind, final int parent, final Span span) {
-    kinds.add(kind);
-    parents.add(parent);
-    spans.add(span);
-    bindings.add(new ArrayList<>());
-    open.add(Boolean.FALSE);
-    return kinds.size() - 1;
   }
 
   /** Opens a scope inside the current one and makes it current; returns its id. */
@@ -61,7 +47,7 @@ public final class ScopeBuilder {
     stack.pop();
   }
 
-  /** Returns the id of the current scope. */
+  @Override
   public int current() {
     return stack.peek();
   }
@@ -69,11 +55,6 @@ public final class ScopeBuilder {
   /** Returns the kind of scope {@code id}. */
   public ScopeKind kindOf(final int id) {
     return kinds.get(id);
-  }
-
-  /** Returns the id of the scope that encloses scope {@code id}. */
-  public int parentOf(final int id) {
-    return parents.get(id);
   }
 
   /**
@@ -90,49 +71,6 @@ public final class ScopeBuilder {
   /** Marks scope {@code id} open: names the analysis cannot see may be added to it. */
   public void markOpen(final int id) {
     open.set(id, Boolean.TRUE);
-  }
-
-  /** Reports whether scope {@code id} already declares {@code name}. */
-  public boolean declares(final int id, final String name) {
-    return bindings.get(id).stream().anyMatch(binding -> binding.name().equals(name));
-  }
-
-  /** Returns the latest binding of {@code name} that scope {@code id} declares. */
-  public Optional<Binding> declared(final int id, final String name) {
-    final List<Binding> here = bindings.get(id);
-    for (int index = here.size() - 1; index >= 0; index--) {
-      if (here.get(index).name().equals(name)) {
-        return Optional.of(here.get(index));
-      }
-    }
-    return Optional.empty();
-  }
-
-  /** Declares {@code name} in the current scope; returns the binding. */
-  public Binding declare(
-      final String name, final BindingKind kind, final Span span, final Set<BindingFlag> flags) {
-    return declareIn(current(), name, kind, span, flags);
-  }
-
-  /** Declares {@code name} in scope {@code id}; returns the binding. */
-  public Binding declareIn(
-      final int id,
-      final String name,
-      final BindingKind kind,
-      final Span span,
-      final Set<BindingFlag> flags) {
-    final Binding binding = new Binding(name, kind, span, flags, id, Optional.empty());
-    bindings.get(id).add(binding);
-    return binding;
-  }
-
-  /** Declares an imported name in the current scope; returns the binding. */
-  public Binding declareImport(
-      final String name, final Span span, final ImportOrigin origin, final Set<BindingFlag> flags) {
-    final Binding binding =
-        new Binding(name, BindingKind.IMPORT, span, flags, current(), Optional.of(origin));
-    bindings.get(current()).add(binding);
-    return binding;
   }
 
   /** Records a use of {@code name} in the current scope. */
@@ -152,13 +90,13 @@ public final class ScopeBuilder {
     for (int id = 0; id < kinds.size(); id++) {
       scopes.add(
           new Scope(
-              id, kinds.get(id), parents.get(id), spans.get(id), bindings.get(id), open.get(id)));
+              id, kinds.get(id), parents.get(id), spans.get(id), bindingsOf(id), open.get(id)));
     }
     final ScopeResolver resolver = new ScopeResolver(scopes, classScopes);
     final List<NameReference> references =
         pending.stream()
-            .sorted(java.util.Comparator.comparingInt(p -> p.span().startOffset()))
-            .map(p -> resolved(resolver, p))
+            .sorted(Comparator.comparingInt(use -> use.span().startOffset()))
+            .map(use -> resolved(resolver, use))
             .toList();
     return new UnitScopes(scopes, references);
   }
@@ -174,4 +112,6 @@ public final class ScopeBuilder {
         found.map(ScopeResolver.Found::binding),
         found.map(ScopeResolver.Found::before).orElse(false));
   }
+
+  private record Pending(String name, Span span, ReferenceAccess access, int scope) {}
 }
