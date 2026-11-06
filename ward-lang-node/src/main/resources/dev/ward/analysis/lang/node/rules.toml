@@ -1478,3 +1478,16 @@ check = "reassigned-binding"
 binding-kinds = ["IMPORT"]
 message = "'{value}' is read-only"
 '''
+
+[[rules]]
+id = "ward:javascript/no-undef"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+env = ["es2024"]
+message = "'{value}' is not defined"
+'''

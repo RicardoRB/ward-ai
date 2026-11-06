@@ -802,9 +802,8 @@ eslint = ["no-unassigned-vars"]
 
 [[rule]]
 name = "no-undef"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "planned", javascript = "implemented" }
+issues = { typescript = "#326" }
 eslint = ["no-undef"]
 
 [[rule]]
