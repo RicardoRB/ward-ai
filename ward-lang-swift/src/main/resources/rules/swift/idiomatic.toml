@@ -604,3 +604,19 @@ not-inside = ["class_body", "struct_body", "protocol_body", "extension_body", "c
 text = '^(?!(@\w+|static|final|class|dynamic|override|lazy|weak|unowned|required|convenience|mutating|nonmutating)*(private|fileprivate|internal|public|open))'
 message = "top-level declaration should specify its access level explicitly"
 '''
+
+[[rules]]
+id = "ward:swift/static-operator"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+inside = ["top_level"]
+not-inside = ["class_body", "struct_body", "extension_body", "protocol_body", "union_style_enum", "raw_value_style_enum"]
+text = '^func[^\w(]'
+message = "operator should be declared as a static function in its type"
+'''

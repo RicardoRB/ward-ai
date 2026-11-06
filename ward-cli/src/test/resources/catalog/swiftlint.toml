@@ -1111,8 +1111,7 @@ swiftlint = ["sorted_first_last"]
 [[rule]]
 name = "static-operator"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["static_operator"]
 
 [[rule]]
