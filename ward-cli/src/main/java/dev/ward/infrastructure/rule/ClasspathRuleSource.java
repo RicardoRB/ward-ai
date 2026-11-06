@@ -47,6 +47,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/python/pyflakes.toml",
           "rules/python/pylint.toml",
           "rules/swift-structural.toml",
+          "rules/swift/idiomatic-2.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/naming.toml");
 

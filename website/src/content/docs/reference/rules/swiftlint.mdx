@@ -130,7 +130,7 @@ description: Rules of the catalog file swiftlint and their counterparts.
 | `orphaned-doc-comment` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `orphaned_doc_comment` |
 | `overridden-super-call` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `overridden_super_call` |
 | `override-in-extension` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `override_in_extension` |
-| `pattern-matching-keywords` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `pattern_matching_keywords` |
+| `pattern-matching-keywords` | idiomatic | n/a | n/a | n/a | n/a | n/a | implemented | SwiftLint `pattern_matching_keywords` |
 | `period-spacing` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `period_spacing` |
 | `prefer-asset-symbols` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `prefer_asset_symbols` |
 | `prefer-condition-list` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `prefer_condition_list` |
@@ -190,7 +190,7 @@ description: Rules of the catalog file swiftlint and their counterparts.
 | `trailing-semicolon` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `trailing_semicolon` |
 | `type-contents-order` | linter | n/a | n/a | n/a | n/a | n/a | [#301](https://github.com/RicardoRB/ward-ai/issues/301) | SwiftLint `type_contents_order` |
 | `typesafe-array-init` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `typesafe_array_init` |
-| `unavailable-condition` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `unavailable_condition` |
+| `unavailable-condition` | idiomatic | n/a | n/a | n/a | n/a | n/a | implemented | SwiftLint `unavailable_condition` |
 | `unavailable-function` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `unavailable_function` |
 | `unhandled-throwing-task` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `unhandled_throwing_task` |
 | `unneeded-break-in-switch` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `unneeded_break_in_switch` |
@@ -215,3 +215,10 @@ description: Rules of the catalog file swiftlint and their counterparts.
 | `weak-delegate` | lint | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `weak_delegate` |
 | `xct-specific-matcher` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `xct_specific_matcher` |
 | `xctfail-message` | idiomatic | n/a | n/a | n/a | n/a | n/a | [#338](https://github.com/RicardoRB/ward-ai/issues/338) | SwiftLint `xctfail_message` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:swift/pattern-matching-keywords` | idiomatic | strict | none | SwiftLint `pattern_matching_keywords` |
+| `ward:swift/unavailable-condition` | idiomatic | standard, strict | none | SwiftLint `unavailable_condition` |

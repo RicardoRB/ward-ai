@@ -850,8 +850,7 @@ swiftlint = ["override_in_extension"]
 [[rule]]
 name = "pattern-matching-keywords"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["pattern_matching_keywords"]
 
 [[rule]]
@@ -1270,8 +1269,7 @@ swiftlint = ["typesafe_array_init"]
 [[rule]]
 name = "unavailable-condition"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unavailable_condition"]
 
 [[rule]]
