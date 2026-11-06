@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 
@@ -40,5 +41,22 @@ public interface CompiledRule {
   default List<RuleMatch> matches(
       final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
     return matches(root, dependencies);
+  }
+
+  /**
+   * Returns the matches of this rule in the tree rooted at {@code root} of the file {@code unit},
+   * given the files around it and the control-flow graphs of the unit. A rule that reads neither
+   * the path nor the text needs only {@link #matches(SyntaxNode, DependencyView, FlowView)}, which
+   * this default method delegates to.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final SourceUnit unit) {
+    return matches(root, dependencies, flow);
   }
 }

@@ -1,0 +1,8 @@
+# How Kotlin spells the modifiers that rule filters name. Kotlin has no `static`: members of a
+# companion or object are static, which is written `const` for constants and `companion` otherwise.
+kinds = ["modifierList", "functionModifierList", "annotation"]
+
+[texts]
+final = ["final", "const"]
+static = ["const", "companion"]
+abstract = ["abstract"]

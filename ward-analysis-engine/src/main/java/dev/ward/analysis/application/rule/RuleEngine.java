@@ -125,7 +125,8 @@ public final class RuleEngine {
       rule.matches(
               root.get(),
               view(rule, unit, state),
-              state.trees().flows(rule, unit, root.get(), collector))
+              state.trees().flows(rule, unit, root.get(), collector),
+              unit)
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
       collector.recordError(

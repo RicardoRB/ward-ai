@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -26,5 +27,18 @@ public interface RuleCheck {
    */
   default List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     return matches(root);
+  }
+
+  /**
+   * Returns the places in {@code root} where the check fails, given the control-flow graphs and the
+   * file. A check that reads neither the path nor the text needs only {@link #matches(SyntaxNode,
+   * FlowView)}.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the check cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+    return matches(root, flow);
   }
 }
