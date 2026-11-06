@@ -31,6 +31,8 @@ import org.junit.jupiter.api.Test;
 /** The {@code SCOPES} capability in the rule engine: gating, sharing and failures. */
 class RuleEngineScopesTest {
 
+  private static final int RULES = 3;
+
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
 
   private static final class CountingAnalysis implements ScopeAnalysis {
@@ -122,10 +124,10 @@ class RuleEngineScopesTest {
     final CountingAnalysis analysis = new CountingAnalysis(false);
 
     final RuleRunResult result =
-        run(analysis, Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES), 3);
+        run(analysis, Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES), RULES);
 
     assertThat(analysis.calls).isEqualTo(1);
-    assertThat(result.findings()).hasSize(3);
+    assertThat(result.findings()).hasSize(RULES);
   }
 
   @Test

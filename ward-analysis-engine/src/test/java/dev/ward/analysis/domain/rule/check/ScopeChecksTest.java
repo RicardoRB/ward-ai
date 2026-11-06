@@ -26,6 +26,20 @@ import org.junit.jupiter.api.Test;
 
 class ScopeChecksTest {
 
+  private static final int REFERENCES = 3;
+
+  private static final int OFFSET_0 = 0;
+  private static final int OFFSET_1 = 1;
+  private static final int OFFSET_2 = 2;
+  private static final int OFFSET_3 = 3;
+  private static final int OFFSET_4 = 4;
+  private static final int OFFSET_5 = 5;
+  private static final int OFFSET_6 = 6;
+  private static final int OFFSET_7 = 7;
+  private static final int OFFSET_8 = 8;
+  private static final int OFFSET_9 = 9;
+  private static final int OFFSET_10 = 10;
+
   private static final SyntaxNode ROOT =
       new SyntaxNode("file", new Span(1, 1, 1, 1, 0, 0), Map.of(), List.of());
 
@@ -58,15 +72,15 @@ class ScopeChecksTest {
 
   @Test
   void undefinedNamesAreTheUnresolvedOnesOutsideOpenScopes() {
-    final ScopeBuilder builder = new ScopeBuilder(at(0), ClassScopes.VISIBLE);
-    builder.reference("known", at(1), ReferenceAccess.READ);
-    builder.reference("print", at(2), ReferenceAccess.READ);
-    builder.reference("missing", at(3), ReferenceAccess.READ);
-    final int open = builder.open(ScopeKind.FUNCTION, at(4));
+    final ScopeBuilder builder = new ScopeBuilder(at(OFFSET_0), ClassScopes.VISIBLE);
+    builder.reference("known", at(OFFSET_1), ReferenceAccess.READ);
+    builder.reference("print", at(OFFSET_2), ReferenceAccess.READ);
+    builder.reference("missing", at(OFFSET_3), ReferenceAccess.READ);
+    final int open = builder.open(ScopeKind.FUNCTION, at(OFFSET_4));
     builder.markOpen(open);
-    builder.reference("hidden", at(5), ReferenceAccess.READ);
+    builder.reference("hidden", at(OFFSET_5), ReferenceAccess.READ);
     builder.close();
-    builder.declare("known", BindingKind.VARIABLE, at(0), Set.of());
+    builder.declare("known", BindingKind.VARIABLE, at(OFFSET_0), Set.of());
 
     final List<RuleMatch> found =
         run(
@@ -79,8 +93,8 @@ class ScopeChecksTest {
 
   @Test
   void theEnvironmentsAreHandedToTheBuiltins() {
-    final ScopeBuilder builder = new ScopeBuilder(at(0), ClassScopes.VISIBLE);
-    builder.reference("env", at(1), ReferenceAccess.READ);
+    final ScopeBuilder builder = new ScopeBuilder(at(OFFSET_0), ClassScopes.VISIBLE);
+    builder.reference("env", at(OFFSET_1), ReferenceAccess.READ);
     final ScopeView view = view(builder.build(), Set.of());
 
     assertThat(
@@ -96,33 +110,33 @@ class ScopeChecksTest {
 
   @Test
   void typesOfThePackageAreNotUndefinedInJavaKotlinAndSwift() {
-    final ScopeBuilder builder = new ScopeBuilder(at(0), ClassScopes.VISIBLE);
-    builder.reference("Upper", at(1), ReferenceAccess.READ);
-    builder.reference("Declared", at(2), ReferenceAccess.READ);
-    builder.reference("lower", at(3), ReferenceAccess.READ);
+    final ScopeBuilder builder = new ScopeBuilder(at(OFFSET_0), ClassScopes.VISIBLE);
+    builder.reference("Upper", at(OFFSET_1), ReferenceAccess.READ);
+    builder.reference("Declared", at(OFFSET_2), ReferenceAccess.READ);
+    builder.reference("lower", at(OFFSET_3), ReferenceAccess.READ);
     final ScopeView view = view(builder.build(), Set.of());
     final UndefinedNameCheck check = new UndefinedNameCheck("{value}", Set.of());
 
     assertThat(run(check, AnalysisLanguage.JAVA, view))
         .extracting(RuleMatch::message)
         .containsExactly("lower");
-    assertThat(run(check, AnalysisLanguage.PYTHON, view)).hasSize(3);
+    assertThat(run(check, AnalysisLanguage.PYTHON, view)).hasSize(REFERENCES);
   }
 
   @Test
   void unusedBindingsAreLocalsThatAreNeverRead() {
-    final ScopeBuilder builder = new ScopeBuilder(at(0), ClassScopes.VISIBLE);
-    builder.declare("moduleLevel", BindingKind.VARIABLE, at(1), Set.of());
-    builder.open(ScopeKind.FUNCTION, at(2));
-    builder.declare("param", BindingKind.PARAMETER, at(3), Set.of());
-    builder.declare("unused", BindingKind.VARIABLE, at(4), Set.of());
-    builder.reference("unused", at(4), ReferenceAccess.WRITE);
-    builder.declare("used", BindingKind.VARIABLE, at(5), Set.of());
-    builder.reference("used", at(6), ReferenceAccess.READ);
-    builder.declare("_ignored", BindingKind.VARIABLE, at(7), Set.of());
-    builder.declare("pair", BindingKind.VARIABLE, at(8), Set.of(BindingFlag.DESTRUCTURED));
-    builder.declare("shared", BindingKind.VARIABLE, at(9), Set.of(BindingFlag.NONLOCAL));
-    builder.declare("late", BindingKind.CONSTANT, at(10), Set.of());
+    final ScopeBuilder builder = new ScopeBuilder(at(OFFSET_0), ClassScopes.VISIBLE);
+    builder.declare("moduleLevel", BindingKind.VARIABLE, at(OFFSET_1), Set.of());
+    builder.open(ScopeKind.FUNCTION, at(OFFSET_2));
+    builder.declare("param", BindingKind.PARAMETER, at(OFFSET_3), Set.of());
+    builder.declare("unused", BindingKind.VARIABLE, at(OFFSET_4), Set.of());
+    builder.reference("unused", at(OFFSET_4), ReferenceAccess.WRITE);
+    builder.declare("used", BindingKind.VARIABLE, at(OFFSET_5), Set.of());
+    builder.reference("used", at(OFFSET_6), ReferenceAccess.READ);
+    builder.declare("_ignored", BindingKind.VARIABLE, at(OFFSET_7), Set.of());
+    builder.declare("pair", BindingKind.VARIABLE, at(OFFSET_8), Set.of(BindingFlag.DESTRUCTURED));
+    builder.declare("shared", BindingKind.VARIABLE, at(OFFSET_9), Set.of(BindingFlag.NONLOCAL));
+    builder.declare("late", BindingKind.CONSTANT, at(OFFSET_10), Set.of());
 
     final List<RuleMatch> found =
         run(
@@ -137,10 +151,10 @@ class ScopeChecksTest {
 
   @Test
   void anOpenScopeHidesItsUnusedBindings() {
-    final ScopeBuilder builder = new ScopeBuilder(at(0), ClassScopes.VISIBLE);
-    final int function = builder.open(ScopeKind.FUNCTION, at(1));
+    final ScopeBuilder builder = new ScopeBuilder(at(OFFSET_0), ClassScopes.VISIBLE);
+    final int function = builder.open(ScopeKind.FUNCTION, at(OFFSET_1));
     builder.markOpen(function);
-    builder.declare("local", BindingKind.VARIABLE, at(2), Set.of());
+    builder.declare("local", BindingKind.VARIABLE, at(OFFSET_2), Set.of());
 
     assertThat(
             run(

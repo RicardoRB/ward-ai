@@ -52,6 +52,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.analysis.domain.flow",
           "dev.ward.analysis.domain.flow.taint",
           "dev.ward.analysis.domain.format",
+          "dev.ward.analysis.domain.scope",
           "dev.ward.analysis.domain.types",
           "dev.ward.analysis.application.rule");
 

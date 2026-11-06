@@ -38,6 +38,14 @@ import org.junit.jupiter.api.io.TempDir;
  */
 final class ScopeImportResolutionTest {
 
+  private static final RuleDefinition RULE =
+      new RuleDefinition(
+          "ward:python/import-target",
+          AnalysisLanguage.PYTHON,
+          RuleCapability.SCOPES,
+          AnalysisSeverity.WARNING,
+          "");
+
   /** Reports where each import binding leads. */
   private static final class ImportMatcher implements RuleMatcher {
     @Override
@@ -99,14 +107,6 @@ final class ScopeImportResolutionTest {
     Files.writeString(root.resolve(path), text);
     return new SourceUnit(path, AnalysisLanguage.PYTHON, text);
   }
-
-  private static final RuleDefinition RULE =
-      new RuleDefinition(
-          "ward:python/import-target",
-          AnalysisLanguage.PYTHON,
-          RuleCapability.SCOPES,
-          AnalysisSeverity.WARNING,
-          "");
 
   private List<String> messages(final Map<String, String> entries, final List<SourceUnit> units) {
     final UnitResultCache cache =
