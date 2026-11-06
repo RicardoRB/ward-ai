@@ -30,9 +30,11 @@ public final class CustomImportOrderCheck implements RuleCheck {
   private static final Set<String> TOKENS = Set.of(STATIC, SPECIAL, STANDARD, THIRD_PARTY);
 
   private final List<List<String>> groups;
-  private final Rules rules;
   private final boolean sortAlphabetically;
   private final boolean separateLines;
+  private final Pattern special;
+  private final Pattern standard;
+  private final Pattern thirdParty;
   private final String message;
 
   /**
@@ -76,7 +78,10 @@ public final class CustomImportOrderCheck implements RuleCheck {
       final boolean sortAlphabetically,
       final boolean separateLines,
       final String message) {
-    this.rules = Objects.requireNonNull(rules, "rules");
+    Objects.requireNonNull(rules, "rules");
+    this.special = Pattern.compile(rules.special());
+    this.standard = Pattern.compile(rules.standard());
+    this.thirdParty = Pattern.compile(rules.thirdParty());
     this.groups = parse(rules.order());
     this.sortAlphabetically = sortAlphabetically;
     this.separateLines = separateLines;
@@ -157,15 +162,11 @@ public final class CustomImportOrderCheck implements RuleCheck {
       return false;
     }
     return switch (token) {
-      case SPECIAL -> find(rules.special(), name);
-      case STANDARD -> find(rules.standard(), name);
-      case THIRD_PARTY -> find(rules.thirdParty(), name);
+      case SPECIAL -> special.matcher(name).find();
+      case STANDARD -> standard.matcher(name).find();
+      case THIRD_PARTY -> thirdParty.matcher(name).find();
       default -> false;
     };
-  }
-
-  private static boolean find(final String regex, final String name) {
-    return Pattern.compile(regex).matcher(name).find();
   }
 
   private static List<List<String>> parse(final String order) {
@@ -174,13 +175,17 @@ public final class CustomImportOrderCheck implements RuleCheck {
     }
     final List<List<String>> groups = new ArrayList<>();
     for (final String group : order.split(GROUP_SEPARATOR)) {
-      final List<String> tokens = new ArrayList<>();
-      for (final String token : group.split(MEMBER_SEPARATOR)) {
-        tokens.add(token(token.trim()));
-      }
-      groups.add(List.copyOf(tokens));
+      groups.add(tokens(group));
     }
     return List.copyOf(groups);
+  }
+
+  private static List<String> tokens(final String group) {
+    final List<String> tokens = new ArrayList<>();
+    for (final String token : group.split(MEMBER_SEPARATOR)) {
+      tokens.add(token(token.trim()));
+    }
+    return List.copyOf(tokens);
   }
 
   private static String token(final String token) {

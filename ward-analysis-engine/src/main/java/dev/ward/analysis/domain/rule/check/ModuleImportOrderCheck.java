@@ -52,13 +52,8 @@ public final class ModuleImportOrderCheck implements RuleCheck {
     boolean sawType = false;
     for (int index = 0; index < all.size(); index++) {
       final ImportDeclaration declaration = all.get(index);
-      final boolean misplaced = declaration.isModule() && (top ? sawType : index < lastType);
-      final boolean unsorted =
-          declaration.isModule()
-              && previousModule != null
-              && previousModule.name().compareTo(declaration.name()) > 0;
-      if (misplaced
-          || unsorted
+      if (misplaced(declaration, index, lastType, sawType)
+          || unsorted(previousModule, declaration)
           || (previous != null && splitUnseparated(previous, declaration, lines))) {
         matches.add(
             CheckSupport.at(
@@ -69,6 +64,22 @@ public final class ModuleImportOrderCheck implements RuleCheck {
       previous = declaration;
     }
     return List.copyOf(matches);
+  }
+
+  /** A module import above the other imports when {@code top}, or below them otherwise. */
+  private boolean misplaced(
+      final ImportDeclaration declaration,
+      final int index,
+      final int lastType,
+      final boolean sawType) {
+    return declaration.isModule() && (top ? sawType : index < lastType);
+  }
+
+  private static boolean unsorted(
+      final ImportDeclaration previousModule, final ImportDeclaration declaration) {
+    return declaration.isModule()
+        && previousModule != null
+        && previousModule.name().compareTo(declaration.name()) > 0;
   }
 
   /** Returns the index of the last type or static import, or -1 when there is none. */

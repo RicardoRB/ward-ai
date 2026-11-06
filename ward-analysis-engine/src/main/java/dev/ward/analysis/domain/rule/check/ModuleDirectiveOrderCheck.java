@@ -64,32 +64,60 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
     String previousKeyword = null;
     Span previousSpan = null;
     int highest = -1;
-    for (final SyntaxNode directive : module.children()) {
-      final String keyword = keyword(directive);
+    for (final SyntaxNode node : module.children()) {
+      final String keyword = keyword(node);
       final int rank = order.indexOf(keyword);
-      if (!DIRECTIVE_KIND.equals(directive.kind()) || rank < 0) {
+      if (!DIRECTIVE_KIND.equals(node.kind()) || rank < 0) {
         continue;
       }
       if (rank < highest) {
-        matches.add(at(directive.span(), keyword));
+        matches.add(at(node.span(), keyword));
       }
       highest = Math.max(highest, rank);
-      if (keyword.equals(previousKeyword)) {
-        if (validateBlockSeparation && blankLines(lines, previousSpan, directive) > 0) {
-          matches.add(at(directive.span(), keyword));
-        }
-      } else {
-        if (!seen.add(keyword)) {
-          matches.add(at(directive.span(), keyword));
-        }
-        final int blank = previousKeyword == null ? -1 : blankLines(lines, previousSpan, directive);
-        if (validateBlockSeparation && blank >= 0 && blank != 1) {
-          matches.add(at(directive.span(), keyword));
-        }
-      }
+      matches.addAll(separation(previousKeyword, previousSpan, node, seen, lines));
       previousKeyword = keyword;
-      previousSpan = directive.span();
+      previousSpan = node.span();
     }
+  }
+
+  /**
+   * The findings of a directive's place after the previous directive: its block and blank lines.
+   */
+  private List<RuleMatch> separation(
+      final String previousKeyword,
+      final Span previousSpan,
+      final SyntaxNode directive,
+      final Set<String> seen,
+      final List<String> lines) {
+    final String keyword = keyword(directive);
+    if (keyword.equals(previousKeyword)) {
+      final List<RuleMatch> found = new ArrayList<>();
+      if (validateBlockSeparation && blankLines(lines, previousSpan, directive) > 0) {
+        found.add(at(directive.span(), keyword));
+      }
+      return found;
+    }
+    return boundary(previousSpan, directive, keyword, seen, lines);
+  }
+
+  /** The findings of a directive that starts a block: a repeated block and its blank lines. */
+  private List<RuleMatch> boundary(
+      final Span previousSpan,
+      final SyntaxNode directive,
+      final String keyword,
+      final Set<String> seen,
+      final List<String> lines) {
+    final List<RuleMatch> found = new ArrayList<>();
+    if (!seen.add(keyword)) {
+      found.add(at(directive.span(), keyword));
+    }
+    if (previousSpan != null && validateBlockSeparation) {
+      final int blank = blankLines(lines, previousSpan, directive);
+      if (blank >= 0 && blank != 1) {
+        found.add(at(directive.span(), keyword));
+      }
+    }
+    return found;
   }
 
   /** Returns the blank lines before a directive, or -1 when the text is unknown. */

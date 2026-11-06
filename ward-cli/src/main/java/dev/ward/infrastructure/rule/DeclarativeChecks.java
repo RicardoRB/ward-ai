@@ -95,18 +95,10 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
-      case "static-import",
-          "illegal-import",
-          "redundant-import",
-          "unnecessary-qualified-type",
-          "import-order",
-          "custom-import-order",
-          "import-control",
-          "module-directive-order",
-          "module-import-order",
-          "avoid-module-import" ->
-          ImportChecks.build(name, toml);
-      default -> MetricChecks.build(name, toml);
+      default ->
+          ImportChecks.isImportCheck(name)
+              ? ImportChecks.build(name, toml)
+              : MetricChecks.build(name, toml);
     };
   }
 

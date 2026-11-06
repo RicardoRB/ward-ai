@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StaticImportCheck;
 import dev.ward.analysis.domain.rule.check.UnnecessaryFullyQualifiedTypeCheck;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
@@ -27,7 +28,25 @@ final class ImportChecks {
   private static final String TOP = "top";
   private static final String BOTTOM = "bottom";
 
+  private static final Set<String> CHECKS =
+      Set.of(
+          "static-import",
+          "illegal-import",
+          "redundant-import",
+          "unnecessary-qualified-type",
+          "import-order",
+          "custom-import-order",
+          "import-control",
+          "module-directive-order",
+          "module-import-order",
+          "avoid-module-import");
+
   private ImportChecks() {}
+
+  /** Returns whether {@code name} is one of the import and module checks. */
+  static boolean isImportCheck(final String name) {
+    return CHECKS.contains(name);
+  }
 
   /**
    * Builds the check named {@code name}.
@@ -59,6 +78,13 @@ final class ImportChecks {
               TomlLists.optional(toml, "rules"),
               Pattern.compile(TomlValues.required(toml, "path")),
               message(toml));
+      default -> moduleCheck(name, toml);
+    };
+  }
+
+  /** Builds the checks of module declarations and module imports. */
+  private static RuleCheck moduleCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
       case "module-directive-order" ->
           new ModuleDirectiveOrderCheck(
               TomlLists.optional(toml, "order"),

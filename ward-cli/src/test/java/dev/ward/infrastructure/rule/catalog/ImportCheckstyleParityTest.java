@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 class ImportCheckstyleParityTest {
 
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
+  private static final String TRUE = "true";
   private static final String CUSTOM_RULES = "STATIC###THIRD_PARTY_PACKAGE";
   private static final String GOOGLE_STANDARD = "^(java|javax)\\.";
   private static final String ANY = ".*";
@@ -47,9 +48,6 @@ class ImportCheckstyleParityTest {
           "unnecessary-fully-qualified-type",
           "Checkstyle reports the last dot before the type name");
 
-  /** One Ward rule case and the Checkstyle module that mirrors it, with the module's properties. */
-  record Mirror(String rule, String fixture, String module, Map<String, String> properties) {}
-
   private static final List<Mirror> MIRRORS =
       List.of(
           new Mirror("static-import", "", "AvoidStaticImport", Map.of()),
@@ -69,7 +67,7 @@ class ImportCheckstyleParityTest {
               "illegal-import",
               "regexp",
               "IllegalImport",
-              Map.of("regexp", "true", "illegalPkgs", FILTER_SUN)),
+              Map.of("regexp", TRUE, "illegalPkgs", FILTER_SUN)),
           new Mirror("redundant-import", "", "RedundantImport", Map.of()),
           new Mirror(
               "unnecessary-fully-qualified-type", "", "UnnecessaryFullyQualifiedType", Map.of()),
@@ -80,68 +78,63 @@ class ImportCheckstyleParityTest {
               "import-order",
               "separated",
               "ImportOrder",
-              Map.of("groups", "java, javax", "separated", "true")),
+              Map.of("groups", "java, javax", "separated", TRUE)),
           new Mirror(
               "import-order", "case-sensitive", "ImportOrder", Map.of("caseSensitive", "false")),
           new Mirror(
               "custom-import-order",
               "",
               "CustomImportOrder",
-              customProperties(CUSTOM_RULES, "true", "true", NO_SPECIAL, GOOGLE_STANDARD, ANY)),
+              customProperties(
+                  CUSTOM_RULES, TRUE, TRUE, new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
           new Mirror(
               "custom-import-order",
               "rules",
               "CustomImportOrder",
               customProperties(
                   "THIRD_PARTY_PACKAGE###STATIC",
-                  "true",
-                  "true",
-                  NO_SPECIAL,
-                  GOOGLE_STANDARD,
-                  ANY)),
+                  TRUE,
+                  TRUE,
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
           new Mirror(
               "custom-import-order",
               "sort",
               "CustomImportOrder",
-              customProperties(CUSTOM_RULES, "false", "true", NO_SPECIAL, GOOGLE_STANDARD, ANY)),
+              customProperties(
+                  CUSTOM_RULES, "false", TRUE, new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
           new Mirror(
               "custom-import-order",
               "separate",
               "CustomImportOrder",
-              customProperties(CUSTOM_RULES, "true", "false", NO_SPECIAL, GOOGLE_STANDARD, ANY)),
+              customProperties(
+                  CUSTOM_RULES, TRUE, "false", new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
           new Mirror(
               "custom-import-order",
               "special",
               "CustomImportOrder",
               customProperties(
                   "SPECIAL_IMPORTS###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
-                  "true",
-                  "true",
-                  "^org\\.example\\..*",
-                  GOOGLE_STANDARD,
-                  ANY)),
+                  TRUE,
+                  TRUE,
+                  new Patterns("^org\\.example\\..*", GOOGLE_STANDARD, ANY))),
           new Mirror(
               "custom-import-order",
               "standard",
               "CustomImportOrder",
               customProperties(
                   "STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
-                  "true",
-                  "true",
-                  NO_SPECIAL,
-                  "^org\\.example\\..*",
-                  ANY)),
+                  TRUE,
+                  TRUE,
+                  new Patterns(NO_SPECIAL, "^org\\.example\\..*", ANY))),
           new Mirror(
               "custom-import-order",
               "third",
               "CustomImportOrder",
               customProperties(
                   "STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
-                  "true",
-                  "true",
-                  NO_SPECIAL,
-                  GOOGLE_STANDARD,
-                  "^org\\..*")),
+                  TRUE,
+                  TRUE,
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, "^org\\..*"))),
           new Mirror("module-directive-order", "", "ModuleDirectiveOrder", Map.of()),
           new Mirror(
               "module-directive-order",
@@ -157,7 +150,7 @@ class ImportCheckstyleParityTest {
           new Mirror(
               "module-import-order", "option", "ModuleImportOrder", Map.of("option", "bottom")),
           new Mirror(
-              "module-import-order", "separated", "ModuleImportOrder", Map.of("separated", "true")),
+              "module-import-order", "separated", "ModuleImportOrder", Map.of("separated", TRUE)),
           new Mirror("avoid-module-import", "", "AvoidModuleImport", Map.of()),
           new Mirror(
               "avoid-module-import",
@@ -171,19 +164,20 @@ class ImportCheckstyleParityTest {
               Map.of("maxAllowedModuleImports", "1")));
 
   private static Map<String, String> customProperties(
-      final String rules,
-      final String sort,
-      final String separate,
-      final String special,
-      final String standard,
-      final String thirdParty) {
+      final String rules, final String sort, final String separate, final Patterns patterns) {
     return Map.of(
-        "customImportOrderRules", rules,
-        "sortImportsInGroupAlphabetically", sort,
-        "separateLineBetweenGroups", separate,
-        "specialImportsRegExp", special,
-        "standardPackageRegExp", standard,
-        "thirdPartyPackageRegExp", thirdParty);
+        "customImportOrderRules",
+        rules,
+        "sortImportsInGroupAlphabetically",
+        sort,
+        "separateLineBetweenGroups",
+        separate,
+        "specialImportsRegExp",
+        patterns.special(),
+        "standardPackageRegExp",
+        patterns.standard(),
+        "thirdPartyPackageRegExp",
+        patterns.thirdParty());
   }
 
   @Test
@@ -281,4 +275,10 @@ class ImportCheckstyleParityTest {
     }
     return found;
   }
+
+  /** The regular expressions of the custom order's group tokens. */
+  private record Patterns(String special, String standard, String thirdParty) {}
+
+  /** One Ward rule case and the Checkstyle module that mirrors it, with the module's properties. */
+  record Mirror(String rule, String fixture, String module, Map<String, String> properties) {}
 }
