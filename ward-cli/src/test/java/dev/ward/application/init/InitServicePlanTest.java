@@ -4,7 +4,6 @@ import static dev.ward.ProjectFixtures.PLAIN_POM;
 import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.CompatibilityFixtures;
 import dev.ward.JavaPresetGates;
 import dev.ward.ProjectSnapshot;
 import dev.ward.application.project.ProjectDetector;
@@ -17,6 +16,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -72,31 +72,6 @@ class InitServicePlanTest {
   }
 
   @Test
-  void compatibilityUpdateIsPendingUntilApproved(@TempDir final Path dir) throws IOException {
-    Files.writeString(dir.resolve("pom.xml"), CompatibilityFixtures.OUTDATED_SPOTLESS_POM);
-    final InitService service = service(CompatibilityFixtures.outdatedSpotless());
-    final InitSelection format =
-        new InitSelection(
-            List.of("none"),
-            List.of("format"),
-            null,
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            false,
-            null,
-            false,
-            null,
-            null);
-
-    assertThat(pom(dir, service.plan(dir, format, false)).details())
-        .containsExactly("~ spotless-maven-plugin 1.0.0 -> 3.10.3 (requires approval)");
-    assertThat(pom(dir, service.plan(dir, format, true)).details())
-        .containsExactly("~ spotless-maven-plugin 1.0.0 -> 3.10.3");
-  }
-
-  @Test
   void consentedInstallationIsDescribed(@TempDir final Path dir) throws IOException {
     withPom(dir, PLAIN_POM);
 
@@ -122,12 +97,12 @@ class InitServicePlanTest {
     final Path configuration = dir.resolve("ward.toml");
     final String written = Files.readString(configuration);
 
-    assertThat(written).contains("[checks.checkstyle.paths]");
+    assertThat(written).contains("[checks.ward-format.paths]");
     assertThat(actions(dir, service.plan(dir, selection, true)))
         .containsEntry("ward.toml", Action.UNCHANGED);
 
     Files.writeString(
-        configuration, written.replaceAll("(?s)\\n\\[checks\\.[a-z]+\\.paths\\][^\\[]*", "\n"));
+        configuration, written.replaceAll("(?s)\\n\\[checks\\.[a-z-]+\\.paths\\][^\\[]*", "\n"));
 
     assertThat(Files.readString(configuration)).doesNotContain(".paths]");
     assertThat(actions(dir, service.plan(dir, selection, true)))
@@ -160,14 +135,8 @@ class InitServicePlanTest {
             pom,
             RuleFileTargetsFixtures.writer(),
             new ArchitectureTestGenerator(),
-            new FileConfigurationStorage()));
-  }
-
-  private static PlannedFileChange pom(final Path dir, final InitPlan plan) {
-    return plan.files().stream()
-        .filter(change -> change.file().equals(dir.resolve("pom.xml")))
-        .findFirst()
-        .orElseThrow();
+            new FileConfigurationStorage(),
+            new OwnedSectionWriter()));
   }
 
   private static Map<String, Action> actions(final Path dir, final InitPlan plan) {

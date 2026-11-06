@@ -49,7 +49,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
 
   @Test
   void initThenCheckPasses() {
-    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
+    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString()))
         .isZero();
     assertThat(project.resolve(WARD_TOML)).exists();
 
@@ -57,7 +57,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.OK);
     assertThat(out.toString())
         .contains(
-            "Ward " + VersionProvider.current(), "✓ format", "PASSED", "Quality Gate: PASSED");
+            "Ward " + VersionProvider.current(), "✓ ward-format", "PASSED", "Quality Gate: PASSED");
   }
 
   @Test

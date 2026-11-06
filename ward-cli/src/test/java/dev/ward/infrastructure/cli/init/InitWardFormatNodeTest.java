@@ -10,24 +10,19 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Node init: Biome keeps linting with its formatter off, and {@code ward-format} checks formatting. */
+/**
+ * Node init: Biome keeps linting with its formatter off, and {@code ward-format} checks formatting.
+ */
 @DisabledOnOs(OS.WINDOWS)
 class InitWardFormatNodeTest {
   @TempDir Path project;
 
   @Test
-  void nodeInitWritesWardFormatAndNoPrettierGate()
-      throws IOException, InterruptedException {
+  void nodeInitWritesWardFormatAndNoPrettierGate() throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
 
     final NodeFixtureRun.Result init =
-        fixture.ward(
-            "init",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--yes");
+        fixture.ward("init", "--preset", "standard", "--integration", "none", "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
@@ -52,13 +47,7 @@ class InitWardFormatNodeTest {
 
     final NodeFixtureRun.Result init =
         fixture.ward(
-            "init",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--agent-rules",
-            "--yes");
+            "init", "--preset", "standard", "--integration", "none", "--agent-rules", "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("AGENTS.md"))

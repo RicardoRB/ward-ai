@@ -51,7 +51,7 @@ class WardCliPythonProjectTest extends WardCliIntegrationSupport {
 
   @Test
   void jsonReportOfAMavenProjectHasNoLanguageVersion() {
-    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
+    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString()))
         .isZero();
     out.getBuffer().setLength(0);
 

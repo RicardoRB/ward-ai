@@ -24,7 +24,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Init writes the {@code ward-format} gate and, without one, the {@code .editorconfig} it reads. */
+/**
+ * Init writes the {@code ward-format} gate and, without one, the {@code .editorconfig} it reads.
+ */
 class InitWardFormatTest {
 
   @TempDir Path root;
@@ -34,14 +36,7 @@ class InitWardFormatTest {
     mavenProject();
 
     final InitCommandFixture init = init();
-    final int exit =
-        init.run(
-            "",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--yes");
+    final int exit = init.run("", "--preset", "standard", "--integration", "none", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))
@@ -61,14 +56,7 @@ class InitWardFormatTest {
     Files.writeString(root.resolve("src/main/java/shop/App.java"), "package shop;\nclass App {}\n");
 
     final InitCommandFixture init = init();
-    final int exit =
-        init.run(
-            "",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--yes");
+    final int exit = init.run("", "--preset", "standard", "--integration", "none", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))
@@ -86,26 +74,12 @@ class InitWardFormatTest {
     Files.writeString(root.resolve(".editorconfig"), existing);
 
     final InitCommandFixture preview = init();
-    preview.run(
-        "",
-        "--preset",
-        "standard",
-        "--integration",
-        "none",
-        "--dry-run",
-        "--yes");
+    preview.run("", "--preset", "standard", "--integration", "none", "--dry-run", "--yes");
     assertThat(preview.output()).contains("Ward formats with this .editorconfig");
     assertThat(Files.readString(root.resolve(".editorconfig"))).isEqualTo(existing);
 
     final InitCommandFixture init = init();
-    final int exit =
-        init.run(
-            "",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--yes");
+    final int exit = init.run("", "--preset", "standard", "--integration", "none", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve(".editorconfig"))).isEqualTo(existing);

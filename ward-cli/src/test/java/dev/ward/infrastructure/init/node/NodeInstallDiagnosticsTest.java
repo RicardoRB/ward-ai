@@ -50,7 +50,7 @@ class NodeInstallDiagnosticsTest {
                   "24",
                   TaskRunner.NONE,
                   null),
-              List.of(new InitGateOption("prettier", "Prettier", List.of("npx"), true, "ok")));
+              List.of(new InitGateOption("vitest", "Vitest", List.of("npx"), true, "ok")));
     } finally {
       logger.removeHandler(handler);
     }
@@ -58,7 +58,7 @@ class NodeInstallDiagnosticsTest {
     assertThat(records)
         .extracting(LogRecord::getMessage)
         .containsExactly(
-            "event=node-dependencies-added count=1 manager=npm",
+            "event=node-dependencies-added count=2 manager=npm",
             "event=node-install-start manager=npm",
             "event=node-install-complete exit=0");
   }

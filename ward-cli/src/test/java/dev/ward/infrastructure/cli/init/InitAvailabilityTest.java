@@ -78,13 +78,13 @@ class InitAvailabilityTest {
         wizard.selectGates(
             catalog,
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
-            List.of("tests", "format"));
+            List.of("tests", "checkstyle"));
 
     assertThat(output.toString())
         .contains(
-            "Unavailable on this JDK: format omitted: spotless-maven-plugin needs JDK 11+;"
+            "Unavailable on this JDK: checkstyle omitted: maven-checkstyle-plugin needs JDK 11+;"
                 + " this project builds on JDK 8")
-        .doesNotContain("format - ");
+        .doesNotContain("checkstyle - ");
     assertThat(selected).containsExactly("tests");
   }
 
@@ -140,10 +140,11 @@ class InitAvailabilityTest {
 
     @Override
     public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
-      return gateIds.contains("format")
+      return gateIds.contains("checkstyle")
           ? List.of(
               new GateOmission(
-                  "format", "spotless-maven-plugin needs JDK 11+; this project builds on JDK 8"))
+                  "checkstyle",
+                  "maven-checkstyle-plugin needs JDK 11+; this project builds on JDK 8"))
           : List.of();
     }
 

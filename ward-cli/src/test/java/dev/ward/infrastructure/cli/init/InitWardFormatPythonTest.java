@@ -17,19 +17,12 @@ class InitWardFormatPythonTest {
   @TempDir Path project;
 
   @Test
-  void pythonInitWritesWardFormatAndNoRuffFormatGate()
-      throws IOException, InterruptedException {
+  void pythonInitWritesWardFormatAndNoRuffFormatGate() throws IOException, InterruptedException {
     copyFixture("python-uv", project);
 
     final PythonStubbedRun.Result init =
         PythonStubbedRun.ward(
-            project,
-            "init",
-            "--preset",
-            "standard",
-            "--integration",
-            "none",
-            "--yes");
+            project, "init", "--preset", "standard", "--integration", "none", "--yes");
 
     assertThat(init.exit()).as(init.stdout() + init.stderr()).isZero();
     final String toml = Files.readString(project.resolve("ward.toml"));

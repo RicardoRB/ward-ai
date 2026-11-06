@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
  * their toolchain support. A change to any of these tables is a change to what init writes.
  */
 class PartialCheckSnapshotTest {
-  private static final List<String> JAVA_SOURCES = List.of("src/**/*.java");
   private static final List<String> NODE_SOURCES =
       List.of(
           "**/*.ts",
@@ -31,7 +30,6 @@ class PartialCheckSnapshotTest {
           "**/*.mjs",
           "**/*.cjs");
   private static final List<String> PYTHON_SOURCES = List.of("**/*.py", "**/*.pyi");
-  private static final List<String> SWIFT_SOURCES = List.of("**/*.swift");
   private static final List<String> PATHS = List.of("{paths}");
   private static final List<String> WHOLE_PROJECT = List.of("**");
 
@@ -65,32 +63,6 @@ class PartialCheckSnapshotTest {
           null);
   private static final Project UV =
       new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.NONE);
-  private static final Project SWIFTPM =
-      new Project(Path.of("/shop"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
-
-  @Test
-  void jvmMavenGatesKeepTheirTables() {
-    assertThat(table("checkstyle", MAVEN, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                JAVA_SOURCES,
-                List.of("config/checkstyle.xml", "pom.xml"),
-                List.of("-Dcheckstyle.includes={paths}"),
-                "**/{name}",
-                ","));
-    assertThat(table("pmd", MAVEN, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                JAVA_SOURCES, List.of("config/pmd-ruleset.xml", "pom.xml"), List.of(), null, null));
-    assertThat(table("format", MAVEN, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                JAVA_SOURCES,
-                List.of("pom.xml"),
-                List.of("-DspotlessFiles={paths}"),
-                ".*/{path}",
-                ","));
-  }
 
   @Test
   void nodeGatesKeepTheirTables() {
@@ -103,7 +75,6 @@ class PartialCheckSnapshotTest {
                 null,
                 null,
                 List.of("pnpm", "exec", "eslint", "--format", "json")));
-    assertThat(table("prettier", PNPM, QualityPreset.STANDARD).match()).isEqualTo(NODE_SOURCES);
   }
 
   @Test
@@ -137,19 +108,6 @@ class PartialCheckSnapshotTest {
                 null,
                 List.of(
                     "uv", "run", "--group", "ward", "ruff", "check", "--output-format", "json")));
-  }
-
-  @Test
-  void swiftGatesKeepTheirTables() {
-    assertThat(table("swift-format", SWIFTPM, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                SWIFT_SOURCES,
-                List.of(".swift-format"),
-                PATHS,
-                null,
-                null,
-                List.of("swift", "format", "lint", "--strict")));
   }
 
   @Test

@@ -10,6 +10,7 @@ import dev.ward.domain.init.InitResult;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -63,7 +64,8 @@ class InitOpenSpecIgnoreWarningTest {
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
                 new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()))
+                new FileConfigurationStorage(),
+                new OwnedSectionWriter()))
         .initialize(
             root,
             new InitSelection(

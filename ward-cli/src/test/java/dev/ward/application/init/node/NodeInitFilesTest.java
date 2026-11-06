@@ -72,7 +72,7 @@ class NodeInitFilesTest {
         new InitGeneralCatalog(
                 InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm")))
             .gates(project(BuildTool.NPM, "24"), null).stream()
-                .filter(gate -> Set.of("tsc", "vitest", "prettier", "eslint").contains(gate.id()))
+                .filter(gate -> Set.of("tsc", "vitest", "eslint").contains(gate.id()))
                 .toList();
 
     final String body =
@@ -83,7 +83,6 @@ class NodeInitFilesTest {
     assertThat(body)
         .contains(
             "ESLint",
-            "Prettier",
             "`npx tsc --noEmit --pretty false`",
             "Tests (Vitest)",
             "at least 70% line coverage",

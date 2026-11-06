@@ -21,12 +21,12 @@ class WardCliModuleCheckTest extends WardCliIntegrationSupport {
             .replace("</project>", "    <modules><module>core</module></modules>\n</project>"));
     final Path core = Files.createDirectories(project.resolve("core"));
     Files.writeString(core.resolve("pom.xml"), "<project><artifactId>core</artifactId></project>");
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     out.getBuffer().setLength(0);
     err.getBuffer().setLength(0);
 
     assertThat(run(CHECK, FORMAT_OPTION, JSON, "-C", core.toString())).isEqualTo(ExitCodes.OK);
-    assertThat(out.toString()).contains("\"format\"");
+    assertThat(out.toString()).contains("\"ward-format\"");
     assertThat(core.resolve(WARD_TOML)).doesNotExist();
   }
 }

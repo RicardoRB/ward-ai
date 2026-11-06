@@ -2,12 +2,10 @@ package dev.ward.infrastructure.cli.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.CompatibilityFixtures;
 import dev.ward.ProjectSnapshot;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -80,43 +78,5 @@ class InitDryRunTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("brew install semgrep").doesNotContain("openspec");
     assertThat(root.resolve(".ward")).doesNotExist();
-  }
-
-  @Test
-  void acceptCompatibilityUpdatesAppliesWithoutPromptingButStillAsks() throws IOException {
-    Files.writeString(root.resolve("pom.xml"), CompatibilityFixtures.OUTDATED_SPOTLESS_POM);
-    final InitCommandFixture init =
-        new InitCommandFixture(root, CompatibilityFixtures.outdatedSpotless());
-
-    final int exit =
-        init.run(
-            true,
-            "\nn\n\n",
-            "--accept-compatibility-updates",
-            "--integration",
-            "none",
-            "--gate",
-            "format");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output())
-        .contains("Select optional tools", "~ spotless-maven-plugin 1.0.0 -> 3.10.3")
-        .doesNotContain("Compatibility update proposed", "(requires approval)");
-    assertThat(Files.readString(root.resolve("pom.xml"))).contains("<version>3.10.3</version>");
-  }
-
-  @Test
-  void compatibilityUpdateIsPendingWithoutApproval() throws IOException {
-    Files.writeString(root.resolve("pom.xml"), CompatibilityFixtures.OUTDATED_SPOTLESS_POM);
-    final InitCommandFixture init =
-        new InitCommandFixture(root, CompatibilityFixtures.outdatedSpotless());
-
-    final int exit = init.run("", "--dry-run", "--integration", "none", "--gate", "format");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output())
-        .contains("~ spotless-maven-plugin 1.0.0 -> 3.10.3 (requires approval)");
-    assertThat(Files.readString(root.resolve("pom.xml")))
-        .isEqualTo(CompatibilityFixtures.OUTDATED_SPOTLESS_POM);
   }
 }

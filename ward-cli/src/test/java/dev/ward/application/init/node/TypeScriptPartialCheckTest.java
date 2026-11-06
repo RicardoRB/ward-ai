@@ -27,18 +27,16 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** The edit hook's check of a TypeScript project runs only ESLint and Prettier, on the file. */
+/** The edit hook's check of a TypeScript project runs only ESLint, on the file. */
 class TypeScriptPartialCheckTest {
   @TempDir Path root;
 
   @Test
-  void editedFileNarrowsEslintAndPrettierAndSkipsTheRest() throws IOException {
+  void editedFileNarrowsEslintAndSkipsTheRest() throws IOException {
     final FakeCommandExecutor executor = checkEditedFile(PackageManifest.EMPTY);
 
     assertThat(executor.commands)
-        .containsExactlyInAnyOrder(
-            List.of("npx", "prettier", "--check", "src/app.ts"),
-            List.of("npx", "eslint", "--format", "json", "src/app.ts"));
+        .containsExactlyInAnyOrder(List.of("npx", "eslint", "--format", "json", "src/app.ts"));
   }
 
   @Test

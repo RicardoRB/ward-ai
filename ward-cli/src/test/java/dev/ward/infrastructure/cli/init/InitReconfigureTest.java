@@ -22,8 +22,7 @@ class InitReconfigureTest {
         .isEqualTo(ExitCodes.OK);
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit =
-        init.run(true, "y\n2\n1\n" + MUTATION_ROW + "\n\n\n\nn\n\n");
+    final int exit = init.run(true, "y\n2\n1\n" + MUTATION_ROW + "\n\n\n\nn\n\n");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");

@@ -41,7 +41,7 @@ class InitJavaScriptProjectTest {
     assertThat(fixture.read("ward.toml"))
         .contains(
             "[checks.vitest]",
-            "[checks.prettier]",
+            "[checks.ward-format]",
             "[checks.eslint]",
             "command = \"npx vitest run --coverage\"")
         .doesNotContain("[checks.tsc]", "checkstyle", "mvnw");
@@ -50,7 +50,6 @@ class InitJavaScriptProjectTest {
             "\"eslint\": \"10.12.0\"",
             "\"@eslint/js\": \"10.0.1\"",
             "\"globals\": \"17.13.0\"",
-            "\"prettier\": \"3.9.10\"",
             "\"vitest\": \"4.0.18\"")
         .doesNotContain("typescript");
     assertThat(fixture.read(eslintConfig))

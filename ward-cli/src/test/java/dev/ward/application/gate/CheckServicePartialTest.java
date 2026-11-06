@@ -27,7 +27,6 @@ class CheckServicePartialTest {
       """
       version = 2
       [checks.format]
-      uses = "format"
       profiles = ["default", "edit"]
       command = "mvn spotless:check"
       [checks.checkstyle]

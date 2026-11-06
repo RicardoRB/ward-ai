@@ -71,7 +71,6 @@ class CoverageProjectMutationTest {
             "archunit-junit5",
             "pitest-maven",
             "maven-enforcer-plugin",
-            "spotless-maven-plugin",
             "license-maven-plugin",
             "japicmp-maven-plugin");
     assertThat(Files.readString(root.resolve("pom.xml")))

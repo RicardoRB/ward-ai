@@ -23,7 +23,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The Node version warning init shows, which never changes the files it writes. */
 class NodeVersionWarningInitTest {
-  private static final String PRETTIER = "prettier";
+  private static final String VITEST = "vitest";
   private static final String MANIFEST =
       """
       {
@@ -48,7 +48,7 @@ class NodeVersionWarningInitTest {
     final BuildFileChange change = configurator().apply(project(BuildTool.NPM, "20"), gates());
 
     assertThat(change.warnings()).anyMatch(warning -> warning.contains("Node 20"));
-    assertThat(Files.readString(root.resolve("package.json"))).contains("\"prettier\": \"3.9.10\"");
+    assertThat(Files.readString(root.resolve("package.json"))).contains("\"vitest\": \"4.0.18\"");
   }
 
   @Test
@@ -95,7 +95,6 @@ class NodeVersionWarningInitTest {
   }
 
   private static List<InitGateOption> gates() {
-    return List.of(
-        new InitGateOption(PRETTIER, PRETTIER, List.of("npx", PRETTIER), true, "available"));
+    return List.of(new InitGateOption(VITEST, VITEST, List.of("npx", VITEST), true, "available"));
   }
 }

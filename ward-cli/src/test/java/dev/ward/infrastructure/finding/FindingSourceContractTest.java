@@ -37,8 +37,7 @@ class FindingSourceContractTest {
                         new RuffJsonFindings(new ForyJsonCodec()),
                         new MypyJsonFindings(new ForyJsonCodec())),
                     new SwiftFindingSources(new SwiftLintJsonFindings(new ForyJsonCodec()))
-                        .sources()
-                        .stream())
+                        .sources().stream())
                 .toList());
 
     assertThat(extractor.gates())

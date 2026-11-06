@@ -53,19 +53,19 @@ class NodeBuildToolConfiguratorTest {
   @ParameterizedTest
   @CsvSource({"NPM, npm", "PNPM, pnpm", "YARN, yarn", "BUN, bun"})
   void installsWithThePackageManager(final BuildTool manager, final String executable) {
-    final BuildFileChange change = configurator.apply(project(manager, "24"), gates("prettier"));
+    final BuildFileChange change = configurator.apply(project(manager, "24"), gates("vitest"));
 
     assertThat(executor.commands).containsExactly(List.of(executable, "install"));
     assertThat(executor.workingDirectories).containsExactly(root);
-    assertThat(change.tools()).containsExactly("prettier");
+    assertThat(change.tools()).containsExactly("vitest", "@vitest/coverage-v8");
   }
 
   @Test
   void addsPinnedVersionsAndKeepsDeclaredOnes() throws IOException {
-    configurator.apply(project(BuildTool.NPM, "24"), gates("tsc", "prettier"));
+    configurator.apply(project(BuildTool.NPM, "24"), gates("tsc", "vitest"));
 
     assertThat(Files.readString(root.resolve("package.json")))
-        .contains("\"typescript\": \"^5.9.3\",\n    \"prettier\": \"3.9.10\"\n");
+        .contains("\"typescript\": \"^5.9.3\",\n    \"vitest\": \"4.0.18\",");
   }
 
   @Test
@@ -98,7 +98,7 @@ class NodeBuildToolConfiguratorTest {
               }
             });
 
-    assertThatThrownBy(() -> failing.apply(project(BuildTool.NPM, "24"), gates("prettier")))
+    assertThatThrownBy(() -> failing.apply(project(BuildTool.NPM, "24"), gates("vitest")))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("`npm install` failed");
     assertThat(Files.readString(root.resolve("package.json"))).isEqualTo(MANIFEST);
@@ -108,7 +108,7 @@ class NodeBuildToolConfiguratorTest {
   @Test
   void rollbackDeletesALockFileTheInstallCreated() throws IOException {
     final BuildFileChange change =
-        configurator.apply(project(BuildTool.PNPM, "24"), gates("prettier"));
+        configurator.apply(project(BuildTool.PNPM, "24"), gates("vitest"));
     Files.writeString(root.resolve("pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
 
     configurator.rollback(change);

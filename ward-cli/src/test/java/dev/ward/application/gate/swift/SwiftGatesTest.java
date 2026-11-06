@@ -35,7 +35,6 @@ class SwiftGatesTest {
   private static final int MINIMUM = 80;
   private static final List<String> TYPES =
       List.of(
-          "swift-format",
           "swiftlint",
           "swift-build",
           "swift-test",

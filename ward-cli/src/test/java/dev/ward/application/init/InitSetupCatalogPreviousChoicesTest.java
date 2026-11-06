@@ -13,6 +13,7 @@ import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
@@ -35,8 +36,10 @@ class InitSetupCatalogPreviousChoicesTest {
           catalog,
           new InitProjectFiles(
               new PomToolConfigurator(),
+              new NoRuleFileGeneration(),
               new ArchitectureTestGenerator(),
-              new FileConfigurationStorage()));
+              new FileConfigurationStorage(),
+              new OwnedSectionWriter()));
 
   @Test
   void strictConfigurationGivesItsGatesInOrderWithoutAPreset(@TempDir final Path dir)
