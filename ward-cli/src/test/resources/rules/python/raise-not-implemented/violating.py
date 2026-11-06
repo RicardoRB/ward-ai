@@ -1,0 +1,2 @@
+raise NotImplemented
+raise NotImplemented()

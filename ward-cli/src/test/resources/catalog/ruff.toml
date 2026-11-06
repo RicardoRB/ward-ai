@@ -352,30 +352,22 @@ ruff = ["B002"]
 
 [[rule]]
 name = "assignment-to-os-environ"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B003"]
 
 [[rule]]
 name = "unreliable-callable-check"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B004"]
 
 [[rule]]
 name = "strip-with-multi-characters"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B005"]
 
 [[rule]]
 name = "mutable-argument-default"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B006"]
 
 [[rule]]
@@ -387,23 +379,17 @@ ruff = ["B007"]
 
 [[rule]]
 name = "function-call-in-default-argument"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B008"]
 
 [[rule]]
 name = "get-attr-with-constant"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B009"]
 
 [[rule]]
 name = "set-attr-with-constant"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B010"]
 
 [[rule]]
@@ -415,9 +401,7 @@ ruff = ["B012"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B013"]
 
 [[rule]]
@@ -436,16 +420,12 @@ ruff = ["B015"]
 
 [[rule]]
 name = "raise-literal"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B016"]
 
 [[rule]]
 name = "assert-raises-exception"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B017"]
 
 [[rule]]
@@ -478,9 +458,7 @@ ruff = ["B021"]
 
 [[rule]]
 name = "useless-contextlib-suppress"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B022"]
 
 [[rule]]
@@ -506,9 +484,7 @@ ruff = ["B025"]
 
 [[rule]]
 name = "star-arg-unpacking-after-keyword-arg"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B026"]
 
 [[rule]]
@@ -520,16 +496,12 @@ ruff = ["B027"]
 
 [[rule]]
 name = "no-explicit-stacklevel"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B028"]
 
 [[rule]]
 name = "except-with-empty-tuple"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B029"]
 
 [[rule]]
@@ -563,9 +535,7 @@ pylint = ["duplicate-value"]
 
 [[rule]]
 name = "re-sub-positional-args"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B034"]
 
 [[rule]]
@@ -612,9 +582,7 @@ ruff = ["B904"]
 
 [[rule]]
 name = "zip-without-explicit-strict"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B905"]
 
 [[rule]]
@@ -1265,9 +1233,7 @@ ruff = ["DTZ901"]
 
 [[rule]]
 name = "multiple-imports-on-one-line"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E401"]
 
 [[rule]]
@@ -1286,16 +1252,12 @@ ruff = ["E502"]
 
 [[rule]]
 name = "none-comparison"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E711"]
 
 [[rule]]
 name = "true-false-comparison"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E712"]
 
 [[rule]]
@@ -1314,45 +1276,33 @@ ruff = ["E714"]
 
 [[rule]]
 name = "type-comparison"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E721"]
 
 [[rule]]
 name = "bare-except"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E722"]
 pylint = ["bare-except"]
 
 [[rule]]
 name = "lambda-assignment"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E731"]
 
 [[rule]]
 name = "ambiguous-variable-name"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E741"]
 
 [[rule]]
 name = "ambiguous-class-name"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E742"]
 
 [[rule]]
 name = "ambiguous-function-name"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E743"]
 
 [[rule]]
@@ -1455,9 +1405,7 @@ ruff = ["F406"]
 
 [[rule]]
 name = "future-feature-not-defined"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F407"]
 
 [[rule]]
@@ -1560,9 +1508,7 @@ ruff = ["F525"]
 
 [[rule]]
 name = "f-string-missing-placeholders"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F541"]
 
 [[rule]]
@@ -1595,9 +1541,7 @@ ruff = ["F622"]
 
 [[rule]]
 name = "assert-tuple"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F631"]
 
 [[rule]]
@@ -1616,9 +1560,7 @@ ruff = ["F633"]
 
 [[rule]]
 name = "if-tuple"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F634"]
 
 [[rule]]
@@ -1702,9 +1644,7 @@ ruff = ["F842"]
 
 [[rule]]
 name = "raise-not-implemented"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F901"]
 
 [[rule]]
