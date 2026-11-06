@@ -3,7 +3,6 @@ package dev.ward.infrastructure.rule.catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOption;
@@ -27,8 +26,8 @@ import org.tomlj.TomlParseResult;
 /**
  * Runs each option case of an implemented rule: a fixture directory {@code option-<case>/} holds an
  * {@code options.toml} with the user option values, and its {@code violating.<ext>} must report
- * exactly the expected positions with those values, and {@code passing.<ext>} nothing. Every
- * option a rule declares needs at least one case, so each option is checked at a non-default value.
+ * exactly the expected positions with those values, and {@code passing.<ext>} nothing. Every option
+ * a rule declares needs at least one case, so each option is checked at a non-default value.
  */
 class RuleOptionFixturesTest {
 
@@ -67,7 +66,8 @@ class RuleOptionFixturesTest {
   @MethodSource("optionCases")
   void optionCaseReportsExactlyTheExpectedPositions(final OptionCase optionCase)
       throws IOException {
-    final RuleDefinition rule = RULES.get(optionCase.pair().row().idFor(optionCase.pair().language()));
+    final RuleDefinition rule =
+        RULES.get(optionCase.pair().row().idFor(optionCase.pair().language()));
     assertThat(rule).isNotNull();
     final RuleDefinition tuned = RuleOptions.apply(rule, values(optionCase.directory()));
     final Path directory = optionCase.directory();
@@ -76,7 +76,12 @@ class RuleOptionFixturesTest {
     final TypeFacts typeFacts = FixtureTypeFacts.of(Optional.empty());
     final List<String> problems = new ArrayList<>();
     problems.addAll(
-        check(runner, tuned, directory.resolve("violating." + extension), expected(directory), typeFacts));
+        check(
+            runner,
+            tuned,
+            directory.resolve("violating." + extension),
+            expected(directory),
+            typeFacts));
     problems.addAll(
         check(runner, tuned, directory.resolve("passing." + extension), List.of(), typeFacts));
     assertThat(problems).isEmpty();
