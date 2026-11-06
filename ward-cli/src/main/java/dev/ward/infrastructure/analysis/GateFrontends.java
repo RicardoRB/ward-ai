@@ -25,57 +25,57 @@ public final class GateFrontends {
 
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
-  private static final Set<RuleCapability> SYNTAX =
-      Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES);
-  private static final Set<RuleCapability> SYMBOLS =
-      Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
-  private static final Set<RuleCapability> FLOW =
-      Set.of(
-          RuleCapability.SYNTAX,
-          RuleCapability.SYMBOLS,
-          RuleCapability.CFG,
-          RuleCapability.DATAFLOW,
-          RuleCapability.SCOPES);
 
   private GateFrontends() {}
 
   /** Creates the support of every language over one parser. */
   public static List<FrontendSupport> create(final LanguageFrontend frontend) {
+    // The sets are built here, not in static fields: a native image must not freeze enum sets.
+    final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES);
+    final Set<RuleCapability> symbols =
+        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
+    final Set<RuleCapability> flow =
+        Set.of(
+            RuleCapability.SYNTAX,
+            RuleCapability.SYMBOLS,
+            RuleCapability.CFG,
+            RuleCapability.DATAFLOW,
+            RuleCapability.SCOPES);
     return List.of(
         new FrontendSupport(
             AnalysisLanguage.JAVA,
             frontend,
-            FLOW,
+            flow,
             new JavaControlFlow(),
             new CachedScopes(new JavaScopeAnalysis(ClasspathBuiltinNames.java()))),
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             frontend,
-            SYMBOLS,
+            symbols,
             NO_GRAPHS,
             new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))),
         new FrontendSupport(
             AnalysisLanguage.TYPESCRIPT,
             frontend,
-            FLOW,
+            flow,
             new NodeControlFlow(),
             new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript()))),
         new FrontendSupport(
             AnalysisLanguage.JAVASCRIPT,
             frontend,
-            FLOW,
+            flow,
             new NodeControlFlow(),
             new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript()))),
         new FrontendSupport(
             AnalysisLanguage.SWIFT,
             frontend,
-            SYMBOLS,
+            symbols,
             NO_GRAPHS,
             new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))),
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,
             frontend,
-            SYNTAX,
+            syntax,
             NO_GRAPHS,
             new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))));
   }
