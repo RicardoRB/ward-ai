@@ -1,10 +1,11 @@
 package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type sidecars of one run. A language's sidecar starts at most once, and only when a selected
@@ -19,14 +22,29 @@ import java.util.Set;
  */
 public final class TypeSidecarRun implements AutoCloseable {
 
+  private static final Logger LOGGER = Logger.getLogger(TypeSidecarRun.class.getName());
+
   private final Map<AnalysisLanguage, TypeSidecar> sidecars;
-  private final Map<AnalysisLanguage, Optional<TypeResolver>> started =
+  private final Map<AnalysisLanguage, Optional<TypeFacts>> started =
       new EnumMap<>(AnalysisLanguage.class);
   private final List<TypeSidecar> opened = new ArrayList<>();
+  private final Optional<Path> classpathFile;
 
-  /** Creates the run over the sidecars registered per language. */
+  /**
+   * Creates the run over the sidecars registered per language, for a project without a classpath.
+   */
   public TypeSidecarRun(final Map<AnalysisLanguage, TypeSidecar> sidecars) {
+    this(sidecars, Optional.empty());
+  }
+
+  /**
+   * Creates the run over the sidecars registered per language; {@code classpathFile} is the
+   * project's {@code java-classpath} file, handed to every sidecar that uses one.
+   */
+  public TypeSidecarRun(
+      final Map<AnalysisLanguage, TypeSidecar> sidecars, final Optional<Path> classpathFile) {
     this.sidecars = Map.copyOf(sidecars);
+    this.classpathFile = classpathFile;
   }
 
   /**
@@ -41,7 +59,7 @@ public final class TypeSidecarRun implements AutoCloseable {
 
   private FrontendSupport withTypes(
       final FrontendSupport support, final List<RuleDefinition> rules) {
-    if (!needsTypes(support.language(), rules) || resolver(support.language()).isEmpty()) {
+    if (!needsTypes(support.language(), rules) || facts(support.language()).isEmpty()) {
       return support;
     }
     final Set<RuleCapability> capabilities = EnumSet.noneOf(RuleCapability.class);
@@ -60,20 +78,24 @@ public final class TypeSidecarRun implements AutoCloseable {
   }
 
   /**
-   * Returns the resolver of {@code language}, starting its sidecar on the first request. Empty when
-   * no sidecar is registered or it could not start; a failed start is not retried in the run.
+   * Returns the type facts of {@code language}, starting its sidecar on the first request. Empty
+   * when no sidecar is registered or it could not start; a failed start is not retried in the run.
    */
-  public Optional<TypeResolver> resolver(final AnalysisLanguage language) {
+  public Optional<TypeFacts> facts(final AnalysisLanguage language) {
     return started.computeIfAbsent(language, this::start);
   }
 
-  private Optional<TypeResolver> start(final AnalysisLanguage language) {
+  private Optional<TypeFacts> start(final AnalysisLanguage language) {
     final TypeSidecar sidecar = sidecars.get(language);
     if (sidecar == null) {
       return Optional.empty();
     }
     opened.add(sidecar);
-    return sidecar.start();
+    final Optional<TypeFacts> facts = sidecar.start(classpathFile);
+    if (facts.isEmpty() && LOGGER.isLoggable(Level.WARNING)) {
+      LOGGER.warning("event=type-sidecar-not-started language=" + language);
+    }
+    return facts;
   }
 
   /** Stops every sidecar that was started in this run. */

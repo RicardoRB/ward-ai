@@ -17,11 +17,14 @@ public final class JavaTypeSidecarFinding {
   /** Returns the optional finding for the Java type sidecar. */
   public static Finding finding(final EnvironmentFacts facts) {
     if (facts.hasExecutable(COMPILER)) {
-      return new Finding(NAME, Status.OK, "The Java type sidecar can run: javac is available.");
+      return new Finding(
+          NAME,
+          Status.OK,
+          "The Java type sidecar can run: javac is available. Without a java-classpath file, library types stay unresolved.");
     }
     return new Finding(
         NAME,
         Status.WARNING,
-        "optional: type-aware Java rules are skipped until a JDK with javac is on PATH.");
+        "optional: type-aware Java rules are not run until a JDK with javac is on PATH.");
   }
 }

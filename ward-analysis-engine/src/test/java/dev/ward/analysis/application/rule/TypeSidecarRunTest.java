@@ -4,13 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
-import dev.ward.analysis.domain.ir.ExpressionTypes;
-import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.port.TypeResolver;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.lang.reflect.Method;
 import java.lang.reflect.RecordComponent;
 import java.util.List;
@@ -83,8 +81,8 @@ class TypeSidecarRunTest {
   void aFailedStartIsNotRetriedInTheRun() {
     final CountingSidecar sidecar = new CountingSidecar(false);
     try (TypeSidecarRun run = new TypeSidecarRun(Map.of(AnalysisLanguage.JAVA, sidecar))) {
-      run.resolver(AnalysisLanguage.JAVA);
-      run.resolver(AnalysisLanguage.JAVA);
+      run.facts(AnalysisLanguage.JAVA);
+      run.facts(AnalysisLanguage.JAVA);
     }
     assertThat(sidecar.starts).isOne();
   }
@@ -96,7 +94,7 @@ class TypeSidecarRunTest {
     try (TypeSidecarRun run =
         new TypeSidecarRun(
             Map.of(AnalysisLanguage.JAVA, started, AnalysisLanguage.TYPESCRIPT, idle))) {
-      run.resolver(AnalysisLanguage.JAVA);
+      run.facts(AnalysisLanguage.JAVA);
     }
     assertThat(started.closes).isOne();
     assertThat(idle.closes).isZero();
@@ -105,8 +103,38 @@ class TypeSidecarRunTest {
   @Test
   void languageWithoutSidecarHasNoResolver() {
     try (TypeSidecarRun run = new TypeSidecarRun(Map.of())) {
-      assertThat(run.resolver(AnalysisLanguage.PYTHON)).isEmpty();
+      assertThat(run.facts(AnalysisLanguage.PYTHON)).isEmpty();
     }
+  }
+
+  @Test
+  void handsTheClasspathFileToTheSidecar() {
+    final java.nio.file.Path classpath = java.nio.file.Path.of("classpath.txt");
+    final java.util.concurrent.atomic.AtomicReference<Optional<java.nio.file.Path>> seen =
+        new java.util.concurrent.atomic.AtomicReference<>();
+    final TypeSidecar sidecar =
+        new TypeSidecar() {
+          @Override
+          public Optional<TypeFacts> start() {
+            return Optional.empty();
+          }
+
+          @Override
+          public Optional<TypeFacts> start(final Optional<java.nio.file.Path> classpathFile) {
+            seen.set(classpathFile);
+            return Optional.empty();
+          }
+
+          @Override
+          public void close() {
+            // Nothing runs.
+          }
+        };
+    try (TypeSidecarRun run =
+        new TypeSidecarRun(Map.of(AnalysisLanguage.JAVA, sidecar), Optional.of(classpath))) {
+      run.facts(AnalysisLanguage.JAVA);
+    }
+    assertThat(seen.get()).contains(classpath);
   }
 
   private static RuleDefinition typedRule() {
@@ -134,12 +162,12 @@ class TypeSidecarRunTest {
     }
 
     @Override
-    public Optional<TypeResolver> start() {
+    public Optional<TypeFacts> start() {
       starts++;
       if (!startable) {
         return Optional.empty();
       }
-      return Optional.of((SourceUnit unit, List<Span> spans) -> ExpressionTypes.none());
+      return Optional.of((unit, spans, kinds) -> UnitTypeFacts.none());
     }
 
     @Override
