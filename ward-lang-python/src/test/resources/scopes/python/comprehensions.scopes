@@ -1,0 +1,58 @@
+module
+  variable items @1:1
+  variable squares @2:1
+  variable pairs @3:1
+  variable gen @4:1
+  variable leak @5:1
+  variable nested @6:1
+  variable fn @7:1
+  comprehension @2:12
+    variable n @2:22 [destructured]
+  comprehension @3:10
+    variable k @3:19 [destructured]
+    variable v @3:22 [destructured]
+  comprehension @4:8
+    variable m @4:14 [destructured]
+    variable j @4:29 [destructured]
+  comprehension @6:11
+    variable row @6:32 [destructured]
+    comprehension @6:12
+      variable y @6:18 [destructured]
+  lambda @7:6
+    parameter q @7:13
+    parameter r @7:16
+references
+  1:1 items write -> module variable items @1:1
+  2:1 squares write -> module variable squares @2:1
+  2:12 n read -> comprehension variable n @2:22
+  2:16 n read -> comprehension variable n @2:22
+  2:22 n write -> comprehension variable n @2:22
+  2:27 items read -> module variable items @1:1
+  2:36 n read -> comprehension variable n @2:22
+  3:1 pairs write -> module variable pairs @3:1
+  3:10 k read -> comprehension variable k @3:19
+  3:13 v read -> comprehension variable v @3:22
+  3:19 k write -> comprehension variable k @3:19
+  3:22 v write -> comprehension variable v @3:22
+  3:27 zip read -> unresolved
+  3:31 items read -> module variable items @1:1
+  3:38 items read -> module variable items @1:1
+  4:1 gen write -> module variable gen @4:1
+  4:8 m read -> comprehension variable m @4:14
+  4:14 m write -> comprehension variable m @4:14
+  4:19 items read -> module variable items @1:1
+  4:29 j write -> comprehension variable j @4:29
+  4:34 range read -> unresolved
+  4:40 m read -> comprehension variable m @4:14
+  5:1 leak write -> module variable leak @5:1
+  5:8 n read -> unresolved
+  6:1 nested write -> module variable nested @6:1
+  6:12 y read -> comprehension variable y @6:18
+  6:18 y write -> comprehension variable y @6:18
+  6:23 row read -> comprehension variable row @6:32
+  6:32 row write -> comprehension variable row @6:32
+  6:39 items read -> module variable items @1:1
+  7:1 fn write -> module variable fn @7:1
+  7:18 items read -> module variable items @1:1
+  7:25 q read -> lambda parameter q @7:13
+  7:29 r read -> lambda parameter r @7:16

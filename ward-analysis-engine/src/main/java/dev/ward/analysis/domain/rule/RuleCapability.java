@@ -9,6 +9,8 @@ public enum RuleCapability {
   SYNTAX,
   /** Declared symbols and their scopes. */
   SYMBOLS,
+  /** The lexical scopes of a unit and the declaration each name refers to. */
+  SCOPES,
   /** Resolved types. */
   TYPES,
   /** Control-flow graphs. */

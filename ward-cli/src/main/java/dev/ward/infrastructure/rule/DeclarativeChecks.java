@@ -12,8 +12,10 @@ import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
+import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
+import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
 import java.util.Optional;
 import java.util.Set;
 import org.tomlj.TomlInvalidTypeException;
@@ -91,6 +93,11 @@ final class DeclarativeChecks {
   private static RuleCheck dataFlowCheck(final String name, final TomlParseResult toml) {
     return switch (name) {
       case "unused-assignment" -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE));
+      case "undefined-name" ->
+          new UndefinedNameCheck(
+              TomlValues.required(toml, MESSAGE),
+              Set.copyOf(TomlValues.optionalStrings(toml, "env")));
+      case "unused-binding" -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE));
       case "taint" ->
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));

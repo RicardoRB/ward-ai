@@ -6,10 +6,13 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.ParseResult;
+import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.rule.CompiledRule;
+import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
+import dev.ward.analysis.domain.rule.ScopeView;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -83,6 +86,30 @@ final class UnitTrees {
       collector.recordError(
           new RuleExecutionError(ruleId, unit.path(), "the control flow could not be lowered"));
       return FlowView.NONE;
+    }
+  }
+
+  /**
+   * The scopes a rule reads: none unless the rule reads capability {@code SCOPES}. The language's
+   * analysis shares one build per unit across rules.
+   */
+  ScopeView scopes(
+      final CompiledRule rule,
+      final SourceUnit unit,
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final RuleRunCollector collector) {
+    if (rule.definition().capability() != RuleCapability.SCOPES) {
+      return ScopeView.NONE;
+    }
+    final ScopeAnalysis analysis = support.get(unit.language()).scopes();
+    try {
+      return ScopeView.of(analysis.analyze(unit, root), dependencies, analysis);
+    } catch (final AnalysisFailedException exception) {
+      collector.recordError(
+          new RuleExecutionError(
+              rule.definition().id(), unit.path(), "the scopes could not be built"));
+      return ScopeView.NONE;
     }
   }
 }

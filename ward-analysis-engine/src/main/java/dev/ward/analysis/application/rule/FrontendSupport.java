@@ -4,7 +4,9 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.ControlFlowLowering;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.LanguageFrontend;
+import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.rule.RuleCapability;
+import dev.ward.analysis.domain.scope.NoScopes;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,12 +19,14 @@ import java.util.Set;
  * @param frontend the parser
  * @param capabilities the capabilities the frontend provides
  * @param lowering the control-flow lowering, which yields no graphs for a language without one
+ * @param scopes the scope analysis, which gives empty scopes for a language without one
  */
 public record FrontendSupport(
     AnalysisLanguage language,
     LanguageFrontend frontend,
     Set<RuleCapability> capabilities,
-    ControlFlowLowering lowering) {
+    ControlFlowLowering lowering,
+    ScopeAnalysis scopes) {
 
   /** A lowering for a language that has no control-flow graphs yet. */
   private static final ControlFlowLowering NO_GRAPHS =
@@ -39,7 +43,23 @@ public record FrontendSupport(
       final AnalysisLanguage language,
       final LanguageFrontend frontend,
       final Set<RuleCapability> capabilities) {
-    this(language, frontend, capabilities, NO_GRAPHS);
+    this(language, frontend, capabilities, NO_GRAPHS, NoScopes.INSTANCE);
+  }
+
+  /**
+   * Creates a frontend that provides control-flow graphs and no scopes.
+   *
+   * @param language the language the frontend parses
+   * @param frontend the parser
+   * @param capabilities the capabilities the frontend provides
+   * @param lowering the control-flow lowering
+   */
+  public FrontendSupport(
+      final AnalysisLanguage language,
+      final LanguageFrontend frontend,
+      final Set<RuleCapability> capabilities,
+      final ControlFlowLowering lowering) {
+    this(language, frontend, capabilities, lowering, NoScopes.INSTANCE);
   }
 
   /**
@@ -51,6 +71,7 @@ public record FrontendSupport(
     Objects.requireNonNull(language, "language");
     Objects.requireNonNull(frontend, "frontend");
     Objects.requireNonNull(lowering, "lowering");
+    Objects.requireNonNull(scopes, "scopes");
     capabilities = Set.copyOf(capabilities);
   }
 }

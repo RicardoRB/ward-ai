@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.ScopeView;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,5 +50,15 @@ public final class CheckedRule implements CompiledRule {
       final FlowView flow,
       final SourceUnit unit) {
     return check.matches(root, flow, unit);
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final ScopeView scopes,
+      final SourceUnit unit) {
+    return check.matches(root, flow, scopes, unit);
   }
 }

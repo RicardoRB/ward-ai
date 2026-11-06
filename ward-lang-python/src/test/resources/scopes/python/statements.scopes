@@ -1,0 +1,51 @@
+module
+  import json @1:8 [exported] from json
+  function work @5:5 [exported]
+  variable __all__ @23:1
+  function @5:1
+    parameter path @5:10
+    variable handle @6:24
+    variable data @7:9
+    variable error @10:23
+    variable index @12:9 [destructured]
+    variable value @12:16 [destructured]
+    variable first @14:5 [destructured]
+    variable rest @14:13 [destructured]
+    variable label @16:5
+    variable count @17:5
+    variable note @18:5
+references
+  1:8 json write -> module import json @1:8
+  4:2 decorator read -> unresolved
+  4:12 json read -> module import json @1:8
+  6:10 open read -> unresolved
+  6:15 path read -> function parameter path @5:10
+  6:24 handle write -> function variable handle @6:24
+  7:9 data write -> function variable data @7:9
+  7:16 handle read -> function variable handle @6:24
+  10:12 OSError read -> unresolved
+  10:23 error write -> function variable error @10:23
+  12:9 index write -> function variable index @12:9
+  12:16 value write -> function variable value @12:16
+  12:25 enumerate read -> unresolved
+  12:35 data read -> function variable data @7:9
+  13:9 value read -> function variable value @12:16
+  13:9 value write -> function variable value @12:16
+  14:5 first write -> function variable first @14:5
+  14:13 rest write -> function variable rest @14:13
+  14:20 data read -> function variable data @7:9
+  15:9 data delete -> function variable data @7:9
+  16:5 label write -> function variable label @16:5
+  16:16 path read -> function parameter path @5:10
+  16:25 width read -> unresolved
+  16:34 rest read -> function variable rest @14:13
+  16:44 first read -> function variable first @14:5
+  17:5 count write -> function variable count @17:5
+  17:12 int read -> unresolved
+  18:5 note write -> function variable note @18:5
+  18:11 str read -> unresolved
+  19:12 label read -> function variable label @16:5
+  19:19 count read -> function variable count @17:5
+  22:1 work write -> module function work @5:5
+  22:8 work read -> module function work @5:5
+  23:1 __all__ write -> module variable __all__ @23:1

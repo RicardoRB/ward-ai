@@ -59,4 +59,22 @@ public interface CompiledRule {
       final SourceUnit unit) {
     return matches(root, dependencies, flow);
   }
+
+  /**
+   * Returns the matches of this rule in the tree rooted at {@code root} of the file {@code unit},
+   * given the files around it, the control-flow graphs and the scopes of the unit. A rule that
+   * reads no scopes needs only {@link #matches(SyntaxNode, DependencyView, FlowView, SourceUnit)},
+   * which this default method delegates to.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final ScopeView scopes,
+      final SourceUnit unit) {
+    return matches(root, dependencies, flow, unit);
+  }
 }

@@ -122,10 +122,12 @@ public final class RuleEngine {
       return;
     }
     try {
+      final DependencyView dependencies = view(rule, unit, state);
       rule.matches(
               root.get(),
-              view(rule, unit, state),
+              dependencies,
               state.trees().flows(rule, unit, root.get(), collector),
+              state.trees().scopes(rule, unit, root.get(), dependencies, collector),
               unit)
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
@@ -134,10 +136,11 @@ public final class RuleEngine {
     }
   }
 
-  /** Only a rule that reads capability {@code SYMBOLS} sees the files around the unit. */
+  /** Only a rule that reads {@code SYMBOLS} or {@code SCOPES} sees the files around the unit. */
   private static DependencyView view(
       final CompiledRule rule, final SourceUnit unit, final RunState state) {
-    if (rule.definition().capability() != RuleCapability.SYMBOLS) {
+    final RuleCapability capability = rule.definition().capability();
+    if (capability != RuleCapability.SYMBOLS && capability != RuleCapability.SCOPES) {
       return DependencyView.NONE;
     }
     return state.snapshot().view(unit.path());
