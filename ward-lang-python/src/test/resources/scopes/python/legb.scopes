@@ -1,0 +1,60 @@
+module
+  import os @1:8 from os
+  import system @1:19 from sys
+  import d @2:22 from a.b
+  import e @2:25 from a.b
+  variable counter @4:1
+  function outer @7:5
+  function setter @19:5
+  variable created @22:5
+  class Box @26:7
+  function @7:1
+    parameter a @7:11
+    parameter b @7:14
+    parameter args @7:26
+    parameter kwargs @7:34
+    variable total @8:5
+    variable helper @9:5
+    function inner @11:9
+    function @11:5
+      variable total @12:18 [nonlocal]
+  function @19:1
+    variable counter @20:12 [global]
+    variable created @20:21 [global]
+    variable unused @23:5
+  class @26:1
+    variable size @27:5
+    variable other @28:5
+    function method @30:9
+    function read @33:9
+    function @30:5
+      parameter self @30:16
+    function @33:5
+      parameter self @33:14
+references
+  1:8 os write -> module import os @1:8
+  1:19 system write -> module import system @1:19
+  2:22 d write -> module import d @2:22
+  2:25 e write -> module import e @2:25
+  4:1 counter write -> module variable counter @4:1
+  7:16 counter read -> module variable counter @4:1
+  8:5 total write -> function variable total @8:5
+  8:13 a read -> function parameter a @7:11
+  8:17 b read -> function parameter b @7:14
+  9:5 helper write -> function variable helper @9:5
+  13:9 total write -> function variable total @8:5
+  13:17 total read -> function variable total @8:5
+  14:16 helper read -> function variable helper @9:5
+  16:12 inner read -> function function inner @11:9
+  16:19 d read -> module import d @2:22
+  16:22 os read -> module import os @1:8
+  16:26 undefined_name read -> unresolved
+  21:5 counter write -> module variable counter @4:1
+  22:5 created write -> module variable created @22:5
+  23:5 unused write -> function variable unused @23:5
+  27:5 size write -> class variable size @27:5
+  28:5 other write -> class variable other @28:5
+  28:13 size read -> class variable size @27:5
+  31:16 size read -> unresolved
+  34:16 self read -> function parameter self @33:14
+  34:28 counter read -> module variable counter @4:1

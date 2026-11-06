@@ -1,0 +1,52 @@
+module
+  import Function @1:27 from java.util.function.Function
+  class Lambdas @3:7
+  class @3:1 open
+    function run @4:8
+    function @4:3
+      parameter o @4:19
+      parameter k @4:26
+      block @4:29
+        variable inc @5:32
+        variable r @6:14
+        variable str @14:29 [destructured]
+        variable anon @24:12
+        lambda @5:38
+          parameter x @5:38
+        lambda @6:18
+          block @6:24
+            variable inner @7:11
+        block @9:5
+          variable resource @9:14 [destructured]
+          block @9:33
+          block @11:7
+            parameter e @11:63
+            block @11:66
+        block @14:51
+        block @17:5
+          variable scoped @19:13
+        class @24:32 open
+          variable hidden @25:11
+          function show @26:11
+          function @26:7
+            block @26:18
+references
+  5:32 inc write -> block variable inc @5:32
+  5:43 x read -> lambda parameter x @5:38
+  5:47 k read -> function parameter k @4:26
+  6:14 r write -> block variable r @6:14
+  7:11 inner write -> block variable inner @7:11
+  7:19 k read -> function parameter k @4:26
+  9:14 resource write -> block variable resource @9:14
+  10:11 resource read -> block variable resource @9:14
+  12:13 e read -> block parameter e @11:63
+  14:9 o read -> function parameter o @4:19
+  14:36 str read -> block variable str @14:29
+  15:11 str read -> block variable str @14:29
+  17:13 k read -> function parameter k @4:26
+  19:13 scoped write -> block variable scoped @19:13
+  24:12 anon write -> block variable anon @24:12
+  25:11 hidden write -> class variable hidden @25:11
+  26:27 hidden read -> class variable hidden @25:11
+  26:36 k read -> function parameter k @4:26
+  28:5 inherited write -> unresolved open

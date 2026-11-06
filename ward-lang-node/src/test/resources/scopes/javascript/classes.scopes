@@ -1,0 +1,30 @@
+module
+  import def @1:8 from ./m
+  import b @1:20 from ./m
+  import c @1:23 from ./m
+  import ns @2:13 from lib
+  constant exported @4:14 [const,lexical,exported]
+  function exportedFn @5:17 [hoisted,exported]
+  class Base @7:22 [lexical,exported]
+  class Other @13:7 [lexical]
+  constant Expr @14:7 [const,lexical]
+  function @5:8
+  class @7:16
+    function @10:3
+      parameter init @10:15
+    function @11:3
+      parameter arg @11:10
+  class @13:1
+references
+  4:14 exported write -> module constant exported @4:14
+  6:10 b read -> module import b @1:20
+  7:35 def read -> module import def @1:8
+  9:11 c read -> module import c @1:23
+  10:15 init write -> function parameter init @10:15
+  10:44 init read -> function parameter init @10:15
+  11:10 arg write -> function parameter arg @11:10
+  11:24 ns read -> module import ns @2:13
+  11:35 arg read -> function parameter arg @11:10
+  11:41 Base read -> module class Base @7:22
+  13:21 Missing read -> unresolved
+  14:7 Expr write -> module constant Expr @14:7

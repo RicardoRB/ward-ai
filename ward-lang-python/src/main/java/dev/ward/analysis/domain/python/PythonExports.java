@@ -51,6 +51,17 @@ final class PythonExports {
     return literalAll ? all : names;
   }
 
+  /** The entries of {@code __all__} when the module sets it to a literal list of strings. */
+  static Optional<List<String>> declaredAll(final SyntaxNode tree) {
+    for (final SyntaxNode statement : topLevelStatements(tree)) {
+      final Optional<List<String>> listed = literalAll(statement);
+      if (listed.isPresent()) {
+        return listed;
+      }
+    }
+    return Optional.empty();
+  }
+
   /** The statements directly in the module: definitions and simple statements. */
   private static List<SyntaxNode> topLevelStatements(final SyntaxNode tree) {
     final List<SyntaxNode> statements = new ArrayList<>();

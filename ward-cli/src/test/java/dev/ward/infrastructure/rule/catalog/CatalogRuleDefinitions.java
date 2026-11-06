@@ -12,7 +12,8 @@ import java.util.List;
 final class CatalogRuleDefinitions {
 
   private static final List<String> EXAMPLE_FILES =
-      List.of("rules-examples/java.toml", "rules-examples/python.toml");
+      List.of(
+          "rules-examples/java.toml", "rules-examples/python.toml", "rules-examples/scopes.toml");
 
   private CatalogRuleDefinitions() {}
 

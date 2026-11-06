@@ -4,16 +4,13 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.analysis.application.rule.FrontendSupport;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.jvm.JavaControlFlow;
-import dev.ward.analysis.domain.node.NodeControlFlow;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
+import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
@@ -25,7 +22,6 @@ import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import dev.ward.infrastructure.rule.ProjectRuleSource;
 import java.util.List;
-import java.util.Set;
 import javax.inject.Named;
 
 /** Binds the adapters of the {@code ward} gate and the optional gate extensions. */
@@ -62,22 +58,7 @@ interface GateExtensionBindingsModule {
       final AnalysisResultCodec codec,
       @Named("ward.version") final String wardVersion) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
-    final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX);
-    final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
-    final Set<RuleCapability> flow =
-        Set.of(
-            RuleCapability.SYNTAX,
-            RuleCapability.SYMBOLS,
-            RuleCapability.CFG,
-            RuleCapability.DATAFLOW);
-    final List<FrontendSupport> frontends =
-        List.of(
-            new FrontendSupport(AnalysisLanguage.JAVA, frontend, flow, new JavaControlFlow()),
-            new FrontendSupport(AnalysisLanguage.PYTHON, frontend, symbols),
-            new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, flow, new NodeControlFlow()),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, flow, new NodeControlFlow()),
-            new FrontendSupport(AnalysisLanguage.SWIFT, frontend, symbols),
-            new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, syntax));
+    final List<FrontendSupport> frontends = GateFrontends.create(frontend);
     return new AnalysisPorts(
         rules,
         matcher,

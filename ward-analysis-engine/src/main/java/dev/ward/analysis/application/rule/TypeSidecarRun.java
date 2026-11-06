@@ -66,7 +66,7 @@ public final class TypeSidecarRun implements AutoCloseable {
     capabilities.addAll(support.capabilities());
     capabilities.add(RuleCapability.TYPES);
     return new FrontendSupport(
-        support.language(), support.frontend(), capabilities, support.lowering());
+        support.language(), support.frontend(), capabilities, support.lowering(), support.scopes());
   }
 
   private static boolean needsTypes(

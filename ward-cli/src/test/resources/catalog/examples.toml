@@ -67,3 +67,11 @@ status = { python = "implemented" }
 [[rule]]
 name = "example-duplicate-import"
 status = { python = "implemented" }
+
+[[rule]]
+name = "example-undefined-name"
+status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
+
+[[rule]]
+name = "example-unused-binding"
+status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }

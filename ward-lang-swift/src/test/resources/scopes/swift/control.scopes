@@ -1,0 +1,91 @@
+module
+  function run @1:6
+  class Direction @28:6
+  class Base @33:7
+  class Derived @34:7
+  function @1:1
+    parameter optional @1:10
+    parameter other @1:26
+    block @1:46
+      constant unwrapped @2:15
+      constant closure @8:9
+      constant short @9:9
+      block @2:41
+      block @3:5
+        constant a @3:12
+        variable b @3:30
+        block @3:40
+      block @5:12
+      lambda @8:19
+        parameter n @8:22
+      lambda @9:17 open
+      lambda @10:15
+        parameter item @10:17
+      block @12:5
+        constant v @12:14
+      block @14:5
+        constant w @14:20
+      block @16:5
+      block @19:8
+      block @21:7
+        constant failure @21:17
+        block @21:25
+      block @24:8
+      block @24:24
+        parameter error @24:24
+        block @24:30
+  class @28:1 open
+    constant north @29:10
+    constant south @29:21
+    function flip @30:10
+    function @30:5
+      block @30:30
+  class @33:1
+  class @34:1 open
+    function use @35:10
+    function @35:5
+      block @35:16
+  class @38:1 open
+    function more @39:10
+    function @39:5
+      block @39:17
+references
+  2:15 unwrapped write -> block constant unwrapped @2:15
+  2:27 optional read -> function parameter optional @1:10
+  3:12 a write -> block constant a @3:12
+  3:16 optional read -> function parameter optional @1:10
+  3:30 b write -> block variable b @3:30
+  3:34 other read -> function parameter other @1:26
+  4:9 print read -> unresolved
+  4:15 a read -> block constant a @3:12
+  4:18 b read -> block variable b @3:30
+  6:9 print read -> unresolved
+  6:15 a read -> unresolved
+  8:9 closure write -> block constant closure @8:9
+  8:40 n read -> lambda parameter n @8:22
+  9:9 short write -> block constant short @9:9
+  9:19 $0 read -> unresolved open
+  10:5 items read -> unresolved
+  10:25 item read -> lambda parameter item @10:17
+  10:32 unknown read -> unresolved
+  11:12 unwrapped read -> block constant unwrapped @2:15
+  12:14 v write -> block constant v @12:14
+  12:22 v read -> block constant v @12:14
+  13:9 print read -> unresolved
+  13:15 v read -> block constant v @12:14
+  14:20 w write -> block constant w @14:20
+  15:9 print read -> unresolved
+  15:15 w read -> block constant w @14:20
+  20:13 risky read -> unresolved
+  21:17 failure write -> block constant failure @21:17
+  22:9 print read -> unresolved
+  22:15 failure read -> block constant failure @21:17
+  24:14 risky read -> unresolved
+  24:32 print read -> unresolved
+  24:38 error read -> block parameter error @24:24
+  25:12 unwrapped read -> block constant unwrapped @2:15
+  25:24 closure read -> block constant closure @8:9
+  25:37 short read -> block constant short @9:9
+  30:39 north read -> class constant north @29:10
+  35:18 inherited read -> unresolved open
+  39:19 y read -> unresolved open

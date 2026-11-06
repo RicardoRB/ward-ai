@@ -1,0 +1,46 @@
+module
+  variable hoisted @2:5 [hoisted]
+  variable later @3:5 [lexical]
+  function declared @4:10 [hoisted]
+  function early @17:10 [hoisted]
+  function late @18:10 [hoisted]
+  variable again @19:5 [hoisted]
+  variable again @20:5 [hoisted]
+  function @4:1
+    parameter a @4:19
+    parameter b @4:22
+    parameter rest @4:32
+    variable inner @5:7 [hoisted]
+    variable leaked @7:9 [hoisted]
+    block @6:10
+      variable scoped @8:9 [lexical]
+      constant fixed @9:11 [const,lexical]
+  block @13:1
+    variable tdz @15:7 [lexical]
+  function @17:1
+  function @18:1
+references
+  1:1 console read -> unresolved
+  1:13 hoisted read -> module variable hoisted @2:5 before-declaration
+  1:22 later read -> module variable later @3:5 before-declaration
+  1:29 tdz read -> unresolved
+  2:5 hoisted write -> module variable hoisted @2:5
+  3:5 later write -> module variable later @3:5
+  4:19 a write -> function parameter a @4:19
+  4:22 b write -> function parameter b @4:22
+  4:26 a read -> function parameter a @4:19
+  4:32 rest write -> function parameter rest @4:32
+  5:7 inner write -> function variable inner @5:7
+  6:7 a read -> function parameter a @4:19
+  7:9 leaked write -> function variable leaked @7:9
+  8:9 scoped write -> block variable scoped @8:9
+  9:11 fixed write -> block constant fixed @9:11
+  9:19 scoped read -> block variable scoped @8:9
+  11:10 leaked read -> function variable leaked @7:9
+  11:19 inner read -> function variable inner @5:7
+  11:27 missing read -> unresolved
+  14:3 tdz read -> block variable tdz @15:7 before-declaration
+  15:7 tdz write -> block variable tdz @15:7
+  17:27 late read -> module function late @18:10
+  19:5 again write -> module variable again @19:5
+  20:5 again write -> module variable again @20:5

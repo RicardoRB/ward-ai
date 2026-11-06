@@ -2,7 +2,6 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +24,7 @@ final class AnalysisFocus {
     this.paths = Set.copyOf(paths);
     this.dependencyRules =
         rules.stream()
-            .filter(rule -> rule.capability() == RuleCapability.SYMBOLS)
+            .filter(rule -> rule.capability().readsDependencies())
             .map(RuleDefinition::id)
             .collect(Collectors.toUnmodifiableSet());
     this.graph = graph;
