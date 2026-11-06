@@ -30,19 +30,22 @@ public final class NodeScopeAnalysis implements ScopeAnalysis {
   public UnitScopes analyze(final SourceUnit unit, final SyntaxNode tree) {
     final ScopeBuilder builder = new ScopeBuilder(tree.span(), ClassScopes.VISIBLE);
     final NodeImportScan imports = new NodeImportScan(tree);
-    for (final NodeImportScan.Binding binding : imports.bindings()) {
-      final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
-      if (binding.typeOnly()) {
-        flags.add(BindingFlag.TYPE_ONLY);
-      }
-      builder.declareImport(
-          NodeFlowSyntax.text(binding.local()),
-          binding.local().span(),
-          new ImportOrigin(binding.specifier(), binding.member(), binding.site()),
-          flags);
-    }
+    imports.bindings().forEach(binding -> declareImport(builder, binding));
     new NodeScopeWalk(builder, imports.sites()).visit(tree);
     return builder.build();
+  }
+
+  private static void declareImport(
+      final ScopeBuilder builder, final NodeImportScan.Binding binding) {
+    final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
+    if (binding.typeOnly()) {
+      flags.add(BindingFlag.TYPE_ONLY);
+    }
+    builder.declareImport(
+        NodeFlowSyntax.text(binding.local()),
+        binding.local().span(),
+        new ImportOrigin(binding.specifier(), binding.member(), binding.site()),
+        flags);
   }
 
   @Override

@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.scope.BindingFlag;
 import dev.ward.analysis.domain.scope.BindingKind;
 import dev.ward.analysis.domain.scope.ReferenceAccess;
 import dev.ward.analysis.domain.scope.ScopeBuilder;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -80,20 +81,32 @@ final class NodeScopeNames {
       final Set<BindingFlag> flags,
       final boolean destructured) {
     final SyntaxNode inner = unwrap(pattern);
+    if (TYPE_NODES.contains(inner.kind())) {
+      return;
+    }
     if (isName(inner)) {
       declareName(inner, scope, kind, flags, destructured);
-    } else if (TYPE_NODES.contains(inner.kind())) {
-      return;
     } else if (isAssignmentWithDefault(inner)) {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
       declare(parts.get(0), scope, kind, flags, destructured);
       expression.accept(parts.get(2));
-    } else if (PROPERTY_ASSIGNMENT.equals(inner.kind()) && hasToken(inner, COLON)) {
-      final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
+    } else {
+      declareParts(inner, scope, kind, flags, destructured);
+    }
+  }
+
+  private void declareParts(
+      final SyntaxNode inner,
+      final int scope,
+      final BindingKind kind,
+      final Set<BindingFlag> flags,
+      final boolean destructured) {
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
+    if (PROPERTY_ASSIGNMENT.equals(inner.kind()) && hasToken(inner, COLON)) {
       expression.accept(parts.get(0));
       declare(parts.get(parts.size() - 1), scope, kind, flags, true);
     } else {
-      for (final SyntaxNode part : NodeFlowSyntax.parts(inner)) {
+      for (final SyntaxNode part : parts) {
         declare(part, scope, kind, flags, destructured || isContainer(inner));
       }
     }
@@ -123,7 +136,8 @@ final class NodeScopeNames {
       final BindingKind kind,
       final Set<BindingFlag> flags,
       final boolean destructured) {
-    final Set<BindingFlag> all = new java.util.HashSet<>(flags);
+    final Set<BindingFlag> all = EnumSet.noneOf(BindingFlag.class);
+    all.addAll(flags);
     if (destructured) {
       all.add(BindingFlag.DESTRUCTURED);
     }

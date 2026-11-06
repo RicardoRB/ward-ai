@@ -17,18 +17,23 @@ import java.util.function.Consumer;
 final class NodeScopeExpressions {
 
   private static final int TRIPLE = 3;
+  private static final String TYPE_ANNOTATION = "typeAnnotation";
+  private static final int PAIR = 2;
+  private static final int SINGLE = 1;
 
   private static final Set<String> MEMBER_OPERATORS = Set.of(".", "?.");
   private static final Set<String> UPDATE_OPERATORS = Set.of("++", "--");
   private static final String EQUALS = "=";
   private static final String EVAL = "eval";
 
-  private final ScopeBuilder builder;
+  final ScopeBuilder builder;
   private final NodeScopeNames names;
   private final Consumer<SyntaxNode> visit;
+  final NodeScopeTypeRefs typeRefs;
 
   NodeScopeExpressions(
       final ScopeBuilder builder, final NodeScopeNames names, final Consumer<SyntaxNode> visit) {
+    this.typeRefs = new NodeScopeTypeRefs(this);
     this.builder = builder;
     this.names = names;
     this.visit = visit;
@@ -37,20 +42,32 @@ final class NodeScopeExpressions {
   /** Handles a {@code singleExpression}. */
   void expression(final SyntaxNode node) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
-    if (parts.size() == 1) {
-      final SyntaxNode name = NodeScopeNames.nameOf(node);
-      if (name == null) {
-        visit.accept(parts.get(0));
-      } else {
-        read(name);
-      }
-    } else if (parts.size() == TRIPLE && isAssignment(parts.get(1))) {
-      names.target(parts.get(0), !EQUALS.equals(NodeFlowSyntax.text(parts.get(1))));
-      visit.accept(parts.get(2));
-    } else if (parts.size() == 2 && updates(parts)) {
+    if (parts.size() == SINGLE) {
+      single(node, parts.get(0));
+    } else if (parts.size() == TRIPLE) {
+      triple(parts);
+    } else if (parts.size() == PAIR && updates(parts)) {
       names.target(parts.get(0).children().isEmpty() ? parts.get(1) : parts.get(0), true);
-    } else if (parts.size() == TRIPLE
-        && MEMBER_OPERATORS.contains(NodeFlowSyntax.text(parts.get(1)))) {
+    } else {
+      parts.forEach(visit);
+    }
+  }
+
+  private void single(final SyntaxNode node, final SyntaxNode only) {
+    final SyntaxNode name = NodeScopeNames.nameOf(node);
+    if (name == null) {
+      visit.accept(only);
+    } else {
+      read(name);
+    }
+  }
+
+  private void triple(final List<SyntaxNode> parts) {
+    final String operator = NodeFlowSyntax.text(parts.get(1));
+    if (isAssignment(parts.get(1))) {
+      names.target(parts.get(0), !EQUALS.equals(operator));
+      visit.accept(parts.get(2));
+    } else if (MEMBER_OPERATORS.contains(operator)) {
       visit.accept(parts.get(0));
     } else {
       parts.forEach(visit);
@@ -66,7 +83,7 @@ final class NodeScopeExpressions {
         || UPDATE_OPERATORS.contains(NodeFlowSyntax.text(parts.get(1)));
   }
 
-  private void read(final SyntaxNode name) {
+  void read(final SyntaxNode name) {
     final String text = NodeFlowSyntax.text(name);
     builder.reference(text, name.span(), ReferenceAccess.READ);
     if (EVAL.equals(text)) {
@@ -80,59 +97,6 @@ final class NodeScopeExpressions {
     final SyntaxNode name = NodeScopeNames.nameOf(first);
     if (name != null) {
       read(name);
-    }
-  }
-
-  /** Handles a type name: the first identifier, which is the type or the namespace, is read. */
-  void typeName(final SyntaxNode node) {
-    final SyntaxNode name = NodeScopeNames.nameOf(NodeFlowSyntax.parts(node).get(0));
-    if (name != null) {
-      read(name);
-    }
-  }
-
-  /** Handles {@code typeof x} in a type position. */
-  void typeQuery(final SyntaxNode node) {
-    NodeLeaves.of(node).stream()
-        .filter(NodeScopeNames::isName)
-        .filter(leaf -> !"typeof".equals(NodeFlowSyntax.text(leaf)))
-        .findFirst()
-        .ifPresent(this::read);
-  }
-
-  /** Reads the type references under a type position, declaring and visiting nothing else. */
-  void types(final SyntaxNode node) {
-    if ("typeName".equals(node.kind())) {
-      typeName(node);
-    } else if ("typeQuery".equals(node.kind())) {
-      typeQuery(node);
-    } else if (!"typeParameters".equals(node.kind())) {
-      node.children().forEach(this::types);
-    }
-  }
-
-  /** Declares the type parameters among {@code parts} in the current scope. */
-  void typeParameters(final List<SyntaxNode> parts) {
-    for (final SyntaxNode list : NodeFlowSyntax.allOf(parts, "typeParameters")) {
-      declareTypeParameters(list);
-    }
-  }
-
-  /** Declares the type parameters of a {@code typeParameters} node in the current scope. */
-  void declareTypeParameters(final SyntaxNode node) {
-    if ("typeParameter".equals(node.kind())) {
-      final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
-      final SyntaxNode name = NodeScopeNames.nameOf(parts.get(0));
-      if (name != null) {
-        builder.declare(
-            NodeFlowSyntax.text(name),
-            BindingKind.TYPE,
-            name.span(),
-            Set.of(BindingFlag.TYPE_ONLY));
-      }
-      parts.stream().skip(1).forEach(this::types);
-    } else {
-      node.children().forEach(this::declareTypeParameters);
     }
   }
 
@@ -156,7 +120,7 @@ final class NodeScopeExpressions {
         names.target(inner.get(0), false);
         inner.stream().skip(1).forEach(visit);
       } else {
-        inner.forEach(part -> readAll(part));
+        inner.forEach(this::readAll);
       }
     }
   }
@@ -191,8 +155,8 @@ final class NodeScopeExpressions {
     final SyntaxNode name = NodeScopeNames.nameOf(node);
     if (name != null) {
       read(name);
-    } else if ("typeAnnotation".equals(node.kind())) {
-      types(node);
+    } else if (TYPE_ANNOTATION.equals(node.kind())) {
+      typeRefs.types(node);
     } else {
       visit.accept(node);
     }

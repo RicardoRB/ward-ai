@@ -14,17 +14,6 @@ import java.util.regex.Pattern;
  */
 final class NodeImportScan {
 
-  /**
-   * One name an import binds.
-   *
-   * @param local the token of the name as the file uses it
-   * @param member the imported name, {@code default} for a default import, or {@code *}
-   * @param specifier the module as written, without quotes
-   * @param typeOnly whether the import exists only for the type system
-   * @param site the region from {@code import} to the module string
-   */
-  record Binding(SyntaxNode local, String member, String specifier, boolean typeOnly, Span site) {}
-
   private static final Pattern WORD = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final String STRING = "StringLiteral";
   private static final String TYPE = "type";
@@ -204,4 +193,15 @@ final class NodeImportScan {
         first.startOffset(),
         last.endOffset());
   }
+
+  /**
+   * One name an import binds.
+   *
+   * @param local the token of the name as the file uses it
+   * @param member the imported name, {@code default} for a default import, or {@code *}
+   * @param specifier the module as written, without quotes
+   * @param typeOnly whether the import exists only for the type system
+   * @param site the region from {@code import} to the module string
+   */
+  record Binding(SyntaxNode local, String member, String specifier, boolean typeOnly, Span site) {}
 }
