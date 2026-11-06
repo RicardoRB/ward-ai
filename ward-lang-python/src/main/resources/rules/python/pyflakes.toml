@@ -280,3 +280,68 @@ check = "percent-format"
 problem = "unsupported"
 message = "% format has an unsupported format character"
 '''
+
+[[rules]]
+id = "ward:python/string-dot-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "invalid"
+message = "invalid .format string: unbalanced braces"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-named"
+message = "unused named argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-positional-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-positional"
+message = "unused positional argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-missing-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "missing"
+message = "missing argument for a placeholder in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-mixing-automatic"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "mixed"
+message = ".format string mixes automatic and manual numbering"
+'''

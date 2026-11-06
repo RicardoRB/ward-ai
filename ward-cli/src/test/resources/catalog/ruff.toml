@@ -1447,37 +1447,27 @@ ruff = ["F509"]
 
 [[rule]]
 name = "string-dot-format-invalid-format"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F521"]
 
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F522"]
 
 [[rule]]
 name = "string-dot-format-extra-positional-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F523"]
 
 [[rule]]
 name = "string-dot-format-missing-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F524"]
 
 [[rule]]
 name = "string-dot-format-mixing-automatic"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F525"]
 
 [[rule]]
