@@ -51,6 +51,7 @@ sourceElement
 
 statement
     : block
+    | usingDeclaration
     | variableStatement
     | importStatement
     | exportStatement
@@ -85,10 +86,15 @@ importStatement
     ;
 
 importFromBlock
-    : importDefault? (importNamespace | importModuleItems) importFrom eos
-    | StringLiteral eos
+    : importDefault? (importNamespace | importModuleItems) importFrom importAttributes? eos
+    | StringLiteral importAttributes? eos
     ;
-
+importAttributes
+    : With '{' (importAttribute (',' importAttribute)* ','?)? '}'
+    ;
+importAttribute
+    : moduleExportName ':' StringLiteral
+    ;
 importModuleItems
     : '{' (importAliasName ',')* (importAliasName ','?)? '}'
     ;
@@ -131,10 +137,9 @@ exportStatement
     ;
 
 exportFromBlock
-    : importNamespace importFrom eos
-    | exportModuleItems importFrom? eos
+    : importNamespace importFrom importAttributes? eos
+    | exportModuleItems (importFrom importAttributes?)? eos
     ;
-
 exportModuleItems
     : '{' (exportAliasName ',')* (exportAliasName ','?)? '}'
     ;
@@ -149,10 +154,13 @@ declaration
     | functionDeclaration
     ;
 
+// `using` and `await using` declarations; `using` is not a reserved word
+usingDeclaration
+    : Await? {this.n("using")}? identifier variableDeclaration (',' variableDeclaration)* eos
+    ;
 variableStatement
     : variableDeclarationList eos
     ;
-
 variableDeclarationList
     : varModifier variableDeclaration (',' variableDeclaration)*
     ;
@@ -260,16 +268,15 @@ functionDeclaration
     ;
 
 classDeclaration
-    : Class identifier classTail
+    : decoratorList? Class identifier classTail
     ;
-
 classTail
     : (Extends singleExpression)? '{' classElement* '}'
     ;
 
 classElement
-    : (Static | {this.n("static")}? identifier)? methodDefinition
-    | (Static | {this.n("static")}? identifier)? fieldDefinition
+    : decoratorList? (Static | {this.n("static")}? identifier)? methodDefinition
+    | decoratorList? (Static | {this.n("static")}? identifier)? fieldDefinition
     | (Static | {this.n("static")}? identifier) block
     | emptyStatement_
     ;
@@ -281,9 +288,27 @@ methodDefinition
     ;
 
 fieldDefinition
-    : classElementName initializer?
+    : accessorModifier? classElementName initializer?
     ;
-
+// `accessor` is not a reserved word, so it is matched by its text
+accessorModifier
+    : {this.n("accessor")}? identifier
+    ;
+// Decorators: `@name`, `@a.b`, `@f(args)` and `@(expression)`
+decoratorList
+    : decorator+
+    ;
+decorator
+    : '@' (decoratorMemberExpression | decoratorCallExpression)
+    ;
+decoratorMemberExpression
+    : identifier
+    | decoratorMemberExpression '.' identifierName
+    | '(' singleExpression ')'
+    ;
+decoratorCallExpression
+    : decoratorMemberExpression arguments
+    ;
 classElementName
     : propertyName
     | privateIdentifier
@@ -343,6 +368,10 @@ propertyName
     | '[' singleExpression ']'
     ;
 
+// `import.meta`: the `meta` property of the module
+importMetaExpression
+    : Import '.' identifierName
+    ;
 arguments
     : '(' (argument (',' argument)* ','?)? ')'
     ;
@@ -366,6 +395,7 @@ singleExpression
     | New singleExpression                                                 # NewExpression
     | singleExpression '?.'? arguments                                     # ArgumentsExpression
     | New '.' identifier                                                   # MetaExpression // new.target
+    | importMetaExpression                                                 # ImportMeta
     | singleExpression {this.notLineTerminator()}? '++'                    # PostIncrementExpression
     | singleExpression {this.notLineTerminator()}? '--'                    # PostDecreaseExpression
     | Delete singleExpression                                              # DeleteExpression
