@@ -239,3 +239,31 @@ text = '^zip\((?![\s\S]*\bstrict\s*=)'
 message = "zip without an explicit strict= argument"
 '''
 
+
+[[rules]]
+id = "ward:python/except-with-non-exception-classes"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = "^except[\\d\"']"
+message = "except handler names a non-exception value"
+'''
+
+[[rules]]
+id = "ward:python/static-key-dict-comprehension"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "^\\{([\"'\\d]|True|False|None)[^:]*:[\\s\\S]*for\\w+in"
+message = "dict comprehension with a constant key repeats one key; use a literal value or a loop"
+'''

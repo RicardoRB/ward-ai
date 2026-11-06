@@ -1,0 +1,15 @@
+# Ruff's flake8-debugger rules (T100): a debugger call or import left in the code.
+
+[[rules]]
+id = "ward:python/debugger"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr", "import_name"]
+text = "^(breakpoint\\(|(i|pu)?pdb\\.set_trace\\()|^import(pdb|ipdb|pudb)$"
+message = "debugger call or import left in the code"
+'''

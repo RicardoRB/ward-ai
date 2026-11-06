@@ -1,2 +1,30 @@
 # Ruff's pylint error rules (PLE) that a line pattern decides.
 
+
+[[rules]]
+id = "ward:python/duplicate-bases"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class[^(]*\((?:[^,()]*,)*([\w.]+),(?:[^,()]*,)*\1[,)]'
+message = "duplicate base class in the class definition"
+'''
+
+[[rules]]
+id = "ward:python/bidirectional-unicode"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\\u202A-\\u202E\\u2066-\\u2069]"
+message = "bidirectional control character can hide code; remove it"
+'''
