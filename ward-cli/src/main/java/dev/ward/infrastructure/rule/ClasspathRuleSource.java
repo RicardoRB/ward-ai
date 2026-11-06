@@ -52,6 +52,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/swift/performance.toml",
           "rules/swift/idiomatic.toml",
           "rules/swift/lint.toml",
+          "rules/swift/idiomatic-2.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/naming.toml");
 
