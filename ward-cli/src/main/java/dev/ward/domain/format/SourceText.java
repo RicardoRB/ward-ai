@@ -7,8 +7,9 @@ import java.util.Objects;
  *
  * @param text the text, without its byte-order mark
  * @param byteOrderMark whether the file starts with a UTF-8 byte-order mark
+ * @param symbolicLink whether the path is a symbolic link, which Ward never rewrites
  */
-public record SourceText(String text, boolean byteOrderMark) {
+public record SourceText(String text, boolean byteOrderMark, boolean symbolicLink) {
   /**
    * Checks the text.
    *

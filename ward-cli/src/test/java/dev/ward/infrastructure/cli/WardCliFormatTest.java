@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.JsonTree;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -89,5 +91,22 @@ class WardCliFormatTest extends WardCliIntegrationSupport {
     assertThat(report.get("files").get(0).get("status").asString()).isEqualTo("needs-formatting");
     assertThat(report.get("files").get(0).get("path").asString()).isEqualTo(A);
     assertThat(report.get("files").get(0).get("line").asInt()).isEqualTo(1);
+  }
+
+  @Test
+  @DisabledOnOs(OS.WINDOWS)
+  void aSymbolicLinkIsRefusedAndNeverReplaced() throws IOException {
+    final Path link = project.resolve("src/Link.java");
+    Files.createSymbolicLink(link, project.resolve(A));
+
+    assertThat(run(FORMAT, CHECK_FLAG, "-C", project.toString(), "src/Link.java"))
+        .isEqualTo(ExitCodes.FAILED);
+    assertThat(run(FORMAT, "-C", project.toString(), "src/Link.java")).isEqualTo(ExitCodes.ERROR);
+
+    assertThat(err.toString())
+        .contains("refused src/Link.java:")
+        .contains("symbolic link, not rewritten");
+    assertThat(Files.isSymbolicLink(link)).isTrue();
+    assertThat(read(project, A)).isEqualTo(RAW_JAVA);
   }
 }

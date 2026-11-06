@@ -11,6 +11,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Added
 
 - `ward-frontend-antlr`, an internal analysis module with ANTLR parsers for Java, Kotlin, TypeScript, JavaScript, Python and Swift. Parsers are generated at build time from grammars pinned by commit, and syntax errors are returned as diagnostics next to a partial tree. No CLI behavior changes.
+- `ward format [--check] [--format text|json] [<path>...]`, Ward's native formatter for the sources of Java, Kotlin, TypeScript, JavaScript, Python and Swift, in Ward style and with no external formatter. Each file is checked for syntax, tokens, syntax-tree shape and idempotence before it is written. It writes atomically and keeps file permissions; `--check` writes nothing and exits 1 when a file needs formatting. Settings come from `.editorconfig`. Symbolic links are reported and never rewritten.
+- The `ward-format` quality gate (`uses = "ward-format"`, phase FAST), which reports one error per file that `ward format` would change, at its first differing line. Refused files and invalid `.editorconfig` settings are execution errors, never a pass. It supports partial runs and caches results by content and settings.
 - `ward:architecture/cycles` and `ward:architecture/independence`, the slice cycle and feature independence rules of the `ward` gate, configured by `[checks.ward.cycles]` and `[[checks.ward.independence]]`. One meaning for Java, Python, TypeScript, JavaScript and Swift: a cycle is reported between two or more slices, the first directory under a source root (#246).
 
 ### Changed
