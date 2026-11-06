@@ -114,4 +114,27 @@ class NodeFileSummarizerTest {
   private static List<String> exportNames(final FileSummary summary) {
     return summary.exports().stream().map(Symbol::name).toList();
   }
+
+  @Test
+  void recordsImportEqualsRequireAsARequireReference() {
+    final FileSummary summary =
+        summarize(AnalysisLanguage.TYPESCRIPT, "import g = require(\"./g\");\n");
+
+    assertThat(references(summary)).containsExactly("require:./g");
+  }
+
+  @Test
+  void exportsTheNamesOfTypeOnlyAndAliasedExportLists() {
+    final FileSummary summary =
+        summarize(
+            AnalysisLanguage.TYPESCRIPT,
+            """
+            const a = 1;
+            export type { T } from "./t";
+            export { a as b, type C };
+            """);
+
+    assertThat(summary.exports().stream().map(Symbol::name).toList())
+        .containsExactly("T", "b", "C");
+  }
 }
