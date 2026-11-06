@@ -7,28 +7,16 @@
       "glob": "dev/ward/rules/*.toml"
     },
     {
-      "glob": "rules/java/*.toml"
-    },
-    {
       "glob": "taint/**"
     },
     {
-      "glob": "rules/kotlin/*.toml"
+      "glob": "rules/**"
     },
     {
       "glob": "dev/ward/analysis/lang/node/rules.toml"
     },
     {
       "glob": "dev/ward/sidecar/*"
-    },
-    {
-      "glob": "rules/python-structural.toml"
-    },
-    {
-      "glob": "rules/swift-structural.toml"
-    },
-    {
-      "glob": "rules/modifiers/*.toml"
     },
     {
       "bundle": "com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"

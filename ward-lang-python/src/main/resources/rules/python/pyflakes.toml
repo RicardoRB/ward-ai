@@ -1,0 +1,72 @@
+# Ruff's pyflakes rules (F) that a text or syntax check can decide. Undefined-name and unused-name
+# rules need the symbol tables and are not here yet.
+
+[[rules]]
+id = "ward:python/future-feature-not-defined"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_from"]
+text = '^from__future__import(?!(annotations|generator_stop|nested_scopes|generators|division|absolute_import|with_statement|print_function|unicode_literals|barry_as_FLUFL))'
+message = "__future__ import of a feature that Python does not define"
+'''
+
+[[rules]]
+id = "ward:python/f-string-missing-placeholders"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "^[fF][rR]?(?:'[^'{]*'|\"[^\"{]*\")$"
+message = "f-string without any placeholders; drop the f prefix"
+'''
+
+[[rules]]
+id = "ward:python/assert-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assert_stmt"]
+text = '^assert\s*\([^()]*,[^()]*\)\s*(,[\s\S]*)?$'
+message = "assert on a non-empty tuple is always true"
+'''
+
+[[rules]]
+id = "ward:python/if-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = '^if\s*\(\s*[^()]*,[^()]*\)\s*:'
+message = "if on a non-empty tuple is always true"
+'''
+
+[[rules]]
+id = "ward:python/raise-not-implemented"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = '^raiseNotImplemented(\(\))?$'
+message = "NotImplemented is not an exception; raise NotImplementedError"
+'''

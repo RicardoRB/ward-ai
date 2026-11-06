@@ -1,0 +1,4 @@
+class Work {
+  void doWork() {
+  }
+}

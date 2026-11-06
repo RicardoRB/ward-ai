@@ -111,7 +111,7 @@ options.max = { type = "integer", min = 1 }
 body = '''
 check = "lines"
 kinds = ["lambdaBody"]
-max = 20
+max = 10
 message = "lambda body has {value} lines; the limit is {max}"
 '''
 

@@ -42,6 +42,10 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/bestpractices.toml",
           "dev/ward/analysis/lang/node/rules.toml",
           "rules/python-structural.toml",
+          "rules/python/pycodestyle.toml",
+          "rules/python/bugbear.toml",
+          "rules/python/pyflakes.toml",
+          "rules/python/pylint.toml",
           "rules/swift-structural.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/naming.toml");

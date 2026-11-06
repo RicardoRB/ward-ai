@@ -12,9 +12,10 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 56;
-  private static final int BUNDLED_RULES = 20;
-  private static final int RULES_PER_LANGUAGE = 10;
+  private static final int JAVA_RULE_COUNT = 73;
+  private static final int BUNDLED_RULES = 64;
+  private static final int TYPESCRIPT_RULES = 31;
+  private static final int JAVASCRIPT_RULES = 33;
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -84,14 +85,13 @@ class ClasspathRuleSourceTest {
             rule -> {
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
-              assertThat(rule.body().isEmpty() || rule.body().contains("check = \"taint\""))
-                  .isTrue();
+              assertThat(rule.body().isEmpty() || rule.body().contains("check = ")).isTrue();
             });
     assertThat(node.stream().map(RuleDefinition::id).distinct()).hasSize(BUNDLED_RULES);
     assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.TYPESCRIPT)))
-        .hasSize(RULES_PER_LANGUAGE);
+        .hasSize(TYPESCRIPT_RULES);
     assertThat(node.stream().filter(r -> r.covers(AnalysisLanguage.JAVASCRIPT)))
-        .hasSize(RULES_PER_LANGUAGE);
+        .hasSize(JAVASCRIPT_RULES);
   }
 
   @Test

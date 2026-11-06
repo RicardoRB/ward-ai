@@ -1,0 +1,2 @@
+record Point(int y) {
+}
