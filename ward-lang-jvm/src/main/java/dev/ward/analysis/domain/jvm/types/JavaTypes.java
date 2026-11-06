@@ -29,7 +29,8 @@ final class JavaTypes {
         dimensions++;
       }
     }
-    return base.map(found -> arrayOf(found, dimensions));
+    final int depth = dimensions;
+    return base.map(found -> arrayOf(found, depth));
   }
 
   /** Returns the type of a {@code typeTypeOrVoid} node. */
@@ -64,7 +65,8 @@ final class JavaTypes {
     if (segments.size() == 1 && scope.isTypeVariable(segments.get(0))) {
       return Optional.of(new JType.TypeVariable(segments.get(0)));
     }
-    return scope.resolve(segments).map(name -> new JType.ClassType(name, arguments));
+    final List<JType> written = arguments;
+    return scope.resolve(segments).map(name -> new JType.ClassType(name, written));
   }
 
   private static List<String> identifiers(final SyntaxNode node) {
