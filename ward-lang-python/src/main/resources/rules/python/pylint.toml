@@ -1,2 +1,119 @@
 # Ruff's pylint error rules (PLE) that a line pattern decides.
 
+
+[[rules]]
+id = "ward:python/duplicate-bases"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class[^(]*\((?:[^,()]*,)*([\w.]+),(?:[^,()]*,)*\1[,)]'
+message = "duplicate base class in the class definition"
+'''
+
+[[rules]]
+id = "ward:python/bidirectional-unicode"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\\u202A-\\u202E\\u2066-\\u2069]"
+message = "bidirectional control character can hide code; remove it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-all-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^__all__=[\"']"
+message = "__all__ must be a tuple or a list"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-backspace"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x08"
+message = "backspace character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-sub"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x1a"
+message = "SUB character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-esc"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x1b"
+message = "ESC character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-nul"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x00"
+message = "NUL character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-zero-width-space"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\u200B"
+message = "zero-width space in a string literal; use the escape instead"
+'''
