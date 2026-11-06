@@ -3,6 +3,9 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.AbstractClassWithoutAbstractMethodCheck;
+import dev.ward.analysis.domain.rule.check.ArrayIsStoredDirectlyCheck;
+import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
+import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveComplexityCheck;
 import dev.ward.analysis.domain.rule.check.CognitiveTokens;
 import dev.ward.analysis.domain.rule.check.CountedKinds;
@@ -11,11 +14,13 @@ import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
+import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
+import dev.ward.analysis.domain.rule.check.TypeNameMismatchCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestAssertCountCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestLifecycleCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestMissingAnnotationCheck;
@@ -142,6 +147,25 @@ final class DeclarativeChecks {
           new ImplicitFunctionalInterfaceCheck(TomlValues.required(toml, MESSAGE));
       case "preserve-stack-trace" ->
           new PreserveStackTraceCheck(TomlValues.required(toml, MESSAGE));
+      default -> flowCheck(name, toml);
+    };
+  }
+
+  /** The checks over assignments, array fields and file names; other names go to the metrics. */
+  private static RuleCheck flowCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "avoid-reassigning-catch-variables" ->
+          new AvoidReassigningCatchVariablesCheck(TomlValues.required(toml, MESSAGE));
+      case "avoid-reassigning-loop-variables" ->
+          new AvoidReassigningLoopVariablesCheck(
+              TomlValues.required(toml, "for-reassign"),
+              TomlValues.required(toml, "foreach-reassign"),
+              TomlValues.required(toml, MESSAGE));
+      case "method-returns-internal-array" ->
+          new MethodReturnsInternalArrayCheck(TomlValues.required(toml, MESSAGE));
+      case "array-is-stored-directly" ->
+          new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE));
+      case "type-name-mismatch" -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

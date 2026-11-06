@@ -44,10 +44,7 @@ pmd = ["AppendCharacterWithChar"]
 
 [[rule]]
 name = "array-is-stored-directly"
-category = "bestpractices"
-# Not applicable (review): needs data flow from a parameter into a field; no data-flow check of that shape exists yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ArrayIsStoredDirectly"]
 
 [[rule]]
@@ -214,18 +211,12 @@ pmd = ["AvoidPrintStackTrace"]
 
 [[rule]]
 name = "avoid-reassigning-catch-variables"
-category = "bestpractices"
-# Not applicable (review): needs the writes to a catch parameter; no data-flow check reads them yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidReassigningCatchVariables"]
 
 [[rule]]
 name = "avoid-reassigning-loop-variables"
-category = "bestpractices"
-# Not applicable (review): needs the writes to a loop variable inside its body; no data-flow check reads them yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AvoidReassigningLoopVariables"]
 
 [[rule]]
@@ -985,10 +976,7 @@ pmd = ["MDBAndSessionBeanNamingConvention"]
 
 [[rule]]
 name = "method-returns-internal-array"
-category = "bestpractices"
-# Not applicable (review): needs the binding of a returned name to a field
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["MethodReturnsInternalArray"]
 
 [[rule]]
@@ -1392,10 +1380,7 @@ pmd = ["TooManyStaticImports"]
 
 [[rule]]
 name = "type-name-mismatch"
-category = "bestpractices"
-# Not applicable (review): needs the declared type name compared with the file name, which no text check can do
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["TypeNameMismatch"]
 
 [[rule]]

@@ -511,3 +511,67 @@ body = '''
 check = "preserve-stack-trace"
 message = "exception is thrown without the caught exception as its cause"
 '''
+
+[[rules]]
+id = "ward:java/avoid-reassigning-catch-variables"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "avoid-reassigning-catch-variables"
+message = "catch parameter '{value}' is reassigned; use a new variable"
+'''
+
+[[rules]]
+id = "ward:java/avoid-reassigning-loop-variables"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.for-reassign = { type = "enum", values = ["allow", "deny"], parameter = "for-reassign" }
+options.foreach-reassign = { type = "enum", values = ["allow", "firstOnly", "deny"], parameter = "foreach-reassign" }
+body = '''
+check = "avoid-reassigning-loop-variables"
+for-reassign = "deny"
+foreach-reassign = "deny"
+message = "loop variable '{value}' is reassigned in its loop body"
+'''
+
+[[rules]]
+id = "ward:java/method-returns-internal-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "method-returns-internal-array"
+message = "returns the internal array of field '{value}'; return a copy"
+'''
+
+[[rules]]
+id = "ward:java/array-is-stored-directly"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "array-is-stored-directly"
+message = "array parameter {value} is stored in a field without a copy"
+'''
+
+[[rules]]
+id = "ward:java/type-name-mismatch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "type-name-mismatch"
+message = "type '{value}' is not named after its file"
+'''
