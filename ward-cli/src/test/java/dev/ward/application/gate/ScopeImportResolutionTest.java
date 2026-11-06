@@ -46,6 +46,8 @@ final class ScopeImportResolutionTest {
           AnalysisSeverity.WARNING,
           "");
 
+  @TempDir Path root;
+
   /** Reports where each import binding leads. */
   private static final class ImportMatcher implements RuleMatcher {
     @Override
@@ -90,8 +92,6 @@ final class ScopeImportResolutionTest {
       };
     }
   }
-
-  @TempDir Path root;
 
   private List<SourceUnit> write() throws IOException {
     Files.writeString(
