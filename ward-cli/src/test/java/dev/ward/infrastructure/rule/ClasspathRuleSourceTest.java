@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 44;
+  private static final int JAVA_RULE_COUNT = 61;
   private static final int BUNDLED_RULES = 64;
   private static final int TYPESCRIPT_RULES = 31;
   private static final int JAVASCRIPT_RULES = 33;
