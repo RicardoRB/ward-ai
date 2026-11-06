@@ -214,7 +214,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `shebang-not-first-line` | flake8-executable | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EXE005` |
 | `import-shadowed-by-loop-var` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F402` |
 | `late-future-import` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F404` |
-| `undefined-local-with-import-star-usage` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F405` |
+| `undefined-local-with-import-star-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F405` |
 | `undefined-local-with-nested-import-star-usage` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F406` |
 | `future-feature-not-defined` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F407` |
 | `percent-format-invalid-format` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F501` |
@@ -242,12 +242,12 @@ description: Rules of the catalog file ruff and their counterparts.
 | `if-tuple` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F634` |
 | `break-outside-loop` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F701` |
 | `continue-outside-loop` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F702` |
-| `yield-outside-function` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F704`; Pylint `yield-outside-function` |
-| `return-outside-function` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F706`; Pylint `return-outside-function` |
+| `yield-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F704`; Pylint `yield-outside-function` |
+| `return-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F706`; Pylint `return-outside-function` |
 | `default-except-not-last` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F707` |
 | `forward-annotation-syntax-error` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F722` |
-| `redefined-while-unused` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F811` |
-| `undefined-name` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F821` |
+| `redefined-while-unused` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F811` |
+| `undefined-name` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F821` |
 | `undefined-export` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F822` |
 | `undefined-local` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F823` |
 | `unused-annotation` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F842` |
@@ -918,6 +918,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/ambiguous-variable-name` | naming | standard, strict | none | Ruff `E741` |
 | `ward:python/ambiguous-class-name` | naming | standard, strict | none | Ruff `E742` |
 | `ward:python/ambiguous-function-name` | naming | standard, strict | none | Ruff `E743` |
+| `ward:python/undefined-local-with-import-star-usage` | coding | standard, strict | none | Ruff `F405` |
 | `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
 | `ward:python/f-string-missing-placeholders` | coding | standard, strict | none | Ruff `F541` |
 | `ward:python/multi-value-repeated-key-literal` | coding | standard, strict | none | Ruff `F601` |
@@ -925,6 +926,10 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/assert-tuple` | coding | standard, strict | none | Ruff `F631` |
 | `ward:python/invalid-print-syntax` | coding | standard, strict | none | Ruff `F633` |
 | `ward:python/if-tuple` | coding | standard, strict | none | Ruff `F634` |
+| `ward:python/yield-outside-function` | coding | standard, strict | none | Ruff `F704`; Pylint `yield-outside-function` |
+| `ward:python/return-outside-function` | coding | standard, strict | none | Ruff `F706`; Pylint `return-outside-function` |
+| `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
+| `ward:python/undefined-name` | coding | standard, strict | none | Ruff `F821` |
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
 | `ward:python/duplicate-bases` | coding | strict | none | Ruff `PLE0241`; Pylint `duplicate-bases` |
 | `ward:python/invalid-all-format` | coding | strict | none | Ruff `PLE0605`; Pylint `invalid-all-format` |

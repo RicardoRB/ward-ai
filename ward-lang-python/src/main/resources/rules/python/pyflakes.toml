@@ -112,3 +112,67 @@ kinds = ["expr_stmt"]
 text = '^\*[^=]*\*[^=]*='
 message = "two starred expressions in an assignment"
 '''
+
+[[rules]]
+id = "ward:python/undefined-name"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "undefined name '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/yield-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["yield_expr"]
+within = ["FUNCTION", "LAMBDA"]
+message = "yield statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/return-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["return_stmt"]
+within = ["FUNCTION"]
+message = "return statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/redefined-while-unused"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefinition"
+message = "redefinition of unused '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local-with-import-star-usage"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "star-import-usage"
+message = "'{value}' may be undefined, or defined from star imports"
+'''

@@ -1383,9 +1383,7 @@ ruff = ["F404"]
 
 [[rule]]
 name = "undefined-local-with-import-star-usage"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F405"]
 
 [[rule]]
@@ -1565,17 +1563,13 @@ ruff = ["F702"]
 
 [[rule]]
 name = "yield-outside-function"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F704"]
 pylint = ["yield-outside-function"]
 
 [[rule]]
 name = "return-outside-function"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F706"]
 pylint = ["return-outside-function"]
 
@@ -1595,16 +1589,12 @@ ruff = ["F722"]
 
 [[rule]]
 name = "redefined-while-unused"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F811"]
 
 [[rule]]
 name = "undefined-name"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F821"]
 
 [[rule]]
