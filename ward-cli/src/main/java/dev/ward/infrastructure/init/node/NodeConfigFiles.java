@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.init.node;
 
-import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
@@ -84,9 +83,7 @@ final class NodeConfigFiles {
               + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()));
     }
     if (ids.contains(BIOME)) {
-      targets.addAll(
-          NodeLintConfigTargets.biome(
-              project, configs, preset, ids.contains(FormatGates.WARD_FORMAT)));
+      targets.addAll(NodeLintConfigTargets.biome(project, configs, preset));
     }
     return targets;
   }

@@ -119,15 +119,15 @@ order:
 
    Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
-   that uses Biome gets one `biome` gate in place of Prettier and ESLint, as described there. Recommend `standard` for a first setup or a large
+   that uses Biome gets one `biome` gate in place of ESLint, as described there. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
-   script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format` and `enforcer` are
+   script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd` and `enforcer` are
    written into each of those module scripts, and the root script declares their versions with
    `apply false`. `archunit` is not offered there, because module boundaries already enforce the
    dependency direction; a single-module Kotlin project keeps it. Do not offer `archunit` for such
    a build, even under `strict`.
-   In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format`
+   In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`
    and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
@@ -179,10 +179,9 @@ order:
    enforces the style: `tool` (the default, and the recommendation until the engine's verdict is
    proven on the project) or `ward` (`--architecture-engine ward`, boundaries, slice cycles and
    feature independence in `ward.toml`; the strict cycle rules are then not generated externally).
-   When a selected gate formats the sources (`format`, `prettier`, `biome`, `ruff-format` or
-   `swift-format`), also ask which formatter checks them: `tool` (the default) or `ward`
-   (`--format-engine ward`, the `ward-format` gate in place of the external formatters, and an
-   `.editorconfig` with Ward's defaults only when the project has none).
+   Formatting is always checked by the `ward-format` gate, which init adds to every selection.
+   Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
+   Ward's defaults only when the project has none; an existing one is kept unchanged.
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.
@@ -298,8 +297,8 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that `ward.toml` has `paths` tables for Checkstyle, PMD, format, Semgrep, and
-   Gitleaks (ESLint and Prettier, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
+   Mention that `ward.toml` has `paths` tables for Checkstyle, PMD, ward-format, Semgrep, and
+   Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
    native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the

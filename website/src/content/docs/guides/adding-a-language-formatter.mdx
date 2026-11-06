@@ -60,7 +60,6 @@ last `--check` must pass.
 
 ## Init
 
-`ward init --format-engine ward` uses the registry only through the `ward-format` gate, so a new
-language needs no init change to be formatted. If the language has an external formatter that init
-generates, add its gate id to `FormatGates.REPLACED` so that `--format-engine ward` drops it, and
-extend the `.editorconfig` defaults in `EditorConfigTemplate` if the language has its own indent.
+`ward init` uses the registry only through the `ward-format` gate, so a new language needs no init
+change to be formatted. Ward runs no external formatter, so init never generates one: extend the
+`.editorconfig` defaults in `EditorConfigTemplate` if the language has its own indent.

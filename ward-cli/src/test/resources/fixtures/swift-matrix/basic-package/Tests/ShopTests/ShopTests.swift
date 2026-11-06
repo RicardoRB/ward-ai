@@ -1,14 +1,16 @@
-import Testing
+import XCTest
 @testable import Shop
 
-@Test func addsAnItem() {
-    var cart = Cart()
-    cart.add("Book")
-    #expect(cart.items == ["Book"])
-}
+class ShopTests: XCTestCase {
+    func testAddsAnItem() {
+        var cart = Cart()
+        cart.add("Book")
+        XCTAssertEqual(cart.items, ["Book"])
+    }
 
-@Test func serviceSavesTheAddedItem() {
-    let repository = InMemoryCartRepository()
-    CartService(repository: repository).addItem("Book")
-    #expect(repository.load().items == ["Book"])
+    func testServiceSavesTheAddedItem() {
+        let repository = InMemoryCartRepository()
+        CartService(repository: repository).addItem("Book")
+        XCTAssertEqual(repository.load().items, ["Book"])
+    }
 }

@@ -70,11 +70,7 @@ class SwiftSyntaxFixturesTest {
       children
           .filter(child -> child.getFileName().toString().endsWith(".swift"))
           .sorted()
-          .forEach(
-              child ->
-                  cases.add(
-                      Arguments.of(
-                          child.getFileName().toString(), child)));
+          .forEach(child -> cases.add(Arguments.of(child.getFileName().toString(), child)));
     } catch (IOException e) {
       throw new IllegalStateException("cannot list the Swift syntax fixtures", e);
     }

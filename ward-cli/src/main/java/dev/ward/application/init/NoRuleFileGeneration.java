@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /** Compatibility rule-file port that writes nothing. */
-final class NoRuleFileGeneration implements RuleFileGeneration {
+public final class NoRuleFileGeneration implements RuleFileGeneration {
   @Override
   public RuleFileChange apply(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {

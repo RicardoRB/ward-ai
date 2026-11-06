@@ -25,9 +25,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/**
- * Biome replaces Prettier and ESLint in a Node project's gates, and keeps a project's own ESLint.
- */
+/** Biome replaces ESLint in a Node project's gates, and keeps a project's own ESLint. */
 class BiomeGatesTest {
   private static final String BIOME = "biome";
   private static final PackageManifest NO_PACKAGES = PackageManifest.EMPTY;
@@ -41,7 +39,7 @@ class BiomeGatesTest {
   @TempDir Path root;
 
   @Test
-  void declaredBiomeReplacesPrettierAndEslint() {
+  void declaredBiomeReplacesEslint() {
     final InitGeneralCatalog catalog = catalog(BIOME_PACKAGE, NO_CONFIGS, "npm");
     final Project project = project(Language.TYPESCRIPT, BuildTool.NPM);
 
@@ -61,13 +59,13 @@ class BiomeGatesTest {
   }
 
   @Test
-  void noBiomeKeepsPrettierAndEslint() {
+  void noBiomeKeepsEslint() {
     final InitGeneralCatalog catalog = catalog(NO_PACKAGES, NO_CONFIGS, "npm");
 
     assertThat(
             catalog.presetGates(
                 project(Language.TYPESCRIPT, BuildTool.NPM), QualityPreset.STANDARD))
-        .containsExactly("tsc", "vitest", "prettier", "eslint");
+        .containsExactly("tsc", "vitest", "eslint");
   }
 
   @Test

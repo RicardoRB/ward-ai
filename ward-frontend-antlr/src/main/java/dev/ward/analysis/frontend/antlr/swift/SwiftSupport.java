@@ -295,12 +295,16 @@ public final class SwiftSupport {
     return CONTEXTUAL_TYPE_KEYWORDS.contains(tokens.LT(1).getText());
   }
 
-  /** Whether the next token is {@code consume} or {@code each} applied to an operand on the same statement. */
+  /**
+   * Whether the next token is {@code consume} or {@code each} applied to an operand on the same
+   * statement.
+   */
   public static boolean isContextualOperator(final TokenStream tokens) {
     final String text = tokens.LT(1).getText();
     final boolean operatorWord = CONTEXTUAL_OPERATOR_WORDS.contains(text);
     final Token next = tokens.LT(2);
-    return operatorWord && (next.getType() == SwiftLexer.Identifier || "self".equals(next.getText()));
+    return operatorWord
+        && (next.getType() == SwiftLexer.Identifier || "self".equals(next.getText()));
   }
 
   /** Reads the stream to its end, so that the lookahead the predicates use is available. */

@@ -99,8 +99,7 @@ class NodeCompatibilityTest {
     final PackageManifest manifest = new PackageManifest(Map.of("typescript", "5.9.3"), null, null);
 
     assertThat(
-            check("24", manifest, "eslint", "@eslint/js", "typescript-eslint", "prettier", "vitest")
-                .findings())
+            check("24", manifest, "eslint", "@eslint/js", "typescript-eslint", "vitest").findings())
         .isEmpty();
   }
 
