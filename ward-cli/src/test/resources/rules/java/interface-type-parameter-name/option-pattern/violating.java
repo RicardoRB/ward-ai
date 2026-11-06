@@ -1,0 +1,2 @@
+interface Repo<T> {
+}
