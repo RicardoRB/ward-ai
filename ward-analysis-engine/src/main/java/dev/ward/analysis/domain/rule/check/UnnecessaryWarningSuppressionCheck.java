@@ -32,7 +32,10 @@ public final class UnnecessaryWarningSuppressionCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxNode node : SyntaxWalk.descendants(root)) {
-      final String text = SyntaxWalk.text(node);
+      final String text =
+          COMMENT.equals(node.kind())
+              ? node.fields().getOrDefault("text", "")
+              : SyntaxWalk.text(node);
       if ("annotation".equals(node.kind()) && text.contains(SUPPRESS)) {
         matches.add(CheckSupport.at(node.span(), CheckSupport.fill(message, text, "")));
       } else if (COMMENT.equals(node.kind()) && text.contains(NO_PMD)) {
