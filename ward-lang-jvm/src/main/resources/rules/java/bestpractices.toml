@@ -383,3 +383,69 @@ counted = ["variableDeclarator"]
 max = 1
 message = "for loop declares {value} variables; the limit is {max}"
 '''
+
+[[rules]]
+id = "ward:java/unused-label"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-label"
+message = "label '{value}' is never used by break or continue"
+'''
+
+[[rules]]
+id = "ward:java/unit-test-should-include-assert"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unit-test-without-assert"
+message = "test method '{value}' calls no assertion"
+'''
+
+[[rules]]
+id = "ward:java/unit-test-contains-too-many-asserts"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["strict"]
+options.maximum-asserts = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "unit-test-assert-count"
+max = 1
+message = "test method has {value} assertions; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/unit-test-should-use-test-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.test-class-pattern = { type = "regex", parameter = "class-pattern" }
+body = '''
+check = "unit-test-missing-annotation"
+class-pattern = "Test"
+message = "public test method '{value}' has no @Test annotation"
+'''
+
+[[rules]]
+id = "ward:java/unit-test-should-use-after-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unit-test-lifecycle"
+method = "tearDown"
+annotations = ["After", "AfterEach", "AfterAll"]
+message = "'{value}' is not annotated @After, @AfterEach or @AfterAll"
+'''

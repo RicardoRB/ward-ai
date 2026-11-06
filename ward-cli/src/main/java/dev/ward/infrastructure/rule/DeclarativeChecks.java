@@ -12,10 +12,16 @@ import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
+import dev.ward.analysis.domain.rule.check.UnitTestAssertCountCheck;
+import dev.ward.analysis.domain.rule.check.UnitTestLifecycleCheck;
+import dev.ward.analysis.domain.rule.check.UnitTestMissingAnnotationCheck;
+import dev.ward.analysis.domain.rule.check.UnitTestWithoutAssertCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
+import dev.ward.analysis.domain.rule.check.UnusedLabelCheck;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.tomlj.TomlInvalidTypeException;
 import org.tomlj.TomlParseResult;
 
@@ -95,6 +101,28 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
+      default -> labelOrJUnitCheck(name, toml);
+    };
+  }
+
+  /** The checks over labels and JUnit test classes; other names go to the metric checks. */
+  private static RuleCheck labelOrJUnitCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "unused-label" -> new UnusedLabelCheck(TomlValues.required(toml, MESSAGE));
+      case "unit-test-without-assert" ->
+          new UnitTestWithoutAssertCheck(TomlValues.required(toml, MESSAGE));
+      case "unit-test-assert-count" ->
+          new UnitTestAssertCountCheck(
+              TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
+      case "unit-test-missing-annotation" ->
+          new UnitTestMissingAnnotationCheck(
+              Pattern.compile(TomlValues.required(toml, "class-pattern")),
+              TomlValues.required(toml, MESSAGE));
+      case "unit-test-lifecycle" ->
+          new UnitTestLifecycleCheck(
+              TomlValues.required(toml, "method"),
+              TomlValues.strings(toml, "annotations"),
+              TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

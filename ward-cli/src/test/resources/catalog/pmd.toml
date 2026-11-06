@@ -1445,26 +1445,17 @@ pmd = ["UnitTestAssertionsShouldIncludeMessage"]
 
 [[rule]]
 name = "unit-test-contains-too-many-asserts"
-category = "bestpractices"
-# Not applicable (review): needs the number of assertion calls in each method; the count check counts node kinds, not calls by name
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestContainsTooManyAsserts"]
 
 [[rule]]
 name = "unit-test-should-include-assert"
-category = "bestpractices"
-# Not applicable (review): needs whether a method body contains an assertion; the text checks cannot ask for a match inside a node
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestShouldIncludeAssert"]
 
 [[rule]]
 name = "unit-test-should-use-after-annotation"
-category = "bestpractices"
-# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestShouldUseAfterAnnotation"]
 
 [[rule]]
@@ -1477,10 +1468,7 @@ pmd = ["UnitTestShouldUseBeforeAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-test-annotation"
-category = "bestpractices"
-# Not applicable (review): needs the annotations of each method; the generic filters do not read annotations
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnitTestShouldUseTestAnnotation"]
 
 [[rule]]
@@ -1590,10 +1578,7 @@ pmd = ["UnusedFormalParameter"]
 
 [[rule]]
 name = "unused-label"
-category = "bestpractices"
-# Not applicable (review): needs the references to each label, a symbol-level check
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnusedLabel"]
 errorprone = ["UnusedLabel"]
 
