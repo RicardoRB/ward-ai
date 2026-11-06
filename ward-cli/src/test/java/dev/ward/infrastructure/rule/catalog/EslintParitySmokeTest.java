@@ -4,38 +4,62 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 /**
  * Runs the real ESLint named by {@code -Dward.eslint.binary} on the fixtures of every implemented
- * TypeScript and JavaScript pair, and checks that ESLint reports the same lines as the fixture's
- * expected positions. Columns are not compared: where Ward reports a different column for the same
- * line, the difference is listed in the pull request. It is skipped when the property is not set.
+ * TypeScript and JavaScript pair whose ESLint rule has the row's name, and checks that ESLint
+ * reports the same lines as the fixture's expected positions. Columns are not compared: where Ward
+ * reports another column on the same line, the difference is listed in the pull request. The test
+ * is skipped when the property is not set.
  */
 class EslintParitySmokeTest {
 
   private static final String BINARY_PROPERTY = "ward.eslint.binary";
+  private static final String PARSER = "@typescript-eslint/parser/dist/index.js";
   private static final String FORMATTER = "formatter.mjs";
+  private static final String CONFIG = "eslint.config.mjs";
   private static final String FORMATTER_SOURCE =
-      "export default function (results) {\n"
-          + "  const lines = [];\n"
-          + "  for (const result of results) {\n"
-          + "    for (const message of result.messages) {\n"
-          + "      lines.push([result.filePath, message.line, message.column, message.ruleId].join(\"\\t\"));\n"
-          + "    }\n"
-          + "  }\n"
-          + "  return lines.join(\"\\n\");\n"
-          + "}\n";
-  private static final String PARSER_RELATIVE = "@typescript-eslint/parser/dist/index.js";
+      """
+      export default function (results) {
+        const lines = [];
+        for (const result of results) {
+          for (const message of result.messages) {
+            lines.push([result.filePath, message.line, message.column, message.ruleId].join("\\t"));
+          }
+        }
+        return lines.join("\\n");
+      }
+      """;
+  private static final String SEPARATOR = "\t";
+  private static final int FIELDS = 4;
+  private static final int FILE = 0;
+  private static final int LINE = 1;
+  private static final int RULE = 3;
+
+  /** One implemented pair with its catalog row and language. */
+  private record Pair(CatalogRow row, AnalysisLanguage language) {
+
+    String folder() {
+      return language == AnalysisLanguage.TYPESCRIPT ? "typescript" : "javascript";
+    }
+
+    String rule() {
+      return row.name();
+    }
+  }
 
   @Test
   void eslintReportsTheSameLinesAsTheFixtures() throws IOException, InterruptedException {
@@ -47,15 +71,7 @@ class EslintParitySmokeTest {
     final Map<String, List<String>> expected = copyFixtures(workspace, pairs);
     writeConfig(workspace, eslint, pairs);
     final List<String> output = run(eslint, workspace);
-    final List<String> problems = compare(pairs, expected, output);
-    assertThat(problems).isEmpty();
-  }
-
-  /** One implemented pair with its rule id and language. */
-  private record Pair(CatalogRow row, AnalysisLanguage language) {
-    String rule() {
-      return row.name();
-    }
+    assertThat(compare(pairs, expected, output)).isEmpty();
   }
 
   private static List<Pair> implementedPairs() {
@@ -73,25 +89,33 @@ class EslintParitySmokeTest {
     return pairs;
   }
 
-  /** Copies each violating and passing fixture; returns the expected lines per copied file. */
+  /** Copies each violating and passing fixture; returns the expected lines of each copy. */
   private static Map<String, List<String>> copyFixtures(
       final Path workspace, final List<Pair> pairs) throws IOException {
-    final Map<String, List<String>> expected = new java.util.HashMap<>();
+    final Map<String, List<String>> expected = new HashMap<>();
     for (final Pair pair : pairs) {
       final RuleFixtureSet set =
           RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language());
       final String extension = RuleFixtureSet.extension(pair.language());
       for (final String name : set.cases()) {
-        final String violating = relative(pair, "violating." + extension);
-        Files.createDirectories(workspace.resolve(violating).getParent());
-        Files.copy(set.violating(name), workspace.resolve(violating));
+        final String violating =
+            copy(workspace, pair, "violating." + extension, set.violating(name));
         expected.put(violating, lines(set.expected(name)));
-        final String passing = relative(pair, "passing." + extension);
-        Files.copy(set.passing(name), workspace.resolve(passing));
+        final String passing = copy(workspace, pair, "passing." + extension, set.passing(name));
         expected.put(passing, List.of());
       }
     }
     return expected;
+  }
+
+  private static String copy(
+      final Path workspace, final Pair pair, final String file, final Path source)
+      throws IOException {
+    final String relative = pair.folder() + "/" + pair.rule() + "/" + file;
+    final Path target = workspace.resolve(relative);
+    Files.createDirectories(target.getParent());
+    Files.copy(source, target);
+    return relative;
   }
 
   private static List<String> lines(final List<String> expected) {
@@ -102,78 +126,73 @@ class EslintParitySmokeTest {
     return lines;
   }
 
-  private static String relative(final Pair pair, final String file) {
-    return folder(pair.language()) + "/" + pair.rule() + "/" + file;
-  }
-
-  private static String folder(final AnalysisLanguage language) {
-    return language == AnalysisLanguage.TYPESCRIPT ? "typescript" : "javascript";
-  }
-
   private static void writeConfig(final Path workspace, final Path eslint, final List<Pair> pairs)
       throws IOException {
-    final Path parser = eslint.getParent().getParent().getParent().resolve(PARSER_RELATIVE);
-    final Set<String> rules = new TreeSet<>();
-    pairs.forEach(pair -> rules.add(pair.rule()));
-    final StringBuilder config = new StringBuilder();
-    config.append("import tsParser from \"").append(parser.toUri()).append("\";\n");
-    config.append("export default [\n");
-    config.append(
-        "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"script\" }, rules: ");
-    config.append(rulesObject(rules)).append(" },\n");
-    config.append("  { files: [\"**/*.js\"], languageOptions: { sourceType: \"script\" }, rules: ");
-    config.append(rulesObject(rules)).append(" },\n");
-    config.append("];\n");
-    Files.writeString(workspace.resolve("eslint.config.mjs"), config.toString());
+    final Path parser = eslint.getParent().getParent().getParent().resolve(PARSER);
+    final String rules = rulesObject(pairs);
+    final String config =
+        "import tsParser from \"%s\";\n".formatted(parser.toUri())
+            + "export default [\n"
+            + "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"script\" },"
+            + " rules: %s },\n".formatted(rules)
+            + "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"script\" },"
+            + " rules: %s },\n".formatted(rules)
+            + "];\n";
+    Files.writeString(workspace.resolve(CONFIG), config);
     Files.writeString(workspace.resolve(FORMATTER), FORMATTER_SOURCE);
   }
 
-  private static String rulesObject(final Set<String> rules) {
-    final StringBuilder object = new StringBuilder("{ ");
-    for (final String rule : rules) {
-      object.append('"').append(rule).append("\": \"error\", ");
+  private static String rulesObject(final List<Pair> pairs) {
+    final Set<String> rules = new TreeSet<>();
+    for (final Pair pair : pairs) {
+      rules.add(pair.rule());
     }
-    return object.append('}').toString();
+    final List<String> entries = new ArrayList<>();
+    for (final String rule : rules) {
+      entries.add("\"" + rule + "\": \"error\"");
+    }
+    return "{ " + String.join(", ", entries) + " }";
   }
 
   private static List<String> run(final Path eslint, final Path workspace)
       throws IOException, InterruptedException {
-    final Path root = workspace.toRealPath();
     final Process process =
-        new ProcessBuilder(
-                eslint.toString(), "-c", "eslint.config.mjs", "-f", "./" + FORMATTER, ".")
+        new ProcessBuilder(eslint.toString(), "-c", CONFIG, "-f", "./" + FORMATTER, ".")
             .directory(workspace.toFile())
-            .redirectErrorStream(false)
             .start();
-    final List<String> lines =
-        new String(process.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8)
-            .lines()
-            .toList();
+    final String stdout =
+        new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     process.waitFor();
-    return lines.stream().map(line -> line.replace(root + "/", "")).toList();
+    final String root = workspace.toRealPath() + "/";
+    return stdout.lines().map(line -> line.replace(root, "")).toList();
   }
 
-  /** Compares the lines per file and rule; a file's findings must match its expected lines. */
+  /** Compares the lines per file and rule; each file's findings must match its expected lines. */
   private static List<String> compare(
       final List<Pair> pairs, final Map<String, List<String>> expected, final List<String> output) {
-    final Map<String, Set<String>> found = new java.util.HashMap<>();
-    for (final String line : output) {
-      final String[] fields = line.split("\t");
-      if (fields.length == 4 && !"null".equals(fields[3])) {
-        final String file = fields[0];
-        found.computeIfAbsent(file + "#" + fields[3], key -> new LinkedHashSet<>()).add(fields[1]);
-      }
-    }
+    final Map<String, Set<String>> found =
+        output.stream()
+            .map(line -> line.split(SEPARATOR))
+            .filter(fields -> fields.length == FIELDS && !"null".equals(fields[RULE]))
+            .collect(
+                Collectors.groupingBy(
+                    fields -> fields[FILE] + "#" + fields[RULE],
+                    TreeMap::new,
+                    Collectors.mapping(
+                        fields -> fields[LINE], Collectors.toCollection(TreeSet::new))));
+    final Map<String, Set<String>> wanted =
+        expected.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new TreeSet<>(entry.getValue())));
     final List<String> problems = new ArrayList<>();
     for (final Pair pair : pairs) {
-      for (final String file : expected.keySet()) {
-        if (!file.startsWith(folder(pair.language()) + "/" + pair.rule() + "/")) {
-          continue;
-        }
-        final Set<String> actual = found.getOrDefault(file + "#" + pair.rule(), Set.of());
-        final Set<String> wanted = new TreeSet<>(expected.get(file));
-        if (!new TreeSet<>(actual).equals(wanted)) {
-          problems.add(file + " ESLint lines " + actual + " but fixture expects " + wanted);
+      final String prefix = pair.folder() + "/" + pair.rule() + "/";
+      for (final String file : wanted.keySet()) {
+        if (file.startsWith(prefix)) {
+          final Set<String> actual = found.getOrDefault(file + "#" + pair.rule(), Set.of());
+          if (!actual.equals(wanted.get(file))) {
+            problems.add(
+                file + " ESLint lines " + actual + " but fixture expects " + wanted.get(file));
+          }
         }
       }
     }
