@@ -7,11 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +28,9 @@ class CheckstyleNamingParityTest {
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
   private static final String GOOGLE_TYPE_PARAMETER =
       "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)";
+  private static final String FORMAT = "format";
   private static final String GOOGLE_NAME = "^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$";
   private static final Pattern FINDING = Pattern.compile(":(\\d+):(\\d+): ");
-
-  /** One Ward rule and the Checkstyle module that mirrors it, with the module's properties. */
-  record Mirror(String rule, String module, Map<String, String> properties) {}
 
   /** Ward positions that Checkstyle 14.3.0 does not report, with the reason. */
   private static final Map<String, Set<String>> WARD_ONLY =
@@ -46,11 +46,11 @@ class CheckstyleNamingParityTest {
               "AbbreviationAsWordInName",
               Map.of("ignoreFinal", "false", "allowedAbbreviationLength", "0")),
           new Mirror("abstract-class-name", "AbstractClassName", Map.of()),
-          new Mirror("catch-parameter-name", "CatchParameterName", Map.of("format", GOOGLE_NAME)),
+          new Mirror("catch-parameter-name", "CatchParameterName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "class-type-parameter-name",
               "ClassTypeParameterName",
-              Map.of("format", GOOGLE_TYPE_PARAMETER)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
           new Mirror("constant-name", "ConstantName", Map.of()),
           new Mirror("google-method-name", "GoogleMethodName", Map.of()),
           new Mirror("google-non-constant-field-name", "GoogleNonConstantFieldName", Map.of()),
@@ -58,29 +58,30 @@ class CheckstyleNamingParityTest {
           new Mirror(
               "interface-type-parameter-name",
               "InterfaceTypeParameterName",
-              Map.of("format", GOOGLE_TYPE_PARAMETER)),
-          new Mirror("lambda-parameter-name", "LambdaParameterName", Map.of("format", GOOGLE_NAME)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
+          new Mirror("lambda-parameter-name", "LambdaParameterName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "local-final-variable-name",
               "LocalFinalVariableName",
               Map.of(
-                  "tokens", "VARIABLE_DEF, PARAMETER_DEF, RESOURCE",
-                  "format", "^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$")),
+                  "tokens",
+                  "VARIABLE_DEF, PARAMETER_DEF, RESOURCE",
+                  FORMAT,
+                  "^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$")),
           new Mirror(
               "method-type-parameter-name",
               "MethodTypeParameterName",
-              Map.of("format", GOOGLE_TYPE_PARAMETER)),
-          new Mirror(
-              "package-name", "PackageName", Map.of("format", "^[a-z]+(\\.[a-z][a-z0-9]*)*$")),
-          new Mirror("pattern-variable-name", "PatternVariableName", Map.of("format", GOOGLE_NAME)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
+          new Mirror("package-name", "PackageName", Map.of(FORMAT, "^[a-z]+(\\.[a-z][a-z0-9]*)*$")),
+          new Mirror("pattern-variable-name", "PatternVariableName", Map.of(FORMAT, GOOGLE_NAME)),
           new Mirror(
               "record-component-name",
               "RecordComponentName",
-              Map.of("format", "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$")),
+              Map.of(FORMAT, "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$")),
           new Mirror(
               "record-type-parameter-name",
               "RecordTypeParameterName",
-              Map.of("format", GOOGLE_TYPE_PARAMETER)),
+              Map.of(FORMAT, GOOGLE_TYPE_PARAMETER)),
           new Mirror("static-variable-name", "StaticVariableName", Map.of()));
 
   @Test
@@ -97,8 +98,10 @@ class CheckstyleNamingParityTest {
               .filter(line -> !line.isBlank())
               .toList();
       final Set<String> found = positions(config, directory.resolve("violating.java"));
-      final Set<String> wanted = new java.util.HashSet<>(expected);
-      wanted.removeAll(WARD_ONLY.getOrDefault(mirror.rule(), Set.of()));
+      final Set<String> wanted =
+          expected.stream()
+              .filter(p -> !WARD_ONLY.getOrDefault(mirror.rule(), Set.of()).contains(p))
+              .collect(Collectors.toSet());
       if (LINE_ONLY.contains(mirror.rule())) {
         assertThat(found.stream().map(p -> p.split(":")[0]).toList())
             .as(mirror.rule())
@@ -154,7 +157,7 @@ class CheckstyleNamingParityTest {
     final String output =
         new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     process.waitFor();
-    final Set<String> found = new java.util.HashSet<>();
+    final Set<String> found = new HashSet<>();
     for (final String line : output.split("\n")) {
       final Matcher matcher = FINDING.matcher(line);
       if (matcher.find()) {
@@ -163,4 +166,7 @@ class CheckstyleNamingParityTest {
     }
     return found;
   }
+
+  /** One Ward rule and the Checkstyle module that mirrors it, with the module's properties. */
+  record Mirror(String rule, String module, Map<String, String> properties) {}
 }

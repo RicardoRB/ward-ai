@@ -53,7 +53,7 @@ class RuleOptionFixturesTest {
       }
       try (Stream<Path> entries = Files.list(fixtures.directory())) {
         entries
-            .filter(entry -> Files.isDirectory(entry))
+            .filter(Files::isDirectory)
             .filter(entry -> entry.getFileName().toString().startsWith("option-"))
             .sorted()
             .forEach(entry -> cases.add(new OptionCase(pair, entry)));
