@@ -15,6 +15,8 @@ import java.util.Set;
  */
 public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
 
+  private static final String FOR_CONTROL = "forControl";
+
   private static final String DENY = "deny";
   private static final String FIRST_ONLY = "firstOnly";
   private static final String STATEMENT = "statement";
@@ -73,7 +75,7 @@ public final class AvoidReassigningLoopVariablesCheck implements UnitCheck {
 
   private static java.util.Optional<SyntaxLoop> loopVariable(final SyntaxNode loop) {
     for (final SyntaxNode child : loop.children()) {
-      if ("forControl".equals(child.kind())) {
+      if (FOR_CONTROL.equals(child.kind())) {
         return child.children().stream()
             .filter(c -> "enhancedForControl".equals(c.kind()))
             .findFirst()

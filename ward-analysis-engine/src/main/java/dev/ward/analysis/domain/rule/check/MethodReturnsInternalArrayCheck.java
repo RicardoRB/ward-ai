@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public final class MethodReturnsInternalArrayCheck implements UnitCheck {
 
+  private static final int STATEMENT_PARTS = 3;
+
   private final String message;
 
   /**
@@ -42,7 +44,7 @@ public final class MethodReturnsInternalArrayCheck implements UnitCheck {
   private static boolean isReturnOf(final SyntaxNode node, final Set<String> arrays) {
     final List<SyntaxNode> children = node.children();
     return "statement".equals(node.kind())
-        && children.size() == 3
+        && children.size() == STATEMENT_PARTS
         && "'return'".equals(children.get(0).kind())
         && "expression".equals(children.get(1).kind())
         && arrays.contains(SyntaxWalk.text(children.get(1)));

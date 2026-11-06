@@ -13,6 +13,9 @@ import java.util.Set;
  */
 public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck {
 
+  private static final String CLASS_DECLARATION = "classDeclaration";
+  private static final String MEMBER_DECLARATION = "memberDeclaration";
+
   private final String message;
 
   /**
@@ -41,12 +44,12 @@ public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck 
 
   private static java.util.Optional<SyntaxNode> classOf(final SyntaxNode wrapper) {
     for (final SyntaxNode child : wrapper.children()) {
-      if ("classDeclaration".equals(child.kind())) {
+      if (CLASS_DECLARATION.equals(child.kind())) {
         return java.util.Optional.of(child);
       }
-      if ("memberDeclaration".equals(child.kind())) {
+      if (MEMBER_DECLARATION.equals(child.kind())) {
         return child.children().stream()
-            .filter(c -> "classDeclaration".equals(c.kind()))
+            .filter(c -> CLASS_DECLARATION.equals(c.kind()))
             .findFirst();
       }
     }
@@ -54,8 +57,8 @@ public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck 
   }
 
   private static boolean hasAbstractMethod(final SyntaxNode clazz) {
-    return JUnitTests.body(clazz).stream()
-        .flatMap(body -> JUnitTests.members(body).stream())
+    return JUnitMembers.body(clazz).stream()
+        .flatMap(body -> JUnitMembers.members(body).stream())
         .anyMatch(member -> hasChildText(member, "abstract"));
   }
 }

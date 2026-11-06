@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public final class TypeNameMismatchCheck implements UnitCheck {
 
+  private static final String TYPE_DECLARATION = "typeDeclaration";
+
   private static final String EXTENSION = ".java";
   private static final Set<String> TYPES =
       Set.of("classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration");
@@ -36,7 +38,7 @@ public final class TypeNameMismatchCheck implements UnitCheck {
       return List.of();
     }
     for (final SyntaxNode unit : root.children()) {
-      if ("typeDeclaration".equals(unit.kind())) {
+      if (TYPE_DECLARATION.equals(unit.kind())) {
         topLevelMismatch(unit, base, matches);
       }
     }

@@ -23,14 +23,14 @@ public final class UnitTestWithoutAssertCheck implements UnitCheck {
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     return SyntaxWalk.visits(root, Set.of("classBody")).stream()
-        .flatMap(visit -> JUnitTests.members(visit.node()).stream())
-        .filter(JUnitTests::isTest)
-        .flatMap(member -> JUnitTests.method(member).stream())
-        .filter(method -> JUnitTests.assertionCount(method) == 0)
+        .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
+        .filter(JUnitMembers::isTest)
+        .flatMap(member -> JUnitMembers.method(member).stream())
+        .filter(method -> JUnitMembers.assertionCount(method) == 0)
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitTests.name(method), "")))
+                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
         .toList();
   }
 }

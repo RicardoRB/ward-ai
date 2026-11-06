@@ -34,7 +34,7 @@ public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("classBody"))) {
       final Set<String> fields = ClassFields.names(visit.node());
-      for (final SyntaxNode member : JUnitTests.members(visit.node())) {
+      for (final SyntaxNode member : JUnitMembers.members(visit.node())) {
         for (final SyntaxNode body : callables(member)) {
           checkCallable(body, fields, matches);
         }

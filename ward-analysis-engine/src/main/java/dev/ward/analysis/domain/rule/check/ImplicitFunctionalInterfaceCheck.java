@@ -12,6 +12,9 @@ import java.util.Set;
  */
 public final class ImplicitFunctionalInterfaceCheck implements UnitCheck {
 
+  private static final String INTERFACE_DECLARATION = "interfaceDeclaration";
+  private static final String MEMBER_DECLARATION = "memberDeclaration";
+
   private static final String ANNOTATION = "FunctionalInterface";
 
   private final String message;
@@ -39,7 +42,7 @@ public final class ImplicitFunctionalInterfaceCheck implements UnitCheck {
   private static boolean annotated(final SyntaxNode wrapper) {
     return wrapper.children().stream()
         .filter(
-            c -> !"interfaceDeclaration".equals(c.kind()) && !"memberDeclaration".equals(c.kind()))
+            c -> !INTERFACE_DECLARATION.equals(c.kind()) && !MEMBER_DECLARATION.equals(c.kind()))
         .flatMap(c -> SyntaxWalk.descendants(c).stream())
         .anyMatch(
             n -> "annotation".equals(n.kind()) && ANNOTATION.equals(simple(SyntaxWalk.text(n))));
@@ -54,12 +57,12 @@ public final class ImplicitFunctionalInterfaceCheck implements UnitCheck {
 
   private static java.util.Optional<SyntaxNode> interfaceOf(final SyntaxNode wrapper) {
     for (final SyntaxNode child : wrapper.children()) {
-      if ("interfaceDeclaration".equals(child.kind())) {
+      if (INTERFACE_DECLARATION.equals(child.kind())) {
         return java.util.Optional.of(child);
       }
-      if ("memberDeclaration".equals(child.kind())) {
+      if (MEMBER_DECLARATION.equals(child.kind())) {
         return child.children().stream()
-            .filter(c -> "interfaceDeclaration".equals(c.kind()))
+            .filter(c -> INTERFACE_DECLARATION.equals(c.kind()))
             .findFirst();
       }
     }

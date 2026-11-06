@@ -17,6 +17,7 @@ final class Assignments {
           "'>>>='");
 
   private static final String EXPRESSION = "expression";
+  private static final int PARTS = 3;
 
   private Assignments() {}
 
@@ -28,7 +29,7 @@ final class Assignments {
   /** Returns whether a node is an assignment expression. */
   static boolean isAssignment(final SyntaxNode node) {
     return EXPRESSION.equals(node.kind())
-        && node.children().size() == 3
+        && node.children().size() == PARTS
         && OPERATORS.contains(node.children().get(1).kind());
   }
 

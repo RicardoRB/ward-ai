@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * Reads the JUnit parts of a class body: its members, their names, their annotations and their
  * modifiers. Annotations are matched by simple name, so {@code @org.junit.Test} is {@code Test}.
  */
-final class JUnitTests {
+final class JUnitMembers {
 
   /** The annotations that mark a JUnit 4 or 5 test method. */
   static final Set<String> TEST_ANNOTATIONS =
@@ -24,7 +24,7 @@ final class JUnitTests {
   private static final String IDENTIFIER = "identifier";
   private static final String METHOD_CALL = "methodCall";
 
-  private JUnitTests() {}
+  private JUnitMembers() {}
 
   /** Returns the members of a class body, the {@code classBodyDeclaration} children. */
   static List<SyntaxNode> members(final SyntaxNode classBody) {

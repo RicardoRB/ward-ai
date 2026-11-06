@@ -26,17 +26,17 @@ public final class UnitTestAssertCountCheck implements UnitCheck {
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     return SyntaxWalk.visits(root, Set.of("classBody")).stream()
-        .flatMap(visit -> JUnitTests.members(visit.node()).stream())
-        .filter(JUnitTests::isTest)
-        .flatMap(member -> JUnitTests.method(member).stream())
-        .filter(method -> JUnitTests.assertionCount(method) > max)
+        .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
+        .filter(JUnitMembers::isTest)
+        .flatMap(member -> JUnitMembers.method(member).stream())
+        .filter(method -> JUnitMembers.assertionCount(method) > max)
         .map(
             method ->
                 CheckSupport.at(
                     method.span(),
                     CheckSupport.fill(
                         message,
-                        String.valueOf(JUnitTests.assertionCount(method)),
+                        String.valueOf(JUnitMembers.assertionCount(method)),
                         String.valueOf(max))))
         .toList();
   }

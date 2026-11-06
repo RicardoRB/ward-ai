@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  */
 public final class ForLoopCanBeForeachCheck implements UnitCheck {
 
+  private static final int CONTROL_PARTS = 3;
   private static final Pattern BOUND =
       Pattern.compile("^([A-Za-z_]\\w*)<([A-Za-z_][\\w.]*)(\\.size\\(\\)|\\.length)$");
 
@@ -55,7 +56,7 @@ public final class ForLoopCanBeForeachCheck implements UnitCheck {
       final SyntaxNode control, final SyntaxNode loop) {
     final List<SyntaxNode> parts =
         control.children().stream().filter(c -> !c.kind().startsWith("'")).toList();
-    if (parts.size() < 3 || !"forInit".equals(parts.get(0).kind())) {
+    if (parts.size() < CONTROL_PARTS || !"forInit".equals(parts.get(0).kind())) {
       return java.util.Optional.empty();
     }
     final String index = indexName(parts.get(0));

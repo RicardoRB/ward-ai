@@ -34,16 +34,17 @@ public final class UnitTestLifecycleCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     return SyntaxWalk.visits(root, Set.of("classBody")).stream()
         .map(SyntaxWalk.Visit::node)
-        .filter(body -> JUnitTests.members(body).stream().anyMatch(JUnitTests::isTest))
-        .flatMap(body -> JUnitTests.members(body).stream())
-        .filter(member -> JUnitTests.annotations(member).stream().noneMatch(annotations::contains))
-        .flatMap(member -> JUnitTests.method(member).stream())
-        .filter(method -> methodName.equals(JUnitTests.name(method)))
-        .filter(JUnitTests::hasNoParameters)
+        .filter(body -> JUnitMembers.members(body).stream().anyMatch(JUnitMembers::isTest))
+        .flatMap(body -> JUnitMembers.members(body).stream())
+        .filter(
+            member -> JUnitMembers.annotations(member).stream().noneMatch(annotations::contains))
+        .flatMap(member -> JUnitMembers.method(member).stream())
+        .filter(method -> methodName.equals(JUnitMembers.name(method)))
+        .filter(JUnitMembers::hasNoParameters)
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitTests.name(method), "")))
+                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
         .toList();
   }
 }

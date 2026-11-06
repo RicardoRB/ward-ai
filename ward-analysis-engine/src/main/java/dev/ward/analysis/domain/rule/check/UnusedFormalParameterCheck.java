@@ -32,9 +32,9 @@ public final class UnusedFormalParameterCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("classBody"))) {
-      for (final SyntaxNode member : JUnitTests.members(visit.node())) {
-        if (checkAll || JUnitTests.isPrivate(member)) {
-          JUnitTests.method(member).ifPresent(method -> unused(method, matches));
+      for (final SyntaxNode member : JUnitMembers.members(visit.node())) {
+        if (checkAll || JUnitMembers.isPrivate(member)) {
+          JUnitMembers.method(member).ifPresent(method -> unused(method, matches));
         }
       }
     }

@@ -28,14 +28,14 @@ public final class UnusedPrivateMethodCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final Set<String> called = calledNames(root);
     return SyntaxWalk.visits(root, Set.of("classBody")).stream()
-        .flatMap(visit -> JUnitTests.members(visit.node()).stream())
-        .filter(JUnitTests::isPrivate)
-        .flatMap(member -> JUnitTests.method(member).stream())
-        .filter(method -> !called.contains(JUnitTests.name(method)))
+        .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
+        .filter(JUnitMembers::isPrivate)
+        .flatMap(member -> JUnitMembers.method(member).stream())
+        .filter(method -> !called.contains(JUnitMembers.name(method)))
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitTests.name(method), "")))
+                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
         .toList();
   }
 

@@ -34,21 +34,21 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
     return SyntaxWalk.visits(root, Set.of("classDeclaration")).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(this::isTestClass)
-        .flatMap(clazz -> JUnitTests.body(clazz).stream())
-        .flatMap(body -> JUnitTests.members(body).stream())
-        .filter(JUnitTests::isPublic)
-        .filter(member -> !JUnitTests.isTest(member))
-        .flatMap(member -> JUnitTests.method(member).stream())
-        .filter(method -> JUnitTests.name(method).startsWith("test"))
+        .flatMap(clazz -> JUnitMembers.body(clazz).stream())
+        .flatMap(body -> JUnitMembers.members(body).stream())
+        .filter(JUnitMembers::isPublic)
+        .filter(member -> !JUnitMembers.isTest(member))
+        .flatMap(member -> JUnitMembers.method(member).stream())
+        .filter(method -> JUnitMembers.name(method).startsWith("test"))
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitTests.name(method), "")))
+                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
         .toList();
   }
 
   private boolean isTestClass(final SyntaxNode clazz) {
-    return classPattern.matcher(JUnitTests.className(clazz)).find() || extendsTestCase(clazz);
+    return classPattern.matcher(JUnitMembers.className(clazz)).find() || extendsTestCase(clazz);
   }
 
   private static boolean extendsTestCase(final SyntaxNode clazz) {

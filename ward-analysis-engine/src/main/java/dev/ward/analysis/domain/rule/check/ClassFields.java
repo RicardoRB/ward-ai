@@ -30,7 +30,7 @@ final class ClassFields {
   }
 
   private static List<SyntaxNode> declarations(final SyntaxNode classBody) {
-    return JUnitTests.members(classBody).stream()
+    return JUnitMembers.members(classBody).stream()
         .flatMap(member -> member.children().stream())
         .filter(child -> MEMBER_DECLARATION.equals(child.kind()))
         .flatMap(member -> member.children().stream())
