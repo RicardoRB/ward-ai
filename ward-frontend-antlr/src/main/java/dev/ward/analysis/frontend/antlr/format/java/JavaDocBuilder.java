@@ -21,7 +21,7 @@ final class JavaDocBuilder {
   private final int maxBlankLines;
   private final int continuationLevels;
   private final JavaFrameStack stack = new JavaFrameStack();
-  private final JavaSeparator separator = new JavaSeparator();
+  private final JavaSeparator separator;
   private boolean hasOutput;
   private JavaAtom previous;
 
@@ -42,6 +42,7 @@ final class JavaDocBuilder {
     this.facts = facts;
     this.maxBlankLines = maxBlankLines;
     this.continuationLevels = continuationLevels;
+    this.separator = new JavaSeparator(new JavaSpacing(atoms, facts));
   }
 
   /**
@@ -59,6 +60,7 @@ final class JavaDocBuilder {
       }
       hasOutput = true;
       previous = atom;
+      separator.remember(atom);
     }
     if (!stack.isRootOnly()) {
       throw new IllegalStateException("unclosed brackets in Java source");

@@ -19,12 +19,15 @@ import java.util.logging.Logger;
  */
 public final class JavaFormatter implements SourceFormatter {
 
+  private static final Logger LOG = Logger.getLogger(JavaFormatter.class.getName());
+  private static final String LINE_WIDTH = "line-width";
+  private static final String INDENT_STYLE = "indent-style";
   private static final String INDENT_WIDTH = "indent-width";
   private static final String CONTINUATION_INDENT_SIZE = "continuation-indent-size";
   private static final String MAX_BLANK_LINES = "max-blank-lines";
-
-  private static final Logger LOG = Logger.getLogger(JavaFormatter.class.getName());
-  private static final int LINE_WIDTH = 100;
+  private static final String TAB = "tab";
+  private static final String SPACE = "space";
+  private static final String DEFAULT_LINE_WIDTH = "100";
   private static final String DEFAULT_INDENT = "4";
   private static final String DEFAULT_CONTINUATION = "8";
   private static final String DEFAULT_BLANK_LINES = "1";
@@ -38,6 +41,8 @@ public final class JavaFormatter implements SourceFormatter {
   @Override
   public List<FormatOption> options() {
     return List.of(
+        new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, DEFAULT_LINE_WIDTH, List.of()),
+        new FormatOption(INDENT_STYLE, FormatOptionType.TEXT, SPACE, List.of(SPACE, TAB)),
         new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, DEFAULT_INDENT, List.of()),
         new FormatOption(
             CONTINUATION_INDENT_SIZE, FormatOptionType.INTEGER, DEFAULT_CONTINUATION, List.of()),
@@ -53,7 +58,12 @@ public final class JavaFormatter implements SourceFormatter {
       return new FormatResult.Refused(SYNTAX_REASON, parsed.errorLine().getAsInt());
     }
     final int indent = options.integer(INDENT_WIDTH);
-    final PrintStyle style = new PrintStyle(LINE_WIDTH, IndentStyle.SPACE, indent, EndOfLine.LF);
+    final PrintStyle style =
+        new PrintStyle(
+            options.integer(LINE_WIDTH),
+            indentStyle(options.get(INDENT_STYLE)),
+            indent,
+            EndOfLine.LF);
     final int continuationLevels = options.integer(CONTINUATION_INDENT_SIZE) / indent;
     final JavaDocBuilder builder =
         new JavaDocBuilder(
@@ -65,5 +75,9 @@ public final class JavaFormatter implements SourceFormatter {
     return printed.equals(source)
         ? new FormatResult.Unchanged()
         : new FormatResult.Formatted(printed);
+  }
+
+  private static IndentStyle indentStyle(final String value) {
+    return TAB.equals(value) ? IndentStyle.TAB : IndentStyle.SPACE;
   }
 }

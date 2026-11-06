@@ -21,12 +21,21 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 /** Walks a Java parse tree once and collects the {@link JavaTreeFacts}. */
 final class JavaTreeWalk {
 
+  private static final Set<String> ANGLE_RULES =
+      Set.of(
+          "typeParameters",
+          "typeArguments",
+          "nonWildcardTypeArguments",
+          "typeArgumentsOrDiamond",
+          "nonWildcardTypeArgumentsOrDiamond");
+
   private final String[] ruleNames;
   private final List<FormatRule> rules = new ArrayList<>();
   private final Set<Integer> groupOpens = new HashSet<>();
   private final Set<Integer> arrayOpens = new HashSet<>();
   private final Set<Integer> hardAfter = new HashSet<>();
   private final Set<Integer> annotationEnds = new HashSet<>();
+  private final Set<Integer> angleTokens = new HashSet<>();
 
   private JavaTreeWalk(final String... ruleNames) {
     this.ruleNames = ruleNames.clone();
@@ -43,7 +52,12 @@ final class JavaTreeWalk {
     final JavaTreeWalk walk = new JavaTreeWalk(ruleNames);
     walk.visit(root);
     return new JavaTreeFacts(
-        walk.rules, walk.groupOpens, walk.arrayOpens, walk.hardAfter, walk.annotationEnds);
+        walk.rules,
+        walk.groupOpens,
+        walk.arrayOpens,
+        walk.hardAfter,
+        walk.annotationEnds,
+        walk.angleTokens);
   }
 
   private void visit(final ParseTree node) {
@@ -77,6 +91,9 @@ final class JavaTreeWalk {
     } else if (context instanceof SwitchBlockStatementGroupContext
         || context instanceof SwitchLabeledRuleContext) {
       addTerminals(context, ":");
+    } else if (ANGLE_RULES.contains(ruleNames[context.getRuleIndex()])) {
+      addTerminals(context, "<");
+      addTerminals(context, ">");
     }
   }
 
@@ -91,10 +108,14 @@ final class JavaTreeWalk {
         || context instanceof ElementValueArrayInitializerContext;
   }
 
+  private Set<Integer> target(final String text) {
+    return "<".equals(text) || ">".equals(text) ? angleTokens : hardAfter;
+  }
+
   private void addTerminals(final ParserRuleContext context, final String text) {
     for (final ParseTree child : context.children) {
       if (child instanceof TerminalNode terminal && text.equals(terminal.getText())) {
-        hardAfter.add(terminal.getSymbol().getTokenIndex());
+        target(text).add(terminal.getSymbol().getTokenIndex());
       }
     }
   }

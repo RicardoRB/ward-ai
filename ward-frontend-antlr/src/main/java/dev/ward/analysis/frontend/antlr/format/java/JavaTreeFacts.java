@@ -15,13 +15,15 @@ import java.util.Set;
  * @param hardAfter token indexes after which a line always breaks: a switch label colon and an enum
  *     constant separator
  * @param annotationEnds token indexes that end an annotation
+ * @param angleTokens token indexes of the angle brackets of type arguments and type parameters
  */
 record JavaTreeFacts(
     List<FormatRule> rules,
     Set<Integer> groupOpens,
     Set<Integer> arrayOpens,
     Set<Integer> hardAfter,
-    Set<Integer> annotationEnds) {
+    Set<Integer> annotationEnds,
+    Set<Integer> angleTokens) {
 
   /** Copies the rules and the token sets. */
   JavaTreeFacts {
@@ -30,5 +32,6 @@ record JavaTreeFacts(
     arrayOpens = Set.copyOf(arrayOpens);
     hardAfter = Set.copyOf(hardAfter);
     annotationEnds = Set.copyOf(annotationEnds);
+    angleTokens = Set.copyOf(angleTokens);
   }
 }

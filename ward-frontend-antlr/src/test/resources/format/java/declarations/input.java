@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Account extends Base implements Auditable, Serializable {
 private final String id;
-private static int count = 0;
+private static int count=0;
 public Account(String id) { this.id = id; }
 public String id() { return id; }
 }

@@ -6,7 +6,7 @@ package demo;
  */
 class Service {
     // own line before a field
-    private int count; // trailing on a field
+    private int count = 0; // trailing on a field
     /* block comment */
     void run() {
         step(); // trailing on a call

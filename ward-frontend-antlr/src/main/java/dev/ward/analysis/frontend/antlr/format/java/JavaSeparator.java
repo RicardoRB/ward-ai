@@ -6,9 +6,29 @@ package dev.ward.analysis.frontend.antlr.format.java;
  */
 final class JavaSeparator {
 
+  private final JavaSpacing spacing;
   private JavaBreak pending = JavaBreak.UNSET;
   private boolean afterBlockClose;
   private boolean afterAnnotation;
+  private JavaAtom previous;
+
+  /**
+   * Creates the separator for one source.
+   *
+   * @param spacing the spacing rules for tokens on one line
+   */
+  JavaSeparator(final JavaSpacing spacing) {
+    this.spacing = spacing;
+  }
+
+  /**
+   * Remembers the atom just written, so the next token's spacing can look back at it.
+   *
+   * @param atom the atom just written
+   */
+  void remember(final JavaAtom atom) {
+    previous = atom;
+  }
 
   /**
    * Decides the break before a code token.
@@ -88,6 +108,8 @@ final class JavaSeparator {
     if (atom.newlines() > 0 && blockTop && hasOutput) {
       return JavaBreak.CONTINUE;
     }
-    return atom.gapSpace() ? JavaBreak.SPACE : JavaBreak.NONE;
+    return previous != null && spacing.spaceBetween(previous, atom)
+        ? JavaBreak.SPACE
+        : JavaBreak.NONE;
   }
 }
