@@ -63,6 +63,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("config", Set.of()),
           Map.entry("doctor", Set.of()),
           Map.entry("gate", Set.of("project", "process")),
+          Map.entry("format", Set.of("config")),
           Map.entry("init", Set.of("agent", "gate", "project")),
           Map.entry("loop", Set.of("gate")),
           Map.entry("policy", Set.of("gate")),

@@ -73,9 +73,7 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     @Override
     public FileVisitResult preVisitDirectory(
         final Path directory, final BasicFileAttributes attributes) {
-      final String name = nameOf(directory);
-      final boolean skipped =
-          !directory.equals(root) && (name.startsWith(".") || SKIPPED_DIRECTORIES.contains(name));
+      final boolean skipped = !directory.equals(root) && skipsDirectory(nameOf(directory));
       return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 
@@ -101,8 +99,24 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     return name == null ? "" : name.toString();
   }
 
-  /** Returns the language of a file name by its extension, or {@code null} when none is known. */
-  static AnalysisLanguage language(final String fileName) {
+  /**
+   * Tells whether a folder is skipped: hidden folders, and build output such as {@code target} or
+   * {@code node_modules}.
+   *
+   * @param name the folder name
+   * @return true when the folder and everything under it is skipped
+   */
+  public static boolean skipsDirectory(final String name) {
+    return name.startsWith(".") || SKIPPED_DIRECTORIES.contains(name);
+  }
+
+  /**
+   * Returns the language of a file name by its extension, or {@code null} when none is known.
+   *
+   * @param fileName the file name
+   * @return the language, or null
+   */
+  public static AnalysisLanguage language(final String fileName) {
     final int dot = fileName.lastIndexOf('.');
     if (dot < 0) {
       return null;
