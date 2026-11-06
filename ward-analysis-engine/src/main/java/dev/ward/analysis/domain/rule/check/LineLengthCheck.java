@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public final class LineLengthCheck implements UnitCheck {
 
+  private static final int MIN_TAB_WIDTH = 1;
+
   private final int max;
   private final int tabWidth;
   private final Pattern ignore;
@@ -31,7 +33,7 @@ public final class LineLengthCheck implements UnitCheck {
   public LineLengthCheck(
       final int max, final int tabWidth, final String ignorePattern, final String message) {
     this.max = CheckSupport.nonNegative(max, "max");
-    if (tabWidth < 1) {
+    if (tabWidth < MIN_TAB_WIDTH) {
       throw new IllegalArgumentException("tab-width must be positive");
     }
     this.tabWidth = tabWidth;
@@ -48,23 +50,25 @@ public final class LineLengthCheck implements UnitCheck {
       final String line = lines.get(index);
       final int length = expandedLength(line);
       if (length > max && !ignore.matcher(line).find()) {
-        final int number = index + 1;
-        final Span span = new Span(number, 1, number, line.length() + 1, offset, offset + line.length());
-        matches.add(
-            CheckSupport.at(
-                span,
-                CheckSupport.fill(message, String.valueOf(length), String.valueOf(max))));
+        matches.add(report(index + 1, line, offset, length));
       }
       offset += line.length() + 1;
     }
     return List.copyOf(matches);
   }
 
+  private RuleMatch report(
+      final int number, final String line, final int offset, final int length) {
+    final Span span =
+        new Span(number, 1, number, line.length() + 1, offset, offset + line.length());
+    return CheckSupport.at(
+        span, CheckSupport.fill(message, String.valueOf(length), String.valueOf(max)));
+  }
+
   private int expandedLength(final String line) {
     int column = 0;
     for (int index = 0; index < line.length(); index++) {
-      column =
-          line.charAt(index) == '\t' ? column + tabWidth - column % tabWidth : column + 1;
+      column = line.charAt(index) == '\t' ? column + tabWidth - column % tabWidth : column + 1;
     }
     return column;
   }

@@ -36,7 +36,10 @@ public final class ClassCouplingCheck implements RuleCheck {
    * @throws IllegalArgumentException if {@code max} is negative
    */
   public ClassCouplingCheck(
-      final Set<String> typeKinds, final Set<String> excluded, final int max, final String message) {
+      final Set<String> typeKinds,
+      final Set<String> excluded,
+      final int max,
+      final String message) {
     this.typeKinds = Set.copyOf(typeKinds);
     this.excluded = Set.copyOf(excluded);
     this.max = CheckSupport.nonNegative(max, "max");
@@ -47,17 +50,25 @@ public final class ClassCouplingCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
-      final Set<String> types = new HashSet<>();
-      collect(visit.node(), types);
-      if (types.size() > max) {
-        matches.add(
-            new RuleMatch(
-                visit.node().span(),
-                CheckSupport.fill(
-                    message, String.valueOf(types.size()), String.valueOf(max))));
-      }
+      report(visit.node(), typesOf(visit.node()), matches);
     }
     return List.copyOf(matches);
+  }
+
+  private void report(
+      final SyntaxNode node, final Set<String> types, final List<RuleMatch> matches) {
+    if (types.size() > max) {
+      matches.add(
+          new RuleMatch(
+              node.span(),
+              CheckSupport.fill(message, String.valueOf(types.size()), String.valueOf(max))));
+    }
+  }
+
+  private Set<String> typesOf(final SyntaxNode node) {
+    final Set<String> types = new HashSet<>();
+    collect(node, types);
+    return types;
   }
 
   private void collect(final SyntaxNode node, final Set<String> types) {
@@ -72,8 +83,10 @@ public final class ClassCouplingCheck implements RuleCheck {
   }
 
   private void addName(final String text, final Set<String> types) {
-    final String withoutGenerics = text.indexOf(GENERICS) < 0 ? text : text.substring(0, text.indexOf(GENERICS));
-    final String simple = withoutGenerics.substring(withoutGenerics.lastIndexOf(PACKAGE_SEPARATOR) + 1);
+    final String withoutGenerics =
+        text.indexOf(GENERICS) < 0 ? text : text.substring(0, text.indexOf(GENERICS));
+    final String simple =
+        withoutGenerics.substring(withoutGenerics.lastIndexOf(PACKAGE_SEPARATOR) + 1);
     if (!simple.isEmpty() && !excluded.contains(simple)) {
       types.add(simple);
     }

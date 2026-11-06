@@ -47,8 +47,7 @@ public final class AnonymousLinesCheck implements RuleCheck {
     if (lines > max) {
       matches.add(
           new RuleMatch(
-              body.span(),
-              CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))));
+              body.span(), CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))));
     }
   }
 }

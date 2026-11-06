@@ -128,8 +128,10 @@ final class DeclarativeChecks {
               TomlValues.required(toml, IGNORE_PATTERN),
               TomlValues.required(toml, MESSAGE));
       case "boolean-operators" ->
-          new BooleanOperatorCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
-      case "npath" -> new NPathCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
+          new BooleanOperatorCheck(
+              TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
+      case "npath" ->
+          new NPathCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
       case "ncss" ->
           new NcssCheck(
               TomlValues.integer(toml, METHOD_MAXIMUM),
@@ -152,7 +154,8 @@ final class DeclarativeChecks {
               TomlValues.integer(toml, MAX),
               TomlValues.required(toml, MESSAGE));
       case "anonymous-lines" ->
-          new AnonymousLinesCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
+          new AnonymousLinesCheck(
+              TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE));
       default -> throw new RuleConfigurationException("unknown check '" + name + "'");
     };
   }

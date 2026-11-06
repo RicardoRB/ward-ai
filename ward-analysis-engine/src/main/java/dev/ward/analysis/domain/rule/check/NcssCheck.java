@@ -83,8 +83,7 @@ public final class NcssCheck implements RuleCheck {
     if (value > max) {
       matches.add(
           new RuleMatch(
-              node.span(),
-              CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
+              node.span(), CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
     }
   }
 
@@ -104,14 +103,10 @@ public final class NcssCheck implements RuleCheck {
 
   /** A statement that only wraps a block is not counted; the statements in the block are. */
   private static boolean counts(final SyntaxNode node) {
-    if (!COUNTED.contains(node.kind())) {
-      return false;
-    }
-    return !(STATEMENT.equals(node.kind()) && wrapsBlock(node));
+    return COUNTED.contains(node.kind()) && !(STATEMENT.equals(node.kind()) && wrapsBlock(node));
   }
 
   private static boolean wrapsBlock(final SyntaxNode statement) {
-    return statement.children().size() == 1
-        && BLOCK.equals(statement.children().get(0).kind());
+    return statement.children().size() == 1 && BLOCK.equals(statement.children().get(0).kind());
   }
 }

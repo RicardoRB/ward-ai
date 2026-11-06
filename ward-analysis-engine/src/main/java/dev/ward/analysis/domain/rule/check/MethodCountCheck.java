@@ -15,7 +15,8 @@ import java.util.Set;
 public final class MethodCountCheck implements RuleCheck {
 
   private static final Set<String> BODIES = Set.of("classBody", "interfaceBody");
-  private static final Set<String> MEMBERS = Set.of("classBodyDeclaration", "interfaceBodyDeclaration");
+  private static final Set<String> MEMBERS =
+      Set.of("classBodyDeclaration", "interfaceBodyDeclaration");
   private static final Set<String> METHODS =
       Set.of(
           "methodDeclaration",
@@ -88,8 +89,7 @@ public final class MethodCountCheck implements RuleCheck {
     if (value > max) {
       matches.add(
           new RuleMatch(
-              body.span(),
-              CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
+              body.span(), CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
     }
   }
 

@@ -67,6 +67,9 @@ public final class LinesCheck implements RuleCheck {
   /** Counts the distinct lines that start a token of code; comments do not count. */
   private static int codeLines(final SyntaxNode node) {
     return (int)
-        SyntaxWalk.leaves(node).stream().mapToInt(leaf -> leaf.span().startLine()).distinct().count();
+        SyntaxWalk.leaves(node).stream()
+            .mapToInt(leaf -> leaf.span().startLine())
+            .distinct()
+            .count();
   }
 }

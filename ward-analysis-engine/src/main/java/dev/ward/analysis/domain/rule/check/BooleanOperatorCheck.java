@@ -55,8 +55,7 @@ public final class BooleanOperatorCheck implements RuleCheck {
     if (count > max) {
       matches.add(
           new RuleMatch(
-              node.span(),
-              CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
+              node.span(), CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
     }
   }
 
