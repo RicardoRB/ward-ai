@@ -1,0 +1,1827 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "abstract-class-without-abstract-method"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AbstractClassWithoutAbstractMethod"]
+
+[[rule]]
+name = "abstract-class-without-any-method"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AbstractClassWithoutAnyMethod"]
+
+[[rule]]
+name = "accessor-class-generation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AccessorClassGeneration"]
+
+[[rule]]
+name = "accessor-method-generation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AccessorMethodGeneration"]
+
+[[rule]]
+name = "add-empty-string"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AddEmptyString"]
+
+[[rule]]
+name = "append-character-with-char"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AppendCharacterWithChar"]
+
+[[rule]]
+name = "array-is-stored-directly"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ArrayIsStoredDirectly"]
+
+[[rule]]
+name = "assert-equals-argument-order"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AssertEqualsArgumentOrder"]
+
+[[rule]]
+name = "assert-statement-in-test"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AssertStatementInTest"]
+
+[[rule]]
+name = "assignment-in-operand"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AssignmentInOperand"]
+
+[[rule]]
+name = "assignment-to-non-final-static"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AssignmentToNonFinalStatic"]
+
+[[rule]]
+name = "at-least-one-constructor"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["AtLeastOneConstructor"]
+
+[[rule]]
+name = "avoid-accessibility-alteration"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidAccessibilityAlteration"]
+
+[[rule]]
+name = "avoid-array-loops"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidArrayLoops"]
+
+[[rule]]
+name = "avoid-assert-as-identifier"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidAssertAsIdentifier"]
+
+[[rule]]
+name = "avoid-branching-statement-as-last-in-loop"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidBranchingStatementAsLastInLoop"]
+
+[[rule]]
+name = "avoid-calendar-date-creation"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidCalendarDateCreation"]
+
+[[rule]]
+name = "avoid-calling-finalize"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidCallingFinalize"]
+
+[[rule]]
+name = "avoid-decimal-literals-in-big-decimal-constructor"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidDecimalLiteralsInBigDecimalConstructor"]
+
+[[rule]]
+name = "avoid-deeply-nested-if-stmts"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AvoidDeeplyNestedIfStmts"]
+
+[[rule]]
+name = "avoid-dollar-signs"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["AvoidDollarSigns"]
+
+[[rule]]
+name = "avoid-enum-as-identifier"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidEnumAsIdentifier"]
+
+[[rule]]
+name = "avoid-field-name-matching-method-name"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidFieldNameMatchingMethodName"]
+
+[[rule]]
+name = "avoid-field-name-matching-type-name"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidFieldNameMatchingTypeName"]
+
+[[rule]]
+name = "avoid-file-stream"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidFileStream"]
+
+[[rule]]
+name = "avoid-instanceof-checks-in-catch-clause"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidInstanceofChecksInCatchClause"]
+
+[[rule]]
+name = "avoid-instantiating-objects-in-loops"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidInstantiatingObjectsInLoops"]
+
+[[rule]]
+name = "avoid-literals-in-if-condition"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidLiteralsInIfCondition"]
+
+[[rule]]
+name = "avoid-message-digest-field"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidMessageDigestField"]
+
+[[rule]]
+name = "avoid-multiple-unary-operators"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidMultipleUnaryOperators"]
+
+[[rule]]
+name = "avoid-print-stack-trace"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidPrintStackTrace"]
+
+[[rule]]
+name = "avoid-reassigning-catch-variables"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidReassigningCatchVariables"]
+
+[[rule]]
+name = "avoid-reassigning-loop-variables"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidReassigningLoopVariables"]
+
+[[rule]]
+name = "avoid-rethrowing-exception"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AvoidRethrowingException"]
+
+[[rule]]
+name = "avoid-string-buffer-field"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidStringBufferField"]
+
+[[rule]]
+name = "avoid-synchronized-at-method-level"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidSynchronizedAtMethodLevel"]
+
+[[rule]]
+name = "avoid-synchronized-statement"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidSynchronizedStatement"]
+
+[[rule]]
+name = "avoid-thread-group"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidThreadGroup"]
+
+[[rule]]
+name = "avoid-throwing-new-instance-of-same-exception"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AvoidThrowingNewInstanceOfSameException"]
+
+[[rule]]
+name = "avoid-throwing-null-pointer-exception"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AvoidThrowingNullPointerException"]
+
+[[rule]]
+name = "avoid-unchecked-exceptions-in-signatures"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["AvoidUncheckedExceptionsInSignatures"]
+
+[[rule]]
+name = "avoid-using-hard-coded-ip"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["AvoidUsingHardCodedIP"]
+
+[[rule]]
+name = "avoid-using-native-code"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["AvoidUsingNativeCode"]
+
+[[rule]]
+name = "avoid-using-octal-values"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["AvoidUsingOctalValues"]
+
+[[rule]]
+name = "avoid-using-volatile"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["AvoidUsingVolatile"]
+
+[[rule]]
+name = "big-integer-instantiation"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["BigIntegerInstantiation"]
+
+[[rule]]
+name = "boolean-get-method-name"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["BooleanGetMethodName"]
+
+[[rule]]
+name = "broken-null-check"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["BrokenNullCheck"]
+
+[[rule]]
+name = "c-style-array-declaration"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["CStyleArrayDeclaration"]
+
+[[rule]]
+name = "call-super-first"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CallSuperFirst"]
+
+[[rule]]
+name = "call-super-in-constructor"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["CallSuperInConstructor"]
+
+[[rule]]
+name = "call-super-last"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CallSuperLast"]
+
+[[rule]]
+name = "check-result-set"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["CheckResultSet"]
+
+[[rule]]
+name = "class-cast-exception-with-to-array"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["ClassCastExceptionWithToArray"]
+
+[[rule]]
+name = "clone-method-must-be-public"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CloneMethodMustBePublic"]
+
+[[rule]]
+name = "clone-method-must-implement-cloneable"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CloneMethodMustImplementCloneable"]
+
+[[rule]]
+name = "clone-method-return-type-must-match-class-name"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CloneMethodReturnTypeMustMatchClassName"]
+
+[[rule]]
+name = "close-resource"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CloseResource"]
+
+[[rule]]
+name = "collapsible-if-statements"
+category = "design"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#309", kotlin = "#295" }
+detekt = ["CollapsibleIfStatements"]
+pmd = ["CollapsibleIfStatements"]
+
+[[rule]]
+name = "collection-type-mismatch"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CollectionTypeMismatch"]
+
+[[rule]]
+name = "comment-content"
+category = "documentation"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["CommentContent"]
+
+[[rule]]
+name = "comment-default-access-modifier"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["CommentDefaultAccessModifier"]
+
+[[rule]]
+name = "comment-size"
+category = "documentation"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["CommentSize"]
+
+[[rule]]
+name = "compare-objects-with-equals"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["CompareObjectsWithEquals"]
+
+[[rule]]
+name = "comparison-with-na-n"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["ComparisonWithNaN"]
+
+[[rule]]
+name = "confusing-argument-to-varargs-method"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["ConfusingArgumentToVarargsMethod"]
+
+[[rule]]
+name = "confusing-ternary"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ConfusingTernary"]
+
+[[rule]]
+name = "consecutive-appends-should-reuse"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["ConsecutiveAppendsShouldReuse"]
+
+[[rule]]
+name = "consecutive-literal-appends"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["ConsecutiveLiteralAppends"]
+
+[[rule]]
+name = "constants-in-interface"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ConstantsInInterface"]
+
+[[rule]]
+name = "constructor-calls-overridable-method"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["ConstructorCallsOverridableMethod"]
+
+[[rule]]
+name = "control-statement-braces"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ControlStatementBraces"]
+
+[[rule]]
+name = "dangling-javadoc"
+category = "documentation"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["DanglingJavadoc"]
+
+[[rule]]
+name = "data-class"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["DataClass"]
+
+[[rule]]
+name = "default-label-not-last-in-switch"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["DefaultLabelNotLastInSwitch"]
+
+[[rule]]
+name = "detached-test-case"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DetachedTestCase"]
+
+[[rule]]
+name = "do-not-call-garbage-collection-explicitly"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DoNotCallGarbageCollectionExplicitly"]
+
+[[rule]]
+name = "do-not-extend-java-lang-error"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["DoNotExtendJavaLangError"]
+
+[[rule]]
+name = "do-not-extend-java-lang-throwable"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DoNotExtendJavaLangThrowable"]
+
+[[rule]]
+name = "do-not-hard-code-sd-card"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DoNotHardCodeSDCard"]
+
+[[rule]]
+name = "do-not-terminate-vm"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DoNotTerminateVM"]
+
+[[rule]]
+name = "do-not-throw-exception-in-finally"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DoNotThrowExceptionInFinally"]
+
+[[rule]]
+name = "do-not-use-threads"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["DoNotUseThreads"]
+
+[[rule]]
+name = "dont-call-thread-run"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["DontCallThreadRun"]
+
+[[rule]]
+name = "dont-use-float-type-for-loop-indices"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["DontUseFloatTypeForLoopIndices"]
+
+[[rule]]
+name = "double-checked-locking"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["DoubleCheckedLocking"]
+errorprone = ["DoubleCheckedLocking"]
+
+[[rule]]
+name = "empty-finalizer"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["EmptyFinalizer"]
+
+[[rule]]
+name = "empty-method-in-abstract-class-should-be-abstract"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
+
+[[rule]]
+name = "enum-comparison"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["EnumComparison"]
+
+[[rule]]
+name = "equals-null"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["EqualsNull"]
+errorprone = ["EqualsNull"]
+
+[[rule]]
+name = "exception-as-flow-control"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["ExceptionAsFlowControl"]
+
+[[rule]]
+name = "excessive-imports"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["ExcessiveImports"]
+
+[[rule]]
+name = "excessive-parameter-list"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["ExcessiveParameterList"]
+
+[[rule]]
+name = "excessive-public-count"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["ExcessivePublicCount"]
+
+[[rule]]
+name = "exhaustive-switch-has-default"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ExhaustiveSwitchHasDefault"]
+
+[[rule]]
+name = "extends-object"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ExtendsObject"]
+errorprone = ["ExtendsObject"]
+
+[[rule]]
+name = "final-field-could-be-static"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["FinalFieldCouldBeStatic"]
+
+[[rule]]
+name = "final-parameter-in-abstract-method"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["FinalParameterInAbstractMethod"]
+
+[[rule]]
+name = "finalize-does-not-call-super-finalize"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["FinalizeDoesNotCallSuperFinalize"]
+
+[[rule]]
+name = "finalize-only-calls-super-finalize"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["FinalizeOnlyCallsSuperFinalize"]
+
+[[rule]]
+name = "finalize-overloaded"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["FinalizeOverloaded"]
+
+[[rule]]
+name = "finalize-should-be-protected"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["FinalizeShouldBeProtected"]
+
+[[rule]]
+name = "for-loop-can-be-foreach"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ForLoopCanBeForeach"]
+
+[[rule]]
+name = "for-loop-should-be-while-loop"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ForLoopShouldBeWhileLoop"]
+
+[[rule]]
+name = "for-loop-variable-count"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ForLoopVariableCount"]
+
+[[rule]]
+name = "god-class"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["GodClass"]
+
+[[rule]]
+name = "guard-log-statement"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["GuardLogStatement"]
+
+[[rule]]
+name = "hard-coded-crypto-key"
+category = "security"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["HardCodedCryptoKey"]
+
+[[rule]]
+name = "idempotent-operations"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["IdempotentOperations"]
+
+[[rule]]
+name = "identical-catch-branches"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["IdenticalCatchBranches"]
+
+[[rule]]
+name = "identical-conditional-branches"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#310" }
+pmd = ["IdenticalConditionalBranches"]
+
+[[rule]]
+name = "immutable-field"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["ImmutableField"]
+
+[[rule]]
+name = "implicit-functional-interface"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ImplicitFunctionalInterface"]
+
+[[rule]]
+name = "inefficient-empty-string-check"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["InefficientEmptyStringCheck"]
+
+[[rule]]
+name = "inefficient-string-buffering"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["InefficientStringBuffering"]
+
+[[rule]]
+name = "insecure-crypto-iv"
+category = "security"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["InsecureCryptoIv"]
+
+[[rule]]
+name = "instantiable-utility-class"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["InstantiableUtilityClass"]
+
+[[rule]]
+name = "instantiation-to-get-class"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["InstantiationToGetClass"]
+
+[[rule]]
+name = "insufficient-string-buffer-declaration"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["InsufficientStringBufferDeclaration"]
+
+[[rule]]
+name = "internal-api-usage"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["InternalApiUsage"]
+
+[[rule]]
+name = "invalid-java-bean"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["InvalidJavaBean"]
+
+[[rule]]
+name = "invalid-log-message-format"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["InvalidLogMessageFormat"]
+
+[[rule]]
+name = "j-unit4-suites-should-use-suite-annotation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["JUnit4SuitesShouldUseSuiteAnnotation"]
+
+[[rule]]
+name = "j-unit-jupiter-test-no-private-modifier"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["JUnitJupiterTestNoPrivateModifier"]
+
+[[rule]]
+name = "j-unit-jupiter-test-should-be-package-private"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["JUnitJupiterTestShouldBePackagePrivate"]
+
+[[rule]]
+name = "j-unit-spelling"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["JUnitSpelling"]
+
+[[rule]]
+name = "j-unit-static-suite"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["JUnitStaticSuite"]
+
+[[rule]]
+name = "j-unit-use-expected"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["JUnitUseExpected"]
+
+[[rule]]
+name = "jumbled-incrementer"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["JumbledIncrementer"]
+
+[[rule]]
+name = "labeled-statement"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["LabeledStatement"]
+
+[[rule]]
+name = "lambda-can-be-method-reference"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LambdaCanBeMethodReference"]
+
+[[rule]]
+name = "law-of-demeter"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["LawOfDemeter"]
+
+[[rule]]
+name = "linguistic-naming"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LinguisticNaming"]
+
+[[rule]]
+name = "literals-first-in-comparisons"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["LiteralsFirstInComparisons"]
+
+[[rule]]
+name = "local-home-naming-convention"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LocalHomeNamingConvention"]
+
+[[rule]]
+name = "local-interface-session-naming-convention"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LocalInterfaceSessionNamingConvention"]
+
+[[rule]]
+name = "local-variable-declaration-should-be-at-start-of-block"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LocalVariableDeclarationShouldBeAtStartOfBlock"]
+
+[[rule]]
+name = "logic-inversion"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["LogicInversion"]
+
+[[rule]]
+name = "long-literal-ending-with-lowercase-l"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["LongLiteralEndingWithLowercaseL"]
+
+[[rule]]
+name = "long-variable"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["LongVariable"]
+
+[[rule]]
+name = "loose-coupling"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["LooseCoupling"]
+
+[[rule]]
+name = "loose-package-coupling"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["LoosePackageCoupling"]
+
+[[rule]]
+name = "mdb-and-session-bean-naming-convention"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["MDBAndSessionBeanNamingConvention"]
+
+[[rule]]
+name = "method-returns-internal-array"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["MethodReturnsInternalArray"]
+
+[[rule]]
+name = "method-with-same-name-as-enclosing-class"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["MethodWithSameNameAsEnclosingClass"]
+
+[[rule]]
+name = "misplaced-null-check"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["MisplacedNullCheck"]
+
+[[rule]]
+name = "missing-serial-version-uid"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["MissingSerialVersionUID"]
+
+[[rule]]
+name = "missing-static-method-in-non-instantiatable-class"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["MissingStaticMethodInNonInstantiatableClass"]
+
+[[rule]]
+name = "more-than-one-logger"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["MoreThanOneLogger"]
+
+[[rule]]
+name = "mutable-static-state"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["MutableStaticState"]
+
+[[rule]]
+name = "no-package"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["NoPackage"]
+
+[[rule]]
+name = "non-case-label-in-switch"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["NonCaseLabelInSwitch"]
+
+[[rule]]
+name = "non-exhaustive-switch"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["NonExhaustiveSwitch"]
+
+[[rule]]
+name = "non-serializable-class"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["NonSerializableClass"]
+
+[[rule]]
+name = "non-static-initializer"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["NonStaticInitializer"]
+
+[[rule]]
+name = "non-thread-safe-singleton"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["NonThreadSafeSingleton"]
+
+[[rule]]
+name = "null-assignment"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["NullAssignment"]
+
+[[rule]]
+name = "on-demand-import"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["OnDemandImport"]
+
+[[rule]]
+name = "optimizable-to-array-call"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["OptimizableToArrayCall"]
+
+[[rule]]
+name = "override-both-equals-and-hashcode"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["OverrideBothEqualsAndHashcode"]
+
+[[rule]]
+name = "overriding-thread-run"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["OverridingThreadRun"]
+
+[[rule]]
+name = "package-case"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["PackageCase"]
+
+[[rule]]
+name = "premature-declaration"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["PrematureDeclaration"]
+
+[[rule]]
+name = "preserve-stack-trace"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["PreserveStackTrace"]
+
+[[rule]]
+name = "primitive-wrapper-instantiation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["PrimitiveWrapperInstantiation"]
+
+[[rule]]
+name = "proper-clone-implementation"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ProperCloneImplementation"]
+
+[[rule]]
+name = "proper-logger"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ProperLogger"]
+
+[[rule]]
+name = "protected-member-in-final-class"
+category = "design"
+status = { java = "planned", kotlin = "planned" }
+issues = { java = "#309", kotlin = "#295" }
+detekt = ["ProtectedMemberInFinalClass"]
+pmd = ["ProtectedMemberInFinalClass"]
+
+[[rule]]
+name = "public-member-in-non-public-type"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["PublicMemberInNonPublicType"]
+
+[[rule]]
+name = "reliance-on-default-charset"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["RelianceOnDefaultCharset"]
+
+[[rule]]
+name = "remote-interface-naming-convention"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["RemoteInterfaceNamingConvention"]
+
+[[rule]]
+name = "remote-session-interface-naming-convention"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["RemoteSessionInterfaceNamingConvention"]
+
+[[rule]]
+name = "replace-enumeration-with-iterator"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ReplaceEnumerationWithIterator"]
+
+[[rule]]
+name = "replace-hashtable-with-map"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ReplaceHashtableWithMap"]
+
+[[rule]]
+name = "replace-java-util-calendar"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ReplaceJavaUtilCalendar"]
+
+[[rule]]
+name = "replace-java-util-date"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ReplaceJavaUtilDate"]
+
+[[rule]]
+name = "replace-java-util-vector"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["ReplaceJavaUtilVector"]
+
+[[rule]]
+name = "return-empty-collection-rather-than-null"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ReturnEmptyCollectionRatherThanNull"]
+
+[[rule]]
+name = "return-from-finally-block"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["ReturnFromFinallyBlock"]
+
+[[rule]]
+name = "short-class-name"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ShortClassName"]
+
+[[rule]]
+name = "short-method-name"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ShortMethodName"]
+
+[[rule]]
+name = "short-variable"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["ShortVariable"]
+
+[[rule]]
+name = "signature-declare-throws-exception"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["SignatureDeclareThrowsException"]
+
+[[rule]]
+name = "simple-date-format-needs-locale"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SimpleDateFormatNeedsLocale"]
+
+[[rule]]
+name = "simplifiable-test-assertion"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["SimplifiableTestAssertion"]
+
+[[rule]]
+name = "simplified-ternary"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["SimplifiedTernary"]
+
+[[rule]]
+name = "simplify-conditional"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["SimplifyConditional"]
+
+[[rule]]
+name = "single-method-singleton"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SingleMethodSingleton"]
+
+[[rule]]
+name = "singleton-class-returning-new-instance"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SingletonClassReturningNewInstance"]
+
+[[rule]]
+name = "singular-field"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["SingularField"]
+
+[[rule]]
+name = "static-ejb-field-should-be-final"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["StaticEJBFieldShouldBeFinal"]
+
+[[rule]]
+name = "string-buffer-instantiation-with-char"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["StringBufferInstantiationWithChar"]
+
+[[rule]]
+name = "string-instantiation"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["StringInstantiation"]
+
+[[rule]]
+name = "string-to-string"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["StringToString"]
+
+[[rule]]
+name = "suspicious-equals-method-name"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SuspiciousEqualsMethodName"]
+
+[[rule]]
+name = "suspicious-hashcode-method-name"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SuspiciousHashcodeMethodName"]
+
+[[rule]]
+name = "suspicious-octal-escape"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["SuspiciousOctalEscape"]
+
+[[rule]]
+name = "switch-density"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["SwitchDensity"]
+
+[[rule]]
+name = "system-println"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["SystemPrintln"]
+
+[[rule]]
+name = "test-class-without-test-cases"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["TestClassWithoutTestCases"]
+
+[[rule]]
+name = "too-few-branches-for-switch"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["TooFewBranchesForSwitch"]
+
+[[rule]]
+name = "too-many-fields"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["TooManyFields"]
+
+[[rule]]
+name = "too-many-methods"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["TooManyMethods"]
+
+[[rule]]
+name = "too-many-static-imports"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["TooManyStaticImports"]
+
+[[rule]]
+name = "type-name-mismatch"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["TypeNameMismatch"]
+
+[[rule]]
+name = "type-parameter-naming-conventions"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["TypeParameterNamingConventions"]
+
+[[rule]]
+name = "uncommented-empty-constructor"
+category = "documentation"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UncommentedEmptyConstructor"]
+
+[[rule]]
+name = "uncommented-empty-method-body"
+category = "documentation"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UncommentedEmptyMethodBody"]
+
+[[rule]]
+name = "unconditional-if-statement"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnconditionalIfStatement"]
+
+[[rule]]
+name = "unit-test-assertions-should-include-message"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestAssertionsShouldIncludeMessage"]
+
+[[rule]]
+name = "unit-test-contains-too-many-asserts"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestContainsTooManyAsserts"]
+
+[[rule]]
+name = "unit-test-should-include-assert"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestShouldIncludeAssert"]
+
+[[rule]]
+name = "unit-test-should-use-after-annotation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestShouldUseAfterAnnotation"]
+
+[[rule]]
+name = "unit-test-should-use-before-annotation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestShouldUseBeforeAnnotation"]
+
+[[rule]]
+name = "unit-test-should-use-test-annotation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnitTestShouldUseTestAnnotation"]
+
+[[rule]]
+name = "unnecessary-annotation-value-element"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryAnnotationValueElement"]
+
+[[rule]]
+name = "unnecessary-block"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryBlock"]
+
+[[rule]]
+name = "unnecessary-boolean-assertion"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnnecessaryBooleanAssertion"]
+
+[[rule]]
+name = "unnecessary-boxing"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryBoxing"]
+
+[[rule]]
+name = "unnecessary-case-change"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnnecessaryCaseChange"]
+
+[[rule]]
+name = "unnecessary-cast"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryCast"]
+
+[[rule]]
+name = "unnecessary-conversion-temporary"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnnecessaryConversionTemporary"]
+
+[[rule]]
+name = "unnecessary-fully-qualified-name"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryFullyQualifiedName"]
+
+[[rule]]
+name = "unnecessary-interface-declaration"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryInterfaceDeclaration"]
+
+[[rule]]
+name = "unnecessary-return"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UnnecessaryReturn"]
+
+[[rule]]
+name = "unnecessary-varargs-array-creation"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnnecessaryVarargsArrayCreation"]
+
+[[rule]]
+name = "unnecessary-warning-suppression"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnnecessaryWarningSuppression"]
+
+[[rule]]
+name = "unsupported-jdk-api-usage"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnsupportedJdkApiUsage"]
+
+[[rule]]
+name = "unsynchronized-static-formatter"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UnsynchronizedStaticFormatter"]
+
+[[rule]]
+name = "unused-formal-parameter"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnusedFormalParameter"]
+
+[[rule]]
+name = "unused-label"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnusedLabel"]
+errorprone = ["UnusedLabel"]
+
+[[rule]]
+name = "unused-null-check-in-equals"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnusedNullCheckInEquals"]
+
+[[rule]]
+name = "unused-private-method"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UnusedPrivateMethod"]
+
+[[rule]]
+name = "unused-return-value"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UnusedReturnValue"]
+
+[[rule]]
+name = "use-arrays-as-list"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseArraysAsList"]
+
+[[rule]]
+name = "use-collection-is-empty"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UseCollectionIsEmpty"]
+
+[[rule]]
+name = "use-concurrent-hash-map"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseConcurrentHashMap"]
+
+[[rule]]
+name = "use-correct-exception-logging"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UseCorrectExceptionLogging"]
+
+[[rule]]
+name = "use-diamond-operator"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UseDiamondOperator"]
+
+[[rule]]
+name = "use-enum-collections"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UseEnumCollections"]
+
+[[rule]]
+name = "use-equals-to-compare-strings"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UseEqualsToCompareStrings"]
+
+[[rule]]
+name = "use-explicit-types"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UseExplicitTypes"]
+
+[[rule]]
+name = "use-io-streams-with-apache-commons-file-item"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseIOStreamsWithApacheCommonsFileItem"]
+
+[[rule]]
+name = "use-index-of-char"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseIndexOfChar"]
+
+[[rule]]
+name = "use-locale-with-case-conversions"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UseLocaleWithCaseConversions"]
+
+[[rule]]
+name = "use-notify-all-instead-of-notify"
+category = "multithreading"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseNotifyAllInsteadOfNotify"]
+
+[[rule]]
+name = "use-proper-class-loader"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["UseProperClassLoader"]
+
+[[rule]]
+name = "use-short-array-initializer"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UseShortArrayInitializer"]
+
+[[rule]]
+name = "use-standard-charsets"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UseStandardCharsets"]
+
+[[rule]]
+name = "use-string-buffer-for-string-appends"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseStringBufferForStringAppends"]
+
+[[rule]]
+name = "use-string-buffer-length"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UseStringBufferLength"]
+
+[[rule]]
+name = "use-try-with-resources"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UseTryWithResources"]
+
+[[rule]]
+name = "use-underscores-in-numeric-literals"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UseUnderscoresInNumericLiterals"]
+
+[[rule]]
+name = "use-varargs"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["UseVarargs"]
+
+[[rule]]
+name = "useless-overriding-method"
+category = "design"
+status = { java = "planned" }
+issues = { java = "#309" }
+pmd = ["UselessOverridingMethod"]
+
+[[rule]]
+name = "useless-qualified-this"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["UselessQualifiedThis"]
+
+[[rule]]
+name = "useless-string-value-of"
+category = "performance"
+status = { java = "planned" }
+issues = { java = "#312" }
+pmd = ["UselessStringValueOf"]
+
+[[rule]]
+name = "variable-can-be-inlined"
+category = "codestyle"
+status = { java = "planned" }
+issues = { java = "#313" }
+pmd = ["VariableCanBeInlined"]
+
+[[rule]]
+name = "while-loop-with-literal-boolean"
+category = "bestpractices"
+status = { java = "planned" }
+issues = { java = "#308" }
+pmd = ["WhileLoopWithLiteralBoolean"]
+
+[[rule]]
+name = "wrong-test-annotation"
+category = "errorprone"
+status = { java = "planned" }
+issues = { java = "#311" }
+pmd = ["WrongTestAnnotation"]

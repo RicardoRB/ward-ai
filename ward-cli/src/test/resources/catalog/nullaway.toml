@@ -1,0 +1,204 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "annotation-value-invalid"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["ANNOTATION_VALUE_INVALID"]
+
+[[rule]]
+name = "assign-field-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["ASSIGN_FIELD_NULLABLE"]
+
+[[rule]]
+name = "assign-generic-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["ASSIGN_GENERIC_NULLABLE"]
+
+[[rule]]
+name = "assign-nullable-to-nonnull-array"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["ASSIGN_NULLABLE_TO_NONNULL_ARRAY"]
+
+[[rule]]
+name = "cast-to-nonnull-arg-nonnull"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["CAST_TO_NONNULL_ARG_NONNULL"]
+
+[[rule]]
+name = "dereference-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["DEREFERENCE_NULLABLE"]
+
+[[rule]]
+name = "field-no-init"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["FIELD_NO_INIT"]
+
+[[rule]]
+name = "generic-inference-failure"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["GENERIC_INFERENCE_FAILURE"]
+
+[[rule]]
+name = "get-on-empty-optional"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["GET_ON_EMPTY_OPTIONAL"]
+
+[[rule]]
+name = "method-no-init"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["METHOD_NO_INIT"]
+
+[[rule]]
+name = "nonnull-field-read-before-init"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["NONNULL_FIELD_READ_BEFORE_INIT"]
+
+[[rule]]
+name = "nullable-on-wrong-nested-class-level"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["NULLABLE_ON_WRONG_NESTED_CLASS_LEVEL"]
+
+[[rule]]
+name = "nullable-varargs-unsupported"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["NULLABLE_VARARGS_UNSUPPORTED"]
+
+[[rule]]
+name = "pass-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["PASS_NULLABLE"]
+
+[[rule]]
+name = "pass-nullable-generic"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["PASS_NULLABLE_GENERIC"]
+
+[[rule]]
+name = "postcondition-not-satisfied"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["POSTCONDITION_NOT_SATISFIED"]
+
+[[rule]]
+name = "precondition-not-satisfied"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["PRECONDITION_NOT_SATISFIED"]
+
+[[rule]]
+name = "return-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["RETURN_NULLABLE"]
+
+[[rule]]
+name = "return-nullable-generic"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["RETURN_NULLABLE_GENERIC"]
+
+[[rule]]
+name = "switch-expression-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["SWITCH_EXPRESSION_NULLABLE"]
+
+[[rule]]
+name = "type-parameter-cannot-be-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["TYPE_PARAMETER_CANNOT_BE_NULLABLE"]
+
+[[rule]]
+name = "unbox-nullable"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["UNBOX_NULLABLE"]
+
+[[rule]]
+name = "unrecognized-nullness-annotation-location"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["UNRECOGNIZED_NULLNESS_ANNOTATION_LOCATION"]
+
+[[rule]]
+name = "wrong-override-param"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_PARAM"]
+
+[[rule]]
+name = "wrong-override-param-generic"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_PARAM_GENERIC"]
+
+[[rule]]
+name = "wrong-override-postcondition"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_POSTCONDITION"]
+
+[[rule]]
+name = "wrong-override-precondition"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_PRECONDITION"]
+
+[[rule]]
+name = "wrong-override-return"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_RETURN"]
+
+[[rule]]
+name = "wrong-override-return-generic"
+category = "nullness"
+status = { java = "planned" }
+issues = { java = "#322" }
+nullaway = ["WRONG_OVERRIDE_RETURN_GENERIC"]

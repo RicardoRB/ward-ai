@@ -1,0 +1,41 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "regexp"
+category = "regexp"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["Regexp"]
+
+[[rule]]
+name = "regexp-multiline"
+category = "regexp"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["RegexpMultiline"]
+
+[[rule]]
+name = "regexp-on-filename"
+category = "regexp"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["RegexpOnFilename"]
+
+[[rule]]
+name = "regexp-singleline"
+category = "regexp"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["RegexpSingleline"]
+
+[[rule]]
+name = "regexp-singleline-java"
+category = "regexp"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["RegexpSinglelineJava"]

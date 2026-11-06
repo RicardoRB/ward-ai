@@ -1,0 +1,111 @@
+# Rules of biome-2.5.15 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "JSON files are not an engine language"
+rules = [
+  "noBiomeFirstException",
+  "noDuplicateDependencies",
+  "noDuplicateObjectKeys",
+  "noEmptyObjectKeys",
+  "noJsonUnsafeValues",
+  "noQuickfixBiome",
+  "noRestrictedDependencies",
+  "noTopLevelLiterals",
+  "noUntrustedLicenses",
+  "useBiomeIgnoreFolder",
+  "useConsistentObjectKeys",
+  "useRequiredScripts",
+]
+
+[[group]]
+reason = "CSS files are not an engine language"
+rules = [
+  "noDeprecatedMediaType",
+  "noDescendingSpecificity",
+  "noDuplicateAtImportRules",
+  "noDuplicateCustomProperties",
+  "noDuplicateFontNames",
+  "noDuplicateProperties",
+  "noDuplicateSelectors",
+  "noDuplicateSelectorsKeyframeBlock",
+  "noEmptyBlock",
+  "noExcessiveSelectorClasses",
+  "noHexColors",
+  "noImportantInKeyframe",
+  "noImportantStyles",
+  "noInvalidDirectionInLinearGradient",
+  "noInvalidGridAreas",
+  "noInvalidPositionAtImportRule",
+  "noInvalidPropertyInitValue",
+  "noMissingVarFunction",
+  "noShorthandPropertyOverrides",
+  "noUnknownAtRules",
+  "noUnknownFunction",
+  "noUnknownMediaFeatureName",
+  "noUnknownProperty",
+  "noUnknownPseudoClass",
+  "noUnknownPseudoElement",
+  "noUnknownTypeSelector",
+  "noUnknownUnit",
+  "noUnmatchableAnbSelector",
+  "noUnusedClasses",
+  "noValueAtRule",
+  "useBaseline",
+  "useGenericFontNames",
+  "useLayeredStyles",
+  "useLogicalProperties",
+  "useNamedLayer",
+]
+
+[[group]]
+reason = "GraphQL files are not an engine language"
+rules = [
+  "noDuplicateArgumentNames",
+  "noDuplicateEnumValueNames",
+  "noDuplicateFieldDefinitionNames",
+  "noDuplicateFields",
+  "noDuplicateGraphqlOperationName",
+  "noDuplicateInputFieldNames",
+  "noDuplicateVariableNames",
+  "noRootType",
+  "useConsistentGraphqlDescriptions",
+  "useDeprecatedDate",
+  "useDeprecatedReason",
+  "useGraphqlNamedOperations",
+  "useGraphqlNamingConvention",
+  "useInputName",
+  "useLoneAnonymousOperation",
+  "useLoneExecutableDefinition",
+]
+
+[[group]]
+reason = "HTML files are not an engine language"
+rules = [
+  "noDuplicateAttributes",
+  "noSvelteAtDebugTags",
+  "noSvelteAtHtmlTags",
+  "noSvelteLegacyConst",
+  "noVueUndeclaredDirectives",
+  "noVueVIfWithVFor",
+  "noVueVOnNumberValues",
+  "useAstroClientOnlyDirectiveValue",
+  "useScopedStyles",
+  "useSvelteRequireEachKey",
+  "useVueConsistentVBindStyle",
+  "useVueConsistentVOnStyle",
+  "useVueHyphenatedAttributes",
+  "useVueVForKey",
+  "useVueValidTemplateRoot",
+  "useVueValidVBind",
+  "useVueValidVCloak",
+  "useVueValidVElse",
+  "useVueValidVElseIf",
+  "useVueValidVFor",
+  "useVueValidVHtml",
+  "useVueValidVIf",
+  "useVueValidVOn",
+  "useVueValidVOnce",
+  "useVueValidVPre",
+  "useVueValidVText",
+  "useVueVapor",
+]

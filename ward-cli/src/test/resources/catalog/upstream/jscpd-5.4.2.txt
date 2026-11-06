@@ -1,0 +1,8 @@
+# jscpd 5.4.2 detection modes and options that change which code is compared.
+# jscpd has no rule index. Generated from: npx jscpd@5.4.2 --help (--mode strict|mild|weak, --ignore-case).
+# format: <rule id><TAB><group>
+duplicate-code	mode
+ignore-case	mode
+mode-mild	mode
+mode-strict	mode
+mode-weak	mode

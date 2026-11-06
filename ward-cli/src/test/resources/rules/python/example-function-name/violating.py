@@ -1,0 +1,2 @@
+def BadName():
+    pass

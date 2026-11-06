@@ -1,0 +1,71 @@
+# Rules of checkstyle-14.3.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "formatting: covered by ward format"
+rules = [
+  "ArrayBracketNoWhitespace",
+  "CommentsIndentation",
+  "EmptyForInitializerPad",
+  "EmptyForIteratorPad",
+  "EmptyLineSeparator",
+  "FileTabCharacter",
+  "GenericWhitespace",
+  "Indentation",
+  "MethodParamPad",
+  "NoLineWrap",
+  "NoWhitespaceAfter",
+  "NoWhitespaceBefore",
+  "NoWhitespaceBeforeCaseDefaultColon",
+  "OpenjdkMethodThrowsAlignment",
+  "OperatorWrap",
+  "ParenPad",
+  "SeparatorWrap",
+  "SingleSpaceSeparator",
+  "TypeBodyPadding",
+  "TypecastParenPad",
+  "WhitespaceAfter",
+  "WhitespaceAround",
+  "WhitespaceBeforeEmptyBody",
+]
+
+[[group]]
+reason = "file selection is done with include and exclude in ward-rules.toml"
+rules = [
+  "BeforeExecutionExclusionFileFilter",
+]
+
+[[group]]
+reason = "Checkstyle framework module, not a check"
+rules = [
+  "Checker",
+  "TreeWalker",
+]
+
+[[group]]
+reason = "properties files are not source files of an engine language"
+rules = [
+  "OrderedProperties",
+  "Translation",
+  "UniqueProperties",
+]
+
+[[group]]
+reason = "suppression: Ward has no inline suppressions or suppression files"
+rules = [
+  "SeverityMatchFilter",
+  "SuppressWarningsFilter",
+  "SuppressWithNearbyCommentFilter",
+  "SuppressWithNearbyTextFilter",
+  "SuppressWithPlainTextCommentFilter",
+  "SuppressionCommentFilter",
+  "SuppressionFilter",
+  "SuppressionSingleFilter",
+  "SuppressionXpathFilter",
+  "SuppressionXpathSingleFilter",
+]
+
+[[group]]
+reason = "suppression: Ward has no inline suppressions"
+rules = [
+  "SuppressWarningsHolder",
+]

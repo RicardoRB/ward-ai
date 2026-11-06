@@ -1,0 +1,15 @@
+# Rules of typescript-eslint-8.72.1 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "deprecated upstream"
+rules = [
+  "no-empty-interface",
+  "no-loop-func",
+  "no-loss-of-precision",
+  "no-restricted-imports",
+  "no-type-alias",
+  "no-var-requires",
+  "prefer-ts-expect-error",
+  "sort-type-constituents",
+  "typedef",
+]

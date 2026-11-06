@@ -1,0 +1,92 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "design-for-extension"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#287", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["DesignForExtension"]
+
+[[rule]]
+name = "final-class"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287", kotlin = "#294" }
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+pmd = ["ClassWithOnlyPrivateConstructorsShouldBeFinal"]
+checkstyle = ["FinalClass"]
+
+[[rule]]
+name = "hide-utility-class-constructor"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+pmd = ["UseUtilityClass"]
+checkstyle = ["HideUtilityClassConstructor"]
+
+[[rule]]
+name = "inner-type-last"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["InnerTypeLast"]
+
+[[rule]]
+name = "interface-is-type"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["InterfaceIsType"]
+
+[[rule]]
+name = "mutable-exception"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287", kotlin = "#294" }
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+checkstyle = ["MutableException"]
+
+[[rule]]
+name = "one-top-level-class"
+category = "design"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["OneTopLevelClass"]
+
+[[rule]]
+name = "sealed-should-have-permits-list"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["SealedShouldHavePermitsList"]
+
+[[rule]]
+name = "throws-count"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#287", kotlin = "#295" }
+not-applicable = { typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+detekt = ["ThrowsCount"]
+checkstyle = ["ThrowsCount"]
+
+[[rule]]
+name = "visibility-modifier"
+category = "design"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#287", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["VisibilityModifier"]

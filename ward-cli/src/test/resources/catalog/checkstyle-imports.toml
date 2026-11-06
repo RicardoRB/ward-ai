@@ -1,0 +1,113 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "avoid-module-import"
+category = "imports"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#285" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["AvoidModuleImport"]
+
+[[rule]]
+name = "avoid-star-import"
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+ids = { java = "ward:java/star-import" }
+detekt = ["WildcardImport"]
+checkstyle = ["AvoidStarImport"]
+ktlint = ["no-wildcard-imports"]
+ruff = ["F403"]
+
+[[rule]]
+name = "avoid-static-import"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["AvoidStaticImport"]
+
+[[rule]]
+name = "custom-import-order"
+category = "imports"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["CustomImportOrder"]
+ktlint = ["import-ordering"]
+eslint = ["sort-imports"]
+swiftlint = ["sorted_imports"]
+ruff = ["I001"]
+
+[[rule]]
+name = "illegal-import"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+pmd = ["DontImportSun"]
+checkstyle = ["IllegalImport"]
+eslint = ["no-restricted-imports"]
+
+[[rule]]
+name = "import-control"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["ImportControl"]
+
+[[rule]]
+name = "import-order"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["ImportOrder"]
+
+[[rule]]
+name = "module-directive-order"
+category = "imports"
+presets = ["standard", "strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#285" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["ModuleDirectiveOrder"]
+
+[[rule]]
+name = "module-import-order"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+issues = { java = "#285" }
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["ModuleImportOrder"]
+
+[[rule]]
+name = "redundant-import"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["RedundantImport"]
+
+[[rule]]
+name = "unnecessary-fully-qualified-type"
+category = "imports"
+presets = ["strict"]
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { java = "#285", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+checkstyle = ["UnnecessaryFullyQualifiedType"]
+
+[[rule]]
+name = "unused-imports"
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+ids = { java = "ward:java/unused-import" }
+detekt = ["UnusedImports"]
+pmd = ["UnnecessaryImport"]
+checkstyle = ["UnusedImports"]
+ktlint = ["no-unused-imports"]
+swiftlint = ["unused_import"]
+biome = ["noUnusedImports"]
+ruff = ["F401"]

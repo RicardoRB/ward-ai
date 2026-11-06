@@ -1,0 +1,11 @@
+# PMD CPD 7.29.0 detection modes: the token comparison itself and the options that change which tokens are compared.
+# CPD has no rule index. Generated from: pmd cpd --help for PMD 7.29.0 (--ignore-literals, --ignore-identifiers, --ignore-annotations, --ignore-usings, --ignore-literal-sequences, --ignore-identifier-and-literal-sequences, --skip-lexical-errors).
+# format: <rule id><TAB><group>
+duplicate-tokens	mode
+ignore-annotations	mode
+ignore-identifier-and-literal-sequences	mode
+ignore-identifiers	mode
+ignore-literal-sequences	mode
+ignore-literals	mode
+ignore-usings	mode
+skip-lexical-errors	mode

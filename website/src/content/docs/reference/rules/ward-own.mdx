@@ -1,0 +1,20 @@
+---
+title: ward-own
+description: Rules of the catalog file ward-own and their counterparts.
+---
+
+{/* Generated from the rule catalog by RuleReferenceTest. Do not edit by hand. */}
+
+[Rule reference](/reference/rules/)
+
+| Rule | Category | java | kotlin | typescript | javascript | python | swift | Counterparts |
+|---|---|---|---|---|---|---|---|---|
+| `cognitive-complexity` | metrics | implemented | implemented | n/a | n/a | n/a | n/a | PMD `CognitiveComplexity` |
+| `naming` | naming | n/a | n/a | implemented | implemented | implemented | implemented | ESLint `camelcase` |
+| `nesting-depth` | coding | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `max-depth`; detekt `NestedBlockDepth` |
+| `type-body-length` | sizes | n/a | n/a | n/a | n/a | n/a | implemented | SwiftLint `type_body_length` |
+| `unused-assignment` | coding | implemented | n/a | implemented | implemented | n/a | n/a | PMD `UnusedAssignment`; ESLint `no-useless-assignment` |
+| `sql-injection` | misc | implemented | n/a | n/a | n/a | n/a | n/a | SpotBugs `SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE`, `SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING` |
+| `command-injection` | misc | implemented | n/a | implemented | implemented | n/a | n/a | none |
+| `path-traversal` | misc | implemented | n/a | implemented | implemented | n/a | n/a | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
+| `xss` | misc | n/a | n/a | implemented | implemented | n/a | n/a | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |

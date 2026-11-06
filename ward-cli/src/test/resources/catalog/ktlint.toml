@@ -1,0 +1,92 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "backing-property-naming"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["backing-property-naming"]
+
+[[rule]]
+name = "enum-entry-name-case"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["enum-entry-name-case"]
+
+[[rule]]
+name = "filename"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["filename"]
+
+[[rule]]
+name = "function-expression-body"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["function-expression-body"]
+
+[[rule]]
+name = "kdoc"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["kdoc"]
+
+[[rule]]
+name = "no-consecutive-comments"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["no-consecutive-comments"]
+
+[[rule]]
+name = "no-empty-file"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["no-empty-file"]
+
+[[rule]]
+name = "no-single-line-block-comment"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["no-single-line-block-comment"]
+
+[[rule]]
+name = "no-unit-return"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["no-unit-return"]
+
+[[rule]]
+name = "string-template"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["string-template"]
+
+[[rule]]
+name = "unnecessary-parentheses-before-trailing-lambda"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["unnecessary-parentheses-before-trailing-lambda"]
+
+[[rule]]
+name = "value-argument-comment"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["value-argument-comment"]
+
+[[rule]]
+name = "value-parameter-comment"
+category = "linter"
+status = { kotlin = "planned" }
+issues = { kotlin = "#295" }
+ktlint = ["value-parameter-comment"]
