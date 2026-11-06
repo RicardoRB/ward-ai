@@ -575,3 +575,53 @@ body = '''
 check = "type-name-mismatch"
 message = "type '{value}' is not named after its file"
 '''
+
+[[rules]]
+id = "ward:java/unused-private-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-private-method"
+message = "private method '{value}' is never called"
+'''
+
+[[rules]]
+id = "ward:java/unused-formal-parameter"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.check-all = { type = "boolean", parameter = "check-all" }
+body = '''
+check = "unused-formal-parameter"
+check-all = false
+message = "parameter '{value}' is never used in the method body"
+'''
+
+[[rules]]
+id = "ward:java/for-loop-can-be-foreach"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "for-loop-can-be-foreach"
+message = "loop only reads the elements of '{value}'; use an enhanced for loop"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-warning-suppression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "unnecessary-warning-suppression"
+message = "suppression {value} is not allowed; fix the code instead"
+'''

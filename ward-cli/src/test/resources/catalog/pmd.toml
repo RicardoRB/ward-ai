@@ -703,10 +703,7 @@ pmd = ["FinalizeShouldBeProtected"]
 
 [[rule]]
 name = "for-loop-can-be-foreach"
-category = "bestpractices"
-# Not applicable (review): needs data flow showing the index is only used to read the elements
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ForLoopCanBeForeach"]
 
 [[rule]]
@@ -1518,10 +1515,7 @@ pmd = ["UnnecessaryVarargsArrayCreation"]
 
 [[rule]]
 name = "unnecessary-warning-suppression"
-category = "bestpractices"
-# Not applicable (review): reports suppressions that no other rule needs, so it depends on the results of the other rules
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnnecessaryWarningSuppression"]
 
 [[rule]]
@@ -1540,10 +1534,7 @@ pmd = ["UnsynchronizedStaticFormatter"]
 
 [[rule]]
 name = "unused-formal-parameter"
-category = "bestpractices"
-# Not applicable (review): needs the references to each parameter, a symbol-level check
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnusedFormalParameter"]
 
 [[rule]]
@@ -1561,10 +1552,7 @@ pmd = ["UnusedNullCheckInEquals"]
 
 [[rule]]
 name = "unused-private-method"
-category = "bestpractices"
-# Not applicable (review): needs the references to each private method, a symbol-level check
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UnusedPrivateMethod"]
 
 [[rule]]

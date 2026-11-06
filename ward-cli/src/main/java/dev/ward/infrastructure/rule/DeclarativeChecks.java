@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.CountedKinds;
 import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
+import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
@@ -25,9 +26,12 @@ import dev.ward.analysis.domain.rule.check.UnitTestAssertCountCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestLifecycleCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestMissingAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestWithoutAssertCheck;
+import dev.ward.analysis.domain.rule.check.UnnecessaryWarningSuppressionCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
+import dev.ward.analysis.domain.rule.check.UnusedFormalParameterCheck;
 import dev.ward.analysis.domain.rule.check.UnusedLabelCheck;
+import dev.ward.analysis.domain.rule.check.UnusedPrivateMethodCheck;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -166,6 +170,22 @@ final class DeclarativeChecks {
       case "array-is-stored-directly" ->
           new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE));
       case "type-name-mismatch" -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE));
+      default -> reviewCheck(name, toml);
+    };
+  }
+
+  /** The checks over unused names, loops and suppressions; other names go to the metrics. */
+  private static RuleCheck reviewCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "unused-private-method" ->
+          new UnusedPrivateMethodCheck(TomlValues.required(toml, MESSAGE));
+      case "unused-formal-parameter" ->
+          new UnusedFormalParameterCheck(
+              toml.getBoolean("check-all", () -> false), TomlValues.required(toml, MESSAGE));
+      case "for-loop-can-be-foreach" ->
+          new ForLoopCanBeForeachCheck(TomlValues.required(toml, MESSAGE));
+      case "unnecessary-warning-suppression" ->
+          new UnnecessaryWarningSuppressionCheck(TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

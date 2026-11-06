@@ -68,6 +68,13 @@ final class JUnitTests {
             child -> MODIFIER.equals(child.kind()) && "public".equals(SyntaxWalk.text(child)));
   }
 
+  /** Returns whether a member has the modifier {@code private}. */
+  static boolean isPrivate(final SyntaxNode member) {
+    return member.children().stream()
+        .anyMatch(
+            child -> MODIFIER.equals(child.kind()) && "private".equals(SyntaxWalk.text(child)));
+  }
+
   /** Returns whether a member is a test method: it has one of the test annotations. */
   static boolean isTest(final SyntaxNode member) {
     return annotations(member).stream().anyMatch(TEST_ANNOTATIONS::contains);
