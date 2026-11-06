@@ -1,0 +1,327 @@
+# Lint rules for Swift, mirroring SwiftLint's lint rules that match a node or a line of source text.
+# Each rule is a generic check; a rule matches the compact text of a node (its tokens without
+# spaces), so a pattern can match across the spacing of the source.
+
+[[rules]]
+id = "ward:swift/array-init"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '\.map\{\$0\}$'
+message = "prefer Array(sequence) to map { $0 }"
+'''
+
+[[rules]]
+id = "ward:swift/class-delegate-protocol"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["protocol_declaration"]
+text = '^protocol\w*Delegate(?!:[^{]*(AnyObject|class))(:[^{]*)?\{'
+message = "delegate protocol {value} should be class-only so it can be weakly referenced"
+'''
+
+[[rules]]
+id = "ward:swift/comment-spacing"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^//[^\s/]'
+message = "prefer at least one space after the slashes of a comment"
+'''
+
+[[rules]]
+id = "ward:swift/compiler-protocol-init"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^[\w.]+\((arrayLiteral|dictionaryLiteral|stringLiteral|integerLiteral|floatLiteral|booleanLiteral|nilLiteral|unicodeScalarLiteral|extendedGraphemeClusterLiteral):'
+message = "do not call the initializer of a compiler protocol directly"
+'''
+
+[[rules]]
+id = "ward:swift/dynamic-inline"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration", "variable_declaration"]
+text = '^(?=.*@inline\(__always\))(?=.*dynamic)'
+message = "avoid using dynamic and @inline(__always) together"
+'''
+
+[[rules]]
+id = "ward:swift/identical-operands"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([\w.]+)(==|!=|<=|>=|<|>|&&|\|\|)\1$'
+message = "comparing two identical operands is likely a mistake"
+'''
+
+[[rules]]
+id = "ward:swift/ibinspectable-in-extension"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+inside = ["extension_body"]
+text = '^@IBInspectable'
+message = "extensions should not add @IBInspectable properties"
+'''
+
+[[rules]]
+id = "ward:swift/invalid-swiftlint-command"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^//.*swiftlint:(?!(disable|enable)\b)'
+message = "swiftlint command is invalid"
+'''
+
+[[rules]]
+id = "ward:swift/invisible-character"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '[\x{00AD}\x{200B}-\x{200F}\x{2060}\x{FEFF}]'
+message = "line contains an invisible character"
+'''
+
+[[rules]]
+id = "ward:swift/mark"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^//\s*MARK(?!: (- )?\S)'
+message = "MARK comment should be in the form '// MARK: ...' or '// MARK: - ...'"
+'''
+
+[[rules]]
+id = "ward:swift/ns-number-init-as-function-reference"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(NSNumber|NSDecimalNumber)\.init$'
+message = "passing an NSNumber initializer as a function reference is dangerous"
+'''
+
+[[rules]]
+id = "ward:swift/nslocalizedstring-key"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^NSLocalizedString\((?!")'
+message = "NSLocalizedString should use a static string as its key"
+'''
+
+[[rules]]
+id = "ward:swift/nslocalizedstring-require-bundle"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^NSLocalizedString\((?!.*bundle:)'
+message = "NSLocalizedString should specify the bundle that holds the strings file"
+'''
+
+[[rules]]
+id = "ward:swift/override-in-extension"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration", "variable_declaration", "subscript_declaration"]
+inside = ["extension_body"]
+text = '^(?:@\w+|private|fileprivate|internal|public|open|final|static|class|dynamic|required|convenience|lazy|weak|unowned|mutating|nonmutating)*override(?:func|var|let|subscript)'
+message = "extensions should not override declarations"
+'''
+
+[[rules]]
+id = "ward:swift/period-spacing"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\.\s{2,}\S'
+message = "period should not be followed by more than one space"
+'''
+
+[[rules]]
+id = "ward:swift/private-action"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^@IBAction(?!private|fileprivate)'
+message = "IBAction should be private"
+'''
+
+[[rules]]
+id = "ward:swift/private-subject"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^(?!(@\w+)*(private|fileprivate))(@\w+)*(var|let)\w+[:=](PassthroughSubject|CurrentValueSubject)'
+message = "Combine subject should be private"
+'''
+
+[[rules]]
+id = "ward:swift/private-swiftui-state"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^@State(Object)?(?!private|fileprivate)'
+message = "SwiftUI state property should be private"
+'''
+
+[[rules]]
+id = "ward:swift/private-unit-test"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_declaration"]
+text = '^(@\w+)*(private|fileprivate)functest'
+message = "unit test marked private is silently skipped"
+'''
+
+[[rules]]
+id = "ward:swift/quick-discouraged-focused-test"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^f(it|describe|context)\(.*\{.*\}$'
+message = "non-focused tests will not run while this test is focused"
+'''
+
+[[rules]]
+id = "ward:swift/quick-discouraged-pending-test"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^x(it|describe|context)\(.*\{.*\}$'
+message = "this test will not run while it is marked pending"
+'''
+
+[[rules]]
+id = "ward:swift/strong-iboutlet"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^@IBOutlet(private|fileprivate)?weak'
+message = "@IBOutlet should not be declared as weak"
+'''
+
+[[rules]]
+id = "ward:swift/weak-delegate"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^(?!.*weak)[a-z]*var\w*[dD]elegate:'
+message = "delegates should be weak to avoid reference cycles"
+'''

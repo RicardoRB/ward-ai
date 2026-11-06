@@ -24,8 +24,7 @@ swiftlint = ["anonymous_argument_in_multiline_closure"]
 [[rule]]
 name = "array-init"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["array_init"]
 
 [[rule]]
@@ -59,8 +58,7 @@ swiftlint = ["blanket_disable_command"]
 [[rule]]
 name = "block-based-kvo"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["block_based_kvo"]
 
 [[rule]]
@@ -73,8 +71,7 @@ swiftlint = ["capture_variable"]
 [[rule]]
 name = "class-delegate-protocol"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["class_delegate_protocol"]
 
 [[rule]]
@@ -101,15 +98,13 @@ swiftlint = ["comma_inheritance"]
 [[rule]]
 name = "comment-spacing"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["comment_spacing"]
 
 [[rule]]
 name = "compiler-protocol-init"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["compiler_protocol_init"]
 
 [[rule]]
@@ -129,29 +124,25 @@ swiftlint = ["conditional_returns_on_newline"]
 [[rule]]
 name = "contains-over-filter-count"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["contains_over_filter_count"]
 
 [[rule]]
 name = "contains-over-filter-is-empty"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["contains_over_filter_is_empty"]
 
 [[rule]]
 name = "contains-over-first-not-nil"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["contains_over_first_not_nil"]
 
 [[rule]]
 name = "contains-over-range-nil-comparison"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["contains_over_range_nil_comparison"]
 
 [[rule]]
@@ -199,8 +190,7 @@ swiftlint = ["discarded_notification_center_observer"]
 [[rule]]
 name = "discouraged-assert"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["discouraged_assert"]
 
 [[rule]]
@@ -220,8 +210,7 @@ swiftlint = ["discouraged_direct_init"]
 [[rule]]
 name = "discouraged-none-name"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["discouraged_none_name"]
 
 [[rule]]
@@ -234,15 +223,13 @@ swiftlint = ["discouraged_object_literal"]
 [[rule]]
 name = "discouraged-optional-boolean"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["discouraged_optional_boolean"]
 
 [[rule]]
 name = "discouraged-optional-collection"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["discouraged_optional_collection"]
 
 [[rule]]
@@ -276,15 +263,13 @@ swiftlint = ["duplicated_key_in_dictionary_literal"]
 [[rule]]
 name = "dynamic-inline"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["dynamic_inline"]
 
 [[rule]]
 name = "empty-collection-literal"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["empty_collection_literal"]
 
 [[rule]]
@@ -311,8 +296,7 @@ swiftlint = ["empty_parameters"]
 [[rule]]
 name = "empty-string"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["empty_string"]
 
 [[rule]]
@@ -346,8 +330,7 @@ swiftlint = ["explicit_acl"]
 [[rule]]
 name = "explicit-enum-raw-value"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["explicit_enum_raw_value"]
 
 [[rule]]
@@ -360,8 +343,7 @@ swiftlint = ["explicit_init"]
 [[rule]]
 name = "explicit-top-level-acl"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["explicit_top_level_acl"]
 
 [[rule]]
@@ -381,15 +363,13 @@ swiftlint = ["extension_access_modifier"]
 [[rule]]
 name = "fallthrough"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["fallthrough"]
 
 [[rule]]
 name = "fatal-error-message"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["fatal_error_message"]
 
 [[rule]]
@@ -423,22 +403,19 @@ swiftlint = ["file_types_order"]
 [[rule]]
 name = "final-test-case"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["final_test_case"]
 
 [[rule]]
 name = "first-where"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["first_where"]
 
 [[rule]]
 name = "flatmap-over-map-reduce"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["flatmap_over_map_reduce"]
 
 [[rule]]
@@ -451,15 +428,13 @@ swiftlint = ["for_where"]
 [[rule]]
 name = "force-cast"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["force_cast"]
 
 [[rule]]
 name = "force-try"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["force_try"]
 
 [[rule]]
@@ -493,15 +468,13 @@ swiftlint = ["generic_type_name"]
 [[rule]]
 name = "ibinspectable-in-extension"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["ibinspectable_in_extension"]
 
 [[rule]]
 name = "identical-operands"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["identical_operands"]
 
 [[rule]]
@@ -542,29 +515,25 @@ swiftlint = ["incompatible_concurrency_annotation"]
 [[rule]]
 name = "invalid-swiftlint-command"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["invalid_swiftlint_command"]
 
 [[rule]]
 name = "invisible-character"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["invisible_character"]
 
 [[rule]]
 name = "is-disjoint"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["is_disjoint"]
 
 [[rule]]
 name = "joined-default-parameter"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["joined_default_parameter"]
 
 [[rule]]
@@ -577,50 +546,43 @@ swiftlint = ["large_tuple"]
 [[rule]]
 name = "last-where"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["last_where"]
 
 [[rule]]
 name = "legacy-cggeometry-functions"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_cggeometry_functions"]
 
 [[rule]]
 name = "legacy-constant"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_constant"]
 
 [[rule]]
 name = "legacy-constructor"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_constructor"]
 
 [[rule]]
 name = "legacy-hashing"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_hashing"]
 
 [[rule]]
 name = "legacy-multiple"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_multiple"]
 
 [[rule]]
 name = "legacy-nsgeometry-functions"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_nsgeometry_functions"]
 
 [[rule]]
@@ -633,22 +595,19 @@ swiftlint = ["legacy_objc_type"]
 [[rule]]
 name = "legacy-random"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_random"]
 
 [[rule]]
 name = "legacy-swiftui-aspect-ratio"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_swiftui_aspect_ratio"]
 
 [[rule]]
 name = "legacy-uigraphics-function"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["legacy_uigraphics_function"]
 
 [[rule]]
@@ -675,8 +634,7 @@ swiftlint = ["lower_acl_than_parent"]
 [[rule]]
 name = "mark"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["mark"]
 
 [[rule]]
@@ -703,8 +661,7 @@ swiftlint = ["nesting"]
 [[rule]]
 name = "nimble-operator"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["nimble_operator"]
 
 [[rule]]
@@ -717,15 +674,13 @@ swiftlint = ["no_empty_block"]
 [[rule]]
 name = "no-extension-access-modifier"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["no_extension_access_modifier"]
 
 [[rule]]
 name = "no-fallthrough-only"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["no_fallthrough_only"]
 
 [[rule]]
@@ -759,22 +714,19 @@ swiftlint = ["notification_center_detachment"]
 [[rule]]
 name = "ns-number-init-as-function-reference"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["ns_number_init_as_function_reference"]
 
 [[rule]]
 name = "nslocalizedstring-key"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["nslocalizedstring_key"]
 
 [[rule]]
 name = "nslocalizedstring-require-bundle"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["nslocalizedstring_require_bundle"]
 
 [[rule]]
@@ -843,8 +795,7 @@ swiftlint = ["overridden_super_call"]
 [[rule]]
 name = "override-in-extension"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["override_in_extension"]
 
 [[rule]]
@@ -857,15 +808,13 @@ swiftlint = ["pattern_matching_keywords"]
 [[rule]]
 name = "period-spacing"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["period_spacing"]
 
 [[rule]]
 name = "prefer-asset-symbols"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["prefer_asset_symbols"]
 
 [[rule]]
@@ -885,8 +834,7 @@ swiftlint = ["prefer_key_path"]
 [[rule]]
 name = "prefer-nimble"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["prefer_nimble"]
 
 [[rule]]
@@ -906,15 +854,13 @@ swiftlint = ["prefer_self_type_over_type_of_self"]
 [[rule]]
 name = "prefer-type-checking"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["prefer_type_checking"]
 
 [[rule]]
 name = "prefer-zero-over-explicit-init"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["prefer_zero_over_explicit_init"]
 
 [[rule]]
@@ -927,8 +873,7 @@ swiftlint = ["prefixed_toplevel_constant"]
 [[rule]]
 name = "private-action"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["private_action"]
 
 [[rule]]
@@ -948,22 +893,19 @@ swiftlint = ["private_over_fileprivate"]
 [[rule]]
 name = "private-subject"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["private_subject"]
 
 [[rule]]
 name = "private-swiftui-state"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["private_swiftui_state"]
 
 [[rule]]
 name = "private-unit-test"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["private_unit_test"]
 
 [[rule]]
@@ -997,15 +939,13 @@ swiftlint = ["quick_discouraged_call"]
 [[rule]]
 name = "quick-discouraged-focused-test"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["quick_discouraged_focused_test"]
 
 [[rule]]
 name = "quick-discouraged-pending-test"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["quick_discouraged_pending_test"]
 
 [[rule]]
@@ -1018,15 +958,13 @@ swiftlint = ["raw_value_for_camel_cased_codable_enum"]
 [[rule]]
 name = "reduce-boolean"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["reduce_boolean"]
 
 [[rule]]
 name = "reduce-into"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["reduce_into"]
 
 [[rule]]
@@ -1046,15 +984,13 @@ swiftlint = ["redundant_final"]
 [[rule]]
 name = "redundant-nil-coalescing"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["redundant_nil_coalescing"]
 
 [[rule]]
 name = "redundant-objc-attribute"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["redundant_objc_attribute"]
 
 [[rule]]
@@ -1074,15 +1010,13 @@ swiftlint = ["redundant_sendable"]
 [[rule]]
 name = "redundant-set-access-control"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["redundant_set_access_control"]
 
 [[rule]]
 name = "redundant-string-enum-value"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["redundant_string_enum_value"]
 
 [[rule]]
@@ -1151,8 +1085,7 @@ swiftlint = ["shorthand_operator"]
 [[rule]]
 name = "shorthand-optional-binding"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["shorthand_optional_binding"]
 
 [[rule]]
@@ -1172,8 +1105,7 @@ swiftlint = ["sorted_enum_cases"]
 [[rule]]
 name = "sorted-first-last"
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["sorted_first_last"]
 
 [[rule]]
@@ -1193,15 +1125,13 @@ swiftlint = ["static_over_final_class"]
 [[rule]]
 name = "strict-fileprivate"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["strict_fileprivate"]
 
 [[rule]]
 name = "strong-iboutlet"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["strong_iboutlet"]
 
 [[rule]]
@@ -1221,8 +1151,7 @@ swiftlint = ["switch_case_on_newline"]
 [[rule]]
 name = "syntactic-sugar"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["syntactic_sugar"]
 
 [[rule]]
@@ -1235,8 +1164,7 @@ swiftlint = ["test_case_accessibility"]
 [[rule]]
 name = "toggle-bool"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["toggle_bool"]
 
 [[rule]]
@@ -1249,8 +1177,7 @@ swiftlint = ["trailing_closure"]
 [[rule]]
 name = "trailing-semicolon"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["trailing_semicolon"]
 
 [[rule]]
@@ -1277,8 +1204,7 @@ swiftlint = ["unavailable_condition"]
 [[rule]]
 name = "unavailable-function"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unavailable_function"]
 
 [[rule]]
@@ -1291,8 +1217,7 @@ swiftlint = ["unhandled_throwing_task"]
 [[rule]]
 name = "unneeded-break-in-switch"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unneeded_break_in_switch"]
 
 [[rule]]
@@ -1333,8 +1258,7 @@ swiftlint = ["unowned_variable_capture"]
 [[rule]]
 name = "untyped-error-in-catch"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["untyped_error_in_catch"]
 
 [[rule]]
@@ -1362,8 +1286,7 @@ swiftlint = ["unused_declaration"]
 [[rule]]
 name = "unused-enumerated"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["unused_enumerated"]
 
 [[rule]]
@@ -1425,8 +1348,7 @@ swiftlint = ["void_return"]
 [[rule]]
 name = "weak-delegate"
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["weak_delegate"]
 
 [[rule]]
@@ -1439,6 +1361,5 @@ swiftlint = ["xct_specific_matcher"]
 [[rule]]
 name = "xctfail-message"
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
+status = { swift = "implemented" }
 swiftlint = ["xctfail_message"]
