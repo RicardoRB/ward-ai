@@ -176,3 +176,107 @@ body = '''
 check = "star-import-usage"
 message = "'{value}' may be undefined, or defined from star imports"
 '''
+
+[[rules]]
+id = "ward:python/percent-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "invalid"
+message = "invalid % format literal: incomplete format"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-expected-mapping"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "expected-mapping"
+message = "% format expected a mapping but got a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unused-keys"
+message = "% format has unused named argument"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-missing-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "missing-keys"
+message = "% format is missing an argument for a named placeholder"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-mixed-positional-and-named"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "mixed"
+message = "% format mixes positional and named placeholders"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-positional-count-mismatch"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "count"
+message = "% format has a different number of placeholders and substitutions"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-star-requires-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "star-mapping"
+message = "% format * specifier requires a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-unsupported-format-character"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unsupported"
+message = "% format has an unsupported format character"
+'''

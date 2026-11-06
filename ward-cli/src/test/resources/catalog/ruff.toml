@@ -1400,16 +1400,12 @@ ruff = ["F407"]
 
 [[rule]]
 name = "percent-format-invalid-format"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F501"]
 
 [[rule]]
 name = "percent-format-expected-mapping"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F502"]
 
 [[rule]]
@@ -1421,44 +1417,32 @@ ruff = ["F503"]
 
 [[rule]]
 name = "percent-format-extra-named-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F504"]
 
 [[rule]]
 name = "percent-format-missing-argument"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F505"]
 
 [[rule]]
 name = "percent-format-mixed-positional-and-named"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F506"]
 
 [[rule]]
 name = "percent-format-positional-count-mismatch"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F507"]
 
 [[rule]]
 name = "percent-format-star-requires-sequence"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F508"]
 
 [[rule]]
 name = "percent-format-unsupported-format-character"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F509"]
 
 [[rule]]

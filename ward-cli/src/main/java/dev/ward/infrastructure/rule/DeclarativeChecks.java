@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
+import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
 import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -110,11 +111,19 @@ final class DeclarativeChecks {
       case "outside-scope" -> outsideScope(toml);
       case "redefinition" -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE));
       case "star-import-usage" -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE));
+      case "percent-format" -> percentFormat(toml);
       default ->
           ImportChecks.isImportCheck(name)
               ? ImportChecks.build(name, toml)
               : ReviewChecks.build(name, toml);
     };
+  }
+
+  private static RuleCheck percentFormat(final TomlParseResult toml) {
+    final String problem =
+        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
+    return new PercentFormatCheck(
+        PercentFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {
