@@ -30,11 +30,11 @@ Init reports these and writes nothing; say what to change before the user approv
   automatically; several need a choice.
 - **Platform.** The Xcode test runs on `iOS Simulator`, unless every target builds for macOS only,
   then `macOS`.
-- **Own configs.** A `.swiftlint.yml` that the project keeps is reused unchanged. A `.swift-format`
-  that the project keeps is reused unchanged. Ward writes only the files that are absent.
-- **Indentation.** Init reads the indentation of the Swift sources (tabs, 2 spaces or 4 spaces; 4
-  when the project has no indented Swift) and writes it into a new `.swift-format`. Xcode templates
-  use 4 spaces, and swift-format's default of 2 would fail every file.
+- **Own configs.** A `.swiftlint.yml` that the project keeps is reused unchanged. Ward writes only
+  the files that are absent.
+- **Formatting.** `ward-format` checks the Swift sources against `.editorconfig`, which init writes
+  when the project has none, with the indentation of the sources (tabs, 2 spaces or 4 spaces; 4
+  when the project has no indented Swift). Xcode templates use 4 spaces.
 
 ## Choices to offer
 
@@ -54,7 +54,7 @@ when the user asks for mutation testing.
 
 ## Plan lines to expect
 
-- `swift-format`, `swiftlint`, then for SwiftPM `swift-build` and `swift-test`, or for Xcode
+- `ward-format`, `swiftlint`, then for SwiftPM `swift-build` and `swift-test`, or for Xcode
   `xcodebuild-test` with its scheme and platform.
 - `swift-coverage` with `minimum = 80`, or `minimum = 85` under `strict`.
 - Under `strict`, the `swiftlint` command contains `--strict`, and the SwiftPM build, test and
@@ -65,7 +65,7 @@ when the user asks for mutation testing.
   `standard`, that file is removed.
 - `.ward/swift-tools/Package.swift` pinning SwiftLintPlugins, resolved with `swift package resolve`.
   A failed resolve removes `.ward/swift-tools/` and changes nothing else.
-- `.swiftlint.yml` and `.swift-format`, each written only when absent.
+- `.swiftlint.yml`, written only when absent, and `.editorconfig` when the project has none.
 - `.gitignore` entries for `.ward/reports/` and `.ward/swift-tools/.build/`.
 - With `harmonize`: `.ward/swift-architecture/Package.swift` pinning Harmonize 1.3.0 exactly, and
   `Tests/ArchitectureRules/LayerRules.swift` for the style. Rollback removes the package.
