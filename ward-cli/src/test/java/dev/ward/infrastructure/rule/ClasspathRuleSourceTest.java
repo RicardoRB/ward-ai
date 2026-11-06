@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
-  private static final int JAVA_RULE_COUNT = 34;
+  private static final int JAVA_RULE_COUNT = 61;
   private static final int BUNDLED_RULES = 20;
   private static final int RULES_PER_LANGUAGE = 10;
 
@@ -47,7 +47,7 @@ class ClasspathRuleSourceTest {
   }
 
   @Test
-  void packagedJavaRuleFilesLoadAllSeventeenRules() {
+  void packagedJavaRuleFilesLoadAllFortyFourRules() {
     final AnalysisRuleLoad load = new ClasspathRuleSource().load();
 
     assertThat(load.configurationErrors()).isEmpty();

@@ -12,7 +12,7 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 | Tool | Pinned version | Implemented | Planned | Out of scope |
 |---|---|---|---|---|
 | Checkstyle | 14.3.0 | 29 | 178 | 40 |
-| PMD | 7.29.0 | 10 | 293 | 23 |
+| PMD | 7.29.0 | 38 | 265 | 23 |
 | SpotBugs | 4.9.7 | 7 | 499 | 0 |
 | Error Prone | 2.52.0 | 2 | 649 | 0 |
 | NullAway | 0.14.3 | 0 | 29 | 0 |
@@ -38,7 +38,7 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 
 | Rule | Category | Presets | Options | Counterparts |
 |---|---|---|---|---|
-| `ward:java/star-import` | imports | standard, strict | none | Checkstyle `AvoidStarImport`; Ruff `F403`; detekt `WildcardImport`; ktlint `no-wildcard-imports` |
+| `ward:java/star-import` | imports | standard, strict | none | Checkstyle `AvoidStarImport`; PMD `OnDemandImport`; Ruff `F403`; detekt `WildcardImport`; ktlint `no-wildcard-imports` |
 | `ward:java/unused-import` | imports | standard, strict | none | Checkstyle `UnusedImports`; PMD `UnnecessaryImport`; Biome `noUnusedImports`; Ruff `F401`; SwiftLint `unused_import`; detekt `UnusedImports`; ktlint `no-unused-imports` |
 | `ward:java/missing-javadoc` | javadoc | standard, strict | none | Checkstyle `MissingJavadocMethod`; PMD `CommentRequired`; Error Prone `MissingJavadoc`; Ruff `D102`, `D103`; SwiftLint `missing_docs`; detekt `UndocumentedPublicFunction` |
 | `ward:java/cyclomatic-complexity` | metrics | standard, strict | `max` | Checkstyle `CyclomaticComplexity`; PMD `CyclomaticComplexity`; ESLint `complexity`; Ruff `C901`; SwiftLint `cyclomatic_complexity`; detekt `CyclomaticComplexMethod` |
@@ -109,6 +109,33 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 | `ward:python/example-trailing-whitespace` | whitespace | standard, strict | `pattern`, `limit` | none |
 | `ward:python/example-block-order` | coding | standard, strict | `order` | none |
 | `ward:python/example-duplicate-import` | imports | standard, strict | none | none |
+| `ward:java/assert-statement-in-test` | bestpractices | standard, strict | none | PMD `AssertStatementInTest` |
+| `ward:java/avoid-message-digest-field` | bestpractices | standard, strict | none | PMD `AvoidMessageDigestField` |
+| `ward:java/avoid-print-stack-trace` | bestpractices | standard, strict | none | PMD `AvoidPrintStackTrace` |
+| `ward:java/avoid-string-buffer-field` | bestpractices | standard, strict | none | PMD `AvoidStringBufferField` |
+| `ward:java/avoid-using-hard-coded-ip` | bestpractices | standard, strict | none | PMD `AvoidUsingHardCodedIP` |
+| `ward:java/constants-in-interface` | bestpractices | standard, strict | none | PMD `ConstantsInInterface` |
+| `ward:java/for-loop-variable-count` | bestpractices | standard, strict | `maximum-variables` | PMD `ForLoopVariableCount` |
+| `ward:java/j-unit4-suites-should-use-suite-annotation` | bestpractices | standard, strict | none | PMD `JUnit4SuitesShouldUseSuiteAnnotation` |
+| `ward:java/j-unit-jupiter-test-should-be-package-private` | bestpractices | standard, strict | none | PMD `JUnitJupiterTestShouldBePackagePrivate` |
+| `ward:java/j-unit-use-expected` | bestpractices | standard, strict | none | PMD `JUnitUseExpected` |
+| `ward:java/labeled-statement` | bestpractices | standard, strict | none | PMD `LabeledStatement` |
+| `ward:java/literals-first-in-comparisons` | bestpractices | standard, strict | none | PMD `LiteralsFirstInComparisons` |
+| `ward:java/loose-coupling` | bestpractices | standard, strict | none | PMD `LooseCoupling` |
+| `ward:java/primitive-wrapper-instantiation` | bestpractices | standard, strict | none | PMD `PrimitiveWrapperInstantiation` |
+| `ward:java/reliance-on-default-charset` | bestpractices | standard, strict | none | PMD `RelianceOnDefaultCharset` |
+| `ward:java/replace-enumeration-with-iterator` | bestpractices | standard, strict | none | PMD `ReplaceEnumerationWithIterator` |
+| `ward:java/replace-hashtable-with-map` | bestpractices | standard, strict | none | PMD `ReplaceHashtableWithMap` |
+| `ward:java/replace-java-util-vector` | bestpractices | standard, strict | none | PMD `ReplaceJavaUtilVector` |
+| `ward:java/simplifiable-test-assertion` | bestpractices | standard, strict | none | PMD `SimplifiableTestAssertion` |
+| `ward:java/system-println` | bestpractices | standard, strict | none | PMD `SystemPrintln` |
+| `ward:java/unit-test-assertions-should-include-message` | bestpractices | standard, strict | none | PMD `UnitTestAssertionsShouldIncludeMessage` |
+| `ward:java/unnecessary-varargs-array-creation` | bestpractices | standard, strict | none | PMD `UnnecessaryVarargsArrayCreation` |
+| `ward:java/use-collection-is-empty` | bestpractices | standard, strict | none | PMD `UseCollectionIsEmpty` |
+| `ward:java/use-standard-charsets` | bestpractices | standard, strict | none | PMD `UseStandardCharsets` |
+| `ward:java/use-try-with-resources` | bestpractices | standard, strict | none | PMD `UseTryWithResources` |
+| `ward:java/use-varargs` | bestpractices | standard, strict | none | PMD `UseVarargs` |
+| `ward:java/while-loop-with-literal-boolean` | bestpractices | standard, strict | none | PMD `WhileLoopWithLiteralBoolean` |
 | `ward:java/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
 | `ward:kotlin/cognitive-complexity` | metrics | standard, strict | `max` | PMD `CognitiveComplexity` |
 | `ward:typescript/naming` | naming | standard, strict | none | ESLint `camelcase` |
@@ -159,7 +186,7 @@ One catalog maps every rule of the tools that Ward replaces to a Ward rule, or l
 - [ktlint](/reference/rules/ktlint/) (13 rules)
 - [nullaway](/reference/rules/nullaway/) (29 rules)
 - [periphery](/reference/rules/periphery/) (4 rules)
-- [pmd](/reference/rules/pmd/) (260 rules)
+- [pmd](/reference/rules/pmd/) (259 rules)
 - [pylint](/reference/rules/pylint/) (320 rules)
 - [ruff](/reference/rules/ruff/) (875 rules)
 - [semgrep](/reference/rules/semgrep/) (130 rules)
