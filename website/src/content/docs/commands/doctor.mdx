@@ -40,7 +40,6 @@ per check:
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
 | `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |
-| `java-type-sidecar` | `OK` / `WARNING` | For Java and Kotlin projects: `javac` is on `PATH`, so the optional Java type sidecar can run. `WARNING` names the missing piece: type-aware Java rules are not run until a JDK with `javac` is on `PATH`. The warning is optional and does not change the exit status. See [Type sidecars](#type-sidecars). |
 | `typescript-type-sidecar` | `OK` / `WARNING` | For TypeScript and JavaScript projects, Bun included: `node` is on `PATH` and the project's `typescript` package resolves from the project root, so the optional TypeScript type sidecar can run. `WARNING` names what is missing: type-aware rules for the project are skipped until `node` is on `PATH` or `typescript` is installed. The warning is optional and does not change the exit status. See [Type sidecars](#type-sidecars). |
 | `python` | `OK` / `ERROR` / `WARNING` | For Python projects: `python3` or `python` is on `PATH`. For uv a missing interpreter is a `WARNING`, because uv installs its own. No `maven` or `gradle` line is printed for Python projects. |
 | `uv` / `poetry` | `OK` / `ERROR` | For uv and Poetry projects: the manager's executable is on `PATH`. |
@@ -78,19 +77,21 @@ OpenSpec diagnosis is conditional and read-only:
 
 ## Type sidecars
 
-Rules that need static types for Java or TypeScript run a type sidecar: a small helper process that
-uses the project's own `java` or `node` and `typescript`. The sidecar is optional. When
-`java-type-sidecar` or `typescript-type-sidecar` is a `WARNING`, the rules that need types for that
-language are reported as not run, naming the unavailable type sidecar, and the `ward` gate still
-passes or fails only on its other findings. Syntax and dependency analysis do not depend on
-sidecars.
+Rules that need static types for TypeScript run a type sidecar: a small helper process that uses the
+project's own `node` and `typescript`. The sidecar is optional. When `typescript-type-sidecar` is a
+`WARNING`, the rules that need types for that language are reported as not run, naming the
+unavailable type sidecar, and the `ward` gate still passes or fails only on its other findings.
+Syntax and dependency analysis do not depend on sidecars.
 
-The Java sidecar resolves the JDK and the project's own sources; with the gate's `java-classpath` file
-it also resolves library types, and without it they are unknown (a hint, not a failure). A sidecar answers, in one request per source
-file, the type of an expression, the shape and supertypes of a type, the target of a call, the
-annotations and nullness of a declaration, the methods a method overrides, the checked exceptions it
-throws and compile-time constants. A fact it cannot resolve is unknown, and a rule never reports a
-finding that depends on one. Python and Swift have no type sidecar, so their type-aware rules are
+Java and Kotlin need no sidecar and no JDK on the machine. Ward answers their type facts itself: the
+project's sources are typed on the scope model, and library and JDK types are read directly from
+class files, from the jars in the gate's `java-classpath` file and from the JDK image
+(`lib/modules`, found through `JAVA_HOME` or the running JDK). Without a `java-classpath` file, or
+without a JDK image, library or JDK types are unknown (a hint, not a failure). The type facts are:
+the type of an expression, the shape and supertypes of a type, the target of a call, the annotations
+and nullness of a declaration, the methods a method overrides, the checked exceptions it throws and
+compile-time constants. A fact Ward cannot resolve is unknown, and a rule never reports a finding
+that depends on one. Python and Swift have no type facts yet, so their type-aware rules are
 reported as not run.
 
 ## Verbose diagnostics
