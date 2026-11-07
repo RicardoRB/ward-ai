@@ -40,7 +40,14 @@ public final class AncestorCheck implements RuleCheck {
    * @param allowed the kinds that make a node allowed (or reported, for {@link Mode#INSIDE})
    * @param stop the kinds at which the search ends without finding an allowed kind
    */
-  public record Boundary(Set<String> allowed, Set<String> stop) {}
+  public record Boundary(Set<String> allowed, Set<String> stop) {
+
+    /** Copies both sets. */
+    public Boundary {
+      allowed = Set.copyOf(allowed);
+      stop = Set.copyOf(stop);
+    }
+  }
 
   /**
    * Creates the check.
