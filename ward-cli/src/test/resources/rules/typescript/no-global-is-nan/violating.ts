@@ -1,0 +1,1 @@
+const bad = isNaN(value);
