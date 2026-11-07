@@ -4,39 +4,29 @@
 name = "regexp"
 category = "regexp"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["Regexp"]
 
 [[rule]]
 name = "regexp-multiline"
 category = "regexp"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["RegexpMultiline"]
 
 [[rule]]
 name = "regexp-on-filename"
 category = "regexp"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["RegexpOnFilename"]
 
 [[rule]]
 name = "regexp-singleline"
 category = "regexp"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", swift = "#298" }
 checkstyle = ["RegexpSingleline"]
 
 [[rule]]
 name = "regexp-singleline-java"
 category = "regexp"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-specific regexp check over Java source; the generic regexp-singleline covers Python" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["RegexpSinglelineJava"]

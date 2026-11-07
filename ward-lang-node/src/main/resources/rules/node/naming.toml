@@ -1,0 +1,179 @@
+# Structural rules of the "naming" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/naming"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = ""
+
+[[rules]]
+id = "ward:javascript/naming"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = ""
+
+[[rules]]
+id = "ward:typescript/type-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^[A-Z][A-Za-z0-9]*$'
+message = "type name '{value}' must be PascalCase"
+'''
+
+[[rules]]
+id = "ward:typescript/method-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["functionDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "function name '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:typescript/parameter-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["requiredParameter", "optionalParameter", "formalParameterArg"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "parameter name '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:typescript/local-variable-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["variableDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^(_*[a-z$][A-Za-z0-9$]*_*|[A-Z][A-Z0-9_]*)$'
+message = "variable name '{value}' must be camelCase or UPPER_SNAKE_CASE"
+'''
+
+[[rules]]
+id = "ward:typescript/catch-parameter-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["catchProduction"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "catch parameter '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:javascript/type-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^[A-Z][A-Za-z0-9]*$'
+message = "type name '{value}' must be PascalCase"
+'''
+
+[[rules]]
+id = "ward:javascript/method-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["functionDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "function name '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:javascript/parameter-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["formalParameterArg"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "parameter name '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:javascript/local-variable-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["variableDeclaration"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^(_*[a-z$][A-Za-z0-9$]*_*|[A-Z][A-Z0-9_]*)$'
+message = "variable name '{value}' must be camelCase or UPPER_SNAKE_CASE"
+'''
+
+[[rules]]
+id = "ward:javascript/catch-parameter-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["catchProduction"]
+name = "identifier"
+skip = ["arrayLiteral", "objectLiteral", "singleExpression", "typeAnnotation", "callSignature", "functionBody", "decoratorList", "decorator", "block", "bindingPattern", "initializer"]
+pattern = '^_*[a-z$][A-Za-z0-9$]*_*$'
+message = "catch parameter '{value}' must be camelCase"
+'''

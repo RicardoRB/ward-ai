@@ -1,0 +1,24 @@
+# Status of the checkstyle-naming rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+abbreviation-as-word-in-name = { status = "planned", issue = "#294" }
+abstract-class-name = { status = "planned", issue = "#294" }
+catch-parameter-name = { status = "planned", issue = "#294" }
+class-type-parameter-name = { status = "planned", issue = "#294" }
+constant-name = { status = "planned", issue = "#294" }
+google-method-name = { status = "planned", issue = "#294" }
+google-non-constant-field-name = { status = "planned", issue = "#294" }
+illegal-identifier-name = { status = "planned", issue = "#294" }
+interface-type-parameter-name = { status = "planned", issue = "#294" }
+lambda-parameter-name = { status = "planned", issue = "#294" }
+local-final-variable-name = { status = "planned", issue = "#294" }
+local-variable-name = { status = "planned", issue = "#294" }
+member-name = "implemented"
+method-name = "implemented"
+method-type-parameter-name = { status = "planned", issue = "#294" }
+package-name = { status = "planned", issue = "#294" }
+parameter-name = { status = "planned", issue = "#294" }
+pattern-variable-name = "not-applicable"
+record-component-name = "not-applicable"
+record-type-parameter-name = "not-applicable"
+static-variable-name = { status = "planned", issue = "#294" }
+type-name = "implemented"

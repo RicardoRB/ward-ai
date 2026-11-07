@@ -1,0 +1,5 @@
+[[rules]]
+id = "ward:java/y"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"

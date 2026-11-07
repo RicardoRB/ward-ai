@@ -1,0 +1,3 @@
+# Status of the cpd rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+duplicate-code = "implemented"

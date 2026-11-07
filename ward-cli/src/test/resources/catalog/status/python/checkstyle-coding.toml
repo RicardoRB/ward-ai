@@ -1,0 +1,68 @@
+# Status of the checkstyle-coding rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-trailing-comma = "not-applicable"
+avoid-inline-conditionals = "implemented"
+avoid-no-argument-super-constructor-call = "not-applicable"
+constructors-declaration-grouping = "not-applicable"
+covariant-equals = "not-applicable"
+declaration-order = "not-applicable"
+default-comes-last = { status = "planned", issue = "#297" }
+empty-statement = { status = "planned", issue = "#297" }
+equals-avoid-null = "not-applicable"
+equals-hash-code = "not-applicable"
+explicit-initialization = "not-applicable"
+expression-over-block-lambda = "not-applicable"
+fall-through = "not-applicable"
+final-local-variable = "not-applicable"
+hidden-field = { status = "planned", issue = "#297" }
+illegal-catch = "implemented"
+illegal-instantiation = "not-applicable"
+illegal-symbol = "not-applicable"
+illegal-throws = "not-applicable"
+illegal-token = "not-applicable"
+illegal-token-text = "not-applicable"
+illegal-type = "not-applicable"
+inner-assignment = { status = "planned", issue = "#297" }
+magic-number = "implemented"
+missing-ctor = "not-applicable"
+missing-null-case-in-switch = "not-applicable"
+missing-switch-default = { status = "planned", issue = "#297" }
+modified-control-variable = { status = "planned", issue = "#297" }
+multiple-string-literals = { status = "planned", issue = "#297" }
+multiple-variable-declarations = "not-applicable"
+nested-for-depth = "implemented"
+nested-if-depth = "implemented"
+nested-try-depth = "implemented"
+no-array-trailing-comma = "not-applicable"
+no-clone = "not-applicable"
+no-enum-trailing-comma = "not-applicable"
+no-finalizer = "not-applicable"
+one-statement-per-line = "implemented"
+overload-methods-declaration-order = { status = "planned", issue = "#297" }
+package-declaration = "not-applicable"
+parameter-assignment = { status = "planned", issue = "#297" }
+pattern-variable-assignment = "not-applicable"
+require-this = "not-applicable"
+return-count = { status = "planned", issue = "#297" }
+simplify-boolean-expression = "implemented"
+simplify-boolean-return = "implemented"
+string-literal-equality = "not-applicable"
+super-clone = "not-applicable"
+super-finalize = "not-applicable"
+text-block-google-style-formatting = "not-applicable"
+unnecessary-null-check-with-instance-of = "not-applicable"
+unnecessary-parentheses = { status = "planned", issue = "#297" }
+unnecessary-permits-clause = "not-applicable"
+unnecessary-semicolon-after-outer-type-declaration = "not-applicable"
+unnecessary-semicolon-after-type-member-declaration = "not-applicable"
+unnecessary-semicolon-in-enumeration = "not-applicable"
+unnecessary-semicolon-in-try-with-resources = "not-applicable"
+unnecessary-type-arguments-with-record-pattern = "not-applicable"
+unused-catch-parameter-should-be-unnamed = "not-applicable"
+unused-lambda-parameter-should-be-unnamed = "not-applicable"
+unused-local-variable = { status = "planned", issue = "#297" }
+unused-private-field = "not-applicable"
+unused-try-resource-should-be-unnamed = "not-applicable"
+use-enhanced-switch = "not-applicable"
+variable-declaration-usage-distance = { status = "planned", issue = "#297" }
+when-should-be-used = "not-applicable"

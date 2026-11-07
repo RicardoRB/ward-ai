@@ -1,0 +1,11 @@
+# Status of the checkstyle-annotation rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+annotation-location = "not-applicable"
+annotation-on-same-line = "not-applicable"
+annotation-use-style = "not-applicable"
+missing-deprecated = "not-applicable"
+missing-override = "not-applicable"
+missing-override-on-record-accessor = "not-applicable"
+openjdk-annotation-location = "not-applicable"
+package-annotation = "not-applicable"
+suppress-warnings = "not-applicable"

@@ -1,0 +1,7 @@
+# Status of the checkstyle-regexp rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+regexp = { status = "planned", issue = "#292" }
+regexp-multiline = { status = "planned", issue = "#292" }
+regexp-on-filename = { status = "planned", issue = "#292" }
+regexp-singleline = { status = "planned", issue = "#292" }
+regexp-singleline-java = { status = "planned", issue = "#292" }

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 /** The rule files {@link NodeRuleFiles} lists exist, and their rule ids are unique. */
 class NodeRuleFilesTest {
 
-  private static final String CHECKSTYLE_FILE = "rules/node/checkstyle.toml";
+  private static final String CHECKSTYLE_FILE = "rules/node/naming.toml";
   private static final Pattern ID = Pattern.compile("^id = \"ward:(\\w+)/([\\w-]+)\"$");
   private static final String TYPESCRIPT = "typescript";
   private static final String JAVASCRIPT = "javascript";

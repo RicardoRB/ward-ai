@@ -2,76 +2,57 @@
 
 [[rule]]
 name = "example-constant-name"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-inline-conditional"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-switch-default"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-method-count"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-nested-if"
-status = { java = "implemented", python = "implemented" }
 
 [[rule]]
 name = "example-todo-comment"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-modifier-order"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-magic-number"
-status = { java = "implemented", python = "implemented" }
 
 [[rule]]
 name = "example-redundant-import"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-overload-order"
-status = { java = "implemented" }
 
 [[rule]]
 name = "example-function-name"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-wildcard-import"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-try-needs-except"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-return-count"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-trailing-whitespace"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-block-order"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-duplicate-import"
-status = { python = "implemented" }
 
 [[rule]]
 name = "example-undefined-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 
 [[rule]]
 name = "example-unused-binding"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }

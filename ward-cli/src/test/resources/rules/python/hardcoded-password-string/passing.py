@@ -1,0 +1,1 @@
+password = get_password()

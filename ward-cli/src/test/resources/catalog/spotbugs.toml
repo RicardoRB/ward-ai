@@ -2,3439 +2,2943 @@
 
 [[rule]]
 name = "aa-assertion-of-arguments"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
 
 [[rule]]
 name = "am-creates-empty-jar-file-entry"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["AM_CREATES_EMPTY_JAR_FILE_ENTRY"]
 
 [[rule]]
 name = "am-creates-empty-zip-file-entry"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["AM_CREATES_EMPTY_ZIP_FILE_ENTRY"]
 
 [[rule]]
 name = "ase-assertion-with-side-effect"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT"]
 
 [[rule]]
 name = "ase-assertion-with-side-effect-method"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT_METHOD"]
 
 [[rule]]
 name = "at-nonatomic-64-bit-primitive"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["AT_NONATOMIC_64BIT_PRIMITIVE"]
 
 [[rule]]
 name = "at-nonatomic-operations-on-shared-variable"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["AT_NONATOMIC_OPERATIONS_ON_SHARED_VARIABLE"]
 
 [[rule]]
 name = "at-operation-sequence-on-concurrent-abstraction"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"]
 
 [[rule]]
 name = "at-stale-thread-write-of-primitive"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["AT_STALE_THREAD_WRITE_OF_PRIMITIVE"]
 
 [[rule]]
 name = "at-unsafe-resource-access-in-thread"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["AT_UNSAFE_RESOURCE_ACCESS_IN_THREAD"]
 
 [[rule]]
 name = "bac-bad-applet-constructor"
+presets = ["strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
 
 [[rule]]
 name = "bc-bad-cast-to-abstract-collection"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"]
 
 [[rule]]
 name = "bc-bad-cast-to-concrete-collection"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BC_BAD_CAST_TO_CONCRETE_COLLECTION"]
 
 [[rule]]
 name = "bc-equals-method-should-work-for-all-objects"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS"]
 
 [[rule]]
 name = "bc-impossible-cast"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BC_IMPOSSIBLE_CAST"]
 
 [[rule]]
 name = "bc-impossible-cast-primitive-array"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BC_IMPOSSIBLE_CAST_PRIMITIVE_ARRAY"]
 
 [[rule]]
 name = "bc-impossible-downcast"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BC_IMPOSSIBLE_DOWNCAST"]
 
 [[rule]]
 name = "bc-impossible-downcast-of-toarray"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY"]
 
 [[rule]]
 name = "bc-impossible-instanceof"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BC_IMPOSSIBLE_INSTANCEOF"]
 
 [[rule]]
 name = "bc-unconfirmed-cast"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BC_UNCONFIRMED_CAST"]
 
 [[rule]]
 name = "bc-unconfirmed-cast-of-return-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"]
 
 [[rule]]
 name = "bc-vacuous-instanceof"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BC_VACUOUS_INSTANCEOF"]
 
 [[rule]]
 name = "bit-add-of-signed-byte"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BIT_ADD_OF_SIGNED_BYTE"]
 
 [[rule]]
 name = "bit-and"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["BIT_AND"]
 
 [[rule]]
 name = "bit-and-zz"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["BIT_AND_ZZ"]
 
 [[rule]]
 name = "bit-ior"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["BIT_IOR"]
 
 [[rule]]
 name = "bit-ior-of-signed-byte"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BIT_IOR_OF_SIGNED_BYTE"]
 
 [[rule]]
 name = "bit-signed-check"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["BIT_SIGNED_CHECK"]
 
 [[rule]]
 name = "bit-signed-check-high-bit"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["BIT_SIGNED_CHECK_HIGH_BIT"]
 
 [[rule]]
 name = "boa-badly-overridden-adapter"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["BOA_BADLY_OVERRIDDEN_ADAPTER"]
 
 [[rule]]
 name = "bshift-wrong-add-priority"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["BSHIFT_WRONG_ADD_PRIORITY"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed-to-perform-coercion"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION"]
 
 [[rule]]
 name = "bx-unboxed-and-coerced-for-ternary-operator"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR"]
 
 [[rule]]
 name = "bx-unboxing-immediately-reboxed"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["BX_UNBOXING_IMMEDIATELY_REBOXED"]
 
 [[rule]]
 name = "caa-covariant-array-element-store"
+presets = ["strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["CAA_COVARIANT_ARRAY_ELEMENT_STORE"]
 
 [[rule]]
 name = "caa-covariant-array-field"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["CAA_COVARIANT_ARRAY_FIELD"]
 
 [[rule]]
 name = "caa-covariant-array-local"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["CAA_COVARIANT_ARRAY_LOCAL"]
 
 [[rule]]
 name = "caa-covariant-array-return"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["CAA_COVARIANT_ARRAY_RETURN"]
 
 [[rule]]
 name = "cd-circular-dependency"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["CD_CIRCULAR_DEPENDENCY"]
 
 [[rule]]
 name = "ci-confused-inheritance"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["CI_CONFUSED_INHERITANCE"]
 
 [[rule]]
 name = "cnt-rough-constant-value"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CNT_ROUGH_CONSTANT_VALUE"]
 
 [[rule]]
 name = "cn-idiom"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CN_IDIOM"]
 
 [[rule]]
 name = "cn-idiom-no-super-call"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CN_IDIOM_NO_SUPER_CALL"]
 
 [[rule]]
 name = "cn-implements-clone-but-not-cloneable"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
 
 [[rule]]
 name = "co-abstract-self"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CO_ABSTRACT_SELF"]
 
 [[rule]]
 name = "co-compareto-incorrect-floating"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CO_COMPARETO_INCORRECT_FLOATING"]
 
 [[rule]]
 name = "co-compareto-results-min-value"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
 
 [[rule]]
 name = "co-self-no-object"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CO_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "ct-constructor-throw"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["CT_CONSTRUCTOR_THROW"]
 
 [[rule]]
 name = "cwo-closed-without-opened"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["CWO_CLOSED_WITHOUT_OPENED"]
 
 [[rule]]
 name = "db-duplicate-branches"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DB_DUPLICATE_BRANCHES"]
 
 [[rule]]
 name = "db-duplicate-switch-clauses"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DB_DUPLICATE_SWITCH_CLAUSES"]
 
 [[rule]]
 name = "dcn-nullpointer-exception"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DCN_NULLPOINTER_EXCEPTION"]
 
 [[rule]]
 name = "dc-doublecheck"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DC_DOUBLECHECK"]
 
 [[rule]]
 name = "dc-partially-constructed"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DC_PARTIALLY_CONSTRUCTED"]
 
 [[rule]]
 name = "de-might-drop"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DE_MIGHT_DROP"]
 
 [[rule]]
 name = "de-might-ignore"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DE_MIGHT_IGNORE"]
 
 [[rule]]
 name = "dls-dead-local-increment-in-return"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DLS_DEAD_LOCAL_INCREMENT_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DLS_DEAD_LOCAL_STORE"]
 
 [[rule]]
 name = "dls-dead-local-store-in-return"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store-of-null"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DLS_DEAD_LOCAL_STORE_OF_NULL"]
 
 [[rule]]
 name = "dls-dead-local-store-shadows-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
 
 [[rule]]
 name = "dls-dead-store-of-class-literal"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DLS_DEAD_STORE_OF_CLASS_LITERAL"]
 
 [[rule]]
 name = "dls-overwritten-increment"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DLS_OVERWRITTEN_INCREMENT"]
 
 [[rule]]
 name = "dl-synchronization-on-boolean"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DL_SYNCHRONIZATION_ON_BOOLEAN"]
 
 [[rule]]
 name = "dl-synchronization-on-boxed-primitive"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DL_SYNCHRONIZATION_ON_BOXED_PRIMITIVE"]
 
 [[rule]]
 name = "dl-synchronization-on-interned-string"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DL_SYNCHRONIZATION_ON_INTERNED_STRING"]
 
 [[rule]]
 name = "dl-synchronization-on-shared-constant"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DL_SYNCHRONIZATION_ON_SHARED_CONSTANT"]
 
 [[rule]]
 name = "dl-synchronization-on-unshared-boxed-primitive"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE"]
 
 [[rule]]
 name = "dmi-annotation-is-not-visible-to-reflection"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_ANNOTATION_IS_NOT_VISIBLE_TO_REFLECTION"]
 
 [[rule]]
 name = "dmi-arguments-wrong-order"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_ARGUMENTS_WRONG_ORDER"]
 
 [[rule]]
 name = "dmi-bad-month"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_BAD_MONTH"]
 
 [[rule]]
 name = "dmi-bigdecimal-constructed-from-double"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE"]
 
 [[rule]]
 name = "dmi-blocking-methods-on-url"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_BLOCKING_METHODS_ON_URL"]
 
 [[rule]]
 name = "dmi-calling-next-from-hasnext"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_CALLING_NEXT_FROM_HASNEXT"]
 
 [[rule]]
 name = "dmi-collections-should-not-contain-themselves"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_COLLECTIONS_SHOULD_NOT_CONTAIN_THEMSELVES"]
 
 [[rule]]
 name = "dmi-collection-of-urls"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_COLLECTION_OF_URLS"]
 
 [[rule]]
 name = "dmi-constant-db-password"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-doh"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_DOH"]
 
 [[rule]]
 name = "dmi-empty-db-password"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_EMPTY_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-entry-sets-may-reuse-entry-objects"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS"]
 
 [[rule]]
 name = "dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_FUTILE_ATTEMPT_TO_CHANGE_MAXPOOL_SIZE_OF_SCHEDULED_THREAD_POOL_EXECUTOR"]
 
 [[rule]]
 name = "dmi-hardcoded-absolute-filename"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_HARDCODED_ABSOLUTE_FILENAME"]
 
 [[rule]]
 name = "dmi-invoking-hashcode-on-array"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_INVOKING_HASHCODE_ON_ARRAY"]
 
 [[rule]]
 name = "dmi-invoking-tostring-on-anonymous-array"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_INVOKING_TOSTRING_ON_ANONYMOUS_ARRAY"]
 
 [[rule]]
 name = "dmi-invoking-tostring-on-array"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_INVOKING_TOSTRING_ON_ARRAY"]
 
 [[rule]]
 name = "dmi-long-bits-to-double-invoked-on-int"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT"]
 
 [[rule]]
 name = "dmi-misleading-substring"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_MISLEADING_SUBSTRING"]
 
 [[rule]]
 name = "dmi-nonserializable-object-written"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_NONSERIALIZABLE_OBJECT_WRITTEN"]
 
 [[rule]]
 name = "dmi-random-used-only-once"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DMI_RANDOM_USED_ONLY_ONCE"]
 
 [[rule]]
 name = "dmi-scheduled-thread-pool-executor-with-zero-core-threads"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_SCHEDULED_THREAD_POOL_EXECUTOR_WITH_ZERO_CORE_THREADS"]
 
 [[rule]]
 name = "dmi-thread-passed-where-runnable-expected"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
 
 [[rule]]
 name = "dmi-unsupported-method"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_UNSUPPORTED_METHOD"]
 
 [[rule]]
 name = "dmi-useless-substring"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DMI_USELESS_SUBSTRING"]
 
 [[rule]]
 name = "dmi-using-removeall-to-clear-collection"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
 
 [[rule]]
 name = "dmi-vacuous-call-to-easymock-method"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
 
 [[rule]]
 name = "dmi-vacuous-self-collection-call"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DMI_VACUOUS_SELF_COLLECTION_CALL"]
 
 [[rule]]
 name = "dm-boolean-ctor"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_BOOLEAN_CTOR"]
 
 [[rule]]
 name = "dm-boxed-primitive-for-compare"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_BOXED_PRIMITIVE_FOR_COMPARE"]
 
 [[rule]]
 name = "dm-boxed-primitive-for-parsing"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_BOXED_PRIMITIVE_FOR_PARSING"]
 
 [[rule]]
 name = "dm-boxed-primitive-tostring"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_BOXED_PRIMITIVE_TOSTRING"]
 
 [[rule]]
 name = "dm-convert-case"
+presets = ["standard", "strict"]
 category = "i18-n"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_CONVERT_CASE"]
 
 [[rule]]
 name = "dm-default-encoding"
+presets = ["standard", "strict"]
 category = "i18-n"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_DEFAULT_ENCODING"]
 
 [[rule]]
 name = "dm-exit"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DM_EXIT"]
 
 [[rule]]
 name = "dm-fp-number-ctor"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_FP_NUMBER_CTOR"]
 
 [[rule]]
 name = "dm-gc"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_GC"]
 
 [[rule]]
 name = "dm-invalid-min-max"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["DM_INVALID_MIN_MAX"]
 
 [[rule]]
 name = "dm-monitor-wait-on-condition"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DM_MONITOR_WAIT_ON_CONDITION"]
 
 [[rule]]
 name = "dm-new-for-getclass"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_NEW_FOR_GETCLASS"]
 
 [[rule]]
 name = "dm-nextint-via-nextdouble"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_NEXTINT_VIA_NEXTDOUBLE"]
 
 [[rule]]
 name = "dm-number-ctor"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_NUMBER_CTOR"]
 
 [[rule]]
 name = "dm-run-finalizers-on-exit"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["DM_RUN_FINALIZERS_ON_EXIT"]
 
 [[rule]]
 name = "dm-string-ctor"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_STRING_CTOR"]
 
 [[rule]]
 name = "dm-string-tostring"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_STRING_TOSTRING"]
 
 [[rule]]
 name = "dm-string-void-ctor"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DM_STRING_VOID_CTOR"]
 
 [[rule]]
 name = "dm-useless-thread"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["DM_USELESS_THREAD"]
 
 [[rule]]
 name = "dp-create-classloader-inside-do-privileged"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
 name = "dp-do-inside-do-privileged"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["DP_DO_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
 name = "ec-array-and-nonarray"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_ARRAY_AND_NONARRAY"]
 
 [[rule]]
 name = "ec-bad-array-compare"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_BAD_ARRAY_COMPARE"]
 
 [[rule]]
 name = "ec-incompatible-array-compare"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_INCOMPATIBLE_ARRAY_COMPARE"]
 
 [[rule]]
 name = "ec-null-arg"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EC_NULL_ARG"]
 
 [[rule]]
 name = "ec-unrelated-class-and-interface"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_UNRELATED_CLASS_AND_INTERFACE"]
 
 [[rule]]
 name = "ec-unrelated-interfaces"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_UNRELATED_INTERFACES"]
 
 [[rule]]
 name = "ec-unrelated-types"
-status = { java = "implemented" }
 ids = { java = "ward:java/equals-on-unrelated-types" }
 spotbugs = ["EC_UNRELATED_TYPES"]
 
 [[rule]]
 name = "ec-unrelated-types-using-pointer-equality"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EC_UNRELATED_TYPES_USING_POINTER_EQUALITY"]
 
 [[rule]]
 name = "ei-expose-buf"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_BUF"]
 
 [[rule]]
 name = "ei-expose-buf2"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_BUF2"]
 
 [[rule]]
 name = "ei-expose-rep"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_REP"]
 
 [[rule]]
 name = "ei-expose-rep2"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_REP2"]
 
 [[rule]]
 name = "ei-expose-static-buf2"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_STATIC_BUF2"]
 
 [[rule]]
 name = "ei-expose-static-rep2"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EI_EXPOSE_STATIC_REP2"]
 
 [[rule]]
 name = "env-use-property-instead-of-env"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ENV_USE_PROPERTY_INSTEAD_OF_ENV"]
 
 [[rule]]
 name = "eos-bad-end-of-stream-check"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
 
 [[rule]]
 name = "eq-abstract-self"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["EQ_ABSTRACT_SELF"]
 
 [[rule]]
 name = "eq-always-false"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EQ_ALWAYS_FALSE"]
 
 [[rule]]
 name = "eq-always-true"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EQ_ALWAYS_TRUE"]
 
 [[rule]]
 name = "eq-check-for-operand-not-compatible-with-this"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
 
 [[rule]]
 name = "eq-compareto-use-object-equals"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["EQ_COMPARETO_USE_OBJECT_EQUALS"]
 
 [[rule]]
 name = "eq-comparing-class-names"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
 
 [[rule]]
 name = "eq-doesnt-override-equals"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
 
 [[rule]]
 name = "eq-dont-define-equals-for-enum"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
 
 [[rule]]
 name = "eq-getclass-and-class-constant"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
 
 [[rule]]
 name = "eq-other-no-object"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["EQ_OTHER_NO_OBJECT"]
 
 [[rule]]
 name = "eq-overriding-equals-not-symmetric"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
 
 [[rule]]
 name = "eq-self-no-object"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["EQ_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "eq-self-use-object"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["EQ_SELF_USE_OBJECT"]
 
 [[rule]]
 name = "eq-unusual"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["EQ_UNUSUAL"]
 
 [[rule]]
 name = "es-comparing-parameter-string-with-eq"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ES_COMPARING_PARAMETER_STRING_WITH_EQ"]
 
 [[rule]]
 name = "e-sync-empty-sync"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["ESync_EMPTY_SYNC"]
 
 [[rule]]
 name = "fb-missing-expected-warning"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["FB_MISSING_EXPECTED_WARNING"]
 
 [[rule]]
 name = "fb-unexpected-warning"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["FB_UNEXPECTED_WARNING"]
 
 [[rule]]
 name = "fe-floating-point-equality"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["FE_FLOATING_POINT_EQUALITY"]
 
 [[rule]]
 name = "fe-test-if-equal-to-not-a-number"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER"]
 
 [[rule]]
 name = "fi-empty"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_EMPTY"]
 
 [[rule]]
 name = "fi-explicit-invocation"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_EXPLICIT_INVOCATION"]
 
 [[rule]]
 name = "fi-finalizer-nulls-fields"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_FINALIZER_NULLS_FIELDS"]
 
 [[rule]]
 name = "fi-finalizer-only-nulls-fields"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_FINALIZER_ONLY_NULLS_FIELDS"]
 
 [[rule]]
 name = "fi-missing-super-call"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_MISSING_SUPER_CALL"]
 
 [[rule]]
 name = "fi-nullify-super"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_NULLIFY_SUPER"]
 
 [[rule]]
 name = "fi-public-should-be-protected"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["FI_PUBLIC_SHOULD_BE_PROTECTED"]
 
 [[rule]]
 name = "fi-useless"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FI_USELESS"]
 
 [[rule]]
 name = "fl-floats-as-loop-counters"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
 
 [[rule]]
 name = "fl-math-using-float-precision"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 
 [[rule]]
 name = "fs-bad-date-format-flag-combo"
+presets = ["strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["FS_BAD_DATE_FORMAT_FLAG_COMBO"]
 
 [[rule]]
 name = "gc-unchecked-type-in-generic-call"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["GC_UNCHECKED_TYPE_IN_GENERIC_CALL"]
 
 [[rule]]
 name = "gc-unrelated-types"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["GC_UNRELATED_TYPES"]
 
 [[rule]]
 name = "he-equals-use-hashcode"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["HE_EQUALS_USE_HASHCODE"]
 
 [[rule]]
 name = "he-hashcode-no-equals"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["HE_HASHCODE_NO_EQUALS"]
 
 [[rule]]
 name = "he-hashcode-use-object-equals"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["HE_HASHCODE_USE_OBJECT_EQUALS"]
 
 [[rule]]
 name = "he-inherits-equals-use-hashcode"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
 
 [[rule]]
 name = "he-signature-declares-hashing-of-unhashable-class"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS"]
 
 [[rule]]
 name = "he-use-of-unhashable-class"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["HE_USE_OF_UNHASHABLE_CLASS"]
 
 [[rule]]
 name = "hrs-request-parameter-to-cookie"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["HRS_REQUEST_PARAMETER_TO_COOKIE"]
 
 [[rule]]
 name = "hrs-request-parameter-to-http-header"
+presets = ["standard", "strict"]
 category = "security"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
 
 [[rule]]
 name = "hsc-huge-shared-string-constant"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
 
 [[rule]]
 name = "hsm-hiding-method"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["HSM_HIDING_METHOD"]
 
 [[rule]]
 name = "ia-ambiguous-invocation-of-inherited-or-outer-method"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD"]
 
 [[rule]]
 name = "icast-bad-shift-amount"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
 
 [[rule]]
 name = "icast-idiv-cast-to-double"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ICAST_IDIV_CAST_TO_DOUBLE"]
 
 [[rule]]
 name = "icast-integer-multiply-cast-to-long"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
 
 [[rule]]
 name = "icast-int-2-long-as-instant"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["ICAST_INT_2_LONG_AS_INSTANT"]
 
 [[rule]]
 name = "icast-int-cast-to-double-passed-to-ceil"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["ICAST_INT_CAST_TO_DOUBLE_PASSED_TO_CEIL"]
 
 [[rule]]
 name = "icast-int-cast-to-float-passed-to-round"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND"]
 
 [[rule]]
 name = "icast-questionable-unsigned-right-shift"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT"]
 
 [[rule]]
 name = "ic-init-circularity"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IC_INIT_CIRCULARITY"]
 
 [[rule]]
 name = "ic-superclass-uses-subclass-during-initialization"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION"]
 
 [[rule]]
 name = "iil-elements-get-length-in-loop"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIL_ELEMENTS_GET_LENGTH_IN_LOOP"]
 
 [[rule]]
 name = "iil-pattern-compile-in-loop"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP"]
 
 [[rule]]
 name = "iil-pattern-compile-in-loop-indirect"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP_INDIRECT"]
 
 [[rule]]
 name = "iil-prepare-statement-in-loop"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIL_PREPARE_STATEMENT_IN_LOOP"]
 
 [[rule]]
 name = "iio-inefficient-index-of"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIO_INEFFICIENT_INDEX_OF"]
 
 [[rule]]
 name = "iio-inefficient-last-index-of"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IIO_INEFFICIENT_LAST_INDEX_OF"]
 
 [[rule]]
 name = "iju-assert-method-invoked-from-run-method"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_ASSERT_METHOD_INVOKED_FROM_RUN_METHOD"]
 
 [[rule]]
 name = "iju-bad-suite-method"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_BAD_SUITE_METHOD"]
 
 [[rule]]
 name = "iju-no-tests"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_NO_TESTS"]
 
 [[rule]]
 name = "iju-setup-no-super"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_SETUP_NO_SUPER"]
 
 [[rule]]
 name = "iju-suite-not-static"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_SUITE_NOT_STATIC"]
 
 [[rule]]
 name = "iju-teardown-no-super"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IJU_TEARDOWN_NO_SUPER"]
 
 [[rule]]
 name = "il-container-added-to-itself"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IL_CONTAINER_ADDED_TO_ITSELF"]
 
 [[rule]]
 name = "il-infinite-loop"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["IL_INFINITE_LOOP"]
 
 [[rule]]
 name = "il-infinite-recursive-loop"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["IL_INFINITE_RECURSIVE_LOOP"]
 
 [[rule]]
 name = "ima-inefficient-member-access"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IMA_INEFFICIENT_MEMBER_ACCESS"]
 
 [[rule]]
 name = "imse-dont-catch-imse"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["IMSE_DONT_CATCH_IMSE"]
 
 [[rule]]
 name = "im-average-computation-could-overflow"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
 
 [[rule]]
 name = "im-bad-check-for-odd"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["IM_BAD_CHECK_FOR_ODD"]
 
 [[rule]]
 name = "im-multiplying-result-of-irem"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["IM_MULTIPLYING_RESULT_OF_IREM"]
 
 [[rule]]
 name = "int-bad-comparison-with-int-value"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["INT_BAD_COMPARISON_WITH_INT_VALUE"]
 
 [[rule]]
 name = "int-bad-comparison-with-nonnegative-value"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE"]
 
 [[rule]]
 name = "int-bad-comparison-with-signed-byte"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["INT_BAD_COMPARISON_WITH_SIGNED_BYTE"]
 
 [[rule]]
 name = "int-bad-rem-by-1"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["INT_BAD_REM_BY_1"]
 
 [[rule]]
 name = "int-vacuous-bit-operation"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["INT_VACUOUS_BIT_OPERATION"]
 
 [[rule]]
 name = "int-vacuous-comparison"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["INT_VACUOUS_COMPARISON"]
 
 [[rule]]
 name = "io-appending-to-object-output-stream"
 category = "correctness"
-status = { java = "implemented" }
 spotbugs = ["IO_APPENDING_TO_OBJECT_OUTPUT_STREAM"]
 
 [[rule]]
 name = "ip-parameter-is-dead-but-overwritten"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
 spotbugs = ["IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"]
 
 [[rule]]
 name = "is2-inconsistent-sync"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["IS2_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "isc-instantiate-static-class"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
 
 [[rule]]
 name = "is-field-not-guarded"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["IS_FIELD_NOT_GUARDED"]
 
 [[rule]]
 name = "is-inconsistent-sync"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["IS_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "ita-inefficient-to-array"
+presets = ["strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ITA_INEFFICIENT_TO_ARRAY"]
 
 [[rule]]
 name = "it-no-such-element"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["IT_NO_SUCH_ELEMENT"]
 
 [[rule]]
 name = "j2-ee-store-of-non-serializable-object-into-session"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION"]
 
 [[rule]]
 name = "jcip-field-isnt-final-in-immutable-class"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS"]
 
 [[rule]]
 name = "jlm-jsr166-lock-monitorenter"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["JLM_JSR166_LOCK_MONITORENTER"]
 
 [[rule]]
 name = "jlm-jsr166-utilconcurrent-monitorenter"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["JLM_JSR166_UTILCONCURRENT_MONITORENTER"]
 
 [[rule]]
 name = "jml-jsr166-calling-wait-rather-than-await"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT"]
 
 [[rule]]
 name = "jua-dont-assert-instanceof-in-tests"
+presets = ["strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["JUA_DONT_ASSERT_INSTANCEOF_IN_TESTS"]
 
 [[rule]]
 name = "lg-lost-logger-due-to-weak-reference"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE"]
 
 [[rule]]
 name = "li-lazy-init-static"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["LI_LAZY_INIT_STATIC"]
 
 [[rule]]
 name = "li-lazy-init-update-static"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["LI_LAZY_INIT_UPDATE_STATIC"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-clone"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CLONE"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-constructor"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-read-object"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_READ_OBJECT"]
 
 [[rule]]
 name = "me-enum-field-setter"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ME_ENUM_FIELD_SETTER"]
 
 [[rule]]
 name = "me-mutable-enum-field"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ME_MUTABLE_ENUM_FIELD"]
 
 [[rule]]
 name = "mf-class-masks-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["MF_CLASS_MASKS_FIELD"]
 
 [[rule]]
 name = "mf-method-masks-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["MF_METHOD_MASKS_FIELD"]
 
 [[rule]]
 name = "ml-sync-on-field-to-guard-changing-that-field"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["ML_SYNC_ON_FIELD_TO_GUARD_CHANGING_THAT_FIELD"]
 
 [[rule]]
 name = "ml-sync-on-updated-field"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["ML_SYNC_ON_UPDATED_FIELD"]
 
 [[rule]]
 name = "msf-mutable-servlet-field"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["MSF_MUTABLE_SERVLET_FIELD"]
 
 [[rule]]
 name = "ms-cannot-be-final"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_CANNOT_BE_FINAL"]
 
 [[rule]]
 name = "ms-expose-buf"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_EXPOSE_BUF"]
 
 [[rule]]
 name = "ms-expose-rep"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_EXPOSE_REP"]
 
 [[rule]]
 name = "ms-final-pkgprotect"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_FINAL_PKGPROTECT"]
 
 [[rule]]
 name = "ms-mutable-array"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_MUTABLE_ARRAY"]
 
 [[rule]]
 name = "ms-mutable-collection"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_MUTABLE_COLLECTION"]
 
 [[rule]]
 name = "ms-mutable-collection-pkgprotect"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_MUTABLE_COLLECTION_PKGPROTECT"]
 
 [[rule]]
 name = "ms-mutable-hashtable"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_MUTABLE_HASHTABLE"]
 
 [[rule]]
 name = "ms-ooi-pkgprotect"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_OOI_PKGPROTECT"]
 
 [[rule]]
 name = "ms-pkgprotect"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_PKGPROTECT"]
 
 [[rule]]
 name = "ms-should-be-final"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_SHOULD_BE_FINAL"]
 
 [[rule]]
 name = "ms-should-be-refactored-to-be-final"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MS_SHOULD_BE_REFACTORED_TO_BE_FINAL"]
 
 [[rule]]
 name = "mtia-suspect-servlet-instance-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MTIA_SUSPECT_SERVLET_INSTANCE_FIELD"]
 
 [[rule]]
 name = "mtia-suspect-struts-instance-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["MTIA_SUSPECT_STRUTS_INSTANCE_FIELD"]
 
 [[rule]]
 name = "mwn-mismatched-notify"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["MWN_MISMATCHED_NOTIFY"]
 
 [[rule]]
 name = "mwn-mismatched-wait"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["MWN_MISMATCHED_WAIT"]
 
 [[rule]]
 name = "nm-bad-equal"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_BAD_EQUAL"]
 
 [[rule]]
 name = "nm-class-naming-convention"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_CLASS_NAMING_CONVENTION"]
 
 [[rule]]
 name = "nm-class-not-exception"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_CLASS_NOT_EXCEPTION"]
 
 [[rule]]
 name = "nm-confusing"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_CONFUSING"]
 
 [[rule]]
 name = "nm-field-naming-convention"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_FIELD_NAMING_CONVENTION"]
 
 [[rule]]
 name = "nm-future-keyword-used-as-identifier"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_FUTURE_KEYWORD_USED_AS_IDENTIFIER"]
 
 [[rule]]
 name = "nm-future-keyword-used-as-member-identifier"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_FUTURE_KEYWORD_USED_AS_MEMBER_IDENTIFIER"]
 
 [[rule]]
 name = "nm-lcase-hashcode"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_LCASE_HASHCODE"]
 
 [[rule]]
 name = "nm-lcase-tostring"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_LCASE_TOSTRING"]
 
 [[rule]]
 name = "nm-method-constructor-confusion"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_METHOD_CONSTRUCTOR_CONFUSION"]
 
 [[rule]]
 name = "nm-method-naming-convention"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_METHOD_NAMING_CONVENTION"]
 
 [[rule]]
 name = "nm-same-simple-name-as-interface"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_SAME_SIMPLE_NAME_AS_INTERFACE"]
 
 [[rule]]
 name = "nm-same-simple-name-as-superclass"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"]
 
 [[rule]]
 name = "nm-very-confusing"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_VERY_CONFUSING"]
 
 [[rule]]
 name = "nm-very-confusing-intentional"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_VERY_CONFUSING_INTENTIONAL"]
 
 [[rule]]
 name = "nm-wrong-package"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NM_WRONG_PACKAGE"]
 
 [[rule]]
 name = "nm-wrong-package-intentional"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NM_WRONG_PACKAGE_INTENTIONAL"]
 
 [[rule]]
 name = "nn-naked-notify"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["NN_NAKED_NOTIFY"]
 
 [[rule]]
 name = "noise-field-reference"
+presets = ["strict"]
 category = "noise"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NOISE_FIELD_REFERENCE"]
 
 [[rule]]
 name = "noise-method-call"
+presets = ["strict"]
 category = "noise"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NOISE_METHOD_CALL"]
 
 [[rule]]
 name = "noise-null-dereference"
+presets = ["strict"]
 category = "noise"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NOISE_NULL_DEREFERENCE"]
 
 [[rule]]
 name = "noise-operation"
+presets = ["strict"]
 category = "noise"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NOISE_OPERATION"]
 
 [[rule]]
 name = "no-notify-not-notifyall"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["NO_NOTIFY_NOT_NOTIFYALL"]
 
 [[rule]]
 name = "np-always-null"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_ALWAYS_NULL"]
 
 [[rule]]
 name = "np-always-null-exception"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_ALWAYS_NULL_EXCEPTION"]
 
 [[rule]]
 name = "np-argument-might-be-null"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_ARGUMENT_MIGHT_BE_NULL"]
 
 [[rule]]
 name = "np-boolean-return-null"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NP_BOOLEAN_RETURN_NULL"]
 
 [[rule]]
 name = "np-clone-could-return-null"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NP_CLONE_COULD_RETURN_NULL"]
 
 [[rule]]
 name = "np-closing-null"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_CLOSING_NULL"]
 
 [[rule]]
 name = "np-dereference-of-readline-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_DEREFERENCE_OF_READLINE_VALUE"]
 
 [[rule]]
 name = "np-equals-should-handle-null-argument"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"]
 
 [[rule]]
 name = "np-guaranteed-deref"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_GUARANTEED_DEREF"]
 
 [[rule]]
 name = "np-guaranteed-deref-on-exception-path"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH"]
 
 [[rule]]
 name = "np-immediate-dereference-of-readline"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_IMMEDIATE_DEREFERENCE_OF_READLINE"]
 
 [[rule]]
 name = "np-load-of-known-null-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_LOAD_OF_KNOWN_NULL_VALUE"]
 
 [[rule]]
 name = "np-method-parameter-relaxing-annotation"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_METHOD_PARAMETER_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-method-parameter-tightens-annotation"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"]
 
 [[rule]]
 name = "np-method-return-relaxing-annotation"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_METHOD_RETURN_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-nonnull-field-not-initialized-in-constructor"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "np-nonnull-param-violation"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NONNULL_PARAM_VIOLATION"]
 
 [[rule]]
 name = "np-nonnull-return-violation"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NONNULL_RETURN_VIOLATION"]
 
 [[rule]]
 name = "np-null-instanceof"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_INSTANCEOF"]
 
 [[rule]]
 name = "np-null-on-some-path"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_ON_SOME_PATH"]
 
 [[rule]]
 name = "np-null-on-some-path-exception"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_ON_SOME_PATH_EXCEPTION"]
 
 [[rule]]
 name = "np-null-on-some-path-from-return-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"]
 
 [[rule]]
 name = "np-null-on-some-path-might-be-infeasible"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE"]
 
 [[rule]]
 name = "np-null-param-deref"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_PARAM_DEREF"]
 
 [[rule]]
 name = "np-null-param-deref-all-targets-dangerous"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"]
 
 [[rule]]
 name = "np-null-param-deref-nonvirtual"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_NULL_PARAM_DEREF_NONVIRTUAL"]
 
 [[rule]]
 name = "np-optional-return-null"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_OPTIONAL_RETURN_NULL"]
 
 [[rule]]
 name = "np-parameter-must-be-nonnull-but-marked-as-nullable"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"]
 
 [[rule]]
 name = "np-store-into-nonnull-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_STORE_INTO_NONNULL_FIELD"]
 
 [[rule]]
 name = "np-sync-and-null-check-field"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["NP_SYNC_AND_NULL_CHECK_FIELD"]
 
 [[rule]]
 name = "np-tostring-could-return-null"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["NP_TOSTRING_COULD_RETURN_NULL"]
 
 [[rule]]
 name = "np-unwritten-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["NP_UNWRITTEN_FIELD"]
 
 [[rule]]
 name = "np-unwritten-public-or-protected-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "ns-dangerous-non-short-circuit"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NS_DANGEROUS_NON_SHORT_CIRCUIT"]
 
 [[rule]]
 name = "ns-non-short-circuit"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["NS_NON_SHORT_CIRCUIT"]
 
 [[rule]]
 name = "obl-unsatisfied-obligation"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["OBL_UNSATISFIED_OBLIGATION"]
 
 [[rule]]
 name = "obl-unsatisfied-obligation-exception-edge"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"]
 
 [[rule]]
 name = "odr-open-database-resource"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE"]
 
 [[rule]]
 name = "odr-open-database-resource-exception-path"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH"]
 
 [[rule]]
 name = "os-open-stream"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["OS_OPEN_STREAM"]
 
 [[rule]]
 name = "os-open-stream-exception-path"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["OS_OPEN_STREAM_EXCEPTION_PATH"]
 
 [[rule]]
 name = "overriding-methods-must-invoke-super"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["OVERRIDING_METHODS_MUST_INVOKE_SUPER"]
 
 [[rule]]
 name = "pa-public-array-attribute"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PA_PUBLIC_ARRAY_ATTRIBUTE"]
 
 [[rule]]
 name = "pa-public-mutable-object-attribute"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE"]
 
 [[rule]]
 name = "pa-public-primitive-attribute"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PA_PUBLIC_PRIMITIVE_ATTRIBUTE"]
 
 [[rule]]
 name = "perm-super-not-called-in-getpermissions"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-class-names"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-field-names"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_FIELD_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-local-variable-names"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_LOCAL_VARIABLE_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-method-names"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_METHOD_NAMES"]
 
 [[rule]]
 name = "ps-public-semaphores"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["PS_PUBLIC_SEMAPHORES"]
 
 [[rule]]
 name = "pzla-prefer-zero-length-arrays"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["PZLA_PREFER_ZERO_LENGTH_ARRAYS"]
 
 [[rule]]
 name = "pz-dont-reuse-entry-objects-in-iterators"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["PZ_DONT_REUSE_ENTRY_OBJECTS_IN_ITERATORS"]
 
 [[rule]]
 name = "qba-questionable-boolean-assignment"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT"]
 
 [[rule]]
 name = "qf-questionable-for-loop"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["QF_QUESTIONABLE_FOR_LOOP"]
 
 [[rule]]
 name = "range-array-index"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RANGE_ARRAY_INDEX"]
 
 [[rule]]
 name = "range-array-length"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RANGE_ARRAY_LENGTH"]
 
 [[rule]]
 name = "range-array-offset"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RANGE_ARRAY_OFFSET"]
 
 [[rule]]
 name = "range-string-index"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RANGE_STRING_INDEX"]
 
 [[rule]]
 name = "rcn-redundant-comparison-of-null-and-nonnull-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-comparison-two-null-values"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-of-nonnull-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-of-null-value"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-would-have-been-a-npe"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"]
 
 [[rule]]
 name = "rc-ref-comparison"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RC_REF_COMPARISON"]
 
 [[rule]]
 name = "rc-ref-comparison-bad-practice"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE"]
 
 [[rule]]
 name = "rc-ref-comparison-bad-practice-boolean"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"]
 
 [[rule]]
 name = "rec-catch-exception"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["REC_CATCH_EXCEPTION"]
 
 [[rule]]
 name = "reflc-reflection-may-increase-accessibility-of-class"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["REFLC_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_CLASS"]
 
 [[rule]]
 name = "reflf-reflection-may-increase-accessibility-of-field"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD"]
 
 [[rule]]
 name = "re-bad-syntax-for-regular-expression"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION"]
 
 [[rule]]
 name = "re-cant-use-file-separator-as-regular-expression"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RE_CANT_USE_FILE_SEPARATOR_AS_REGULAR_EXPRESSION"]
 
 [[rule]]
 name = "re-possible-unintended-pattern"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RE_POSSIBLE_UNINTENDED_PATTERN"]
 
 [[rule]]
 name = "ri-redundant-interfaces"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RI_REDUNDANT_INTERFACES"]
 
 [[rule]]
 name = "rr-not-checked"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["RR_NOT_CHECKED"]
 
 [[rule]]
 name = "rs-readobject-sync"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["RS_READOBJECT_SYNC"]
 
 [[rule]]
 name = "ru-invoke-run"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["RU_INVOKE_RUN"]
 
 [[rule]]
 name = "rv-01-to-int"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_01_TO_INT"]
 
 [[rule]]
 name = "rv-absolute-value-of-hashcode"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_ABSOLUTE_VALUE_OF_HASHCODE"]
 
 [[rule]]
 name = "rv-absolute-value-of-random-int"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_ABSOLUTE_VALUE_OF_RANDOM_INT"]
 
 [[rule]]
 name = "rv-check-compareto-for-specific-return-value"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE"]
 
 [[rule]]
 name = "rv-check-for-positive-indexof"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_CHECK_FOR_POSITIVE_INDEXOF"]
 
 [[rule]]
 name = "rv-dont-just-null-check-readline"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_DONT_JUST_NULL_CHECK_READLINE"]
 
 [[rule]]
 name = "rv-exception-not-thrown"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_EXCEPTION_NOT_THROWN"]
 
 [[rule]]
 name = "rv-negating-result-of-compareto"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["RV_NEGATING_RESULT_OF_COMPARETO"]
 
 [[rule]]
 name = "rv-rem-of-hashcode"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_REM_OF_HASHCODE"]
 
 [[rule]]
 name = "rv-rem-of-random-int"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_REM_OF_RANDOM_INT"]
 
 [[rule]]
 name = "rv-return-value-ignored"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RV_RETURN_VALUE_IGNORED"]
 
 [[rule]]
 name = "rv-return-value-ignored-bad-practice"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"]
 
 [[rule]]
 name = "rv-return-value-ignored-inferred"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_RETURN_VALUE_IGNORED_INFERRED"]
 
 [[rule]]
 name = "rv-return-value-ignored-no-side-effect"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"]
 
 [[rule]]
 name = "rv-return-value-of-putifabsent-ignored"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["RV_RETURN_VALUE_OF_PUTIFABSENT_IGNORED"]
 
 [[rule]]
 name = "rp-c-repeated-conditional-test"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["RpC_REPEATED_CONDITIONAL_TEST"]
 
 [[rule]]
 name = "sa-field-double-assignment"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SA_FIELD_DOUBLE_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-field-self-assignment"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_FIELD_SELF_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-field-self-comparison"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_FIELD_SELF_COMPARISON"]
 
 [[rule]]
 name = "sa-field-self-computation"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_FIELD_SELF_COMPUTATION"]
 
 [[rule]]
 name = "sa-local-double-assignment"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SA_LOCAL_DOUBLE_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-local-self-assignment"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-local-self-assignment-instead-of-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT_INSTEAD_OF_FIELD"]
 
 [[rule]]
 name = "sa-local-self-comparison"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_LOCAL_SELF_COMPARISON"]
 
 [[rule]]
 name = "sa-local-self-computation"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SA_LOCAL_SELF_COMPUTATION"]
 
 [[rule]]
 name = "sbsc-use-stringbuffer-concatenation"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SBSC_USE_STRINGBUFFER_CONCATENATION"]
 
 [[rule]]
 name = "sc-start-in-ctor"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["SC_START_IN_CTOR"]
 
 [[rule]]
 name = "se-bad-field"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_BAD_FIELD"]
 
 [[rule]]
 name = "se-bad-field-inner-class"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_BAD_FIELD_INNER_CLASS"]
 
 [[rule]]
 name = "se-bad-field-store"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_BAD_FIELD_STORE"]
 
 [[rule]]
 name = "se-comparator-should-be-serializable"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"]
 
 [[rule]]
 name = "se-inner-class"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_INNER_CLASS"]
 
 [[rule]]
 name = "se-method-must-be-private"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SE_METHOD_MUST_BE_PRIVATE"]
 
 [[rule]]
 name = "se-nonfinal-serialversionid"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NONFINAL_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-nonlong-serialversionid"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NONLONG_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-nonstatic-serialversionid"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NONSTATIC_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-no-serialversionid"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NO_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-no-suitable-constructor"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NO_SUITABLE_CONSTRUCTOR"]
 
 [[rule]]
 name = "se-no-suitable-constructor-for-externalization"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION"]
 
 [[rule]]
 name = "se-prevent-ext-obj-overwrite"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_PREVENT_EXT_OBJ_OVERWRITE"]
 
 [[rule]]
 name = "se-private-read-resolve-not-inherited"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SE_PRIVATE_READ_RESOLVE_NOT_INHERITED"]
 
 [[rule]]
 name = "se-read-resolve-is-static"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SE_READ_RESOLVE_IS_STATIC"]
 
 [[rule]]
 name = "se-read-resolve-must-return-object"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_READ_RESOLVE_MUST_RETURN_OBJECT"]
 
 [[rule]]
 name = "se-transient-field-not-restored"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SE_TRANSIENT_FIELD_NOT_RESTORED"]
 
 [[rule]]
 name = "se-transient-field-of-nonserializable-class"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS"]
 
 [[rule]]
 name = "sf-dead-store-due-to-switch-fallthrough"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH"]
 
 [[rule]]
 name = "sf-dead-store-due-to-switch-fallthrough-to-throw"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW"]
 
 [[rule]]
 name = "sf-switch-fallthrough"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SF_SWITCH_FALLTHROUGH"]
 
 [[rule]]
 name = "sf-switch-no-default"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SF_SWITCH_NO_DEFAULT"]
 
 [[rule]]
 name = "sic-inner-should-be-static"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SIC_INNER_SHOULD_BE_STATIC"]
 
 [[rule]]
 name = "sic-inner-should-be-static-anon"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_ANON"]
 
 [[rule]]
 name = "sic-inner-should-be-static-needs-this"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"]
 
 [[rule]]
 name = "sic-threadlocal-deadly-embrace"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SIC_THREADLOCAL_DEADLY_EMBRACE"]
 
 [[rule]]
 name = "sing-singleton-getter-not-synchronized"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_GETTER_NOT_SYNCHRONIZED"]
 
 [[rule]]
 name = "sing-singleton-has-nonprivate-constructor"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"]
 
 [[rule]]
 name = "sing-singleton-implements-cloneable"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONEABLE"]
 
 [[rule]]
 name = "sing-singleton-implements-clone-method"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONE_METHOD"]
 
 [[rule]]
 name = "sing-singleton-implements-serializable"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_SERIALIZABLE"]
 
 [[rule]]
 name = "sing-singleton-indirectly-implements-cloneable"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SING_SINGLETON_INDIRECTLY_IMPLEMENTS_CLONEABLE"]
 
 [[rule]]
 name = "sio-superfluous-instanceof"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SIO_SUPERFLUOUS_INSTANCEOF"]
 
 [[rule]]
 name = "si-instance-before-finals-assigned"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SI_INSTANCE_BEFORE_FINALS_ASSIGNED"]
 
 [[rule]]
 name = "skipped-class-too-big"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SKIPPED_CLASS_TOO_BIG"]
 
 [[rule]]
 name = "sp-spin-on-field"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["SP_SPIN_ON_FIELD"]
 
 [[rule]]
 name = "sql-bad-prepared-statement-access"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SQL_BAD_PREPARED_STATEMENT_ACCESS"]
 
 [[rule]]
 name = "sql-bad-resultset-access"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["SQL_BAD_RESULTSET_ACCESS"]
 
 [[rule]]
 name = "sr-not-checked"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SR_NOT_CHECKED"]
 
 [[rule]]
 name = "ssd-do-not-use-instance-lock-on-shared-static-data"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["SSD_DO_NOT_USE_INSTANCE_LOCK_ON_SHARED_STATIC_DATA"]
 
 [[rule]]
 name = "ss-should-be-static"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["SS_SHOULD_BE_STATIC"]
 
 [[rule]]
 name = "stcal-invoke-on-static-calendar-instance"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE"]
 
 [[rule]]
 name = "stcal-invoke-on-static-date-format-instance"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE"]
 
 [[rule]]
 name = "stcal-static-calendar-instance"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["STCAL_STATIC_CALENDAR_INSTANCE"]
 
 [[rule]]
 name = "stcal-static-simple-date-format-instance"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE"]
 
 [[rule]]
 name = "sti-interrupted-on-currentthread"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["STI_INTERRUPTED_ON_CURRENTTHREAD"]
 
 [[rule]]
 name = "sti-interrupted-on-unknownthread"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["STI_INTERRUPTED_ON_UNKNOWNTHREAD"]
 
 [[rule]]
 name = "st-write-to-static-from-instance-method"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"]
 
 [[rule]]
 name = "swl-sleep-with-lock-held"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["SWL_SLEEP_WITH_LOCK_HELD"]
 
 [[rule]]
 name = "sw-swing-methods-invoked-in-swing-thread"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["SW_SWING_METHODS_INVOKED_IN_SWING_THREAD"]
 
 [[rule]]
 name = "testing"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TESTING"]
 
 [[rule]]
 name = "testing1"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TESTING1"]
 
 [[rule]]
 name = "testing2"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TESTING2"]
 
 [[rule]]
 name = "testing3"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TESTING3"]
 
 [[rule]]
 name = "throws-method-throws-clause-basic-exception"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"]
 
 [[rule]]
 name = "throws-method-throws-clause-throwable"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_THROWABLE"]
 
 [[rule]]
 name = "throws-method-throws-runtimeexception"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"]
 
 [[rule]]
 name = "tlw-two-lock-wait"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["TLW_TWO_LOCK_WAIT"]
 
 [[rule]]
 name = "tq-always-value-used-where-never-required"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED"]
 
 [[rule]]
 name = "tq-comparing-values-with-incompatible-type-qualifiers"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS"]
 
 [[rule]]
 name = "tq-explicit-unknown-source-value-reaches-always-sink"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
 
 [[rule]]
 name = "tq-explicit-unknown-source-value-reaches-never-sink"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK"]
 
 [[rule]]
 name = "tq-maybe-source-value-reaches-always-sink"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
 
 [[rule]]
 name = "tq-maybe-source-value-reaches-never-sink"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK"]
 
 [[rule]]
 name = "tq-never-value-used-where-always-required"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED"]
 
 [[rule]]
 name = "tq-unknown-value-used-where-always-strictly-required"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED"]
 
 [[rule]]
 name = "ucf-useless-control-flow"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UCF_USELESS_CONTROL_FLOW"]
 
 [[rule]]
 name = "ucf-useless-control-flow-next-line"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UCF_USELESS_CONTROL_FLOW_NEXT_LINE"]
 
 [[rule]]
 name = "uc-useless-condition"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UC_USELESS_CONDITION"]
 
 [[rule]]
 name = "uc-useless-condition-type"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UC_USELESS_CONDITION_TYPE"]
 
 [[rule]]
 name = "uc-useless-object"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UC_USELESS_OBJECT"]
 
 [[rule]]
 name = "uc-useless-object-stack"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UC_USELESS_OBJECT_STACK"]
 
 [[rule]]
 name = "uc-useless-void-method"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UC_USELESS_VOID_METHOD"]
 
 [[rule]]
 name = "ug-sync-set-unsync-get"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["UG_SYNC_SET_UNSYNC_GET"]
 
 [[rule]]
 name = "ui-inheritance-unsafe-getresource"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["UI_INHERITANCE_UNSAFE_GETRESOURCE"]
 
 [[rule]]
 name = "ul-unreleased-lock"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["UL_UNRELEASED_LOCK"]
 
 [[rule]]
 name = "ul-unreleased-lock-exception-path"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["UL_UNRELEASED_LOCK_EXCEPTION_PATH"]
 
 [[rule]]
 name = "umac-uncallable-method-of-anonymous-class"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS"]
 
 [[rule]]
 name = "um-unnecessary-math"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UM_UNNECESSARY_MATH"]
 
 [[rule]]
 name = "unknown"
+presets = ["strict"]
 category = "experimental"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UNKNOWN"]
 
 [[rule]]
 name = "upm-uncalled-private-method"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UPM_UNCALLED_PRIVATE_METHOD"]
 
 [[rule]]
 name = "urf-unread-field"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["URF_UNREAD_FIELD"]
 
 [[rule]]
 name = "urf-unread-public-or-protected-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "ur-uninit-read"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["UR_UNINIT_READ"]
 
 [[rule]]
 name = "ur-uninit-read-called-from-super-constructor"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR"]
 
 [[rule]]
 name = "usc-potential-security-check-based-on-untrusted-source"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["USC_POTENTIAL_SECURITY_CHECK_BASED_ON_UNTRUSTED_SOURCE"]
 
 [[rule]]
 name = "usm-useless-abstract-method"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["USM_USELESS_ABSTRACT_METHOD"]
 
 [[rule]]
 name = "usm-useless-subclass-method"
+presets = ["strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["USM_USELESS_SUBCLASS_METHOD"]
 
 [[rule]]
 name = "us-useless-suppression-on-class"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["US_USELESS_SUPPRESSION_ON_CLASS"]
 
 [[rule]]
 name = "us-useless-suppression-on-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["US_USELESS_SUPPRESSION_ON_FIELD"]
 
 [[rule]]
 name = "us-useless-suppression-on-method"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["US_USELESS_SUPPRESSION_ON_METHOD"]
 
 [[rule]]
 name = "us-useless-suppression-on-method-parameter"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["US_USELESS_SUPPRESSION_ON_METHOD_PARAMETER"]
 
 [[rule]]
 name = "us-useless-suppression-on-package"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["US_USELESS_SUPPRESSION_ON_PACKAGE"]
 
 [[rule]]
 name = "uuf-unused-field"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UUF_UNUSED_FIELD"]
 
 [[rule]]
 name = "uuf-unused-public-or-protected-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "uwf-field-not-initialized-in-constructor"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "uwf-null-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["UWF_NULL_FIELD"]
 
 [[rule]]
 name = "uwf-unwritten-field"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["UWF_UNWRITTEN_FIELD"]
 
 [[rule]]
 name = "uwf-unwritten-public-or-protected-field"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "uw-uncond-wait"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["UW_UNCOND_WAIT"]
 
 [[rule]]
 name = "va-format-string-uses-newline"
+presets = ["standard", "strict"]
 category = "bad-practice"
-status = { java = "planned" }
-issues = { java = "#316" }
 spotbugs = ["VA_FORMAT_STRING_USES_NEWLINE"]
 
 [[rule]]
 name = "va-primitive-array-passed-to-object-vararg"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG"]
 
 [[rule]]
 name = "vo-volatile-increment"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["VO_VOLATILE_INCREMENT"]
 
 [[rule]]
 name = "vo-volatile-reference-to-array"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["VO_VOLATILE_REFERENCE_TO_ARRAY"]
 
 [[rule]]
 name = "vr-unresolvable-reference"
+presets = ["strict"]
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#315" }
 spotbugs = ["VR_UNRESOLVABLE_REFERENCE"]
 
 [[rule]]
 name = "vsc-vulnerable-security-check-methods"
+presets = ["standard", "strict"]
 category = "malicious-code"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["VSC_VULNERABLE_SECURITY_CHECK_METHODS"]
 
 [[rule]]
 name = "wa-await-not-in-loop"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["WA_AWAIT_NOT_IN_LOOP"]
 
 [[rule]]
 name = "wa-not-in-loop"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["WA_NOT_IN_LOOP"]
 
 [[rule]]
 name = "wl-using-getclass-rather-than-class-literal"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL"]
 
 [[rule]]
 name = "wmi-wrong-map-iterator"
+presets = ["standard", "strict"]
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["WMI_WRONG_MAP_ITERATOR"]
 
 [[rule]]
 name = "ws-writeobject-sync"
+presets = ["standard", "strict"]
 category = "mt-correctness"
-status = { java = "planned" }
-issues = { java = "#317" }
 spotbugs = ["WS_WRITEOBJECT_SYNC"]
 
 [[rule]]
 name = "xfb-xml-factory-bypass"
+presets = ["standard", "strict"]
 category = "style"
-status = { java = "planned" }
-issues = { java = "#318" }
 spotbugs = ["XFB_XML_FACTORY_BYPASS"]

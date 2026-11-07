@@ -1,0 +1,37 @@
+# Status of the checkstyle-javadoc rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+atclause-order = "not-applicable"
+illegal-block-tag = "not-applicable"
+inappropriate-javadoc-block-tags-on-field = "not-applicable"
+inappropriate-javadoc-block-tags-on-package = "not-applicable"
+inappropriate-javadoc-block-tags-on-type = "not-applicable"
+invalid-javadoc-position = "not-applicable"
+javadoc-block-tag-location = "not-applicable"
+javadoc-content-location = "not-applicable"
+javadoc-end-comment-delimiter = "not-applicable"
+javadoc-leading-asterisk-align = "not-applicable"
+javadoc-link-first-occurrence = "not-applicable"
+javadoc-link-well-known-api = "not-applicable"
+javadoc-method = { status = "planned", issue = "#297" }
+javadoc-missing-leading-asterisk = "not-applicable"
+javadoc-missing-whitespace-after-asterisk = "not-applicable"
+javadoc-no-error-in-throws-tag = "not-applicable"
+javadoc-package = "not-applicable"
+javadoc-paragraph = "not-applicable"
+javadoc-param-order = "not-applicable"
+javadoc-regexp = "not-applicable"
+javadoc-see-tag-order = "not-applicable"
+javadoc-tag-continuation-indentation = "not-applicable"
+javadoc-throws-order = "not-applicable"
+javadoc-type = { status = "planned", issue = "#297" }
+javadoc-variable = { status = "planned", issue = "#297" }
+missing-javadoc-method = "implemented"
+missing-javadoc-package = "not-applicable"
+missing-javadoc-type = "implemented"
+non-empty-atclause-description = { status = "planned", issue = "#297" }
+prefer-code-or-snippet-javadoc-inline-tag = "not-applicable"
+prefer-literal-javadoc-inline-tag = "not-applicable"
+require-empty-line-before-block-tag-group = "not-applicable"
+single-line-javadoc = "not-applicable"
+summary-javadoc = { status = "planned", issue = "#297" }
+write-tag = "not-applicable"
