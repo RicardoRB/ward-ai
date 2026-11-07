@@ -1,33 +1,33 @@
 # Status of the semgrep rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 blowfish-insufficient-key-size = { status = "planned", issue = "#323" }
-cbc-padding-oracle = { status = "planned", issue = "#323" }
+cbc-padding-oracle = "implemented"
 crlf-injection-logs = { status = "planned", issue = "#323" }
-des-is-deprecated = { status = "planned", issue = "#323" }
-desede-is-deprecated = { status = "planned", issue = "#323" }
+des-is-deprecated = "implemented"
+desede-is-deprecated = "implemented"
 documentbuilderfactory-disallow-doctype-decl-false = { status = "planned", issue = "#323" }
 documentbuilderfactory-disallow-doctype-decl-missing = { status = "planned", issue = "#323" }
 documentbuilderfactory-external-general-entities-true = { status = "planned", issue = "#323" }
 documentbuilderfactory-external-parameter-entities-true = { status = "planned", issue = "#323" }
-ecb-cipher = { status = "planned", issue = "#323" }
+ecb-cipher = "implemented"
 find-sql-string-concatenation = { status = "planned", issue = "#323" }
 formatted-sql-string = { status = "planned", issue = "#323" }
 gcm-nonce-reuse = { status = "planned", issue = "#323" }
 http-response-splitting = { status = "planned", issue = "#323" }
-httpget-http-request = { status = "planned", issue = "#323" }
+httpget-http-request = "implemented"
 httpservlet-path-traversal = { status = "planned", issue = "#323" }
 insecure-jms-deserialization = { status = "planned", issue = "#323" }
 insecure-smtp-connection = { status = "planned", issue = "#323" }
-jackson-unsafe-deserialization = { status = "planned", issue = "#323" }
+jackson-unsafe-deserialization = "implemented"
 java-jwt-decode-without-verify = { status = "planned", issue = "#323" }
-java-jwt-hardcoded-secret = { status = "planned", issue = "#323" }
-java-jwt-none-alg = { status = "planned", issue = "#323" }
+java-jwt-hardcoded-secret = "implemented"
+java-jwt-none-alg = "implemented"
 jax-rs-path-traversal = { status = "planned", issue = "#323" }
 md5-used-as-password = { status = "planned", issue = "#323" }
 no-direct-response-writer = { status = "planned", issue = "#323" }
-no-null-cipher = { status = "planned", issue = "#323" }
-no-static-initialization-vector = { status = "planned", issue = "#323" }
-rsa-no-padding = { status = "planned", issue = "#323" }
+no-null-cipher = "implemented"
+no-static-initialization-vector = "implemented"
+rsa-no-padding = "implemented"
 saxparserfactory-disallow-doctype-decl-missing = { status = "planned", issue = "#323" }
 servletresponse-writer-xss = { status = "planned", issue = "#323" }
 spring-sqli = { status = "planned", issue = "#323" }
@@ -45,17 +45,17 @@ tainted-system-command = { status = "planned", issue = "#323" }
 tainted-url-host = { status = "planned", issue = "#323" }
 tainted-xpath-from-http-request = { status = "planned", issue = "#323" }
 transformerfactory-dtds-not-disabled = { status = "planned", issue = "#323" }
-unencrypted-socket = { status = "planned", issue = "#323" }
+unencrypted-socket = "implemented"
 unvalidated-redirect = { status = "planned", issue = "#323" }
-use-of-aes-ecb = { status = "planned", issue = "#323" }
-use-of-blowfish = { status = "planned", issue = "#323" }
-use-of-default-aes = { status = "planned", issue = "#323" }
-use-of-md5 = { status = "planned", issue = "#323" }
-use-of-md5-digest-utils = { status = "planned", issue = "#323" }
-use-of-rc2 = { status = "planned", issue = "#323" }
-use-of-rc4 = { status = "planned", issue = "#323" }
-use-of-sha1 = { status = "planned", issue = "#323" }
-use-of-sha224 = { status = "planned", issue = "#323" }
+use-of-aes-ecb = "implemented"
+use-of-blowfish = "implemented"
+use-of-default-aes = "implemented"
+use-of-md5 = "implemented"
+use-of-md5-digest-utils = "implemented"
+use-of-rc2 = "implemented"
+use-of-rc4 = "implemented"
+use-of-sha1 = "implemented"
+use-of-sha224 = "implemented"
 use-of-weak-rsa-key = { status = "planned", issue = "#323" }
-weak-ssl-context = { status = "planned", issue = "#323" }
+weak-ssl-context = "implemented"
 xmlinputfactory-possible-xxe = { status = "planned", issue = "#323" }
