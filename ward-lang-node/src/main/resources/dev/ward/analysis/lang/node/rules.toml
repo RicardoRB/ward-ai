@@ -1712,3 +1712,33 @@ kinds = ["singleExpression"]
 text = '^(__dirname|__filename)$'
 message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
 '''
+
+[[rules]]
+id = "ward:typescript/need-braces"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
+
+[[rules]]
+id = "ward:javascript/need-braces"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
