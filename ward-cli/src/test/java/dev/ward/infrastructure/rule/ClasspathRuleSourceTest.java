@@ -15,6 +15,16 @@ class ClasspathRuleSourceTest {
   private static final List<String> SCOPE_CHECKS =
       List.of("reassigned-binding", "undefined-name", "unused-binding");
 
+  /** The Java rules that read the type facts of a file. */
+  private static final java.util.Set<String> TYPE_AWARE =
+      java.util.Set.of(
+          "ward:java/check-result-set",
+          "ward:java/enum-comparison",
+          "ward:java/use-enum-collections",
+          "ward:java/guard-log-statement",
+          "ward:java/exhaustive-switch-has-default",
+          "ward:java/non-exhaustive-switch");
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -140,7 +150,7 @@ class ClasspathRuleSourceTest {
         .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
       return RuleCapability.SCOPES;
     }
-    if (rule.id().endsWith("/equals-on-unrelated-types")) {
+    if (TYPE_AWARE.contains(rule.id()) || rule.id().endsWith("/equals-on-unrelated-types")) {
       return RuleCapability.TYPES;
     }
     return rule.id().endsWith("/unused-assignment")
