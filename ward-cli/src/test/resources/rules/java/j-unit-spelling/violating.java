@@ -1,0 +1,3 @@
+class ServiceTest {
+  void setup() {}
+}

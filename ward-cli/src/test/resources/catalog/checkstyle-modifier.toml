@@ -2,8 +2,9 @@
 
 [[rule]]
 name = "annotated-declaration-visibility"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["AnnotatedDeclarationVisibility"]
 
 [[rule]]
@@ -20,8 +21,9 @@ checkstyle = ["InterfaceMemberImpliedModifier"]
 
 [[rule]]
 name = "modifier-order"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["ModifierOrder"]
 pmd = ["ModifierOrder"]
 checkstyle = ["ModifierOrder"]
@@ -30,8 +32,9 @@ swiftlint = ["modifier_order"]
 
 [[rule]]
 name = "redundant-modifier"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["RedundantVisibilityModifierRule"]
 pmd = ["UnnecessaryModifier"]
 checkstyle = ["RedundantModifier"]

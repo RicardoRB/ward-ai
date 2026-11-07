@@ -4,8 +4,9 @@
 name = "array-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["ArrayTrailingComma"]
 
 [[rule]]
@@ -41,8 +42,9 @@ checkstyle = ["AvoidNoArgumentSuperConstructorCall"]
 name = "constructors-declaration-grouping"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java constructors; Python has a single __init__ per class" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["ConstructorsDeclarationGrouping"]
 
 [[rule]]
@@ -111,8 +113,9 @@ ruff = ["PLW1641"]
 name = "explicit-initialization"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java field default values; Python has no field declarations" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["RedundantFieldInitializer"]
 checkstyle = ["ExplicitInitialization"]
 
@@ -120,16 +123,18 @@ checkstyle = ["ExplicitInitialization"]
 name = "expression-over-block-lambda"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java block lambdas; Python lambdas are expressions only" }
+issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["ExpressionOverBlockLambda"]
 
 [[rule]]
 name = "fall-through"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Python match and if statements never fall through to the next case" }
+issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["ImplicitSwitchFallThrough"]
 checkstyle = ["FallThrough"]
 eslint = ["no-fallthrough"]
@@ -140,8 +145,9 @@ biome = ["noFallthroughSwitchClause"]
 name = "final-local-variable"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java final local variables; Python has no final modifier" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["LocalVariableCouldBeFinal"]
 checkstyle = ["FinalLocalVariable"]
 
@@ -160,8 +166,8 @@ pylint = ["redefined-outer-name"]
 name = "illegal-catch"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["TooGenericExceptionCaught"]
 pmd = ["AvoidCatchingGenericException"]
 checkstyle = ["IllegalCatch"]
@@ -181,16 +187,18 @@ checkstyle = ["IllegalInstantiation"]
 name = "illegal-symbol"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalSymbol"]
 
 [[rule]]
 name = "illegal-throws"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["TooGenericExceptionThrown"]
 pmd = ["AvoidThrowingRawExceptionTypes"]
 checkstyle = ["IllegalThrows"]
@@ -199,24 +207,27 @@ checkstyle = ["IllegalThrows"]
 name = "illegal-token"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalToken"]
 
 [[rule]]
 name = "illegal-token-text"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalTokenText"]
 
 [[rule]]
 name = "illegal-type"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalType"]
 
 [[rule]]
@@ -244,8 +255,9 @@ pylint = ["magic-value-comparison"]
 name = "match-xpath"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Checkstyle XPath over the Java AST; Python has no equivalent tree" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["MatchXpath"]
 
 [[rule]]
@@ -297,8 +309,9 @@ checkstyle = ["MultipleStringLiterals"]
 name = "multiple-variable-declarations"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["OneDeclarationPerLine"]
 checkstyle = ["MultipleVariableDeclarations"]
 eslint = ["one-var"]
@@ -331,8 +344,9 @@ checkstyle = ["NestedTryDepth"]
 name = "no-array-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NoArrayTrailingComma"]
 
 [[rule]]
@@ -348,8 +362,9 @@ checkstyle = ["NoClone"]
 name = "no-enum-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NoEnumTrailingComma"]
 
 [[rule]]
@@ -365,8 +380,8 @@ checkstyle = ["NoFinalizer"]
 name = "one-statement-per-line"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["OneStatementPerLine"]
 
 [[rule]]
@@ -409,8 +424,9 @@ checkstyle = ["PatternVariableAssignment"]
 name = "require-this"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java this. qualifier; Python uses self, which is a parameter" }
+issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["RequireThis"]
 swiftlint = ["explicit_self"]
 
@@ -488,8 +504,9 @@ checkstyle = ["TextBlockGoogleStyleFormatting"]
 name = "unnecessary-null-check-with-instance-of"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["UnnecessaryNullCheckWithInstanceOf"]
 
 [[rule]]
@@ -593,8 +610,9 @@ pylint = ["unused-variable"]
 name = "unused-private-field"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java private fields; Python has no private field modifier" }
+issues = { java = "#290", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["UnusedPrivateProperty"]
 pmd = ["UnusedPrivateField"]
 checkstyle = ["UnusedPrivateField"]

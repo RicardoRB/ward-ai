@@ -1,0 +1,5 @@
+class Stamp {
+  Object now() {
+    return java.time.Instant.now();
+  }
+}
