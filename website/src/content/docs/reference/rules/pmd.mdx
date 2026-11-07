@@ -103,7 +103,7 @@ description: Rules of the catalog file pmd and their counterparts.
 | `excessive-imports` | design | implemented | n/a | n/a | n/a | n/a | n/a | PMD `ExcessiveImports` |
 | `excessive-parameter-list` | design | implemented | n/a | n/a | n/a | n/a | n/a | PMD `ExcessiveParameterList` |
 | `excessive-public-count` | design | [#309](https://github.com/RicardoRB/ward-ai/issues/309) | n/a | n/a | n/a | n/a | n/a | PMD `ExcessivePublicCount` |
-| `exhaustive-switch-has-default` | bestpractices | [#308](https://github.com/RicardoRB/ward-ai/issues/308) | n/a | n/a | n/a | n/a | n/a | PMD `ExhaustiveSwitchHasDefault` |
+| `exhaustive-switch-has-default` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `ExhaustiveSwitchHasDefault` |
 | `extends-object` | codestyle | [#313](https://github.com/RicardoRB/ward-ai/issues/313) | n/a | n/a | n/a | n/a | n/a | PMD `ExtendsObject`; Error Prone `ExtendsObject` |
 | `final-field-could-be-static` | design | implemented | n/a | n/a | n/a | n/a | n/a | PMD `FinalFieldCouldBeStatic` |
 | `final-parameter-in-abstract-method` | codestyle | [#313](https://github.com/RicardoRB/ward-ai/issues/313) | n/a | n/a | n/a | n/a | n/a | PMD `FinalParameterInAbstractMethod` |
@@ -161,7 +161,7 @@ description: Rules of the catalog file pmd and their counterparts.
 | `mutable-static-state` | design | implemented | n/a | n/a | n/a | n/a | n/a | PMD `MutableStaticState` |
 | `no-package` | codestyle | [#313](https://github.com/RicardoRB/ward-ai/issues/313) | n/a | n/a | n/a | n/a | n/a | PMD `NoPackage` |
 | `non-case-label-in-switch` | errorprone | [#311](https://github.com/RicardoRB/ward-ai/issues/311) | n/a | n/a | n/a | n/a | n/a | PMD `NonCaseLabelInSwitch` |
-| `non-exhaustive-switch` | bestpractices | [#308](https://github.com/RicardoRB/ward-ai/issues/308) | n/a | n/a | n/a | n/a | n/a | PMD `NonExhaustiveSwitch` |
+| `non-exhaustive-switch` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `NonExhaustiveSwitch` |
 | `non-serializable-class` | errorprone | [#311](https://github.com/RicardoRB/ward-ai/issues/311) | n/a | n/a | n/a | n/a | n/a | PMD `NonSerializableClass` |
 | `non-static-initializer` | errorprone | [#311](https://github.com/RicardoRB/ward-ai/issues/311) | n/a | n/a | n/a | n/a | n/a | PMD `NonStaticInitializer` |
 | `non-thread-safe-singleton` | multithreading | [#312](https://github.com/RicardoRB/ward-ai/issues/312) | n/a | n/a | n/a | n/a | n/a | PMD `NonThreadSafeSingleton` |
@@ -297,6 +297,7 @@ description: Rules of the catalog file pmd and their counterparts.
 | `ward:java/enum-comparison` | bestpractices | standard, strict | none | PMD `EnumComparison` |
 | `ward:java/excessive-imports` | design | standard, strict | `minimum` | PMD `ExcessiveImports` |
 | `ward:java/excessive-parameter-list` | design | standard, strict | `minimum` | PMD `ExcessiveParameterList` |
+| `ward:java/exhaustive-switch-has-default` | bestpractices | standard, strict | none | PMD `ExhaustiveSwitchHasDefault` |
 | `ward:java/final-field-could-be-static` | design | standard, strict | none | PMD `FinalFieldCouldBeStatic` |
 | `ward:java/for-loop-can-be-foreach` | bestpractices | standard, strict | none | PMD `ForLoopCanBeForeach` |
 | `ward:java/for-loop-variable-count` | bestpractices | standard, strict | `maximum-variables` | PMD `ForLoopVariableCount` |
@@ -311,6 +312,7 @@ description: Rules of the catalog file pmd and their counterparts.
 | `ward:java/loose-coupling` | bestpractices | standard, strict | none | PMD `LooseCoupling` |
 | `ward:java/method-returns-internal-array` | bestpractices | standard, strict | none | PMD `MethodReturnsInternalArray` |
 | `ward:java/mutable-static-state` | design | standard, strict | none | PMD `MutableStaticState` |
+| `ward:java/non-exhaustive-switch` | bestpractices | standard, strict | none | PMD `NonExhaustiveSwitch` |
 | `ward:java/preserve-stack-trace` | bestpractices | standard, strict | none | PMD `PreserveStackTrace` |
 | `ward:java/primitive-wrapper-instantiation` | bestpractices | standard, strict | none | PMD `PrimitiveWrapperInstantiation` |
 | `ward:java/reliance-on-default-charset` | bestpractices | standard, strict | none | PMD `RelianceOnDefaultCharset` |

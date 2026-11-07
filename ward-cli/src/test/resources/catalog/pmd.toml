@@ -622,11 +622,8 @@ pmd = ["ExcessivePublicCount"]
 
 [[rule]]
 name = "exhaustive-switch-has-default"
-category = "bestpractices"
 # Not applicable (review): needs the type of the switch selector to know it is an enum or sealed type
-# Planned: needs the type of the switch selector; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
@@ -1011,11 +1008,8 @@ pmd = ["NonCaseLabelInSwitch"]
 
 [[rule]]
 name = "non-exhaustive-switch"
-category = "bestpractices"
 # Not applicable (review): needs the type of the switch selector to know which constants must be covered
-# Planned: needs the type of the switch selector; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]

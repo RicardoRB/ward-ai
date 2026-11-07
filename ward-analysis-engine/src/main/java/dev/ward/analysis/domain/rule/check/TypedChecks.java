@@ -15,6 +15,10 @@ final class TypedChecks {
   /** The needs of a check that reads the calls of expressions. */
   static final TypeNeed CALLS = new TypeNeed(Set.of("expression"), Set.of(FactKind.CALL));
 
+  /** The needs of a check that reads the type and shape of a switch selector. */
+  static final TypeNeed ENUM_SELECTORS =
+      new TypeNeed(Set.of("expression"), Set.of(FactKind.TYPE, FactKind.SHAPE));
+
   /** The needs of a check that reads the shapes of expressions and types. */
   static final TypeNeed SHAPES =
       new TypeNeed(Set.of("expression", "typeType"), Set.of(FactKind.SHAPE));
