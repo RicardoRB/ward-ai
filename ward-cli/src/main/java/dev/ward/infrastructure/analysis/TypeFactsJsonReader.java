@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /** A recursive-descent reader for objects, arrays, strings, numbers and literals. */
-final class TypeSidecarJsonReader {
+final class TypeFactsJsonReader {
   private static final String NUMBER_CHARACTERS = "0123456789.eE+-";
   private static final int HEX_RADIX = 16;
   private static final int HEX_WIDTH = 4;
@@ -14,7 +14,7 @@ final class TypeSidecarJsonReader {
   private final String text;
   private int position;
 
-  TypeSidecarJsonReader(final String text) {
+  TypeFactsJsonReader(final String text) {
     this.text = text;
   }
 

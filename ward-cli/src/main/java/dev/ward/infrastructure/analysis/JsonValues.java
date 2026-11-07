@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** Typed reads of the values {@link TypeSidecarJsonReader} returns; a wrong shape is rejected. */
+/** Typed reads of the values {@link TypeFactsJsonReader} returns; a wrong shape is rejected. */
 final class JsonValues {
   private JsonValues() {}
 
