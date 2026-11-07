@@ -12,7 +12,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
@@ -76,7 +76,7 @@ class SelectedGatesOfflineTrivyTest {
             new InitProjectFiles(
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
-                new ArchitectureTestGenerator(),
+                ArchitectureTablesFixtures.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()))
         .initialize(dir, new InitSelection(List.of("none"), List.of("tests", "trivy")));

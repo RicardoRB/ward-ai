@@ -87,7 +87,6 @@ final class GradleToolVersions {
     tools.put("pmd", List.of(GradleToolCatalog.PMD_ENGINE));
     tools.put("spotbugs", List.of(GradleToolCatalog.SPOTBUGS, GradleToolCatalog.SPOTBUGS_ENGINE));
     tools.put("coverage", List.of(GradleToolCatalog.JACOCO_ENGINE));
-    tools.put("archunit", List.of(GradleToolCatalog.ARCHUNIT));
     tools.put("mutation", List.of(GradleToolCatalog.PITEST, GradleToolCatalog.PITEST_ENGINE));
     tools.put("dependency-check", List.of("org.owasp.dependencycheck"));
     tools.put("sonar", List.of("org.sonarqube"));

@@ -42,11 +42,11 @@ class PomToolConfiguratorValidationTest {
     final Path pom = root.resolve("pom.xml");
     Files.writeString(pom, "<project>\n  <build/>\n</project>\n");
 
-    new PomToolConfigurator().apply(project(root), List.of(gate("pmd"), gate("archunit")));
+    new PomToolConfigurator().apply(project(root), List.of(gate("pmd"), gate("mutation")));
 
     assertThat(Files.readString(pom))
         .contains("<artifactId>maven-pmd-plugin</artifactId>")
-        .contains("<artifactId>archunit-junit5</artifactId>");
+        .contains("<artifactId>pitest-maven</artifactId>");
   }
 
   private static Project project(final Path root) {

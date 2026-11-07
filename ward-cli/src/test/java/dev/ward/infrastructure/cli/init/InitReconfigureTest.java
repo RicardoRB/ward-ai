@@ -11,7 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Overwriting an existing configuration starts from its recorded preset and gates. */
 class InitReconfigureTest {
-  private static final String MUTATION_ROW = "10";
+  private static final String MUTATION_ROW = "9";
 
   @TempDir Path root;
 
@@ -22,12 +22,12 @@ class InitReconfigureTest {
         .isEqualTo(ExitCodes.OK);
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "y\n2\n1\n" + MUTATION_ROW + "\n\n\n\nn\n\n");
+    final int exit = init.run(true, "y\n2\n1\n" + MUTATION_ROW + "\n\n\n\n\nn\n\n");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");
     assertThat(init.configuration())
-        .contains("[checks.archunit]", "[checks.enforcer]")
+        .contains("[checks.enforcer]", "[[checks.ward.layers]]")
         .doesNotContain("[checks.mutation]");
   }
 

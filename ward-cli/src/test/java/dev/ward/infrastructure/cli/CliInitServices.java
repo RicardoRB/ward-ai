@@ -8,7 +8,7 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.agent.OpenCodeIntegration;
 import dev.ward.infrastructure.doctor.SystemEnvironmentInspection;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -29,7 +29,7 @@ final class CliInitServices {
         new InitProjectFiles(
             new PomToolConfigurator(),
             new NoRuleFileGeneration(),
-            new ArchitectureTestGenerator(),
+            ArchitectureTablesFixtures.create(),
             new FileConfigurationStorage(),
             new OwnedSectionWriter()));
   }

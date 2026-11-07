@@ -41,7 +41,7 @@ class AgentRulesTemplateTest {
             "effort Max, threshold Low",
             "branch at least 75%, line at least 85%",
             "at least 60% of mutants killed",
-            "`@ArchIgnore`",
+            "- Architecture: `ward:architecture/layers` enforces",
             "requirePluginVersions",
             "Do not add suppressions");
   }
@@ -71,30 +71,6 @@ class AgentRulesTemplateTest {
         AgentRulesTemplate.render(swift, gates, QualityPreset.STRICT, List.of()).body();
 
     assertThat(body).contains("must meet the 85% minimum of line coverage", "warnings are errors");
-  }
-
-  @Test
-  void harmonizeRuleNamesItsCommandAndForbidsEditingTheRulesToWeakenThem() {
-    final Project swift =
-        new Project(Path.of("/p"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
-    final List<InitGateOption> gates =
-        List.of(
-            new InitGateOption(
-                "harmonize",
-                "Architecture rules",
-                List.of("swift", "test", "--package-path", ".ward/swift-architecture"),
-                true,
-                "",
-                Map.of()));
-
-    final String body =
-        AgentRulesTemplate.render(swift, gates, QualityPreset.STANDARD, List.of()).body();
-
-    assertThat(body)
-        .contains(
-            "- Architecture rules (Harmonize): `swift test --package-path .ward/swift-architecture`"
-                + " must pass.",
-            "do not edit `.ward/swift-architecture` or `.harmonize.yaml` to weaken a rule");
   }
 
   @Test

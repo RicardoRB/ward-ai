@@ -30,17 +30,14 @@ class InitToolchainsSwiftTest {
   }
 
   @Test
-  void strictOffersTheStandardGatesAndHarmonizeAndNoMutationGate() {
+  void strictOffersTheStandardGatesAndNoMutationGate() {
     final Project project = swift(BuildTool.SWIFTPM);
     final ToolchainInitSupport support = InitToolchains.support(project);
 
     assertThat(support.presets()).containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
     assertThat(support.presetGates(project, QualityPreset.STRICT, null))
         .containsAll(support.presetGates(project, QualityPreset.STANDARD, null))
-        .contains("harmonize")
         .doesNotContain("mutation");
-    assertThat(support.presetGates(project, QualityPreset.STANDARD, null))
-        .doesNotContain("harmonize");
   }
 
   private static Project swift(final BuildTool buildTool) {

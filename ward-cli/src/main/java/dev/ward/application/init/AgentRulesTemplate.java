@@ -53,20 +53,6 @@ public final class AgentRulesTemplate {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final List<Path> userOwned) {
-    return render(project, gates, preset, userOwned, false);
-  }
-
-  /**
-   * Returns the section as {@link #render(Project, List, QualityPreset, List)} does, and when
-   * {@code wardArchitecture} is set, names the {@code ward:architecture} rules that enforce the
-   * style, the cycles and the independence the {@code ward} engine checks.
-   */
-  public static OwnedSection render(
-      final Project project,
-      final List<InitGateOption> gates,
-      final QualityPreset preset,
-      final List<Path> userOwned,
-      final boolean wardArchitecture) {
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final Set<String> owned =
         userOwned.stream()
@@ -91,16 +77,14 @@ public final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    if (wardArchitecture) {
-      lines.add(
-          "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"
-              + " `ward.toml`; do not remove them or add exemptions.");
-      lines.add(
-          "- Architecture: when `ward.toml` configures `[checks.ward.cycles]` or"
-              + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
-              + " `ward:architecture/independence` enforce them; do not remove them or add"
-              + " exemptions.");
-    }
+    lines.add(
+        "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"
+            + " `ward.toml`; do not remove them or add exemptions.");
+    lines.add(
+        "- Architecture: when `ward.toml` configures `[checks.ward.cycles]` or"
+            + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
+            + " `ward:architecture/independence` enforce them; do not remove them or add"
+            + " exemptions.");
     if (ids.contains(FormatGates.WARD_FORMAT)) {
       lines.add(
           "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
@@ -160,8 +144,6 @@ public final class AgentRulesTemplate {
           "mutation",
           "- Mutation (PIT): at least " + rules.mutationThreshold() + "% of mutants killed.");
     }
-    lines.put(
-        "archunit", "- ArchUnit: keep the architecture tests passing; do not add `@ArchIgnore`.");
     lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
     return lines;
   }

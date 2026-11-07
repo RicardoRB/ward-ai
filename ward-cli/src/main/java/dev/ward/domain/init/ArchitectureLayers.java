@@ -8,16 +8,10 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * The layer boundary of each architecture style. Every generated tool and the {@code ward} engine
- * read this table, so they cannot drift apart.
+ * The layer boundary of each architecture style, which init writes to {@code ward.toml} for the
+ * {@code ward} gate to check.
  */
 public final class ArchitectureLayers {
-  /** The plan note of a tool that generates only strict extras, because ward checks the layers. */
-  public static final String EXTRAS_ONLY_NOTE = "strict extras only (layers checked by ward)";
-
-  private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
-  private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
-
   /** The languages whose dependencies the {@code ward} engine resolves, with type-name edges. */
   public static final Set<AnalysisLanguage> ENGINE_LANGUAGES =
       Set.of(
@@ -26,6 +20,9 @@ public final class ArchitectureLayers {
           AnalysisLanguage.TYPESCRIPT,
           AnalysisLanguage.JAVASCRIPT,
           AnalysisLanguage.SWIFT);
+
+  private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
+  private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
 
   private ArchitectureLayers() {}
 

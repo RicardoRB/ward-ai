@@ -4,17 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.ProjectFixtures;
 import dev.ward.application.project.ProjectDiscovery;
-import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.project.BuildTool;
-import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
-import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -85,45 +80,5 @@ class CoverageProjectDiscoveryTest {
                 .project()
                 .buildTool())
         .isEqualTo(BuildTool.YARN);
-  }
-
-  @Test
-  void architectureGeneratorCreatesAndRollsBackAllStyles(@TempDir final Path root)
-      throws IOException {
-    Files.createDirectories(root.resolve("src/main/java/com/acme"));
-    Files.writeString(
-        root.resolve("src/main/java/com/acme/App.java"), "package com.acme; class App {}");
-    final ArchitectureTestGenerator generator = new ArchitectureTestGenerator();
-    final Project project = new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
-    for (final String style : List.of("layered", "hexagonal", "clean")) {
-      final ArchitectureTestChange change = generator.apply(project, style);
-      assertThat(change.created()).isTrue();
-      assertThat(Files.readString(change.file())).contains("package com.acme;", style);
-      generator.rollback(change);
-    }
-    final ArchitectureTestChange existing = generator.apply(project, "layered");
-    assertThat(generator.apply(project, "clean").created()).isFalse();
-    generator.rollback(existing);
-  }
-
-  @Test
-  void architectureGeneratorDefaultsPackageAndPreservesExisting(@TempDir final Path root)
-      throws IOException {
-    final ArchitectureTestGenerator generator = new ArchitectureTestGenerator();
-    final ArchitectureTestChange change =
-        generator.apply(
-            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), "layered");
-    assertThat(change.file())
-        .isEqualTo(root.resolve("src/test/java/com/example/ArchitectureTest.java"));
-    assertThat(Files.readString(change.file())).contains("package com.example;");
-    generator.rollback(change);
-    Files.createDirectories(change.file().getParent());
-    Files.writeString(change.file(), "user test");
-    assertThat(
-            generator
-                .apply(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), "clean")
-                .created())
-        .isFalse();
-    generator.rollback(null);
   }
 }

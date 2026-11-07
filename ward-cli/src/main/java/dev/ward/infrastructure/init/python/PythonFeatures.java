@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 /**
  * The features of a Python project that the independence rules keep apart: the Django apps, the
- * Flask blueprints or the root's feature packages, as import-linter modules and as directories.
+ * Flask blueprints or the root's feature packages, as module names and as directories.
  */
 final class PythonFeatures {
   /** The fewest features that an independence rule is written for. */

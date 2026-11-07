@@ -29,47 +29,6 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
   }
 
   @Test
-  void archunitSelectionPromptsForArchitectureAndGeneratesTest() throws IOException {
-    assertThat(runInitWithInput("3\n1\n9\n2\n", "-C", project.toString())).isZero();
-    final Path test = project.resolve("src/test/java/com/example/ArchitectureTest.java");
-    assertThat(test).exists();
-    assertThat(Files.readString(test))
-        .contains("hexagonal", "@AnalyzeClasses(packages = \"com.example\"");
-    assertThat(Files.readString(project.resolve("pom.xml"))).contains("archunit-junit5");
-    assertThat(out.toString())
-        .contains("Select an architecture style", "Generated hexagonal ArchUnit test");
-  }
-
-  @Test
-  void archunitGateTargetsOnlyGeneratedArchitectureTest() throws IOException {
-    assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                "archunit",
-                "--architecture",
-                "layered",
-                "-C",
-                project.toString()))
-        .isZero();
-    assertThat(Files.readString(project.resolve(WARD_TOML)))
-        .contains("./mvnw -Dtest=ArchitectureTest test");
-  }
-
-  @Test
-  void existingArchitectureTestIsPreserved() throws IOException {
-    final Path test = project.resolve("src/test/java/com/example/ArchitectureTest.java");
-    Files.createDirectories(test.getParent());
-    Files.writeString(test, "user-owned architecture test\n");
-
-    assertThat(runInitWithInput("3\n1\n9\n1\n", "-C", project.toString())).isZero();
-    assertThat(test).hasContent("user-owned architecture test\n");
-    assertThat(out.toString()).contains("Preserved existing ArchUnit test");
-  }
-
-  @Test
   void selectedCheckstyleAddsMissingMavenPluginAndReportsIt() throws IOException {
     assertThat(
             run(

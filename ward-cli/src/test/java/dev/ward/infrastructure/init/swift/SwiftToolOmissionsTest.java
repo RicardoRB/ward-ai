@@ -19,12 +19,12 @@ class SwiftToolOmissionsTest {
   @TempDir Path root;
 
   @Test
-  void omitsTheSwiftLintAndHarmonizeGatesOnAnXcodeNoRowCovers() {
+  void omitsTheSwiftLintGateOnAnXcodeNoRowCovers() {
     final List<GateOmission> omissions =
         new SwiftBuildToolConfigurator(new FakeCommandExecutor(), SwiftToolchainFakes.mac("28.0"))
-            .omissions(swiftPm(), List.of("swift-format", "swiftlint", "harmonize"));
+            .omissions(swiftPm(), List.of("swiftlint"));
 
-    assertThat(omissions).extracting(GateOmission::gate).containsExactly("swiftlint", "harmonize");
+    assertThat(omissions).extracting(GateOmission::gate).containsExactly("swiftlint");
     assertThat(omissions.getFirst().note())
         .isEqualTo(
             "swiftlint omitted: no SwiftLint version is proven on Xcode 28.0; Ward proves it on"

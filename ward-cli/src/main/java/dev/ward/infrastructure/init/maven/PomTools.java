@@ -14,7 +14,6 @@ final class PomTools {
   private static final String PMD = "maven-pmd-plugin";
   private static final String SPOTBUGS = "spotbugs-maven-plugin";
   private static final String SONAR = "sonar-maven-plugin";
-  private static final String ARCHUNIT = "archunit-junit5";
   private static final String JACOCO = "jacoco-maven-plugin";
   private static final String DEPENDENCY_CHECK = "dependency-check-maven";
   private static final String PIT = "pitest-maven";
@@ -70,15 +69,6 @@ final class PomTools {
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>5.1.0.4751</version>
               </plugin>
-            """;
-  private static final String ARCHUNIT_DEPENDENCY =
-      """
-              <dependency>
-                <groupId>com.tngtech.archunit</groupId>
-                <artifactId>archunit-junit5</artifactId>
-                <version>1.5.1</version>
-                <scope>test</scope>
-              </dependency>
             """;
   private static final String JACOCO_PLUGIN =
       """
@@ -175,7 +165,6 @@ final class PomTools {
           Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN, PresetPluginSnippets::jacoco),
           Tool.plugin("dependency-check", DEPENDENCY_CHECK, DEPENDENCY_CHECK_PLUGIN),
-          new Tool("archunit", ARCHUNIT, ARCHUNIT_DEPENDENCY, null, true, false),
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
           Tool.modulePlugin(
               "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),

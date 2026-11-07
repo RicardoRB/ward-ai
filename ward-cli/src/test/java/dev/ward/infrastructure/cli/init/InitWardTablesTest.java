@@ -3,7 +3,6 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.FakeCommandExecutor;
-import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
 import dev.ward.infrastructure.init.gradle.GradleToolConfigurator;
@@ -17,16 +16,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
- * {@code --architecture-engine ward} with strict extras: the engine checks the layers, and the
- * external tool keeps only the extras. TypeScript, end to end on the offline fixture.
+ * The {@code ward} layer, cycle and independence tables that every init writes. TypeScript, Python
+ * and Java, end to end on the offline fixtures.
  */
-class InitWardExtrasTest {
-  private static final String DEPENDENCY_CRUISER_CONFIG = ".dependency-cruiser.mjs";
+class InitWardTablesTest {
 
   @TempDir Path project;
 
   @Test
-  void typeScriptStrictWardWritesTheCycleRootsAndNoDependencyCruiserConfig()
+  void typeScriptStrictWritesTheCycleRootsAndNoExternalConfig()
       throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
 
@@ -39,21 +37,17 @@ class InitWardExtrasTest {
             "none",
             "--architecture",
             "hexagonal",
-            "--architecture-engine",
-            "ward",
-            "--gate",
-            "dependency-cruiser",
             "--yes");
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
         .contains("[[checks.ward.layers]]", "[checks.ward.cycles]", "roots = [\"src\"]")
-        .doesNotContain("[checks.dependency-cruiser]");
-    assertThat(project.resolve(DEPENDENCY_CRUISER_CONFIG)).doesNotExist();
+        .doesNotContain("dependency-cruiser");
+    assertThat(project.resolve(".dependency-cruiser.mjs")).doesNotExist();
   }
 
   @Test
-  void pythonStrictWardWritesTheCycleAndIndependenceTables() throws IOException {
+  void pythonStrictWritesTheCycleAndIndependenceTables() throws IOException {
     final Path python = Files.createDirectories(project.resolve("py"));
     writeUvProject(python);
     final InitCommandFixture init =
@@ -69,21 +63,17 @@ class InitWardExtrasTest {
             "none",
             "--architecture",
             "layered",
-            "--architecture-engine",
-            "ward",
-            "--gate",
-            "import-linter",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(python.resolve(".importlinter")).doesNotExist();
     assertThat(Files.readString(python.resolve("ward.toml")))
         .contains("[checks.ward.cycles]", "[[checks.ward.independence]]")
-        .doesNotContain("[checks.import-linter]");
+        .doesNotContain("import-linter");
   }
 
   @Test
-  void gradleStrictWardKeepsTheExtrasInTheArchUnitTestAndDropsTheLayerRule() throws IOException {
+  void gradleStrictWritesTheCycleRootsAndNoArchUnitTest() throws IOException {
     Files.writeString(project.resolve("build.gradle.kts"), "plugins { java }\n");
     Files.createDirectories(project.resolve("src/main/java/shop"));
     Files.writeString(
@@ -102,29 +92,19 @@ class InitWardExtrasTest {
             "none",
             "--architecture",
             "hexagonal",
-            "--architecture-engine",
-            "ward",
-            "--gate",
-            "archunit",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    final String archUnit;
-    try (Stream<Path> files = Files.walk(project.resolve("src/test/java"))) {
-      archUnit =
-          Files.readString(
-              files
-                  .filter(file -> "ArchitectureTest.java".equals(file.getFileName().toString()))
-                  .findFirst()
-                  .orElseThrow());
+    try (Stream<Path> files = Files.walk(project)) {
+      assertThat(files.map(file -> file.getFileName().toString()))
+          .doesNotContain("ArchitectureTest.java");
     }
-    assertThat(archUnit).doesNotContain("noCycles").doesNotContain("..domain..", "..adapter..");
     assertThat(Files.readString(project.resolve("ward.toml")))
         .contains("[checks.ward.cycles]", "roots = [\"src/main/java/shop\"]");
   }
 
   @Test
-  void dryRunNamesTheExtrasOnlyToolPlanAndWritesNothing() throws IOException {
+  void dryRunWritesNoWardTables() throws IOException {
     final Path python = Files.createDirectories(project.resolve("py"));
     writeUvProject(python);
     final InitCommandFixture init =
@@ -140,16 +120,10 @@ class InitWardExtrasTest {
             "none",
             "--architecture",
             "layered",
-            "--architecture-engine",
-            "ward",
-            "--gate",
-            "import-linter",
             "--dry-run",
             "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).doesNotContain(ArchitectureLayers.EXTRAS_ONLY_NOTE);
-    assertThat(python.resolve(".importlinter")).doesNotExist();
     assertThat(python.resolve("ward.toml")).doesNotExist();
   }
 

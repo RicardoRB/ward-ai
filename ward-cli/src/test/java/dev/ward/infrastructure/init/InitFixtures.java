@@ -20,7 +20,7 @@ public final class InitFixtures {
     return new InitProjectFiles(
         buildTools,
         ruleFiles,
-        new ArchitectureTestGenerator(),
+        ArchitectureTablesFixtures.create(),
         new FileConfigurationStorage(),
         new OwnedSectionWriter());
   }

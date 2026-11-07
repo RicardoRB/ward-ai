@@ -43,8 +43,8 @@ class SwiftCompatibilityMatrixTest {
   private static final String STANDARD = "standard";
 
   /**
-   * The style whose layers match the fixtures' Domain and Infrastructure folders, so Harmonize's
-   * Domain-to-Infrastructure rule applies to the seeded violation.
+   * The style whose layers match the fixtures' Domain and Infrastructure folders, so the layer rule
+   * of {@code ward:architecture/layers} applies to the seeded violation.
    */
   private static final String ARCHITECTURE = "clean";
 
@@ -93,8 +93,11 @@ class SwiftCompatibilityMatrixTest {
         .isEmpty();
 
     copyTree(VIOLATIONS.resolve(fixture), project);
-    final Map<String, String> violated =
-        checks(run(env, project, "check", "--profile", "ci", "--format", "json"));
+    final Run violatedReport = run(env, project, "check", "--profile", "ci", "--format", "json");
+    final Map<String, String> violated = checks(violatedReport);
+    assertThat(violatedReport.output())
+        .as("seeded layer violation reported by ward:architecture/layers")
+        .contains("ward:architecture/layers");
     clean.keySet().stream()
         .filter(gate -> !NOT_VIOLATED.contains(gate))
         .filter(gate -> !(STANDARD.equals(preset) && STANDARD_PASSES.contains(gate)))

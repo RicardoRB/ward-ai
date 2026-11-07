@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -117,10 +116,8 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
         .isZero();
     assertThat(project.resolve("config/enforcer-rules.xml")).exists();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.mutation");
-    try (Stream<Path> files = Files.walk(project.resolve("src/test/java"))) {
-      assertThat(files)
-          .anyMatch(path -> "ArchitectureTest.java".equals(path.getFileName().toString()));
-    }
+    assertThat(Files.readString(project.resolve(WARD_TOML)))
+        .contains("[[checks.ward.layers]]", "[checks.ward.cycles]");
   }
 
   @Test
