@@ -8,14 +8,19 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AccessorClassGenerationCheck;
 import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
 import dev.ward.analysis.domain.rule.check.ArrayReceiverCallCheck;
+import dev.ward.analysis.domain.rule.check.CallMatchCheck;
 import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
 import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
 import dev.ward.analysis.domain.rule.check.GuardLogStatementCheck;
 import dev.ward.analysis.domain.rule.check.NonExhaustiveSwitchCheck;
+import dev.ward.analysis.domain.rule.check.ReferenceEqualityCheck;
+import dev.ward.analysis.domain.rule.check.SynchronizedOnTypeCheck;
 import dev.ward.analysis.domain.rule.check.UseEnumCollectionsCheck;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import org.tomlj.TomlParseResult;
 
 /**
  * The checks of the Java rules that read the Java release or the type facts of a file. A check
@@ -24,13 +29,14 @@ import java.util.Map;
 final class TypeAwareChecks {
 
   private static final String MESSAGE = "message";
+  private static final String TYPES = "types";
   private static final String JAVA_RELEASE = "java-release";
 
   private TypeAwareChecks() {}
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return CheckRegistry.union(List.of(release(), types()));
+    return CheckRegistry.union(List.of(release(), types(), calls()));
   }
 
   private static Map<String, CheckFactory> release() {
@@ -73,5 +79,32 @@ final class TypeAwareChecks {
         entry(
             "non-exhaustive-switch",
             toml -> new NonExhaustiveSwitchCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static Map<String, CheckFactory> calls() {
+    return Map.ofEntries(
+        entry("call-match", TypeAwareChecks::callMatch),
+        entry(
+            "reference-equality",
+            toml ->
+                new ReferenceEqualityCheck(
+                    TomlValues.strings(toml, TYPES), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "synchronized-on-type",
+            toml ->
+                new SynchronizedOnTypeCheck(
+                    TomlValues.strings(toml, TYPES), TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static CallMatchCheck callMatch(final TomlParseResult toml) {
+    final CallMatchCheck.Criteria criteria =
+        new CallMatchCheck.Criteria(
+            TomlValues.optionalStrings(toml, "declaring-types"),
+            TomlValues.optionalStrings(toml, "names"),
+            TomlValues.optionalStrings(toml, "receiver-types"),
+            toml.getBoolean("receiver-array", () -> false),
+            Pattern.compile(toml.getString("text", () -> "")),
+            toml.getBoolean("ignored", () -> false));
+    return new CallMatchCheck(criteria, TomlValues.required(toml, MESSAGE));
   }
 }

@@ -1,0 +1,42 @@
+{
+  "3:12-3:61": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Duration"
+      },
+      "name": "plus",
+      "params": [
+        {
+          "name": "long",
+          "primitive": true
+        },
+        {
+          "name": "java.time.temporal.TemporalUnit"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "4:12-4:61": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Duration"
+      },
+      "name": "plus",
+      "params": [
+        {
+          "name": "long",
+          "primitive": true
+        },
+        {
+          "name": "java.time.temporal.TemporalUnit"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

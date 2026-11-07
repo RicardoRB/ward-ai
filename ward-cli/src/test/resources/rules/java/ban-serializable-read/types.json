@@ -1,0 +1,27 @@
+{
+  "3:12-3:29": {
+    "call": {
+      "declaring": {
+        "name": "java.io.ObjectInputStream"
+      },
+      "name": "readObject",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "4:12-4:24": {
+    "call": {
+      "declaring": {
+        "name": "java.io.Reader"
+      },
+      "name": "read",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}
