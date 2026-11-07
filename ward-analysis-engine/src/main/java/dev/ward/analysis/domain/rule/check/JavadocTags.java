@@ -77,7 +77,8 @@ public final class JavadocTags {
     private final SyntaxNode comment;
     private final List<Tag> tags;
     private final List<Line> continuation = new ArrayList<>();
-    private String name;
+    private boolean open;
+    private String name = "";
     private Span span;
     private String description;
 
@@ -104,7 +105,7 @@ public final class JavadocTags {
       if (text.startsWith(AT)) {
         finish();
         startTag(text, line, column, offset);
-      } else if (name != null) {
+      } else if (open) {
         final Span at = new Span(line, column, line, column + 1, offset, offset + 1);
         continuation.add(new Line(at, content - star));
       }
@@ -112,6 +113,7 @@ public final class JavadocTags {
 
     private void startTag(final String text, final int line, final int column, final int offset) {
       final int space = text.indexOf(' ');
+      open = true;
       name = space < 0 ? text : text.substring(0, space);
       description = space < 0 ? "" : text.substring(space).strip();
       span = new Span(line, column, line, column + name.length(), offset, offset + name.length());
@@ -119,10 +121,10 @@ public final class JavadocTags {
 
     /** Adds the tag under construction to the tags, if there is one. */
     void finish() {
-      if (name != null) {
+      if (open) {
         tags.add(new Tag(name, span, description, continuation));
         continuation.clear();
-        name = null;
+        open = false;
       }
     }
 
