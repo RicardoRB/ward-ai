@@ -61,14 +61,25 @@ final class ScopeAndFormatChecks {
       case "dot-format" -> dotFormat(toml);
       case "ancestor-check" -> ancestorCheck(toml);
       case "module-order" -> moduleOrder(toml);
+      case "hidden-field",
+          "javadoc-method",
+          "constructor-group",
+          "import-sort",
+          "variable-declaration-usage-distance" -> structure(name, toml);
+      default -> loggingArgs(toml);
+    };
+  }
+
+  /** Builds the checks of declarations, documentation and imports that read the scopes or the tree. */
+  private static RuleCheck structure(final String name, final TomlParseResult toml) {
+    return switch (name) {
       case "hidden-field" -> new HiddenFieldCheck(TomlValues.required(toml, MESSAGE));
       case "javadoc-method" -> new JavadocMethodCheck(TomlValues.required(toml, MESSAGE));
       case "constructor-group" -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE));
       case "import-sort" -> new ImportSortCheck(TomlValues.required(toml, MESSAGE));
-      case "variable-declaration-usage-distance" ->
+      default ->
           new VariableDistanceCheck(
               TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE));
-      default -> loggingArgs(toml);
     };
   }
 

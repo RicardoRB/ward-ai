@@ -98,8 +98,10 @@ public final class HiddenFieldCheck implements RuleCheck {
   }
 
   private static boolean isInitializer(final Scope scope, final SourceUnit unit) {
+    final String text = unit.text();
     final int start = scope.span().startOffset();
     return scope.kind() == ScopeKind.FUNCTION
-        && INITIALIZER.matcher(unit.text()).region(start, unit.text().length()).lookingAt();
+        && start <= text.length()
+        && INITIALIZER.matcher(text).region(start, text.length()).lookingAt();
   }
 }
