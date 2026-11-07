@@ -1,0 +1,86 @@
+# Checkstyle naming concepts for TypeScript and JavaScript (#296): class members and type parameters.
+
+[[rules]]
+id = "ward:typescript/class-type-parameter-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["classDeclaration"]
+not-inside = ["callSignature"]
+name = "identifier"
+skip = ["constraint", "typeArgument"]
+pattern = '^[A-Z][A-Za-z0-9]*$'
+message = "type parameter '{value}' must be PascalCase, such as T or TKey"
+'''
+
+[[rules]]
+id = "ward:typescript/interface-type-parameter-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["interfaceDeclaration"]
+not-inside = ["callSignature"]
+name = "identifier"
+skip = ["constraint", "typeArgument"]
+pattern = '^[A-Z][A-Za-z0-9]*$'
+message = "type parameter '{value}' must be PascalCase, such as T or TKey"
+'''
+
+[[rules]]
+id = "ward:typescript/method-type-parameter-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["callSignature"]
+name = "identifier"
+skip = ["constraint", "typeArgument"]
+pattern = '^[A-Z][A-Za-z0-9]*$'
+message = "type parameter '{value}' must be PascalCase, such as T or TKey"
+'''
+
+[[rules]]
+id = "ward:typescript/member-name"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["propertyMemberDeclaration"]
+name = "identifierName"
+skip = ["typeAnnotation", "initializer", "propertyMemberBase", "callSignature", "functionBody"]
+pattern = '^#?_*[a-z$][A-Za-z0-9$]*_*$'
+message = "member name '{value}' must be camelCase"
+'''
+
+[[rules]]
+id = "ward:javascript/member-name"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDefinition"]
+name = "identifierName"
+skip = ["accessorModifier", "initializer"]
+pattern = '^#?_*[a-z$][A-Za-z0-9$]*_*$'
+message = "member name '{value}' must be camelCase"
+'''

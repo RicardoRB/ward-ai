@@ -22,9 +22,9 @@ checkstyle = ["CatchParameterName"]
 
 [[rule]]
 name = "class-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "not-applicable", python = "not-applicable", swift = "implemented" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
+issues = { kotlin = "#294" }
 checkstyle = ["ClassTypeParameterName"]
 
 [[rule]]
@@ -58,9 +58,9 @@ checkstyle = ["IllegalIdentifierName"]
 
 [[rule]]
 name = "interface-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
+issues = { kotlin = "#294" }
 checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
@@ -86,8 +86,8 @@ ruff = ["N806"]
 
 [[rule]]
 name = "member-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "planned", swift = "implemented" }
+issues = { python = "#297" }
 ids = { kotlin = "ward:kotlin/property-name" }
 detekt = ["VariableNaming"]
 pmd = ["FieldNamingConventions"]
@@ -106,9 +106,9 @@ ruff = ["N802"]
 
 [[rule]]
 name = "method-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "not-applicable", python = "not-applicable", swift = "implemented" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
+issues = { kotlin = "#294" }
 checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]
