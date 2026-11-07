@@ -889,7 +889,9 @@ errorprone = ["DoNotMockAutoValue"]
 [[rule]]
 name = "double-brace-initialization"
 status = { java = "implemented" }
+pmd = ["DoubleBraceInitialization"]
 errorprone = ["DoubleBraceInitialization"]
+checkstyle = ["AvoidDoubleBraceInitialization"]
 
 [[rule]]
 name = "duplicate-assertion"

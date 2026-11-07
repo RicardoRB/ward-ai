@@ -10,16 +10,6 @@ issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#2
 checkstyle = ["ArrayTrailingComma"]
 
 [[rule]]
-name = "avoid-double-brace-initialization"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#289" }
-not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
-pmd = ["DoubleBraceInitialization"]
-checkstyle = ["AvoidDoubleBraceInitialization"]
-
-[[rule]]
 name = "avoid-inline-conditionals"
 status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
 ids = { java = "ward:java/avoid-inline-conditionals" }
@@ -242,15 +232,6 @@ checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
 ruff = ["PLR2004"]
 pylint = ["magic-value-comparison"]
-
-[[rule]]
-name = "match-xpath"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
-not-applicable = { python = "Checkstyle XPath over the Java AST; Python has no equivalent tree" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
-checkstyle = ["MatchXpath"]
 
 [[rule]]
 name = "missing-ctor"
