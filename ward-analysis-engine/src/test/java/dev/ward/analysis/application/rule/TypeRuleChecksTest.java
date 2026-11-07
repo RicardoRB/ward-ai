@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.FactNeed;
@@ -97,6 +98,21 @@ class TypeRuleChecksTest {
 
     assertThat(result.findings()).isEmpty();
     assertThat(result.notRun()).isEmpty();
+  }
+
+  @Test
+  void aResolverThatFailsIsRecordedAsAnExecutionErrorNotAFinding() {
+    final TypeFacts resolver =
+        (unit, spans, kinds) -> {
+          throw new AnalysisFailedException("boom");
+        };
+
+    final RuleRunResult result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
+
+    assertThat(result.findings()).isEmpty();
+    assertThat(result.executionErrors())
+        .singleElement()
+        .satisfies(error -> assertThat(error.reason()).contains("type facts"));
   }
 
   @Test
