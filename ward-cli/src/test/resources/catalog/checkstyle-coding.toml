@@ -171,8 +171,7 @@ pylint = ["broad-exception-caught"]
 name = "illegal-instantiation"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#289" }
+status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["IllegalInstantiation"]
 
@@ -217,9 +216,9 @@ checkstyle = ["IllegalTokenText"]
 name = "illegal-type"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalType"]
 
 [[rule]]
