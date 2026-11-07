@@ -1,0 +1,29 @@
+# Ruff's pygrep-hooks rules (PGH) for Python: suppression comments that do not say what they silence.
+
+[[rules]]
+id = "ward:python/blanket-type-ignore"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '#\s*type:\s*ignore(?!\[)'
+message = "blanket type: ignore comment; name the error code in brackets"
+'''
+
+[[rules]]
+id = "ward:python/blanket-noqa"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '#\s*noqa(?!\s*:)'
+message = "blanket noqa comment; name the rule codes after a colon"
+'''
