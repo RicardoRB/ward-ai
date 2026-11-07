@@ -58,6 +58,9 @@ public final class NullnessCheck implements RuleCheck {
     final Map<String, NullFinder> map = new TreeMap<>();
     NullValueFinders.each(map::put);
     NullCallFinders.each(map::put);
+    NullGenericFinders.each(map::put);
+    NullGenericOverrides.each(map::put);
+    NullGenericUses.each(map::put);
     NullInitFinders.each(map::put);
     NullOverrideFinders.each(map::put);
     NullContracts.each(map::put);

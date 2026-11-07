@@ -72,7 +72,7 @@ final class NullMiscFinders {
    * The annotations before a type: its own, and those of the field, parameter, local or method
    * whose type it is. A type nested in type arguments has only its own.
    */
-  private static List<SyntaxNode> leading(final SyntaxWalk.Visit visit) {
+  static List<SyntaxNode> leading(final SyntaxWalk.Visit visit) {
     final List<SyntaxNode> notes = new ArrayList<>(NullSyntax.annotations(visit.node()));
     for (int index = visit.ancestors().size() - 1; index >= 0; index--) {
       final SyntaxNode ancestor = visit.ancestors().get(index);
@@ -87,7 +87,7 @@ final class NullMiscFinders {
     return notes;
   }
 
-  private static boolean importsTypeUse(final SyntaxNode root) {
+  static boolean importsTypeUse(final SyntaxNode root) {
     return SyntaxWalk.visits(root, Set.of("importDeclaration")).stream()
         .map(visit -> SyntaxWalk.text(visit.node()))
         .anyMatch(text -> TYPE_USE_IMPORTS.stream().anyMatch(text::contains));

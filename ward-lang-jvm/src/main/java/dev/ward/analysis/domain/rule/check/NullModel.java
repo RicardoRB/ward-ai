@@ -33,7 +33,8 @@ final class NullModel {
       boolean primitive,
       boolean array,
       boolean init,
-      boolean isStatic) {}
+      boolean isStatic,
+      SyntaxNode type) {}
 
   /** What a method returns. */
   enum Returns {

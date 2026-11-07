@@ -15,13 +15,13 @@ final class NullOverrideFinders {
   private NullOverrideFinders() {}
 
   /** An override and the method of a supertype in this file that it overrides. */
-  private record Pair(
+  record Pair(
       NullModel.Type type,
       NullModel.Method method,
       NullModel.Type superType,
       NullModel.Method overridden) {}
 
-  private static List<Pair> pairs(final NullFinder.Unit unit) {
+  static List<Pair> pairs(final NullFinder.Unit unit) {
     final List<Pair> pairs = new ArrayList<>();
     for (final NullModel.Type type : unit.types()) {
       for (final String name : type.supertypes()) {

@@ -252,3 +252,99 @@ body = '''
 check = "get-on-empty-optional"
 message = "get() on {value} always fails: the optional is empty"
 '''
+
+[[rules]]
+id = "ward:java/assign-generic-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "assign-generic-nullable"
+message = "{value} has nullable type arguments, but the declared type allows none"
+'''
+
+[[rules]]
+id = "ward:java/pass-nullable-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "pass-nullable-generic"
+message = "{value} has nullable type arguments, but the parameter type allows none"
+'''
+
+[[rules]]
+id = "ward:java/return-nullable-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "return-nullable-generic"
+message = "{value} has nullable type arguments, but the return type allows none"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-return-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-return-generic"
+message = "{value} returns nullable type arguments that the overridden method does not"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-param-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-param-generic"
+message = "{value} does not accept the nullable type arguments that the overridden method does"
+'''
+
+[[rules]]
+id = "ward:java/type-parameter-cannot-be-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-parameter-cannot-be-nullable"
+message = "a type argument of {value} cannot be nullable; declare its type parameter with a @Nullable bound"
+'''
+
+[[rules]]
+id = "ward:java/generic-inference-failure"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "generic-inference-failure"
+message = "{value} passes null, but the declared type arguments are non-null"
+'''
+
+[[rules]]
+id = "ward:java/unrecognized-nullness-annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "unrecognized-nullness-annotation-location"
+message = "@Nullable cannot apply to the primitive type {value}"
+'''
