@@ -37,6 +37,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/size.toml",
           "rules/java/imports.toml",
           "rules/java/naming.toml",
+          "rules/java/javadoc.toml",
           "rules/java/dataflow.toml",
           "rules/java/security.toml",
           "rules/java/bestpractices.toml",
