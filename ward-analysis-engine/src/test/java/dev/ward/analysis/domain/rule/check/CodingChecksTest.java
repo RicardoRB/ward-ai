@@ -8,67 +8,72 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-/** The Checkstyle-style coding checks on small trees: their options and boundary cases. */
+/** The switch and exception coding checks on small trees: their options and boundary cases. */
 class CodingChecksTest extends TreeBuilders {
 
   private static final String MESSAGE = "{value}";
+  private static final String CASE = "case";
+  private static final String DEFAULT = "default";
+  private static final String NULL_LABEL = "null";
+  private static final String FIRST_STATEMENT = "result=1;";
+  private static final String LEAVING_STATEMENT = "break;";
+  private static final String THROWING_STATEMENT = "throw e;";
+  private static final String CALL_STATEMENT = "breakfast();";
+  private static final String OTHER_STATEMENT = "x;";
+  private static final String RUNTIME = "RuntimeException";
   private static final String TOKEN_CASE = "'case'";
   private static final String TOKEN_DEFAULT = "'default'";
-  private static final String TOKEN_RETURN = "'return'";
-  private static final String TOKEN_THROWS = "'throws'";
-  private static final String TOKEN_CATCH = "'catch'";
+  private static final String TOKEN_NAME = "IDENTIFIER";
   private static final String TOKEN_SWITCH = "'switch'";
   private static final String TOKEN_CLOSE_BRACE = "'}'";
+  private static final String TOKEN_CATCH = "'catch'";
+  private static final String TOKEN_THROWS = "'throws'";
   private static final String TOKEN_AT = "'@'";
   private static final String TOKEN_NULL = "NULL";
-  private static final String TOKEN_NAME = "IDENTIFIER";
-  private static final String TOKEN_STRING = "STRING";
-  private static final String VOID = "void";
-  private static final String OBJECT = "Object";
   private static final String GROUP = "switchBlockStatementGroup";
   private static final String LABEL = "switchLabel";
   private static final String BLOCK_STATEMENT = "blockStatement";
-  private static final String CATCH_CLAUSE = "catchClause";
-  private static final String CATCH_TYPE = "catchType";
+  private static final String STATEMENT = "statement";
+  private static final String TYPE_TYPE = "typeType";
   private static final String QUALIFIED_NAME = "qualifiedName";
   private static final String QUALIFIED_NAME_LIST = "qualifiedNameList";
-  private static final String FORMAL_PARAMETERS_KIND = "formalParameters";
-  private static final String ARGUMENTS = "arguments";
-  private static final String CLASS_BODY = "classBody";
-  private static final String CLASS_BODY_DECLARATION_KIND = "classBodyDeclaration";
+  private static final String CLASS_BODY_DECLARATION = "classBodyDeclaration";
   private static final String MEMBER = "memberDeclaration";
-  private static final String TYPE_TYPE = "typeType";
-  private static final String TYPE_TYPE_OR_VOID = "typeTypeOrVoid";
-  private static final String LAMBDA = "lambdaExpression";
-  private static final String ANNOTATION = "annotation";
   private static final String MODIFIER = "modifier";
   private static final String CLASS_OR_INTERFACE_MODIFIER = "classOrInterfaceModifier";
+  private static final String ANNOTATION = "annotation";
+  private static final String METHOD = "methodDeclaration";
+  private static final String VOID = "void";
 
   @Test
   void fallThroughReportsGroupsThatRunIntoTheNextLabel() {
-    final SyntaxNode falls = switchOf(group("case", "result=1;"), group("default", "return2;"));
+    final SyntaxNode falls =
+        switchOf(group(CASE, FIRST_STATEMENT), group(DEFAULT, OTHER_STATEMENT));
     assertThat(findings(new FallThroughCheck(false, MESSAGE), falls)).hasSize(1);
-    final SyntaxNode leaves = switchOf(group("case", "break;"), group("default", "return2;"));
+    final SyntaxNode leaves =
+        switchOf(group(CASE, LEAVING_STATEMENT), group(DEFAULT, OTHER_STATEMENT));
     assertThat(findings(new FallThroughCheck(false, MESSAGE), leaves)).isEmpty();
-    final SyntaxNode last = switchOf(group("case", "result=1;"));
+    final SyntaxNode last = switchOf(group(CASE, FIRST_STATEMENT));
     assertThat(findings(new FallThroughCheck(false, MESSAGE), last)).isEmpty();
     assertThat(findings(new FallThroughCheck(true, MESSAGE), last)).hasSize(1);
-    final SyntaxNode trailing = switchOf(group("case", "throw e;"), labelOnly("default"));
+    final SyntaxNode trailing = switchOf(group(CASE, THROWING_STATEMENT), labelOnly(DEFAULT));
     assertThat(findings(new FallThroughCheck(false, MESSAGE), trailing)).isEmpty();
-    final SyntaxNode call = switchOf(group("case", "breakfast();"), group("default", "x;"));
+    final SyntaxNode call = switchOf(group(CASE, CALL_STATEMENT), group(DEFAULT, OTHER_STATEMENT));
     assertThat(findings(new FallThroughCheck(false, MESSAGE), call)).hasSize(1);
   }
 
   @Test
   void missingSwitchDefaultSkipsSwitchesWithDefaultOrPatternOrNullLabels() {
-    final SyntaxNode without = switchOf(group("case", "x;"));
+    final SyntaxNode without = switchOf(group(CASE, OTHER_STATEMENT));
     assertThat(findings(new MissingSwitchDefaultCheck(MESSAGE), without)).hasSize(1);
-    final SyntaxNode withDefault = switchOf(group("case", "x;"), labelOnly("default"));
+    final SyntaxNode withDefault = switchOf(group(CASE, OTHER_STATEMENT), labelOnly(DEFAULT));
     assertThat(findings(new MissingSwitchDefaultCheck(MESSAGE), withDefault)).isEmpty();
-    final SyntaxNode withNull = switchOf(group("case", "x;"), labelOnly(TOKEN_NULL));
+    final SyntaxNode withNull = switchOf(group(CASE, OTHER_STATEMENT), labelOnly(NULL_LABEL));
     assertThat(findings(new MissingSwitchDefaultCheck(MESSAGE), withNull)).isEmpty();
     final SyntaxNode pattern =
-        switchOf(group("case", "x;"), n(LABEL, t(TOKEN_CASE, "case"), n(TYPE_TYPE, id("String"))));
+        switchOf(
+            group(CASE, OTHER_STATEMENT),
+            n(LABEL, t(TOKEN_CASE, CASE), n(TYPE_TYPE, id("String"))));
     assertThat(findings(new MissingSwitchDefaultCheck(MESSAGE), pattern)).isEmpty();
   }
 
@@ -77,57 +82,20 @@ class CodingChecksTest extends TreeBuilders {
     final SyntaxNode catching = catchClause("Error");
     assertThat(findings(new IllegalCatchCheck(Set.of("Error"), MESSAGE), catching)).hasSize(1);
     assertThat(findings(new IllegalCatchCheck(Set.of("IOException"), MESSAGE), catching)).isEmpty();
-    final SyntaxNode throwing = throwing("run", "RuntimeException");
-    assertThat(findings(new IllegalThrowsCheck(illegal(), Set.of(), true, MESSAGE), throwing))
+    final SyntaxNode throwing = throwing("run", RUNTIME);
+    assertThat(findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), true, MESSAGE), throwing))
         .hasSize(1);
-    assertThat(findings(new IllegalThrowsCheck(illegal(), Set.of("run"), true, MESSAGE), throwing))
+    assertThat(
+            findings(
+                new IllegalThrowsCheck(Set.of(RUNTIME), Set.of("run"), true, MESSAGE), throwing))
         .isEmpty();
-    final SyntaxNode overriding = overriding("run", "RuntimeException");
-    assertThat(findings(new IllegalThrowsCheck(illegal(), Set.of(), true, MESSAGE), overriding))
+    final SyntaxNode overriding = overriding("run", RUNTIME);
+    assertThat(
+            findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), true, MESSAGE), overriding))
         .isEmpty();
-    assertThat(findings(new IllegalThrowsCheck(illegal(), Set.of(), false, MESSAGE), overriding))
+    assertThat(
+            findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), false, MESSAGE), overriding))
         .hasSize(1);
-  }
-
-  @Test
-  void equalsMethodsNeedTheirCounterpart() {
-    final SyntaxNode equalsOnly = type(method("equals", List.of(OBJECT)));
-    assertThat(findings(new EqualsHashCodeCheck(MESSAGE), equalsOnly)).hasSize(1);
-    final SyntaxNode hashOnly = type(method("hashCode", List.of()));
-    assertThat(findings(new EqualsHashCodeCheck(MESSAGE), hashOnly)).hasSize(1);
-    final SyntaxNode both = type(method("equals", List.of(OBJECT)), method("hashCode", List.of()));
-    assertThat(findings(new EqualsHashCodeCheck(MESSAGE), both)).isEmpty();
-    final SyntaxNode covariant = type(method("equals", List.of("Pair")));
-    assertThat(findings(new CovariantEqualsCheck(MESSAGE), covariant)).hasSize(1);
-    final SyntaxNode overloaded =
-        type(method("equals", List.of("Pair")), method("equals", List.of(OBJECT)));
-    assertThat(findings(new CovariantEqualsCheck(MESSAGE), overloaded)).isEmpty();
-  }
-
-  @Test
-  void equalsAvoidNullReportsLiteralArgumentsOnly() {
-    assertThat(findings(new EqualsAvoidNullCheck(false, MESSAGE), equalsCall("equals"))).hasSize(1);
-    final SyntaxNode ignoreCase = equalsCall("equalsIgnoreCase");
-    assertThat(findings(new EqualsAvoidNullCheck(false, MESSAGE), ignoreCase)).hasSize(1);
-    assertThat(findings(new EqualsAvoidNullCheck(true, MESSAGE), ignoreCase)).isEmpty();
-    assertThat(findings(new EqualsAvoidNullCheck(false, MESSAGE), equalsCall("hashCode")))
-        .isEmpty();
-  }
-
-  @Test
-  void returnCountUsesTheLimitOfTheMethodsReturnType() {
-    final SyntaxNode voidOnce = returns(VOID, returnStatement(), lambdaReturn());
-    assertThat(findings(new ReturnCountCheck(2, 1, MESSAGE), voidOnce)).isEmpty();
-    final SyntaxNode voidTwice = returns(VOID, returnStatement(), returnStatement());
-    assertThat(findings(new ReturnCountCheck(2, 1, MESSAGE), voidTwice)).hasSize(1);
-    assertThat(findings(new ReturnCountCheck(2, 2, MESSAGE), voidTwice)).isEmpty();
-    final SyntaxNode valued =
-        returns("int", returnStatement(), returnStatement(), returnStatement());
-    assertThat(findings(new ReturnCountCheck(2, 1, MESSAGE), valued)).hasSize(1);
-  }
-
-  private static Set<String> illegal() {
-    return Set.of("RuntimeException");
   }
 
   private static List<RuleMatch> findings(final UnitCheck check, final SyntaxNode root) {
@@ -139,98 +107,44 @@ class CodingChecksTest extends TreeBuilders {
     children[0] = t(TOKEN_SWITCH, "switch");
     System.arraycopy(groups, 0, children, 1, groups.length);
     children[groups.length + 1] = t(TOKEN_CLOSE_BRACE, "}");
-    return n("statement", children);
+    return n(STATEMENT, children);
   }
 
+  /** A case group whose statement starts with its first word, as the grammar gives it. */
   private static SyntaxNode group(final String label, final String statement) {
-    return n(GROUP, labelOnly(label), n(BLOCK_STATEMENT, n("statement", leafFor(statement))));
-  }
-
-  /** A leaf whose first token is the statement's first word, as the grammar gives it. */
-  private static SyntaxNode leafFor(final String statement) {
     final String word = statement.replaceAll("[^A-Za-z].*", "");
-    final String kind =
-        Set.of("break", "return", "throw").contains(word) ? "'" + word + "'" : TOKEN_NAME;
-    return t(kind, statement);
+    final String kind = Set.of("break", "throw").contains(word) ? "'" + word + "'" : TOKEN_NAME;
+    return n(GROUP, labelOnly(label), n(BLOCK_STATEMENT, n(STATEMENT, t(kind, statement))));
   }
 
   private static SyntaxNode labelOnly(final String label) {
-    if (TOKEN_NULL.equals(label)) {
-      return n(LABEL, t(TOKEN_CASE, "case"), t(TOKEN_NULL, "null"));
+    if (NULL_LABEL.equals(label)) {
+      return n(LABEL, t(TOKEN_CASE, CASE), t(TOKEN_NULL, NULL_LABEL));
     }
-    final String keyword = "case".equals(label) ? TOKEN_CASE : TOKEN_DEFAULT;
-    return n(LABEL, t(keyword, label));
-  }
-
-  private static SyntaxNode returnStatement() {
-    return n("statement", t(TOKEN_RETURN, "return;"));
-  }
-
-  private static SyntaxNode lambdaReturn() {
-    return n(LAMBDA, returnStatement());
+    return n(LABEL, t(CASE.equals(label) ? TOKEN_CASE : TOKEN_DEFAULT, label));
   }
 
   private static SyntaxNode catchClause(final String name) {
     return n(
-        CATCH_CLAUSE,
+        "catchClause",
         t(TOKEN_CATCH, "catch"),
-        n(CATCH_TYPE, n(QUALIFIED_NAME, t(TOKEN_NAME, name))));
-  }
-
-  private static SyntaxNode method(final String name, final List<String> types) {
-    return n("methodDeclaration", t(VOID, VOID), id(name), parameters(types));
+        n("catchType", n(QUALIFIED_NAME, t(TOKEN_NAME, name))));
   }
 
   private static SyntaxNode throwing(final String name, final String thrown) {
     return n(
-        "methodDeclaration",
+        METHOD,
         t(VOID, VOID),
         id(name),
-        parameters(List.of()),
+        n("formalParameters"),
         t(TOKEN_THROWS, "throws"),
         n(QUALIFIED_NAME_LIST, n(QUALIFIED_NAME, t(TOKEN_NAME, thrown))));
   }
 
-  private static SyntaxNode parameters(final List<String> types) {
-    final SyntaxNode[] parameters = new SyntaxNode[types.size()];
-    for (int index = 0; index < types.size(); index++) {
-      parameters[index] = n("formalParameter", n(TYPE_TYPE, t(TOKEN_NAME, types.get(index))));
-    }
-    return n(FORMAL_PARAMETERS_KIND, parameters);
-  }
-
   private static SyntaxNode overriding(final String name, final String thrown) {
     return n(
-        CLASS_BODY_DECLARATION_KIND,
+        CLASS_BODY_DECLARATION,
         n(MODIFIER, n(CLASS_OR_INTERFACE_MODIFIER, n(ANNOTATION, t(TOKEN_AT, "@Override")))),
         n(MEMBER, throwing(name, thrown)));
-  }
-
-  private static SyntaxNode type(final SyntaxNode... methods) {
-    final SyntaxNode[] declarations = new SyntaxNode[methods.length];
-    for (int index = 0; index < methods.length; index++) {
-      declarations[index] = n(CLASS_BODY_DECLARATION_KIND, n(MEMBER, methods[index]));
-    }
-    return n("classDeclaration", n(CLASS_BODY, declarations));
-  }
-
-  private static SyntaxNode equalsCall(final String name) {
-    return n(
-        EXPRESSION,
-        n(EXPRESSION, n(PRIMARY, id("value"))),
-        t(TOKEN_DOT, "."),
-        n(
-            METHOD_CALL,
-            id(name),
-            n(ARGUMENTS, t(TOKEN_OPEN, "("), t(TOKEN_STRING, "\"ward\""), t(TOKEN_CLOSE, ")"))));
-  }
-
-  private static SyntaxNode returns(final String type, final SyntaxNode... statements) {
-    final SyntaxNode[] children = new SyntaxNode[statements.length + 3];
-    children[0] = n(TYPE_TYPE_OR_VOID, t(type, type));
-    children[1] = id("run");
-    children[2] = parameters(List.of());
-    System.arraycopy(statements, 0, children, 3, statements.length);
-    return n("methodDeclaration", children);
   }
 }
