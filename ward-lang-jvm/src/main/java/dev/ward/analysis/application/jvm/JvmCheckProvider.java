@@ -17,6 +17,7 @@ public final class JvmCheckProvider implements CheckProvider {
     return CheckRegistry.union(
         List.of(
             BlockChecks.checks(),
+            ClassDesignChecks.checks(),
             CodingChecks.checks(),
             CheckstyleDesignChecks.checks(),
             DesignChecks.checks(),
