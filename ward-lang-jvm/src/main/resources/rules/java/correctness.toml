@@ -1,0 +1,447 @@
+# SpotBugs CORRECTNESS patterns for Java, part 1 (bug patterns A to IP). Most rules match the text of a
+# node with a pattern, so they are approximations of SpotBugs' detectors: each one notes its limit in
+# the catalog row and in its fixtures. Node text has no separators between tokens, so patterns match adjacent words. Rules that need types or data flow are left for a later part.
+
+[[rules]]
+id = "ward:java/bit-and"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "bit-mask-comparison"
+message = "(x & mask) can never equal this value: the value has bits the mask clears"
+'''
+
+[[rules]]
+id = "ward:java/bit-and-zz"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(.*&\s*0\)\s*==\s*0$'
+message = "{value} is always true: masking with 0 yields 0"
+'''
+
+[[rules]]
+id = "ward:java/bit-ior"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(.*\|\s*[1-9]\d*\)\s*==\s*0$'
+message = "{value} is always false: a bitwise OR with a nonzero value is never zero"
+'''
+
+[[rules]]
+id = "ward:java/bit-signed-check-high-bit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(.*&\s*(0x[89a-fA-F][0-9a-fA-F]*|\d{3,})[lL]?\)\s*(<\s*0|>=\s*0)$'
+message = "{value} tests the sign of a masked high bit; compare the masked value with 0 instead"
+'''
+
+[[rules]]
+id = "ward:java/bshift-wrong-add-priority"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[^()]*(<<|>>>?)(?!=)[^()]*[-+][^()]*$'
+message = "{value} shifts by an unparenthesized sum; add parentheses to show the precedence"
+'''
+
+[[rules]]
+id = "ward:java/dls-overwritten-increment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\s*=\s*\1\s*(\+\+|--)$'
+message = "{value} assigns a variable to its own post-increment; the increment has no effect"
+'''
+
+[[rules]]
+id = "ward:java/dm-invalid-min-max"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "constant-clamp"
+message = "Math.max and Math.min with these constant bounds always return the same bound"
+'''
+
+[[rules]]
+id = "ward:java/dmi-bad-month"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^set\(\s*(Calendar\.)?MONTH\s*,\s*12\s*\)$'
+message = "month 12 is out of range; Calendar months are 0 to 11"
+'''
+
+[[rules]]
+id = "ward:java/dmi-bigdecimal-constructed-from-double"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new\s*(java\.math\.)?BigDecimal\(\s*-?(\d+\.\d*|\.\d+)[dD]?\s*\)$'
+message = "BigDecimal built from a double literal is not exact; use the String constructor"
+'''
+
+[[rules]]
+id = "ward:java/dmi-calling-next-from-hasnext"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'booleanhasNext\(\)[^{]*\{[\s\S]*next\s*\('
+message = "hasNext() calls next(), which moves the iterator"
+'''
+
+[[rules]]
+id = "ward:java/dmi-collections-should-not-contain-themselves"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.(add|offer|push|addFirst|addLast)\(\s*\1\s*\)$'
+message = "{value} adds a collection to itself"
+'''
+
+[[rules]]
+id = "ward:java/dmi-invoking-tostring-on-anonymous-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new[\w.<>]+(\[\])+\s*\{[^}]*\}\.toString\(\)$'
+message = "toString() on an array returns its identity, not its contents; use Arrays.toString"
+'''
+
+[[rules]]
+id = "ward:java/dmi-scheduled-thread-pool-executor-with-zero-core-threads"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new\s*(java\.util\.concurrent\.)?ScheduledThreadPoolExecutor\(\s*0\s*[,)]'
+message = "ScheduledThreadPoolExecutor with zero core threads never runs a task"
+'''
+
+[[rules]]
+id = "ward:java/dmi-vacuous-self-collection-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.(containsAll|removeAll|retainAll)\(\s*\1\s*\)$'
+message = "{value} passes a collection to its own bulk operation; the result is fixed"
+'''
+
+[[rules]]
+id = "ward:java/eq-always-false"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'booleanequals\(\s*(final)?Object\w+\)\s*\{\s*returnfalse;\s*\}'
+message = "equals(Object) always returns false"
+'''
+
+[[rules]]
+id = "ward:java/eq-always-true"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'booleanequals\(\s*(final)?Object\w+\)\s*\{\s*returntrue;\s*\}'
+message = "equals(Object) always returns true"
+'''
+
+[[rules]]
+id = "ward:java/eq-comparing-class-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'booleanequals\(\s*(final)?Object\w+\)[\s\S]*getClass\(\)\.getName\(\)'
+message = "equals compares class names; compare the Class objects instead"
+'''
+
+[[rules]]
+id = "ward:java/eq-dont-define-equals-for-enum"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enumDeclaration"]
+text = 'booleanequals\(\s*(?!Object)[\w.<>\[\]]+\w+\s*\)'
+message = "enum defines a covariant equals(); enum constants are compared with =="
+'''
+
+[[rules]]
+id = "ward:java/eq-other-no-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'booleanequals\(\s*(final)?(?!Object)[\w.<>\[\]]+\w+\s*\)'
+message = "equals() does not override equals(Object), so collections never call it"
+'''
+
+[[rules]]
+id = "ward:java/eos-bad-end-of-stream-check"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(\s*(byte|char|short)\s*\)\s*(?:[\w.\[\]]+\.)?read\w*\([^)]*\)\s*[!=]=\s*-1$'
+message = "{value} narrows read() before the end-of-stream check; keep the int result"
+'''
+
+[[rules]]
+id = "ward:java/ec-null-arg"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^equals\(\s*null\s*\)$'
+message = "equals(null) is always false; compare with == null"
+'''
+
+[[rules]]
+id = "ward:java/fe-test-if-equal-to-not-a-number"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '[!=]=\s*(Double|Float)\.NaN\b|\b(Double|Float)\.NaN\s*[!=]='
+message = "{value} compares with NaN, which is never equal to anything; use isNaN"
+'''
+
+[[rules]]
+id = "ward:java/fl-floats-as-loop-counters"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["forControl"]
+text = '^\(?(final)?(float|double)[^:]*;'
+message = "floating-point loop counter; use an integer and convert inside the loop"
+'''
+
+[[rules]]
+id = "ward:java/il-container-added-to-itself"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.addAll\(\s*\1\s*\)$'
+message = "{value} adds a collection to itself"
+'''
+
+[[rules]]
+id = "ward:java/int-bad-comparison-with-nonnegative-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.(size|length)\(\)\s*(<\s*0(?![\w.])|>=\s*0(?![\w.]))|\b0\s*(>|<=)\s*[\w.]+\.(size|length)\(\)'
+message = "{value} compares a size or length, which is never negative, with zero or less"
+'''
+
+[[rules]]
+id = "ward:java/io-appending-to-object-output-stream"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.io\.)?ObjectOutputStream\(\s*new\s*(java\.io\.)?FileOutputStream\([^)]*,\s*true\s*\)'
+message = "appending to a file with ObjectOutputStream writes a second stream header that cannot be read"
+'''
+
+[[rules]]
+id = "ward:java/iju-assert-method-invoked-from-run-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'voidrun\(\s*\)(throws[^{]*)?\{[\s\S]*assert\w*\s*\('
+message = "assertion in run() is not reported to the test runner; assert on the test thread"
+'''
+
+[[rules]]
+id = "ward:java/iju-bad-suite-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = 'static(?!Testsuite\(\)\{)[\w.<>\[\]]+suite\s*\(|suite\(\s*[\w.<>\[\]]+\w+'
+message = "suite() must be static, take no arguments and return Test"
+'''
+
+[[rules]]
+id = "ward:java/iju-no-tests"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = '^(?![\s\S]*voidtest\w*\s*\()[\s\S]*extends(junit\.framework\.)?TestCase\b'
+message = "TestCase declares no test methods"
+'''
+
+[[rules]]
+id = "ward:java/iju-setup-no-super"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = 'extends(junit\.framework\.)?TestCase\b(?![\s\S]*super\.setUp\s*\()[\s\S]*voidsetUp\s*\('
+message = "TestCase defines setUp() that does not call super.setUp()"
+'''
+
+[[rules]]
+id = "ward:java/iju-suite-not-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(public|protected|private)?Testsuite\s*\(\s*\)'
+message = "TestCase implements a non-static suite() method"
+'''
+
+[[rules]]
+id = "ward:java/iju-teardown-no-super"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = 'extends(junit\.framework\.)?TestCase\b(?![\s\S]*super\.tearDown\s*\()[\s\S]*voidtearDown\s*\('
+message = "TestCase defines tearDown() that does not call super.tearDown()"
+'''

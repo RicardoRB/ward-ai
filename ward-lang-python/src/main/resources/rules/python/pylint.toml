@@ -183,3 +183,54 @@ kinds = ["atom_expr"]
 text = "^[\"'][^\"']*[\"']\\.(?:strip|lstrip|rstrip)\\([\"'][^\"']*(.)[^\"']*\\1"
 message = "strip call contains duplicate characters"
 '''
+
+[[rules]]
+id = "ward:python/misplaced-bare-raise"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["raise_stmt"]
+allowed = ["try_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+text = "^raise$"
+message = "bare raise statement is not inside an exception handler"
+'''
+
+[[rules]]
+id = "ward:python/await-outside-async"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["atom_expr"]
+allowed = ["async_stmt", "async_funcdef"]
+stop = ["funcdef", "classdef", "lambdef"]
+mode = "outside"
+text = "^await"
+message = "await should be used within an async function"
+'''
+
+[[rules]]
+id = "ward:python/yield-from-in-async-function"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["yield_expr"]
+allowed = ["async_stmt", "async_funcdef"]
+stop = ["funcdef", "classdef", "lambdef"]
+mode = "inside"
+text = "^yieldfrom"
+message = "yield from statement in async function; use async for instead"
+'''

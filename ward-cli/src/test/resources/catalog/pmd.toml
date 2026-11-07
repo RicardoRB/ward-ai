@@ -7,9 +7,7 @@ pmd = ["AbstractClassWithoutAbstractMethod"]
 
 [[rule]]
 name = "abstract-class-without-any-method"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AbstractClassWithoutAnyMethod"]
 
 [[rule]]
@@ -126,6 +124,7 @@ pmd = ["AvoidDecimalLiteralsInBigDecimalConstructor"]
 [[rule]]
 name = "avoid-deeply-nested-if-stmts"
 category = "design"
+# Planned: the depth check counts every nested statement, and no generic check selects if statements alone
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["AvoidDeeplyNestedIfStmts"]
@@ -215,9 +214,7 @@ pmd = ["AvoidReassigningLoopVariables"]
 
 [[rule]]
 name = "avoid-rethrowing-exception"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AvoidRethrowingException"]
 
 [[rule]]
@@ -248,23 +245,17 @@ pmd = ["AvoidThreadGroup"]
 
 [[rule]]
 name = "avoid-throwing-new-instance-of-same-exception"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AvoidThrowingNewInstanceOfSameException"]
 
 [[rule]]
 name = "avoid-throwing-null-pointer-exception"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AvoidThrowingNullPointerException"]
 
 [[rule]]
 name = "avoid-unchecked-exceptions-in-signatures"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AvoidUncheckedExceptionsInSignatures"]
 
 [[rule]]
@@ -385,9 +376,8 @@ pmd = ["CloseResource"]
 
 [[rule]]
 name = "collapsible-if-statements"
-category = "design"
-status = { java = "planned", kotlin = "planned" }
-issues = { java = "#309", kotlin = "#295" }
+status = { java = "implemented", kotlin = "planned" }
+issues = { kotlin = "#295" }
 detekt = ["CollapsibleIfStatements"]
 pmd = ["CollapsibleIfStatements"]
 
@@ -490,6 +480,7 @@ pmd = ["DanglingJavadoc"]
 [[rule]]
 name = "data-class"
 category = "design"
+# Planned: PMD flags classes with a low weighted operation count; the engine computes no class-level method metrics
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["DataClass"]
@@ -515,9 +506,7 @@ pmd = ["DoNotCallGarbageCollectionExplicitly"]
 
 [[rule]]
 name = "do-not-extend-java-lang-error"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["DoNotExtendJavaLangError"]
 
 [[rule]]
@@ -608,27 +597,25 @@ errorprone = ["EqualsNull"]
 [[rule]]
 name = "exception-as-flow-control"
 category = "design"
+# Planned: needs a try and a catch of the same method paired, which no generic check expresses
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["ExceptionAsFlowControl"]
 
 [[rule]]
 name = "excessive-imports"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["ExcessiveImports"]
 
 [[rule]]
 name = "excessive-parameter-list"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["ExcessiveParameterList"]
 
 [[rule]]
 name = "excessive-public-count"
 category = "design"
+# Planned: counts public methods and fields together; method-count cannot count fields
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["ExcessivePublicCount"]
@@ -652,9 +639,7 @@ errorprone = ["ExtendsObject"]
 
 [[rule]]
 name = "final-field-could-be-static"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["FinalFieldCouldBeStatic"]
 
 [[rule]]
@@ -712,6 +697,7 @@ pmd = ["ForLoopVariableCount"]
 [[rule]]
 name = "god-class"
 category = "design"
+# Planned: needs class-level WMC, ATFD and TCC metrics the engine does not compute
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["GodClass"]
@@ -753,6 +739,7 @@ pmd = ["IdenticalConditionalBranches"]
 [[rule]]
 name = "immutable-field"
 category = "design"
+# Planned: needs field use across the class (assigned only in constructors)
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["ImmutableField"]
@@ -786,6 +773,7 @@ pmd = ["InsecureCryptoIv"]
 [[rule]]
 name = "instantiable-utility-class"
 category = "design"
+# Planned: needs every member of a type to be static, which no generic check expresses
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["InstantiableUtilityClass"]
@@ -807,6 +795,7 @@ pmd = ["InsufficientStringBufferDeclaration"]
 [[rule]]
 name = "internal-api-usage"
 category = "design"
+# Planned: needs annotations on members used from other classes, read through type facts
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["InternalApiUsage"]
@@ -814,6 +803,7 @@ pmd = ["InternalApiUsage"]
 [[rule]]
 name = "invalid-java-bean"
 category = "design"
+# Planned: needs field types resolved to decide serializability
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["InvalidJavaBean"]
@@ -883,6 +873,7 @@ pmd = ["LambdaCanBeMethodReference"]
 [[rule]]
 name = "law-of-demeter"
 category = "design"
+# Planned: needs the receiver type of each call in a chain
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["LawOfDemeter"]
@@ -922,9 +913,7 @@ pmd = ["LocalVariableDeclarationShouldBeAtStartOfBlock"]
 
 [[rule]]
 name = "logic-inversion"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["LogicInversion"]
 
 [[rule]]
@@ -949,6 +938,7 @@ pmd = ["LooseCoupling"]
 [[rule]]
 name = "loose-package-coupling"
 category = "design"
+# Planned: PMD configures no packages by default, so the rule needs a package-list option
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["LoosePackageCoupling"]
@@ -1002,9 +992,7 @@ pmd = ["MoreThanOneLogger"]
 
 [[rule]]
 name = "mutable-static-state"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["MutableStaticState"]
 
 [[rule]]
@@ -1128,6 +1116,7 @@ pmd = ["ProtectedMemberInFinalClass"]
 [[rule]]
 name = "public-member-in-non-public-type"
 category = "design"
+# Planned: needs the visibility of the enclosing type, which generic checks cannot read
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["PublicMemberInNonPublicType"]
@@ -1217,9 +1206,7 @@ pmd = ["ShortVariable"]
 
 [[rule]]
 name = "signature-declare-throws-exception"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["SignatureDeclareThrowsException"]
 
 [[rule]]
@@ -1236,16 +1223,12 @@ pmd = ["SimplifiableTestAssertion"]
 
 [[rule]]
 name = "simplified-ternary"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["SimplifiedTernary"]
 
 [[rule]]
 name = "simplify-conditional"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["SimplifyConditional"]
 
 [[rule]]
@@ -1265,6 +1248,7 @@ pmd = ["SingletonClassReturningNewInstance"]
 [[rule]]
 name = "singular-field"
 category = "design"
+# Planned: needs field use across the class methods
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["SingularField"]
@@ -1321,6 +1305,7 @@ pmd = ["SuspiciousOctalEscape"]
 [[rule]]
 name = "switch-density"
 category = "design"
+# Planned: needs the ratio of statements to labels in a switch, which no generic check counts
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["SwitchDensity"]
@@ -1347,6 +1332,7 @@ pmd = ["TooFewBranchesForSwitch"]
 [[rule]]
 name = "too-many-fields"
 category = "design"
+# Planned: counts non-final, non-static fields; count checks cannot filter by modifier
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["TooManyFields"]
@@ -1354,6 +1340,7 @@ pmd = ["TooManyFields"]
 [[rule]]
 name = "too-many-methods"
 category = "design"
+# Planned: excludes simple get, set and is methods; count checks cannot filter by name
 status = { java = "planned" }
 issues = { java = "#309" }
 pmd = ["TooManyMethods"]
@@ -1685,9 +1672,7 @@ pmd = ["UseVarargs"]
 
 [[rule]]
 name = "useless-overriding-method"
-category = "design"
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["UselessOverridingMethod"]
 
 [[rule]]

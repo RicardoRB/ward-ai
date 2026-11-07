@@ -164,22 +164,19 @@ spotbugs = ["BIT_ADD_OF_SIGNED_BYTE"]
 [[rule]]
 name = "bit-and"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["BIT_AND"]
 
 [[rule]]
 name = "bit-and-zz"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["BIT_AND_ZZ"]
 
 [[rule]]
 name = "bit-ior"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["BIT_IOR"]
 
 [[rule]]
@@ -199,8 +196,7 @@ spotbugs = ["BIT_SIGNED_CHECK"]
 [[rule]]
 name = "bit-signed-check-high-bit"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["BIT_SIGNED_CHECK_HIGH_BIT"]
 
 [[rule]]
@@ -213,8 +209,7 @@ spotbugs = ["BOA_BADLY_OVERRIDDEN_ADAPTER"]
 [[rule]]
 name = "bshift-wrong-add-priority"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["BSHIFT_WRONG_ADD_PRIORITY"]
 
 [[rule]]
@@ -451,8 +446,7 @@ spotbugs = ["DLS_DEAD_STORE_OF_CLASS_LITERAL"]
 [[rule]]
 name = "dls-overwritten-increment"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DLS_OVERWRITTEN_INCREMENT"]
 
 [[rule]]
@@ -507,15 +501,13 @@ spotbugs = ["DMI_ARGUMENTS_WRONG_ORDER"]
 [[rule]]
 name = "dmi-bad-month"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_BAD_MONTH"]
 
 [[rule]]
 name = "dmi-bigdecimal-constructed-from-double"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE"]
 
 [[rule]]
@@ -528,15 +520,13 @@ spotbugs = ["DMI_BLOCKING_METHODS_ON_URL"]
 [[rule]]
 name = "dmi-calling-next-from-hasnext"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_CALLING_NEXT_FROM_HASNEXT"]
 
 [[rule]]
 name = "dmi-collections-should-not-contain-themselves"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_COLLECTIONS_SHOULD_NOT_CONTAIN_THEMSELVES"]
 
 [[rule]]
@@ -598,8 +588,7 @@ spotbugs = ["DMI_INVOKING_HASHCODE_ON_ARRAY"]
 [[rule]]
 name = "dmi-invoking-tostring-on-anonymous-array"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_INVOKING_TOSTRING_ON_ANONYMOUS_ARRAY"]
 
 [[rule]]
@@ -640,8 +629,7 @@ spotbugs = ["DMI_RANDOM_USED_ONLY_ONCE"]
 [[rule]]
 name = "dmi-scheduled-thread-pool-executor-with-zero-core-threads"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_SCHEDULED_THREAD_POOL_EXECUTOR_WITH_ZERO_CORE_THREADS"]
 
 [[rule]]
@@ -682,8 +670,7 @@ spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
 [[rule]]
 name = "dmi-vacuous-self-collection-call"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DMI_VACUOUS_SELF_COLLECTION_CALL"]
 
 [[rule]]
@@ -752,8 +739,7 @@ spotbugs = ["DM_GC"]
 [[rule]]
 name = "dm-invalid-min-max"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["DM_INVALID_MIN_MAX"]
 
 [[rule]]
@@ -857,8 +843,7 @@ spotbugs = ["EC_INCOMPATIBLE_ARRAY_COMPARE"]
 [[rule]]
 name = "ec-null-arg"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EC_NULL_ARG"]
 
 [[rule]]
@@ -941,8 +926,7 @@ spotbugs = ["ENV_USE_PROPERTY_INSTEAD_OF_ENV"]
 [[rule]]
 name = "eos-bad-end-of-stream-check"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
 
 [[rule]]
@@ -955,15 +939,13 @@ spotbugs = ["EQ_ABSTRACT_SELF"]
 [[rule]]
 name = "eq-always-false"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EQ_ALWAYS_FALSE"]
 
 [[rule]]
 name = "eq-always-true"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EQ_ALWAYS_TRUE"]
 
 [[rule]]
@@ -983,8 +965,7 @@ spotbugs = ["EQ_COMPARETO_USE_OBJECT_EQUALS"]
 [[rule]]
 name = "eq-comparing-class-names"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
 
 [[rule]]
@@ -997,8 +978,7 @@ spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
 [[rule]]
 name = "eq-dont-define-equals-for-enum"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
 
 [[rule]]
@@ -1011,8 +991,7 @@ spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
 [[rule]]
 name = "eq-other-no-object"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["EQ_OTHER_NO_OBJECT"]
 
 [[rule]]
@@ -1081,8 +1060,7 @@ spotbugs = ["FE_FLOATING_POINT_EQUALITY"]
 [[rule]]
 name = "fe-test-if-equal-to-not-a-number"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER"]
 
 [[rule]]
@@ -1144,8 +1122,7 @@ spotbugs = ["FI_USELESS"]
 [[rule]]
 name = "fl-floats-as-loop-counters"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
 
 [[rule]]
@@ -1361,50 +1338,43 @@ spotbugs = ["IIO_INEFFICIENT_LAST_INDEX_OF"]
 [[rule]]
 name = "iju-assert-method-invoked-from-run-method"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_ASSERT_METHOD_INVOKED_FROM_RUN_METHOD"]
 
 [[rule]]
 name = "iju-bad-suite-method"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_BAD_SUITE_METHOD"]
 
 [[rule]]
 name = "iju-no-tests"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_NO_TESTS"]
 
 [[rule]]
 name = "iju-setup-no-super"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_SETUP_NO_SUPER"]
 
 [[rule]]
 name = "iju-suite-not-static"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_SUITE_NOT_STATIC"]
 
 [[rule]]
 name = "iju-teardown-no-super"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IJU_TEARDOWN_NO_SUPER"]
 
 [[rule]]
 name = "il-container-added-to-itself"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IL_CONTAINER_ADDED_TO_ITSELF"]
 
 [[rule]]
@@ -1466,8 +1436,7 @@ spotbugs = ["INT_BAD_COMPARISON_WITH_INT_VALUE"]
 [[rule]]
 name = "int-bad-comparison-with-nonnegative-value"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE"]
 
 [[rule]]
@@ -1501,8 +1470,7 @@ spotbugs = ["INT_VACUOUS_COMPARISON"]
 [[rule]]
 name = "io-appending-to-object-output-stream"
 category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
 spotbugs = ["IO_APPENDING_TO_OBJECT_OUTPUT_STREAM"]
 
 [[rule]]
