@@ -141,3 +141,16 @@ kinds = ["atom"]
 text = "^(?![rRbBfFuU]*[rR])[bBuUfF]{0,2}(?:'|\")(?:[^\\\\]|\\\\[\\s\\S])*?\\\\[^\\\\'\"abfnrtvx0-7NuU\r\n]"
 message = "invalid escape sequence in a non-raw string; use a raw string or escape the backslash"
 '''
+
+[[rules]]
+id = "ward:python/module-import-not-at-top-of-file"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "module-order"
+problem = "import-after-code"
+message = "module level import not at top of file"
+'''
