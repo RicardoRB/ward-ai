@@ -27,7 +27,7 @@ bit-and = "implemented"
 bit-and-zz = "implemented"
 bit-ior = "implemented"
 bit-ior-of-signed-byte = "implemented"
-bit-signed-check = { status = "planned", issue = "#316" }
+bit-signed-check = "implemented"
 bit-signed-check-high-bit = "implemented"
 boa-badly-overridden-adapter = "implemented"
 bshift-wrong-add-priority = "implemented"
@@ -42,7 +42,7 @@ caa-covariant-array-return = { status = "planned", issue = "#316" }
 cd-circular-dependency = { status = "planned", issue = "#316" }
 ci-confused-inheritance = "implemented"
 cn-idiom = { status = "planned", issue = "#316" }
-cn-idiom-no-super-call = { status = "planned", issue = "#316" }
+cn-idiom-no-super-call = "implemented"
 cn-implements-clone-but-not-cloneable = "implemented"
 cnt-rough-constant-value = "implemented"
 co-abstract-self = { status = "planned", issue = "#316" }
@@ -52,7 +52,7 @@ co-self-no-object = { status = "planned", issue = "#316" }
 ct-constructor-throw = { status = "planned", issue = "#316" }
 cwo-closed-without-opened = { status = "planned", issue = "#316" }
 db-duplicate-branches = "implemented"
-db-duplicate-switch-clauses = { status = "planned", issue = "#316" }
+db-duplicate-switch-clauses = "implemented"
 dc-doublecheck = "implemented"
 dc-partially-constructed = { status = "planned", issue = "#316" }
 dcn-nullpointer-exception = "implemented"
@@ -72,7 +72,7 @@ dls-dead-store-of-class-literal = { status = "planned", issue = "#314" }
 dls-overwritten-increment = "implemented"
 dm-boolean-ctor = "implemented"
 dm-boxed-primitive-for-compare = "implemented"
-dm-boxed-primitive-for-parsing = { status = "planned", issue = "#316" }
+dm-boxed-primitive-for-parsing = "implemented"
 dm-boxed-primitive-tostring = "implemented"
 dm-convert-case = "implemented"
 dm-default-encoding = "implemented"
@@ -187,11 +187,11 @@ icast-int-cast-to-float-passed-to-round = { status = "planned", issue = "#314" }
 icast-integer-multiply-cast-to-long = { status = "planned", issue = "#316" }
 icast-questionable-unsigned-right-shift = "implemented"
 iil-elements-get-length-in-loop = { status = "planned", issue = "#316" }
-iil-pattern-compile-in-loop = { status = "planned", issue = "#316" }
+iil-pattern-compile-in-loop = "implemented"
 iil-pattern-compile-in-loop-indirect = { status = "planned", issue = "#316" }
-iil-prepare-statement-in-loop = { status = "planned", issue = "#316" }
-iio-inefficient-index-of = { status = "planned", issue = "#316" }
-iio-inefficient-last-index-of = { status = "planned", issue = "#316" }
+iil-prepare-statement-in-loop = "implemented"
+iio-inefficient-index-of = "implemented"
+iio-inefficient-last-index-of = "implemented"
 iju-assert-method-invoked-from-run-method = "implemented"
 iju-bad-suite-method = "implemented"
 iju-no-tests = "implemented"
@@ -218,14 +218,14 @@ is-field-not-guarded = { status = "planned", issue = "#316" }
 is-inconsistent-sync = { status = "planned", issue = "#316" }
 is2-inconsistent-sync = { status = "planned", issue = "#316" }
 isc-instantiate-static-class = { status = "planned", issue = "#316" }
-it-no-such-element = { status = "planned", issue = "#316" }
-ita-inefficient-to-array = { status = "planned", issue = "#316" }
+it-no-such-element = "implemented"
+ita-inefficient-to-array = "implemented"
 j2-ee-store-of-non-serializable-object-into-session = { status = "planned", issue = "#316" }
 jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
 jlm-jsr166-lock-monitorenter = "implemented"
 jlm-jsr166-utilconcurrent-monitorenter = "implemented"
 jml-jsr166-calling-wait-rather-than-await = "implemented"
-jua-dont-assert-instanceof-in-tests = { status = "planned", issue = "#316" }
+jua-dont-assert-instanceof-in-tests = "implemented"
 lg-lost-logger-due-to-weak-reference = { status = "planned", issue = "#316" }
 li-lazy-init-static = { status = "planned", issue = "#316" }
 li-lazy-init-update-static = { status = "planned", issue = "#316" }
@@ -270,7 +270,7 @@ nm-very-confusing = "implemented"
 nm-very-confusing-intentional = { status = "planned", issue = "#316" }
 nm-wrong-package = "implemented"
 nm-wrong-package-intentional = { status = "planned", issue = "#316" }
-nn-naked-notify = { status = "planned", issue = "#316" }
+nn-naked-notify = "implemented"
 no-notify-not-notifyall = "implemented"
 noise-field-reference = { status = "planned", issue = "#316" }
 noise-method-call = { status = "planned", issue = "#316" }
@@ -322,7 +322,7 @@ pa-public-array-attribute = "implemented"
 pa-public-mutable-object-attribute = { status = "planned", issue = "#316" }
 pa-public-primitive-attribute = "implemented"
 perm-super-not-called-in-getpermissions = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-class-names = { status = "planned", issue = "#316" }
+pi-do-not-reuse-public-identifiers-class-names = "implemented"
 pi-do-not-reuse-public-identifiers-field-names = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-local-variable-names = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = "#316" }
@@ -330,7 +330,7 @@ ps-public-semaphores = "implemented"
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
 pzla-prefer-zero-length-arrays = "implemented"
 qba-questionable-boolean-assignment = "implemented"
-qf-questionable-for-loop = { status = "planned", issue = "#316" }
+qf-questionable-for-loop = "implemented"
 range-array-index = { status = "planned", issue = "#314" }
 range-array-length = { status = "planned", issue = "#314" }
 range-array-offset = { status = "planned", issue = "#314" }
@@ -378,8 +378,8 @@ sa-local-self-assignment = "implemented"
 sa-local-self-assignment-instead-of-field = "implemented"
 sa-local-self-comparison = "implemented"
 sa-local-self-computation = "implemented"
-sbsc-use-stringbuffer-concatenation = { status = "planned", issue = "#316" }
-sc-start-in-ctor = { status = "planned", issue = "#316" }
+sbsc-use-stringbuffer-concatenation = "implemented"
+sc-start-in-ctor = "implemented"
 se-bad-field = { status = "planned", issue = "#316" }
 se-bad-field-inner-class = { status = "planned", issue = "#316" }
 se-bad-field-store = { status = "planned", issue = "#316" }
@@ -422,8 +422,8 @@ sr-not-checked = { status = "planned", issue = "#316" }
 ss-should-be-static = "implemented"
 ssd-do-not-use-instance-lock-on-shared-static-data = { status = "planned", issue = "#316" }
 st-write-to-static-from-instance-method = { status = "planned", issue = "#316" }
-stcal-invoke-on-static-calendar-instance = { status = "planned", issue = "#316" }
-stcal-invoke-on-static-date-format-instance = { status = "planned", issue = "#316" }
+stcal-invoke-on-static-calendar-instance = "implemented"
+stcal-invoke-on-static-date-format-instance = "implemented"
 stcal-static-calendar-instance = "implemented"
 stcal-static-simple-date-format-instance = "implemented"
 sti-interrupted-on-currentthread = "implemented"

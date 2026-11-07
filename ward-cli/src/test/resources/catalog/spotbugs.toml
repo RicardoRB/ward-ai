@@ -152,8 +152,6 @@ spotbugs = ["BIT_IOR_OF_SIGNED_BYTE"]
 
 [[rule]]
 name = "bit-signed-check"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["BIT_SIGNED_CHECK"]
 
 [[rule]]
@@ -240,8 +238,6 @@ spotbugs = ["CN_IDIOM"]
 
 [[rule]]
 name = "cn-idiom-no-super-call"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CN_IDIOM_NO_SUPER_CALL"]
 
 [[rule]]
@@ -290,8 +286,6 @@ spotbugs = ["DB_DUPLICATE_BRANCHES"]
 
 [[rule]]
 name = "db-duplicate-switch-clauses"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DB_DUPLICATE_SWITCH_CLAUSES"]
 
 [[rule]]
@@ -539,8 +533,6 @@ spotbugs = ["DM_BOXED_PRIMITIVE_FOR_COMPARE"]
 
 [[rule]]
 name = "dm-boxed-primitive-for-parsing"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["DM_BOXED_PRIMITIVE_FOR_PARSING"]
 
 [[rule]]
@@ -991,8 +983,6 @@ spotbugs = ["IIL_ELEMENTS_GET_LENGTH_IN_LOOP"]
 
 [[rule]]
 name = "iil-pattern-compile-in-loop"
-presets = ["strict"]
-category = "performance"
 spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP"]
 
 [[rule]]
@@ -1003,20 +993,14 @@ spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP_INDIRECT"]
 
 [[rule]]
 name = "iil-prepare-statement-in-loop"
-presets = ["strict"]
-category = "performance"
 spotbugs = ["IIL_PREPARE_STATEMENT_IN_LOOP"]
 
 [[rule]]
 name = "iio-inefficient-index-of"
-presets = ["strict"]
-category = "performance"
 spotbugs = ["IIO_INEFFICIENT_INDEX_OF"]
 
 [[rule]]
 name = "iio-inefficient-last-index-of"
-presets = ["strict"]
-category = "performance"
 spotbugs = ["IIO_INEFFICIENT_LAST_INDEX_OF"]
 
 [[rule]]
@@ -1155,14 +1139,10 @@ spotbugs = ["IS_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "ita-inefficient-to-array"
-presets = ["strict"]
-category = "performance"
 spotbugs = ["ITA_INEFFICIENT_TO_ARRAY"]
 
 [[rule]]
 name = "it-no-such-element"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["IT_NO_SUCH_ELEMENT"]
 
 [[rule]]
@@ -1194,8 +1174,6 @@ spotbugs = ["JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT"]
 
 [[rule]]
 name = "jua-dont-assert-instanceof-in-tests"
-presets = ["strict"]
-category = "bad-practice"
 spotbugs = ["JUA_DONT_ASSERT_INSTANCEOF_IN_TESTS"]
 
 [[rule]]
@@ -1433,8 +1411,6 @@ spotbugs = ["NM_WRONG_PACKAGE_INTENTIONAL"]
 
 [[rule]]
 name = "nn-naked-notify"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["NN_NAKED_NOTIFY"]
 
 [[rule]]
@@ -1727,8 +1703,6 @@ spotbugs = ["PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-class-names"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES"]
 
 [[rule]]
@@ -1770,8 +1744,6 @@ spotbugs = ["QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT"]
 
 [[rule]]
 name = "qf-questionable-for-loop"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["QF_QUESTIONABLE_FOR_LOOP"]
 
 [[rule]]
@@ -2010,14 +1982,10 @@ spotbugs = ["SA_LOCAL_SELF_COMPUTATION"]
 
 [[rule]]
 name = "sbsc-use-stringbuffer-concatenation"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["SBSC_USE_STRINGBUFFER_CONCATENATION"]
 
 [[rule]]
 name = "sc-start-in-ctor"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["SC_START_IN_CTOR"]
 
 [[rule]]
@@ -2238,14 +2206,10 @@ spotbugs = ["SS_SHOULD_BE_STATIC"]
 
 [[rule]]
 name = "stcal-invoke-on-static-calendar-instance"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE"]
 
 [[rule]]
 name = "stcal-invoke-on-static-date-format-instance"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE"]
 
 [[rule]]
