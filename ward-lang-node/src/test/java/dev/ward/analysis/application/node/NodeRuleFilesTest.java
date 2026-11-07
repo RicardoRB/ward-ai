@@ -41,16 +41,15 @@ class NodeRuleFilesTest {
   }
 
   @Test
-  void checkstyleRulesComeInTypeScriptAndJavaScriptPairs() throws IOException {
+  void everyJavaScriptCheckstyleRuleHasATypeScriptTwin() throws IOException {
     final List<String> ids = ids(CHECKSTYLE_FILE);
 
     assertThat(ids).isNotEmpty();
+    // TypeScript is a superset: every JavaScript rule has a TypeScript twin, not the reverse.
     for (final String id : ids) {
-      final String twin =
-          id.startsWith("ward:" + TYPESCRIPT)
-              ? id.replace(TYPESCRIPT, JAVASCRIPT)
-              : id.replace(JAVASCRIPT, TYPESCRIPT);
-      assertThat(ids).as("twin of " + id).contains(twin);
+      if (id.startsWith("ward:" + JAVASCRIPT)) {
+        assertThat(ids).as("twin of " + id).contains(id.replace(JAVASCRIPT, TYPESCRIPT));
+      }
     }
   }
 
