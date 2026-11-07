@@ -26,6 +26,15 @@
             <artifactId>ward-analysis-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-analysis-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tomlj</groupId>
+            <artifactId>tomlj</artifactId>
+        </dependency>
         <!-- Tests parse real Java sources; the module itself only reads the shared syntax tree. -->
         <dependency>
             <groupId>dev.ward</groupId>
