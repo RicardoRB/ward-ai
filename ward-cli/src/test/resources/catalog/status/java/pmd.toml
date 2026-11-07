@@ -1,0 +1,261 @@
+# Status of the pmd rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+abstract-class-without-abstract-method = "implemented"
+abstract-class-without-any-method = "implemented"
+accessor-class-generation = "implemented"
+accessor-method-generation = "implemented"
+add-empty-string = { status = "planned", issue = "#312" }
+append-character-with-char = { status = "planned", issue = "#312" }
+array-is-stored-directly = "implemented"
+assert-equals-argument-order = "implemented"
+assert-statement-in-test = "implemented"
+assignment-in-operand = "implemented"
+assignment-to-non-final-static = { status = "planned", issue = "#310" }
+at-least-one-constructor = { status = "planned", issue = "#313" }
+avoid-accessibility-alteration = "implemented"
+avoid-array-loops = { status = "planned", issue = "#312" }
+avoid-assert-as-identifier = { status = "planned", issue = "#310" }
+avoid-branching-statement-as-last-in-loop = "implemented"
+avoid-calendar-date-creation = { status = "planned", issue = "#312" }
+avoid-calling-finalize = "implemented"
+avoid-decimal-literals-in-big-decimal-constructor = "implemented"
+avoid-deeply-nested-if-stmts = "implemented"
+avoid-dollar-signs = { status = "planned", issue = "#313" }
+avoid-enum-as-identifier = { status = "planned", issue = "#310" }
+avoid-field-name-matching-method-name = { status = "planned", issue = "#310" }
+avoid-field-name-matching-type-name = { status = "planned", issue = "#310" }
+avoid-file-stream = { status = "planned", issue = "#312" }
+avoid-instanceof-checks-in-catch-clause = "implemented"
+avoid-instantiating-objects-in-loops = { status = "planned", issue = "#312" }
+avoid-literals-in-if-condition = "implemented"
+avoid-message-digest-field = "implemented"
+avoid-multiple-unary-operators = "implemented"
+avoid-print-stack-trace = "implemented"
+avoid-reassigning-catch-variables = "implemented"
+avoid-reassigning-loop-variables = "implemented"
+avoid-rethrowing-exception = "implemented"
+avoid-string-buffer-field = "implemented"
+avoid-synchronized-at-method-level = { status = "planned", issue = "#312" }
+avoid-synchronized-statement = { status = "planned", issue = "#312" }
+avoid-thread-group = { status = "planned", issue = "#312" }
+avoid-throwing-new-instance-of-same-exception = "implemented"
+avoid-throwing-null-pointer-exception = "implemented"
+avoid-unchecked-exceptions-in-signatures = "implemented"
+avoid-using-hard-coded-ip = "implemented"
+avoid-using-native-code = { status = "planned", issue = "#313" }
+avoid-using-octal-values = "implemented"
+avoid-using-volatile = { status = "planned", issue = "#312" }
+big-integer-instantiation = { status = "planned", issue = "#312" }
+boolean-get-method-name = { status = "planned", issue = "#313" }
+broken-null-check = "implemented"
+c-style-array-declaration = { status = "planned", issue = "#313" }
+call-super-first = { status = "planned", issue = "#310" }
+call-super-in-constructor = { status = "planned", issue = "#313" }
+call-super-last = { status = "planned", issue = "#310" }
+check-result-set = "implemented"
+class-cast-exception-with-to-array = "implemented"
+clone-method-must-be-public = "implemented"
+clone-method-must-implement-cloneable = "implemented"
+clone-method-return-type-must-match-class-name = "implemented"
+close-resource = { status = "planned", issue = "#310" }
+collapsible-if-statements = "implemented"
+collection-type-mismatch = { status = "planned", issue = "#310" }
+comment-content = { status = "planned", issue = "#313" }
+comment-default-access-modifier = { status = "planned", issue = "#313" }
+comment-size = { status = "planned", issue = "#313" }
+compare-objects-with-equals = { status = "planned", issue = "#310" }
+comparison-with-na-n = "implemented"
+confusing-argument-to-varargs-method = { status = "planned", issue = "#310" }
+confusing-ternary = { status = "planned", issue = "#313" }
+consecutive-appends-should-reuse = { status = "planned", issue = "#312" }
+consecutive-literal-appends = { status = "planned", issue = "#312" }
+constants-in-interface = "implemented"
+constructor-calls-overridable-method = { status = "planned", issue = "#310" }
+control-statement-braces = { status = "planned", issue = "#313" }
+dangling-javadoc = { status = "planned", issue = "#313" }
+data-class = "implemented"
+default-label-not-last-in-switch = "implemented"
+detached-test-case = { status = "planned", issue = "#310" }
+do-not-call-garbage-collection-explicitly = "implemented"
+do-not-extend-java-lang-error = "implemented"
+do-not-extend-java-lang-throwable = "implemented"
+do-not-hard-code-sd-card = "implemented"
+do-not-terminate-vm = "implemented"
+do-not-throw-exception-in-finally = "implemented"
+do-not-use-threads = { status = "planned", issue = "#312" }
+dont-call-thread-run = { status = "planned", issue = "#312" }
+dont-use-float-type-for-loop-indices = "implemented"
+double-checked-locking = { status = "planned", issue = "#312" }
+empty-finalizer = "implemented"
+empty-method-in-abstract-class-should-be-abstract = { status = "planned", issue = "#313" }
+enum-comparison = "implemented"
+equals-null = "implemented"
+exception-as-flow-control = "implemented"
+excessive-imports = "implemented"
+excessive-parameter-list = "implemented"
+excessive-public-count = "implemented"
+exhaustive-switch-has-default = "implemented"
+extends-object = { status = "planned", issue = "#313" }
+final-field-could-be-static = "implemented"
+final-parameter-in-abstract-method = { status = "planned", issue = "#313" }
+finalize-does-not-call-super-finalize = "implemented"
+finalize-only-calls-super-finalize = "implemented"
+finalize-overloaded = "implemented"
+finalize-should-be-protected = "implemented"
+for-loop-can-be-foreach = "implemented"
+for-loop-should-be-while-loop = { status = "planned", issue = "#313" }
+for-loop-variable-count = "implemented"
+god-class = "implemented"
+guard-log-statement = "implemented"
+hard-coded-crypto-key = { status = "planned", issue = "#312" }
+idempotent-operations = "implemented"
+identical-catch-branches = { status = "planned", issue = "#313" }
+identical-conditional-branches = "implemented"
+immutable-field = "implemented"
+implicit-functional-interface = "implemented"
+inefficient-empty-string-check = { status = "planned", issue = "#312" }
+inefficient-string-buffering = { status = "planned", issue = "#312" }
+insecure-crypto-iv = { status = "planned", issue = "#312" }
+instantiable-utility-class = "implemented"
+instantiation-to-get-class = "implemented"
+insufficient-string-buffer-declaration = { status = "planned", issue = "#312" }
+internal-api-usage = "implemented"
+invalid-java-bean = "implemented"
+invalid-log-message-format = { status = "planned", issue = "#310" }
+j-unit-jupiter-test-no-private-modifier = "implemented"
+j-unit-jupiter-test-should-be-package-private = "implemented"
+j-unit-spelling = "implemented"
+j-unit-static-suite = "implemented"
+j-unit-use-expected = "implemented"
+j-unit4-suites-should-use-suite-annotation = "implemented"
+jumbled-incrementer = { status = "planned", issue = "#310" }
+labeled-statement = "implemented"
+lambda-can-be-method-reference = { status = "planned", issue = "#313" }
+law-of-demeter = "implemented"
+linguistic-naming = { status = "planned", issue = "#313" }
+literals-first-in-comparisons = "implemented"
+local-home-naming-convention = { status = "planned", issue = "#313" }
+local-interface-session-naming-convention = { status = "planned", issue = "#313" }
+local-variable-declaration-should-be-at-start-of-block = { status = "planned", issue = "#313" }
+logic-inversion = "implemented"
+long-literal-ending-with-lowercase-l = "implemented"
+long-variable = { status = "planned", issue = "#313" }
+loose-coupling = "implemented"
+loose-package-coupling = "implemented"
+mdb-and-session-bean-naming-convention = { status = "planned", issue = "#313" }
+method-returns-internal-array = "implemented"
+method-with-same-name-as-enclosing-class = { status = "planned", issue = "#310" }
+misplaced-null-check = "implemented"
+missing-serial-version-uid = "implemented"
+missing-static-method-in-non-instantiatable-class = "implemented"
+more-than-one-logger = "implemented"
+mutable-static-state = "implemented"
+no-package = { status = "planned", issue = "#313" }
+non-case-label-in-switch = "implemented"
+non-exhaustive-switch = "implemented"
+non-serializable-class = { status = "planned", issue = "#310" }
+non-static-initializer = "implemented"
+non-thread-safe-singleton = { status = "planned", issue = "#312" }
+null-assignment = "implemented"
+optimizable-to-array-call = { status = "planned", issue = "#312" }
+override-both-equals-and-hashcode = "implemented"
+overriding-thread-run = { status = "planned", issue = "#312" }
+package-case = { status = "planned", issue = "#313" }
+premature-declaration = { status = "planned", issue = "#313" }
+preserve-stack-trace = "implemented"
+primitive-wrapper-instantiation = "implemented"
+proper-clone-implementation = "implemented"
+proper-logger = { status = "planned", issue = "#310" }
+protected-member-in-final-class = "implemented"
+public-member-in-non-public-type = "implemented"
+reliance-on-default-charset = "implemented"
+remote-interface-naming-convention = { status = "planned", issue = "#313" }
+remote-session-interface-naming-convention = { status = "planned", issue = "#313" }
+replace-enumeration-with-iterator = "implemented"
+replace-hashtable-with-map = "implemented"
+replace-java-util-calendar = "implemented"
+replace-java-util-date = "implemented"
+replace-java-util-vector = "implemented"
+return-empty-collection-rather-than-null = { status = "planned", issue = "#310" }
+return-from-finally-block = "implemented"
+short-class-name = { status = "planned", issue = "#313" }
+short-method-name = { status = "planned", issue = "#313" }
+short-variable = { status = "planned", issue = "#313" }
+signature-declare-throws-exception = "implemented"
+simple-date-format-needs-locale = "implemented"
+simplifiable-test-assertion = "implemented"
+simplified-ternary = "implemented"
+simplify-conditional = "implemented"
+single-method-singleton = { status = "planned", issue = "#310" }
+singleton-class-returning-new-instance = "implemented"
+singular-field = "implemented"
+static-ejb-field-should-be-final = { status = "planned", issue = "#310" }
+string-buffer-instantiation-with-char = "implemented"
+string-instantiation = { status = "planned", issue = "#312" }
+string-to-string = { status = "planned", issue = "#312" }
+suspicious-equals-method-name = "implemented"
+suspicious-hashcode-method-name = "implemented"
+suspicious-octal-escape = "implemented"
+switch-density = "implemented"
+system-println = "implemented"
+test-class-without-test-cases = "implemented"
+too-few-branches-for-switch = { status = "planned", issue = "#312" }
+too-many-fields = "implemented"
+too-many-methods = "implemented"
+too-many-static-imports = { status = "planned", issue = "#313" }
+type-name-mismatch = "implemented"
+type-parameter-naming-conventions = { status = "planned", issue = "#313" }
+uncommented-empty-constructor = { status = "planned", issue = "#313" }
+uncommented-empty-method-body = { status = "planned", issue = "#313" }
+unconditional-if-statement = "implemented"
+unit-test-assertions-should-include-message = "implemented"
+unit-test-contains-too-many-asserts = "implemented"
+unit-test-should-include-assert = "implemented"
+unit-test-should-use-after-annotation = "implemented"
+unit-test-should-use-before-annotation = "implemented"
+unit-test-should-use-test-annotation = "implemented"
+unnecessary-annotation-value-element = { status = "planned", issue = "#313" }
+unnecessary-block = { status = "planned", issue = "#313" }
+unnecessary-boolean-assertion = "implemented"
+unnecessary-boxing = { status = "planned", issue = "#313" }
+unnecessary-case-change = "implemented"
+unnecessary-cast = { status = "planned", issue = "#313" }
+unnecessary-conversion-temporary = "implemented"
+unnecessary-fully-qualified-name = { status = "planned", issue = "#313" }
+unnecessary-interface-declaration = { status = "planned", issue = "#313" }
+unnecessary-return = { status = "planned", issue = "#313" }
+unnecessary-varargs-array-creation = "implemented"
+unnecessary-warning-suppression = "implemented"
+unsupported-jdk-api-usage = { status = "planned", issue = "#310" }
+unsynchronized-static-formatter = { status = "planned", issue = "#312" }
+unused-formal-parameter = "implemented"
+unused-label = "implemented"
+unused-null-check-in-equals = "implemented"
+unused-private-method = "implemented"
+unused-return-value = { status = "planned", issue = "#310" }
+use-arrays-as-list = { status = "planned", issue = "#312" }
+use-collection-is-empty = "implemented"
+use-concurrent-hash-map = { status = "planned", issue = "#312" }
+use-correct-exception-logging = { status = "planned", issue = "#310" }
+use-diamond-operator = { status = "planned", issue = "#313" }
+use-enum-collections = "implemented"
+use-equals-to-compare-strings = "implemented"
+use-explicit-types = { status = "planned", issue = "#313" }
+use-index-of-char = { status = "planned", issue = "#312" }
+use-io-streams-with-apache-commons-file-item = { status = "planned", issue = "#312" }
+use-locale-with-case-conversions = "implemented"
+use-notify-all-instead-of-notify = { status = "planned", issue = "#312" }
+use-proper-class-loader = "implemented"
+use-short-array-initializer = { status = "planned", issue = "#313" }
+use-standard-charsets = "implemented"
+use-string-buffer-for-string-appends = { status = "planned", issue = "#312" }
+use-string-buffer-length = { status = "planned", issue = "#312" }
+use-try-with-resources = "implemented"
+use-underscores-in-numeric-literals = { status = "planned", issue = "#313" }
+use-varargs = "implemented"
+useless-overriding-method = "implemented"
+useless-qualified-this = { status = "planned", issue = "#313" }
+useless-string-value-of = { status = "planned", issue = "#312" }
+variable-can-be-inlined = { status = "planned", issue = "#313" }
+while-loop-with-literal-boolean = "implemented"
+wrong-test-annotation = { status = "planned", issue = "#310" }

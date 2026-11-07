@@ -1,0 +1,9 @@
+# Status of the checkstyle-blocks rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+avoid-nested-blocks = "not-applicable"
+empty-block = "not-applicable"
+empty-catch-block = { status = "planned", issue = "#297" }
+google-right-curly = "not-applicable"
+left-curly = "not-applicable"
+need-braces = "not-applicable"
+right-curly = "not-applicable"

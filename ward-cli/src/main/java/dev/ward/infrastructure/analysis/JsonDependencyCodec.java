@@ -10,6 +10,7 @@ import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import org.apache.fory.json.annotation.JsonType;
 
@@ -43,7 +44,8 @@ final class JsonDependencyCodec {
               dto.path,
               all(dto.exports, SymbolDto::toSymbol),
               all(dto.imports, ReferenceDto::toReference),
-              all(dto.declared, SymbolDto::toSymbol)));
+              all(dto.declared, SymbolDto::toSymbol),
+              Set.copyOf(names(dto.usedNames))));
     } catch (final JsonCodecException | IllegalArgumentException exception) {
       return Optional.empty();
     }
@@ -61,6 +63,13 @@ final class JsonDependencyCodec {
       throw new IllegalArgumentException("Cached list is missing");
     }
     return dtos.stream().map(dto -> convertOrFail(dto, convert)).toList();
+  }
+
+  private static List<String> names(final List<String> names) {
+    if (names == null || names.contains(null)) {
+      throw new IllegalArgumentException("Cached names are missing");
+    }
+    return names;
   }
 
   private static <D, T> T convertOrFail(final D dto, final Function<D, T> convert) {
@@ -87,6 +96,7 @@ final class JsonDependencyCodec {
     public List<SymbolDto> exports;
     public List<ReferenceDto> imports;
     public List<SymbolDto> declared;
+    public List<String> usedNames;
 
     static SummaryDto from(final String key, final FileSummary summary) {
       final SummaryDto dto = new SummaryDto();
@@ -96,6 +106,7 @@ final class JsonDependencyCodec {
       dto.exports = summary.exports().stream().map(SymbolDto::from).toList();
       dto.imports = summary.imports().stream().map(ReferenceDto::from).toList();
       dto.declared = summary.declared().stream().map(SymbolDto::from).toList();
+      dto.usedNames = summary.usedNames().stream().sorted().toList();
       return dto;
     }
   }
@@ -104,20 +115,22 @@ final class JsonDependencyCodec {
   @JsonType
   public static final class SymbolDto {
     public String name;
+    public String kind;
     public SpanDto span;
 
     static SymbolDto from(final Symbol symbol) {
       final SymbolDto dto = new SymbolDto();
       dto.name = symbol.name();
+      dto.kind = symbol.kind();
       dto.span = SpanDto.from(symbol.span());
       return dto;
     }
 
     Symbol toSymbol() {
-      if (name == null) {
+      if (name == null || kind == null) {
         throw new IllegalArgumentException("Cached symbol is incomplete");
       }
-      return new Symbol(name, span(span));
+      return new Symbol(name, span(span), kind);
     }
   }
 

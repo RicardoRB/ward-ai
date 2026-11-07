@@ -1,0 +1,12 @@
+# Status of the checkstyle-design rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+design-for-extension = { status = "planned", issue = "#298" }
+final-class = "not-applicable"
+hide-utility-class-constructor = "not-applicable"
+inner-type-last = "not-applicable"
+interface-is-type = "not-applicable"
+mutable-exception = "not-applicable"
+one-top-level-class = "not-applicable"
+sealed-should-have-permits-list = "not-applicable"
+throws-count = "not-applicable"
+visibility-modifier = { status = "planned", issue = "#298" }

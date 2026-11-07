@@ -154,3 +154,29 @@ check = "module-order"
 problem = "import-after-code"
 message = "module level import not at top of file"
 '''
+
+[[rules]]
+id = "ward:python/not-in-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "not-in"
+message = "test for membership should be 'not in'"
+'''
+
+[[rules]]
+id = "ward:python/not-is-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "not-is"
+message = "test for object identity should be 'is not'"
+'''

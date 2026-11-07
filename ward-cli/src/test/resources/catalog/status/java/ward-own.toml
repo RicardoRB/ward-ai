@@ -1,0 +1,9 @@
+# Status of the ward-own rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+cognitive-complexity = "implemented"
+command-injection = "implemented"
+no-field-di = "implemented"
+no-standard-streams = "implemented"
+path-traversal = "implemented"
+sql-injection = "implemented"
+unused-assignment = "implemented"

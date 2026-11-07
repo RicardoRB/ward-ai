@@ -1,0 +1,5 @@
+# Status of the checkstyle-header rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+header = { status = "planned", issue = "#298" }
+multi-file-regexp-header = { status = "planned", issue = "#298" }
+regexp-header = { status = "planned", issue = "#298" }

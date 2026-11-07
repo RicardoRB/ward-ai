@@ -1,0 +1,1105 @@
+# Structural rules of the "suggestion" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/no-with"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["withStatement"]
+message = "unexpected use of with statement"
+'''
+
+[[rules]]
+id = "ward:javascript/no-with"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["withStatement"]
+message = "unexpected use of with statement"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-static-block"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classElement"]
+text = '^static\{\}$'
+message = "unexpected empty static block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-empty-static-block"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classElement"]
+text = '^static\{\}$'
+message = "unexpected empty static block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-octal"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["OctalIntegerLiteral"]
+message = "octal literals are not allowed"
+'''
+
+[[rules]]
+id = "ward:typescript/no-regex-spaces"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '(?<!\\) {2,}'
+message = "multiple spaces in regular expression; use a quantifier"
+'''
+
+[[rules]]
+id = "ward:javascript/no-regex-spaces"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '(?<!\\) {2,}'
+message = "multiple spaces in regular expression; use a quantifier"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-catch"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["tryStatement"]
+text = '^(?!.*finally)[\s\S]*catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "unnecessary try/catch wraps the block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-catch"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["tryStatement"]
+text = '^(?!.*finally)[\s\S]*catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "unnecessary try/catch wraps the block"
+'''
+
+[[rules]]
+id = "ward:typescript/require-yield"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["functionDeclaration>'*'", "anonymousFunction>'*'"]
+descendant = ["'yield'"]
+skip = ["functionDeclaration", "anonymousFunction"]
+message = "generator function has no yield"
+'''
+
+[[rules]]
+id = "ward:javascript/require-yield"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["functionDeclaration>'*'", "anonymousFunction>'*'"]
+descendant = ["'yield'"]
+skip = ["functionDeclaration", "anonymousFunction"]
+message = "generator function has no yield"
+'''
+
+[[rules]]
+id = "ward:typescript/no-shadow-restricted-names"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assignable", "identifierOrKeyWord"]
+text = '^(NaN|Infinity|undefined|eval|arguments)$'
+message = "shadowing of a restricted name"
+'''
+
+[[rules]]
+id = "ward:javascript/no-shadow-restricted-names"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assignable", "identifierOrKeyWord"]
+text = '^(NaN|Infinity|undefined|eval|arguments)$'
+message = "shadowing of a restricted name"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^(undefined|NaN|Infinity|Object|Array|String|Number|Boolean|Math|JSON|Date|Symbol|Promise|Map|Set)='
+message = "assignment to a global"
+'''
+
+[[rules]]
+id = "ward:typescript/no-delete-var"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete[\w$]+$'
+message = "variables should not be deleted"
+'''
+
+[[rules]]
+id = "ward:javascript/no-delete-var"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete[\w$]+$'
+message = "variables should not be deleted"
+'''
+
+[[rules]]
+id = "ward:typescript/no-alert"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?(alert|confirm|prompt)\('
+message = "unexpected alert"
+'''
+
+[[rules]]
+id = "ward:javascript/no-alert"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?(alert|confirm|prompt)\('
+message = "unexpected alert"
+'''
+
+[[rules]]
+id = "ward:typescript/no-caller"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.(caller|callee)$'
+message = "do not use arguments.callee or fn.caller"
+'''
+
+[[rules]]
+id = "ward:javascript/no-caller"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.(caller|callee)$'
+message = "do not use arguments.callee or fn.caller"
+'''
+
+[[rules]]
+id = "ward:typescript/no-eval"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?eval\('
+message = "eval can be harmful"
+'''
+
+[[rules]]
+id = "ward:javascript/no-eval"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?eval\('
+message = "eval can be harmful"
+'''
+
+[[rules]]
+id = "ward:typescript/no-extend-native"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^(Object|Array|String|Number|Boolean|Function|Date|RegExp|Symbol|Map|Set|Promise)\.prototype\.'
+message = "do not extend a native prototype"
+'''
+
+[[rules]]
+id = "ward:javascript/no-extend-native"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^(Object|Array|String|Number|Boolean|Function|Date|RegExp|Symbol|Map|Set|Promise)\.prototype\.'
+message = "do not extend a native prototype"
+'''
+
+[[rules]]
+id = "ward:typescript/no-iterator"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.__iterator__$'
+message = "do not use __iterator__"
+'''
+
+[[rules]]
+id = "ward:javascript/no-iterator"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.__iterator__$'
+message = "do not use __iterator__"
+'''
+
+[[rules]]
+id = "ward:typescript/no-proto"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.__proto__$'
+message = "use Object.getPrototypeOf instead of __proto__"
+'''
+
+[[rules]]
+id = "ward:javascript/no-proto"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["identifierName"]
+text = '\.__proto__$'
+message = "use Object.getPrototypeOf instead of __proto__"
+'''
+
+[[rules]]
+id = "ward:typescript/no-new-func"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(new)?Function\('
+message = "the Function constructor is not allowed"
+'''
+
+[[rules]]
+id = "ward:javascript/no-new-func"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(new)?Function\('
+message = "the Function constructor is not allowed"
+'''
+
+[[rules]]
+id = "ward:typescript/no-new-wrappers"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^new(String|Number|Boolean)\('
+message = "do not use String, Number or Boolean as constructors"
+'''
+
+[[rules]]
+id = "ward:javascript/no-new-wrappers"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^new(String|Number|Boolean)\('
+message = "do not use String, Number or Boolean as constructors"
+'''
+
+[[rules]]
+id = "ward:typescript/no-script-url"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '(?i)^["\x27\x60]javascript:'
+message = "javascript: URLs are not allowed"
+'''
+
+[[rules]]
+id = "ward:javascript/no-script-url"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '(?i)^["\x27\x60]javascript:'
+message = "javascript: URLs are not allowed"
+'''
+
+[[rules]]
+id = "ward:typescript/no-throw-literal"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["throwStatement"]
+text = '^throw(["\x27\x60\d]|null|undefined|true|false)'
+message = "throw an Error object, not a literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-throw-literal"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["throwStatement"]
+text = '^throw(["\x27\x60\d]|null|undefined|true|false)'
+message = "throw an Error object, not a literal"
+'''
+
+[[rules]]
+id = "ward:typescript/no-undef-init"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '=undefined$'
+message = "do not initialize a variable to undefined"
+'''
+
+[[rules]]
+id = "ward:javascript/no-undef-init"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '=undefined$'
+message = "do not initialize a variable to undefined"
+'''
+
+[[rules]]
+id = "ward:typescript/symbol-description"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Symbol\(\)$'
+message = "Symbol needs a description"
+'''
+
+[[rules]]
+id = "ward:javascript/symbol-description"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Symbol\(\)$'
+message = "Symbol needs a description"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-call"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^([\w$]+)(?:\.[\w$]+)*\.(call|apply)\(\1[,)]'
+message = "unnecessary call; call the function directly"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-call"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^([\w$]+)(?:\.[\w$]+)*\.(call|apply)\(\1[,)]'
+message = "unnecessary call; call the function directly"
+'''
+
+[[rules]]
+id = "ward:typescript/no-array-constructor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(new)?Array\(\)$|^(new)?Array\([^,()]*,'
+message = "use an array literal instead of Array()"
+'''
+
+[[rules]]
+id = "ward:javascript/no-array-constructor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(new)?Array\(\)$|^(new)?Array\([^,()]*,'
+message = "use an array literal instead of Array()"
+'''
+
+[[rules]]
+id = "ward:typescript/no-div-regex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '^/='
+message = "do not write a regex that looks like a division"
+'''
+
+[[rules]]
+id = "ward:javascript/no-div-regex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '^/='
+message = "do not write a regex that looks like a division"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-object-has-own"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^Object\.prototype\.hasOwnProperty\.call\('
+message = "use Object.hasOwn() instead"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-object-has-own"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^Object\.prototype\.hasOwnProperty\.call\('
+message = "use Object.hasOwn() instead"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-spread"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^[\w$.]+\.apply\((undefined|null),'
+message = "use the spread operator instead of .apply()"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-spread"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^[\w$.]+\.apply\((undefined|null),'
+message = "use the spread operator instead of .apply()"
+'''
+
+[[rules]]
+id = "ward:typescript/no-process-env"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^process\.env(\.|\[)'
+message = "read configuration through the project's config, not process.env"
+'''
+
+[[rules]]
+id = "ward:javascript/no-process-env"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^process\.env(\.|\[)'
+message = "read configuration through the project's config, not process.env"
+'''
+
+[[rules]]
+id = "ward:typescript/no-substr"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.substr\('
+message = "use slice instead of the deprecated substr"
+'''
+
+[[rules]]
+id = "ward:javascript/no-substr"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.substr\('
+message = "use slice instead of the deprecated substr"
+'''
+
+[[rules]]
+id = "ward:typescript/no-delete"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete'
+message = "do not use the delete operator; it changes the object's shape"
+'''
+
+[[rules]]
+id = "ward:javascript/no-delete"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete'
+message = "do not use the delete operator; it changes the object's shape"
+'''
+
+[[rules]]
+id = "ward:typescript/no-flat-map-identity"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.flatMap\(\s*(\w+)\s*=>\s*\1\s*\)'
+message = "flatMap with an identity callback; use flat instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-flat-map-identity"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.flatMap\(\s*(\w+)\s*=>\s*\1\s*\)'
+message = "flatMap with an identity callback; use flat instead"
+'''
+
+[[rules]]
+id = "ward:typescript/use-date-now"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^newDate\(\)\.getTime\(\)$'
+message = "use Date.now() instead of new Date().getTime()"
+'''
+
+[[rules]]
+id = "ward:javascript/use-date-now"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^newDate\(\)\.getTime\(\)$'
+message = "use Date.now() instead of new Date().getTime()"
+'''
+
+[[rules]]
+id = "ward:typescript/use-flat-map"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.map\(.*\)\.flat\(\)$'
+message = "use flatMap instead of map followed by flat"
+'''
+
+[[rules]]
+id = "ward:javascript/use-flat-map"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.map\(.*\)\.flat\(\)$'
+message = "use flatMap instead of map followed by flat"
+'''
+
+[[rules]]
+id = "ward:typescript/use-array-find"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.filter\(.*\)\[0\]$'
+message = "use find instead of filter followed by the first element"
+'''
+
+[[rules]]
+id = "ward:javascript/use-array-find"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.filter\(.*\)\[0\]$'
+message = "use find instead of filter followed by the first element"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-string-raw"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^String\.raw`[^\\`$]*`$'
+message = "String.raw is useless without escape sequences"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-string-raw"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^String\.raw`[^\\`$]*`$'
+message = "String.raw is useless without escape sequences"
+'''
+
+[[rules]]
+id = "ward:typescript/no-accumulating-spread"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.reduce\(\(?([\w$]+),[\w$]+\)?=>[\w$]*\(?\{\.\.\.\1'
+message = "do not spread the accumulator in reduce; it copies it on every step"
+'''
+
+[[rules]]
+id = "ward:javascript/no-accumulating-spread"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.reduce\(\(?([\w$]+),[\w$]+\)?=>[\w$]*\(?\{\.\.\.\1'
+message = "do not spread the accumulator in reduce; it copies it on every step"
+'''
+
+[[rules]]
+id = "ward:typescript/use-index-of"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.findIndex\(\(?([\w$]+)\)?=>\1===[\w$.]+\)$'
+message = "use indexOf instead of findIndex with a strict equality check"
+'''
+
+[[rules]]
+id = "ward:javascript/use-index-of"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.findIndex\(\(?([\w$]+)\)?=>\1===[\w$.]+\)$'
+message = "use indexOf instead of findIndex with a strict equality check"
+'''
+
+[[rules]]
+id = "ward:typescript/use-while"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:javascript/use-while"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-catch-binding"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-catch-binding"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:typescript/no-banned-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeReference"]
+text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
+message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
+'''
+
+[[rules]]
+id = "ward:typescript/no-case-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableStatement", "classDeclaration", "functionDeclaration"]
+parent-path = "statement>statementList>caseClause|defaultClause"
+text = '^(let|const|class|function|async)'
+message = "lexical declaration in a case clause; wrap the clause in a block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-case-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableStatement", "classDeclaration", "functionDeclaration"]
+parent-path = "statement>statementList>caseClause|defaultClause"
+text = '^(let|const|class|function|async)'
+message = "lexical declaration in a case clause; wrap the clause in a block"
+'''

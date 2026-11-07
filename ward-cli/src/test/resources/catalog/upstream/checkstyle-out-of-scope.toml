@@ -69,3 +69,9 @@ reason = "suppression: Ward has no inline suppressions"
 rules = [
   "SuppressWarningsHolder",
 ]
+
+[[group]]
+reason = "user-supplied XPath: MatchXpath runs an expression the user writes, and Ward has no XPath evaluator over its syntax tree, so there is no fixed rule to implement"
+rules = [
+  "MatchXpath",
+]

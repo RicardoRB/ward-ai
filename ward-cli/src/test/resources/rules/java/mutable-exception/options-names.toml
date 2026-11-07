@@ -1,0 +1,2 @@
+format = "^.*Failure$"
+extended-class-name-format = "^Exception$"

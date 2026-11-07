@@ -1,0 +1,8 @@
+# Status of the checkstyle-metrics rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+boolean-expression-complexity = { status = "planned", issue = "#294" }
+class-data-abstraction-coupling = { status = "planned", issue = "#294" }
+class-fan-out-complexity = { status = "planned", issue = "#294" }
+cyclomatic-complexity = "implemented"
+java-ncss = { status = "planned", issue = "#294" }
+n-path-complexity = { status = "planned", issue = "#294" }

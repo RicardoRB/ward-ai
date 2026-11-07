@@ -1,0 +1,7 @@
+[[rules]]
+id = "ward:java/z"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+presets = ["loose"]
+body = "check = 1"

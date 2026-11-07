@@ -1,0 +1,5 @@
+allow-public-final-fields = true
+package-allowed = true
+protected-allowed = true
+public-member-pattern = '^ID$'
+ignore-annotation-canonical-names = ["Inject"]
