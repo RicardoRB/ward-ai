@@ -4584,9 +4584,7 @@ ruff = ["S108"]
 
 [[rule]]
 name = "try-except-continue"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["S112"]
 [[rule]]
 name = "request-without-timeout"
@@ -5002,16 +5000,12 @@ ruff = ["SIM101"]
 
 [[rule]]
 name = "collapsible-if"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM102"]
 
 [[rule]]
 name = "suppressible-exception"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM105"]
 
 [[rule]]
