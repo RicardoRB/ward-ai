@@ -33,8 +33,10 @@ public final class EnclosingMethodCheck implements RuleCheck {
    * @param methods names of the methods in which the node is allowed, for {@code outside} mode
    * @param annotation a pattern an annotation of the enclosing method matches, for {@code within}
    *     mode, or {@code null} for the {@code outside} mode
+   * @param child the kind of a direct child the node must have, or {@code null} for no condition
    */
-  public record Criteria(Set<String> kinds, Pattern text, Set<String> methods, Pattern annotation) {
+  public record Criteria(
+      Set<String> kinds, Pattern text, Set<String> methods, Pattern annotation, String child) {
 
     /** Copies the sets. */
     public Criteria {
@@ -58,7 +60,7 @@ public final class EnclosingMethodCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, criteria.kinds())) {
-      if (textMeets(visit.node()) && contextMeets(visit.ancestors())) {
+      if (textMeets(visit.node()) && childMeets(visit.node()) && contextMeets(visit.ancestors())) {
         matches.add(CheckSupport.at(visit.node().span(), message));
       }
     }
@@ -67,6 +69,11 @@ public final class EnclosingMethodCheck implements RuleCheck {
 
   private boolean textMeets(final SyntaxNode node) {
     return criteria.text() == null || criteria.text().matcher(SyntaxWalk.text(node)).find();
+  }
+
+  private boolean childMeets(final SyntaxNode node) {
+    return criteria.child() == null
+        || node.children().stream().anyMatch(child -> criteria.child().equals(child.kind()));
   }
 
   private boolean contextMeets(final List<SyntaxNode> ancestors) {

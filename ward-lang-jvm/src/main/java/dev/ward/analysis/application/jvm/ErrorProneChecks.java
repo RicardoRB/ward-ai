@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.DetachedTestCaseCheck;
 import dev.ward.analysis.domain.rule.check.EnclosingMethodCheck;
 import dev.ward.analysis.domain.rule.check.JumbledIncrementerCheck;
 import dev.ward.analysis.domain.rule.check.MemberNamedAfterClassCheck;
+import dev.ward.analysis.domain.rule.check.NullableOnContainingClassCheck;
 import dev.ward.analysis.domain.rule.check.ReturnEmptyCollectionCheck;
 import dev.ward.analysis.domain.rule.check.SingleMethodSingletonCheck;
 import dev.ward.analysis.domain.rule.check.StaticEjbFieldCheck;
@@ -56,6 +57,9 @@ final class ErrorProneChecks {
         entry("call-arguments", ErrorProneChecks::callArguments),
         entry("enclosing-method", ErrorProneChecks::enclosingMethod),
         entry(
+            "nullable-on-containing-class",
+            toml -> new NullableOnContainingClassCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
             "compact-constructor-accessor",
             toml -> new CompactConstructorAccessorCheck(TomlValues.required(toml, MESSAGE))),
         entry(
@@ -82,7 +86,8 @@ final class ErrorProneChecks {
             TomlValues.optionalStrings(toml, "kinds"),
             text.isEmpty() ? null : Pattern.compile(text),
             TomlValues.optionalStrings(toml, "methods"),
-            annotation.isEmpty() ? null : Pattern.compile(annotation)),
+            annotation.isEmpty() ? null : Pattern.compile(annotation),
+            toml.getString("child", () -> null)),
         TomlValues.required(toml, MESSAGE));
   }
 }
