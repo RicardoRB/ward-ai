@@ -1,0 +1,59 @@
+# Error Prone checks at ERROR severity for Java, part 2: self-comparisons and self-assignments that
+# match the compact text of one node (Ward node text has no whitespace). Each is on by default in
+# Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/self-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:this\.(?<a>\w+)=this\.\k<a>|(?<b>\w+)=\k<b>);?$'
+message = "variable assigned to itself; the assignment has no effect"
+'''
+
+[[rules]]
+id = "ward:java/self-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?<v>\w+)\.equals\(\k<v>\)$'
+message = "value compared with itself by equals(); the result is always true"
+'''
+
+[[rules]]
+id = "ward:java/self-comparison"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?<v>\w+)(==|<|>|<=|>=)\k<v>$'
+message = "value compared with itself; the result does not depend on the value"
+'''
+
+[[rules]]
+id = "ward:java/comparing-this-with-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:this(==|!=)null|null(==|!=)this)$'
+message = "this is never null; remove the comparison"
+'''
