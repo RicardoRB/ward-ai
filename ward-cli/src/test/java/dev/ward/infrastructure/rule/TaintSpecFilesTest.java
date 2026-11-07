@@ -71,10 +71,12 @@ class TaintSpecFilesTest {
   @Test
   void taintBodyCompilesToACheck() {
     assertThat(
-            DeclarativeChecks.build(
-                "check = \"taint\"\nspecs = [\"taint/fake/java-sql.toml\"]\nmessage = \"x\""))
+            DeclarativeChecks.bundled()
+                .build(
+                    "check = \"taint\"\nspecs = [\"taint/fake/java-sql.toml\"]\nmessage = \"x\""))
         .isInstanceOf(TaintCheck.class);
-    assertThatThrownBy(() -> DeclarativeChecks.build("check = \"taint\"\nmessage = \"x\"\n"))
+    assertThatThrownBy(
+            () -> DeclarativeChecks.bundled().build("check = \"taint\"\nmessage = \"x\"\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("specs must name");
   }

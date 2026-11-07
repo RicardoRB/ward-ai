@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 class DesignLimitChecksTest extends DesignFlowTrees {
 
   private static final String TEMPLATE = "{value}/{max}";
+  private static final int DEEPER_THAN_TWO = 3;
 
   @Test
   void reportsNestedIfAtTheProblemDepthOnly() {
@@ -16,7 +17,7 @@ class DesignLimitChecksTest extends DesignFlowTrees {
 
     assertThat(messagesOf(new NestedIfCheck(1, TEMPLATE), root)).containsExactly("1/1");
     assertThat(messagesOf(new NestedIfCheck(2, TEMPLATE), root)).containsExactly("2/2");
-    assertThat(messagesOf(new NestedIfCheck(3, TEMPLATE), root)).isEmpty();
+    assertThat(messagesOf(new NestedIfCheck(DEEPER_THAN_TWO, TEMPLATE), root)).isEmpty();
   }
 
   @Test
