@@ -2,2240 +2,1920 @@
 
 [[rule]]
 name = "abstract-class-instantiated"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["abstract-class-instantiated"]
 
 [[rule]]
 name = "abstract-method"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["abstract-method"]
 
 [[rule]]
 name = "access-member-before-definition"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["access-member-before-definition"]
 
 [[rule]]
 name = "anomalous-backslash-in-string"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["anomalous-backslash-in-string"]
 
 [[rule]]
 name = "anomalous-unicode-escape-in-string"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["anomalous-unicode-escape-in-string"]
 
 [[rule]]
 name = "arguments-differ"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["arguments-differ"]
 
 [[rule]]
 name = "arguments-out-of-order"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["arguments-out-of-order"]
 
 [[rule]]
 name = "arguments-renamed"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["arguments-renamed"]
 
 [[rule]]
 name = "assert-on-tuple"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["assert-on-tuple"]
 
 [[rule]]
 name = "assigning-non-slot"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["assigning-non-slot"]
 
 [[rule]]
 name = "assignment-from-no-return"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["assignment-from-no-return"]
 
 [[rule]]
 name = "assignment-from-none"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["assignment-from-none"]
 
 [[rule]]
 name = "async-context-manager-with-regular-with"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["async-context-manager-with-regular-with"]
 
 [[rule]]
 name = "attribute-defined-outside-init"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["attribute-defined-outside-init"]
 
 [[rule]]
 name = "bad-builtin"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-builtin"]
 
 [[rule]]
 name = "bad-chained-comparison"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-chained-comparison"]
 
 [[rule]]
 name = "bad-classmethod-argument"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["bad-classmethod-argument"]
 
 [[rule]]
 name = "bad-configuration-section"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-configuration-section"]
 
 [[rule]]
 name = "bad-docstring-quotes"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["bad-docstring-quotes"]
 
 [[rule]]
 name = "bad-dunder-name"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-dunder-name"]
 
 [[rule]]
 name = "bad-except-order"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-except-order"]
 
 [[rule]]
 name = "bad-exception-cause"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-exception-cause"]
 
 [[rule]]
 name = "bad-file-encoding"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["bad-file-encoding"]
 
 [[rule]]
 name = "bad-format-character"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-format-character"]
 
 [[rule]]
 name = "bad-format-string"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-format-string"]
 
 [[rule]]
 name = "bad-format-string-key"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-format-string-key"]
 
 [[rule]]
 name = "bad-mcs-classmethod-argument"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["bad-mcs-classmethod-argument"]
 
 [[rule]]
 name = "bad-mcs-method-argument"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["bad-mcs-method-argument"]
 
 [[rule]]
 name = "bad-plugin-value"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-plugin-value"]
 
 [[rule]]
 name = "bad-reversed-sequence"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-reversed-sequence"]
 
 [[rule]]
 name = "bad-super-call"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-super-call"]
 
 [[rule]]
 name = "bad-thread-instantiation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bad-thread-instantiation"]
 
 [[rule]]
 name = "bare-name-capture-pattern"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["bare-name-capture-pattern"]
 
 [[rule]]
 name = "boolean-datetime"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["boolean-datetime"]
 
 [[rule]]
 name = "break-in-finally"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["break-in-finally"]
 
 [[rule]]
 name = "broad-exception-raised"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["broad-exception-raised"]
 
 [[rule]]
 name = "catching-non-exception"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["catching-non-exception"]
 
 [[rule]]
 name = "cell-var-from-loop"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["cell-var-from-loop"]
 
 [[rule]]
 name = "chained-comparison"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["chained-comparison"]
 
 [[rule]]
 name = "chained-comparison-all-equal"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["chained-comparison-all-equal"]
 
 [[rule]]
 name = "class-variable-slots-conflict"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["class-variable-slots-conflict"]
 
 [[rule]]
 name = "comparison-of-constants"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["comparison-of-constants"]
 
 [[rule]]
 name = "comparison-with-callable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["comparison-with-callable"]
 
 [[rule]]
 name = "condition-evals-to-constant"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["condition-evals-to-constant"]
 
 [[rule]]
 name = "confusing-consecutive-elif"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["confusing-consecutive-elif"]
 
 [[rule]]
 name = "confusing-with-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["confusing-with-statement"]
 
 [[rule]]
 name = "consider-iterating-dictionary"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["consider-iterating-dictionary"]
 
 [[rule]]
 name = "consider-math-not-float"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-math-not-float"]
 
 [[rule]]
 name = "consider-merging-isinstance"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-merging-isinstance"]
 
 [[rule]]
 name = "consider-refactoring-into-while-condition"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-refactoring-into-while-condition"]
 
 [[rule]]
 name = "consider-swap-variables"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-swap-variables"]
 
 [[rule]]
 name = "consider-ternary-expression"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-ternary-expression"]
 
 [[rule]]
 name = "consider-using-any-or-all"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["consider-using-any-or-all"]
 
 [[rule]]
 name = "consider-using-assignment-expr"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-assignment-expr"]
 
 [[rule]]
 name = "consider-using-augmented-assign"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-augmented-assign"]
 
 [[rule]]
 name = "consider-using-dict-comprehension"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-dict-comprehension"]
 
 [[rule]]
 name = "consider-using-dict-items"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["consider-using-dict-items"]
 
 [[rule]]
 name = "consider-using-enumerate"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["consider-using-enumerate"]
 
 [[rule]]
 name = "consider-using-f-string"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["consider-using-f-string"]
 
 [[rule]]
 name = "consider-using-from-import"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-from-import"]
 
 [[rule]]
 name = "consider-using-generator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-generator"]
 
 [[rule]]
 name = "consider-using-get"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-get"]
 
 [[rule]]
 name = "consider-using-in"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-in"]
 
 [[rule]]
 name = "consider-using-join"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-join"]
 
 [[rule]]
 name = "consider-using-max-builtin"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-max-builtin"]
 
 [[rule]]
 name = "consider-using-min-builtin"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-min-builtin"]
 
 [[rule]]
 name = "consider-using-namedtuple-or-dataclass"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-namedtuple-or-dataclass"]
 
 [[rule]]
 name = "consider-using-set-comprehension"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-set-comprehension"]
 
 [[rule]]
 name = "consider-using-sys-exit"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-sys-exit"]
 
 [[rule]]
 name = "consider-using-ternary"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-ternary"]
 
 [[rule]]
 name = "consider-using-tuple"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-tuple"]
 
 [[rule]]
 name = "consider-using-with"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["consider-using-with"]
 
 [[rule]]
 name = "contextmanager-generator-missing-cleanup"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["contextmanager-generator-missing-cleanup"]
 
 [[rule]]
 name = "cyclic-import"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["cyclic-import"]
 
 [[rule]]
 name = "dangerous-default-value"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["dangerous-default-value"]
 
 [[rule]]
 name = "declare-non-slot"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["declare-non-slot"]
 
 [[rule]]
 name = "deprecated-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-argument"]
 
 [[rule]]
 name = "deprecated-attribute"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-attribute"]
 
 [[rule]]
 name = "deprecated-class"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-class"]
 
 [[rule]]
 name = "deprecated-decorator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-decorator"]
 
 [[rule]]
 name = "deprecated-method"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-method"]
 
 [[rule]]
 name = "deprecated-module"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["deprecated-module"]
 
 [[rule]]
 name = "dict-init-mutate"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["dict-init-mutate"]
 
 [[rule]]
 name = "differing-param-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["differing-param-doc"]
 
 [[rule]]
 name = "differing-type-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["differing-type-doc"]
 
 [[rule]]
 name = "disallowed-name"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["disallowed-name"]
 
 [[rule]]
 name = "docstring-first-line-empty"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["docstring-first-line-empty"]
 
 [[rule]]
 name = "duplicate-argument-name"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["duplicate-argument-name"]
 
 [[rule]]
 name = "duplicate-except"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["duplicate-except"]
 
 [[rule]]
 name = "duplicate-key"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["duplicate-key"]
 
 [[rule]]
 name = "duplicate-string-formatting-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["duplicate-string-formatting-argument"]
 
 [[rule]]
 name = "else-if-used"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["else-if-used"]
 
 [[rule]]
 name = "eq-without-hash"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["eq-without-hash"]
 
 [[rule]]
 name = "eval-used"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["eval-used"]
 
 [[rule]]
 name = "exec-used"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["exec-used"]
 
 [[rule]]
 name = "expression-not-assigned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["expression-not-assigned"]
 
 [[rule]]
 name = "f-string-without-interpolation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["f-string-without-interpolation"]
 
 [[rule]]
 name = "forgotten-debug-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["forgotten-debug-statement"]
 
 [[rule]]
 name = "format-combined-specification"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["format-combined-specification"]
 
 [[rule]]
 name = "format-needs-mapping"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["format-needs-mapping"]
 
 [[rule]]
 name = "format-string-without-interpolation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["format-string-without-interpolation"]
 
 [[rule]]
 name = "function-redefined"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["function-redefined"]
 
 [[rule]]
 name = "global-variable-undefined"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["global-variable-undefined"]
 
 [[rule]]
 name = "implicit-flag-alias"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["implicit-flag-alias"]
 
 [[rule]]
 name = "implicit-str-concat"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["implicit-str-concat"]
 
 [[rule]]
 name = "import-error"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["import-error"]
 
 [[rule]]
 name = "import-outside-toplevel"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["import-outside-toplevel"]
 
 [[rule]]
 name = "impossible-comparison"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["impossible-comparison"]
 
 [[rule]]
 name = "inconsistent-mro"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["inconsistent-mro"]
 
 [[rule]]
 name = "inconsistent-quotes"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["inconsistent-quotes"]
 
 [[rule]]
 name = "inconsistent-return-statements"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["inconsistent-return-statements"]
 
 [[rule]]
 name = "inherit-non-class"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["inherit-non-class"]
 
 [[rule]]
 name = "init-is-generator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["init-is-generator"]
 
 [[rule]]
 name = "invalid-bool-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-bool-returned"]
 
 [[rule]]
 name = "invalid-bytes-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-bytes-returned"]
 
 [[rule]]
 name = "invalid-character-carriage-return"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-character-carriage-return"]
 
 [[rule]]
 name = "invalid-characters-in-docstring"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["invalid-characters-in-docstring"]
 
 [[rule]]
 name = "invalid-class-object"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-class-object"]
 
 [[rule]]
 name = "invalid-enum-extension"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-enum-extension"]
 
 [[rule]]
 name = "invalid-field-call"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-field-call"]
 
 [[rule]]
 name = "invalid-format-index"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-format-index"]
 
 [[rule]]
 name = "invalid-format-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-format-returned"]
 
 [[rule]]
 name = "invalid-getnewargs-ex-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-getnewargs-ex-returned"]
 
 [[rule]]
 name = "invalid-getnewargs-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-getnewargs-returned"]
 
 [[rule]]
 name = "invalid-hash-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-hash-returned"]
 
 [[rule]]
 name = "invalid-index-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-index-returned"]
 
 [[rule]]
 name = "invalid-length-hint-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-length-hint-returned"]
 
 [[rule]]
 name = "invalid-length-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-length-returned"]
 
 [[rule]]
 name = "invalid-match-args-definition"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-match-args-definition"]
 
 [[rule]]
 name = "invalid-metaclass"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-metaclass"]
 
 [[rule]]
 name = "invalid-name"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["invalid-name"]
 
 [[rule]]
 name = "invalid-overridden-method"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-overridden-method"]
 
 [[rule]]
 name = "invalid-repr-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-repr-returned"]
 
 [[rule]]
 name = "invalid-sequence-index"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-sequence-index"]
 
 [[rule]]
 name = "invalid-slice-index"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-slice-index"]
 
 [[rule]]
 name = "invalid-slice-step"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-slice-step"]
 
 [[rule]]
 name = "invalid-slots"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-slots"]
 
 [[rule]]
 name = "invalid-slots-object"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-slots-object"]
 
 [[rule]]
 name = "invalid-star-assignment-target"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-star-assignment-target"]
 
 [[rule]]
 name = "invalid-str-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-str-returned"]
 
 [[rule]]
 name = "invalid-unary-operand-type"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-unary-operand-type"]
 
 [[rule]]
 name = "invalid-unicode-codec"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["invalid-unicode-codec"]
 
 [[rule]]
 name = "isinstance-second-argument-not-valid-type"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["isinstance-second-argument-not-valid-type"]
 
 [[rule]]
 name = "keyword-arg-before-vararg"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["keyword-arg-before-vararg"]
 
 [[rule]]
 name = "kwarg-superseded-by-positional-arg"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
 name = "literal-comparison"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["literal-comparison"]
 
 [[rule]]
 name = "logging-format-interpolation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["logging-format-interpolation"]
 
 [[rule]]
 name = "logging-format-truncated"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["logging-format-truncated"]
 
 [[rule]]
 name = "logging-fstring-interpolation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["logging-fstring-interpolation"]
 
 [[rule]]
 name = "logging-not-lazy"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["logging-not-lazy"]
 
 [[rule]]
 name = "logging-unsupported-format"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["logging-unsupported-format"]
 
 [[rule]]
 name = "looping-through-iterator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["looping-through-iterator"]
 
 [[rule]]
 name = "lost-exception"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["lost-exception"]
 
 [[rule]]
 name = "match-class-bind-self"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["match-class-bind-self"]
 
 [[rule]]
 name = "match-class-positional-attributes"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["match-class-positional-attributes"]
 
 [[rule]]
 name = "method-cache-max-size-none"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["method-cache-max-size-none"]
 
 [[rule]]
 name = "method-hidden"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["method-hidden"]
 
 [[rule]]
 name = "misplaced-comparison-constant"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["misplaced-comparison-constant"]
 
 [[rule]]
 name = "misplaced-format-function"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["misplaced-format-function"]
 
 [[rule]]
 name = "misplaced-future"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["misplaced-future"]
 
 [[rule]]
 name = "missing-any-param-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-any-param-doc"]
 
 [[rule]]
 name = "missing-class-docstring"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["missing-class-docstring"]
 
 [[rule]]
 name = "missing-format-argument-key"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-format-argument-key"]
 
 [[rule]]
 name = "missing-format-attribute"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-format-attribute"]
 
 [[rule]]
 name = "missing-format-string-key"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-format-string-key"]
 
 [[rule]]
 name = "missing-function-docstring"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["missing-function-docstring"]
 
 [[rule]]
 name = "missing-kwoa"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-kwoa"]
 
 [[rule]]
 name = "missing-module-docstring"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["missing-module-docstring"]
 
 [[rule]]
 name = "missing-param-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-param-doc"]
 
 [[rule]]
 name = "missing-parentheses-for-call-in-test"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-parentheses-for-call-in-test"]
 
 [[rule]]
 name = "missing-raises-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-raises-doc"]
 
 [[rule]]
 name = "missing-return-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-return-doc"]
 
 [[rule]]
 name = "missing-return-type-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-return-type-doc"]
 
 [[rule]]
 name = "missing-timeout"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-timeout"]
 
 [[rule]]
 name = "missing-type-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-type-doc"]
 
 [[rule]]
 name = "missing-yield-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-yield-doc"]
 
 [[rule]]
 name = "missing-yield-type-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["missing-yield-type-doc"]
 
 [[rule]]
 name = "mixed-format-string"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "modified-iterating-dict"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["modified-iterating-dict"]
 
 [[rule]]
 name = "modified-iterating-list"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["modified-iterating-list"]
 
 [[rule]]
 name = "multiple-class-sub-patterns"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["multiple-class-sub-patterns"]
 
 [[rule]]
 name = "multiple-constructor-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["multiple-constructor-doc"]
 
 [[rule]]
 name = "multiple-imports"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["multiple-imports"]
 
 [[rule]]
 name = "no-else-break"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-else-break"]
 
 [[rule]]
 name = "no-else-continue"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-else-continue"]
 
 [[rule]]
 name = "no-else-raise"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-else-raise"]
 
 [[rule]]
 name = "no-member"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-member"]
 
 [[rule]]
 name = "no-method-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-method-argument"]
 
 [[rule]]
 name = "no-name-in-module"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-name-in-module"]
 
 [[rule]]
 name = "no-self-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-self-argument"]
 
 [[rule]]
 name = "no-value-for-parameter"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["no-value-for-parameter"]
 
 [[rule]]
 name = "non-ascii-file-name"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["non-ascii-file-name"]
 
 [[rule]]
 name = "non-ascii-module-import"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["non-ascii-module-import"]
 
 [[rule]]
 name = "non-iterator-returned"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["non-iterator-returned"]
 
 [[rule]]
 name = "non-parent-init-called"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["non-parent-init-called"]
 
 [[rule]]
 name = "non-str-assignment-to-dunder-name"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["non-str-assignment-to-dunder-name"]
 
 [[rule]]
 name = "nonexistent-operator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["nonexistent-operator"]
 
 [[rule]]
 name = "not-a-mapping"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-a-mapping"]
 
 [[rule]]
 name = "not-an-iterable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-an-iterable"]
 
 [[rule]]
 name = "not-async-context-manager"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-async-context-manager"]
 
 [[rule]]
 name = "not-callable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-callable"]
 
 [[rule]]
 name = "not-context-manager"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-context-manager"]
 
 [[rule]]
 name = "not-in-loop"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["not-in-loop"]
 
 [[rule]]
 name = "notimplemented-raised"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["notimplemented-raised"]
 
 [[rule]]
 name = "overlapping-except"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["overlapping-except"]
 
 [[rule]]
 name = "overridden-final-method"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["overridden-final-method"]
 
 [[rule]]
 name = "pointless-exception-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["pointless-exception-statement"]
 
 [[rule]]
 name = "pointless-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["pointless-statement"]
 
 [[rule]]
 name = "pointless-string-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["pointless-string-statement"]
 
 [[rule]]
 name = "positional-only-arguments-expected"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["positional-only-arguments-expected"]
 
 [[rule]]
 name = "possibly-unused-variable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["possibly-unused-variable"]
 
 [[rule]]
 name = "possibly-used-before-assignment"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["possibly-used-before-assignment"]
 
 [[rule]]
 name = "prefer-typing-namedtuple"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["prefer-typing-namedtuple"]
 
 [[rule]]
 name = "preferred-module"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["preferred-module"]
 
 [[rule]]
 name = "protected-access"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["protected-access"]
 
 [[rule]]
 name = "raise-missing-from"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["raise-missing-from"]
 
 [[rule]]
 name = "raising-bad-type"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["raising-bad-type"]
 
 [[rule]]
 name = "raising-format-tuple"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["raising-format-tuple"]
 
 [[rule]]
 name = "raising-non-exception"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["raising-non-exception"]
 
 [[rule]]
 name = "redefined-builtin"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redefined-builtin"]
 
 [[rule]]
 name = "redefined-variable-type"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redefined-variable-type"]
 
 [[rule]]
 name = "redundant-keyword-arg"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redundant-keyword-arg"]
 
 [[rule]]
 name = "redundant-returns-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redundant-returns-doc"]
 
 [[rule]]
 name = "redundant-u-string-prefix"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redundant-u-string-prefix"]
 
 [[rule]]
 name = "redundant-unittest-assert"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redundant-unittest-assert"]
 
 [[rule]]
 name = "redundant-yields-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["redundant-yields-doc"]
 
 [[rule]]
 name = "reimported"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["reimported"]
 
 [[rule]]
 name = "relative-beyond-top-level"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["relative-beyond-top-level"]
 
 [[rule]]
 name = "repeated-keyword"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["repeated-keyword"]
 
 [[rule]]
 name = "return-arg-in-generator"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["return-arg-in-generator"]
 
 [[rule]]
 name = "return-in-finally"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["return-in-finally"]
 
 [[rule]]
 name = "self-cls-assignment"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["self-cls-assignment"]
 
 [[rule]]
 name = "shadowed-import"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["shadowed-import"]
 
 [[rule]]
 name = "signature-differs"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["signature-differs"]
 
 [[rule]]
 name = "simplifiable-condition"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["simplifiable-condition"]
 
 [[rule]]
 name = "simplifiable-if-expression"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["simplifiable-if-expression"]
 
 [[rule]]
 name = "simplifiable-if-statement"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["simplifiable-if-statement"]
 
 [[rule]]
 name = "single-string-used-for-slots"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["single-string-used-for-slots"]
 
 [[rule]]
 name = "singleton-comparison"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["singleton-comparison"]
 
 [[rule]]
 name = "star-needs-assignment-target"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["star-needs-assignment-target"]
 
 [[rule]]
 name = "subclassed-final-class"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["subclassed-final-class"]
 
 [[rule]]
 name = "subprocess-run-check"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["subprocess-run-check"]
 
 [[rule]]
 name = "super-init-not-called"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["super-init-not-called"]
 
 [[rule]]
 name = "super-with-arguments"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["super-with-arguments"]
 
 [[rule]]
 name = "syntax-error"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["syntax-error"]
 
 [[rule]]
 name = "too-complex"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-complex"]
 
 [[rule]]
 name = "too-few-format-args"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-few-format-args"]
 
 [[rule]]
 name = "too-few-public-methods"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-few-public-methods"]
 
 [[rule]]
 name = "too-many-ancestors"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-ancestors"]
 
 [[rule]]
 name = "too-many-format-args"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-format-args"]
 
 [[rule]]
 name = "too-many-function-args"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-function-args"]
 
 [[rule]]
 name = "too-many-instance-attributes"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-instance-attributes"]
 
 [[rule]]
 name = "too-many-positional-sub-patterns"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-positional-sub-patterns"]
 
 [[rule]]
 name = "too-many-star-expressions"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-star-expressions"]
 
 [[rule]]
 name = "too-many-try-statements"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["too-many-try-statements"]
 
 [[rule]]
 name = "trailing-comma-tuple"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["trailing-comma-tuple"]
 
 [[rule]]
 name = "truncated-format-string"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["truncated-format-string"]
 
 [[rule]]
 name = "try-except-raise"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["try-except-raise"]
 
 [[rule]]
 name = "typevar-double-variance"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["typevar-double-variance"]
 
 [[rule]]
 name = "typevar-name-incorrect-variance"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["typevar-name-incorrect-variance"]
 
 [[rule]]
 name = "typevar-name-mismatch"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["typevar-name-mismatch"]
 
 [[rule]]
 name = "unbalanced-dict-unpacking"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unbalanced-dict-unpacking"]
 
 [[rule]]
 name = "unbalanced-tuple-unpacking"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unbalanced-tuple-unpacking"]
 
 [[rule]]
 name = "undefined-all-variable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["undefined-all-variable"]
 
 [[rule]]
 name = "undefined-loop-variable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["undefined-loop-variable"]
 
 [[rule]]
 name = "undefined-variable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["undefined-variable"]
 
 [[rule]]
 name = "unexpected-keyword-arg"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unexpected-keyword-arg"]
 
 [[rule]]
 name = "ungrouped-imports"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["ungrouped-imports"]
 
 [[rule]]
 name = "unhashable-member"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unhashable-member"]
 
 [[rule]]
 name = "unidiomatic-typecheck"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["unidiomatic-typecheck"]
 
 [[rule]]
 name = "unknown-option-value"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unknown-option-value"]
 
 [[rule]]
 name = "unnecessary-ellipsis"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unnecessary-ellipsis"]
 
 [[rule]]
 name = "unnecessary-lambda-assignment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["unnecessary-lambda-assignment"]
 
 [[rule]]
 name = "unnecessary-negation"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["unnecessary-negation"]
 
 [[rule]]
 name = "unnecessary-pass"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unnecessary-pass"]
 
 [[rule]]
 name = "unpacking-non-sequence"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unpacking-non-sequence"]
 
 [[rule]]
 name = "unreachable"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unreachable"]
 
 [[rule]]
 name = "unrecognized-inline-option"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unrecognized-inline-option"]
 
 [[rule]]
 name = "unrecognized-option"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unrecognized-option"]
 
 [[rule]]
 name = "unsubscriptable-object"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unsubscriptable-object"]
 
 [[rule]]
 name = "unsupported-assignment-operation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unsupported-assignment-operation"]
 
 [[rule]]
 name = "unsupported-binary-operation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unsupported-binary-operation"]
 
 [[rule]]
 name = "unsupported-delete-operation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unsupported-delete-operation"]
 
 [[rule]]
 name = "unsupported-membership-test"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unsupported-membership-test"]
 
 [[rule]]
 name = "unused-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unused-argument"]
 
 [[rule]]
 name = "unused-format-string-argument"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unused-format-string-argument"]
 
 [[rule]]
 name = "unused-format-string-key"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unused-format-string-key"]
 
 [[rule]]
 name = "unused-wildcard-import"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["unused-wildcard-import"]
 
 [[rule]]
 name = "use-a-generator"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["use-a-generator"]
 
 [[rule]]
 name = "use-dict-literal"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["use-dict-literal"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-implicit-booleaness-not-comparison"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison-to-string"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-implicit-booleaness-not-comparison-to-string"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison-to-zero"
+presets = ["strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-implicit-booleaness-not-comparison-to-zero"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-len"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-implicit-booleaness-not-len"]
 
 [[rule]]
 name = "use-list-literal"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["use-list-literal"]
 
 [[rule]]
 name = "use-maxsplit-arg"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-maxsplit-arg"]
 
 [[rule]]
 name = "use-sequence-for-iteration"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["use-sequence-for-iteration"]
 
 [[rule]]
 name = "use-set-for-membership"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["use-set-for-membership"]
 
 [[rule]]
 name = "use-yield-from"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["use-yield-from"]
 
 [[rule]]
 name = "used-before-assignment"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["used-before-assignment"]
 
 [[rule]]
 name = "used-prior-global-declaration"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["used-prior-global-declaration"]
 
 [[rule]]
 name = "useless-option-value"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["useless-option-value"]
 
 [[rule]]
 name = "useless-param-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["useless-param-doc"]
 
 [[rule]]
 name = "useless-parent-delegation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["useless-parent-delegation"]
 
 [[rule]]
 name = "useless-type-doc"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["useless-type-doc"]
 
 [[rule]]
 name = "using-assignment-expression-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-assignment-expression-in-unsupported-version"]
 
 [[rule]]
 name = "using-comprehension-unpacking-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-comprehension-unpacking-in-unsupported-version"]
 
 [[rule]]
 name = "using-constant-test"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-constant-test"]
 
 [[rule]]
 name = "using-exception-groups-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-exception-groups-in-unsupported-version"]
 
 [[rule]]
 name = "using-f-string-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-f-string-in-unsupported-version"]
 
 [[rule]]
 name = "using-final-decorator-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-final-decorator-in-unsupported-version"]
 
 [[rule]]
 name = "using-generic-type-syntax-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-generic-type-syntax-in-unsupported-version"]
 
 [[rule]]
 name = "using-positional-only-args-in-unsupported-version"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["using-positional-only-args-in-unsupported-version"]
 
 [[rule]]
 name = "while-used"
+presets = ["strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["while-used"]
 
 [[rule]]
 name = "wrong-exception-operation"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["wrong-exception-operation"]
 
 [[rule]]
 name = "wrong-import-order"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["wrong-import-order"]
 
 [[rule]]
 name = "wrong-import-position"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["wrong-import-position"]
 
 [[rule]]
 name = "wrong-spelling-in-comment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["wrong-spelling-in-comment"]
 
 [[rule]]
 name = "wrong-spelling-in-docstring"
+presets = ["standard", "strict"]
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 pylint = ["wrong-spelling-in-docstring"]
 
 [[rule]]
 name = "yield-inside-async-function"
+presets = ["standard", "strict"]
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#336" }
 pylint = ["yield-inside-async-function"]

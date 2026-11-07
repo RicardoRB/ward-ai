@@ -1,0 +1,14 @@
+# Ruff's flake8-bandit rules (S) that read the body of a handler.
+
+[[rules]]
+id = "ward:python/try-except-continue"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "handler-body"
+body = "continue"
+message = "try-except-continue; handle the error or log it"
+'''

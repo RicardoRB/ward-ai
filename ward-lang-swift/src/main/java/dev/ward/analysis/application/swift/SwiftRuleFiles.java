@@ -20,7 +20,8 @@ public final class SwiftRuleFiles implements RuleFileProvider {
           "rules/swift/modifier-order.toml",
           "rules/swift/naming.toml",
           "rules/swift/part-3.toml",
-          "rules/swift/performance.toml");
+          "rules/swift/performance.toml",
+          "rules/swift/style.toml");
 
   @Override
   public List<String> ruleFiles() {

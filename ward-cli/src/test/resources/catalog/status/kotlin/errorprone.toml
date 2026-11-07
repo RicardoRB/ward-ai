@@ -1,0 +1,5 @@
+# Status of the errorprone rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+default-locale = { status = "planned", issue = "#325" }
+missing-super-call = { status = "planned", issue = "#325" }
+restricted-api = { status = "planned", issue = "#325" }

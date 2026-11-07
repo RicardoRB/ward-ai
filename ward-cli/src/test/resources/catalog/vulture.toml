@@ -3,26 +3,22 @@
 [[rule]]
 name = "unused-class"
 category = "dead-code"
-status = { python = "implemented" }
 vulture = ["V102"]
 
 [[rule]]
 name = "unused-function"
 category = "dead-code"
-status = { python = "implemented" }
 vulture = ["V103"]
 
 [[rule]]
 name = "unused-import"
+presets = ["standard", "strict"]
 category = "dead-code"
-status = { python = "planned" }
-issues = { python = "#337" }
 pylint = ["unused-import"]
 vulture = ["V104"]
 
 [[rule]]
 name = "unused-property"
+presets = ["standard", "strict"]
 category = "dead-code"
-status = { python = "planned" }
-issues = { python = "#337" }
 vulture = ["V106"]

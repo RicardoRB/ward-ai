@@ -1,0 +1,4 @@
+enum Violating {
+  A, B,
+  ;
+}
