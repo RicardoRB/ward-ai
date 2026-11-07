@@ -40,8 +40,10 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/dataflow.toml",
           "rules/java/security.toml",
           "rules/java/bestpractices.toml",
+          "rules/java/design.toml",
           "rules/java/correctness.toml",
           "rules/java/architecture.toml",
+          "rules/java/errorprone.toml",
           "rules/duplication-jvm.toml",
           "rules/duplication-node.toml",
           "rules/duplication-python.toml",
@@ -50,6 +52,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/python-structural.toml",
           "rules/python/pycodestyle.toml",
           "rules/python/bugbear.toml",
+          "rules/python/flake8-comprehensions.toml",
           "rules/python/pyflakes.toml",
           "rules/python/pylint.toml",
           "rules/python/flake8-2020.toml",
@@ -61,7 +64,11 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/swift/lint.toml",
           "rules/swift/idiomatic-2.toml",
           "rules/kotlin/size.toml",
-          "rules/kotlin/naming.toml");
+          "rules/kotlin/naming.toml",
+          "rules/kotlin/exceptions.toml",
+          "rules/kotlin/coroutines.toml",
+          "rules/kotlin/performance.toml",
+          "rules/kotlin/potential-bugs.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";
