@@ -1,0 +1,220 @@
+# Coding rules for Java. They mirror Checkstyle's coding checks EmptyStatement, EqualsHashCode,
+# FallThrough, IllegalCatch, IllegalThrows, MissingSwitchDefault and StringLiteralEquality, with
+# Checkstyle 14.3.0's defaults.
+
+[[rules]]
+id = "ward:java/empty-statement"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^;$'
+message = "empty statement; remove the stray semicolon"
+'''
+
+[[rules]]
+id = "ward:java/equals-hash-code"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-hash-code"
+message = "equals(Object) and hashCode() must be declared together"
+'''
+
+[[rules]]
+id = "ward:java/fall-through"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.check-last-group = { type = "boolean" }
+body = '''
+check = "fall-through"
+check-last-group = false
+message = "case group falls through to the next case; end it with break, return, throw, continue or yield"
+'''
+
+[[rules]]
+id = "ward:java/illegal-catch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.illegal-classes = { type = "string-list" }
+body = '''
+check = "illegal-catch"
+illegal-classes = ["Error", "Exception", "RuntimeException", "Throwable", "java.lang.Error", "java.lang.Exception", "java.lang.RuntimeException", "java.lang.Throwable"]
+message = "catches {value}; catch a more specific exception"
+'''
+
+[[rules]]
+id = "ward:java/illegal-throws"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.illegal-classes = { type = "string-list" }
+options.ignored-method-names = { type = "string-list" }
+options.ignore-overridden-methods = { type = "boolean" }
+body = '''
+check = "illegal-throws"
+illegal-classes = ["Error", "RuntimeException", "Throwable", "java.lang.Error", "java.lang.RuntimeException", "java.lang.Throwable"]
+ignored-method-names = ["finalize"]
+ignore-overridden-methods = true
+message = "declares {value} in its throws clause; declare a more specific exception"
+'''
+
+[[rules]]
+id = "ward:java/missing-switch-default"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-switch-default"
+message = "switch statement has no default label; add one, even when every case is covered"
+'''
+
+[[rules]]
+id = "ward:java/string-literal-equality"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+with-child = ["'=='", "'!='"]
+text = '^"(?:[^"\\]|\\.)*"(?:==|!=)|(?:==|!=)"(?:[^"\\]|\\.)*"$'
+message = "compares a string literal with == or !=; use equals instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-inline-conditionals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+with-child = ["'?'"]
+message = "inline conditional; use an if statement"
+'''
+
+[[rules]]
+id = "ward:java/simplify-boolean-return"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\([^;]*\)\{?returntrue;\}?else\{?returnfalse;\}?$|^if\([^;]*\)\{?returnfalse;\}?else\{?returntrue;\}?$'
+message = "if statement only returns true or false; return the condition itself"
+'''
+
+[[rules]]
+id = "ward:java/covariant-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "covariant-equals"
+message = "equals with a parameter other than Object does not override Object.equals; declare equals(Object) too"
+'''
+
+[[rules]]
+id = "ward:java/equals-avoid-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.ignore-equals-ignore-case = { type = "boolean" }
+body = '''
+check = "equals-avoid-null"
+ignore-equals-ignore-case = false
+message = "equals is called on a variable with a string literal argument; put the literal on the left"
+'''
+
+[[rules]]
+id = "ward:java/return-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+options.max-for-void = { type = "integer", min = 0 }
+body = '''
+check = "return-count"
+max = 2
+max-for-void = 1
+message = "method has {value} return statements; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-if-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'if'"]
+reset = []
+max = 1
+message = "if is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-for-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'for'"]
+reset = []
+max = 1
+message = "for is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-try-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'try'"]
+reset = []
+max = 1
+message = "try is nested {value} deep; the limit is {max}"
+'''
