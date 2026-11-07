@@ -651,13 +651,11 @@ spotbugs = ["EC_NULL_ARG"]
 
 [[rule]]
 name = "ec-unrelated-class-and-interface"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_UNRELATED_CLASS_AND_INTERFACE"]
 
 [[rule]]
 name = "ec-unrelated-interfaces"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_UNRELATED_INTERFACES"]
 
@@ -668,7 +666,6 @@ spotbugs = ["EC_UNRELATED_TYPES"]
 
 [[rule]]
 name = "ec-unrelated-types-using-pointer-equality"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_UNRELATED_TYPES_USING_POINTER_EQUALITY"]
 
@@ -876,7 +873,6 @@ spotbugs = ["GC_UNCHECKED_TYPE_IN_GENERIC_CALL"]
 
 [[rule]]
 name = "gc-unrelated-types"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["GC_UNRELATED_TYPES"]
 
@@ -904,13 +900,11 @@ spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
 
 [[rule]]
 name = "he-signature-declares-hashing-of-unhashable-class"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS"]
 
 [[rule]]
 name = "he-use-of-unhashable-class"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["HE_USE_OF_UNHASHABLE_CLASS"]
 
@@ -1440,7 +1434,6 @@ spotbugs = ["NM_VERY_CONFUSING_INTENTIONAL"]
 
 [[rule]]
 name = "nm-wrong-package"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_WRONG_PACKAGE"]
 
@@ -1719,7 +1712,6 @@ spotbugs = ["OS_OPEN_STREAM_EXCEPTION_PATH"]
 
 [[rule]]
 name = "overriding-methods-must-invoke-super"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["OVERRIDING_METHODS_MUST_INVOKE_SUPER"]
 
@@ -2204,7 +2196,6 @@ spotbugs = ["SING_SINGLETON_IMPLEMENTS_SERIALIZABLE"]
 
 [[rule]]
 name = "sing-singleton-indirectly-implements-cloneable"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_INDIRECTLY_IMPLEMENTS_CLONEABLE"]
 

@@ -19,8 +19,14 @@ final class DeclaredMethods {
    * @param node the method declaration
    * @param isStatic whether the method is static
    * @param parameterTypes the simple names of the parameter types, with {@code []} for arrays
+   * @param parameterNodes the type nodes of the parameters, in order
    */
-  record Method(String name, SyntaxNode node, boolean isStatic, List<String> parameterTypes) {}
+  record Method(
+      String name,
+      SyntaxNode node,
+      boolean isStatic,
+      List<String> parameterTypes,
+      List<SyntaxNode> parameterNodes) {}
 
   private DeclaredMethods() {}
 
@@ -46,7 +52,16 @@ final class DeclaredMethods {
                             child ->
                                 MODIFIER.equals(child.kind())
                                     && "static".equals(SyntaxWalk.text(child))),
-                    parameterTypes(declaration)));
+                    parameterTypes(declaration),
+                    parameterNodes(declaration)));
+  }
+
+  private static List<SyntaxNode> parameterNodes(final SyntaxNode method) {
+    return SyntaxWalk.descendants(method).stream()
+        .filter(node -> PARAMETER.equals(node.kind()))
+        .flatMap(parameter -> parameter.children().stream())
+        .filter(child -> TYPE_TYPE.equals(child.kind()))
+        .toList();
   }
 
   private static List<String> parameterTypes(final SyntaxNode method) {

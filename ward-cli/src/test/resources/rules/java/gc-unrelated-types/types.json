@@ -1,0 +1,66 @@
+{
+  "3:12-3:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    }
+  },
+  "3:27-3:28": {
+    "type": {
+      "name": "java.lang.Integer"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Number"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:12-4:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    }
+  },
+  "4:27-4:28": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

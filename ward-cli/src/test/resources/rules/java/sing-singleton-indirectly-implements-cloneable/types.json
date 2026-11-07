@@ -1,0 +1,29 @@
+{
+  "1:1-6:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Cloneable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "2:1-7:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

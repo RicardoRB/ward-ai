@@ -1,0 +1,50 @@
+{
+  "3:12-3:15": {
+    "type": {
+      "name": "app.A"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": []
+    }
+  },
+  "3:24-3:28": {
+    "type": {
+      "name": "app.B"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": []
+    }
+  },
+  "4:12-4:15": {
+    "type": {
+      "name": "app.A"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.B"
+        }
+      ]
+    }
+  },
+  "4:24-4:28": {
+    "type": {
+      "name": "app.B"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": []
+    }
+  }
+}
