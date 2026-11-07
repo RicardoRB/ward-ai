@@ -149,3 +149,65 @@ body = '''
 check = "openjdk-annotation-location"
 message = "annotations are not placed as the OpenJDK style requires"
 '''
+
+[[rules]]
+id = "ward:java/class-member-implied-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.violate-implied-static-on-nested-enum = { type = "boolean" }
+options.violate-implied-static-on-nested-interface = { type = "boolean" }
+options.violate-implied-static-on-nested-record = { type = "boolean" }
+body = '''
+check = "class-member-implied-modifier"
+violate-implied-static-on-nested-enum = true
+violate-implied-static-on-nested-interface = true
+violate-implied-static-on-nested-record = true
+message = "nested type of a class should say static explicitly"
+'''
+
+[[rules]]
+id = "ward:java/interface-member-implied-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.violate-implied-abstract-method = { type = "boolean" }
+options.violate-implied-final-field = { type = "boolean" }
+options.violate-implied-public-field = { type = "boolean" }
+options.violate-implied-public-method = { type = "boolean" }
+options.violate-implied-public-nested = { type = "boolean" }
+options.violate-implied-static-field = { type = "boolean" }
+options.violate-implied-static-nested = { type = "boolean" }
+body = '''
+check = "interface-member-implied-modifier"
+violate-implied-abstract-method = true
+violate-implied-final-field = true
+violate-implied-public-field = true
+violate-implied-public-method = true
+violate-implied-public-nested = true
+violate-implied-static-field = true
+violate-implied-static-nested = true
+message = "interface member should say its implied modifier explicitly"
+'''
+
+[[rules]]
+id = "ward:java/annotation-use-style"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+options.closing-parens = { type = "enum", values = ["always", "ignore", "never"] }
+options.element-style = { type = "enum", values = ["compact", "compact-no-array", "expanded", "ignore"] }
+options.trailing-array-comma = { type = "enum", values = ["always", "ignore", "never"] }
+body = '''
+check = "annotation-use-style"
+closing-parens = "never"
+element-style = "compact-no-array"
+trailing-array-comma = "never"
+message = "annotation element is not written in the style that is configured"
+'''

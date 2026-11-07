@@ -3,6 +3,9 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.domain.rule.check.AnnotatedDeclarationVisibilityCheck;
 import dev.ward.analysis.domain.rule.check.AnnotationLocationCheck;
 import dev.ward.analysis.domain.rule.check.AnnotationOnSameLineCheck;
+import dev.ward.analysis.domain.rule.check.AnnotationUseStyleCheck;
+import dev.ward.analysis.domain.rule.check.ClassMemberImpliedModifierCheck;
+import dev.ward.analysis.domain.rule.check.InterfaceMemberImpliedModifierCheck;
 import dev.ward.analysis.domain.rule.check.JavadocAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.ModifierOrderCheck;
 import dev.ward.analysis.domain.rule.check.OpenjdkAnnotationLocationCheck;
@@ -46,7 +49,10 @@ final class ModifierChecks {
           "missing-override",
           "missing-deprecated",
           "annotation-on-same-line",
-          "openjdk-annotation-location");
+          "openjdk-annotation-location",
+          "class-member-implied-modifier",
+          "interface-member-implied-modifier",
+          "annotation-use-style");
 
   private ModifierChecks() {}
 
@@ -95,6 +101,36 @@ final class ModifierChecks {
           new JavadocAnnotationCheck(
               TomlValues.required(toml, TAG), TomlValues.required(toml, ANNOTATION),
               flag(toml, METHODS_ONLY, false), message(toml));
+      default -> memberCheck(name, toml);
+    };
+  }
+
+  /** The checks over implied modifiers of nested types and interface members. */
+  private static RuleCheck memberCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "class-member-implied-modifier" ->
+          new ClassMemberImpliedModifierCheck(
+              flag(toml, "violate-implied-static-on-nested-enum", true),
+              flag(toml, "violate-implied-static-on-nested-interface", true),
+              flag(toml, "violate-implied-static-on-nested-record", true),
+              message(toml));
+      case "interface-member-implied-modifier" ->
+          new InterfaceMemberImpliedModifierCheck(
+              new InterfaceMemberImpliedModifierCheck.Flags(
+                  flag(toml, "violate-implied-abstract-method", true),
+                  flag(toml, "violate-implied-final-field", true),
+                  flag(toml, "violate-implied-public-field", true),
+                  flag(toml, "violate-implied-public-method", true),
+                  flag(toml, "violate-implied-public-nested", true),
+                  flag(toml, "violate-implied-static-field", true),
+                  flag(toml, "violate-implied-static-nested", true)),
+              message(toml));
+      case "annotation-use-style" ->
+          new AnnotationUseStyleCheck(
+              TomlValues.required(toml, "closing-parens"),
+              TomlValues.required(toml, "element-style"),
+              TomlValues.required(toml, "trailing-array-comma"),
+              message(toml));
       default -> new RecordAccessorOverrideCheck(message(toml));
     };
   }
