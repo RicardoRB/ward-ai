@@ -345,3 +345,35 @@ check = "dot-format"
 problem = "mixed"
 message = ".format string mixes automatic and manual numbering"
 '''
+
+[[rules]]
+id = "ward:python/break-outside-loop"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["break_stmt"]
+allowed = ["for_stmt", "while_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+message = "break outside loop"
+'''
+
+[[rules]]
+id = "ward:python/continue-outside-loop"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["continue_stmt"]
+allowed = ["for_stmt", "while_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+message = "continue not properly in loop"
+'''
