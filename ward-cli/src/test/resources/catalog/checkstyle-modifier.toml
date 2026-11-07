@@ -31,9 +31,9 @@ checkstyle = ["InterfaceMemberImpliedModifier"]
 name = "modifier-order"
 category = "modifier"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
 not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["ModifierOrder"]
 pmd = ["ModifierOrder"]
 checkstyle = ["ModifierOrder"]

@@ -70,10 +70,10 @@ description: Rules of the catalog file ruff and their counterparts.
 | `jump-statement-in-finally` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B012` |
 | `redundant-tuple-in-exception-handler` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B013` |
 | `duplicate-handler-exception` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B014` |
-| `useless-comparison` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B015` |
+| `useless-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B015` |
 | `raise-literal` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B016` |
 | `assert-raises-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B017` |
-| `useless-expression` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B018` |
+| `useless-expression` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B018` |
 | `cached-instance-method` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B019` |
 | `loop-variable-overrides-iterator` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B020` |
 | `f-string-docstring` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B021` |
@@ -190,7 +190,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `call-date-fromtimestamp` | flake8-datetimez | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `DTZ012` |
 | `datetime-min-max` | flake8-datetimez | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `DTZ901` |
 | `multiple-imports-on-one-line` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E401` |
-| `module-import-not-at-top-of-file` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E402` |
+| `module-import-not-at-top-of-file` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E402` |
 | `redundant-backslash` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E502` |
 | `none-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E711` |
 | `true-false-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E712` |
@@ -213,7 +213,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `shebang-leading-whitespace` | flake8-executable | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EXE004` |
 | `shebang-not-first-line` | flake8-executable | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EXE005` |
 | `import-shadowed-by-loop-var` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F402` |
-| `late-future-import` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F404` |
+| `late-future-import` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F404` |
 | `undefined-local-with-import-star-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F405` |
 | `undefined-local-with-nested-import-star-usage` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F406` |
 | `future-feature-not-defined` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F407` |
@@ -897,8 +897,10 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/get-attr-with-constant` | coding | standard, strict | none | Ruff `B009` |
 | `ward:python/set-attr-with-constant` | coding | standard, strict | none | Ruff `B010` |
 | `ward:python/redundant-tuple-in-exception-handler` | coding | standard, strict | none | Ruff `B013` |
+| `ward:python/useless-comparison` | coding | standard, strict | none | Ruff `B015` |
 | `ward:python/raise-literal` | coding | standard, strict | none | Ruff `B016` |
 | `ward:python/assert-raises-exception` | coding | standard, strict | none | Ruff `B017` |
+| `ward:python/useless-expression` | coding | standard, strict | none | Ruff `B018` |
 | `ward:python/useless-contextlib-suppress` | coding | standard, strict | none | Ruff `B022` |
 | `ward:python/abstract-base-class-without-abstract-method` | coding | standard, strict | none | Ruff `B024` |
 | `ward:python/star-arg-unpacking-after-keyword-arg` | coding | standard, strict | none | Ruff `B026` |
@@ -929,6 +931,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/unnecessary-comprehension-in-call` | coding | strict | none | Ruff `C419` |
 | `ward:python/unnecessary-dict-comprehension-for-iterable` | coding | strict | none | Ruff `C420` |
 | `ward:python/multiple-imports-on-one-line` | imports | standard, strict | none | Ruff `E401` |
+| `ward:python/module-import-not-at-top-of-file` | imports | standard, strict | none | Ruff `E402` |
 | `ward:python/none-comparison` | coding | standard, strict | none | Ruff `E711` |
 | `ward:python/true-false-comparison` | coding | standard, strict | none | Ruff `E712` |
 | `ward:python/type-comparison` | coding | standard, strict | none | Ruff `E721` |
@@ -940,6 +943,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/raw-string-in-exception` | coding | strict | none | Ruff `EM101` |
 | `ward:python/f-string-in-exception` | coding | strict | none | Ruff `EM102` |
 | `ward:python/dot-format-in-exception` | coding | strict | none | Ruff `EM103` |
+| `ward:python/late-future-import` | imports | standard, strict | none | Ruff `F404` |
 | `ward:python/undefined-local-with-import-star-usage` | coding | standard, strict | none | Ruff `F405` |
 | `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
 | `ward:python/percent-format-invalid-format` | coding | standard, strict | none | Ruff `F501` |
