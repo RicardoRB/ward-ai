@@ -65,8 +65,8 @@ checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
 name = "lambda-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["LambdaParameterName"]
 
 [[rule]]
@@ -78,8 +78,8 @@ checkstyle = ["LocalFinalVariableName"]
 
 [[rule]]
 name = "local-variable-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 pmd = ["LocalVariableNamingConventions"]
 checkstyle = ["LocalVariableName"]
 ruff = ["N806"]
@@ -113,9 +113,9 @@ checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]
 name = "package-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
-not-applicable = { swift = "Swift has no package declaration; module names come from the package manifest" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+not-applicable = { swift = "Swift has no package declaration; module names come from the package manifest", python = "Java package declarations; Python packages are directories and module names follow PEP 8" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["PackageNaming"]
 checkstyle = ["PackageName"]
 ktlint = ["package-name"]

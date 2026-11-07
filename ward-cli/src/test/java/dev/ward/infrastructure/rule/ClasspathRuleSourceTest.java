@@ -140,6 +140,9 @@ class ClasspathRuleSourceTest {
         .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
       return RuleCapability.SCOPES;
     }
+    if (rule.id().endsWith("/equals-on-unrelated-types")) {
+      return RuleCapability.TYPES;
+    }
     return rule.id().endsWith("/unused-assignment")
             || isJavaInjection(rule.id())
             || rule.body().contains("check = \"taint\"")
