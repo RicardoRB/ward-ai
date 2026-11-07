@@ -9,7 +9,7 @@ description: Rules of the catalog file checkstyle-annotation and their counterpa
 
 | Rule | Category | java | kotlin | typescript | javascript | python | swift | Counterparts |
 |---|---|---|---|---|---|---|---|---|
-| `annotation-location` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `AnnotationLocation` |
+| `annotation-location` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | implemented | Checkstyle `AnnotationLocation` |
 | `annotation-on-same-line` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `AnnotationOnSameLine` |
 | `annotation-use-style` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `AnnotationUseStyle` |
 | `missing-deprecated` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `MissingDeprecated` |
@@ -18,3 +18,9 @@ description: Rules of the catalog file checkstyle-annotation and their counterpa
 | `openjdk-annotation-location` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | n/a | n/a | n/a | n/a | n/a | Checkstyle `OpenjdkAnnotationLocation` |
 | `package-annotation` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | n/a | n/a | n/a | n/a | n/a | Checkstyle `PackageAnnotation` |
 | `suppress-warnings` | annotation | [#286](https://github.com/RicardoRB/ward-ai/issues/286) | [#294](https://github.com/RicardoRB/ward-ai/issues/294) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#296](https://github.com/RicardoRB/ward-ai/issues/296) | [#297](https://github.com/RicardoRB/ward-ai/issues/297) | [#298](https://github.com/RicardoRB/ward-ai/issues/298) | Checkstyle `SuppressWarnings` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:swift/annotation-location` | annotation | standard, strict | none | Checkstyle `AnnotationLocation` |

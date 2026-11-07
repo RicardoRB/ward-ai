@@ -4,8 +4,9 @@
 name = "array-type-style"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift has one array syntax, [Element], so there is no C-style declarator to flag" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 typescript-eslint = ["array-type"]
 checkstyle = ["ArrayTypeStyle"]
 
@@ -55,8 +56,8 @@ checkstyle = ["LineEnding"]
 name = "multiline-comment-leading-asterisk-presence"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["MultilineCommentLeadingAsteriskPresence"]
 
 [[rule]]
@@ -96,8 +97,8 @@ checkstyle = ["OuterTypeFilename"]
 name = "todo-comment"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 detekt = ["ForbiddenComment"]
 checkstyle = ["TodoComment"]
 eslint = ["no-warning-comments"]
@@ -127,6 +128,7 @@ checkstyle = ["UncommentedMain"]
 name = "upper-ell"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift integer literals have no long suffix" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["UpperEll"]
