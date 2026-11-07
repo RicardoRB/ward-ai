@@ -240,8 +240,8 @@ description: Rules of the catalog file ruff and their counterparts.
 | `is-literal` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F632` |
 | `invalid-print-syntax` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F633` |
 | `if-tuple` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F634` |
-| `break-outside-loop` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F701` |
-| `continue-outside-loop` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F702` |
+| `break-outside-loop` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F701` |
+| `continue-outside-loop` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F702` |
 | `yield-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F704`; Pylint `yield-outside-function` |
 | `return-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F706`; Pylint `return-outside-function` |
 | `default-except-not-last` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F707` |
@@ -405,10 +405,10 @@ description: Rules of the catalog file ruff and their counterparts.
 | `invalid-all-object` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE0604`; Pylint `invalid-all-object` |
 | `invalid-all-format` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE0605`; Pylint `invalid-all-format` |
 | `potential-index-error` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE0643`; Pylint `potential-index-error` |
-| `misplaced-bare-raise` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE0704`; Pylint `misplaced-bare-raise` |
+| `misplaced-bare-raise` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE0704`; Pylint `misplaced-bare-raise` |
 | `repeated-keyword-argument` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1132` |
 | `dict-iter-missing-items` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1141`; Pylint `dict-iter-missing-items` |
-| `await-outside-async` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1142`; Pylint `await-outside-async` |
+| `await-outside-async` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE1142`; Pylint `await-outside-async` |
 | `logging-too-many-args` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE1205`; Pylint `logging-too-many-args` |
 | `logging-too-few-args` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE1206`; Pylint `logging-too-few-args` |
 | `bad-string-format-character` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE1300` |
@@ -417,7 +417,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `invalid-envvar-value` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1507`; Pylint `invalid-envvar-value` |
 | `singledispatch-method` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1519`; Pylint `singledispatch-method` |
 | `singledispatchmethod-function` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1520`; Pylint `singledispatchmethod-function` |
-| `yield-from-in-async-function` | pylint | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `PLE1700` |
+| `yield-from-in-async-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE1700` |
 | `bidirectional-unicode` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE2502`; Pylint `bidirectional-unicode` |
 | `invalid-character-backspace` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE2510`; Pylint `invalid-character-backspace` |
 | `invalid-character-sub` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PLE2512`; Pylint `invalid-character-sub` |
@@ -958,6 +958,8 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/assert-tuple` | coding | standard, strict | none | Ruff `F631` |
 | `ward:python/invalid-print-syntax` | coding | standard, strict | none | Ruff `F633` |
 | `ward:python/if-tuple` | coding | standard, strict | none | Ruff `F634` |
+| `ward:python/break-outside-loop` | coding | standard, strict | none | Ruff `F701` |
+| `ward:python/continue-outside-loop` | coding | standard, strict | none | Ruff `F702` |
 | `ward:python/yield-outside-function` | coding | standard, strict | none | Ruff `F704`; Pylint `yield-outside-function` |
 | `ward:python/return-outside-function` | coding | standard, strict | none | Ruff `F706`; Pylint `return-outside-function` |
 | `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
@@ -965,11 +967,14 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
 | `ward:python/duplicate-bases` | coding | strict | none | Ruff `PLE0241`; Pylint `duplicate-bases` |
 | `ward:python/invalid-all-format` | coding | strict | none | Ruff `PLE0605`; Pylint `invalid-all-format` |
+| `ward:python/misplaced-bare-raise` | coding | strict | none | Ruff `PLE0704`; Pylint `misplaced-bare-raise` |
+| `ward:python/await-outside-async` | coding | strict | none | Ruff `PLE1142`; Pylint `await-outside-async` |
 | `ward:python/logging-too-many-args` | coding | strict | none | Ruff `PLE1205`; Pylint `logging-too-many-args` |
 | `ward:python/logging-too-few-args` | coding | strict | none | Ruff `PLE1206`; Pylint `logging-too-few-args` |
 | `ward:python/bad-string-format-character` | coding | strict | none | Ruff `PLE1300` |
 | `ward:python/bad-string-format-type` | coding | strict | none | Ruff `PLE1307`; Pylint `bad-string-format-type` |
 | `ward:python/bad-str-strip-call` | coding | strict | none | Ruff `PLE1310`; Pylint `bad-str-strip-call` |
+| `ward:python/yield-from-in-async-function` | coding | strict | none | Ruff `PLE1700` |
 | `ward:python/bidirectional-unicode` | coding | strict | none | Ruff `PLE2502`; Pylint `bidirectional-unicode` |
 | `ward:python/invalid-character-backspace` | coding | strict | none | Ruff `PLE2510`; Pylint `invalid-character-backspace` |
 | `ward:python/invalid-character-sub` | coding | strict | none | Ruff `PLE2512`; Pylint `invalid-character-sub` |
