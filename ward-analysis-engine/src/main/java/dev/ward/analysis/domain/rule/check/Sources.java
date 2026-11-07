@@ -44,7 +44,6 @@ public enum Sources {
       case MAIN -> !TEST_PATH.matcher(path).find();
       case TEST -> TEST_PATH.matcher(path).find();
       case APP -> !TEST_PATH.matcher(path).find() && !TOOL_CONFIG.matcher(path).find();
-      default -> throw new IllegalStateException(name());
     };
   }
 }
