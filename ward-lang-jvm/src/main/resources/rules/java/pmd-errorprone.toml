@@ -1,0 +1,877 @@
+# Error-prone checks for Java that mirror PMD 7.29.0 errorprone rules, as generic syntax
+# checks over the syntax tree. Each is a text approximation of PMD's XPath; the catalog row
+# and the message name what differs.
+
+[[rules]]
+id = "ward:java/assert-equals-argument-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^assertEquals\((?!"|-?\d|true|false|null)[^,]*,(?:"[^"]*"|-?\d[\w.]*|true|false|null)\)$'
+message = "assertEquals passes a constant as the actual value; put the expected value first"
+'''
+
+[[rules]]
+id = "ward:java/assignment-in-operand"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:if|while)\([^{};]*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
+message = "assignment or increment inside an if or while condition; move it out of the operand"
+'''
+
+[[rules]]
+id = "ward:java/avoid-accessibility-alteration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^setAccessible\((?!false\))'
+message = "setAccessible alters access to private members; avoid it or justify the use"
+'''
+
+[[rules]]
+id = "ward:java/avoid-branching-statement-as-last-in-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:for|while)\(.*\)\{.*(?:break|continue|return[^;]*);\}$'
+message = "loop ends with a branching statement, so it never repeats; check that this is not a bug"
+'''
+
+[[rules]]
+id = "ward:java/avoid-calling-finalize"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^finalize\(\)$'
+message = "finalize is called by the garbage collector and must not be invoked by application code"
+'''
+
+[[rules]]
+id = "ward:java/avoid-decimal-literals-in-big-decimal-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.math\.)?BigDecimal\((?:-?(?:\d*\.\d+|\d+\.\d*)|-?\d+[dDfF])(?:,[^()]*)?\)$'
+message = "BigDecimal built from a double literal is inexact; pass a String instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-using-octal-values"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^0[0-9_]+[lL]?$'
+message = "integer literal {value} is octal; write it in decimal"
+'''
+
+[[rules]]
+id = "ward:java/broken-null-check"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(\w+)==null&&\1\.|(\w+)!=null\|\|\2\.)'
+message = "null check is broken: the dereference runs when the value is null, or never when it is not"
+'''
+
+[[rules]]
+id = "ward:java/class-cast-exception-with-to-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\([\w.]+(?:\[\])+\)[\w.]+\.toArray\(\)$'
+message = "cast of toArray() without an argument throws ClassCastException; pass an array of the target type"
+'''
+
+[[rules]]
+id = "ward:java/clone-method-must-be-public"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+not-modifiers = ["public"]
+text = '^[^({]*clone\(\)'
+message = "clone method must be public; Cloneable classes override Object.clone with a public method"
+'''
+
+[[rules]]
+id = "ward:java/clone-method-must-implement-cloneable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^(?!.*Cloneable)(?=.*\wclone\(\))'
+message = "class declares clone but does not implement Cloneable"
+'''
+
+[[rules]]
+id = "ward:java/clone-method-return-type-must-match-class-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?:java\.lang\.)?Objectclone\(\)'
+message = "clone returns Object; return the class type so callers need no cast"
+'''
+
+[[rules]]
+id = "ward:java/comparison-with-na-n"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.()]+\s*(?:==|!=)\s*(?:java\.lang\.)?(?:Double|Float)\.NaN|(?:java\.lang\.)?(?:Double|Float)\.NaN\s*(?:==|!=)\s*[\w.()]+)$'
+message = "comparison with NaN is always unequal; use Double.isNaN or Float.isNaN"
+'''
+
+[[rules]]
+id = "ward:java/do-not-call-garbage-collection-explicitly"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:java\.lang\.)?System|Runtime\.getRuntime\(\))\.(?:gc|runFinalization)\(\)$'
+message = "explicit garbage collection is not advised; let the JVM collect"
+'''
+
+[[rules]]
+id = "ward:java/do-not-extend-java-lang-throwable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType"]
+parent = ["classDeclaration"]
+text = '^(java\.lang\.)?Throwable$'
+message = "class extends Throwable; extend Exception or RuntimeException instead"
+'''
+
+[[rules]]
+id = "ward:java/do-not-hard-code-sd-card"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^"/sdcard'
+message = "hard-coded /sdcard path; use Environment.getExternalStorageDirectory"
+'''
+
+[[rules]]
+id = "ward:java/do-not-throw-exception-in-finally"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+inside = ["finallyBlock"]
+text = '^throw'
+message = "throw inside a finally block can mask other exceptions"
+'''
+
+[[rules]]
+id = "ward:java/dont-use-float-type-for-loop-indices"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["forControl"]
+text = '^(?:final)?float'
+message = "loop index is a float; use double or int"
+'''
+
+[[rules]]
+id = "ward:java/empty-finalizer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(?:throws[\w.,]+)?\{\}$'
+message = "empty finalize method serves no purpose; remove it"
+'''
+
+[[rules]]
+id = "ward:java/equals-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.equals\(null\)$'
+message = "equals(null) is always false; compare with == null"
+'''
+
+[[rules]]
+id = "ward:java/finalize-does-not-call-super-finalize"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(?:throws[\w.,]+)?\{(?!\})(?!(?s).*super\.finalize\(\);\}$)'
+message = "finalize does not end by calling super.finalize"
+'''
+
+[[rules]]
+id = "ward:java/finalize-only-calls-super-finalize"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(?:throws[\w.,]+)?\{super\.finalize\(\);\}$'
+message = "finalize only calls super.finalize; remove it"
+'''
+
+[[rules]]
+id = "ward:java/finalize-overloaded"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[^({]*finalize\((?!\))'
+message = "finalize with parameters is an overload, not the finalizer; rename it"
+'''
+
+[[rules]]
+id = "ward:java/finalize-should-be-protected"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+not-modifiers = ["protected"]
+text = '^voidfinalize\(\)'
+message = "finalize should be protected, not public or package-private"
+'''
+
+[[rules]]
+id = "ward:java/idempotent-operations"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^([\w.]+)(?:=|&=|\|=|&|\|)\1$'
+message = "idempotent operation has no effect; remove it"
+'''
+
+[[rules]]
+id = "ward:java/identical-conditional-branches"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\((?:[^()]|\([^()]*\))*\)\{(.*)\}else\{\1\}$'
+message = "if and else branches are identical; one of them is wrong or the statement is redundant"
+'''
+
+[[rules]]
+id = "ward:java/instantiation-to-get-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new[\w.<>]+\([^()]*\)\.getClass\(\)$'
+message = "instance created only to call getClass; use the class literal"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-jupiter-test-no-private-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^@(?:org\.junit\.jupiter\.api\.)?(?:ParameterizedTest|RepeatedTest|TestFactory|Test)(?:\([^()]*\))?(?:@[\w.]+(?:\([^()]*\))?)*private'
+message = "JUnit Jupiter test method is private and will not be run"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-spelling"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?![^({]*(?:setUp|tearDown)\(\))(?i)[^({]*(?:setup|teardown)\(\)'
+message = "misspelled JUnit 3 fixture method; it is not called as setUp or tearDown"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-static-suite"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?:(?![^({]*public)|(?![^({]*static))[^({]*suite\(\)'
+message = "JUnit suite method must be public and static"
+'''
+
+[[rules]]
+id = "ward:java/long-literal-ending-with-lowercase-l"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^(0[xX][0-9a-fA-F_]+|[0-9][0-9_]*)l$'
+message = "long literal {value} uses a lower-case l suffix that reads like the digit 1; use L"
+'''
+
+[[rules]]
+id = "ward:java/misplaced-null-check"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.\w+\([^()]*\)(?:&&\1!=null|\|\|\1==null)'
+message = "null check comes after the dereference; check for null first"
+'''
+
+[[rules]]
+id = "ward:java/missing-serial-version-uid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^(?!.*serialVersionUID)class\w+[^{]*Serializable'
+message = "Serializable class has no serialVersionUID field"
+'''
+
+[[rules]]
+id = "ward:java/missing-static-method-in-non-instantiatable-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^class(\w+)[^{]*\{(?=.*private\1\()(?!.*static)(?!.*(?<!private)\1\()'
+message = "class has only private constructors and no static member, so it can never be used"
+'''
+
+[[rules]]
+id = "ward:java/more-than-one-logger"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^class\w+[^{]*\{.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\(.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\('
+message = "class declares more than one logger"
+'''
+
+[[rules]]
+id = "ward:java/non-case-label-in-switch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["switchBlockStatementGroup"]
+text = '[;{}:](?!case|default)\w+:'
+message = "non-case label inside a switch is confusing; move the loop or branch out of the switch"
+'''
+
+[[rules]]
+id = "ward:java/non-static-initializer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^\{'
+message = "instance initializer runs before every constructor; move the code into the constructor"
+'''
+
+[[rules]]
+id = "ward:java/null-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.\[\]]+=null$'
+message = "assigning null outside a declaration; reconsider the design"
+'''
+
+[[rules]]
+id = "ward:java/override-both-equals-and-hashcode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^(?:(?=.*booleanequals\(Object)(?!.*inthashCode\(\))|(?=.*inthashCode\(\))(?!.*booleanequals\(Object))'
+message = "class overrides only one of equals and hashCode"
+'''
+
+[[rules]]
+id = "ward:java/proper-clone-implementation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[^({]*clone\(\)(?!(?s).*super\.clone\(\))'
+message = "clone should be implemented with super.clone()"
+'''
+
+[[rules]]
+id = "ward:java/replace-java-util-calendar"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:java\.util\.)?Calendar\.getInstance\(\)|new(?:java\.util\.)?GregorianCalendar\([^()]*\))$'
+message = "java.util.Calendar is mutable and error-prone; use java.time"
+'''
+
+[[rules]]
+id = "ward:java/replace-java-util-date"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType", "expression"]
+text = '^(?:(?:java\.util\.)?Date|new(?:java\.util\.)?Date\([^()]*\))$'
+message = "java.util.Date is mutable and error-prone; use java.time"
+'''
+
+[[rules]]
+id = "ward:java/return-from-finally-block"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+inside = ["finallyBlock"]
+text = '^return'
+message = "return inside a finally block can discard exceptions"
+'''
+
+[[rules]]
+id = "ward:java/simple-date-format-needs-locale"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.text\.)?SimpleDateFormat\((?:[^,()]|\([^()]*\))*\)$'
+message = "SimpleDateFormat without a Locale formats with the default locale"
+'''
+
+[[rules]]
+id = "ward:java/singleton-class-returning-new-instance"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[^({]*getInstance\(\)\{returnnew'
+message = "getInstance returns a new instance on every call; cache one instance"
+'''
+
+[[rules]]
+id = "ward:java/string-buffer-instantiation-with-char"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?StringBuffer\(\x27[^\x27]\x27\)$'
+message = "StringBuffer created from a char uses it as the capacity; pass a String"
+'''
+
+[[rules]]
+id = "ward:java/suspicious-equals-method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[^({]*equals\((?!(?:final)?(?:java\.lang\.)?Object\w*\))'
+message = "equals with a parameter other than Object overloads Object.equals instead of overriding it"
+'''
+
+[[rules]]
+id = "ward:java/suspicious-hashcode-method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?:(?!int)[^({])*(?i:hashcode)\(\)'
+message = "method named hashCode does not return int, so it does not override Object.hashCode"
+'''
+
+[[rules]]
+id = "ward:java/suspicious-octal-escape"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '\\[4-7][0-7][0-9]'
+message = "octal escape followed by a digit is read as a shorter escape plus that digit"
+'''
+
+[[rules]]
+id = "ward:java/test-class-without-test-cases"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class\w*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
+message = "class named as a test has no test methods"
+'''
+
+[[rules]]
+id = "ward:java/unconditional-if-statement"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\((?:true|false)\)'
+message = "if condition is always true or always false"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-boolean-assertion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^assert(?:True|False)\((?:true|false)(?:,.*)?\)$'
+message = "assertion with a boolean literal always evaluates the same way"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-case-change"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.(?:toLowerCase|toUpperCase)\(\)\.equals\([^()]*\)$'
+message = "case conversion before equals; use equalsIgnoreCase"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-conversion-temporary"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:java\.lang\.)?(?:Integer|Long|Short|Byte|Double|Float|Boolean|Character)\.valueOf\([^()]*\)|new(?:java\.lang\.)?(?:Integer|Long|Short|Byte|Double|Float|Boolean|Character)\([^()]*\))\.toString\(\)$'
+message = "temporary wrapper object only to convert a primitive to a String; use the static toString method"
+'''
+
+[[rules]]
+id = "ward:java/unused-null-check-in-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)!=null&&[\w.]+\.equals\(\1\)$'
+message = "null-checked value is passed to another object equals; call equals on the checked value"
+'''
+
+[[rules]]
+id = "ward:java/use-equals-to-compare-strings"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()]+(?:==|!=)"[^"]*"$|^"[^"]*"(?:==|!=)[\w.()]+$'
+message = "strings compared with == or !=; use equals"
+'''
+
+[[rules]]
+id = "ward:java/use-locale-with-case-conversions"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(?:toLowerCase|toUpperCase)\(\)$'
+message = "case conversion without a Locale depends on the default locale"
+'''
+
+[[rules]]
+id = "ward:java/use-proper-class-loader"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^getClassLoader\(\)$'
+message = "getClassLoader may not work in J2EE; use Thread.currentThread().getContextClassLoader()"
+'''
+
+[[rules]]
+id = "ward:java/avoid-literals-in-if-condition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\([^{};]*?(?:(?<![\w.-])(?!0(?![\w.]))\d[\w.]*|(?<![\w.])-(?!1(?![\w.]))\d[\w.]*)'
+message = "literal in an if condition; name it as a constant"
+'''
+
+[[rules]]
+id = "ward:java/avoid-instanceof-checks-in-catch-clause"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+inside = ["catchClause"]
+text = '^\w+instanceof\w+$'
+message = "instanceof check in a catch clause; catch each exception type in its own clause"
+'''
+
+[[rules]]
+id = "ward:java/avoid-multiple-unary-operators"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?!--|\+\+)(?:[!~][!~+-]|[+-][!~+-])'
+message = "multiple unary operators are confusing; simplify the expression"
+'''
+
+[[rules]]
+id = "ward:java/do-not-terminate-vm"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:java\.lang\.)?System|Runtime\.getRuntime\(\))\.(?:exit|halt)\([^()]*\)$'
+message = "System.exit terminates the JVM; only the application entry point should do it"
+'''

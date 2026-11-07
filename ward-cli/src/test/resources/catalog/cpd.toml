@@ -2,9 +2,7 @@
 
 [[rule]]
 name = "duplicate-code"
-category = "duplicate-code"
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#340", kotlin = "#340", typescript = "#340", javascript = "#340", python = "#340", swift = "#340" }
+status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 jscpd = ["duplicate-code"]
 cpd = ["duplicate-tokens"]
 pylint = ["duplicate-code"]

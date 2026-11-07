@@ -37,6 +37,7 @@ references
   7:9 z write -> function constant z @7:9
   7:12 Array read -> unresolved
   7:18 R read -> function type R @6:12
+  7:23 p read -> function parameter p @6:15
   7:28 any read -> unresolved
   8:10 z read -> function constant z @7:9
   10:23 I read -> module type I @4:11
