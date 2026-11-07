@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test;
 /** The percent and str.format parsers and the argument reader, on the shapes the rules judge. */
 final class FormatStringParsersTest {
 
+  private static final int THREE = 3;
+
   @Test
   void percentFormatCountsPositionalAndStarConversions() {
     final PercentFormatString parsed = PercentFormatString.parse("%s %*d");
 
-    assertThat(parsed.positional()).isEqualTo(3);
+    assertThat(parsed.positional()).isEqualTo(THREE);
     assertThat(parsed.star()).isTrue();
     assertThat(parsed.numeric()).isTrue();
     assertThat(parsed.named()).isEmpty();
