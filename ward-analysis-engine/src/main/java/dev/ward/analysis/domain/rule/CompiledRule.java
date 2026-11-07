@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
@@ -95,10 +94,8 @@ public interface CompiledRule {
   default List<RuleMatch> matches(
       final SyntaxNode root,
       final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final UnitTypeFacts types,
+      final UnitViews views,
       final SourceUnit unit) {
-    return matches(root, dependencies, flow, scopes, unit);
+    return matches(root, dependencies, views.flow(), views.scopes(), unit);
   }
 }

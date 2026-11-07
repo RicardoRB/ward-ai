@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.rule.check.CheckedRule;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.types.FactKind;
@@ -80,7 +81,7 @@ class TypeRuleChecksTest {
                       null)));
         };
 
-    final var result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
+    final RuleRunResult result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
 
     assertThat(result.findings())
         .singleElement()
@@ -92,7 +93,7 @@ class TypeRuleChecksTest {
   void unknownFactsProduceNoFindings() {
     final TypeFacts resolver = (unit, spans, kinds) -> UnitTypeFacts.none();
 
-    final var result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
+    final RuleRunResult result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
 
     assertThat(result.findings()).isEmpty();
     assertThat(result.notRun()).isEmpty();
@@ -100,13 +101,13 @@ class TypeRuleChecksTest {
 
   @Test
   void withoutAResolverTheRuleIsNotRun() {
-    final var result = run(new TypeFactsRun(Map.of()));
+    final RuleRunResult result = run(new TypeFactsRun(Map.of()));
 
     assertThat(result.notRun()).hasSize(1);
     assertThat(result.findings()).isEmpty();
   }
 
-  private static dev.ward.analysis.domain.rule.RuleRunResult run(final TypeFactsRun types) {
+  private static RuleRunResult run(final TypeFactsRun types) {
     final SyntaxNode root =
         new SyntaxNode(
             "file",

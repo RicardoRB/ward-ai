@@ -9,7 +9,7 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
-import dev.ward.analysis.domain.types.UnitTypeFacts;
+import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,10 +73,8 @@ public final class CheckedRule implements CompiledRule {
   public List<RuleMatch> matches(
       final SyntaxNode root,
       final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final UnitTypeFacts types,
+      final UnitViews views,
       final SourceUnit unit) {
-    return check.matches(root, flow, scopes, types, unit);
+    return check.matches(root, views.flow(), views.scopes(), views.types(), unit);
   }
 }
