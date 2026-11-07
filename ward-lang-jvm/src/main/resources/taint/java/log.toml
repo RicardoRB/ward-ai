@@ -1,0 +1,146 @@
+# Log sinks: the message that a logger writes, where a line break forges a new entry.
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "log"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "log"
+receiver = "java.util.logging.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "log"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "log"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1]
+
