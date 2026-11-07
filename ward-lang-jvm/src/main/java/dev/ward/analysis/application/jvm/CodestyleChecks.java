@@ -5,8 +5,8 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ConstructorSuperCheck;
-import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.IdenticalCatchBranchesCheck;
+import dev.ward.analysis.domain.rule.check.JavaEmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.LocalDeclarationOrderCheck;
 import dev.ward.analysis.domain.rule.check.PrematureDeclarationCheck;
 import dev.ward.analysis.domain.rule.check.RedundantInterfaceCheck;
@@ -35,7 +35,7 @@ final class CodestyleChecks {
             toml -> new ConstructorSuperCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "empty-method-in-abstract-class",
-            toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaEmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "identical-catch-branches",
             toml -> new IdenticalCatchBranchesCheck(TomlValues.required(toml, MESSAGE))),

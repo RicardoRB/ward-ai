@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Reports a method of an abstract class whose body is empty or only returns {@code null}, zero or
  * the empty string, as PMD's EmptyMethodInAbstractClassShouldBeAbstract does.
  */
-public final class EmptyAbstractMethodCheck implements RuleCheck {
+public final class JavaEmptyAbstractMethodCheck implements RuleCheck {
 
   private static final String ABSTRACT = "abstract";
   private static final Pattern TRIVIAL = Pattern.compile("^\\{;*(?:return(?:null|0|\"\");)?;*}$");
@@ -24,7 +24,7 @@ public final class EmptyAbstractMethodCheck implements RuleCheck {
    *
    * @param message the message of each finding
    */
-  public EmptyAbstractMethodCheck(final String message) {
+  public JavaEmptyAbstractMethodCheck(final String message) {
     this.message = Objects.requireNonNull(message, "message");
   }
 
