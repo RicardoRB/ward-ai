@@ -1,0 +1,1 @@
+const s = text.trimStart();

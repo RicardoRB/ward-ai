@@ -1,0 +1,633 @@
+# Biome rules for TypeScript and JavaScript that have no ESLint counterpart, as node text checks.
+
+[[rules]]
+id = "ward:typescript/no-adjacent-spaces-in-regex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '^/[^/]*  '
+message = "use a quantifier such as {2} instead of repeated spaces in a regular expression"
+'''
+
+[[rules]]
+id = "ward:javascript/no-adjacent-spaces-in-regex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '^/[^/]*  '
+message = "use a quantifier such as {2} instead of repeated spaces in a regular expression"
+'''
+
+[[rules]]
+id = "ward:javascript/no-confusing-labels"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["labelledStatement"]
+text = '^[\w$]+:(?!for\(|while\(|do|switch)'
+message = "a label should only mark a loop"
+'''
+
+[[rules]]
+id = "ward:typescript/no-const-enum"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enumDeclaration"]
+text = '^(declare)?constenum'
+message = "avoid const enum; use a regular enum or a union of literals"
+'''
+
+[[rules]]
+id = "ward:typescript/no-assign-in-expressions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-assign-in-expressions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-continue"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^(for|while)\(.*continue;?\}$'
+message = "the final continue of a loop body has no effect; remove it"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-continue"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^(for|while)\(.*continue;?\}$'
+message = "the final continue of a loop body has no effect; remove it"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-switch-case"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["switchStatement"]
+text = 'case[^:;{}]+:default:'
+message = "a case that falls straight into default is useless; remove it"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-switch-case"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["switchStatement"]
+text = 'case[^:;{}]+:default:'
+message = "a case that falls straight into default is useless; remove it"
+'''
+
+[[rules]]
+id = "ward:typescript/no-this-in-static"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classElement"]
+text = '^static(async)?[\w$]+\(.*this[.\[]'
+message = "use the class name instead of this in a static method"
+'''
+
+[[rules]]
+id = "ward:javascript/no-this-in-static"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classElement"]
+text = '^static(async)?[\w$]+\(.*this[.\[]'
+message = "use the class name instead of this in a static method"
+'''
+
+[[rules]]
+id = "ward:typescript/no-misrefactored-shorthand-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:javascript/no-misrefactored-shorthand-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:typescript/no-string-case-mismatch"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-string-case-mismatch"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:typescript/no-render-return-value"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:javascript/no-render-return-value"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-for-each"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.forEach\('
+message = "use a for...of loop instead of forEach"
+'''
+
+[[rules]]
+id = "ward:javascript/no-for-each"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.forEach\('
+message = "use a for...of loop instead of forEach"
+'''
+
+[[rules]]
+id = "ward:typescript/no-for-in"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+with-child = ["'in'"]
+text = '^for'
+message = "use for...of over Object.keys instead of for...in"
+'''
+
+[[rules]]
+id = "ward:javascript/no-for-in"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+with-child = ["'in'"]
+text = '^for'
+message = "use for...of over Object.keys instead of for...in"
+'''
+
+[[rules]]
+id = "ward:typescript/no-default-export"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["sourceElement"]
+text = '^exportdefault'
+message = "use a named export instead of a default export"
+'''
+
+[[rules]]
+id = "ward:javascript/no-default-export"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["exportStatement"]
+text = '^exportdefault'
+message = "use a named export instead of a default export"
+'''
+
+[[rules]]
+id = "ward:typescript/no-namespace-import"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = '^import\*as'
+message = "import only the names you use instead of the whole namespace"
+'''
+
+[[rules]]
+id = "ward:javascript/no-namespace-import"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = '^import\*as'
+message = "import only the names you use instead of the whole namespace"
+'''
+
+[[rules]]
+id = "ward:typescript/no-re-export-all"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["exportStatement"]
+text = '^export\*from'
+message = "re-export the names explicitly instead of export *"
+'''
+
+[[rules]]
+id = "ward:javascript/no-re-export-all"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["exportStatement"]
+text = '^export\*from'
+message = "re-export the names explicitly instead of export *"
+'''
+
+[[rules]]
+id = "ward:typescript/use-trim-start-end"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.trim(Left|Right)\(\)$'
+message = "use trimStart or trimEnd instead of trimLeft or trimRight"
+'''
+
+[[rules]]
+id = "ward:javascript/use-trim-start-end"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.trim(Left|Right)\(\)$'
+message = "use trimStart or trimEnd instead of trimLeft or trimRight"
+'''
+
+[[rules]]
+id = "ward:typescript/use-throw-new-error"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["throwStatement"]
+text = '^throw(Error|TypeError|RangeError|SyntaxError|ReferenceError|EvalError|URIError)\('
+message = "throw an error created with new"
+'''
+
+[[rules]]
+id = "ward:javascript/use-throw-new-error"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["throwStatement"]
+text = '^throw(Error|TypeError|RangeError|SyntaxError|ReferenceError|EvalError|URIError)\('
+message = "throw an error created with new"
+'''
+
+[[rules]]
+id = "ward:typescript/use-nodejs-import-protocol"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = 'from[\"\x27](assert|buffer|child_process|cluster|crypto|dns|events|fs|http|https|net|os|path|readline|stream|url|util|zlib|worker_threads)(/[\w/]+)?[\"\x27]'
+message = "import Node.js built-in modules with the node: protocol"
+'''
+
+[[rules]]
+id = "ward:javascript/use-nodejs-import-protocol"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = 'from[\"\x27](assert|buffer|child_process|cluster|crypto|dns|events|fs|http|https|net|os|path|readline|stream|url|util|zlib|worker_threads)(/[\w/]+)?[\"\x27]'
+message = "import Node.js built-in modules with the node: protocol"
+'''
+
+[[rules]]
+id = "ward:typescript/use-json-import-attributes"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = 'from[\"\x27][^\"\x27]+\.json[\"\x27];?$'
+message = "import JSON modules with the type json import attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-json-import-attributes"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importStatement"]
+text = 'from[\"\x27][^\"\x27]+\.json[\"\x27];?$'
+message = "import JSON modules with the type json import attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-global-this"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window|self|global)$'
+message = "use globalThis instead of the environment specific global"
+'''
+
+[[rules]]
+id = "ward:javascript/use-global-this"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window|self|global)$'
+message = "use globalThis instead of the environment specific global"
+'''
+
+[[rules]]
+id = "ward:typescript/use-shorthand-function-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["interfaceDeclaration"]
+text = '^(export)?interface[\w$]+(<[^{]*>)?\{\([^)]*\):[^;,}]+;?\}$'
+message = "use a function type instead of an interface with one call signature"
+'''
+
+[[rules]]
+id = "ward:typescript/no-xor-as-exponentiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''
+
+[[rules]]
+id = "ward:javascript/no-xor-as-exponentiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-template-literal"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^`[^`$\\]*`$'
+message = "use a plain string; the template literal has no placeholders"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-template-literal"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^`[^`$\\]*`$'
+message = "use a plain string; the template literal has no placeholders"
+'''
