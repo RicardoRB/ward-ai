@@ -3,7 +3,7 @@
 array-trailing-comma = { status = "planned", issue = "#298" }
 avoid-inline-conditionals = { status = "planned", issue = "#298" }
 avoid-no-argument-super-constructor-call = "not-applicable"
-constructors-declaration-grouping = { status = "planned", issue = "#298" }
+constructors-declaration-grouping = "implemented"
 covariant-equals = "not-applicable"
 declaration-order = { status = "planned", issue = "#298" }
 default-comes-last = { status = "planned", issue = "#298" }
@@ -14,7 +14,7 @@ explicit-initialization = { status = "planned", issue = "#298" }
 expression-over-block-lambda = { status = "planned", issue = "#298" }
 fall-through = "not-applicable"
 final-local-variable = { status = "planned", issue = "#298" }
-hidden-field = { status = "planned", issue = "#298" }
+hidden-field = "implemented"
 illegal-catch = "not-applicable"
 illegal-instantiation = "not-applicable"
 illegal-symbol = { status = "planned", issue = "#298" }
@@ -64,5 +64,5 @@ unused-local-variable = { status = "planned", issue = "#298" }
 unused-private-field = { status = "planned", issue = "#298" }
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
-variable-declaration-usage-distance = { status = "planned", issue = "#298" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = "not-applicable"
