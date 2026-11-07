@@ -31,7 +31,7 @@ bit-signed-check = { status = "planned", issue = "#316" }
 bit-signed-check-high-bit = "implemented"
 boa-badly-overridden-adapter = { status = "planned", issue = "#314" }
 bshift-wrong-add-priority = "implemented"
-bx-boxing-immediately-unboxed = { status = "planned", issue = "#316" }
+bx-boxing-immediately-unboxed = "implemented"
 bx-boxing-immediately-unboxed-to-perform-coercion = { status = "planned", issue = "#316" }
 bx-unboxed-and-coerced-for-ternary-operator = { status = "planned", issue = "#316" }
 bx-unboxing-immediately-reboxed = { status = "planned", issue = "#316" }
@@ -58,10 +58,10 @@ dc-partially-constructed = { status = "planned", issue = "#316" }
 dcn-nullpointer-exception = { status = "planned", issue = "#316" }
 de-might-drop = { status = "planned", issue = "#316" }
 de-might-ignore = { status = "planned", issue = "#316" }
-dl-synchronization-on-boolean = { status = "planned", issue = "#316" }
-dl-synchronization-on-boxed-primitive = { status = "planned", issue = "#316" }
-dl-synchronization-on-interned-string = { status = "planned", issue = "#316" }
-dl-synchronization-on-shared-constant = { status = "planned", issue = "#316" }
+dl-synchronization-on-boolean = "implemented"
+dl-synchronization-on-boxed-primitive = "implemented"
+dl-synchronization-on-interned-string = "implemented"
+dl-synchronization-on-shared-constant = "implemented"
 dl-synchronization-on-unshared-boxed-primitive = { status = "planned", issue = "#316" }
 dls-dead-local-increment-in-return = { status = "planned", issue = "#314" }
 dls-dead-local-store = { status = "planned", issue = "#316" }
@@ -70,32 +70,32 @@ dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
 dls-dead-local-store-shadows-field = { status = "planned", issue = "#316" }
 dls-dead-store-of-class-literal = { status = "planned", issue = "#314" }
 dls-overwritten-increment = "implemented"
-dm-boolean-ctor = { status = "planned", issue = "#316" }
-dm-boxed-primitive-for-compare = { status = "planned", issue = "#316" }
+dm-boolean-ctor = "implemented"
+dm-boxed-primitive-for-compare = "implemented"
 dm-boxed-primitive-for-parsing = { status = "planned", issue = "#316" }
-dm-boxed-primitive-tostring = { status = "planned", issue = "#316" }
+dm-boxed-primitive-tostring = "implemented"
 dm-convert-case = { status = "planned", issue = "#316" }
 dm-default-encoding = { status = "planned", issue = "#316" }
 dm-exit = { status = "planned", issue = "#316" }
-dm-fp-number-ctor = { status = "planned", issue = "#316" }
-dm-gc = { status = "planned", issue = "#316" }
+dm-fp-number-ctor = "implemented"
+dm-gc = "implemented"
 dm-invalid-min-max = "implemented"
-dm-monitor-wait-on-condition = { status = "planned", issue = "#316" }
-dm-new-for-getclass = { status = "planned", issue = "#316" }
-dm-nextint-via-nextdouble = { status = "planned", issue = "#316" }
-dm-number-ctor = { status = "planned", issue = "#316" }
+dm-monitor-wait-on-condition = "implemented"
+dm-new-for-getclass = "implemented"
+dm-nextint-via-nextdouble = "implemented"
+dm-number-ctor = "implemented"
 dm-run-finalizers-on-exit = { status = "planned", issue = "#316" }
-dm-string-ctor = { status = "planned", issue = "#316" }
-dm-string-tostring = { status = "planned", issue = "#316" }
-dm-string-void-ctor = { status = "planned", issue = "#316" }
-dm-useless-thread = { status = "planned", issue = "#316" }
+dm-string-ctor = "implemented"
+dm-string-tostring = "implemented"
+dm-string-void-ctor = "implemented"
+dm-useless-thread = "implemented"
 dmi-annotation-is-not-visible-to-reflection = { status = "planned", issue = "#314" }
 dmi-arguments-wrong-order = { status = "planned", issue = "#314" }
 dmi-bad-month = "implemented"
 dmi-bigdecimal-constructed-from-double = "implemented"
-dmi-blocking-methods-on-url = { status = "planned", issue = "#316" }
+dmi-blocking-methods-on-url = "implemented"
 dmi-calling-next-from-hasnext = "implemented"
-dmi-collection-of-urls = { status = "planned", issue = "#316" }
+dmi-collection-of-urls = "implemented"
 dmi-collections-should-not-contain-themselves = "implemented"
 dmi-constant-db-password = { status = "planned", issue = "#316" }
 dmi-doh = { status = "planned", issue = "#314" }
@@ -119,7 +119,7 @@ dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
 dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316" }
 dp-do-inside-do-privileged = { status = "planned", issue = "#316" }
-e-sync-empty-sync = { status = "planned", issue = "#316" }
+e-sync-empty-sync = "implemented"
 ec-array-and-nonarray = { status = "planned", issue = "#314" }
 ec-bad-array-compare = "implemented"
 ec-incompatible-array-compare = { status = "planned", issue = "#314" }
@@ -224,9 +224,9 @@ it-no-such-element = { status = "planned", issue = "#316" }
 ita-inefficient-to-array = { status = "planned", issue = "#316" }
 j2-ee-store-of-non-serializable-object-into-session = { status = "planned", issue = "#316" }
 jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
-jlm-jsr166-lock-monitorenter = { status = "planned", issue = "#316" }
-jlm-jsr166-utilconcurrent-monitorenter = { status = "planned", issue = "#316" }
-jml-jsr166-calling-wait-rather-than-await = { status = "planned", issue = "#316" }
+jlm-jsr166-lock-monitorenter = "implemented"
+jlm-jsr166-utilconcurrent-monitorenter = "implemented"
+jml-jsr166-calling-wait-rather-than-await = "implemented"
 jua-dont-assert-instanceof-in-tests = { status = "planned", issue = "#316" }
 lg-lost-logger-due-to-weak-reference = { status = "planned", issue = "#316" }
 li-lazy-init-static = { status = "planned", issue = "#316" }
@@ -275,7 +275,7 @@ nm-very-confusing-intentional = { status = "planned", issue = "#316" }
 nm-wrong-package = { status = "planned", issue = "#314" }
 nm-wrong-package-intentional = { status = "planned", issue = "#316" }
 nn-naked-notify = { status = "planned", issue = "#316" }
-no-notify-not-notifyall = { status = "planned", issue = "#316" }
+no-notify-not-notifyall = "implemented"
 noise-field-reference = { status = "planned", issue = "#316" }
 noise-method-call = { status = "planned", issue = "#316" }
 noise-null-dereference = { status = "planned", issue = "#316" }
@@ -357,7 +357,7 @@ ri-redundant-interfaces = { status = "planned", issue = "#316" }
 rp-c-repeated-conditional-test = { status = "planned", issue = "#314" }
 rr-not-checked = { status = "planned", issue = "#316" }
 rs-readobject-sync = { status = "planned", issue = "#316" }
-ru-invoke-run = { status = "planned", issue = "#316" }
+ru-invoke-run = "implemented"
 rv-01-to-int = "implemented"
 rv-absolute-value-of-hashcode = "implemented"
 rv-absolute-value-of-random-int = "implemented"
@@ -428,8 +428,8 @@ ssd-do-not-use-instance-lock-on-shared-static-data = { status = "planned", issue
 st-write-to-static-from-instance-method = { status = "planned", issue = "#316" }
 stcal-invoke-on-static-calendar-instance = { status = "planned", issue = "#316" }
 stcal-invoke-on-static-date-format-instance = { status = "planned", issue = "#316" }
-stcal-static-calendar-instance = { status = "planned", issue = "#316" }
-stcal-static-simple-date-format-instance = { status = "planned", issue = "#316" }
+stcal-static-calendar-instance = "implemented"
+stcal-static-simple-date-format-instance = "implemented"
 sti-interrupted-on-currentthread = "implemented"
 sti-interrupted-on-unknownthread = "implemented"
 sw-swing-methods-invoked-in-swing-thread = { status = "planned", issue = "#316" }
@@ -461,7 +461,7 @@ ug-sync-set-unsync-get = { status = "planned", issue = "#316" }
 ui-inheritance-unsafe-getresource = { status = "planned", issue = "#316" }
 ul-unreleased-lock = { status = "planned", issue = "#316" }
 ul-unreleased-lock-exception-path = { status = "planned", issue = "#316" }
-um-unnecessary-math = { status = "planned", issue = "#316" }
+um-unnecessary-math = "implemented"
 umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314" }
 unknown = { status = "planned", issue = "#316" }
 upm-uncalled-private-method = { status = "planned", issue = "#316" }
@@ -492,7 +492,7 @@ vr-unresolvable-reference = { status = "planned", issue = "#314" }
 vsc-vulnerable-security-check-methods = { status = "planned", issue = "#316" }
 wa-await-not-in-loop = { status = "planned", issue = "#316" }
 wa-not-in-loop = { status = "planned", issue = "#316" }
-wl-using-getclass-rather-than-class-literal = { status = "planned", issue = "#316" }
+wl-using-getclass-rather-than-class-literal = "implemented"
 wmi-wrong-map-iterator = { status = "planned", issue = "#316" }
 ws-writeobject-sync = { status = "planned", issue = "#316" }
 xfb-xml-factory-bypass = { status = "planned", issue = "#316" }

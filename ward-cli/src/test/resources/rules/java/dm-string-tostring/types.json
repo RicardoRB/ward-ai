@@ -1,0 +1,36 @@
+{
+  "3:5-3:5": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "3:5-3:16": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:5-5:5": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "5:5-5:16": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

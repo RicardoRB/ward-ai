@@ -1,0 +1,36 @@
+{
+  "3:5-3:5": {
+    "type": {
+      "name": "java.lang.Thread"
+    }
+  },
+  "3:5-3:11": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Thread"
+      },
+      "name": "run",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:5-5:5": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "5:5-5:11": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "run",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

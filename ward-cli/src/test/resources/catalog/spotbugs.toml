@@ -183,7 +183,6 @@ spotbugs = ["BSHIFT_WRONG_ADD_PRIORITY"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
 
@@ -386,25 +385,21 @@ spotbugs = ["DLS_OVERWRITTEN_INCREMENT"]
 
 [[rule]]
 name = "dl-synchronization-on-boolean"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_BOOLEAN"]
 
 [[rule]]
 name = "dl-synchronization-on-boxed-primitive"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_BOXED_PRIMITIVE"]
 
 [[rule]]
 name = "dl-synchronization-on-interned-string"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_INTERNED_STRING"]
 
 [[rule]]
 name = "dl-synchronization-on-shared-constant"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_SHARED_CONSTANT"]
 
@@ -438,7 +433,6 @@ spotbugs = ["DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE"]
 
 [[rule]]
 name = "dmi-blocking-methods-on-url"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DMI_BLOCKING_METHODS_ON_URL"]
 
@@ -454,7 +448,6 @@ spotbugs = ["DMI_COLLECTIONS_SHOULD_NOT_CONTAIN_THEMSELVES"]
 
 [[rule]]
 name = "dmi-collection-of-urls"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DMI_COLLECTION_OF_URLS"]
 
@@ -575,13 +568,11 @@ spotbugs = ["DMI_VACUOUS_SELF_COLLECTION_CALL"]
 
 [[rule]]
 name = "dm-boolean-ctor"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_BOOLEAN_CTOR"]
 
 [[rule]]
 name = "dm-boxed-primitive-for-compare"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_BOXED_PRIMITIVE_FOR_COMPARE"]
 
@@ -593,7 +584,6 @@ spotbugs = ["DM_BOXED_PRIMITIVE_FOR_PARSING"]
 
 [[rule]]
 name = "dm-boxed-primitive-tostring"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_BOXED_PRIMITIVE_TOSTRING"]
 
@@ -617,13 +607,11 @@ spotbugs = ["DM_EXIT"]
 
 [[rule]]
 name = "dm-fp-number-ctor"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_FP_NUMBER_CTOR"]
 
 [[rule]]
 name = "dm-gc"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_GC"]
 
@@ -634,25 +622,21 @@ spotbugs = ["DM_INVALID_MIN_MAX"]
 
 [[rule]]
 name = "dm-monitor-wait-on-condition"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DM_MONITOR_WAIT_ON_CONDITION"]
 
 [[rule]]
 name = "dm-new-for-getclass"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_NEW_FOR_GETCLASS"]
 
 [[rule]]
 name = "dm-nextint-via-nextdouble"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_NEXTINT_VIA_NEXTDOUBLE"]
 
 [[rule]]
 name = "dm-number-ctor"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_NUMBER_CTOR"]
 
@@ -664,25 +648,21 @@ spotbugs = ["DM_RUN_FINALIZERS_ON_EXIT"]
 
 [[rule]]
 name = "dm-string-ctor"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_STRING_CTOR"]
 
 [[rule]]
 name = "dm-string-tostring"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_STRING_TOSTRING"]
 
 [[rule]]
 name = "dm-string-void-ctor"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["DM_STRING_VOID_CTOR"]
 
 [[rule]]
 name = "dm-useless-thread"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DM_USELESS_THREAD"]
 
@@ -877,7 +857,6 @@ spotbugs = ["ES_COMPARING_PARAMETER_STRING_WITH_EQ"]
 
 [[rule]]
 name = "e-sync-empty-sync"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["ESync_EMPTY_SYNC"]
 
@@ -1310,19 +1289,16 @@ spotbugs = ["JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS"]
 
 [[rule]]
 name = "jlm-jsr166-lock-monitorenter"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["JLM_JSR166_LOCK_MONITORENTER"]
 
 [[rule]]
 name = "jlm-jsr166-utilconcurrent-monitorenter"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["JLM_JSR166_UTILCONCURRENT_MONITORENTER"]
 
 [[rule]]
 name = "jml-jsr166-calling-wait-rather-than-await"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT"]
 
@@ -1637,7 +1613,6 @@ spotbugs = ["NOISE_OPERATION"]
 
 [[rule]]
 name = "no-notify-not-notifyall"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["NO_NOTIFY_NOT_NOTIFYALL"]
 
@@ -2096,7 +2071,6 @@ spotbugs = ["RS_READOBJECT_SYNC"]
 
 [[rule]]
 name = "ru-invoke-run"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["RU_INVOKE_RUN"]
 
@@ -2509,13 +2483,11 @@ spotbugs = ["STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE"]
 
 [[rule]]
 name = "stcal-static-calendar-instance"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["STCAL_STATIC_CALENDAR_INSTANCE"]
 
 [[rule]]
 name = "stcal-static-simple-date-format-instance"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE"]
 
@@ -2717,7 +2689,6 @@ spotbugs = ["UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS"]
 
 [[rule]]
 name = "um-unnecessary-math"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["UM_UNNECESSARY_MATH"]
 
@@ -2897,7 +2868,6 @@ spotbugs = ["WA_NOT_IN_LOOP"]
 
 [[rule]]
 name = "wl-using-getclass-rather-than-class-literal"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL"]
 

@@ -1,0 +1,418 @@
+# SpotBugs multithreaded-correctness and performance rules for Java (standard preset).
+
+[[rules]]
+id = "ward:java/dm-boolean-ctor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?Boolean\('
+message = "Boolean constructor allocates a new object; use Boolean.valueOf or the TRUE and FALSE constants"
+'''
+
+[[rules]]
+id = "ward:java/dm-number-ctor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?(Byte|Short|Integer|Long|Character)\('
+message = "boxed number constructor allocates a new object; use valueOf"
+'''
+
+[[rules]]
+id = "ward:java/dm-fp-number-ctor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?(Float|Double)\('
+message = "floating-point wrapper constructor allocates a new object; use valueOf"
+'''
+
+[[rules]]
+id = "ward:java/dm-string-ctor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?String\("'
+message = "new String(literal) allocates a copy of an interned string; use the literal"
+'''
+
+[[rules]]
+id = "ward:java/dm-string-void-ctor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?String\(\)$'
+message = "new String() allocates an empty string; use the empty literal"
+'''
+
+[[rules]]
+id = "ward:java/dm-gc"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(System|Runtime\.getRuntime\(\))\.gc\(\)$'
+message = "explicit garbage collection call; remove it and let the JVM decide"
+'''
+
+[[rules]]
+id = "ward:java/dm-new-for-getclass"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new[\w.]+\(.*\)\.getClass\(\)$'
+message = "object created only to call getClass; use the class literal"
+'''
+
+[[rules]]
+id = "ward:java/dm-nextint-via-nextdouble"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(int\)\(?[\w.]*\.nextDouble\(\)\*'
+message = "nextDouble scaled and cast to int; call nextInt(bound)"
+'''
+
+[[rules]]
+id = "ward:java/dm-boxed-primitive-tostring"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(new(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\(|(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\.valueOf\().*\)\.toString\(\)$'
+message = "primitive boxed only to call toString; use the static toString"
+'''
+
+[[rules]]
+id = "ward:java/dm-boxed-primitive-for-compare"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(new(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\(|(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\.valueOf\().*\)\.compareTo\('
+message = "primitive boxed only to compare; use the static compare"
+'''
+
+[[rules]]
+id = "ward:java/bx-boxing-immediately-unboxed"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(new(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\(|(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\.valueOf\().*\)\.(byte|short|int|long|char|float|double|boolean)Value\(\)$'
+message = "primitive boxed and immediately unboxed; use the primitive directly"
+'''
+
+[[rules]]
+id = "ward:java/um-unnecessary-math"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Math\.(ceil|floor|rint|sqrt|exp|log|sin|cos|tan)\(-?\d+(\.\d*)?[dDfF]?\)$'
+message = "Math method called on a constant; write the result as a literal"
+'''
+
+[[rules]]
+id = "ward:java/dm-useless-thread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?Thread\(\)$'
+message = "Thread created without a Runnable and without a run override does nothing"
+'''
+
+[[rules]]
+id = "ward:java/dmi-collection-of-urls"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType"]
+text = '^(java\.util\.)?\w*(Set|Map)<(java\.net\.)?URL[,>]'
+message = "URLs as set elements or map keys block on name resolution; use URI"
+'''
+
+[[rules]]
+id = "ward:java/wl-using-getclass-rather-than-class-literal"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'synchronized'"]
+text = '^synchronized\((this\.)?getClass\(\)\)'
+message = "synchronized on getClass() locks a different monitor in each subclass; use the class literal"
+'''
+
+[[rules]]
+id = "ward:java/dl-synchronization-on-shared-constant"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'synchronized'"]
+text = '^synchronized\("'
+message = "synchronized on a string literal shares the lock with unrelated code; lock a private object"
+'''
+
+[[rules]]
+id = "ward:java/e-sync-empty-sync"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'synchronized'"]
+text = '^synchronized\([^)]*\)\{\}$'
+message = "empty synchronized block; it does nothing useful"
+'''
+
+[[rules]]
+id = "ward:java/no-notify-not-notifyall"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(this\.)?notify\(\)$'
+message = "notify wakes one arbitrary waiter; use notifyAll"
+'''
+
+[[rules]]
+id = "ward:java/stcal-static-calendar-instance"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["static"]
+text = '^(java\.util\.)?(Gregorian)?Calendar[a-z_]'
+message = "Calendar stored in a static field is not thread safe; create one per use"
+'''
+
+[[rules]]
+id = "ward:java/stcal-static-simple-date-format-instance"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["static"]
+text = '^(java\.text\.)?(Simple)?DateFormat[a-z_]'
+message = "DateFormat stored in a static field is not thread safe; create one per use"
+'''
+
+[[rules]]
+id = "ward:java/dm-string-tostring"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["toString"]
+receiver-types = ["java.lang.String"]
+message = "toString() on a String returns the same String; remove the call"
+'''
+
+[[rules]]
+id = "ward:java/dmi-blocking-methods-on-url"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["equals", "hashCode"]
+receiver-types = ["java.net.URL"]
+message = "URL.equals and URL.hashCode resolve host names and block; compare URIs"
+'''
+
+[[rules]]
+id = "ward:java/dm-monitor-wait-on-condition"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["wait"]
+receiver-types = ["java.util.concurrent.locks.Condition"]
+message = "wait() on a Condition waits on its monitor; call await"
+'''
+
+[[rules]]
+id = "ward:java/jml-jsr166-calling-wait-rather-than-await"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["wait"]
+receiver-types = ["java.util.concurrent.CountDownLatch", "java.util.concurrent.CyclicBarrier", "java.util.concurrent.Semaphore", "java.util.concurrent.Phaser", "java.util.concurrent.Exchanger"]
+message = "wait() on a java.util.concurrent synchronizer waits on its monitor; use its own blocking method"
+'''
+
+[[rules]]
+id = "ward:java/ru-invoke-run"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["run"]
+receiver-types = ["java.lang.Thread"]
+message = "run() on a Thread runs in the calling thread; call start"
+'''
+
+[[rules]]
+id = "ward:java/dl-synchronization-on-boolean"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.lang.Boolean"]
+message = "synchronized on a Boolean, which is shared by the whole JVM; lock a private object"
+'''
+
+[[rules]]
+id = "ward:java/dl-synchronization-on-boxed-primitive"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.lang.Byte", "java.lang.Short", "java.lang.Integer", "java.lang.Long", "java.lang.Character", "java.lang.Float", "java.lang.Double"]
+message = "synchronized on a boxed number, which may be shared by the whole JVM; lock a private object"
+'''
+
+[[rules]]
+id = "ward:java/dl-synchronization-on-interned-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.lang.String"]
+message = "synchronized on a String, which may be interned and shared; lock a private object"
+'''
+
+[[rules]]
+id = "ward:java/jlm-jsr166-lock-monitorenter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.util.concurrent.locks.Lock", "java.util.concurrent.locks.ReentrantLock", "java.util.concurrent.locks.ReadWriteLock", "java.util.concurrent.locks.ReentrantReadWriteLock"]
+message = "synchronized on a Lock uses its monitor, not the lock; call lock()"
+'''
+
+[[rules]]
+id = "ward:java/jlm-jsr166-utilconcurrent-monitorenter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.util.concurrent.ConcurrentHashMap", "java.util.concurrent.ConcurrentMap", "java.util.concurrent.ConcurrentLinkedQueue", "java.util.concurrent.CopyOnWriteArrayList", "java.util.concurrent.CountDownLatch", "java.util.concurrent.Semaphore"]
+message = "synchronized on a java.util.concurrent object mixes two locking schemes; lock a private object"
+'''

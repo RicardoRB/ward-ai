@@ -1,0 +1,36 @@
+{
+  "3:5-3:5": {
+    "type": {
+      "name": "java.util.concurrent.CountDownLatch"
+    }
+  },
+  "3:5-3:12": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.CountDownLatch"
+      },
+      "name": "wait",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:5-5:5": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "5:5-5:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "wait",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

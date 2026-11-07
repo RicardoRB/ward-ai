@@ -1,0 +1,12 @@
+{
+  "3:19-3:22": {
+    "type": {
+      "name": "java.lang.Boolean"
+    }
+  },
+  "4:19-4:22": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}
