@@ -106,6 +106,9 @@ final class ParsedFacts {
         false,
         List.of(annotations),
         List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
         List.of());
   }
 

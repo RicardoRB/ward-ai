@@ -21,7 +21,21 @@ public final class RuleRowMetadata {
   private static final Set<String> OPTION_KEYS =
       Set.of("type", "min", "max", "values", "parameter");
 
+  private static final String MIN_JAVA_RELEASE = "min-java-release";
+
   private RuleRowMetadata() {}
+
+  /** Returns the lowest Java release the row names, or 0 when it names none. */
+  public static int minJavaRelease(final TomlTable row) {
+    if (!row.contains(MIN_JAVA_RELEASE)) {
+      return 0;
+    }
+    final Long release = row.getLong(MIN_JAVA_RELEASE);
+    if (release == null || release < 1) {
+      throw new IllegalArgumentException("'" + MIN_JAVA_RELEASE + "' must be a positive integer");
+    }
+    return Math.toIntExact(release);
+  }
 
   /** Returns the category, or the empty text when the row has none. */
   public static String category(final TomlTable row) {

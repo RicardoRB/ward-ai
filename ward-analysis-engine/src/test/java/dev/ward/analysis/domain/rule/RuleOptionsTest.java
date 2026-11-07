@@ -79,6 +79,7 @@ class RuleOptionsTest {
         List.of(
             RuleOption.integer("max", 1),
             new RuleOption("pattern", RuleOptionType.STRING),
-            new RuleOption("names", RuleOptionType.STRING_LIST)));
+            new RuleOption("names", RuleOptionType.STRING_LIST)),
+        0);
   }
 }

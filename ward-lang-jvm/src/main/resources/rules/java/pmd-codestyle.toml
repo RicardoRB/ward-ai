@@ -321,6 +321,7 @@ message = "the return statement at the end of the method is unnecessary"
 [[rules]]
 id = "ward:java/use-diamond-operator"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "codestyle"
@@ -335,6 +336,7 @@ message = "the type arguments of the created type can be inferred; use <>"
 [[rules]]
 id = "ward:java/use-explicit-types"
 language = "java"
+min-java-release = 10
 capability = "SYNTAX"
 severity = "error"
 category = "codestyle"
@@ -364,6 +366,7 @@ message = "the declaration can use a short array initializer; drop new and the t
 [[rules]]
 id = "ward:java/use-underscores-in-numeric-literals"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "codestyle"

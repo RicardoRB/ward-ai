@@ -53,7 +53,10 @@ final class FactMembers {
             method.isVarargs(),
             FactRefs.displayAll(method.annotations()),
             method.parameterAnnotations().stream().map(FactRefs::displayAll).toList(),
-            FactRefs.displayAll(owner.annotations())));
+            FactRefs.displayAll(owner.annotations()),
+            method.compatibleWith(),
+            method.typeParameters().stream().map(TypeParameter::name).toList(),
+            owner.typeParameters().stream().map(TypeParameter::name).toList()));
   }
 
   /** Returns what the class is and what it extends. */

@@ -44,6 +44,9 @@ final class TypedTrees {
         false,
         List.of(),
         List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
         List.of());
   }
 

@@ -62,6 +62,7 @@ message = "a Calendar is created only to read the current time; use new Date() o
 [[rules]]
 id = "ward:java/avoid-file-stream"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "performance"

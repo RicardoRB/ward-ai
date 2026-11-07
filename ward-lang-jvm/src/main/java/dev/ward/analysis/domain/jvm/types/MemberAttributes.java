@@ -14,6 +14,7 @@ final class MemberAttributes {
   boolean record;
   final List<String> annotations = new ArrayList<>();
   final List<List<String>> parameterAnnotations = new ArrayList<>();
+  final List<String> compatibleWith = new ArrayList<>();
   final List<String> thrown = new ArrayList<>();
   final List<String> memberClasses = new ArrayList<>();
 
@@ -47,7 +48,7 @@ final class MemberAttributes {
       final ByteBuffer in, final ConstantPool pool, final String owner, final String attribute) {
     switch (attribute) {
       case "RuntimeVisibleParameterAnnotations", "RuntimeInvisibleParameterAnnotations" ->
-          new AnnotationReader(in, pool).parameters(parameterAnnotations);
+          new AnnotationReader(in, pool).parameters(parameterAnnotations, compatibleWith);
       case "PermittedSubclasses", "Record" -> flag(attribute);
       case "InnerClasses" -> innerClasses(in, pool, owner);
       default -> {

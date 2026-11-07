@@ -31,7 +31,18 @@ class InheritedMemberCheckTest {
   private static CallTarget method(
       final String name, final boolean isStatic, final TypeRef... parameters) {
     return new CallTarget(
-        BASE, name, List.of(parameters), VOID, isStatic, false, List.of(), List.of(), List.of());
+        BASE,
+        name,
+        List.of(parameters),
+        VOID,
+        isStatic,
+        false,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static List<String> run(

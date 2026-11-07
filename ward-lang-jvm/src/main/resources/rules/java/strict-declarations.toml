@@ -54,6 +54,7 @@ message = "local variable {value} should be declared final"
 [[rules]]
 id = "ward:java/pattern-variable-assignment"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "coding"

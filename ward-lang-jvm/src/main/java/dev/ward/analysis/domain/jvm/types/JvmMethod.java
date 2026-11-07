@@ -14,6 +14,7 @@ import java.util.Objects;
  * @param thrown the declared exception types
  * @param annotations the qualified names of its annotations
  * @param parameterAnnotations the qualified names of the annotations of each parameter, when known
+ * @param compatibleWith the {@code @CompatibleWith} value of each parameter, empty text for none
  */
 public record JvmMethod(
     String name,
@@ -23,7 +24,8 @@ public record JvmMethod(
     JType returnType,
     List<JType> thrown,
     List<String> annotations,
-    List<List<String>> parameterAnnotations) {
+    List<List<String>> parameterAnnotations,
+    List<String> compatibleWith) {
   /** The name of a constructor. */
   public static final String CONSTRUCTOR = "<init>";
 
@@ -40,6 +42,7 @@ public record JvmMethod(
     thrown = List.copyOf(thrown);
     annotations = List.copyOf(annotations);
     parameterAnnotations = List.copyOf(parameterAnnotations);
+    compatibleWith = List.copyOf(compatibleWith);
   }
 
   /** Returns whether the method is static. */

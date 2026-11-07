@@ -62,7 +62,9 @@ class TypeFactsFixtureTest {
                 "call": {"declaring": {"name": "a.Api"}, "name": "run",
                          "annotations": ["a.Restricted"],
                          "paramAnnotations": [["a.Nullable"], []],
-                         "declaringAnnotations": ["a.ThreadSafe"]},
+                         "declaringAnnotations": ["a.ThreadSafe"],
+                         "compatibleWith": ["", "K"], "typeParameters": ["T"],
+                         "declaringTypeParameters": ["K", "V"]},
                 "members": {
                   "methods": [{"declaring": {"name": "a.Api"}, "name": "run"}],
                   "fields": [{"name": "size", "type": {"name": "int", "primitive": true},
@@ -78,6 +80,9 @@ class TypeFactsFixtureTest {
     assertThat(target.annotations()).containsExactly("a.Restricted");
     assertThat(target.parameterAnnotations()).containsExactly(List.of("a.Nullable"), List.of());
     assertThat(target.declaringAnnotations()).containsExactly("a.ThreadSafe");
+    assertThat(target.compatibleWith()).containsExactly("", "K");
+    assertThat(target.typeParameters()).containsExactly("T");
+    assertThat(target.declaringTypeParameters()).containsExactly("K", "V");
     final TypeMembers members = facts.membersOf(CALL).orElseThrow();
     assertThat(members.methods()).singleElement().extracting(m -> m.name()).isEqualTo("run");
     assertThat(members.fields())

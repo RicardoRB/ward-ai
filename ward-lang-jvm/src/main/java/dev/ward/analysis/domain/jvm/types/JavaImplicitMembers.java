@@ -117,6 +117,7 @@ final class JavaImplicitMembers {
         returns,
         List.of(),
         List.of(),
+        List.of(),
         List.of());
   }
 

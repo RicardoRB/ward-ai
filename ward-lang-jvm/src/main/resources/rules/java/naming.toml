@@ -330,6 +330,7 @@ message = "package name '{value}' does not match the name pattern of this rule"
 [[rules]]
 id = "ward:java/pattern-variable-name"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
@@ -347,6 +348,7 @@ message = "pattern variable name '{value}' does not match the name pattern of th
 [[rules]]
 id = "ward:java/record-component-name"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
@@ -364,6 +366,7 @@ message = "record component name '{value}' does not match the name pattern of th
 [[rules]]
 id = "ward:java/record-type-parameter-name"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "naming"
