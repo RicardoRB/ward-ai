@@ -402,9 +402,7 @@ ruff = ["B013"]
 
 [[rule]]
 name = "duplicate-handler-exception"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B014"]
 
 [[rule]]
@@ -429,9 +427,7 @@ ruff = ["B018"]
 
 [[rule]]
 name = "cached-instance-method"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B019"]
 
 [[rule]]
@@ -441,9 +437,7 @@ ruff = ["B020"]
 
 [[rule]]
 name = "f-string-docstring"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B021"]
 
 [[rule]]
@@ -465,9 +459,7 @@ ruff = ["B024"]
 
 [[rule]]
 name = "duplicate-try-block-exception"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B025"]
 
 [[rule]]

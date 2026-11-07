@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
+import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
+import dev.ward.analysis.domain.rule.check.FStringDocstringCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -23,7 +25,9 @@ final class OperatorAndOrderChecks {
           "except-order",
           "raise-without-from",
           "loop-variable",
-          "undefined-export" ->
+          "undefined-export",
+          "duplicate-handler",
+          "fstring-docstring" ->
           true;
       default -> false;
     };
@@ -36,6 +40,8 @@ final class OperatorAndOrderChecks {
       case "except-order" -> new ExceptOrderCheck(TomlValues.required(toml, MESSAGE));
       case "loop-variable" -> loopVariable(toml);
       case "undefined-export" -> new UndefinedExportCheck(TomlValues.required(toml, MESSAGE));
+      case "duplicate-handler" -> new DuplicateHandlerCheck(TomlValues.required(toml, MESSAGE));
+      case "fstring-docstring" -> new FStringDocstringCheck(TomlValues.required(toml, MESSAGE));
       default -> new RaiseWithoutFromCheck(TomlValues.required(toml, MESSAGE));
     };
   }

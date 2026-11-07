@@ -77,6 +77,6 @@ public final class RaiseWithoutFromCheck implements RuleCheck {
   /** Whether a raise with an exception has no {@code from} clause. */
   private static boolean chained(final SyntaxNode raise) {
     final String text = SyntaxWalk.text(raise);
-    return !text.equals(BARE_RAISE) && !text.contains(FROM);
+    return !BARE_RAISE.equals(text) && !text.contains(FROM);
   }
 }

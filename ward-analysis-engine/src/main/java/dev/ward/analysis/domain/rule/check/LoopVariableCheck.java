@@ -26,6 +26,8 @@ public final class LoopVariableCheck implements RuleCheck {
   }
 
   private static final Set<String> LOOPS = Set.of("for_stmt");
+  private static final int SINGLE = 1;
+  private static final String IN = "in";
   private static final Pattern NAME = Pattern.compile("[A-Za-z_]\\w*");
   private static final String UNDERSCORE = "_";
   private static final Set<String> BINDERS = Set.of("import", ",", "as");
@@ -71,7 +73,7 @@ public final class LoopVariableCheck implements RuleCheck {
   /** The loop's target when it is one plain name, or {@code null}. */
   private static String singleName(final SyntaxNode target) {
     final List<SyntaxNode> leaves = SyntaxWalk.leaves(target);
-    if (leaves.size() != 1) {
+    if (leaves.size() != SINGLE) {
       return null;
     }
     final String text = SyntaxWalk.text(leaves.get(0));
@@ -93,7 +95,7 @@ public final class LoopVariableCheck implements RuleCheck {
   private static List<SyntaxNode> iterable(final SyntaxNode loop) {
     final List<SyntaxNode> children = loop.children();
     for (int index = 2; index < children.size(); index++) {
-      if ("in".equals(SyntaxWalk.text(children.get(index - 1)))) {
+      if (IN.equals(SyntaxWalk.text(children.get(index - 1)))) {
         return List.of(children.get(index));
       }
     }

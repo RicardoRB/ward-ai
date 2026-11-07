@@ -375,3 +375,58 @@ check = "loop-variable"
 problem = "overrides-iterator"
 message = "loop control variable overrides the iterable it iterates"
 '''
+
+[[rules]]
+id = "ward:python/duplicate-handler-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\((?:[\w.]+,)*?([\w.]+),(?:[\w.]+,)*?\1[,)]'
+message = "exception handler with a duplicate exception"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-try-block-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-handler"
+message = "try-except block with a duplicate exception"
+'''
+
+[[rules]]
+id = "ward:python/cached-instance-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["decorated"]
+allowed = ["classdef"]
+stop = ["funcdef", "async_funcdef", "lambdef"]
+mode = "inside"
+text = '^@(functools\.)?(lru_cache|cache)(?!\w)'
+message = "use of functools.lru_cache or functools.cache on a method can leak memory"
+'''
+
+[[rules]]
+id = "ward:python/f-string-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "fstring-docstring"
+message = "f-string used as docstring; Python does not treat it as one"
+'''
