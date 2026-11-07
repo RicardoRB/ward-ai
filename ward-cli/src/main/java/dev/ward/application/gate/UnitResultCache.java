@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.graph.DependencyGraph;
+import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -91,7 +92,10 @@ final class UnitResultCache {
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
     final List<AnalysisFinding> graphFindings =
-        ArchitectureGraphRules.findings(rules, snapshot.graph());
+        ArchitectureGraphRules.findings(
+            rules,
+            snapshot.graph(),
+            new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries()));
     return new CachedRun(merged(reused, analyzed, graphFindings), snapshot.graph());
   }
 
