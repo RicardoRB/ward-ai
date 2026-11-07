@@ -83,7 +83,6 @@ final class GradleToolVersions {
 
   private static Map<String, List<String>> gateTools() {
     final Map<String, List<String>> tools = new LinkedHashMap<>();
-    tools.put("format", List.of(GradleToolCatalog.SPOTLESS, GradleToolCatalog.FORMATTER));
     tools.put("checkstyle", List.of(GradleToolCatalog.CHECKSTYLE_ENGINE));
     tools.put("pmd", List.of(GradleToolCatalog.PMD_ENGINE));
     tools.put("spotbugs", List.of(GradleToolCatalog.SPOTBUGS, GradleToolCatalog.SPOTBUGS_ENGINE));

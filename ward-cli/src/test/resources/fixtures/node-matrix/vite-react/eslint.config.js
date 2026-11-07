@@ -5,15 +5,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig(
   {
-    ignores: [
-      "eslint.base.*",
-      ".next/",
-      "out/",
-      "build/",
-      "dist/",
-      "coverage/",
-      ".ward/",
-    ],
+    ignores: ["eslint.base.*", ".next/", "out/", "build/", "dist/", "coverage/", ".ward/",],
   },
   await base,
   tseslint.configs.strictTypeChecked,
@@ -27,10 +19,7 @@ export default defineConfig(
   },
   {
     rules: {
-      "@typescript-eslint/no-extraneous-class": [
-        "error",
-        { allowWithDecorator: true },
-      ],
+      "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true },],
     },
   },
   {

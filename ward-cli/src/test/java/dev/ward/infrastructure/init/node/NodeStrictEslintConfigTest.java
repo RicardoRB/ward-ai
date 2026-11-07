@@ -66,10 +66,7 @@ class NodeStrictEslintConfigTest {
               },
               {
                 rules: {
-                  "@typescript-eslint/no-extraneous-class": [
-                    "error",
-                    { allowWithDecorator: true },
-                  ],
+                  "@typescript-eslint/no-extraneous-class": ["error", { allowWithDecorator: true }],
                 },
               },
               {

@@ -1,4 +1,4 @@
-# Tuning SwiftLint and swift-format
+# Tuning SwiftLint
 
 ## Where the rules live
 
@@ -12,9 +12,8 @@
   first and the strict file adds its rules on top. Tune the user's rules in `.swiftlint.yml`, and the
   strict rules in `.ward/swiftlint-strict.yml`. Ward owns that second file, so changes to it are
   overwritten by the next init; propose any change to a strict rule as a change to the preset.
-- **swift-format:** `.swift-format` (JSON) at the project root. Init writes it only when the file is
-  absent, with the indentation of the project's sources, and never rewrites it afterwards. Ward
-  cannot mark a JSON file, so treat it as the user's own from then on.
+- **Formatting** is `ward-format`'s, not a Swift formatter's: `ward format` rewrites the Swift sources
+  to the layout in `.editorconfig`. Tune the layout there, not in a Swift formatter config.
 - **The SwiftLint version** is pinned in `.ward/swift-tools/Package.swift`, which Ward owns. Changing
   the pinned version is an upgrade, not a tuning change; propose it separately with evidence.
 
@@ -22,27 +21,25 @@
 
 - Read `.swiftlint.yml` and list `disabled_rules`, `opt_in_rules`, `only_rules`, `excluded`, and any
   per-rule `warning` or `error` levels.
-- Read `.swift-format` and note the `indentation` and `lineLength` values.
-- Run `ward check --profile ci` and read the `swiftlint` and `swift-format` findings before proposing
+- Read `.editorconfig` and note `indent_size` and `max_line_length` for Swift.
+- Run `ward check --profile ci` and read the `swiftlint` and `ward-format` findings before proposing
   anything. Each proposal must cite the finding or the code it changes.
 
 ## Classifying a change
 
 - **Tightening** (enabling an opt-in rule, lowering a rule's threshold, raising a warning to an
   error): propose with the findings it would add, and show the count from `ward check`.
-- **Weakening** (disabling a rule, excluding a path, raising a threshold, or changing a
-  `.swift-format` value to pass): needs its own approval and a reason from the code. Never add a
-  `// swiftlint:disable` or `// swift-format-ignore` comment to pass a gate; both are forbidden
-  suppressions in Ward projects.
+- **Weakening** (disabling a rule, excluding a path, or raising a threshold): needs its own approval
+  and a reason from the code. Never add a `// swiftlint:disable` comment to pass a gate; it is a
+  forbidden suppression in Ward projects.
 - **Excluding a path** in `.swiftlint.yml` is a weakening even when the path is generated code. Name
   the generated file and say how it is produced.
 
-## Indentation for swift-format
+## Indentation for ward-format
 
-- The indentation is detected from the sources at init. If the sources mix 2 and 4 spaces, the
-  detected value may be wrong; `swift format lint --strict` then reports indentation findings on
-  most files. Show the findings and propose the value that matches the majority, then ask.
-- Tabs are used only when most indented lines start with a tab.
+- Init writes the Swift indentation into `.editorconfig` (`indent_size`) when the project has none.
+  If the sources mix 2 and 4 spaces, the value may be wrong; `ward format --check` then lists most
+  files. Show the findings and propose the value that matches the majority, then ask.
 
 ## Coverage
 

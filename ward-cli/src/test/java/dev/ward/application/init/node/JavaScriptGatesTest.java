@@ -40,8 +40,6 @@ class JavaScriptGatesTest {
   void npmAndBunCommandsRunThroughThePackageManager() {
     assertThat(gate(BuildTool.NPM, NO_RUNNER, ESLINT).command())
         .containsExactly("npx", ESLINT, ".", "--format", "json");
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, "prettier").command())
-        .containsExactly("npx", "prettier", "--check", ".");
     assertThat(gate(BuildTool.BUN, NO_RUNNER, ESLINT).command())
         .containsExactly("bunx", ESLINT, ".", "--format", "json");
   }
@@ -70,13 +68,13 @@ class JavaScriptGatesTest {
             : new PackageManifest(Map.of(declared, "^1.0.0"), null, null);
 
     assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
-        .containsExactly(gate, "prettier", ESLINT);
+        .containsExactly(gate, ESLINT);
   }
 
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("vitest", "prettier", ESLINT, "stryker", "dependency-cruiser");
+        .containsExactly("vitest", ESLINT, "stryker", "dependency-cruiser");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
@@ -93,10 +91,9 @@ class JavaScriptGatesTest {
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
-    assertThat(gates).containsOnlyKeys("vitest", "prettier", ESLINT);
+    assertThat(gates).containsOnlyKeys("vitest", ESLINT);
     final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(gates.get(ESLINT).profiles()).isEqualTo(fast);
-    assertThat(gates.get("prettier").profiles()).isEqualTo(fast);
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }
 
@@ -112,7 +109,7 @@ class JavaScriptGatesTest {
   }
 
   @Test
-  void javaScriptAgentRulesNameEslintPrettierAndTheRunnerOnly() {
+  void javaScriptAgentRulesNameEslintAndTheRunnerOnly() {
     final Project project =
         new Project(
             root,
@@ -139,10 +136,7 @@ class JavaScriptGatesTest {
 
     assertThat(body)
         .contains(
-            "ESLint's recommended JavaScript rules",
-            "Prettier",
-            "Tests (Vitest)",
-            "at least 70% line coverage")
+            "ESLint's recommended JavaScript rules", "Tests (Vitest)", "at least 70% line coverage")
         .doesNotContain(
             "tsc", "TypeScript", "typescript-eslint", "Checkstyle", "PMD", "JaCoCo", "SpotBugs");
   }

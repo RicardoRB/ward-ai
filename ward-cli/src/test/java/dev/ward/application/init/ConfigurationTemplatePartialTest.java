@@ -26,12 +26,11 @@ class ConfigurationTemplatePartialTest {
   private static final List<String> GRADLE_BUILD = List.of("build.gradle*", "settings.gradle*");
   private static final String CHECKSTYLE = "checkstyle";
   private static final String PMD = "pmd";
-  private static final String FORMAT = "format";
 
   @TempDir Path dir;
 
   @Test
-  void mavenWithPresetNarrowsCheckstyleAndFormatAndRunsPmdInFull() throws IOException {
+  void mavenWithPresetNarrowsCheckstyleAndRunsPmdInFull() throws IOException {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
 
     assertThat(gates.get(CHECKSTYLE).partial())
@@ -46,10 +45,6 @@ class ConfigurationTemplatePartialTest {
         .isEqualTo(
             new PartialGateConfiguration(
                 JAVA, List.of("config/pmd-ruleset.xml", "pom.xml"), List.of(), null, null));
-    assertThat(gates.get(FORMAT).partial())
-        .isEqualTo(
-            new PartialGateConfiguration(
-                JAVA, List.of("pom.xml"), List.of("-DspotlessFiles={paths}"), ".*/{path}", ","));
   }
 
   @Test
@@ -72,9 +67,6 @@ class ConfigurationTemplatePartialTest {
       assertThat(gates.get(gate).partial().item()).isEqualTo("{path}");
       assertThat(gates.get(gate).partial().full()).containsAll(GRADLE_BUILD);
     }
-    assertThat(gates.get(FORMAT).partial())
-        .isEqualTo(
-            new PartialGateConfiguration(JAVA, List.of("build.gradle*"), List.of(), null, null));
   }
 
   @Test
@@ -126,7 +118,6 @@ class ConfigurationTemplatePartialTest {
         List.of(
                 "compile",
                 "tests",
-                FORMAT,
                 CHECKSTYLE,
                 PMD,
                 "spotbugs",

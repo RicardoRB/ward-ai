@@ -27,20 +27,10 @@ class GradleToolCompatibilityTest {
   private static final int JAVA_7 = 7;
   private static final int JAVA_11 = 11;
   private static final List<String> STRICT_GATES =
-      List.of(
-          "format",
-          "checkstyle",
-          "pmd",
-          "spotbugs",
-          "coverage",
-          "archunit",
-          "enforcer",
-          "mutation");
+      List.of("checkstyle", "pmd", "spotbugs", "coverage", "archunit", "enforcer", "mutation");
 
   private static final List<String> STRICT_TOOLS =
       List.of(
-          GradleToolCatalog.SPOTLESS,
-          GradleToolCatalog.FORMATTER,
           GradleToolCatalog.CHECKSTYLE_ENGINE,
           GradleToolCatalog.PMD_ENGINE,
           GradleToolCatalog.SPOTBUGS,
@@ -73,10 +63,10 @@ class GradleToolCompatibilityTest {
   void gatesWithNoVersionForTheJdkAreOmittedWithAWarning(final String file) throws IOException {
     final Configured configured = configure(file, JAVA_7);
 
-    assertThat(configured.script()).doesNotContain("com.diffplug.spotless", "pitest {");
+    assertThat(configured.script()).doesNotContain("pitest {");
     assertThat(configured.change().warnings())
         .contains(
-            "format omitted: com.diffplug.spotless needs JDK 8+; this project builds on JDK 7")
+            "mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK 7")
         .anyMatch(warning -> warning.startsWith("Ward supports Java 8 to 25"));
   }
 

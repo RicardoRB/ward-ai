@@ -1,6 +1,6 @@
 ---
 name: ward-fix
-description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, format, Checkstyle, PMD, ESLint, Biome, SpotBugs, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
+description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Checkstyle, PMD, ESLint, Biome, SpotBugs, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -84,9 +84,8 @@ Sort the checks:
 Order the failing gates so that early fixes do not create work for later ones:
 
 1. `compile` (nothing else is trustworthy until the code builds)
-2. `format`, `prettier`, `ward-format` (mechanical; run the formatter the gate uses, for example
-   `./mvnw spotless:apply`, `npx prettier --write`, `npx biome format --write`, or `ward format`
-   for a `ward-format` gate. `ward format --check` lists the files it would change without writing)
+2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
+   `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
    `checkstyle`, `pmd`, `eslint`, `biome`, `spotbugs`, `semgrep`, `enforcer`
 4. Architecture: `archunit`, `dependency-cruiser`

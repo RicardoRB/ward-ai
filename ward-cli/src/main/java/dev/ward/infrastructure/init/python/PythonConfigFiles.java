@@ -107,7 +107,7 @@ public final class PythonConfigFiles {
     final Path root = project.root();
     final String marker = ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset);
     final boolean strict = preset == QualityPreset.STRICT;
-    if (ids.contains("ruff-format") || ids.contains("ruff")) {
+    if (ids.contains("ruff")) {
       target(
           targets,
           root,

@@ -11,4 +11,4 @@
 
 - Never add `# noqa` comments or `per-file-ignores` to silence a finding. Fix the code, or change a
   rule with a reason written down in the change.
-- Ruff format is a separate gate (`ruff-format`). Formatting changes are not lint findings.
+- Formatting is the `ward-format` gate, not Ruff: `ruff format` is not run. Formatting changes are not lint findings.

@@ -185,17 +185,16 @@ match = ["**"]
 full = [".semgrep.yml", ".semgrepignore"]
 args = ["{paths}"]
 
-[checks.prettier.paths]
+[checks.eslint.paths]
 match = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
-full = [".prettierrc*", "package.json"]
+full = ["eslint.config.*", "package.json"]
 args = ["{paths}"]
-command = ["npx", "prettier", "--check"]
+command = ["npx", "eslint"]
 ```
 
 For example, a Maven Checkstyle edit of `src/main/java/acme/Order.java` receives
 `-Dcheckstyle.includes=**/Order.java`; a Semgrep edit receives the root-relative path as its own
-argument. A Prettier edit of `src/app.ts` runs `npx prettier --check src/app.ts` instead of
-`npx prettier --check .`. Other `args` entries are appended unchanged, and nothing passes through a
+argument. An ESLint edit of `src/app.ts` runs `npx eslint src/app.ts` instead of `npx eslint .`. Other `args` entries are appended unchanged, and nothing passes through a
 shell.
 
 - A `full` match wins over a `match` match, and a check without `args` runs in full when an edited
