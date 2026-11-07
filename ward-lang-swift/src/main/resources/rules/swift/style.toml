@@ -112,7 +112,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
 target = "lines"
-pattern = ';[ \t]*[^\s/]'
+pattern = '^(?!\s*//).*;[ \t]*[^\s/]'
 message = "more than one statement on a line; put each statement on its own line"
 '''
 
