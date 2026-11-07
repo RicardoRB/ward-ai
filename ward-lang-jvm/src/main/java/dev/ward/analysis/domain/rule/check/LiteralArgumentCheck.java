@@ -32,6 +32,7 @@ public final class LiteralArgumentCheck implements RuleCheck {
     ZONE_ID
   }
 
+  private static final char BACKSLASH = (char) 92;
   private static final String EXPRESSION = "expression";
   private static final Pattern CUSTOM_ZONE = Pattern.compile("GMT[+-]\\d{1,2}(?::?\\d{2})?");
   private static final Set<String> TIME_ZONES =
@@ -105,7 +106,7 @@ public final class LiteralArgumentCheck implements RuleCheck {
       if (escape) {
         out.append(escaped(next));
         escape = false;
-      } else if (next == '\\') {
+      } else if (next == BACKSLASH) {
         escape = true;
       } else {
         out.append(next);
