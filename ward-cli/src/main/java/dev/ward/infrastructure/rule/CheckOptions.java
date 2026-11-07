@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.application.rule.TomlValues;
 import java.util.List;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
