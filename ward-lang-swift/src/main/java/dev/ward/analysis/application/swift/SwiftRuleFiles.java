@@ -18,6 +18,7 @@ public final class SwiftRuleFiles implements RuleFileProvider {
           "rules/swift/idiomatic-2.toml",
           "rules/swift/idiomatic.toml",
           "rules/swift/lint.toml",
+          "rules/swift/linter-style.toml",
           "rules/swift/modifier-order.toml",
           "rules/swift/naming.toml",
           "rules/swift/part-3.toml",

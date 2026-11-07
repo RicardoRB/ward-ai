@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
+import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import java.util.Map;
 
 /**
@@ -31,6 +32,8 @@ public final class SwiftCheckProvider implements CheckProvider {
         toml -> new ImportSortCheck(TomlValues.required(toml, MESSAGE)),
         "swift-unused-import",
         toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE)),
+        "swift-parameter-alignment",
+        toml -> new SwiftParameterAlignmentCheck(TomlValues.required(toml, MESSAGE)),
         "swift-variable-distance",
         toml ->
             new VariableDistanceCheck(

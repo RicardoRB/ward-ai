@@ -12,18 +12,18 @@ block-based-kvo = "implemented"
 capture-variable = { status = "planned", issue = "#338" }
 class-delegate-protocol = "implemented"
 closure-body-length = { status = "planned", issue = "#298" }
-closure-parameter-position = { status = "planned", issue = "#298" }
+closure-parameter-position = "implemented"
 comma-inheritance = { status = "planned", issue = "#298" }
 comment-spacing = "implemented"
 compiler-protocol-init = "implemented"
-computed-accessors-order = { status = "planned", issue = "#298" }
+computed-accessors-order = "implemented"
 conditional-returns-on-newline = { status = "planned", issue = "#298" }
 contains-over-filter-count = "implemented"
 contains-over-filter-is-empty = "implemented"
 contains-over-first-not-nil = "implemented"
 contains-over-range-nil-comparison = "implemented"
 contrasted-opening-brace = { status = "planned", issue = "#298" }
-control-statement = { status = "planned", issue = "#298" }
+control-statement = "implemented"
 convenience-type = { status = "planned", issue = "#338" }
 deployment-target = { status = "planned", issue = "#338" }
 direct-return = { status = "planned", issue = "#298" }
@@ -42,8 +42,8 @@ duplicated-key-in-dictionary-literal = { status = "planned", issue = "#338" }
 dynamic-inline = "implemented"
 empty-collection-literal = "implemented"
 empty-count = { status = "planned", issue = "#338" }
-empty-enum-arguments = { status = "planned", issue = "#298" }
-empty-parameters = { status = "planned", issue = "#298" }
+empty-enum-arguments = "implemented"
+empty-parameters = "implemented"
 empty-string = "implemented"
 empty-xctest-method = "implemented"
 enum-case-associated-values-count = { status = "planned", issue = "#298" }
@@ -68,20 +68,20 @@ force-cast = "implemented"
 force-try = "implemented"
 force-unwrapping = { status = "planned", issue = "#338" }
 function-default-parameter-at-end = { status = "planned", issue = "#338" }
-function-name-whitespace = { status = "planned", issue = "#298" }
+function-name-whitespace = "implemented"
 generic-type-name = { status = "planned", issue = "#338" }
 ibinspectable-in-extension = "implemented"
 identical-operands = "implemented"
-implicit-getter = { status = "planned", issue = "#298" }
-implicit-optional-initialization = { status = "planned", issue = "#298" }
+implicit-getter = "implemented"
+implicit-optional-initialization = "implemented"
 implicitly-unwrapped-optional = { status = "planned", issue = "#338" }
-inclusive-language = { status = "planned", issue = "#298" }
+inclusive-language = "implemented"
 incompatible-concurrency-annotation = { status = "planned", issue = "#338" }
 invalid-swiftlint-command = "implemented"
 invisible-character = "implemented"
 is-disjoint = "implemented"
 joined-default-parameter = "implemented"
-large-tuple = { status = "planned", issue = "#298" }
+large-tuple = "implemented"
 last-where = "implemented"
 legacy-cggeometry-functions = "implemented"
 legacy-constant = "implemented"
@@ -98,8 +98,8 @@ local-doc-comment = { status = "planned", issue = "#338" }
 lower-acl-than-parent = { status = "planned", issue = "#338" }
 mark = "implemented"
 multiline-call-arguments = { status = "planned", issue = "#338" }
-multiple-closures-with-trailing-closure = { status = "planned", issue = "#298" }
-nesting = { status = "planned", issue = "#298" }
+multiple-closures-with-trailing-closure = "implemented"
+nesting = "implemented"
 nimble-operator = "implemented"
 no-empty-block = { status = "planned", issue = "#338" }
 no-extension-access-modifier = "implemented"
@@ -140,14 +140,14 @@ private-swiftui-state = "implemented"
 private-unit-test = "implemented"
 prohibited-interface-builder = { status = "planned", issue = "#338" }
 prohibited-super-call = { status = "planned", issue = "#338" }
-protocol-property-accessors-order = { status = "planned", issue = "#298" }
+protocol-property-accessors-order = "implemented"
 quick-discouraged-call = { status = "planned", issue = "#338" }
 quick-discouraged-focused-test = "implemented"
 quick-discouraged-pending-test = "implemented"
 raw-value-for-camel-cased-codable-enum = { status = "planned", issue = "#338" }
 reduce-boolean = "implemented"
 reduce-into = "implemented"
-redundant-discardable-let = { status = "planned", issue = "#298" }
+redundant-discardable-let = "implemented"
 redundant-final = { status = "planned", issue = "#338" }
 redundant-nil-coalescing = "implemented"
 redundant-objc-attribute = "implemented"
@@ -163,7 +163,7 @@ return-value-from-void-function = { status = "planned", issue = "#338" }
 self-binding = { status = "planned", issue = "#298" }
 self-in-property-initialization = "implemented"
 shorthand-argument = { status = "planned", issue = "#298" }
-shorthand-operator = { status = "planned", issue = "#298" }
+shorthand-operator = "implemented"
 shorthand-optional-binding = "implemented"
 single-test-class = { status = "planned", issue = "#298" }
 sorted-enum-cases = { status = "planned", issue = "#298" }
@@ -195,14 +195,14 @@ unused-closure-parameter = "implemented"
 unused-control-flow-label = "implemented"
 unused-declaration = { status = "planned", issue = "#338" }
 unused-enumerated = "implemented"
-unused-optional-binding = { status = "planned", issue = "#298" }
+unused-optional-binding = "implemented"
 unused-setter-value = { status = "planned", issue = "#338" }
 valid-ibinspectable = { status = "planned", issue = "#338" }
 variable-shadowing = { status = "planned", issue = "#338" }
-vertical-parameter-alignment = { status = "planned", issue = "#298" }
+vertical-parameter-alignment = "implemented"
 vertical-parameter-alignment-on-call = { status = "planned", issue = "#298" }
 void-function-in-ternary = { status = "planned", issue = "#338" }
-void-return = { status = "planned", issue = "#298" }
+void-return = "implemented"
 weak-delegate = "implemented"
 xct-specific-matcher = { status = "planned", issue = "#338" }
 xctfail-message = "implemented"

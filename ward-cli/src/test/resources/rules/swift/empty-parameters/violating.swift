@@ -1,0 +1,1 @@
+let callback: (Void) -> Void = { }
