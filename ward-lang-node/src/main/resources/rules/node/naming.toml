@@ -1,0 +1,19 @@
+# Structural rules of the "naming" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/naming"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = ""
+
+[[rules]]
+id = "ward:javascript/naming"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "naming"
+presets = ["standard", "strict"]
+body = ""

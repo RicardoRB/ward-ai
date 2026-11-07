@@ -1,0 +1,17 @@
+# Status of the checkstyle-misc rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-type-style = "not-applicable"
+avoid-escaped-unicode-characters = "not-applicable"
+descendant-token = "not-applicable"
+final-parameters = "not-applicable"
+hex-literal-case = "implemented"
+line-ending = { status = "planned", issue = "#297" }
+multiline-comment-leading-asterisk-presence = "not-applicable"
+newline-at-end-of-file = { status = "planned", issue = "#297" }
+no-code-in-file = { status = "planned", issue = "#297" }
+numerical-prefixes-infixes-suffixes-character-case = "implemented"
+outer-type-filename = "not-applicable"
+todo-comment = "implemented"
+trailing-comment = "implemented"
+uncommented-main = "not-applicable"
+upper-ell = "not-applicable"

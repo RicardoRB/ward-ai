@@ -1,0 +1,3 @@
+# Status of the android-lint rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+unused-attribute = { status = "planned", issue = "#331" }

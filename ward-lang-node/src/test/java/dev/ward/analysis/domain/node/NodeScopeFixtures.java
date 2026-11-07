@@ -18,6 +18,11 @@ final class NodeScopeFixtures {
         .analyze(unit, new AntlrLanguageFrontend().parse(unit).tree());
   }
 
+  /** Builds the scopes of TypeScript source. */
+  static UnitScopes typescript(final String source) {
+    return scopes(AnalysisLanguage.TYPESCRIPT, source);
+  }
+
   /** Builds the scopes of JavaScript source. */
   static UnitScopes javascript(final String source) {
     return scopes(AnalysisLanguage.JAVASCRIPT, source);

@@ -1,0 +1,31 @@
+# Status of the nullaway rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+annotation-value-invalid = { status = "planned", issue = "#322" }
+assign-field-nullable = { status = "planned", issue = "#322" }
+assign-generic-nullable = { status = "planned", issue = "#322" }
+assign-nullable-to-nonnull-array = { status = "planned", issue = "#322" }
+cast-to-nonnull-arg-nonnull = { status = "planned", issue = "#322" }
+dereference-nullable = { status = "planned", issue = "#322" }
+field-no-init = { status = "planned", issue = "#322" }
+generic-inference-failure = { status = "planned", issue = "#322" }
+get-on-empty-optional = { status = "planned", issue = "#322" }
+method-no-init = { status = "planned", issue = "#322" }
+nonnull-field-read-before-init = { status = "planned", issue = "#322" }
+nullable-on-wrong-nested-class-level = { status = "planned", issue = "#322" }
+nullable-varargs-unsupported = { status = "planned", issue = "#322" }
+pass-nullable = { status = "planned", issue = "#322" }
+pass-nullable-generic = { status = "planned", issue = "#322" }
+postcondition-not-satisfied = { status = "planned", issue = "#322" }
+precondition-not-satisfied = { status = "planned", issue = "#322" }
+return-nullable = { status = "planned", issue = "#322" }
+return-nullable-generic = { status = "planned", issue = "#322" }
+switch-expression-nullable = { status = "planned", issue = "#322" }
+type-parameter-cannot-be-nullable = { status = "planned", issue = "#322" }
+unbox-nullable = { status = "planned", issue = "#322" }
+unrecognized-nullness-annotation-location = { status = "planned", issue = "#322" }
+wrong-override-param = { status = "planned", issue = "#322" }
+wrong-override-param-generic = { status = "planned", issue = "#322" }
+wrong-override-postcondition = { status = "planned", issue = "#322" }
+wrong-override-precondition = { status = "planned", issue = "#322" }
+wrong-override-return = { status = "planned", issue = "#322" }
+wrong-override-return-generic = { status = "planned", issue = "#322" }

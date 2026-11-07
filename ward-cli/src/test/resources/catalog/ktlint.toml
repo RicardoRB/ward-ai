@@ -2,91 +2,78 @@
 
 [[rule]]
 name = "backing-property-naming"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["backing-property-naming"]
 
 [[rule]]
 name = "enum-entry-name-case"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["enum-entry-name-case"]
 
 [[rule]]
 name = "filename"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["filename"]
 
 [[rule]]
 name = "function-expression-body"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["function-expression-body"]
 
 [[rule]]
 name = "kdoc"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["kdoc"]
 
 [[rule]]
 name = "no-consecutive-comments"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["no-consecutive-comments"]
 
 [[rule]]
 name = "no-empty-file"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["no-empty-file"]
 
 [[rule]]
 name = "no-single-line-block-comment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["no-single-line-block-comment"]
 
 [[rule]]
 name = "no-unit-return"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["no-unit-return"]
 
 [[rule]]
 name = "string-template"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["string-template"]
 
 [[rule]]
 name = "unnecessary-parentheses-before-trailing-lambda"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["unnecessary-parentheses-before-trailing-lambda"]
 
 [[rule]]
 name = "value-argument-comment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["value-argument-comment"]
 
 [[rule]]
 name = "value-parameter-comment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { kotlin = "planned" }
-issues = { kotlin = "#295" }
 ktlint = ["value-parameter-comment"]

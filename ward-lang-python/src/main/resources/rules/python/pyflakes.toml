@@ -390,3 +390,92 @@ check = "module-order"
 problem = "future-after-statement"
 message = "from __future__ imports must occur at the beginning of the file"
 '''
+
+[[rules]]
+id = "ward:python/is-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "is-literal"
+message = "use ==/!= to compare constant literals"
+'''
+
+[[rules]]
+id = "ward:python/default-except-not-last"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "except-order"
+message = "an except clause follows a bare except; the later clauses never run"
+'''
+
+[[rules]]
+id = "ward:python/multi-value-repeated-key-variable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = '^\{(?:[^{}]*,)*?([A-Za-z_]\w*):(?:[^{}]*,)*?\1:'
+message = "dictionary key repeated; the first value is lost"
+'''
+
+[[rules]]
+id = "ward:python/import-shadowed-by-loop-var"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "shadows-import"
+message = "import shadowed by loop variable"
+'''
+
+[[rules]]
+id = "ward:python/undefined-export"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-export"
+message = "undefined name '{value}' in __all__"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unbound-local"
+message = "local variable '{value}' referenced before assignment"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-expected-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "expected-sequence"
+message = "% format expected a sequence but got a mapping"
+'''

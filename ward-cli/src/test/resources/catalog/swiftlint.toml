@@ -2,1354 +2,1148 @@
 
 [[rule]]
 name = "accessibility-label-for-image"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["accessibility_label_for_image"]
 
 [[rule]]
 name = "accessibility-trait-for-button"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["accessibility_trait_for_button"]
 
 [[rule]]
 name = "anonymous-argument-in-multiline-closure"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["anonymous_argument_in_multiline_closure"]
 
 [[rule]]
 name = "array-init"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["array_init"]
 
 [[rule]]
 name = "async-without-await"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["async_without_await"]
 
 [[rule]]
 name = "attributes"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["attributes"]
 
 [[rule]]
 name = "balanced-xctest-lifecycle"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["balanced_xctest_lifecycle"]
 
 [[rule]]
 name = "blanket-disable-command"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["blanket_disable_command"]
 
 [[rule]]
 name = "block-based-kvo"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["block_based_kvo"]
 
 [[rule]]
 name = "capture-variable"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["capture_variable"]
 
 [[rule]]
 name = "class-delegate-protocol"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["class_delegate_protocol"]
 
 [[rule]]
 name = "closure-body-length"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["closure_body_length"]
 
 [[rule]]
 name = "closure-parameter-position"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["closure_parameter_position"]
 
 [[rule]]
 name = "comma-inheritance"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["comma_inheritance"]
 
 [[rule]]
 name = "comment-spacing"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["comment_spacing"]
 
 [[rule]]
 name = "compiler-protocol-init"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["compiler_protocol_init"]
 
 [[rule]]
 name = "computed-accessors-order"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["computed_accessors_order"]
 
 [[rule]]
 name = "conditional-returns-on-newline"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["conditional_returns_on_newline"]
 
 [[rule]]
 name = "contains-over-filter-count"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["contains_over_filter_count"]
 
 [[rule]]
 name = "contains-over-filter-is-empty"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["contains_over_filter_is_empty"]
 
 [[rule]]
 name = "contains-over-first-not-nil"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["contains_over_first_not_nil"]
 
 [[rule]]
 name = "contains-over-range-nil-comparison"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["contains_over_range_nil_comparison"]
 
 [[rule]]
 name = "contrasted-opening-brace"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["contrasted_opening_brace"]
 
 [[rule]]
 name = "control-statement"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["control_statement"]
 
 [[rule]]
 name = "convenience-type"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["convenience_type"]
 
 [[rule]]
 name = "deployment-target"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["deployment_target"]
 
 [[rule]]
 name = "direct-return"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["direct_return"]
 
 [[rule]]
 name = "discarded-notification-center-observer"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["discarded_notification_center_observer"]
 
 [[rule]]
 name = "discouraged-assert"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["discouraged_assert"]
 
 [[rule]]
 name = "discouraged-default-parameter"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["discouraged_default_parameter"]
 
 [[rule]]
 name = "discouraged-direct-init"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["discouraged_direct_init"]
 
 [[rule]]
 name = "discouraged-none-name"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["discouraged_none_name"]
 
 [[rule]]
 name = "discouraged-object-literal"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["discouraged_object_literal"]
 
 [[rule]]
 name = "discouraged-optional-boolean"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["discouraged_optional_boolean"]
 
 [[rule]]
 name = "discouraged-optional-collection"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["discouraged_optional_collection"]
 
 [[rule]]
 name = "duplicate-conditions"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["duplicate_conditions"]
 
 [[rule]]
 name = "duplicate-enum-cases"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["duplicate_enum_cases"]
 
 [[rule]]
 name = "duplicate-imports"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["duplicate_imports"]
 
 [[rule]]
 name = "duplicated-key-in-dictionary-literal"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["duplicated_key_in_dictionary_literal"]
 
 [[rule]]
 name = "dynamic-inline"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["dynamic_inline"]
 
 [[rule]]
 name = "empty-collection-literal"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["empty_collection_literal"]
 
 [[rule]]
 name = "empty-count"
+presets = ["strict"]
 category = "performance"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["empty_count"]
 
 [[rule]]
 name = "empty-enum-arguments"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["empty_enum_arguments"]
 
 [[rule]]
 name = "empty-parameters"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["empty_parameters"]
 
 [[rule]]
 name = "empty-string"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["empty_string"]
 
 [[rule]]
 name = "empty-xctest-method"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["empty_xctest_method"]
 
 [[rule]]
 name = "enum-case-associated-values-count"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["enum_case_associated_values_count"]
 
 [[rule]]
 name = "expiring-todo"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["expiring_todo"]
 
 [[rule]]
 name = "explicit-acl"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["explicit_acl"]
 
 [[rule]]
 name = "explicit-enum-raw-value"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["explicit_enum_raw_value"]
 
 [[rule]]
 name = "explicit-init"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["explicit_init"]
 
 [[rule]]
 name = "explicit-top-level-acl"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["explicit_top_level_acl"]
 
 [[rule]]
 name = "explicit-type-interface"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["explicit_type_interface"]
 
 [[rule]]
 name = "extension-access-modifier"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["extension_access_modifier"]
 
 [[rule]]
 name = "fallthrough"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["fallthrough"]
 
 [[rule]]
 name = "fatal-error-message"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["fatal_error_message"]
 
 [[rule]]
 name = "file-header"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["file_header"]
 
 [[rule]]
 name = "file-name"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["file_name"]
 
 [[rule]]
 name = "file-name-no-space"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["file_name_no_space"]
 
 [[rule]]
 name = "file-types-order"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["file_types_order"]
 
 [[rule]]
 name = "final-test-case"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["final_test_case"]
 
 [[rule]]
 name = "first-where"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["first_where"]
 
 [[rule]]
 name = "flatmap-over-map-reduce"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["flatmap_over_map_reduce"]
 
 [[rule]]
 name = "for-where"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["for_where"]
 
 [[rule]]
 name = "force-cast"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["force_cast"]
 
 [[rule]]
 name = "force-try"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["force_try"]
 
 [[rule]]
 name = "force-unwrapping"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["force_unwrapping"]
 
 [[rule]]
 name = "function-default-parameter-at-end"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["function_default_parameter_at_end"]
 
 [[rule]]
 name = "function-name-whitespace"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["function_name_whitespace"]
 
 [[rule]]
 name = "generic-type-name"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["generic_type_name"]
 
 [[rule]]
 name = "ibinspectable-in-extension"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["ibinspectable_in_extension"]
 
 [[rule]]
 name = "identical-operands"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["identical_operands"]
 
 [[rule]]
 name = "implicit-getter"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["implicit_getter"]
 
 [[rule]]
 name = "implicit-optional-initialization"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["implicit_optional_initialization"]
 
 [[rule]]
 name = "implicitly-unwrapped-optional"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["implicitly_unwrapped_optional"]
 
 [[rule]]
 name = "inclusive-language"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["inclusive_language"]
 
 [[rule]]
 name = "incompatible-concurrency-annotation"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["incompatible_concurrency_annotation"]
 
 [[rule]]
 name = "invalid-swiftlint-command"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["invalid_swiftlint_command"]
 
 [[rule]]
 name = "invisible-character"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["invisible_character"]
 
 [[rule]]
 name = "is-disjoint"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["is_disjoint"]
 
 [[rule]]
 name = "joined-default-parameter"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["joined_default_parameter"]
 
 [[rule]]
 name = "large-tuple"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["large_tuple"]
 
 [[rule]]
 name = "last-where"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["last_where"]
 
 [[rule]]
 name = "legacy-cggeometry-functions"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_cggeometry_functions"]
 
 [[rule]]
 name = "legacy-constant"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_constant"]
 
 [[rule]]
 name = "legacy-constructor"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_constructor"]
 
 [[rule]]
 name = "legacy-hashing"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_hashing"]
 
 [[rule]]
 name = "legacy-multiple"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_multiple"]
 
 [[rule]]
 name = "legacy-nsgeometry-functions"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_nsgeometry_functions"]
 
 [[rule]]
 name = "legacy-objc-type"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["legacy_objc_type"]
 
 [[rule]]
 name = "legacy-random"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_random"]
 
 [[rule]]
 name = "legacy-swiftui-aspect-ratio"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_swiftui_aspect_ratio"]
 
 [[rule]]
 name = "legacy-uigraphics-function"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["legacy_uigraphics_function"]
 
 [[rule]]
 name = "let-var-whitespace"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["let_var_whitespace"]
 
 [[rule]]
 name = "local-doc-comment"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["local_doc_comment"]
 
 [[rule]]
 name = "lower-acl-than-parent"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["lower_acl_than_parent"]
 
 [[rule]]
 name = "mark"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["mark"]
 
 [[rule]]
 name = "multiline-call-arguments"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["multiline_call_arguments"]
 
 [[rule]]
 name = "multiple-closures-with-trailing-closure"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["multiple_closures_with_trailing_closure"]
 
 [[rule]]
 name = "nesting"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["nesting"]
 
 [[rule]]
 name = "nimble-operator"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["nimble_operator"]
 
 [[rule]]
 name = "no-empty-block"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["no_empty_block"]
 
 [[rule]]
 name = "no-extension-access-modifier"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["no_extension_access_modifier"]
 
 [[rule]]
 name = "no-fallthrough-only"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["no_fallthrough_only"]
 
 [[rule]]
 name = "no-grouping-extension"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["no_grouping_extension"]
 
 [[rule]]
 name = "non-optional-string-data-conversion"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["non_optional_string_data_conversion"]
 
 [[rule]]
 name = "non-overridable-class-declaration"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["non_overridable_class_declaration"]
 
 [[rule]]
 name = "notification-center-detachment"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["notification_center_detachment"]
 
 [[rule]]
 name = "ns-number-init-as-function-reference"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["ns_number_init_as_function_reference"]
 
 [[rule]]
 name = "nslocalizedstring-key"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["nslocalizedstring_key"]
 
 [[rule]]
 name = "nslocalizedstring-require-bundle"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["nslocalizedstring_require_bundle"]
 
 [[rule]]
 name = "nsobject-prefer-isequal"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["nsobject_prefer_isequal"]
 
 [[rule]]
 name = "number-separator"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["number_separator"]
 
 [[rule]]
 name = "object-literal"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["object_literal"]
 
 [[rule]]
 name = "one-declaration-per-file"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["one_declaration_per_file"]
 
 [[rule]]
 name = "operator-usage-whitespace"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["operator_usage_whitespace"]
 
 [[rule]]
 name = "optional-data-string-conversion"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["optional_data_string_conversion"]
 
 [[rule]]
 name = "optional-enum-case-matching"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["optional_enum_case_matching"]
 
 [[rule]]
 name = "orphaned-doc-comment"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["orphaned_doc_comment"]
 
 [[rule]]
 name = "overridden-super-call"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["overridden_super_call"]
 
 [[rule]]
 name = "override-in-extension"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["override_in_extension"]
 
 [[rule]]
 name = "pattern-matching-keywords"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["pattern_matching_keywords"]
 
 [[rule]]
 name = "period-spacing"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["period_spacing"]
 
 [[rule]]
 name = "prefer-asset-symbols"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["prefer_asset_symbols"]
 
 [[rule]]
 name = "prefer-condition-list"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["prefer_condition_list"]
 
 [[rule]]
 name = "prefer-key-path"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["prefer_key_path"]
 
 [[rule]]
 name = "prefer-nimble"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["prefer_nimble"]
 
 [[rule]]
 name = "prefer-self-in-static-references"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["prefer_self_in_static_references"]
 
 [[rule]]
 name = "prefer-self-type-over-type-of-self"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["prefer_self_type_over_type_of_self"]
 
 [[rule]]
 name = "prefer-type-checking"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["prefer_type_checking"]
 
 [[rule]]
 name = "prefer-zero-over-explicit-init"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["prefer_zero_over_explicit_init"]
 
 [[rule]]
 name = "prefixed-toplevel-constant"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["prefixed_toplevel_constant"]
 
 [[rule]]
 name = "private-action"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["private_action"]
 
 [[rule]]
 name = "private-outlet"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["private_outlet"]
 
 [[rule]]
 name = "private-over-fileprivate"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["private_over_fileprivate"]
 
 [[rule]]
 name = "private-subject"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["private_subject"]
 
 [[rule]]
 name = "private-swiftui-state"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["private_swiftui_state"]
 
 [[rule]]
 name = "private-unit-test"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["private_unit_test"]
 
 [[rule]]
 name = "prohibited-interface-builder"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["prohibited_interface_builder"]
 
 [[rule]]
 name = "prohibited-super-call"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["prohibited_super_call"]
 
 [[rule]]
 name = "protocol-property-accessors-order"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["protocol_property_accessors_order"]
 
 [[rule]]
 name = "quick-discouraged-call"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["quick_discouraged_call"]
 
 [[rule]]
 name = "quick-discouraged-focused-test"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["quick_discouraged_focused_test"]
 
 [[rule]]
 name = "quick-discouraged-pending-test"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["quick_discouraged_pending_test"]
 
 [[rule]]
 name = "raw-value-for-camel-cased-codable-enum"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["raw_value_for_camel_cased_codable_enum"]
 
 [[rule]]
 name = "reduce-boolean"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["reduce_boolean"]
 
 [[rule]]
 name = "reduce-into"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["reduce_into"]
 
 [[rule]]
 name = "redundant-discardable-let"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["redundant_discardable_let"]
 
 [[rule]]
 name = "redundant-final"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["redundant_final"]
 
 [[rule]]
 name = "redundant-nil-coalescing"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["redundant_nil_coalescing"]
 
 [[rule]]
 name = "redundant-objc-attribute"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["redundant_objc_attribute"]
 
 [[rule]]
 name = "redundant-self"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["redundant_self"]
 
 [[rule]]
 name = "redundant-sendable"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["redundant_sendable"]
 
 [[rule]]
 name = "redundant-set-access-control"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["redundant_set_access_control"]
 
 [[rule]]
 name = "redundant-string-enum-value"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["redundant_string_enum_value"]
 
 [[rule]]
 name = "redundant-type-annotation"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["redundant_type_annotation"]
 
 [[rule]]
 name = "redundant-void-return"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["redundant_void_return"]
 
 [[rule]]
 name = "required-deinit"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["required_deinit"]
 
 [[rule]]
 name = "required-enum-case"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["required_enum_case"]
 
 [[rule]]
 name = "return-value-from-void-function"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["return_value_from_void_function"]
 
 [[rule]]
 name = "self-binding"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["self_binding"]
 
 [[rule]]
 name = "self-in-property-initialization"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["self_in_property_initialization"]
 
 [[rule]]
 name = "shorthand-argument"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["shorthand_argument"]
 
 [[rule]]
 name = "shorthand-operator"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["shorthand_operator"]
 
 [[rule]]
 name = "shorthand-optional-binding"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["shorthand_optional_binding"]
 
 [[rule]]
 name = "single-test-class"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["single_test_class"]
 
 [[rule]]
 name = "sorted-enum-cases"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["sorted_enum_cases"]
 
 [[rule]]
 name = "sorted-first-last"
 category = "performance"
-status = { swift = "implemented" }
 swiftlint = ["sorted_first_last"]
 
 [[rule]]
 name = "static-operator"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["static_operator"]
 
 [[rule]]
 name = "static-over-final-class"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["static_over_final_class"]
 
 [[rule]]
 name = "strict-fileprivate"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["strict_fileprivate"]
 
 [[rule]]
 name = "strong-iboutlet"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["strong_iboutlet"]
 
 [[rule]]
 name = "superfluous-else"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["superfluous_else"]
 
 [[rule]]
 name = "switch-case-on-newline"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["switch_case_on_newline"]
 
 [[rule]]
 name = "syntactic-sugar"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["syntactic_sugar"]
 
 [[rule]]
 name = "test-case-accessibility"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["test_case_accessibility"]
 
 [[rule]]
 name = "toggle-bool"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["toggle_bool"]
 
 [[rule]]
 name = "trailing-closure"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["trailing_closure"]
 
 [[rule]]
 name = "trailing-semicolon"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["trailing_semicolon"]
 
 [[rule]]
 name = "type-contents-order"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["type_contents_order"]
 
 [[rule]]
 name = "typesafe-array-init"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["typesafe_array_init"]
 
 [[rule]]
 name = "unavailable-condition"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["unavailable_condition"]
 
 [[rule]]
 name = "unavailable-function"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["unavailable_function"]
 
 [[rule]]
 name = "unhandled-throwing-task"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unhandled_throwing_task"]
 
 [[rule]]
 name = "unneeded-break-in-switch"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["unneeded_break_in_switch"]
 
 [[rule]]
 name = "unneeded-escaping"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unneeded_escaping"]
 
 [[rule]]
 name = "unneeded-override"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unneeded_override"]
 
 [[rule]]
 name = "unneeded-synthesized-initializer"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unneeded_synthesized_initializer"]
 
 [[rule]]
 name = "unneeded-throws-rethrows"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["unneeded_throws_rethrows"]
 
 [[rule]]
 name = "unowned-variable-capture"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unowned_variable_capture"]
 
 [[rule]]
 name = "untyped-error-in-catch"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["untyped_error_in_catch"]
 
 [[rule]]
 name = "unused-closure-parameter"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["unused_closure_parameter"]
 
 [[rule]]
 name = "unused-control-flow-label"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["unused_control_flow_label"]
 
 [[rule]]
 name = "unused-declaration"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 periphery = ["unused"]
 swiftlint = ["unused_declaration"]
 
 [[rule]]
 name = "unused-enumerated"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["unused_enumerated"]
 
 [[rule]]
 name = "unused-optional-binding"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["unused_optional_binding"]
 
 [[rule]]
 name = "unused-setter-value"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["unused_setter_value"]
 
 [[rule]]
 name = "valid-ibinspectable"
+presets = ["standard", "strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["valid_ibinspectable"]
 
 [[rule]]
 name = "variable-shadowing"
+presets = ["strict"]
 category = "lint"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["variable_shadowing"]
 
 [[rule]]
 name = "vertical-parameter-alignment"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["vertical_parameter_alignment"]
 
 [[rule]]
 name = "vertical-parameter-alignment-on-call"
+presets = ["strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["vertical_parameter_alignment_on_call"]
 
 [[rule]]
 name = "void-function-in-ternary"
+presets = ["standard", "strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["void_function_in_ternary"]
 
 [[rule]]
 name = "void-return"
+presets = ["standard", "strict"]
 category = "linter"
-status = { swift = "planned" }
-issues = { swift = "#301" }
 swiftlint = ["void_return"]
 
 [[rule]]
 name = "weak-delegate"
 category = "lint"
-status = { swift = "implemented" }
 swiftlint = ["weak_delegate"]
 
 [[rule]]
 name = "xct-specific-matcher"
+presets = ["strict"]
 category = "idiomatic"
-status = { swift = "planned" }
-issues = { swift = "#338" }
 swiftlint = ["xct_specific_matcher"]
 
 [[rule]]
 name = "xctfail-message"
 category = "idiomatic"
-status = { swift = "implemented" }
 swiftlint = ["xctfail_message"]

@@ -1,3 +1,4 @@
+/// A shopping cart of item names.
 public struct Cart {
     public private(set) var items: [String] = []
 
