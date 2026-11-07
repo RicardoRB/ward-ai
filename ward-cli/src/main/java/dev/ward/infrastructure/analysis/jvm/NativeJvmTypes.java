@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,12 +74,13 @@ public final class NativeJvmTypes implements TypeSidecar {
         LOGGER.log(Level.WARNING, "event=native-types-classpath-unreadable");
       }
     }
+    final UnaryOperator<String> environment = System::getenv;
     final JvmClassLibraries libraries =
         JvmClassLibraries.open(
             projectRoot,
             entries,
             JvmClassLibraries.jdkHome(
-                Optional.ofNullable(System.getenv("JAVA_HOME")),
+                Optional.ofNullable(environment.apply("JAVA_HOME")),
                 Optional.ofNullable(System.getProperty("java.home"))),
             Optional.of(projectRoot.resolve(CACHE_DIRECTORY)));
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();

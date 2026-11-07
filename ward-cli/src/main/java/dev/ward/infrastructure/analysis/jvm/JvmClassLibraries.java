@@ -69,7 +69,8 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
 
   private static void addEntry(
       final Path path, final Optional<Path> cacheDirectory, final List<JvmLibrary> libraries) {
-    final String name = path.getFileName() == null ? "" : path.getFileName().toString();
+    final Path fileName = path.getFileName();
+    final String name = fileName == null ? "" : fileName.toString();
     if (Files.isDirectory(path)) {
       libraries.add(new DirectoryLibrary(path));
     } else if (Files.isRegularFile(path)

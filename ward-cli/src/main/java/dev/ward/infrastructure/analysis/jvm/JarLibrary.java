@@ -104,9 +104,13 @@ public final class JarLibrary implements JvmLibrary {
   }
 
   private static void store(final Path file, final Set<String> found) {
+    final Path directory = file.toAbsolutePath().getParent();
+    if (directory == null) {
+      return;
+    }
     try {
-      Files.createDirectories(file.getParent());
-      final Path temporary = Files.createTempFile(file.getParent(), INDEX_PREFIX, ".tmp");
+      Files.createDirectories(directory);
+      final Path temporary = Files.createTempFile(directory, INDEX_PREFIX, ".tmp");
       Files.write(temporary, List.copyOf(new TreeSet<>(found)), StandardCharsets.UTF_8);
       Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException unwritable) {
