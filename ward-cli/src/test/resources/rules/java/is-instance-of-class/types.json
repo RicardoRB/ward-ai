@@ -1,0 +1,46 @@
+{
+  "3:12-3:30": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Class"
+      },
+      "name": "isInstance",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "3:27-3:29": {
+    "type": {
+      "name": "java.lang.Class"
+    }
+  },
+  "5:12-5:30": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Class"
+      },
+      "name": "isInstance",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "5:27-5:29": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}

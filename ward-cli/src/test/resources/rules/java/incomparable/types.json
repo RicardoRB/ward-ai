@@ -1,0 +1,12 @@
+{
+  "3:24-3:29": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "5:24-5:29": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "3:12-3:48": {
+    "call": {
+      "declaring": {
+        "name": "com.google.protobuf.ByteString"
+      },
+      "name": "toStringUtf8",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "5:12-5:31": {
+    "call": {
+      "declaring": {
+        "name": "com.google.protobuf.ByteString"
+      },
+      "name": "toStringUtf8",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

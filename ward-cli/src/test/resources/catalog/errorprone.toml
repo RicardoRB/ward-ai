@@ -1302,8 +1302,6 @@ errorprone = ["ImpossibleNullComparison"]
 
 [[rule]]
 name = "incomparable"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["Incomparable"]
 
 [[rule]]
@@ -1354,8 +1352,6 @@ errorprone = ["IndexOfChar"]
 
 [[rule]]
 name = "inexact-varargs-conditional"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InexactVarargsConditional"]
 
 [[rule]]
@@ -1570,8 +1566,6 @@ errorprone = ["IsInstanceIncompatibleType"]
 
 [[rule]]
 name = "is-instance-of-class"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IsInstanceOfClass"]
 
 [[rule]]
@@ -1662,8 +1656,6 @@ errorprone = ["JUnitParameterMethodNotFound"]
 
 [[rule]]
 name = "java8-api-checker"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["Java8ApiChecker"]
 
 [[rule]]
@@ -1786,8 +1778,6 @@ errorprone = ["JodaTimeConverterManager"]
 
 [[rule]]
 name = "joda-to-self"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JodaToSelf"]
 
 [[rule]]
@@ -1810,8 +1800,6 @@ errorprone = ["LambdaFunctionalInterface"]
 
 [[rule]]
 name = "lenient-format-string-validation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LenientFormatStringValidation"]
 
 [[rule]]
@@ -1822,8 +1810,6 @@ errorprone = ["ListRemoveAmbiguous"]
 
 [[rule]]
 name = "lite-byte-string-utf8"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LiteByteStringUtf8"]
 
 [[rule]]
@@ -1898,8 +1884,6 @@ errorprone = ["LoopToTestParameter"]
 
 [[rule]]
 name = "lossy-primitive-compare"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LossyPrimitiveCompare"]
 
 [[rule]]
