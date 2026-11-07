@@ -3,14 +3,11 @@ package dev.ward.analysis.domain.jvm.types;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.scope.Binding;
-import dev.ward.analysis.domain.scope.NameReference;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /** The state of typing one unit: what the scopes resolve, and what typing has found so far. */
 final class Session {
@@ -21,22 +18,16 @@ final class Session {
   final Assignability assignability;
   final Map<Long, Typed> expressions = new HashMap<>();
   final Map<Long, DeclInfo> declarations = new HashMap<>();
-  private final Map<Integer, NameReference> references = new HashMap<>();
-  private final Set<Integer> declared = new HashSet<>();
+  private final ScopeIndex scopes;
   private final Map<Integer, Optional<JType>> variables = new HashMap<>();
 
-  Session(final JvmClasses classes, final UnitScopes scopes) {
+  Session(final JvmClasses classes, final UnitScopes unitScopes) {
     this.classes = classes;
     this.hierarchy = new Hierarchy(classes);
     this.assignability = new Assignability(hierarchy);
     this.inference = new Inference(hierarchy, assignability);
     this.overloads = new Overloads(assignability, inference);
-    for (final NameReference reference : scopes.references()) {
-      references.putIfAbsent(reference.span().startOffset(), reference);
-    }
-    for (final Binding binding : scopes.bindings()) {
-      declared.add(binding.declaration().startOffset());
-    }
+    this.scopes = new ScopeIndex(unitScopes);
   }
 
   static long key(final Span span) {
@@ -58,11 +49,10 @@ final class Session {
 
   /** Returns the binding a name resolved to, if any. */
   Optional<Binding> binding(final SyntaxNode identifier) {
-    final NameReference reference = references.get(identifier.span().startOffset());
-    return reference == null ? Optional.empty() : reference.resolved();
+    return scopes.binding(identifier);
   }
 
-  /** Returns whether a variable was declared at {@code identifier}, and its type. */
+  /** Returns whether a variable was declared at the binding, and its type. */
   Optional<Optional<JType>> variableAt(final Binding binding) {
     return Optional.ofNullable(variables.get(binding.declaration().startOffset()));
   }
@@ -72,16 +62,8 @@ final class Session {
     return variables.getOrDefault(identifier.span().startOffset(), Optional.empty());
   }
 
-  /** Returns whether the binding names a value, not a type, an import or a function. */
-  static boolean isValue(final Binding binding) {
-    return switch (binding.kind()) {
-      case VARIABLE, PARAMETER, CONSTANT -> true;
-      default -> false;
-    };
-  }
-
   boolean isDeclaration(final SyntaxNode identifier) {
-    return declared.contains(identifier.span().startOffset());
+    return scopes.isDeclaration(identifier);
   }
 
   /** Returns the type of {@code binary} with its own type parameters as arguments. */

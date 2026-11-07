@@ -26,19 +26,7 @@ final class JavaMethodReader {
   /** Reads the method declared by {@code entry}, empty when it is not one. */
   static Optional<SourceModel.Member> method(
       final JavaClassReader.Entry entry, final TypeScope scope, final boolean inInterface) {
-    final SyntaxNode node = entry.declaration();
-    final Optional<SyntaxNode> core = unwrap(node);
-    if (core.isEmpty()) {
-      return Optional.empty();
-    }
-    final List<TypeParameter> typeParameters =
-        node.kind().startsWith(GENERIC) ? JavaTypes.typeParameters(node, scope) : List.of();
-    final TypeScope inner =
-        scope.withTypeVariables(typeParameters.stream().map(TypeParameter::name).toList());
-    final List<SyntaxNode> modifiers = new ArrayList<>(entry.modifiers());
-    modifiers.addAll(Syntax.children(node, INTERFACE_MODIFIER));
-    modifiers.addAll(Syntax.children(core.get(), INTERFACE_MODIFIER));
-    return Optional.of(member(entry, core.get(), typeParameters, inner, modifiers, inInterface));
+    return unwrap(entry.declaration()).map(core -> member(entry, core, scope, inInterface));
   }
 
   private static Parameters parameters(final SyntaxNode core, final TypeScope inner) {
@@ -80,10 +68,16 @@ final class JavaMethodReader {
   private static SourceModel.Member member(
       final JavaClassReader.Entry entry,
       final SyntaxNode core,
-      final List<TypeParameter> typeParameters,
-      final TypeScope inner,
-      final List<SyntaxNode> modifiers,
+      final TypeScope scope,
       final boolean inInterface) {
+    final SyntaxNode node = entry.declaration();
+    final List<TypeParameter> typeParameters =
+        node.kind().startsWith(GENERIC) ? JavaTypeParameters.of(node, scope) : List.of();
+    final TypeScope inner =
+        scope.withTypeVariables(typeParameters.stream().map(TypeParameter::name).toList());
+    final List<SyntaxNode> modifiers = new ArrayList<>(entry.modifiers());
+    modifiers.addAll(Syntax.children(node, INTERFACE_MODIFIER));
+    modifiers.addAll(Syntax.children(core, INTERFACE_MODIFIER));
     final boolean constructor = "constructorDeclaration".equals(core.kind());
     final Parameters parameters = parameters(core, inner);
     final Optional<JType> returns =

@@ -13,8 +13,7 @@ import java.util.Set;
  * functional interface a lambda implements.
  */
 final class Inference {
-  /** The functional interface method a lambda implements, in terms of the interface's arguments. */
-  record Shape(List<JType> parameters, JType returns) {}
+  private static final int ONE = 1;
 
   private final Hierarchy hierarchy;
   private final Assignability assignability;
@@ -23,6 +22,9 @@ final class Inference {
     this.hierarchy = hierarchy;
     this.assignability = assignability;
   }
+
+  /** The functional interface method a lambda implements, in terms of the interface's arguments. */
+  record Shape(List<JType> parameters, JType returns) {}
 
   /** Binds the method's type parameters from the argument types. */
   Map<String, JType> infer(
@@ -107,7 +109,7 @@ final class Inference {
     }
     final List<Hierarchy.Found<JvmMethod>> abstracts = new ArrayList<>();
     collectAbstract(site, abstracts, new HashSet<>());
-    if (abstracts.size() != 1) {
+    if (abstracts.size() != ONE) {
       return Optional.empty();
     }
     final Hierarchy.Found<JvmMethod> single = abstracts.get(0);
@@ -151,7 +153,7 @@ final class Inference {
 
   private static boolean objectMethod(final JvmMethod method) {
     final int arity = method.parameters().size();
-    return "equals".equals(method.name()) && arity == 1
+    return "equals".equals(method.name()) && arity == ONE
         || "hashCode".equals(method.name()) && arity == 0
         || "toString".equals(method.name()) && arity == 0;
   }

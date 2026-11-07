@@ -34,6 +34,32 @@ final class JavaLambdas {
     return expression.children().stream().anyMatch(child -> REFERENCE.equals(Syntax.token(child)));
   }
 
+  /** Types the lambda and method reference arguments of a call against the chosen method. */
+  void deferredAll(
+      final JavaCalls.Prepared prepared,
+      final Optional<Hierarchy.Found<JvmMethod>> chosen,
+      final Map<String, JType> bound,
+      final Set<String> variables,
+      final Ctx ctx) {
+    final List<JType> parameters =
+        chosen
+            .map(
+                found ->
+                    found.member().parameters().stream()
+                        .map(parameter -> Types.substitute(parameter, found.bindings()))
+                        .toList())
+            .orElse(List.of());
+    for (int index = 0; index < prepared.nodes().size(); index++) {
+      if (prepared.arguments().get(index).deferred()) {
+        final Optional<JType> declared =
+            index < parameters.size()
+                ? Optional.of(Types.substitute(parameters.get(index), bound))
+                : Optional.empty();
+        deferred(prepared.nodes().get(index), declared, variables, bound, ctx);
+      }
+    }
+  }
+
   /** Types a lambda or method reference argument against the parameter it is passed to. */
   void deferred(
       final SyntaxNode node,

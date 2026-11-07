@@ -12,17 +12,17 @@ import java.util.Set;
 
 /** Supertypes and members over the classes a unit can see. */
 final class Hierarchy {
-  /**
-   * A member found on a type, with the class that declares it and the type arguments of that class
-   * as seen from the site of the lookup.
-   */
-  record Found<T>(T member, JvmClass owner, Map<String, JType> bindings) {}
-
   private final JvmClasses classes;
 
   Hierarchy(final JvmClasses classes) {
     this.classes = classes;
   }
+
+  /**
+   * A member found on a type, with the class that declares it and the type arguments of that class
+   * as seen from the site of the lookup.
+   */
+  record Found<T>(T member, JvmClass owner, Map<String, JType> bindings) {}
 
   Optional<JvmClass> find(final String name) {
     return classes.find(name);
@@ -47,13 +47,9 @@ final class Hierarchy {
               : JType.ClassType.of(
                   parameter.bounds().isEmpty()
                       ? Types.OBJECT
-                      : erasureName(parameter.bounds().get(0))));
+                      : Types.erasedName(parameter.bounds().get(0))));
     }
     return bound;
-  }
-
-  private static String erasureName(final JType type) {
-    return type instanceof JType.ClassType named ? named.name() : Types.OBJECT;
   }
 
   /** Returns the direct supertypes of {@code site} with its arguments applied. */
@@ -103,12 +99,10 @@ final class Hierarchy {
       final JType.ClassType next = pending.poll();
       final Optional<JvmClass> owner = find(next.name());
       if (owner.isPresent() && seen.add(next.name())) {
-        final Optional<JvmField> field =
-            owner.get().fields().stream()
-                .filter(candidate -> candidate.name().equals(name))
-                .findFirst();
+        final Optional<Found<JvmField>> field =
+            MemberViews.field(owner.get(), name, bindings(owner.get(), next));
         if (field.isPresent()) {
-          return Optional.of(new Found<>(field.get(), owner.get(), bindings(owner.get(), next)));
+          return field;
         }
         pending.addAll(directSupertypes(next));
       }
@@ -130,27 +124,12 @@ final class Hierarchy {
       if (owner.isEmpty() || !seen.add(next.name())) {
         continue;
       }
-      final Map<String, JType> bound = bindings(owner.get(), next);
-      for (final JvmMethod method : owner.get().methods()) {
-        if (method.name().equals(name)
-            && (method.access() & Flags.SYNTHETIC) == 0
-            && signatures.add(signature(method, bound))) {
-          final Map<String, JType> visible = new HashMap<>(bound);
-          method.typeParameters().forEach(parameter -> visible.remove(parameter.name()));
-          found.add(new Found<>(method, owner.get(), visible));
-        }
-      }
+      found.addAll(MemberViews.methods(owner.get(), bindings(owner.get(), next), name, signatures));
       if (!JvmMethod.CONSTRUCTOR.equals(name)) {
         pending.addAll(directSupertypes(next));
       }
     }
     return found;
-  }
-
-  private static String signature(final JvmMethod method, final Map<String, JType> bound) {
-    return method.parameters().stream()
-        .map(parameter -> Types.erasure(Types.substitute(parameter, bound), Map.of()))
-        .collect(java.util.stream.Collectors.joining(","));
   }
 
   /**

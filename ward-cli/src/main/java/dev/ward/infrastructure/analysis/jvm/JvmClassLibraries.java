@@ -76,13 +76,12 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
       libraries.add(new DirectoryLibrary(path));
     } else if (Files.isRegularFile(path)
         && (name.endsWith(JAR_SUFFIX) || name.endsWith(ZIP_SUFFIX))) {
-      try {
-        final JarLibrary jar = new JarLibrary(path, cacheDirectory);
-        libraries.add(jar);
-        owned.add(jar);
-      } catch (IOException unreadable) {
-        LOGGER.log(Level.WARNING, "event=classpath-entry-unreadable");
-      }
+      JarLibrary.open(path, cacheDirectory)
+          .ifPresent(
+              jar -> {
+                libraries.add(jar);
+                owned.add(jar);
+              });
     }
   }
 

@@ -12,7 +12,9 @@ final class Literals {
   private static final int BINARY_RADIX = 2;
   private static final int DECIMAL_RADIX = 10;
   private static final int UNICODE_DIGITS = 4;
+  private static final char UNICODE_ESCAPE = 'u';
   private static final String STRING = "java.lang.String";
+  private static final String OCTAL = "OCT_LITERAL";
   private static final String INTEGER_KIND = "int";
   private static final String LONG_KIND = "long";
   private static final Set<String> INTEGER_LITERALS =
@@ -71,7 +73,7 @@ final class Literals {
     return switch (kind) {
       case "HEX_LITERAL" -> HEX_RADIX;
       case "BINARY_LITERAL" -> BINARY_RADIX;
-      case "OCT_LITERAL" -> OCTAL_RADIX;
+      case OCTAL -> OCTAL_RADIX;
       default -> DECIMAL_RADIX;
     };
   }
@@ -85,7 +87,7 @@ final class Literals {
     final int radix = radix(kind);
     if ("HEX_LITERAL".equals(kind) || "BINARY_LITERAL".equals(kind)) {
       digits = digits.substring(2);
-    } else if ("OCT_LITERAL".equals(kind)) {
+    } else if (OCTAL.equals(kind)) {
       digits = digits.substring(1);
     }
     final String name = isLong ? LONG_KIND : INTEGER_KIND;
@@ -112,12 +114,14 @@ final class Literals {
     final StringBuilder text = new StringBuilder();
     int at = 0;
     while (at < body.length()) {
-      final char next = body.charAt(at++);
+      final char next = body.charAt(at);
+      at++;
       if (next != '\\' || at >= body.length()) {
         text.append(next);
       } else {
-        final char code = body.charAt(at++);
-        if (code == 'u') {
+        final char code = body.charAt(at);
+        at++;
+        if (code == UNICODE_ESCAPE) {
           at = unicode(body, at, text);
         } else {
           text.append(ESCAPES.getOrDefault(code, code));
@@ -132,7 +136,7 @@ final class Literals {
    */
   private static int unicode(final String body, final int at, final StringBuilder text) {
     int start = at;
-    while (start < body.length() && body.charAt(start) == 'u') {
+    while (start < body.length() && body.charAt(start) == UNICODE_ESCAPE) {
       start++;
     }
     if (start + UNICODE_DIGITS <= body.length()) {
@@ -141,7 +145,7 @@ final class Literals {
             (char) Integer.parseInt(body.substring(start, start + UNICODE_DIGITS), HEX_RADIX));
         return start + UNICODE_DIGITS;
       } catch (NumberFormatException malformed) {
-        text.append('u');
+        text.append(UNICODE_ESCAPE);
       }
     }
     return at;

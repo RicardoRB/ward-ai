@@ -26,14 +26,7 @@ final class KotlinTyper {
   void run(final KotlinUnitModel model) {
     final Ctx root = new Ctx(model.scope(), Map.of(), List.of(), Optional.empty());
     for (final KotlinUnitModel.Declared declared : model.classes()) {
-      final DeclInfo info =
-          new DeclInfo(
-              Optional.of(declared.jvm()),
-              Optional.empty(),
-              Optional.empty(),
-              Optional.empty(),
-              List.of());
-      session.declare(declared.node(), info);
+      session.declare(declared.node(), classInfo(declared.jvm()));
       final Ctx inside = root.withScope(declared.scope(), declared.jvm().typeParameters());
       Syntax.child(declared.node(), "primaryConstructor")
           .flatMap(constructor -> Syntax.child(constructor, "classParameters"))
@@ -46,6 +39,11 @@ final class KotlinTyper {
           .forEach(variable -> declareWritten(variable, inside));
       walk(declared.node(), inside);
     }
+  }
+
+  private static DeclInfo classInfo(final JvmClass jvm) {
+    return new DeclInfo(
+        Optional.of(jvm), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
   }
 
   private void declare(final SyntaxNode holder, final Ctx ctx) {

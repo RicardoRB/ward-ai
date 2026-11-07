@@ -11,11 +11,14 @@ import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.ClasspathBuiltinNames;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,8 +32,11 @@ public final class NativeJvmTypes implements TypeSidecar {
   private static final String CACHE_DIRECTORY = ".ward/cache/types";
 
   private final Path projectRoot;
-  private JvmClassLibraries libraries;
-  private TypeFacts started;
+  private final ReentrantLock lock = new ReentrantLock();
+  private final AtomicReference<Running> running = new AtomicReference<>();
+
+  /** The libraries that are open and the facts that read them. */
+  private record Running(JvmClassLibraries libraries, TypeFacts facts) {}
 
   /** Creates the facts of the project at {@code projectRoot}. */
   public NativeJvmTypes(final Path projectRoot) {
@@ -44,21 +50,30 @@ public final class NativeJvmTypes implements TypeSidecar {
   }
 
   @Override
-  public synchronized Optional<TypeFacts> start(final Optional<Path> classpathFile) {
-    if (started != null) {
-      return Optional.of(started);
+  public Optional<TypeFacts> start(final Optional<Path> classpathFile) {
+    lock.lock();
+    try {
+      if (running.get() == null) {
+        running.set(open(classpathFile));
+      }
+      return Optional.of(running.get().facts());
+    } finally {
+      lock.unlock();
     }
+  }
+
+  private Running open(final Optional<Path> classpathFile) {
     String classpathText = "";
     List<String> entries = List.of();
     if (classpathFile.isPresent()) {
       try {
         classpathText = Files.readString(classpathFile.get());
         entries = JdtJavaDependencyResolver.classpathEntries(classpathFile.get());
-      } catch (IOException | java.io.UncheckedIOException unreadable) {
+      } catch (IOException | UncheckedIOException unreadable) {
         LOGGER.log(Level.WARNING, "event=native-types-classpath-unreadable");
       }
     }
-    libraries =
+    final JvmClassLibraries libraries =
         JvmClassLibraries.open(
             projectRoot,
             entries,
@@ -73,7 +88,7 @@ public final class NativeJvmTypes implements TypeSidecar {
             new ProjectJvmSources(
                 projectRoot, JvmSourceLayouts.of(projectRoot, List.of(projectRoot))),
             frontend);
-    started =
+    final TypeFacts facts =
         new CachedTypeFacts(
             new NativeJvmTypeFacts(
                 classes,
@@ -84,15 +99,14 @@ public final class NativeJvmTypes implements TypeSidecar {
                     AnalysisLanguage.KOTLIN,
                     new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
             CachedTypeFacts.sha256(classpathText));
-    return Optional.of(started);
+    return new Running(libraries, facts);
   }
 
   @Override
-  public synchronized void close() {
-    if (libraries != null) {
-      libraries.close();
-      libraries = null;
-      started = null;
+  public void close() {
+    final Running current = running.getAndSet(null);
+    if (current != null) {
+      current.libraries().close();
     }
   }
 }

@@ -88,13 +88,9 @@ final class TypeScope {
   }
 
   private Optional<String> resolveSimple(final String name) {
-    for (final String outer : enclosing) {
-      if (BinaryNames.simpleName(outer).equals(name)) {
-        return Optional.of(outer);
-      }
-      if (exists.test(outer + '$' + name)) {
-        return Optional.of(outer + '$' + name);
-      }
+    final Optional<String> enclosed = enclosed(name);
+    if (enclosed.isPresent()) {
+      return enclosed;
     }
     final String imported = imports.single().get(name);
     final Optional<String> viaImport = imported == null ? Optional.empty() : binaryOf(imported);
@@ -105,14 +101,25 @@ final class TypeScope {
     if (exists.test(samePackage)) {
       return Optional.of(samePackage);
     }
-    for (final String container : imports.onDemand()) {
-      final Optional<String> found = binaryOf(container + '.' + name);
-      if (found.isPresent()) {
-        return found;
+    final Optional<String> onDemand =
+        imports.onDemand().stream()
+            .map(container -> binaryOf(container + '.' + name))
+            .flatMap(Optional::stream)
+            .findFirst();
+    final String implicit = JAVA_LANG + '.' + name;
+    return onDemand.or(() -> exists.test(implicit) ? Optional.of(implicit) : Optional.empty());
+  }
+
+  private Optional<String> enclosed(final String name) {
+    for (final String outer : enclosing) {
+      if (BinaryNames.simpleName(outer).equals(name)) {
+        return Optional.of(outer);
+      }
+      if (exists.test(outer + '$' + name)) {
+        return Optional.of(outer + '$' + name);
       }
     }
-    final String implicit = JAVA_LANG + '.' + name;
-    return exists.test(implicit) ? Optional.of(implicit) : Optional.empty();
+    return Optional.empty();
   }
 
   /** Turns a qualified name with dots into a binary name, trying each package and class split. */

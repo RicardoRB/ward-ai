@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.types.CallTarget;
-import dev.ward.analysis.domain.types.ConstantValue;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /** Reads what typing a unit found as the facts asked for, span by span. */
 final class FactTable {
@@ -39,24 +39,28 @@ final class FactTable {
     final Typed typed = Containing.of(session.expressions, span).orElse(Typed.UNKNOWN);
     final Optional<DeclInfo> declaration =
         Optional.ofNullable(session.declarations.get(Session.key(span)));
-    final boolean annotated = kinds.contains(FactKind.ANNOTATIONS) && declaration.isPresent();
     return new SpanFacts(
-        kinds.contains(FactKind.TYPE) ? type(typed).orElse(null) : null,
-        kinds.contains(FactKind.SHAPE) ? shape(typed, declaration).orElse(null) : null,
-        kinds.contains(FactKind.CALL) ? call(typed).orElse(null) : null,
-        annotated ? annotations(declaration.get()) : List.of(),
-        annotated ? declaration.get().scopes().stream().map(FactRefs::display).toList() : List.of(),
-        kinds.contains(FactKind.OVERRIDES) ? overrides(declaration) : List.of(),
-        kinds.contains(FactKind.THROWS) ? thrown(typed, declaration) : List.of(),
-        kinds.contains(FactKind.CONSTANT) ? constant(typed).orElse(null) : null);
+        ask(kinds, FactKind.TYPE, () -> FactValues.type(typed)).orElse(null),
+        ask(kinds, FactKind.SHAPE, () -> shape(typed, declaration)).orElse(null),
+        ask(kinds, FactKind.CALL, () -> FactValues.call(typed)).orElse(null),
+        list(kinds, FactKind.ANNOTATIONS, declaration.map(FactValues::annotations)),
+        list(
+            kinds,
+            FactKind.ANNOTATIONS,
+            declaration.map(found -> found.scopes().stream().map(FactRefs::display).toList())),
+        list(kinds, FactKind.OVERRIDES, Optional.of(overrides(declaration))),
+        list(kinds, FactKind.THROWS, Optional.of(thrown(typed, declaration))),
+        ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null));
   }
 
-  private static Optional<TypeRef> type(final Typed typed) {
-    return typed.type().flatMap(found -> FactRefs.ref(found, Map.of()));
+  private static <T> Optional<T> ask(
+      final Set<FactKind> kinds, final FactKind kind, final Supplier<Optional<T>> fact) {
+    return kinds.contains(kind) ? fact.get() : Optional.empty();
   }
 
-  private static Optional<ConstantValue> constant(final Typed typed) {
-    return typed.constant().map(ConstantValue::new);
+  private static <T> List<T> list(
+      final Set<FactKind> kinds, final FactKind kind, final Optional<List<T>> facts) {
+    return kinds.contains(kind) ? facts.orElse(List.of()) : List.of();
   }
 
   private Optional<TypeShape> shape(final Typed typed, final Optional<DeclInfo> declaration) {
@@ -70,22 +74,6 @@ final class FactTable {
         .map(found -> ((JType.ClassType) found).name())
         .flatMap(session.hierarchy::find)
         .map(FactMembers::shape);
-  }
-
-  private static Optional<CallTarget> call(final Typed typed) {
-    return typed.call().flatMap(found -> FactMembers.target(found.owner(), found.member()));
-  }
-
-  private static List<String> annotations(final DeclInfo declaration) {
-    return declaration
-        .type()
-        .map(JvmClass::annotations)
-        .or(() -> declaration.method().map(JvmMethod::annotations))
-        .or(() -> declaration.field().map(JvmField::annotations))
-        .orElse(List.of())
-        .stream()
-        .map(FactRefs::display)
-        .toList();
   }
 
   private List<CallTarget> overrides(final Optional<DeclInfo> declaration) {

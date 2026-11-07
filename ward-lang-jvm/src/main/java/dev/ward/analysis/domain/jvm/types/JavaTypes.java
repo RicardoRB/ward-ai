@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +8,6 @@ import java.util.Optional;
 final class JavaTypes {
   private static final String TYPE_TYPE = "typeType";
   private static final String CLASS_TYPE = "classType";
-  private static final String IDENTIFIER = "identifier";
   private static final String BRACKET = "[";
   private static final String WILDCARD = "?";
   private static final String EXTENDS = "extends";
@@ -32,7 +30,7 @@ final class JavaTypes {
     return switch (child.kind()) {
       case "primitiveType" -> Optional.of(new JType.Primitive(Syntax.text(child)));
       case "classOrInterfaceType" ->
-          Syntax.child(child, CLASS_TYPE).flatMap(found -> classType(found, scope));
+          Syntax.child(child, CLASS_TYPE).flatMap(found -> JavaClassTypes.of(found, scope));
       default -> Optional.empty();
     };
   }
@@ -54,31 +52,6 @@ final class JavaTypes {
 
   private static JType wrap(final JType component) {
     return new JType.ArrayType(component);
-  }
-
-  /** Returns the class or type variable that a {@code classType} node writes. */
-  static Optional<JType> classType(final SyntaxNode node, final TypeScope scope) {
-    final List<String> segments = new ArrayList<>();
-    List<JType> arguments = List.of();
-    for (final SyntaxNode child : node.children()) {
-      switch (child.kind()) {
-        case "packageName" ->
-            segments.addAll(Syntax.children(child, IDENTIFIER).stream().map(Syntax::text).toList());
-        case "typeIdentifier" -> {
-          segments.add(Syntax.text(child));
-          arguments = List.of();
-        }
-        case "typeArguments" -> arguments = typeArguments(child, scope);
-        default -> {
-          // Dots and annotations carry no name.
-        }
-      }
-    }
-    if (segments.size() == 1 && scope.isTypeVariable(segments.get(0))) {
-      return Optional.of(new JType.TypeVariable(segments.get(0)));
-    }
-    final List<JType> written = arguments;
-    return scope.resolve(segments).map(name -> new JType.ClassType(name, written));
   }
 
   /** Returns the arguments; empty when any one does not resolve, so the type is left raw. */
@@ -108,26 +81,5 @@ final class JavaTypes {
         .map(type -> type(type, scope))
         .flatMap(Optional::stream)
         .toList();
-  }
-
-  /** Returns the type parameters declared by the {@code typeParameters} child of {@code node}. */
-  static List<TypeParameter> typeParameters(final SyntaxNode node, final TypeScope scope) {
-    final List<SyntaxNode> declared =
-        Syntax.child(node, "typeParameters")
-            .map(found -> Syntax.children(found, "typeParameter"))
-            .orElse(List.of());
-    final TypeScope inner =
-        scope.withTypeVariables(declared.stream().map(JavaTypes::nameOf).toList());
-    return declared.stream().map(parameter -> typeParameter(parameter, inner)).toList();
-  }
-
-  private static String nameOf(final SyntaxNode parameter) {
-    return Syntax.text(Syntax.child(parameter, IDENTIFIER).orElse(parameter));
-  }
-
-  private static TypeParameter typeParameter(final SyntaxNode node, final TypeScope scope) {
-    final List<JType> bounds =
-        Syntax.child(node, "typeBound").map(bound -> typeList(bound, scope)).orElse(List.of());
-    return new TypeParameter(nameOf(node), bounds);
   }
 }

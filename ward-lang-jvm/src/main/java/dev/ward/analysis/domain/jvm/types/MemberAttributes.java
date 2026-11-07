@@ -7,7 +7,6 @@ import java.util.List;
 /** The attributes of one class, field or method that type facts need. */
 final class MemberAttributes {
   private static final int UNSIGNED_SHORT = 0xFFFF;
-  private static final int UNSIGNED_BYTE = 0xFF;
 
   String signature;
   Object constant;
@@ -35,15 +34,21 @@ final class MemberAttributes {
   private void attribute(
       final ByteBuffer in, final ConstantPool pool, final String owner, final String attribute) {
     switch (attribute) {
-      case "Signature" -> signature = pool.utf8(in.getShort() & UNSIGNED_SHORT);
-      case "ConstantValue" -> constant = pool.constant(in.getShort() & UNSIGNED_SHORT);
+      case "Signature" -> signature(in, pool);
+      case "ConstantValue" -> constant(in, pool);
       case "Exceptions" -> exceptions(in, pool);
       case "RuntimeVisibleAnnotations", "RuntimeInvisibleAnnotations" ->
           annotations.addAll(new AnnotationReader(in, pool).list());
+      default -> structure(in, pool, owner, attribute);
+    }
+  }
+
+  private void structure(
+      final ByteBuffer in, final ConstantPool pool, final String owner, final String attribute) {
+    switch (attribute) {
       case "RuntimeVisibleParameterAnnotations", "RuntimeInvisibleParameterAnnotations" ->
-          parameterAnnotations(in, pool);
-      case "PermittedSubclasses" -> sealed = true;
-      case "Record" -> record = true;
+          new AnnotationReader(in, pool).parameters(parameterAnnotations);
+      case "PermittedSubclasses", "Record" -> flag(attribute);
       case "InnerClasses" -> innerClasses(in, pool, owner);
       default -> {
         // Other attributes are skipped by the caller.
@@ -51,22 +56,23 @@ final class MemberAttributes {
     }
   }
 
+  private void signature(final ByteBuffer in, final ConstantPool pool) {
+    this.signature = pool.utf8(in.getShort() & UNSIGNED_SHORT);
+  }
+
+  private void constant(final ByteBuffer in, final ConstantPool pool) {
+    this.constant = pool.constant(in.getShort() & UNSIGNED_SHORT);
+  }
+
+  private void flag(final String attribute) {
+    this.sealed = this.sealed || "PermittedSubclasses".equals(attribute);
+    this.record = this.record || "Record".equals(attribute);
+  }
+
   private void exceptions(final ByteBuffer in, final ConstantPool pool) {
     final int count = in.getShort() & UNSIGNED_SHORT;
     for (int index = 0; index < count; index++) {
       thrown.add(pool.className(in.getShort() & UNSIGNED_SHORT));
-    }
-  }
-
-  private void parameterAnnotations(final ByteBuffer in, final ConstantPool pool) {
-    final int parameters = in.get() & UNSIGNED_BYTE;
-    for (int index = 0; index < parameters; index++) {
-      final List<String> names = new AnnotationReader(in, pool).list();
-      if (index < parameterAnnotations.size()) {
-        parameterAnnotations.get(index).addAll(names);
-      } else {
-        parameterAnnotations.add(new ArrayList<>(names));
-      }
     }
   }
 

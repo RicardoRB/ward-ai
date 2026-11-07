@@ -3,6 +3,8 @@ package dev.ward.analysis.domain.jvm.types;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.types.CallTarget;
+import dev.ward.analysis.domain.types.TypeRef;
+import dev.ward.analysis.domain.types.TypeShape;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +41,7 @@ class NativeJvmTypeFactsTest {
     assertThat(target.declaringType().name()).isEqualTo("java.util.Objects");
     assertThat(target.name()).isEqualTo("equals");
     assertThat(target.parameters())
-        .extracting(p -> p.name())
+        .extracting(TypeRef::name)
         .containsExactly("java.lang.Object", "java.lang.Object");
     assertThat(target.returnType().name()).isEqualTo("boolean");
     assertThat(target.isStatic()).isTrue();
@@ -54,11 +56,11 @@ class NativeJvmTypeFactsTest {
                 "    var a = Math.max(1, 2L);\n    var b = Math.abs(1.5f);\n    var c = String.valueOf(any);\n    var d = Arrays.asList(1, 2);\n    var e = List.of(\"a\");"));
 
     assertThat(probe.call("Math.max(1, 2L)").orElseThrow().parameters())
-        .extracting(p -> p.name())
+        .extracting(TypeRef::name)
         .containsExactly("long", "long");
     assertThat(probe.type("Math.abs(1.5f)")).isEqualTo("float");
     assertThat(probe.call("String.valueOf(any)").orElseThrow().parameters())
-        .extracting(p -> p.name())
+        .extracting(TypeRef::name)
         .containsExactly("java.lang.Object");
     assertThat(probe.type("Arrays.asList(1, 2)")).isEqualTo("java.util.List<java.lang.Integer>");
     assertThat(probe.type("List.of(\"a\")")).isEqualTo("java.util.List<java.lang.String>");
@@ -119,9 +121,9 @@ class NativeJvmTypeFactsTest {
     final Probe probe = Probe.of(text);
 
     final String klass = text.substring(text.indexOf("@Deprecated"), text.lastIndexOf('}') + 1);
-    final var shape = probe.at(probe.span(klass)).shapeOf(probe.span(klass)).orElseThrow();
+    final TypeShape shape = probe.at(probe.span(klass)).shapeOf(probe.span(klass)).orElseThrow();
     assertThat(shape.supertypes())
-        .extracting(t -> t.name())
+        .extracting(TypeRef::name)
         .containsExactly("java.lang.Object", "java.lang.Comparable");
     assertThat(probe.at(probe.span(klass)).at(probe.span(klass)).annotations())
         .containsExactly("java.lang.Deprecated");
@@ -134,7 +136,7 @@ class NativeJvmTypeFactsTest {
     assertThat(probe.at(probe.span(toString)).at(probe.span(toString)).overrides()).hasSize(1);
     final String read = "public void read() throws IOException {}";
     assertThat(probe.at(probe.span(read)).at(probe.span(read)).thrown())
-        .extracting(t -> t.name())
+        .extracting(TypeRef::name)
         .containsExactly("java.io.IOException");
     assertThat(probe.at(probe.span("\"user\"")).constant(probe.span("\"user\""))).isPresent();
   }

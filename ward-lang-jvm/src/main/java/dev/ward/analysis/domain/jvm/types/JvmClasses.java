@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,6 +63,7 @@ public final class JvmClasses {
     private final LanguageFrontend frontend;
     private final Map<String, Map<String, JvmClass>> parsed = new HashMap<>();
     private final Set<String> loading = new HashSet<>();
+    private final ReentrantLock lock = new ReentrantLock();
 
     Shared(final JvmLibrary library, final JvmSources sources, final LanguageFrontend frontend) {
       this.library = library;
@@ -69,20 +71,29 @@ public final class JvmClasses {
       this.frontend = frontend;
     }
 
-    synchronized Optional<JvmClass> find(final String name) {
-      final String top = topLevel(name);
-      final Optional<JvmClass> source = Optional.ofNullable(declared(top).get(name));
-      return source.isPresent() ? source : library.find(name);
+    Optional<JvmClass> find(final String name) {
+      lock.lock();
+      try {
+        final Optional<JvmClass> source = Optional.ofNullable(declared(topLevel(name)).get(name));
+        return source.isPresent() ? source : library.find(name);
+      } finally {
+        lock.unlock();
+      }
     }
 
-    synchronized boolean exists(final String name) {
-      if (library.exists(name)) {
-        return true;
+    boolean exists(final String name) {
+      lock.lock();
+      try {
+        if (library.exists(name)) {
+          return true;
+        }
+        final String top = topLevel(name);
+        return top.equals(name)
+            ? sources.declaring(top).isPresent()
+            : declared(top).containsKey(name);
+      } finally {
+        lock.unlock();
       }
-      final String top = topLevel(name);
-      return top.equals(name)
-          ? sources.declaring(top).isPresent()
-          : declared(top).containsKey(name);
     }
 
     private static String topLevel(final String name) {

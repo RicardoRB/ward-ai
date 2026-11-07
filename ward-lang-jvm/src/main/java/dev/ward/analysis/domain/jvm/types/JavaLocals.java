@@ -124,7 +124,7 @@ final class JavaLocals {
     final Optional<JType> written =
         Syntax.child(node, "classOrInterfaceType")
             .flatMap(type -> Syntax.child(type, "classType"))
-            .flatMap(type -> JavaTypes.classType(type, ctx.scope()));
+            .flatMap(type -> JavaClassTypes.of(type, ctx.scope()));
     Syntax.child(node, DECLARATOR_ID)
         .flatMap(id -> Syntax.child(id, IDENTIFIER))
         .or(() -> Syntax.child(node, IDENTIFIER))

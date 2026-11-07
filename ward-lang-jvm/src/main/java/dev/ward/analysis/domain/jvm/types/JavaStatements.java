@@ -9,6 +9,8 @@ import java.util.Set;
 final class JavaStatements {
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
+  private static final String RULE = "switchLabeledRule";
+  private static final String OUTCOME = "switchRuleOutcome";
   private static final Set<String> RESULT_WORDS = Set.of("return", "yield");
 
   private final JavaTyper typer;
@@ -35,7 +37,7 @@ final class JavaStatements {
     for (final SyntaxNode child : node.children()) {
       if (EXPRESSION.equals(child.kind())) {
         expressions.expression(child, ctx, Optional.empty());
-      } else if ("switchLabeledRule".equals(child.kind())) {
+      } else if (RULE.equals(child.kind())) {
         rule(child, ctx, results);
       }
     }
@@ -43,7 +45,7 @@ final class JavaStatements {
 
   private void rule(final SyntaxNode node, final Ctx ctx, final List<Optional<JType>> results) {
     for (final SyntaxNode part : node.children()) {
-      if ("switchRuleOutcome".equals(part.kind())) {
+      if (OUTCOME.equals(part.kind())) {
         part.children().forEach(statement -> outcome(statement, ctx, results));
       } else {
         typer.walk(part, ctx);

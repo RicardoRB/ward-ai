@@ -14,6 +14,7 @@ import java.util.Set;
  * unique the call stays unresolved.
  */
 final class Overloads {
+  private static final int ONE = 1;
   private static final int STRICT_PHASE = 1;
   private static final int VARARGS_PHASE = 3;
 
@@ -119,7 +120,7 @@ final class Overloads {
 
   private Optional<Hierarchy.Found<JvmMethod>> mostSpecific(
       final List<Hierarchy.Found<JvmMethod>> applicable, final boolean varargs) {
-    if (applicable.size() == 1) {
+    if (applicable.size() == ONE) {
       return Optional.of(applicable.get(0));
     }
     final List<Hierarchy.Found<JvmMethod>> best = new ArrayList<>();
@@ -128,12 +129,12 @@ final class Overloads {
         best.add(candidate);
       }
     }
-    if (best.size() == 1) {
+    if (best.size() == ONE) {
       return Optional.of(best.get(0));
     }
     final Set<String> signatures = new HashSet<>();
     applicable.forEach(candidate -> signatures.add(parameters(candidate).toString()));
-    return signatures.size() == 1 ? Optional.of(applicable.get(0)) : Optional.empty();
+    return signatures.size() == ONE ? Optional.of(applicable.get(0)) : Optional.empty();
   }
 
   private boolean moreSpecific(

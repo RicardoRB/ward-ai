@@ -122,7 +122,7 @@ final class JavaClassReader {
             flags,
             superclass,
             supertypes,
-            JavaTypes.typeParameters(declaration, scope),
+            JavaTypeParameters.of(declaration, scope),
             read.stream().flatMap(member -> member.field().stream()).toList(),
             members.methods(read, kind == JvmClass.Kind.CLASS),
             JavaModifiers.annotations(entry.modifiers(), scope),

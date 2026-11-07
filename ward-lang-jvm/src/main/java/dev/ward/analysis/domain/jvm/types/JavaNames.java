@@ -8,6 +8,7 @@ import java.util.Optional;
 /** Types the names of Java: simple names, member selection, class literals and patterns. */
 final class JavaNames {
   private static final String IDENTIFIER = "identifier";
+  private static final String METHOD_CALL = "methodCall";
   private static final int SELECTION = 3;
 
   private final Session session;
@@ -47,7 +48,7 @@ final class JavaNames {
   Typed name(final SyntaxNode identifier, final Ctx ctx) {
     final String name = Syntax.text(identifier);
     final Optional<Binding> binding = session.binding(identifier);
-    if (binding.isPresent() && Session.isValue(binding.get())) {
+    if (binding.isPresent() && ScopeIndex.isValue(binding.get())) {
       return session.variableAt(binding.get()).map(Typed::of).orElse(Typed.UNKNOWN);
     }
     final Optional<Typed> inherited = fieldOfEnclosing(name, ctx);
@@ -93,7 +94,7 @@ final class JavaNames {
       typer.walkChildren(parts.get(parts.size() - 1), ctx);
       return Typed.UNKNOWN;
     }
-    if ("methodCall".equals(right.kind())) {
+    if (METHOD_CALL.equals(right.kind())) {
       return calls.qualified(qualifier, right, ctx);
     }
     if (!IDENTIFIER.equals(right.kind())) {

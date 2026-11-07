@@ -82,20 +82,38 @@ final class JavaMemberReader {
             ? JavaModifiers.flags(entry.modifiers()) | Flags.PUBLIC | Flags.STATIC | Flags.FINAL
             : JavaModifiers.flags(entry.modifiers());
     final List<String> annotations = JavaModifiers.annotations(entry.modifiers(), scope);
-    final List<JvmField> fields = new ArrayList<>();
-    final List<SourceModel.Variable> variables = new ArrayList<>();
-    for (final SyntaxNode declarator : declarators(node)) {
-      final SyntaxNode id = Syntax.child(declarator, DECLARATOR_ID).orElse(declarator);
-      final SyntaxNode name = Syntax.child(id, IDENTIFIER).orElse(declarator);
-      final Optional<JType> type = base.map(found -> JavaTypes.arrayOf(found, dimensions(id)));
-      variables.add(new SourceModel.Variable(name, type));
-      final Optional<Object> value =
-          Flags.has(flags, Flags.FINAL) ? constantOf(declarator) : Optional.empty();
-      type.map(found -> new JvmField(Syntax.text(name), flags, found, value, annotations))
-          .ifPresent(fields::add);
-    }
+    final List<SyntaxNode> declarators = declarators(node);
+    final List<SourceModel.Variable> variables =
+        declarators.stream().map(declarator -> variable(declarator, base)).toList();
+    final List<JvmField> fields =
+        declarators.stream()
+            .map(declarator -> field(declarator, variable(declarator, base), flags, annotations))
+            .flatMap(Optional::stream)
+            .toList();
     return new SourceModel.Member(
         node, entry.outer(), scope, Optional.empty(), fields, variables, Optional.of(node));
+  }
+
+  private static SourceModel.Variable variable(
+      final SyntaxNode declarator, final Optional<JType> base) {
+    final SyntaxNode id = Syntax.child(declarator, DECLARATOR_ID).orElse(declarator);
+    return new SourceModel.Variable(
+        Syntax.child(id, IDENTIFIER).orElse(declarator),
+        base.map(found -> JavaTypes.arrayOf(found, dimensions(id))));
+  }
+
+  private static Optional<JvmField> field(
+      final SyntaxNode declarator,
+      final SourceModel.Variable variable,
+      final int flags,
+      final List<String> annotations) {
+    final Optional<Object> value =
+        Flags.has(flags, Flags.FINAL) ? constantOf(declarator) : Optional.empty();
+    return variable
+        .type()
+        .map(
+            type ->
+                new JvmField(Syntax.text(variable.identifier()), flags, type, value, annotations));
   }
 
   private static List<SyntaxNode> declarators(final SyntaxNode node) {

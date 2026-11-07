@@ -11,6 +11,7 @@ import java.util.Set;
 /** Types the expressions of Kotlin by their shape. */
 final class KotlinExpressions {
   private static final String POSTFIX = "postfixUnaryExpression";
+  private static final String ATOMIC = "atomicExpression";
   private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
   private static final String EXPRESSION = "expression";
   private static final String ADDITIVE = "additiveExpression";
@@ -38,7 +39,7 @@ final class KotlinExpressions {
     if (POSTFIX.equals(node.kind())) {
       return calls.postfix(node, Optional.empty(), ctx);
     }
-    if ("atomicExpression".equals(node.kind())) {
+    if (ATOMIC.equals(node.kind())) {
       return atomic(node, ctx);
     }
     final boolean wrapper =
@@ -98,7 +99,7 @@ final class KotlinExpressions {
   private Typed name(final SyntaxNode identifier, final Ctx ctx) {
     final String name = Syntax.text(identifier);
     final Optional<Binding> binding = session.binding(identifier);
-    if (binding.isPresent() && Session.isValue(binding.get())) {
+    if (binding.isPresent() && ScopeIndex.isValue(binding.get())) {
       return session.variableAt(binding.get()).map(Typed::of).orElse(Typed.UNKNOWN);
     }
     final Optional<Typed> inherited =

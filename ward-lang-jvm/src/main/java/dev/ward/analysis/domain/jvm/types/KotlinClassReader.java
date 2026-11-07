@@ -8,6 +8,8 @@ import java.util.Optional;
 /** Reads one Kotlin class declaration into a {@link JvmClass}. */
 final class KotlinClassReader {
   private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
+  private static final String PROPERTY = "propertyDeclaration";
+  private static final String FUNCTION = "functionDeclaration";
 
   private KotlinClassReader() {}
 
@@ -22,9 +24,9 @@ final class KotlinClassReader {
     constructor(node, inner, isInterface, fields, methods);
     final List<SyntaxNode> members = KotlinUnitModel.members(node);
     for (final SyntaxNode member : members) {
-      if ("propertyDeclaration".equals(member.kind())) {
+      if (PROPERTY.equals(member.kind())) {
         propertyMember(member, inner, fields, methods);
-      } else if ("functionDeclaration".equals(member.kind())) {
+      } else if (FUNCTION.equals(member.kind())) {
         function(member, inner).ifPresent(methods::add);
       }
     }

@@ -16,6 +16,8 @@ import java.util.function.Predicate;
 final class KotlinUnitModel {
   private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
   private static final String CLASS = "classDeclaration";
+  private static final String FILE = "kotlinFile";
+  private static final String TOP = "topLevelObject";
   private static final Set<String> MEMBER_KINDS =
       Set.of("functionDeclaration", "propertyDeclaration", CLASS, "objectDeclaration");
 
@@ -61,12 +63,9 @@ final class KotlinUnitModel {
     for (final SyntaxNode child : node.children()) {
       if (CLASS.equals(child.kind())) {
         out.add(child);
-      } else if ("kotlinFile".equals(child.kind()) || "topLevelObject".equals(child.kind())) {
+      } else if (FILE.equals(child.kind()) || TOP.equals(child.kind())) {
         collectClasses(child, out);
       }
-    }
-    if ("kotlinFile".equals(node.kind())) {
-      return;
     }
   }
 

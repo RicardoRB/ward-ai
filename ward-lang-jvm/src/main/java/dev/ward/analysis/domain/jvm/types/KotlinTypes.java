@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +35,8 @@ final class KotlinTypes {
           Map.entry("Exception", "java.lang.Exception"),
           Map.entry("RuntimeException", "java.lang.RuntimeException"));
 
+  private static final int ONE = 1;
+
   private KotlinTypes() {}
 
   /** Reads the dotted names of an {@code identifier} node. */
@@ -43,7 +46,7 @@ final class KotlinTypes {
 
   /** Reads the imports and package of a Kotlin file. */
   static Imports imports(final SyntaxNode root) {
-    final java.util.Map<String, String> single = new java.util.HashMap<>();
+    final Map<String, String> single = new HashMap<>();
     final List<String> onDemand = new ArrayList<>();
     for (final SyntaxNode child : root.children()) {
       Syntax.find(child, "importList")
@@ -113,7 +116,7 @@ final class KotlinTypes {
       final boolean nullable,
       final TypeScope scope) {
     final String first = names.get(0);
-    if (names.size() == 1) {
+    if (names.size() == ONE) {
       final Optional<JType> builtin = builtin(first, arguments, nullable, scope);
       if (builtin.isPresent()) {
         return builtin;
@@ -137,7 +140,7 @@ final class KotlinTypes {
       final JType primitive = new JType.Primitive(PRIMITIVES.get(name));
       return Optional.of(nullable ? Types.boxed(primitive) : primitive);
     }
-    if ("Array".equals(name) && arguments.size() == 1) {
+    if ("Array".equals(name) && arguments.size() == ONE) {
       return Optional.of(new JType.ArrayType(arguments.get(0)));
     }
     return Optional.ofNullable(CLASSES.get(name))

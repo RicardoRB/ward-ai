@@ -9,6 +9,7 @@ import java.util.Set;
 /** Types the operators of Java: arithmetic, comparison, casts, conditionals and indexing. */
 final class JavaOperators {
   private static final String BOOLEAN = "boolean";
+  private static final String NOT = "!";
   private static final String INT = "int";
   private static final Set<String> COMPARISONS =
       Set.of("<", ">", "<=", ">=", "==", "!=", "&&", "||");
@@ -88,7 +89,7 @@ final class JavaOperators {
   }
 
   Typed unary(final String operator, final Typed operand) {
-    if ("!".equals(operator)) {
+    if (NOT.equals(operator)) {
       return Typed.of(new JType.Primitive(BOOLEAN));
     }
     if (operand.type().isEmpty()) {

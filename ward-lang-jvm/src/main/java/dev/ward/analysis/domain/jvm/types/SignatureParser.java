@@ -17,6 +17,9 @@ final class SignatureParser {
   private static final char ARGUMENTS_START = '<';
   private static final char ARGUMENTS_END = '>';
   private static final char THROWS = '^';
+  private static final char BOUND = ':';
+  private static final char INNER = '.';
+  private static final char WILDCARD = '*';
   private static final Map<Character, String> PRIMITIVES =
       Map.of(
           'B', "byte", 'C', "char", 'D', "double", 'F', "float", 'I', "int", 'J', "long", 'S',
@@ -85,20 +88,24 @@ final class SignatureParser {
     }
     position++;
     while (peek() != ARGUMENTS_END) {
-      final int colon = text.indexOf(':', position);
-      final String name = text.substring(position, colon);
-      position = colon;
-      final List<JType> bounds = new ArrayList<>();
-      while (peek() == ':') {
-        position++;
-        if (peek() != ':') {
-          bounds.add(type());
-        }
-      }
-      parameters.add(new TypeParameter(name, bounds));
+      parameters.add(typeParameter());
     }
     position++;
     return parameters;
+  }
+
+  private TypeParameter typeParameter() {
+    final int colon = text.indexOf(BOUND, position);
+    final String name = text.substring(position, colon);
+    position = colon;
+    final List<JType> bounds = new ArrayList<>();
+    while (peek() == BOUND) {
+      position++;
+      if (peek() != BOUND) {
+        bounds.add(type());
+      }
+    }
+    return new TypeParameter(name, bounds);
   }
 
   private JType type() {
@@ -133,7 +140,7 @@ final class SignatureParser {
     while (next != END) {
       if (next == ARGUMENTS_START) {
         arguments = typeArguments();
-      } else if (next == '.') {
+      } else if (next == INNER) {
         name.append('$');
         arguments = List.of();
       } else {
@@ -149,7 +156,7 @@ final class SignatureParser {
     final List<JType> arguments = new ArrayList<>();
     while (peek() != ARGUMENTS_END) {
       final char next = peek();
-      if (next == '*') {
+      if (next == WILDCARD) {
         position++;
         arguments.add(new JType.Wildcard(null, true));
       } else if (next == '+' || next == '-') {

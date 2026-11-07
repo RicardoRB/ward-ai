@@ -141,26 +141,10 @@ final class JavaCalls {
         chosen
             .map(found -> session.inference.infer(found, prepared.arguments()))
             .orElseGet(HashMap::new);
-    final List<JType> parameters =
-        chosen
-            .map(
-                found ->
-                    found.member().parameters().stream()
-                        .map(parameter -> Types.substitute(parameter, found.bindings()))
-                        .toList())
-            .orElse(List.of());
     final Set<String> variables = new HashSet<>();
     chosen.ifPresent(
         found -> found.member().typeParameters().forEach(p -> variables.add(p.name())));
-    for (int index = 0; index < prepared.nodes().size(); index++) {
-      if (prepared.arguments().get(index).deferred()) {
-        final Optional<JType> declared =
-            index < parameters.size()
-                ? Optional.of(Types.substitute(parameters.get(index), bound))
-                : Optional.empty();
-        lambdas.deferred(prepared.nodes().get(index), declared, variables, bound, ctx);
-      }
-    }
+    lambdas.deferredAll(prepared, chosen, bound, variables, ctx);
     if (chosen.isEmpty()) {
       return Typed.UNKNOWN;
     }

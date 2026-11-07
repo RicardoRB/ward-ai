@@ -137,4 +137,11 @@ final class Types {
           wildcard.bound() != null && wildcard.upper() ? erasure(wildcard.bound(), bounds) : OBJECT;
     };
   }
+
+  /**
+   * Returns the class name of the erasure of {@code type}, {@code Object} when it is not a class.
+   */
+  static String erasedName(final JType type) {
+    return type instanceof JType.ClassType named ? named.name() : OBJECT;
+  }
 }

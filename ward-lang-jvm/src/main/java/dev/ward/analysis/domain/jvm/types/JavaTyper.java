@@ -75,17 +75,23 @@ final class JavaTyper {
   void walk(final SyntaxNode node, final Ctx ctx) {
     switch (node.kind()) {
       case EXPRESSION -> expressions.expression(node, ctx, Optional.empty());
+      case "lambdaExpression" -> expressions.expression(wrap(node), ctx, Optional.empty());
+      case "pattern", "switchLabel" -> {
+        locals.declarePattern(node, ctx);
+        walkChildren(node, ctx);
+      }
+      default -> declaration(node, ctx);
+    }
+  }
+
+  private void declaration(final SyntaxNode node, final Ctx ctx) {
+    switch (node.kind()) {
       case "variableDeclarator" -> locals.declarator(node, ctx);
       case "localVariableDeclaration" -> locals.local(node, ctx);
       case "enhancedForControl" -> locals.forEach(node, ctx);
       case "catchClause" -> catchClause(node, ctx);
       case "resource" -> locals.resource(node, ctx);
       case "statement" -> statements.statement(node, ctx);
-      case "lambdaExpression" -> expressions.expression(wrap(node), ctx, Optional.empty());
-      case "pattern", "switchLabel" -> {
-        locals.declarePattern(node, ctx);
-        walkChildren(node, ctx);
-      }
       default -> walkChildren(node, ctx);
     }
   }

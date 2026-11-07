@@ -28,12 +28,16 @@ class JvmClassLibrariesTest {
     }
   }
 
+  private static JarEntry entryOf(final Class<?> type) {
+    return new JarEntry(type.getName().replace('.', '/') + ".class");
+  }
+
   private Path jarOf(final Class<?>... types) throws IOException {
     final Path jar = temp.resolve("lib.jar");
     try (OutputStream out = Files.newOutputStream(jar);
         JarOutputStream jarOut = new JarOutputStream(out)) {
       for (final Class<?> type : types) {
-        jarOut.putNextEntry(new JarEntry(type.getName().replace('.', '/') + ".class"));
+        jarOut.putNextEntry(entryOf(type));
         jarOut.write(bytesOf(type));
         jarOut.closeEntry();
       }
@@ -70,16 +74,16 @@ class JvmClassLibrariesTest {
 
   @Test
   void jarIndexIsCachedByContentHash() throws IOException {
-    final Path jar = jarOf(String.class, java.util.List.class);
+    final Path jar = jarOf(String.class, List.class);
     final Path cache = temp.resolve("cache");
 
-    try (JarLibrary first = new JarLibrary(jar, Optional.of(cache))) {
+    try (JarLibrary first = JarLibrary.open(jar, Optional.of(cache)).orElseThrow()) {
       assertThat(first.find("java.lang.String")).isPresent();
       assertThat(first.exists("java.lang.Integer")).isFalse();
     }
     assertThat(cache).isDirectoryContaining("glob:**/jar-*.idx");
     final Path moved = Files.move(jar, temp.resolve("renamed.jar"));
-    try (JarLibrary warm = new JarLibrary(moved, Optional.of(cache))) {
+    try (JarLibrary warm = JarLibrary.open(moved, Optional.of(cache)).orElseThrow()) {
       assertThat(warm.exists("java.util.List")).isTrue();
       assertThat(warm.find("java.util.List")).isPresent();
     }

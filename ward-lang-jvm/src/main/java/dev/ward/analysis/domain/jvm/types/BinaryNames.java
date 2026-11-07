@@ -22,14 +22,14 @@ final class BinaryNames {
   /** Returns the member class reached from {@code owner} through {@code names}, if each exists. */
   static Optional<String> members(
       final String owner, final List<String> names, final Predicate<String> exists) {
-    String current = owner;
+    final StringBuilder current = new StringBuilder(owner);
     for (final String name : names) {
-      current = current + '$' + name;
-      if (!exists.test(current)) {
+      current.append('$').append(name);
+      if (!exists.test(current.toString())) {
         return Optional.empty();
       }
     }
-    return Optional.of(current);
+    return Optional.of(current.toString());
   }
 
   /**

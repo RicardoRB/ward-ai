@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.jvm.types.ClassFileException;
 import dev.ward.analysis.domain.jvm.types.ClassFileReader;
 import dev.ward.analysis.domain.jvm.types.JvmClass;
 import dev.ward.analysis.domain.jvm.types.JvmLibrary;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -12,12 +13,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -28,7 +30,7 @@ import java.util.zip.ZipFile;
  * a warm run knows which classes the jar holds without opening it again; the jar is opened only to
  * read a class that a rule asked about.
  */
-public final class JarLibrary implements JvmLibrary, java.io.Closeable {
+public final class JarLibrary implements JvmLibrary, Closeable {
   private static final Logger LOGGER = Logger.getLogger(JarLibrary.class.getName());
   private static final String CLASS_SUFFIX = ".class";
   private static final String INDEX_PREFIX = "jar-";
@@ -39,51 +41,64 @@ public final class JarLibrary implements JvmLibrary, java.io.Closeable {
 
   private final Path jar;
   private final Set<String> names;
-  private ZipFile zip;
+  private final AtomicReference<ZipFile> zip = new AtomicReference<>();
+
+  private JarLibrary(final Path jar, final Set<String> names) {
+    this.jar = jar;
+    this.names = names;
+  }
 
   /**
    * Opens the jar at {@code jar}.
    *
    * @param jar the jar file
    * @param cacheDirectory where to keep the class-name index, empty for no cache
-   * @throws IOException if the jar cannot be read
+   * @return the library, empty when the jar cannot be read
    */
-  public JarLibrary(final Path jar, final Optional<Path> cacheDirectory) throws IOException {
-    this.jar = jar;
-    this.names = index(cacheDirectory);
-  }
-
-  private Set<String> index(final Optional<Path> cacheDirectory) throws IOException {
-    final Optional<Path> cached = cacheDirectory.map(this::indexFile);
-    if (cached.isPresent() && Files.isRegularFile(cached.get())) {
-      LOGGER.log(Level.FINE, "event=jar-index-hit");
-      return new HashSet<>(Files.readAllLines(cached.get(), StandardCharsets.UTF_8));
-    }
-    final Set<String> found = new HashSet<>();
-    final ZipFile file = zip();
-    final Enumeration<? extends ZipEntry> entries = file.entries();
-    while (entries.hasMoreElements()) {
-      final String entry = entries.nextElement().getName();
-      if (entry.endsWith(CLASS_SUFFIX)
-          && !entry.startsWith(MULTI_RELEASE)
-          && !entry.startsWith(MODULE_INFO)) {
-        found.add(entry.substring(0, entry.length() - CLASS_SUFFIX.length()).replace('/', '.'));
+  public static Optional<JarLibrary> open(final Path jar, final Optional<Path> cacheDirectory) {
+    try {
+      final Optional<Path> cached = cacheDirectory.map(directory -> indexFile(jar, directory));
+      if (cached.isPresent() && Files.isRegularFile(cached.get())) {
+        LOGGER.log(Level.FINE, "event=jar-index-hit");
+        return Optional.of(
+            new JarLibrary(
+                jar, new HashSet<>(Files.readAllLines(cached.get(), StandardCharsets.UTF_8))));
       }
+      final Set<String> found = classNames(jar);
+      cached.ifPresent(path -> store(path, found));
+      return Optional.of(new JarLibrary(jar, found));
+    } catch (IOException unreadable) {
+      LOGGER.log(Level.WARNING, "event=classpath-entry-unreadable");
+      return Optional.empty();
     }
-    cached.ifPresent(path -> store(path, found));
-    return found;
   }
 
-  private Path indexFile(final Path directory) {
-    return directory.resolve(INDEX_PREFIX + contentHash() + INDEX_SUFFIX);
+  private static Set<String> classNames(final Path jar) throws IOException {
+    try (ZipFile file = new ZipFile(jar.toFile())) {
+      final Set<String> found = new HashSet<>();
+      file.stream()
+          .map(ZipEntry::getName)
+          .filter(entry -> entry.endsWith(CLASS_SUFFIX))
+          .filter(entry -> !entry.startsWith(MULTI_RELEASE) && !entry.startsWith(MODULE_INFO))
+          .map(
+              entry -> entry.substring(0, entry.length() - CLASS_SUFFIX.length()).replace('/', '.'))
+          .forEach(found::add);
+      return found;
+    }
   }
 
-  private String contentHash() {
+  private static Path indexFile(final Path jar, final Path directory) {
+    return directory.resolve(INDEX_PREFIX + contentHash(jar) + INDEX_SUFFIX);
+  }
+
+  private static String contentHash(final Path jar) {
     try (InputStream in = Files.newInputStream(jar)) {
       final MessageDigest digest = MessageDigest.getInstance("SHA-256");
       final byte[] buffer = new byte[BUFFER];
-      for (int read = in.read(buffer); read >= 0; read = in.read(buffer)) {
+      int read = in.read(buffer);
+      while (read >= 0) {
         digest.update(buffer, 0, read);
+        read = in.read(buffer);
       }
       return HexFormat.of().formatHex(digest.digest());
     } catch (IOException | NoSuchAlgorithmException unreadable) {
@@ -95,18 +110,11 @@ public final class JarLibrary implements JvmLibrary, java.io.Closeable {
     try {
       Files.createDirectories(file.getParent());
       final Path temporary = Files.createTempFile(file.getParent(), INDEX_PREFIX, ".tmp");
-      Files.write(temporary, List.copyOf(new java.util.TreeSet<>(found)), StandardCharsets.UTF_8);
+      Files.write(temporary, List.copyOf(new TreeSet<>(found)), StandardCharsets.UTF_8);
       Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException unwritable) {
       LOGGER.log(Level.FINE, "event=jar-index-not-stored");
     }
-  }
-
-  private synchronized ZipFile zip() throws IOException {
-    if (zip == null) {
-      zip = new ZipFile(jar.toFile());
-    }
-    return zip;
   }
 
   @Override
@@ -120,11 +128,12 @@ public final class JarLibrary implements JvmLibrary, java.io.Closeable {
       return Optional.empty();
     }
     try {
-      final ZipEntry entry = zip().getEntry(name.replace('.', '/') + CLASS_SUFFIX);
+      final ZipFile file = opened();
+      final ZipEntry entry = file.getEntry(name.replace('.', '/') + CLASS_SUFFIX);
       if (entry == null) {
         return Optional.empty();
       }
-      try (InputStream in = zip().getInputStream(entry)) {
+      try (InputStream in = file.getInputStream(entry)) {
         return Optional.of(ClassFileReader.read(in.readAllBytes()));
       }
     } catch (IOException | ClassFileException unreadable) {
@@ -133,11 +142,24 @@ public final class JarLibrary implements JvmLibrary, java.io.Closeable {
     }
   }
 
+  private ZipFile opened() throws IOException {
+    final ZipFile current = zip.get();
+    if (current != null) {
+      return current;
+    }
+    final ZipFile fresh = new ZipFile(jar.toFile());
+    if (zip.compareAndSet(null, fresh)) {
+      return fresh;
+    }
+    fresh.close();
+    return zip.get();
+  }
+
   @Override
-  public synchronized void close() throws IOException {
-    if (zip != null) {
-      zip.close();
-      zip = null;
+  public void close() throws IOException {
+    final ZipFile current = zip.getAndSet(null);
+    if (current != null) {
+      current.close();
     }
   }
 }
