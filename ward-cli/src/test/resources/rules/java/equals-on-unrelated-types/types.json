@@ -1,0 +1,8 @@
+{
+  "3:12": {"type": {"name": "java.lang.String"}, "shape": {"kind": "class", "final": true, "supertypes": []}},
+  "3:24": {"type": {"name": "java.lang.Integer"}, "shape": {"kind": "class", "final": true, "supertypes": []}},
+  "4:20": {"type": {"name": "java.lang.String"}, "shape": {"kind": "class", "final": true, "supertypes": []}},
+  "4:32": {"type": {"name": "java.lang.String"}, "shape": {"kind": "class", "final": true, "supertypes": []}},
+  "5:23": {"type": {"name": "java.lang.String"}, "shape": {"kind": "class", "final": true, "supertypes": []}},
+  "5:35": {"type": {"name": "java.lang.Object"}, "shape": {"kind": "class", "final": false, "supertypes": []}}
+}
