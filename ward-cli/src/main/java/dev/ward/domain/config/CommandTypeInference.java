@@ -21,7 +21,6 @@ public final class CommandTypeInference {
   /** Types that init writes with {@code uses}, because no command shape identifies them. */
   public static final Set<String> USES_ONLY =
       Set.of(
-          "archunit",
           "ward",
           "openspec-archived",
           "openspec-junit-traceability",
@@ -34,7 +33,6 @@ public final class CommandTypeInference {
           "openapi-diff",
           "openapi-compat",
           "swift-coverage",
-          "harmonize",
           "android-coverage",
           COMMAND);
 
@@ -78,14 +76,11 @@ public final class CommandTypeInference {
           new Rule("vitest", sequence("vitest")),
           new Rule("jest", sequence("jest")),
           new Rule("bun-test", sequence("bun", "test")),
-          new Rule(
-              "dependency-cruiser", anyOf(sequence("depcruise"), sequence("dependency-cruiser"))),
           new Rule("openspec", sequence("openspec", "validate")),
           new Rule("ruff", sequence("ruff", "check")),
           new Rule("mypy", sequence("mypy")),
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),
-          new Rule("import-linter", sequence("lint-imports")),
           new Rule("django-check", sequence("manage.py", "check")),
           new Rule("pip-audit", sequence("pip-audit")),
           new Rule(

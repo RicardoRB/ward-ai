@@ -35,7 +35,6 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
                 "eslint",
                 "Lints sources with ESLint and typescript-eslint's recommended rules.",
                 node.command("eslint", ".", "--format", "json"))));
-    gates.add(node.dependencyCruiser());
     if (!mutationUnavailable()) {
       gates.add(node.stryker());
     }
@@ -46,11 +45,8 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
   public List<String> presetGates(final QualityPreset preset) {
     final List<String> gates = new ArrayList<>(List.of(typeCheckId(), testGate));
     gates.addAll(linting.presetIds());
-    if (preset == QualityPreset.STRICT) {
-      if (!mutationUnavailable()) {
-        gates.add("stryker");
-      }
-      gates.add("dependency-cruiser");
+    if (preset == QualityPreset.STRICT && !mutationUnavailable()) {
+      gates.add("stryker");
     }
     return List.copyOf(gates);
   }

@@ -18,7 +18,6 @@ public final class QualityGateDefinitions {
           new Definition("pmd", "PMD", Phase.FAST, true),
           gate("sonar", Phase.CI),
           new Definition("dependency-check", "OWASP Dependency-Check", Phase.CI, false),
-          gate("archunit", Phase.LOCAL),
           gate("mutation", Phase.CI),
           gate("semgrep", Phase.CI),
           new Definition("gitleaks", "Gitleaks", Phase.FAST, true),
@@ -42,12 +41,10 @@ public final class QualityGateDefinitions {
           new Definition("jest", "Jest", Phase.LOCAL, false),
           new Definition("bun-test", "Bun test", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.STRYKER, "Stryker", Phase.CI, false),
-          gate("dependency-cruiser", Phase.LOCAL),
           new Definition("ruff", "Ruff", Phase.FAST, true),
           new Definition("mypy", "mypy", Phase.LOCAL, true),
           new Definition("pytest", "pytest", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),
-          new Definition("import-linter", "Import Linter", Phase.LOCAL, false),
           new Definition("django-check", "Django system checks", Phase.LOCAL, false),
           new Definition("pip-audit", "pip-audit", Phase.CI, false),
           new Definition("swiftlint", "SwiftLint", Phase.FAST, true),
@@ -56,7 +53,6 @@ public final class QualityGateDefinitions {
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.SWIFT_COVERAGE, "Swift coverage", Phase.LOCAL, false),
-          new Definition(SupportedQualityGates.HARMONIZE, "Harmonize", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.ANDROID_LINT, "Android Lint", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.ANDROID_UNIT_TEST, "Android unit tests", Phase.LOCAL, false),

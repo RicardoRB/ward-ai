@@ -1,8 +1,6 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.ArchitectureEngine;
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
@@ -47,7 +45,6 @@ final class SelectedGates {
             .toList();
     final List<InitGateOption> gates =
         ids.stream()
-            .filter(id -> !checkedByWard(project, selection, id))
             .map(id -> option(catalog, project, selection, openSpecExecutable, id))
             .toList();
     if (gates.isEmpty() && selection.tools().isEmpty()) {
@@ -80,17 +77,6 @@ final class SelectedGates {
     return catalog.openSpecValidations().contains(id)
         ? catalog.openSpecValidation(project, id, openSpecExecutable)
         : configured(catalog, project, id, selection.preset());
-  }
-
-  /**
-   * Whether {@code id} is an architecture tool that the {@code ward} engine replaces: its layer
-   * rule is then written as {@code [[checks.ward.layers]]}, not as a tool gate.
-   */
-  private static boolean checkedByWard(
-      final Project project, final InitSelection selection, final String id) {
-    return ArchitectureGates.IDS.contains(id)
-        && selection.architectureEngine() == ArchitectureEngine.WARD
-        && !ArchitectureToolPlan.wardLeavesExtras(project, selection);
   }
 
   /** Returns the offered gate {@code id}, with the command {@code preset} configures. */

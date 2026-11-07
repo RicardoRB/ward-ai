@@ -83,7 +83,6 @@ class NodeStrictPresetTest {
             false,
             null,
             false,
-            null,
             null);
 
     assertThat(
@@ -91,13 +90,13 @@ class NodeStrictPresetTest {
                     catalog, project, selection, List.of(gate(project, "stryker")), List.of())
                 .getFirst()
                 .body())
-        .isEqualTo(".ward/reports/\ncoverage/\n.stryker-tmp/\nreports/mutation/\n");
+        .isEqualTo(".ward/reports/\ncoverage/\n.stryker-tmp/\nreports/mutation/\n.ward/cache/\n");
     assertThat(
             OwnedSections.of(
                     catalog, project, selection, List.of(gate(project, "eslint")), List.of())
                 .getFirst()
                 .body())
-        .isEqualTo(".ward/reports/\ncoverage/\n");
+        .isEqualTo(".ward/reports/\ncoverage/\n.ward/cache/\n");
   }
 
   private InitGateOption gate(final Project project, final String id) {

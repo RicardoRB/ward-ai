@@ -10,8 +10,7 @@ import java.util.Optional;
 /**
  * The {@code ward:architecture/layers} rule: reports every dependency edge that leaves a file in a
  * {@code from} layer for a file in a {@code forbidden} layer, once per boundary it breaks, at the
- * reference that creates the edge. Java and Swift test sources are not checked, as the generated
- * ArchUnit and Harmonize rules do not check them.
+ * reference that creates the edge. Java and Swift test sources are not checked.
  */
 public final class LayerDependencyRule implements CompiledRule {
 

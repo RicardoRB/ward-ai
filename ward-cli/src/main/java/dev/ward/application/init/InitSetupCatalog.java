@@ -134,9 +134,7 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
         gates,
         wardVersion,
         new CiWorkflowTemplate.ProjectFacts(
-            manifests.read(project.root()),
-            inputs.runtimeJdk(project),
-            gates.stream().anyMatch(gate -> "harmonize".equals(gate.id()))));
+            manifests.read(project.root()), inputs.runtimeJdk(project)));
   }
 
   QualityHookGeneration qualityHooks() {

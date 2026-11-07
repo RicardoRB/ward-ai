@@ -52,7 +52,7 @@ public class InitGeneralCatalog {
     return List.copyOf(options);
   }
 
-  /** Returns the supported architecture styles for the generated ArchUnit test. */
+  /** Returns the supported architecture styles, which the ward gate checks layer by layer. */
   public List<InitArchitectureOption> architectures() {
     return List.of(
         new InitArchitectureOption("layered", "Layered (controller -> service -> repository)"),

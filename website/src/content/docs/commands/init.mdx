@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--architecture-engine <tool|ward>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -29,8 +29,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--preset <standard\|strict>` | Pre-select the preset's gates and rules. See [Presets and gates](#presets-and-gates). |
 | `--gate <id>[,...]` | Enable these [gates](/configuration/gates/). With `--preset`, adds to the preset's gates. |
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
-| `--architecture <style>` | `layered`, `hexagonal`, or `clean` for the architecture gates: `archunit`, `dependency-cruiser`, `import-linter` and `harmonize`. |
-| `--architecture-engine <tool\|ward>` | Which checker enforces the style. `tool` (default) generates the external tool. `ward` writes the style's boundaries as `[[checks.ward.layers]]`, the strict cycle check as `[checks.ward.cycles]` and, for Python, the feature independence as `[[checks.ward.independence]]`, and generates no layer or cycle tool. Strict extras that the engine does not own (ArchUnit field injection and standard streams on Java) stay on the external tool, which then generates only those rules. `ward` is refused for a project with a language the engine does not resolve (Kotlin, Swift for now),. Unknown values are rejected. |
+| `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`: the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. The wizard asks for it under `strict`. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
@@ -61,13 +60,10 @@ each choice for this codebase, and runs `init` with explicit options after you a
 
 Some gates need extra input:
 
-- **`archunit`** asks for Layered, Hexagonal, or Clean architecture. If test sources already
-  contain ArchUnit classes ending in `Test` or `Tests`, init runs those instead of generating a
-  duplicate. Otherwise it creates a minimal `ArchitectureTest.java`; see
-  [Generated files](#generated-files).
-- **`dependency-cruiser`** in a TypeScript or JavaScript project asks for the same three styles.
-  Init writes the config that enforces the style, unless the project has its own; see
-  [Generated files](#generated-files).
+- **Architecture.** Init always writes the layer boundaries of a style (Layered, Hexagonal, or Clean;
+  `layered` by default) to `ward.toml`, checked by `ward:architecture/layers`. Under `strict` the
+  wizard asks for the style, and the slice cycle check and the feature independence table are
+  written too; see [Generated files](#generated-files).
 - **`zap`** writes a `<TARGET_URL>` placeholder. Replace it with an authorized target before
   `check` will run the gate.
 - **`api-compat`** needs a released baseline. On Maven it is offered only when `pom.xml` declares
@@ -143,8 +139,6 @@ stay in the root script.
 - Convention plugins, `buildSrc`, and nested builds with their own settings file are not modules.
   When a module applies the Kotlin JVM plugin only through a convention plugin, its blocks stay in
   the root script, and init says that no module applies the Kotlin JVM plugin directly.
-- `archunit` is not offered for a multi-module Kotlin build, even under `strict`: module boundaries
-  already enforce the dependency direction. A single-module Kotlin project keeps `archunit`.
 - `ward init --dry-run` lists every module script that would change. Rollback restores every
   script init changed, and a rerun changes no script.
 - The Gradle `coverage` gate fails a module that has no tests, instead of passing it: Gradle skips
@@ -176,7 +170,7 @@ Each version was run on a real JDK in Ward's compatibility matrix:
 | SpotBugs (Maven plugin / Gradle engine) | 4.8.6.6 / 4.8.6 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 |
 | PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
 
-PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, ArchUnit 1.5.1, and Enforcer 3.5.0 use the same
+PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, and Enforcer 3.5.0 use the same
 version on every JDK.
 
 Every strict gate runs on each LTS JDK from 8 to 25. When no version of a gate's tool runs on your
@@ -262,10 +256,11 @@ commercial Arcmutate history plugin.
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
   committed; its full run scans the Git history.
-- **`ArchitectureTest.java`** goes in the package shared by all main sources, for example
-  `com.acme.shop` for `com.acme.shop.domain` and `com.acme.shop.application`. Its rules analyze that
-  whole package. The layer rule passes while layer packages are empty, so a new project does not
-  fail before they exist.
+- **`ward.toml` architecture tables.** `[[checks.ward.layers]]` holds the boundary of the style, and
+  `ward:architecture/layers` checks it. Under `strict`, `[checks.ward.cycles]` lists the source roots
+  whose slices must not form cycles, and `[[checks.ward.independence]]` lists the feature modules that
+  must stay independent. Init writes no ArchUnit test, dependency-cruiser config, Import Linter config
+  or Harmonize package.
 - **The `gitleaks` gate** writes a redacted SARIF report, so `ward check` can attach findings (file,
   line, and rule) to a failed gate:
 
@@ -394,7 +389,6 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `stryker` | `npx stryker run` | `ci` |
 | `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
 | `biome` | `npx biome ci --colors=off --reporter=checkstyle .` (`--error-on-warnings` under `strict`) | `default`, `pre-commit`, `pre-push`, `ci` |
-| `dependency-cruiser` | `npx depcruise . --config <file> --output-type err` | `pre-push`, `ci` |
 | `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
 
 - JavaScript gets the same gates except `tsc`.
@@ -405,13 +399,13 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 
 | | `standard` | `strict` |
 |---|---|---|
-| Gates | `tsc` (TypeScript only), the test runner, and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` and `dependency-cruiser` |
+| Gates | `tsc` (TypeScript only), the test runner, and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` |
 | Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
 | ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
 | Mutation score | none | at least 60%, in `ci` |
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
-score without a minimum. `dependency-cruiser` is offered by both presets, and `strict` selects it.
+score without a minimum.
 
 #### Declared ESLint and Biome versions
 
@@ -527,14 +521,12 @@ root config in its place:
 | `typescript` | 6.0.3 | `>=14.17` |
 | `globals` | 17.13.0 | `>=18` |
 | `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
-| `dependency-cruiser` | 18.6.0 | `^22.0.0 \|\| ^24.0.0 \|\| >=26.0.0`, TypeScript `>=2.0.0 <7.0.0` |
 
 The `eslint` gate adds `eslint`, `@eslint/js`, and `typescript-eslint` (plus `typescript` when it is
 missing) to a TypeScript project, and `eslint`, `@eslint/js`, and `globals` to a JavaScript project,
 with no TypeScript package. The `stryker` gate adds `@stryker-mutator/core` and the runner plugin
 for Vitest or Jest. Bun has no runner plugin, so Stryker runs `bun test` through its command
-runner. Stryker 10 needs Node 22 or later. The `dependency-cruiser` gate adds `dependency-cruiser`,
-and `typescript` to a TypeScript project when it is missing.
+runner. Stryker 10 needs Node 22 or later.
 
 ### Compatibility checks
 
@@ -601,22 +593,6 @@ Before writing, init checks each package it would add against the project's Node
   `clear-text`, and `progress` reporters, and sets `thresholds` with `high: 80` and `low: 60`. With
   `strict` it also sets `break: 60`, so Stryker fails below a 60% mutation score. An existing
   Stryker config is kept with its own thresholds.
-- **`.dependency-cruiser.mjs`** for `dependency-cruiser` when the project has no dependency-cruiser
-  config of its own (`.dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}`). In the chosen style, a
-  module in one layer must not import another. A layer is a directory with that name in the
-  module's path, and the config does not cruise `node_modules`:
-
-  | Style | Modules in a path named | Must not import modules in |
-  |---|---|---|
-  | `layered` | `controller` | `repository` |
-  | `hexagonal` | `domain`, `application` | `adapter`, `infrastructure` |
-  | `clean` | `domain`, `core` | `controller`, `adapter`, `infrastructure` |
-
-  `strict` also forbids circular dependencies. In a TypeScript project, type-only imports count, and
-  the config names `tsconfig.json` when it exists. A layer folder that does not exist matches
-  nothing, so the gate passes. A config the project wrote is used as it is. Init rewrites Ward's
-  file when you change the style or preset, and its first line is `// managed-by: ward` with no
-  preset.
 - These generated configs are ES modules (`.mjs`) in every project and start with a
   `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
   never touches a config you wrote.
@@ -650,7 +626,7 @@ projects are not supported yet, and init stops with an error that names the mana
   the package, so tests cannot import it until one is added.
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
-- `strict` adds `import-linter` and `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
+- `strict` adds `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
   and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
   project's own. `mutmut` runs in `ci` with a 60% minimum.
 - A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
@@ -661,9 +637,9 @@ projects are not supported yet, and init stops with an error that names the mana
 - A FastAPI project adds `httpx` for its test client and the pydantic mypy plugin. A Flask project adds
   `pytest-flask` when it has an app factory (`create_app`), and under strict its blueprints are
   independent features.
-- An architecture style (`layered`, `hexagonal` or `clean`) for `import-linter` writes `.importlinter`.
-  The root package comes from `[project] name` under `src/`. Init stops when it finds no single
-  root package.
+- The architecture style (`layered`, `hexagonal` or `clean`) is written to `ward.toml` as layer
+  boundaries. The root package comes from `[project] name` under `src/`. Init stops when it finds
+  no single root package.
 
 ## Android projects
 
@@ -694,9 +670,9 @@ error that names the generator.
 - **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
   Swift mutation tool is mature enough yet, so Swift strict stops at the checks below.
 - **Proven versions.** CI proves the Swift setup on Xcode 26.0.1 and Xcode 26.6, with SwiftLintPlugins
-  0.65.1 and Harmonize 1.3.0. Init pins those tools for the selected Xcode, within the range Ward's
+  0.65.1. Init pins those tools for the selected Xcode, within the range Ward's
   tools cover (Xcode 26.0 up to 28.0). When no pinned version covers the selected Xcode, init leaves out
-  the `swiftlint` or `harmonize` gate and the plan names the Xcode versions Ward supports for it.
+  the `swiftlint` gate and the plan names the Xcode versions Ward supports for it.
 
   | Gate | `standard` | `strict` |
   |---|---|---|
@@ -705,7 +681,6 @@ error that names the generator.
   | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
   | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
   | `swift-coverage` (SwiftPM) | `swift test --show-codecov-path`, `minimum = 80` | same flags as `swift-test`, `minimum = 85` |
-  | `harmonize` (architecture rules) | not selected; opt-in | selected, `swift test --package-path .ward/swift-architecture` |
 
   The project's `Package.swift`, `project.pbxproj` and build settings are never edited; the compiler
   flags and build settings are on the command line only.
@@ -727,23 +702,9 @@ error that names the generator.
   writes an ownership-marked `.ward/swiftlint-strict.yml` with the strict rules. The `swiftlint` gate
   then passes both files, yours first, so your `disabled_rules` and other keys still apply. Running
   init with `standard` again removes that file.
-- **Architecture rules (`harmonize`).** Selecting `harmonize` asks for the architecture style, as the
-  other architecture gates do; `--architecture` chooses it, and `--yes` uses `layered`. Ward writes an
-  ownership-marked `.ward/swift-architecture/` package that pins [Harmonize](https://github.com/perrystreetsoftware/Harmonize)
-  1.3.0 exactly, with one generated rules test for the style. Harmonize reads the sources with
-  SwiftSyntax and never compiles the app, so `Package.swift` and `project.pbxproj` are not edited and
-  no test target is added. Layers are folders at any depth, matched ignoring case, and a layer
-  folder that does not exist passes. `layered` forbids `controller` code from depending on
-  `repository`; `hexagonal` forbids `domain` and `application` from depending on `adapter` and
-  `infrastructure`; `clean` forbids `domain` and `core` from depending on `controller`, `adapter`
-  and `infrastructure`. A dependency means importing a module with a forbidden layer's name, or
-  naming a type declared under a forbidden folder in an inheritance clause, property, parameter or
-  return type.
-- **Root config.** Harmonize finds the project root by `.harmonize.yaml`, so Ward writes one with its
-  marker, excluding `.ward`, `.build`, `Pods`, `Carthage` and `DerivedData`. A `.harmonize.yaml` you
-  keep is left unchanged, and the plan asks you to add `.ward` to its excludes.
-- **First run.** The first `harmonize` run compiles swift-syntax, which takes about half a minute on a
-  laptop. CI caches `.ward/swift-architecture/.build`, and `.gitignore` names that path.
+- **Architecture rules.** Under `strict`, the wizard asks for the style, as `--architecture` answers it.
+  Ward writes the layer boundaries to `ward.toml`, checked by `ward:architecture/layers`. It writes no
+  Swift package or rules file for them.
 - **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
   JDK, Node, or Python for the Swift job.
 
@@ -903,7 +864,7 @@ as `apps/api/.codex/`).
 ## Wizard tips
 
 - Each question starts with `Step N of M`. The total can grow when an answer adds a follow-up
-  question, such as the architecture style after you select `archunit`.
+  question, such as the architecture style under `strict`.
 - Press Enter to accept the default shown in brackets: `Enter=1` (`standard`) at the preset question
   and `Enter=layered` at the architecture question.
 - Gates whose tool is not installed are marked `[unavailable]`. If you select one anyway, init
@@ -929,7 +890,7 @@ Run `ward init` again and answer `y` to the overwrite question, or pass `--overw
   re-running init does not preselect the previous preset.
 - The gate list starts with the currently enabled gates, so changing one gate takes a couple of key
   presses.
-- Integrations, hooks, tools, and the architecture style are asked as usual.
+- Integrations, hooks, tools, and, under `strict`, the architecture style are asked as usual.
 - If the existing file can't be read, the usual defaults apply.
 
 Answering `n` keeps the file and prints `Kept existing ward.toml. No changes were made.`

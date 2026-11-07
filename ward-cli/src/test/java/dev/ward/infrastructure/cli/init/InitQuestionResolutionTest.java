@@ -37,8 +37,10 @@ class InitQuestionResolutionTest {
     final int exit = init.run("", "--yes", "--preset", "strict", "--integration", "claude-code");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.configuration()).contains("[checks.archunit]").doesNotContain("preset =");
-    assertThat(init.output()).contains("Generated layered ArchUnit test");
+    assertThat(init.configuration())
+        .contains("[[checks.ward.layers]]", "[checks.ward.cycles]")
+        .doesNotContain("preset =");
+    assertThat(init.output()).doesNotContain("ArchUnit");
     assertThat(root.resolve(".claude/settings.json")).exists();
   }
 

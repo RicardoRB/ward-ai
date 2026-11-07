@@ -14,7 +14,7 @@ final class WardGateTemplate {
    * Appends the gate, one {@code [[checks.ward.layers]]} table per boundary, then the cycle and
    * independence tables that {@code architecture} sets.
    */
-  static void append(final StringBuilder content, final EngineArchitecture architecture) {
+  static void append(final StringBuilder content, final WardArchitecture architecture) {
     content
         .append("\n[checks.ward]\nenabled = true\nprofiles = [\"")
         .append(QualityGatePhasePolicy.DEFAULT)

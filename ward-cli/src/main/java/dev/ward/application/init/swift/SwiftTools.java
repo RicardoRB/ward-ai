@@ -1,6 +1,5 @@
 package dev.ward.application.init.swift;
 
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import java.util.ArrayList;
@@ -50,7 +49,6 @@ record SwiftTools(
   static final String SWIFT_TEST = "swift-test";
   static final String XCODEBUILD_TEST = "xcodebuild-test";
   static final String SWIFT_COVERAGE = "swift-coverage";
-  static final String HARMONIZE = "harmonize";
 
   /** The compiler flags strict adds on SwiftPM, so warnings fail and concurrency is complete. */
   private static final List<String> SWIFTPM_STRICT_FLAGS =
@@ -137,13 +135,6 @@ record SwiftTools(
       command.addAll(XCODE_STRICT_SETTINGS);
     }
     return List.copyOf(command);
-  }
-
-  /**
-   * Returns the test run of the architecture rules package, which builds Harmonize on first use.
-   */
-  static List<String> harmonizeCommand() {
-    return List.of("swift", "test", "--package-path", ArchitectureGates.HARMONIZE_PACKAGE);
   }
 
   /** Returns the command that reads the Xcode test result bundle's coverage as JSON. */

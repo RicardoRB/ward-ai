@@ -142,10 +142,7 @@ public class InitService {
     final Path installed = OpenSpecInstallation.install(toolInstaller, project, selection);
     final String executable = OpenSpecInstallation.executable(installed);
     final List<InitGateOption> gates =
-        InitToolchains.reuseTests(
-            project,
-            SelectedGates.resolve(catalog.get(), project, selection, executable),
-            files.architectureTests().existingArchUnitTests(project));
+        SelectedGates.resolve(catalog.get(), project, selection, executable);
     if (selection.architecture() != null) {
       catalog.get().architecture(selection.architecture());
     }
@@ -199,7 +196,7 @@ public class InitService {
             selection.preset(),
             project,
             catalog.get().openSpecDirectories().root(project),
-            EngineArchitecture.of(selection, project, files.architectureTests()));
+            WardArchitecture.of(selection, project, files.architectureTables()));
     final boolean created;
     if (overwrite) {
       files.configuration().replace(file, content);

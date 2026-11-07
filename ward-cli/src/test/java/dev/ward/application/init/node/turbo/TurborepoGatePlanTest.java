@@ -50,12 +50,6 @@ class TurborepoGatePlanTest {
   }
 
   @Test
-  void repositoryWideGatesStayAsSingleRunsFromTheRoot() {
-    assertThat(rootGates(BuildTool.PNPM).get("dependency-cruiser").command())
-        .doesNotContain("turbo");
-  }
-
-  @Test
   void testGateFollowsTheMajorityRunnerAndTiesGoToVitest() {
     final List<WorkspaceMember> members =
         List.of(

@@ -44,15 +44,6 @@ public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
     return List.of();
   }
 
-  /**
-   * Returns {@code gates} with the toolchain's ArchUnit gate running the user's existing {@code
-   * tests}; the default leaves the gates as they are.
-   */
-  default List<InitGateOption> reuseTests(
-      final Project project, final List<InitGateOption> gates, final List<String> tests) {
-    return gates;
-  }
-
   /** Returns the plan and output notes the toolchain adds for {@code project}. */
   default List<String> notes(
       final Project project, final QualityPreset preset, final InitInputs inputs) {

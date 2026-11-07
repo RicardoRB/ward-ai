@@ -30,7 +30,6 @@ public final class ManagedPluginCatalog {
           row(PIT, "1.17.4", JDK_8, JDK_10),
           row(PIT, "1.30.1", JDK_11, JDK_25),
           row("maven-enforcer-plugin", "3.5.0", JDK_8, JDK_25),
-          row("archunit-junit5", "1.5.1", JDK_8, JDK_25),
           row("sonar-maven-plugin", "3.11.0.3922", JDK_8, JDK_10),
           row("sonar-maven-plugin", "5.1.0.4751", JDK_11, JDK_25),
           row("dependency-check-maven", "8.4.0", JDK_8, JDK_10),

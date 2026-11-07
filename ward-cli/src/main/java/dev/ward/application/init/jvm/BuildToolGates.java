@@ -107,16 +107,6 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
             "test"));
   }
 
-  // Gradle task options follow their task: test --tests <pattern>.
-  /** Checks architecture rules with the generated ArchitectureTest. */
-  InitGateOption archunit() {
-    final String description = "Checks architecture rules with ArchitectureTest.";
-    final String note = " (runs only ArchitectureTest.)";
-    return gradle
-        ? option("archunit", description, note, "test", "--tests", "*ArchitectureTest")
-        : option("archunit", description, note, "-Dtest=ArchitectureTest", "test");
-  }
-
   // japicmp:cmp compares the packaged jar, so Maven packages it first.
   private InitGateOption apiCompat() {
     final String description = "Checks binary/API compatibility between versions with japicmp.";

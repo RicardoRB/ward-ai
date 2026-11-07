@@ -26,13 +26,6 @@ final class GradleQualityBlocks {
         : "tasks.named('check') { dependsOn 'checkstyleMain' }";
   }
 
-  static String archunit(final boolean kotlin, final String version) {
-    final String coordinates = "com.tngtech.archunit:archunit-junit5:" + version;
-    return kotlin
-        ? "dependencies { testImplementation(\"" + coordinates + "\") }"
-        : "dependencies { testImplementation '" + coordinates + "' }";
-  }
-
   /**
    * OSS Index needs credentials, so it stays off until the user opts in through the environment.
    */

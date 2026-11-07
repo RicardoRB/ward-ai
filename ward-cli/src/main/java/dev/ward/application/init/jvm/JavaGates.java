@@ -11,15 +11,7 @@ final class JavaGates implements SourceLanguageGates<BuildToolGates> {
       List.of("compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage");
   private static final List<String> STRICT =
       List.of(
-          "compile",
-          "tests",
-          "checkstyle",
-          "pmd",
-          "spotbugs",
-          "coverage",
-          "archunit",
-          "enforcer",
-          "mutation");
+          "compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage", "enforcer", "mutation");
 
   @Override
   public List<InitGateOption> analysisGates(final BuildToolGates jvm) {
@@ -44,7 +36,6 @@ final class JavaGates implements SourceLanguageGates<BuildToolGates> {
             "pmd:check"),
         jvm.sonar(),
         jvm.dependencyCheck(),
-        jvm.archunit(),
         jvm.mutation());
   }
 

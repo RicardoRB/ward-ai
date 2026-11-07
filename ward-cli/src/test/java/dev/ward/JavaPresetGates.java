@@ -9,15 +9,7 @@ public final class JavaPresetGates {
       List.of("compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage");
   public static final List<String> STRICT =
       List.of(
-          "compile",
-          "tests",
-          "checkstyle",
-          "pmd",
-          "spotbugs",
-          "coverage",
-          "archunit",
-          "enforcer",
-          "mutation");
+          "compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage", "enforcer", "mutation");
 
   private JavaPresetGates() {}
 
