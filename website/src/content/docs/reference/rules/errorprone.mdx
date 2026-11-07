@@ -102,7 +102,7 @@ description: Rules of the catalog file errorprone and their counterparts.
 | `comparable-and-comparator` | severity-warning | [#320](https://github.com/RicardoRB/ward-ai/issues/320) | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparableAndComparator` |
 | `comparable-type` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparableType` |
 | `compare-to-zero` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `CompareToZero` |
-| `comparing-this-with-null` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparingThisWithNull` |
+| `comparing-this-with-null` | errorprone | implemented | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparingThisWithNull` |
 | `comparison-contract-violated` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparisonContractViolated` |
 | `comparison-out-of-range` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `ComparisonOutOfRange` |
 | `compatible-with-annotation-misuse` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `CompatibleWithAnnotationMisuse` |
@@ -502,9 +502,9 @@ description: Rules of the catalog file errorprone and their counterparts.
 | `scope-on-module` | severity-suggestion | [#321](https://github.com/RicardoRB/ward-ai/issues/321) | n/a | n/a | n/a | n/a | n/a | Error Prone `ScopeOnModule` |
 | `self-always-returns-this` | severity-warning | [#320](https://github.com/RicardoRB/ward-ai/issues/320) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfAlwaysReturnsThis` |
 | `self-assertion` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfAssertion` |
-| `self-assignment` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfAssignment` |
-| `self-comparison` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfComparison` |
-| `self-equals` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfEquals` |
+| `self-assignment` | errorprone | implemented | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfAssignment` |
+| `self-comparison` | errorprone | implemented | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfComparison` |
+| `self-equals` | errorprone | implemented | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfEquals` |
 | `self-set` | severity-warning | [#320](https://github.com/RicardoRB/ward-ai/issues/320) | n/a | n/a | n/a | n/a | n/a | Error Prone `SelfSet` |
 | `set-unrecognized` | severity-error | [#319](https://github.com/RicardoRB/ward-ai/issues/319) | n/a | n/a | n/a | n/a | n/a | Error Prone `SetUnrecognized` |
 | `short-circuit-boolean` | severity-warning | [#320](https://github.com/RicardoRB/ward-ai/issues/320) | n/a | n/a | n/a | n/a | n/a | Error Prone `ShortCircuitBoolean` |
@@ -656,3 +656,7 @@ description: Rules of the catalog file errorprone and their counterparts.
 | Rule | Category | Presets | Options | Counterparts |
 |---|---|---|---|---|
 | `ward:python/assert-false` | coding | standard, strict | none | Error Prone `AssertFalse`; Ruff `B011` |
+| `ward:java/comparing-this-with-null` | errorprone | standard | none | Error Prone `ComparingThisWithNull` |
+| `ward:java/self-assignment` | errorprone | standard | none | Error Prone `SelfAssignment` |
+| `ward:java/self-comparison` | errorprone | standard | none | Error Prone `SelfComparison` |
+| `ward:java/self-equals` | errorprone | standard | none | Error Prone `SelfEquals` |
