@@ -1,8 +1,8 @@
 # Status of the spotbugs rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 aa-assertion-of-arguments = { status = "planned", issue = "#316" }
-am-creates-empty-jar-file-entry = { status = "planned", issue = "#316" }
-am-creates-empty-zip-file-entry = { status = "planned", issue = "#316" }
+am-creates-empty-jar-file-entry = "implemented"
+am-creates-empty-zip-file-entry = "implemented"
 ase-assertion-with-side-effect = "implemented"
 ase-assertion-with-side-effect-method = "implemented"
 at-nonatomic-64-bit-primitive = { status = "planned", issue = "#316" }
@@ -43,8 +43,8 @@ cd-circular-dependency = { status = "planned", issue = "#316" }
 ci-confused-inheritance = { status = "planned", issue = "#316" }
 cn-idiom = { status = "planned", issue = "#316" }
 cn-idiom-no-super-call = { status = "planned", issue = "#316" }
-cn-implements-clone-but-not-cloneable = { status = "planned", issue = "#316" }
-cnt-rough-constant-value = { status = "planned", issue = "#316" }
+cn-implements-clone-but-not-cloneable = "implemented"
+cnt-rough-constant-value = "implemented"
 co-abstract-self = { status = "planned", issue = "#316" }
 co-compareto-incorrect-floating = { status = "planned", issue = "#316" }
 co-compareto-results-min-value = "implemented"
@@ -166,8 +166,8 @@ fl-math-using-float-precision = { status = "planned", issue = "#314" }
 fs-bad-date-format-flag-combo = { status = "planned", issue = "#316" }
 gc-unchecked-type-in-generic-call = { status = "planned", issue = "#316" }
 gc-unrelated-types = { status = "planned", issue = "#314" }
-he-equals-use-hashcode = { status = "planned", issue = "#316" }
-he-hashcode-no-equals = { status = "planned", issue = "#316" }
+he-equals-use-hashcode = "implemented"
+he-hashcode-no-equals = "implemented"
 he-hashcode-use-object-equals = { status = "planned", issue = "#316" }
 he-inherits-equals-use-hashcode = { status = "planned", issue = "#316" }
 he-signature-declares-hashing-of-unhashable-class = { status = "planned", issue = "#314" }
@@ -257,7 +257,7 @@ mwn-mismatched-notify = { status = "planned", issue = "#316" }
 mwn-mismatched-wait = { status = "planned", issue = "#316" }
 nm-bad-equal = "implemented"
 nm-class-naming-convention = "implemented"
-nm-class-not-exception = { status = "planned", issue = "#316" }
+nm-class-not-exception = "implemented"
 nm-confusing = { status = "planned", issue = "#316" }
 nm-field-naming-convention = { status = "planned", issue = "#316" }
 nm-future-keyword-used-as-identifier = { status = "planned", issue = "#316" }
@@ -281,8 +281,8 @@ noise-operation = { status = "planned", issue = "#316" }
 np-always-null = { status = "planned", issue = "#314" }
 np-always-null-exception = { status = "planned", issue = "#314" }
 np-argument-might-be-null = { status = "planned", issue = "#314" }
-np-boolean-return-null = { status = "planned", issue = "#316" }
-np-clone-could-return-null = { status = "planned", issue = "#316" }
+np-boolean-return-null = "implemented"
+np-clone-could-return-null = "implemented"
 np-closing-null = { status = "planned", issue = "#314" }
 np-dereference-of-readline-value = { status = "planned", issue = "#316" }
 np-equals-should-handle-null-argument = { status = "planned", issue = "#316" }
@@ -308,7 +308,7 @@ np-optional-return-null = "implemented"
 np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
 np-store-into-nonnull-field = { status = "planned", issue = "#314" }
 np-sync-and-null-check-field = { status = "planned", issue = "#316" }
-np-tostring-could-return-null = { status = "planned", issue = "#316" }
+np-tostring-could-return-null = "implemented"
 np-unwritten-field = "implemented"
 np-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
 ns-dangerous-non-short-circuit = "implemented"
@@ -320,9 +320,9 @@ odr-open-database-resource-exception-path = { status = "planned", issue = "#316"
 os-open-stream = { status = "planned", issue = "#316" }
 os-open-stream-exception-path = { status = "planned", issue = "#316" }
 overriding-methods-must-invoke-super = { status = "planned", issue = "#314" }
-pa-public-array-attribute = { status = "planned", issue = "#316" }
+pa-public-array-attribute = "implemented"
 pa-public-mutable-object-attribute = { status = "planned", issue = "#316" }
-pa-public-primitive-attribute = { status = "planned", issue = "#316" }
+pa-public-primitive-attribute = "implemented"
 perm-super-not-called-in-getpermissions = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-class-names = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-field-names = { status = "planned", issue = "#316" }
@@ -338,8 +338,8 @@ range-array-length = { status = "planned", issue = "#314" }
 range-array-offset = { status = "planned", issue = "#314" }
 range-string-index = { status = "planned", issue = "#314" }
 rc-ref-comparison = "implemented"
-rc-ref-comparison-bad-practice = { status = "planned", issue = "#316" }
-rc-ref-comparison-bad-practice-boolean = { status = "planned", issue = "#316" }
+rc-ref-comparison-bad-practice = "implemented"
+rc-ref-comparison-bad-practice-boolean = "implemented"
 rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
 rcn-redundant-comparison-two-null-values = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-of-nonnull-value = "implemented"
@@ -353,7 +353,7 @@ reflc-reflection-may-increase-accessibility-of-class = "implemented"
 reflf-reflection-may-increase-accessibility-of-field = "implemented"
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
 rp-c-repeated-conditional-test = "implemented"
-rr-not-checked = { status = "planned", issue = "#316" }
+rr-not-checked = "implemented"
 rs-readobject-sync = "implemented"
 ru-invoke-run = "implemented"
 rv-01-to-int = "implemented"
@@ -367,7 +367,7 @@ rv-negating-result-of-compareto = "implemented"
 rv-rem-of-hashcode = "implemented"
 rv-rem-of-random-int = "implemented"
 rv-return-value-ignored = "implemented"
-rv-return-value-ignored-bad-practice = { status = "planned", issue = "#316" }
+rv-return-value-ignored-bad-practice = "implemented"
 rv-return-value-ignored-inferred = { status = "planned", issue = "#316" }
 rv-return-value-ignored-no-side-effect = "implemented"
 rv-return-value-of-putifabsent-ignored = { status = "planned", issue = "#316" }
@@ -385,10 +385,10 @@ sc-start-in-ctor = { status = "planned", issue = "#316" }
 se-bad-field = { status = "planned", issue = "#316" }
 se-bad-field-inner-class = { status = "planned", issue = "#316" }
 se-bad-field-store = { status = "planned", issue = "#316" }
-se-comparator-should-be-serializable = { status = "planned", issue = "#316" }
+se-comparator-should-be-serializable = "implemented"
 se-inner-class = { status = "planned", issue = "#316" }
 se-method-must-be-private = "implemented"
-se-no-serialversionid = { status = "planned", issue = "#316" }
+se-no-serialversionid = "implemented"
 se-no-suitable-constructor = { status = "planned", issue = "#316" }
 se-no-suitable-constructor-for-externalization = { status = "planned", issue = "#316" }
 se-nonfinal-serialversionid = "implemented"
@@ -397,7 +397,7 @@ se-nonstatic-serialversionid = "implemented"
 se-prevent-ext-obj-overwrite = { status = "planned", issue = "#316" }
 se-private-read-resolve-not-inherited = "implemented"
 se-read-resolve-is-static = "implemented"
-se-read-resolve-must-return-object = { status = "planned", issue = "#316" }
+se-read-resolve-must-return-object = "implemented"
 se-transient-field-not-restored = { status = "planned", issue = "#316" }
 se-transient-field-of-nonserializable-class = "implemented"
 sf-dead-store-due-to-switch-fallthrough = "implemented"
