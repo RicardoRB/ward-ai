@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.RuleFileProvider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +27,7 @@ class RuleFileResourcesTest {
   void everyRuleFileMatchesANativeResourceGlob() throws IOException {
     final List<Pattern> globs = globs();
 
-    for (final String file : ClasspathRuleSource.RULE_FILES) {
+    for (final String file : bundledFiles()) {
       assertThat(globs)
           .as("native resource glob for %s", file)
           .anyMatch(glob -> glob.matcher(file).matches());
@@ -35,10 +36,23 @@ class RuleFileResourcesTest {
 
   @Test
   void everyRuleFileExistsOnTheClasspath() {
-    for (final String file : ClasspathRuleSource.RULE_FILES) {
+    for (final String file : bundledFiles()) {
       assertThat(ClasspathRuleSource.class.getResource("/" + file))
           .as("classpath resource %s", file)
           .isNotNull();
+    }
+  }
+
+  private static List<String> bundledFiles() {
+    return BundledLanguages.ruleFiles().stream()
+        .flatMap(provider -> provider.ruleFiles().stream())
+        .toList();
+  }
+
+  @Test
+  void everyLanguageListsItsRuleFilesAlphabetically() {
+    for (final RuleFileProvider provider : BundledLanguages.ruleFiles()) {
+      assertThat(provider.ruleFiles()).isSorted();
     }
   }
 

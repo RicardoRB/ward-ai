@@ -1,5 +1,7 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.application.rule.TomlLists;
+import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CountCheck;
 import dev.ward.analysis.domain.rule.check.DepthCheck;

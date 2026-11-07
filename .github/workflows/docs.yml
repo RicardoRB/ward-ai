@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - 'website/**'
+      - 'ward-cli/src/test/resources/catalog/**'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'website/**'
+      - 'ward-cli/src/test/resources/catalog/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -24,6 +26,17 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      # The rule reference pages are generated from the catalog and are not committed.
+      - name: Generate the rule reference
+        run: >
+          ./mvnw -B -q -pl ward-cli -am test
+          -Dtest=RuleReferenceTest -Dward.rules.reference.write=true
+          -Dsurefire.failIfNoSpecifiedTests=false -Djacoco.skip=true
       - uses: actions/setup-node@v5
         with:
           node-version-file: website/.nvmrc

@@ -1950,3 +1950,33 @@ kinds = ["singleExpression"]
 text = '\.findIndex\(\(?([\w$]+)\)?=>\1===[\w$.]+\)$'
 message = "use indexOf instead of findIndex with a strict equality check"
 '''
+
+[[rules]]
+id = "ward:typescript/need-braces"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
+
+[[rules]]
+id = "ward:javascript/need-braces"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
