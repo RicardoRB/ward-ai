@@ -145,3 +145,61 @@ kinds = ["except_clause"]
 text = '^except(Exception|BaseException)(as\w+)?$'
 message = "catching Exception or BaseException is too broad; name the exceptions to handle"
 '''
+
+[[rules]]
+id = "ward:python/local-variable-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["expr_stmt"]
+inside = ["funcdef"]
+name = "NAME"
+pattern = "^_*[a-z][a-z0-9_]*$"
+message = "local variable name '{value}' must be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/magic-number"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["NUMBER"]
+text = "^(?!(?:0|1|2)$)"
+message = "magic number; name it as a constant"
+'''
+
+[[rules]]
+id = "ward:python/missing-javadoc-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["funcdef"]
+text = "^def(?!_)\\w+\\((?:[^()]|\\([^()]*\\))*\\)(?:->[^:]*)?:(?![\\s]*['\"])"
+message = "public function has no docstring"
+'''
+
+[[rules]]
+id = "ward:python/missing-javadoc-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "^class(?!_)\\w+(?:\\((?:[^()]|\\([^()]*\\))*\\))?:(?![\\s]*['\"])"
+message = "public class has no docstring"
+'''

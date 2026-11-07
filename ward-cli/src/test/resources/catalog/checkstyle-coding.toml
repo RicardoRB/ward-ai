@@ -61,8 +61,9 @@ spotbugs = ["EQ_OTHER_USE_OBJECT"]
 name = "declaration-order"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java member declaration order; Python class bodies have no declaration-order rule of this kind" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
 typescript-eslint = ["member-ordering"]
 checkstyle = ["DeclarationOrder"]
@@ -243,8 +244,8 @@ eslint = ["no-cond-assign"]
 name = "magic-number"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
