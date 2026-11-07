@@ -58,7 +58,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `blocking-path-method-in-async-function` | flake8-async | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `ASYNC240` |
 | `blocking-input-in-async-function` | flake8-async | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `ASYNC250` |
 | `blocking-sleep-in-async-function` | flake8-async | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `ASYNC251` |
-| `unary-prefix-increment-decrement` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B002` |
+| `unary-prefix-increment-decrement` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B002` |
 | `assignment-to-os-environ` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B003` |
 | `unreliable-callable-check` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B004` |
 | `strip-with-multi-characters` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B005` |
@@ -95,7 +95,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `del-attr-with-constant` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B043` |
 | `return-in-generator` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B901` |
 | `class-as-data-structure` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B903` |
-| `raise-without-from-inside-except` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B904` |
+| `raise-without-from-inside-except` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B904` |
 | `zip-without-explicit-strict` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B905` |
 | `loop-iterator-mutation` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B909` |
 | `batched-without-explicit-strict` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B911` |
@@ -194,8 +194,8 @@ description: Rules of the catalog file ruff and their counterparts.
 | `redundant-backslash` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E502` |
 | `none-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E711` |
 | `true-false-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E712` |
-| `not-in-test` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E713` |
-| `not-is-test` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E714` |
+| `not-in-test` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E713` |
+| `not-is-test` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E714` |
 | `type-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E721` |
 | `bare-except` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E722`; Pylint `bare-except` |
 | `lambda-assignment` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E731` |
@@ -233,18 +233,18 @@ description: Rules of the catalog file ruff and their counterparts.
 | `string-dot-format-mixing-automatic` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F525` |
 | `f-string-missing-placeholders` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F541` |
 | `multi-value-repeated-key-literal` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F601` |
-| `multi-value-repeated-key-variable` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F602` |
+| `multi-value-repeated-key-variable` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F602` |
 | `expressions-in-star-assignment` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F621` |
 | `multiple-starred-expressions` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F622` |
 | `assert-tuple` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F631` |
-| `is-literal` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F632` |
+| `is-literal` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F632` |
 | `invalid-print-syntax` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F633` |
 | `if-tuple` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F634` |
 | `break-outside-loop` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F701` |
 | `continue-outside-loop` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F702` |
 | `yield-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F704`; Pylint `yield-outside-function` |
 | `return-outside-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F706`; Pylint `return-outside-function` |
-| `default-except-not-last` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F707` |
+| `default-except-not-last` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F707` |
 | `forward-annotation-syntax-error` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F722` |
 | `redefined-while-unused` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F811` |
 | `undefined-name` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F821` |
@@ -889,6 +889,7 @@ description: Rules of the catalog file ruff and their counterparts.
 
 | Rule | Category | Presets | Options | Counterparts |
 |---|---|---|---|---|
+| `ward:python/unary-prefix-increment-decrement` | coding | standard, strict | none | Ruff `B002` |
 | `ward:python/assignment-to-os-environ` | coding | standard, strict | none | Ruff `B003` |
 | `ward:python/unreliable-callable-check` | coding | standard, strict | none | Ruff `B004` |
 | `ward:python/strip-with-multi-characters` | coding | standard, strict | none | Ruff `B005` |
@@ -910,6 +911,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/re-sub-positional-args` | coding | standard, strict | none | Ruff `B034` |
 | `ward:python/static-key-dict-comprehension` | coding | standard, strict | none | Ruff `B035` |
 | `ward:python/mutable-contextvar-default` | coding | standard, strict | none | Ruff `B039` |
+| `ward:python/raise-without-from-inside-except` | coding | standard, strict | none | Ruff `B904` |
 | `ward:python/zip-without-explicit-strict` | coding | standard, strict | none | Ruff `B905` |
 | `ward:python/unnecessary-generator-list` | coding | strict | none | Ruff `C400` |
 | `ward:python/unnecessary-generator-set` | coding | strict | none | Ruff `C401` |
@@ -934,6 +936,8 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/module-import-not-at-top-of-file` | imports | standard, strict | none | Ruff `E402` |
 | `ward:python/none-comparison` | coding | standard, strict | none | Ruff `E711` |
 | `ward:python/true-false-comparison` | coding | standard, strict | none | Ruff `E712` |
+| `ward:python/not-in-test` | coding | standard, strict | none | Ruff `E713` |
+| `ward:python/not-is-test` | coding | standard, strict | none | Ruff `E714` |
 | `ward:python/type-comparison` | coding | standard, strict | none | Ruff `E721` |
 | `ward:python/bare-except` | coding | standard, strict | none | Ruff `E722`; Pylint `bare-except` |
 | `ward:python/lambda-assignment` | coding | standard, strict | none | Ruff `E731` |
@@ -961,14 +965,17 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/string-dot-format-mixing-automatic` | coding | standard, strict | none | Ruff `F525` |
 | `ward:python/f-string-missing-placeholders` | coding | standard, strict | none | Ruff `F541` |
 | `ward:python/multi-value-repeated-key-literal` | coding | standard, strict | none | Ruff `F601` |
+| `ward:python/multi-value-repeated-key-variable` | coding | standard, strict | none | Ruff `F602` |
 | `ward:python/multiple-starred-expressions` | coding | standard, strict | none | Ruff `F622` |
 | `ward:python/assert-tuple` | coding | standard, strict | none | Ruff `F631` |
+| `ward:python/is-literal` | coding | standard, strict | none | Ruff `F632` |
 | `ward:python/invalid-print-syntax` | coding | standard, strict | none | Ruff `F633` |
 | `ward:python/if-tuple` | coding | standard, strict | none | Ruff `F634` |
 | `ward:python/break-outside-loop` | coding | standard, strict | none | Ruff `F701` |
 | `ward:python/continue-outside-loop` | coding | standard, strict | none | Ruff `F702` |
 | `ward:python/yield-outside-function` | coding | standard, strict | none | Ruff `F704`; Pylint `yield-outside-function` |
 | `ward:python/return-outside-function` | coding | standard, strict | none | Ruff `F706`; Pylint `return-outside-function` |
+| `ward:python/default-except-not-last` | coding | standard, strict | none | Ruff `F707` |
 | `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
 | `ward:python/undefined-name` | coding | standard, strict | none | Ruff `F821` |
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |

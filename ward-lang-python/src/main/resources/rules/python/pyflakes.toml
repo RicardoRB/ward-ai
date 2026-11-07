@@ -390,3 +390,42 @@ check = "module-order"
 problem = "future-after-statement"
 message = "from __future__ imports must occur at the beginning of the file"
 '''
+
+[[rules]]
+id = "ward:python/is-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "is-literal"
+message = "use ==/!= to compare constant literals"
+'''
+
+[[rules]]
+id = "ward:python/default-except-not-last"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "except-order"
+message = "an except clause follows a bare except; the later clauses never run"
+'''
+
+[[rules]]
+id = "ward:python/multi-value-repeated-key-variable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = '^\{(?:[^{}]*,)*?([A-Za-z_]\w*):(?:[^{}]*,)*?\1:'
+message = "dictionary key repeated; the first value is lost"
+'''

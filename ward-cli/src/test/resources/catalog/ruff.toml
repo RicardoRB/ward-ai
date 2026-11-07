@@ -345,9 +345,7 @@ ruff = ["ASYNC251"]
 
 [[rule]]
 name = "unary-prefix-increment-decrement"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B002"]
 
 [[rule]]
@@ -563,9 +561,7 @@ ruff = ["B903"]
 
 [[rule]]
 name = "raise-without-from-inside-except"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B904"]
 
 [[rule]]
@@ -1210,16 +1206,12 @@ ruff = ["E712"]
 
 [[rule]]
 name = "not-in-test"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E713"]
 
 [[rule]]
 name = "not-is-test"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E714"]
 
 [[rule]]
@@ -1430,9 +1422,7 @@ ruff = ["F601"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F602"]
 
 [[rule]]
@@ -1454,9 +1444,7 @@ ruff = ["F631"]
 
 [[rule]]
 name = "is-literal"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F632"]
 
 [[rule]]
@@ -1493,9 +1481,7 @@ pylint = ["return-outside-function"]
 
 [[rule]]
 name = "default-except-not-last"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F707"]
 
 [[rule]]

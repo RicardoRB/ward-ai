@@ -37,7 +37,7 @@ final class ScopeAndFormatChecks {
           "ancestor-check",
           "module-order" ->
           true;
-      default -> false;
+      default -> OperatorAndOrderChecks.isCheck(name);
     };
   }
 
@@ -51,7 +51,10 @@ final class ScopeAndFormatChecks {
       case "dot-format" -> dotFormat(toml);
       case "ancestor-check" -> ancestorCheck(toml);
       case "module-order" -> moduleOrder(toml);
-      default -> loggingArgs(toml);
+      default ->
+          OperatorAndOrderChecks.isCheck(name)
+              ? OperatorAndOrderChecks.build(name, toml)
+              : loggingArgs(toml);
     };
   }
 

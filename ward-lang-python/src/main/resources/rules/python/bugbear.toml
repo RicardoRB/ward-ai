@@ -323,3 +323,29 @@ kinds = ["expr_stmt"]
 text = "^(?!await|yield)(?!\\.\\.\\.$)[^=()\"'<>!]*$"
 message = "useless expression; assign it or remove it"
 '''
+
+[[rules]]
+id = "ward:python/raise-without-from-inside-except"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "raise-without-from"
+message = "within an except clause, raise exceptions with 'raise ... from err'"
+'''
+
+[[rules]]
+id = "ward:python/unary-prefix-increment-decrement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^(\+\+|--)'
+message = "Python has no ++ or -- operator; use += or -="
+'''
