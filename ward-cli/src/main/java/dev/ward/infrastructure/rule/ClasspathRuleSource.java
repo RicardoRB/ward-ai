@@ -40,6 +40,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/dataflow.toml",
           "rules/java/security.toml",
           "rules/java/bestpractices.toml",
+          "rules/java/design.toml",
           "rules/java/correctness.toml",
           "rules/java/architecture.toml",
           "dev/ward/analysis/lang/node/rules.toml",
