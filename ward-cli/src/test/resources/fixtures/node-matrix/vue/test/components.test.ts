@@ -18,9 +18,12 @@ describe("components", () => {
   });
 
   it("renders each welcome item with its heading and icon slot", () => {
-    const wrapper = mount(WelcomeItem, {
-      slots: { icon: '<span class="icon">i</span>', heading: "Heading" },
-    });
+    const wrapper = mount(
+      WelcomeItem,
+      {
+        slots: { icon: '<span class="icon">i</span>', heading: "Heading" },
+      }
+    );
 
     expect(wrapper.get("h3").text()).toBe("Heading");
     expect(wrapper.find(".icon").exists()).toBe(true);

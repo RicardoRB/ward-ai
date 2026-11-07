@@ -46,7 +46,6 @@ public final class PythonPackageCatalog {
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
       Map.of(
-          "ruff-format", List.of(RUFF),
           "ruff", List.of(RUFF),
           "mypy", List.of(MYPY),
           "pytest", List.of(PYTEST, COVERAGE),

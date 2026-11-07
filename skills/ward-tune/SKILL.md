@@ -59,13 +59,13 @@ List the gates with `enabled = true`. This skill tunes these:
 | `dependency-cruiser` | Layer paths, added layers and cycle rules of the import-boundary config | [references/dependency-cruiser.md](references/dependency-cruiser.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
 | `biome` | Biome rules in `biome.jsonc` or the project's own Biome config | [references/biome.md](references/biome.md) |
-| `ruff`, `ruff-format` | Ruff rule sets and complexity in `ruff.toml` or the project's own Ruff config | [references/ruff.md](references/ruff.md) |
+| `ruff` | Ruff rule sets and complexity in `ruff.toml` or the project's own Ruff config | [references/ruff.md](references/ruff.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `import-linter` | Layer and feature contracts in `.importlinter` | [references/import-linter.md](references/import-linter.md) |
 | `ward` | `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init --architecture-engine ward`; the slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
-| `swiftlint`, `swift-format` | SwiftLint rules in `.swiftlint.yml` and the swift-format settings in `.swift-format` | [references/swiftlint.md](references/swiftlint.md) |
+| `swiftlint` | SwiftLint rules in `.swiftlint.yml` | [references/swiftlint.md](references/swiftlint.md) |
 | `harmonize` | Layer rules in the generated `.ward/swift-architecture` package and the root `.harmonize.yaml` | [references/harmonize.md](references/harmonize.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 

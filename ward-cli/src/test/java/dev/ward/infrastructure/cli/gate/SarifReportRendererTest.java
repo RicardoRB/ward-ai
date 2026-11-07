@@ -146,11 +146,11 @@ class SarifReportRendererTest {
 
   @Test
   void fileLevelAndOutsideFindingsAndToolNames() {
-    final Finding format =
+    final Finding style =
         new Finding(
-            "format",
-            "spotless",
-            "format",
+            "checkstyle",
+            "checkstyle",
+            "checkstyle",
             FindingSeverity.ERROR,
             "m",
             "A.java",
@@ -173,11 +173,11 @@ class SarifReportRendererTest {
 
     final JsonTree log =
         render(
-            result("format", GateStatus.FAILED).withFindings(GateFindings.of(List.of(format))),
+            result("checkstyle", GateStatus.FAILED).withFindings(GateFindings.of(List.of(style))),
             result("compile", GateStatus.FAILED).withFindings(GateFindings.of(List.of(outside))));
 
     final JsonTree formatRun = log.get(RUNS).get(0);
-    assertThat(formatRun.get("tool").get("driver").get("name").asString()).isEqualTo("spotless");
+    assertThat(formatRun.get("tool").get("driver").get("name").asString()).isEqualTo("checkstyle");
     assertThat(
             formatRun
                 .get(RESULTS)

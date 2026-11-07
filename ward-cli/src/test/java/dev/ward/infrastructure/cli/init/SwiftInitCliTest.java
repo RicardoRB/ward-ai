@@ -46,11 +46,11 @@ class SwiftInitCliTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     final String toml = Files.readString(root.resolve("ward.toml"));
     assertThat(toml)
-        .contains("swift-format", "swiftlint", "swift-build", "swift-test", "swift-coverage")
+        .contains("ward-format", "swiftlint", "swift-build", "swift-test", "swift-coverage")
         .doesNotContain("xcodebuild-test");
     assertThat(root.resolve(".ward/swift-tools/Package.swift")).exists();
     assertThat(root.resolve(".swiftlint.yml")).exists();
-    assertThat(root.resolve(".swift-format")).exists();
+    assertThat(root.resolve(".swift-format")).doesNotExist();
     assertThat(Files.readString(root.resolve("Package.swift"))).isEqualTo(packageBefore);
     assertThat(init.output()).contains(".ward/swift-tools/Package.swift").doesNotContain("pom.xml");
   }

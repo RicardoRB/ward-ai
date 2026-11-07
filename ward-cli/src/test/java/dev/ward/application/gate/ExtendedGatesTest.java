@@ -28,7 +28,6 @@ class ExtendedGatesTest {
   private static final String GITLEAKS = "gitleaks";
   private static final List<String> GATE_IDENTIFIERS =
       List.of(
-          "format",
           "semgrep",
           GITLEAKS,
           "trivy",

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.condition.OS;
 class WardCliContract7Test extends WardCliIntegrationSupport {
   @Test
   void hookPassingWithoutPromptsEmitsNothing() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     out.getBuffer().setLength(0);
     err.getBuffer().setLength(0);
 

@@ -45,15 +45,6 @@ final class NodePartialTables {
                   null,
                   null,
                   NodeTools.command(project.buildTool(), "eslint", "--format", "json")),
-          "prettier",
-          (project, preset) ->
-              new Table(
-                  NODE_SOURCES,
-                  List.of(".prettierrc*", "prettier.config.*", ".prettierignore", "package.json"),
-                  PATHS,
-                  null,
-                  null,
-                  NodeTools.command(project.buildTool(), "prettier", "--check")),
           "biome",
           (project, preset) ->
               new Table(

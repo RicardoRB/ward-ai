@@ -45,7 +45,6 @@ record SwiftTools(
   static final String STANDARD_COVERAGE = "80";
   static final String STRICT_COVERAGE = "85";
   static final String XCRESULT = ".ward/reports/xcode/tests.xcresult";
-  static final String SWIFT_FORMAT = "swift-format";
   static final String SWIFTLINT = "swiftlint";
   static final String SWIFT_BUILD = "swift-build";
   static final String SWIFT_TEST = "swift-test";
@@ -79,14 +78,6 @@ record SwiftTools(
   /** Returns the line coverage minimum of the preset, in percent. */
   String coverageMinimum() {
     return strict() ? STRICT_COVERAGE : STANDARD_COVERAGE;
-  }
-
-  /** Returns the {@code swift format} lint over the source directories, strict and recursive. */
-  List<String> swiftFormatCommand() {
-    final List<String> command = new ArrayList<>(List.of("swift", "format", "lint"));
-    command.addAll(List.of("--strict", "--recursive", "--parallel"));
-    command.addAll(sourceDirectories);
-    return List.copyOf(command);
   }
 
   /** Returns the standard SwiftLint command, which runs the binary the tools package resolved. */

@@ -63,16 +63,6 @@ public final class GradleBuildBlocks {
                   GradleQualityBlocks.pmd(
                       kotlin, versions.version(GradleToolCatalog.PMD_ENGINE), module)),
           new Block(
-              "format",
-              false,
-              true,
-              "spotless {",
-              "spotless-google-java-format",
-              "",
-              (kotlin, preset, versions, module) ->
-                  GradleQualityBlocks.spotless(
-                      kotlin, versions.version(GradleToolCatalog.FORMATTER))),
-          new Block(
               "spotbugs",
               false,
               true,

@@ -5,7 +5,6 @@ import dev.ward.application.init.PreviousChoices;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.ArchitectureGates;
-import dev.ward.domain.init.FormatEngine;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
 import dev.ward.domain.init.QualityPreset;
@@ -88,13 +87,6 @@ final class InitQuestions {
                 useDefaults,
                 project)
             .resolve(architecture, gates);
-    final FormatEngine formatEngine =
-        new FormatEngineChoice(
-                answers.formatEngine(),
-                new FormatEngineQuestion(wizard.answering, wizard.prompt, wizard.out),
-                progress,
-                useDefaults)
-            .resolve(gates);
     final ToolQuestions.Selection tools =
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
             .resolve(catalog, project, gates);
@@ -113,8 +105,7 @@ final class InitQuestions {
         answers.agentRules(),
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
             .scheme(catalog, project),
-        engine,
-        formatEngine);
+        engine);
   }
 
   private QualityPreset preset(final boolean gatesGiven) {
@@ -242,8 +233,7 @@ final class InitQuestions {
       boolean agentRules,
       boolean yes,
       String scheme,
-      String architectureEngine,
-      String formatEngine) {
+      String architectureEngine) {
     boolean setupGiven() {
       return preset != null || gates != null || integrations != null;
     }

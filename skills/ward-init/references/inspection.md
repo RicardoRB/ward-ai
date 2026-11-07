@@ -135,7 +135,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,checkstyle,pmd,spotbugs,sonar,format,semgrep,gitleaks,dependency-check,zap,trivy,archunit,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,checkstyle,pmd,spotbugs,sonar,semgrep,gitleaks,dependency-check,zap,trivy,archunit,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.

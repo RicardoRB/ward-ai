@@ -13,9 +13,6 @@ import java.util.stream.Stream;
 final class SwiftAgentRules {
   private static final Map<String, String> ROWS =
       Map.of(
-          SwiftTools.SWIFT_FORMAT,
-          "- swift-format: `{command}` must pass; format edited files, do not add"
-              + " `// swift-format-ignore` comments.",
           SwiftTools.SWIFTLINT,
           "- SwiftLint: `{command}` must report no violations; fix the code, do not add"
               + " `// swiftlint:disable` comments or disable rules.",
@@ -63,7 +60,7 @@ final class SwiftAgentRules {
         : Stream.concat(
                 lines.stream(),
                 Stream.of(
-                    "- Never add `// swiftlint:disable` or `// swift-format-ignore`: suppressions"
+                    "- Never add `// swiftlint:disable`: suppressions"
                         + " are forbidden in Ward projects."))
             .toList();
   }

@@ -250,7 +250,7 @@ public record NodeTools(
     arguments.add(".");
     return option(
         BIOME,
-        "Lints and checks formatting with Biome.",
+        "Lints with Biome; ward-format checks formatting.",
         command(arguments.toArray(String[]::new)));
   }
 
