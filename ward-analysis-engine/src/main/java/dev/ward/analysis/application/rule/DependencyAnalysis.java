@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,9 +54,8 @@ public final class DependencyAnalysis {
         ResolverGroups.of(dependencies).entrySet()) {
       edges.addAll(group.getKey().resolve(summariesOf(units, group.getValue(), summaries)));
     }
-    final Set<String> entries = new TreeSet<>();
-    dependencies.forEach(support -> entries.addAll(support.resolver().entryFiles()));
-    return new DependencySnapshot(new DependencyGraph(edges), summaries, entries);
+    return new DependencySnapshot(
+        new DependencyGraph(edges), summaries, DependencyEntries.of(dependencies));
   }
 
   private static List<FileSummary> summariesOf(
