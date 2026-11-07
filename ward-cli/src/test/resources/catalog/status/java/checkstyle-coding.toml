@@ -49,7 +49,7 @@ simplify-boolean-return = "implemented"
 string-literal-equality = "implemented"
 super-clone = "implemented"
 super-finalize = "implemented"
-text-block-google-style-formatting = { status = "planned", issue = "#289" }
+text-block-google-style-formatting = "implemented"
 unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
 unnecessary-parentheses = { status = "planned", issue = "#289" }
 unnecessary-permits-clause = { status = "planned", issue = "#289" }

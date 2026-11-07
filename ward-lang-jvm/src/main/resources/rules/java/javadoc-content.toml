@@ -1,0 +1,65 @@
+# Javadoc content rules for Java. Each rule mirrors one Checkstyle 14.3.0 check.
+
+[[rules]]
+id = "ward:java/invalid-javadoc-position"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-javadoc-position"
+message = "the Javadoc comment is not before a declaration"
+'''
+
+[[rules]]
+id = "ward:java/summary-javadoc"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "summary-javadoc"
+message = "Javadoc problem: {value}"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-paragraph"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-paragraph"
+message = "Javadoc paragraph problem: {value}"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-method"
+message = "Javadoc does not match the method: {value}"
+'''
+
+[[rules]]
+id = "ward:java/missing-javadoc-type"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "preceding-comment"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration", "annotationTypeDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+required = "public"
+exempt-annotation = "Generated"
+message = "public type has no Javadoc comment"
+'''

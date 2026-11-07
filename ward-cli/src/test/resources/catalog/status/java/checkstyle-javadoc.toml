@@ -5,19 +5,19 @@ illegal-block-tag = { status = "planned", issue = "#292" }
 inappropriate-javadoc-block-tags-on-field = { status = "planned", issue = "#292" }
 inappropriate-javadoc-block-tags-on-package = { status = "planned", issue = "#292" }
 inappropriate-javadoc-block-tags-on-type = { status = "planned", issue = "#292" }
-invalid-javadoc-position = { status = "planned", issue = "#289" }
+invalid-javadoc-position = "implemented"
 javadoc-block-tag-location = { status = "planned", issue = "#292" }
 javadoc-content-location = "implemented"
 javadoc-end-comment-delimiter = { status = "planned", issue = "#289" }
 javadoc-leading-asterisk-align = "implemented"
 javadoc-link-first-occurrence = { status = "planned", issue = "#292" }
 javadoc-link-well-known-api = { status = "planned", issue = "#292" }
-javadoc-method = { status = "planned", issue = "#289" }
+javadoc-method = "implemented"
 javadoc-missing-leading-asterisk = "implemented"
 javadoc-missing-whitespace-after-asterisk = "implemented"
 javadoc-no-error-in-throws-tag = { status = "planned", issue = "#292" }
 javadoc-package = { status = "planned", issue = "#289" }
-javadoc-paragraph = { status = "planned", issue = "#289" }
+javadoc-paragraph = "implemented"
 javadoc-param-order = { status = "planned", issue = "#292" }
 javadoc-regexp = { status = "planned", issue = "#292" }
 javadoc-see-tag-order = { status = "planned", issue = "#292" }
@@ -27,11 +27,11 @@ javadoc-type = { status = "planned", issue = "#289" }
 javadoc-variable = { status = "planned", issue = "#289" }
 missing-javadoc-method = "implemented"
 missing-javadoc-package = { status = "planned", issue = "#289" }
-missing-javadoc-type = { status = "planned", issue = "#289" }
+missing-javadoc-type = "implemented"
 non-empty-atclause-description = "implemented"
 prefer-code-or-snippet-javadoc-inline-tag = { status = "planned", issue = "#292" }
 prefer-literal-javadoc-inline-tag = { status = "planned", issue = "#292" }
 require-empty-line-before-block-tag-group = "implemented"
 single-line-javadoc = "implemented"
-summary-javadoc = { status = "planned", issue = "#289" }
+summary-javadoc = "implemented"
 write-tag = { status = "planned", issue = "#292" }
