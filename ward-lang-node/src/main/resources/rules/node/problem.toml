@@ -1238,3 +1238,30 @@ items = ["formalParameterArg"]
 key = "assignable"
 message = "duplicate parameter '{value}'"
 '''
+[[rules]]
+id = "ward:typescript/no-template-curly-in-string"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-template-curly-in-string"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''
