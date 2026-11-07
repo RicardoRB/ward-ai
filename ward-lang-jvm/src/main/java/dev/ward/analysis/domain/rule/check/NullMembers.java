@@ -74,7 +74,7 @@ final class NullMembers {
       final String name = declaredName(declarator);
       final boolean init =
           declarator.children().stream().anyMatch(child -> "=".equals(SyntaxWalk.text(child)));
-      out.add(new NullModel.Field(name, declarator, notes, primitive, array, init, isStatic));
+      out.add(new NullModel.Field(name, declarator, notes, primitive, array, init, isStatic, type));
     }
     return out;
   }
