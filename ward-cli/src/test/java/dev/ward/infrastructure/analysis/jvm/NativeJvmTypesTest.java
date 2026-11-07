@@ -125,6 +125,45 @@ class NativeJvmTypesTest {
     }
   }
 
+  @Test
+  void readsTheMembersOfAClassInAClasspathJar() throws IOException {
+    final Path jar = project.resolve("libs/library.jar");
+    Files.createDirectories(jar.getParent());
+    try (OutputStream out = Files.newOutputStream(jar);
+        JarOutputStream jarOut = new JarOutputStream(out);
+        InputStream in = Library.class.getResourceAsStream("NativeJvmTypesTest$Library.class")) {
+      jarOut.putNextEntry(new JarEntry("lib/Library.class"));
+      jarOut.write(rename(in.readAllBytes()));
+      jarOut.closeEntry();
+    }
+    final Path classpath = Files.writeString(project.resolve("classpath.txt"), jar.toString());
+    final String text =
+        "package app;\nclass Use {\n  void run() {\n    lib.Library kept = null;\n    kept.hashCode();\n  }\n}\n";
+    final NativeJvmTypes types = new NativeJvmTypes(project);
+    try {
+      final Span kept = span(text, "kept");
+      final UnitTypeFacts actual =
+          types
+              .facts(Optional.of(classpath))
+              .orElseThrow()
+              .factsOf(
+                  new SourceUnit("src/main/java/app/Use.java", AnalysisLanguage.JAVA, text),
+                  List.of(kept),
+                  EnumSet.of(FactKind.TYPE, FactKind.MEMBERS));
+
+      final var members = actual.membersOf(kept).orElseThrow();
+      assertThat(members.fields()).extracting(field -> field.name()).contains("LIMIT");
+      assertThat(members.methods())
+          .filteredOn(method -> "legacy".equals(method.name()))
+          .singleElement()
+          .satisfies(
+              method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated"));
+      assertThat(members.ancestors()).extracting(TypeRef::name).containsExactly("java.lang.Object");
+    } finally {
+      types.close();
+    }
+  }
+
   /** Rewrites the class name {@code NativeJvmTypesTest$Library} to {@code lib/Library}. */
   private static byte[] rename(final byte[] bytes) {
     final String from = "dev/ward/infrastructure/analysis/jvm/NativeJvmTypesTest$Library";
@@ -148,9 +187,18 @@ class NativeJvmTypesTest {
   public static final class Library {
     private Library() {}
 
+    /** The size. */
+    public static final int LIMIT = 3;
+
     /** Returns an object. */
     public static Object make() {
       return new Object();
+    }
+
+    /** An old way. */
+    @Deprecated
+    public static String legacy() {
+      return "";
     }
   }
 }

@@ -57,6 +57,7 @@ class UnitTypeFactsTest {
             List.of("org.jspecify.annotations.NullMarked"),
             List.of(),
             List.of(),
+            null,
             null);
 
     assertThat(new UnitTypeFacts(Map.of("3:5", parameter)).nullness(CALL))
@@ -67,7 +68,15 @@ class UnitTypeFactsTest {
   void aCallTargetKeepsItsCopiedParameters() {
     final CallTarget target =
         new CallTarget(
-            STRING, "equals", List.of(TypeRef.of("java.lang.Object")), null, false, false);
+            STRING,
+            "equals",
+            List.of(TypeRef.of("java.lang.Object")),
+            null,
+            false,
+            false,
+            List.of(),
+            List.of(),
+            List.of());
 
     assertThat(target.parameters()).containsExactly(TypeRef.of("java.lang.Object"));
     assertThatThrownBy(() -> target.parameters().add(STRING))
@@ -83,6 +92,6 @@ class UnitTypeFactsTest {
   }
 
   private static SpanFacts withType(final TypeRef type) {
-    return new SpanFacts(type, null, null, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(type, null, null, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 }

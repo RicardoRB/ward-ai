@@ -46,6 +46,7 @@ final class CorrectnessTrees {
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 
@@ -54,11 +55,20 @@ final class CorrectnessTrees {
         null,
         null,
         new dev.ward.analysis.domain.types.CallTarget(
-            type(declaring, false), "trim", List.of(), type(returned, false), false, false),
+            type(declaring, false),
+            "trim",
+            List.of(),
+            type(returned, false),
+            false,
+            false,
+            List.of(),
+            List.of(),
+            List.of()),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 

@@ -67,7 +67,7 @@ public final class SwiftTypeFacts implements TypeFacts {
       final String file, final SwiftTypeSyntax.Visit visit, final Set<FactKind> kinds) {
     final TypeRef type = kinds.contains(FactKind.TYPE) ? typeOf(file, visit) : null;
     final TypeShape shape = kinds.contains(FactKind.SHAPE) ? shapeOf(file, visit) : null;
-    return new SpanFacts(type, shape, null, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(type, shape, null, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 
   private TypeRef typeOf(final String file, final SwiftTypeSyntax.Visit visit) {

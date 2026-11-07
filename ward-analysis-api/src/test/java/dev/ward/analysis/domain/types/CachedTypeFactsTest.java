@@ -79,6 +79,7 @@ class CachedTypeFactsTest {
                         List.of(),
                         List.of(),
                         List.of(),
+                        null,
                         null)));
 
     assertThat(facts.typesOf(new SourceUnit("A.java", AnalysisLanguage.JAVA, "x"), SPANS).types())

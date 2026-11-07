@@ -36,11 +36,20 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
     final SyntaxNode root =
         compilationUnit(node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, RUN, LINE, COLUMN)));
     final CallTarget target =
-        new CallTarget(TypeRef.of(HELPER), RUN, List.of(), TypeRef.of(VOID), false, false);
+        new CallTarget(
+            TypeRef.of(HELPER),
+            RUN,
+            List.of(),
+            TypeRef.of(VOID),
+            false,
+            false,
+            List.of(),
+            List.of(),
+            List.of());
     final Map<String, SpanFacts> facts = new HashMap<>();
     facts.put(
         LINE + ":" + COLUMN,
-        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null));
+        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null, null));
 
     assertThat(internalApi(root, new UnitTypeFacts(facts))).containsExactly(HELPER);
     assertThat(internalApi(root, UnitTypeFacts.none())).isEmpty();

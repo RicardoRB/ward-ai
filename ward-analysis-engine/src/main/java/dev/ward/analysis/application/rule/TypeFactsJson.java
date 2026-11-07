@@ -2,7 +2,9 @@ package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.ConstantValue;
+import dev.ward.analysis.domain.types.FieldRef;
 import dev.ward.analysis.domain.types.SpanFacts;
+import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.LinkedHashMap;
@@ -34,7 +36,25 @@ final class TypeFactsJson {
         JsonValues.strings(fact.get("scopes")),
         JsonValues.list(fact.get("overrides")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(fact.get("thrown")).stream().map(TypeFactsJson::typeRef).toList(),
-        fact.containsKey("constant") ? new ConstantValue(fact.get("constant")) : null);
+        fact.containsKey("constant") ? new ConstantValue(fact.get("constant")) : null,
+        fact.containsKey("members") ? members(JsonValues.object(fact.get("members"))) : null);
+  }
+
+  private static TypeMembers members(final Map<?, ?> members) {
+    return new TypeMembers(
+        JsonValues.list(members.get("methods")).stream().map(TypeFactsJson::call).toList(),
+        JsonValues.list(members.get("fields")).stream().map(TypeFactsJson::field).toList(),
+        JsonValues.list(members.get("ancestors")).stream().map(TypeFactsJson::typeRef).toList(),
+        JsonValues.strings(members.get("annotations")));
+  }
+
+  private static FieldRef field(final Object value) {
+    final Map<?, ?> field = JsonValues.object(value);
+    return new FieldRef(
+        JsonValues.string(field.get("name")),
+        field.containsKey("type") ? typeRef(field.get("type")) : null,
+        JsonValues.flag(field.get("static")),
+        JsonValues.strings(field.get("annotations")));
   }
 
   private static TypeShape shape(final Map<?, ?> shape) {
@@ -54,7 +74,10 @@ final class TypeFactsJson {
         JsonValues.list(call.get("params")).stream().map(TypeFactsJson::typeRef).toList(),
         call.containsKey("returns") ? typeRef(call.get("returns")) : null,
         JsonValues.flag(call.get("static")),
-        JsonValues.flag(call.get("varargs")));
+        JsonValues.flag(call.get("varargs")),
+        JsonValues.strings(call.get("annotations")),
+        JsonValues.list(call.get("paramAnnotations")).stream().map(JsonValues::strings).toList(),
+        JsonValues.strings(call.get("declaringAnnotations")));
   }
 
   private static TypeRef typeRef(final Object value) {

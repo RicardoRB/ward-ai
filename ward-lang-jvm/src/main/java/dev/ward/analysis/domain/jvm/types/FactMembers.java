@@ -50,7 +50,10 @@ final class FactMembers {
             parameters.stream().map(Optional::get).toList(),
             FactRefs.ref(method.returnType(), bounds).orElse(null),
             method.isStatic(),
-            method.isVarargs()));
+            method.isVarargs(),
+            FactRefs.displayAll(method.annotations()),
+            method.parameterAnnotations().stream().map(FactRefs::displayAll).toList(),
+            FactRefs.displayAll(owner.annotations())));
   }
 
   /** Returns what the class is and what it extends. */
