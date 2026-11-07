@@ -1,0 +1,103 @@
+# Error Prone checks at ERROR severity for Java, G to L, fourth batch: checks that read the call targets
+# and the types of expressions. A call or type whose facts are unknown is never reported.
+
+[[rules]]
+id = "ward:java/is-instance-of-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "is-instance-of-class"
+message = "a Class is passed to Class.isInstance, which tests whether the receiver is Class itself; use isAssignableFrom"
+'''
+
+[[rules]]
+id = "ward:java/lossy-primitive-compare"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "lossy-primitive-compare"
+message = "an argument of type {value} is widened lossily to compare; use Integer.compare or Long.compare"
+'''
+
+[[rules]]
+id = "ward:java/lenient-format-string-validation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "lenient-format"
+message = "the template has {value} placeholders but the call passes {max} arguments"
+'''
+
+[[rules]]
+id = "ward:java/java8-api-checker"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+options.java-release = { type = "integer", min = 0 }
+body = '''
+check = "jdk8-api"
+java-release = 0
+message = "{value} does not exist in Java 8"
+'''
+
+[[rules]]
+id = "ward:java/joda-to-self"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "joda-to-self"
+message = "the conversion returns the receiver itself; remove the call"
+'''
+
+[[rules]]
+id = "ward:java/lite-byte-string-utf8"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["com.google.protobuf.ByteString"]
+names = ["toStringUtf8"]
+text = 'toByteString\(\)\.toStringUtf8\(\)$'
+message = "serialized protobuf bytes are binary, not UTF-8 text; keep them as a ByteString or byte[]"
+'''
+
+[[rules]]
+id = "ward:java/incomparable"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "incomparable-element"
+message = "{value} is not Comparable, so it cannot be an element of a sorted collection without a comparator"
+'''
+
+[[rules]]
+id = "ward:java/inexact-varargs-conditional"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "varargs-conditional"
+message = "one branch is an array and the other is not, so the array is passed as a single element; make both branches arrays"
+'''

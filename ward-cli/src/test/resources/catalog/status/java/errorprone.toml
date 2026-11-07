@@ -224,7 +224,7 @@ immutable-refactoring = { status = "planned", issue = "#319" }
 immutable-set-for-contains = { status = "planned", issue = "#319" }
 implement-assertion-with-chaining = { status = "planned", issue = "#319" }
 impossible-null-comparison = { status = "planned", issue = "#319" }
-incomparable = { status = "planned", issue = "#319" }
+incomparable = "implemented"
 incompatible-argument-type = { status = "planned", issue = "#319" }
 incompatible-modifiers = "implemented"
 inconsistent-capitalization = { status = "planned", issue = "#319" }
@@ -233,7 +233,7 @@ inconsistent-overloads = { status = "planned", issue = "#319" }
 incorrect-main-method = { status = "planned", issue = "#319" }
 increment-in-for-loop-and-header = { status = "planned", issue = "#319" }
 index-of-char = "implemented"
-inexact-varargs-conditional = { status = "planned", issue = "#319" }
+inexact-varargs-conditional = "implemented"
 infinite-recursion = "implemented"
 inherit-doc = { status = "planned", issue = "#319" }
 initialize-inline = { status = "planned", issue = "#319" }
@@ -272,7 +272,7 @@ invalid-throws-link = { status = "planned", issue = "#319" }
 invalid-time-zone-id = "implemented"
 invalid-zone-id = "implemented"
 is-instance-incompatible-type = { status = "planned", issue = "#319" }
-is-instance-of-class = { status = "planned", issue = "#319" }
+is-instance-of-class = "implemented"
 is-loggable-tag-length = "implemented"
 iterable-and-iterator = { status = "planned", issue = "#319" }
 iterable-path-parameter = "implemented"
@@ -300,7 +300,7 @@ java-local-time-get-nano = { status = "planned", issue = "#319" }
 java-period-get-days = { status = "planned", issue = "#319" }
 java-time-default-time-zone = { status = "planned", issue = "#319" }
 java-util-date = { status = "planned", issue = "#319" }
-java8-api-checker = { status = "planned", issue = "#319" }
+java8-api-checker = "implemented"
 javax-inject-on-abstract-method = "implemented"
 javax-inject-on-final-field = { status = "planned", issue = "#319" }
 jdk-obsolete = { status = "planned", issue = "#319" }
@@ -311,13 +311,13 @@ joda-instant-with-millis = { status = "planned", issue = "#319" }
 joda-new-period = { status = "planned", issue = "#319" }
 joda-plus-minus-long = { status = "planned", issue = "#319" }
 joda-time-converter-manager = { status = "planned", issue = "#319" }
-joda-to-self = { status = "planned", issue = "#319" }
+joda-to-self = "implemented"
 joda-with-duration-added-long = { status = "planned", issue = "#319" }
 labelled-break-target = "implemented"
 lambda-functional-interface = { status = "planned", issue = "#319" }
-lenient-format-string-validation = { status = "planned", issue = "#319" }
+lenient-format-string-validation = "implemented"
 list-remove-ambiguous = { status = "planned", issue = "#319" }
-lite-byte-string-utf8 = { status = "planned", issue = "#319" }
+lite-byte-string-utf8 = "implemented"
 lite-enum-value-of = { status = "planned", issue = "#319" }
 lite-proto-to-string = { status = "planned", issue = "#319" }
 local-date-temporal-amount = "implemented"
@@ -331,7 +331,7 @@ long-literal-lower-case-suffix = "implemented"
 loop-condition-checker = "implemented"
 loop-over-char-array = { status = "planned", issue = "#319" }
 loop-to-test-parameter = { status = "planned", issue = "#319" }
-lossy-primitive-compare = { status = "planned", issue = "#319" }
+lossy-primitive-compare = "implemented"
 malformed-inline-tag = { status = "planned", issue = "#319" }
 math-absolute-negative = { status = "planned", issue = "#319" }
 math-round-int-long = "implemented"
