@@ -12,6 +12,14 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
+  /** The Java rules that read the type facts of a file. */
+  private static final java.util.Set<String> TYPE_AWARE =
+      java.util.Set.of(
+          "ward:java/check-result-set",
+          "ward:java/enum-comparison",
+          "ward:java/use-enum-collections",
+          "ward:java/guard-log-statement");
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -128,14 +136,6 @@ class ClasspathRuleSourceTest {
   private static boolean isJavaInjection(final String id) {
     return id.startsWith("ward:java/") && id.endsWith("-injection");
   }
-
-  /** The Java rules that read the type facts of a file. */
-  private static final java.util.Set<String> TYPE_AWARE =
-      java.util.Set.of(
-          "ward:java/check-result-set",
-          "ward:java/enum-comparison",
-          "ward:java/use-enum-collections",
-          "ward:java/guard-log-statement");
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
     if (TYPE_AWARE.contains(rule.id())) {
