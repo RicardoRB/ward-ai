@@ -48,6 +48,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/python-structural.toml",
           "rules/python/pycodestyle.toml",
           "rules/python/bugbear.toml",
+          "rules/python/checkstyle.toml",
           "rules/python/flake8-comprehensions.toml",
           "rules/python/pyflakes.toml",
           "rules/python/pylint.toml",
