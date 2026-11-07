@@ -28,6 +28,6 @@ public final class RuleConfigurationCheck {
                 new ConfiguredRuleSetup.Choices(
                     List.of(), !check.rules().isEmpty(), available, List.of()),
                 source)
-            .resolve(root));
+            .resolve(root, JavaRelease.UNKNOWN));
   }
 }
