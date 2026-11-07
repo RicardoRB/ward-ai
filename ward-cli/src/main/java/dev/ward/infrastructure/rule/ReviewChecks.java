@@ -4,6 +4,8 @@ import dev.ward.analysis.domain.rule.check.AbstractClassWithoutAbstractMethodChe
 import dev.ward.analysis.domain.rule.check.ArrayIsStoredDirectlyCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
+import dev.ward.analysis.domain.rule.check.BitMaskComparisonCheck;
+import dev.ward.analysis.domain.rule.check.ConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
@@ -101,6 +103,8 @@ final class ReviewChecks {
           new ForLoopCanBeForeachCheck(TomlValues.required(toml, MESSAGE));
       case "unnecessary-warning-suppression" ->
           new UnnecessaryWarningSuppressionCheck(TomlValues.required(toml, MESSAGE));
+      case "bit-mask-comparison" -> new BitMaskComparisonCheck(TomlValues.required(toml, MESSAGE));
+      case "constant-clamp" -> new ConstantClampCheck(TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }
