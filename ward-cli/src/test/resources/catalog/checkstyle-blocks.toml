@@ -10,8 +10,9 @@ eslint = ["no-lone-blocks"]
 
 [[rule]]
 name = "empty-block"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Python requires a statement in every block, and pass is one; there is no empty block to report" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["EmptyFunctionBlock"]
 pmd = ["EmptyControlStatement"]
 checkstyle = ["EmptyBlock"]

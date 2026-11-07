@@ -42,8 +42,8 @@ checkstyle = ["FinalParameters"]
 name = "hex-literal-case"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["HexLiteralCase"]
 
 [[rule]]
@@ -83,8 +83,8 @@ checkstyle = ["NoCodeInFile"]
 name = "numerical-prefixes-infixes-suffixes-character-case"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NumericalPrefixesInfixesSuffixesCharacterCase"]
 
 [[rule]]
@@ -113,8 +113,8 @@ pylint = ["fixme"]
 name = "trailing-comment"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["TrailingComment"]
 eslint = ["no-inline-comments"]
 
