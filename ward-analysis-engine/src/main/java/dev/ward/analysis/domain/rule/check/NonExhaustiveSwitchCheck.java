@@ -1,8 +1,8 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.analysis.domain.rule.TypeNeed;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,8 @@ public final class NonExhaustiveSwitchCheck implements RuleCheck {
   }
 
   @Override
-  public Set<TypeNeed> typeNeeds() {
-    return Set.of(TypedChecks.ENUM_SELECTORS);
+  public FactNeed needs() {
+    return TypedChecks.ENUM_SELECTORS;
   }
 
   @Override
@@ -41,8 +41,8 @@ public final class NonExhaustiveSwitchCheck implements RuleCheck {
       final SyntaxNode root,
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
-      final dev.ward.analysis.domain.ir.SourceUnit unit,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types,
+      final dev.ward.analysis.domain.ir.SourceUnit unit) {
     final Map<String, Set<String>> declared = EnumSwitch.declaredConstants(root);
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(STATEMENT))) {

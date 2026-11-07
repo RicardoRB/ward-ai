@@ -1,8 +1,8 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.analysis.domain.rule.TypeNeed;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +36,8 @@ public final class EnumComparisonCheck implements RuleCheck {
   }
 
   @Override
-  public Set<TypeNeed> typeNeeds() {
-    return Set.of(TypedChecks.CALLS, TypedChecks.SHAPES);
+  public FactNeed needs() {
+    return TypedChecks.CALLS_AND_SHAPES;
   }
 
   @Override
@@ -45,8 +45,8 @@ public final class EnumComparisonCheck implements RuleCheck {
       final SyntaxNode root,
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
-      final dev.ward.analysis.domain.ir.SourceUnit unit,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types,
+      final dev.ward.analysis.domain.ir.SourceUnit unit) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();

@@ -2,13 +2,12 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
-import dev.ward.analysis.domain.rule.TypeNeed;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
-import java.util.Set;
 
 /** One check of a declarative rule, run over the syntax tree of a source unit. */
 @FunctionalInterface
@@ -59,22 +58,29 @@ public interface RuleCheck {
     return matches(root, flow, unit);
   }
 
-  /** The type facts this check reads; empty for a check that reads no types. */
-  default Set<TypeNeed> typeNeeds() {
-    return Set.of();
+  /**
+   * What this check reads from the type facts. A check with capability {@code TYPES} declares the
+   * node kinds and fact kinds it asks about, so one batched request per unit serves every rule.
+   */
+  default FactNeed needs() {
+    return FactNeed.NONE;
   }
 
   /**
    * Returns the places in {@code root} where the check fails, given the control-flow graphs, the
-   * scopes, the file and the type facts of the file. A check that reads no types needs only {@link
-   * #matches(SyntaxNode, FlowView, ScopeView, SourceUnit)}.
+   * scopes, the type facts and the file. Facts the resolver could not answer are unknown, and a
+   * check must report nothing that depends on them. A check that reads no type facts needs only
+   * {@link #matches(SyntaxNode, FlowView, ScopeView, SourceUnit)}.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the check cannot run on the
+   *     tree
    */
   default List<RuleMatch> matches(
       final SyntaxNode root,
       final FlowView flow,
       final ScopeView scopes,
-      final SourceUnit unit,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types,
+      final SourceUnit unit) {
     return matches(root, flow, scopes, unit);
   }
 }

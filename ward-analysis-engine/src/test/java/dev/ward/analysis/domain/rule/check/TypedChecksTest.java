@@ -179,14 +179,13 @@ class TypedChecksTest {
     assertThat(TypedChecks.calledName(call, facts)).contains(DEBUG);
     assertThat(TypedChecks.declaringType(call, facts)).contains(LOGGER);
     assertThat(TypedChecks.isEnum(call, facts)).isFalse();
-    assertThat(new CheckResultSetCheck(MESSAGE).typeNeeds()).containsExactly(TypedChecks.CALLS);
-    assertThat(new EnumComparisonCheck(MESSAGE).typeNeeds())
-        .containsExactlyInAnyOrder(TypedChecks.CALLS, TypedChecks.SHAPES);
+    assertThat(new CheckResultSetCheck(MESSAGE).needs()).isEqualTo(TypedChecks.CALLS);
+    assertThat(new EnumComparisonCheck(MESSAGE).needs()).isEqualTo(TypedChecks.CALLS_AND_SHAPES);
     assertThat(new CheckResultSetCheck(MESSAGE).matches(call)).isEmpty();
   }
 
   private static List<RuleMatch> run(
       final RuleCheck check, final SyntaxNode root, final UnitTypeFacts facts) {
-    return check.matches(root, null, ScopeView.NONE, UNIT, facts);
+    return check.matches(root, null, ScopeView.NONE, facts, UNIT);
   }
 }

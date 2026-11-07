@@ -64,7 +64,7 @@ class EnumSwitchChecksTest {
   }
 
   private static List<RuleMatch> run(final RuleCheck check, final Scene scene) {
-    return check.matches(scene.root(), null, ScopeView.NONE, UNIT, scene.facts());
+    return check.matches(scene.root(), null, ScopeView.NONE, scene.facts(), UNIT);
   }
 
   /**

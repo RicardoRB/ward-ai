@@ -9,13 +9,16 @@ import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.scope.UnitScopes;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,8 +29,18 @@ final class UnitTrees {
   private final Map<SourceUnit, FlowView> lowered = new IdentityHashMap<>();
   private final Map<SourceUnit, UnitScopes> scoped = new IdentityHashMap<>();
 
-  UnitTrees(final Map<AnalysisLanguage, FrontendSupport> support) {
+  private final Map<SourceUnit, UnitTypeFacts> typed = new IdentityHashMap<>();
+  private final Map<AnalysisLanguage, List<FactNeed>> needs;
+
+  /**
+   * Creates the trees over {@code support}; {@code needs} are the type-fact needs of the rules that
+   * run, by language, merged into one request per unit.
+   */
+  UnitTrees(
+      final Map<AnalysisLanguage, FrontendSupport> support,
+      final Map<AnalysisLanguage, List<FactNeed>> needs) {
     this.support = support;
+    this.needs = Map.copyOf(needs);
   }
 
   Optional<SyntaxNode> parse(final SourceUnit unit, final RuleRunCollector collector) {
@@ -113,6 +126,49 @@ final class UnitTrees {
           new RuleExecutionError(
               rule.definition().id(), unit.path(), "the scopes could not be built"));
       return ScopeView.NONE;
+    }
+  }
+
+  /**
+   * The type facts a rule reads: none unless the rule reads capability {@code TYPES}. The resolver
+   * is asked once per unit for the merged needs of every rule of the language.
+   */
+  UnitTypeFacts types(
+      final CompiledRule rule,
+      final SourceUnit unit,
+      final SyntaxNode root,
+      final RuleRunCollector collector) {
+    if (rule.definition().capability() != RuleCapability.TYPES) {
+      return UnitTypeFacts.none();
+    }
+    final UnitTypeFacts known = typed.get(unit);
+    if (known != null) {
+      return known;
+    }
+    final UnitTypeFacts fetched = fetch(rule, unit, root, collector);
+    typed.put(unit, fetched);
+    return fetched;
+  }
+
+  private UnitTypeFacts fetch(
+      final CompiledRule rule,
+      final SourceUnit unit,
+      final SyntaxNode root,
+      final RuleRunCollector collector) {
+    try {
+      return support
+          .get(unit.language())
+          .types()
+          .map(
+              facts ->
+                  new TypeFactsPrePass(facts)
+                      .run(unit, root, needs.getOrDefault(unit.language(), List.of())))
+          .orElseGet(UnitTypeFacts::none);
+    } catch (final AnalysisFailedException exception) {
+      collector.recordError(
+          new RuleExecutionError(
+              rule.definition().id(), unit.path(), "the type facts could not be computed"));
+      return UnitTypeFacts.none();
     }
   }
 }

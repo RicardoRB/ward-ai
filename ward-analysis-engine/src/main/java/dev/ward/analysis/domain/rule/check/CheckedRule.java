@@ -4,15 +4,14 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
-import dev.ward.analysis.domain.rule.TypeNeed;
-import dev.ward.analysis.domain.rule.TypedUnit;
+import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /** A rule whose matches come from one {@link RuleCheck}. */
 public final class CheckedRule implements CompiledRule {
@@ -66,17 +65,16 @@ public final class CheckedRule implements CompiledRule {
   }
 
   @Override
-  public Set<TypeNeed> typeNeeds() {
-    return check.typeNeeds();
+  public FactNeed factNeed() {
+    return check.needs();
   }
 
   @Override
   public List<RuleMatch> matches(
       final SyntaxNode root,
       final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final TypedUnit typed) {
-    return check.matches(root, flow, scopes, typed.unit(), typed.types());
+      final UnitViews views,
+      final SourceUnit unit) {
+    return check.matches(root, views.flow(), views.scopes(), views.types(), unit);
   }
 }

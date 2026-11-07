@@ -140,7 +140,7 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
-    if (TYPE_AWARE.contains(rule.id())) {
+    if (TYPE_AWARE.contains(rule.id()) || rule.id().endsWith("/equals-on-unrelated-types")) {
       return RuleCapability.TYPES;
     }
     return rule.id().endsWith("/unused-assignment")

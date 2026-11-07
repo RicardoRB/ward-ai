@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.rule;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
-import java.util.Set;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
 public interface CompiledRule {
@@ -79,22 +78,24 @@ public interface CompiledRule {
     return matches(root, dependencies, flow, unit);
   }
 
-  /** The type facts this rule reads; empty for a rule that reads no types. */
-  default Set<TypeNeed> typeNeeds() {
-    return Set.of();
+  /** What this rule reads from the type facts; none unless it has capability {@code TYPES}. */
+  default FactNeed factNeed() {
+    return FactNeed.NONE;
   }
 
   /**
-   * Returns the matches given the type facts of the unit. A rule that reads no types needs only
-   * {@link #matches(SyntaxNode, DependencyView, FlowView, ScopeView, SourceUnit)}, which this
-   * default method delegates to.
+   * Returns the matches of this rule in the tree rooted at {@code root} of the file {@code unit},
+   * given everything the other overloads take and the type facts of the unit. A rule that reads no
+   * type facts needs only the overload without them, which this default method delegates to.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
    */
   default List<RuleMatch> matches(
       final SyntaxNode root,
       final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final TypedUnit typed) {
-    return matches(root, dependencies, flow, scopes, typed.unit());
+      final UnitViews views,
+      final SourceUnit unit) {
+    return matches(root, dependencies, views.flow(), views.scopes(), unit);
   }
 }
