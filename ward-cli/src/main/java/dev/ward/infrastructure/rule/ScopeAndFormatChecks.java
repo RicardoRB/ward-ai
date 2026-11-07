@@ -65,7 +65,7 @@ final class ScopeAndFormatChecks {
   }
 
   private static RuleCheck ancestorCheck(final TomlParseResult toml) {
-    final String mode = TomlValues.required(toml, "mode").toUpperCase(java.util.Locale.ROOT);
+    final String mode = TomlValues.required(toml, "mode").toUpperCase(Locale.ROOT);
     final String text = toml.getString("text");
     return new AncestorCheck(
         TomlValues.strings(toml, KINDS),
@@ -78,14 +78,14 @@ final class ScopeAndFormatChecks {
 
   private static RuleCheck percentFormat(final TomlParseResult toml) {
     final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
+        TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new PercentFormatCheck(
         PercentFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck dotFormat(final TomlParseResult toml) {
     final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
+        TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new DotFormatCheck(
         DotFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
   }
@@ -99,7 +99,7 @@ final class ScopeAndFormatChecks {
 
   private static RuleCheck loggingArgs(final TomlParseResult toml) {
     final String problem =
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_');
+        TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new LoggingArgsCheck(
         LoggingArgsCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
   }
