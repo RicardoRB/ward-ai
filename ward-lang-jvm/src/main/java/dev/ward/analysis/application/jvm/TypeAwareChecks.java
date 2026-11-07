@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AccessorClassGenerationCheck;
 import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
+import dev.ward.analysis.domain.rule.check.ArrayReceiverCallCheck;
 import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
 import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
@@ -48,6 +49,13 @@ final class TypeAwareChecks {
 
   private static Map<String, CheckFactory> types() {
     return Map.ofEntries(
+        entry(
+            "array-receiver-call",
+            toml ->
+                new ArrayReceiverCallCheck(
+                    TomlValues.required(toml, "method"),
+                    TomlValues.integer(toml, "arguments"),
+                    TomlValues.required(toml, MESSAGE))),
         entry(
             "check-result-set",
             toml -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE))),

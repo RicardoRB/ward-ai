@@ -1,0 +1,9 @@
+{
+  "3:12-3:17": {
+    "type": {
+      "name": "int",
+      "primitive": true,
+      "array": 1
+    }
+  }
+}

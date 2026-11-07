@@ -445,3 +445,339 @@ kinds = ["typeDeclaration"]
 text = 'extends(junit\.framework\.)?TestCase\b(?![\s\S]*super\.tearDown\s*\()[\s\S]*voidtearDown\s*\('
 message = "TestCase defines tearDown() that does not call super.tearDown()"
 '''
+
+[[rules]]
+id = "ward:java/sa-field-self-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^this\.(\w+)=this\.\1$'
+message = "{value} assigns a field to itself"
+'''
+
+[[rules]]
+id = "ward:java/sa-local-self-assignment-instead-of-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)=\1$'
+message = "{value} assigns a variable to itself; assign it to the field"
+'''
+
+[[rules]]
+id = "ward:java/sa-field-self-comparison"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^this\.(\w+)(==|!=|<=|>=|<|>)this\.\1$'
+message = "{value} compares a field with itself"
+'''
+
+[[rules]]
+id = "ward:java/sa-local-self-comparison"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)(==|!=|<=|>=|<|>)\1$'
+message = "{value} compares a variable with itself"
+'''
+
+[[rules]]
+id = "ward:java/sa-field-self-computation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^this\.(\w+)(&|\||\^|-|/|%)this\.\1$'
+message = "{value} combines a field with itself"
+'''
+
+[[rules]]
+id = "ward:java/sa-local-self-computation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)(&|\||\^|-|/|%)\1$'
+message = "{value} combines a variable with itself"
+'''
+
+[[rules]]
+id = "ward:java/rv-absolute-value-of-hashcode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Math\.abs\((?:[\w.()\[\]]*\.)?hashCode\(\)\)$'
+message = "{value} is negative for Integer.MIN_VALUE; mask the sign bit instead"
+'''
+
+[[rules]]
+id = "ward:java/rv-absolute-value-of-random-int"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Math\.abs\((?:[\w.()\[\]]*\.)?nextInt\(\)\)$'
+message = "{value} is negative for Integer.MIN_VALUE; use nextInt(bound)"
+'''
+
+[[rules]]
+id = "ward:java/rv-01-to-int"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\((int|long|byte|short|char)\)(?:[\w.()\[\]]*\.)?(Math\.random|nextDouble|nextFloat)\(\)$'
+message = "{value} casts a value from 0 to 1 to the integer 0"
+'''
+
+[[rules]]
+id = "ward:java/rv-exception-not-thrown"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^new[\w.]*(Exception|Error|Throwable)\(.*\);$'
+message = "exception is created but not thrown"
+'''
+
+[[rules]]
+id = "ward:java/rv-check-compareto-for-specific-return-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*\.compareTo\w*\([^()]*\)(==|!=)-?1$'
+message = "{value} relies on compareTo returning exactly 1 or -1; compare the sign instead"
+'''
+
+[[rules]]
+id = "ward:java/re-cant-use-file-separator-as-regular-expression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(split|replaceAll|replaceFirst|matches)\((?:java\.io\.)?File\.separator[,)]'
+message = "File.separator is not a safe regular expression on Windows; quote it"
+'''
+
+[[rules]]
+id = "ward:java/re-possible-unintended-pattern"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(split|replaceAll|replaceFirst)\("(\.|\|)"[,)]'
+message = "{value} uses a regular expression that matches every character or nothing; escape it"
+'''
+
+[[rules]]
+id = "ward:java/qba-questionable-boolean-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:if|while)\(\w+=(?:true|false)\)'
+message = "condition assigns a boolean literal; use =="
+'''
+
+[[rules]]
+id = "ward:java/sti-interrupted-on-currentthread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Thread\.currentThread\(\)\.interrupted\(\)$'
+message = "interrupted() is static; call Thread.interrupted()"
+'''
+
+[[rules]]
+id = "ward:java/sti-interrupted-on-unknownthread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?!Thread\.interrupted\(\)$)(?!Thread\.currentThread)[\w.()\[\]]+\.interrupted\(\)$'
+message = "interrupted() is static and tests the current thread, not this one; call isInterrupted()"
+'''
+
+[[rules]]
+id = "ward:java/se-method-must-be-private"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?!private)(?:(?:public|protected|static|final|synchronized)+)?void(?:readObject\(ObjectInputStream\w+\)|writeObject\(ObjectOutputStream\w+\)|readObjectNoData\(\))'
+message = "serialization hook is not private, so the serialization machinery ignores it"
+'''
+
+[[rules]]
+id = "ward:java/se-read-resolve-is-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?:(?:public|protected|private|final|synchronized)+)?static(?:final|synchronized)*ObjectreadResolve\(\)'
+message = "readResolve is static, so serialization never calls it"
+'''
+
+[[rules]]
+id = "ward:java/nm-lcase-hashcode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?:int|Integer|long)hashcode\(\)'
+message = "method hashcode() is not hashCode(); it does not override Object.hashCode"
+'''
+
+[[rules]]
+id = "ward:java/nm-lcase-tostring"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^Stringtostring\(\)'
+message = "method tostring() is not toString(); it does not override Object.toString"
+'''
+
+[[rules]]
+id = "ward:java/nm-bad-equal"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^booleanequal\(Object\w+\)'
+message = "method equal(Object) is not equals(Object); it does not override Object.equals"
+'''
+
+[[rules]]
+id = "ward:java/dmi-invoking-hashcode-on-array"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-receiver-call"
+method = "hashCode"
+arguments = 0
+message = "hashCode() on an array is its identity hash; use Arrays.hashCode"
+'''
+
+[[rules]]
+id = "ward:java/dmi-invoking-tostring-on-array"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-receiver-call"
+method = "toString"
+arguments = 0
+message = "toString() on an array shows its identity; use Arrays.toString"
+'''
+
+[[rules]]
+id = "ward:java/ec-bad-array-compare"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-receiver-call"
+method = "equals"
+arguments = 1
+message = "equals() on an array compares references; use Arrays.equals"
+'''
