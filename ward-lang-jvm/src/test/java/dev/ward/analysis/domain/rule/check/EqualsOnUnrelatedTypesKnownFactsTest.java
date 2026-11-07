@@ -58,6 +58,7 @@ class EqualsOnUnrelatedTypesKnownFactsTest {
             List.of(),
             List.of(),
             List.of(),
+            null,
             null);
 
     assertThat(
@@ -72,7 +73,15 @@ class EqualsOnUnrelatedTypesKnownFactsTest {
   void aTypeWithoutShapeOrWithoutTypeIsUnknown() {
     final SpanFacts noShape =
         new SpanFacts(
-            TypeRef.of(Calls.TYPE_A), null, null, List.of(), List.of(), List.of(), List.of(), null);
+            TypeRef.of(Calls.TYPE_A),
+            null,
+            null,
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            null,
+            null);
 
     assertThat(
             Calls.run(

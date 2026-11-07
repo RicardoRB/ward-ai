@@ -1,0 +1,19 @@
+{
+  "1:7-4:1": {
+    "inherited": {
+      "fields": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "getValue",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -40,7 +40,7 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
     final Map<String, SpanFacts> facts = new HashMap<>();
     facts.put(
         LINE + ":" + COLUMN,
-        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null));
+        new SpanFacts(null, null, target, List.of(), List.of(), List.of(), List.of(), null, null));
 
     assertThat(internalApi(root, new UnitTypeFacts(facts))).containsExactly(HELPER);
     assertThat(internalApi(root, UnitTypeFacts.none())).isEmpty();

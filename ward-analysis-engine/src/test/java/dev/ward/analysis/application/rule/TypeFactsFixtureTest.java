@@ -50,6 +50,29 @@ class TypeFactsFixtureTest {
   }
 
   @Test
+  void readsTheMembersATypeInherits() {
+    final UnitTypeFacts facts =
+        TypeFactsFixture.parse(
+            """
+            {"5:9-5:25": {"inherited": {
+              "fields": [{"declaring": {"name": "app.Base"}, "name": "count", "static": true}],
+              "methods": [{"declaring": {"name": "app.Base"}, "name": "run", "params": [],
+                           "static": false}]}}}
+            """);
+
+    assertThat(facts.at(CALL).inherited().fields())
+        .singleElement()
+        .satisfies(
+            field -> {
+              assertThat(field.name()).isEqualTo("count");
+              assertThat(field.isStatic()).isTrue();
+              assertThat(field.declaringType().name()).isEqualTo("app.Base");
+            });
+    assertThat(facts.at(CALL).inherited().methods()).extracting("name").containsExactly("run");
+    assertThat(TypeFactsFixture.parse("{}").at(CALL).inherited().fields()).isEmpty();
+  }
+
+  @Test
   void aSpanWithoutAFactIsUnknown() {
     assertThat(TypeFactsFixture.parse("{}").typeOf(CALL)).isEmpty();
   }

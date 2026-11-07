@@ -86,6 +86,6 @@ class ClassTreeNodes {
 
   private SpanFacts typed(final String type) {
     return new SpanFacts(
-        TypeRef.of(type), null, null, List.of(), List.of(), List.of(), List.of(), null);
+        TypeRef.of(type), null, null, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 }

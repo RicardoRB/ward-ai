@@ -1,0 +1,32 @@
+{
+  "1:7-4:1": {
+    "shape": {
+      "kind": "class",
+      "final": true,
+      "supertypes": [
+        {
+          "name": "java.awt.event.MouseAdapter"
+        }
+      ]
+    },
+    "inherited": {
+      "fields": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "java.awt.event.MouseAdapter"
+          },
+          "name": "mouseClicked",
+          "params": [
+            {
+              "name": "java.awt.event.MouseEvent"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  }
+}

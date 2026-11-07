@@ -57,6 +57,7 @@ class UnitTypeFactsTest {
             List.of("org.jspecify.annotations.NullMarked"),
             List.of(),
             List.of(),
+            null,
             null);
 
     assertThat(new UnitTypeFacts(Map.of("3:5", parameter)).nullness(CALL))
@@ -83,6 +84,6 @@ class UnitTypeFactsTest {
   }
 
   private static SpanFacts withType(final TypeRef type) {
-    return new SpanFacts(type, null, null, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(type, null, null, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 }

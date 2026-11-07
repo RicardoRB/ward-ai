@@ -50,7 +50,15 @@ final class FactTable {
             declaration.map(found -> found.scopes().stream().map(FactRefs::display).toList())),
         list(kinds, FactKind.OVERRIDES, Optional.of(overrides(declaration))),
         list(kinds, FactKind.THROWS, Optional.of(thrown(typed, declaration))),
-        ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null));
+        ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null),
+        ask(
+                kinds,
+                FactKind.MEMBERS,
+                () ->
+                    declaration
+                        .flatMap(DeclInfo::type)
+                        .map(type -> InheritedMemberReader.of(session.hierarchy, type)))
+            .orElse(null));
   }
 
   private static <T> Optional<T> ask(

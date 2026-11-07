@@ -2,6 +2,7 @@ package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.ConstantValue;
+import dev.ward.analysis.domain.types.InheritedMembers;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
@@ -34,7 +35,22 @@ final class TypeFactsJson {
         JsonValues.strings(fact.get("scopes")),
         JsonValues.list(fact.get("overrides")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(fact.get("thrown")).stream().map(TypeFactsJson::typeRef).toList(),
-        fact.containsKey("constant") ? new ConstantValue(fact.get("constant")) : null);
+        fact.containsKey("constant") ? new ConstantValue(fact.get("constant")) : null,
+        fact.containsKey("inherited") ? inherited(JsonValues.object(fact.get("inherited"))) : null);
+  }
+
+  private static InheritedMembers inherited(final Map<?, ?> inherited) {
+    return new InheritedMembers(
+        JsonValues.list(inherited.get("fields")).stream()
+            .map(JsonValues::object)
+            .map(
+                field ->
+                    new InheritedMembers.Field(
+                        typeRef(field.get("declaring")),
+                        JsonValues.string(field.get("name")),
+                        JsonValues.flag(field.get("static"))))
+            .toList(),
+        JsonValues.list(inherited.get("methods")).stream().map(TypeFactsJson::call).toList());
   }
 
   private static TypeShape shape(final Map<?, ?> shape) {

@@ -29,7 +29,7 @@ bit-ior = "implemented"
 bit-ior-of-signed-byte = { status = "planned", issue = "#314" }
 bit-signed-check = { status = "planned", issue = "#316" }
 bit-signed-check-high-bit = "implemented"
-boa-badly-overridden-adapter = { status = "planned", issue = "#314" }
+boa-badly-overridden-adapter = "implemented"
 bshift-wrong-add-priority = "implemented"
 bx-boxing-immediately-unboxed = { status = "planned", issue = "#316" }
 bx-boxing-immediately-unboxed-to-perform-coercion = { status = "planned", issue = "#316" }
@@ -175,7 +175,7 @@ he-use-of-unhashable-class = { status = "planned", issue = "#314" }
 hrs-request-parameter-to-cookie = { status = "planned", issue = "#316" }
 hrs-request-parameter-to-http-header = { status = "planned", issue = "#316" }
 hsc-huge-shared-string-constant = { status = "planned", issue = "#316" }
-hsm-hiding-method = { status = "planned", issue = "#314" }
+hsm-hiding-method = "implemented"
 ia-ambiguous-invocation-of-inherited-or-outer-method = { status = "planned", issue = "#316" }
 ic-init-circularity = { status = "planned", issue = "#316" }
 ic-superclass-uses-subclass-during-initialization = { status = "planned", issue = "#316" }
@@ -234,8 +234,8 @@ mc-overridable-method-call-in-constructor = { status = "planned", issue = "#316"
 mc-overridable-method-call-in-read-object = { status = "planned", issue = "#316" }
 me-enum-field-setter = "implemented"
 me-mutable-enum-field = "implemented"
-mf-class-masks-field = { status = "planned", issue = "#314" }
-mf-method-masks-field = { status = "planned", issue = "#314" }
+mf-class-masks-field = "implemented"
+mf-method-masks-field = "implemented"
 ml-sync-on-field-to-guard-changing-that-field = { status = "planned", issue = "#316" }
 ml-sync-on-updated-field = { status = "planned", issue = "#316" }
 ms-cannot-be-final = { status = "planned", issue = "#316" }
@@ -268,7 +268,7 @@ nm-method-constructor-confusion = { status = "planned", issue = "#314" }
 nm-method-naming-convention = "implemented"
 nm-same-simple-name-as-interface = "implemented"
 nm-same-simple-name-as-superclass = "implemented"
-nm-very-confusing = { status = "planned", issue = "#314" }
+nm-very-confusing = "implemented"
 nm-very-confusing-intentional = { status = "planned", issue = "#316" }
 nm-wrong-package = { status = "planned", issue = "#314" }
 nm-wrong-package-intentional = { status = "planned", issue = "#316" }

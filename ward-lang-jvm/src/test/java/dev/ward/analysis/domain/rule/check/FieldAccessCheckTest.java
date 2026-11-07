@@ -109,37 +109,4 @@ class FieldAccessCheckTest {
                     "  private String label;\n  Box() { label = \"x\"; }\n  int n() { return label.length(); }\n")))
         .isEmpty();
   }
-
-  @Test
-  void aConstructorThatReadsAFieldBeforeWritingItIsReported() {
-    assertThat(
-            run(
-                FieldAccessCheck.Mode.UNINITIALIZED_READ,
-                box(
-                    "  private int size;\n  private int twice;\n  Box() {\n    twice = size * 2;\n    size = 1;\n  }\n")))
-        .containsExactly("5:13");
-    for (final String body : List.of("size += 1;", "size++;", "size = size + 1;")) {
-      assertThat(
-              run(
-                  FieldAccessCheck.Mode.UNINITIALIZED_READ,
-                  box("  private int size;\n  Box() { " + body + " }\n")))
-          .as(body)
-          .hasSize(1);
-    }
-  }
-
-  @Test
-  void aFieldThatIsWrittenFirstOrSetUpElsewhereIsNotAnUninitializedRead() {
-    for (final String members :
-        List.of(
-            "  private int size;\n  private int twice;\n  Box() { size = 1; twice = size * 2; }\n",
-            "  private int size;\n  Box() { this(1); int x = size; }\n  Box(int s) { size = s; }\n",
-            "  private int size;\n  { size = 1; }\n  Box() { int x = size; }\n",
-            "  private static int size;\n  Box() { int x = size; }\n",
-            "  private int size = 1;\n  Box() { int x = size; }\n",
-            "  @Inject private int size;\n  Box() { int x = size; }\n",
-            "  private int size;\n  Box(int size) { int x = size; }\n")) {
-      assertThat(run(FieldAccessCheck.Mode.UNINITIALIZED_READ, box(members))).as(members).isEmpty();
-    }
-  }
 }

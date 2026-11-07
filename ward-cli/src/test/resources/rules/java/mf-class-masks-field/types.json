@@ -1,0 +1,15 @@
+{
+  "1:7-3:1": {
+    "inherited": {
+      "fields": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "count"
+        }
+      ],
+      "methods": []
+    }
+  }
+}

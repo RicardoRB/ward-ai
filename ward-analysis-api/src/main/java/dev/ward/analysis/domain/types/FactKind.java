@@ -15,5 +15,7 @@ public enum FactKind {
   /** The checked exceptions a method declares or an invocation can throw. */
   THROWS,
   /** The compile-time constant value of an expression. */
-  CONSTANT;
+  CONSTANT,
+  /** The fields and methods a type declaration inherits from its supertypes. */
+  MEMBERS;
 }

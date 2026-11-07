@@ -31,7 +31,7 @@ final class TypedTrees {
         shape = found;
       }
     }
-    return new SpanFacts(null, shape, call, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(null, shape, call, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 
   CallTarget callOf(final String declaring, final String name) {

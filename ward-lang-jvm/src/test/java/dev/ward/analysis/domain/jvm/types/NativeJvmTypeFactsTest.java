@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm.types;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.types.CallTarget;
+import dev.ward.analysis.domain.types.InheritedMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.Map;
@@ -112,6 +113,29 @@ class NativeJvmTypeFactsTest {
     assertThat(probe.type("Helper.make()")).isEqualTo("app.Helper");
     assertThat(probe.type("missing.call()")).isEqualTo("?");
     assertThat(probe.type("g.value()")).isEqualTo("?");
+  }
+
+  @Test
+  void answersTheVisibleMembersATypeInherits() {
+    final String base =
+        "package app;\npublic class Base implements Runnable {\n  protected int count;\n  private int hidden;\n  public static String NAME = \"b\";\n  public void run() {}\n  static void util() {}\n  private void secret() {}\n}\n";
+    final String text = "package app;\npublic class App extends Base {\n  int own;\n}\n";
+    final Probe probe = new Probe(text, Map.of("app.Base", base));
+
+    final String klass =
+        text.substring(text.indexOf("public class App"), text.lastIndexOf('}') + 1);
+    final InheritedMembers inherited =
+        probe.at(probe.span(klass)).at(probe.span(klass)).inherited();
+
+    assertThat(inherited.fields()).extracting("name").containsExactlyInAnyOrder("count", "NAME");
+    assertThat(inherited.methods())
+        .extracting(CallTarget::name)
+        .contains("run", "util", "hashCode", "toString")
+        .doesNotContain("secret", "<init>");
+    assertThat(inherited.methods())
+        .filteredOn(method -> "util".equals(method.name()))
+        .singleElement()
+        .satisfies(method -> assertThat(method.isStatic()).isTrue());
   }
 
   @Test
