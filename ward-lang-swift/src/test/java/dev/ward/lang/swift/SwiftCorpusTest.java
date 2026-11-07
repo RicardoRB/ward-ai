@@ -23,7 +23,7 @@ final class SwiftCorpusTest {
       List.of(
           "async-await.swift",
           "generics-where.swift",
-          "macros-outside-grammar.swift",
+          "macros-freestanding.swift",
           "opaque-existential.swift",
           "optional-binding.swift",
           "plain-types.swift",

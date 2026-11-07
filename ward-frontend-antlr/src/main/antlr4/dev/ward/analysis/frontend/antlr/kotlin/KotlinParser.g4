@@ -525,7 +525,7 @@ whenExpression
     ;
 
 whenEntry
-    : whenCondition (NL* COMMA NL* whenCondition)* NL* ARROW NL* controlStructureBody semi?
+    : whenCondition (NL* COMMA NL* whenCondition)* (NL* whenGuard)? NL* ARROW NL* controlStructureBody semi?
     | ELSE NL* ARROW NL* controlStructureBody
     ;
 
@@ -533,6 +533,10 @@ whenCondition
     : expression
     | rangeTest
     | typeTest
+    ;
+
+whenGuard
+    : IF NL* expression
     ;
 
 rangeTest
@@ -675,7 +679,7 @@ contextParameters
 
 contextModifier
     : CONTEXT
-    contextParameters
+    contextParameters NL*
     ;
 
 modifier
@@ -689,15 +693,22 @@ modifier
         | inheritanceModifier
         | parameterModifier
         | typeParameterModifier
+        | platformModifier
     ) NL*
     ;
 
 classModifier
     : ENUM
     | SEALED
+    | VALUE
     | ANNOTATION
     | DATA
     | INNER
+    ;
+
+platformModifier
+    : EXPECT
+    | ACTUAL
     ;
 
 memberModifier
@@ -792,6 +803,9 @@ simpleIdentifier
     | BY
     | CATCH
     | CONTEXT
+    | VALUE
+    | EXPECT
+    | ACTUAL
     | COMPANION
     | CONSTRUCTOR
     | CROSSINLINE

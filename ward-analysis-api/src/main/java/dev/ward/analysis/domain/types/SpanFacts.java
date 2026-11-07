@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Everything a sidecar answered for one span. A {@code null} component and an empty list both mean
+ * Everything a resolver answered for one span. A {@code null} component and an empty list both mean
  * that the fact is unknown or absent; rules must not report a finding that depends on it.
  *
  * @param type the type of the expression

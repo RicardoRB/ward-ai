@@ -1383,9 +1383,7 @@ ruff = ["F404"]
 
 [[rule]]
 name = "undefined-local-with-import-star-usage"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F405"]
 
 [[rule]]
@@ -1402,16 +1400,12 @@ ruff = ["F407"]
 
 [[rule]]
 name = "percent-format-invalid-format"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F501"]
 
 [[rule]]
 name = "percent-format-expected-mapping"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F502"]
 
 [[rule]]
@@ -1423,79 +1417,57 @@ ruff = ["F503"]
 
 [[rule]]
 name = "percent-format-extra-named-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F504"]
 
 [[rule]]
 name = "percent-format-missing-argument"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F505"]
 
 [[rule]]
 name = "percent-format-mixed-positional-and-named"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F506"]
 
 [[rule]]
 name = "percent-format-positional-count-mismatch"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F507"]
 
 [[rule]]
 name = "percent-format-star-requires-sequence"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F508"]
 
 [[rule]]
 name = "percent-format-unsupported-format-character"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F509"]
 
 [[rule]]
 name = "string-dot-format-invalid-format"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F521"]
 
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F522"]
 
 [[rule]]
 name = "string-dot-format-extra-positional-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F523"]
 
 [[rule]]
 name = "string-dot-format-missing-arguments"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F524"]
 
 [[rule]]
 name = "string-dot-format-mixing-automatic"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F525"]
 
 [[rule]]
@@ -1565,17 +1537,13 @@ ruff = ["F702"]
 
 [[rule]]
 name = "yield-outside-function"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F704"]
 pylint = ["yield-outside-function"]
 
 [[rule]]
 name = "return-outside-function"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F706"]
 pylint = ["return-outside-function"]
 
@@ -1595,16 +1563,12 @@ ruff = ["F722"]
 
 [[rule]]
 name = "redefined-while-unused"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F811"]
 
 [[rule]]
 name = "undefined-name"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F821"]
 
 [[rule]]
@@ -2747,40 +2711,30 @@ pylint = ["await-outside-async"]
 
 [[rule]]
 name = "logging-too-many-args"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1205"]
 pylint = ["logging-too-many-args"]
 
 [[rule]]
 name = "logging-too-few-args"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1206"]
 pylint = ["logging-too-few-args"]
 
 [[rule]]
 name = "bad-string-format-character"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1300"]
 
 [[rule]]
 name = "bad-string-format-type"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1307"]
 pylint = ["bad-string-format-type"]
 
 [[rule]]
 name = "bad-str-strip-call"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1310"]
 pylint = ["bad-str-strip-call"]
 

@@ -10,9 +10,9 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Reads the fact objects of the sidecar protocol, which {@code types.json} fixtures share. Each
- * fact is optional; a field of the wrong shape rejects the whole object, so a broken sidecar is
- * never taken for an answer.
+ * Reads the fact objects of the native resolver protocol, which {@code types.json} fixtures share.
+ * Each fact is optional; a field of the wrong shape rejects the whole object, so a broken resolver
+ * is never taken for an answer.
  */
 final class TypeFactsJson {
   private TypeFactsJson() {}

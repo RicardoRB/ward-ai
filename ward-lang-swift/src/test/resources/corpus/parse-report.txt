@@ -1,6 +1,6 @@
-async-await.swift	error	6:18
+async-await.swift	parsed
 generics-where.swift	parsed
-macros-outside-grammar.swift	error	2:8
+macros-freestanding.swift	parsed
 opaque-existential.swift	parsed
 optional-binding.swift	parsed
 plain-types.swift	parsed
