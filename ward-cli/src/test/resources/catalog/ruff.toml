@@ -600,136 +600,98 @@ ruff = ["B912"]
 
 [[rule]]
 name = "unnecessary-generator-list"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C400"]
 
 [[rule]]
 name = "unnecessary-generator-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C401"]
 
 [[rule]]
 name = "unnecessary-generator-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C402"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C403"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C404"]
 
 [[rule]]
 name = "unnecessary-literal-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C405"]
 
 [[rule]]
 name = "unnecessary-literal-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C406"]
 
 [[rule]]
 name = "unnecessary-collection-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C408"]
 
 [[rule]]
 name = "unnecessary-literal-within-tuple-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C409"]
 
 [[rule]]
 name = "unnecessary-literal-within-list-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C410"]
 
 [[rule]]
 name = "unnecessary-list-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C411"]
 
 [[rule]]
 name = "unnecessary-call-around-sorted"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C413"]
 
 [[rule]]
 name = "unnecessary-double-cast-or-process"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C414"]
 
 [[rule]]
 name = "unnecessary-subscript-reversal"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C415"]
 
 [[rule]]
 name = "unnecessary-comprehension"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C416"]
 pylint = ["unnecessary-comprehension"]
 
 [[rule]]
 name = "unnecessary-map"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C417"]
 
 [[rule]]
 name = "unnecessary-literal-within-dict-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C418"]
 
 [[rule]]
 name = "unnecessary-comprehension-in-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C419"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C420"]
 
 [[rule]]
