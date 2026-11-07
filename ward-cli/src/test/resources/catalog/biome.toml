@@ -2,6 +2,7 @@
 
 [[rule]]
 name = "no-access-key"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noAccessKey"]
 
@@ -11,51 +12,61 @@ biome = ["noAccumulatingSpread"]
 
 [[rule]]
 name = "no-adjacent-spaces-in-regex"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noAdjacentSpacesInRegex"]
 
 [[rule]]
 name = "no-ambiguous-anchor-text"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noAmbiguousAnchorText"]
 
 [[rule]]
 name = "no-approximative-numeric-constant"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noApproximativeNumericConstant"]
 
 [[rule]]
 name = "no-aria-hidden-on-focusable"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noAriaHiddenOnFocusable"]
 
 [[rule]]
 name = "no-aria-unsupported-elements"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noAriaUnsupportedElements"]
 
 [[rule]]
 name = "no-array-index-key"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noArrayIndexKey"]
 
 [[rule]]
 name = "no-assign-in-expressions"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noAssignInExpressions"]
 
 [[rule]]
 name = "no-astro-conflicting-set-directives"
+presets = ["strict"]
 category = "nursery"
 biome = ["noAstroConflictingSetDirectives"]
 
 [[rule]]
 name = "no-astro-set-html-directive"
+presets = ["strict"]
 category = "nursery"
 biome = ["noAstroSetHtmlDirective"]
 
 [[rule]]
 name = "no-autofocus"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noAutofocus"]
 
@@ -66,81 +77,97 @@ biome = ["noBannedTypes"]
 
 [[rule]]
 name = "no-barrel-file"
+presets = ["strict"]
 category = "performance"
 biome = ["noBarrelFile"]
 
 [[rule]]
 name = "no-before-interactive-script-outside-document"
+presets = ["strict"]
 category = "correctness"
 biome = ["noBeforeInteractiveScriptOutsideDocument"]
 
 [[rule]]
 name = "no-blank-target"
+presets = ["standard", "strict"]
 category = "security"
 biome = ["noBlankTarget"]
 
 [[rule]]
 name = "no-bun-modules"
+presets = ["strict"]
 category = "nursery"
 biome = ["noBunModules"]
 
 [[rule]]
 name = "no-children-prop"
+presets = ["strict"]
 category = "correctness"
 biome = ["noChildrenProp"]
 
 [[rule]]
 name = "no-comment-text"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noCommentText"]
 
 [[rule]]
 name = "no-common-js"
+presets = ["strict"]
 category = "linter"
 biome = ["noCommonJs"]
 
 [[rule]]
 name = "no-component-hook-factories"
+presets = ["strict"]
 category = "nursery"
 biome = ["noComponentHookFactories"]
 
 [[rule]]
 name = "no-conditional-expect"
+presets = ["strict"]
 category = "nursery"
 biome = ["noConditionalExpect"]
 
 [[rule]]
 name = "no-confusing-labels"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noConfusingLabels"]
 
 [[rule]]
 name = "no-confusing-void-type"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noConfusingVoidType"]
 
 [[rule]]
 name = "no-const-enum"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noConstEnum"]
 
 [[rule]]
 name = "no-constant-math-min-max-clamp"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noConstantMathMinMaxClamp"]
 
 [[rule]]
 name = "no-dangerously-set-inner-html"
+presets = ["strict"]
 category = "security"
 biome = ["noDangerouslySetInnerHtml"]
 
 [[rule]]
 name = "no-dangerously-set-inner-html-with-children"
+presets = ["strict"]
 category = "security"
 biome = ["noDangerouslySetInnerHtmlWithChildren"]
 
 [[rule]]
 name = "no-default-export"
+presets = ["strict"]
 category = "linter"
 biome = ["noDefaultExport"]
 
@@ -150,11 +177,13 @@ biome = ["noDelete"]
 
 [[rule]]
 name = "no-deprecated-imports"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noDeprecatedImports"]
 
 [[rule]]
 name = "no-distracting-elements"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noDistractingElements"]
 
@@ -164,41 +193,49 @@ biome = ["noDocumentCookie"]
 
 [[rule]]
 name = "no-document-import-in-page"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noDocumentImportInPage"]
 
 [[rule]]
 name = "no-done-callback"
+presets = ["strict"]
 category = "linter"
 biome = ["noDoneCallback"]
 
 [[rule]]
 name = "no-drizzle-delete-without-where"
+presets = ["strict"]
 category = "nursery"
 biome = ["noDrizzleDeleteWithoutWhere"]
 
 [[rule]]
 name = "no-drizzle-update-without-where"
+presets = ["strict"]
 category = "nursery"
 biome = ["noDrizzleUpdateWithoutWhere"]
 
 [[rule]]
 name = "no-duplicate-jsx-props"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noDuplicateJsxProps"]
 
 [[rule]]
 name = "no-duplicate-test-hooks"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noDuplicateTestHooks"]
 
 [[rule]]
 name = "no-duplicated-spread-props"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noDuplicatedSpreadProps"]
 
 [[rule]]
 name = "no-dynamic-namespace-import-access"
+presets = ["standard", "strict"]
 category = "performance"
 biome = ["noDynamicNamespaceImportAccess"]
 
@@ -209,51 +246,61 @@ biome = ["noEmptyInterface"]
 
 [[rule]]
 name = "no-empty-source"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noEmptySource"]
 
 [[rule]]
 name = "no-empty-type-parameters"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noEmptyTypeParameters"]
 
 [[rule]]
 name = "no-enum"
+presets = ["strict"]
 category = "linter"
 biome = ["noEnum"]
 
 [[rule]]
 name = "no-evolving-types"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noEvolvingTypes"]
 
 [[rule]]
 name = "no-excessive-cognitive-complexity"
+presets = ["strict"]
 category = "complexity"
 biome = ["noExcessiveCognitiveComplexity"]
 
 [[rule]]
 name = "no-excessive-lines-per-file"
+presets = ["strict"]
 category = "linter"
 biome = ["noExcessiveLinesPerFile"]
 
 [[rule]]
 name = "no-excessive-lines-per-function"
+presets = ["strict"]
 category = "complexity"
 biome = ["noExcessiveLinesPerFunction"]
 
 [[rule]]
 name = "no-excessive-nested-test-suites"
+presets = ["strict"]
 category = "complexity"
 biome = ["noExcessiveNestedTestSuites"]
 
 [[rule]]
 name = "no-exported-imports"
+presets = ["strict"]
 category = "linter"
 biome = ["noExportedImports"]
 
 [[rule]]
 name = "no-exports-in-test"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noExportsInTest"]
 
@@ -267,11 +314,13 @@ biome = ["noFocusedTests"]
 
 [[rule]]
 name = "no-for-each"
+presets = ["strict"]
 category = "complexity"
 biome = ["noForEach"]
 
 [[rule]]
 name = "no-for-in"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noForIn"]
 
@@ -293,51 +342,61 @@ biome = ["noGlobalIsNan"]
 
 [[rule]]
 name = "no-head-element"
+presets = ["strict"]
 category = "linter"
 biome = ["noHeadElement"]
 
 [[rule]]
 name = "no-head-import-in-document"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noHeadImportInDocument"]
 
 [[rule]]
 name = "no-header-scope"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noHeaderScope"]
 
 [[rule]]
 name = "no-identical-test-title"
+presets = ["strict"]
 category = "nursery"
 biome = ["noIdenticalTestTitle"]
 
 [[rule]]
 name = "no-img-element"
+presets = ["strict"]
 category = "performance"
 biome = ["noImgElement"]
 
 [[rule]]
 name = "no-implicit-any-let"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noImplicitAnyLet"]
 
 [[rule]]
 name = "no-implicit-boolean"
+presets = ["strict"]
 category = "linter"
 biome = ["noImplicitBoolean"]
 
 [[rule]]
 name = "no-import-cycles"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noImportCycles"]
 
 [[rule]]
 name = "no-inline-styles"
+presets = ["strict"]
 category = "nursery"
 biome = ["noInlineStyles"]
 
 [[rule]]
 name = "no-interactive-element-to-noninteractive-role"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noInteractiveElementToNoninteractiveRole"]
 
@@ -347,196 +406,235 @@ biome = ["noInvalidBuiltinInstantiation"]
 
 [[rule]]
 name = "no-invalid-file-input-accept"
+presets = ["strict"]
 category = "nursery"
 biome = ["noInvalidFileInputAccept"]
 
 [[rule]]
 name = "no-js-restricted-properties"
+presets = ["strict"]
 category = "nursery"
 biome = ["noJsRestrictedProperties"]
 
 [[rule]]
 name = "no-jsx-leaked-dollar"
+presets = ["strict"]
 category = "nursery"
 biome = ["noJsxLeakedDollar"]
 
 [[rule]]
 name = "no-jsx-literals"
+presets = ["strict"]
 category = "linter"
 biome = ["noJsxLiterals"]
 
 [[rule]]
 name = "no-jsx-namespace"
+presets = ["strict"]
 category = "nursery"
 biome = ["noJsxNamespace"]
 
 [[rule]]
 name = "no-jsx-props-bind"
+presets = ["strict"]
 category = "performance"
 biome = ["noJsxPropsBind"]
 
 [[rule]]
 name = "no-label-without-control"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noLabelWithoutControl"]
 
 [[rule]]
 name = "no-leaked-render"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noLeakedRender"]
 
 [[rule]]
 name = "no-misleading-instantiator"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noMisleadingInstantiator"]
 
 [[rule]]
 name = "no-misleading-return-type"
+presets = ["strict"]
 category = "nursery"
 biome = ["noMisleadingReturnType"]
 
 [[rule]]
 name = "no-misplaced-assertion"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noMisplacedAssertion"]
 
 [[rule]]
 name = "no-misplaced-list-elements"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["noMisplacedListElements"]
 
 [[rule]]
 name = "no-misrefactored-shorthand-assign"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noMisrefactoredShorthandAssign"]
 
 [[rule]]
 name = "no-multiline-string"
+presets = ["strict"]
 category = "linter"
 biome = ["noMultilineString"]
 
 [[rule]]
 name = "no-namespace-import"
+presets = ["strict"]
 category = "performance"
 biome = ["noNamespaceImport"]
 
 [[rule]]
 name = "no-negation-in-equality-check"
+presets = ["strict"]
 category = "nursery"
 biome = ["noNegationInEqualityCheck"]
 
 [[rule]]
 name = "no-nested-component-definitions"
+presets = ["strict"]
 category = "correctness"
 biome = ["noNestedComponentDefinitions"]
 
 [[rule]]
 name = "no-nested-promises"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noNestedPromises"]
 
 [[rule]]
 name = "no-next-async-client-component"
+presets = ["strict"]
 category = "correctness"
 biome = ["noNextAsyncClientComponent"]
 
 [[rule]]
 name = "no-nodejs-modules"
+presets = ["strict"]
 category = "correctness"
 biome = ["noNodejsModules"]
 
 [[rule]]
 name = "no-non-scalable-viewport"
+presets = ["strict"]
 category = "nursery"
 biome = ["noNonScalableViewport"]
 
 [[rule]]
 name = "no-noninteractive-element-interactions"
+presets = ["strict"]
 category = "a11y"
 biome = ["noNoninteractiveElementInteractions"]
 
 [[rule]]
 name = "no-noninteractive-element-to-interactive-role"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noNoninteractiveElementToInteractiveRole"]
 
 [[rule]]
 name = "no-noninteractive-tabindex"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noNoninteractiveTabindex"]
 
 [[rule]]
 name = "no-obsolete-tags"
+presets = ["strict"]
 category = "nursery"
 biome = ["noObsoleteTags"]
 
 [[rule]]
 name = "no-parameter-assign"
+presets = ["strict"]
 category = "linter"
 biome = ["noParameterAssign"]
 
 [[rule]]
 name = "no-parameters-only-used-in-recursion"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noParametersOnlyUsedInRecursion"]
 
 [[rule]]
 name = "no-playwright-element-handle"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightElementHandle"]
 
 [[rule]]
 name = "no-playwright-eval"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightEval"]
 
 [[rule]]
 name = "no-playwright-force-option"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightForceOption"]
 
 [[rule]]
 name = "no-playwright-missing-await"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightMissingAwait"]
 
 [[rule]]
 name = "no-playwright-networkidle"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightNetworkidle"]
 
 [[rule]]
 name = "no-playwright-page-pause"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightPagePause"]
 
 [[rule]]
 name = "no-playwright-useless-await"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightUselessAwait"]
 
 [[rule]]
 name = "no-playwright-wait-for-navigation"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightWaitForNavigation"]
 
 [[rule]]
 name = "no-playwright-wait-for-selector"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightWaitForSelector"]
 
 [[rule]]
 name = "no-playwright-wait-for-timeout"
+presets = ["strict"]
 category = "nursery"
 biome = ["noPlaywrightWaitForTimeout"]
 
 [[rule]]
 name = "no-positive-tabindex"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noPositiveTabindex"]
 
 [[rule]]
 name = "no-private-imports"
+presets = ["strict"]
 category = "correctness"
 biome = ["noPrivateImports"]
 
@@ -546,111 +644,133 @@ biome = ["noProcessEnv"]
 
 [[rule]]
 name = "no-process-global"
+presets = ["strict"]
 category = "correctness"
 biome = ["noProcessGlobal"]
 
 [[rule]]
 name = "no-qwik-use-visible-task"
+presets = ["strict"]
 category = "correctness"
 biome = ["noQwikUseVisibleTask"]
 
 [[rule]]
 name = "no-re-export-all"
+presets = ["strict"]
 category = "performance"
 biome = ["noReExportAll"]
 
 [[rule]]
 name = "no-react-forward-ref"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noReactForwardRef"]
 
 [[rule]]
 name = "no-react-native-deep-imports"
+presets = ["strict"]
 category = "nursery"
 biome = ["noReactNativeDeepImports"]
 
 [[rule]]
 name = "no-react-native-literal-colors"
+presets = ["strict"]
 category = "nursery"
 biome = ["noReactNativeLiteralColors"]
 
 [[rule]]
 name = "no-react-native-raw-text"
+presets = ["strict"]
 category = "nursery"
 biome = ["noReactNativeRawText"]
 
 [[rule]]
 name = "no-react-object-type-as-default-prop"
+presets = ["strict"]
 category = "nursery"
 biome = ["noReactObjectTypeAsDefaultProp"]
 
 [[rule]]
 name = "no-react-prop-assignments"
+presets = ["strict"]
 category = "correctness"
 biome = ["noReactPropAssignments"]
 
 [[rule]]
 name = "no-react-specific-props"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noReactSpecificProps"]
 
 [[rule]]
 name = "no-react-string-refs"
+presets = ["strict"]
 category = "nursery"
 biome = ["noReactStringRefs"]
 
 [[rule]]
 name = "no-redundant-alt"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noRedundantAlt"]
 
 [[rule]]
 name = "no-redundant-default-export"
+presets = ["strict"]
 category = "complexity"
 biome = ["noRedundantDefaultExport"]
 
 [[rule]]
 name = "no-redundant-roles"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noRedundantRoles"]
 
 [[rule]]
 name = "no-render-return-value"
+presets = ["strict"]
 category = "correctness"
 biome = ["noRenderReturnValue"]
 
 [[rule]]
 name = "no-restricted-elements"
+presets = ["strict"]
 category = "correctness"
 biome = ["noRestrictedElements"]
 
 [[rule]]
 name = "no-restricted-imports"
+presets = ["strict"]
 category = "linter"
 biome = ["noRestrictedImports"]
 
 [[rule]]
 name = "no-return-in-finally"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["noReturnInFinally"]
 
 [[rule]]
 name = "no-secrets"
+presets = ["strict"]
 category = "security"
 biome = ["noSecrets"]
 
 [[rule]]
 name = "no-self-import"
+presets = ["strict"]
 category = "nursery"
 biome = ["noSelfImport"]
 
 [[rule]]
 name = "no-shadow"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noShadow"]
 
 [[rule]]
 name = "no-shouty-constants"
+presets = ["strict"]
 category = "linter"
 biome = ["noShoutyConstants"]
 
@@ -660,21 +780,25 @@ biome = ["noSkippedTests"]
 
 [[rule]]
 name = "no-solid-destructured-props"
+presets = ["strict"]
 category = "correctness"
 biome = ["noSolidDestructuredProps"]
 
 [[rule]]
 name = "no-static-element-interactions"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noStaticElementInteractions"]
 
 [[rule]]
 name = "no-static-only-class"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noStaticOnlyClass"]
 
 [[rule]]
 name = "no-string-case-mismatch"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noStringCaseMismatch"]
 
@@ -684,41 +808,49 @@ biome = ["noSubstr"]
 
 [[rule]]
 name = "no-suspicious-semicolon-in-jsx"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noSuspiciousSemicolonInJsx"]
 
 [[rule]]
 name = "no-svelte-export-let"
+presets = ["strict"]
 category = "nursery"
 biome = ["noSvelteExportLet"]
 
 [[rule]]
 name = "no-svelte-unnecessary-state-wrap"
+presets = ["strict"]
 category = "nursery"
 biome = ["noSvelteUnnecessaryStateWrap"]
 
 [[rule]]
 name = "no-svg-without-title"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["noSvgWithoutTitle"]
 
 [[rule]]
 name = "no-sync-scripts"
+presets = ["strict"]
 category = "performance"
 biome = ["noSyncScripts"]
 
 [[rule]]
 name = "no-tailwind-arbitrary-value"
+presets = ["strict"]
 category = "nursery"
 biome = ["noTailwindArbitraryValue"]
 
 [[rule]]
 name = "no-tailwind-raw-colors"
+presets = ["strict"]
 category = "nursery"
 biome = ["noTailwindRawColors"]
 
 [[rule]]
 name = "no-ternary"
+presets = ["strict"]
 category = "linter"
 biome = ["noTernary"]
 
@@ -728,81 +860,97 @@ biome = ["noThenProperty"]
 
 [[rule]]
 name = "no-this-in-static"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noThisInStatic"]
 
 [[rule]]
 name = "no-this-outside-of-class"
+presets = ["strict"]
 category = "nursery"
 biome = ["noThisOutsideOfClass"]
 
 [[rule]]
 name = "no-unassigned-variables"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noUnassignedVariables"]
 
 [[rule]]
 name = "no-undeclared-classes"
+presets = ["strict"]
 category = "nursery"
 biome = ["noUndeclaredClasses"]
 
 [[rule]]
 name = "no-undeclared-custom-properties"
+presets = ["strict"]
 category = "nursery"
 biome = ["noUndeclaredCustomProperties"]
 
 [[rule]]
 name = "no-undeclared-dependencies"
+presets = ["strict"]
 category = "correctness"
 biome = ["noUndeclaredDependencies"]
 
 [[rule]]
 name = "no-undeclared-env-vars"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noUndeclaredEnvVars"]
 
 [[rule]]
 name = "no-unknown-attribute"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noUnknownAttribute"]
 
 [[rule]]
 name = "no-unnecessary-conditions"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noUnnecessaryConditions"]
 
 [[rule]]
 name = "no-unreachable-super"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noUnreachableSuper"]
 
 [[rule]]
 name = "no-unresolved-imports"
+presets = ["strict"]
 category = "correctness"
 biome = ["noUnresolvedImports"]
 
 [[rule]]
 name = "no-unsafe-iframe-sandbox"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
 name = "no-unused-function-parameters"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noUnusedFunctionParameters"]
 
 [[rule]]
 name = "no-unused-instantiation"
+presets = ["strict"]
 category = "correctness"
 biome = ["noUnusedInstantiation"]
 
 [[rule]]
 name = "no-unused-template-literal"
+presets = ["strict"]
 category = "linter"
 biome = ["noUnusedTemplateLiteral"]
 
 [[rule]]
 name = "no-unwanted-polyfillio"
+presets = ["strict"]
 category = "performance"
 biome = ["noUnwantedPolyfillio"]
 
@@ -812,16 +960,19 @@ biome = ["noUselessCatchBinding"]
 
 [[rule]]
 name = "no-useless-continue"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noUselessContinue"]
 
 [[rule]]
 name = "no-useless-fragments"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noUselessFragments"]
 
 [[rule]]
 name = "no-useless-lone-block-statements"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noUselessLoneBlockStatements"]
 
@@ -831,101 +982,121 @@ biome = ["noUselessStringRaw"]
 
 [[rule]]
 name = "no-useless-switch-case"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["noUselessSwitchCase"]
 
 [[rule]]
 name = "no-useless-undefined"
+presets = ["strict"]
 category = "complexity"
 biome = ["noUselessUndefined"]
 
 [[rule]]
 name = "no-void-elements-with-children"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noVoidElementsWithChildren"]
 
 [[rule]]
 name = "no-void-type-return"
+presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noVoidTypeReturn"]
 
 [[rule]]
 name = "no-vue-arrow-func-in-watch"
+presets = ["strict"]
 category = "suspicious"
 biome = ["noVueArrowFuncInWatch"]
 
 [[rule]]
 name = "no-vue-data-object-declaration"
+presets = ["strict"]
 category = "correctness"
 biome = ["noVueDataObjectDeclaration"]
 
 [[rule]]
 name = "no-vue-deprecated-scoped-slots"
+presets = ["strict"]
 category = "nursery"
 biome = ["noVueDeprecatedScopedSlots"]
 
 [[rule]]
 name = "no-vue-duplicate-keys"
+presets = ["strict"]
 category = "correctness"
 biome = ["noVueDuplicateKeys"]
 
 [[rule]]
 name = "no-vue-import-compiler-macros"
+presets = ["strict"]
 category = "nursery"
 biome = ["noVueImportCompilerMacros"]
 
 [[rule]]
 name = "no-vue-options-api"
+presets = ["strict"]
 category = "linter"
 biome = ["noVueOptionsApi"]
 
 [[rule]]
 name = "no-vue-ref-as-operand"
+presets = ["strict"]
 category = "nursery"
 biome = ["noVueRefAsOperand"]
 
 [[rule]]
 name = "no-vue-reserved-keys"
+presets = ["strict"]
 category = "correctness"
 biome = ["noVueReservedKeys"]
 
 [[rule]]
 name = "no-vue-reserved-props"
+presets = ["strict"]
 category = "correctness"
 biome = ["noVueReservedProps"]
 
 [[rule]]
 name = "no-vue-setup-props-reactivity-loss"
+presets = ["strict"]
 category = "correctness"
 biome = ["noVueSetupPropsReactivityLoss"]
 
 [[rule]]
 name = "no-xor-as-exponentiation"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["noXorAsExponentiation"]
 
 [[rule]]
 name = "use-alt-text"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useAltText"]
 
 [[rule]]
 name = "use-anchor-content"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useAnchorContent"]
 
 [[rule]]
 name = "use-aria-activedescendant-with-tabindex"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useAriaActivedescendantWithTabindex"]
 
 [[rule]]
 name = "use-aria-props-for-role"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useAriaPropsForRole"]
 
 [[rule]]
 name = "use-aria-props-supported-by-role"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useAriaPropsSupportedByRole"]
 
@@ -935,71 +1106,85 @@ biome = ["useArrayFind"]
 
 [[rule]]
 name = "use-array-some"
+presets = ["strict"]
 category = "nursery"
 biome = ["useArraySome"]
 
 [[rule]]
 name = "use-at-index"
+presets = ["strict"]
 category = "linter"
 biome = ["useAtIndex"]
 
 [[rule]]
 name = "use-better-dom-traversing"
+presets = ["strict"]
 category = "nursery"
 biome = ["useBetterDomTraversing"]
 
 [[rule]]
 name = "use-button-type"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useButtonType"]
 
 [[rule]]
 name = "use-component-export-only-modules"
+presets = ["strict"]
 category = "linter"
 biome = ["useComponentExportOnlyModules"]
 
 [[rule]]
 name = "use-consistent-array-type"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentArrayType"]
 
 [[rule]]
 name = "use-consistent-arrow-return"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentArrowReturn"]
 
 [[rule]]
 name = "use-consistent-builtin-instantiation"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentBuiltinInstantiation"]
 
 [[rule]]
 name = "use-consistent-curly-braces"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentCurlyBraces"]
 
 [[rule]]
 name = "use-consistent-enum-value-type"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentEnumValueType"]
 
 [[rule]]
 name = "use-consistent-member-accessibility"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentMemberAccessibility"]
 
 [[rule]]
 name = "use-consistent-object-definitions"
+presets = ["strict"]
 category = "linter"
 biome = ["useConsistentObjectDefinitions"]
 
 [[rule]]
 name = "use-consistent-test-it"
+presets = ["strict"]
 category = "nursery"
 biome = ["useConsistentTestIt"]
 
 [[rule]]
 name = "use-control-label"
+presets = ["strict"]
 category = "nursery"
 biome = ["useControlLabel"]
 
@@ -1009,76 +1194,91 @@ biome = ["useDateNow"]
 
 [[rule]]
 name = "use-default-switch-clause"
+presets = ["strict"]
 category = "linter"
 biome = ["useDefaultSwitchClause"]
 
 [[rule]]
 name = "use-default-switch-clause-last"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["useDefaultSwitchClauseLast"]
 
 [[rule]]
 name = "use-disposables"
+presets = ["strict"]
 category = "nursery"
 biome = ["useDisposables"]
 
 [[rule]]
 name = "use-dom-node-text-content"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["useDomNodeTextContent"]
 
 [[rule]]
 name = "use-dom-query-selector"
+presets = ["strict"]
 category = "nursery"
 biome = ["useDomQuerySelector"]
 
 [[rule]]
 name = "use-error-cause"
+presets = ["strict"]
 category = "linter"
 biome = ["useErrorCause"]
 
 [[rule]]
 name = "use-error-message"
+presets = ["strict"]
 category = "suspicious"
 biome = ["useErrorMessage"]
 
 [[rule]]
 name = "use-exhaustive-dependencies"
+presets = ["strict"]
 category = "correctness"
 biome = ["useExhaustiveDependencies"]
 
 [[rule]]
 name = "use-exhaustive-switch-cases"
+presets = ["strict"]
 category = "nursery"
 biome = ["useExhaustiveSwitchCases"]
 
 [[rule]]
 name = "use-expect"
+presets = ["strict"]
 category = "nursery"
 biome = ["useExpect"]
 
 [[rule]]
 name = "use-explicit-length-check"
+presets = ["strict"]
 category = "linter"
 biome = ["useExplicitLengthCheck"]
 
 [[rule]]
 name = "use-explicit-return-type"
+presets = ["strict"]
 category = "nursery"
 biome = ["useExplicitReturnType"]
 
 [[rule]]
 name = "use-explicit-type"
+presets = ["strict"]
 category = "nursery"
 biome = ["useExplicitType"]
 
 [[rule]]
 name = "use-exports-last"
+presets = ["strict"]
 category = "linter"
 biome = ["useExportsLast"]
 
 [[rule]]
 name = "use-filenaming-convention"
+presets = ["strict"]
 category = "linter"
 biome = ["useFilenamingConvention"]
 
@@ -1088,71 +1288,85 @@ biome = ["useFlatMap"]
 
 [[rule]]
 name = "use-flat-math-min-max"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["useFlatMathMinMax"]
 
 [[rule]]
 name = "use-focusable-interactive"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useFocusableInteractive"]
 
 [[rule]]
 name = "use-fragment-syntax"
+presets = ["strict"]
 category = "linter"
 biome = ["useFragmentSyntax"]
 
 [[rule]]
 name = "use-global-this"
+presets = ["strict"]
 category = "linter"
 biome = ["useGlobalThis"]
 
 [[rule]]
 name = "use-google-font-display"
+presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["useGoogleFontDisplay"]
 
 [[rule]]
 name = "use-google-font-preconnect"
+presets = ["strict"]
 category = "performance"
 biome = ["useGoogleFontPreconnect"]
 
 [[rule]]
 name = "use-heading-content"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useHeadingContent"]
 
 [[rule]]
 name = "use-hook-at-top-level"
+presets = ["strict"]
 category = "correctness"
 biome = ["useHookAtTopLevel"]
 
 [[rule]]
 name = "use-html-lang"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useHtmlLang"]
 
 [[rule]]
 name = "use-iframe-sandbox"
+presets = ["strict"]
 category = "nursery"
 biome = ["useIframeSandbox"]
 
 [[rule]]
 name = "use-iframe-title"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useIframeTitle"]
 
 [[rule]]
 name = "use-image-size"
+presets = ["strict"]
 category = "correctness"
 biome = ["useImageSize"]
 
 [[rule]]
 name = "use-import-extensions"
+presets = ["strict"]
 category = "correctness"
 biome = ["useImportExtensions"]
 
 [[rule]]
 name = "use-imports-first"
+presets = ["strict"]
 category = "nursery"
 biome = ["useImportsFirst"]
 
@@ -1162,6 +1376,7 @@ biome = ["useIndexOf"]
 
 [[rule]]
 name = "use-inline-script-id"
+presets = ["strict"]
 category = "correctness"
 biome = ["useInlineScriptId"]
 
@@ -1171,51 +1386,61 @@ biome = ["useIsArray"]
 
 [[rule]]
 name = "use-json-import-attributes"
+presets = ["strict"]
 category = "correctness"
 biome = ["useJsonImportAttributes"]
 
 [[rule]]
 name = "use-jsx-key-in-iterable"
+presets = ["strict"]
 category = "correctness"
 biome = ["useJsxKeyInIterable"]
 
 [[rule]]
 name = "use-key-with-click-events"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useKeyWithClickEvents"]
 
 [[rule]]
 name = "use-key-with-mouse-events"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useKeyWithMouseEvents"]
 
 [[rule]]
 name = "use-math-min-max"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["useMathMinMax"]
 
 [[rule]]
 name = "use-media-caption"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useMediaCaption"]
 
 [[rule]]
 name = "use-modern-math-apis"
+presets = ["standard", "strict"]
 category = "nursery"
 biome = ["useModernMathApis"]
 
 [[rule]]
 name = "use-node-assert-strict"
+presets = ["strict"]
 category = "linter"
 biome = ["useNodeAssertStrict"]
 
 [[rule]]
 name = "use-nodejs-import-protocol"
+presets = ["standard", "strict"]
 category = "linter"
 biome = ["useNodejsImportProtocol"]
 
 [[rule]]
 name = "use-number-namespace"
+presets = ["strict"]
 category = "linter"
 biome = ["useNumberNamespace"]
 
@@ -1225,186 +1450,223 @@ biome = ["useNumberToFixedDigitsArgument"]
 
 [[rule]]
 name = "use-numeric-separators"
+presets = ["strict"]
 category = "linter"
 biome = ["useNumericSeparators"]
 
 [[rule]]
 name = "use-playwright-valid-describe-callback"
+presets = ["strict"]
 category = "nursery"
 biome = ["usePlaywrightValidDescribeCallback"]
 
 [[rule]]
 name = "use-qwik-classlist"
+presets = ["strict"]
 category = "correctness"
 biome = ["useQwikClasslist"]
 
 [[rule]]
 name = "use-qwik-loader-location"
+presets = ["strict"]
 category = "nursery"
 biome = ["useQwikLoaderLocation"]
 
 [[rule]]
 name = "use-qwik-method-usage"
+presets = ["strict"]
 category = "correctness"
 biome = ["useQwikMethodUsage"]
 
 [[rule]]
 name = "use-qwik-valid-lexical-scope"
+presets = ["strict"]
 category = "correctness"
 biome = ["useQwikValidLexicalScope"]
 
 [[rule]]
 name = "use-react-async-server-function"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReactAsyncServerFunction"]
 
 [[rule]]
 name = "use-react-compiler"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReactCompiler"]
 
 [[rule]]
 name = "use-react-function-component-definition"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReactFunctionComponentDefinition"]
 
 [[rule]]
 name = "use-react-function-components"
+presets = ["strict"]
 category = "linter"
 biome = ["useReactFunctionComponents"]
 
 [[rule]]
 name = "use-react-naming-convention"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReactNamingConvention"]
 
 [[rule]]
 name = "use-react-native-platform-components"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReactNativePlatformComponents"]
 
 [[rule]]
 name = "use-reduce-type-parameter"
+presets = ["strict"]
 category = "nursery"
 biome = ["useReduceTypeParameter"]
 
 [[rule]]
 name = "use-regexp-test"
+presets = ["strict"]
 category = "nursery"
 biome = ["useRegexpTest"]
 
 [[rule]]
 name = "use-self-closing-elements"
+presets = ["strict"]
 category = "linter"
 biome = ["useSelfClosingElements"]
 
 [[rule]]
 name = "use-semantic-elements"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useSemanticElements"]
 
 [[rule]]
 name = "use-shorthand-function-type"
+presets = ["standard", "strict"]
 category = "linter"
 biome = ["useShorthandFunctionType"]
 
 [[rule]]
 name = "use-simple-number-keys"
+presets = ["standard", "strict"]
 category = "complexity"
 biome = ["useSimpleNumberKeys"]
 
 [[rule]]
 name = "use-simplified-logic-expression"
+presets = ["strict"]
 category = "complexity"
 biome = ["useSimplifiedLogicExpression"]
 
 [[rule]]
 name = "use-single-js-doc-asterisk"
+presets = ["strict"]
 category = "correctness"
 biome = ["useSingleJsDocAsterisk"]
 
 [[rule]]
 name = "use-single-var-declarator"
+presets = ["strict"]
 category = "linter"
 biome = ["useSingleVarDeclarator"]
 
 [[rule]]
 name = "use-solid-for-component"
+presets = ["strict"]
 category = "performance"
 biome = ["useSolidForComponent"]
 
 [[rule]]
 name = "use-sorted-classes"
+presets = ["strict"]
 category = "nursery"
 biome = ["useSortedClasses"]
 
 [[rule]]
 name = "use-static-response-methods"
+presets = ["strict"]
 category = "suspicious"
 biome = ["useStaticResponseMethods"]
 
 [[rule]]
 name = "use-svelte-kit-rune-imports"
+presets = ["strict"]
 category = "nursery"
 biome = ["useSvelteKitRuneImports"]
 
 [[rule]]
 name = "use-tailwind-shorthand-classes"
+presets = ["strict"]
 category = "nursery"
 biome = ["useTailwindShorthandClasses"]
 
 [[rule]]
 name = "use-test-hooks-in-order"
+presets = ["strict"]
 category = "nursery"
 biome = ["useTestHooksInOrder"]
 
 [[rule]]
 name = "use-test-hooks-on-top"
+presets = ["strict"]
 category = "nursery"
 biome = ["useTestHooksOnTop"]
 
 [[rule]]
 name = "use-throw-new-error"
+presets = ["strict"]
 category = "linter"
 biome = ["useThrowNewError"]
 
 [[rule]]
 name = "use-top-level-regex"
+presets = ["strict"]
 category = "performance"
 biome = ["useTopLevelRegex"]
 
 [[rule]]
 name = "use-trim-start-end"
+presets = ["strict"]
 category = "linter"
 biome = ["useTrimStartEnd"]
 
 [[rule]]
 name = "use-unique-element-ids"
+presets = ["strict"]
 category = "correctness"
 biome = ["useUniqueElementIds"]
 
 [[rule]]
 name = "use-valid-anchor"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidAnchor"]
 
 [[rule]]
 name = "use-valid-aria-props"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidAriaProps"]
 
 [[rule]]
 name = "use-valid-aria-role"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidAriaRole"]
 
 [[rule]]
 name = "use-valid-aria-values"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidAriaValues"]
 
 [[rule]]
 name = "use-valid-autocomplete"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidAutocomplete"]
 
@@ -1414,36 +1676,43 @@ biome = ["useValidForDirection"]
 
 [[rule]]
 name = "use-valid-lang"
+presets = ["standard", "strict"]
 category = "a11y"
 biome = ["useValidLang"]
 
 [[rule]]
 name = "use-valid-test-title"
+presets = ["strict"]
 category = "nursery"
 biome = ["useValidTestTitle"]
 
 [[rule]]
 name = "use-vue-base-import"
+presets = ["strict"]
 category = "nursery"
 biome = ["useVueBaseImport"]
 
 [[rule]]
 name = "use-vue-consistent-define-props-declaration"
+presets = ["strict"]
 category = "nursery"
 biome = ["useVueConsistentDefinePropsDeclaration"]
 
 [[rule]]
 name = "use-vue-define-macros-order"
+presets = ["strict"]
 category = "linter"
 biome = ["useVueDefineMacrosOrder"]
 
 [[rule]]
 name = "use-vue-multi-word-component-names"
+presets = ["strict"]
 category = "linter"
 biome = ["useVueMultiWordComponentNames"]
 
 [[rule]]
 name = "use-vue-next-tick-promise"
+presets = ["strict"]
 category = "nursery"
 biome = ["useVueNextTickPromise"]
 

@@ -2,5 +2,5 @@
 
 unused-class = "implemented"
 unused-function = "implemented"
-unused-import = { status = "planned", issue = "#337" }
-unused-property = { status = "planned", issue = "#337" }
+unused-import = { status = "planned", issue = "#331" }
+unused-property = { status = "planned", issue = "#331" }

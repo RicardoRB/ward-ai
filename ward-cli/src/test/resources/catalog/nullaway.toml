@@ -2,145 +2,174 @@
 
 [[rule]]
 name = "annotation-value-invalid"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["ANNOTATION_VALUE_INVALID"]
 
 [[rule]]
 name = "assign-field-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["ASSIGN_FIELD_NULLABLE"]
 
 [[rule]]
 name = "assign-generic-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["ASSIGN_GENERIC_NULLABLE"]
 
 [[rule]]
 name = "assign-nullable-to-nonnull-array"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["ASSIGN_NULLABLE_TO_NONNULL_ARRAY"]
 
 [[rule]]
 name = "cast-to-nonnull-arg-nonnull"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["CAST_TO_NONNULL_ARG_NONNULL"]
 
 [[rule]]
 name = "dereference-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["DEREFERENCE_NULLABLE"]
 
 [[rule]]
 name = "field-no-init"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["FIELD_NO_INIT"]
 
 [[rule]]
 name = "generic-inference-failure"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["GENERIC_INFERENCE_FAILURE"]
 
 [[rule]]
 name = "get-on-empty-optional"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["GET_ON_EMPTY_OPTIONAL"]
 
 [[rule]]
 name = "method-no-init"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["METHOD_NO_INIT"]
 
 [[rule]]
 name = "nonnull-field-read-before-init"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["NONNULL_FIELD_READ_BEFORE_INIT"]
 
 [[rule]]
 name = "nullable-on-wrong-nested-class-level"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["NULLABLE_ON_WRONG_NESTED_CLASS_LEVEL"]
 
 [[rule]]
 name = "nullable-varargs-unsupported"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["NULLABLE_VARARGS_UNSUPPORTED"]
 
 [[rule]]
 name = "pass-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["PASS_NULLABLE"]
 
 [[rule]]
 name = "pass-nullable-generic"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["PASS_NULLABLE_GENERIC"]
 
 [[rule]]
 name = "postcondition-not-satisfied"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["POSTCONDITION_NOT_SATISFIED"]
 
 [[rule]]
 name = "precondition-not-satisfied"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["PRECONDITION_NOT_SATISFIED"]
 
 [[rule]]
 name = "return-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["RETURN_NULLABLE"]
 
 [[rule]]
 name = "return-nullable-generic"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["RETURN_NULLABLE_GENERIC"]
 
 [[rule]]
 name = "switch-expression-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["SWITCH_EXPRESSION_NULLABLE"]
 
 [[rule]]
 name = "type-parameter-cannot-be-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["TYPE_PARAMETER_CANNOT_BE_NULLABLE"]
 
 [[rule]]
 name = "unbox-nullable"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["UNBOX_NULLABLE"]
 
 [[rule]]
 name = "unrecognized-nullness-annotation-location"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["UNRECOGNIZED_NULLNESS_ANNOTATION_LOCATION"]
 
 [[rule]]
 name = "wrong-override-param"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_PARAM"]
 
 [[rule]]
 name = "wrong-override-param-generic"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_PARAM_GENERIC"]
 
 [[rule]]
 name = "wrong-override-postcondition"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_POSTCONDITION"]
 
 [[rule]]
 name = "wrong-override-precondition"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_PRECONDITION"]
 
 [[rule]]
 name = "wrong-override-return"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_RETURN"]
 
 [[rule]]
 name = "wrong-override-return-generic"
+presets = ["standard", "strict"]
 category = "nullness"
 nullaway = ["WRONG_OVERRIDE_RETURN_GENERIC"]

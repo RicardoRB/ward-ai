@@ -18,11 +18,13 @@ pmd = ["AccessorMethodGeneration"]
 
 [[rule]]
 name = "add-empty-string"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AddEmptyString"]
 
 [[rule]]
 name = "append-character-with-char"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AppendCharacterWithChar"]
 
@@ -44,12 +46,14 @@ pmd = ["AssignmentInOperand"]
 
 [[rule]]
 name = "assignment-to-non-final-static"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the static non-final fields of the file bound to each assignment through the scopes; no Java rule reads scopes for this yet
 pmd = ["AssignmentToNonFinalStatic"]
 
 [[rule]]
 name = "at-least-one-constructor"
+presets = ["strict"]
 category = "codestyle"
 pmd = ["AtLeastOneConstructor"]
 
@@ -59,11 +63,13 @@ pmd = ["AvoidAccessibilityAlteration"]
 
 [[rule]]
 name = "avoid-array-loops"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AvoidArrayLoops"]
 
 [[rule]]
 name = "avoid-assert-as-identifier"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: not applicable (review): assert is a keyword since Java 1.4 and the parser rejects it as an identifier, so no Java source reaches the rule
 pmd = ["AvoidAssertAsIdentifier"]
@@ -74,6 +80,7 @@ pmd = ["AvoidBranchingStatementAsLastInLoop"]
 
 [[rule]]
 name = "avoid-calendar-date-creation"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AvoidCalendarDateCreation"]
 
@@ -91,29 +98,34 @@ pmd = ["AvoidDeeplyNestedIfStmts"]
 
 [[rule]]
 name = "avoid-dollar-signs"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["AvoidDollarSigns"]
 
 [[rule]]
 name = "avoid-enum-as-identifier"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: not applicable (review): enum is a keyword since Java 5 and the parser rejects it as an identifier, so no Java source reaches the rule
 pmd = ["AvoidEnumAsIdentifier"]
 
 [[rule]]
 name = "avoid-field-name-matching-method-name"
+presets = ["strict"]
 category = "errorprone"
 # Planned: needs the method names of the enclosing class compared with each field name; no generic check compares sibling declarations
 pmd = ["AvoidFieldNameMatchingMethodName"]
 
 [[rule]]
 name = "avoid-field-name-matching-type-name"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the enclosing type name compared with each field name; no generic check compares a node with its enclosing declaration
 pmd = ["AvoidFieldNameMatchingTypeName"]
 
 [[rule]]
 name = "avoid-file-stream"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AvoidFileStream"]
 
@@ -123,6 +135,7 @@ pmd = ["AvoidInstanceofChecksInCatchClause"]
 
 [[rule]]
 name = "avoid-instantiating-objects-in-loops"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["AvoidInstantiatingObjectsInLoops"]
 
@@ -160,16 +173,19 @@ pmd = ["AvoidStringBufferField"]
 
 [[rule]]
 name = "avoid-synchronized-at-method-level"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["AvoidSynchronizedAtMethodLevel"]
 
 [[rule]]
 name = "avoid-synchronized-statement"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["AvoidSynchronizedStatement"]
 
 [[rule]]
 name = "avoid-thread-group"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["AvoidThreadGroup"]
 
@@ -191,6 +207,7 @@ pmd = ["AvoidUsingHardCodedIP"]
 
 [[rule]]
 name = "avoid-using-native-code"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["AvoidUsingNativeCode"]
 
@@ -200,16 +217,19 @@ pmd = ["AvoidUsingOctalValues"]
 
 [[rule]]
 name = "avoid-using-volatile"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["AvoidUsingVolatile"]
 
 [[rule]]
 name = "big-integer-instantiation"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["BigIntegerInstantiation"]
 
 [[rule]]
 name = "boolean-get-method-name"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["BooleanGetMethodName"]
 
@@ -219,22 +239,26 @@ pmd = ["BrokenNullCheck"]
 
 [[rule]]
 name = "c-style-array-declaration"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["CStyleArrayDeclaration"]
 
 [[rule]]
 name = "call-super-first"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 pmd = ["CallSuperFirst"]
 
 [[rule]]
 name = "call-super-in-constructor"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["CallSuperInConstructor"]
 
 [[rule]]
 name = "call-super-last"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 pmd = ["CallSuperLast"]
@@ -262,6 +286,7 @@ pmd = ["CloneMethodReturnTypeMustMatchClassName"]
 
 [[rule]]
 name = "close-resource"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs resolved types (AutoCloseable and the declared resource type); no Java rule consumes TYPES facts yet
 pmd = ["CloseResource"]
@@ -273,27 +298,32 @@ pmd = ["CollapsibleIfStatements"]
 
 [[rule]]
 name = "collection-type-mismatch"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs resolved collection and argument types; no Java rule consumes TYPES facts yet
 pmd = ["CollectionTypeMismatch"]
 
 [[rule]]
 name = "comment-content"
+presets = ["strict"]
 category = "documentation"
 pmd = ["CommentContent"]
 
 [[rule]]
 name = "comment-default-access-modifier"
+presets = ["strict"]
 category = "codestyle"
 pmd = ["CommentDefaultAccessModifier"]
 
 [[rule]]
 name = "comment-size"
+presets = ["strict"]
 category = "documentation"
 pmd = ["CommentSize"]
 
 [[rule]]
 name = "compare-objects-with-equals"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs resolved reference types of both operands; no Java rule consumes TYPES facts yet
 pmd = ["CompareObjectsWithEquals"]
@@ -304,22 +334,26 @@ pmd = ["ComparisonWithNaN"]
 
 [[rule]]
 name = "confusing-argument-to-varargs-method"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the varargs signature and argument types of the called method; no Java rule consumes TYPES facts yet
 pmd = ["ConfusingArgumentToVarargsMethod"]
 
 [[rule]]
 name = "confusing-ternary"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["ConfusingTernary"]
 
 [[rule]]
 name = "consecutive-appends-should-reuse"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["ConsecutiveAppendsShouldReuse"]
 
 [[rule]]
 name = "consecutive-literal-appends"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["ConsecutiveLiteralAppends"]
 
@@ -329,17 +363,20 @@ pmd = ["ConstantsInInterface"]
 
 [[rule]]
 name = "constructor-calls-overridable-method"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the class hierarchy and each method overridability from symbols and types
 pmd = ["ConstructorCallsOverridableMethod"]
 
 [[rule]]
 name = "control-statement-braces"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["ControlStatementBraces"]
 
 [[rule]]
 name = "dangling-javadoc"
+presets = ["strict"]
 category = "documentation"
 pmd = ["DanglingJavadoc"]
 
@@ -353,6 +390,7 @@ pmd = ["DefaultLabelNotLastInSwitch"]
 
 [[rule]]
 name = "detached-test-case"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the JUnit test methods of the enclosing class; no generic check looks across members
 pmd = ["DetachedTestCase"]
@@ -383,11 +421,13 @@ pmd = ["DoNotThrowExceptionInFinally"]
 
 [[rule]]
 name = "do-not-use-threads"
+presets = ["strict"]
 category = "multithreading"
 pmd = ["DoNotUseThreads"]
 
 [[rule]]
 name = "dont-call-thread-run"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["DontCallThreadRun"]
 
@@ -397,6 +437,7 @@ pmd = ["DontUseFloatTypeForLoopIndices"]
 
 [[rule]]
 name = "double-checked-locking"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["DoubleCheckedLocking"]
 errorprone = ["DoubleCheckedLocking"]
@@ -407,6 +448,7 @@ pmd = ["EmptyFinalizer"]
 
 [[rule]]
 name = "empty-method-in-abstract-class-should-be-abstract"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 
@@ -443,6 +485,7 @@ pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
 name = "extends-object"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["ExtendsObject"]
 errorprone = ["ExtendsObject"]
@@ -453,6 +496,7 @@ pmd = ["FinalFieldCouldBeStatic"]
 
 [[rule]]
 name = "final-parameter-in-abstract-method"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["FinalParameterInAbstractMethod"]
 
@@ -478,6 +522,7 @@ pmd = ["ForLoopCanBeForeach"]
 
 [[rule]]
 name = "for-loop-should-be-while-loop"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["ForLoopShouldBeWhileLoop"]
 
@@ -496,6 +541,7 @@ pmd = ["GuardLogStatement"]
 
 [[rule]]
 name = "hard-coded-crypto-key"
+presets = ["standard", "strict"]
 category = "security"
 pmd = ["HardCodedCryptoKey"]
 
@@ -505,6 +551,7 @@ pmd = ["IdempotentOperations"]
 
 [[rule]]
 name = "identical-catch-branches"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["IdenticalCatchBranches"]
 
@@ -522,16 +569,19 @@ pmd = ["ImplicitFunctionalInterface"]
 
 [[rule]]
 name = "inefficient-empty-string-check"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["InefficientEmptyStringCheck"]
 
 [[rule]]
 name = "inefficient-string-buffering"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["InefficientStringBuffering"]
 
 [[rule]]
 name = "insecure-crypto-iv"
+presets = ["standard", "strict"]
 category = "security"
 pmd = ["InsecureCryptoIv"]
 
@@ -545,6 +595,7 @@ pmd = ["InstantiationToGetClass"]
 
 [[rule]]
 name = "insufficient-string-buffer-declaration"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["InsufficientStringBufferDeclaration"]
 
@@ -558,6 +609,7 @@ pmd = ["InvalidJavaBean"]
 
 [[rule]]
 name = "invalid-log-message-format"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the placeholder count of the message and the argument count of the logger call; LoggingArgsCheck only judges Python
 pmd = ["InvalidLogMessageFormat"]
@@ -588,6 +640,7 @@ pmd = ["JUnitUseExpected"]
 
 [[rule]]
 name = "jumbled-incrementer"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the loop variables of nested for loops; no generic check relates a loop to its enclosing loop
 pmd = ["JumbledIncrementer"]
@@ -598,6 +651,7 @@ pmd = ["LabeledStatement"]
 
 [[rule]]
 name = "lambda-can-be-method-reference"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["LambdaCanBeMethodReference"]
 
@@ -607,6 +661,7 @@ pmd = ["LawOfDemeter"]
 
 [[rule]]
 name = "linguistic-naming"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["LinguisticNaming"]
 
@@ -616,16 +671,19 @@ pmd = ["LiteralsFirstInComparisons"]
 
 [[rule]]
 name = "local-home-naming-convention"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["LocalHomeNamingConvention"]
 
 [[rule]]
 name = "local-interface-session-naming-convention"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["LocalInterfaceSessionNamingConvention"]
 
 [[rule]]
 name = "local-variable-declaration-should-be-at-start-of-block"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["LocalVariableDeclarationShouldBeAtStartOfBlock"]
 
@@ -639,6 +697,7 @@ pmd = ["LongLiteralEndingWithLowercaseL"]
 
 [[rule]]
 name = "long-variable"
+presets = ["strict"]
 category = "codestyle"
 pmd = ["LongVariable"]
 
@@ -652,6 +711,7 @@ pmd = ["LoosePackageCoupling"]
 
 [[rule]]
 name = "mdb-and-session-bean-naming-convention"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["MDBAndSessionBeanNamingConvention"]
 
@@ -661,6 +721,7 @@ pmd = ["MethodReturnsInternalArray"]
 
 [[rule]]
 name = "method-with-same-name-as-enclosing-class"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the enclosing class name compared with each method name; no generic check compares a node with its enclosing declaration
 pmd = ["MethodWithSameNameAsEnclosingClass"]
@@ -687,6 +748,7 @@ pmd = ["MutableStaticState"]
 
 [[rule]]
 name = "no-package"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["NoPackage"]
 
@@ -701,6 +763,7 @@ pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]
 name = "non-serializable-class"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: strict only; needs the resolved types of every field of a Serializable class
 pmd = ["NonSerializableClass"]
@@ -711,6 +774,7 @@ pmd = ["NonStaticInitializer"]
 
 [[rule]]
 name = "non-thread-safe-singleton"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["NonThreadSafeSingleton"]
 
@@ -720,6 +784,7 @@ pmd = ["NullAssignment"]
 
 [[rule]]
 name = "optimizable-to-array-call"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["OptimizableToArrayCall"]
 
@@ -729,16 +794,19 @@ pmd = ["OverrideBothEqualsAndHashcode"]
 
 [[rule]]
 name = "overriding-thread-run"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["OverridingThreadRun"]
 
 [[rule]]
 name = "package-case"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["PackageCase"]
 
 [[rule]]
 name = "premature-declaration"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["PrematureDeclaration"]
 
@@ -756,6 +824,7 @@ pmd = ["ProperCloneImplementation"]
 
 [[rule]]
 name = "proper-logger"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: the rule takes three string options (static-logger-name, logger-name, logger-class) that no generic check accepts, and the logger type needs types
 pmd = ["ProperLogger"]
@@ -775,11 +844,13 @@ pmd = ["RelianceOnDefaultCharset"]
 
 [[rule]]
 name = "remote-interface-naming-convention"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["RemoteInterfaceNamingConvention"]
 
 [[rule]]
 name = "remote-session-interface-naming-convention"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["RemoteSessionInterfaceNamingConvention"]
 
@@ -805,6 +876,7 @@ pmd = ["ReplaceJavaUtilVector"]
 
 [[rule]]
 name = "return-empty-collection-rather-than-null"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the return type of a method tied to the return statements of its body; no generic check relates the two
 pmd = ["ReturnEmptyCollectionRatherThanNull"]
@@ -815,16 +887,19 @@ pmd = ["ReturnFromFinallyBlock"]
 
 [[rule]]
 name = "short-class-name"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["ShortClassName"]
 
 [[rule]]
 name = "short-method-name"
+presets = ["strict"]
 category = "codestyle"
 pmd = ["ShortMethodName"]
 
 [[rule]]
 name = "short-variable"
+presets = ["strict"]
 category = "codestyle"
 pmd = ["ShortVariable"]
 
@@ -850,6 +925,7 @@ pmd = ["SimplifyConditional"]
 
 [[rule]]
 name = "single-method-singleton"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the other getInstance overloads of the class; no generic check compares sibling methods
 pmd = ["SingleMethodSingleton"]
@@ -864,6 +940,7 @@ pmd = ["SingularField"]
 
 [[rule]]
 name = "static-ejb-field-should-be-final"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the EJB annotations of the enclosing class; no generic check looks at the enclosing class
 pmd = ["StaticEJBFieldShouldBeFinal"]
@@ -874,11 +951,13 @@ pmd = ["StringBufferInstantiationWithChar"]
 
 [[rule]]
 name = "string-instantiation"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["StringInstantiation"]
 
 [[rule]]
 name = "string-to-string"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["StringToString"]
 
@@ -908,6 +987,7 @@ pmd = ["TestClassWithoutTestCases"]
 
 [[rule]]
 name = "too-few-branches-for-switch"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["TooFewBranchesForSwitch"]
 
@@ -921,6 +1001,7 @@ pmd = ["TooManyMethods"]
 
 [[rule]]
 name = "too-many-static-imports"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["TooManyStaticImports"]
 
@@ -930,16 +1011,19 @@ pmd = ["TypeNameMismatch"]
 
 [[rule]]
 name = "type-parameter-naming-conventions"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["TypeParameterNamingConventions"]
 
 [[rule]]
 name = "uncommented-empty-constructor"
+presets = ["strict"]
 category = "documentation"
 pmd = ["UncommentedEmptyConstructor"]
 
 [[rule]]
 name = "uncommented-empty-method-body"
+presets = ["strict"]
 category = "documentation"
 pmd = ["UncommentedEmptyMethodBody"]
 
@@ -973,11 +1057,13 @@ pmd = ["UnitTestShouldUseTestAnnotation"]
 
 [[rule]]
 name = "unnecessary-annotation-value-element"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryAnnotationValueElement"]
 
 [[rule]]
 name = "unnecessary-block"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryBlock"]
 
@@ -987,6 +1073,7 @@ pmd = ["UnnecessaryBooleanAssertion"]
 
 [[rule]]
 name = "unnecessary-boxing"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryBoxing"]
 
@@ -996,6 +1083,7 @@ pmd = ["UnnecessaryCaseChange"]
 
 [[rule]]
 name = "unnecessary-cast"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryCast"]
 
@@ -1005,16 +1093,19 @@ pmd = ["UnnecessaryConversionTemporary"]
 
 [[rule]]
 name = "unnecessary-fully-qualified-name"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryFullyQualifiedName"]
 
 [[rule]]
 name = "unnecessary-interface-declaration"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryInterfaceDeclaration"]
 
 [[rule]]
 name = "unnecessary-return"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UnnecessaryReturn"]
 
@@ -1028,12 +1119,14 @@ pmd = ["UnnecessaryWarningSuppression"]
 
 [[rule]]
 name = "unsupported-jdk-api-usage"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs resolved types to see uses of sun.* and jdk.internal.* classes; imports alone do not show the uses
 pmd = ["UnsupportedJdkApiUsage"]
 
 [[rule]]
 name = "unsynchronized-static-formatter"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["UnsynchronizedStaticFormatter"]
 
@@ -1056,12 +1149,14 @@ pmd = ["UnusedPrivateMethod"]
 
 [[rule]]
 name = "unused-return-value"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the return type and mutation-by-copy API of the called method from types
 pmd = ["UnusedReturnValue"]
 
 [[rule]]
 name = "use-arrays-as-list"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UseArraysAsList"]
 
@@ -1071,17 +1166,20 @@ pmd = ["UseCollectionIsEmpty"]
 
 [[rule]]
 name = "use-concurrent-hash-map"
+presets = ["strict"]
 category = "multithreading"
 pmd = ["UseConcurrentHashMap"]
 
 [[rule]]
 name = "use-correct-exception-logging"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the logger type (Apache Commons Log) and the argument type (Throwable) from types
 pmd = ["UseCorrectExceptionLogging"]
 
 [[rule]]
 name = "use-diamond-operator"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UseDiamondOperator"]
 
@@ -1096,16 +1194,19 @@ pmd = ["UseEqualsToCompareStrings"]
 
 [[rule]]
 name = "use-explicit-types"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UseExplicitTypes"]
 
 [[rule]]
 name = "use-io-streams-with-apache-commons-file-item"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UseIOStreamsWithApacheCommonsFileItem"]
 
 [[rule]]
 name = "use-index-of-char"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UseIndexOfChar"]
 
@@ -1115,6 +1216,7 @@ pmd = ["UseLocaleWithCaseConversions"]
 
 [[rule]]
 name = "use-notify-all-instead-of-notify"
+presets = ["standard", "strict"]
 category = "multithreading"
 pmd = ["UseNotifyAllInsteadOfNotify"]
 
@@ -1124,6 +1226,7 @@ pmd = ["UseProperClassLoader"]
 
 [[rule]]
 name = "use-short-array-initializer"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UseShortArrayInitializer"]
 
@@ -1133,11 +1236,13 @@ pmd = ["UseStandardCharsets"]
 
 [[rule]]
 name = "use-string-buffer-for-string-appends"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UseStringBufferForStringAppends"]
 
 [[rule]]
 name = "use-string-buffer-length"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UseStringBufferLength"]
 
@@ -1147,6 +1252,7 @@ pmd = ["UseTryWithResources"]
 
 [[rule]]
 name = "use-underscores-in-numeric-literals"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UseUnderscoresInNumericLiterals"]
 
@@ -1160,16 +1266,19 @@ pmd = ["UselessOverridingMethod"]
 
 [[rule]]
 name = "useless-qualified-this"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["UselessQualifiedThis"]
 
 [[rule]]
 name = "useless-string-value-of"
+presets = ["standard", "strict"]
 category = "performance"
 pmd = ["UselessStringValueOf"]
 
 [[rule]]
 name = "variable-can-be-inlined"
+presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["VariableCanBeInlined"]
 
@@ -1179,6 +1288,7 @@ pmd = ["WhileLoopWithLiteralBoolean"]
 
 [[rule]]
 name = "wrong-test-annotation"
+presets = ["standard", "strict"]
 category = "errorprone"
 # Planned: needs the imports of the file paired with each test annotation; no generic check pairs them
 pmd = ["WrongTestAnnotation"]

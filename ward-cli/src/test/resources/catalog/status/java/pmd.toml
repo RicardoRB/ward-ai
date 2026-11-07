@@ -121,14 +121,14 @@ instantiation-to-get-class = "implemented"
 insufficient-string-buffer-declaration = { status = "planned", issue = "#312" }
 internal-api-usage = "implemented"
 invalid-java-bean = "implemented"
-invalid-log-message-format = { status = "planned", issue = "#311" }
+invalid-log-message-format = { status = "planned", issue = "#310" }
 j-unit-jupiter-test-no-private-modifier = "implemented"
 j-unit-jupiter-test-should-be-package-private = "implemented"
 j-unit-spelling = "implemented"
 j-unit-static-suite = "implemented"
 j-unit-use-expected = "implemented"
 j-unit4-suites-should-use-suite-annotation = "implemented"
-jumbled-incrementer = { status = "planned", issue = "#311" }
+jumbled-incrementer = { status = "planned", issue = "#310" }
 labeled-statement = "implemented"
 lambda-can-be-method-reference = { status = "planned", issue = "#313" }
 law-of-demeter = "implemented"
@@ -144,7 +144,7 @@ loose-coupling = "implemented"
 loose-package-coupling = "implemented"
 mdb-and-session-bean-naming-convention = { status = "planned", issue = "#313" }
 method-returns-internal-array = "implemented"
-method-with-same-name-as-enclosing-class = { status = "planned", issue = "#311" }
+method-with-same-name-as-enclosing-class = { status = "planned", issue = "#310" }
 misplaced-null-check = "implemented"
 missing-serial-version-uid = "implemented"
 missing-static-method-in-non-instantiatable-class = "implemented"
@@ -153,7 +153,7 @@ mutable-static-state = "implemented"
 no-package = { status = "planned", issue = "#313" }
 non-case-label-in-switch = "implemented"
 non-exhaustive-switch = "implemented"
-non-serializable-class = { status = "planned", issue = "#311" }
+non-serializable-class = { status = "planned", issue = "#310" }
 non-static-initializer = "implemented"
 non-thread-safe-singleton = { status = "planned", issue = "#312" }
 null-assignment = "implemented"
@@ -165,7 +165,7 @@ premature-declaration = { status = "planned", issue = "#313" }
 preserve-stack-trace = "implemented"
 primitive-wrapper-instantiation = "implemented"
 proper-clone-implementation = "implemented"
-proper-logger = { status = "planned", issue = "#311" }
+proper-logger = { status = "planned", issue = "#310" }
 protected-member-in-final-class = "implemented"
 public-member-in-non-public-type = "implemented"
 reliance-on-default-charset = "implemented"
@@ -176,7 +176,7 @@ replace-hashtable-with-map = "implemented"
 replace-java-util-calendar = "implemented"
 replace-java-util-date = "implemented"
 replace-java-util-vector = "implemented"
-return-empty-collection-rather-than-null = { status = "planned", issue = "#311" }
+return-empty-collection-rather-than-null = { status = "planned", issue = "#310" }
 return-from-finally-block = "implemented"
 short-class-name = { status = "planned", issue = "#313" }
 short-method-name = { status = "planned", issue = "#313" }
@@ -186,10 +186,10 @@ simple-date-format-needs-locale = "implemented"
 simplifiable-test-assertion = "implemented"
 simplified-ternary = "implemented"
 simplify-conditional = "implemented"
-single-method-singleton = { status = "planned", issue = "#311" }
+single-method-singleton = { status = "planned", issue = "#310" }
 singleton-class-returning-new-instance = "implemented"
 singular-field = "implemented"
-static-ejb-field-should-be-final = { status = "planned", issue = "#311" }
+static-ejb-field-should-be-final = { status = "planned", issue = "#310" }
 string-buffer-instantiation-with-char = "implemented"
 string-instantiation = { status = "planned", issue = "#312" }
 string-to-string = { status = "planned", issue = "#312" }
@@ -226,17 +226,17 @@ unnecessary-interface-declaration = { status = "planned", issue = "#313" }
 unnecessary-return = { status = "planned", issue = "#313" }
 unnecessary-varargs-array-creation = "implemented"
 unnecessary-warning-suppression = "implemented"
-unsupported-jdk-api-usage = { status = "planned", issue = "#311" }
+unsupported-jdk-api-usage = { status = "planned", issue = "#310" }
 unsynchronized-static-formatter = { status = "planned", issue = "#312" }
 unused-formal-parameter = "implemented"
 unused-label = "implemented"
 unused-null-check-in-equals = "implemented"
 unused-private-method = "implemented"
-unused-return-value = { status = "planned", issue = "#311" }
+unused-return-value = { status = "planned", issue = "#310" }
 use-arrays-as-list = { status = "planned", issue = "#312" }
 use-collection-is-empty = "implemented"
 use-concurrent-hash-map = { status = "planned", issue = "#312" }
-use-correct-exception-logging = { status = "planned", issue = "#311" }
+use-correct-exception-logging = { status = "planned", issue = "#310" }
 use-diamond-operator = { status = "planned", issue = "#313" }
 use-enum-collections = "implemented"
 use-equals-to-compare-strings = "implemented"
@@ -258,4 +258,4 @@ useless-qualified-this = { status = "planned", issue = "#313" }
 useless-string-value-of = { status = "planned", issue = "#312" }
 variable-can-be-inlined = { status = "planned", issue = "#313" }
 while-loop-with-literal-boolean = "implemented"
-wrong-test-annotation = { status = "planned", issue = "#311" }
+wrong-test-annotation = { status = "planned", issue = "#310" }

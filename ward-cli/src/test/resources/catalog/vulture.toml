@@ -12,11 +12,13 @@ vulture = ["V103"]
 
 [[rule]]
 name = "unused-import"
+presets = ["standard", "strict"]
 category = "dead-code"
 pylint = ["unused-import"]
 vulture = ["V104"]
 
 [[rule]]
 name = "unused-property"
+presets = ["standard", "strict"]
 category = "dead-code"
 vulture = ["V106"]

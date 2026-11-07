@@ -2,65 +2,78 @@
 
 [[rule]]
 name = "backing-property-naming"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["backing-property-naming"]
 
 [[rule]]
 name = "enum-entry-name-case"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["enum-entry-name-case"]
 
 [[rule]]
 name = "filename"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["filename"]
 
 [[rule]]
 name = "function-expression-body"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["function-expression-body"]
 
 [[rule]]
 name = "kdoc"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["kdoc"]
 
 [[rule]]
 name = "no-consecutive-comments"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["no-consecutive-comments"]
 
 [[rule]]
 name = "no-empty-file"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["no-empty-file"]
 
 [[rule]]
 name = "no-single-line-block-comment"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["no-single-line-block-comment"]
 
 [[rule]]
 name = "no-unit-return"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["no-unit-return"]
 
 [[rule]]
 name = "string-template"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["string-template"]
 
 [[rule]]
 name = "unnecessary-parentheses-before-trailing-lambda"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["unnecessary-parentheses-before-trailing-lambda"]
 
 [[rule]]
 name = "value-argument-comment"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["value-argument-comment"]
 
 [[rule]]
 name = "value-parameter-comment"
+presets = ["standard", "strict"]
 category = "linter"
 ktlint = ["value-parameter-comment"]

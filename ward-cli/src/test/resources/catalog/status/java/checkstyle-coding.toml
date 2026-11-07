@@ -2,7 +2,7 @@
 
 array-trailing-comma = "implemented"
 avoid-inline-conditionals = "implemented"
-avoid-no-argument-super-constructor-call = { status = "planned", issue = "#290" }
+avoid-no-argument-super-constructor-call = { status = "planned", issue = "#289" }
 constructors-declaration-grouping = "implemented"
 covariant-equals = "implemented"
 declaration-order = { status = "planned", issue = "#289" }
@@ -11,7 +11,7 @@ empty-statement = "implemented"
 equals-avoid-null = "implemented"
 equals-hash-code = "implemented"
 explicit-initialization = "implemented"
-expression-over-block-lambda = { status = "planned", issue = "#290" }
+expression-over-block-lambda = { status = "planned", issue = "#289" }
 fall-through = "implemented"
 final-local-variable = { status = "planned", issue = "#289" }
 hidden-field = "implemented"
@@ -24,7 +24,7 @@ illegal-token-text = "implemented"
 illegal-type = { status = "planned", issue = "#289" }
 inner-assignment = { status = "planned", issue = "#288" }
 magic-number = "implemented"
-missing-ctor = { status = "planned", issue = "#290" }
+missing-ctor = { status = "planned", issue = "#289" }
 missing-null-case-in-switch = { status = "planned", issue = "#288" }
 missing-switch-default = "implemented"
 modified-control-variable = { status = "planned", issue = "#288" }
@@ -34,35 +34,35 @@ nested-for-depth = "implemented"
 nested-if-depth = "implemented"
 nested-try-depth = "implemented"
 no-array-trailing-comma = "implemented"
-no-clone = { status = "planned", issue = "#290" }
+no-clone = { status = "planned", issue = "#289" }
 no-enum-trailing-comma = "implemented"
-no-finalizer = { status = "planned", issue = "#290" }
+no-finalizer = { status = "planned", issue = "#289" }
 one-statement-per-line = "implemented"
 overload-methods-declaration-order = "implemented"
 package-declaration = "implemented"
 parameter-assignment = "implemented"
 pattern-variable-assignment = { status = "planned", issue = "#289" }
-require-this = { status = "planned", issue = "#290" }
+require-this = { status = "planned", issue = "#289" }
 return-count = "implemented"
 simplify-boolean-expression = { status = "planned", issue = "#288" }
 simplify-boolean-return = "implemented"
 string-literal-equality = "implemented"
-super-clone = { status = "planned", issue = "#290" }
-super-finalize = { status = "planned", issue = "#290" }
-text-block-google-style-formatting = { status = "planned", issue = "#290" }
+super-clone = { status = "planned", issue = "#289" }
+super-finalize = { status = "planned", issue = "#289" }
+text-block-google-style-formatting = { status = "planned", issue = "#289" }
 unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
-unnecessary-parentheses = { status = "planned", issue = "#290" }
-unnecessary-permits-clause = { status = "planned", issue = "#290" }
-unnecessary-semicolon-after-outer-type-declaration = { status = "planned", issue = "#290" }
-unnecessary-semicolon-after-type-member-declaration = { status = "planned", issue = "#290" }
-unnecessary-semicolon-in-enumeration = { status = "planned", issue = "#290" }
-unnecessary-semicolon-in-try-with-resources = { status = "planned", issue = "#290" }
-unnecessary-type-arguments-with-record-pattern = { status = "planned", issue = "#290" }
-unused-catch-parameter-should-be-unnamed = { status = "planned", issue = "#290" }
-unused-lambda-parameter-should-be-unnamed = { status = "planned", issue = "#290" }
-unused-local-variable = { status = "planned", issue = "#290" }
-unused-private-field = { status = "planned", issue = "#290" }
-unused-try-resource-should-be-unnamed = { status = "planned", issue = "#290" }
+unnecessary-parentheses = { status = "planned", issue = "#289" }
+unnecessary-permits-clause = { status = "planned", issue = "#289" }
+unnecessary-semicolon-after-outer-type-declaration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-after-type-member-declaration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-in-enumeration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-in-try-with-resources = { status = "planned", issue = "#289" }
+unnecessary-type-arguments-with-record-pattern = { status = "planned", issue = "#289" }
+unused-catch-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
+unused-lambda-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
+unused-local-variable = { status = "planned", issue = "#289" }
+unused-private-field = { status = "planned", issue = "#289" }
+unused-try-resource-should-be-unnamed = { status = "planned", issue = "#289" }
 use-enhanced-switch = { status = "planned", issue = "#288" }
 variable-declaration-usage-distance = "implemented"
 when-should-be-used = { status = "planned", issue = "#288" }

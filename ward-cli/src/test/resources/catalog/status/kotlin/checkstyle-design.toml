@@ -8,5 +8,5 @@ interface-is-type = "not-applicable"
 mutable-exception = { status = "planned", issue = "#294" }
 one-top-level-class = "not-applicable"
 sealed-should-have-permits-list = "not-applicable"
-throws-count = { status = "planned", issue = "#295" }
+throws-count = { status = "planned", issue = "#294" }
 visibility-modifier = { status = "planned", issue = "#294" }

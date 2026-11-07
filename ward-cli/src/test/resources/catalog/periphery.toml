@@ -2,20 +2,24 @@
 
 [[rule]]
 name = "assign-only-property"
+presets = ["standard", "strict"]
 category = "dead-code"
 periphery = ["assign-only-property"]
 
 [[rule]]
 name = "redundant-protocol"
+presets = ["standard", "strict"]
 category = "dead-code"
 periphery = ["redundant-protocol"]
 
 [[rule]]
 name = "redundant-public-accessibility"
+presets = ["standard", "strict"]
 category = "dead-code"
 periphery = ["redundant-public-accessibility"]
 
 [[rule]]
 name = "superfluous-ignore-command"
+presets = ["standard", "strict"]
 category = "dead-code"
 periphery = ["superfluous-ignore-command"]

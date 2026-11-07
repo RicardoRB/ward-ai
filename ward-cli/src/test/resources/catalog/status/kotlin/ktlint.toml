@@ -1,15 +1,15 @@
 # Status of the ktlint rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-backing-property-naming = { status = "planned", issue = "#295" }
-enum-entry-name-case = { status = "planned", issue = "#295" }
-filename = { status = "planned", issue = "#295" }
-function-expression-body = { status = "planned", issue = "#295" }
-kdoc = { status = "planned", issue = "#295" }
-no-consecutive-comments = { status = "planned", issue = "#295" }
-no-empty-file = { status = "planned", issue = "#295" }
-no-single-line-block-comment = { status = "planned", issue = "#295" }
-no-unit-return = { status = "planned", issue = "#295" }
-string-template = { status = "planned", issue = "#295" }
-unnecessary-parentheses-before-trailing-lambda = { status = "planned", issue = "#295" }
-value-argument-comment = { status = "planned", issue = "#295" }
-value-parameter-comment = { status = "planned", issue = "#295" }
+backing-property-naming = { status = "planned", issue = "#294" }
+enum-entry-name-case = { status = "planned", issue = "#294" }
+filename = { status = "planned", issue = "#294" }
+function-expression-body = { status = "planned", issue = "#294" }
+kdoc = { status = "planned", issue = "#294" }
+no-consecutive-comments = { status = "planned", issue = "#294" }
+no-empty-file = { status = "planned", issue = "#294" }
+no-single-line-block-comment = { status = "planned", issue = "#294" }
+no-unit-return = { status = "planned", issue = "#294" }
+string-template = { status = "planned", issue = "#294" }
+unnecessary-parentheses-before-trailing-lambda = { status = "planned", issue = "#294" }
+value-argument-comment = { status = "planned", issue = "#294" }
+value-parameter-comment = { status = "planned", issue = "#294" }

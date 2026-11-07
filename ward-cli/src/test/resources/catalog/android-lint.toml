@@ -2,6 +2,7 @@
 
 [[rule]]
 name = "unused-attribute"
+presets = ["standard", "strict"]
 category = "correctness"
 vulture = ["V101"]
 
