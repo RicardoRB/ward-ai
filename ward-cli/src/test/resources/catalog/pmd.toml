@@ -307,9 +307,6 @@ pmd = ["CommentSize"]
 
 [[rule]]
 name = "compare-objects-with-equals"
-presets = ["standard", "strict"]
-category = "errorprone"
-# Planned: needs resolved reference types of both operands; no Java rule consumes TYPES facts yet
 pmd = ["CompareObjectsWithEquals"]
 
 [[rule]]

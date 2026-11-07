@@ -61,7 +61,7 @@ collection-type-mismatch = { status = "planned", issue = "#310" }
 comment-content = { status = "planned", issue = "#313" }
 comment-default-access-modifier = { status = "planned", issue = "#313" }
 comment-size = { status = "planned", issue = "#313" }
-compare-objects-with-equals = { status = "planned", issue = "#310" }
+compare-objects-with-equals = "implemented"
 comparison-with-na-n = "implemented"
 confusing-argument-to-varargs-method = { status = "planned", issue = "#310" }
 confusing-ternary = "implemented"
