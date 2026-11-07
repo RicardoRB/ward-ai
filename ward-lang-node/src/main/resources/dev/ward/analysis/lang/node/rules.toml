@@ -1856,7 +1856,6 @@ category = "problem"
 presets = ["standard", "strict"]
 body = '''
 check = "undefined-name"
-env = ["es2024"]
 message = "'{value}' is not defined"
 '''
 
@@ -1893,7 +1892,6 @@ category = "problem"
 presets = ["standard", "strict"]
 body = '''
 check = "undefined-name"
-env = ["es2024"]
 message = "'{value}' is not defined"
 '''
 
