@@ -145,6 +145,7 @@ class ClasspathRuleSourceTest {
       return RuleCapability.TYPES;
     }
     return rule.id().endsWith("/unused-assignment")
+            || rule.body().contains("check = \"unused-assignment\"")
             || isJavaInjection(rule.id())
             || rule.body().contains("check = \"taint\"")
         ? RuleCapability.DATAFLOW
