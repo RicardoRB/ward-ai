@@ -96,9 +96,7 @@ biome = ["noDoubleEquals"]
 
 [[rule]]
 name = "for-direction"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["for-direction"]
 
 [[rule]]
@@ -255,9 +253,7 @@ eslint = ["no-caller"]
 
 [[rule]]
 name = "no-case-declarations"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-case-declarations"]
 biome = ["noSwitchDeclarations"]
 
@@ -348,9 +344,7 @@ biome = ["noDivRegex"]
 
 [[rule]]
 name = "no-dupe-args"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-dupe-args"]
 biome = ["noDuplicateParameters"]
 
@@ -414,9 +408,7 @@ eslint = ["no-empty-function"]
 
 [[rule]]
 name = "no-empty-pattern"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-empty-pattern"]
 biome = ["noEmptyPattern"]
 

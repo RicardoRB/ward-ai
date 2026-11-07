@@ -43,11 +43,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    * @param text a pattern that must be found in the node's text, if any
    * @param withChild kinds of which a direct child must exist, if not empty
    * @param parent kinds of which the parent must be, if not empty
+   * @param path the kinds of the ancestors, nearest first, as {@code parent>grandparent}; each step
+   *     may list alternatives as {@code a|b}; empty does not limit
    */
-  public record Condition(Optional<Pattern> text, Set<String> withChild, Set<String> parent) {
+  public record Condition(
+      Optional<Pattern> text, Set<String> withChild, Set<String> parent, String path) {
 
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
+
+    /** Creates a condition without an ancestor path. */
+    public Condition(
+        final Optional<Pattern> text, final Set<String> withChild, final Set<String> parent) {
+      this(text, withChild, parent, "");
+    }
 
     /**
      * Copies the sets.
@@ -56,6 +65,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
      */
     public Condition {
       Objects.requireNonNull(text, "text");
+      Objects.requireNonNull(path, "path");
       withChild = Set.copyOf(withChild);
       parent = Set.copyOf(parent);
     }
@@ -66,7 +76,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       final boolean childOk =
           withChild.isEmpty()
               || node.children().stream().anyMatch(c -> withChild.contains(c.kind()));
-      return textOk && childOk && parentOk(visit);
+      return textOk && childOk && parentOk(visit) && pathOk(visit);
     }
 
     private boolean parentOk(final SyntaxWalk.Visit visit) {
@@ -75,6 +85,24 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       }
       final List<SyntaxNode> up = visit.ancestors();
       return !up.isEmpty() && parent.contains(up.get(up.size() - 1).kind());
+    }
+
+    private boolean pathOk(final SyntaxWalk.Visit visit) {
+      if (path.isEmpty()) {
+        return true;
+      }
+      final String[] steps = path.split(">");
+      final List<SyntaxNode> up = visit.ancestors();
+      if (up.size() < steps.length) {
+        return false;
+      }
+      for (int step = 0; step < steps.length; step++) {
+        final String kind = up.get(up.size() - 1 - step).kind();
+        if (!Set.of(steps[step].split("\\|")).contains(kind)) {
+          return false;
+        }
+      }
+      return true;
     }
   }
 }
