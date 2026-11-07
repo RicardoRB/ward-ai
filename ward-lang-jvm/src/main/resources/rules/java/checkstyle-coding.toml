@@ -210,3 +210,15 @@ body = '''
 check = "text-block-google-style-formatting"
 message = "text block format problem: {value}"
 '''
+
+[[rules]]
+id = "ward:java/unused-local-variable"
+language = "java"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
