@@ -1,0 +1,21 @@
+# Structural rules of the "metrics" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/complexity"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:javascript/complexity"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
