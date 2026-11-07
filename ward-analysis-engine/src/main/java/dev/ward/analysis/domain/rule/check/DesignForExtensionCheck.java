@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 /**
  * Reports each method of a non-final class that a subclass may override, when it has no Javadoc
@@ -18,6 +19,7 @@ public final class DesignForExtensionCheck implements RuleCheck {
 
   private static final String CLASS = "classDeclaration";
   private static final String METHOD = "methodDeclaration";
+  private static final String PUBLIC = "public";
   private static final Set<String> NOT_OVERRIDABLE =
       Set.of("private", "static", "final", "abstract");
 
@@ -47,11 +49,26 @@ public final class DesignForExtensionCheck implements RuleCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : DesignMembers.types(root)) {
       final SyntaxNode type = visit.node();
-      if (CLASS.equals(type.kind()) && !DesignMembers.modifiers(visit).contains("final")) {
+      if (CLASS.equals(type.kind())
+          && isPublicScope(visit)
+          && !DesignMembers.modifiers(visit).contains("final")) {
         DesignMembers.body(type).ifPresent(body -> undocumented(body, matches));
       }
     }
     return List.copyOf(matches);
+  }
+
+  /** Tells whether a class and every type around it is public, so subclasses can be outside. */
+  private static boolean isPublicScope(final SyntaxWalk.Visit visit) {
+    final List<SyntaxNode> ancestors = visit.ancestors();
+    return DesignMembers.modifiers(visit).contains(PUBLIC)
+        && IntStream.range(0, ancestors.size())
+            .filter(index -> DesignMembers.TYPE_KINDS.contains(ancestors.get(index).kind()))
+            .allMatch(
+                index ->
+                    DesignMembers.modifiers(
+                            new SyntaxWalk.Visit(ancestors.get(index), ancestors.subList(0, index)))
+                        .contains(PUBLIC));
   }
 
   private void undocumented(final SyntaxNode body, final List<RuleMatch> matches) {

@@ -1,4 +1,4 @@
-class Service {
+public class Service {
   public void start() {
     run();
   }

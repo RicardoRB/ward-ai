@@ -49,7 +49,7 @@ public final class MutableExceptionCheck implements RuleCheck {
 
   private boolean isException(final SyntaxNode type) {
     return format.matcher(JUnitMembers.name(type)).find()
-        || DeclarationText.superclassName(type)
+        && DeclarationText.superclassName(type)
             .map(name -> extendedClassNameFormat.matcher(name).find())
             .orElse(false);
   }
@@ -57,7 +57,7 @@ public final class MutableExceptionCheck implements RuleCheck {
   private void mutableFields(final SyntaxNode body, final List<RuleMatch> matches) {
     for (final DesignMembers.Member member : DesignMembers.members(body)) {
       final SyntaxNode field = member.declaration();
-      if (FIELD.equals(field.kind()) && !member.has("static") && !member.has("final")) {
+      if (FIELD.equals(field.kind()) && !member.has("final")) {
         for (final String name : DeclarationText.declaredNames(field)) {
           matches.add(CheckSupport.at(field.span(), CheckSupport.fill(message, name, "")));
         }

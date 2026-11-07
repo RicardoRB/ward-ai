@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports each inner type that a later member of its body follows. Fields, constructors, methods
- * and initializer blocks come before the inner types of a class or interface.
+ * Reports each member of a class or interface body that follows an inner type. Fields,
+ * constructors, methods and initializer blocks come before the inner types, which go last.
  */
 public final class InnerTypeLastCheck implements RuleCheck {
 
@@ -25,7 +25,7 @@ public final class InnerTypeLastCheck implements RuleCheck {
   /**
    * Creates the check.
    *
-   * @param message the message; {@code {value}} is the name of the inner type
+   * @param message the message, reported at each member that follows an inner type
    */
   public InnerTypeLastCheck(final String message) {
     this.message = Objects.requireNonNull(message, "message");
@@ -41,24 +41,16 @@ public final class InnerTypeLastCheck implements RuleCheck {
   }
 
   private void misplaced(final SyntaxNode body, final List<RuleMatch> matches) {
-    final List<SyntaxNode> wrappers =
-        body.children().stream()
-            .filter(child -> BODY_WRAPPERS.contains(child.kind()))
-            .filter(child -> !SEMICOLON.equals(SyntaxWalk.text(child)))
-            .toList();
-    int lastMember = -1;
-    for (int index = 0; index < wrappers.size(); index++) {
-      if (innerType(wrappers.get(index)).isEmpty()) {
-        lastMember = index;
+    boolean seenInnerType = false;
+    for (final SyntaxNode wrapper : body.children()) {
+      if (BODY_WRAPPERS.contains(wrapper.kind()) && !SEMICOLON.equals(SyntaxWalk.text(wrapper))) {
+        final Optional<SyntaxNode> inner = innerType(wrapper);
+        if (inner.isPresent()) {
+          seenInnerType = true;
+        } else if (seenInnerType) {
+          matches.add(CheckSupport.at(wrapper.span(), CheckSupport.fill(message, "", "")));
+        }
       }
-    }
-    for (int index = 0; index < lastMember; index++) {
-      innerType(wrappers.get(index))
-          .ifPresent(
-              type ->
-                  matches.add(
-                      CheckSupport.at(
-                          type.span(), CheckSupport.fill(message, JUnitMembers.name(type), ""))));
     }
   }
 

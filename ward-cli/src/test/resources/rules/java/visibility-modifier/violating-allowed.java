@@ -1,6 +1,5 @@
 class Config {
   public final int size = 1;
-  public Money price;
   public Widget widget;
   protected int level;
   int count;

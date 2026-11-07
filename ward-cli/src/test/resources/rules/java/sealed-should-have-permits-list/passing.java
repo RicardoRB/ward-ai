@@ -1,8 +1,8 @@
 sealed interface Shape permits Circle, Square {
 }
 
-sealed interface Vehicle {
+sealed interface Vehicle permits Car {
 }
 
-final class Circle implements Vehicle {
+final class Car implements Vehicle {
 }

@@ -1,4 +1,4 @@
-class ParseFailure {
+class ParseFailure extends Exception {
   int line;
 }
 

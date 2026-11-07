@@ -16,6 +16,8 @@ final class DeclarationText {
   private static final String IDENTIFIER = "identifier";
   private static final String TYPE_TYPE = "typeType";
   private static final String BLOCK_OPEN = "{";
+  private static final String EMPTY_BLOCK = "{}";
+  private static final String METHOD_BODY = "methodBody";
   private static final String GENERIC_OPEN = "<";
   private static final String AT = "@";
 
@@ -49,12 +51,13 @@ final class DeclarationText {
         .map(child -> simpleName(SyntaxWalk.text(child)));
   }
 
-  /** Returns whether a method declaration has a block body rather than a semicolon. */
+  /** Returns whether a method has statements: a block that is neither empty nor a semicolon. */
   static boolean hasBody(final SyntaxNode method) {
     return method.children().stream()
-        .filter(child -> "methodBody".equals(child.kind()))
+        .filter(child -> METHOD_BODY.equals(child.kind()))
         .findFirst()
-        .map(child -> SyntaxWalk.text(child).startsWith(BLOCK_OPEN))
+        .map(child -> SyntaxWalk.text(child).replaceAll("\\s", ""))
+        .map(text -> text.startsWith(BLOCK_OPEN) && !EMPTY_BLOCK.equals(text))
         .orElse(false);
   }
 
