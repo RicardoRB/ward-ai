@@ -634,7 +634,6 @@ void-missing-nullable = { status = "planned", issue = "#319" }
 void-used = { status = "planned", issue = "#319" }
 wait-not-in-loop = { status = "planned", issue = "#319" }
 wakelock-released-dangerously = { status = "planned", issue = "#319" }
-wildcard-import = { status = "planned", issue = "#319" }
 wrong-oneof = { status = "planned", issue = "#319" }
 xor-power = "implemented"
 yoda-condition = { status = "planned", issue = "#319" }
