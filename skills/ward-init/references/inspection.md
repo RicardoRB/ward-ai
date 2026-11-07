@@ -84,8 +84,8 @@ look at the segments directly below it. Match them against these styles. These a
   grep -rl "import .*\.infrastructure\." src/main/java/<base>/domain
   ```
 
-  Any hit means the generated ArchUnit rule will fail on the first check. Tell the user before they
-  choose `archunit`.
+  Any hit means `ward:architecture/layers` will fail on the first check. Tell the user before the
+  first `ward check`.
 
 ## 4. Existing ArchUnit tests
 
@@ -93,11 +93,9 @@ look at the segments directly below it. Match them against these styles. These a
 grep -rl "com.tngtech.archunit" src/test --include='*Test.java' --include='*Tests.java'
 ```
 
-If any classes are found, init reuses them. It does not generate `ArchitectureTest.java`, and it
-points the `archunit` gate command at those classes. The dry-run plan shows this only as a missing
-`create ... ArchitectureTest.java` line. It does not list the reused classes, so tell the user which
-classes you found and that the gate will run them. In that case the architecture style has no effect.
-Do not ask the user to choose one, and keep `--architecture` out of the command.
+Init no longer reads or generates ArchUnit tests. Any ArchUnit test the project keeps is its own
+and runs as a `command` check that the user configures, so init does not change it. Mention the
+classes you found, and do not treat them as a reason to change `--architecture`.
 
 ## 5. Existing Ward configuration
 
@@ -135,7 +133,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,checkstyle,pmd,spotbugs,sonar,semgrep,gitleaks,dependency-check,zap,trivy,archunit,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,checkstyle,pmd,spotbugs,sonar,semgrep,gitleaks,dependency-check,zap,trivy,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
@@ -183,7 +181,7 @@ Before the first question, show something like this:
 Project: Maven, Java, Spring Boot (root: /path/to/project)
 Build: Maven Wrapper available
 Layout: com.acme.shop -> domain, application, infrastructure (looks hexagonal)
-ArchUnit: none found, so init would generate ArchitectureTest.java
+Layers: controller, service, repository (layered boundaries written to ward.toml)
 Config: no ward.toml yet
 Rule files: none
 Unavailable tools: semgrep, gitleaks (brew can install them), zap (manual)

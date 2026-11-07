@@ -9,7 +9,7 @@ Everything here is read-only until the user approves the plan.
 Ward sets up SwiftPM packages and Xcode projects that contain Swift sources, on macOS with Xcode
 26.0 or newer. Ward's pinned SwiftLint runs from its own tools package, so no Swift project file is
 edited. CI proves Xcode 26.0.1 and 26.6. When the selected Xcode is outside the range a pinned tool
-covers, init leaves out that tool's gate (`swiftlint` or `harmonize`), and the plan names the Xcode
+covers, init leaves out that tool's gate (`swiftlint`), and the plan names the Xcode
 versions it supports; tell the user before they approve.
 
 ## Blocking findings
@@ -45,11 +45,11 @@ Init reports these and writes nothing; say what to change before the user approv
 | Gates | Preset gates; the gate list follows the build tool | `--gate <id>[,<id>...]` |
 | Agent integration | Ask whether to add one | `--integration <id>` |
 | CI workflow | Ask whether to add one; it runs on `macos-26` | `--ci github` |
-| Architecture rules | Ask only when `harmonize` is selected: layered, hexagonal or clean | `--architecture <style>`, `layered` under `--yes` |
+| Architecture rules | Ask only under `strict`: layered, hexagonal or clean. Init writes the layer boundaries to `ward.toml` | `--architecture <style>`, `layered` by default |
 
 Strict selects the standard gates with stricter commands: SwiftLint runs with `--strict` and the
 opt-in rules, compiler warnings are errors with complete concurrency checking, and coverage needs
-85%. Strict also selects `harmonize`; standard offers it as an opt-in choice. Swift strict has no mutation gate, because no Swift mutation tool is mature enough yet. Say so
+85%. Swift strict has no mutation gate, because no Swift mutation tool is mature enough yet. Say so
 when the user asks for mutation testing.
 
 ## Plan lines to expect
@@ -67,17 +67,13 @@ when the user asks for mutation testing.
   A failed resolve removes `.ward/swift-tools/` and changes nothing else.
 - `.swiftlint.yml`, written only when absent, and `.editorconfig` when the project has none.
 - `.gitignore` entries for `.ward/reports/` and `.ward/swift-tools/.build/`.
-- With `harmonize`: `.ward/swift-architecture/Package.swift` pinning Harmonize 1.3.0 exactly, and
-  `Tests/ArchitectureRules/LayerRules.swift` for the style. Rollback removes the package.
-- With `harmonize`: `.harmonize.yaml` at the root when the project has none. A project's own file is
-  kept, and the plan says to add `.ward` to its excludes. The `.gitignore` gains
-  `.ward/swift-architecture/.build/`.
+- The layer boundaries of the style in `ward.toml`, as `[[checks.ward.layers]]`, checked by
+  `ward:architecture/layers`. Init writes no Swift package or rules file for them.
 
 Ward never edits `Package.swift`, `project.pbxproj`, or any scheme.
 
 ## Before running the test gate
 
-The first `swiftlint` run downloads the SwiftLint artifact bundle, so it needs the network. The first
-`harmonize` run downloads Harmonize and swift-syntax and compiles them, which takes longer than the
-rest. CI caches `.ward/swift-tools/.build` and `.ward/swift-architecture/.build`. Run `ward check --profile ci` once the plan is applied, and report
-the first failure as it is printed.
+The first `swiftlint` run downloads the SwiftLint artifact bundle, so it needs the network. CI caches
+`.ward/swift-tools/.build`. Run `ward check --profile ci` once the plan is applied, and report the
+first failure as it is printed.
