@@ -128,3 +128,93 @@ kinds = ["statement"]
 text = '^if\([^;]*\)\{?returntrue;\}?else\{?returnfalse;\}?$|^if\([^;]*\)\{?returnfalse;\}?else\{?returntrue;\}?$'
 message = "if statement only returns true or false; return the condition itself"
 '''
+
+[[rules]]
+id = "ward:java/covariant-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "covariant-equals"
+message = "equals with a parameter other than Object does not override Object.equals; declare equals(Object) too"
+'''
+
+[[rules]]
+id = "ward:java/equals-avoid-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.ignore-equals-ignore-case = { type = "boolean" }
+body = '''
+check = "equals-avoid-null"
+ignore-equals-ignore-case = false
+message = "equals is called on a variable with a string literal argument; put the literal on the left"
+'''
+
+[[rules]]
+id = "ward:java/return-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+options.max-for-void = { type = "integer", min = 0 }
+body = '''
+check = "return-count"
+max = 2
+max-for-void = 1
+message = "method has {value} return statements; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-if-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'if'"]
+reset = []
+max = 1
+message = "if is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-for-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'for'"]
+reset = []
+max = 1
+message = "for is nested {value} deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/nested-try-depth"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "depth"
+kinds = ["statement>'try'"]
+reset = []
+max = 1
+message = "try is nested {value} deep; the limit is {max}"
+'''

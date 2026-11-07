@@ -46,10 +46,9 @@ checkstyle = ["ConstructorsDeclarationGrouping"]
 
 [[rule]]
 name = "covariant-equals"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#288", kotlin = "#294" }
+status = { java = "implemented", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+ids = { java = "ward:java/covariant-equals" }
+issues = { kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["CovariantEquals"]
 spotbugs = ["EQ_OTHER_USE_OBJECT"]
@@ -84,10 +83,9 @@ pylint = ["unnecessary-semicolon"]
 
 [[rule]]
 name = "equals-avoid-null"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#288", kotlin = "#294" }
+status = { java = "implemented", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+ids = { java = "ward:java/equals-avoid-null" }
+issues = { kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["EqualsAvoidNull"]
 
@@ -298,26 +296,23 @@ eslint = ["one-var"]
 
 [[rule]]
 name = "nested-for-depth"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/nested-for-depth" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NestedForDepth"]
 
 [[rule]]
 name = "nested-if-depth"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/nested-if-depth" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NestedIfDepth"]
 
 [[rule]]
 name = "nested-try-depth"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/nested-try-depth" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NestedTryDepth"]
 
 [[rule]]
@@ -409,10 +404,9 @@ swiftlint = ["explicit_self"]
 
 [[rule]]
 name = "return-count"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/return-count" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["ReturnCount"]
 pmd = ["OnlyOneReturn"]
 checkstyle = ["ReturnCount"]

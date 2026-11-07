@@ -6,7 +6,9 @@ import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.BitMaskComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ConstantClampCheck;
+import dev.ward.analysis.domain.rule.check.CovariantEqualsCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
+import dev.ward.analysis.domain.rule.check.EqualsAvoidNullCheck;
 import dev.ward.analysis.domain.rule.check.EqualsHashCodeCheck;
 import dev.ward.analysis.domain.rule.check.FallThroughCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
@@ -16,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
 import dev.ward.analysis.domain.rule.check.MissingSwitchDefaultCheck;
 import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
+import dev.ward.analysis.domain.rule.check.ReturnCountCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TypeNameMismatchCheck;
 import dev.ward.analysis.domain.rule.check.UnitTestAssertCountCheck;
@@ -96,12 +99,36 @@ final class ReviewChecks {
     };
   }
 
-  /** The checks over switch and catch structure and over equality methods. */
+  /** The checks over switch structure and return statements. */
   private static RuleCheck codingCheck(final String name, final TomlParseResult toml) {
     return switch (name) {
       case "fall-through" ->
           new FallThroughCheck(toml.getBoolean("check-last-group", () -> false), message(toml));
       case "missing-switch-default" -> new MissingSwitchDefaultCheck(message(toml));
+      case "return-count" ->
+          new ReturnCountCheck(
+              TomlValues.integer(toml, MAX),
+              TomlValues.integer(toml, "max-for-void"),
+              message(toml));
+      default -> equalityCheck(name, toml);
+    };
+  }
+
+  /** The checks over equals and hashCode, and over exception types. */
+  private static RuleCheck equalityCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "equals-hash-code" -> new EqualsHashCodeCheck(message(toml));
+      case "covariant-equals" -> new CovariantEqualsCheck(message(toml));
+      case "equals-avoid-null" ->
+          new EqualsAvoidNullCheck(
+              toml.getBoolean("ignore-equals-ignore-case", () -> false), message(toml));
+      default -> exceptionCheck(name, toml);
+    };
+  }
+
+  /** The checks over the exception types that catch clauses and throws clauses name. */
+  private static RuleCheck exceptionCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
       case "illegal-catch" ->
           new IllegalCatchCheck(TomlValues.strings(toml, "illegal-classes"), message(toml));
       case "illegal-throws" ->
@@ -110,7 +137,6 @@ final class ReviewChecks {
               TomlValues.strings(toml, "ignored-method-names"),
               toml.getBoolean("ignore-overridden-methods", () -> true),
               message(toml));
-      case "equals-hash-code" -> new EqualsHashCodeCheck(message(toml));
       default -> reviewCheck(name, toml);
     };
   }

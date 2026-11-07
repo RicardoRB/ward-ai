@@ -6,26 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Reports a class or enum that declares {@code equals(Object)} without {@code hashCode()}, or the
- * other way round. Only the methods declared directly in the type's body count; nested types and
- * method bodies are not searched.
+ * other way round. Only the methods declared directly in the type's body count.
  */
 public final class EqualsHashCodeCheck implements UnitCheck {
 
   private static final String EQUALS = "equals";
   private static final String HASH_CODE = "hashCode";
-  private static final String IDENTIFIER = "identifier";
-  private static final String METHOD = "methodDeclaration";
-  private static final Set<String> TYPES =
-      Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
-  private static final Set<String> MEMBER_CONTAINERS =
-      Set.of("classBody", "classBodyDeclaration", "memberDeclaration", "enumBodyDeclarations");
-  private static final Pattern OBJECT_PARAMETER =
-      Pattern.compile("\\((?:final)?(?:java\\.lang\\.)?Object[\\w$]+\\)");
 
   private final String message;
 
@@ -41,9 +30,8 @@ public final class EqualsHashCodeCheck implements UnitCheck {
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, TYPES)) {
-      final List<SyntaxNode> methods = new ArrayList<>();
-      members(visit.node(), methods);
+    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, TypeMethods.TYPES)) {
+      final List<SyntaxNode> methods = TypeMethods.of(visit.node());
       final Optional<SyntaxNode> equals = find(methods, EQUALS, true);
       final Optional<SyntaxNode> hashCode = find(methods, HASH_CODE, false);
       equals
@@ -56,38 +44,16 @@ public final class EqualsHashCodeCheck implements UnitCheck {
     return List.copyOf(matches);
   }
 
-  private static void members(final SyntaxNode node, final List<SyntaxNode> methods) {
-    for (final SyntaxNode child : node.children()) {
-      if (METHOD.equals(child.kind())) {
-        methods.add(child);
-      } else if (MEMBER_CONTAINERS.contains(child.kind())) {
-        members(child, methods);
-      }
-    }
-  }
-
   private static Optional<SyntaxNode> find(
       final List<SyntaxNode> methods, final String name, final boolean withObjectParameter) {
     return methods.stream()
-        .filter(m -> name.equals(methodName(m)))
-        .filter(m -> !withObjectParameter || OBJECT_PARAMETER.matcher(parameters(m)).matches())
-        .filter(m -> withObjectParameter || "()".equals(parameters(m)))
+        .filter(m -> name.equals(TypeMethods.name(m)))
+        .filter(m -> matchesParameters(m, withObjectParameter))
         .findFirst();
   }
 
-  private static String methodName(final SyntaxNode method) {
-    return method.children().stream()
-        .filter(c -> IDENTIFIER.equals(c.kind()))
-        .map(SyntaxWalk::text)
-        .findFirst()
-        .orElse("");
-  }
-
-  private static String parameters(final SyntaxNode method) {
-    return method.children().stream()
-        .filter(c -> "formalParameters".equals(c.kind()))
-        .map(SyntaxWalk::text)
-        .findFirst()
-        .orElse("");
+  private static boolean matchesParameters(final SyntaxNode method, final boolean withObject) {
+    final List<String> types = TypeMethods.parameterTypes(method);
+    return withObject ? types.size() == 1 && TypeMethods.isObject(types.get(0)) : types.isEmpty();
   }
 }
