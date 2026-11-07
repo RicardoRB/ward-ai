@@ -69,6 +69,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/python/refurb-calls.toml",
           "rules/swift-structural.toml",
           "rules/swift/part-3.toml",
+          "rules/swift/naming.toml",
           "rules/swift/modifier-order.toml",
           "rules/swift/declaration-order.toml",
           "rules/swift/performance.toml",
