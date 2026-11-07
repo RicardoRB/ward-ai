@@ -1,0 +1,42 @@
+{
+  "3:12-3:95": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "getChecked",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      },
+      "static": true
+    }
+  },
+  "4:12-4:98": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "getChecked",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      },
+      "static": true
+    }
+  }
+}

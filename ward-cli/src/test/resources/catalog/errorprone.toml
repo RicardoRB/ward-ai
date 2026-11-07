@@ -116,8 +116,6 @@ errorprone = ["ArrayToString"]
 
 [[rule]]
 name = "arrays-as-list-primitive-array"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArraysAsListPrimitiveArray"]
 
 [[rule]]
@@ -673,8 +671,6 @@ errorprone = ["DefaultPackage"]
 
 [[rule]]
 name = "dep-ann"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DepAnn"]
 
 [[rule]]
@@ -773,8 +769,6 @@ errorprone = ["DuplicateMapKeys"]
 
 [[rule]]
 name = "duration-from"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DurationFrom"]
 
 [[rule]]
@@ -1143,8 +1137,6 @@ errorprone = ["FutureTransformAsync"]
 
 [[rule]]
 name = "futures-get-checked-illegal-exception-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FuturesGetCheckedIllegalExceptionType"]
 
 [[rule]]
@@ -1942,8 +1934,6 @@ errorprone = ["MisformattedTestData"]
 
 [[rule]]
 name = "mislabeled-android-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MislabeledAndroidString"]
 
 [[rule]]
@@ -2201,8 +2191,6 @@ errorprone = ["NewFileSystem"]
 
 [[rule]]
 name = "no-allocation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NoAllocation"]
 
 [[rule]]
@@ -2277,8 +2265,6 @@ errorprone = ["NullArgumentForNonNullParameter"]
 
 [[rule]]
 name = "null-needs-cast-for-varargs"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullNeedsCastForVarargs"]
 
 [[rule]]
@@ -2289,8 +2275,6 @@ errorprone = ["NullOptional"]
 
 [[rule]]
 name = "null-ternary"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullTernary"]
 
 [[rule]]
@@ -2301,8 +2285,6 @@ errorprone = ["NullableConstructor"]
 
 [[rule]]
 name = "nullable-on-containing-class"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullableOnContainingClass"]
 
 [[rule]]
@@ -2377,8 +2359,6 @@ errorprone = ["OptionalMapToOptional"]
 
 [[rule]]
 name = "optional-map-unused-value"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OptionalMapUnusedValue"]
 
 [[rule]]
@@ -2643,8 +2623,6 @@ errorprone = ["ReachabilityFenceUsage"]
 
 [[rule]]
 name = "record-accessor-in-compact-constructor"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RecordAccessorInCompactConstructor"]
 
 [[rule]]
@@ -2846,8 +2824,6 @@ errorprone = ["ShortCircuitBoolean"]
 
 [[rule]]
 name = "should-have-even-args"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ShouldHaveEvenArgs"]
 
 [[rule]]
@@ -3034,8 +3010,6 @@ errorprone = ["SystemConsoleNull"]
 
 [[rule]]
 name = "system-exit-outside-main"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SystemExitOutsideMain"]
 
 [[rule]]
@@ -3052,8 +3026,6 @@ errorprone = ["TemporalAccessorGetChronoField"]
 
 [[rule]]
 name = "test-exception-checker"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TestExceptionChecker"]
 
 [[rule]]
@@ -3100,8 +3072,6 @@ errorprone = ["ThreeLetterTimeZoneID"]
 
 [[rule]]
 name = "throw-if-unchecked-known-checked"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ThrowIfUncheckedKnownChecked"]
 
 [[rule]]
@@ -3222,8 +3192,6 @@ errorprone = ["TryFailRefactoring"]
 
 [[rule]]
 name = "try-fail-throwable"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TryFailThrowable"]
 
 [[rule]]
@@ -3310,8 +3278,6 @@ errorprone = ["UnicodeEscape"]
 
 [[rule]]
 name = "unicode-in-code"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnicodeInCode"]
 
 [[rule]]
@@ -3508,8 +3474,6 @@ errorprone = ["UnsynchronizedOverridesSynchronized"]
 
 [[rule]]
 name = "unused-anonymous-class"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnusedAnonymousClass"]
 
 [[rule]]
@@ -3564,8 +3528,6 @@ errorprone = ["UseBinds"]
 
 [[rule]]
 name = "use-correct-assert-in-tests"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UseCorrectAssertInTests"]
 
 [[rule]]

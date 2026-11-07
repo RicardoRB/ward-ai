@@ -19,7 +19,7 @@ array-fill-incompatible-type = { status = "planned", issue = "#319" }
 array-hash-code = "implemented"
 array-record-component = { status = "planned", issue = "#319" }
 array-to-string = "implemented"
-arrays-as-list-primitive-array = { status = "planned", issue = "#319" }
+arrays-as-list-primitive-array = "implemented"
 assert-equals-argument-order-checker = { status = "planned", issue = "#319" }
 assert-false = { status = "planned", issue = "#319" }
 assert-same-incompatible = { status = "planned", issue = "#319" }
@@ -115,7 +115,7 @@ deeply-nested = { status = "planned", issue = "#319" }
 default-charset = { status = "planned", issue = "#319" }
 default-locale = { status = "planned", issue = "#319" }
 default-package = { status = "planned", issue = "#319" }
-dep-ann = { status = "planned", issue = "#319" }
+dep-ann = "implemented"
 deprecated-variable = { status = "planned", issue = "#319" }
 dereference-with-null-branch = { status = "planned", issue = "#319" }
 different-name-but-same = { status = "planned", issue = "#319" }
@@ -132,7 +132,7 @@ duplicate-assertion = { status = "planned", issue = "#319" }
 duplicate-branches = { status = "planned", issue = "#319" }
 duplicate-date-format-field = { status = "planned", issue = "#319" }
 duplicate-map-keys = { status = "planned", issue = "#319" }
-duration-from = { status = "planned", issue = "#319" }
+duration-from = "implemented"
 duration-get-temporal-unit = "implemented"
 duration-temporal-unit = "implemented"
 duration-to-long-time-unit = { status = "planned", issue = "#319" }
@@ -195,7 +195,7 @@ functional-interface-clash = { status = "planned", issue = "#319" }
 functional-interface-method-changed = { status = "planned", issue = "#319" }
 future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
-futures-get-checked-illegal-exception-type = { status = "planned", issue = "#319" }
+futures-get-checked-illegal-exception-type = "implemented"
 fuzzy-equals-should-not-be-used-in-equals-method = { status = "planned", issue = "#319" }
 get-class-on-annotation = "implemented"
 get-class-on-class = "implemented"
@@ -339,7 +339,7 @@ memoize-constant-visitor-state-lookups = { status = "planned", issue = "#319" }
 memory-segment-reference-equality = "implemented"
 method-can-be-static = { status = "planned", issue = "#319" }
 misformatted-test-data = { status = "planned", issue = "#319" }
-mislabeled-android-string = { status = "planned", issue = "#319" }
+mislabeled-android-string = "implemented"
 misleading-empty-varargs = "implemented"
 misleading-escaped-space = "implemented"
 misplaced-scope-annotations = { status = "planned", issue = "#319" }
@@ -385,7 +385,7 @@ negative-boolean = { status = "planned", issue = "#319" }
 negative-char-literal = { status = "planned", issue = "#319" }
 nested-instance-of-conditions = { status = "planned", issue = "#319" }
 new-file-system = { status = "planned", issue = "#319" }
-no-allocation = { status = "planned", issue = "#319" }
+no-allocation = "implemented"
 no-can-ignore-return-value-on-classes = "implemented"
 non-api-type = { status = "planned", issue = "#319" }
 non-atomic-volatile-update = { status = "planned", issue = "#319" }
@@ -398,11 +398,11 @@ non-overriding-equals = { status = "planned", issue = "#319" }
 non-runtime-annotation = { status = "planned", issue = "#319" }
 not-javadoc = { status = "planned", issue = "#319" }
 null-argument-for-non-null-parameter = { status = "planned", issue = "#319" }
-null-needs-cast-for-varargs = { status = "planned", issue = "#319" }
+null-needs-cast-for-varargs = "implemented"
 null-optional = { status = "planned", issue = "#319" }
-null-ternary = { status = "planned", issue = "#319" }
+null-ternary = "implemented"
 nullable-constructor = { status = "planned", issue = "#319" }
-nullable-on-containing-class = { status = "planned", issue = "#319" }
+nullable-on-containing-class = "implemented"
 nullable-optional = { status = "planned", issue = "#319" }
 nullable-primitive = { status = "planned", issue = "#319" }
 nullable-primitive-array = { status = "planned", issue = "#319" }
@@ -415,7 +415,7 @@ objects-hash-code-primitive = { status = "planned", issue = "#319" }
 operator-precedence = { status = "planned", issue = "#319" }
 optional-equality = "implemented"
 optional-map-to-optional = { status = "planned", issue = "#319" }
-optional-map-unused-value = { status = "planned", issue = "#319" }
+optional-map-unused-value = "implemented"
 optional-not-present = { status = "planned", issue = "#319" }
 optional-of-redundant-method = "implemented"
 orphaned-format-string = { status = "planned", issue = "#319" }
@@ -463,7 +463,7 @@ qualifier-with-type-use = { status = "planned", issue = "#319" }
 random-cast = "implemented"
 random-mod-integer = "implemented"
 reachability-fence-usage = { status = "planned", issue = "#319" }
-record-accessor-in-compact-constructor = { status = "planned", issue = "#319" }
+record-accessor-in-compact-constructor = "implemented"
 record-component-accessor-annotation-conflict = { status = "planned", issue = "#319" }
 record-component-override = { status = "planned", issue = "#319" }
 rect-intersect-return-value-ignored = "implemented"
@@ -499,7 +499,7 @@ self-equals = "implemented"
 self-set = { status = "planned", issue = "#319" }
 set-unrecognized = { status = "planned", issue = "#319" }
 short-circuit-boolean = { status = "planned", issue = "#319" }
-should-have-even-args = { status = "planned", issue = "#319" }
+should-have-even-args = "implemented"
 simplify-test-parameter = { status = "planned", issue = "#319" }
 single-test-parameter = { status = "planned", issue = "#319" }
 size-greater-than-or-equals-zero = "implemented"
@@ -532,10 +532,10 @@ switch-default = { status = "planned", issue = "#319" }
 symbol-to-string = { status = "planned", issue = "#319" }
 synchronize-on-non-final-field = { status = "planned", issue = "#319" }
 system-console-null = { status = "planned", issue = "#319" }
-system-exit-outside-main = { status = "planned", issue = "#319" }
+system-exit-outside-main = "implemented"
 system-out = { status = "planned", issue = "#319" }
 temporal-accessor-get-chrono-field = { status = "planned", issue = "#319" }
-test-exception-checker = { status = "planned", issue = "#319" }
+test-exception-checker = "implemented"
 test-parameters-not-initialized = "implemented"
 theory-but-no-theories = "implemented"
 thread-builder-name-with-placeholder = "implemented"
@@ -544,7 +544,7 @@ thread-local-usage = { status = "planned", issue = "#319" }
 thread-priority-check = { status = "planned", issue = "#319" }
 thread-safe = { status = "planned", issue = "#319" }
 three-letter-time-zone-id = { status = "planned", issue = "#319" }
-throw-if-unchecked-known-checked = { status = "planned", issue = "#319" }
+throw-if-unchecked-known-checked = "implemented"
 throw-if-unchecked-known-unchecked = { status = "planned", issue = "#319" }
 throw-null = "implemented"
 throw-specific-exceptions = { status = "planned", issue = "#319" }
@@ -565,7 +565,7 @@ truth-contains-exactly-elements-in-usage = { status = "planned", issue = "#319" 
 truth-get-or-default = { status = "planned", issue = "#319" }
 truth-incompatible-type = { status = "planned", issue = "#319" }
 try-fail-refactoring = { status = "planned", issue = "#319" }
-try-fail-throwable = { status = "planned", issue = "#319" }
+try-fail-throwable = "implemented"
 try-with-resources-variable = { status = "planned", issue = "#319" }
 type-equals = { status = "planned", issue = "#319" }
 type-name-shadowing = { status = "planned", issue = "#319" }
@@ -579,7 +579,7 @@ unescaped-entity = { status = "planned", issue = "#319" }
 ungrouped-overloads = { status = "planned", issue = "#319" }
 unicode-directionality-characters = "implemented"
 unicode-escape = { status = "planned", issue = "#319" }
-unicode-in-code = { status = "planned", issue = "#319" }
+unicode-in-code = "implemented"
 unnamed-variable = { status = "planned", issue = "#319" }
 unnecessarily-fully-qualified = { status = "planned", issue = "#319" }
 unnecessarily-used-value = { status = "planned", issue = "#319" }
@@ -612,7 +612,7 @@ unsafe-locale-usage = { status = "planned", issue = "#319" }
 unsafe-reflective-construction-cast = { status = "planned", issue = "#319" }
 unsafe-wildcard = { status = "planned", issue = "#319" }
 unsynchronized-overrides-synchronized = { status = "planned", issue = "#319" }
-unused-anonymous-class = { status = "planned", issue = "#319" }
+unused-anonymous-class = "implemented"
 unused-collection-modified-in-place = { status = "planned", issue = "#319" }
 unused-exception = { status = "planned", issue = "#319" }
 unused-method = { status = "planned", issue = "#319" }
@@ -622,7 +622,7 @@ unused-variable = { status = "planned", issue = "#319" }
 url-equals-hash-code = { status = "planned", issue = "#319" }
 url-in-see = { status = "planned", issue = "#319" }
 use-binds = { status = "planned", issue = "#319" }
-use-correct-assert-in-tests = { status = "planned", issue = "#319" }
+use-correct-assert-in-tests = "implemented"
 use-enum-switch = { status = "planned", issue = "#319" }
 using-jsr305-check-return-value = { status = "planned", issue = "#319" }
 value-class-equals = { status = "planned", issue = "#319" }

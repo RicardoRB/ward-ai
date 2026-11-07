@@ -1,0 +1,72 @@
+# Error Prone checks at ERROR severity for Java that depend on the framework a file uses (JUnit, Optional,
+# nullness annotations). Each is on by default in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/optional-map-unused-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.Optional"]
+names = ["map"]
+ignored = true
+message = "the result of Optional.map is dropped; use ifPresent to run an action"
+'''
+
+[[rules]]
+id = "ward:java/null-ternary"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["localVariableDeclaration"]
+text = '^(?:final)?(?:int|long|short|byte|char|boolean|float|double)\w+=[^?;]*\?(?:null:[^;]+|[^:;]+:null);?$'
+message = "a conditional with a null branch and a primitive branch is unboxed to a primitive here and throws NullPointerException when it yields null"
+'''
+
+[[rules]]
+id = "ward:java/test-exception-checker"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["annotation"]
+text = '^@(?:org\.junit\.)?Test\((?:[^()]*,)?expected='
+message = "@Test(expected = ...) passes if any statement of the test throws; use assertThrows around the one call that should"
+'''
+
+[[rules]]
+id = "ward:java/use-correct-assert-in-tests"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "enclosing-method"
+kinds = ["statement"]
+annotation = '^@(?:[\w.]*\.)?(?:Test|ParameterizedTest|RepeatedTest)\b'
+child = "'assert'"
+message = "a Java assert statement does nothing unless assertions are enabled; use an assertion method of the test framework"
+'''
+
+[[rules]]
+id = "ward:java/nullable-on-containing-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "nullable-on-containing-class"
+message = "@Nullable before a nested type name annotates the outer class, not the nested type; write Outer.@Nullable Inner"
+'''

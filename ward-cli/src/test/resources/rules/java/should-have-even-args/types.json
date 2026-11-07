@@ -1,0 +1,44 @@
+{
+  "3:5-3:34": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.MapSubject"
+      },
+      "name": "containsExactly",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.Ordered"
+      },
+      "varargs": true
+    }
+  },
+  "4:5-4:29": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.MapSubject"
+      },
+      "name": "containsExactly",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.Ordered"
+      },
+      "varargs": true
+    }
+  }
+}
