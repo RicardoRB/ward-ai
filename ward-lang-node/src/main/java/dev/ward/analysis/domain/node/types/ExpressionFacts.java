@@ -49,7 +49,7 @@ final class ExpressionFacts {
     final boolean constructs = "new".equals(Exprs.token(parts.get(0)));
     final Optional<CallTyper.Call> resolved =
         constructs
-            ? typer.constructs().constructed(node)
+            ? typer.constructed(node)
             : typer.calls().isCall(parts) ? typer.calls().call(node) : Optional.empty();
     return resolved
         .map(call -> TypeRefs.target(ownerName(call), call.name(), call.sig(), call.isStatic()))

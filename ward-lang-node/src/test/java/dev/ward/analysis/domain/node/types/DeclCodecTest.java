@@ -55,7 +55,7 @@ class DeclCodecTest {
   }
 
   private static String printed(final Decl decl) {
-    final StringBuilder out = new StringBuilder();
+    final StringBuilder out = new StringBuilder(64);
     out.append(decl.kind()).append(' ').append(decl.name()).append(' ').append(decl.flags());
     decl.members()
         .forEach(

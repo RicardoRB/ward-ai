@@ -122,6 +122,11 @@ public sealed interface TsType
     return new Named(name, args, null);
   }
 
+  /** Returns the array of {@code element}. */
+  static TsType arrayOf(final TsType element) {
+    return new Arr(element);
+  }
+
   /** Returns whether anything is known about this type, including its parts. */
   default boolean isKnown() {
     return switch (this) {

@@ -76,13 +76,9 @@ public final class TyParser {
         return cursor.fail();
       }
       cursor.skip(2);
-      current = array(current);
+      current = TsType.arrayOf(current);
     }
     return current;
-  }
-
-  private static TsType array(final TsType element) {
-    return new TsType.Arr(element);
   }
 
   private TsType primary() {
@@ -90,7 +86,7 @@ public final class TyParser {
     if (token.isEmpty() || KEYWORDS.contains(token)) {
       return cursor.fail();
     }
-    skipModifiers();
+    cursor.skipModifiers(MODIFIERS);
     return switch (cursor.peek(0)) {
       case OPEN_PAREN -> parenthesized();
       case LESS -> function();
@@ -98,14 +94,6 @@ public final class TyParser {
       case OPEN_BRACKET -> tuples.tuple();
       default -> named();
     };
-  }
-
-  private void skipModifiers() {
-    while (MODIFIERS.contains(cursor.peek(0))
-        && !cursor.peek(1).isEmpty()
-        && !TokenCursor.isPunctuation(cursor.peek(1))) {
-      cursor.skip(1);
-    }
   }
 
   private TsType parenthesized() {

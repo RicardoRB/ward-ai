@@ -4,11 +4,19 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 /** Types unary operators, casts, conditionals and the other operator forms of expressions. */
 final class OperatorTypes {
   private static final String NUMBER = Literals.NUMBER;
+  private static final Map<String, String> PREFIX_TYPES =
+      Map.of(
+          "typeof", Literals.STRING,
+          "void", "undefined",
+          "!", Literals.BOOLEAN,
+          "delete", Literals.BOOLEAN);
+  private static final Set<String> UNARY = Set.of("-", "+", "~", "++", "--");
   private static final int BINARY_PARTS = 3;
   private static final int TERNARY_PARTS = 5;
   private static final int TERNARY_ELSE = 4;
@@ -36,13 +44,11 @@ final class OperatorTypes {
    * Returns the type of a prefix form such as {@code typeof x} or {@code -x}, if the parts are one.
    */
   Optional<TsType> prefix(final String first, final List<SyntaxNode> parts) {
-    return switch (first) {
-      case "typeof" -> Optional.of(TsType.named(Literals.STRING));
-      case "void" -> Optional.of(TsType.named("undefined"));
-      case "!", "delete" -> Optional.of(TsType.named(Literals.BOOLEAN));
-      case "-", "+", "~", "++", "--" -> Optional.of(unary(first, parts.get(1)));
-      default -> Optional.empty();
-    };
+    final String known = PREFIX_TYPES.get(first);
+    if (known != null) {
+      return Optional.of(TsType.named(known));
+    }
+    return UNARY.contains(first) ? Optional.of(unary(first, parts.get(1))) : Optional.empty();
   }
 
   /** Returns the type of a prefix operator applied to {@code operand}. */

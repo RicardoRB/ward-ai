@@ -12,6 +12,7 @@ final class SigParser {
   private static final String LESS = "<";
   private static final String GREATER = ">";
   private static final String IS = "is";
+  private static final int TOP_LEVEL = 1;
 
   private final TokenCursor cursor;
   private final Supplier<TsType> type;
@@ -76,7 +77,7 @@ final class SigParser {
   /** Records a type parameter name when one is expected; returns whether another is expected. */
   private static boolean nextExpectation(
       final String token, final int depth, final boolean expecting, final List<String> names) {
-    if (depth != 1) {
+    if (depth != TOP_LEVEL) {
       return expecting;
     }
     if (COMMA.equals(token)) {

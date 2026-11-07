@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -12,6 +13,7 @@ import java.util.Set;
  */
 final class ExprTyper {
   private static final int WRAPPED = 1;
+  private static final String ARGUMENT = "argument";
   private static final Set<String> FUNCTION_KINDS =
       Set.of("anonymousFunction", "arrowFunctionDeclaration", "functionDeclaration");
 
@@ -37,20 +39,23 @@ final class ExprTyper {
     this.names = new NameTypes(this::typeOf, model, program, constructs);
   }
 
-  Members members() {
-    return members;
+  /** Finds a member of a type, or returns null. */
+  Members.Found findMember(final TsType receiver, final String name) {
+    return members.find(receiver, name);
   }
 
   CallTyper calls() {
     return calls;
   }
 
-  ConstructTyper constructs() {
-    return constructs;
+  /** Resolves a {@code new} expression. */
+  Optional<CallTyper.Call> constructed(final SyntaxNode node) {
+    return constructs.constructed(node);
   }
 
-  FunctionTypes functions() {
-    return functions;
+  /** Returns the declared or inferred return type of a function node. */
+  TsType returnOf(final SyntaxNode function) {
+    return functions.returnOf(function);
   }
 
   NameTypes names() {
@@ -86,7 +91,7 @@ final class ExprTyper {
   }
 
   private TsType other(final SyntaxNode node) {
-    if ("argument".equals(node.kind())) {
+    if (ARGUMENT.equals(node.kind())) {
       return typeOf(Exprs.argumentValue(node));
     }
     return "this".equals(Exprs.token(node)) ? constructs.thisType(node) : TsType.UNKNOWN;

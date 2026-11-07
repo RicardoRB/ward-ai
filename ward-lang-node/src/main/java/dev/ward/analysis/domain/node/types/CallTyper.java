@@ -87,7 +87,7 @@ final class CallTyper {
     final TsType callee = typer.typeOf(name);
     final Optional<Call> call = viaType(callee, args);
     if (call.isPresent() && !call.get().returns().isKnown()) {
-      final TsType inferred = typer.functions().returnOf(declaration(name));
+      final TsType inferred = typer.returnOf(declaration(name));
       return Optional.of(
           new Call(call.get().owner(), call.get().name(), call.get().sig(), inferred, true));
     }

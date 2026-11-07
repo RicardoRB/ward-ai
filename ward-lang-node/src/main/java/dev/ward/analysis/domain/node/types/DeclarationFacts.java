@@ -76,7 +76,7 @@ final class DeclarationFacts {
     if (sym != null) {
       for (final Sym.Located located : sym.of(Decl.Kind.CLASS)) {
         for (final TsType base : ShapeFacts.bases(located.decl(), located.scope())) {
-          final Members.Found inherited = typer.members().find(base, TreeText.text(name));
+          final Members.Found inherited = typer.findMember(base, TreeText.text(name));
           if (inherited != null) {
             found.add(inheritedTarget(inherited, TreeText.text(name)));
           }
