@@ -2044,8 +2044,6 @@ errorprone = ["MissingRefasterAnnotation"]
 
 [[rule]]
 name = "missing-runtime-retention"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MissingRuntimeRetention"]
 
 [[rule]]
@@ -2147,8 +2145,6 @@ errorprone = ["ModifyingCollectionWithItself"]
 
 [[rule]]
 name = "more-than-one-injectable-constructor"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MoreThanOneInjectableConstructor"]
 
 [[rule]]
@@ -2469,8 +2465,6 @@ errorprone = ["OutlineNone"]
 
 [[rule]]
 name = "overlapping-qualifier-and-scope-annotation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OverlappingQualifierAndScopeAnnotation"]
 
 [[rule]]
@@ -2529,14 +2523,10 @@ errorprone = ["ParameterMissingNullable"]
 
 [[rule]]
 name = "parameters-but-not-parameterized"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ParametersButNotParameterized"]
 
 [[rule]]
 name = "parcelable-creator"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ParcelableCreator"]
 
 [[rule]]
@@ -2683,8 +2673,6 @@ errorprone = ["ProtocolBufferOrdinal"]
 
 [[rule]]
 name = "provides-method-outside-of-module"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ProvidesMethodOutsideOfModule"]
 
 [[rule]]
@@ -3148,14 +3136,10 @@ errorprone = ["TestExceptionChecker"]
 
 [[rule]]
 name = "test-parameters-not-initialized"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TestParametersNotInitialized"]
 
 [[rule]]
 name = "theory-but-no-theories"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TheoryButNoTheories"]
 
 [[rule]]

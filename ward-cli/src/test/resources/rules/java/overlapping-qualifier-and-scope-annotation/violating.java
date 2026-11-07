@@ -1,0 +1,3 @@
+@Qualifier
+@Scope
+@interface Both {}

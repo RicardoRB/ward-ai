@@ -23,6 +23,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/dataflow.toml",
           "rules/java/declarations.toml",
           "rules/java/design.toml",
+          "rules/java/errorprone-annotations.toml",
           "rules/java/errorprone-part2.toml",
           "rules/java/errorprone-standard-2.toml",
           "rules/java/errorprone-types.toml",
