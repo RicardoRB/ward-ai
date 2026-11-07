@@ -10,7 +10,7 @@ array-is-stored-directly = "implemented"
 assert-equals-argument-order = "implemented"
 assert-statement-in-test = "implemented"
 assignment-in-operand = "implemented"
-assignment-to-non-final-static = { status = "planned", issue = "#310" }
+assignment-to-non-final-static = "implemented"
 at-least-one-constructor = { status = "planned", issue = "#313" }
 avoid-accessibility-alteration = "implemented"
 avoid-array-loops = { status = "planned", issue = "#312" }
@@ -23,7 +23,7 @@ avoid-deeply-nested-if-stmts = "implemented"
 avoid-dollar-signs = { status = "planned", issue = "#313" }
 avoid-enum-as-identifier = { status = "planned", issue = "#310" }
 avoid-field-name-matching-method-name = { status = "planned", issue = "#310" }
-avoid-field-name-matching-type-name = { status = "planned", issue = "#310" }
+avoid-field-name-matching-type-name = "implemented"
 avoid-file-stream = { status = "planned", issue = "#312" }
 avoid-instanceof-checks-in-catch-clause = "implemented"
 avoid-instantiating-objects-in-loops = { status = "planned", issue = "#312" }
@@ -70,12 +70,12 @@ confusing-ternary = { status = "planned", issue = "#313" }
 consecutive-appends-should-reuse = { status = "planned", issue = "#312" }
 consecutive-literal-appends = { status = "planned", issue = "#312" }
 constants-in-interface = "implemented"
-constructor-calls-overridable-method = { status = "planned", issue = "#310" }
+constructor-calls-overridable-method = "implemented"
 control-statement-braces = { status = "planned", issue = "#313" }
 dangling-javadoc = { status = "planned", issue = "#313" }
 data-class = "implemented"
 default-label-not-last-in-switch = "implemented"
-detached-test-case = { status = "planned", issue = "#310" }
+detached-test-case = "implemented"
 do-not-call-garbage-collection-explicitly = "implemented"
 do-not-extend-java-lang-error = "implemented"
 do-not-extend-java-lang-throwable = "implemented"
@@ -128,7 +128,7 @@ j-unit-spelling = "implemented"
 j-unit-static-suite = "implemented"
 j-unit-use-expected = "implemented"
 j-unit4-suites-should-use-suite-annotation = "implemented"
-jumbled-incrementer = { status = "planned", issue = "#310" }
+jumbled-incrementer = "implemented"
 labeled-statement = "implemented"
 lambda-can-be-method-reference = { status = "planned", issue = "#313" }
 law-of-demeter = "implemented"
@@ -144,7 +144,7 @@ loose-coupling = "implemented"
 loose-package-coupling = "implemented"
 mdb-and-session-bean-naming-convention = { status = "planned", issue = "#313" }
 method-returns-internal-array = "implemented"
-method-with-same-name-as-enclosing-class = { status = "planned", issue = "#310" }
+method-with-same-name-as-enclosing-class = "implemented"
 misplaced-null-check = "implemented"
 missing-serial-version-uid = "implemented"
 missing-static-method-in-non-instantiatable-class = "implemented"
@@ -176,7 +176,7 @@ replace-hashtable-with-map = "implemented"
 replace-java-util-calendar = "implemented"
 replace-java-util-date = "implemented"
 replace-java-util-vector = "implemented"
-return-empty-collection-rather-than-null = { status = "planned", issue = "#310" }
+return-empty-collection-rather-than-null = "implemented"
 return-from-finally-block = "implemented"
 short-class-name = { status = "planned", issue = "#313" }
 short-method-name = { status = "planned", issue = "#313" }
@@ -186,10 +186,10 @@ simple-date-format-needs-locale = "implemented"
 simplifiable-test-assertion = "implemented"
 simplified-ternary = "implemented"
 simplify-conditional = "implemented"
-single-method-singleton = { status = "planned", issue = "#310" }
+single-method-singleton = "implemented"
 singleton-class-returning-new-instance = "implemented"
 singular-field = "implemented"
-static-ejb-field-should-be-final = { status = "planned", issue = "#310" }
+static-ejb-field-should-be-final = "implemented"
 string-buffer-instantiation-with-char = "implemented"
 string-instantiation = { status = "planned", issue = "#312" }
 string-to-string = { status = "planned", issue = "#312" }

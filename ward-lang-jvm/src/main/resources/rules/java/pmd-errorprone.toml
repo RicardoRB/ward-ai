@@ -875,3 +875,113 @@ kinds = ["expression"]
 text = '^(?:(?:java\.lang\.)?System|Runtime\.getRuntime\(\))\.(?:exit|halt)\([^()]*\)$'
 message = "System.exit terminates the JVM; only the application entry point should do it"
 '''
+
+[[rules]]
+id = "ward:java/avoid-field-name-matching-type-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "member-named-after-class"
+member = "field"
+message = "field {value} has the name of its class; rename it"
+'''
+
+[[rules]]
+id = "ward:java/method-with-same-name-as-enclosing-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "member-named-after-class"
+member = "method"
+message = "method {value} has the name of its class and is not a constructor; remove the return type or rename it"
+'''
+
+[[rules]]
+id = "ward:java/return-empty-collection-rather-than-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "return-empty-collection"
+message = "return an empty collection or array rather than null"
+'''
+
+[[rules]]
+id = "ward:java/static-ejb-field-should-be-final"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "static-ejb-field"
+message = "an EJB must not have a non-final static field"
+'''
+
+[[rules]]
+id = "ward:java/single-method-singleton"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "single-method-singleton"
+message = "class has more than one getInstance method; the overload does not return the cached instance"
+'''
+
+[[rules]]
+id = "ward:java/jumbled-incrementer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "jumbled-incrementer"
+message = "the update of this loop changes the variable of an enclosing loop"
+'''
+
+[[rules]]
+id = "ward:java/assignment-to-non-final-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "assignment-to-non-final-static"
+message = "constructor assigns the non-final static field {value}; every instance changes it"
+'''
+
+[[rules]]
+id = "ward:java/constructor-calls-overridable-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+message = "constructor calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/detached-test-case"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "detached-test-case"
+message = "method looks like a test but has no annotation; annotate it or make it private"
+'''
