@@ -1,0 +1,147 @@
+# Checkstyle concepts for Python (#297). Each row is the Python form of one Checkstyle check that
+# google_checks.xml or config/checkstyle.xml enables. Naming follows PEP 8: functions and parameters
+# are snake_case, classes are CapWords.
+
+[[rules]]
+id = "ward:python/abbreviation-as-word-in-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classdef", "funcdef", "tfpdef"]
+name = "NAME"
+pattern = "^(?!.*[A-Z]{2}).*$"
+message = "name '{value}' has more than one consecutive capital letter"
+'''
+
+[[rules]]
+id = "ward:python/type-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classdef"]
+name = "NAME"
+pattern = "^[A-Z][a-zA-Z0-9]*$"
+message = "class name '{value}' must be CapWords"
+'''
+
+[[rules]]
+id = "ward:python/method-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["funcdef"]
+name = "NAME"
+pattern = "^_*[a-z][a-z0-9_]*_*$"
+message = "function name '{value}' must be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/parameter-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["tfpdef"]
+name = "NAME"
+pattern = "^_*[a-z][a-z0-9_]*$"
+message = "parameter name '{value}' must be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/avoid-star-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_from"]
+text = '\*$'
+message = "star import hides the names it binds; import them by name"
+'''
+
+[[rules]]
+id = "ward:python/line-length"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^.{101,}$"
+message = "line is longer than 100 characters"
+'''
+
+[[rules]]
+id = "ward:python/regexp-singleline"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:python/todo-comment"
+language = "python"
+capability = "SYNTAX"
+severity = "warning"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "#\\s*TODO:"
+message = "TODO comment; track the work in an issue instead"
+'''
+
+[[rules]]
+id = "ward:python/one-statement-per-line"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^(?:[^'\"#]|'[^']*'|\"[^\"]*\")*;"
+message = "more than one statement on a line"
+'''
+
+[[rules]]
+id = "ward:python/illegal-catch"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except(Exception|BaseException)(as\w+)?$'
+message = "catching Exception or BaseException is too broad; name the exceptions to handle"
+'''
