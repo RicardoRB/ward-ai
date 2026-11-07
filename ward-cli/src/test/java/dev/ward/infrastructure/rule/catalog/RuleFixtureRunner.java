@@ -5,10 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -16,6 +19,7 @@ import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -44,6 +48,9 @@ final class RuleFixtureRunner {
       return DuplicateCodeFindings.findings(
           List.of(rule), List.of(new SourceUnit(path, language, text)), frontends);
     }
+    if (UnusedDefinitionFindings.isUnusedDefinitionRule(rule)) {
+      return unusedDefinitions(rule, new SourceUnit(path, language, text));
+    }
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
             .run(List.of(new SourceUnit(path, language, text)), frontends, List.of(rule));
@@ -52,5 +59,18 @@ final class RuleFixtureRunner {
     return result.findings().stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .toList();
+  }
+
+  /** A fixture is one file, so a definition is used when the file itself uses it. */
+  private List<AnalysisFinding> unusedDefinitions(
+      final RuleDefinition rule, final SourceUnit unit) {
+    final FrontendSupport python =
+        frontends.stream()
+            .filter(support -> support.language() == unit.language())
+            .findFirst()
+            .orElseThrow();
+    final FileSummary summary =
+        new PythonFileSummarizer().summarize(unit, python.frontend().parse(unit).tree());
+    return UnusedDefinitionFindings.findings(List.of(rule), Map.of(unit.path(), summary));
   }
 }

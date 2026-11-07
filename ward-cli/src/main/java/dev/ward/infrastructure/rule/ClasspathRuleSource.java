@@ -54,6 +54,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/duplication-swift.toml",
           "dev/ward/analysis/lang/node/rules.toml",
           "rules/python-structural.toml",
+          "rules/python-unused.toml",
           "rules/python/pycodestyle.toml",
           "rules/python/bugbear.toml",
           "rules/python/checkstyle.toml",

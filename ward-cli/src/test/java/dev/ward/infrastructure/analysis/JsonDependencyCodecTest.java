@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class JsonDependencyCodecTest {
@@ -20,7 +21,8 @@ class JsonDependencyCodecTest {
           "src/A.kt",
           List.of(new Symbol("N", AT)),
           List.of(new Reference("B", AT)),
-          List.of(new Symbol("Q", AT)));
+          List.of(new Symbol("Q", AT, "function")),
+          Set.of("used", "other"));
 
   private final AnalysisResultCodec codec = new JsonAnalysisResultCodec(new ForyJsonCodec());
 

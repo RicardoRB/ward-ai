@@ -83,8 +83,9 @@ final class DeclarativeChecks {
               TomlValues.required(toml, MESSAGE),
               Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true));
       case "descendant-count" -> descendantCount(toml);
-      // A whole-run rule: DuplicateCodeFindings reports its copies, so no unit has a match here.
-      case "duplicate-code" -> root -> List.of();
+      // Whole-run rules: DuplicateCodeFindings and UnusedDefinitionFindings report them, so no
+      // unit has a match here.
+      case "duplicate-code", "unused-definition" -> root -> List.of();
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));

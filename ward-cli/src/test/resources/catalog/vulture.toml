@@ -3,15 +3,13 @@
 [[rule]]
 name = "unused-class"
 category = "dead-code"
-status = { python = "planned" }
-issues = { python = "#337" }
+status = { python = "implemented" }
 vulture = ["V102"]
 
 [[rule]]
 name = "unused-function"
 category = "dead-code"
-status = { python = "planned" }
-issues = { python = "#337" }
+status = { python = "implemented" }
 vulture = ["V103"]
 
 [[rule]]
