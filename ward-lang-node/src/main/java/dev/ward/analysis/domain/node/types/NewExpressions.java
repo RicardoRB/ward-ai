@@ -60,17 +60,19 @@ final class NewExpressions {
             ChainBuilder.cover(parts.get(0).span(), call.span()),
             List.of(parts.get(0), inner.get(0), inner.get(1)));
     for (int index = suffixes.size() - 1; index >= 0; index--) {
-      final List<SyntaxNode> suffix = suffixes.get(index);
-      final List<SyntaxNode> children = new ArrayList<>();
-      children.add(built);
-      children.addAll(suffix);
-      built =
-          wrap(ChainBuilder.cover(built.span(), suffix.get(suffix.size() - 1).span()), children);
+      built = applySuffix(built, suffixes.get(index));
     }
     if (hasArguments) {
       return wrap(node.span(), List.of(built, parts.get(2)));
     }
     return wrap(node.span(), built.children());
+  }
+
+  private static SyntaxNode applySuffix(final SyntaxNode base, final List<SyntaxNode> suffix) {
+    final List<SyntaxNode> children = new ArrayList<>();
+    children.add(base);
+    children.addAll(suffix);
+    return wrap(ChainBuilder.cover(base.span(), suffix.get(suffix.size() - 1).span()), children);
   }
 
   private static SyntaxNode wrap(final Span span, final List<SyntaxNode> children) {
