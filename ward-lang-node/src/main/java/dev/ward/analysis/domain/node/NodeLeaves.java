@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.node;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,35 @@ final class NodeLeaves {
     for (final SyntaxNode child : node.children()) {
       collect(child, leaves);
     }
+  }
+
+  /** The first direct child of the kind, or null. */
+  static SyntaxNode child(final SyntaxNode node, final String kind) {
+    return node.children().stream()
+        .filter(child -> kind.equals(child.kind()))
+        .findFirst()
+        .orElse(null);
+  }
+
+  static boolean hasChild(final SyntaxNode node, final String kind) {
+    return child(node, kind) != null;
+  }
+
+  /** The text of a token. */
+  static String text(final SyntaxNode leaf) {
+    return leaf.fields().getOrDefault("text", "");
+  }
+
+  /** The region from the first token of {@code from} to the last token of {@code to}. */
+  static Span site(final SyntaxNode from, final SyntaxNode to) {
+    final Span first = of(from).get(0).span();
+    final Span last = to.span();
+    return new Span(
+        first.startLine(),
+        first.startColumn(),
+        last.endLine(),
+        last.endColumn(),
+        first.startOffset(),
+        last.endOffset());
   }
 }

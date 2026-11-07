@@ -497,6 +497,12 @@ Then run `./gradlew writeClasspath` and set `java-classpath = "build/classpath.t
 resolution uses Eclipse JDT, which is part of the `ward` binary. It parses every Java file on each
 run, so it is slower than the default; the result cache still reuses unchanged results.
 
+The same classpath file gives the type-aware rules their library types. Ward reads the class files
+of the jars and directories it lists, and the JDK's `lib/modules` image, without starting `javac`
+or any other process; an entry that is missing or unreadable makes its types unknown, not an error.
+It indexes each jar once and keeps the index under `.ward/cache/types/`, named by the SHA-256 of the
+jar's content.
+
 ### Result cache
 
 The `ward` gate keeps each source file's results in `.ward/cache/analysis/`, and reuses them on the

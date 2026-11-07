@@ -23,7 +23,8 @@ module
     function @12:3
       parameter y @12:22
     function @13:3
-  block @17:8
+  block @15:8
+    type Q @15:19 [type_only]
 references
   4:24 J read -> unresolved
   4:31 T read -> module import T @1:15
@@ -44,6 +45,8 @@ references
   12:22 y write -> function parameter y @12:22
   12:25 V read -> module import V @2:18
   13:12 T read -> module import T @1:15
+  15:24 Q read -> block type Q @15:19
+  15:28 V read -> module import V @2:18
   16:5 typed write -> module variable typed @16:5
   16:12 Def read -> module import Def @3:8
   16:22 All read -> module import All @3:18

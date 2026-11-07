@@ -16,9 +16,6 @@
       "glob": "dev/ward/analysis/lang/node/rules.toml"
     },
     {
-      "glob": "dev/ward/sidecar/*"
-    },
-    {
       "bundle": "com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"
     },
     {

@@ -173,7 +173,7 @@ class AnalysisGateTest {
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            unused -> Map.of());
+            (unused, classpath) -> Map.of());
     return new AnalysisGate("ward", rules, ports);
   }
 

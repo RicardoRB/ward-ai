@@ -54,7 +54,7 @@ public final class LayerPorts {
             AnalysisCacheFixtures.codec(),
             "test",
             dependencies,
-            unused -> Map.of());
+            (unused, classpath) -> Map.of());
     return new AnalysisGate("ward", rules, ports, null)
         .execute(project).findings().items().stream()
             .filter(finding -> ruleId.equals(finding.ruleId()))

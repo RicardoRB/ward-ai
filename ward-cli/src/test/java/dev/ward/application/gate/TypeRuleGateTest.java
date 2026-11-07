@@ -9,11 +9,12 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.ParseResult;
-import dev.ward.analysis.domain.port.TypeSidecar;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.project.BuildTool;
@@ -23,68 +24,49 @@ import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import org.junit.jupiter.api.Test;
 
-/** A rule that needs types is skipped, without failing the gate, when no sidecar runs. */
+/** A rule that needs types is never passed without a native type resolver for its language. */
 class TypeRuleGateTest {
   private static final Project PROJECT =
       new Project(Path.of("/repo"), Language.JAVA, BuildTool.GRADLE, Framework.SPRING_BOOT);
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
+  private static final RuleDefinition TYPED =
+      new RuleDefinition(
+          "ward:java/data-flow",
+          Set.of(AnalysisLanguage.JAVA),
+          RuleCapability.TYPES,
+          AnalysisSeverity.ERROR,
+          "body");
 
   @Test
-  void typeRuleWithoutSidecarIsSkippedWithoutFailingTheGate() {
-    final RuleDefinition syntax =
-        new RuleDefinition(
-            "ward:java/method-length",
-            Set.of(AnalysisLanguage.JAVA),
-            RuleCapability.SYNTAX,
-            AnalysisSeverity.ERROR,
-            "body");
-    final RuleDefinition typed =
-        new RuleDefinition(
-            "ward:java/data-flow",
-            Set.of(AnalysisLanguage.JAVA),
-            RuleCapability.TYPES,
-            AnalysisSeverity.ERROR,
-            "body");
-    final GateResult result = gate(List.of(syntax, typed)).execute(PROJECT);
+  void typeRuleWithoutNativeResolverIsNotRunAndTheGateIsUnavailable() {
+    final GateResult result = gate((root, classpath) -> Map.of()).execute(PROJECT);
 
-    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.stderr())
         .contains("ward:java/data-flow not run")
-        .contains("type sidecar is unavailable");
+        .contains("no native type resolver is registered for JAVA yet");
   }
 
   @Test
-  void javaTypeRuleIsNotRunWhenNoJdkCanStartTheSidecar() {
-    final RuleDefinition typed =
-        new RuleDefinition(
-            "ward:java/data-flow",
-            Set.of(AnalysisLanguage.JAVA),
-            RuleCapability.TYPES,
-            AnalysisSeverity.ERROR,
-            "body");
+  void typeRuleRunsWhenANativeResolverIsRegisteredForItsLanguage() {
+    final TypeFacts resolver = (unit, spans, kinds) -> UnitTypeFacts.none();
     final GateResult result =
-        gate(List.of(typed), root -> Map.of(AnalysisLanguage.JAVA, new NoJdkSidecar()))
-            .execute(PROJECT);
+        gate((root, classpath) -> Map.of(AnalysisLanguage.JAVA, resolver)).execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
-    assertThat(result.stderr())
-        .contains("ward:java/data-flow not run")
-        .contains("type sidecar is unavailable");
-  }
-
-  private static AnalysisGate gate(final List<RuleDefinition> rules) {
-    return gate(rules, unused -> Map.of());
+    assertThat(result.stderr()).doesNotContain("not run");
   }
 
   private static AnalysisGate gate(
-      final List<RuleDefinition> rules,
-      final java.util.function.Function<Path, Map<AnalysisLanguage, TypeSidecar>> sidecars) {
+      final BiFunction<Path, Optional<Path>, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
     final AnalysisPorts ports =
         new AnalysisPorts(
-            () -> new AnalysisRuleLoad(rules, List.of()),
+            () -> new AnalysisRuleLoad(List.of(TYPED), List.of()),
             definition ->
                 new CompiledRule() {
                   @Override
@@ -108,20 +90,7 @@ class TypeRuleGateTest {
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            sidecars);
-    return new AnalysisGate("ward", rules, ports);
-  }
-
-  /** A Java sidecar that cannot start because the machine has no JDK. */
-  private static final class NoJdkSidecar implements TypeSidecar {
-    @Override
-    public java.util.Optional<dev.ward.analysis.domain.port.TypeFacts> start() {
-      return java.util.Optional.empty();
-    }
-
-    @Override
-    public void close() {
-      // Nothing started.
-    }
+            nativeTypeFacts);
+    return new AnalysisGate("ward", List.of(TYPED), ports);
   }
 }

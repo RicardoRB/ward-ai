@@ -77,7 +77,7 @@ async_funcdef
     ;
 
 funcdef
-    : 'def' name parameters ('->' test)? ':' block
+    : 'def' name typeparams? parameters ('->' test)? ':' block
     ;
 
 parameters
@@ -129,7 +129,8 @@ simple_stmts
 
 simple_stmt
     : (
-        expr_stmt
+        type_stmt
+        | expr_stmt
         | del_stmt
         | pass_stmt
         | flow_stmt
@@ -311,7 +312,19 @@ with_item
 
 // NB compile.c makes sure that the default except clause is last
 except_clause
-    : 'except' (test ('as' name)?)?
+    : 'except' '*'? (test ('as' name)? | test (',' test)+)?
+    ;
+
+type_stmt
+    : 'type' name typeparams? '=' test
+    ;
+
+typeparams
+    : '[' typeparam (',' typeparam)* ','? ']'
+    ;
+
+typeparam
+    : ('*' | '**')? name (':' test)? ('=' test)?
     ;
 
 block
@@ -601,6 +614,7 @@ name
     : NAME
     | '_'
     | 'match'
+    | 'type'
     ;
 
 testlist_comp
@@ -642,7 +656,7 @@ dictorsetmaker
     ;
 
 classdef
-    : 'class' name ('(' arglist? ')')? ':' block
+    : 'class' name typeparams? ('(' arglist? ')')? ':' block
     ;
 
 arglist

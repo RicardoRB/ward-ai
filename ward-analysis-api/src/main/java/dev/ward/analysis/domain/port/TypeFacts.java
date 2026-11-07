@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The type facts of a source unit, fetched in one batch per unit from an optional sidecar. A fact
- * the sidecar cannot resolve is left out, and a rule treats it as unknown.
+ * The type facts of a source unit, fetched in one batch per unit from an optional resolver. A fact
+ * the resolver cannot resolve is left out, and a rule treats it as unknown.
  */
 @FunctionalInterface
 public interface TypeFacts extends TypeResolver {
