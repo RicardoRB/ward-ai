@@ -130,7 +130,8 @@ final class GenericChecks {
     return new ForbiddenNodeCheck.Condition(
         Optional.ofNullable(toml.getString("text")).map(Pattern::compile),
         TomlValues.optionalStrings(toml, "with-child"),
-        TomlValues.optionalStrings(toml, "parent"));
+        TomlValues.optionalStrings(toml, "parent"),
+        toml.getString("parent-path", () -> ""));
   }
 
   private static RequiredNodeCheck.Requirement requirement(final TomlParseResult toml) {

@@ -1495,3 +1495,32 @@ kinds = ["singleExpression"]
 text = '^`[^`$\\]*`$'
 message = "use a plain string; the template literal has no placeholders"
 '''
+[[rules]]
+id = "ward:typescript/no-case-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableStatement", "classDeclaration", "functionDeclaration"]
+parent-path = "statement>statementList>caseClause|defaultClause"
+text = '^(let|const|class|function|async)'
+message = "lexical declaration in a case clause; wrap the clause in a block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-case-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableStatement", "classDeclaration", "functionDeclaration"]
+parent-path = "statement>statementList>caseClause|defaultClause"
+text = '^(let|const|class|function|async)'
+message = "lexical declaration in a case clause; wrap the clause in a block"
+'''
