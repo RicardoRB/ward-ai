@@ -1523,16 +1523,12 @@ ruff = ["F634"]
 
 [[rule]]
 name = "break-outside-loop"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F701"]
 
 [[rule]]
 name = "continue-outside-loop"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F702"]
 
 [[rule]]
@@ -2680,9 +2676,7 @@ pylint = ["potential-index-error"]
 
 [[rule]]
 name = "misplaced-bare-raise"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE0704"]
 pylint = ["misplaced-bare-raise"]
 
@@ -2703,9 +2697,7 @@ pylint = ["dict-iter-missing-items"]
 
 [[rule]]
 name = "await-outside-async"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1142"]
 pylint = ["await-outside-async"]
 
@@ -2764,9 +2756,7 @@ pylint = ["singledispatchmethod-function"]
 
 [[rule]]
 name = "yield-from-in-async-function"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1700"]
 
 [[rule]]

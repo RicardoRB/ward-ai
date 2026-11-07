@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.check.AncestorCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
 import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
@@ -8,7 +9,9 @@ import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
 import dev.ward.analysis.domain.scope.ScopeKind;
+import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.tomlj.TomlParseResult;
 
@@ -28,7 +31,8 @@ final class ScopeAndFormatChecks {
           "star-import-usage",
           "percent-format",
           "dot-format",
-          "logging-args" ->
+          "logging-args",
+          "ancestor-check" ->
           true;
       default -> false;
     };
@@ -42,6 +46,7 @@ final class ScopeAndFormatChecks {
       case "star-import-usage" -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE));
       case "percent-format" -> percentFormat(toml);
       case "dot-format" -> dotFormat(toml);
+      case "ancestor-check" -> ancestorCheck(toml);
       default -> loggingArgs(toml);
     };
   }
@@ -53,6 +58,18 @@ final class ScopeAndFormatChecks {
             .collect(Collectors.toUnmodifiableSet());
     return new OutsideScopeCheck(
         TomlValues.strings(toml, KINDS), within, TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck ancestorCheck(final TomlParseResult toml) {
+    final String mode = TomlValues.required(toml, "mode").toUpperCase(java.util.Locale.ROOT);
+    final String text = toml.getString("text");
+    return new AncestorCheck(
+        TomlValues.strings(toml, KINDS),
+        TomlValues.strings(toml, "allowed"),
+        TomlValues.strings(toml, "stop"),
+        AncestorCheck.Mode.valueOf(mode),
+        Optional.ofNullable(text).map(Pattern::compile),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck percentFormat(final TomlParseResult toml) {
