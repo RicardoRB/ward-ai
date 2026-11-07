@@ -36,7 +36,15 @@ final class TypeRefs {
       params.add(ref);
     }
     return new CallTarget(
-        TypeRef.of(owner), name, params, of(sig.returns()), isStatic, sig.isVarargs());
+        TypeRef.of(owner),
+        name,
+        params,
+        of(sig.returns()),
+        isStatic,
+        sig.isVarargs(),
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static boolean needsParentheses(final TsType element) {

@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.python;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.TypeRef;
+import java.util.List;
 import java.util.Optional;
 
 /** The members that expressions reach through a module, a class or a value, and calls of stubs. */
@@ -60,7 +61,10 @@ final class PythonMembers {
             signatures.parameters(definition, current.module(), method),
             returns,
             false,
-            false);
+            false,
+            List.of(),
+            List.of(),
+            List.of());
     return PythonSubject.called(returns, call);
   }
 

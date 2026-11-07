@@ -15,6 +15,7 @@ import java.util.Objects;
  * @param overrides the methods this method declaration overrides
  * @param thrown the checked exceptions thrown
  * @param constant the compile-time constant value
+ * @param members what the type declares and inherits
  */
 public record SpanFacts(
     TypeRef type,
@@ -24,11 +25,12 @@ public record SpanFacts(
     List<String> scopes,
     List<CallTarget> overrides,
     List<TypeRef> thrown,
-    ConstantValue constant) {
+    ConstantValue constant,
+    TypeMembers members) {
 
   /** The span about which nothing is known. */
   public static final SpanFacts UNKNOWN =
-      new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null);
+      new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null, null);
 
   /**
    * Copies the lists.

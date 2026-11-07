@@ -5,7 +5,6 @@ import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
-import dev.ward.analysis.domain.types.TypeShape;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +17,12 @@ import java.util.function.Supplier;
 final class FactTable {
   private final Session session;
   private final FactMembers members;
+  private final FactTypeMembers typeMembers;
 
   FactTable(final Session session) {
     this.session = session;
     this.members = new FactMembers(session.hierarchy);
+    this.typeMembers = new FactTypeMembers(session.hierarchy);
   }
 
   UnitTypeFacts answer(final List<Span> spans, final Set<FactKind> kinds) {
@@ -41,7 +42,7 @@ final class FactTable {
         Optional.ofNullable(session.declarations.get(Session.key(span)));
     return new SpanFacts(
         ask(kinds, FactKind.TYPE, () -> FactValues.type(typed)).orElse(null),
-        ask(kinds, FactKind.SHAPE, () -> shape(typed, declaration)).orElse(null),
+        ask(kinds, FactKind.SHAPE, () -> typeMembers.shape(typed, declaration)).orElse(null),
         ask(kinds, FactKind.CALL, () -> FactValues.call(typed)).orElse(null),
         list(kinds, FactKind.ANNOTATIONS, declaration.map(FactValues::annotations)),
         list(
@@ -50,7 +51,8 @@ final class FactTable {
             declaration.map(found -> found.scopes().stream().map(FactRefs::display).toList())),
         list(kinds, FactKind.OVERRIDES, Optional.of(overrides(declaration))),
         list(kinds, FactKind.THROWS, Optional.of(thrown(typed, declaration))),
-        ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null));
+        ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null),
+        ask(kinds, FactKind.MEMBERS, () -> typeMembers.of(typed, declaration)).orElse(null));
   }
 
   private static <T> Optional<T> ask(
@@ -61,19 +63,6 @@ final class FactTable {
   private static <T> List<T> list(
       final Set<FactKind> kinds, final FactKind kind, final Optional<List<T>> facts) {
     return kinds.contains(kind) ? facts.orElse(List.of()) : List.of();
-  }
-
-  private Optional<TypeShape> shape(final Typed typed, final Optional<DeclInfo> declaration) {
-    final Optional<JvmClass> declared = declaration.flatMap(DeclInfo::type);
-    if (declared.isPresent()) {
-      return declared.map(FactMembers::shape);
-    }
-    return typed
-        .type()
-        .filter(JType.ClassType.class::isInstance)
-        .map(found -> ((JType.ClassType) found).name())
-        .flatMap(session.hierarchy::find)
-        .map(FactMembers::shape);
   }
 
   private List<CallTarget> overrides(final Optional<DeclInfo> declaration) {

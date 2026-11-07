@@ -47,6 +47,7 @@ final class FactBuilder {
         type == null && shape == null && call == null && constant == null && overrides.isEmpty();
     return none && annotations.isEmpty()
         ? null
-        : new SpanFacts(type, shape, call, annotations, scopes, overrides, List.of(), constant);
+        : new SpanFacts(
+            type, shape, call, annotations, scopes, overrides, List.of(), constant, null);
   }
 }

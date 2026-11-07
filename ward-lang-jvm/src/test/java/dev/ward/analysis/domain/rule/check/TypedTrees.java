@@ -31,11 +31,20 @@ final class TypedTrees {
         shape = found;
       }
     }
-    return new SpanFacts(null, shape, call, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(null, shape, call, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 
   CallTarget callOf(final String declaring, final String name) {
-    return new CallTarget(TypeRef.of(declaring), name, List.of(), TypeRef.of("void"), false, false);
+    return new CallTarget(
+        TypeRef.of(declaring),
+        name,
+        List.of(),
+        TypeRef.of("void"),
+        false,
+        false,
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   TypeShape shape(final TypeShape.Kind kind) {

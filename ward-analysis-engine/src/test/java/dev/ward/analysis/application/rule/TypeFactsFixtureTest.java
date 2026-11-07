@@ -4,13 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.Nullness;
+import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -47,6 +50,45 @@ class TypeFactsFixtureTest {
     assertThat(facts.shapeOf(CALL).orElseThrow().kind()).isEqualTo(TypeShape.Kind.CLASS);
     assertThat(facts.at(CALL).thrown()).containsExactly(TypeRef.of("java.io.IOException"));
     assertThat(facts.constant(CALL).orElseThrow().value()).isEqualTo("text");
+  }
+
+  @Test
+  void readsTheAnnotationsOfACallTargetAndTheMembersOfAType() {
+    final UnitTypeFacts facts =
+        TypeFactsFixture.parse(
+            """
+            {
+              "5:9": {
+                "call": {"declaring": {"name": "a.Api"}, "name": "run",
+                         "annotations": ["a.Restricted"],
+                         "paramAnnotations": [["a.Nullable"], []],
+                         "declaringAnnotations": ["a.ThreadSafe"]},
+                "members": {
+                  "methods": [{"declaring": {"name": "a.Api"}, "name": "run"}],
+                  "fields": [{"name": "size", "type": {"name": "int", "primitive": true},
+                              "static": true, "annotations": ["a.Nullable"]}],
+                  "ancestors": [{"name": "java.lang.Object"}],
+                  "annotations": ["a.ThreadSafe"]
+                }
+              }
+            }
+            """);
+
+    final CallTarget target = facts.callTarget(CALL).orElseThrow();
+    assertThat(target.annotations()).containsExactly("a.Restricted");
+    assertThat(target.parameterAnnotations()).containsExactly(List.of("a.Nullable"), List.of());
+    assertThat(target.declaringAnnotations()).containsExactly("a.ThreadSafe");
+    final TypeMembers members = facts.membersOf(CALL).orElseThrow();
+    assertThat(members.methods()).singleElement().extracting(m -> m.name()).isEqualTo("run");
+    assertThat(members.fields())
+        .singleElement()
+        .satisfies(
+            field -> {
+              assertThat(field.isStatic()).isTrue();
+              assertThat(field.annotations()).containsExactly("a.Nullable");
+            });
+    assertThat(members.ancestors()).extracting(TypeRef::name).containsExactly("java.lang.Object");
+    assertThat(members.annotations()).containsExactly("a.ThreadSafe");
   }
 
   @Test

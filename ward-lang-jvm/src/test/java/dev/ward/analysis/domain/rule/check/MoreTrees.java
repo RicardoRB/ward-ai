@@ -41,6 +41,7 @@ final class MoreTrees {
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 
@@ -54,11 +55,15 @@ final class MoreTrees {
             parameters,
             type("java.lang.String", 0, false),
             true,
-            varargs),
+            varargs,
+            List.of(),
+            List.of(),
+            List.of()),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 

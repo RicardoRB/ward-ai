@@ -54,7 +54,7 @@ public final class PythonTypeFacts implements TypeFacts {
       final SyntaxNode node, final Set<FactKind> kinds, final PythonExpressionTypes types) {
     final TypeRef type = kinds.contains(FactKind.TYPE) ? types.typeOf(node).orElse(null) : null;
     final CallTarget call = kinds.contains(FactKind.CALL) ? types.callOf(node).orElse(null) : null;
-    return new SpanFacts(type, null, call, List.of(), List.of(), List.of(), List.of(), null);
+    return new SpanFacts(type, null, call, List.of(), List.of(), List.of(), List.of(), null, null);
   }
 
   private static boolean isKnown(final SpanFacts facts) {

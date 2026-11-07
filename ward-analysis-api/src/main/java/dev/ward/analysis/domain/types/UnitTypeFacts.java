@@ -66,6 +66,11 @@ public final class UnitTypeFacts {
     return NullnessAnnotations.of(known.annotations(), known.scopes());
   }
 
+  /** Returns what the type of the expression at {@code span} declares and inherits. */
+  public Optional<TypeMembers> membersOf(final Span span) {
+    return Optional.ofNullable(at(span).members());
+  }
+
   /** Returns the compile-time constant value of the expression at {@code span}. */
   public Optional<ConstantValue> constant(final Span span) {
     return Optional.ofNullable(at(span).constant());

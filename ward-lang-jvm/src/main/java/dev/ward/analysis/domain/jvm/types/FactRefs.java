@@ -15,6 +15,11 @@ final class FactRefs {
     return binary.replace('$', '.');
   }
 
+  /** The display names of the classes {@code binaries}. */
+  static List<String> displayAll(final List<String> binaries) {
+    return binaries.stream().map(FactRefs::display).toList();
+  }
+
   /** Returns the reference to {@code type}; empty for the null type and unresolved wildcards. */
   static Optional<TypeRef> ref(final JType type, final Map<String, JType> bounds) {
     return switch (type) {

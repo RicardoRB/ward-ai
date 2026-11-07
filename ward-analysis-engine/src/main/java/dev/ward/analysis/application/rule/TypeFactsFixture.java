@@ -20,11 +20,15 @@ import java.util.Map;
  *   "3:12": {
  *     "type": {"name": "java.lang.String"},
  *     "call": {"declaring": {"name": "java.lang.String"}, "name": "equals",
- *              "params": [{"name": "java.lang.Object"}], "returns": {"name": "boolean", "primitive": true}},
+ *              "params": [{"name": "java.lang.Object"}], "returns": {"name": "boolean", "primitive": true},
+ *              "annotations": ["java.lang.Deprecated"], "paramAnnotations": [["javax.annotation.Nullable"]],
+ *              "declaringAnnotations": ["javax.annotation.concurrent.ThreadSafe"]},
  *     "annotations": ["org.jspecify.annotations.Nullable"],
  *     "scopes": ["org.jspecify.annotations.NullMarked"],
  *     "shape": {"kind": "class", "final": true, "supertypes": [{"name": "java.lang.Object"}]},
- *     "overrides": [], "thrown": [{"name": "java.io.IOException"}], "constant": "text"
+ *     "overrides": [], "thrown": [{"name": "java.io.IOException"}], "constant": "text",
+ *     "members": {"methods": [], "fields": [{"name": "size", "type": {"name": "int", "primitive": true}}],
+ *                 "ancestors": [{"name": "java.lang.Object"}], "annotations": []}
  *   }
  * }
  * }</pre>
