@@ -55,7 +55,19 @@ class PmdDesignSmokeTest {
           Map.entry("signature-declare-throws-exception", "SignatureDeclareThrowsException"),
           Map.entry("simplified-ternary", "SimplifiedTernary"),
           Map.entry("simplify-conditional", "SimplifyConditional"),
-          Map.entry("useless-overriding-method", "UselessOverridingMethod"));
+          Map.entry("useless-overriding-method", "UselessOverridingMethod"),
+          Map.entry("avoid-deeply-nested-if-stmts", "AvoidDeeplyNestedIfStmts"),
+          Map.entry("too-many-fields", "TooManyFields"),
+          Map.entry("too-many-methods", "TooManyMethods"),
+          Map.entry("excessive-public-count", "ExcessivePublicCount"),
+          Map.entry("protected-member-in-final-class", "ProtectedMemberInFinalClass"),
+          Map.entry("public-member-in-non-public-type", "PublicMemberInNonPublicType"),
+          Map.entry("switch-density", "SwitchDensity"),
+          Map.entry("exception-as-flow-control", "ExceptionAsFlowControl"),
+          Map.entry("immutable-field", "ImmutableField"),
+          Map.entry("singular-field", "SingularField"),
+          Map.entry("instantiable-utility-class", "InstantiableUtilityClass"),
+          Map.entry("loose-package-coupling", "LoosePackageCoupling"));
 
   @Test
   void aRealPmdReportsTheFixtureLines()
