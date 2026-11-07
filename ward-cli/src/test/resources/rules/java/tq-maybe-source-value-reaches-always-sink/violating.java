@@ -1,0 +1,14 @@
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+class Flows {
+  void take(@NonNull String value) {}
+
+  void run(@Nullable String maybe) {
+    take(maybe);
+  }
+
+  @NonNull String give(@Nullable String maybe) {
+    return maybe;
+  }
+}

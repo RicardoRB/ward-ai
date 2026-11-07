@@ -1,0 +1,194 @@
+# SpotBugs null-pointer (NP), redundant-comparison (RCN) and type-qualifier (TQ) rules for Java that read the
+# nullness data flow of each method body. A variable with an unknown value is never reported.
+
+[[rules]]
+id = "ward:java/np-always-null"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-always-null"
+message = "'{value}' is null on every path here, so dereferencing it throws a NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-always-null-exception"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-always-null-exception"
+message = "'{value}' is null on an exception path here, so dereferencing it throws a NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-null-on-some-path"
+message = "'{value}' is null on some path to here and is dereferenced"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path-exception"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-null-on-some-path-exception"
+message = "'{value}' is null on some exception path to here and is dereferenced"
+'''
+
+[[rules]]
+id = "ward:java/np-closing-null"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-closing-null"
+message = "closing '{value}', which is null on every path, throws a NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-null-instanceof"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-null-instanceof"
+message = "'{value}' is null, so this instanceof test is always false"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-nullcheck-would-have-been-a-npe"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "rcn-redundant-nullcheck-would-have-been-a-npe"
+message = "'{value}' is checked against null after it was dereferenced, so the check would have been a NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-nonnull-param-violation"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-nonnull-param-violation"
+message = "'{value}' is null, but the parameter it is passed for must not be null"
+'''
+
+[[rules]]
+id = "ward:java/np-nonnull-return-violation"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-nonnull-return-violation"
+message = "'{value}' is null, but this method must not return null"
+'''
+
+[[rules]]
+id = "ward:java/np-store-into-nonnull-field"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-store-into-nonnull-field"
+message = "'{value}' is null, but the field it is stored in must not be null"
+'''
+
+[[rules]]
+id = "ward:java/np-optional-return-null"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "np-optional-return-null"
+message = "this method returns an Optional, so it must not return null"
+'''
+
+[[rules]]
+id = "ward:java/tq-maybe-source-value-reaches-always-sink"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "tq-maybe-source-value-reaches-always-sink"
+message = "'{value}' may be null, but it reaches a place that must not be null"
+'''
+
+[[rules]]
+id = "ward:java/tq-never-value-used-where-always-required"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "tq-never-value-used-where-always-required"
+message = "'{value}' is always null, but it reaches a place that must not be null"
+'''
+
+[[rules]]
+id = "ward:java/tq-always-value-used-where-never-required"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "tq-always-value-used-where-never-required"
+message = "'{value}' is never null, but it reaches a place that must be null"
+'''
+
+[[rules]]
+id = "ward:java/tq-maybe-source-value-reaches-never-sink"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "tq-maybe-source-value-reaches-never-sink"
+message = "'{value}' may be null, but it reaches a place that must be null"
+'''
+
+[[rules]]
+id = "ward:java/tq-comparing-values-with-incompatible-type-qualifiers"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "tq-comparing-values-with-incompatible-type-qualifiers"
+message = "'{value}' is compared with a value whose nullness qualifier is incompatible"
+'''

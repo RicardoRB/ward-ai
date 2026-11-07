@@ -280,12 +280,12 @@ noise-field-reference = { status = "planned", issue = "#316" }
 noise-method-call = { status = "planned", issue = "#316" }
 noise-null-dereference = { status = "planned", issue = "#316" }
 noise-operation = { status = "planned", issue = "#316" }
-np-always-null = { status = "planned", issue = "#314" }
-np-always-null-exception = { status = "planned", issue = "#314" }
+np-always-null = "implemented"
+np-always-null-exception = "implemented"
 np-argument-might-be-null = { status = "planned", issue = "#314" }
 np-boolean-return-null = { status = "planned", issue = "#316" }
 np-clone-could-return-null = { status = "planned", issue = "#316" }
-np-closing-null = { status = "planned", issue = "#314" }
+np-closing-null = "implemented"
 np-dereference-of-readline-value = { status = "planned", issue = "#316" }
 np-equals-should-handle-null-argument = { status = "planned", issue = "#316" }
 np-guaranteed-deref = { status = "planned", issue = "#314" }
@@ -296,19 +296,19 @@ np-method-parameter-relaxing-annotation = { status = "planned", issue = "#316" }
 np-method-parameter-tightens-annotation = { status = "planned", issue = "#316" }
 np-method-return-relaxing-annotation = { status = "planned", issue = "#316" }
 np-nonnull-field-not-initialized-in-constructor = { status = "planned", issue = "#314" }
-np-nonnull-param-violation = { status = "planned", issue = "#314" }
-np-nonnull-return-violation = { status = "planned", issue = "#314" }
-np-null-instanceof = { status = "planned", issue = "#314" }
-np-null-on-some-path = { status = "planned", issue = "#314" }
-np-null-on-some-path-exception = { status = "planned", issue = "#314" }
+np-nonnull-param-violation = "implemented"
+np-nonnull-return-violation = "implemented"
+np-null-instanceof = "implemented"
+np-null-on-some-path = "implemented"
+np-null-on-some-path-exception = "implemented"
 np-null-on-some-path-from-return-value = { status = "planned", issue = "#316" }
 np-null-on-some-path-might-be-infeasible = { status = "planned", issue = "#316" }
 np-null-param-deref = { status = "planned", issue = "#314" }
 np-null-param-deref-all-targets-dangerous = { status = "planned", issue = "#314" }
 np-null-param-deref-nonvirtual = { status = "planned", issue = "#314" }
-np-optional-return-null = { status = "planned", issue = "#314" }
+np-optional-return-null = "implemented"
 np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
-np-store-into-nonnull-field = { status = "planned", issue = "#314" }
+np-store-into-nonnull-field = "implemented"
 np-sync-and-null-check-field = { status = "planned", issue = "#316" }
 np-tostring-could-return-null = { status = "planned", issue = "#316" }
 np-unwritten-field = { status = "planned", issue = "#314" }
@@ -346,7 +346,7 @@ rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue
 rcn-redundant-comparison-two-null-values = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-of-nonnull-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
-rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
+rcn-redundant-nullcheck-would-have-been-a-npe = "implemented"
 re-bad-syntax-for-regular-expression = { status = "planned", issue = "#314" }
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
@@ -442,13 +442,13 @@ throws-method-throws-clause-basic-exception = "implemented"
 throws-method-throws-clause-throwable = "implemented"
 throws-method-throws-runtimeexception = "implemented"
 tlw-two-lock-wait = { status = "planned", issue = "#316" }
-tq-always-value-used-where-never-required = { status = "planned", issue = "#314" }
-tq-comparing-values-with-incompatible-type-qualifiers = { status = "planned", issue = "#314" }
+tq-always-value-used-where-never-required = "implemented"
+tq-comparing-values-with-incompatible-type-qualifiers = "implemented"
 tq-explicit-unknown-source-value-reaches-always-sink = { status = "planned", issue = "#316" }
 tq-explicit-unknown-source-value-reaches-never-sink = { status = "planned", issue = "#316" }
-tq-maybe-source-value-reaches-always-sink = { status = "planned", issue = "#314" }
-tq-maybe-source-value-reaches-never-sink = { status = "planned", issue = "#314" }
-tq-never-value-used-where-always-required = { status = "planned", issue = "#314" }
+tq-maybe-source-value-reaches-always-sink = "implemented"
+tq-maybe-source-value-reaches-never-sink = "implemented"
+tq-never-value-used-where-always-required = "implemented"
 tq-unknown-value-used-where-always-strictly-required = { status = "planned", issue = "#314" }
 uc-useless-condition = { status = "planned", issue = "#316" }
 uc-useless-condition-type = { status = "planned", issue = "#316" }
