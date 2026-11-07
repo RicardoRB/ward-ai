@@ -67,13 +67,6 @@ category = "performance"
 pmd = ["AvoidArrayLoops"]
 
 [[rule]]
-name = "avoid-assert-as-identifier"
-presets = ["standard", "strict"]
-category = "errorprone"
-# Planned: not applicable (review): assert is a keyword since Java 1.4 and the parser rejects it as an identifier, so no Java source reaches the rule
-pmd = ["AvoidAssertAsIdentifier"]
-
-[[rule]]
 name = "avoid-branching-statement-as-last-in-loop"
 pmd = ["AvoidBranchingStatementAsLastInLoop"]
 
@@ -100,13 +93,6 @@ name = "avoid-dollar-signs"
 presets = ["standard", "strict"]
 category = "codestyle"
 pmd = ["AvoidDollarSigns"]
-
-[[rule]]
-name = "avoid-enum-as-identifier"
-presets = ["standard", "strict"]
-category = "errorprone"
-# Planned: not applicable (review): enum is a keyword since Java 5 and the parser rejects it as an identifier, so no Java source reaches the rule
-pmd = ["AvoidEnumAsIdentifier"]
 
 [[rule]]
 name = "avoid-field-name-matching-method-name"
