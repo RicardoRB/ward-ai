@@ -8,6 +8,8 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.types.FactKind;
+import dev.ward.analysis.domain.types.FieldRef;
+import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.io.IOException;
@@ -151,8 +153,8 @@ class NativeJvmTypesTest {
                   List.of(kept),
                   EnumSet.of(FactKind.TYPE, FactKind.MEMBERS));
 
-      final var members = actual.membersOf(kept).orElseThrow();
-      assertThat(members.fields()).extracting(field -> field.name()).contains("LIMIT");
+      final TypeMembers members = actual.membersOf(kept).orElseThrow();
+      assertThat(members.fields()).extracting(FieldRef::name).contains("LIMIT");
       assertThat(members.methods())
           .filteredOn(method -> "legacy".equals(method.name()))
           .singleElement()
@@ -185,10 +187,10 @@ class NativeJvmTypesTest {
 
   /** A class to put in a jar. */
   public static final class Library {
-    private Library() {}
-
     /** The size. */
     public static final int LIMIT = 3;
+
+    private Library() {}
 
     /** Returns an object. */
     public static Object make() {
