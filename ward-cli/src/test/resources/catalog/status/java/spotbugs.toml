@@ -464,7 +464,7 @@ umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314"
 unknown = { status = "planned", issue = "#316" }
 upm-uncalled-private-method = "implemented"
 ur-uninit-read = "implemented"
-ur-uninit-read-called-from-super-constructor = { status = "planned", issue = "#314" }
+ur-uninit-read-called-from-super-constructor = "implemented"
 urf-unread-field = { status = "planned", issue = "#316" }
 urf-unread-public-or-protected-field = { status = "planned", issue = "#316" }
 us-useless-suppression-on-class = { status = "planned", issue = "#316" }

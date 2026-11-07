@@ -70,8 +70,8 @@ final class FieldAccesses {
    */
   record Access(String field, SyntaxNode node, Use use, boolean dereferenced) {}
 
-  /** The accesses of one member, in source order. */
-  record Member(MemberKind kind, List<Access> accesses) {
+  /** The accesses of one member, in source order; {@code name} is that of a method, else empty. */
+  record Member(MemberKind kind, String name, List<Access> accesses) {
 
     /** Copies the accesses. */
     Member {
@@ -169,7 +169,8 @@ final class FieldAccesses {
     final Set<String> locals = isField ? Set.of() : localNames(declaration);
     final List<Access> accesses = new ArrayList<>();
     FieldWalk.walk(declaration, null, fieldNames, locals, accesses);
-    return new Member(kindOf(declaration), accesses);
+    final String name = JUnitMembers.method(declaration).map(JUnitMembers::name).orElse("");
+    return new Member(kindOf(declaration), name, accesses);
   }
 
   private static MemberKind kindOf(final SyntaxNode declaration) {
