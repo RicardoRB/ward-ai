@@ -700,7 +700,6 @@ spotbugs = ["DP_DO_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
 name = "ec-array-and-nonarray"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_ARRAY_AND_NONARRAY"]
 
@@ -711,7 +710,6 @@ spotbugs = ["EC_BAD_ARRAY_COMPARE"]
 
 [[rule]]
 name = "ec-incompatible-array-compare"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_INCOMPATIBLE_ARRAY_COMPARE"]
 
@@ -847,7 +845,6 @@ spotbugs = ["EQ_OTHER_NO_OBJECT"]
 
 [[rule]]
 name = "eq-overriding-equals-not-symmetric"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
 
@@ -1210,7 +1207,6 @@ spotbugs = ["IM_BAD_CHECK_FOR_ODD"]
 
 [[rule]]
 name = "im-multiplying-result-of-irem"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["IM_MULTIPLYING_RESULT_OF_IREM"]
 
@@ -1256,7 +1252,6 @@ spotbugs = ["IO_APPENDING_TO_OBJECT_OUTPUT_STREAM"]
 
 [[rule]]
 name = "ip-parameter-is-dead-but-overwritten"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"]
 
@@ -2187,7 +2182,6 @@ spotbugs = ["RV_RETURN_VALUE_OF_PUTIFABSENT_IGNORED"]
 
 [[rule]]
 name = "rp-c-repeated-conditional-test"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RpC_REPEATED_CONDITIONAL_TEST"]
 
@@ -2359,13 +2353,11 @@ spotbugs = ["SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS"]
 
 [[rule]]
 name = "sf-dead-store-due-to-switch-fallthrough"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH"]
 
 [[rule]]
 name = "sf-dead-store-due-to-switch-fallthrough-to-throw"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW"]
 
@@ -2401,19 +2393,16 @@ spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"]
 
 [[rule]]
 name = "sic-threadlocal-deadly-embrace"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SIC_THREADLOCAL_DEADLY_EMBRACE"]
 
 [[rule]]
 name = "sing-singleton-getter-not-synchronized"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_GETTER_NOT_SYNCHRONIZED"]
 
 [[rule]]
 name = "sing-singleton-has-nonprivate-constructor"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"]
 
@@ -2443,7 +2432,6 @@ spotbugs = ["SING_SINGLETON_INDIRECTLY_IMPLEMENTS_CLONEABLE"]
 
 [[rule]]
 name = "sio-superfluous-instanceof"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SIO_SUPERFLUOUS_INSTANCEOF"]
 
@@ -2855,7 +2843,6 @@ spotbugs = ["VA_FORMAT_STRING_USES_NEWLINE"]
 
 [[rule]]
 name = "va-primitive-array-passed-to-object-vararg"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG"]
 

@@ -19,6 +19,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/checkstyle-misc.toml",
           "rules/java/coding.toml",
           "rules/java/correctness.toml",
+          "rules/java/correctness-more.toml",
           "rules/java/dataflow.toml",
           "rules/java/declarations.toml",
           "rules/java/design.toml",

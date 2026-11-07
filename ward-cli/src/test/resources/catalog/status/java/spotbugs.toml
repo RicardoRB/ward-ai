@@ -120,9 +120,9 @@ dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316" }
 dp-do-inside-do-privileged = { status = "planned", issue = "#316" }
 e-sync-empty-sync = { status = "planned", issue = "#316" }
-ec-array-and-nonarray = { status = "planned", issue = "#314" }
+ec-array-and-nonarray = "implemented"
 ec-bad-array-compare = "implemented"
-ec-incompatible-array-compare = { status = "planned", issue = "#314" }
+ec-incompatible-array-compare = "implemented"
 ec-null-arg = "implemented"
 ec-unrelated-class-and-interface = { status = "planned", issue = "#314" }
 ec-unrelated-interfaces = { status = "planned", issue = "#314" }
@@ -146,7 +146,7 @@ eq-doesnt-override-equals = { status = "planned", issue = "#316" }
 eq-dont-define-equals-for-enum = "implemented"
 eq-getclass-and-class-constant = { status = "planned", issue = "#316" }
 eq-other-no-object = "implemented"
-eq-overriding-equals-not-symmetric = { status = "planned", issue = "#314" }
+eq-overriding-equals-not-symmetric = "implemented"
 eq-self-no-object = { status = "planned", issue = "#316" }
 eq-self-use-object = { status = "planned", issue = "#314" }
 eq-unusual = { status = "planned", issue = "#316" }
@@ -205,7 +205,7 @@ il-infinite-loop = { status = "planned", issue = "#314" }
 il-infinite-recursive-loop = { status = "planned", issue = "#314" }
 im-average-computation-could-overflow = { status = "planned", issue = "#316" }
 im-bad-check-for-odd = { status = "planned", issue = "#316" }
-im-multiplying-result-of-irem = { status = "planned", issue = "#314" }
+im-multiplying-result-of-irem = "implemented"
 ima-inefficient-member-access = { status = "planned", issue = "#316" }
 imse-dont-catch-imse = { status = "planned", issue = "#316" }
 int-bad-comparison-with-int-value = { status = "planned", issue = "#314" }
@@ -215,7 +215,7 @@ int-bad-rem-by-1 = { status = "planned", issue = "#316" }
 int-vacuous-bit-operation = { status = "planned", issue = "#316" }
 int-vacuous-comparison = { status = "planned", issue = "#316" }
 io-appending-to-object-output-stream = "implemented"
-ip-parameter-is-dead-but-overwritten = { status = "planned", issue = "#314" }
+ip-parameter-is-dead-but-overwritten = "implemented"
 is-field-not-guarded = { status = "planned", issue = "#316" }
 is-inconsistent-sync = { status = "planned", issue = "#316" }
 is2-inconsistent-sync = { status = "planned", issue = "#316" }
@@ -354,7 +354,7 @@ rec-catch-exception = { status = "planned", issue = "#316" }
 reflc-reflection-may-increase-accessibility-of-class = { status = "planned", issue = "#316" }
 reflf-reflection-may-increase-accessibility-of-field = { status = "planned", issue = "#316" }
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
-rp-c-repeated-conditional-test = { status = "planned", issue = "#314" }
+rp-c-repeated-conditional-test = "implemented"
 rr-not-checked = { status = "planned", issue = "#316" }
 rs-readobject-sync = { status = "planned", issue = "#316" }
 ru-invoke-run = { status = "planned", issue = "#316" }
@@ -402,22 +402,22 @@ se-read-resolve-is-static = "implemented"
 se-read-resolve-must-return-object = { status = "planned", issue = "#316" }
 se-transient-field-not-restored = { status = "planned", issue = "#316" }
 se-transient-field-of-nonserializable-class = { status = "planned", issue = "#316" }
-sf-dead-store-due-to-switch-fallthrough = { status = "planned", issue = "#314" }
-sf-dead-store-due-to-switch-fallthrough-to-throw = { status = "planned", issue = "#314" }
+sf-dead-store-due-to-switch-fallthrough = "implemented"
+sf-dead-store-due-to-switch-fallthrough-to-throw = "implemented"
 sf-switch-fallthrough = { status = "planned", issue = "#316" }
 sf-switch-no-default = { status = "planned", issue = "#316" }
 si-instance-before-finals-assigned = { status = "planned", issue = "#316" }
 sic-inner-should-be-static = { status = "planned", issue = "#316" }
 sic-inner-should-be-static-anon = { status = "planned", issue = "#316" }
 sic-inner-should-be-static-needs-this = { status = "planned", issue = "#316" }
-sic-threadlocal-deadly-embrace = { status = "planned", issue = "#314" }
-sing-singleton-getter-not-synchronized = { status = "planned", issue = "#314" }
-sing-singleton-has-nonprivate-constructor = { status = "planned", issue = "#314" }
+sic-threadlocal-deadly-embrace = "implemented"
+sing-singleton-getter-not-synchronized = "implemented"
+sing-singleton-has-nonprivate-constructor = "implemented"
 sing-singleton-implements-clone-method = { status = "planned", issue = "#314" }
 sing-singleton-implements-cloneable = { status = "planned", issue = "#314" }
 sing-singleton-implements-serializable = { status = "planned", issue = "#314" }
 sing-singleton-indirectly-implements-cloneable = { status = "planned", issue = "#314" }
-sio-superfluous-instanceof = { status = "planned", issue = "#314" }
+sio-superfluous-instanceof = "implemented"
 skipped-class-too-big = { status = "planned", issue = "#316" }
 sp-spin-on-field = { status = "planned", issue = "#316" }
 sql-bad-prepared-statement-access = { status = "planned", issue = "#314" }
@@ -485,7 +485,7 @@ uwf-null-field = { status = "planned", issue = "#314" }
 uwf-unwritten-field = { status = "planned", issue = "#314" }
 uwf-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
 va-format-string-uses-newline = { status = "planned", issue = "#316" }
-va-primitive-array-passed-to-object-vararg = { status = "planned", issue = "#314" }
+va-primitive-array-passed-to-object-vararg = "implemented"
 vo-volatile-increment = { status = "planned", issue = "#316" }
 vo-volatile-reference-to-array = { status = "planned", issue = "#316" }
 vr-unresolvable-reference = { status = "planned", issue = "#314" }
