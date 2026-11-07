@@ -69,3 +69,29 @@ kinds = ["atom_expr"]
 text = "^zip\\((\\w+)\\.keys\\(\\),\\1\\.values\\(\\)\\)"
 message = "zip of keys and values; iterate over items()"
 '''
+
+[[rules]]
+id = "ward:python/collapsible-if"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "collapsible-if"
+message = "nested if; join the conditions with and"
+'''
+
+[[rules]]
+id = "ward:python/suppressible-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "handler-body"
+body = "pass"
+sole = true
+message = "try-except-pass; use contextlib.suppress"
+'''
