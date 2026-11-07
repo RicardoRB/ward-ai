@@ -35,6 +35,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/naming.toml",
           "rules/java/nullaway.toml",
           "rules/java/object-methods.toml",
+          "rules/java/pmd-codestyle-shape.toml",
           "rules/java/pmd-codestyle.toml",
           "rules/java/pmd-errorprone.toml",
           "rules/java/pmd-multithreading.toml",

@@ -50,7 +50,7 @@ boolean-get-method-name = "implemented"
 broken-null-check = "implemented"
 c-style-array-declaration = "implemented"
 call-super-first = { status = "planned", issue = "#310" }
-call-super-in-constructor = { status = "planned", issue = "#313" }
+call-super-in-constructor = "implemented"
 call-super-last = { status = "planned", issue = "#310" }
 check-result-set = "implemented"
 class-cast-exception-with-to-array = "implemented"
@@ -87,7 +87,7 @@ dont-call-thread-run = "implemented"
 dont-use-float-type-for-loop-indices = "implemented"
 double-checked-locking = "implemented"
 empty-finalizer = "implemented"
-empty-method-in-abstract-class-should-be-abstract = { status = "planned", issue = "#313" }
+empty-method-in-abstract-class-should-be-abstract = "implemented"
 enum-comparison = "implemented"
 equals-null = "implemented"
 exception-as-flow-control = "implemented"
@@ -109,7 +109,7 @@ god-class = "implemented"
 guard-log-statement = "implemented"
 hard-coded-crypto-key = "implemented"
 idempotent-operations = "implemented"
-identical-catch-branches = { status = "planned", issue = "#313" }
+identical-catch-branches = "implemented"
 identical-conditional-branches = "implemented"
 immutable-field = "implemented"
 implicit-functional-interface = "implemented"
@@ -136,7 +136,7 @@ linguistic-naming = "implemented"
 literals-first-in-comparisons = "implemented"
 local-home-naming-convention = "implemented"
 local-interface-session-naming-convention = "implemented"
-local-variable-declaration-should-be-at-start-of-block = { status = "planned", issue = "#313" }
+local-variable-declaration-should-be-at-start-of-block = "implemented"
 logic-inversion = "implemented"
 long-literal-ending-with-lowercase-l = "implemented"
 long-variable = { status = "planned", issue = "#313" }
@@ -161,7 +161,7 @@ optimizable-to-array-call = "implemented"
 override-both-equals-and-hashcode = "implemented"
 overriding-thread-run = "implemented"
 package-case = "implemented"
-premature-declaration = { status = "planned", issue = "#313" }
+premature-declaration = "implemented"
 preserve-stack-trace = "implemented"
 primitive-wrapper-instantiation = "implemented"
 proper-clone-implementation = "implemented"
@@ -202,7 +202,7 @@ test-class-without-test-cases = "implemented"
 too-few-branches-for-switch = "implemented"
 too-many-fields = "implemented"
 too-many-methods = "implemented"
-too-many-static-imports = { status = "planned", issue = "#313" }
+too-many-static-imports = "implemented"
 type-name-mismatch = "implemented"
 type-parameter-naming-conventions = "implemented"
 uncommented-empty-constructor = { status = "planned", issue = "#313" }
@@ -217,12 +217,12 @@ unit-test-should-use-test-annotation = "implemented"
 unnecessary-annotation-value-element = "implemented"
 unnecessary-block = "implemented"
 unnecessary-boolean-assertion = "implemented"
-unnecessary-boxing = { status = "planned", issue = "#313" }
+unnecessary-boxing = "implemented"
 unnecessary-case-change = "implemented"
-unnecessary-cast = { status = "planned", issue = "#313" }
+unnecessary-cast = "implemented"
 unnecessary-conversion-temporary = "implemented"
-unnecessary-fully-qualified-name = { status = "planned", issue = "#313" }
-unnecessary-interface-declaration = { status = "planned", issue = "#313" }
+unnecessary-fully-qualified-name = "implemented"
+unnecessary-interface-declaration = "implemented"
 unnecessary-return = "implemented"
 unnecessary-varargs-array-creation = "implemented"
 unnecessary-warning-suppression = "implemented"
@@ -254,8 +254,8 @@ use-try-with-resources = "implemented"
 use-underscores-in-numeric-literals = "implemented"
 use-varargs = "implemented"
 useless-overriding-method = "implemented"
-useless-qualified-this = { status = "planned", issue = "#313" }
+useless-qualified-this = "implemented"
 useless-string-value-of = "implemented"
-variable-can-be-inlined = { status = "planned", issue = "#313" }
+variable-can-be-inlined = "implemented"
 while-loop-with-literal-boolean = "implemented"
 wrong-test-annotation = { status = "planned", issue = "#310" }
