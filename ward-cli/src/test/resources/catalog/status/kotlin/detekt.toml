@@ -45,7 +45,7 @@ enum-naming = { status = "planned", issue = "#294" }
 equals-always-returns-true-or-false = "implemented"
 equals-null-call = { status = "planned", issue = "#294" }
 equals-on-signature-line = { status = "planned", issue = "#294" }
-exception-raised-in-unexpected-location = { status = "planned", issue = "#324" }
+exception-raised-in-unexpected-location = "implemented"
 exit-outside-main = { status = "planned", issue = "#324" }
 explicit-collection-element-access-method = { status = "planned", issue = "#294" }
 explicit-garbage-collection-call = "implemented"
@@ -67,9 +67,9 @@ ignored-return-value = { status = "planned", issue = "#324" }
 implicit-default-locale = "implemented"
 implicit-unit-return-type = { status = "planned", issue = "#324" }
 inject-dispatcher = "implemented"
-instance-of-check-for-exception = { status = "planned", issue = "#324" }
+instance-of-check-for-exception = "implemented"
 invalid-package-declaration = { status = "planned", issue = "#294" }
-invalid-range = { status = "planned", issue = "#324" }
+invalid-range = "implemented"
 iterator-has-next-calls-next-method = "implemented"
 iterator-not-throwing-no-such-element-exception = "implemented"
 k-doc-references-non-public-property = { status = "planned", issue = "#294" }
@@ -116,7 +116,7 @@ rethrow-caught-exception = "implemented"
 return-from-finally = "implemented"
 safe-cast = { status = "planned", issue = "#294" }
 serial-version-uid-in-serializable-class = { status = "planned", issue = "#294" }
-sleep-instead-of-delay = { status = "planned", issue = "#324" }
+sleep-instead-of-delay = "implemented"
 spacing-between-package-and-imports = { status = "planned", issue = "#294" }
 spread-operator = "implemented"
 string-literal-duplication = { status = "planned", issue = "#294" }
@@ -124,11 +124,11 @@ string-should-be-raw-string = { status = "planned", issue = "#294" }
 suspend-fun-swallowed-cancellation = { status = "planned", issue = "#324" }
 suspend-fun-with-coroutine-scope-receiver = "implemented"
 suspend-fun-with-flow-return-type = "implemented"
-swallowed-exception = { status = "planned", issue = "#324" }
+swallowed-exception = "implemented"
 throwing-exception-from-finally = "implemented"
 throwing-exception-in-main = { status = "planned", issue = "#324" }
 throwing-exceptions-without-message-or-cause = "implemented"
-throwing-new-instance-of-same-exception = { status = "planned", issue = "#324" }
+throwing-new-instance-of-same-exception = "implemented"
 too-many-functions = { status = "planned", issue = "#294" }
 trailing-whitespace = { status = "planned", issue = "#294" }
 trim-multiline-raw-string = { status = "planned", issue = "#294" }
@@ -148,16 +148,16 @@ unnecessary-not-null-check = { status = "planned", issue = "#324" }
 unnecessary-not-null-operator = { status = "planned", issue = "#324" }
 unnecessary-part-of-binary-expression = { status = "planned", issue = "#324" }
 unnecessary-safe-call = { status = "planned", issue = "#324" }
-unnecessary-temporary-instantiation = { status = "planned", issue = "#324" }
+unnecessary-temporary-instantiation = "implemented"
 unreachable-catch-block = { status = "planned", issue = "#324" }
-unreachable-code = { status = "planned", issue = "#324" }
+unreachable-code = "implemented"
 unsafe-call-on-nullable-type = { status = "planned", issue = "#324" }
 unsafe-cast = { status = "planned", issue = "#324" }
 until-instead-of-range-to = { status = "planned", issue = "#294" }
 unused-parameter = { status = "planned", issue = "#294" }
 unused-private-class = { status = "planned", issue = "#294" }
 unused-private-member = { status = "planned", issue = "#294" }
-unused-unary-operator = { status = "planned", issue = "#324" }
+unused-unary-operator = "implemented"
 use-any-or-none-instead-of-find = { status = "planned", issue = "#294" }
 use-array-literals-in-annotations = { status = "planned", issue = "#294" }
 use-check-not-null = { status = "planned", issue = "#294" }
@@ -173,7 +173,7 @@ use-require = { status = "planned", issue = "#294" }
 use-require-not-null = { status = "planned", issue = "#294" }
 use-sum-of-instead-of-flat-map-size = { status = "planned", issue = "#294" }
 useless-call-on-not-null = { status = "planned", issue = "#294" }
-useless-postfix-expression = { status = "planned", issue = "#324" }
+useless-postfix-expression = "implemented"
 utility-class-with-public-constructor = { status = "planned", issue = "#294" }
 var-could-be-val = { status = "planned", issue = "#294" }
 variable-max-length = { status = "planned", issue = "#294" }

@@ -41,3 +41,17 @@ kinds = ["valueArgument"]
 text = '^\*'
 message = "spread operator copies the array; pass the elements or use a list"
 '''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-temporary-instantiation"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(?:Integer|Long|Short|Byte|Double|Float|Boolean|Character)\([^()]*\)\.toString\(\)$'
+message = "temporary wrapper object only to call toString; call toString on the value"
+'''

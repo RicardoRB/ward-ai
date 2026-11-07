@@ -266,8 +266,6 @@ detekt = ["EqualsOnSignatureLine"]
 
 [[rule]]
 name = "exception-raised-in-unexpected-location"
-presets = ["standard", "strict"]
-category = "exceptions"
 detekt = ["ExceptionRaisedInUnexpectedLocation"]
 
 [[rule]]
@@ -388,8 +386,6 @@ detekt = ["InjectDispatcher"]
 
 [[rule]]
 name = "instance-of-check-for-exception"
-presets = ["standard", "strict"]
-category = "exceptions"
 detekt = ["InstanceOfCheckForException"]
 
 [[rule]]
@@ -400,8 +396,6 @@ detekt = ["InvalidPackageDeclaration"]
 
 [[rule]]
 name = "invalid-range"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["InvalidRange"]
 
 [[rule]]
@@ -666,8 +660,6 @@ detekt = ["SerialVersionUIDInSerializableClass"]
 
 [[rule]]
 name = "sleep-instead-of-delay"
-presets = ["standard", "strict"]
-category = "coroutines"
 detekt = ["SleepInsteadOfDelay"]
 
 [[rule]]
@@ -708,8 +700,6 @@ detekt = ["SuspendFunWithFlowReturnType"]
 
 [[rule]]
 name = "swallowed-exception"
-presets = ["standard", "strict"]
-category = "exceptions"
 detekt = ["SwallowedException"]
 
 [[rule]]
@@ -728,8 +718,6 @@ detekt = ["ThrowingExceptionsWithoutMessageOrCause"]
 
 [[rule]]
 name = "throwing-new-instance-of-same-exception"
-presets = ["standard", "strict"]
-category = "exceptions"
 detekt = ["ThrowingNewInstanceOfSameException"]
 
 [[rule]]
@@ -849,8 +837,6 @@ detekt = ["UnnecessarySafeCall"]
 
 [[rule]]
 name = "unnecessary-temporary-instantiation"
-presets = ["standard", "strict"]
-category = "performance"
 detekt = ["UnnecessaryTemporaryInstantiation"]
 
 [[rule]]
@@ -861,8 +847,6 @@ detekt = ["UnreachableCatchBlock"]
 
 [[rule]]
 name = "unreachable-code"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnreachableCode"]
 vulture = ["V201"]
 
@@ -906,8 +890,6 @@ pylint = ["unused-private-member"]
 
 [[rule]]
 name = "unused-unary-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnusedUnaryOperator"]
 
 [[rule]]
@@ -1002,8 +984,6 @@ detekt = ["UselessCallOnNotNull"]
 
 [[rule]]
 name = "useless-postfix-expression"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UselessPostfixExpression"]
 
 [[rule]]
