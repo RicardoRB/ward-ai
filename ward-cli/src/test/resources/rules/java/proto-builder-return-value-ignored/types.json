@@ -1,0 +1,50 @@
+{
+  "3:5-3:13": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "build",
+      "params": [],
+      "returns": {
+        "name": "my.Msg"
+      }
+    }
+  },
+  "3:5-3:5": {
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  },
+  "4:16-4:24": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "build",
+      "params": [],
+      "returns": {
+        "name": "my.Msg"
+      }
+    }
+  },
+  "4:6-4:6": {
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  }
+}

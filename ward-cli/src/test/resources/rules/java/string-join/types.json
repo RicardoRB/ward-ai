@@ -1,0 +1,103 @@
+{
+  "3:16-3:31": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "join",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.CharSequence",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "4:12-4:30": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "join",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.CharSequence",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "4:29-4:29": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "4:16-4:37": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "join",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.Iterable"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true
+    }
+  },
+  "5:12-5:33": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "join",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.CharSequence",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "5:28-5:28": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "5:31-5:31": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

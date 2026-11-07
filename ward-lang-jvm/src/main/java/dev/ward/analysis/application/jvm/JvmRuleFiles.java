@@ -34,6 +34,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/errorprone-gl-shape.toml",
           "rules/java/errorprone-gl-types.toml",
           "rules/java/errorprone-gl.toml",
+          "rules/java/errorprone-facts.toml",
           "rules/java/errorprone-part2.toml",
           "rules/java/errorprone-part3.toml",
           "rules/java/errorprone-part4.toml",

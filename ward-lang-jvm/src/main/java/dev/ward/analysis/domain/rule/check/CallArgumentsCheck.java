@@ -24,9 +24,6 @@ import java.util.Set;
 public final class CallArgumentsCheck implements RuleCheck {
 
   private static final String EXPRESSION = "expression";
-  private static final String METHOD_CALL = "methodCall";
-  private static final String EXPRESSION_LIST = "expressionList";
-  private static final String NULL = "null";
   private static final int PAIR = 2;
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE));
@@ -43,19 +40,26 @@ public final class CallArgumentsCheck implements RuleCheck {
    * @param oddArguments whether the call must pass an odd number of arguments
    * @param nullVarargs whether the last argument must be {@code null} in the place of the variadic
    *     parameter
+   * @param nullToNonNull whether a literal {@code null} must be passed for a parameter annotated as
+   *     not null
+   * @param varargElementTypes for a variadic call: the types of the single element passed for the
+   *     variadic parameter; a call that passes none is reported too; empty for no condition
    */
   public record Criteria(
       Set<String> declaringTypes,
       Set<String> names,
       Set<String> argumentTypes,
       boolean oddArguments,
-      boolean nullVarargs) {
+      boolean nullVarargs,
+      boolean nullToNonNull,
+      Set<String> varargElementTypes) {
 
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
       names = Set.copyOf(names);
       argumentTypes = Set.copyOf(argumentTypes);
+      varargElementTypes = Set.copyOf(varargElementTypes);
     }
   }
 
@@ -99,44 +103,21 @@ public final class CallArgumentsCheck implements RuleCheck {
   }
 
   private boolean meets(final SyntaxNode call, final CallTarget target, final UnitTypeFacts types) {
-    final List<SyntaxNode> arguments = arguments(call);
     return (criteria.declaringTypes().isEmpty()
             || criteria.declaringTypes().contains(target.declaringType().name()))
         && (criteria.names().isEmpty() || criteria.names().contains(target.name()))
-        && (!criteria.oddArguments() || arguments.size() % PAIR == 1)
-        && (!criteria.nullVarargs() || passesNullForVarargs(arguments, target))
-        && (criteria.argumentTypes().isEmpty() || firstArgumentIsOfType(arguments, types));
+        && argumentsMeet(CallArgumentShapes.arguments(call), target, types);
   }
 
-  private boolean firstArgumentIsOfType(
-      final List<SyntaxNode> arguments, final UnitTypeFacts types) {
-    return !arguments.isEmpty()
-        && types
-            .typeOf(arguments.get(0).span())
-            .filter(type -> criteria.argumentTypes().contains(type.name()))
-            .isPresent();
-  }
-
-  private static boolean passesNullForVarargs(
-      final List<SyntaxNode> arguments, final CallTarget target) {
-    return target.isVarargs()
-        && !arguments.isEmpty()
-        && arguments.size() == target.parameters().size()
-        && NULL.equals(SyntaxWalk.text(arguments.get(arguments.size() - 1)));
-  }
-
-  private static List<SyntaxNode> arguments(final SyntaxNode call) {
-    return call.children().stream()
-        .filter(part -> METHOD_CALL.equals(part.kind()))
-        .findFirst()
-        .flatMap(
-            invoked ->
-                SyntaxWalk.descendants(invoked).stream()
-                    .filter(node -> EXPRESSION_LIST.equals(node.kind()))
-                    .findFirst())
-        .map(
-            list ->
-                list.children().stream().filter(child -> EXPRESSION.equals(child.kind())).toList())
-        .orElse(List.of());
+  private boolean argumentsMeet(
+      final List<SyntaxNode> arguments, final CallTarget target, final UnitTypeFacts types) {
+    return (!criteria.oddArguments() || arguments.size() % PAIR == 1)
+        && (!criteria.nullVarargs() || CallArgumentShapes.passesNullForVarargs(arguments, target))
+        && (criteria.argumentTypes().isEmpty()
+            || CallArgumentShapes.firstArgumentIsOfType(criteria.argumentTypes(), arguments, types))
+        && (!criteria.nullToNonNull() || CallArgumentShapes.passesNullToNonNull(arguments, target))
+        && (criteria.varargElementTypes().isEmpty()
+            || CallArgumentShapes.fewVarargElements(
+                criteria.varargElementTypes(), arguments, target, types));
   }
 }

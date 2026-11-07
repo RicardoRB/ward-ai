@@ -78,7 +78,9 @@ final class ErrorProneChecks {
             TomlValues.optionalStrings(toml, "names"),
             TomlValues.optionalStrings(toml, "argument-types"),
             toml.getBoolean("odd-arguments", () -> false),
-            toml.getBoolean("null-varargs", () -> false)),
+            toml.getBoolean("null-varargs", () -> false),
+            toml.getBoolean("null-to-non-null", () -> false),
+            TomlValues.optionalStrings(toml, "vararg-element-types")),
         TomlValues.required(toml, MESSAGE));
   }
 

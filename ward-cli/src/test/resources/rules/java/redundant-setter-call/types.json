@@ -1,0 +1,87 @@
+{
+  "3:5-3:31": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setName",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    }
+  },
+  "3:5-3:18": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setName",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    },
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  },
+  "4:5-4:28": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setAge",
+      "params": [
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    }
+  },
+  "4:5-4:18": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setName",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    },
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  }
+}

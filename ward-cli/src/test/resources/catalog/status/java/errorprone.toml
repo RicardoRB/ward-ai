@@ -351,7 +351,7 @@ missing-implements-comparable = { status = "planned", issue = "#319" }
 missing-refaster-annotation = { status = "planned", issue = "#319" }
 missing-runtime-retention = "implemented"
 missing-summary = { status = "planned", issue = "#319" }
-missing-super-call = { status = "planned", issue = "#319" }
+missing-super-call = "implemented"
 missing-test-call = "implemented"
 misused-day-of-year = "implemented"
 misused-week-year = "implemented"
@@ -374,7 +374,7 @@ multiple-nullness-annotations = { status = "planned", issue = "#319" }
 multiple-parallel-or-sequential-calls = { status = "planned", issue = "#319" }
 multiple-top-level-classes = { status = "planned", issue = "#319" }
 multiple-unary-operators-in-method-call = { status = "planned", issue = "#319" }
-must-be-closed-checker = { status = "planned", issue = "#319" }
+must-be-closed-checker = "implemented"
 mutable-guice-module = { status = "planned", issue = "#319" }
 mutable-public-array = { status = "planned", issue = "#319" }
 n-copies-of-char = "implemented"
@@ -397,7 +397,7 @@ non-final-static-field = { status = "planned", issue = "#319" }
 non-overriding-equals = { status = "planned", issue = "#319" }
 non-runtime-annotation = "implemented"
 not-javadoc = { status = "planned", issue = "#319" }
-null-argument-for-non-null-parameter = { status = "planned", issue = "#319" }
+null-argument-for-non-null-parameter = "implemented"
 null-needs-cast-for-varargs = "implemented"
 null-optional = { status = "planned", issue = "#319" }
 null-ternary = "implemented"
@@ -424,7 +424,7 @@ overlapping-qualifier-and-scope-annotation = "implemented"
 override-throwable-to-string = { status = "planned", issue = "#319" }
 overrides = { status = "planned", issue = "#319" }
 overrides-guice-injectable-method = { status = "planned", issue = "#319" }
-overrides-javax-injectable-method = { status = "planned", issue = "#319" }
+overrides-javax-injectable-method = "implemented"
 overriding-method-inconsistent-argument-names-checker = { status = "planned", issue = "#319" }
 package-info = "implemented"
 package-location = { status = "planned", issue = "#319" }
@@ -450,12 +450,12 @@ private-constructor-for-noninstantiable-module = { status = "planned", issue = "
 private-constructor-for-utility-class = { status = "planned", issue = "#319" }
 private-security-contract-proto-access = { status = "planned", issue = "#319" }
 protected-members-in-final-class = { status = "planned", issue = "#319" }
-proto-builder-return-value-ignored = { status = "planned", issue = "#319" }
+proto-builder-return-value-ignored = "implemented"
 proto-duration-get-seconds-get-nano = { status = "planned", issue = "#319" }
-proto-string-field-reference-equality = { status = "planned", issue = "#319" }
+proto-string-field-reference-equality = "implemented"
 proto-timestamp-get-seconds-get-nano = { status = "planned", issue = "#319" }
 proto-truth-mixed-descriptors = { status = "planned", issue = "#319" }
-protocol-buffer-ordinal = { status = "planned", issue = "#319" }
+protocol-buffer-ordinal = "implemented"
 provides-method-outside-of-module = "implemented"
 public-api-named-stream-should-return-stream = { status = "planned", issue = "#319" }
 qualifier-or-scope-on-inject-method = { status = "planned", issue = "#319" }
@@ -470,15 +470,15 @@ rect-intersect-return-value-ignored = "implemented"
 redundant-control-flow = { status = "planned", issue = "#319" }
 redundant-null-check = { status = "planned", issue = "#319" }
 redundant-override = { status = "planned", issue = "#319" }
-redundant-setter-call = { status = "planned", issue = "#319" }
+redundant-setter-call = "implemented"
 redundant-throws = { status = "planned", issue = "#319" }
 refactor-switch = { status = "planned", issue = "#319" }
 reference-equality = { status = "planned", issue = "#319" }
 refers-to-dagger-codegen = "implemented"
 remove-unused-imports = { status = "planned", issue = "#319" }
 require-non-null-refactoring = { status = "planned", issue = "#319" }
-required-modifiers = { status = "planned", issue = "#319" }
-restricted-api = { status = "planned", issue = "#319" }
+required-modifiers = "implemented"
+restricted-api = "implemented"
 rethrow-reflective-operation-exception-as-linkage-error = { status = "planned", issue = "#319" }
 return-at-the-end-of-void-function = { status = "planned", issue = "#319" }
 return-from-void = { status = "planned", issue = "#319" }
@@ -497,7 +497,7 @@ self-assignment = "implemented"
 self-comparison = "implemented"
 self-equals = "implemented"
 self-set = { status = "planned", issue = "#319" }
-set-unrecognized = { status = "planned", issue = "#319" }
+set-unrecognized = "implemented"
 short-circuit-boolean = { status = "planned", issue = "#319" }
 should-have-even-args = "implemented"
 simplify-test-parameter = { status = "planned", issue = "#319" }
@@ -518,7 +518,7 @@ string-case-locale-usage = { status = "planned", issue = "#319" }
 string-charset = { status = "planned", issue = "#319" }
 string-concat-to-text-block = { status = "planned", issue = "#319" }
 string-format-with-literal = { status = "planned", issue = "#319" }
-string-join = { status = "planned", issue = "#319" }
+string-join = "implemented"
 string-splitter = { status = "planned", issue = "#319" }
 strongly-type-byte-string = { status = "planned", issue = "#319" }
 strongly-type-time = { status = "planned", issue = "#319" }
@@ -542,7 +542,7 @@ thread-builder-name-with-placeholder = "implemented"
 thread-join-loop = { status = "planned", issue = "#319" }
 thread-local-usage = { status = "planned", issue = "#319" }
 thread-priority-check = { status = "planned", issue = "#319" }
-thread-safe = { status = "planned", issue = "#319" }
+thread-safe = "implemented"
 three-letter-time-zone-id = { status = "planned", issue = "#319" }
 throw-if-unchecked-known-checked = "implemented"
 throw-if-unchecked-known-unchecked = { status = "planned", issue = "#319" }

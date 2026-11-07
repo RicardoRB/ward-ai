@@ -1961,8 +1961,6 @@ errorprone = ["MissingSummary"]
 [[rule]]
 name = "missing-super-call"
 not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MissingSuperCall"]
 
 [[rule]]
@@ -2085,8 +2083,6 @@ errorprone = ["MultipleUnaryOperatorsInMethodCall"]
 
 [[rule]]
 name = "must-be-closed-checker"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MustBeClosedChecker"]
 
 [[rule]]
@@ -2215,8 +2211,6 @@ errorprone = ["NotJavadoc"]
 
 [[rule]]
 name = "null-argument-for-non-null-parameter"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullArgumentForNonNullParameter"]
 
 [[rule]]
@@ -2363,8 +2357,6 @@ errorprone = ["OverridesGuiceInjectableMethod"]
 
 [[rule]]
 name = "overrides-javax-injectable-method"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OverridesJavaxInjectableMethod"]
 
 [[rule]]
@@ -2505,8 +2497,6 @@ errorprone = ["ProtectedMembersInFinalClass"]
 
 [[rule]]
 name = "proto-builder-return-value-ignored"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ProtoBuilderReturnValueIgnored"]
 
 [[rule]]
@@ -2517,8 +2507,6 @@ errorprone = ["ProtoDurationGetSecondsGetNano"]
 
 [[rule]]
 name = "proto-string-field-reference-equality"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ProtoStringFieldReferenceEquality"]
 
 [[rule]]
@@ -2535,8 +2523,6 @@ errorprone = ["ProtoTruthMixedDescriptors"]
 
 [[rule]]
 name = "protocol-buffer-ordinal"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ProtocolBufferOrdinal"]
 
 [[rule]]
@@ -2615,8 +2601,6 @@ errorprone = ["RedundantOverride"]
 
 [[rule]]
 name = "redundant-setter-call"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RedundantSetterCall"]
 
 [[rule]]
@@ -2655,15 +2639,11 @@ errorprone = ["RequireNonNullRefactoring"]
 
 [[rule]]
 name = "required-modifiers"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RequiredModifiers"]
 
 [[rule]]
 name = "restricted-api"
 not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RestrictedApi"]
 
 [[rule]]
@@ -2766,8 +2746,6 @@ errorprone = ["SelfSet"]
 
 [[rule]]
 name = "set-unrecognized"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SetUnrecognized"]
 
 [[rule]]
@@ -2884,8 +2862,6 @@ errorprone = ["StringFormatWithLiteral"]
 
 [[rule]]
 name = "string-join"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["StringJoin"]
 
 [[rule]]
@@ -3014,8 +2990,6 @@ errorprone = ["ThreadPriorityCheck"]
 
 [[rule]]
 name = "thread-safe"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ThreadSafe"]
 
 [[rule]]
