@@ -1,0 +1,34 @@
+{
+  "3:12-3:49": {
+    "call": {
+      "declaring": {
+        "name": "javax.crypto.Cipher"
+      },
+      "name": "getInstance",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "javax.crypto.Cipher"
+      }
+    }
+  },
+  "5:12-5:63": {
+    "call": {
+      "declaring": {
+        "name": "javax.crypto.Cipher"
+      },
+      "name": "getInstance",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "javax.crypto.Cipher"
+      }
+    }
+  }
+}

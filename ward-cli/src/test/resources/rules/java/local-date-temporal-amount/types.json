@@ -1,0 +1,18 @@
+{
+  "3:12-3:40": {
+    "call": {
+      "declaring": {
+        "name": "java.time.LocalDate"
+      },
+      "name": "plus",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAmount"
+        }
+      ],
+      "returns": {
+        "name": "java.time.LocalDate"
+      }
+    }
+  }
+}
