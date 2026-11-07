@@ -19,7 +19,6 @@ detekt
 errorprone
 eslint
 examples
-gitleaks
 knip
 ktlint
 nullaway

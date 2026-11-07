@@ -759,9 +759,7 @@ errorprone = ["DateFormatConstant"]
 
 [[rule]]
 name = "dead-exception"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["DeadException"]
 
 [[rule]]
@@ -798,7 +796,6 @@ category = "severity-warning"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#320", kotlin = "#325" }
 errorprone = ["DefaultLocale"]
-android-lint = ["DefaultLocale"]
 
 [[rule]]
 name = "default-package"
@@ -893,9 +890,7 @@ errorprone = ["DoNotMockAutoValue"]
 
 [[rule]]
 name = "double-brace-initialization"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["DoubleBraceInitialization"]
 
 [[rule]]
@@ -977,9 +972,7 @@ errorprone = ["EmptyCatch"]
 
 [[rule]]
 name = "empty-if"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["EmptyIf"]
 
 [[rule]]
@@ -1033,9 +1026,7 @@ errorprone = ["EqualsMissingNullable"]
 
 [[rule]]
 name = "equals-na-n"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["EqualsNaN"]
 
 [[rule]]
@@ -1390,9 +1381,7 @@ errorprone = ["GetClassOnAnnotation"]
 
 [[rule]]
 name = "get-class-on-class"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["GetClassOnClass"]
 
 [[rule]]
@@ -2294,9 +2283,7 @@ errorprone = ["LongFloatConversion"]
 
 [[rule]]
 name = "long-literal-lower-case-suffix"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["LongLiteralLowerCaseSuffix"]
 
 [[rule]]
@@ -2466,7 +2453,6 @@ category = "severity-error"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#319", kotlin = "#325" }
 errorprone = ["MissingSuperCall"]
-android-lint = ["MissingSuperCall"]
 
 [[rule]]
 name = "missing-test-call"
@@ -3356,7 +3342,6 @@ category = "severity-error"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#319", kotlin = "#325" }
 errorprone = ["RestrictedApi"]
-android-lint = ["RestrictedApi"]
 
 [[rule]]
 name = "rethrow-reflective-operation-exception-as-linkage-error"
@@ -3598,9 +3583,7 @@ errorprone = ["StreamToString"]
 
 [[rule]]
 name = "string-builder-init-with-char"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["StringBuilderInitWithChar"]
 
 [[rule]]
@@ -3829,9 +3812,7 @@ errorprone = ["ThrowIfUncheckedKnownUnchecked"]
 
 [[rule]]
 name = "throw-null"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["ThrowNull"]
 
 [[rule]]
@@ -4493,7 +4474,5 @@ errorprone = ["YodaCondition"]
 
 [[rule]]
 name = "zone-id-of-z"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["ZoneIdOfZ"]

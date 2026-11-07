@@ -1,0 +1,116 @@
+# Potential-bug rules for Kotlin, from detekt's potential-bugs set (standard preset). Rules that
+# need resolved types are not here yet; they stay planned in the catalog.
+
+[[rules]]
+id = "ward:kotlin/explicit-garbage-collection-call"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(System\s*\.\s*gc|Runtime\s*\.\s*getRuntime\s*\(\s*\)\s*\.\s*gc)\s*\(\s*\)$'
+message = "explicit garbage collection call; the JVM manages memory itself"
+'''
+
+[[rules]]
+id = "ward:kotlin/implicit-default-locale"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '(\.\s*(toUpperCase|toLowerCase|capitalize|decapitalize)\s*\(\s*\)$)|(^String\s*\.\s*format\s*\(\s*")'
+message = "uses the default locale implicitly; pass a Locale explicitly"
+'''
+
+[[rules]]
+id = "ward:kotlin/equals-always-returns-true-or-false"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funequals\s*\([^)]*\)\s*(:\s*Boolean\s*)?(\{\s*(return\s*)?(true|false)\s*\}|=\s*(true|false)\s*$)'
+message = "equals always returns the same value"
+'''
+
+[[rules]]
+id = "ward:kotlin/iterator-has-next-calls-next-method"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funhasNext\s*\(\s*\)\s*(:\s*Boolean\s*)?\{[^}]*next\s*\('
+message = "hasNext calls next, which moves the iterator"
+'''
+
+[[rules]]
+id = "ward:kotlin/iterator-not-throwing-no-such-element-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'overridefunnext\s*\(\s*\)(?![\s\S]*NoSuchElementException)'
+message = "next does not throw NoSuchElementException when the iterator is exhausted"
+'''
+
+[[rules]]
+id = "ward:kotlin/wrong-equals-type-parameter"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funequals\s*\(\s*\w+\s*:\s*(?!Any\??\))[\w.?<>]+\s*\)'
+message = "equals must take Any? as its parameter to override Any.equals"
+'''
+
+[[rules]]
+id = "ward:kotlin/double-mutability-for-collection"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyDeclaration"]
+not-inside = ["functionBody"]
+text = '^(?:(?:override|open|final|public)\s*)*val\w*?\s*(:\s*(MutableList|MutableMap|MutableSet|ArrayList|HashMap|HashSet|LinkedHashMap|LinkedHashSet)|=\s*(mutableListOf|mutableMapOf|mutableSetOf|arrayListOf|hashMapOf|hashSetOf|linkedMapOf|linkedSetOf))'
+message = "public val exposes a mutable collection; expose a read-only type instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/lateinit-usage"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyDeclaration"]
+not-inside = ["functionBody"]
+text = '^(?:(?:private|internal|protected|public|override|open)\s*)*lateinit'
+message = "lateinit property; use a nullable type or constructor injection"
+'''
