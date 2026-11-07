@@ -349,7 +349,7 @@ missing-default = { status = "planned", issue = "#319" }
 missing-fail = { status = "planned", issue = "#319" }
 missing-implements-comparable = { status = "planned", issue = "#319" }
 missing-refaster-annotation = { status = "planned", issue = "#319" }
-missing-runtime-retention = { status = "planned", issue = "#319" }
+missing-runtime-retention = "implemented"
 missing-summary = { status = "planned", issue = "#319" }
 missing-super-call = { status = "planned", issue = "#319" }
 missing-test-call = { status = "planned", issue = "#319" }
@@ -366,7 +366,7 @@ modified-but-not-used = { status = "planned", issue = "#319" }
 modify-collection-in-enhanced-for-loop = { status = "planned", issue = "#319" }
 modify-source-collection-in-stream = { status = "planned", issue = "#319" }
 modifying-collection-with-itself = "implemented"
-more-than-one-injectable-constructor = { status = "planned", issue = "#319" }
+more-than-one-injectable-constructor = "implemented"
 more-than-one-qualifier = { status = "planned", issue = "#319" }
 multi-variable-declaration = { status = "planned", issue = "#319" }
 multimap-keys = { status = "planned", issue = "#319" }
@@ -420,7 +420,7 @@ optional-not-present = { status = "planned", issue = "#319" }
 optional-of-redundant-method = "implemented"
 orphaned-format-string = { status = "planned", issue = "#319" }
 outline-none = { status = "planned", issue = "#319" }
-overlapping-qualifier-and-scope-annotation = { status = "planned", issue = "#319" }
+overlapping-qualifier-and-scope-annotation = "implemented"
 override-throwable-to-string = { status = "planned", issue = "#319" }
 overrides = { status = "planned", issue = "#319" }
 overrides-guice-injectable-method = { status = "planned", issue = "#319" }
@@ -430,8 +430,8 @@ package-info = { status = "planned", issue = "#319" }
 package-location = { status = "planned", issue = "#319" }
 parameter-comment = { status = "planned", issue = "#319" }
 parameter-missing-nullable = { status = "planned", issue = "#319" }
-parameters-but-not-parameterized = { status = "planned", issue = "#319" }
-parcelable-creator = { status = "planned", issue = "#319" }
+parameters-but-not-parameterized = "implemented"
+parcelable-creator = "implemented"
 pattern-matching-instanceof = { status = "planned", issue = "#319" }
 period-from = "implemented"
 period-get-temporal-unit = "implemented"
@@ -456,7 +456,7 @@ proto-string-field-reference-equality = { status = "planned", issue = "#319" }
 proto-timestamp-get-seconds-get-nano = { status = "planned", issue = "#319" }
 proto-truth-mixed-descriptors = { status = "planned", issue = "#319" }
 protocol-buffer-ordinal = { status = "planned", issue = "#319" }
-provides-method-outside-of-module = { status = "planned", issue = "#319" }
+provides-method-outside-of-module = "implemented"
 public-api-named-stream-should-return-stream = { status = "planned", issue = "#319" }
 qualifier-or-scope-on-inject-method = { status = "planned", issue = "#319" }
 qualifier-with-type-use = { status = "planned", issue = "#319" }
@@ -536,8 +536,8 @@ system-exit-outside-main = { status = "planned", issue = "#319" }
 system-out = { status = "planned", issue = "#319" }
 temporal-accessor-get-chrono-field = { status = "planned", issue = "#319" }
 test-exception-checker = { status = "planned", issue = "#319" }
-test-parameters-not-initialized = { status = "planned", issue = "#319" }
-theory-but-no-theories = { status = "planned", issue = "#319" }
+test-parameters-not-initialized = "implemented"
+theory-but-no-theories = "implemented"
 thread-builder-name-with-placeholder = "implemented"
 thread-join-loop = { status = "planned", issue = "#319" }
 thread-local-usage = { status = "planned", issue = "#319" }

@@ -1,0 +1,125 @@
+# Error Prone checks at ERROR severity for Java that read the annotations on a type and on its members
+# (Dagger, JUnit and Guice). A pattern that does not match an annotation as written stays silent.
+
+[[rules]]
+id = "ward:java/provides-method-outside-of-module"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+members = '^@(?:[\w.]*\.)?(?:Provides|Binds|BindsOptionalOf|Produces)\b'
+member-kind = "method"
+least = 1
+class-lacks = '^@(?:[\w.]*\.)?(?:Module|ProducerModule)\b'
+enclosing = true
+report-members = true
+message = "a binding method outside a class annotated @Module is never used by Dagger; move it into a module"
+'''
+
+[[rules]]
+id = "ward:java/more-than-one-injectable-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+members = '^@(?:[\w.]*\.)?Inject\b'
+member-kind = "constructor"
+least = 2
+report-members = true
+message = "a class can have only one constructor annotated @Inject"
+'''
+
+[[rules]]
+id = "ward:java/parameters-but-not-parameterized"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+members = '^@(?:[\w.]*\.)?Parameters\b'
+member-kind = "method"
+least = 1
+class-lacks = '^@(?:[\w.]*\.)?RunWith\('
+message = "a @Parameters method is ignored unless the class runs with @RunWith(Parameterized.class)"
+'''
+
+[[rules]]
+id = "ward:java/test-parameters-not-initialized"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+members = '^@(?:[\w.]*\.)?TestParameter\b'
+least = 1
+class-lacks = '^@(?:[\w.]*\.)?(?:RunWith\(|TestParameterInjectorTest\b)'
+message = "@TestParameter members are not filled in unless the class runs with TestParameterInjector"
+'''
+
+[[rules]]
+id = "ward:java/theory-but-no-theories"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+members = '^@(?:[\w.]*\.)?(?:Theory|DataPoint|DataPoints)\b'
+least = 1
+class-lacks = '^@(?:[\w.]*\.)?RunWith\('
+message = "@Theory and @DataPoint members need @RunWith(Theories.class); the default runner ignores them"
+'''
+
+[[rules]]
+id = "ward:java/missing-runtime-retention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+types = ["@interface"]
+class-has = ['^@(?:[\w.]*\.)?(?:Qualifier|Scope|BindingAnnotation|ScopeAnnotation)\b']
+class-lacks = '^@(?:[\w.]*\.)?Retention\((?:value=)?(?:[\w.]*\.)?RUNTIME\)'
+message = "a qualifier or scope annotation needs @Retention(RUNTIME) to be seen at run time"
+'''
+
+[[rules]]
+id = "ward:java/overlapping-qualifier-and-scope-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-structure"
+types = ["@interface"]
+class-has = ['^@(?:[\w.]*\.)?(?:Qualifier|BindingAnnotation)\b', '^@(?:[\w.]*\.)?(?:Scope|ScopeAnnotation)\b']
+message = "an annotation cannot be both a qualifier and a scope"
+'''
+
+[[rules]]
+id = "ward:java/parcelable-creator"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = '(?s)^(?:public|protected|private|final|static|strictfp|@\w+(?:\([^()]*\))?)*class\w+(?:<[^{]*>)?(?:extends[\w.<>,?]+)?implements[^{]*Parcelable(?![\w])[^{]*\{(?!.*CREATOR)'
+message = "a Parcelable class needs a public static CREATOR field"
+'''
