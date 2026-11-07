@@ -1,0 +1,12 @@
+
+[[rules]]
+id = "ward:java/declaration-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "declaration-order"
+message = "declaration is out of the order of static variables, instance variables, constructors and methods"
+'''

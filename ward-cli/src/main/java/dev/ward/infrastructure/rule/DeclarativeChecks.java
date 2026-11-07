@@ -112,7 +112,9 @@ final class DeclarativeChecks {
                   ? JavadocChecks.build(name, toml)
                   : ImportChecks.isImportCheck(name)
                       ? ImportChecks.build(name, toml)
-                      : ReviewChecks.build(name, toml);
+                      : StrictDeclarationChecks.isStrictDeclarationCheck(name)
+                          ? StrictDeclarationChecks.build(name, toml)
+                          : ReviewChecks.build(name, toml);
     };
   }
 

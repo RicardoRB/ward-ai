@@ -1,0 +1,14 @@
+# Strict-preset declaration rules for Java. Each rule mirrors one Checkstyle 14.3.0 check, with the
+# same option names in kebab-case and Checkstyle's defaults.
+
+[[rules]]
+id = "ward:java/declaration-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "declaration-order"
+message = "declaration is out of the order of static variables, instance variables, constructors and methods"
+'''

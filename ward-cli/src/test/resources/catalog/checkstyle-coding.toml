@@ -59,8 +59,8 @@ spotbugs = ["EQ_OTHER_USE_OBJECT"]
 name = "declaration-order"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
 typescript-eslint = ["member-ordering"]
 checkstyle = ["DeclarationOrder"]
