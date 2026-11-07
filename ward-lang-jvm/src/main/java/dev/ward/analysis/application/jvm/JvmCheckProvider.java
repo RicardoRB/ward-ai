@@ -29,6 +29,7 @@ public final class JvmCheckProvider implements CheckProvider {
             JavadocLayoutChecks.checks(),
             MetricChecks.checks(),
             ModifierChecks.checks(),
+            NullnessChecks.checks(),
             ObjectMethodChecks.checks(),
             ReviewChecks.checks(),
             StrictDeclarationChecks.checks(),
