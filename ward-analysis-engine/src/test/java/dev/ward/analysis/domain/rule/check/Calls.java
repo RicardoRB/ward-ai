@@ -1,7 +1,12 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
@@ -11,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /** Builds the syntax trees and type facts of {@link EqualsOnUnrelatedTypesCheckTest}. */
-final class EqualsCallFixtures {
+final class Calls {
   static final Span CALL = new Span(1, 1, 1, 20, 0, 19);
   static final Span RECEIVER = new Span(1, 1, 1, 5, 0, 4);
   static final Span ARGUMENT = new Span(1, 13, 1, 18, 12, 17);
@@ -20,7 +25,14 @@ final class EqualsCallFixtures {
   static final String TYPE_A = "a.A";
   static final String TYPE_B = "b.B";
 
-  private EqualsCallFixtures() {}
+  static final SourceUnit UNIT = new SourceUnit("A.java", AnalysisLanguage.JAVA, "text");
+  static final EqualsOnUnrelatedTypesCheck CHECK = new EqualsOnUnrelatedTypesCheck("{value}");
+
+  private Calls() {}
+
+  static List<RuleMatch> run(final SyntaxNode root, final UnitTypeFacts types) {
+    return CHECK.matches(root, FlowView.NONE, ScopeView.NONE, types, UNIT);
+  }
 
   static SyntaxNode call(final String method, final Span... arguments) {
     final List<SyntaxNode> expressions = new java.util.ArrayList<>();
