@@ -26,7 +26,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Checks the native JVM type facts against the fixtures the Java sidecar answered. */
 class NativeJvmTypesTest {
-  private static final Path FIXTURES = Path.of("src/test/resources/fixtures/type-sidecar");
+  private static final Path FIXTURES = Path.of("src/test/resources/fixtures/native-types");
   private static final String PATH = "src/main/java/app/User.java";
 
   @TempDir Path project;
