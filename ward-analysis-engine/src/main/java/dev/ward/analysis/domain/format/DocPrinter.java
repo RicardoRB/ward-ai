@@ -55,6 +55,9 @@ public final class DocPrinter {
     if (document instanceof Document.Group group) {
       return forcesBreak(group.body());
     }
+    if (document instanceof Document.IfBreak ifBreak) {
+      return forcesBreak(ifBreak.broken()) || forcesBreak(ifBreak.flat());
+    }
     return document instanceof Document.Concat concat
         && concat.parts().stream().anyMatch(DocPrinter::forcesBreak);
   }
@@ -64,6 +67,52 @@ public final class DocPrinter {
     for (int i = parts.size() - 1; i >= 0; i--) {
       target.push(new Command(parent.level(), parent.flat(), parts.get(i)));
     }
+  }
+
+  /**
+   * Returns the width a command adds to its line before any break, and queues the parts of a
+   * container so that {@link #fits} measures them next.
+   */
+  private static int measure(final Command next, final Deque<Command> expanding) {
+    final Document document = next.document();
+    if (document instanceof Document.Text text) {
+      final int newline = text.text().indexOf('\n');
+      return newline < 0 ? text.text().length() : newline;
+    }
+    if (document instanceof Document.Line line) {
+      return line.forced() || !next.flat() ? 0 : line.flat().length();
+    }
+    expand(next, expanding);
+    return 0;
+  }
+
+  /** Queues the parts of a container, so that the measure reads them next. */
+  private static void expand(final Command next, final Deque<Command> expanding) {
+    final Document document = next.document();
+    if (document instanceof Document.Concat concat) {
+      pushParts(expanding, next, concat.parts());
+    } else if (document instanceof Document.Indent indent) {
+      expanding.push(new Command(next.level() + 1, next.flat(), indent.body()));
+    } else if (document instanceof Document.Group group) {
+      final boolean flat = next.flat() && !forcesBreak(group.body());
+      expanding.push(new Command(next.level(), flat, group.body()));
+    } else if (document instanceof Document.IfBreak ifBreak) {
+      expanding.push(new Command(next.level(), next.flat(), chosen(next, ifBreak)));
+    }
+  }
+
+  /** The alternative an if-break prints for the command: flat when the group is flat. */
+  private static Document chosen(final Command command, final Document.IfBreak ifBreak) {
+    return command.flat() ? ifBreak.flat() : ifBreak.broken();
+  }
+
+  /** Tells whether a command ends the line when measured: a break, or text with a newline. */
+  private static boolean endsLine(final Command next) {
+    final Document document = next.document();
+    if (document instanceof Document.Line line) {
+      return line.forced() || !next.flat();
+    }
+    return document instanceof Document.Text text && text.text().indexOf('\n') >= 0;
   }
 
   /** A document waiting to be placed, with its indentation level and whether it is flat. */
@@ -89,16 +138,24 @@ public final class DocPrinter {
 
     private void place(final Command command) {
       final Document document = command.document();
+      if (document instanceof Document.Line line) {
+        placeLine(command, line);
+      } else if (document instanceof Document.Group group) {
+        placeGroup(command, group);
+      } else {
+        emit(command, document);
+      }
+    }
+
+    private void emit(final Command command, final Document document) {
       if (document instanceof Document.Text text) {
         writeText(text.text());
-      } else if (document instanceof Document.Line line) {
-        placeLine(command, line);
       } else if (document instanceof Document.Concat concat) {
         pushParts(pending, command, concat.parts());
       } else if (document instanceof Document.Indent indent) {
         pending.push(new Command(command.level() + 1, command.flat(), indent.body()));
-      } else if (document instanceof Document.Group group) {
-        placeGroup(command, group);
+      } else if (document instanceof Document.IfBreak ifBreak) {
+        pending.push(new Command(command.level(), command.flat(), chosen(command, ifBreak)));
       }
     }
 
@@ -139,39 +196,6 @@ public final class DocPrinter {
         }
       }
       return false;
-    }
-
-    /**
-     * Returns the width a command adds to its line before any break, and queues the parts of a
-     * container so that {@link #fits} measures them next.
-     */
-    private static int measure(final Command next, final Deque<Command> expanding) {
-      final Document document = next.document();
-      if (document instanceof Document.Text text) {
-        final int newline = text.text().indexOf('\n');
-        return newline < 0 ? text.text().length() : newline;
-      }
-      if (document instanceof Document.Line line) {
-        return line.forced() || !next.flat() ? 0 : line.flat().length();
-      }
-      if (document instanceof Document.Concat concat) {
-        pushParts(expanding, next, concat.parts());
-      } else if (document instanceof Document.Indent indent) {
-        expanding.push(new Command(next.level() + 1, next.flat(), indent.body()));
-      } else if (document instanceof Document.Group group) {
-        final boolean flat = next.flat() && !forcesBreak(group.body());
-        expanding.push(new Command(next.level(), flat, group.body()));
-      }
-      return 0;
-    }
-
-    /** Tells whether a command ends the line when measured: a break, or text with a newline. */
-    private static boolean endsLine(final Command next) {
-      final Document document = next.document();
-      if (document instanceof Document.Line line) {
-        return line.forced() || !next.flat();
-      }
-      return document instanceof Document.Text text && text.text().indexOf('\n') >= 0;
     }
 
     private void breakLine(final int level) {

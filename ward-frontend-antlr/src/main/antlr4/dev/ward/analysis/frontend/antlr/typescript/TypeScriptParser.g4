@@ -61,11 +61,22 @@ typeParameterList
     ;
 
 typeParameter
-    : identifier constraint?
-    | identifier '=' typeArgument
+    : typeParameterModifier* identifier constraint?
+    | typeParameterModifier* identifier '=' typeArgument
     | typeParameters
     ;
-
+typeParameterModifier
+    : constModifier
+    | varianceModifier
+    ;
+constModifier
+    : Const
+    ;
+// `in` and `out` variance annotations; `out` is not a reserved word
+varianceModifier
+    : In
+    | {this.n("out")}? identifier
+    ;
 constraint
     : 'extends' type_
     ;
@@ -85,12 +96,15 @@ typeArgument
 // Union and intersection types can have a leading '|' or '&'
 // See https://github.com/microsoft/TypeScript/pull/12386
 type_
-    : ('|' | '&')? unionOrIntersectionOrPrimaryType
+    : conditionalType
+    | ('|' | '&')? unionOrIntersectionOrPrimaryType
     | functionType
     | constructorType
     | typeGeneric
     ;
-
+conditionalType
+    : unionOrIntersectionOrPrimaryType 'extends' unionOrIntersectionOrPrimaryType '?' type_ ':' type_
+    ;
 unionOrIntersectionOrPrimaryType
     : unionOrIntersectionOrPrimaryType '|' unionOrIntersectionOrPrimaryType # Union
     | unionOrIntersectionOrPrimaryType '&' unionOrIntersectionOrPrimaryType # Intersection
@@ -99,6 +113,9 @@ unionOrIntersectionOrPrimaryType
 
 primaryType
     : '(' type_ ')'                              # ParenthesizedPrimType
+    | readonlyType                               # ReadonlyPrimType
+    | templateStringType                         # TemplateStringPrimType
+    | inferType                                  # InferPrimType
     | predefinedType                             # PredefinedPrimType
     | typeReference                              # ReferencePrimType
     | objectType                                 # ObjectPrimType
@@ -127,10 +144,23 @@ predefinedType
     | Void
     ;
 
+readonlyType
+    : ReadOnly primaryType
+    ;
+templateStringType
+    : BackTick templateStringTypeAtom* BackTick
+    ;
+templateStringTypeAtom
+    : TemplateStringAtom
+    | TemplateStringEscapeAtom
+    | TemplateStringStartExpression type_ TemplateCloseBrace
+    ;
+inferType
+    : {this.n("infer")}? identifier identifier constraint?
+    ;
 typeReference
     : typeName typeGeneric?
     ;
-
 typeGeneric
     : '<' typeArgumentList typeGeneric?'>'
     ;
@@ -170,9 +200,11 @@ tupleType
 
 // Tuples can have a trailing comma. See https://github.com/Microsoft/TypeScript/issues/28893
 tupleElementTypes
-    : type_ (',' type_)* ','?
+    : tupleElementType (',' tupleElementType)* ','?
     ;
-
+tupleElementType
+    : Ellipsis? type_
+    ;
 functionType
     : typeParameters? '(' parameterList? ')' '=>' type_
     ;
@@ -286,7 +318,7 @@ classOrInterfaceTypeList
 // A.7 Interface
 
 enumDeclaration
-    : Const? Enum identifier '{' enumBody? '}'
+    : Declare? Const? Enum identifier '{' enumBody? '}'
     ;
 
 enumBody
@@ -341,14 +373,17 @@ program
     ;
 
 sourceElement
-    : Export? statement
+    : ({this.notExportClauseAhead()}? Export)? statement
     ;
 
 statement
     : block
+    | usingDeclaration
+    | typeAliasDeclaration
     | namespaceDeclaration //ADDED
     | variableStatement
     | importStatement
+    | importEqualsDeclaration
     | exportStatement
     | emptyStatement_
     | abstractDeclaration //ADDED
@@ -369,7 +404,6 @@ statement
     | debuggerStatement
     | arrowFunctionDeclaration
     | generatorFunctionDeclaration
-    | typeAliasDeclaration //ADDED
     | enumDeclaration      //ADDED
     | Export statement
     | expressionStatement
@@ -392,18 +426,25 @@ importStatement
     ;
 
 importFromBlock
-    : importDefault? (importNamespace | importModuleItems) importFrom eos
-    | StringLiteral eos
+    : typeOnlyModifier? importDefault? (importNamespace | importModuleItems) importFrom importAttributes? eos
+    | StringLiteral importAttributes? eos
     ;
-
 importModuleItems
     : '{' (importAliasName ',')* (importAliasName ','?)? '}'
     ;
-
 importAliasName
-    : moduleExportName (As importedBinding)?
+    : typeOnlyModifier? moduleExportName (As importedBinding)?
     ;
-
+// `import type` and `export type`, and the `type` marker on one specifier
+typeOnlyModifier
+    : TypeAlias
+    ;
+importAttributes
+    : With '{' (importAttribute (',' importAttribute)* ','?)? '}'
+    ;
+importAttribute
+    : moduleExportName ':' StringLiteral
+    ;
 moduleExportName
     : identifierName
     | StringLiteral
@@ -433,21 +474,19 @@ aliasName
     ;
 
 exportStatement
-    : Export Default? (exportFromBlock | declaration) eos # ExportDeclaration
+    : Export typeOnlyModifier? Default? (exportFromBlock | declaration) eos # ExportDeclaration
     | Export Default singleExpression eos                 # ExportDefaultDeclaration
     ;
 
 exportFromBlock
-    : importNamespace importFrom eos
-    | exportModuleItems importFrom? eos
+    : importNamespace importFrom importAttributes? eos
+    | exportModuleItems (importFrom importAttributes?)? eos
     ;
-
 exportModuleItems
     : '{' (exportAliasName ',')* (exportAliasName ','?)? '}'
     ;
-
 exportAliasName
-    : moduleExportName (As moduleExportName)?
+    : typeOnlyModifier? moduleExportName (As moduleExportName)?
     ;
 
 declaration
@@ -456,6 +495,10 @@ declaration
     | functionDeclaration
     ;
 
+// `using` and `await using` declarations; `using` is not a reserved word
+usingDeclaration
+    : Await? {this.n("using")}? identifier variableDeclarationList eos
+    ;
 variableStatement
     : bindingPattern typeAnnotation? initializer SemiColon?
     | accessibilityModifier? varModifier? ReadOnly? variableDeclarationList SemiColon?
@@ -606,7 +649,10 @@ propertyMemberDeclaration
     ;
 
 propertyMemberBase
-    : accessibilityModifier? Async? Static? ReadOnly?
+    : accessibilityModifier? Async? Static? ReadOnly? accessorModifier?
+    ;
+accessorModifier
+    : {this.n("accessor")}? identifier
     ;
 
 indexMemberDeclaration
@@ -777,6 +823,7 @@ singleExpression
     | generatorFunctionDeclaration                                    # GeneratorsFunctionExpression // ECMAScript 6
     | yieldStatement                                                  # YieldExpression              // ECMAScript 6
     | This                                                            # ThisExpression
+    | importMetaExpression                                            # ImportMeta
     | identifierName singleExpression?                                # IdentifierExpression
     | Super                                                           # SuperExpression
     | literal                                                         # LiteralExpression
@@ -785,10 +832,23 @@ singleExpression
     | '(' expressionSequence ')'                                      # ParenthesizedExpression
     | typeArguments expressionSequence?                               # GenericTypes
     | singleExpression As asExpression                                # CastAsExpression
+    | singleExpression satisfiesClause                                # SatisfiesExpression
 // TypeScript v2.0
     | singleExpression '!'                                            # NonNullAssertionExpression
     ;
 
+// `satisfies` is not a reserved word, so it is matched by its text
+satisfiesClause
+    : {this.n("satisfies")}? identifier type_
+    ;
+// `import x = require('m')` and `import x = A.B`
+importEqualsDeclaration
+    : Import identifier '=' (Require '(' StringLiteral ')' | namespaceName) eos
+    ;
+// `import.meta`: the `meta` property of the module
+importMetaExpression
+    : Import '.' identifierName
+    ;
 asExpression
     : predefinedType ('[' ']')?
     | singleExpression

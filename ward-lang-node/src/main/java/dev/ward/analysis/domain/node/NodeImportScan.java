@@ -4,41 +4,35 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
- * Reads the names the import declarations of one file bind, from its tokens. Tokens are used rather
- * than the tree because the TypeScript grammar does not parse {@code import type} and {@code import
- * { type A }}, and reads them as unrelated statements.
+ * Reads the names the import declarations of one file bind, from the syntax tree. The grammar
+ * produces the type-only markers, the specifier lists and the module string as nodes, so the names
+ * are read from them directly.
  */
 final class NodeImportScan {
 
-  private static final Pattern WORD = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
+  private static final String IMPORT_STATEMENT = "importStatement";
+  private static final String IMPORT_EQUALS = "importEqualsDeclaration";
+  private static final String IMPORT_FROM_BLOCK = "importFromBlock";
+  private static final String IMPORT_FROM = "importFrom";
+  private static final String IMPORT_DEFAULT = "importDefault";
+  private static final String IMPORT_NAMESPACE = "importNamespace";
+  private static final String IMPORT_MODULE_ITEMS = "importModuleItems";
+  private static final String IMPORT_ALIAS_NAME = "importAliasName";
+  private static final String MODULE_EXPORT_NAME = "moduleExportName";
+  private static final String IMPORTED_BINDING = "importedBinding";
+  private static final String TYPE_ONLY = "typeOnlyModifier";
   private static final String STRING = "StringLiteral";
-  private static final String TYPE = "type";
-  private static final String FROM = "from";
-  private static final String AS = "as";
-  private static final String COMMA = ",";
-  private static final String OPEN = "{";
-  private static final String CLOSE = "}";
+  private static final String REQUIRE = "Require";
+  private static final String DEFAULT = "default";
   private static final String STAR = "*";
-  private static final String EQUALS = "=";
-  private static final String REQUIRE = "require";
-  private static final Set<String> DEFAULT_FOLLOWERS = Set.of(",", "from", "=");
-  private static final int REQUIRE_STRING_OFFSET = 3;
 
-  private final NodeTokens tokens;
   private final List<Binding> bindings = new ArrayList<>();
   private final List<Span> sites = new ArrayList<>();
 
   NodeImportScan(final SyntaxNode tree) {
-    this.tokens = new NodeTokens(NodeLeaves.of(tree));
-    for (int index = 0; index < tokens.size(); index++) {
-      if (tokens.isKeyword(index, "import") && tokens.isStatementKeyword(index)) {
-        scan(index);
-      }
-    }
+    collect(tree);
   }
 
   /** The names the imports bind, in source order. */
@@ -51,147 +45,103 @@ final class NodeImportScan {
     return List.copyOf(sites);
   }
 
-  private void scan(final int start) {
-    int index = start + 1;
-    if (STRING.equals(tokens.kind(index))) {
-      sites.add(skip(start, index));
+  private void collect(final SyntaxNode node) {
+    if (IMPORT_STATEMENT.equals(node.kind())) {
+      importStatement(node);
+    } else if (IMPORT_EQUALS.equals(node.kind())) {
+      importEquals(node);
+    } else {
+      node.children().forEach(this::collect);
+    }
+  }
+
+  private void importStatement(final SyntaxNode statement) {
+    final SyntaxNode block = NodeLeaves.child(statement, IMPORT_FROM_BLOCK);
+    final boolean typeOnly = NodeLeaves.hasChild(block, TYPE_ONLY);
+    final SyntaxNode literal = moduleLiteral(block);
+    if (literal == null) {
+      sites.add(statement.span());
       return;
     }
-    final boolean typeOnly = isTypeKeyword(index);
-    index += typeOnly ? 1 : 0;
-    if (isWord(index) && EQUALS.equals(tokens.text(index + 1))) {
-      requireForm(start, index);
+    final String specifier = NodeTokens.unquote(NodeLeaves.text(literal));
+    final Span site = NodeLeaves.site(statement, literal);
+    for (final SyntaxNode part : block.children()) {
+      if (IMPORT_DEFAULT.equals(part.kind())) {
+        addDefault(part, typeOnly, specifier, site);
+      } else if (IMPORT_NAMESPACE.equals(part.kind())) {
+        addNamespace(part, typeOnly, specifier, site);
+      } else if (IMPORT_MODULE_ITEMS.equals(part.kind())) {
+        part.children().stream()
+            .filter(item -> IMPORT_ALIAS_NAME.equals(item.kind()))
+            .forEach(item -> addNamed(item, typeOnly, specifier, site));
+      }
+    }
+    sites.add(statement.span());
+  }
+
+  /** Reads {@code import x = require('m')}, the only equals form that binds a module. */
+  private void importEquals(final SyntaxNode declaration) {
+    final List<SyntaxNode> leaves = NodeLeaves.of(declaration);
+    final boolean requireForm = leaves.stream().anyMatch(leaf -> REQUIRE.equals(leaf.kind()));
+    if (!requireForm) {
       return;
     }
-    final List<SyntaxNode> names = new ArrayList<>();
-    final List<String> members = new ArrayList<>();
-    final List<Boolean> types = new ArrayList<>();
-    index = defaultImport(index, typeOnly, names, members, types);
-    index = literalAfter(clause(index, names, members, types));
-    if (index >= tokens.size()) {
-      return;
-    }
-    final Span site = site(start, index);
-    final String specifier = NodeTokens.unquote(tokens.text(index));
-    sites.add(skip(start, index));
-    for (int slot = 0; slot < names.size(); slot++) {
-      bindings.add(
-          new Binding(
-              names.get(slot), members.get(slot), specifier, typeOnly || types.get(slot), site));
-    }
+    final SyntaxNode literal =
+        leaves.stream().filter(leaf -> STRING.equals(leaf.kind())).findFirst().orElseThrow();
+    final SyntaxNode name = leaves.get(1);
+    final Span site = NodeLeaves.site(declaration, literal);
+    bindings.add(
+        new Binding(name, STAR, NodeTokens.unquote(NodeLeaves.text(literal)), false, site));
+    sites.add(declaration.span());
   }
 
-  /** Reads a default import name and the comma after it; returns the index after them. */
-  private int defaultImport(
-      final int start,
-      final boolean typeOnly,
-      final List<SyntaxNode> names,
-      final List<String> members,
-      final List<Boolean> types) {
-    if (!isWord(start) || !DEFAULT_FOLLOWERS.contains(tokens.text(start + 1))) {
-      return start;
-    }
-    names.add(tokens.leaf(start));
-    members.add("default");
-    types.add(typeOnly);
-    return COMMA.equals(tokens.text(start + 1)) ? start + 2 : start + 1;
+  /** A default import, or the default of a namespace-shaped part without a star. */
+  private void addDefault(
+      final SyntaxNode part, final boolean typeOnly, final String specifier, final Span site) {
+    bindings.add(new Binding(NodeLeaves.of(part).get(0), DEFAULT, specifier, typeOnly, site));
   }
 
-  private int literalAfter(final int from) {
-    int index = from;
-    while (index < tokens.size() && !STRING.equals(tokens.kind(index))) {
-      index++;
-    }
-    return index;
-  }
-
-  private boolean isTypeKeyword(final int index) {
-    return TYPE.equals(tokens.text(index))
-        && (OPEN.equals(tokens.text(index + 1))
-            || STAR.equals(tokens.text(index + 1))
-            || isWord(index + 1) && !FROM.equals(tokens.text(index + 1)));
-  }
-
-  private boolean isString(final int index) {
-    return STRING.equals(tokens.kind(index));
-  }
-
-  private boolean isWord(final int index) {
-    return WORD.matcher(tokens.text(index)).matches() && !STRING.equals(tokens.kind(index));
-  }
-
-  /** Reads {@code * as ns} or {@code { a, b as c, type d }} from {@code index}; returns the end. */
-  private int clause(
-      final int index,
-      final List<SyntaxNode> names,
-      final List<String> members,
-      final List<Boolean> types) {
-    if (STAR.equals(tokens.text(index)) && AS.equals(tokens.text(index + 1))) {
-      names.add(tokens.leaf(index + 2));
-      members.add(STAR);
-      types.add(Boolean.FALSE);
-      return index + REQUIRE_STRING_OFFSET;
-    }
-    if (!OPEN.equals(tokens.text(index))) {
-      return index;
-    }
-    int cursor = index + 1;
-    while (cursor < tokens.size() && !CLOSE.equals(tokens.text(cursor))) {
-      cursor = specifier(cursor, names, members, types);
-    }
-    return cursor + 1;
-  }
-
-  private int specifier(
-      final int start,
-      final List<SyntaxNode> names,
-      final List<String> members,
-      final List<Boolean> types) {
-    int cursor = start;
-    final boolean type =
-        TYPE.equals(tokens.text(cursor))
-            && isWord(cursor + 1)
-            && !AS.equals(tokens.text(cursor + 1));
-    cursor += type ? 1 : 0;
-    if (isWord(cursor) || STRING.equals(tokens.kind(cursor))) {
-      final String member = NodeTokens.unquote(tokens.text(cursor));
-      final int local = AS.equals(tokens.text(cursor + 1)) ? cursor + 2 : cursor;
-      names.add(tokens.leaf(local));
-      members.add(member);
-      types.add(type);
-      cursor = local;
-    }
-    cursor++;
-    return COMMA.equals(tokens.text(cursor)) ? cursor + 1 : cursor;
-  }
-
-  /** {@code import x = require('m')}. */
-  private void requireForm(final int start, final int name) {
-    if (REQUIRE.equals(tokens.text(name + 2)) && isString(name + REQUIRE_STRING_OFFSET + 1)) {
-      final int literal = name + REQUIRE_STRING_OFFSET + 1;
-      final Span site = site(start, literal);
-      sites.add(skip(start, literal));
-      bindings.add(
-          new Binding(
-              tokens.leaf(name), "*", NodeTokens.unquote(tokens.text(literal)), false, site));
+  /** {@code * as ns} binds the namespace; a bare name is the default export. */
+  private void addNamespace(
+      final SyntaxNode part, final boolean typeOnly, final String specifier, final Span site) {
+    final List<SyntaxNode> leaves = NodeLeaves.of(part);
+    if (STAR.equals(NodeLeaves.text(leaves.get(0)))) {
+      bindings.add(new Binding(leaves.get(leaves.size() - 1), STAR, specifier, false, site));
+    } else {
+      bindings.add(new Binding(leaves.get(0), DEFAULT, specifier, typeOnly, site));
     }
   }
 
-  /** The region to leave out of the tree walk: the import and its closing semicolon. */
-  private Span skip(final int from, final int to) {
-    return site(from, ";".equals(tokens.text(to + 1)) ? to + 1 : to);
+  /** {@code name}, {@code name as local}, {@code type name} or {@code "string" as local}. */
+  private void addNamed(
+      final SyntaxNode item, final boolean typeOnly, final String specifier, final Span site) {
+    final List<SyntaxNode> exported = NodeLeaves.of(NodeLeaves.child(item, MODULE_EXPORT_NAME));
+    final SyntaxNode binding = NodeLeaves.child(item, IMPORTED_BINDING);
+    final SyntaxNode local =
+        binding != null ? NodeLeaves.of(binding).get(0) : exported.get(exported.size() - 1);
+    final boolean itemTypeOnly = typeOnly || NodeLeaves.hasChild(item, TYPE_ONLY);
+    bindings.add(
+        new Binding(
+            local,
+            NodeTokens.unquote(NodeLeaves.text(exported.get(0))),
+            specifier,
+            itemTypeOnly,
+            site));
   }
 
-  private Span site(final int from, final int to) {
-    final Span first = tokens.leaf(from).span();
-    final Span last = tokens.leaf(to).span();
-    return new Span(
-        first.startLine(),
-        first.startColumn(),
-        last.endLine(),
-        last.endColumn(),
-        first.startOffset(),
-        last.endOffset());
+  /** The module string: a direct child of the block, or of its {@code from} clause. */
+  private static SyntaxNode moduleLiteral(final SyntaxNode block) {
+    final SyntaxNode from = NodeLeaves.child(block, IMPORT_FROM);
+    if (from != null) {
+      return NodeLeaves.of(from).stream()
+          .filter(leaf -> STRING.equals(leaf.kind()))
+          .findFirst()
+          .orElse(null);
+    }
+    return block.children().stream()
+        .filter(leaf -> STRING.equals(leaf.kind()))
+        .findFirst()
+        .orElse(null);
   }
 
   /**

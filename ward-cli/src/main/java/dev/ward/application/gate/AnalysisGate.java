@@ -107,7 +107,13 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
-    final TypeFactsRun types = new TypeFactsRun(ports.nativeTypeFacts().apply(project.root()));
+    final TypeFactsRun types =
+        new TypeFactsRun(
+            ports
+                .nativeTypeFacts()
+                .apply(
+                    project.root(),
+                    Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
     final UnitResultCache.CachedRun run =
         results.analyze(cache, units, types.withTypes(ports.frontends()), rules);
     return AnalysisGateResults.result(name, focused(ExcludedFindings.drop(run, set), rules), rules);

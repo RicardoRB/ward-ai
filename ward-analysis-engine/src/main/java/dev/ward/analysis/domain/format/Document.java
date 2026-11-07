@@ -9,7 +9,12 @@ import java.util.Objects;
  * DocPrinter} lays it out for a line width and indentation style.
  */
 public sealed interface Document
-    permits Document.Text, Document.Line, Document.Indent, Document.Group, Document.Concat {
+    permits Document.Text,
+        Document.Line,
+        Document.Indent,
+        Document.Group,
+        Document.Concat,
+        Document.IfBreak {
 
   /**
    * Verbatim text. It must not carry a line break except inside a token that the source already had
@@ -100,6 +105,26 @@ public sealed interface Document
   }
 
   /**
+   * Prints {@code broken} when its enclosing group breaks, and {@code flat} when it stays on one
+   * line. Used for a comma that the source ends a list with, which only a broken list keeps.
+   *
+   * @param broken the document printed when the group breaks
+   * @param flat the document printed when the group stays flat
+   */
+  record IfBreak(Document broken, Document flat) implements Document {
+
+    /**
+     * Checks both documents.
+     *
+     * @throws NullPointerException if a document is missing
+     */
+    public IfBreak {
+      Objects.requireNonNull(broken, "broken");
+      Objects.requireNonNull(flat, "flat");
+    }
+  }
+
+  /**
    * Makes verbatim text.
    *
    * @param text the text
@@ -154,6 +179,17 @@ public sealed interface Document
    */
   static Document group(final Document body) {
     return new Group(body);
+  }
+
+  /**
+   * Makes a document that prints one of two alternatives, by whether its group breaks.
+   *
+   * @param broken the document printed when the group breaks
+   * @param flat the document printed when the group stays flat
+   * @return the document
+   */
+  static Document ifBreak(final Document broken, final Document flat) {
+    return new IfBreak(broken, flat);
   }
 
   /**

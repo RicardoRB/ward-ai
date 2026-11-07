@@ -130,7 +130,7 @@ class JavaResolutionGateTest {
             AnalysisCacheFixtures.codec(),
             "test",
             new JvmDependencyAdapters(),
-            unused -> Map.of()),
+            (unused, classpath) -> Map.of()),
         javaClasspath);
   }
 
