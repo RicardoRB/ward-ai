@@ -116,8 +116,6 @@ errorprone = ["ArrayToString"]
 
 [[rule]]
 name = "arrays-as-list-primitive-array"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArraysAsListPrimitiveArray"]
 
 [[rule]]
@@ -673,8 +671,6 @@ errorprone = ["DefaultPackage"]
 
 [[rule]]
 name = "dep-ann"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DepAnn"]
 
 [[rule]]
@@ -773,8 +769,6 @@ errorprone = ["DuplicateMapKeys"]
 
 [[rule]]
 name = "duration-from"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DurationFrom"]
 
 [[rule]]
@@ -1143,8 +1137,6 @@ errorprone = ["FutureTransformAsync"]
 
 [[rule]]
 name = "futures-get-checked-illegal-exception-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FuturesGetCheckedIllegalExceptionType"]
 
 [[rule]]

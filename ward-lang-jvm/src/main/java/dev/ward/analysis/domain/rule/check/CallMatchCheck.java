@@ -44,6 +44,8 @@ public final class CallMatchCheck implements RuleCheck {
    * @param text a pattern found in the compact text of the call, empty for any text
    * @param ignored whether the call must be a statement, so that its result is dropped
    * @param argumentTypes qualified names of the type of the first argument
+   * @param anyArgumentTypes qualified names of the type of at least one argument
+   * @param argumentPrimitiveArray whether at least one argument must be an array of primitives
    */
   public record Criteria(
       Set<String> declaringTypes,
@@ -52,7 +54,9 @@ public final class CallMatchCheck implements RuleCheck {
       boolean receiverArray,
       Pattern text,
       boolean ignored,
-      Set<String> argumentTypes) {
+      Set<String> argumentTypes,
+      Set<String> anyArgumentTypes,
+      boolean argumentPrimitiveArray) {
 
     /** Copies the sets. */
     public Criteria {
@@ -60,6 +64,7 @@ public final class CallMatchCheck implements RuleCheck {
       names = Set.copyOf(names);
       receiverTypes = Set.copyOf(receiverTypes);
       argumentTypes = Set.copyOf(argumentTypes);
+      anyArgumentTypes = Set.copyOf(anyArgumentTypes);
       Objects.requireNonNull(text, "text");
     }
   }
@@ -110,6 +115,7 @@ public final class CallMatchCheck implements RuleCheck {
         && (criteria.names().isEmpty() || criteria.names().contains(target.get().name()))
         && receiverMeets(call, types)
         && argumentMeets(call, types)
+        && anyArgumentsMeet(call, types)
         && criteria.text().matcher(SyntaxWalk.text(call)).find()
         && (!criteria.ignored() || isStatement(call, visit));
   }
@@ -136,23 +142,10 @@ public final class CallMatchCheck implements RuleCheck {
 
   private boolean argumentMeets(final SyntaxNode call, final UnitTypeFacts types) {
     return criteria.argumentTypes().isEmpty()
-        || firstArgument(call)
+        || CallArgumentNodes.first(call)
             .flatMap(argument -> types.typeOf(argument.span()))
             .filter(type -> criteria.argumentTypes().contains(type.name()))
             .isPresent();
-  }
-
-  private static Optional<SyntaxNode> firstArgument(final SyntaxNode call) {
-    return call.children().stream()
-        .filter(part -> "methodCall".equals(part.kind()))
-        .findFirst()
-        .flatMap(
-            invoked ->
-                SyntaxWalk.descendants(invoked).stream()
-                    .filter(node -> "expressionList".equals(node.kind()))
-                    .findFirst())
-        .flatMap(
-            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst());
   }
 
   /** Tells whether the call is a whole expression statement, as in {@code call();}. */
@@ -167,5 +160,25 @@ public final class CallMatchCheck implements RuleCheck {
         && parts.size() == STATEMENT_PARTS
         && parts.get(0).span().equals(call.span())
         && SEMICOLON.equals(parts.get(1).kind());
+  }
+
+  /**
+   * Tells whether some argument has one of the {@code any-argument-types}, or a primitive array.
+   */
+  private boolean anyArgumentsMeet(final SyntaxNode call, final UnitTypeFacts types) {
+    return criteria.anyArgumentTypes().isEmpty() && !criteria.argumentPrimitiveArray()
+        || CallArgumentNodes.all(call).stream()
+            .map(argument -> types.typeOf(argument.span()))
+            .flatMap(Optional::stream)
+            .anyMatch(this::anyTypeMeets);
+  }
+
+  private boolean anyTypeMeets(final TypeRef type) {
+    final boolean array = type.arrayDepth() > 0;
+    final boolean typeOk =
+        criteria.anyArgumentTypes().isEmpty()
+            || !array && criteria.anyArgumentTypes().contains(type.name());
+    final boolean arrayOk = !criteria.argumentPrimitiveArray() || array && type.primitive();
+    return typeOk && arrayOk;
   }
 }
