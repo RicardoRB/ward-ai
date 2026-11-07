@@ -9,9 +9,7 @@ biome = ["noAccessKey"]
 
 [[rule]]
 name = "no-accumulating-spread"
-category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noAccumulatingSpread"]
 
 [[rule]]
@@ -285,9 +283,8 @@ biome = ["noDynamicNamespaceImportAccess"]
 
 [[rule]]
 name = "no-empty-interface"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "not-applicable" }
+not-applicable = { javascript = "TypeScript interface declarations have no JavaScript counterpart" }
 biome = ["noEmptyInterface"]
 
 [[rule]]
@@ -1154,9 +1151,7 @@ biome = ["noUselessLoneBlockStatements"]
 
 [[rule]]
 name = "no-useless-string-raw"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessStringRaw"]
 
 [[rule]]
@@ -1301,9 +1296,7 @@ biome = ["useAriaPropsSupportedByRole"]
 
 [[rule]]
 name = "use-array-find"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useArrayFind"]
 
 [[rule]]
@@ -1406,9 +1399,7 @@ biome = ["useControlLabel"]
 
 [[rule]]
 name = "use-date-now"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useDateNow"]
 
 [[rule]]
@@ -1518,9 +1509,7 @@ biome = ["useFilenamingConvention"]
 
 [[rule]]
 name = "use-flat-map"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useFlatMap"]
 
 [[rule]]
@@ -1623,9 +1612,7 @@ biome = ["useImportsFirst"]
 
 [[rule]]
 name = "use-index-of"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useIndexOf"]
 
 [[rule]]
@@ -1637,9 +1624,7 @@ biome = ["useInlineScriptId"]
 
 [[rule]]
 name = "use-is-array"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useIsArray"]
 
 [[rule]]
@@ -1714,9 +1699,7 @@ biome = ["useNumberNamespace"]
 
 [[rule]]
 name = "use-number-to-fixed-digits-argument"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useNumberToFixedDigitsArgument"]
 
 [[rule]]
