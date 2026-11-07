@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.analysis;
+package dev.ward.analysis.application.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

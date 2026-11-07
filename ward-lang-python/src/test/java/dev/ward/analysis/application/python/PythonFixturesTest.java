@@ -95,12 +95,18 @@ class PythonFixturesTest {
           Files.readAllLines(owned.directory().resolve("expected" + suffix + ".txt")).stream()
               .filter(line -> !line.isBlank())
               .toList();
-      assertThat(run(rule, owned.directory().resolve(VIOLATING + suffix + "." + EXTENSION)))
+      assertThat(
+              run(
+                  rule,
+                  owned.directory().resolve(VIOLATING + suffix + "." + EXTENSION),
+                  owned.directory()))
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
       final Path passing = owned.directory().resolve("passing" + suffix + "." + EXTENSION);
       if (Files.isRegularFile(passing)) {
-        assertThat(run(rule, passing)).as("%s passing%s", owned, suffix).isEmpty();
+        assertThat(run(rule, passing, owned.directory()))
+            .as("%s passing%s", owned, suffix)
+            .isEmpty();
       }
     }
   }
@@ -119,7 +125,8 @@ class PythonFixturesTest {
     return values;
   }
 
-  private static List<String> run(final RuleDefinition rule, final Path file) throws IOException {
+  private static List<String> run(final RuleDefinition rule, final Path file, final Path directory)
+      throws IOException {
     final Map<String, CheckFactory> factories = new PythonCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
     final AnalysisLanguage language = rule.languages().iterator().next();
@@ -131,7 +138,7 @@ class PythonFixturesTest {
                         file.getFileName().toString(),
                         language,
                         Files.readString(file, StandardCharsets.UTF_8))),
-                PythonFixtureFrontends.of(language),
+                PythonFixtureFrontends.forRule(rule, language, directory),
                 List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();

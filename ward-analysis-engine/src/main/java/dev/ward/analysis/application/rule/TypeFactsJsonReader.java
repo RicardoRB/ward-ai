@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.analysis;
+package dev.ward.analysis.application.rule;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

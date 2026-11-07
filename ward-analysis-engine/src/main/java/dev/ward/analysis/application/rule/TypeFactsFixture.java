@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.analysis;
+package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
