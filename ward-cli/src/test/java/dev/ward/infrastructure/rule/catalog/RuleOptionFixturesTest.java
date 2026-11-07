@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.tomlj.Toml;
+import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -128,7 +129,8 @@ class RuleOptionFixturesTest {
     final TomlParseResult toml = Toml.parse(Files.readString(directory.resolve("options.toml")));
     final Map<String, Object> values = new HashMap<>();
     for (final String key : toml.keySet()) {
-      values.put(key, toml.get(key));
+      final Object value = toml.get(key);
+      values.put(key, value instanceof TomlArray array ? array.toList() : value);
     }
     return values;
   }
