@@ -134,7 +134,7 @@ description: Rules of the catalog file spotbugs and their counterparts.
 | `ec-null-arg` | correctness | [#314](https://github.com/RicardoRB/ward-ai/issues/314) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_NULL_ARG` |
 | `ec-unrelated-class-and-interface` | correctness | [#314](https://github.com/RicardoRB/ward-ai/issues/314) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_UNRELATED_CLASS_AND_INTERFACE` |
 | `ec-unrelated-interfaces` | correctness | [#314](https://github.com/RicardoRB/ward-ai/issues/314) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_UNRELATED_INTERFACES` |
-| `ec-unrelated-types` | correctness | [#314](https://github.com/RicardoRB/ward-ai/issues/314) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_UNRELATED_TYPES` |
+| `ec-unrelated-types` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_UNRELATED_TYPES` |
 | `ec-unrelated-types-using-pointer-equality` | correctness | [#314](https://github.com/RicardoRB/ward-ai/issues/314) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EC_UNRELATED_TYPES_USING_POINTER_EQUALITY` |
 | `ei-expose-buf` | malicious-code | [#318](https://github.com/RicardoRB/ward-ai/issues/318) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EI_EXPOSE_BUF` |
 | `ei-expose-buf2` | malicious-code | [#318](https://github.com/RicardoRB/ward-ai/issues/318) | n/a | n/a | n/a | n/a | n/a | SpotBugs `EI_EXPOSE_BUF2` |
@@ -505,3 +505,9 @@ description: Rules of the catalog file spotbugs and their counterparts.
 | `wmi-wrong-map-iterator` | performance | [#318](https://github.com/RicardoRB/ward-ai/issues/318) | n/a | n/a | n/a | n/a | n/a | SpotBugs `WMI_WRONG_MAP_ITERATOR` |
 | `ws-writeobject-sync` | mt-correctness | [#317](https://github.com/RicardoRB/ward-ai/issues/317) | n/a | n/a | n/a | n/a | n/a | SpotBugs `WS_WRITEOBJECT_SYNC` |
 | `xfb-xml-factory-bypass` | style | [#318](https://github.com/RicardoRB/ward-ai/issues/318) | n/a | n/a | n/a | n/a | n/a | SpotBugs `XFB_XML_FACTORY_BYPASS` |
+
+## Implemented rules
+
+| Rule | Category | Presets | Options | Counterparts |
+|---|---|---|---|---|
+| `ward:java/equals-on-unrelated-types` | bestpractices |  | none | SpotBugs `EC_UNRELATED_TYPES` |

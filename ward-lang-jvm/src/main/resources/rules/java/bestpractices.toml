@@ -589,6 +589,18 @@ message = "private method '{value}' is never called"
 '''
 
 [[rules]]
+id = "ward:java/equals-on-unrelated-types"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = []
+body = '''
+check = "equals-on-unrelated-types"
+message = "equals between {value} is always false"
+'''
+
+[[rules]]
 id = "ward:java/unused-formal-parameter"
 language = "java"
 capability = "SYNTAX"

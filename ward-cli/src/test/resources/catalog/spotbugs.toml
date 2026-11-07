@@ -877,9 +877,8 @@ spotbugs = ["EC_UNRELATED_INTERFACES"]
 
 [[rule]]
 name = "ec-unrelated-types"
-category = "correctness"
-status = { java = "planned" }
-issues = { java = "#314" }
+status = { java = "implemented" }
+ids = { java = "ward:java/equals-on-unrelated-types" }
 spotbugs = ["EC_UNRELATED_TYPES"]
 
 [[rule]]

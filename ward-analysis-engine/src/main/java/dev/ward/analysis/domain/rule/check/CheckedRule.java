@@ -4,10 +4,12 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,5 +62,21 @@ public final class CheckedRule implements CompiledRule {
       final ScopeView scopes,
       final SourceUnit unit) {
     return check.matches(root, flow, scopes, unit);
+  }
+
+  @Override
+  public FactNeed factNeed() {
+    return check.needs();
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final ScopeView scopes,
+      final UnitTypeFacts types,
+      final SourceUnit unit) {
+    return check.matches(root, flow, scopes, types, unit);
   }
 }

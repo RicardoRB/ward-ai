@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.rule.check.ArrayIsStoredDirectlyCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
+import dev.ward.analysis.domain.rule.check.EqualsOnUnrelatedTypesCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
@@ -94,6 +95,8 @@ final class ReviewChecks {
     return switch (name) {
       case "unused-private-method" ->
           new UnusedPrivateMethodCheck(TomlValues.required(toml, MESSAGE));
+      case "equals-on-unrelated-types" ->
+          new EqualsOnUnrelatedTypesCheck(TomlValues.required(toml, MESSAGE));
       case "unused-formal-parameter" ->
           new UnusedFormalParameterCheck(
               toml.getBoolean("check-all", () -> false), TomlValues.required(toml, MESSAGE));

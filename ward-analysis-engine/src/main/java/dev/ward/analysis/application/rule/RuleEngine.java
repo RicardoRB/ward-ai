@@ -6,12 +6,15 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,12 +55,15 @@ public final class RuleEngine {
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot) {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
+    final RuleRunCollector collector = new RuleRunCollector();
+    final List<Prepared> prepared =
+        rules.stream().map(rule -> prepare(rule, support, collector)).toList();
     final RunState state =
-        new RunState(support, new UnitTrees(support), new RuleRunCollector(), snapshot);
-    for (final RuleDefinition rule : rules) {
+        new RunState(support, new UnitTrees(support, needs(prepared)), collector, snapshot);
+    for (final Prepared rule : prepared) {
       runRule(rule, units, state);
     }
-    return state.collector().result();
+    return collector.result();
   }
 
   /** What one run shares between its rules. */
@@ -73,20 +79,48 @@ public final class RuleEngine {
         .collect(Collectors.toMap(FrontendSupport::language, frontend -> frontend));
   }
 
-  private void runRule(
-      final RuleDefinition definition, final List<SourceUnit> units, final RunState state) {
-    final List<AnalysisLanguage> runnable = runnable(definition, state.support());
+  /** A rule that can run, with the languages it runs on; none when it was not run or failed. */
+  private record Prepared(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable) {}
+
+  /** Compiles each runnable rule once, up front, so the type needs of all rules are known. */
+  private Prepared prepare(
+      final RuleDefinition definition,
+      final Map<AnalysisLanguage, FrontendSupport> support,
+      final RuleRunCollector collector) {
+    final List<AnalysisLanguage> runnable = runnable(definition, support);
     if (!runnable.containsAll(definition.languages())) {
-      state.collector().notRun(new RuleNotRun(definition.id(), definition.capability()));
-      return;
+      collector.notRun(new RuleNotRun(definition.id(), definition.capability()));
+      return new Prepared(Optional.empty(), List.of());
     }
-    final Optional<CompiledRule> rule = compile(definition, state.collector());
-    if (rule.isEmpty()) {
+    return new Prepared(compile(definition, collector), runnable);
+  }
+
+  private static Map<AnalysisLanguage, List<FactNeed>> needs(final List<Prepared> prepared) {
+    final Map<AnalysisLanguage, List<FactNeed>> needs = new HashMap<>();
+    for (final Prepared item : prepared) {
+      item.rule()
+          .filter(rule -> rule.definition().capability() == RuleCapability.TYPES)
+          .ifPresent(
+              rule ->
+                  rule.definition()
+                      .languages()
+                      .forEach(
+                          language ->
+                              needs
+                                  .computeIfAbsent(language, key -> new ArrayList<>())
+                                  .add(rule.factNeed())));
+    }
+    return needs;
+  }
+
+  private void runRule(
+      final Prepared prepared, final List<SourceUnit> units, final RunState state) {
+    if (prepared.rule().isEmpty()) {
       return;
     }
     for (final SourceUnit unit : units) {
-      if (runnable.contains(unit.language())) {
-        runOnUnit(rule.get(), unit, state);
+      if (prepared.runnable().contains(unit.language())) {
+        runOnUnit(prepared.rule().get(), unit, state);
       }
     }
   }
@@ -128,6 +162,7 @@ public final class RuleEngine {
               dependencies,
               state.trees().flows(rule, unit, root.get(), collector),
               state.trees().scopes(rule, unit, root.get(), dependencies, collector),
+              state.trees().types(rule, unit, root.get(), collector),
               unit)
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
