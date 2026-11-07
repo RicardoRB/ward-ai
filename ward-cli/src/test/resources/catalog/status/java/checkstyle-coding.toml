@@ -34,9 +34,9 @@ nested-for-depth = "implemented"
 nested-if-depth = "implemented"
 nested-try-depth = "implemented"
 no-array-trailing-comma = "implemented"
-no-clone = { status = "planned", issue = "#289" }
+no-clone = "implemented"
 no-enum-trailing-comma = "implemented"
-no-finalizer = { status = "planned", issue = "#289" }
+no-finalizer = "implemented"
 one-statement-per-line = "implemented"
 overload-methods-declaration-order = "implemented"
 package-declaration = "implemented"
@@ -47,8 +47,8 @@ return-count = "implemented"
 simplify-boolean-expression = { status = "planned", issue = "#288" }
 simplify-boolean-return = "implemented"
 string-literal-equality = "implemented"
-super-clone = { status = "planned", issue = "#289" }
-super-finalize = { status = "planned", issue = "#289" }
+super-clone = "implemented"
+super-finalize = "implemented"
 text-block-google-style-formatting = { status = "planned", issue = "#289" }
 unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
 unnecessary-parentheses = { status = "planned", issue = "#289" }
