@@ -485,16 +485,12 @@ ruff = ["B030"]
 
 [[rule]]
 name = "reuse-of-groupby-generator"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B031"]
 
 [[rule]]
 name = "unintentional-type-annotation"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B032"]
 
 [[rule]]
@@ -521,6 +517,7 @@ ruff = ["B039"]
 [[rule]]
 name = "del-attr-with-constant"
 category = "flake8-bugbear"
+presets = ["strict"]
 status = { python = "planned" }
 issues = { python = "#332" }
 ruff = ["B043"]
@@ -528,6 +525,7 @@ ruff = ["B043"]
 [[rule]]
 name = "return-in-generator"
 category = "flake8-bugbear"
+presets = ["strict"]
 status = { python = "planned" }
 issues = { python = "#332" }
 ruff = ["B901"]
@@ -535,6 +533,7 @@ ruff = ["B901"]
 [[rule]]
 name = "class-as-data-structure"
 category = "flake8-bugbear"
+presets = ["strict"]
 status = { python = "planned" }
 issues = { python = "#332" }
 ruff = ["B903"]
@@ -552,22 +551,19 @@ ruff = ["B905"]
 [[rule]]
 name = "loop-iterator-mutation"
 category = "flake8-bugbear"
+presets = ["strict"]
 status = { python = "planned" }
 issues = { python = "#332" }
 ruff = ["B909"]
 
 [[rule]]
 name = "batched-without-explicit-strict"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B911"]
 
 [[rule]]
 name = "map-without-explicit-strict"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B912"]
 
 [[rule]]
@@ -1170,6 +1166,7 @@ ruff = ["E402"]
 [[rule]]
 name = "redundant-backslash"
 category = "pycodestyle"
+presets = ["strict"]
 status = { python = "planned" }
 issues = { python = "#332" }
 ruff = ["E502"]
@@ -1224,13 +1221,6 @@ ruff = ["E742"]
 name = "ambiguous-function-name"
 status = { python = "implemented" }
 ruff = ["E743"]
-
-[[rule]]
-name = "io-error"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
-ruff = ["E902"]
 
 [[rule]]
 name = "raw-string-in-exception"
@@ -1306,9 +1296,7 @@ ruff = ["F405"]
 
 [[rule]]
 name = "undefined-local-with-nested-import-star-usage"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F406"]
 
 [[rule]]
@@ -1462,9 +1450,7 @@ ruff = ["F707"]
 
 [[rule]]
 name = "forward-annotation-syntax-error"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F722"]
 
 [[rule]]
@@ -1489,9 +1475,7 @@ ruff = ["F823"]
 
 [[rule]]
 name = "unused-annotation"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F842"]
 
 [[rule]]

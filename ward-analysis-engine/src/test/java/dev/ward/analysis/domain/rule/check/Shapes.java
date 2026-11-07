@@ -65,6 +65,11 @@ final class Shapes {
             Nodes.leaf("annotations")));
   }
 
+  /** A call expression with the given text. */
+  static SyntaxNode call(final String text) {
+    return Nodes.node("atom_expr", Nodes.leaf(text));
+  }
+
   static SyntaxNode file(final SyntaxNode... statements) {
     return new SyntaxNode("file_input", Nodes.at(0, 1), Map.of(), List.of(statements));
   }
