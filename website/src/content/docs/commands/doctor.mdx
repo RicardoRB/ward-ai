@@ -89,6 +89,16 @@ from class files: the jars and directories of the `java-classpath` file, and the
 image found through `JAVA_HOME` or the running JDK. It never starts `javac`. Each jar is indexed once
 and the index is kept under `.ward/cache/types/`, named by the SHA-256 of the jar.
 
+The TypeScript and JavaScript resolver types the project sources and reads declarations as text,
+with no `node` or TypeScript compiler process. The declarations come from the `.d.ts` files of the
+project, from the packages in `node_modules` (the `types` or `typings` field, the `main` file with a
+`.d.ts` extension, `index.d.ts`, and `@types/*`), and from the library of the installed `typescript`
+package (`node_modules/typescript/lib`). Without that package, library types such as `Array` and
+`Promise` are unknown. Expressions are typed from annotations, initializers, calls to declared
+functions and members of declared types; what needs full checking, such as conditional and mapped
+types or control-flow narrowing, is unknown. The declaration index of each package is kept under
+`.ward/cache/types/node/`, named by the SHA-256 of the package's manifest and declaration files.
+
 `ward doctor` hints at the inputs the resolvers read. For Java and Kotlin these are a JDK image and
 the gate's `java-classpath` file, which names the library jars; without that file, library types stay
 unknown. For TypeScript and JavaScript it is the `typescript` declarations in `node_modules`. A missing

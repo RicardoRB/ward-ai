@@ -18,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.UnreachableCodeCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.tomlj.TomlInvalidTypeException;
@@ -83,16 +84,9 @@ final class DeclarativeChecks {
               TomlValues.integer(toml, MAX),
               TomlValues.required(toml, MESSAGE),
               Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true));
-      case "descendant-count" ->
-          new DescendantCountCheck(
-              TomlValues.strings(toml, KINDS),
-              new CountedKinds(
-                  TomlValues.strings(toml, "counted"),
-                  TomlValues.kindMap(toml, "requires-sibling"),
-                  TomlValues.kindMap(toml, "cancelled-by")),
-              TomlValues.optionalInteger(toml, "base", 0),
-              TomlValues.integer(toml, MAX),
-              TomlValues.required(toml, MESSAGE));
+      case "descendant-count" -> descendantCount(toml);
+      // A whole-run rule: DuplicateCodeFindings reports its copies, so no unit has a match here.
+      case "duplicate-code" -> root -> List.of();
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));
@@ -127,20 +121,35 @@ final class DeclarativeChecks {
       default ->
           ScopeAndFormatChecks.isCheck(name)
               ? ScopeAndFormatChecks.build(name, toml)
-              : ImportChecks.isImportCheck(name)
-                  ? ImportChecks.build(name, toml)
-                  : ReviewChecks.build(name, toml);
+              : JavadocChecks.isJavadocCheck(name)
+                  ? JavadocChecks.build(name, toml)
+                  : ImportChecks.isImportCheck(name)
+                      ? ImportChecks.build(name, toml)
+                      : ReviewChecks.build(name, toml);
     };
+  }
+
+  private static RuleCheck descendantCount(final TomlParseResult toml) {
+    return new DescendantCountCheck(
+        TomlValues.strings(toml, KINDS),
+        countedKinds(toml, "counted"),
+        TomlValues.optionalInteger(toml, "base", 0),
+        TomlValues.integer(toml, MAX),
+        TomlValues.required(toml, MESSAGE));
+  }
+
+  private static CountedKinds countedKinds(final TomlParseResult toml, final String key) {
+    return new CountedKinds(
+        TomlValues.strings(toml, key),
+        TomlValues.kindMap(toml, "requires-sibling"),
+        TomlValues.kindMap(toml, "cancelled-by"));
   }
 
   private static RuleCheck cognitiveComplexity(final TomlParseResult toml) {
     return new CognitiveComplexityCheck(
         TomlValues.strings(toml, KINDS),
         new CognitiveTokens(
-            new CountedKinds(
-                TomlValues.strings(toml, "structures"),
-                TomlValues.kindMap(toml, "requires-sibling"),
-                TomlValues.kindMap(toml, "cancelled-by")),
+            countedKinds(toml, "structures"),
             TomlValues.strings(toml, "flat"),
             TomlValues.optionalStrings(toml, "chaining")),
         TomlValues.integer(toml, MAX),

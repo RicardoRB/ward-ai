@@ -23,6 +23,7 @@ final class NodeScopeExpressions {
   private static final Set<String> UPDATE_OPERATORS = Set.of("++", "--");
   private static final String EQUALS = "=";
   private static final String EVAL = "eval";
+  private static final Set<String> CONTEXTUAL_WORDS = Set.of("as", "satisfies");
 
   final ScopeBuilder builder;
   private final NodeScopeNames names;
@@ -46,12 +47,26 @@ final class NodeScopeExpressions {
       triple(parts);
     } else if (parts.size() == PAIR && updates(parts)) {
       names.target(parts.get(0).children().isEmpty() ? parts.get(1) : parts.get(0), true);
-    } else if (parts.size() == PAIR && leadsWithName(parts)) {
-      read(NodeSyntax.leafOf(parts.get(0)));
-      visit.accept(parts.get(1));
+    } else if (parts.size() == PAIR && isLeadingName(parts.get(0))) {
+      leadingName(parts);
     } else {
       parts.forEach(visit);
     }
+  }
+
+  /**
+   * The grammar reads {@code f(x)} as the name {@code f} followed by the expression {@code (x)}.
+   */
+  private static boolean isLeadingName(final SyntaxNode part) {
+    final SyntaxNode name = NodeScopeNames.nameOf(part);
+    return "identifierName".equals(part.kind())
+        && name != null
+        && !CONTEXTUAL_WORDS.contains(NodeFlowSyntax.text(name));
+  }
+
+  private void leadingName(final List<SyntaxNode> parts) {
+    read(NodeScopeNames.nameOf(parts.get(0)));
+    visit.accept(parts.get(1));
   }
 
   private void single(final SyntaxNode node, final SyntaxNode only) {
@@ -77,16 +92,6 @@ final class NodeScopeExpressions {
 
   private static boolean isAssignment(final SyntaxNode part) {
     return NodeSyntax.isAssignment(part);
-  }
-
-  /**
-   * Reports whether a pair is a name followed by its operand, which the TypeScript grammar builds
-   * for a binary or call expression: {@code a + 1} is {@code [a, (+ 1)]}.
-   */
-  private static boolean leadsWithName(final List<SyntaxNode> parts) {
-    return "identifierName".equals(parts.get(0).kind())
-        && NodeSyntax.leafOf(parts.get(0)) != null
-        && "singleExpression".equals(parts.get(1).kind());
   }
 
   private static boolean updates(final List<SyntaxNode> parts) {
