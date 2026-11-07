@@ -80,7 +80,7 @@ public final class ModuleOrderCheck implements RuleCheck {
     return SyntaxWalk.descendants(node).stream()
         .anyMatch(
             child ->
-                child.kind().equals("import_from")
+                "import_from".equals(child.kind())
                     && FUTURE.matcher(SyntaxWalk.text(child)).find());
   }
 }
