@@ -1,0 +1,2 @@
+class Violating implements SessionBean {
+}

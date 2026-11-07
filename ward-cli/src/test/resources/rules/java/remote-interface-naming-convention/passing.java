@@ -1,0 +1,2 @@
+interface Passing extends EJBObject {
+}

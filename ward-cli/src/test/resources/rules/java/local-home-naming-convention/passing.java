@@ -1,0 +1,2 @@
+interface PassingLocalHome extends EJBLocalHome {
+}
