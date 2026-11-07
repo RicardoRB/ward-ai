@@ -1268,13 +1268,11 @@ spotbugs = ["MF_METHOD_MASKS_FIELD"]
 
 [[rule]]
 name = "ml-sync-on-field-to-guard-changing-that-field"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["ML_SYNC_ON_FIELD_TO_GUARD_CHANGING_THAT_FIELD"]
 
 [[rule]]
 name = "ml-sync-on-updated-field"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["ML_SYNC_ON_UPDATED_FIELD"]
 
@@ -1358,13 +1356,11 @@ spotbugs = ["MTIA_SUSPECT_STRUTS_INSTANCE_FIELD"]
 
 [[rule]]
 name = "mwn-mismatched-notify"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["MWN_MISMATCHED_NOTIFY"]
 
 [[rule]]
 name = "mwn-mismatched-wait"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["MWN_MISMATCHED_WAIT"]
 
@@ -2320,7 +2316,6 @@ spotbugs = ["ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"]
 
 [[rule]]
 name = "swl-sleep-with-lock-held"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["SWL_SLEEP_WITH_LOCK_HELD"]
 
@@ -2508,7 +2503,6 @@ spotbugs = ["UPM_UNCALLED_PRIVATE_METHOD"]
 
 [[rule]]
 name = "urf-unread-field"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["URF_UNREAD_FIELD"]
 
@@ -2578,7 +2572,6 @@ spotbugs = ["US_USELESS_SUPPRESSION_ON_PACKAGE"]
 
 [[rule]]
 name = "uuf-unused-field"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["UUF_UNUSED_FIELD"]
 
@@ -2628,7 +2621,6 @@ spotbugs = ["VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG"]
 
 [[rule]]
 name = "vo-volatile-increment"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["VO_VOLATILE_INCREMENT"]
 
@@ -2657,7 +2649,6 @@ spotbugs = ["WA_AWAIT_NOT_IN_LOOP"]
 
 [[rule]]
 name = "wa-not-in-loop"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["WA_NOT_IN_LOOP"]
 
@@ -2668,7 +2659,6 @@ spotbugs = ["WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL"]
 
 [[rule]]
 name = "wmi-wrong-map-iterator"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["WMI_WRONG_MAP_ITERATOR"]
 

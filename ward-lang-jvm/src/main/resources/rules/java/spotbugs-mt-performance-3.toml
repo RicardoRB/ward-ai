@@ -1,0 +1,134 @@
+# SpotBugs multithreaded-correctness and performance rules for Java that need a check class (standard preset).
+
+[[rules]]
+id = "ward:java/urf-unread-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-private-field"
+mode = "unread"
+message = "private field '{value}' is written but never read; remove it"
+'''
+
+[[rules]]
+id = "ward:java/uuf-unused-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-private-field"
+mode = "unused"
+message = "private field '{value}' is never used; remove it"
+'''
+
+[[rules]]
+id = "ward:java/vo-volatile-increment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "volatile-increment"
+message = "increment of a volatile field is not atomic; use an atomic type or a lock"
+'''
+
+[[rules]]
+id = "ward:java/ml-sync-on-updated-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-updated-field"
+message = "synchronized on field '{value}', which other code assigns; lock a final object"
+'''
+
+[[rules]]
+id = "ward:java/ml-sync-on-field-to-guard-changing-that-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-updated-field"
+guarding-only = true
+message = "synchronized on field '{value}' to guard a change of that field; lock a final object"
+'''
+
+[[rules]]
+id = "ward:java/swl-sleep-with-lock-held"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lock-scope-call"
+call = '^(Thread\.)?sleep\('
+lock = "yes"
+message = "sleeping while holding a lock blocks every other thread that needs it"
+'''
+
+[[rules]]
+id = "ward:java/wa-not-in-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lock-scope-call"
+call = '^([\w.]+\.)?wait\('
+loop = "no"
+message = "wait called outside a loop that re-checks its condition"
+'''
+
+[[rules]]
+id = "ward:java/mwn-mismatched-wait"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lock-scope-call"
+call = '^([\w.]+\.)?wait\('
+lock = "no"
+message = "wait called without holding a lock"
+'''
+
+[[rules]]
+id = "ward:java/mwn-mismatched-notify"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lock-scope-call"
+call = '^([\w.]+\.)?notify(All)?\(\)'
+lock = "no"
+message = "notify called without holding a lock"
+'''
+
+[[rules]]
+id = "ward:java/wmi-wrong-map-iterator"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'for'"]
+text = '^for\(.+:(\w+)\.keySet\(\)\)\{.*\1\.get\('
+message = "loop over keySet that looks each value up; iterate entrySet instead"
+'''
