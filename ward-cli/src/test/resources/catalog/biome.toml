@@ -14,9 +14,7 @@ biome = ["noAccumulatingSpread"]
 
 [[rule]]
 name = "no-adjacent-spaces-in-regex"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noAdjacentSpacesInRegex"]
 
 [[rule]]
@@ -56,9 +54,7 @@ biome = ["noArrayIndexKey"]
 
 [[rule]]
 name = "no-assign-in-expressions"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noAssignInExpressions"]
 
 [[rule]]
@@ -153,9 +149,9 @@ biome = ["noConditionalExpect"]
 
 [[rule]]
 name = "no-confusing-labels"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+category = "suggestion"
+status = { typescript = "planned", javascript = "implemented" }
+issues = { typescript = "#329" }
 biome = ["noConfusingLabels"]
 
 [[rule]]
@@ -167,9 +163,8 @@ biome = ["noConfusingVoidType"]
 
 [[rule]]
 name = "no-const-enum"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "not-applicable" }
+not-applicable = { javascript = "TypeScript enum declarations have no JavaScript counterpart" }
 biome = ["noConstEnum"]
 
 [[rule]]
@@ -195,9 +190,7 @@ biome = ["noDangerouslySetInnerHtmlWithChildren"]
 
 [[rule]]
 name = "no-default-export"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noDefaultExport"]
 
 [[rule]]
@@ -368,16 +361,12 @@ biome = ["noFocusedTests"]
 
 [[rule]]
 name = "no-for-each"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noForEach"]
 
 [[rule]]
 name = "no-for-in"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noForIn"]
 
 [[rule]]
@@ -561,9 +550,7 @@ biome = ["noMisplacedListElements"]
 
 [[rule]]
 name = "no-misrefactored-shorthand-assign"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noMisrefactoredShorthandAssign"]
 
 [[rule]]
@@ -575,9 +562,7 @@ biome = ["noMultilineString"]
 
 [[rule]]
 name = "no-namespace-import"
-category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noNamespaceImport"]
 
 [[rule]]
@@ -769,9 +754,7 @@ biome = ["noQwikUseVisibleTask"]
 
 [[rule]]
 name = "no-re-export-all"
-category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noReExportAll"]
 
 [[rule]]
@@ -853,9 +836,7 @@ biome = ["noRedundantRoles"]
 
 [[rule]]
 name = "no-render-return-value"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noRenderReturnValue"]
 
 [[rule]]
@@ -935,9 +916,7 @@ biome = ["noStaticOnlyClass"]
 
 [[rule]]
 name = "no-string-case-mismatch"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noStringCaseMismatch"]
 
 [[rule]]
@@ -1008,9 +987,7 @@ biome = ["noThenProperty"]
 
 [[rule]]
 name = "no-this-in-static"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noThisInStatic"]
 
 [[rule]]
@@ -1099,16 +1076,12 @@ biome = ["noUnusedFunctionParameters"]
 
 [[rule]]
 name = "no-unused-instantiation"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUnusedInstantiation"]
 
 [[rule]]
 name = "no-unused-template-literal"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUnusedTemplateLiteral"]
 
 [[rule]]
@@ -1125,9 +1098,7 @@ biome = ["noUselessCatchBinding"]
 
 [[rule]]
 name = "no-useless-continue"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessContinue"]
 
 [[rule]]
@@ -1151,9 +1122,7 @@ biome = ["noUselessStringRaw"]
 
 [[rule]]
 name = "no-useless-switch-case"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessSwitchCase"]
 
 [[rule]]
@@ -1249,9 +1218,7 @@ biome = ["noVueSetupPropsReactivityLoss"]
 
 [[rule]]
 name = "no-xor-as-exponentiation"
-category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noXorAsExponentiation"]
 
 [[rule]]
@@ -1530,9 +1497,7 @@ biome = ["useFragmentSyntax"]
 
 [[rule]]
 name = "use-global-this"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useGlobalThis"]
 
 [[rule]]
@@ -1624,9 +1589,7 @@ biome = ["useIsArray"]
 
 [[rule]]
 name = "use-json-import-attributes"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useJsonImportAttributes"]
 
 [[rule]]
@@ -1680,9 +1643,7 @@ biome = ["useNodeAssertStrict"]
 
 [[rule]]
 name = "use-nodejs-import-protocol"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useNodejsImportProtocol"]
 
 [[rule]]
@@ -1811,9 +1772,8 @@ biome = ["useSemanticElements"]
 
 [[rule]]
 name = "use-shorthand-function-type"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "not-applicable" }
+not-applicable = { javascript = "TypeScript interface declarations have no JavaScript counterpart" }
 biome = ["useShorthandFunctionType"]
 
 [[rule]]
@@ -1895,9 +1855,7 @@ biome = ["useTestHooksOnTop"]
 
 [[rule]]
 name = "use-throw-new-error"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useThrowNewError"]
 
 [[rule]]
@@ -1909,9 +1867,7 @@ biome = ["useTopLevelRegex"]
 
 [[rule]]
 name = "use-trim-start-end"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useTrimStartEnd"]
 
 [[rule]]
