@@ -1,0 +1,132 @@
+{
+  "2:19": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:15": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "4:11": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "5:11": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "6:11": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "7:11": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "8:11": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:12": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:22": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:32": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:42": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:52": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "3:62": {
+    "type": {
+      "name": "sample.Other"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  }
+}

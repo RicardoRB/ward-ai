@@ -456,10 +456,7 @@ pmd = ["DanglingJavadoc"]
 
 [[rule]]
 name = "data-class"
-category = "design"
-# Planned: PMD flags classes with a low weighted operation count; the engine computes no class-level method metrics
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["DataClass"]
 
 [[rule]]
@@ -641,10 +638,7 @@ pmd = ["ForLoopVariableCount"]
 
 [[rule]]
 name = "god-class"
-category = "design"
-# Planned: needs class-level WMC, ATFD and TCC metrics the engine does not compute
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["GodClass"]
 
 [[rule]]
@@ -727,18 +721,12 @@ pmd = ["InsufficientStringBufferDeclaration"]
 
 [[rule]]
 name = "internal-api-usage"
-category = "design"
-# Planned: needs annotations on members used from other classes, read through type facts
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["InternalApiUsage"]
 
 [[rule]]
 name = "invalid-java-bean"
-category = "design"
-# Planned: needs field types resolved to decide serializability
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["InvalidJavaBean"]
 
 [[rule]]
@@ -801,10 +789,7 @@ pmd = ["LambdaCanBeMethodReference"]
 
 [[rule]]
 name = "law-of-demeter"
-category = "design"
-# Planned: needs the receiver type of each call in a chain
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["LawOfDemeter"]
 
 [[rule]]

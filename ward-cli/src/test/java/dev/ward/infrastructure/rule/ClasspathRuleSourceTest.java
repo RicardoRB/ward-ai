@@ -20,7 +20,10 @@ class ClasspathRuleSourceTest {
           "ward:java/use-enum-collections",
           "ward:java/guard-log-statement",
           "ward:java/exhaustive-switch-has-default",
-          "ward:java/non-exhaustive-switch");
+          "ward:java/non-exhaustive-switch",
+          "ward:java/god-class",
+          "ward:java/law-of-demeter",
+          "ward:java/internal-api-usage");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {

@@ -16,6 +16,7 @@ public final class JvmCheckProvider implements CheckProvider {
   public Map<String, CheckFactory> checks() {
     return CheckRegistry.union(
         List.of(
+            ClassDesignChecks.checks(),
             CodingChecks.checks(),
             CheckstyleDesignChecks.checks(),
             DesignChecks.checks(),
