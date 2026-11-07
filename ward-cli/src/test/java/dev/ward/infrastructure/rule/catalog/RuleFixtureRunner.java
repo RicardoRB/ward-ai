@@ -11,11 +11,13 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +37,9 @@ final class RuleFixtureRunner {
 
   /**
    * Returns the findings of {@code rule} on {@code text}, after checking that the engine ran the
-   * rule without an error. {@code typeFacts} are the facts of the fixture's {@code types.json}; the
-   * engine takes no type facts yet, so they reach a rule once the first type-aware rule lands (see
-   * {@link FixtureTypeFacts}).
+   * rule without an error. {@code typeFacts} are the facts of the fixture's {@code types.json}; a
+   * rule with capability {@code TYPES} receives them for its language, as it would receive a native
+   * resolver's (see {@link FixtureTypeFacts}).
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
@@ -47,10 +49,10 @@ final class RuleFixtureRunner {
           List.of(rule), List.of(new SourceUnit(path, language, text)), frontends);
     }
     final RuleRunResult result =
-        new RuleEngine(BundledRuleMatchers.create(), types(language, typeFacts))
+        new RuleEngine(BundledRuleMatchers.create())
             .run(
                 List.of(new SourceUnit(path, language, text)),
-                types(language, typeFacts).withTypes(frontends),
+                frontendsFor(rule, typeFacts),
                 List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
@@ -59,8 +61,12 @@ final class RuleFixtureRunner {
         .toList();
   }
 
-  /** The type facts of the fixture for {@code language}, as the engine's type run. */
-  private static TypeFactsRun types(final AnalysisLanguage language, final TypeFacts typeFacts) {
-    return new TypeFactsRun(Map.of(language, typeFacts));
+  private List<FrontendSupport> frontendsFor(final RuleDefinition rule, final TypeFacts typeFacts) {
+    if (rule.capability() != RuleCapability.TYPES) {
+      return frontends;
+    }
+    final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
+    rule.languages().forEach(language -> sources.put(language, typeFacts));
+    return new TypeFactsRun(sources).withTypes(frontends);
   }
 }

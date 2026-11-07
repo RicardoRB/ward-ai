@@ -1,7 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.rule.TypeNeed;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.TypeShape;
@@ -13,11 +13,19 @@ import java.util.Set;
 final class TypedChecks {
 
   /** The needs of a check that reads the calls of expressions. */
-  static final TypeNeed CALLS = new TypeNeed(Set.of("expression"), Set.of(FactKind.CALL));
+  static final FactNeed CALLS = new FactNeed(Set.of("expression"), Set.of(FactKind.CALL));
+
+  /** The needs of a check that reads the type and shape of a switch selector. */
+  static final FactNeed ENUM_SELECTORS =
+      new FactNeed(Set.of("expression"), Set.of(FactKind.TYPE, FactKind.SHAPE));
+
+  /** The needs of a check that reads the calls and shapes of expressions. */
+  static final FactNeed CALLS_AND_SHAPES =
+      new FactNeed(Set.of("expression"), Set.of(FactKind.CALL, FactKind.SHAPE));
 
   /** The needs of a check that reads the shapes of expressions and types. */
-  static final TypeNeed SHAPES =
-      new TypeNeed(Set.of("expression", "typeType"), Set.of(FactKind.SHAPE));
+  static final FactNeed SHAPES =
+      new FactNeed(Set.of("expression", "typeType"), Set.of(FactKind.SHAPE));
 
   private TypedChecks() {}
 

@@ -108,7 +108,7 @@ public final class AnalysisGate implements QualityGate {
                     Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
     final UnitResultCache results =
         new UnitResultCache(
-            new RuleEngine(ports.matcher(), types),
+            new RuleEngine(ports.matcher()),
             ports.codec(),
             ports.engineVersion(),
             ports
