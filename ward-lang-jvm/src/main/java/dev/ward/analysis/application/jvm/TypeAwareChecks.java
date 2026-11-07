@@ -46,8 +46,11 @@ final class TypeAwareChecks {
 
   private static Map<String, CheckFactory> types() {
     return Map.ofEntries(
-        entry("check-result-set", toml -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE))),
-        entry("enum-comparison", toml -> new EnumComparisonCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "check-result-set",
+            toml -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "enum-comparison", toml -> new EnumComparisonCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "use-enum-collections",
             toml -> new UseEnumCollectionsCheck(TomlValues.required(toml, MESSAGE))),
