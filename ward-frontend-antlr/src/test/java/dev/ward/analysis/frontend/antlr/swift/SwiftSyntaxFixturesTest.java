@@ -14,11 +14,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,6 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 class SwiftSyntaxFixturesTest {
 
+  private static final int MIN_FIXTURES = 16;
   private static final String FIXTURE_ROOT = "/syntax/swift";
   private static final SwiftFormatter FORMATTER = new SwiftFormatter();
   private static final FormatSafety SAFETY = new FormatSafety(new SwiftFormatSyntax());
@@ -38,7 +36,7 @@ class SwiftSyntaxFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")
   void parsesWithoutSyntaxErrors(final String name, final Path file) throws IOException {
-    assertThat(syntaxErrors(Files.readString(file))).isEmpty();
+    assertThat(syntaxErrors(Files.readString(file))).isZero();
   }
 
   @ParameterizedTest(name = "{0}")
@@ -61,7 +59,7 @@ class SwiftSyntaxFixturesTest {
 
   @Test
   void everyConstructHasAFixture() {
-    assertThat(fixtures().count()).isGreaterThanOrEqualTo(16);
+    assertThat(fixtures().count()).isGreaterThanOrEqualTo(MIN_FIXTURES);
   }
 
   static Stream<Arguments> fixtures() {
@@ -77,29 +75,14 @@ class SwiftSyntaxFixturesTest {
     return cases.stream();
   }
 
-  private static List<String> syntaxErrors(final String text) {
+  /** Counts the syntax errors the parser reports for the whole file. */
+  private static int syntaxErrors(final String text) {
     final SwiftLexer lexer = new SwiftLexer(CharStreams.fromString(text));
     lexer.removeErrorListeners();
     final SwiftParser parser = new SwiftParser(new CommonTokenStream(lexer));
     parser.removeErrorListeners();
-    final List<String> errors = new ArrayList<>();
-    final BaseErrorListener listener =
-        new BaseErrorListener() {
-          @Override
-          public void syntaxError(
-              final Recognizer<?, ?> recognizer,
-              final Object offendingSymbol,
-              final int line,
-              final int column,
-              final String message,
-              final RecognitionException exception) {
-            errors.add(line + ":" + column + " " + message);
-          }
-        };
-    lexer.addErrorListener(listener);
-    parser.addErrorListener(listener);
     parser.top_level();
-    return errors;
+    return parser.getNumberOfSyntaxErrors();
   }
 
   private static Path root() {

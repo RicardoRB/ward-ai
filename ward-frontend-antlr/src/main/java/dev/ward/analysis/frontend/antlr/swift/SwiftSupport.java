@@ -1,7 +1,6 @@
 package dev.ward.analysis.frontend.antlr.swift;
 
 import java.util.BitSet;
-import java.util.Set;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.Interval;
@@ -26,13 +25,6 @@ public final class SwiftSupport {
    * Operator-head code point ranges as inclusive (first, last) pairs, from the Swift grammar's
    * {@code operator-head} rule.
    */
-  /** Words that are keywords only where a type starts, so they stay identifiers elsewhere. */
-  private static final Set<String> CONTEXTUAL_TYPE_KEYWORDS =
-      Set.of("any", "some", "borrowing", "consuming", "sending", "each");
-
-  /** Words that are prefix operators only before an operand, so they stay identifiers elsewhere. */
-  private static final Set<String> CONTEXTUAL_OPERATOR_WORDS = Set.of("consume", "each");
-
   private static final int[] OPERATOR_HEAD_RANGES = {
     0x00A1, 0x00A7,
     0x00A9, 0x00A9,
@@ -288,23 +280,6 @@ public final class SwiftSupport {
     }
     final String between = tokens.getText(Interval.of(indexFrom, indexTo));
     return between.contains("\n") || between.contains(";");
-  }
-
-  /** Whether the next token is a contextual keyword that can start a type. */
-  public static boolean isContextualTypeKeyword(final TokenStream tokens) {
-    return CONTEXTUAL_TYPE_KEYWORDS.contains(tokens.LT(1).getText());
-  }
-
-  /**
-   * Whether the next token is {@code consume} or {@code each} applied to an operand on the same
-   * statement.
-   */
-  public static boolean isContextualOperator(final TokenStream tokens) {
-    final String text = tokens.LT(1).getText();
-    final boolean operatorWord = CONTEXTUAL_OPERATOR_WORDS.contains(text);
-    final Token next = tokens.LT(2);
-    return operatorWord
-        && (next.getType() == SwiftLexer.Identifier || "self".equals(next.getText()));
   }
 
   /** Reads the stream to its end, so that the lookahead the predicates use is available. */

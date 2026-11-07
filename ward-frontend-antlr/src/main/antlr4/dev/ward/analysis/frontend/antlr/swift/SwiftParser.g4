@@ -1184,7 +1184,7 @@ prefix_expression
 
 // `consume x` and `each t` are prefix operators only before an identifier
 contextual_operator
-    : {SwiftSupport.isContextualOperator(_input)}? Identifier
+    : {SwiftContextualKeywords.isContextualOperator(_input)}? Identifier
     ;
 
 in_out_expression
@@ -1545,7 +1545,7 @@ type_annotation
 
 // `any` and `some` are contextual keywords, so they stay identifiers everywhere else
 contextual_keyword
-    : {SwiftSupport.isContextualTypeKeyword(_input)}? Identifier
+    : {SwiftContextualKeywords.isContextualTypeKeyword(_input)}? Identifier
     ;
 
 type_identifier
