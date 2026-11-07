@@ -377,3 +377,16 @@ stop = ["funcdef", "classdef"]
 mode = "outside"
 message = "continue not properly in loop"
 '''
+
+[[rules]]
+id = "ward:python/late-future-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "module-order"
+problem = "future-after-statement"
+message = "from __future__ imports must occur at the beginning of the file"
+'''

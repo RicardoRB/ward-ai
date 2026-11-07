@@ -41,6 +41,7 @@ class EcmaSyntaxFixturesTest {
           Map.entry("accessor-field.ts", List.of("accessorModifier")),
           Map.entry("ambient-string-module.ts", List.of("namespaceDeclaration")),
           Map.entry("const-type-params.ts", List.of("constModifier")),
+          Map.entry("declaration-file.ts", List.of("namespaceDeclaration", "tupleElementType")),
           Map.entry("decorators.ts", List.of("decorator")),
           Map.entry("enum.ts", List.of("enumDeclaration")),
           Map.entry("export-named.ts", List.of("exportAliasName")),
