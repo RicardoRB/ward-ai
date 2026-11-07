@@ -131,10 +131,7 @@ pmd = ["AvoidDecimalLiteralsInBigDecimalConstructor"]
 
 [[rule]]
 name = "avoid-deeply-nested-if-stmts"
-category = "design"
-# Planned: the depth check counts every nested statement, and no generic check selects if statements alone
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["AvoidDeeplyNestedIfStmts"]
 
 [[rule]]
@@ -610,10 +607,7 @@ errorprone = ["EqualsNull"]
 
 [[rule]]
 name = "exception-as-flow-control"
-category = "design"
-# Planned: needs a try and a catch of the same method paired, which no generic check expresses
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["ExceptionAsFlowControl"]
 
 [[rule]]
@@ -628,10 +622,7 @@ pmd = ["ExcessiveParameterList"]
 
 [[rule]]
 name = "excessive-public-count"
-category = "design"
-# Planned: counts public methods and fields together; method-count cannot count fields
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["ExcessivePublicCount"]
 
 [[rule]]
@@ -755,10 +746,7 @@ pmd = ["IdenticalConditionalBranches"]
 
 [[rule]]
 name = "immutable-field"
-category = "design"
-# Planned: needs field use across the class (assigned only in constructors)
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["ImmutableField"]
 
 [[rule]]
@@ -789,10 +777,7 @@ pmd = ["InsecureCryptoIv"]
 
 [[rule]]
 name = "instantiable-utility-class"
-category = "design"
-# Planned: needs every member of a type to be static, which no generic check expresses
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["InstantiableUtilityClass"]
 
 [[rule]]
@@ -954,10 +939,7 @@ pmd = ["LooseCoupling"]
 
 [[rule]]
 name = "loose-package-coupling"
-category = "design"
-# Planned: PMD configures no packages by default, so the rule needs a package-list option
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["LoosePackageCoupling"]
 
 [[rule]]
@@ -1124,18 +1106,14 @@ pmd = ["ProperLogger"]
 
 [[rule]]
 name = "protected-member-in-final-class"
-category = "design"
-status = { java = "planned", kotlin = "planned" }
-issues = { java = "#309", kotlin = "#295" }
+status = { java = "implemented", kotlin = "planned" }
+issues = { kotlin = "#295" }
 detekt = ["ProtectedMemberInFinalClass"]
 pmd = ["ProtectedMemberInFinalClass"]
 
 [[rule]]
 name = "public-member-in-non-public-type"
-category = "design"
-# Planned: needs the visibility of the enclosing type, which generic checks cannot read
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["PublicMemberInNonPublicType"]
 
 [[rule]]
@@ -1264,10 +1242,7 @@ pmd = ["SingletonClassReturningNewInstance"]
 
 [[rule]]
 name = "singular-field"
-category = "design"
-# Planned: needs field use across the class methods
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["SingularField"]
 
 [[rule]]
@@ -1321,10 +1296,7 @@ pmd = ["SuspiciousOctalEscape"]
 
 [[rule]]
 name = "switch-density"
-category = "design"
-# Planned: needs the ratio of statements to labels in a switch, which no generic check counts
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["SwitchDensity"]
 
 [[rule]]
@@ -1348,18 +1320,12 @@ pmd = ["TooFewBranchesForSwitch"]
 
 [[rule]]
 name = "too-many-fields"
-category = "design"
-# Planned: counts non-final, non-static fields; count checks cannot filter by modifier
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["TooManyFields"]
 
 [[rule]]
 name = "too-many-methods"
-category = "design"
-# Planned: excludes simple get, set and is methods; count checks cannot filter by name
-status = { java = "planned" }
-issues = { java = "#309" }
+status = { java = "implemented" }
 pmd = ["TooManyMethods"]
 
 [[rule]]
