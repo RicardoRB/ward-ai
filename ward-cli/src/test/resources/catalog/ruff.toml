@@ -1773,30 +1773,22 @@ ruff = ["FURB157"]
 
 [[rule]]
 name = "bit-count"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB161"]
 
 [[rule]]
 name = "fromisoformat-replace-z"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB162"]
 
 [[rule]]
 name = "redundant-log-base"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB163"]
 
 [[rule]]
 name = "unnecessary-from-float"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB164"]
 
 [[rule]]
@@ -1866,9 +1858,7 @@ ruff = ["FURB189"]
 
 [[rule]]
 name = "sorted-min-max"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB192"]
 
 [[rule]]
