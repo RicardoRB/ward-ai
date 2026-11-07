@@ -41,6 +41,15 @@ final class TokenSequence {
     return tokens;
   }
 
+  /** The first token that starts at or after {@code offset}, or {@code null}. */
+  SyntaxNode firstFrom(final int offset) {
+    return tokens.stream()
+        .map(Token::node)
+        .filter(token -> token.span().startOffset() >= offset)
+        .findFirst()
+        .orElse(null);
+  }
+
   /** The token after {@code token}, or {@code null} when it is the last one. */
   SyntaxNode after(final Token token) {
     return token.index() + 1 < tokens.size() ? tokens.get(token.index() + 1).node() : null;

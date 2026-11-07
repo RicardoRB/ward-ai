@@ -37,6 +37,12 @@ final class ReviewChecks {
 
   /** The checks over labels, JUnit classes, declarations, assignments and unused names. */
   static RuleCheck build(final String name, final TomlParseResult toml) {
+    if (BlockChecks.isBlockCheck(name)) {
+      return BlockChecks.build(name, toml);
+    }
+    if (ModifierChecks.isModifierCheck(name)) {
+      return ModifierChecks.build(name, toml);
+    }
     return switch (name) {
       case "unused-label" -> new UnusedLabelCheck(TomlValues.required(toml, MESSAGE));
       case "unit-test-without-assert" ->

@@ -1,11 +1,19 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.check.AnnotatedDeclarationVisibilityCheck;
 import dev.ward.analysis.domain.rule.check.AnnotationLocationCheck;
+import dev.ward.analysis.domain.rule.check.AnnotationOnSameLineCheck;
+import dev.ward.analysis.domain.rule.check.JavadocAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.ModifierOrderCheck;
+import dev.ward.analysis.domain.rule.check.OpenjdkAnnotationLocationCheck;
+import dev.ward.analysis.domain.rule.check.PackageAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.RecordAccessorOverrideCheck;
+import dev.ward.analysis.domain.rule.check.RedundantModifierCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
+import dev.ward.analysis.domain.rule.check.SuppressWarningsCheck;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -19,8 +27,26 @@ final class ModifierChecks {
       "allow-sameline-single-parameterless-annotation";
   private static final String ALLOW_PARAMETERIZED = "allow-sameline-parameterized-annotation";
 
+  private static final String ANNOTATIONS = "annotations";
+  private static final String VISIBILITY = "visibility";
+  private static final String FORMAT = "format";
+  private static final String TAG = "tag";
+  private static final String ANNOTATION = "annotation";
+  private static final String METHODS_ONLY = "methods-only";
+
   private static final Set<String> CHECKS =
-      Set.of("modifier-order", "annotation-location", "missing-override-on-record-accessor");
+      Set.of(
+          "modifier-order",
+          "annotation-location",
+          "missing-override-on-record-accessor",
+          "annotated-declaration-visibility",
+          "redundant-modifier",
+          "suppress-warnings",
+          "package-annotation",
+          "missing-override",
+          "missing-deprecated",
+          "annotation-on-same-line",
+          "openjdk-annotation-location");
 
   private ModifierChecks() {}
 
@@ -42,6 +68,33 @@ final class ModifierChecks {
               flag(toml, ALLOW_SINGLE_PARAMETERLESS, true),
               flag(toml, ALLOW_PARAMETERIZED, false),
               message(toml));
+      case "annotated-declaration-visibility" ->
+          new AnnotatedDeclarationVisibilityCheck(
+              TomlValues.strings(toml, ANNOTATIONS),
+              TomlValues.strings(toml, VISIBILITY),
+              message(toml));
+      case "redundant-modifier" -> new RedundantModifierCheck(message(toml));
+      case "annotation-on-same-line" -> new AnnotationOnSameLineCheck(message(toml));
+      case "openjdk-annotation-location" -> new OpenjdkAnnotationLocationCheck(message(toml));
+      default -> annotationCheck(name, toml);
+    };
+  }
+
+  /** The checks over suppressed warnings, package annotations and Javadoc tags. */
+  private static RuleCheck annotationCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "suppress-warnings" ->
+          new SuppressWarningsCheck(
+              Pattern.compile(TomlValues.required(toml, FORMAT)), message(toml));
+      case "package-annotation" -> new PackageAnnotationCheck(message(toml));
+      case "missing-override" ->
+          new JavadocAnnotationCheck(
+              TomlValues.required(toml, TAG), TomlValues.required(toml, ANNOTATION),
+              flag(toml, METHODS_ONLY, true), message(toml));
+      case "missing-deprecated" ->
+          new JavadocAnnotationCheck(
+              TomlValues.required(toml, TAG), TomlValues.required(toml, ANNOTATION),
+              flag(toml, METHODS_ONLY, false), message(toml));
       default -> new RecordAccessorOverrideCheck(message(toml));
     };
   }

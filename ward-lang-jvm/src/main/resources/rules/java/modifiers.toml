@@ -41,3 +41,111 @@ body = '''
 check = "missing-override-on-record-accessor"
 message = "record accessor method should have the @Override annotation"
 '''
+
+[[rules]]
+id = "ward:java/annotated-declaration-visibility"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.annotations = { type = "string-list" }
+options.visibility = { type = "string-list" }
+body = '''
+check = "annotated-declaration-visibility"
+annotations = ["com.google.common.annotations.VisibleForTesting"]
+visibility = ["protected", "package"]
+message = "annotated declaration has a visibility that is not allowed"
+'''
+
+[[rules]]
+id = "ward:java/redundant-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+body = '''
+check = "redundant-modifier"
+message = "modifier is redundant; the language implies it"
+'''
+
+[[rules]]
+id = "ward:java/suppress-warnings"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+options.format = { type = "regex" }
+body = '''
+check = "suppress-warnings"
+format = "^\\s*+$"
+message = "suppressed warning name is not allowed"
+'''
+
+[[rules]]
+id = "ward:java/package-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "package-annotation"
+message = "package annotation must be in package-info.java"
+'''
+
+[[rules]]
+id = "ward:java/missing-override"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "missing-override"
+tag = "{@inheritDoc}"
+annotation = "@Override"
+methods-only = true
+message = "method with {@inheritDoc} should have the @Override annotation"
+'''
+
+[[rules]]
+id = "ward:java/missing-deprecated"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "missing-deprecated"
+tag = "@deprecated"
+annotation = "@Deprecated"
+methods-only = false
+message = "Javadoc has @deprecated but the declaration lacks the @Deprecated annotation"
+'''
+
+[[rules]]
+id = "ward:java/annotation-on-same-line"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "annotation-on-same-line"
+message = "annotation should be on the same line as its declaration"
+'''
+
+[[rules]]
+id = "ward:java/openjdk-annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "openjdk-annotation-location"
+message = "annotations are not placed as the OpenJDK style requires"
+'''

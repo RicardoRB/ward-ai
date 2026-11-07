@@ -2,10 +2,8 @@
 
 [[rule]]
 name = "annotated-declaration-visibility"
-category = "modifier"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["AnnotatedDeclarationVisibility"]
 
 [[rule]]
@@ -38,10 +36,8 @@ swiftlint = ["modifier_order"]
 
 [[rule]]
 name = "redundant-modifier"
-category = "modifier"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["RedundantVisibilityModifierRule"]
 pmd = ["UnnecessaryModifier"]
 checkstyle = ["RedundantModifier"]

@@ -58,3 +58,45 @@ comment-format = ".*"
 exception-variable-name = "^$"
 message = "empty catch block"
 '''
+
+[[rules]]
+id = "ward:java/avoid-nested-blocks"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["strict"]
+options.allow-in-switch-case = { type = "boolean" }
+body = '''
+check = "avoid-nested-blocks"
+allow-in-switch-case = false
+message = "avoid nested blocks"
+'''
+
+[[rules]]
+id = "ward:java/right-curly"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["strict"]
+options.option = { type = "enum", values = ["alone", "same"] }
+body = '''
+check = "right-curly"
+option = "same"
+message = "right curly brace is not placed as the option requires"
+'''
+
+[[rules]]
+id = "ward:java/empty-block"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["strict"]
+options.option = { type = "enum", values = ["text", "statement"] }
+body = '''
+check = "empty-block"
+option = "statement"
+message = "empty block"
+'''

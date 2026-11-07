@@ -14,6 +14,8 @@ import java.util.Set;
 public final class RecordAccessorOverrideCheck implements RuleCheck {
 
   private static final String RECORD = "recordDeclaration";
+  private static final String RECORD_BODY = "recordBody";
+  private static final String RECORD_HEADER = "recordHeader";
   private static final String IDENTIFIER = "identifier";
   private static final String OVERRIDE = "@Override";
   private static final String NO_PARAMETERS = "()";
@@ -37,7 +39,7 @@ public final class RecordAccessorOverrideCheck implements RuleCheck {
       final SyntaxNode record = visit.node();
       final Set<String> components = componentNames(record);
       for (final SyntaxNode body : record.children()) {
-        if ("recordBody".equals(body.kind())) {
+        if (RECORD_BODY.equals(body.kind())) {
           body.children().forEach(member -> checkMember(member, components, matches));
         }
       }
@@ -48,7 +50,7 @@ public final class RecordAccessorOverrideCheck implements RuleCheck {
   private static Set<String> componentNames(final SyntaxNode record) {
     final List<String> names = new ArrayList<>();
     for (final SyntaxNode header : record.children()) {
-      if ("recordHeader".equals(header.kind())) {
+      if (RECORD_HEADER.equals(header.kind())) {
         header.children().stream()
             .flatMap(list -> list.children().stream())
             .filter(component -> "recordComponent".equals(component.kind()))

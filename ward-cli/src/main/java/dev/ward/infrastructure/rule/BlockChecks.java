@@ -1,9 +1,12 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.check.AvoidNestedBlocksCheck;
+import dev.ward.analysis.domain.rule.check.EmptyBlockCheck;
 import dev.ward.analysis.domain.rule.check.EmptyCatchBlockCheck;
 import dev.ward.analysis.domain.rule.check.GoogleRightCurlyCheck;
 import dev.ward.analysis.domain.rule.check.LeftCurlyCheck;
 import dev.ward.analysis.domain.rule.check.NeedBracesCheck;
+import dev.ward.analysis.domain.rule.check.RightCurlyCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.Optional;
 import java.util.Set;
@@ -22,8 +25,18 @@ final class BlockChecks {
   private static final String IGNORE_ENUMS = "ignore-enums";
   private static final String ALLOW_EMPTY_LOOP_BODY = "allow-empty-loop-body";
 
+  private static final String ALLOW_IN_SWITCH_CASE = "allow-in-switch-case";
+  private static final String OPTION = "option";
+
   private static final Set<String> CHECKS =
-      Set.of("need-braces", "left-curly", "google-right-curly", "empty-catch-block");
+      Set.of(
+          "need-braces",
+          "left-curly",
+          "google-right-curly",
+          "empty-catch-block",
+          "avoid-nested-blocks",
+          "right-curly",
+          "empty-block");
 
   private BlockChecks() {}
 
@@ -43,6 +56,10 @@ final class BlockChecks {
           new NeedBracesCheck(flag(toml, ALLOW_EMPTY_LOOP_BODY, false), message(toml));
       case "left-curly" -> new LeftCurlyCheck(flag(toml, IGNORE_ENUMS, true), message(toml));
       case "google-right-curly" -> new GoogleRightCurlyCheck(message(toml));
+      case "avoid-nested-blocks" ->
+          new AvoidNestedBlocksCheck(flag(toml, ALLOW_IN_SWITCH_CASE, false), message(toml));
+      case "right-curly" -> new RightCurlyCheck(TomlValues.required(toml, OPTION), message(toml));
+      case "empty-block" -> new EmptyBlockCheck(TomlValues.required(toml, OPTION), message(toml));
       default -> emptyCatchBlock(toml);
     };
   }
