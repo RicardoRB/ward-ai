@@ -1,9 +1,15 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.jvm;
 
+import static java.util.Map.entry;
+
+import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
+import dev.ward.analysis.application.rule.TomlLists;
+import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AtclauseOrderCheck;
 import dev.ward.analysis.domain.rule.check.JavadocTagContinuationIndentationCheck;
 import dev.ward.analysis.domain.rule.check.NonEmptyAtclauseDescriptionCheck;
-import dev.ward.analysis.domain.rule.check.RuleCheck;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,35 +40,34 @@ final class JavadocChecks {
           "COMPACT_CTOR_DEF", "compactConstructorDeclaration",
           "VARIABLE_DEF", "fieldDeclaration");
 
-  private static final Set<String> CHECKS =
-      Set.of(
-          "atclause-order",
-          "non-empty-atclause-description",
-          "javadoc-tag-continuation-indentation");
-
   private JavadocChecks() {}
 
-  /** Returns whether {@code name} is one of the Javadoc checks. */
-  static boolean isJavadocCheck(final String name) {
-    return CHECKS.contains(name);
+  /** The checks this class provides, by name. */
+  static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(build()));
   }
 
   /** Builds the Javadoc check {@code name} with the parameters of {@code toml}. */
-  static RuleCheck build(final String name, final TomlParseResult toml) {
-    return switch (name) {
-      case "atclause-order" ->
-          new AtclauseOrderCheck(
-              kinds(toml),
-              TomlValues.strings(toml, MODIFIERS),
-              TomlLists.optional(toml, TAG_ORDER),
-              TomlValues.required(toml, MESSAGE));
-      case "non-empty-atclause-description" ->
-          new NonEmptyAtclauseDescriptionCheck(
-              TomlValues.strings(toml, JAVADOC_TOKENS), TomlValues.required(toml, MESSAGE));
-      default ->
-          new JavadocTagContinuationIndentationCheck(
-              TomlValues.integer(toml, OFFSET), TomlValues.required(toml, MESSAGE));
-    };
+  private static Map<String, CheckFactory> build() {
+    return Map.ofEntries(
+        entry(
+            "atclause-order",
+            toml ->
+                new AtclauseOrderCheck(
+                    kinds(toml),
+                    TomlValues.strings(toml, MODIFIERS),
+                    TomlLists.optional(toml, TAG_ORDER),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "non-empty-atclause-description",
+            toml ->
+                new NonEmptyAtclauseDescriptionCheck(
+                    TomlValues.strings(toml, JAVADOC_TOKENS), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "javadoc-tag-continuation-indentation",
+            toml ->
+                new JavadocTagContinuationIndentationCheck(
+                    TomlValues.integer(toml, OFFSET), TomlValues.required(toml, MESSAGE))));
   }
 
   private static Set<String> kinds(final TomlParseResult toml) {

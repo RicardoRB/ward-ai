@@ -1,5 +1,10 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.python;
 
+import static java.util.Map.entry;
+
+import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckRegistry;
+import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AncestorCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
 import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
@@ -10,7 +15,9 @@ import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
 import dev.ward.analysis.domain.scope.ScopeKind;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -18,41 +25,31 @@ import java.util.stream.Collectors;
 import org.tomlj.TomlParseResult;
 
 /** The declarative checks that read the scopes or the format strings of a literal. */
-final class ScopeAndFormatChecks {
+final class PythonScopeChecks {
 
   private static final String MESSAGE = "message";
   private static final String KINDS = "kinds";
 
-  private ScopeAndFormatChecks() {}
+  private PythonScopeChecks() {}
 
-  /** Whether {@code name} is a check of this family. */
-  static boolean isCheck(final String name) {
-    return switch (name) {
-      case "outside-scope",
-          "redefinition",
-          "star-import-usage",
-          "percent-format",
-          "dot-format",
-          "logging-args",
-          "ancestor-check",
-          "module-order" ->
-          true;
-      default -> false;
-    };
+  /** The checks this class provides, by name. */
+  static Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(List.of(build()));
   }
 
   /** Builds the check {@code name} from its table. */
-  static RuleCheck build(final String name, final TomlParseResult toml) {
-    return switch (name) {
-      case "outside-scope" -> outsideScope(toml);
-      case "redefinition" -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE));
-      case "star-import-usage" -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE));
-      case "percent-format" -> percentFormat(toml);
-      case "dot-format" -> dotFormat(toml);
-      case "ancestor-check" -> ancestorCheck(toml);
-      case "module-order" -> moduleOrder(toml);
-      default -> loggingArgs(toml);
-    };
+  private static Map<String, CheckFactory> build() {
+    return Map.ofEntries(
+        entry("outside-scope", toml -> outsideScope(toml)),
+        entry("redefinition", toml -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "star-import-usage",
+            toml -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE))),
+        entry("percent-format", toml -> percentFormat(toml)),
+        entry("dot-format", toml -> dotFormat(toml)),
+        entry("ancestor-check", toml -> ancestorCheck(toml)),
+        entry("module-order", toml -> moduleOrder(toml)),
+        entry("logging-args", toml -> loggingArgs(toml)));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {

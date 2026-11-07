@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
 /** Reads typed parameters from a rule body, reporting a missing or wrong-typed value. */
-final class TomlValues {
+public final class TomlValues {
 
   private TomlValues() {}
 
@@ -22,7 +22,7 @@ final class TomlValues {
    *
    * @throws RuleConfigurationException if the body is not valid TOML
    */
-  static TomlParseResult parse(final String body) {
+  public static TomlParseResult parse(final String body) {
     final TomlParseResult toml = Toml.parse(body);
     if (toml.hasErrors()) {
       throw new RuleConfigurationException("the rule body is not valid TOML");
@@ -30,7 +30,7 @@ final class TomlValues {
     return toml;
   }
 
-  static String required(final TomlParseResult toml, final String key) {
+  public static String required(final TomlParseResult toml, final String key) {
     final String value = toml.getString(key);
     if (value == null) {
       throw new RuleConfigurationException("'" + key + "' must be a string");
@@ -38,7 +38,7 @@ final class TomlValues {
     return value;
   }
 
-  static int integer(final TomlParseResult toml, final String key) {
+  public static int integer(final TomlParseResult toml, final String key) {
     final Long value = toml.getLong(key);
     if (value == null) {
       throw new RuleConfigurationException("'" + key + "' must be an integer");
@@ -46,29 +46,30 @@ final class TomlValues {
     return toInt(key, value);
   }
 
-  static int optionalInteger(final TomlParseResult toml, final String key, final int fallback) {
+  public static int optionalInteger(
+      final TomlParseResult toml, final String key, final int fallback) {
     return toml.contains(key) ? integer(toml, key) : fallback;
   }
 
-  static int toInt(final String key, final long value) {
+  public static int toInt(final String key, final long value) {
     if (value < 0 || value > Integer.MAX_VALUE) {
       throw new RuleConfigurationException("'" + key + "' is out of range");
     }
     return (int) value;
   }
 
-  static Set<String> strings(final TomlParseResult toml, final String key) {
+  public static Set<String> strings(final TomlParseResult toml, final String key) {
     if (!toml.contains(key)) {
       throw new RuleConfigurationException("'" + key + "' must be a list of strings");
     }
     return stringList(toml.getArray(key), key);
   }
 
-  static Set<String> optionalStrings(final TomlParseResult toml, final String key) {
+  public static Set<String> optionalStrings(final TomlParseResult toml, final String key) {
     return toml.contains(key) ? strings(toml, key) : Set.of();
   }
 
-  static Set<String> stringList(final TomlArray array, final String key) {
+  public static Set<String> stringList(final TomlArray array, final String key) {
     if (array == null) {
       throw new RuleConfigurationException("'" + key + "' must be a list of strings");
     }
@@ -79,7 +80,7 @@ final class TomlValues {
     return Set.copyOf(values);
   }
 
-  static String stringAt(final TomlArray array, final int index, final String key) {
+  public static String stringAt(final TomlArray array, final int index, final String key) {
     try {
       final String value = array.getString(index);
       if (value != null) {
@@ -92,7 +93,7 @@ final class TomlValues {
   }
 
   /** Reads a table of kind to sibling kind; a missing table is empty. */
-  static Map<String, String> kindMap(final TomlParseResult toml, final String key) {
+  public static Map<String, String> kindMap(final TomlParseResult toml, final String key) {
     final TomlTable table = toml.getTable(key);
     final Map<String, String> map = new HashMap<>();
     if (table != null) {
