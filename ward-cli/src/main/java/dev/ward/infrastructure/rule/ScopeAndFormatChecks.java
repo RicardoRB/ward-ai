@@ -65,8 +65,8 @@ final class ScopeAndFormatChecks {
     final String text = toml.getString("text");
     return new AncestorCheck(
         TomlValues.strings(toml, KINDS),
-        TomlValues.strings(toml, "allowed"),
-        TomlValues.strings(toml, "stop"),
+        new AncestorCheck.Boundary(
+            TomlValues.strings(toml, "allowed"), TomlValues.strings(toml, "stop")),
         AncestorCheck.Mode.valueOf(mode),
         Optional.ofNullable(text).map(Pattern::compile),
         TomlValues.required(toml, MESSAGE));

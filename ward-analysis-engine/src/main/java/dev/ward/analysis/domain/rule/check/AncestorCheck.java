@@ -18,6 +18,13 @@ import java.util.regex.Pattern;
  */
 public final class AncestorCheck implements RuleCheck {
 
+  private final Set<String> kinds;
+  private final Set<String> allowed;
+  private final Set<String> stop;
+  private final Mode mode;
+  private final Optional<Pattern> text;
+  private final String message;
+
   /** Whether a node must sit outside the allowed kinds or inside them. */
   public enum Mode {
     /** Reported when no allowed ancestor encloses it. */
@@ -26,36 +33,33 @@ public final class AncestorCheck implements RuleCheck {
     INSIDE
   }
 
-  private final Set<String> kinds;
-  private final Set<String> allowed;
-  private final Set<String> stop;
-  private final Mode mode;
-  private final Optional<Pattern> text;
-  private final String message;
+  /**
+   * The enclosing kinds that count, and the kinds at which the search ends. A stop kind whose
+   * parent is an allowed kind, like the body of an {@code async def}, does not end it.
+   *
+   * @param allowed the kinds that make a node allowed (or reported, for {@link Mode#INSIDE})
+   * @param stop the kinds at which the search ends without finding an allowed kind
+   */
+  public record Boundary(Set<String> allowed, Set<String> stop) {}
 
   /**
    * Creates the check.
    *
    * @param kinds the node kinds to report
-   * @param allowed the enclosing kinds that make a node allowed (or, for {@link Mode#INSIDE}, that
-   *     make it reported)
-   * @param stop the enclosing kinds at which the search ends without finding an allowed kind; a
-   *     stop kind whose parent is an allowed kind, like the body of an {@code async def}, does not
-   *     end it
+   * @param boundary the enclosing kinds that make a node allowed, and the kinds that end the search
    * @param mode the placement that is reported
    * @param text a pattern the node's text must match, if present
    * @param message the message of each finding
    */
   public AncestorCheck(
       final Set<String> kinds,
-      final Set<String> allowed,
-      final Set<String> stop,
+      final Boundary boundary,
       final Mode mode,
       final Optional<Pattern> text,
       final String message) {
     this.kinds = Set.copyOf(kinds);
-    this.allowed = Set.copyOf(allowed);
-    this.stop = Set.copyOf(stop);
+    this.allowed = Set.copyOf(boundary.allowed());
+    this.stop = Set.copyOf(boundary.stop());
     this.mode = Objects.requireNonNull(mode, "mode");
     this.text = Objects.requireNonNull(text, "text");
     this.message = Objects.requireNonNull(message, "message");
