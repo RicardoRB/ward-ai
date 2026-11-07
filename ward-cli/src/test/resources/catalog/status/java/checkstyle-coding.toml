@@ -60,7 +60,7 @@ unnecessary-semicolon-in-try-with-resources = { status = "planned", issue = "#28
 unnecessary-type-arguments-with-record-pattern = { status = "planned", issue = "#289" }
 unused-catch-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
 unused-lambda-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
-unused-local-variable = { status = "planned", issue = "#289" }
+unused-local-variable = "implemented"
 unused-private-field = { status = "planned", issue = "#289" }
 unused-try-resource-should-be-unnamed = { status = "planned", issue = "#289" }
 use-enhanced-switch = { status = "planned", issue = "#288" }
