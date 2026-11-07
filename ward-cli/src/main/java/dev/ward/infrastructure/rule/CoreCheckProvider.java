@@ -40,9 +40,6 @@ public final class CoreCheckProvider implements CheckProvider {
   private static final String SPECS = "specs";
   private static final String COUNT_EMPTY = "count-empty";
 
-  /** Creates the provider. */
-  public CoreCheckProvider() {}
-
   @Override
   public Map<String, CheckFactory> checks() {
     return Map.ofEntries(

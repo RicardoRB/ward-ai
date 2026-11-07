@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.RuleFileProvider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,7 +51,7 @@ class RuleFileResourcesTest {
 
   @Test
   void everyLanguageListsItsRuleFilesAlphabetically() {
-    for (final var provider : BundledLanguages.ruleFiles()) {
+    for (final RuleFileProvider provider : BundledLanguages.ruleFiles()) {
       assertThat(provider.ruleFiles()).isSorted();
     }
   }

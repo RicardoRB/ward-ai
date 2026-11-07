@@ -27,9 +27,6 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/refurb-calls.toml",
           "rules/python/refurb.toml");
 
-  /** Creates the provider. */
-  public PythonRuleFiles() {}
-
   @Override
   public List<String> ruleFiles() {
     return FILES;

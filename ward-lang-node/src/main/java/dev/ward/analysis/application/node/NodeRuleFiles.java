@@ -12,9 +12,6 @@ public final class NodeRuleFiles implements RuleFileProvider {
   private static final List<String> FILES =
       List.of("dev/ward/analysis/lang/node/rules.toml", "rules/duplication-node.toml");
 
-  /** Creates the provider. */
-  public NodeRuleFiles() {}
-
   @Override
   public List<String> ruleFiles() {
     return FILES;

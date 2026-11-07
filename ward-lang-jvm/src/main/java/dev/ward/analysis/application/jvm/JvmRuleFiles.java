@@ -33,9 +33,6 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/kotlin/potential-bugs.toml",
           "rules/kotlin/size.toml");
 
-  /** Creates the provider. */
-  public JvmRuleFiles() {}
-
   @Override
   public List<String> ruleFiles() {
     return FILES;

@@ -49,11 +49,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
   /** Creates the source that loads the rule files of every given language module, sorted. */
   @Inject
   public ClasspathRuleSource(final Set<RuleFileProvider> providers) {
-    this(sorted(providers));
-  }
-
-  private static List<String> sorted(final Set<RuleFileProvider> providers) {
-    return providers.stream().flatMap(provider -> provider.ruleFiles().stream()).sorted().toList();
+    this(RuleFileProvider.sortedFiles(providers));
   }
 
   /** Creates the source that loads the given classpath resources, in order. */

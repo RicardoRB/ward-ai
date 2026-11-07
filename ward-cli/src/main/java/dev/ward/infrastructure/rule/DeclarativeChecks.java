@@ -20,14 +20,6 @@ final class DeclarativeChecks {
   private final CheckRegistry registry;
 
   private static final String CHECK = "check";
-  private static final String KINDS = "kinds";
-  private static final String MAX = "max";
-  private static final String MESSAGE = "message";
-  private static final String MODIFIERS = "modifiers";
-  private static final String REQUIRED = "required";
-  private static final String EXCLUDED = "excluded";
-  private static final String SPECS = "specs";
-  private static final String COUNT_EMPTY = "count-empty";
 
   /** Creates the builder over the checks of {@code registry}. */
   DeclarativeChecks(final CheckRegistry registry) {

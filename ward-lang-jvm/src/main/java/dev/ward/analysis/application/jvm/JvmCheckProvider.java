@@ -12,9 +12,6 @@ import java.util.Map;
  */
 public final class JvmCheckProvider implements CheckProvider {
 
-  /** Creates the provider. */
-  public JvmCheckProvider() {}
-
   @Override
   public Map<String, CheckFactory> checks() {
     return CheckRegistry.union(

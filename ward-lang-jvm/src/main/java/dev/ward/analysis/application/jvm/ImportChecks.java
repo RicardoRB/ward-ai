@@ -67,7 +67,7 @@ final class ImportChecks {
                     flag(toml, "separated", false),
                     flag(toml, "case-sensitive", true),
                     message(toml))),
-        entry("custom-import-order", toml -> customImportOrder(toml)),
+        entry("custom-import-order", ImportChecks::customImportOrder),
         entry(
             "import-control",
             toml ->

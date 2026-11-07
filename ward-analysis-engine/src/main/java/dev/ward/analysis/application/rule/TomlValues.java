@@ -30,6 +30,7 @@ public final class TomlValues {
     return toml;
   }
 
+  /** Reads a required string. */
   public static String required(final TomlParseResult toml, final String key) {
     final String value = toml.getString(key);
     if (value == null) {
@@ -38,6 +39,7 @@ public final class TomlValues {
     return value;
   }
 
+  /** Reads a required non-negative integer. */
   public static int integer(final TomlParseResult toml, final String key) {
     final Long value = toml.getLong(key);
     if (value == null) {
@@ -46,11 +48,13 @@ public final class TomlValues {
     return toInt(key, value);
   }
 
+  /** Reads an integer, or {@code fallback} when the key is absent. */
   public static int optionalInteger(
       final TomlParseResult toml, final String key, final int fallback) {
     return toml.contains(key) ? integer(toml, key) : fallback;
   }
 
+  /** Narrows {@code value} to an int, rejecting a negative or oversized one. */
   public static int toInt(final String key, final long value) {
     if (value < 0 || value > Integer.MAX_VALUE) {
       throw new RuleConfigurationException("'" + key + "' is out of range");
@@ -58,6 +62,7 @@ public final class TomlValues {
     return (int) value;
   }
 
+  /** Reads a required list of strings as a set. */
   public static Set<String> strings(final TomlParseResult toml, final String key) {
     if (!toml.contains(key)) {
       throw new RuleConfigurationException("'" + key + "' must be a list of strings");
@@ -65,10 +70,12 @@ public final class TomlValues {
     return stringList(toml.getArray(key), key);
   }
 
+  /** Reads a list of strings as a set, or an empty set when the key is absent. */
   public static Set<String> optionalStrings(final TomlParseResult toml, final String key) {
     return toml.contains(key) ? strings(toml, key) : Set.of();
   }
 
+  /** Reads {@code array} as a set of strings. */
   public static Set<String> stringList(final TomlArray array, final String key) {
     if (array == null) {
       throw new RuleConfigurationException("'" + key + "' must be a list of strings");
@@ -80,6 +87,7 @@ public final class TomlValues {
     return Set.copyOf(values);
   }
 
+  /** Reads the string at {@code index} of {@code array}. */
   public static String stringAt(final TomlArray array, final int index, final String key) {
     try {
       final String value = array.getString(index);

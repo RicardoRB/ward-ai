@@ -22,9 +22,6 @@ public final class SwiftRuleFiles implements RuleFileProvider {
           "rules/swift/part-3.toml",
           "rules/swift/performance.toml");
 
-  /** Creates the provider. */
-  public SwiftRuleFiles() {}
-
   @Override
   public List<String> ruleFiles() {
     return FILES;

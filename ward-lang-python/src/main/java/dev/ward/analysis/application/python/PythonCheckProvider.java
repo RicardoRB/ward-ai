@@ -10,9 +10,6 @@ import java.util.Map;
  */
 public final class PythonCheckProvider implements CheckProvider {
 
-  /** Creates the provider. */
-  public PythonCheckProvider() {}
-
   @Override
   public Map<String, CheckFactory> checks() {
     return PythonScopeChecks.checks();

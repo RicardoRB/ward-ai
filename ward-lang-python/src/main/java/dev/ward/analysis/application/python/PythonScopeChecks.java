@@ -40,16 +40,16 @@ final class PythonScopeChecks {
   /** Builds the check {@code name} from its table. */
   private static Map<String, CheckFactory> build() {
     return Map.ofEntries(
-        entry("outside-scope", toml -> outsideScope(toml)),
+        entry("outside-scope", PythonScopeChecks::outsideScope),
         entry("redefinition", toml -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "star-import-usage",
             toml -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE))),
-        entry("percent-format", toml -> percentFormat(toml)),
-        entry("dot-format", toml -> dotFormat(toml)),
-        entry("ancestor-check", toml -> ancestorCheck(toml)),
-        entry("module-order", toml -> moduleOrder(toml)),
-        entry("logging-args", toml -> loggingArgs(toml)));
+        entry("percent-format", PythonScopeChecks::percentFormat),
+        entry("dot-format", PythonScopeChecks::dotFormat),
+        entry("ancestor-check", PythonScopeChecks::ancestorCheck),
+        entry("module-order", PythonScopeChecks::moduleOrder),
+        entry("logging-args", PythonScopeChecks::loggingArgs));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {
