@@ -123,7 +123,7 @@ no-undefined = { status = "planned", issue = "#296" }
 no-underscore-dangle = { status = "planned", issue = "#296" }
 no-unexpected-multiline = { status = "planned", issue = "#326" }
 no-unmodified-loop-condition = { status = "planned", issue = "#326" }
-no-unneeded-ternary = { status = "planned", issue = "#296" }
+no-unneeded-ternary = "implemented"
 no-unreachable = "implemented"
 no-unreachable-loop = { status = "planned", issue = "#326" }
 no-unsafe-finally = "implemented"
@@ -150,9 +150,9 @@ operator-assignment = { status = "planned", issue = "#296" }
 prefer-arrow-callback = { status = "planned", issue = "#296" }
 prefer-const = { status = "planned", issue = "#296" }
 prefer-destructuring = { status = "planned", issue = "#296" }
-prefer-exponentiation-operator = { status = "planned", issue = "#296" }
+prefer-exponentiation-operator = "implemented"
 prefer-named-capture-group = { status = "planned", issue = "#326" }
-prefer-numeric-literals = { status = "planned", issue = "#296" }
+prefer-numeric-literals = "implemented"
 prefer-object-has-own = "implemented"
 prefer-object-spread = { status = "planned", issue = "#296" }
 prefer-promise-reject-errors = { status = "planned", issue = "#326" }

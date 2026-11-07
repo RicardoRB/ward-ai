@@ -738,8 +738,6 @@ biome = ["noUnmodifiedLoopCondition"]
 
 [[rule]]
 name = "no-unneeded-ternary"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-unneeded-ternary"]
 biome = ["noUselessTernary"]
 
@@ -918,8 +916,6 @@ biome = ["useDestructuring"]
 
 [[rule]]
 name = "prefer-exponentiation-operator"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-exponentiation-operator"]
 biome = ["useExponentiationOperator"]
 
@@ -932,8 +928,6 @@ biome = ["useNamedCaptureGroup"]
 
 [[rule]]
 name = "prefer-numeric-literals"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-numeric-literals"]
 biome = ["useNumericLiterals"]
 
