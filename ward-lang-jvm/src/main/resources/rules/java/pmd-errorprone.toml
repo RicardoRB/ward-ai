@@ -998,3 +998,161 @@ check = "reference-equality"
 types = ["*"]
 message = "objects compared with == or !=; use equals()"
 '''
+
+[[rules]]
+id = "ward:java/call-super-first"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-super"
+position = "first"
+ancestors = ["android.app.Activity", "android.app.Application", "android.app.Service"]
+methods = ["onCreate", "onConfigurationChanged", "onPostCreate", "onPostResume", "onRestart", "onRestoreInstanceState", "onResume", "onStart"]
+message = "{value} must call super at its start"
+'''
+
+[[rules]]
+id = "ward:java/call-super-last"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-super"
+position = "last"
+ancestors = ["android.app.Activity", "android.app.Application", "android.app.Service"]
+methods = ["finish", "onDestroy", "onPause", "onSaveInstanceState", "onStop", "onTerminate"]
+message = "{value} must call super at its end"
+'''
+
+[[rules]]
+id = "ward:java/close-resource"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+message = "the resource {value} is never closed; use try-with-resources or close it in a finally block"
+'''
+
+[[rules]]
+id = "ward:java/collection-type-mismatch"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "collection-type-mismatch"
+message = "an object of type {value} cannot be found there; the types never match"
+'''
+
+[[rules]]
+id = "ward:java/confusing-argument-to-varargs-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "confusing-argument-to-varargs-method"
+message = "unclear whether the varargs method gets the array or its elements; cast to {value} or {value}[], or pass the elements separately"
+'''
+
+[[rules]]
+id = "ward:java/invalid-log-message-format"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-log-message-format"
+message = "the log message has a different number of placeholders and arguments ({value})"
+'''
+
+[[rules]]
+id = "ward:java/non-serializable-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "non-serializable-class"
+message = "the field {value} of a serializable class has a type that is not serializable; make it transient or serializable"
+'''
+
+[[rules]]
+id = "ward:java/proper-logger"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "proper-logger"
+logger-class = "org.apache.commons.logging.Log"
+static-logger-name = "LOG"
+logger-name = "log"
+message = "logger should be private static final, named as configured, and created for its own class"
+'''
+
+[[rules]]
+id = "ward:java/unsupported-jdk-api-usage"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importDeclaration"]
+text = '^import(?:static)?(?:sun|jdk\.internal)\.'
+message = "do not import unsupported JDK API from sun.* or jdk.internal.*"
+'''
+
+[[rules]]
+id = "ward:java/unused-return-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+declaring-types = ["java.lang.String", "java.math.BigDecimal", "java.math.BigInteger", "java.time.LocalDate", "java.time.LocalDateTime", "java.time.LocalTime", "java.time.Instant", "java.time.Duration", "java.time.ZonedDateTime", "java.time.OffsetDateTime"]
+names = ["concat", "replace", "replaceAll", "replaceFirst", "substring", "toLowerCase", "toUpperCase", "trim", "strip", "stripLeading", "stripTrailing", "repeat", "formatted", "stripIndent", "translateEscapes", "add", "subtract", "multiply", "divide", "remainder", "negate", "abs", "pow", "sqrt", "setScale", "round", "mod", "gcd", "plus", "minus", "plusDays", "plusWeeks", "plusMonths", "plusYears", "plusHours", "plusMinutes", "plusSeconds", "plusNanos", "minusDays", "minusWeeks", "minusMonths", "minusYears", "minusHours", "minusMinutes", "minusSeconds", "minusNanos", "withDayOfMonth", "withMonth", "withYear", "withHour", "withMinute", "withSecond", "withNano"]
+ignored = true
+message = "the result of this call is ignored; it returns a new value and changes nothing"
+'''
+
+[[rules]]
+id = "ward:java/use-correct-exception-logging"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "use-correct-exception-logging"
+message = "log the exception with a message and the throwable so the stack trace is printed"
+'''
+
+[[rules]]
+id = "ward:java/wrong-test-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-test-annotation"
+message = "this @Test is from a JUnit generation the other imports of the file do not use, so the test will not run"
+'''

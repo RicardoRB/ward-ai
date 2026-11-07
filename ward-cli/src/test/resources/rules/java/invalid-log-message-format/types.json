@@ -1,0 +1,104 @@
+{
+  "3:5": {
+    "call": {
+      "declaring": {
+        "name": "org.slf4j.Logger"
+      },
+      "name": "info",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "4:5": {
+    "call": {
+      "declaring": {
+        "name": "org.slf4j.Logger"
+      },
+      "name": "info",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "10:5": {
+    "call": {
+      "declaring": {
+        "name": "org.slf4j.Logger"
+      },
+      "name": "info",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "11:5": {
+    "call": {
+      "declaring": {
+        "name": "org.slf4j.Logger"
+      },
+      "name": "info",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "11:33": {
+    "type": {
+      "name": "java.lang.Exception"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Throwable"
+        }
+      ]
+    }
+  },
+  "12:5": {
+    "call": {
+      "declaring": {
+        "name": "org.slf4j.Logger"
+      },
+      "name": "info",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  }
+}

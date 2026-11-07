@@ -231,7 +231,6 @@ pmd = ["CStyleArrayDeclaration"]
 name = "call-super-first"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 pmd = ["CallSuperFirst"]
 
 [[rule]]
@@ -244,7 +243,6 @@ pmd = ["CallSuperInConstructor"]
 name = "call-super-last"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 pmd = ["CallSuperLast"]
 
 [[rule]]
@@ -272,7 +270,6 @@ pmd = ["CloneMethodReturnTypeMustMatchClassName"]
 name = "close-resource"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs resolved types (AutoCloseable and the declared resource type); no Java rule consumes TYPES facts yet
 pmd = ["CloseResource"]
 
 [[rule]]
@@ -284,7 +281,6 @@ pmd = ["CollapsibleIfStatements"]
 name = "collection-type-mismatch"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs resolved collection and argument types; no Java rule consumes TYPES facts yet
 pmd = ["CollectionTypeMismatch"]
 
 [[rule]]
@@ -317,7 +313,6 @@ pmd = ["ComparisonWithNaN"]
 name = "confusing-argument-to-varargs-method"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the varargs signature and argument types of the called method; no Java rule consumes TYPES facts yet
 pmd = ["ConfusingArgumentToVarargsMethod"]
 
 [[rule]]
@@ -590,7 +585,6 @@ pmd = ["InvalidJavaBean"]
 name = "invalid-log-message-format"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the placeholder count of the message and the argument count of the logger call; LoggingArgsCheck only judges Python
 pmd = ["InvalidLogMessageFormat"]
 
 [[rule]]
@@ -742,7 +736,6 @@ pmd = ["NonExhaustiveSwitch"]
 name = "non-serializable-class"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: strict only; needs the resolved types of every field of a Serializable class
 pmd = ["NonSerializableClass"]
 
 [[rule]]
@@ -803,7 +796,6 @@ pmd = ["ProperCloneImplementation"]
 name = "proper-logger"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: the rule takes three string options (static-logger-name, logger-name, logger-class) that no generic check accepts, and the logger type needs types
 pmd = ["ProperLogger"]
 
 [[rule]]
@@ -1095,7 +1087,6 @@ pmd = ["UnnecessaryWarningSuppression"]
 name = "unsupported-jdk-api-usage"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs resolved types to see uses of sun.* and jdk.internal.* classes; imports alone do not show the uses
 pmd = ["UnsupportedJdkApiUsage"]
 
 [[rule]]
@@ -1126,7 +1117,6 @@ errorprone = ["UnusedMethod"]
 name = "unused-return-value"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the return type and mutation-by-copy API of the called method from types
 pmd = ["UnusedReturnValue"]
 
 [[rule]]
@@ -1149,7 +1139,6 @@ pmd = ["UseConcurrentHashMap"]
 name = "use-correct-exception-logging"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the logger type (Apache Commons Log) and the argument type (Throwable) from types
 pmd = ["UseCorrectExceptionLogging"]
 
 [[rule]]
@@ -1265,5 +1254,4 @@ pmd = ["WhileLoopWithLiteralBoolean"]
 name = "wrong-test-annotation"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the imports of the file paired with each test annotation; no generic check pairs them
 pmd = ["WrongTestAnnotation"]

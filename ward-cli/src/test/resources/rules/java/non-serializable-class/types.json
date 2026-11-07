@@ -1,0 +1,114 @@
+{
+  "1:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        }
+      ]
+    }
+  },
+  "2:3": {
+    "type": {
+      "name": "Helper"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "8:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        }
+      ]
+    }
+  },
+  "9:3": {
+    "type": {
+      "name": "Helper"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        }
+      ]
+    }
+  },
+  "10:3": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        }
+      ]
+    }
+  },
+  "13:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        }
+      ]
+    }
+  },
+  "14:3": {
+    "type": {
+      "name": "Helper"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "19:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "20:3": {
+    "type": {
+      "name": "Helper"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

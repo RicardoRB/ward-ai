@@ -1,0 +1,47 @@
+{
+  "3:5": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "concat",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "9:21": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "concat",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "10:5": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "length",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}

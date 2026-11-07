@@ -1,0 +1,100 @@
+{
+  "5:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "5:9": {
+    "type": {
+      "name": "java.lang.String",
+      "array": 1
+    }
+  },
+  "6:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "14:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "14:9": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "15:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "15:9": {
+    "type": {
+      "name": "java.lang.Object",
+      "array": 1
+    }
+  },
+  "16:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "16:9": {
+    "type": {
+      "name": "java.lang.Object",
+      "array": 1
+    }
+  }
+}
