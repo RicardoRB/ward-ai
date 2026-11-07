@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.TypeFactsRun;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The first type-aware rule, run through the engine on the facts of the native JVM resolver. */
 class EqualsOnUnrelatedTypesNativeTest {
+  private static final int UNRELATED_LINE = 3;
   private static final String RULE_ID = "ward:java/equals-on-unrelated-types";
   private static final String SOURCE =
       """
@@ -47,7 +49,7 @@ class EqualsOnUnrelatedTypesNativeTest {
     try {
       final RuleDefinition rule =
           CatalogRuleDefinitions.all().stream()
-              .filter(definition -> definition.id().equals(RULE_ID))
+              .filter(definition -> RULE_ID.equals(definition.id()))
               .findFirst()
               .orElseThrow();
       final TypeFactsRun run =
@@ -65,7 +67,7 @@ class EqualsOnUnrelatedTypesNativeTest {
       assertThat(result.executionErrors()).isEmpty();
       assertThat(result.findings())
           .singleElement()
-          .satisfies(finding -> assertThat(finding.line()).isEqualTo(3));
+          .satisfies(finding -> assertThat(finding.line()).isEqualTo(UNRELATED_LINE));
     } finally {
       types.close();
     }
@@ -75,7 +77,7 @@ class EqualsOnUnrelatedTypesNativeTest {
   void withoutAResolverTheRuleIsReportedAsNotRun() {
     final RuleDefinition rule =
         CatalogRuleDefinitions.all().stream()
-            .filter(definition -> definition.id().equals(RULE_ID))
+            .filter(definition -> RULE_ID.equals(definition.id()))
             .findFirst()
             .orElseThrow();
 
@@ -86,7 +88,7 @@ class EqualsOnUnrelatedTypesNativeTest {
                 GateFrontends.create(new AntlrLanguageFrontend()),
                 List.of(rule));
 
-    assertThat(result.notRun()).extracting(notRun -> notRun.ruleId()).containsExactly(RULE_ID);
+    assertThat(result.notRun()).extracting(RuleNotRun::ruleId).containsExactly(RULE_ID);
     assertThat(result.findings()).isEmpty();
   }
 }
