@@ -2,8 +2,8 @@
 
 [[rule]]
 name = "abbreviation-as-word-in-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["AbbreviationAsWordInName"]
 
 [[rule]]
@@ -22,8 +22,9 @@ checkstyle = ["CatchParameterName"]
 
 [[rule]]
 name = "class-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["ClassTypeParameterName"]
 
 [[rule]]
@@ -36,14 +37,16 @@ ktlint = ["property-naming"]
 
 [[rule]]
 name = "google-method-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Java lowerCamelCase method names; Python method names are covered by method-name" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["GoogleMethodName"]
 
 [[rule]]
 name = "google-non-constant-field-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Java field naming; Python attributes are covered by the naming rules" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["GoogleNonConstantFieldName"]
 
 [[rule]]
@@ -55,9 +58,9 @@ checkstyle = ["IllegalIdentifierName"]
 
 [[rule]]
 name = "interface-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
-not-applicable = { swift = "Swift protocols take associated types, not generic parameters" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+not-applicable = { python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
@@ -68,8 +71,9 @@ checkstyle = ["LambdaParameterName"]
 
 [[rule]]
 name = "local-final-variable-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Java final local variables; Python has no final locals" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["LocalFinalVariableName"]
 
 [[rule]]
@@ -91,8 +95,8 @@ checkstyle = ["MemberName"]
 
 [[rule]]
 name = "method-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { typescript = "#296", javascript = "#296" }
 ids = { kotlin = "ward:kotlin/function-name" }
 detekt = ["FunctionNaming"]
 pmd = ["MethodNamingConventions"]
@@ -102,8 +106,9 @@ ruff = ["N802"]
 
 [[rule]]
 name = "method-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]
@@ -117,8 +122,8 @@ ktlint = ["package-name"]
 
 [[rule]]
 name = "parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["FunctionParameterNaming"]
 pmd = ["FormalParameterNamingConventions"]
 checkstyle = ["ParameterName"]
@@ -151,8 +156,8 @@ checkstyle = ["StaticVariableName"]
 
 [[rule]]
 name = "type-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { typescript = "#296", javascript = "#296" }
 detekt = ["ClassNaming"]
 pmd = ["ClassNamingConventions"]
 checkstyle = ["TypeName"]

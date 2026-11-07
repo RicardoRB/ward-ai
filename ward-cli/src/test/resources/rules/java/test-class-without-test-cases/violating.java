@@ -1,0 +1,3 @@
+class ParserTest {
+  void helper() {}
+}
