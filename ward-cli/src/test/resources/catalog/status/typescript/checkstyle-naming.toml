@@ -3,18 +3,18 @@
 abbreviation-as-word-in-name = { status = "planned", issue = "#296" }
 abstract-class-name = { status = "planned", issue = "#296" }
 catch-parameter-name = { status = "planned", issue = "#296" }
-class-type-parameter-name = { status = "planned", issue = "#296" }
+class-type-parameter-name = "implemented"
 constant-name = { status = "planned", issue = "#296" }
 google-method-name = { status = "planned", issue = "#296" }
 google-non-constant-field-name = { status = "planned", issue = "#296" }
 illegal-identifier-name = { status = "planned", issue = "#296" }
-interface-type-parameter-name = { status = "planned", issue = "#296" }
+interface-type-parameter-name = "implemented"
 lambda-parameter-name = { status = "planned", issue = "#296" }
 local-final-variable-name = { status = "planned", issue = "#296" }
 local-variable-name = { status = "planned", issue = "#296" }
-member-name = { status = "planned", issue = "#296" }
+member-name = "implemented"
 method-name = { status = "planned", issue = "#296" }
-method-type-parameter-name = { status = "planned", issue = "#296" }
+method-type-parameter-name = "implemented"
 package-name = { status = "planned", issue = "#296" }
 parameter-name = { status = "planned", issue = "#296" }
 pattern-variable-name = "not-applicable"
