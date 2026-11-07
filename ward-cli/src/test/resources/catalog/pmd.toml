@@ -49,9 +49,7 @@ pmd = ["ArrayIsStoredDirectly"]
 
 [[rule]]
 name = "assert-equals-argument-order"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AssertEqualsArgumentOrder"]
 
 [[rule]]
@@ -61,14 +59,13 @@ pmd = ["AssertStatementInTest"]
 
 [[rule]]
 name = "assignment-in-operand"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AssignmentInOperand"]
 
 [[rule]]
 name = "assignment-to-non-final-static"
 category = "errorprone"
+# Planned: needs the static non-final fields of the file bound to each assignment through the scopes; no Java rule reads scopes for this yet
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["AssignmentToNonFinalStatic"]
@@ -82,9 +79,7 @@ pmd = ["AtLeastOneConstructor"]
 
 [[rule]]
 name = "avoid-accessibility-alteration"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidAccessibilityAlteration"]
 
 [[rule]]
@@ -97,15 +92,14 @@ pmd = ["AvoidArrayLoops"]
 [[rule]]
 name = "avoid-assert-as-identifier"
 category = "errorprone"
+# Planned: not applicable (review): assert is a keyword since Java 1.4 and the parser rejects it as an identifier, so no Java source reaches the rule
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["AvoidAssertAsIdentifier"]
 
 [[rule]]
 name = "avoid-branching-statement-as-last-in-loop"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidBranchingStatementAsLastInLoop"]
 
 [[rule]]
@@ -117,16 +111,12 @@ pmd = ["AvoidCalendarDateCreation"]
 
 [[rule]]
 name = "avoid-calling-finalize"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidCallingFinalize"]
 
 [[rule]]
 name = "avoid-decimal-literals-in-big-decimal-constructor"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidDecimalLiteralsInBigDecimalConstructor"]
 
 [[rule]]
@@ -147,6 +137,7 @@ pmd = ["AvoidDollarSigns"]
 [[rule]]
 name = "avoid-enum-as-identifier"
 category = "errorprone"
+# Planned: not applicable (review): enum is a keyword since Java 5 and the parser rejects it as an identifier, so no Java source reaches the rule
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["AvoidEnumAsIdentifier"]
@@ -154,6 +145,7 @@ pmd = ["AvoidEnumAsIdentifier"]
 [[rule]]
 name = "avoid-field-name-matching-method-name"
 category = "errorprone"
+# Planned: needs the method names of the enclosing class compared with each field name; no generic check compares sibling declarations
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["AvoidFieldNameMatchingMethodName"]
@@ -161,6 +153,7 @@ pmd = ["AvoidFieldNameMatchingMethodName"]
 [[rule]]
 name = "avoid-field-name-matching-type-name"
 category = "errorprone"
+# Planned: needs the enclosing type name compared with each field name; no generic check compares a node with its enclosing declaration
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["AvoidFieldNameMatchingTypeName"]
@@ -174,9 +167,7 @@ pmd = ["AvoidFileStream"]
 
 [[rule]]
 name = "avoid-instanceof-checks-in-catch-clause"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidInstanceofChecksInCatchClause"]
 
 [[rule]]
@@ -188,9 +179,7 @@ pmd = ["AvoidInstantiatingObjectsInLoops"]
 
 [[rule]]
 name = "avoid-literals-in-if-condition"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidLiteralsInIfCondition"]
 
 [[rule]]
@@ -200,9 +189,7 @@ pmd = ["AvoidMessageDigestField"]
 
 [[rule]]
 name = "avoid-multiple-unary-operators"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidMultipleUnaryOperators"]
 
 [[rule]]
@@ -280,9 +267,7 @@ pmd = ["AvoidUsingNativeCode"]
 
 [[rule]]
 name = "avoid-using-octal-values"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["AvoidUsingOctalValues"]
 
 [[rule]]
@@ -308,9 +293,7 @@ pmd = ["BooleanGetMethodName"]
 
 [[rule]]
 name = "broken-null-check"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["BrokenNullCheck"]
 
 [[rule]]
@@ -323,6 +306,7 @@ pmd = ["CStyleArrayDeclaration"]
 [[rule]]
 name = "call-super-first"
 category = "errorprone"
+# Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["CallSuperFirst"]
@@ -337,6 +321,7 @@ pmd = ["CallSuperInConstructor"]
 [[rule]]
 name = "call-super-last"
 category = "errorprone"
+# Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["CallSuperLast"]
@@ -352,35 +337,28 @@ pmd = ["CheckResultSet"]
 
 [[rule]]
 name = "class-cast-exception-with-to-array"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["ClassCastExceptionWithToArray"]
 
 [[rule]]
 name = "clone-method-must-be-public"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["CloneMethodMustBePublic"]
 
 [[rule]]
 name = "clone-method-must-implement-cloneable"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["CloneMethodMustImplementCloneable"]
 
 [[rule]]
 name = "clone-method-return-type-must-match-class-name"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["CloneMethodReturnTypeMustMatchClassName"]
 
 [[rule]]
 name = "close-resource"
 category = "errorprone"
+# Planned: needs resolved types (AutoCloseable and the declared resource type); no Java rule consumes TYPES facts yet
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["CloseResource"]
@@ -395,6 +373,7 @@ pmd = ["CollapsibleIfStatements"]
 [[rule]]
 name = "collection-type-mismatch"
 category = "errorprone"
+# Planned: needs resolved collection and argument types; no Java rule consumes TYPES facts yet
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["CollectionTypeMismatch"]
@@ -423,20 +402,20 @@ pmd = ["CommentSize"]
 [[rule]]
 name = "compare-objects-with-equals"
 category = "errorprone"
+# Planned: needs resolved reference types of both operands; no Java rule consumes TYPES facts yet
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["CompareObjectsWithEquals"]
 
 [[rule]]
 name = "comparison-with-na-n"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["ComparisonWithNaN"]
 
 [[rule]]
 name = "confusing-argument-to-varargs-method"
 category = "errorprone"
+# Planned: needs the varargs signature and argument types of the called method; no Java rule consumes TYPES facts yet
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["ConfusingArgumentToVarargsMethod"]
@@ -470,6 +449,7 @@ pmd = ["ConstantsInInterface"]
 [[rule]]
 name = "constructor-calls-overridable-method"
 category = "errorprone"
+# Planned: needs the class hierarchy and each method overridability from symbols and types
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["ConstructorCallsOverridableMethod"]
@@ -504,15 +484,14 @@ pmd = ["DefaultLabelNotLastInSwitch"]
 [[rule]]
 name = "detached-test-case"
 category = "errorprone"
+# Planned: needs the JUnit test methods of the enclosing class; no generic check looks across members
 status = { java = "planned" }
 issues = { java = "#310" }
 pmd = ["DetachedTestCase"]
 
 [[rule]]
 name = "do-not-call-garbage-collection-explicitly"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DoNotCallGarbageCollectionExplicitly"]
 
 [[rule]]
@@ -522,30 +501,22 @@ pmd = ["DoNotExtendJavaLangError"]
 
 [[rule]]
 name = "do-not-extend-java-lang-throwable"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DoNotExtendJavaLangThrowable"]
 
 [[rule]]
 name = "do-not-hard-code-sd-card"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DoNotHardCodeSDCard"]
 
 [[rule]]
 name = "do-not-terminate-vm"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DoNotTerminateVM"]
 
 [[rule]]
 name = "do-not-throw-exception-in-finally"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DoNotThrowExceptionInFinally"]
 
 [[rule]]
@@ -564,9 +535,7 @@ pmd = ["DontCallThreadRun"]
 
 [[rule]]
 name = "dont-use-float-type-for-loop-indices"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["DontUseFloatTypeForLoopIndices"]
 
 [[rule]]
@@ -579,9 +548,7 @@ errorprone = ["DoubleCheckedLocking"]
 
 [[rule]]
 name = "empty-finalizer"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["EmptyFinalizer"]
 
 [[rule]]
@@ -602,9 +569,7 @@ pmd = ["EnumComparison"]
 
 [[rule]]
 name = "equals-null"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["EqualsNull"]
 errorprone = ["EqualsNull"]
 
@@ -665,30 +630,22 @@ pmd = ["FinalParameterInAbstractMethod"]
 
 [[rule]]
 name = "finalize-does-not-call-super-finalize"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["FinalizeDoesNotCallSuperFinalize"]
 
 [[rule]]
 name = "finalize-only-calls-super-finalize"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["FinalizeOnlyCallsSuperFinalize"]
 
 [[rule]]
 name = "finalize-overloaded"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["FinalizeOverloaded"]
 
 [[rule]]
 name = "finalize-should-be-protected"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["FinalizeShouldBeProtected"]
 
 [[rule]]
@@ -734,9 +691,7 @@ pmd = ["HardCodedCryptoKey"]
 
 [[rule]]
 name = "idempotent-operations"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["IdempotentOperations"]
 
 [[rule]]
@@ -748,9 +703,7 @@ pmd = ["IdenticalCatchBranches"]
 
 [[rule]]
 name = "identical-conditional-branches"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#310" }
+status = { java = "implemented" }
 pmd = ["IdenticalConditionalBranches"]
 
 [[rule]]
@@ -797,9 +750,7 @@ pmd = ["InstantiableUtilityClass"]
 
 [[rule]]
 name = "instantiation-to-get-class"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["InstantiationToGetClass"]
 
 [[rule]]
@@ -828,6 +779,7 @@ pmd = ["InvalidJavaBean"]
 [[rule]]
 name = "invalid-log-message-format"
 category = "errorprone"
+# Planned: needs the placeholder count of the message and the argument count of the logger call; LoggingArgsCheck only judges Python
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["InvalidLogMessageFormat"]
@@ -839,9 +791,7 @@ pmd = ["JUnit4SuitesShouldUseSuiteAnnotation"]
 
 [[rule]]
 name = "j-unit-jupiter-test-no-private-modifier"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["JUnitJupiterTestNoPrivateModifier"]
 
 [[rule]]
@@ -851,16 +801,12 @@ pmd = ["JUnitJupiterTestShouldBePackagePrivate"]
 
 [[rule]]
 name = "j-unit-spelling"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["JUnitSpelling"]
 
 [[rule]]
 name = "j-unit-static-suite"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["JUnitStaticSuite"]
 
 [[rule]]
@@ -871,6 +817,7 @@ pmd = ["JUnitUseExpected"]
 [[rule]]
 name = "jumbled-incrementer"
 category = "errorprone"
+# Planned: needs the loop variables of nested for loops; no generic check relates a loop to its enclosing loop
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["JumbledIncrementer"]
@@ -935,9 +882,7 @@ pmd = ["LogicInversion"]
 
 [[rule]]
 name = "long-literal-ending-with-lowercase-l"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["LongLiteralEndingWithLowercaseL"]
 
 [[rule]]
@@ -975,36 +920,29 @@ pmd = ["MethodReturnsInternalArray"]
 [[rule]]
 name = "method-with-same-name-as-enclosing-class"
 category = "errorprone"
+# Planned: needs the enclosing class name compared with each method name; no generic check compares a node with its enclosing declaration
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["MethodWithSameNameAsEnclosingClass"]
 
 [[rule]]
 name = "misplaced-null-check"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["MisplacedNullCheck"]
 
 [[rule]]
 name = "missing-serial-version-uid"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["MissingSerialVersionUID"]
 
 [[rule]]
 name = "missing-static-method-in-non-instantiatable-class"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["MissingStaticMethodInNonInstantiatableClass"]
 
 [[rule]]
 name = "more-than-one-logger"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["MoreThanOneLogger"]
 
 [[rule]]
@@ -1021,9 +959,7 @@ pmd = ["NoPackage"]
 
 [[rule]]
 name = "non-case-label-in-switch"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["NonCaseLabelInSwitch"]
 
 [[rule]]
@@ -1038,15 +974,14 @@ pmd = ["NonExhaustiveSwitch"]
 [[rule]]
 name = "non-serializable-class"
 category = "errorprone"
+# Planned: strict only; needs the resolved types of every field of a Serializable class
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["NonSerializableClass"]
 
 [[rule]]
 name = "non-static-initializer"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["NonStaticInitializer"]
 
 [[rule]]
@@ -1058,9 +993,7 @@ pmd = ["NonThreadSafeSingleton"]
 
 [[rule]]
 name = "null-assignment"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["NullAssignment"]
 
 [[rule]]
@@ -1072,9 +1005,7 @@ pmd = ["OptimizableToArrayCall"]
 
 [[rule]]
 name = "override-both-equals-and-hashcode"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["OverrideBothEqualsAndHashcode"]
 
 [[rule]]
@@ -1110,14 +1041,13 @@ pmd = ["PrimitiveWrapperInstantiation"]
 
 [[rule]]
 name = "proper-clone-implementation"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["ProperCloneImplementation"]
 
 [[rule]]
 name = "proper-logger"
 category = "errorprone"
+# Planned: the rule takes three string options (static-logger-name, logger-name, logger-class) that no generic check accepts, and the logger type needs types
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["ProperLogger"]
@@ -1169,16 +1099,12 @@ pmd = ["ReplaceHashtableWithMap"]
 
 [[rule]]
 name = "replace-java-util-calendar"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilCalendar"]
 
 [[rule]]
 name = "replace-java-util-date"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilDate"]
 
 [[rule]]
@@ -1189,15 +1115,14 @@ pmd = ["ReplaceJavaUtilVector"]
 [[rule]]
 name = "return-empty-collection-rather-than-null"
 category = "errorprone"
+# Planned: needs the return type of a method tied to the return statements of its body; no generic check relates the two
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["ReturnEmptyCollectionRatherThanNull"]
 
 [[rule]]
 name = "return-from-finally-block"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["ReturnFromFinallyBlock"]
 
 [[rule]]
@@ -1228,9 +1153,7 @@ pmd = ["SignatureDeclareThrowsException"]
 
 [[rule]]
 name = "simple-date-format-needs-locale"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["SimpleDateFormatNeedsLocale"]
 
 [[rule]]
@@ -1251,15 +1174,14 @@ pmd = ["SimplifyConditional"]
 [[rule]]
 name = "single-method-singleton"
 category = "errorprone"
+# Planned: needs the other getInstance overloads of the class; no generic check compares sibling methods
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["SingleMethodSingleton"]
 
 [[rule]]
 name = "singleton-class-returning-new-instance"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["SingletonClassReturningNewInstance"]
 
 [[rule]]
@@ -1273,15 +1195,14 @@ pmd = ["SingularField"]
 [[rule]]
 name = "static-ejb-field-should-be-final"
 category = "errorprone"
+# Planned: needs the EJB annotations of the enclosing class; no generic check looks at the enclosing class
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["StaticEJBFieldShouldBeFinal"]
 
 [[rule]]
 name = "string-buffer-instantiation-with-char"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["StringBufferInstantiationWithChar"]
 
 [[rule]]
@@ -1300,23 +1221,17 @@ pmd = ["StringToString"]
 
 [[rule]]
 name = "suspicious-equals-method-name"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["SuspiciousEqualsMethodName"]
 
 [[rule]]
 name = "suspicious-hashcode-method-name"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["SuspiciousHashcodeMethodName"]
 
 [[rule]]
 name = "suspicious-octal-escape"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["SuspiciousOctalEscape"]
 
 [[rule]]
@@ -1334,9 +1249,7 @@ pmd = ["SystemPrintln"]
 
 [[rule]]
 name = "test-class-without-test-cases"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["TestClassWithoutTestCases"]
 
 [[rule]]
@@ -1397,9 +1310,7 @@ pmd = ["UncommentedEmptyMethodBody"]
 
 [[rule]]
 name = "unconditional-if-statement"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UnconditionalIfStatement"]
 
 [[rule]]
@@ -1448,9 +1359,7 @@ pmd = ["UnnecessaryBlock"]
 
 [[rule]]
 name = "unnecessary-boolean-assertion"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UnnecessaryBooleanAssertion"]
 
 [[rule]]
@@ -1462,9 +1371,7 @@ pmd = ["UnnecessaryBoxing"]
 
 [[rule]]
 name = "unnecessary-case-change"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UnnecessaryCaseChange"]
 
 [[rule]]
@@ -1476,9 +1383,7 @@ pmd = ["UnnecessaryCast"]
 
 [[rule]]
 name = "unnecessary-conversion-temporary"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UnnecessaryConversionTemporary"]
 
 [[rule]]
@@ -1515,6 +1420,7 @@ pmd = ["UnnecessaryWarningSuppression"]
 [[rule]]
 name = "unsupported-jdk-api-usage"
 category = "errorprone"
+# Planned: needs resolved types to see uses of sun.* and jdk.internal.* classes; imports alone do not show the uses
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["UnsupportedJdkApiUsage"]
@@ -1539,9 +1445,7 @@ errorprone = ["UnusedLabel"]
 
 [[rule]]
 name = "unused-null-check-in-equals"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UnusedNullCheckInEquals"]
 
 [[rule]]
@@ -1552,6 +1456,7 @@ pmd = ["UnusedPrivateMethod"]
 [[rule]]
 name = "unused-return-value"
 category = "errorprone"
+# Planned: needs the return type and mutation-by-copy API of the called method from types
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["UnusedReturnValue"]
@@ -1578,6 +1483,7 @@ pmd = ["UseConcurrentHashMap"]
 [[rule]]
 name = "use-correct-exception-logging"
 category = "errorprone"
+# Planned: needs the logger type (Apache Commons Log) and the argument type (Throwable) from types
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["UseCorrectExceptionLogging"]
@@ -1600,9 +1506,7 @@ pmd = ["UseEnumCollections"]
 
 [[rule]]
 name = "use-equals-to-compare-strings"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UseEqualsToCompareStrings"]
 
 [[rule]]
@@ -1628,9 +1532,7 @@ pmd = ["UseIndexOfChar"]
 
 [[rule]]
 name = "use-locale-with-case-conversions"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UseLocaleWithCaseConversions"]
 
 [[rule]]
@@ -1642,9 +1544,7 @@ pmd = ["UseNotifyAllInsteadOfNotify"]
 
 [[rule]]
 name = "use-proper-class-loader"
-category = "errorprone"
-status = { java = "planned" }
-issues = { java = "#311" }
+status = { java = "implemented" }
 pmd = ["UseProperClassLoader"]
 
 [[rule]]
@@ -1724,6 +1624,7 @@ pmd = ["WhileLoopWithLiteralBoolean"]
 [[rule]]
 name = "wrong-test-annotation"
 category = "errorprone"
+# Planned: needs the imports of the file paired with each test annotation; no generic check pairs them
 status = { java = "planned" }
 issues = { java = "#311" }
 pmd = ["WrongTestAnnotation"]
