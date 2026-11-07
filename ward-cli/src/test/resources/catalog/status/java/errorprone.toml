@@ -201,7 +201,7 @@ get-class-on-annotation = "implemented"
 get-class-on-class = "implemented"
 get-class-on-enum = { status = "planned", issue = "#319" }
 guarded-by = { status = "planned", issue = "#319" }
-guice-assisted-inject-scoping = { status = "planned", issue = "#319" }
+guice-assisted-inject-scoping = "implemented"
 guice-assisted-parameters = { status = "planned", issue = "#319" }
 guice-inject-on-final-field = "implemented"
 guice-nested-combine = { status = "planned", issue = "#319" }
@@ -241,7 +241,7 @@ inject-invalid-targeting-on-scoping-annotation = { status = "planned", issue = "
 inject-more-than-one-scope-annotation-on-class = "implemented"
 inject-on-bug-checkers = { status = "planned", issue = "#319" }
 inject-on-constructor-of-abstract-class = { status = "planned", issue = "#319" }
-inject-on-member-and-constructor = { status = "planned", issue = "#319" }
+inject-on-member-and-constructor = "implemented"
 inject-scope-annotation-on-interface-or-abstract-class = { status = "planned", issue = "#319" }
 injected-constructor-annotations = { status = "planned", issue = "#319" }
 inline-format-string = { status = "planned", issue = "#319" }
@@ -280,9 +280,9 @@ j-unit-ambiguous-test-class = { status = "planned", issue = "#319" }
 j-unit-assert-same-check = "implemented"
 j-unit-incompatible-type = { status = "planned", issue = "#319" }
 j-unit-method-invoked = { status = "planned", issue = "#319" }
-j-unit-parameter-method-not-found = { status = "planned", issue = "#319" }
+j-unit-parameter-method-not-found = "implemented"
 j-unit3-floating-point-comparison-without-delta = { status = "planned", issue = "#319" }
-j-unit3-test-not-run = { status = "planned", issue = "#319" }
+j-unit3-test-not-run = "implemented"
 j-unit4-class-annotation-non-static = "implemented"
 j-unit4-class-used-in-j-unit3 = { status = "planned", issue = "#319" }
 j-unit4-empty-methods = { status = "planned", issue = "#319" }
@@ -328,7 +328,7 @@ logical-assignment = { status = "planned", issue = "#319" }
 long-double-conversion = { status = "planned", issue = "#319" }
 long-float-conversion = { status = "planned", issue = "#319" }
 long-literal-lower-case-suffix = "implemented"
-loop-condition-checker = { status = "planned", issue = "#319" }
+loop-condition-checker = "implemented"
 loop-over-char-array = { status = "planned", issue = "#319" }
 loop-to-test-parameter = { status = "planned", issue = "#319" }
 lossy-primitive-compare = { status = "planned", issue = "#319" }

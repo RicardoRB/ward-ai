@@ -1175,8 +1175,6 @@ errorprone = ["GuardedBy"]
 
 [[rule]]
 name = "guice-assisted-inject-scoping"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["GuiceAssistedInjectScoping"]
 
 [[rule]]
@@ -1400,8 +1398,6 @@ errorprone = ["InjectOnConstructorOfAbstractClass"]
 
 [[rule]]
 name = "inject-on-member-and-constructor"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InjectOnMemberAndConstructor"]
 
 [[rule]]
@@ -1602,8 +1598,6 @@ errorprone = ["JUnit3FloatingPointComparisonWithoutDelta"]
 
 [[rule]]
 name = "j-unit3-test-not-run"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit3TestNotRun"]
 
 [[rule]]
@@ -1664,8 +1658,6 @@ errorprone = ["JUnitMethodInvoked"]
 
 [[rule]]
 name = "j-unit-parameter-method-not-found"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnitParameterMethodNotFound"]
 
 [[rule]]
@@ -1890,8 +1882,6 @@ errorprone = ["LongLiteralLowerCaseSuffix"]
 
 [[rule]]
 name = "loop-condition-checker"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LoopConditionChecker"]
 
 [[rule]]

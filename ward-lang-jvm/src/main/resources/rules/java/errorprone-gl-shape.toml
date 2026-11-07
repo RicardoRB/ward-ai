@@ -1,0 +1,64 @@
+# Error Prone checks at ERROR severity for Java, G to L, second batch: checks of the members of a class
+# and of the body of a loop. Each is on by default in Error Prone.
+
+[[rules]]
+id = "ward:java/guice-assisted-inject-scoping"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = '^(?:@\w+(?:\.\w+)*(?:\([^()]*\))?|public|protected|private|abstract|final|static|strictfp)*?@(?:\w+\.)*(?:Singleton|SessionScoped|RequestScoped|ApplicationScoped|ConversationScoped|ViewScoped|Dependent)(?=\(|@|public|protected|private|abstract|final|static|strictfp|class)(?:\([^()]*\))?(?:@\w+(?:\.\w+)*(?:\([^()]*\))?|public|protected|private|abstract|final|static|strictfp)*?class[^{]*\{.*@(?:\w+\.)*Assisted'
+message = "a class with an assisted constructor must not have a scope annotation; the factory creates a new instance each time"
+'''
+
+[[rules]]
+id = "ward:java/inject-on-member-and-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "inject-on-member-and-constructor"
+message = "the member is annotated @Inject but the constructor of the class is too; inject through the constructor only"
+'''
+
+[[rules]]
+id = "ward:java/j-unit3-test-not-run"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "junit3-test-not-run"
+message = "'{value}' looks like a JUnit 3 test but is not public void without parameters, so it will not run"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-parameter-method-not-found"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "junit-parameter-method"
+message = "the method '{value}' named by @Parameters is not declared in the class"
+'''
+
+[[rules]]
+id = "ward:java/loop-condition-checker"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-condition"
+message = "the loop condition reads only variables that nothing in the loop changes, so the loop never ends or never runs"
+'''
