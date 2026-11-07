@@ -1,6 +1,10 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.domain.rule.check.ArrayTrailingCommaCheck;
 import dev.ward.analysis.domain.rule.check.ConstructorsDeclarationGroupingCheck;
+import dev.ward.analysis.domain.rule.check.ExplicitInitializationCheck;
+import dev.ward.analysis.domain.rule.check.MagicNumberCheck;
+import dev.ward.analysis.domain.rule.check.NoEnumTrailingCommaCheck;
 import dev.ward.analysis.domain.rule.check.OneStatementPerLineCheck;
 import dev.ward.analysis.domain.rule.check.OverloadMethodsDeclarationOrderCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -21,7 +25,11 @@ final class CodingChecks {
       Set.of(
           "one-statement-per-line",
           "constructors-declaration-grouping",
-          "overload-methods-declaration-order");
+          "overload-methods-declaration-order",
+          "magic-number",
+          "explicit-initialization",
+          "array-trailing-comma",
+          "no-enum-trailing-comma");
 
   private CodingChecks() {}
 
@@ -43,6 +51,20 @@ final class CodingChecks {
       case "constructors-declaration-grouping" ->
           new ConstructorsDeclarationGroupingCheck(
               flag(toml, ORDER_BY_ARITY, false), message(toml));
+      case "array-trailing-comma" ->
+          new ArrayTrailingCommaCheck(
+              flag(toml, "always-demand-trailing-comma", false), message(toml));
+      case "no-enum-trailing-comma" -> new NoEnumTrailingCommaCheck(message(toml));
+      case "explicit-initialization" ->
+          new ExplicitInitializationCheck(
+              flag(toml, "only-object-references", false), message(toml));
+      case "magic-number" ->
+          new MagicNumberCheck(
+              TomlLists.optional(toml, "ignore-numbers"),
+              flag(toml, "ignore-field-declaration", false),
+              flag(toml, "ignore-annotation", false),
+              flag(toml, "ignore-hash-code-method", false),
+              message(toml));
       default ->
           new OverloadMethodsDeclarationOrderCheck(
               flag(toml, ORDER_BY_ARITY, false), message(toml));

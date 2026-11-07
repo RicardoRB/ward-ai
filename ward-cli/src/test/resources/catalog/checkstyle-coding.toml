@@ -2,10 +2,8 @@
 
 [[rule]]
 name = "array-trailing-comma"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["ArrayTrailingComma"]
 
 [[rule]]
@@ -13,8 +11,8 @@ name = "avoid-double-brace-initialization"
 category = "coding"
 presets = ["strict"]
 status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#289" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289" }
 pmd = ["DoubleBraceInitialization"]
 checkstyle = ["AvoidDoubleBraceInitialization"]
 
@@ -107,10 +105,8 @@ ruff = ["PLW1641"]
 
 [[rule]]
 name = "explicit-initialization"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["RedundantFieldInitializer"]
 checkstyle = ["ExplicitInitialization"]
 
@@ -195,10 +191,8 @@ checkstyle = ["IllegalThrows"]
 
 [[rule]]
 name = "illegal-token"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["IllegalToken"]
 
 [[rule]]
@@ -226,10 +220,8 @@ eslint = ["no-cond-assign"]
 
 [[rule]]
 name = "magic-number"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
@@ -282,10 +274,8 @@ checkstyle = ["ModifiedControlVariable"]
 
 [[rule]]
 name = "multiple-string-literals"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["AvoidDuplicateLiterals"]
 checkstyle = ["MultipleStringLiterals"]
 
@@ -323,10 +313,8 @@ checkstyle = ["NestedTryDepth"]
 
 [[rule]]
 name = "no-array-trailing-comma"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NoArrayTrailingComma"]
 
 [[rule]]
@@ -340,10 +328,8 @@ checkstyle = ["NoClone"]
 
 [[rule]]
 name = "no-enum-trailing-comma"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NoEnumTrailingComma"]
 
 [[rule]]

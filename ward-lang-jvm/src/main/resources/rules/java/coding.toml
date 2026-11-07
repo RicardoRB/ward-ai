@@ -45,7 +45,7 @@ options.text = { type = "regex" }
 body = '''
 check = "forbidden-node"
 kinds = ["STRING_LITERAL", "CHAR_LITERAL", "TEXT_BLOCK"]
-text = '[\t\x0B\f\x85\xA0  -     　]|\\u00(08|09|0[aA]|0[cC]|0[dD]|20|22|27|5[cC])|\\(0(10|11|12|14|15|40|42|47)|134)'
+text = '[\t\x0B\f\x85\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]|\\u00(08|09|0[aA]|0[cC]|0[dD]|20|22|27|5[cC])|\\(0(10|11|12|14|15|40|42|47)|134)'
 message = "literal contains whitespace or an escape that must be spelled out with a special escape"
 '''
 
@@ -89,4 +89,112 @@ body = '''
 check = "overload-methods-declaration-order"
 order-by-increasing-parameter-count = false
 message = "overloaded method is not declared next to the other overloads, or is out of parameter-count order"
+'''
+
+[[rules]]
+id = "ward:java/magic-number"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.ignore-numbers = { type = "string-list" }
+options.ignore-field-declaration = { type = "boolean" }
+options.ignore-annotation = { type = "boolean" }
+options.ignore-hash-code-method = { type = "boolean" }
+body = '''
+check = "magic-number"
+ignore-numbers = ["-1", "0", "1", "2"]
+ignore-field-declaration = false
+ignore-annotation = false
+ignore-hash-code-method = false
+message = "'{value}' is a magic number; declare it as a named constant"
+'''
+
+[[rules]]
+id = "ward:java/multiple-string-literals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.ignore = { type = "string-list" }
+options.ignore-contexts = { type = "string-list" }
+options.max-repeats = { type = "integer", min = 0 }
+body = '''
+check = "literal"
+kinds = ["STRING_LITERAL"]
+ignore = ['""']
+ignore-contexts = ["annotation"]
+max-repeats = 1
+message = "string literal {value} is repeated; declare it as a constant"
+'''
+
+[[rules]]
+id = "ward:java/explicit-initialization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.only-object-references = { type = "boolean" }
+body = '''
+check = "explicit-initialization"
+only-object-references = false
+message = "field is explicitly initialized to the default value of its type; remove the initializer"
+'''
+
+[[rules]]
+id = "ward:java/array-trailing-comma"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.always-demand-trailing-comma = { type = "boolean" }
+body = '''
+check = "array-trailing-comma"
+always-demand-trailing-comma = false
+message = "array initializer is closed on a new line without a trailing comma"
+'''
+
+[[rules]]
+id = "ward:java/no-array-trailing-comma"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["arrayInitializer"]
+text = ',\}$'
+message = "array initializer has a trailing comma; remove it"
+'''
+
+[[rules]]
+id = "ward:java/no-enum-trailing-comma"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "no-enum-trailing-comma"
+message = "enum declares a trailing comma after its constants; remove it"
+'''
+
+[[rules]]
+id = "ward:java/illegal-token"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+# shortcut: a label named assert* is not reported, since the text of a statement has no spaces
+text = '^(?!assert)[A-Za-z_$][\w$]*:'
+message = "labeled statement is illegal; restructure the code without a label"
 '''
