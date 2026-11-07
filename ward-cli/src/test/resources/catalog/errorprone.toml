@@ -796,7 +796,6 @@ category = "severity-warning"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#320", kotlin = "#325" }
 errorprone = ["DefaultLocale"]
-android-lint = ["DefaultLocale"]
 
 [[rule]]
 name = "default-package"
@@ -2454,7 +2453,6 @@ category = "severity-error"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#319", kotlin = "#325" }
 errorprone = ["MissingSuperCall"]
-android-lint = ["MissingSuperCall"]
 
 [[rule]]
 name = "missing-test-call"
@@ -3344,7 +3342,6 @@ category = "severity-error"
 status = { java = "planned", kotlin = "planned" }
 issues = { java = "#319", kotlin = "#325" }
 errorprone = ["RestrictedApi"]
-android-lint = ["RestrictedApi"]
 
 [[rule]]
 name = "rethrow-reflective-operation-exception-as-linkage-error"
