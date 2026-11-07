@@ -6,7 +6,8 @@ import java.util.List;
 public final class GraphRules {
 
   /** The ids of the graph rules, which the per-unit engine never runs. */
-  public static final List<String> IDS = List.of(SliceCycleRule.ID, IndependenceRule.ID);
+  public static final List<String> IDS =
+      List.of(SliceCycleRule.ID, IndependenceRule.ID, UnusedFileRule.ID);
 
   private GraphRules() {}
 
@@ -26,6 +27,8 @@ public final class GraphRules {
           new SliceCycleRule(definition, GraphRuleBody.decodeRoots(definition.body()));
       case IndependenceRule.ID ->
           new IndependenceRule(definition, GraphRuleBody.decodeTables(definition.body()));
+      case UnusedFileRule.ID ->
+          new UnusedFileRule(definition, GraphRuleBody.decodeNames(definition.body()));
       default -> throw new IllegalArgumentException("not a graph rule: " + definition.id());
     };
   }
