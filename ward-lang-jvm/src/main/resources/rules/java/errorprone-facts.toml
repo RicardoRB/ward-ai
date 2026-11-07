@@ -2,19 +2,6 @@
 # calls and methods, or the annotations of one file. Each is on by default in Error Prone, so it belongs to the standard preset.
 
 [[rules]]
-id = "ward:java/restricted-api"
-language = "java"
-capability = "TYPES"
-severity = "error"
-category = "errorprone"
-presets = ["standard", "strict"]
-body = '''
-check = "call-facts"
-method-annotations = ["com.google.errorprone.annotations.RestrictedApi"]
-message = "this method is a restricted API; only callers its @RestrictedApi annotation allows may use it"
-'''
-
-[[rules]]
 id = "ward:java/must-be-closed-checker"
 language = "java"
 capability = "TYPES"
