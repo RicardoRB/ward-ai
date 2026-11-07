@@ -1,0 +1,2 @@
+@CanIgnoreReturnValue
+final class T {}
