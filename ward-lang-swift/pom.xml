@@ -40,7 +40,6 @@
         <dependency>
             <groupId>org.tomlj</groupId>
             <artifactId>tomlj</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
