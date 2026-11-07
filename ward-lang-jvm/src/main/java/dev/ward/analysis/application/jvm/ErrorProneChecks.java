@@ -4,6 +4,9 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.AssignmentToNonFinalStaticCheck;
+import dev.ward.analysis.domain.rule.check.ConstructorCallsOverridableMethodCheck;
+import dev.ward.analysis.domain.rule.check.DetachedTestCaseCheck;
 import dev.ward.analysis.domain.rule.check.JumbledIncrementerCheck;
 import dev.ward.analysis.domain.rule.check.MemberNamedAfterClassCheck;
 import dev.ward.analysis.domain.rule.check.ReturnEmptyCollectionCheck;
@@ -36,6 +39,15 @@ final class ErrorProneChecks {
         entry(
             "single-method-singleton",
             toml -> new SingleMethodSingletonCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "assignment-to-non-final-static",
+            toml -> new AssignmentToNonFinalStaticCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "constructor-calls-overridable-method",
+            toml -> new ConstructorCallsOverridableMethodCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "detached-test-case",
+            toml -> new DetachedTestCaseCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "jumbled-incrementer",
             toml -> new JumbledIncrementerCheck(TomlValues.required(toml, MESSAGE))));

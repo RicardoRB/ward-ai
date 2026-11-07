@@ -48,7 +48,6 @@ pmd = ["AssignmentInOperand"]
 name = "assignment-to-non-final-static"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the static non-final fields of the file bound to each assignment through the scopes; no Java rule reads scopes for this yet
 pmd = ["AssignmentToNonFinalStatic"]
 
 [[rule]]
@@ -364,7 +363,6 @@ pmd = ["ConstantsInInterface"]
 name = "constructor-calls-overridable-method"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the class hierarchy and each method overridability from symbols and types
 pmd = ["ConstructorCallsOverridableMethod"]
 
 [[rule]]
@@ -391,7 +389,6 @@ pmd = ["DefaultLabelNotLastInSwitch"]
 name = "detached-test-case"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the JUnit test methods of the enclosing class; no generic check looks across members
 pmd = ["DetachedTestCase"]
 
 [[rule]]

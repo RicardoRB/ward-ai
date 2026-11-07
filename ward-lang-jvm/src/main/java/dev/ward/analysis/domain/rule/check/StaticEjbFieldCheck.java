@@ -51,9 +51,13 @@ public final class StaticEjbFieldCheck implements UnitCheck {
         .anyMatch(ANNOTATIONS::contains);
   }
 
-  /** Drops the package of an annotation, so {@code @javax.ejb.Stateless} reads as {@code @Stateless}. */
+  /**
+   * Drops the package of an annotation, so {@code @javax.ejb.Stateless} reads as
+   * {@code @Stateless}.
+   */
   private static String annotationName(final String annotation) {
-    final String bare = annotation.contains("(") ? annotation.substring(0, annotation.indexOf('(')) : annotation;
+    final String bare =
+        annotation.contains("(") ? annotation.substring(0, annotation.indexOf('(')) : annotation;
     return "@" + ClassMembers.simpleName(bare.substring(1));
   }
 

@@ -10,7 +10,7 @@ array-is-stored-directly = "implemented"
 assert-equals-argument-order = "implemented"
 assert-statement-in-test = "implemented"
 assignment-in-operand = "implemented"
-assignment-to-non-final-static = { status = "planned", issue = "#310" }
+assignment-to-non-final-static = "implemented"
 at-least-one-constructor = { status = "planned", issue = "#313" }
 avoid-accessibility-alteration = "implemented"
 avoid-array-loops = { status = "planned", issue = "#312" }
@@ -70,12 +70,12 @@ confusing-ternary = { status = "planned", issue = "#313" }
 consecutive-appends-should-reuse = { status = "planned", issue = "#312" }
 consecutive-literal-appends = { status = "planned", issue = "#312" }
 constants-in-interface = "implemented"
-constructor-calls-overridable-method = { status = "planned", issue = "#310" }
+constructor-calls-overridable-method = "implemented"
 control-statement-braces = { status = "planned", issue = "#313" }
 dangling-javadoc = { status = "planned", issue = "#313" }
 data-class = "implemented"
 default-label-not-last-in-switch = "implemented"
-detached-test-case = { status = "planned", issue = "#310" }
+detached-test-case = "implemented"
 do-not-call-garbage-collection-explicitly = "implemented"
 do-not-extend-java-lang-error = "implemented"
 do-not-extend-java-lang-throwable = "implemented"

@@ -196,8 +196,7 @@ class ErrorProneClassChecksTest extends ClassMemberTrees {
     final SyntaxNode outer = forLoop("i", "i|++", inner);
 
     assertThat(run(new JumbledIncrementerCheck(MESSAGE), outer)).hasSize(1);
-    assertThat(run(new JumbledIncrementerCheck(MESSAGE), forLoop("i", "x|+=", inner)))
-        .hasSize(1);
+    assertThat(run(new JumbledIncrementerCheck(MESSAGE), forLoop("i", "x|+=", inner))).hasSize(1);
   }
 
   @Test
@@ -216,5 +215,175 @@ class ErrorProneClassChecksTest extends ClassMemberTrees {
     assertThat(run(new JumbledIncrementerCheck(MESSAGE), compound)).isEmpty();
     assertThat(run(new JumbledIncrementerCheck(MESSAGE), comparison)).isEmpty();
     assertThat(run(new JumbledIncrementerCheck(MESSAGE), noUpdate)).isEmpty();
+  }
+
+  // assignment-to-non-final-static
+
+  private SyntaxNode assignment(final String target) {
+    return node(
+        EXPRESSION,
+        LINE,
+        COLUMN,
+        leaf(TOKEN_IDENTIFIER, target, LINE, COLUMN),
+        leaf("'='", "=", LINE, COLUMN),
+        leaf("'1'", "1", LINE, COLUMN));
+  }
+
+  private SyntaxNode constructorOf(final SyntaxNode... statements) {
+    return node(
+        "constructorDeclaration",
+        LINE,
+        COLUMN,
+        ident(CLASS_NAME),
+        node(BLOCK, LINE, COLUMN, statements));
+  }
+
+  @Test
+  void reportsConstructorAssignmentToNonFinalStatic() {
+    final SyntaxNode clazz =
+        classNamed(
+            CLASS_NAME,
+            member(field("count"), STATIC),
+            member(constructorOf(assignment("count"), assignment("Sample.count"))));
+
+    assertThat(run(new AssignmentToNonFinalStaticCheck(MESSAGE), clazz)).hasSize(2);
+  }
+
+  @Test
+  void skipsFinalInstanceForeignAndNonConstructorAssignments() {
+    final SyntaxNode clazz =
+        classNamed(
+            CLASS_NAME,
+            member(field("limit"), STATIC, "final"),
+            member(field("count"), STATIC),
+            member(field("value")),
+            member(
+                constructorOf(
+                    assignment("limit"),
+                    assignment("value"),
+                    assignment("Other.count"),
+                    assignment("unknown"),
+                    node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, "count", LINE, COLUMN)))),
+            member(method("reset", 0, 0, assignment("count"))));
+
+    assertThat(run(new AssignmentToNonFinalStaticCheck(MESSAGE), clazz)).isEmpty();
+  }
+
+  // constructor-calls-overridable-method
+
+  private SyntaxNode call(final String name) {
+    return node(METHOD_CALL, LINE, COLUMN, ident(name));
+  }
+
+  private SyntaxNode bareCall(final String name) {
+    return node(EXPRESSION, LINE, COLUMN, call(name));
+  }
+
+  private SyntaxNode thisCall(final String name) {
+    return node(
+        EXPRESSION,
+        LINE,
+        COLUMN,
+        node(EXPRESSION, LINE, COLUMN, leaf("'this'", "this", LINE, COLUMN)),
+        leaf(DOT_KIND, DOT, LINE, COLUMN),
+        call(name));
+  }
+
+  @Test
+  void reportsOverridableCallsOnThisFromAConstructor() {
+    final SyntaxNode clazz =
+        classNamed(
+            CLASS_NAME,
+            member(method("start", 0, 0)),
+            member(constructorOf(bareCall("start"), thisCall("start"))));
+
+    assertThat(run(new ConstructorCallsOverridableMethodCheck(MESSAGE), clazz)).hasSize(2);
+  }
+
+  @Test
+  void skipsSafeMethodsFinalClassesForeignReceiversAndNestedCode() {
+    final SyntaxNode foreign =
+        node(
+            EXPRESSION,
+            LINE,
+            COLUMN,
+            node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, "other", LINE, COLUMN)),
+            leaf(DOT_KIND, DOT, LINE, COLUMN),
+            call("start"));
+    final SyntaxNode lambda = node("lambdaExpression", LINE, COLUMN, bareCall("start"));
+    final SyntaxNode clazz =
+        classNamed(
+            CLASS_NAME,
+            member(method("start", 0, 0)),
+            member(method("hidden", 0, 0), PRIVATE),
+            member(method("shared", 0, 0), STATIC),
+            member(method("sealed", 0, 0), "final"),
+            member(
+                constructorOf(
+                    bareCall("hidden"),
+                    bareCall("shared"),
+                    bareCall("sealed"),
+                    bareCall("unknown"),
+                    foreign,
+                    lambda)));
+
+    assertThat(run(new ConstructorCallsOverridableMethodCheck(MESSAGE), clazz)).isEmpty();
+    assertThat(
+            run(
+                new ConstructorCallsOverridableMethodCheck(MESSAGE),
+                node(
+                    "typeDeclaration",
+                    1,
+                    1,
+                    node("classOrInterfaceModifier", 1, 1, leaf("'final'", "final", 1, 1)),
+                    classNamed(
+                        CLASS_NAME,
+                        member(method("start", 0, 0)),
+                        member(constructorOf(bareCall("start")))))))
+        .isEmpty();
+  }
+
+  // detached-test-case
+
+  private SyntaxNode annotatedMember(final String annotation, final SyntaxNode method) {
+    return node(
+        "classBodyDeclaration",
+        LINE,
+        COLUMN,
+        node("modifier", LINE, COLUMN, leaf("ANNOTATION", annotation, LINE, COLUMN)),
+        node(MEMBER_DECLARATION, LINE, COLUMN, method));
+  }
+
+  @Test
+  void reportsUnannotatedTestLookingMethodsOfATestClass() {
+    final SyntaxNode clazz =
+        classNamed(
+            CLASS_NAME,
+            annotatedMember("@org.junit.jupiter.api.Test", method("works", 0, 0)),
+            annotatedMember("@RepeatedTest(3)", method("again", 0, 0)),
+            member(method("forgotten", 0, 0)),
+            member(method("alsoForgotten", 0, 0), PUBLIC));
+
+    assertThat(run(new DetachedTestCaseCheck(MESSAGE), clazz)).hasSize(2);
+  }
+
+  @Test
+  void skipsHelpersOtherSignaturesAndClassesWithoutTests() {
+    final SyntaxNode helpers =
+        classNamed(
+            CLASS_NAME,
+            annotatedMember("@Test", method("works", 0, 0)),
+            member(method("hidden", 0, 0), PRIVATE),
+            member(method("guarded", 0, 0), "protected"),
+            member(method("shared", 0, 0), STATIC),
+            member(method("withArgument", 1, 0)),
+            member(typedMethod("result", INT)),
+            annotatedMember("@Before", method("setUp", 0, 0)),
+            member(field("count")));
+    final SyntaxNode plain =
+        classNamed(
+            "Plain", annotatedMember("@Other", method("run", 0, 0)), member(method("go", 0, 0)));
+
+    assertThat(run(new DetachedTestCaseCheck(MESSAGE), helpers, plain)).isEmpty();
   }
 }

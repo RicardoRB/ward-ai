@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 /**
  * Reports a {@code for} loop whose update changes a variable that an enclosing {@code for} loop
- * declares in its init, as PMD's JumbledIncrementer does. A loop that also declares that name in its
- * own init is not reported.
+ * declares in its init, as PMD's JumbledIncrementer does. A loop that also declares that name in
+ * its own init is not reported.
  */
 public final class JumbledIncrementerCheck implements UnitCheck {
 
@@ -22,8 +22,7 @@ public final class JumbledIncrementerCheck implements UnitCheck {
   private static final String EXPRESSION_LIST = "expressionList";
   private static final String VARIABLE_ID = "variableDeclaratorId";
   private static final Pattern WRITE =
-      Pattern.compile(
-          "(?:\\+\\+|--)(\\w+)|(\\w+)(?:\\+\\+|--|(?:[-+*/%&|^]|<<|>>>?)?=(?!=))");
+      Pattern.compile("(?:\\+\\+|--)(\\w+)|(\\w+)(?:\\+\\+|--|(?:[-+*/%&|^]|<<|>>>?)?=(?!=))");
 
   private final String message;
 
@@ -50,8 +49,7 @@ public final class JumbledIncrementerCheck implements UnitCheck {
 
   private boolean isJumbled(final SyntaxWalk.Visit visit) {
     final Set<String> own = initNames(visit.node());
-    final List<SyntaxNode> enclosing =
-        visit.ancestors().subList(0, visit.ancestors().size() - 1);
+    final List<SyntaxNode> enclosing = visit.ancestors().subList(0, visit.ancestors().size() - 1);
     final Set<String> outer =
         enclosing.stream()
             .flatMap(ancestor -> ancestor.children().stream())

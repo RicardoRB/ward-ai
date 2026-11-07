@@ -17,9 +17,26 @@ public final class ReturnEmptyCollectionCheck implements UnitCheck {
 
   private static final Set<String> COLLECTIONS =
       Set.of(
-          "Collection", "List", "Set", "Map", "SortedSet", "SortedMap", "NavigableSet",
-          "NavigableMap", "Queue", "Deque", "ArrayList", "LinkedList", "HashSet", "LinkedHashSet",
-          "TreeSet", "HashMap", "LinkedHashMap", "TreeMap", "Vector", "ArrayDeque");
+          "Collection",
+          "List",
+          "Set",
+          "Map",
+          "SortedSet",
+          "SortedMap",
+          "NavigableSet",
+          "NavigableMap",
+          "Queue",
+          "Deque",
+          "ArrayList",
+          "LinkedList",
+          "HashSet",
+          "LinkedHashSet",
+          "TreeSet",
+          "HashMap",
+          "LinkedHashMap",
+          "TreeMap",
+          "Vector",
+          "ArrayDeque");
   private static final Set<String> NESTED = Set.of("lambdaExpression", "classBody");
   private static final String RETURN_NULL = "returnnull;";
   private static final String STATEMENT = "statement";
