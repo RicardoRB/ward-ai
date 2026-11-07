@@ -8,13 +8,11 @@ spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
 
 [[rule]]
 name = "am-creates-empty-jar-file-entry"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["AM_CREATES_EMPTY_JAR_FILE_ENTRY"]
 
 [[rule]]
 name = "am-creates-empty-zip-file-entry"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["AM_CREATES_EMPTY_ZIP_FILE_ENTRY"]
 
@@ -231,7 +229,6 @@ spotbugs = ["CI_CONFUSED_INHERITANCE"]
 
 [[rule]]
 name = "cnt-rough-constant-value"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["CNT_ROUGH_CONSTANT_VALUE"]
 
@@ -249,7 +246,6 @@ spotbugs = ["CN_IDIOM_NO_SUPER_CALL"]
 
 [[rule]]
 name = "cn-implements-clone-but-not-cloneable"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
 
@@ -886,13 +882,11 @@ spotbugs = ["GC_UNRELATED_TYPES"]
 
 [[rule]]
 name = "he-equals-use-hashcode"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_EQUALS_USE_HASHCODE"]
 
 [[rule]]
 name = "he-hashcode-no-equals"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_HASHCODE_NO_EQUALS"]
 
@@ -1376,7 +1370,6 @@ spotbugs = ["NM_CLASS_NAMING_CONVENTION"]
 
 [[rule]]
 name = "nm-class-not-exception"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NM_CLASS_NOT_EXCEPTION"]
 
@@ -1512,13 +1505,11 @@ spotbugs = ["NP_ARGUMENT_MIGHT_BE_NULL"]
 
 [[rule]]
 name = "np-boolean-return-null"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NP_BOOLEAN_RETURN_NULL"]
 
 [[rule]]
 name = "np-clone-could-return-null"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NP_CLONE_COULD_RETURN_NULL"]
 
@@ -1668,7 +1659,6 @@ spotbugs = ["NP_SYNC_AND_NULL_CHECK_FIELD"]
 
 [[rule]]
 name = "np-tostring-could-return-null"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NP_TOSTRING_COULD_RETURN_NULL"]
 
@@ -1735,7 +1725,6 @@ spotbugs = ["OVERRIDING_METHODS_MUST_INVOKE_SUPER"]
 
 [[rule]]
 name = "pa-public-array-attribute"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["PA_PUBLIC_ARRAY_ATTRIBUTE"]
 
@@ -1747,7 +1736,6 @@ spotbugs = ["PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE"]
 
 [[rule]]
 name = "pa-public-primitive-attribute"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["PA_PUBLIC_PRIMITIVE_ATTRIBUTE"]
 
@@ -1863,13 +1851,11 @@ spotbugs = ["RC_REF_COMPARISON"]
 
 [[rule]]
 name = "rc-ref-comparison-bad-practice"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE"]
 
 [[rule]]
 name = "rc-ref-comparison-bad-practice-boolean"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"]
 
@@ -1910,7 +1896,6 @@ spotbugs = ["RI_REDUNDANT_INTERFACES"]
 
 [[rule]]
 name = "rr-not-checked"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["RR_NOT_CHECKED"]
 
@@ -1977,7 +1962,6 @@ spotbugs = ["RV_RETURN_VALUE_IGNORED"]
 
 [[rule]]
 name = "rv-return-value-ignored-bad-practice"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"]
 
@@ -2076,7 +2060,6 @@ spotbugs = ["SE_BAD_FIELD_STORE"]
 
 [[rule]]
 name = "se-comparator-should-be-serializable"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"]
 
@@ -2108,7 +2091,6 @@ spotbugs = ["SE_NONSTATIC_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-no-serialversionid"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_NO_SERIALVERSIONID"]
 
@@ -2141,7 +2123,6 @@ spotbugs = ["SE_READ_RESOLVE_IS_STATIC"]
 
 [[rule]]
 name = "se-read-resolve-must-return-object"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_READ_RESOLVE_MUST_RETURN_OBJECT"]
 

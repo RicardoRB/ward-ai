@@ -1,0 +1,271 @@
+# SpotBugs bad-practice rules for Java (standard preset).
+
+[[rules]]
+id = "ward:java/am-creates-empty-jar-file-entry"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+text = '^\{[^{}]*?(\w+)\.putNextEntry\(new(java\.util\.jar\.)?JarEntry\([^;]*\)\);\1\.closeEntry\(\)'
+message = "jar entry opened and closed with nothing written to it"
+'''
+
+[[rules]]
+id = "ward:java/am-creates-empty-zip-file-entry"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+text = '^\{[^{}]*?(\w+)\.putNextEntry\(new(java\.util\.zip\.)?ZipEntry\([^;]*\)\);\1\.closeEntry\(\)'
+message = "zip entry opened and closed with nothing written to it"
+'''
+
+[[rules]]
+id = "ward:java/np-boolean-return-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(java\.lang\.)?Boolean\w+\([^)]*\)(?:throws[\w.,]+)?\{.*returnnull;'
+message = "method returning Boolean returns null; return Boolean.FALSE or use an enum"
+'''
+
+[[rules]]
+id = "ward:java/np-tostring-could-return-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(java\.lang\.)?StringtoString\(\)(?:throws[\w.,]+)?\{.*returnnull;'
+message = "toString returns null; return an empty string"
+'''
+
+[[rules]]
+id = "ward:java/np-clone-could-return-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[\w.]+clone\(\)(?:throws[\w.,]+)?\{.*returnnull;'
+message = "clone returns null; throw CloneNotSupportedException instead"
+'''
+
+[[rules]]
+id = "ward:java/se-no-serialversionid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!.*serialVersionUID)class\w+(?:<[^{]*>)?(?:extends[\w.<>,?]+)?implements[^{]*Serializable'
+message = "Serializable class without a serialVersionUID; declare one"
+'''
+
+[[rules]]
+id = "ward:java/se-comparator-should-be-serializable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class\w+(?:<[^{>]*>)?(?:extends[\w.<>,?]+)?implements(?![^{]*Serializable)[^{]*Comparator<'
+message = "Comparator that is not Serializable breaks sorted collections that are serialized; implement Serializable"
+'''
+
+[[rules]]
+id = "ward:java/se-read-resolve-must-return-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?!(?:private|protected|public|final|static)*(java\.lang\.)?ObjectreadResolve)(?:private|protected|public|final|static)*[\w.<>]+readResolve\(\)'
+message = "readResolve must return Object to be called by serialization"
+'''
+
+[[rules]]
+id = "ward:java/pa-public-array-attribute"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public"]
+not-modifiers = ["static"]
+text = '^[\w.<>]+\[\]'
+message = "public array field can be changed by any caller; make it private"
+'''
+
+[[rules]]
+id = "ward:java/pa-public-primitive-attribute"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public"]
+not-modifiers = ["static", "final"]
+text = '^(?:int|long|short|byte|char|boolean|float|double)\w'
+message = "public mutable field can be changed by any caller; make it private"
+'''
+
+[[rules]]
+id = "ward:java/nm-class-not-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!class\w*extends)class\w*Exception(?:<[^{>]*>)?(?:implements[^{]*)?\{'
+message = "class named like an exception that is not a Throwable"
+'''
+
+[[rules]]
+id = "ward:java/cn-implements-clone-but-not-cloneable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?![^{]*Cloneable)class[^{]*\{.*Objectclone\(\)'
+message = "class defines clone but does not implement Cloneable"
+'''
+
+[[rules]]
+id = "ward:java/cnt-rough-constant-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^(?:3\.14(?:1[0-9]*)?|2\.718[0-9]*)[dDfF]?$'
+message = "rough value of a Math constant; use Math.PI or Math.E"
+'''
+
+[[rules]]
+id = "ward:java/he-equals-use-hashcode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!.*hashCode\(\))class.*booleanequals\(Object\w+\)'
+message = "class overrides equals but not hashCode"
+'''
+
+[[rules]]
+id = "ward:java/he-hashcode-no-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!.*booleanequals\()class.*inthashCode\(\)'
+message = "class overrides hashCode but not equals"
+'''
+
+[[rules]]
+id = "ward:java/rc-ref-comparison-bad-practice"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["java.lang.Integer", "java.lang.Byte", "java.lang.Short", "java.lang.Long", "java.lang.Character", "java.lang.Float", "java.lang.Double"]
+message = "boxed numbers compared with ==; use equals"
+'''
+
+[[rules]]
+id = "ward:java/rc-ref-comparison-bad-practice-boolean"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["java.lang.Boolean"]
+message = "Boolean values compared with ==; use equals"
+'''
+
+[[rules]]
+id = "ward:java/rr-not-checked"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.io.InputStream"]
+names = ["read"]
+ignored = true
+message = "the number of bytes read is ignored; the read may be partial"
+'''
+
+[[rules]]
+id = "ward:java/rv-return-value-ignored-bad-practice"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.io.File"]
+names = ["delete", "mkdir", "mkdirs", "renameTo", "createNewFile", "setReadOnly"]
+ignored = true
+message = "the result of this File call is ignored; it reports failure by returning false"
+'''

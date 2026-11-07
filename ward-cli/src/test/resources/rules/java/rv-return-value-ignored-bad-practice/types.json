@@ -1,0 +1,26 @@
+{
+  "3:5-3:17": {
+    "call": {
+      "declaring": {
+        "name": "java.io.File"
+      },
+      "name": "delete",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:16-5:28": {
+    "call": {
+      "declaring": {
+        "name": "java.io.File"
+      },
+      "name": "delete",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

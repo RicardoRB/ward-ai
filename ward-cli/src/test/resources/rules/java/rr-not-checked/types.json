@@ -1,0 +1,26 @@
+{
+  "3:5-3:16": {
+    "call": {
+      "declaring": {
+        "name": "java.io.InputStream"
+      },
+      "name": "read",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:16-5:27": {
+    "call": {
+      "declaring": {
+        "name": "java.io.InputStream"
+      },
+      "name": "read",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}
