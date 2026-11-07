@@ -1,8 +1,10 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.check.DeclarationOrderCheck;
+import dev.ward.analysis.domain.rule.check.FinalLocalVariableCheck;
 import dev.ward.analysis.domain.rule.check.IllegalInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.IllegalTypeCheck;
+import dev.ward.analysis.domain.rule.check.PatternVariableAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.Set;
 import org.tomlj.TomlParseResult;
@@ -16,7 +18,12 @@ final class StrictDeclarationChecks {
   private static final String MESSAGE = "message";
 
   private static final Set<String> CHECKS =
-      Set.of("declaration-order", "illegal-type", "illegal-instantiation");
+      Set.of(
+          "declaration-order",
+          "illegal-type",
+          "illegal-instantiation",
+          "final-local-variable",
+          "pattern-variable-assignment");
 
   /** Checkstyle's default class names of IllegalType, simple and qualified. */
   private static final Set<String> ILLEGAL_TYPE_DEFAULTS =
@@ -52,6 +59,10 @@ final class StrictDeclarationChecks {
       case "illegal-instantiation" ->
           new IllegalInstantiationCheck(
               TomlValues.optionalStrings(toml, "classes"), TomlValues.required(toml, MESSAGE));
+      case "final-local-variable" ->
+          new FinalLocalVariableCheck(TomlValues.required(toml, MESSAGE));
+      case "pattern-variable-assignment" ->
+          new PatternVariableAssignmentCheck(TomlValues.required(toml, MESSAGE));
       default -> new DeclarationOrderCheck(TomlValues.required(toml, MESSAGE));
     };
   }

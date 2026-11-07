@@ -38,3 +38,27 @@ body = '''
 check = "illegal-instantiation"
 message = "instantiation of {value} is not allowed"
 '''
+
+[[rules]]
+id = "ward:java/final-local-variable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "final-local-variable"
+message = "local variable {value} should be declared final"
+'''
+
+[[rules]]
+id = "ward:java/pattern-variable-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "pattern-variable-assignment"
+message = "pattern variable {value} should not be assigned"
+'''
