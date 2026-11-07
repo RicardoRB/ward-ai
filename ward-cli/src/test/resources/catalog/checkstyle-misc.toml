@@ -4,8 +4,9 @@
 name = "array-type-style"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "planned", swift = "planned" }
+not-applicable = { typescript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", javascript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript" }
+issues = { java = "#293", kotlin = "#294", python = "#297", swift = "#298" }
 typescript-eslint = ["array-type"]
 checkstyle = ["ArrayTypeStyle"]
 
@@ -96,8 +97,8 @@ checkstyle = ["OuterTypeFilename"]
 name = "todo-comment"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "planned", swift = "planned" }
+issues = { java = "#293", kotlin = "#294", python = "#297", swift = "#298" }
 detekt = ["ForbiddenComment"]
 checkstyle = ["TodoComment"]
 eslint = ["no-warning-comments"]
@@ -127,6 +128,7 @@ checkstyle = ["UncommentedMain"]
 name = "upper-ell"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "planned", swift = "planned" }
+not-applicable = { typescript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", javascript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin" }
+issues = { java = "#293", kotlin = "#294", python = "#297", swift = "#298" }
 checkstyle = ["UpperEll"]
