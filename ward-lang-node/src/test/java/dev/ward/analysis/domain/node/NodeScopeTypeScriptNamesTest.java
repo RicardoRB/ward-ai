@@ -16,7 +16,7 @@ class NodeScopeTypeScriptNamesTest {
     assertThat(scopes.references().stream().map(NameReference::name)).contains("unknownName");
     final NameReference read =
         scopes.references().stream()
-            .filter(reference -> reference.name().equals("unknownName"))
+            .filter(reference -> "unknownName".equals(reference.name()))
             .findFirst()
             .orElseThrow();
     assertThat(read.access()).isEqualTo(ReferenceAccess.READ);
