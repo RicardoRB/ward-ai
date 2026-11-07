@@ -1,0 +1,19 @@
+# Modifier order for Swift, the standard preset's Checkstyle ModifierOrder. The access level comes
+# before the other modifiers. Compact node text joins the modifiers without spaces, so an access
+# modifier that follows another modifier shows as one adjacent pair. A type declaration keeps its
+# modifiers in its own tokens, so its text is matched from the start only.
+# shortcut: attributes before the modifiers hide them from the match; upgrade when attributes are read apart.
+
+[[rules]]
+id = "ward:swift/modifier-order"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["declaration_modifiers", "class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration"]
+text = '^(static|class|final|override|required|convenience|dynamic|lazy|mutating|nonmutating|weak|unowned|optional|indirect|nonisolated|async)(public|open|internal|fileprivate|private)'
+message = "access level must come before the other modifiers"
+'''
