@@ -2710,7 +2710,6 @@ spotbugs = ["UR_UNINIT_READ"]
 
 [[rule]]
 name = "ur-uninit-read-called-from-super-constructor"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR"]
 

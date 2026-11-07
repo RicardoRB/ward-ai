@@ -63,3 +63,15 @@ body = '''
 check = "non-terminating-loop"
 message = "this loop has no way out: nothing in it breaks, returns or throws"
 '''
+
+[[rules]]
+id = "ward:java/ur-uninit-read-called-from-super-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "super-constructor-read"
+message = "field {value} is read by a method that the superclass constructor calls, before the subclass has set it"
+'''
