@@ -1155,8 +1155,6 @@ errorprone = ["FuzzyEqualsShouldNotBeUsedInEqualsMethod"]
 
 [[rule]]
 name = "get-class-on-annotation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["GetClassOnAnnotation"]
 
 [[rule]]
@@ -1227,8 +1225,6 @@ errorprone = ["ICCProfileGetInstance"]
 
 [[rule]]
 name = "identifier-name"
-presets = ["standard", "strict"]
-category = "severity-warning"
 swiftlint = ["identifier_name"]
 errorprone = ["IdentifierName"]
 
@@ -1238,8 +1234,6 @@ errorprone = ["IdentityBinaryExpression"]
 
 [[rule]]
 name = "identity-hash-map-boxing"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IdentityHashMapBoxing"]
 
 [[rule]]
@@ -1358,8 +1352,6 @@ errorprone = ["IncrementInForLoopAndHeader"]
 
 [[rule]]
 name = "index-of-char"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IndexOfChar"]
 
 [[rule]]
@@ -1370,8 +1362,6 @@ errorprone = ["InexactVarargsConditional"]
 
 [[rule]]
 name = "infinite-recursion"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InfiniteRecursion"]
 
 [[rule]]
@@ -1394,8 +1384,6 @@ errorprone = ["InjectInvalidTargetingOnScopingAnnotation"]
 
 [[rule]]
 name = "inject-more-than-one-scope-annotation-on-class"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InjectMoreThanOneScopeAnnotationOnClass"]
 
 [[rule]]
@@ -1466,8 +1454,6 @@ errorprone = ["InputStreamSlowMultibyteRead"]
 
 [[rule]]
 name = "insecure-crypto-usage"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InsecureCryptoUsage"]
 
 [[rule]]
@@ -1536,8 +1522,6 @@ errorprone = ["InvalidInlineTag"]
 
 [[rule]]
 name = "invalid-java-time-constant"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InvalidJavaTimeConstant"]
 
 [[rule]]
@@ -1554,8 +1538,6 @@ errorprone = ["InvalidParam"]
 
 [[rule]]
 name = "invalid-pattern-syntax"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InvalidPatternSyntax"]
 
 [[rule]]
@@ -1578,14 +1560,10 @@ errorprone = ["InvalidThrowsLink"]
 
 [[rule]]
 name = "invalid-time-zone-id"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InvalidTimeZoneID"]
 
 [[rule]]
 name = "invalid-zone-id"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InvalidZoneId"]
 
 [[rule]]
@@ -1646,20 +1624,14 @@ errorprone = ["JUnit4EmptyMethods"]
 
 [[rule]]
 name = "j-unit4-set-up-not-run"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit4SetUpNotRun"]
 
 [[rule]]
 name = "j-unit4-tear-down-not-run"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit4TearDownNotRun"]
 
 [[rule]]
 name = "j-unit4-test-not-run"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit4TestNotRun"]
 
 [[rule]]
@@ -1876,8 +1848,6 @@ errorprone = ["LiteProtoToString"]
 
 [[rule]]
 name = "local-date-temporal-amount"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LocalDateTemporalAmount"]
 
 [[rule]]

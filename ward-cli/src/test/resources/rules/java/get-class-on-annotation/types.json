@@ -1,0 +1,36 @@
+{
+  "3:12-3:32": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "getClass",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Class"
+      }
+    }
+  },
+  "3:12-3:21": {
+    "type": {
+      "name": "java.lang.annotation.Annotation"
+    }
+  },
+  "5:12-5:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "getClass",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Class"
+      }
+    }
+  },
+  "5:12-5:15": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

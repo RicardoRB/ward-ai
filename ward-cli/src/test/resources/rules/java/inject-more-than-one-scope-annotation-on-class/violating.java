@@ -1,0 +1,4 @@
+@Singleton
+@RequestScoped
+class Violating {
+}

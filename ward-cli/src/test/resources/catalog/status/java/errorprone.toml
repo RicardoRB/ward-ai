@@ -197,7 +197,7 @@ future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
 futures-get-checked-illegal-exception-type = { status = "planned", issue = "#319" }
 fuzzy-equals-should-not-be-used-in-equals-method = { status = "planned", issue = "#319" }
-get-class-on-annotation = { status = "planned", issue = "#319" }
+get-class-on-annotation = "implemented"
 get-class-on-class = "implemented"
 get-class-on-enum = { status = "planned", issue = "#319" }
 guarded-by = { status = "planned", issue = "#319" }
@@ -210,9 +210,9 @@ hash-code-in-objects-hash = { status = "planned", issue = "#319" }
 hashtable-contains = "implemented"
 hiding-field = { status = "planned", issue = "#319" }
 icc-profile-get-instance = { status = "planned", issue = "#319" }
-identifier-name = { status = "planned", issue = "#319" }
+identifier-name = "implemented"
 identity-binary-expression = "implemented"
-identity-hash-map-boxing = { status = "planned", issue = "#319" }
+identity-hash-map-boxing = "implemented"
 identity-hash-map-usage = { status = "planned", issue = "#319" }
 if-chain-to-switch = { status = "planned", issue = "#319" }
 ignored-pure-getter = { status = "planned", issue = "#319" }
@@ -232,13 +232,13 @@ inconsistent-hash-code = { status = "planned", issue = "#319" }
 inconsistent-overloads = { status = "planned", issue = "#319" }
 incorrect-main-method = { status = "planned", issue = "#319" }
 increment-in-for-loop-and-header = { status = "planned", issue = "#319" }
-index-of-char = { status = "planned", issue = "#319" }
+index-of-char = "implemented"
 inexact-varargs-conditional = { status = "planned", issue = "#319" }
-infinite-recursion = { status = "planned", issue = "#319" }
+infinite-recursion = "implemented"
 inherit-doc = { status = "planned", issue = "#319" }
 initialize-inline = { status = "planned", issue = "#319" }
 inject-invalid-targeting-on-scoping-annotation = { status = "planned", issue = "#319" }
-inject-more-than-one-scope-annotation-on-class = { status = "planned", issue = "#319" }
+inject-more-than-one-scope-annotation-on-class = "implemented"
 inject-on-bug-checkers = { status = "planned", issue = "#319" }
 inject-on-constructor-of-abstract-class = { status = "planned", issue = "#319" }
 inject-on-member-and-constructor = { status = "planned", issue = "#319" }
@@ -250,7 +250,7 @@ inline-me-suggester = { status = "planned", issue = "#319" }
 inline-me-validator = { status = "planned", issue = "#319" }
 inline-trivial-constant = { status = "planned", issue = "#319" }
 input-stream-slow-multibyte-read = { status = "planned", issue = "#319" }
-insecure-crypto-usage = { status = "planned", issue = "#319" }
+insecure-crypto-usage = "implemented"
 instance-of-and-cast-match-wrong-type = { status = "planned", issue = "#319" }
 instant-temporal-unit = "implemented"
 int-float-conversion = { status = "planned", issue = "#319" }
@@ -262,15 +262,15 @@ interrupted-in-catch-block = { status = "planned", issue = "#319" }
 interruption = { status = "planned", issue = "#319" }
 invalid-block-tag = { status = "planned", issue = "#319" }
 invalid-inline-tag = { status = "planned", issue = "#319" }
-invalid-java-time-constant = { status = "planned", issue = "#319" }
+invalid-java-time-constant = "implemented"
 invalid-link = { status = "planned", issue = "#319" }
 invalid-param = { status = "planned", issue = "#319" }
-invalid-pattern-syntax = { status = "planned", issue = "#319" }
+invalid-pattern-syntax = "implemented"
 invalid-snippet = { status = "planned", issue = "#319" }
 invalid-throws = { status = "planned", issue = "#319" }
 invalid-throws-link = { status = "planned", issue = "#319" }
-invalid-time-zone-id = { status = "planned", issue = "#319" }
-invalid-zone-id = { status = "planned", issue = "#319" }
+invalid-time-zone-id = "implemented"
+invalid-zone-id = "implemented"
 is-instance-incompatible-type = { status = "planned", issue = "#319" }
 is-instance-of-class = { status = "planned", issue = "#319" }
 is-loggable-tag-length = "implemented"
@@ -286,9 +286,9 @@ j-unit3-test-not-run = { status = "planned", issue = "#319" }
 j-unit4-class-annotation-non-static = "implemented"
 j-unit4-class-used-in-j-unit3 = { status = "planned", issue = "#319" }
 j-unit4-empty-methods = { status = "planned", issue = "#319" }
-j-unit4-set-up-not-run = { status = "planned", issue = "#319" }
-j-unit4-tear-down-not-run = { status = "planned", issue = "#319" }
-j-unit4-test-not-run = { status = "planned", issue = "#319" }
+j-unit4-set-up-not-run = "implemented"
+j-unit4-tear-down-not-run = "implemented"
+j-unit4-test-not-run = "implemented"
 j-unit4-tests-not-run-within-enclosed = { status = "planned", issue = "#319" }
 java-duration-get-seconds-get-nano = { status = "planned", issue = "#319" }
 java-duration-get-seconds-to-to-seconds = { status = "planned", issue = "#319" }
@@ -320,7 +320,7 @@ list-remove-ambiguous = { status = "planned", issue = "#319" }
 lite-byte-string-utf8 = { status = "planned", issue = "#319" }
 lite-enum-value-of = { status = "planned", issue = "#319" }
 lite-proto-to-string = { status = "planned", issue = "#319" }
-local-date-temporal-amount = { status = "planned", issue = "#319" }
+local-date-temporal-amount = "implemented"
 lock-not-before-try = { status = "planned", issue = "#319" }
 lock-on-boxed-primitive = "implemented"
 lock-on-non-enclosing-class-literal = { status = "planned", issue = "#319" }
