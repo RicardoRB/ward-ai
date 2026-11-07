@@ -199,7 +199,7 @@ iju-setup-no-super = "implemented"
 iju-suite-not-static = "implemented"
 iju-teardown-no-super = "implemented"
 il-container-added-to-itself = "implemented"
-il-infinite-loop = { status = "planned", issue = "#314" }
+il-infinite-loop = "implemented"
 il-infinite-recursive-loop = "implemented"
 im-average-computation-could-overflow = { status = "planned", issue = "#316" }
 im-bad-check-for-odd = "implemented"

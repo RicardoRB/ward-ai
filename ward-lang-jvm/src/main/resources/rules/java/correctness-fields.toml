@@ -51,3 +51,15 @@ check = "field-access"
 mode = "uninitialized-read"
 message = "constructor reads field {value} before it writes it"
 '''
+
+[[rules]]
+id = "ward:java/il-infinite-loop"
+language = "java"
+capability = "CFG"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "non-terminating-loop"
+message = "this loop has no way out: nothing in it breaks, returns or throws"
+'''

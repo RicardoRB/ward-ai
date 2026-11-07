@@ -1078,7 +1078,6 @@ spotbugs = ["IL_CONTAINER_ADDED_TO_ITSELF"]
 
 [[rule]]
 name = "il-infinite-loop"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["IL_INFINITE_LOOP"]
 

@@ -5,10 +5,11 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.FieldAccessCheck;
+import dev.ward.analysis.domain.rule.check.NonTerminatingLoopCheck;
 import java.util.Locale;
 import java.util.Map;
 
-/** The checks of the rules that follow how the members of a class read and write its fields. */
+/** The checks of the rules that follow fields and the control flow of a body. */
 final class FieldChecks {
 
   private FieldChecks() {}
@@ -24,6 +25,9 @@ final class FieldChecks {
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
                             .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, "message"))));
+                    TomlValues.required(toml, "message"))),
+        entry(
+            "non-terminating-loop",
+            toml -> new NonTerminatingLoopCheck(TomlValues.required(toml, "message"))));
   }
 }
