@@ -1,0 +1,43 @@
+# Ruff's flake8-slots rules (SLOT) for Python: a builtin-based class without __slots__ gets a __dict__.
+
+[[rules]]
+id = "ward:python/no-slots-in-str-subclass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "^class\\w+\\(str\\)(?!.*__slots__)"
+message = "subclass of str without __slots__ gets a __dict__; declare __slots__"
+'''
+
+[[rules]]
+id = "ward:python/no-slots-in-tuple-subclass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "^class\\w+\\(tuple\\)(?!.*__slots__)"
+message = "subclass of tuple without __slots__ gets a __dict__; declare __slots__"
+'''
+
+[[rules]]
+id = "ward:python/no-slots-in-namedtuple-subclass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "^class\\w+\\(namedtuple\\((?!.*__slots__)"
+message = "subclass of namedtuple without __slots__ gets a __dict__; declare __slots__"
+'''

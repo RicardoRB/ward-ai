@@ -56,9 +56,9 @@ checkstyle = ["LeftCurly"]
 name = "need-braces"
 category = "blocks"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit", swift = "Swift requires braces around every block, so the compiler already enforces it" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
+issues = { java = "#286", kotlin = "#294" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]
