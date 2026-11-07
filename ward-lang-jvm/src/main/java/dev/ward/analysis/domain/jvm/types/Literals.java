@@ -1,14 +1,24 @@
 package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /** Reads the value and type of Java literals. */
 final class Literals {
   private static final int HEX_RADIX = 16;
   private static final int OCTAL_RADIX = 8;
   private static final int BINARY_RADIX = 2;
+  private static final int DECIMAL_RADIX = 10;
+  private static final int UNICODE_DIGITS = 4;
   private static final String STRING = "java.lang.String";
+  private static final String INTEGER_KIND = "int";
+  private static final String LONG_KIND = "long";
+  private static final Set<String> INTEGER_LITERALS =
+      Set.of("DECIMAL_LITERAL", "HEX_LITERAL", "OCT_LITERAL", "BINARY_LITERAL");
+  private static final Map<Character, Character> ESCAPES =
+      Map.of('n', '\n', 't', '\t', 'r', '\r', 'b', '\b', 'f', '\f', 's', ' ');
 
   private Literals() {}
 
@@ -18,14 +28,17 @@ final class Literals {
   /** Reads the {@code literal} node, or returns empty when it is not understood. */
   static Optional<Literal> of(final SyntaxNode literal) {
     final String text = Syntax.text(literal);
-    final String kind = literal.children().isEmpty() ? literal.kind() : leafKind(literal);
+    final String kind = leafKind(literal);
+    if (INTEGER_LITERALS.contains(kind)) {
+      return integer(kind, text);
+    }
     return switch (kind) {
       case "STRING_LITERAL" -> Optional.of(string(text.substring(1, text.length() - 1)));
       case "TEXT_BLOCK" -> Optional.of(new Literal(JType.ClassType.of(STRING), Optional.empty()));
       case "CHAR_LITERAL" -> Optional.of(character(text));
       case "BOOL_LITERAL" -> Optional.of(primitive("boolean", Boolean.valueOf(text)));
-      case "NULL_LITERAL" -> Optional.of(new Literal(JType.ClassType.of("<null>"), Optional.empty()));
-      case "DECIMAL_LITERAL", "HEX_LITERAL", "OCT_LITERAL", "BINARY_LITERAL" -> integer(kind, text);
+      case "NULL_LITERAL" ->
+          Optional.of(new Literal(JType.ClassType.of(Types.NULL), Optional.empty()));
       case "FLOAT_LITERAL", "HEX_FLOAT_LITERAL" -> floating(text);
       default -> Optional.empty();
     };
@@ -54,75 +67,80 @@ final class Literals {
         body.isEmpty() ? Optional.empty() : Optional.of(body.substring(0, 1)));
   }
 
+  private static int radix(final String kind) {
+    return switch (kind) {
+      case "HEX_LITERAL" -> HEX_RADIX;
+      case "BINARY_LITERAL" -> BINARY_RADIX;
+      case "OCT_LITERAL" -> OCTAL_RADIX;
+      default -> DECIMAL_RADIX;
+    };
+  }
+
   private static Optional<Literal> integer(final String kind, final String raw) {
     String digits = raw.replace("_", "");
     final boolean isLong = digits.endsWith("l") || digits.endsWith("L");
     if (isLong) {
       digits = digits.substring(0, digits.length() - 1);
     }
-    final int radix =
-        switch (kind) {
-          case "HEX_LITERAL" -> HEX_RADIX;
-          case "BINARY_LITERAL" -> BINARY_RADIX;
-          case "OCT_LITERAL" -> OCTAL_RADIX;
-          default -> 10;
-        };
-    if (radix != 10) {
-      digits = digits.substring("OCT_LITERAL".equals(kind) ? 1 : 2);
+    final int radix = radix(kind);
+    if ("HEX_LITERAL".equals(kind) || "BINARY_LITERAL".equals(kind)) {
+      digits = digits.substring(2);
+    } else if ("OCT_LITERAL".equals(kind)) {
+      digits = digits.substring(1);
     }
+    final String name = isLong ? LONG_KIND : INTEGER_KIND;
     try {
       final long value = Long.parseUnsignedLong(digits.isEmpty() ? "0" : digits, radix);
-      final long typed = isLong ? value : (int) value;
-      return Optional.of(primitive(isLong ? "long" : "int", typed));
+      return Optional.of(primitive(name, isLong ? value : (long) (int) value));
     } catch (NumberFormatException tooLarge) {
-      return Optional.of(new Literal(new JType.Primitive(isLong ? "long" : "int"), Optional.empty()));
+      return Optional.of(new Literal(new JType.Primitive(name), Optional.empty()));
     }
   }
 
   private static Optional<Literal> floating(final String raw) {
     final String text = raw.replace("_", "");
     final boolean isFloat = text.endsWith("f") || text.endsWith("F");
+    final String name = isFloat ? "float" : "double";
     try {
-      final double value = Double.parseDouble(text);
-      return Optional.of(primitive(isFloat ? "float" : "double", value));
+      return Optional.of(primitive(name, Double.parseDouble(text)));
     } catch (NumberFormatException unreadable) {
-      return Optional.of(new Literal(new JType.Primitive(isFloat ? "float" : "double"), Optional.empty()));
+      return Optional.of(new Literal(new JType.Primitive(name), Optional.empty()));
     }
   }
 
   private static String unescape(final String body) {
     final StringBuilder text = new StringBuilder();
-    for (int at = 0; at < body.length(); at++) {
-      final char next = body.charAt(at);
-      if (next != '\\' || at + 1 >= body.length()) {
+    int at = 0;
+    while (at < body.length()) {
+      final char next = body.charAt(at++);
+      if (next != '\\' || at >= body.length()) {
         text.append(next);
-        continue;
-      }
-      final char code = body.charAt(++at);
-      switch (code) {
-        case 'n' -> text.append('\n');
-        case 't' -> text.append('\t');
-        case 'r' -> text.append('\r');
-        case 'b' -> text.append('\b');
-        case 'f' -> text.append('\f');
-        case 's' -> text.append(' ');
-        case 'u' -> at = unicode(body, at, text);
-        default -> text.append(code);
+      } else {
+        final char code = body.charAt(at++);
+        if (code == 'u') {
+          at = unicode(body, at, text);
+        } else {
+          text.append(ESCAPES.getOrDefault(code, code));
+        }
       }
     }
     return text.toString();
   }
 
+  /**
+   * Appends the character of a {@code \}{@code uXXXX} escape; {@code at} is after the {@code u}.
+   */
   private static int unicode(final String body, final int at, final StringBuilder text) {
     int start = at;
-    while (start + 1 < body.length() && body.charAt(start + 1) == 'u') {
+    while (start < body.length() && body.charAt(start) == 'u') {
       start++;
     }
-    if (start + 4 < body.length() + 0 && start + 4 <= body.length() - 1 + 1) {
+    if (start + UNICODE_DIGITS <= body.length()) {
       try {
-        text.append((char) Integer.parseInt(body.substring(start + 1, start + 5), HEX_RADIX));
-        return start + 4;
-      } catch (NumberFormatException | IndexOutOfBoundsException malformed) {
+        text.append(
+            (char) Integer.parseInt(body.substring(start, start + UNICODE_DIGITS), HEX_RADIX));
+        return start + UNICODE_DIGITS;
+      } catch (NumberFormatException malformed) {
         text.append('u');
       }
     }

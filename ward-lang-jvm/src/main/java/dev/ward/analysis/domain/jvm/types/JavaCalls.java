@@ -37,7 +37,9 @@ final class JavaCalls {
       case JType.ArrayType array -> Optional.of(JType.ClassType.of(Types.OBJECT));
       case JType.TypeVariable variable ->
           ctx.bounds().containsKey(variable.name())
-              ? siteOf(ctx.bounds().get(variable.name()), new Ctx(ctx.scope(), Map.of(), List.of(), Optional.empty()))
+              ? siteOf(
+                  ctx.bounds().get(variable.name()),
+                  new Ctx(ctx.scope(), Map.of(), List.of(), Optional.empty()))
               : Optional.of(JType.ClassType.of(Types.OBJECT));
       case JType.Wildcard wildcard ->
           wildcard.bound() != null && wildcard.upper()
@@ -78,7 +80,8 @@ final class JavaCalls {
             ? owner.map(session::self)
             : owner.flatMap(session.hierarchy::find).flatMap(JvmClass::superclass);
     final List<Hierarchy.Found<JvmMethod>> candidates =
-        site.map(found -> session.hierarchy.methods(found, JvmMethod.CONSTRUCTOR)).orElse(List.of());
+        site.map(found -> session.hierarchy.methods(found, JvmMethod.CONSTRUCTOR))
+            .orElse(List.of());
     return resolve(candidates, prepared, ctx, false);
   }
 
@@ -117,18 +120,21 @@ final class JavaCalls {
     for (final SyntaxNode node : nodes) {
       final Optional<SyntaxNode> lambda = lambdaOf(node);
       if (lambda.isPresent()) {
-        arguments.add(new Overloads.Argument(Optional.empty(), lambdaParameters(lambda.get()).size(), false));
+        arguments.add(
+            new Overloads.Argument(Optional.empty(), lambdaParameters(lambda.get()).size(), false));
       } else if (isReference(node)) {
         arguments.add(new Overloads.Argument(Optional.empty(), -1, true));
       } else {
-        arguments.add(Overloads.Argument.of(expressions.expression(node, ctx, Optional.empty()).type()));
+        arguments.add(
+            Overloads.Argument.of(expressions.expression(node, ctx, Optional.empty()).type()));
       }
     }
     return arguments;
   }
 
   private static Optional<SyntaxNode> lambdaOf(final SyntaxNode expression) {
-    return expression.children().size() == 1 && "lambdaExpression".equals(expression.children().get(0).kind())
+    return expression.children().size() == 1
+            && "lambdaExpression".equals(expression.children().get(0).kind())
         ? Optional.of(expression.children().get(0))
         : Optional.empty();
   }
@@ -142,29 +148,40 @@ final class JavaCalls {
       final Prepared prepared,
       final Ctx ctx,
       final boolean constructor) {
-    final Optional<Hierarchy.Found<JvmMethod>> chosen = session.overloads.select(candidates, prepared.arguments());
+    final Optional<Hierarchy.Found<JvmMethod>> chosen =
+        session.overloads.select(candidates, prepared.arguments());
     final Map<String, JType> bound =
-        chosen.map(found -> session.overloads.infer(found, prepared.arguments())).orElseGet(HashMap::new);
+        chosen
+            .map(found -> session.inference.infer(found, prepared.arguments()))
+            .orElseGet(HashMap::new);
     final List<JType> parameters =
-        chosen.map(found -> found.member().parameters().stream()
-                .map(parameter -> Types.substitute(parameter, found.bindings())).toList())
+        chosen
+            .map(
+                found ->
+                    found.member().parameters().stream()
+                        .map(parameter -> Types.substitute(parameter, found.bindings()))
+                        .toList())
             .orElse(List.of());
     final Set<String> variables = new HashSet<>();
-    chosen.ifPresent(found -> found.member().typeParameters().forEach(p -> variables.add(p.name())));
+    chosen.ifPresent(
+        found -> found.member().typeParameters().forEach(p -> variables.add(p.name())));
     for (int index = 0; index < prepared.nodes().size(); index++) {
       final Overloads.Argument argument = prepared.arguments().get(index);
       if (!argument.deferred()) {
         continue;
       }
       final Optional<JType> declared =
-          index < parameters.size() ? Optional.of(Types.substitute(parameters.get(index), bound)) : Optional.empty();
+          index < parameters.size()
+              ? Optional.of(Types.substitute(parameters.get(index), bound))
+              : Optional.empty();
       deferred(prepared.nodes().get(index), declared, variables, bound, ctx);
     }
     if (chosen.isEmpty()) {
       return Typed.UNKNOWN;
     }
     final JType returned =
-        Types.substitute(Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
+        Types.substitute(
+            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
     return cleanup(returned, variables).map(Typed::of).orElse(Typed.UNKNOWN).withCall(chosen.get());
   }
 
@@ -180,17 +197,21 @@ final class JavaCalls {
       expressions.expression(node, ctx, declared);
       return;
     }
-    final Optional<Overloads.Shape> shape = declared.flatMap(session.overloads::shape);
+    final Optional<Inference.Shape> shape = declared.flatMap(session.inference::shape);
     final List<Optional<JType>> parameters = new ArrayList<>();
     for (int index = 0; index < lambdaParameters(lambda.get()).size(); index++) {
       final int at = index;
       parameters.add(
-          shape.filter(found -> at < found.parameters().size())
+          shape
+              .filter(found -> at < found.parameters().size())
               .map(found -> found.parameters().get(at))
               .flatMap(type -> cleanup(type, variables)));
     }
     final Optional<JType> body = lambdaBody(lambda.get(), parameters, ctx);
-    shape.ifPresent(found -> body.ifPresent(type -> session.overloads.unify(found.returns(), type, variables, bound)));
+    shape.ifPresent(
+        found ->
+            body.ifPresent(
+                type -> session.inference.unify(found.returns(), type, variables, bound)));
     session.record(node, Typed.of(declared));
     session.record(lambda.get(), Typed.of(declared));
   }
@@ -214,19 +235,22 @@ final class JavaCalls {
       return cleanup(array.component(), variables).map(JType.ArrayType::new);
     }
     if (type instanceof JType.Wildcard wildcard && wildcard.bound() != null) {
-      return cleanup(wildcard.bound(), variables).map(bound -> new JType.Wildcard(bound, wildcard.upper()));
+      return cleanup(wildcard.bound(), variables)
+          .map(bound -> new JType.Wildcard(bound, wildcard.upper()));
     }
     return Optional.of(type);
   }
 
   /** Types a lambda that is not an argument, against the type it is assigned to. */
   Typed lambda(final SyntaxNode node, final Ctx ctx, final Optional<JType> target) {
-    final Optional<Overloads.Shape> shape = target.flatMap(session.overloads::shape);
+    final Optional<Inference.Shape> shape = target.flatMap(session.inference::shape);
     final List<Optional<JType>> parameters = new ArrayList<>();
     for (int index = 0; index < lambdaParameters(node).size(); index++) {
       final int at = index;
       parameters.add(
-          shape.filter(found -> at < found.parameters().size()).map(found -> found.parameters().get(at)));
+          shape
+              .filter(found -> at < found.parameters().size())
+              .map(found -> found.parameters().get(at)));
     }
     lambdaBody(node, parameters, ctx);
     final Typed typed = Typed.of(target);
@@ -262,7 +286,8 @@ final class JavaCalls {
               ? parameter
               : Syntax.find(parameter, IDENTIFIER).orElse(parameter);
       final Optional<JType> explicit =
-          Syntax.child(parameter, "typeType").flatMap(written -> JavaTypes.type(written, ctx.scope()));
+          Syntax.child(parameter, "typeType")
+              .flatMap(written -> JavaTypes.type(written, ctx.scope()));
       final Optional<JType> inferred = parameterTypes.get(index);
       session.variable(name, explicit.or(() -> inferred));
     }
@@ -277,7 +302,8 @@ final class JavaCalls {
     final List<Optional<JType>> returns = new ArrayList<>();
     typer.walk(body.get(), ctx.collecting(returns));
     Optional<JType> merged = returns.isEmpty() ? Optional.empty() : returns.get(0);
-    for (final Optional<JType> next : returns.subList(Math.min(1, returns.size()), returns.size())) {
+    for (final Optional<JType> next :
+        returns.subList(Math.min(1, returns.size()), returns.size())) {
       merged = expressions.unify(merged, next);
     }
     return merged;
@@ -295,24 +321,29 @@ final class JavaCalls {
       return arrayCreation(name.get(), array.get(), ctx);
     }
     final Optional<SyntaxNode> rest = Syntax.child(creator, "classCreatorRest");
-    final Prepared prepared = rest.map(found -> prepare(found, ctx)).orElse(new Prepared(List.of(), List.of()));
-    rest.flatMap(found -> Syntax.child(found, "classBody")).ifPresent(body -> typer.walkChildren(body, ctx));
+    final Prepared prepared =
+        rest.map(found -> prepare(found, ctx)).orElse(new Prepared(List.of(), List.of()));
+    rest.flatMap(found -> Syntax.child(found, "classBody"))
+        .ifPresent(body -> typer.walkChildren(body, ctx));
     final Optional<JType.ClassType> created = createdType(name.get(), ctx, target);
     if (created.isEmpty()) {
       return Typed.UNKNOWN;
     }
     final Typed constructed =
-        resolve(session.hierarchy.methods(created.get(), JvmMethod.CONSTRUCTOR), prepared, ctx, true);
+        resolve(
+            session.hierarchy.methods(created.get(), JvmMethod.CONSTRUCTOR), prepared, ctx, true);
     final Typed typed = Typed.of(created.get());
     return constructed.call().map(typed::withCall).orElse(typed);
   }
 
   private Typed arrayCreation(final SyntaxNode name, final SyntaxNode rest, final Ctx ctx) {
     final Optional<JType> element =
-        Syntax.child(name, "primitiveType").<JType>map(p -> new JType.Primitive(Syntax.text(p)))
+        Syntax.child(name, "primitiveType")
+            .<JType>map(p -> new JType.Primitive(Syntax.text(p)))
             .or(() -> createdType(name, ctx, Optional.empty()).map(JType.class::cast));
     typer.walkChildren(rest, ctx);
-    final int dimensions = (int) rest.children().stream().filter(child -> "[".equals(Syntax.token(child))).count();
+    final int dimensions =
+        (int) rest.children().stream().filter(child -> "[".equals(Syntax.token(child))).count();
     return Typed.of(element.map(found -> JavaTypes.arrayOf(found, dimensions)));
   }
 
@@ -333,9 +364,11 @@ final class JavaCalls {
       return Optional.empty();
     }
     final Optional<SyntaxNode> usedArguments = arguments;
-    final Optional<SyntaxNode> written = arguments.flatMap(found -> Syntax.child(found, "typeArguments"));
+    final Optional<SyntaxNode> written =
+        arguments.flatMap(found -> Syntax.child(found, "typeArguments"));
     if (written.isPresent()) {
-      return Optional.of(new JType.ClassType(binary.get(), JavaTypes.typeArguments(written.get(), ctx.scope())));
+      return Optional.of(
+          new JType.ClassType(binary.get(), JavaTypes.typeArguments(written.get(), ctx.scope())));
     }
     final JType.ClassType raw = JType.ClassType.of(binary.get());
     return Optional.of(usedArguments.isPresent() ? diamond(raw, target) : raw);
@@ -356,7 +389,8 @@ final class JavaCalls {
     owner.get().typeParameters().forEach(parameter -> variables.add(parameter.name()));
     final Map<String, JType> bound = new HashMap<>();
     for (int index = 0; index < wanted.arguments().size(); index++) {
-      session.overloads.unify(view.get().arguments().get(index), wanted.arguments().get(index), variables, bound);
+      session.inference.unify(
+          view.get().arguments().get(index), wanted.arguments().get(index), variables, bound);
     }
     final List<JType> arguments = new ArrayList<>();
     for (final TypeParameter parameter : owner.get().typeParameters()) {

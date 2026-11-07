@@ -30,21 +30,12 @@ public final class ClassFileReader {
     try {
       return new Parse(ByteBuffer.wrap(bytes)).parse();
     } catch (BufferUnderflowException | IndexOutOfBoundsException | IllegalArgumentException bad) {
-      throw new ClassFileException("malformed class file");
+      throw new ClassFileException("malformed class file", bad);
     }
   }
 
-  /** The attributes of one class, field or method. */
-  private static final class Attributes {
-    private String signature;
-    private Object constant;
-    private final List<String> annotations = new ArrayList<>();
-    private final List<List<String>> parameterAnnotations = new ArrayList<>();
-    private final List<String> thrown = new ArrayList<>();
-    private final List<String> memberClasses = new ArrayList<>();
-    private boolean sealed;
-    private boolean record;
-  }
+  /** The class header: access flags, superclass index and interface names. */
+  private record Header(int access, int superIndex, List<String> interfaceNames) {}
 
   /** The state of reading one class file. */
   private static final class Parse {
@@ -66,19 +57,22 @@ public final class ClassFileReader {
       name = pool.className(ushort());
       final int superIndex = ushort();
       final List<String> interfaceNames = new ArrayList<>();
-      for (int count = ushort(); count > 0; count--) {
+      final int interfaceCount = ushort();
+      for (int index = 0; index < interfaceCount; index++) {
         interfaceNames.add(pool.className(ushort()));
       }
       final List<JvmField> fields = new ArrayList<>();
-      for (int count = ushort(); count > 0; count--) {
+      final int fieldCount = ushort();
+      for (int index = 0; index < fieldCount; index++) {
         fields.add(field());
       }
       final List<JvmMethod> methods = new ArrayList<>();
-      for (int count = ushort(); count > 0; count--) {
+      final int methodCount = ushort();
+      for (int index = 0; index < methodCount; index++) {
         methods.add(method());
       }
-      final Attributes attributes = attributes();
-      return build(access, superIndex, interfaceNames, fields, methods, attributes);
+      final MemberAttributes attributes = MemberAttributes.read(in, pool, name);
+      return build(new Header(access, superIndex, interfaceNames), fields, methods, attributes);
     }
 
     private int ushort() {
@@ -86,29 +80,29 @@ public final class ClassFileReader {
     }
 
     private JvmClass build(
-        final int access,
-        final int superIndex,
-        final List<String> interfaceNames,
+        final Header header,
         final List<JvmField> fields,
         final List<JvmMethod> methods,
-        final Attributes attributes) {
+        final MemberAttributes attributes) {
+      final boolean hasSuper = header.superIndex() != 0;
       Optional<JType.ClassType> superclass =
-          superIndex == 0
-              ? Optional.empty()
-              : Optional.of(JType.ClassType.of(pool.className(superIndex)));
-      List<JType.ClassType> interfaces = interfaceNames.stream().map(JType.ClassType::of).toList();
+          hasSuper
+              ? Optional.of(JType.ClassType.of(pool.className(header.superIndex())))
+              : Optional.empty();
+      List<JType.ClassType> interfaces =
+          header.interfaceNames().stream().map(JType.ClassType::of).toList();
       List<TypeParameter> typeParameters = List.of();
       if (attributes.signature != null) {
         final SignatureParser.ClassSignature parsed =
             SignatureParser.classSignature(attributes.signature);
         typeParameters = parsed.typeParameters();
-        superclass = superIndex == 0 ? Optional.empty() : Optional.of(parsed.superclass());
+        superclass = hasSuper ? Optional.of(parsed.superclass()) : Optional.empty();
         interfaces = parsed.interfaces();
       }
       return new JvmClass(
           name,
-          kind(access, attributes.record),
-          access,
+          kind(header.access(), attributes.record),
+          header.access(),
           superclass,
           interfaces,
           typeParameters,
@@ -121,13 +115,13 @@ public final class ClassFileReader {
     }
 
     private static JvmClass.Kind kind(final int access, final boolean record) {
-      if ((access & Flags.ANNOTATION) != 0) {
+      if (Flags.has(access, Flags.ANNOTATION)) {
         return JvmClass.Kind.ANNOTATION;
       }
-      if ((access & Flags.INTERFACE) != 0) {
+      if (Flags.has(access, Flags.INTERFACE)) {
         return JvmClass.Kind.INTERFACE;
       }
-      if ((access & Flags.ENUM) != 0) {
+      if (Flags.has(access, Flags.ENUM)) {
         return JvmClass.Kind.ENUM;
       }
       return record ? JvmClass.Kind.RECORD : JvmClass.Kind.CLASS;
@@ -137,7 +131,7 @@ public final class ClassFileReader {
       final int access = ushort();
       final String fieldName = pool.utf8(ushort());
       final String descriptor = pool.utf8(ushort());
-      final Attributes attributes = attributes();
+      final MemberAttributes attributes = MemberAttributes.read(in, pool, name);
       final String written = attributes.signature != null ? attributes.signature : descriptor;
       final JType type = SignatureParser.field(written);
       return new JvmField(
@@ -159,12 +153,12 @@ public final class ClassFileReader {
       final int access = ushort();
       final String methodName = pool.utf8(ushort());
       final String descriptor = pool.utf8(ushort());
-      final Attributes attributes = attributes();
+      final MemberAttributes attributes = MemberAttributes.read(in, pool, name);
       final SignatureParser.MethodSignature parsed =
           SignatureParser.method(attributes.signature != null ? attributes.signature : descriptor);
       final List<JType> thrown =
           parsed.thrown().isEmpty()
-              ? attributes.thrown.stream().map(thrownName -> (JType) JType.ClassType.of(thrownName)).toList()
+              ? attributes.thrown.stream().map(JType.ClassType::of).map(JType.class::cast).toList()
               : parsed.thrown();
       return new JvmMethod(
           methodName,
@@ -175,64 +169,6 @@ public final class ClassFileReader {
           thrown,
           attributes.annotations,
           attributes.parameterAnnotations);
-    }
-
-    private Attributes attributes() {
-      final Attributes found = new Attributes();
-      for (int count = ushort(); count > 0; count--) {
-        final String attribute = pool.utf8(ushort());
-        final int length = in.getInt();
-        final int end = in.position() + length;
-        attribute(found, attribute);
-        in.position(end);
-      }
-      return found;
-    }
-
-    private void attribute(final Attributes found, final String attribute) {
-      switch (attribute) {
-        case "Signature" -> found.signature = pool.utf8(ushort());
-        case "ConstantValue" -> found.constant = pool.constant(ushort());
-        case "Exceptions" -> {
-          for (int count = ushort(); count > 0; count--) {
-            found.thrown.add(pool.className(ushort()));
-          }
-        }
-        case "RuntimeVisibleAnnotations", "RuntimeInvisibleAnnotations" ->
-            found.annotations.addAll(new AnnotationReader(in, pool).list());
-        case "RuntimeVisibleParameterAnnotations", "RuntimeInvisibleParameterAnnotations" ->
-            parameterAnnotations(found);
-        case "PermittedSubclasses" -> found.sealed = true;
-        case "Record" -> found.record = true;
-        case "InnerClasses" -> innerClasses(found);
-        default -> {
-          // Other attributes are skipped by the caller.
-        }
-      }
-    }
-
-    private void parameterAnnotations(final Attributes found) {
-      final int parameters = in.get() & 0xFF;
-      for (int index = 0; index < parameters; index++) {
-        final List<String> names = new AnnotationReader(in, pool).list();
-        if (index < found.parameterAnnotations.size()) {
-          found.parameterAnnotations.get(index).addAll(names);
-        } else {
-          found.parameterAnnotations.add(new ArrayList<>(names));
-        }
-      }
-    }
-
-    private void innerClasses(final Attributes found) {
-      for (int count = ushort(); count > 0; count--) {
-        final int inner = ushort();
-        final int outer = ushort();
-        ushort();
-        ushort();
-        if (outer != 0 && pool.className(outer).equals(name)) {
-          found.memberClasses.add(pool.className(inner));
-        }
-      }
     }
   }
 }

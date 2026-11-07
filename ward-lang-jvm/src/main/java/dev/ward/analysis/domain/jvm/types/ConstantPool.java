@@ -12,16 +12,22 @@ final class ConstantPool {
   private static final int DOUBLE = 6;
   private static final int CLASS = 7;
   private static final int STRING = 8;
-  private static final int FIELD_REF = 9;
-  private static final int METHOD_REF = 10;
-  private static final int INTERFACE_METHOD_REF = 11;
-  private static final int NAME_AND_TYPE = 12;
   private static final int METHOD_HANDLE = 15;
   private static final int METHOD_TYPE = 16;
-  private static final int DYNAMIC = 17;
-  private static final int INVOKE_DYNAMIC = 18;
   private static final int MODULE = 19;
   private static final int PACKAGE = 20;
+  private static final int UNSIGNED_SHORT = 0xFFFF;
+  private static final int UNSIGNED_BYTE = 0xFF;
+  private static final int ASCII_LIMIT = 0x80;
+  private static final int TWO_BYTE_PREFIX = 0b110;
+  private static final int PREFIX_SHIFT = 5;
+  private static final int LOW_FIVE_BITS = 0x1F;
+  private static final int LOW_SIX_BITS = 0x3F;
+  private static final int LOW_FOUR_BITS = 0x0F;
+  private static final int SIX = 6;
+  private static final int TWELVE = 12;
+  /** Tags of four-byte entries: field, method, interface method, name and type, dynamic. */
+  private static final int[] FOUR_BYTE_TAGS = {9, 10, 11, 12, 17, 18};
 
   private final Object[] values;
   private final int[] indexes;
@@ -33,41 +39,44 @@ final class ConstantPool {
 
   /** Reads the pool that starts at the current position of {@code in}. */
   static ConstantPool read(final ByteBuffer in) throws ClassFileException {
-    final int count = in.getShort() & 0xFFFF;
-    final Object[] values = new Object[count];
-    final int[] indexes = new int[count];
-    for (int slot = 1; slot < count; slot++) {
-      final int tag = in.get() & 0xFF;
-      switch (tag) {
-        case UTF8 -> values[slot] = utf8(in);
-        case INTEGER -> values[slot] = (long) in.getInt();
-        case FLOAT -> values[slot] = (double) in.getFloat();
-        case LONG -> {
-          values[slot] = in.getLong();
-          slot++;
-        }
-        case DOUBLE -> {
-          values[slot] = in.getDouble();
-          slot++;
-        }
-        case CLASS, STRING, METHOD_TYPE, MODULE, PACKAGE -> {
-          indexes[slot] = in.getShort() & 0xFFFF;
-          values[slot] = tag;
-        }
-        case FIELD_REF,
-            METHOD_REF,
-            INTERFACE_METHOD_REF,
-            NAME_AND_TYPE,
-            DYNAMIC,
-            INVOKE_DYNAMIC -> in.getInt();
-        case METHOD_HANDLE -> {
-          in.get();
-          in.getShort();
-        }
-        default -> throw new ClassFileException("unknown constant pool tag " + tag);
+    final int count = in.getShort() & UNSIGNED_SHORT;
+    final ConstantPool pool = new ConstantPool(new Object[count], new int[count]);
+    int slot = 1;
+    while (slot < count) {
+      slot += pool.entry(in, slot);
+    }
+    return pool;
+  }
+
+  /** Reads the entry for {@code slot} and returns how many slots it takes. */
+  private int entry(final ByteBuffer in, final int slot) throws ClassFileException {
+    final int tag = in.get() & UNSIGNED_BYTE;
+    switch (tag) {
+      case UTF8 -> values[slot] = utf8(in);
+      case INTEGER -> values[slot] = (long) in.getInt();
+      case FLOAT -> values[slot] = (double) in.getFloat();
+      case LONG -> values[slot] = in.getLong();
+      case DOUBLE -> values[slot] = in.getDouble();
+      case CLASS, STRING, METHOD_TYPE, MODULE, PACKAGE -> reference(in, slot, tag);
+      case METHOD_HANDLE -> in.position(in.position() + Byte.BYTES + Short.BYTES);
+      default -> skipFourBytes(in, tag);
+    }
+    return tag == LONG || tag == DOUBLE ? 2 : 1;
+  }
+
+  private void reference(final ByteBuffer in, final int slot, final int tag) {
+    indexes[slot] = in.getShort() & UNSIGNED_SHORT;
+    values[slot] = tag;
+  }
+
+  private static void skipFourBytes(final ByteBuffer in, final int tag) throws ClassFileException {
+    for (final int known : FOUR_BYTE_TAGS) {
+      if (known == tag) {
+        in.getInt();
+        return;
       }
     }
-    return new ConstantPool(values, indexes);
+    throw new ClassFileException("unknown constant pool tag " + tag);
   }
 
   /** Returns the string at a {@code Utf8} entry. */
@@ -80,7 +89,10 @@ final class ConstantPool {
     return utf8(indexes[index]).replace('/', '.');
   }
 
-  /** Returns the constant of an {@code Integer}, {@code Float}, {@code Long}, {@code Double} or {@code String} entry. */
+  /**
+   * Returns the constant of an {@code Integer}, {@code Float}, {@code Long}, {@code Double} or
+   * {@code String} entry.
+   */
   Object constant(final int index) {
     final Object value = values[index];
     if (value instanceof Integer tag && tag == STRING) {
@@ -90,7 +102,7 @@ final class ConstantPool {
   }
 
   private static String utf8(final ByteBuffer in) {
-    final int length = in.getShort() & 0xFFFF;
+    final int length = in.getShort() & UNSIGNED_SHORT;
     final byte[] bytes = new byte[length];
     in.get(bytes);
     boolean ascii = true;
@@ -105,14 +117,18 @@ final class ConstantPool {
     final StringBuilder text = new StringBuilder(bytes.length);
     int at = 0;
     while (at < bytes.length) {
-      final int first = bytes[at++] & 0xFF;
-      if (first < 0x80) {
+      final int first = bytes[at] & UNSIGNED_BYTE;
+      final int next = at + 1 < bytes.length ? bytes[at + 1] & LOW_SIX_BITS : 0;
+      if (first < ASCII_LIMIT) {
         text.append((char) first);
-      } else if (first >> 5 == 0b110 && at < bytes.length) {
-        text.append((char) ((first & 0x1F) << 6 | bytes[at++] & 0x3F));
-      } else if (at + 1 < bytes.length) {
-        text.append((char) ((first & 0x0F) << 12 | (bytes[at] & 0x3F) << 6 | bytes[at + 1] & 0x3F));
+        at += 1;
+      } else if (first >> PREFIX_SHIFT == TWO_BYTE_PREFIX) {
+        text.append((char) ((first & LOW_FIVE_BITS) << SIX | next));
         at += 2;
+      } else {
+        final int last = at + 2 < bytes.length ? bytes[at + 2] & LOW_SIX_BITS : 0;
+        text.append((char) ((first & LOW_FOUR_BITS) << TWELVE | next << SIX | last));
+        at += 3;
       }
     }
     return text.toString();

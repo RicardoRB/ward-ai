@@ -36,4 +36,14 @@ public final class Flags {
   public static final int SYNTHETIC = 0x1000;
 
   private Flags() {}
+
+  /** Returns whether {@code access} has {@code flag}. */
+  public static boolean has(final int access, final int flag) {
+    return (access & flag) != 0;
+  }
+
+  /** Returns whether {@code access} has {@code flag} among the flags in {@code mask}. */
+  public static boolean hasAny(final int access, final int mask) {
+    return has(access, mask);
+  }
 }

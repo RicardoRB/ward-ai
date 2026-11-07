@@ -37,13 +37,19 @@ final class FactTable {
 
   private SpanFacts factsAt(final Span span, final Set<FactKind> kinds) {
     final Typed typed = Containing.of(session.expressions, span).orElse(Typed.UNKNOWN);
-    final Optional<DeclInfo> declaration = Optional.ofNullable(session.declarations.get(Session.key(span)));
+    final Optional<DeclInfo> declaration =
+        Optional.ofNullable(session.declarations.get(Session.key(span)));
     final TypeRef type =
-        kinds.contains(FactKind.TYPE) ? typed.type().flatMap(found -> refs.ref(found, Map.of())).orElse(null) : null;
-    final TypeShape shape = kinds.contains(FactKind.SHAPE) ? shape(typed, declaration).orElse(null) : null;
+        kinds.contains(FactKind.TYPE)
+            ? typed.type().flatMap(found -> refs.ref(found, Map.of())).orElse(null)
+            : null;
+    final TypeShape shape =
+        kinds.contains(FactKind.SHAPE) ? shape(typed, declaration).orElse(null) : null;
     final CallTarget call = kinds.contains(FactKind.CALL) ? call(typed).orElse(null) : null;
     final ConstantValue constant =
-        kinds.contains(FactKind.CONSTANT) ? typed.constant().map(ConstantValue::new).orElse(null) : null;
+        kinds.contains(FactKind.CONSTANT)
+            ? typed.constant().map(ConstantValue::new).orElse(null)
+            : null;
     final boolean annotated = kinds.contains(FactKind.ANNOTATIONS) && declaration.isPresent();
     return new SpanFacts(
         type,
@@ -61,7 +67,8 @@ final class FactTable {
     if (declared.isPresent()) {
       return declared.map(refs::shape);
     }
-    return typed.type()
+    return typed
+        .type()
         .filter(JType.ClassType.class::isInstance)
         .map(found -> ((JType.ClassType) found).name())
         .flatMap(session.hierarchy::find)
@@ -84,7 +91,9 @@ final class FactTable {
   }
 
   private List<CallTarget> overrides(final Optional<DeclInfo> declaration) {
-    if (declaration.isEmpty() || declaration.get().method().isEmpty() || declaration.get().owner().isEmpty()) {
+    if (declaration.isEmpty()
+        || declaration.get().method().isEmpty()
+        || declaration.get().owner().isEmpty()) {
       return List.of();
     }
     return refs.overridden(declaration.get().owner().get(), declaration.get().method().get());

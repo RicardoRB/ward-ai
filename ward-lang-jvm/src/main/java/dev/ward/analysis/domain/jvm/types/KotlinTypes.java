@@ -10,8 +10,8 @@ import java.util.Optional;
 final class KotlinTypes {
   private static final Map<String, String> PRIMITIVES =
       Map.of(
-          "Int", "int", "Long", "long", "Short", "short", "Byte", "byte",
-          "Float", "float", "Double", "double", "Boolean", "boolean", "Char", "char", "Unit", "void");
+          "Int", "int", "Long", "long", "Short", "short", "Byte", "byte", "Float", "float",
+          "Double", "double", "Boolean", "boolean", "Char", "char", "Unit", "void");
   private static final Map<String, String> CLASSES =
       Map.ofEntries(
           Map.entry("String", Types.STRING),
@@ -84,7 +84,10 @@ final class KotlinTypes {
     List<JType> arguments = List.of();
     for (final SyntaxNode simple : Syntax.children(user.get(), "simpleUserType")) {
       names.add(Syntax.text(Syntax.child(simple, "simpleIdentifier").orElse(simple)));
-      arguments = Syntax.child(simple, "typeArguments").map(found -> arguments(found, scope)).orElse(List.of());
+      arguments =
+          Syntax.child(simple, "typeArguments")
+              .map(found -> arguments(found, scope))
+              .orElse(List.of());
     }
     return named(names, arguments, nullable, scope);
   }
@@ -93,7 +96,9 @@ final class KotlinTypes {
     final List<JType> found = new ArrayList<>();
     for (final SyntaxNode projection : Syntax.children(node, "typeProjection")) {
       final Optional<JType> argument =
-          Syntax.child(projection, "type").flatMap(written -> type(written, scope)).map(Types::boxed);
+          Syntax.child(projection, "type")
+              .flatMap(written -> type(written, scope))
+              .map(Types::boxed);
       if (argument.isEmpty()) {
         return List.of();
       }
@@ -103,21 +108,39 @@ final class KotlinTypes {
   }
 
   private static Optional<JType> named(
-      final List<String> names, final List<JType> arguments, final boolean nullable, final TypeScope scope) {
+      final List<String> names,
+      final List<JType> arguments,
+      final boolean nullable,
+      final TypeScope scope) {
     final String first = names.get(0);
-    if (names.size() == 1 && scope.isTypeVariable(first)) {
-      return Optional.of(new JType.TypeVariable(first));
-    }
-    if (names.size() == 1 && PRIMITIVES.containsKey(first) && scope.imports().single().get(first) == null) {
-      final JType primitive = new JType.Primitive(PRIMITIVES.get(first));
-      return Optional.of(nullable ? Types.boxed(primitive) : primitive);
-    }
-    if (names.size() == 1 && "Array".equals(first) && arguments.size() == 1) {
-      return Optional.of(new JType.ArrayType(arguments.get(0)));
-    }
-    if (names.size() == 1 && CLASSES.containsKey(first) && scope.imports().single().get(first) == null) {
-      return Optional.of(new JType.ClassType(CLASSES.get(first), arguments));
+    if (names.size() == 1) {
+      final Optional<JType> builtin = builtin(first, arguments, nullable, scope);
+      if (builtin.isPresent()) {
+        return builtin;
+      }
     }
     return scope.resolve(names).map(binary -> new JType.ClassType(binary, arguments));
+  }
+
+  private static Optional<JType> builtin(
+      final String name,
+      final List<JType> arguments,
+      final boolean nullable,
+      final TypeScope scope) {
+    if (scope.isTypeVariable(name)) {
+      return Optional.of(new JType.TypeVariable(name));
+    }
+    if (scope.imports().single().containsKey(name)) {
+      return Optional.empty();
+    }
+    if (PRIMITIVES.containsKey(name)) {
+      final JType primitive = new JType.Primitive(PRIMITIVES.get(name));
+      return Optional.of(nullable ? Types.boxed(primitive) : primitive);
+    }
+    if ("Array".equals(name) && arguments.size() == 1) {
+      return Optional.of(new JType.ArrayType(arguments.get(0)));
+    }
+    return Optional.ofNullable(CLASSES.get(name))
+        .map(binary -> new JType.ClassType(binary, arguments));
   }
 }

@@ -33,7 +33,13 @@ final class JavaMemberReader {
       } else if ("block".equals(node.kind())) {
         members.add(
             new SourceModel.Member(
-                node, entry.outer(), scope, Optional.empty(), List.of(), List.of(), Optional.of(node)));
+                node,
+                entry.outer(),
+                scope,
+                Optional.empty(),
+                List.of(),
+                List.of(),
+                Optional.of(node)));
       } else if (!JavaClassReader.isType(node)) {
         method(entry).ifPresent(members::add);
       }
@@ -49,12 +55,12 @@ final class JavaMemberReader {
     final SyntaxNode node = entry.declaration();
     final Optional<JType> base =
         Syntax.child(node, TYPE_TYPE).flatMap(type -> JavaTypes.type(type, scope));
-    int flags = JavaTypes.flags(entry.modifiers());
+    int flags = JavaModifiers.flags(entry.modifiers());
     if (inInterface()) {
       flags |= Flags.PUBLIC | Flags.STATIC | Flags.FINAL;
     }
     final int fieldFlags = flags;
-    final List<String> annotations = JavaTypes.annotations(entry.modifiers(), scope);
+    final List<String> annotations = JavaModifiers.annotations(entry.modifiers(), scope);
     final List<JvmField> fields = new ArrayList<>();
     final List<SourceModel.Variable> variables = new ArrayList<>();
     for (final SyntaxNode declarator : declarators(node)) {
@@ -162,7 +168,12 @@ final class JavaMemberReader {
     if ("compactConstructorDeclaration".equals(node.kind())) {
       return Optional.of(
           new SourceModel.Member(
-              node, entry.outer(), scope, Optional.empty(), List.of(), List.of(),
+              node,
+              entry.outer(),
+              scope,
+              Optional.empty(),
+              List.of(),
+              List.of(),
               Syntax.child(node, "block")));
     }
     final Optional<SyntaxNode> core = unwrap(node);
@@ -179,14 +190,12 @@ final class JavaMemberReader {
     return Optional.of(member(entry, core.get(), typeParameters, inner, modifiers));
   }
 
-  private SourceModel.Member member(
-      final JavaClassReader.Entry entry,
-      final SyntaxNode core,
-      final List<TypeParameter> typeParameters,
-      final TypeScope inner,
-      final List<SyntaxNode> modifiers) {
-    final boolean constructor = "constructorDeclaration".equals(core.kind());
-    final List<SourceModel.Variable> parameters = new ArrayList<>();
+  /** The parameters of a method: their variables and types, and whether the last is variadic. */
+  private record Parameters(
+      List<SourceModel.Variable> variables, List<JType> types, boolean varargs, boolean resolved) {}
+
+  private Parameters parameters(final SyntaxNode core, final TypeScope inner) {
+    final List<SourceModel.Variable> variables = new ArrayList<>();
     final List<JType> types = new ArrayList<>();
     boolean varargs = false;
     boolean resolved = true;
@@ -198,29 +207,42 @@ final class JavaMemberReader {
           Syntax.child(parameter, TYPE_TYPE)
               .flatMap(written -> JavaTypes.type(written, inner))
               .map(found -> JavaTypes.arrayOf(found, dimensions(id) + (variadic ? 1 : 0)));
-      parameters.add(new SourceModel.Variable(Syntax.child(id, IDENTIFIER).orElse(id), type));
+      variables.add(new SourceModel.Variable(Syntax.child(id, IDENTIFIER).orElse(id), type));
       type.ifPresent(types::add);
       resolved &= type.isPresent();
     }
+    return new Parameters(variables, types, varargs, resolved);
+  }
+
+  private int flagsOf(
+      final List<SyntaxNode> modifiers, final boolean declaredBody, final boolean varargs) {
+    int flags = JavaModifiers.flags(modifiers);
+    if (inInterface() && (flags & Flags.PRIVATE) == 0) {
+      flags |= Flags.PUBLIC;
+    }
+    if (inInterface() && !declaredBody && (flags & Flags.STATIC) == 0) {
+      flags |= Flags.ABSTRACT;
+    }
+    return varargs ? flags | Flags.VARARGS : flags;
+  }
+
+  private SourceModel.Member member(
+      final JavaClassReader.Entry entry,
+      final SyntaxNode core,
+      final List<TypeParameter> typeParameters,
+      final TypeScope inner,
+      final List<SyntaxNode> modifiers) {
+    final boolean constructor = "constructorDeclaration".equals(core.kind());
+    final Parameters parameters = parameters(core, inner);
     final Optional<JType> returns =
         constructor
             ? Optional.of(new JType.Primitive(VOID))
             : Syntax.child(core, "typeTypeOrVoid")
                 .flatMap(written -> JavaTypes.typeOrVoid(written, inner));
     final Optional<SyntaxNode> body =
-        (constructor
-                ? Syntax.child(core, "block")
-                : Syntax.child(core, "methodBody").flatMap(b -> Syntax.child(b, "block")));
-    int flags = JavaTypes.flags(modifiers);
-    if (inInterface() && (flags & Flags.PRIVATE) == 0) {
-      flags |= Flags.PUBLIC;
-    }
-    if (inInterface() && body.isEmpty() && (flags & Flags.STATIC) == 0) {
-      flags |= Flags.ABSTRACT;
-    }
-    if (varargs) {
-      flags |= Flags.VARARGS;
-    }
+        constructor
+            ? Syntax.child(core, "block")
+            : Syntax.child(core, "methodBody").flatMap(b -> Syntax.child(b, "block"));
     final List<JType> thrown =
         Syntax.child(core, "qualifiedNameList").stream()
             .flatMap(list -> Syntax.children(list, "qualifiedName").stream())
@@ -232,20 +254,22 @@ final class JavaMemberReader {
         constructor
             ? JvmMethod.CONSTRUCTOR
             : Syntax.text(Syntax.child(core, IDENTIFIER).orElse(core));
+    final int flags = flagsOf(modifiers, body.isPresent(), parameters.varargs());
     final Optional<JvmMethod> method =
-        resolved && returns.isPresent()
+        parameters.resolved() && returns.isPresent()
             ? Optional.of(
                 new JvmMethod(
                     name,
                     flags,
                     typeParameters,
-                    types,
+                    parameters.types(),
                     returns.get(),
                     thrown,
-                    JavaTypes.annotations(modifiers, inner),
+                    JavaModifiers.annotations(modifiers, inner),
                     List.of()))
             : Optional.empty();
-    return new SourceModel.Member(core, entry.outer(), inner, method, List.of(), parameters, body);
+    return new SourceModel.Member(
+        core, entry.outer(), inner, method, List.of(), parameters.variables(), body);
   }
 
   private static Optional<SyntaxNode> unwrap(final SyntaxNode node) {
@@ -291,11 +315,7 @@ final class JavaMemberReader {
       final JType self = JType.ClassType.of(owner);
       methods.add(implicit("values", Flags.STATIC, List.of(), new JType.ArrayType(self)));
       methods.add(
-          implicit(
-              "valueOf",
-              Flags.STATIC,
-              List.of(JType.ClassType.of("java.lang.String")),
-              self));
+          implicit("valueOf", Flags.STATIC, List.of(JType.ClassType.of("java.lang.String")), self));
     }
     if (kind == JvmClass.Kind.RECORD) {
       addRecordMembers(members, methods);
@@ -306,7 +326,14 @@ final class JavaMemberReader {
   private static JvmMethod implicit(
       final String name, final int extra, final List<JType> parameters, final JType returns) {
     return new JvmMethod(
-        name, Flags.PUBLIC | extra, List.of(), parameters, returns, List.of(), List.of(), List.of());
+        name,
+        Flags.PUBLIC | extra,
+        List.of(),
+        parameters,
+        returns,
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static void addRecordMembers(

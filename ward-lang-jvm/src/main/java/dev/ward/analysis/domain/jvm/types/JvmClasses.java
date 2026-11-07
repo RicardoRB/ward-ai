@@ -80,7 +80,9 @@ public final class JvmClasses {
         return true;
       }
       final String top = topLevel(name);
-      return top.equals(name) ? sources.declaring(top).isPresent() : declared(top).containsKey(name);
+      return top.equals(name)
+          ? sources.declaring(top).isPresent()
+          : declared(top).containsKey(name);
     }
 
     private static String topLevel(final String name) {

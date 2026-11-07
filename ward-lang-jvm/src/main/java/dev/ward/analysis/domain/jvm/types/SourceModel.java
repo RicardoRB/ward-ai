@@ -8,6 +8,11 @@ import java.util.Optional;
 final class SourceModel {
   private SourceModel() {}
 
+  /** Returns a variable with no known type. */
+  static Variable untyped(final SyntaxNode identifier) {
+    return new Variable(identifier, Optional.empty());
+  }
+
   /**
    * A variable the declaration introduces.
    *

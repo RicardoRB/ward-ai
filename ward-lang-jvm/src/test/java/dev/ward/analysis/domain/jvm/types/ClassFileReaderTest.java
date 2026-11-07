@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ClassFileReaderTest {
+  private static final int SHORT_HEADER = 8;
 
   static JvmClass read(final Class<?> type) throws IOException, ClassFileException {
     try (InputStream in =
@@ -27,10 +28,12 @@ class ClassFileReaderTest {
     assertThat(map.typeParameters()).extracting(TypeParameter::name).containsExactly("K", "V");
     assertThat(map.memberClasses()).contains("java.util.Map$Entry");
     final JvmMethod getOrDefault =
-        map.methods().stream().filter(m -> "getOrDefault".equals(m.name())).findFirst().orElseThrow();
+        map.methods().stream()
+            .filter(m -> "getOrDefault".equals(m.name()))
+            .findFirst()
+            .orElseThrow();
     assertThat(getOrDefault.parameters())
-        .containsExactly(
-            JType.ClassType.of("java.lang.Object"), new JType.TypeVariable("V"));
+        .containsExactly(JType.ClassType.of("java.lang.Object"), new JType.TypeVariable("V"));
     assertThat(getOrDefault.returnType()).isEqualTo(new JType.TypeVariable("V"));
   }
 
@@ -38,7 +41,10 @@ class ClassFileReaderTest {
   void readsSuperclassInterfacesAndNestedArguments() throws IOException, ClassFileException {
     final JvmClass list = read(java.util.ArrayList.class);
 
-    assertThat(list.superclass()).get().extracting(JType.ClassType::name).isEqualTo("java.util.AbstractList");
+    assertThat(list.superclass())
+        .get()
+        .extracting(JType.ClassType::name)
+        .isEqualTo("java.util.AbstractList");
     assertThat(list.interfaces()).extracting(JType.ClassType::name).contains("java.util.List");
     assertThat(list.interfaces().get(0).arguments()).containsExactly(new JType.TypeVariable("E"));
   }
@@ -47,7 +53,10 @@ class ClassFileReaderTest {
   void readsConstantsThrownExceptionsAndSealing() throws IOException, ClassFileException {
     final JvmClass integer = read(Integer.class);
     final JvmField max =
-        integer.fields().stream().filter(f -> "MAX_VALUE".equals(f.name())).findFirst().orElseThrow();
+        integer.fields().stream()
+            .filter(f -> "MAX_VALUE".equals(f.name()))
+            .findFirst()
+            .orElseThrow();
     assertThat(max.constant()).contains(Integer.MAX_VALUE + 0L);
     assertThat(max.isStatic()).isTrue();
 
@@ -73,9 +82,9 @@ class ClassFileReaderTest {
 
   @Test
   void rejectsBytesThatAreNotAClassFile() {
-    assertThatThrownBy(() -> ClassFileReader.read(new byte[] {1, 2, 3, 4, 5, 6, 7, 8}))
+    assertThatThrownBy(() -> ClassFileReader.read(new byte[SHORT_HEADER]))
         .isInstanceOf(ClassFileException.class);
-    assertThatThrownBy(() -> ClassFileReader.read(new byte[] {(byte) 0xCA, (byte) 0xFE}))
+    assertThatThrownBy(() -> ClassFileReader.read(new byte[1]))
         .isInstanceOf(ClassFileException.class);
   }
 

@@ -36,7 +36,9 @@ final class Probe {
         name -> {
           try (InputStream in =
               ClassLoader.getSystemResourceAsStream(name.replace('.', '/') + ".class")) {
-            return in == null ? Optional.empty() : Optional.of(ClassFileReader.read(in.readAllBytes()));
+            return in == null
+                ? Optional.empty()
+                : Optional.of(ClassFileReader.read(in.readAllBytes()));
           } catch (IOException | ClassFileException unreadable) {
             return Optional.empty();
           }
@@ -46,16 +48,21 @@ final class Probe {
             Optional.ofNullable(this.others.get(name))
                 .map(
                     source ->
-                        new SourceUnit(name.replace('.', '/') + ".java", AnalysisLanguage.JAVA, source));
+                        new SourceUnit(
+                            name.replace('.', '/') + ".java", AnalysisLanguage.JAVA, source));
     final NativeJvmTypeFacts native1 =
         new NativeJvmTypeFacts(
             new JvmClasses(library, sources, frontend),
             frontend,
             Map.of(
                 AnalysisLanguage.JAVA, new JavaScopeAnalysis(environments -> Set.of()),
-                AnalysisLanguage.KOTLIN, new dev.ward.analysis.domain.jvm.KotlinScopeAnalysis(environments -> Set.of())));
+                AnalysisLanguage.KOTLIN,
+                    new dev.ward.analysis.domain.jvm.KotlinScopeAnalysis(
+                        environments -> Set.of())));
     this.nativeFacts = native1;
-    this.unit = new SourceUnit("src/App." + (language == AnalysisLanguage.KOTLIN ? "kt" : "java"), language, text);
+    this.unit =
+        new SourceUnit(
+            "src/App." + (language == AnalysisLanguage.KOTLIN ? "kt" : "java"), language, text);
   }
 
   UnitTypeFacts at(final Span span) {
@@ -86,11 +93,15 @@ final class Probe {
   private static String args(final dev.ward.analysis.domain.types.TypeRef ref) {
     return ref.arguments().isEmpty()
         ? ""
-        : ref.arguments().stream().map(a -> a.display() + args(a)).toList().toString().replace('[', '<').replace(']', '>');
+        : ref.arguments().stream()
+            .map(a -> a.display() + args(a))
+            .toList()
+            .toString()
+            .replace('[', '<')
+            .replace(']', '>');
   }
 
   Optional<CallTarget> call(final String token) {
     return at(span(token)).callTarget(span(token));
   }
-
 }

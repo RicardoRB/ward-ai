@@ -23,8 +23,8 @@ class NativeJvmTypeFactsTest {
             body(
                 "    String a = name;\n    int b = PORT;\n    long c = numbers.length + 1L;\n    var d = \"x\" + b;\n    double e = 1.5 * b;"));
 
-    assertThat(probe.type("name;".substring(0, 4))).isEqualTo("java.lang.String");
-    assertThat(probe.type("PORT;".substring(0, 4))).isEqualTo("int");
+    assertThat(probe.type("name")).isEqualTo("java.lang.String");
+    assertThat(probe.type("PORT")).isEqualTo("int");
     assertThat(probe.type("numbers.length")).isEqualTo("int");
     assertThat(probe.type("numbers.length + 1L")).isEqualTo("long");
     assertThat(probe.type("\"x\" + b")).isEqualTo("java.lang.String");
@@ -38,7 +38,9 @@ class NativeJvmTypeFactsTest {
     final CallTarget target = probe.call("Objects.equals(name, any)").orElseThrow();
     assertThat(target.declaringType().name()).isEqualTo("java.util.Objects");
     assertThat(target.name()).isEqualTo("equals");
-    assertThat(target.parameters()).extracting(p -> p.name()).containsExactly("java.lang.Object", "java.lang.Object");
+    assertThat(target.parameters())
+        .extracting(p -> p.name())
+        .containsExactly("java.lang.Object", "java.lang.Object");
     assertThat(target.returnType().name()).isEqualTo("boolean");
     assertThat(target.isStatic()).isTrue();
     assertThat(probe.type("Objects.equals(name, any)")).isEqualTo("boolean");
@@ -51,9 +53,13 @@ class NativeJvmTypeFactsTest {
             body(
                 "    var a = Math.max(1, 2L);\n    var b = Math.abs(1.5f);\n    var c = String.valueOf(any);\n    var d = Arrays.asList(1, 2);\n    var e = List.of(\"a\");"));
 
-    assertThat(probe.call("Math.max(1, 2L)").orElseThrow().parameters()).extracting(p -> p.name()).containsExactly("long", "long");
+    assertThat(probe.call("Math.max(1, 2L)").orElseThrow().parameters())
+        .extracting(p -> p.name())
+        .containsExactly("long", "long");
     assertThat(probe.type("Math.abs(1.5f)")).isEqualTo("float");
-    assertThat(probe.call("String.valueOf(any)").orElseThrow().parameters()).extracting(p -> p.name()).containsExactly("java.lang.Object");
+    assertThat(probe.call("String.valueOf(any)").orElseThrow().parameters())
+        .extracting(p -> p.name())
+        .containsExactly("java.lang.Object");
     assertThat(probe.type("Arrays.asList(1, 2)")).isEqualTo("java.util.List<java.lang.Integer>");
     assertThat(probe.type("List.of(\"a\")")).isEqualTo("java.util.List<java.lang.String>");
   }
@@ -67,9 +73,11 @@ class NativeJvmTypeFactsTest {
 
     assertThat(probe.type("items.get(0)")).isEqualTo("java.lang.String");
     assertThat(probe.type("counts.get(\"k\")")).isEqualTo("java.lang.Integer");
-    assertThat(probe.type("items.stream().map(s -> s.length()).toList()")).isEqualTo("java.util.List<java.lang.Integer>");
+    assertThat(probe.type("items.stream().map(s -> s.length()).toList()"))
+        .isEqualTo("java.util.List<java.lang.Integer>");
     assertThat(probe.type("s.length()")).isEqualTo("int");
-    assertThat(probe.type("counts.entrySet().iterator().next().getValue()")).isEqualTo("java.lang.Integer");
+    assertThat(probe.type("counts.entrySet().iterator().next().getValue()"))
+        .isEqualTo("java.lang.Integer");
   }
 
   @Test
@@ -81,7 +89,8 @@ class NativeJvmTypeFactsTest {
 
     assertThat(probe.type("new ArrayList<>()")).isEqualTo("java.util.ArrayList<java.lang.String>");
     assertThat(probe.call("new ArrayList<>()")).isPresent();
-    assertThat(probe.type("new HashMap<String, Integer>()")).isEqualTo("java.util.HashMap<java.lang.String, java.lang.Integer>");
+    assertThat(probe.type("new HashMap<String, Integer>()"))
+        .isEqualTo("java.util.HashMap<java.lang.String, java.lang.Integer>");
     assertThat(probe.type("(String) any")).isEqualTo("java.lang.String");
     assertThat(probe.type("any != null ? name : \"x\"")).isEqualTo("java.lang.String");
     assertThat(probe.type("s.trim()")).isEqualTo("java.lang.String");
@@ -111,8 +120,11 @@ class NativeJvmTypeFactsTest {
 
     final String klass = text.substring(text.indexOf("@Deprecated"), text.lastIndexOf('}') + 1);
     final var shape = probe.at(probe.span(klass)).shapeOf(probe.span(klass)).orElseThrow();
-    assertThat(shape.supertypes()).extracting(t -> t.name()).containsExactly("java.lang.Object", "java.lang.Comparable");
-    assertThat(probe.at(probe.span(klass)).at(probe.span(klass)).annotations()).containsExactly("java.lang.Deprecated");
+    assertThat(shape.supertypes())
+        .extracting(t -> t.name())
+        .containsExactly("java.lang.Object", "java.lang.Comparable");
+    assertThat(probe.at(probe.span(klass)).at(probe.span(klass)).annotations())
+        .containsExactly("java.lang.Deprecated");
 
     final String compare = "@Override public int compareTo(App other) { return 0; }";
     assertThat(probe.at(probe.span(compare)).at(probe.span(compare)).overrides())
@@ -121,7 +133,9 @@ class NativeJvmTypeFactsTest {
     final String toString = "@Override public String toString() { return \"a\"; }";
     assertThat(probe.at(probe.span(toString)).at(probe.span(toString)).overrides()).hasSize(1);
     final String read = "public void read() throws IOException {}";
-    assertThat(probe.at(probe.span(read)).at(probe.span(read)).thrown()).extracting(t -> t.name()).containsExactly("java.io.IOException");
+    assertThat(probe.at(probe.span(read)).at(probe.span(read)).thrown())
+        .extracting(t -> t.name())
+        .containsExactly("java.io.IOException");
     assertThat(probe.at(probe.span("\"user\"")).constant(probe.span("\"user\""))).isPresent();
   }
 }

@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 
 /** Reads the classes a Java file declares, with their members, from its syntax tree. */
 final class JavaUnitModel {
+  private static final String TYPE_DECLARATION = "typeDeclaration";
+
   private final Imports imports;
   private final TypeScope scope;
   private final List<SourceModel.ClassDecl> classes = new ArrayList<>();
@@ -20,17 +22,16 @@ final class JavaUnitModel {
     this.imports = Imports.of(tree);
     final List<JavaClassReader.Entry> top = new ArrayList<>();
     for (final SyntaxNode child : tree.children()) {
-      if ("typeDeclaration".equals(child.kind())) {
+      if (TYPE_DECLARATION.equals(child.kind())) {
         JavaClassReader.topLevel(child).ifPresent(top::add);
       }
     }
     final Set<String> names = new HashSet<>();
     top.forEach(entry -> declaredNames(entry, qualified(imports.packageName()), names));
     this.scope = new TypeScope(imports, name -> names.contains(name) || external.test(name));
-    final JavaClassReader reader = new JavaClassReader(scope);
     for (final JavaClassReader.Entry entry : top) {
       final SourceModel.ClassDecl declaration =
-          reader.read(entry, qualified(imports.packageName()), scope);
+          JavaClassReader.read(entry, qualified(imports.packageName()), scope);
       classes.add(declaration);
       flatten(declaration);
     }

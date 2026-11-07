@@ -21,10 +21,12 @@ record Typed(
     Optional<String> packageName) {
 
   static final Typed UNKNOWN =
-      new Typed(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+      new Typed(
+          Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
 
   static Typed of(final JType type) {
-    return new Typed(Optional.of(type), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    return new Typed(
+        Optional.of(type), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
   }
 
   static Typed of(final Optional<JType> type) {
@@ -32,11 +34,13 @@ record Typed(
   }
 
   static Typed naming(final JType.ClassType type) {
-    return new Typed(Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(type), Optional.empty());
+    return new Typed(
+        Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(type), Optional.empty());
   }
 
   static Typed pkg(final String name) {
-    return new Typed(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(name));
+    return new Typed(
+        Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.of(name));
   }
 
   Typed withConstant(final Optional<Object> value) {

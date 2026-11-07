@@ -17,12 +17,13 @@ final class JavaClassReader {
           "annotationTypeDeclaration");
   private static final String OBJECT = "java.lang.Object";
   private static final String IDENTIFIER = "identifier";
+  private static final String EXTENDS = "extends";
+  private static final String PERMITS = "permits";
+  private static final String TYPE_TYPE = "typeType";
+  private static final String TYPE_LIST = "typeList";
+  private static final String COMPACT = "compactConstructorDeclaration";
 
-  private final TypeScope unit;
-
-  JavaClassReader(final TypeScope unit) {
-    this.unit = unit;
-  }
+  private JavaClassReader() {}
 
   /**
    * A declaration with its modifiers.
@@ -48,7 +49,8 @@ final class JavaClassReader {
         .findFirst()
         .map(
             declaration ->
-                new Entry(holder, Syntax.children(holder, "classOrInterfaceModifier"), declaration));
+                new Entry(
+                    holder, Syntax.children(holder, "classOrInterfaceModifier"), declaration));
   }
 
   /** Returns the entries of the body of a type declaration. */
@@ -68,7 +70,7 @@ final class JavaClassReader {
   }
 
   private static Optional<Entry> entryOf(final SyntaxNode member) {
-    if ("compactConstructorDeclaration".equals(member.kind())) {
+    if (COMPACT.equals(member.kind())) {
       return Optional.of(new Entry(member, Syntax.children(member, "modifier"), member));
     }
     final List<SyntaxNode> modifiers = Syntax.children(member, "modifier");
@@ -77,14 +79,17 @@ final class JavaClassReader {
       return Optional.of(new Entry(member, modifiers, block.get()));
     }
     return member.children().stream()
-        .filter(child -> child.kind().endsWith("MemberDeclaration") || "memberDeclaration".equals(child.kind()))
+        .filter(
+            child ->
+                child.kind().endsWith("MemberDeclaration")
+                    || "memberDeclaration".equals(child.kind()))
         .findFirst()
         .flatMap(inner -> inner.children().stream().findFirst())
         .map(declaration -> new Entry(member, modifiers, declaration));
   }
 
   /** Reads {@code entry}, whose binary name is {@code prefix} followed by its name. */
-  SourceModel.ClassDecl read(final Entry entry, final String prefix, final TypeScope outerScope) {
+  static SourceModel.ClassDecl read(final Entry entry, final String prefix, final TypeScope outerScope) {
     final SyntaxNode declaration = entry.declaration();
     final String binary = prefix + entry.name();
     final List<String> variables =
@@ -95,7 +100,8 @@ final class JavaClassReader {
     final TypeScope scope = outerScope.inClass(binary, variables);
     final JvmClass.Kind kind = kindOf(declaration);
     final List<JType.ClassType> supertypes = new ArrayList<>();
-    final Optional<JType.ClassType> superclass = supers(declaration, kind, binary, scope, supertypes);
+    final Optional<JType.ClassType> superclass =
+        supers(declaration, kind, binary, scope, supertypes);
     final JavaMemberReader members = new JavaMemberReader(scope, binary, kind);
     final List<SourceModel.Member> read = members.read(declaration);
     final List<SourceModel.ClassDecl> nested = new ArrayList<>();
@@ -104,7 +110,7 @@ final class JavaClassReader {
         nested.add(read(inner, binary + '$', scope));
       }
     }
-    int flags = JavaTypes.flags(entry.modifiers());
+    int flags = JavaModifiers.flags(entry.modifiers());
     if (kind == JvmClass.Kind.RECORD) {
       flags |= Flags.FINAL;
     }
@@ -118,9 +124,9 @@ final class JavaClassReader {
             JavaTypes.typeParameters(declaration, scope),
             read.stream().flatMap(member -> member.field().stream()).toList(),
             members.methods(read, kind == JvmClass.Kind.CLASS),
-            JavaTypes.annotations(entry.modifiers(), scope),
+            JavaModifiers.annotations(entry.modifiers(), scope),
             nested.stream().map(inner -> inner.jvm().name()).toList(),
-            JavaTypes.has(entry.modifiers(), "sealed"),
+            JavaModifiers.has(entry.modifiers(), "sealed"),
             false);
     return new SourceModel.ClassDecl(jvm, declaration, entry.outer(), scope, read, nested);
   }
@@ -135,7 +141,7 @@ final class JavaClassReader {
     };
   }
 
-  private Optional<JType.ClassType> supers(
+  private static Optional<JType.ClassType> supers(
       final SyntaxNode declaration,
       final JvmClass.Kind kind,
       final String binary,
@@ -145,20 +151,36 @@ final class JavaClassReader {
     String keyword = "";
     for (final SyntaxNode child : declaration.children()) {
       final String token = Syntax.token(child);
-      if (!token.isEmpty()) {
+      if (token.isEmpty()) {
+        final boolean extending = EXTENDS.equals(keyword);
+        if (TYPE_TYPE.equals(child.kind()) && extending) {
+          superclass = classTypeOf(child, scope);
+        } else if (TYPE_LIST.equals(child.kind()) && !PERMITS.equals(keyword)) {
+          JavaTypes.typeList(child, scope).stream()
+              .filter(JType.ClassType.class::isInstance)
+              .map(JType.ClassType.class::cast)
+              .forEach(interfaces::add);
+        }
+      } else {
         keyword = token;
-      } else if ("typeType".equals(child.kind()) && "extends".equals(keyword)) {
-        superclass = JavaTypes.type(child, scope).filter(JType.ClassType.class::isInstance).map(JType.ClassType.class::cast);
-      } else if ("typeList".equals(child.kind()) && !"permits".equals(keyword)) {
-        JavaTypes.typeList(child, scope).stream()
-            .filter(JType.ClassType.class::isInstance)
-            .map(JType.ClassType.class::cast)
-            .forEach(interfaces::add);
       }
     }
+    return implicitSuperclass(kind, binary, superclass);
+  }
+
+  private static Optional<JType.ClassType> classTypeOf(
+      final SyntaxNode written, final TypeScope scope) {
+    return JavaTypes.type(written, scope)
+        .filter(JType.ClassType.class::isInstance)
+        .map(JType.ClassType.class::cast);
+  }
+
+  private static Optional<JType.ClassType> implicitSuperclass(
+      final JvmClass.Kind kind, final String binary, final Optional<JType.ClassType> declared) {
     return switch (kind) {
-      case CLASS -> superclass.or(() -> Optional.of(JType.ClassType.of(OBJECT)));
-      case ENUM -> Optional.of(new JType.ClassType("java.lang.Enum", List.of(JType.ClassType.of(binary))));
+      case CLASS -> declared.or(() -> Optional.of(JType.ClassType.of(OBJECT)));
+      case ENUM ->
+          Optional.of(new JType.ClassType("java.lang.Enum", List.of(JType.ClassType.of(binary))));
       case RECORD -> Optional.of(JType.ClassType.of("java.lang.Record"));
       default -> Optional.empty();
     };

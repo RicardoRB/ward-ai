@@ -17,6 +17,8 @@ final class Session {
   final JvmClasses classes;
   final Hierarchy hierarchy;
   final Overloads overloads;
+  final Inference inference;
+  final Assignability assignability;
   final Map<Long, Typed> expressions = new HashMap<>();
   final Map<Long, DeclInfo> declarations = new HashMap<>();
   private final Map<Integer, NameReference> references = new HashMap<>();
@@ -26,7 +28,9 @@ final class Session {
   Session(final JvmClasses classes, final UnitScopes scopes) {
     this.classes = classes;
     this.hierarchy = new Hierarchy(classes);
-    this.overloads = new Overloads(hierarchy);
+    this.assignability = new Assignability(hierarchy);
+    this.inference = new Inference(hierarchy, assignability);
+    this.overloads = new Overloads(assignability, inference);
     for (final NameReference reference : scopes.references()) {
       references.putIfAbsent(reference.span().startOffset(), reference);
     }

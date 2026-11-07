@@ -18,7 +18,8 @@ final class KotlinTyper {
   private static final String EXPRESSION = "expression";
   private static final Set<String> BOOLEAN_OPERATIONS =
       Set.of("comparison", "equalityComparison", "conjunction", "disjunction");
-  private static final Set<String> ARITHMETIC = Set.of("additiveExpression", "multiplicativeExpression");
+  private static final Set<String> ARITHMETIC =
+      Set.of("additiveExpression", "multiplicativeExpression");
 
   private final Session session;
   private final JavaCalls calls;
@@ -32,7 +33,12 @@ final class KotlinTyper {
     final Ctx root = new Ctx(model.scope(), Map.of(), List.of(), Optional.empty());
     for (final KotlinUnitModel.Declared declared : model.classes()) {
       final DeclInfo info =
-          new DeclInfo(Optional.of(declared.jvm()), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+          new DeclInfo(
+              Optional.of(declared.jvm()),
+              Optional.empty(),
+              Optional.empty(),
+              Optional.empty(),
+              List.of());
       session.declare(declared.node(), info);
       final Ctx inside = root.withScope(declared.scope(), declared.jvm().typeParameters());
       registerParameters(declared.node(), inside);
@@ -62,7 +68,8 @@ final class KotlinTyper {
             name ->
                 session.variable(
                     name,
-                    Syntax.child(holder, "type").flatMap(written -> KotlinTypes.type(written, ctx.scope()))));
+                    Syntax.child(holder, "type")
+                        .flatMap(written -> KotlinTypes.type(written, ctx.scope()))));
   }
 
   private void declareWritten(final SyntaxNode variable, final Ctx ctx) {
@@ -91,7 +98,10 @@ final class KotlinTyper {
       final Optional<JType> written =
           Syntax.child(variable.get(), "type").flatMap(type -> KotlinTypes.type(type, ctx.scope()));
       Syntax.child(variable.get(), SIMPLE_IDENTIFIER)
-          .ifPresent(name -> session.variable(name, written.or(() -> initial.type().filter(t -> !Types.isNull(t)))));
+          .ifPresent(
+              name ->
+                  session.variable(
+                      name, written.or(() -> initial.type().filter(t -> !Types.isNull(t)))));
     }
   }
 
@@ -113,7 +123,9 @@ final class KotlinTyper {
     Syntax.child(node, "variableDeclaration")
         .flatMap(variable -> Syntax.child(variable, SIMPLE_IDENTIFIER))
         .ifPresent(name -> session.variable(name, element(iterable.type())));
-    node.children().stream().filter(child -> "controlStructureBody".equals(child.kind())).forEach(body -> walk(body, ctx));
+    node.children().stream()
+        .filter(child -> "controlStructureBody".equals(child.kind()))
+        .forEach(body -> walk(body, ctx));
   }
 
   private Optional<JType> element(final Optional<JType> iterable) {
@@ -121,7 +133,8 @@ final class KotlinTyper {
       return Optional.of(array.component());
     }
     if (iterable.isPresent() && iterable.get() instanceof JType.ClassType site) {
-      return session.hierarchy
+      return session
+          .hierarchy
           .asSuper(site, "java.lang.Iterable")
           .filter(view -> view.arguments().size() == 1)
           .map(view -> view.arguments().get(0));
@@ -164,7 +177,9 @@ final class KotlinTyper {
     if (operands.isEmpty() || operands.stream().anyMatch(operand -> operand.type().isEmpty())) {
       return Typed.UNKNOWN;
     }
-    final boolean text = operands.stream().anyMatch(operand -> operand.type().get().equals(JType.ClassType.of(Types.STRING)));
+    final boolean text =
+        operands.stream()
+            .anyMatch(operand -> operand.type().get().equals(JType.ClassType.of(Types.STRING)));
     if (text && "additiveExpression".equals(node.kind())) {
       return Typed.of(JType.ClassType.of(Types.STRING));
     }
@@ -196,17 +211,19 @@ final class KotlinTyper {
   private static Typed literal(final SyntaxNode node) {
     final String text = Syntax.text(node);
     if (text.startsWith("\"")) {
-      final boolean plain = !text.contains("$");
+      final boolean plain = !text.contains("$") && !text.startsWith("\"\"\"");
       return Typed.of(JType.ClassType.of(Types.STRING))
-          .withConstant(plain && text.length() >= 2 && !text.startsWith("\"\"\"")
-              ? Optional.of(text.substring(1, text.length() - 1)) : Optional.empty());
+          .withConstant(
+              plain ? Optional.of(text.substring(1, text.length() - 1)) : Optional.empty());
     }
     if ("true".equals(text) || "false".equals(text)) {
-      return Typed.of(new JType.Primitive("boolean")).withConstant(Optional.of(Boolean.valueOf(text)));
+      return Typed.of(new JType.Primitive("boolean"))
+          .withConstant(Optional.of(Boolean.valueOf(text)));
     }
-    if ("null".equals(text)) {
-      return Typed.of(JType.ClassType.of(Types.NULL));
-    }
+    return "null".equals(text) ? Typed.of(JType.ClassType.of(Types.NULL)) : number(text);
+  }
+
+  private static Typed number(final String text) {
     if (text.startsWith("'")) {
       return Typed.of(new JType.Primitive("char"));
     }
@@ -214,12 +231,15 @@ final class KotlinTyper {
       return Typed.of(new JType.Primitive("long"));
     }
     if (text.matches("[0-9_]+")) {
-      return Typed.of(new JType.Primitive("int")).withConstant(Optional.of(Long.parseLong(text.replace("_", ""))));
+      return Typed.of(new JType.Primitive("int"))
+          .withConstant(Optional.of(Long.parseLong(text.replace("_", ""))));
     }
     if (text.matches("[0-9_.eE+-]+[fF]")) {
       return Typed.of(new JType.Primitive("float"));
     }
-    return text.matches("[0-9_]*\\.[0-9_eE+-]+") ? Typed.of(new JType.Primitive("double")) : Typed.UNKNOWN;
+    return text.matches("[0-9_]*\\.[0-9_eE+-]+")
+        ? Typed.of(new JType.Primitive("double"))
+        : Typed.UNKNOWN;
   }
 
   private Typed name(final SyntaxNode identifier, final Ctx ctx) {
@@ -229,13 +249,17 @@ final class KotlinTyper {
       return session.variableAt(binding.get()).map(Typed::of).orElse(Typed.UNKNOWN);
     }
     for (final String owner : ctx.scope().enclosing()) {
-      final Optional<Typed> field = session.hierarchy.field(session.self(owner), name)
-          .map(found -> Typed.of(Types.substitute(found.member().type(), found.bindings())));
+      final Optional<Typed> field =
+          session
+              .hierarchy
+              .field(session.self(owner), name)
+              .map(found -> Typed.of(Types.substitute(found.member().type(), found.bindings())));
       if (field.isPresent()) {
         return field.get();
       }
     }
-    return ctx.scope().resolve(List.of(name))
+    return ctx.scope()
+        .resolve(List.of(name))
         .map(binary -> Typed.naming(JType.ClassType.of(binary)))
         .orElseGet(() -> Typed.pkg(name));
   }
@@ -243,39 +267,58 @@ final class KotlinTyper {
   private Typed postfix(final SyntaxNode node, final Optional<Typed> receiver, final Ctx ctx) {
     final List<SyntaxNode> parts = node.children();
     final boolean callFollows = parts.size() > 1 && callOf(parts.get(1)).isPresent();
-    final Optional<String> written = parts.get(0).children().isEmpty() ? Optional.empty()
-        : Syntax.child(parts.get(0), SIMPLE_IDENTIFIER).map(Syntax::text);
-    Typed current;
-    if (receiver.isEmpty()) {
-      current = written.isPresent() && callFollows
-          ? unqualified(written.get(), callOf(parts.get(1)).get(), ctx)
-          : expr(parts.get(0), ctx);
-    } else if (written.isPresent()) {
-      current = callFollows
-          ? member(receiver.get(), written.get(), callOf(parts.get(1)).get(), ctx)
-          : property(receiver.get(), written.get(), ctx);
-    } else {
-      current = Typed.UNKNOWN;
-    }
+    Typed current = head(parts, receiver, callFollows, ctx);
     for (final SyntaxNode operation : parts.subList(callFollows ? 2 : 1, parts.size())) {
       final Optional<SyntaxNode> access = Syntax.find(operation, POSTFIX);
-      current = access.isPresent() && Syntax.find(operation, "memberAccessOperator").isPresent()
-          ? postfix(access.get(), Optional.of(current), ctx)
-          : current;
+      if (access.isPresent() && Syntax.find(operation, "memberAccessOperator").isPresent()) {
+        current = postfix(access.get(), Optional.of(current), ctx);
+      }
     }
     session.record(node, current);
     return current;
   }
 
-  private static Optional<SyntaxNode> callOf(final SyntaxNode operation) {
-    return "postfixUnaryOperation".equals(operation.kind()) ? Syntax.child(operation, "callSuffix") : Optional.empty();
+  private Typed head(
+      final List<SyntaxNode> parts,
+      final Optional<Typed> receiver,
+      final boolean callFollows,
+      final Ctx ctx) {
+    final Optional<String> written =
+        parts.get(0).children().isEmpty()
+            ? Optional.empty()
+            : Syntax.child(parts.get(0), SIMPLE_IDENTIFIER).map(Syntax::text);
+    if (receiver.isEmpty()) {
+      return written.isPresent() && callFollows
+          ? unqualified(written.get(), callOf(parts.get(1)).get(), ctx)
+          : expr(parts.get(0), ctx);
+    }
+    if (written.isEmpty()) {
+      return Typed.UNKNOWN;
+    }
+    return callFollows
+        ? member(receiver.get(), written.get(), callOf(parts.get(1)).get(), ctx)
+        : property(receiver.get(), written.get(), ctx);
   }
 
-  private List<Overloads.Argument> arguments(final SyntaxNode suffix, final Ctx ctx, final boolean[] complete) {
+  private static Optional<SyntaxNode> callOf(final SyntaxNode operation) {
+    return "postfixUnaryOperation".equals(operation.kind())
+        ? Syntax.child(operation, "callSuffix")
+        : Optional.empty();
+  }
+
+  private List<Overloads.Argument> arguments(
+      final SyntaxNode suffix, final Ctx ctx, final boolean[] complete) {
     final List<Overloads.Argument> arguments = new ArrayList<>();
     Syntax.child(suffix, "valueArguments").stream()
         .flatMap(list -> Syntax.children(list, "valueArgument").stream())
-        .forEach(argument -> arguments.add(Overloads.Argument.of(Syntax.child(argument, EXPRESSION).map(value -> expr(value, ctx)).orElse(Typed.UNKNOWN).type())));
+        .forEach(
+            argument ->
+                arguments.add(
+                    Overloads.Argument.of(
+                        Syntax.child(argument, EXPRESSION)
+                            .map(value -> expr(value, ctx))
+                            .orElse(Typed.UNKNOWN)
+                            .type())));
     if (Syntax.child(suffix, "annotatedLambda").isPresent()) {
       complete[0] = false;
       walk(Syntax.child(suffix, "annotatedLambda").get(), ctx);
@@ -290,24 +333,28 @@ final class KotlinTyper {
       return Typed.UNKNOWN;
     }
     for (final String owner : ctx.scope().enclosing()) {
-      final List<Hierarchy.Found<JvmMethod>> candidates = session.hierarchy.methods(session.self(owner), name);
+      final List<Hierarchy.Found<JvmMethod>> candidates =
+          session.hierarchy.methods(session.self(owner), name);
       if (!candidates.isEmpty()) {
         return finish(candidates, arguments);
       }
     }
-    return ctx.scope().resolve(List.of(name))
+    return ctx.scope()
+        .resolve(List.of(name))
         .map(binary -> JType.ClassType.of(binary))
         .map(site -> finishConstruction(site, arguments))
         .orElse(Typed.UNKNOWN);
   }
 
-  private Typed finishConstruction(final JType.ClassType site, final List<Overloads.Argument> arguments) {
+  private Typed finishConstruction(
+      final JType.ClassType site, final List<Overloads.Argument> arguments) {
     final Typed call = finish(session.hierarchy.methods(site, JvmMethod.CONSTRUCTOR), arguments);
     final Typed typed = Typed.of(site);
     return call.call().map(typed::withCall).orElse(typed);
   }
 
-  private Typed member(final Typed receiver, final String name, final SyntaxNode suffix, final Ctx ctx) {
+  private Typed member(
+      final Typed receiver, final String name, final SyntaxNode suffix, final Ctx ctx) {
     final boolean[] complete = {true};
     final List<Overloads.Argument> arguments = arguments(suffix, ctx, complete);
     final Optional<JType.ClassType> site =
@@ -318,32 +365,50 @@ final class KotlinTyper {
     return finish(session.hierarchy.methods(site.get(), name), arguments);
   }
 
-  private Typed finish(final List<Hierarchy.Found<JvmMethod>> candidates, final List<Overloads.Argument> arguments) {
-    final Optional<Hierarchy.Found<JvmMethod>> chosen = session.overloads.select(candidates, arguments);
+  private Typed finish(
+      final List<Hierarchy.Found<JvmMethod>> candidates, final List<Overloads.Argument> arguments) {
+    final Optional<Hierarchy.Found<JvmMethod>> chosen =
+        session.overloads.select(candidates, arguments);
     if (chosen.isEmpty()) {
       return Typed.UNKNOWN;
     }
-    final Map<String, JType> bound = session.overloads.infer(chosen.get(), arguments);
-    final JType returned = Types.substitute(Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
-    final Typed typed = Types.mentionsVariable(returned) && !chosen.get().member().typeParameters().isEmpty() ? Typed.UNKNOWN : Typed.of(returned);
+    final Map<String, JType> bound = session.inference.infer(chosen.get(), arguments);
+    final JType returned =
+        Types.substitute(
+            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
+    final Typed typed =
+        Types.mentionsVariable(returned) && !chosen.get().member().typeParameters().isEmpty()
+            ? Typed.UNKNOWN
+            : Typed.of(returned);
     return typed.withCall(chosen.get());
   }
 
-  /** A property read: a field, a getter, or the method of that name that Kotlin maps to a property. */
+  /**
+   * A property read: a field, a getter, or the method of that name that Kotlin maps to a property.
+   */
   private Typed property(final Typed receiver, final String name, final Ctx ctx) {
     final Optional<JType.ClassType> site =
         receiver.named().or(() -> receiver.type().flatMap(type -> calls.siteOf(type, ctx)));
     if (site.isEmpty()) {
       return Typed.UNKNOWN;
     }
-    final Optional<Typed> field = session.hierarchy.field(site.get(), name)
-        .map(found -> Typed.of(Types.substitute(found.member().type(), found.bindings())).withConstant(found.member().constant()));
+    final Optional<Typed> field =
+        session
+            .hierarchy
+            .field(site.get(), name)
+            .map(
+                found ->
+                    Typed.of(Types.substitute(found.member().type(), found.bindings()))
+                        .withConstant(found.member().constant()));
     if (field.isPresent()) {
       return field.get();
     }
     if (receiver.named().isPresent()) {
-      return session.hierarchy.memberClass(site.get().name(), name)
-          .map(binary -> Typed.naming(JType.ClassType.of(binary))).orElse(Typed.UNKNOWN);
+      return session
+          .hierarchy
+          .memberClass(site.get().name(), name)
+          .map(binary -> Typed.naming(JType.ClassType.of(binary)))
+          .orElse(Typed.UNKNOWN);
     }
     final String suffix = Character.toUpperCase(name.charAt(0)) + name.substring(1);
     for (final String accessor : List.of("get" + suffix, "is" + suffix, name)) {

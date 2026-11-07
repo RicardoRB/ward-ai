@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-/** Supertypes, members and assignability over the classes a unit can see. */
+/** Supertypes and members over the classes a unit can see. */
 final class Hierarchy {
   /**
    * A member found on a type, with the class that declares it and the type arguments of that class
@@ -32,7 +32,9 @@ final class Hierarchy {
     return classes.exists(name);
   }
 
-  /** Maps the type parameters of {@code owner} to the arguments of {@code site}; raw types erase. */
+  /**
+   * Maps the type parameters of {@code owner} to the arguments of {@code site}; raw types erase.
+   */
   Map<String, JType> bindings(final JvmClass owner, final JType.ClassType site) {
     final Map<String, JType> bound = new HashMap<>();
     final List<TypeParameter> parameters = owner.typeParameters();
@@ -102,7 +104,9 @@ final class Hierarchy {
       final Optional<JvmClass> owner = find(next.name());
       if (owner.isPresent() && seen.add(next.name())) {
         final Optional<JvmField> field =
-            owner.get().fields().stream().filter(candidate -> candidate.name().equals(name)).findFirst();
+            owner.get().fields().stream()
+                .filter(candidate -> candidate.name().equals(name))
+                .findFirst();
         if (field.isPresent()) {
           return Optional.of(new Found<>(field.get(), owner.get(), bindings(owner.get(), next)));
         }
@@ -112,7 +116,9 @@ final class Hierarchy {
     return Optional.empty();
   }
 
-  /** Returns the methods named {@code name} on {@code site}, nearest first, overridden ones removed. */
+  /**
+   * Returns the methods named {@code name} on {@code site}, nearest first, overridden ones removed.
+   */
   List<Found<JvmMethod>> methods(final JType.ClassType site, final String name) {
     final List<Found<JvmMethod>> found = new ArrayList<>();
     final Set<String> signatures = new HashSet<>();
@@ -126,7 +132,8 @@ final class Hierarchy {
       }
       final Map<String, JType> bound = bindings(owner.get(), next);
       for (final JvmMethod method : owner.get().methods()) {
-        if (method.name().equals(name) && (method.access() & Flags.SYNTHETIC) == 0
+        if (method.name().equals(name)
+            && (method.access() & Flags.SYNTHETIC) == 0
             && signatures.add(signature(method, bound))) {
           final Map<String, JType> visible = new HashMap<>(bound);
           method.typeParameters().forEach(parameter -> visible.remove(parameter.name()));
@@ -140,15 +147,15 @@ final class Hierarchy {
     return found;
   }
 
-  private String signature(final JvmMethod method, final Map<String, JType> bound) {
-    final StringBuilder text = new StringBuilder();
-    for (final JType parameter : method.parameters()) {
-      text.append(erasure(Types.substitute(parameter, bound), Map.of())).append(',');
-    }
-    return text.toString();
+  private static String signature(final JvmMethod method, final Map<String, JType> bound) {
+    return method.parameters().stream()
+        .map(parameter -> Types.erasure(Types.substitute(parameter, bound), Map.of()))
+        .collect(java.util.stream.Collectors.joining(","));
   }
 
-  /** Returns the binary name of the member class {@code name} of {@code owner} or its supertypes. */
+  /**
+   * Returns the binary name of the member class {@code name} of {@code owner} or its supertypes.
+   */
   Optional<String> memberClass(final String owner, final String name) {
     final Deque<JType.ClassType> pending = new ArrayDeque<>(List.of(JType.ClassType.of(owner)));
     final Set<String> seen = new HashSet<>();
@@ -162,60 +169,5 @@ final class Hierarchy {
       }
     }
     return Optional.empty();
-  }
-
-  /**
-   * Returns the erasure of {@code type} as a string: a class name, a primitive, or either with
-   * brackets. Type variables erase to their bound in {@code bounds}, else to {@code Object}.
-   */
-  String erasure(final JType type, final Map<String, JType> bounds) {
-    return switch (type) {
-      case JType.Primitive primitive -> primitive.name();
-      case JType.ClassType named -> named.name();
-      case JType.ArrayType array -> erasure(array.component(), bounds) + "[]";
-      case JType.TypeVariable variable ->
-          bounds.containsKey(variable.name()) ? erasure(bounds.get(variable.name()), Map.of()) : Types.OBJECT;
-      case JType.Wildcard wildcard ->
-          wildcard.bound() != null && wildcard.upper() ? erasure(wildcard.bound(), bounds) : Types.OBJECT;
-    };
-  }
-
-  /** Returns whether a value of type {@code from} can be passed where {@code to} is expected. */
-  boolean assignable(final JType from, final JType to, final boolean loose) {
-    if (from instanceof JType.TypeVariable || to instanceof JType.TypeVariable) {
-      return true;
-    }
-    if (Types.isNull(from)) {
-      return !Types.isPrimitive(to);
-    }
-    if (Types.isPrimitive(to)) {
-      final JType source = loose ? Types.unboxed(from) : from;
-      return source instanceof JType.Primitive a
-          && to instanceof JType.Primitive b
-          && Types.widens(a.name(), b.name());
-    }
-    if (Types.isPrimitive(from)) {
-      return loose && assignable(Types.boxed(from), to, false);
-    }
-    return referenceAssignable(from, to);
-  }
-
-  private boolean referenceAssignable(final JType from, final JType to) {
-    final JType target = to instanceof JType.Wildcard wildcard && wildcard.bound() != null ? wildcard.bound() : to;
-    if (target instanceof JType.ClassType named && Types.OBJECT.equals(named.name())) {
-      return true;
-    }
-    if (from instanceof JType.ArrayType source) {
-      if (target instanceof JType.ArrayType array) {
-        return Types.isPrimitive(source.component())
-            ? source.component().equals(array.component())
-            : assignable(source.component(), array.component(), false);
-      }
-      return target instanceof JType.ClassType named
-          && ("java.lang.Cloneable".equals(named.name()) || "java.io.Serializable".equals(named.name()));
-    }
-    return from instanceof JType.ClassType source
-        && target instanceof JType.ClassType named
-        && isSubclass(source.name(), named.name());
   }
 }

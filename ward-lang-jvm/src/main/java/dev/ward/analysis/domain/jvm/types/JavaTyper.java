@@ -30,13 +30,20 @@ final class JavaTyper {
   private void visitClass(final SourceModel.ClassDecl declaration, final Ctx outer) {
     final JvmClass jvm = declaration.jvm();
     final DeclInfo info =
-        new DeclInfo(Optional.of(jvm), Optional.empty(), Optional.empty(), Optional.empty(), outer.annotations());
+        new DeclInfo(
+            Optional.of(jvm),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            outer.annotations());
     session.declare(declaration.outer(), info);
     session.declare(declaration.node(), info);
     final Ctx inside =
         outer.withScope(declaration.scope(), jvm.typeParameters()).within(jvm.annotations());
     for (final SourceModel.Member member : declaration.members()) {
-      member.variables().forEach(variable -> session.variable(variable.identifier(), variable.type()));
+      member
+          .variables()
+          .forEach(variable -> session.variable(variable.identifier(), variable.type()));
     }
     for (final SourceModel.Member member : declaration.members()) {
       visitMember(member, jvm, inside);
@@ -45,7 +52,8 @@ final class JavaTyper {
   }
 
   private void visitMember(final SourceModel.Member member, final JvmClass owner, final Ctx ctx) {
-    final List<TypeParameter> parameters = member.method().map(JvmMethod::typeParameters).orElse(List.of());
+    final List<TypeParameter> parameters =
+        member.method().map(JvmMethod::typeParameters).orElse(List.of());
     final Ctx inner = ctx.withScope(member.scope(), parameters);
     final DeclInfo info =
         new DeclInfo(
@@ -110,7 +118,8 @@ final class JavaTyper {
     if (inferred.isPresent()) {
       final Typed value = expressions.expression(inferred.get(), ctx, Optional.empty());
       Syntax.child(node, IDENTIFIER)
-          .ifPresent(name -> session.variable(name, value.type().filter(type -> !Types.isNull(type))));
+          .ifPresent(
+              name -> session.variable(name, value.type().filter(type -> !Types.isNull(type))));
       return;
     }
     final Optional<JType> base =
@@ -121,7 +130,10 @@ final class JavaTyper {
         final int dimensions =
             (int) id.children().stream().filter(child -> "[".equals(Syntax.token(child))).count();
         Syntax.child(id, IDENTIFIER)
-            .ifPresent(name -> session.variable(name, base.map(found -> JavaTypes.arrayOf(found, dimensions))));
+            .ifPresent(
+                name ->
+                    session.variable(
+                        name, base.map(found -> JavaTypes.arrayOf(found, dimensions))));
         declarator(declarator, ctx);
       }
     }
@@ -130,7 +142,9 @@ final class JavaTyper {
   private void forEach(final SyntaxNode node, final Ctx ctx) {
     final Optional<SyntaxNode> source = Syntax.child(node, EXPRESSION);
     final Typed iterable =
-        source.map(found -> expressions.expression(found, ctx, Optional.empty())).orElse(Typed.UNKNOWN);
+        source
+            .map(found -> expressions.expression(found, ctx, Optional.empty()))
+            .orElse(Typed.UNKNOWN);
     final Optional<JType> written =
         Syntax.child(node, TYPE_TYPE).flatMap(found -> JavaTypes.type(found, ctx.scope()));
     final Optional<JType> element = written.or(() -> elementOf(iterable.type()));
@@ -147,11 +161,13 @@ final class JavaTyper {
       return Optional.of(array.component());
     }
     if (iterable.get() instanceof JType.ClassType site) {
-      return session.hierarchy
+      return session
+          .hierarchy
           .asSuper(site, "java.lang.Iterable")
           .filter(view -> view.arguments().size() == 1)
           .map(view -> view.arguments().get(0))
-          .map(argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
+          .map(
+              argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
           .filter(java.util.Objects::nonNull);
     }
     return Optional.empty();
@@ -168,7 +184,8 @@ final class JavaTyper {
                         .resolve(List.of(Syntax.text(name).split("\\.")))
                         .map(binary -> (JType) JType.ClassType.of(binary))));
     Optional<JType> type = alternatives.isEmpty() ? Optional.empty() : alternatives.get(0);
-    for (final Optional<JType> next : alternatives.subList(Math.min(1, alternatives.size()), alternatives.size())) {
+    for (final Optional<JType> next :
+        alternatives.subList(Math.min(1, alternatives.size()), alternatives.size())) {
       type = expressions.unify(type, next);
     }
     final Optional<JType> caught = type;
@@ -179,7 +196,9 @@ final class JavaTyper {
   private void resource(final SyntaxNode node, final Ctx ctx) {
     final Optional<SyntaxNode> value = Syntax.child(node, EXPRESSION);
     final Typed initial =
-        value.map(found -> expressions.expression(found, ctx, Optional.empty())).orElse(Typed.UNKNOWN);
+        value
+            .map(found -> expressions.expression(found, ctx, Optional.empty()))
+            .orElse(Typed.UNKNOWN);
     final Optional<JType> written =
         Syntax.child(node, "classOrInterfaceType")
             .flatMap(type -> Syntax.child(type, "classType"))
@@ -192,7 +211,8 @@ final class JavaTyper {
   }
 
   private void statement(final SyntaxNode node, final Ctx ctx) {
-    final boolean returns = !node.children().isEmpty() && Set2.RETURNS.contains(Syntax.token(node.children().get(0)));
+    final boolean returns =
+        !node.children().isEmpty() && Set2.RETURNS.contains(Syntax.token(node.children().get(0)));
     final Optional<SyntaxNode> value = Syntax.child(node, EXPRESSION);
     if (returns && value.isPresent() && ctx.returns().isPresent()) {
       ctx.returns().get().add(expressions.expression(value.get(), ctx, Optional.empty()).type());

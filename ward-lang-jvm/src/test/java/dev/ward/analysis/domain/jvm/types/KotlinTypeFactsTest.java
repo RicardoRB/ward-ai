@@ -31,7 +31,8 @@ class KotlinTypeFactsTest {
   @Test
   void leavesWhatNeedsFullInferenceUnknown() {
     final Probe probe =
-        Probe.kotlin("package app\nfun f(items: List<String>) {\n  val a = items.map { it.length }\n  val b = missing.value\n}\n");
+        Probe.kotlin(
+            "package app\nfun f(items: List<String>) {\n  val a = items.map { it.length }\n  val b = missing.value\n}\n");
 
     assertThat(probe.type("items.map { it.length }")).isEqualTo("?");
     assertThat(probe.type("missing.value")).isEqualTo("?");

@@ -15,7 +15,8 @@ import java.util.regex.Pattern;
 /** The classes in a directory tree of {@code .class} files, such as {@code target/classes}. */
 public final class DirectoryLibrary implements JvmLibrary {
   private static final Logger LOGGER = Logger.getLogger(DirectoryLibrary.class.getName());
-  private static final Pattern BINARY_NAME = Pattern.compile("[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*");
+  private static final Pattern BINARY_NAME =
+      Pattern.compile("[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*");
 
   private final Path root;
 

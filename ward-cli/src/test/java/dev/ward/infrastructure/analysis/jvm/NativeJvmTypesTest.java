@@ -66,7 +66,9 @@ class NativeJvmTypesTest {
               new SourceUnit(PATH, AnalysisLanguage.JAVA, text),
               List.of(equalsCall, toString, read, kind, user),
               EnumSet.allOf(FactKind.class));
-      assertThat(actual.callTarget(equalsCall)).isEqualTo(expected.callTarget(equalsCall)).isPresent();
+      assertThat(actual.callTarget(equalsCall))
+          .isEqualTo(expected.callTarget(equalsCall))
+          .isPresent();
       assertThat(actual.typeOf(equalsCall)).isEqualTo(expected.typeOf(equalsCall));
       assertThat(actual.at(toString).annotations()).isEqualTo(expected.at(toString).annotations());
       assertThat(actual.at(toString).overrides()).isEqualTo(expected.at(toString).overrides());
@@ -90,10 +92,14 @@ class NativeJvmTypesTest {
       jarOut.write(rename(in.readAllBytes()));
       jarOut.closeEntry();
     }
-    final Path classpath = Files.writeString(project.resolve("classpath.txt"), jar + "\n" + project.resolve("missing.jar"));
+    final Path classpath =
+        Files.writeString(
+            project.resolve("classpath.txt"), jar + "\n" + project.resolve("missing.jar"));
     final Path helper = project.resolve("src/main/java/app/Helper.java");
     Files.createDirectories(helper.getParent());
-    Files.writeString(helper, "package app;\npublic class Helper { public static String name() { return \"h\"; } }\n");
+    Files.writeString(
+        helper,
+        "package app;\npublic class Helper { public static String name() { return \"h\"; } }\n");
     final String text =
         "package app;\nimport java.util.Objects;\nclass Use {\n  void run() {\n    boolean a = Objects.equals(1, 2);\n    String b = Helper.name();\n    Object c = lib.Library.make();\n  }\n}\n";
 
@@ -109,9 +115,11 @@ class NativeJvmTypesTest {
               List.of(jdk, sources, library),
               EnumSet.of(FactKind.TYPE, FactKind.CALL));
 
-      assertThat(actual.callTarget(jdk).orElseThrow().declaringType().name()).isEqualTo("java.util.Objects");
+      assertThat(actual.callTarget(jdk).orElseThrow().declaringType().name())
+          .isEqualTo("java.util.Objects");
       assertThat(actual.typeOf(sources)).map(TypeRef::name).contains("java.lang.String");
-      assertThat(actual.callTarget(library).orElseThrow().returnType().name()).isEqualTo("java.lang.Object");
+      assertThat(actual.callTarget(library).orElseThrow().returnType().name())
+          .isEqualTo("java.lang.Object");
     } finally {
       types.close();
     }

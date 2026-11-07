@@ -43,9 +43,14 @@ final class JavaExpressions {
       return single(first, ctx, target);
     }
     if (EXPRESSION.equals(first.kind())) {
-      return withLeft(node, parts, ctx, target);
+      return withLeft(parts, ctx, target);
     }
-    final String lead = Syntax.token(first);
+    return leading(node, Syntax.token(first), ctx, target);
+  }
+
+  private Typed leading(
+      final SyntaxNode node, final String lead, final Ctx ctx, final Optional<JType> target) {
+    final List<SyntaxNode> parts = node.children();
     if ("new".equals(lead)) {
       return calls.creator(parts.get(1), ctx, target);
     }
@@ -73,7 +78,7 @@ final class JavaExpressions {
   }
 
   private Typed withLeft(
-      final SyntaxNode node, final List<SyntaxNode> parts, final Ctx ctx, final Optional<JType> target) {
+      final List<SyntaxNode> parts, final Ctx ctx, final Optional<JType> target) {
     final String operator = Syntax.token(parts.get(1));
     if (".".equals(operator)) {
       return member(parts, ctx);
@@ -88,6 +93,14 @@ final class JavaExpressions {
     if (parts.size() == 2) {
       return expression(parts.get(0), ctx, Optional.empty());
     }
+    return infix(parts, operator, ctx, target);
+  }
+
+  private Typed infix(
+      final List<SyntaxNode> parts,
+      final String operator,
+      final Ctx ctx,
+      final Optional<JType> target) {
     if ("instanceof".equals(operator)) {
       expression(parts.get(0), ctx, Optional.empty());
       instanceOf(parts.get(2), ctx);
@@ -107,31 +120,35 @@ final class JavaExpressions {
   private Typed primary(final SyntaxNode node, final Ctx ctx) {
     final List<SyntaxNode> parts = node.children();
     final SyntaxNode first = parts.get(0);
-    if (parts.size() == 1 && "literal".equals(first.kind())) {
-      return Literals.of(first)
-          .map(literal -> Typed.of(literal.type()).withConstant(literal.value()))
-          .orElse(Typed.UNKNOWN);
-    }
-    if (parts.size() == 1 && "identifier".equals(first.kind())) {
-      return name(first, ctx);
+    if (parts.size() == 1) {
+      return simplePrimary(first, ctx);
     }
     if (parts.size() == BINARY && "(".equals(Syntax.token(first))) {
       return expression(parts.get(1), ctx, Optional.empty());
-    }
-    if (parts.size() == 1 && "this".equals(Syntax.token(first))) {
-      return ctx.scope().enclosing().stream()
-          .findFirst()
-          .map(owner -> Typed.of(session.self(owner)))
-          .orElse(Typed.UNKNOWN);
-    }
-    if (parts.size() == 1 && "super".equals(Syntax.token(first))) {
-      return superType(ctx);
     }
     if (parts.size() == BINARY && "class".equals(Syntax.token(parts.get(2)))) {
       return classLiteral(parts.get(0), ctx);
     }
     typer.walkChildren(node, ctx);
     return Typed.UNKNOWN;
+  }
+
+  private Typed simplePrimary(final SyntaxNode first, final Ctx ctx) {
+    if ("literal".equals(first.kind())) {
+      return Literals.of(first)
+          .map(literal -> Typed.of(literal.type()).withConstant(literal.value()))
+          .orElse(Typed.UNKNOWN);
+    }
+    if ("identifier".equals(first.kind())) {
+      return name(first, ctx);
+    }
+    if ("this".equals(Syntax.token(first))) {
+      return ctx.scope().enclosing().stream()
+          .findFirst()
+          .map(owner -> Typed.of(session.self(owner)))
+          .orElse(Typed.UNKNOWN);
+    }
+    return "super".equals(Syntax.token(first)) ? superType(ctx) : Typed.UNKNOWN;
   }
 
   private Typed superType(final Ctx ctx) {
@@ -146,7 +163,8 @@ final class JavaExpressions {
   private Typed classLiteral(final SyntaxNode written, final Ctx ctx) {
     final Optional<JType> type =
         Syntax.child(written, "typeType").flatMap(found -> JavaTypes.type(found, ctx.scope()));
-    return type.map(found -> Typed.of(new JType.ClassType("java.lang.Class", List.of(Types.boxed(found)))))
+    return type.map(
+            found -> Typed.of(new JType.ClassType("java.lang.Class", List.of(Types.boxed(found)))))
         .orElse(Typed.UNKNOWN);
   }
 
@@ -185,7 +203,8 @@ final class JavaExpressions {
   }
 
   private Optional<Typed> field(final JType.ClassType site, final String name, final Ctx ctx) {
-    return session.hierarchy
+    return session
+        .hierarchy
         .field(site, name)
         .map(
             found -> {
@@ -210,7 +229,10 @@ final class JavaExpressions {
     final String name = Syntax.text(right);
     if (qualifier.packageName().isPresent()) {
       final String dotted = qualifier.packageName().get() + '.' + name;
-      return ctx.scope().binaryOf(dotted).map(binary -> Typed.naming(JType.ClassType.of(binary))).orElseGet(() -> Typed.pkg(dotted));
+      return ctx.scope()
+          .binaryOf(dotted)
+          .map(binary -> Typed.naming(JType.ClassType.of(binary)))
+          .orElseGet(() -> Typed.pkg(dotted));
     }
     if (qualifier.named().isPresent()) {
       return staticMember(qualifier.named().get(), name, ctx);
@@ -223,7 +245,8 @@ final class JavaExpressions {
     if (field.isPresent()) {
       return field.get();
     }
-    return session.hierarchy
+    return session
+        .hierarchy
         .memberClass(owner.name(), name)
         .map(binary -> Typed.naming(JType.ClassType.of(binary)))
         .orElse(Typed.UNKNOWN);
@@ -239,7 +262,11 @@ final class JavaExpressions {
   private Typed index(final List<SyntaxNode> parts, final Ctx ctx) {
     final Typed array = expression(parts.get(0), ctx, Optional.empty());
     expression(parts.get(2), ctx, Optional.empty());
-    return array.type().filter(JType.ArrayType.class::isInstance).map(found -> Typed.of(((JType.ArrayType) found).component())).orElse(Typed.UNKNOWN);
+    return array
+        .type()
+        .filter(JType.ArrayType.class::isInstance)
+        .map(found -> Typed.of(((JType.ArrayType) found).component()))
+        .orElse(Typed.UNKNOWN);
   }
 
   private Typed cast(final SyntaxNode node, final Ctx ctx) {
@@ -251,7 +278,10 @@ final class JavaExpressions {
   }
 
   private void instanceOf(final SyntaxNode pattern, final Ctx ctx) {
-    final Optional<SyntaxNode> written = "typeType".equals(pattern.kind()) ? Optional.of(pattern) : Syntax.child(pattern, "typeType");
+    final Optional<SyntaxNode> written =
+        "typeType".equals(pattern.kind())
+            ? Optional.of(pattern)
+            : Syntax.child(pattern, "typeType");
     if (written.isEmpty()) {
       return;
     }
@@ -260,7 +290,8 @@ final class JavaExpressions {
       final List<SyntaxNode> names = Syntax.children(classType.get(), "typeIdentifier");
       final SyntaxNode last = names.get(names.size() - 1);
       if (names.size() > 1 && session.isDeclaration(last)) {
-        final List<String> segments = names.subList(0, names.size() - 1).stream().map(Syntax::text).toList();
+        final List<String> segments =
+            names.subList(0, names.size() - 1).stream().map(Syntax::text).toList();
         session.variable(last, ctx.scope().resolve(segments).map(JType.ClassType::of));
         return;
       }
@@ -304,7 +335,7 @@ final class JavaExpressions {
     }
     JType.ClassType current = first;
     while (true) {
-      if (session.hierarchy.assignable(b, JType.ClassType.of(current.name()), false)) {
+      if (session.assignability.assignable(b, JType.ClassType.of(current.name()), false)) {
         return Optional.of(JType.ClassType.of(current.name()));
       }
       final Optional<JType.ClassType> parent =
@@ -318,7 +349,12 @@ final class JavaExpressions {
 
   private Typed unary(final String operator, final Typed operand) {
     if ("!".equals(operator)) {
-      return Typed.of(new JType.Primitive(BOOLEAN)).withConstant(operand.constant().map(v -> v instanceof Boolean flag ? (Object) !flag : v).filter(Boolean.class::isInstance));
+      return Typed.of(new JType.Primitive(BOOLEAN))
+          .withConstant(
+              operand
+                  .constant()
+                  .map(v -> v instanceof Boolean flag ? (Object) !flag : v)
+                  .filter(Boolean.class::isInstance));
     }
     if (operand.type().isEmpty()) {
       return Typed.UNKNOWN;
@@ -328,36 +364,51 @@ final class JavaExpressions {
     }
     final JType promoted = Types.promote(operand.type().get(), new JType.Primitive("int"));
     final Typed typed = promoted == null ? Typed.UNKNOWN : Typed.of(promoted);
-    return "-".equals(operator) ? typed.withConstant(operand.constant().flatMap(Constants::negate)) : typed;
+    return "-".equals(operator)
+        ? typed.withConstant(operand.constant().flatMap(Constants::negate))
+        : typed;
   }
 
   private Typed binary(final List<SyntaxNode> parts, final Ctx ctx) {
     final Typed left = expression(parts.get(0), ctx, Optional.empty());
     final Typed right = expression(parts.get(parts.size() - 1), ctx, Optional.empty());
-    final String operator = parts.stream().skip(1).limit(parts.size() - 2L).map(Syntax::token).reduce("", String::concat);
+    final String operator =
+        parts.stream()
+            .skip(1)
+            .limit(parts.size() - 2L)
+            .map(Syntax::token)
+            .reduce("", String::concat);
     if (COMPARISONS.contains(operator)) {
       return Typed.of(new JType.Primitive(BOOLEAN));
     }
     if (left.type().isEmpty() || right.type().isEmpty()) {
       return Typed.UNKNOWN;
     }
+    return arithmetic(operator, left, right);
+  }
+
+  private static Typed arithmetic(final String operator, final Typed left, final Typed right) {
     final JType a = left.type().get();
     final JType b = right.type().get();
     if ("+".equals(operator) && (isString(a) || isString(b))) {
-      return Typed.of(JType.ClassType.of(Types.STRING)).withConstant(Operators.concat(left.constant(), right.constant()));
-    }
-    if (("&".equals(operator) || "|".equals(operator) || "^".equals(operator))
-        && Types.unboxed(a).equals(new JType.Primitive(BOOLEAN))) {
-      return Typed.of(new JType.Primitive(BOOLEAN));
+      return Typed.of(JType.ClassType.of(Types.STRING))
+          .withConstant(Operators.concat(left.constant(), right.constant()));
     }
     if (operator.startsWith("<<") || operator.startsWith(">>")) {
-      return Optional.ofNullable(Types.promote(a, new JType.Primitive("int"))).map(Typed::of).orElse(Typed.UNKNOWN);
+      return Optional.ofNullable(Types.promote(a, new JType.Primitive("int")))
+          .map(Typed::of)
+          .orElse(Typed.UNKNOWN);
+    }
+    if (Set.of("&", "|", "^").contains(operator)
+        && Types.unboxed(a).equals(new JType.Primitive(BOOLEAN))) {
+      return Typed.of(new JType.Primitive(BOOLEAN));
     }
     final JType promoted = Types.promote(a, b);
     if (promoted == null) {
       return Typed.UNKNOWN;
     }
-    return Typed.of(promoted).withConstant(Operators.arithmetic(operator, left.constant(), right.constant(), promoted));
+    return Typed.of(promoted)
+        .withConstant(Operators.arithmetic(operator, left.constant(), right.constant(), promoted));
   }
 
   private static boolean isString(final JType type) {

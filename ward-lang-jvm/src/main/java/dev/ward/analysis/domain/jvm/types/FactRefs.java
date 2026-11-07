@@ -24,11 +24,13 @@ final class FactRefs {
   /** Returns the reference to {@code type}; empty for the null type and unresolved wildcards. */
   Optional<TypeRef> ref(final JType type, final Map<String, JType> bounds) {
     return switch (type) {
-      case JType.Primitive primitive -> Optional.of(new TypeRef(primitive.name(), List.of(), 0, true));
+      case JType.Primitive primitive ->
+          Optional.of(new TypeRef(primitive.name(), List.of(), 0, true));
       case JType.ClassType named ->
           Types.isNull(named) ? Optional.empty() : Optional.of(named(named, bounds));
       case JType.ArrayType array -> ref(array.component(), bounds).map(FactRefs::deeper);
-      case JType.TypeVariable variable -> ref(bounds.getOrDefault(variable.name(), JType.ClassType.of(Types.OBJECT)), Map.of());
+      case JType.TypeVariable variable ->
+          ref(bounds.getOrDefault(variable.name(), JType.ClassType.of(Types.OBJECT)), Map.of());
       case JType.Wildcard wildcard -> Optional.empty();
     };
   }
@@ -67,7 +69,9 @@ final class FactRefs {
   }
 
   private static JType bound(final TypeParameter parameter) {
-    return parameter.bounds().isEmpty() ? JType.ClassType.of(Types.OBJECT) : parameter.bounds().get(0);
+    return parameter.bounds().isEmpty()
+        ? JType.ClassType.of(Types.OBJECT)
+        : parameter.bounds().get(0);
   }
 
   /** Returns the target a call resolves to, as declared. */
@@ -156,10 +160,13 @@ final class FactRefs {
   private static JType.ClassType selfOf(final JvmClass owner) {
     return new JType.ClassType(
         owner.name(),
-        owner.typeParameters().stream().map(parameter -> (JType) new JType.TypeVariable(parameter.name())).toList());
+        owner.typeParameters().stream()
+            .map(parameter -> (JType) new JType.TypeVariable(parameter.name()))
+            .toList());
   }
 
-  private boolean overrides(final JvmMethod method, final JvmMethod candidate, final Map<String, JType> bound) {
+  private boolean overrides(
+      final JvmMethod method, final JvmMethod candidate, final Map<String, JType> bound) {
     if (!candidate.name().equals(method.name())
         || candidate.isConstructor()
         || candidate.isStatic()
@@ -168,9 +175,9 @@ final class FactRefs {
       return false;
     }
     for (int index = 0; index < method.parameters().size(); index++) {
-      final String mine = hierarchy.erasure(method.parameters().get(index), Map.of());
+      final String mine = Types.erasure(method.parameters().get(index), Map.of());
       final String theirs =
-          hierarchy.erasure(Types.substitute(candidate.parameters().get(index), bound), Map.of());
+          Types.erasure(Types.substitute(candidate.parameters().get(index), bound), Map.of());
       if (!mine.equals(theirs)) {
         return false;
       }

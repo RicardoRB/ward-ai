@@ -30,7 +30,9 @@ record Ctx(
     for (final TypeParameter parameter : parameters) {
       merged.put(
           parameter.name(),
-          parameter.bounds().isEmpty() ? JType.ClassType.of(Types.OBJECT) : parameter.bounds().get(0));
+          parameter.bounds().isEmpty()
+              ? JType.ClassType.of(Types.OBJECT)
+              : parameter.bounds().get(0));
     }
     return new Ctx(inner, merged, annotations, returns);
   }

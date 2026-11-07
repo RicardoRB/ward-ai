@@ -8,6 +8,8 @@ final class Types {
   static final String OBJECT = "java.lang.Object";
   static final String STRING = "java.lang.String";
   static final String NULL = "<null>";
+  private static final String CHAR = "char";
+  private static final String INT = "int";
   private static final List<String> WIDENING =
       List.of("byte", "short", "int", "long", "float", "double");
   private static final Map<String, String> BOXES =
@@ -56,8 +58,8 @@ final class Types {
     if (from.equals(to)) {
       return true;
     }
-    if ("char".equals(from)) {
-      return WIDENING.indexOf(to) >= WIDENING.indexOf("int");
+    if (CHAR.equals(from)) {
+      return WIDENING.indexOf(to) >= WIDENING.indexOf(INT);
     }
     final int source = WIDENING.indexOf(from);
     final int target = WIDENING.indexOf(to);
@@ -76,7 +78,9 @@ final class Types {
         return new JType.Primitive(wide);
       }
     }
-    return "boolean".equals(a.name()) || "boolean".equals(b.name()) ? null : new JType.Primitive("int");
+    return "boolean".equals(a.name()) || "boolean".equals(b.name())
+        ? null
+        : new JType.Primitive("int");
   }
 
   /** Replaces the type variables named in {@code bindings}. */
@@ -111,6 +115,26 @@ final class Types {
     if (type instanceof JType.ArrayType array) {
       return mentionsVariable(array.component());
     }
-    return type instanceof JType.Wildcard wildcard && wildcard.bound() != null && mentionsVariable(wildcard.bound());
+    return type instanceof JType.Wildcard wildcard
+        && wildcard.bound() != null
+        && mentionsVariable(wildcard.bound());
+  }
+
+  /**
+   * Returns the erasure of {@code type} as a string: a class name, a primitive, or either with
+   * brackets. Type variables erase to their bound in {@code bounds}, else to {@code Object}.
+   */
+  static String erasure(final JType type, final Map<String, JType> bounds) {
+    return switch (type) {
+      case JType.Primitive primitive -> primitive.name();
+      case JType.ClassType named -> named.name();
+      case JType.ArrayType array -> erasure(array.component(), bounds) + "[]";
+      case JType.TypeVariable variable ->
+          bounds.containsKey(variable.name())
+              ? erasure(bounds.get(variable.name()), Map.of())
+              : OBJECT;
+      case JType.Wildcard wildcard ->
+          wildcard.bound() != null && wildcard.upper() ? erasure(wildcard.bound(), bounds) : OBJECT;
+    };
   }
 }

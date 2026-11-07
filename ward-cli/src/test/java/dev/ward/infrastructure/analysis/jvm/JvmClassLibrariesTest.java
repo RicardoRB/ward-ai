@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class JvmClassLibrariesTest {
+  private static final int FAKE_SIZE = 64;
   private static final Path HOME = Path.of(System.getProperty("java.home"));
 
   @TempDir Path temp;
@@ -46,7 +47,9 @@ class JvmClassLibrariesTest {
     assertThat(opened).isPresent();
     try (JdkImageLibrary image = opened.get()) {
       assertThat(image.find("java.util.Objects")).isPresent();
-      assertThat(image.find("java.util.Map$Entry")).get().extracting(JvmClass::name)
+      assertThat(image.find("java.util.Map$Entry"))
+          .get()
+          .extracting(JvmClass::name)
           .isEqualTo("java.util.Map$Entry");
       assertThat(image.find("java.sql.Connection")).isPresent();
       assertThat(image.exists("java.lang.String")).isTrue();
@@ -59,7 +62,7 @@ class JvmClassLibrariesTest {
 
   @Test
   void jdkImageRejectsAFileThatIsNotAnImage() throws IOException {
-    final Path fake = Files.write(temp.resolve("modules"), new byte[64]);
+    final Path fake = Files.write(temp.resolve("modules"), new byte[FAKE_SIZE]);
 
     assertThat(JdkImageLibrary.open(fake)).isEmpty();
     assertThat(JdkImageLibrary.open(temp.resolve("missing"))).isEmpty();
@@ -108,7 +111,8 @@ class JvmClassLibrariesTest {
   void findsTheJdkThroughJavaHomeThenTheRunningJdk() {
     assertThat(JvmClassLibraries.jdkHome(Optional.of(HOME.toString()), Optional.empty()))
         .contains(HOME);
-    assertThat(JvmClassLibraries.jdkHome(Optional.of(temp.toString()), Optional.of(HOME.toString())))
+    assertThat(
+            JvmClassLibraries.jdkHome(Optional.of(temp.toString()), Optional.of(HOME.toString())))
         .contains(HOME);
     assertThat(JvmClassLibraries.jdkHome(Optional.empty(), Optional.empty())).isEmpty();
     assertThat(JvmClassLibraries.jdkHome(Optional.of(" "), Optional.of(temp.toString()))).isEmpty();

@@ -70,7 +70,8 @@ public final class NativeJvmTypes implements TypeSidecar {
     final JvmClasses classes =
         new JvmClasses(
             libraries,
-            new ProjectJvmSources(projectRoot, JvmSourceLayouts.of(projectRoot, List.of(projectRoot))),
+            new ProjectJvmSources(
+                projectRoot, JvmSourceLayouts.of(projectRoot, List.of(projectRoot))),
             frontend);
     started =
         new CachedTypeFacts(

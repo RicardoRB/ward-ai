@@ -1,11 +1,10 @@
 package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The package and imports of one Java file, as qualified names with dots. Static imports are kept
@@ -14,7 +13,7 @@ import java.util.Optional;
  * @param packageName the declared package, empty for the default package
  * @param single the single-type imports: simple name to qualified name
  * @param onDemand the packages or types imported with {@code .*}
- * @param staticSingle the single static imports: member name to the qualified name of its owner
+ * @param staticSingle the single static imports: member name to the qualified names of its owners
  * @param staticOnDemand the types imported with {@code import static T.*}
  */
 record Imports(
@@ -24,6 +23,11 @@ record Imports(
     Map<String, List<String>> staticSingle,
     List<String> staticOnDemand) {
 
+  private static final String PACKAGE = "packageDeclaration";
+  private static final String IMPORT = "importDeclaration";
+  private static final String STATIC = "static";
+  private static final String WILDCARD = "*";
+
   Imports {
     single = Map.copyOf(single);
     onDemand = List.copyOf(onDemand);
@@ -31,43 +35,63 @@ record Imports(
     staticOnDemand = List.copyOf(staticOnDemand);
   }
 
+  /** One {@code import} line. */
+  private record Declaration(String name, boolean wildcard, boolean isStatic) {
+    String simpleName() {
+      return name.substring(name.lastIndexOf('.') + 1);
+    }
+
+    String owner() {
+      return name.substring(0, Math.max(name.lastIndexOf('.'), 0));
+    }
+  }
+
+  /** Reads the package and imports of the compilation unit {@code root}. */
+  static Imports of(final SyntaxNode root) {
+    final String packageName =
+        root.children().stream()
+            .filter(child -> PACKAGE.equals(child.kind()))
+            .findFirst()
+            .flatMap(Imports::nameOf)
+            .orElse("");
+    final List<Declaration> declarations =
+        root.children().stream()
+            .filter(child -> IMPORT.equals(child.kind()))
+            .map(Imports::declaration)
+            .flatMap(Optional::stream)
+            .toList();
+    return new Imports(
+        packageName,
+        declarations.stream()
+            .filter(found -> !found.wildcard() && !found.isStatic())
+            .collect(Collectors.toMap(Declaration::simpleName, Declaration::name, (a, b) -> b)),
+        declarations.stream()
+            .filter(found -> found.wildcard() && !found.isStatic())
+            .map(Declaration::name)
+            .toList(),
+        declarations.stream()
+            .filter(found -> !found.wildcard() && found.isStatic())
+            .collect(
+                Collectors.groupingBy(
+                    Declaration::simpleName,
+                    Collectors.mapping(Declaration::owner, Collectors.toList()))),
+        declarations.stream()
+            .filter(found -> found.wildcard() && found.isStatic())
+            .map(Declaration::name)
+            .toList());
+  }
+
   /** Returns the imports of a file that declares package {@code packageName} and imports none. */
   static Imports none(final String packageName) {
     return new Imports(packageName, Map.of(), List.of(), Map.of(), List.of());
   }
 
-  /** Reads the package and imports of the compilation unit {@code root}. */
-  static Imports of(final SyntaxNode root) {
-    String packageName = "";
-    final Map<String, String> single = new HashMap<>();
-    final List<String> onDemand = new ArrayList<>();
-    final Map<String, List<String>> staticSingle = new HashMap<>();
-    final List<String> staticOnDemand = new ArrayList<>();
-    for (final SyntaxNode child : root.children()) {
-      if ("packageDeclaration".equals(child.kind())) {
-        packageName = nameOf(child).orElse("");
-      } else if ("importDeclaration".equals(child.kind())) {
-        final Optional<String> name = nameOf(child);
-        final boolean wildcard = Syntax.hasToken(child, "*");
-        final boolean isStatic = Syntax.hasToken(child, "static");
-        if (name.isEmpty()) {
-          continue;
-        }
-        if (wildcard) {
-          (isStatic ? staticOnDemand : onDemand).add(name.get());
-        } else if (isStatic) {
-          final int dot = name.get().lastIndexOf('.');
-          if (dot > 0) {
-            staticSingle
-                .computeIfAbsent(name.get().substring(dot + 1), key -> new ArrayList<>())
-                .add(name.get().substring(0, dot));
-          }
-        } else {
-          single.put(name.get().substring(name.get().lastIndexOf('.') + 1), name.get());
-        }
-      }
-    }
-    return new Imports(packageName, single, onDemand, staticSingle, staticOnDemand);
+  private static Optional<Declaration> declaration(final SyntaxNode node) {
+    return nameOf(node)
+        .map(
+            name ->
+                new Declaration(
+                    name, Syntax.hasToken(node, WILDCARD), Syntax.hasToken(node, STATIC)));
   }
 
   private static Optional<String> nameOf(final SyntaxNode declaration) {

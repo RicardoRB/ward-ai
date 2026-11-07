@@ -8,4 +8,9 @@ public final class ClassFileException extends Exception {
   public ClassFileException(final String message) {
     super(message);
   }
+
+  /** Creates the exception with {@code message} and the {@code cause} that was found. */
+  public ClassFileException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }

@@ -52,7 +52,7 @@ final class TypeScope {
     return enclosing;
   }
 
-  /** Returns the scope inside the class {@code binaryName}, whose type parameters are {@code names}. */
+  /** Returns the scope inside the class {@code binaryName} with the type parameters {@code names}. */
   TypeScope inClass(final String binaryName, final Collection<String> names) {
     final List<String> classes = new ArrayList<>();
     classes.add(binaryName);
@@ -73,10 +73,6 @@ final class TypeScope {
     return typeVariables.contains(name);
   }
 
-  boolean exists(final String binaryName) {
-    return exists.test(binaryName);
-  }
-
   /** Resolves a type name written as segments, such as {@code [Map, Entry]}. */
   Optional<String> resolve(final List<String> segments) {
     if (segments.isEmpty()) {
@@ -84,25 +80,14 @@ final class TypeScope {
     }
     final Optional<String> first = resolveSimple(segments.get(0));
     if (first.isPresent()) {
-      return members(first.get(), segments.subList(1, segments.size()));
+      return BinaryNames.members(first.get(), segments.subList(1, segments.size()), exists);
     }
     return binaryOf(String.join(".", segments));
   }
 
-  private Optional<String> members(final String owner, final List<String> names) {
-    String current = owner;
-    for (final String name : names) {
-      current = current + '$' + name;
-      if (!exists.test(current)) {
-        return Optional.empty();
-      }
-    }
-    return Optional.of(current);
-  }
-
   private Optional<String> resolveSimple(final String name) {
     for (final String outer : enclosing) {
-      if (simpleName(outer).equals(name)) {
+      if (BinaryNames.simpleName(outer).equals(name)) {
         return Optional.of(outer);
       }
       if (exists.test(outer + '$' + name)) {
@@ -110,13 +95,12 @@ final class TypeScope {
       }
     }
     final String imported = imports.single().get(name);
-    if (imported != null) {
-      final Optional<String> found = binaryOf(imported);
-      if (found.isPresent()) {
-        return found;
-      }
+    final Optional<String> viaImport =
+        imported == null ? Optional.empty() : binaryOf(imported);
+    if (viaImport.isPresent()) {
+      return viaImport;
     }
-    final String samePackage = qualified(imports.packageName(), name);
+    final String samePackage = BinaryNames.qualified(imports.packageName(), name);
     if (exists.test(samePackage)) {
       return Optional.of(samePackage);
     }
@@ -130,42 +114,19 @@ final class TypeScope {
     return exists.test(implicit) ? Optional.of(implicit) : Optional.empty();
   }
 
-  /**
-   * Turns a qualified name with dots into a binary name by trying each split into a package and
-   * nested classes, longest package first.
-   */
+  /** Turns a qualified name with dots into a binary name, trying each package and class split. */
   Optional<String> binaryOf(final String dotted) {
-    final String[] parts = dotted.split("\\.");
-    for (int classStart = parts.length - 1; classStart >= 0; classStart--) {
-      final String packageName = String.join(".", List.of(parts).subList(0, classStart));
-      final String classes = String.join("$", List.of(parts).subList(classStart, parts.length));
-      final String candidate = qualified(packageName, classes);
-      if (exists.test(candidate)) {
-        return Optional.of(candidate);
-      }
-    }
-    return Optional.empty();
+    return BinaryNames.of(dotted, exists);
   }
 
   /** Returns the binary names of the classes that may declare the static member {@code name}. */
   List<String> staticOwners(final String name) {
     final List<String> owners = new ArrayList<>();
-    for (final String owner : imports.staticSingle().getOrDefault(name, List.of())) {
-      binaryOf(owner).ifPresent(owners::add);
-    }
-    for (final String owner : imports.staticOnDemand()) {
+    final List<String> declared = new ArrayList<>(imports.staticSingle().getOrDefault(name, List.of()));
+    declared.addAll(imports.staticOnDemand());
+    for (final String owner : declared) {
       binaryOf(owner).ifPresent(owners::add);
     }
     return owners;
-  }
-
-  /** Returns the simple name of a binary name: the part after the last dot or {@code $}. */
-  static String simpleName(final String binaryName) {
-    final int cut = Math.max(binaryName.lastIndexOf('.'), binaryName.lastIndexOf('$'));
-    return binaryName.substring(cut + 1);
-  }
-
-  private static String qualified(final String packageName, final String name) {
-    return packageName.isEmpty() ? name : packageName + '.' + name;
   }
 }

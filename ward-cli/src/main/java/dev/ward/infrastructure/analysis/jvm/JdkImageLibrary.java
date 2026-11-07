@@ -28,6 +28,10 @@ public final class JdkImageLibrary implements JvmLibrary, java.io.Closeable {
   private static final Logger LOGGER = Logger.getLogger(JdkImageLibrary.class.getName());
   private static final int MAGIC = 0xCAFEDADA;
   private static final int HEADER_SIZE = 28;
+  private static final int TABLE_LENGTH_AT = 16;
+  private static final int LOCATIONS_SIZE_AT = 20;
+  private static final int STRINGS_SIZE_AT = 24;
+  private static final int VERSION_SHIFT = 16;
   private static final int HASH_MULTIPLIER = 0x01000193;
   private static final int POSITIVE_MASK = 0x7FFFFFFF;
   private static final int ATTRIBUTE_END = 0;
@@ -42,7 +46,8 @@ public final class JdkImageLibrary implements JvmLibrary, java.io.Closeable {
   private static final int KIND_SHIFT = 3;
   private static final int LENGTH_MASK = 7;
   private static final int BYTE_MASK = 0xFF;
-  private static final Pattern BINARY_NAME = Pattern.compile("[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*");
+  private static final Pattern BINARY_NAME =
+      Pattern.compile("[\\p{L}\\p{N}_$]+(\\.[\\p{L}\\p{N}_$]+)*");
 
   private final FileChannel channel;
   private final ByteBuffer image;
@@ -57,9 +62,9 @@ public final class JdkImageLibrary implements JvmLibrary, java.io.Closeable {
   private JdkImageLibrary(final FileChannel channel, final ByteBuffer image) {
     this.channel = channel;
     this.image = image;
-    this.tableLength = image.getInt(HEADER_SIZE - 3 * Integer.BYTES);
-    final int locationsSize = image.getInt(HEADER_SIZE - 2 * Integer.BYTES);
-    final int stringsSize = image.getInt(HEADER_SIZE - Integer.BYTES);
+    this.tableLength = image.getInt(TABLE_LENGTH_AT);
+    final int locationsSize = image.getInt(LOCATIONS_SIZE_AT);
+    final int stringsSize = image.getInt(STRINGS_SIZE_AT);
     this.redirectStart = HEADER_SIZE;
     this.offsetsStart = redirectStart + tableLength * Integer.BYTES;
     this.locationsStart = offsetsStart + tableLength * Integer.BYTES;
@@ -82,7 +87,7 @@ public final class JdkImageLibrary implements JvmLibrary, java.io.Closeable {
       if (mapped.getInt(0) != MAGIC) {
         mapped.order(ByteOrder.BIG_ENDIAN);
       }
-      if (mapped.getInt(0) != MAGIC || mapped.getInt(Integer.BYTES) >>> 16 != 1) {
+      if (mapped.getInt(0) != MAGIC || mapped.getInt(Integer.BYTES) >>> VERSION_SHIFT != 1) {
         channel.close();
         return Optional.empty();
       }
@@ -134,7 +139,8 @@ public final class JdkImageLibrary implements JvmLibrary, java.io.Closeable {
     }
     final int lastDot = name.lastIndexOf('.');
     final String packageName = lastDot < 0 ? "" : name.substring(0, lastDot);
-    return module(packageName).map(module -> "/" + module + "/" + name.replace('.', '/') + ".class");
+    return module(packageName)
+        .map(module -> "/" + module + "/" + name.replace('.', '/') + ".class");
   }
 
   private Optional<long[]> location(final Optional<String> resource) {
