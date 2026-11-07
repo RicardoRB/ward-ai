@@ -2,15 +2,16 @@ package dev.ward.analysis.domain.node.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.types.CallTarget;
-import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 /** The facts of declarations: their shape and supertypes, decorators and overridden members. */
 final class DeclarationFacts {
   private static final String CLASS = "classDeclaration";
+  private static final Set<String> DECLARATIONS =
+      Set.of(CLASS, "interfaceDeclaration", "enumDeclaration");
   private static final String CLASS_ELEMENT = "classElement";
   private static final String MEMBER = "propertyMemberDeclaration";
   private static final String DECORATORS = "decoratorList";
@@ -25,73 +26,31 @@ final class DeclarationFacts {
 
   /** Returns the shape of a type declaration, or of the type of an expression. */
   TypeShape shape(final SyntaxNode node) {
-    final Sym sym;
-    switch (node.kind()) {
-      case CLASS, "interfaceDeclaration", "enumDeclaration" -> sym = declared(node);
-      default -> sym = Exprs.isExpression(node.kind()) ? ofType(typer.typeOf(node)) : null;
-    }
-    return sym == null ? null : shapeOf(sym);
+    final Sym sym = isDeclaration(node) ? declared(node) : ofExpression(node);
+    return sym == null ? null : ShapeFacts.shapeOf(sym);
+  }
+
+  private static boolean isDeclaration(final SyntaxNode node) {
+    return DECLARATIONS.contains(node.kind());
+  }
+
+  private Sym ofExpression(final SyntaxNode node) {
+    return Exprs.isExpression(node.kind()) ? ShapeFacts.ofType(typer.typeOf(node)) : null;
   }
 
   private Sym declared(final SyntaxNode node) {
     final SyntaxNode name = TreeKit.child(node, "identifier");
-    return name == null ? null : model.module().own(TreeKit.text(name));
-  }
-
-  private static Sym ofType(final Ty type) {
-    return type instanceof Ty.Named named && named.ref() != null ? named.ref().sym() : null;
-  }
-
-  private static TypeShape shapeOf(final Sym sym) {
-    for (final Sym.Located located : sym.types()) {
-      final Decl decl = located.decl();
-      final TypeShape.Kind kind = kindOf(decl.kind());
-      if (kind != null) {
-        final boolean isAbstract = decl.has(Decl.ABSTRACT) || kind == TypeShape.Kind.INTERFACE;
-        return new TypeShape(kind, isAbstract, false, false, supertypes(decl, located.scope()));
-      }
-    }
-    return null;
-  }
-
-  private static TypeShape.Kind kindOf(final Decl.Kind kind) {
-    return switch (kind) {
-      case CLASS -> TypeShape.Kind.CLASS;
-      case INTERFACE -> TypeShape.Kind.INTERFACE;
-      case ENUM -> TypeShape.Kind.ENUM;
-      default -> null;
-    };
-  }
-
-  private static List<TypeRef> supertypes(final Decl decl, final Lookup scope) {
-    final List<TypeRef> supertypes = new ArrayList<>();
-    for (final Ty base : bases(decl, scope)) {
-      if (base instanceof Ty.Named named && named.ref() != null && named.ref().sym() != null) {
-        supertypes.add(TypeRefs.of(base));
-      }
-    }
-    return supertypes;
-  }
-
-  private static List<Ty> bases(final Decl decl, final Lookup scope) {
-    final List<Ty> bases = new ArrayList<>();
-    for (final Ty base : decl.header().extendsTypes()) {
-      bases.add(Inst.apply(base, Map.of(), scope));
-    }
-    for (final Ty base : decl.header().implementsTypes()) {
-      bases.add(Inst.apply(base, Map.of(), scope));
-    }
-    return bases;
+    return name == null ? null : model.module().own(TreeText.text(name));
   }
 
   /** Returns the decorators of a class or member declaration. */
   List<String> decorators(final SyntaxNode node) {
     if (CLASS.equals(node.kind()) || CLASS_ELEMENT.equals(node.kind())) {
-      return MemberReader.decorators(TreeKit.child(node, DECORATORS));
+      return MemberSink.decorators(TreeKit.child(node, DECORATORS));
     }
     final SyntaxNode parent = MEMBER.equals(node.kind()) ? model.parent(node) : null;
     return parent != null && CLASS_ELEMENT.equals(parent.kind())
-        ? MemberReader.decorators(TreeKit.child(parent, DECORATORS))
+        ? MemberSink.decorators(TreeKit.child(parent, DECORATORS))
         : List.of();
   }
 
@@ -101,7 +60,7 @@ final class DeclarationFacts {
     SyntaxNode current = model.parent(node);
     while (current != null) {
       if (CLASS.equals(current.kind()) && !CLASS.equals(node.kind())) {
-        names.addAll(MemberReader.decorators(TreeKit.child(current, DECORATORS)));
+        names.addAll(MemberSink.decorators(TreeKit.child(current, DECORATORS)));
       }
       current = model.parent(current);
     }
@@ -116,10 +75,10 @@ final class DeclarationFacts {
     final List<CallTarget> found = new ArrayList<>();
     if (sym != null) {
       for (final Sym.Located located : sym.of(Decl.Kind.CLASS)) {
-        for (final Ty base : bases(located.decl(), located.scope())) {
-          final Members.Found inherited = typer.members().find(base, TreeKit.text(name));
+        for (final TsType base : ShapeFacts.bases(located.decl(), located.scope())) {
+          final Members.Found inherited = typer.members().find(base, TreeText.text(name));
           if (inherited != null) {
-            found.add(inheritedTarget(inherited, TreeKit.text(name)));
+            found.add(inheritedTarget(inherited, TreeText.text(name)));
           }
         }
       }
@@ -134,7 +93,7 @@ final class DeclarationFacts {
 
   private static CallTarget inheritedTarget(final Members.Found found, final String name) {
     final Sig sig =
-        !found.sigs().isEmpty() ? found.sigs().get(0) : new Sig(List.of(), List.of(), found.type());
+        found.sigs().isEmpty() ? new Sig(List.of(), List.of(), found.type()) : found.sigs().get(0);
     return TypeRefs.target(found.owner(), name, sig, false);
   }
 

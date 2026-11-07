@@ -10,13 +10,13 @@ final class TypeRefs {
   private TypeRefs() {}
 
   /** Returns the reference to {@code type}, or null when it is unknown. */
-  static TypeRef of(final Ty type) {
+  static TypeRef of(final TsType type) {
     if (!type.isKnown()) {
       return null;
     }
-    Ty current = type;
+    TsType current = type;
     int depth = 0;
-    while (current instanceof Ty.Arr arr) {
+    while (current instanceof TsType.Arr arr) {
       depth++;
       current = arr.element();
     }

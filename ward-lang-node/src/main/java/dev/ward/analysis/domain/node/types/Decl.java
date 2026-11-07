@@ -10,7 +10,7 @@ import java.util.List;
  * @param name the declared name
  * @param header the type parameters, heritage and signatures
  * @param members the members of an interface, class, enum or object type
- * @param type the aliased type of an alias, the type of a variable, or {@link Ty#UNKNOWN}
+ * @param type the aliased type of an alias, the type of a variable, or {@link TsType#UNKNOWN}
  * @param body the declarations of a namespace, empty for any other kind
  * @param flags {@link #EXPORTED}, {@link #ABSTRACT} and {@link #DEFAULT}
  */
@@ -19,7 +19,7 @@ public record Decl(
     String name,
     Header header,
     List<Member> members,
-    Ty type,
+    TsType type,
     List<Decl> body,
     int flags) {
   /** The declaration is exported. */
@@ -67,8 +67,8 @@ public record Decl(
    */
   public record Header(
       List<String> typeParams,
-      List<Ty> extendsTypes,
-      List<Ty> implementsTypes,
+      List<TsType> extendsTypes,
+      List<TsType> implementsTypes,
       List<Sig> calls,
       List<Sig> constructs,
       List<String> decorators) {

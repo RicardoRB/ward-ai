@@ -15,10 +15,10 @@ final class Calls {
    * @param sig the overload as declared
    * @param returns its return type with the inferred type arguments applied
    */
-  record Picked(Sig sig, Ty returns) {}
+  record Picked(Sig sig, TsType returns) {}
 
   /** Returns the first overload of {@code sigs} that accepts {@code args}. */
-  static Optional<Picked> pick(final List<Sig> sigs, final List<Ty> args) {
+  static Optional<Picked> pick(final List<Sig> sigs, final List<TsType> args) {
     for (final Sig sig : sigs) {
       if (sig.accepts(args.size()) && compatible(sig, args)) {
         return Optional.of(new Picked(sig, returns(sig, args)));
@@ -27,7 +27,7 @@ final class Calls {
     return Optional.empty();
   }
 
-  private static boolean compatible(final Sig sig, final List<Ty> args) {
+  private static boolean compatible(final Sig sig, final List<TsType> args) {
     for (int index = 0; index < args.size(); index++) {
       final Param param = parameter(sig, index);
       if (param != null && clash(param.type(), args.get(index))) {
@@ -45,64 +45,67 @@ final class Calls {
   }
 
   /** Whether both types are known primitives that differ, so the argument cannot be passed. */
-  private static boolean clash(final Ty declared, final Ty argument) {
-    final Ty expected =
-        declared instanceof Ty.Arr arr && !arr.element().isPrimitive() ? declared : declared;
+  private static boolean clash(final TsType declared, final TsType argument) {
+    final TsType expected =
+        declared instanceof TsType.Arr arr && !arr.element().isPrimitive() ? declared : declared;
     if (!expected.isPrimitive() || !Literals.widen(argument).isPrimitive()) {
       return false;
     }
     return !Literals.widen(argument).print().equals(declared.print());
   }
 
-  private static Ty returns(final Sig sig, final List<Ty> args) {
+  private static TsType returns(final Sig sig, final List<TsType> args) {
     if (sig.typeParams().isEmpty()) {
       return sig.returns();
     }
-    final Map<String, Ty> inferred = new HashMap<>();
+    final Map<String, TsType> inferred = new HashMap<>();
     for (int index = 0; index < args.size(); index++) {
       final Param param = parameter(sig, index);
       if (param != null) {
-        final Ty declared =
-            param.rest() && param.type() instanceof Ty.Arr arr ? arr.element() : param.type();
+        final TsType declared =
+            param.rest() && param.type() instanceof TsType.Arr arr ? arr.element() : param.type();
         unify(declared, args.get(index), sig.typeParams(), inferred);
       }
     }
-    sig.typeParams().forEach(name -> inferred.putIfAbsent(name, Ty.UNKNOWN));
-    return Inst.apply(sig.returns(), inferred, null);
+    sig.typeParams().forEach(name -> inferred.putIfAbsent(name, TsType.UNKNOWN));
+    return Instantiate.apply(sig.returns(), inferred, null);
   }
 
   private static void unify(
-      final Ty declared, final Ty argument, final List<String> params, final Map<String, Ty> out) {
-    if (declared instanceof Ty.Named named) {
+      final TsType declared,
+      final TsType argument,
+      final List<String> params,
+      final Map<String, TsType> out) {
+    if (declared instanceof TsType.Named named) {
       unifyNamed(named, argument, params, out);
-    } else if (declared instanceof Ty.Arr arr && argument instanceof Ty.Arr other) {
+    } else if (declared instanceof TsType.Arr arr && argument instanceof TsType.Arr other) {
       unify(arr.element(), other.element(), params, out);
-    } else if (declared instanceof Ty.Fn fn && argument instanceof Ty.Fn other) {
+    } else if (declared instanceof TsType.Fn fn && argument instanceof TsType.Fn other) {
       unify(fn.sig().returns(), other.sig().returns(), params, out);
-    } else if (declared instanceof Ty.Union union) {
+    } else if (declared instanceof TsType.Union union) {
       union.parts().stream()
-          .filter(part -> !Members.isNullish(part))
+          .filter(part -> !MemberValues.isNullish(part))
           .forEach(part -> unify(part, argument, params, out));
     }
   }
 
   private static void unifyNamed(
-      final Ty.Named named,
-      final Ty argument,
+      final TsType.Named named,
+      final TsType argument,
       final List<String> params,
-      final Map<String, Ty> out) {
+      final Map<String, TsType> out) {
     if (named.args().isEmpty() && params.contains(named.name())) {
       out.putIfAbsent(named.name(), Literals.widen(argument));
-    } else if (argument instanceof Ty.Named other && other.name().equals(named.name())) {
+    } else if (argument instanceof TsType.Named other && other.name().equals(named.name())) {
       pairwise(named.args(), other.args(), params, out);
     }
   }
 
   private static void pairwise(
-      final List<Ty> declared,
-      final List<Ty> given,
+      final List<TsType> declared,
+      final List<TsType> given,
       final List<String> params,
-      final Map<String, Ty> out) {
+      final Map<String, TsType> out) {
     for (int index = 0; index < Math.min(declared.size(), given.size()); index++) {
       unify(declared.get(index), given.get(index), params, out);
     }

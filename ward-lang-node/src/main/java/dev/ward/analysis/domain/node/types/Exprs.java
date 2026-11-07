@@ -46,7 +46,7 @@ final class Exprs {
 
   /** Returns the text of {@code node} when it is a single token, else empty. */
   static String token(final SyntaxNode node) {
-    final List<String> leaves = TreeKit.leaves(node);
+    final List<String> leaves = TreeText.leaves(node);
     return node.children().size() <= 1 && leaves.size() == 1 ? leaves.get(0) : "";
   }
 
@@ -95,14 +95,14 @@ final class Exprs {
       final String token = token(parts.get(index));
       if (".".equals(token) || "?.".equals(token)) {
         final SyntaxNode name = parts.get(index + 1);
-        return isName(name) ? TreeKit.text(name) : null;
+        return isName(name) ? TreeText.text(name) : null;
       }
     }
     return null;
   }
 
   private static boolean isName(final SyntaxNode node) {
-    final String text = TreeKit.text(node);
+    final String text = TreeText.text(node);
     return !text.isEmpty()
         && Character.isJavaIdentifierStart(text.charAt(0))
         && text.chars().allMatch(Character::isJavaIdentifierPart)

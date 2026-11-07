@@ -159,7 +159,7 @@ public final class DeclCodec {
     final String name = in.readUTF();
     final Decl.Header header = readHeader(in);
     final List<Member> members = read(in, DeclCodec::readMember);
-    final Ty type = readTy(in);
+    final TsType type = readTy(in);
     final List<Decl> body = readDecls(in);
     return new Decl(kind, name, header, members, type, body, in.readInt());
   }
@@ -222,50 +222,50 @@ public final class DeclCodec {
     return new Param(in.readUTF(), readTy(in), in.readBoolean(), in.readBoolean());
   }
 
-  private static void ty(final DataOutputStream out, final Ty type) throws IOException {
+  private static void ty(final DataOutputStream out, final TsType type) throws IOException {
     switch (type) {
-      case Ty.Named named -> {
+      case TsType.Named named -> {
         out.writeByte(NAMED);
         out.writeUTF(named.name());
         list(out, named.args(), DeclCodec::ty);
       }
-      case Ty.Union union -> tagged(out, UNION, union.parts());
-      case Ty.Inter inter -> tagged(out, INTER, inter.parts());
-      case Ty.Tuple tuple -> tagged(out, TUPLE, tuple.elements());
-      case Ty.Arr arr -> {
+      case TsType.Union union -> tagged(out, UNION, union.parts());
+      case TsType.Inter inter -> tagged(out, INTER, inter.parts());
+      case TsType.Tuple tuple -> tagged(out, TUPLE, tuple.elements());
+      case TsType.Arr arr -> {
         out.writeByte(ARR);
         ty(out, arr.element());
       }
-      case Ty.Fn fn -> {
+      case TsType.Fn fn -> {
         out.writeByte(FN);
         sig(out, fn.sig());
       }
-      case Ty.Obj obj -> {
+      case TsType.Obj obj -> {
         out.writeByte(OBJ);
         list(out, obj.members(), DeclCodec::member);
       }
-      case Ty.Typeof typeOf -> out.writeByte(UNKNOWN);
-      case Ty.Unknown unknown -> out.writeByte(UNKNOWN);
+      case TsType.Typeof typeOf -> out.writeByte(UNKNOWN);
+      case TsType.Unknown unknown -> out.writeByte(UNKNOWN);
     }
   }
 
-  private static void tagged(final DataOutputStream out, final int tag, final List<Ty> parts)
+  private static void tagged(final DataOutputStream out, final int tag, final List<TsType> parts)
       throws IOException {
     out.writeByte(tag);
     list(out, parts, DeclCodec::ty);
   }
 
-  private static Ty readTy(final DataInputStream in) throws IOException {
+  private static TsType readTy(final DataInputStream in) throws IOException {
     final int tag = in.readByte();
     return switch (tag) {
-      case NAMED -> new Ty.Named(in.readUTF(), read(in, DeclCodec::readTy), null);
-      case UNION -> new Ty.Union(read(in, DeclCodec::readTy));
-      case INTER -> new Ty.Inter(read(in, DeclCodec::readTy));
-      case TUPLE -> new Ty.Tuple(read(in, DeclCodec::readTy));
-      case ARR -> new Ty.Arr(readTy(in));
-      case FN -> new Ty.Fn(readSig(in));
-      case OBJ -> new Ty.Obj(read(in, DeclCodec::readMember));
-      default -> Ty.UNKNOWN;
+      case NAMED -> new TsType.Named(in.readUTF(), read(in, DeclCodec::readTy), null);
+      case UNION -> new TsType.Union(read(in, DeclCodec::readTy));
+      case INTER -> new TsType.Inter(read(in, DeclCodec::readTy));
+      case TUPLE -> new TsType.Tuple(read(in, DeclCodec::readTy));
+      case ARR -> new TsType.Arr(readTy(in));
+      case FN -> new TsType.Fn(readSig(in));
+      case OBJ -> new TsType.Obj(read(in, DeclCodec::readMember));
+      default -> TsType.UNKNOWN;
     };
   }
 }

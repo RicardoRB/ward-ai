@@ -14,10 +14,10 @@ final class Literals {
   private Literals() {}
 
   /** Returns the type of a {@code literal} node, or empty if it is not a simple literal. */
-  static Optional<Ty> of(final SyntaxNode literal) {
-    final List<String> tokens = TreeKit.leaves(literal);
+  static Optional<TsType> of(final SyntaxNode literal) {
+    final List<String> tokens = TreeText.leaves(literal);
     if (tokens.size() != 1) {
-      return Optional.of(Ty.named(STRING)).filter(ignored -> isTemplate(tokens));
+      return Optional.of(TsType.named(STRING)).filter(ignored -> isTemplate(tokens));
     }
     final String token = tokens.get(0);
     return Optional.of(typeOfToken(token, literal));
@@ -27,43 +27,43 @@ final class Literals {
     return !tokens.isEmpty() && tokens.get(0).startsWith("`");
   }
 
-  private static Ty typeOfToken(final String token, final SyntaxNode literal) {
+  private static TsType typeOfToken(final String token, final SyntaxNode literal) {
     if (token.startsWith("\"") || token.startsWith("'")) {
-      return Ty.named("\"" + TreeKit.unquote(token) + "\"");
+      return TsType.named("\"" + TreeText.unquote(token) + "\"");
     }
     return switch (token) {
-      case "true", "false", "null" -> Ty.named(token);
+      case "true", "false", "null" -> TsType.named(token);
       default -> numeric(token, literal);
     };
   }
 
-  private static Ty numeric(final String token, final SyntaxNode literal) {
+  private static TsType numeric(final String token, final SyntaxNode literal) {
     if (token.startsWith("/")) {
-      return Ty.named("RegExp");
+      return TsType.named("RegExp");
     }
     if (token.endsWith("n") && !token.startsWith("0x") || "bigintLiteral".equals(literal.kind())) {
-      return Ty.named(BIGINT);
+      return TsType.named(BIGINT);
     }
-    return Ty.named(token);
+    return TsType.named(token);
   }
 
   /** Returns the type with literal types widened to their primitive. */
-  static Ty widen(final Ty type) {
-    if (type instanceof Ty.Named named && named.args().isEmpty()) {
+  static TsType widen(final TsType type) {
+    if (type instanceof TsType.Named named && named.args().isEmpty()) {
       final String name = named.name();
       if (name.startsWith("\"")) {
-        return Ty.named(STRING);
+        return TsType.named(STRING);
       }
       if ("true".equals(name) || "false".equals(name)) {
-        return Ty.named(BOOLEAN);
+        return TsType.named(BOOLEAN);
       }
       if (!name.isEmpty() && (Character.isDigit(name.charAt(0)) || name.charAt(0) == '-')) {
-        return Ty.named(NUMBER);
+        return TsType.named(NUMBER);
       }
       return type;
     }
-    if (type instanceof Ty.Union union) {
-      return new Ty.Union(union.parts().stream().map(Literals::widen).toList());
+    if (type instanceof TsType.Union union) {
+      return new TsType.Union(union.parts().stream().map(Literals::widen).toList());
     }
     return type;
   }

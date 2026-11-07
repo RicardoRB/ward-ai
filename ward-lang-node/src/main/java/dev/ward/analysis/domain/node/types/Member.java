@@ -12,7 +12,7 @@ import java.util.List;
  * @param flags what the member declares
  * @param decorators the decorator names, without {@code @}
  */
-public record Member(String name, Ty type, List<Sig> sigs, int flags, List<String> decorators) {
+public record Member(String name, TsType type, List<Sig> sigs, int flags, List<String> decorators) {
   /** The member is optional ({@code ?}). */
   public static final int OPTIONAL = 1;
 

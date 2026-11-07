@@ -3,18 +3,18 @@ package dev.ward.analysis.domain.node.types;
 import java.util.concurrent.atomic.AtomicReference;
 
 /** A name bound to the scope it resolves in. The declarations are looked up on first use. */
-public final class Ref {
+public final class NameRef {
   private final Lookup scope;
   private final String name;
   private final AtomicReference<Sym> resolved = new AtomicReference<>();
   private volatile boolean done;
 
-  Ref(final Lookup scope, final String name) {
+  NameRef(final Lookup scope, final String name) {
     this.scope = scope;
     this.name = name;
   }
 
-  Ref(final Sym sym, final String name) {
+  NameRef(final Sym sym, final String name) {
     this.scope = null;
     this.name = name;
     this.resolved.set(sym);

@@ -50,12 +50,8 @@ final class Module implements Lookup {
     byName.forEach((name, list) -> declared.put(name, Sym.of(list, this)));
   }
 
-  String path() {
-    return path;
-  }
-
-  FileDecls file() {
-    return file;
+  List<Decl> decls() {
+    return decls;
   }
 
   @Override
@@ -90,22 +86,12 @@ final class Module implements Lookup {
         return null;
       }
       return STAR.equals(origin.member())
-          ? new Sym(List.of(new Sym.Located(namespaceOf(origin.specifier(), target), target)))
+          ? new Sym(
+              List.of(new Sym.Located(ModuleSyms.namespaceOf(origin.specifier(), target), target)))
           : target.exported(origin.member());
     } finally {
       resolving.remove(name);
     }
-  }
-
-  private static Decl namespaceOf(final String specifier, final Module target) {
-    return new Decl(
-        Decl.Kind.NAMESPACE,
-        specifier,
-        Decl.Header.NONE,
-        List.of(),
-        Ty.UNKNOWN,
-        target.decls,
-        Decl.MODULE);
   }
 
   @Override
@@ -123,7 +109,7 @@ final class Module implements Lookup {
   private Sym exportedOnce(final String name) {
     Sym found = explicit(name);
     for (final FileDecls.Export export : file.exports()) {
-      found = join(found, fromClause(export, name));
+      found = ModuleSyms.join(found, fromClause(export, name));
     }
     return found;
   }
@@ -148,7 +134,7 @@ final class Module implements Lookup {
       return assignment(export.local(), name);
     }
     if (export.specifier().isEmpty()) {
-      return export.exported().equals(name) ? declaredOrImported(export.local()) : null;
+      return export.exported().equals(name) ? find(export.local()) : null;
     }
     final Module target = program.moduleFor(path, export.specifier());
     if (target == null) {
@@ -156,22 +142,10 @@ final class Module implements Lookup {
     }
     if (STAR.equals(export.local())) {
       return export.exported().equals(name)
-          ? namespaceSym(export.specifier(), target)
-          : starExport(export, target, name);
+          ? ModuleSyms.namespaceSym(export.specifier(), target)
+          : ModuleSyms.starExport(export, target, name);
     }
     return export.exported().equals(name) ? target.exported(export.local()) : null;
-  }
-
-  private Sym starExport(final FileDecls.Export export, final Module target, final String name) {
-    return STAR.equals(export.exported()) && !DEFAULT.equals(name) ? target.exported(name) : null;
-  }
-
-  private static Sym namespaceSym(final String specifier, final Module target) {
-    return new Sym(List.of(new Sym.Located(namespaceOf(specifier, target), target)));
-  }
-
-  private Sym declaredOrImported(final String local) {
-    return find(local);
   }
 
   /** {@code export = x}: the module is {@code x}, whose namespace members are the exports. */
@@ -184,12 +158,5 @@ final class Module implements Lookup {
       return target;
     }
     return Names.member(target, name);
-  }
-
-  private static Sym join(final Sym first, final Sym second) {
-    if (first == null) {
-      return second;
-    }
-    return second == null ? first : first.join(second);
   }
 }

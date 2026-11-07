@@ -7,9 +7,9 @@ import java.util.List;
  *
  * @param typeParams the names of its own type parameters
  * @param params the parameters in order
- * @param returns the declared return type, or {@link Ty#UNKNOWN}
+ * @param returns the declared return type, or {@link TsType#UNKNOWN}
  */
-public record Sig(List<String> typeParams, List<Param> params, Ty returns) {
+public record Sig(List<String> typeParams, List<Param> params, TsType returns) {
 
   /** Copies the lists. */
   public Sig {

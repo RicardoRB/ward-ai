@@ -83,13 +83,16 @@ final class FactBuilder {
       return TypeRefs.of(typer.typeOf(node));
     }
     if ("variableDeclaration".equals(node.kind())) {
-      return Optional.ofNullable(siteOf(node)).map(typer::variable).map(TypeRefs::of).orElse(null);
+      return Optional.ofNullable(siteOf(node))
+          .map(typer.names()::variable)
+          .map(TypeRefs::of)
+          .orElse(null);
     }
     return null;
   }
 
   private UnitModel.Site siteOf(final SyntaxNode declaration) {
-    final SyntaxNode identifier = TreeKit.variableName(declaration);
+    final SyntaxNode identifier = TreeText.variableName(declaration);
     return identifier == null ? null : model.site(identifier.span());
   }
 
@@ -104,7 +107,7 @@ final class FactBuilder {
     final boolean constructs = "new".equals(Exprs.token(parts.get(0)));
     final Optional<CallTyper.Call> resolved =
         constructs
-            ? typer.calls().constructed(node)
+            ? typer.constructs().constructed(node)
             : typer.calls().isCall(parts) ? typer.calls().call(node) : Optional.empty();
     return resolved
         .map(call -> TypeRefs.target(ownerName(call), call.name(), call.sig(), call.isStatic()))
@@ -116,37 +119,6 @@ final class FactBuilder {
   }
 
   private ConstantValue constant(final SyntaxNode node) {
-    if (!Exprs.isExpression(node.kind())) {
-      return null;
-    }
-    final Ty type = typer.typeOf(node);
-    if (!(type instanceof Ty.Named named) || !named.args().isEmpty()) {
-      return null;
-    }
-    final String name = named.name();
-    if (name.startsWith("\"")) {
-      return new ConstantValue(name.substring(1, name.length() - 1));
-    }
-    if ("true".equals(name) || "false".equals(name)) {
-      return new ConstantValue(Boolean.parseBoolean(name));
-    }
-    return number(name);
-  }
-
-  private static ConstantValue number(final String text) {
-    final String cleaned = text.replace("_", "");
-    try {
-      if (cleaned.matches("-?\\d+")) {
-        return new ConstantValue(Long.parseLong(cleaned));
-      }
-      if (cleaned.matches("-?0[xX][0-9a-fA-F]+")) {
-        return new ConstantValue(Long.decode(cleaned));
-      }
-      return cleaned.matches("-?(\\d+\\.?\\d*|\\.\\d+)([eE][+-]?\\d+)?")
-          ? new ConstantValue(Double.parseDouble(cleaned))
-          : null;
-    } catch (NumberFormatException overflow) {
-      return null;
-    }
+    return Exprs.isExpression(node.kind()) ? ConstantFacts.of(typer.typeOf(node)) : null;
   }
 }

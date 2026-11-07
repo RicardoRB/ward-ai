@@ -14,31 +14,31 @@ final class SimpleInit {
   private SimpleInit() {}
 
   /** Returns the type of {@code expression}, keeping literal types when {@code keepLiteral}. */
-  static Ty of(final SyntaxNode expression, final boolean keepLiteral) {
+  static TsType of(final SyntaxNode expression, final boolean keepLiteral) {
     if (expression == null) {
-      return Ty.UNKNOWN;
+      return TsType.UNKNOWN;
     }
     final SyntaxNode literal = TreeKit.child(expression, "literal");
     if (literal != null) {
-      final Ty type = Literals.of(literal).orElse(Ty.UNKNOWN);
+      final TsType type = Literals.of(literal).orElse(TsType.UNKNOWN);
       return keepLiteral ? type : Literals.widen(type);
     }
     final List<SyntaxNode> parts = TreeKit.parts(expression);
-    if (parts.size() >= 2 && "new".equals(TreeKit.text(parts.get(0)))) {
+    if (parts.size() >= 2 && "new".equals(TreeText.text(parts.get(0)))) {
       return newed(parts.get(1));
     }
-    return Ty.UNKNOWN;
+    return TsType.UNKNOWN;
   }
 
-  private static Ty newed(final SyntaxNode target) {
+  private static TsType newed(final SyntaxNode target) {
     final List<SyntaxNode> parts = TreeKit.parts(target);
     if (parts.size() != 1) {
-      return Ty.UNKNOWN;
+      return TsType.UNKNOWN;
     }
     final SyntaxNode only = parts.get(0);
     if ("identifierName".equals(only.kind())) {
-      return Ty.named(TreeKit.text(only));
+      return TsType.named(TreeText.text(only));
     }
-    return SINGLE_EXPRESSION.equals(only.kind()) ? newed(only) : Ty.UNKNOWN;
+    return SINGLE_EXPRESSION.equals(only.kind()) ? newed(only) : TsType.UNKNOWN;
   }
 }

@@ -12,8 +12,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The declarations a project can see: its own files, the declaration files of the packages it
@@ -23,17 +21,13 @@ import java.util.regex.Pattern;
 public final class Program {
   private static final Logger LOGGER = Logger.getLogger(Program.class.getName());
   private static final String NODE_MODULES = "node_modules";
-  private static final Pattern ENTRY_FIELD =
-      Pattern.compile("\"(?:types|typings)\"\\s*:\\s*\"([^\"]+)\"");
-  private static final Pattern MAIN_FIELD = Pattern.compile("\"main\"\\s*:\\s*\"([^\"]+)\"");
-  private static final List<String> SUFFIXES =
-      List.of(".d.ts", ".ts", ".tsx", "/index.d.ts", "/index.ts", ".d.mts", ".d.cts");
 
   private final DeclarationFiles files;
   private final DeclarationCache cache;
   private final LanguageFrontend frontend;
   private final BiFunction<String, String, Optional<String>> projectResolver;
   private final Globals globals;
+  private final PackageLocator locator;
   private final ReentrantLock lock = new ReentrantLock();
   private final Map<String, FileDecls> parsed = new HashMap<>();
   private final Map<String, Module> modules = new HashMap<>();
@@ -58,6 +52,7 @@ public final class Program {
     this.cache = cache;
     this.frontend = frontend;
     this.projectResolver = projectResolver;
+    this.locator = new PackageLocator(files);
     this.globals =
         new Globals(
             this,
@@ -70,21 +65,8 @@ public final class Program {
     return globals;
   }
 
-  boolean exists(final String path) {
-    return files.exists(path);
-  }
-
-  Optional<String> read(final String path) {
-    return files.read(path);
-  }
-
-  List<String> list(final String directory) {
-    return files.list(directory);
-  }
-
-  /** Returns the name of the {@code @types} directory of a package. */
-  static String typesName(final String packageName) {
-    return packageName.startsWith("@") ? packageName.substring(1).replace("/", "__") : packageName;
+  DeclarationFiles files() {
+    return files;
   }
 
   /** Returns the index of the file at {@code path}, which is empty when the file is unreadable. */
@@ -181,9 +163,9 @@ public final class Program {
       return fileModule(inProject.get());
     }
     if (relative) {
-      return relativeDeclaration(from, specifier);
+      return locator.relative(from, specifier).map(this::fileModule).orElse(null);
     }
-    final Optional<String> installed = installed(from, specifier);
+    final Optional<String> installed = locator.installed(from, specifier);
     return installed.isPresent()
         ? fileModule(installed.get())
         : globals.ambientModule(bare(specifier));
@@ -191,79 +173,5 @@ public final class Program {
 
   private static String bare(final String specifier) {
     return specifier.startsWith("node:") ? specifier.substring("node:".length()) : specifier;
-  }
-
-  private Module relativeDeclaration(final String from, final String specifier) {
-    final String directory = from.contains("/") ? from.substring(0, from.lastIndexOf('/') + 1) : "";
-    final String base = Paths.normalize(directory + specifier);
-    return firstExisting(base).map(this::fileModule).orElse(null);
-  }
-
-  private Optional<String> firstExisting(final String base) {
-    if (files.exists(base) && base.matches(".*\\.[cm]?[jt]sx?$")) {
-      return Optional.of(base);
-    }
-    for (final String suffix : SUFFIXES) {
-      if (files.exists(base + suffix)) {
-        return Optional.of(base + suffix);
-      }
-    }
-    return Optional.empty();
-  }
-
-  /** Finds the declaration file of a package under the nearest {@code node_modules}. */
-  private Optional<String> installed(final String from, final String specifier) {
-    final String[] segments = specifier.split("/");
-    final int length = specifier.startsWith("@") ? 2 : 1;
-    if (segments.length < length) {
-      return Optional.empty();
-    }
-    final String name = String.join("/", List.of(segments).subList(0, length));
-    final String subpath = String.join("/", List.of(segments).subList(length, segments.length));
-    String directory = from.contains("/") ? from.substring(0, from.lastIndexOf('/')) : "";
-    while (true) {
-      final String root = directory.isEmpty() ? NODE_MODULES : directory + "/" + NODE_MODULES;
-      final Optional<String> own = entry(root + "/" + name, subpath);
-      if (own.isPresent()) {
-        return own;
-      }
-      final Optional<String> types = entry(root + "/@types/" + typesName(name), subpath);
-      if (types.isPresent()) {
-        return types;
-      }
-      if (directory.isEmpty()) {
-        return Optional.empty();
-      }
-      directory = directory.contains("/") ? directory.substring(0, directory.lastIndexOf('/')) : "";
-    }
-  }
-
-  private Optional<String> entry(final String packageDirectory, final String subpath) {
-    if (!files.exists(packageDirectory + "/package.json")
-        && !files.exists(packageDirectory + "/index.d.ts")
-        && subpath.isEmpty()) {
-      return Optional.empty();
-    }
-    if (!subpath.isEmpty()) {
-      return firstExisting(packageDirectory + "/" + subpath);
-    }
-    final String manifest = files.read(packageDirectory + "/package.json").orElse("");
-    final Matcher types = ENTRY_FIELD.matcher(manifest);
-    if (types.find()) {
-      final String named = Paths.normalize(packageDirectory + "/" + types.group(1));
-      if (files.exists(named)) {
-        return Optional.of(named);
-      }
-    }
-    final Matcher main = MAIN_FIELD.matcher(manifest);
-    if (main.find()) {
-      final String stem =
-          Paths.normalize(packageDirectory + "/" + main.group(1)).replaceAll("\\.[cm]?jsx?$", "");
-      final Optional<String> declared = firstExisting(stem);
-      if (declared.isPresent()) {
-        return declared;
-      }
-    }
-    return firstExisting(packageDirectory + "/index");
   }
 }

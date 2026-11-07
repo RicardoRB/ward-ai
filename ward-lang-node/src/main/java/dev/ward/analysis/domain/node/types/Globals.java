@@ -112,14 +112,14 @@ final class Globals implements Lookup {
         switch (kind) {
           case "lib" -> TYPESCRIPT_LIB + "lib." + value + ".d.ts";
           case "path" -> Paths.normalize(directory + value);
-          default -> typesEntry(TYPES_ROOT + "/" + Program.typesName(value));
+          default -> typesEntry(TYPES_ROOT + "/" + PackageLocator.typesName(value));
         };
-    return program.exists(candidate) ? Optional.of(candidate) : Optional.empty();
+    return program.files().exists(candidate) ? Optional.of(candidate) : Optional.empty();
   }
 
   private List<String> libraryEntries() {
     for (final String entry : LIB_ENTRIES) {
-      if (program.exists(TYPESCRIPT_LIB + entry)) {
+      if (program.files().exists(TYPESCRIPT_LIB + entry)) {
         return List.of(TYPESCRIPT_LIB + entry);
       }
     }
@@ -127,16 +127,16 @@ final class Globals implements Lookup {
   }
 
   private List<String> typesEntries() {
-    return program.list(TYPES_ROOT).stream()
+    return program.files().list(TYPES_ROOT).stream()
         .sorted()
         .map(name -> typesEntry(TYPES_ROOT + "/" + name))
-        .filter(program::exists)
+        .filter(program.files()::exists)
         .toList();
   }
 
   /** Returns the declaration file that the package at {@code directory} names as its types. */
   String typesEntry(final String directory) {
-    final String manifest = program.read(directory + "/package.json").orElse("");
+    final String manifest = program.files().read(directory + "/package.json").orElse("");
     final Matcher matcher = TYPES_FIELD.matcher(manifest);
     final String field = matcher.find() ? matcher.group(1) : "index.d.ts";
     return Paths.normalize(directory + "/" + field);
