@@ -969,3 +969,31 @@ kinds = ["ifStatement", "iterationStatement", "singleExpression"]
 text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
 message = "unexpected constant condition"
 '''
+
+[[rules]]
+id = "ward:typescript/no-template-curly-in-string"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-template-curly-in-string"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''

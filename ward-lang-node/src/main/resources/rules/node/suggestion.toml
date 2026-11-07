@@ -1073,3 +1073,87 @@ kinds = ["typeReference"]
 text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
 message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
 '''
+
+[[rules]]
+id = "ward:typescript/no-sequences"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionSequence>','"]
+parent = ["expressionStatement", "returnStatement", "ifStatement"]
+message = "unexpected comma operator"
+'''
+
+[[rules]]
+id = "ward:typescript/radix"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression", "variableDeclaration"]
+text = '^(Number\.)?parseInt\([^,]*\)$'
+message = "missing radix parameter"
+'''
+
+[[rules]]
+id = "ward:typescript/no-implied-eval"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression", "variableDeclaration"]
+text = '^(window\.|globalThis\.)?(setTimeout|setInterval|setImmediate)\(("|\x27|\x60)'
+message = "implied eval; pass a function instead of a string"
+'''
+
+[[rules]]
+id = "ward:javascript/no-sequences"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionSequence>','"]
+parent = ["expressionStatement", "returnStatement", "ifStatement"]
+message = "unexpected comma operator"
+'''
+
+[[rules]]
+id = "ward:javascript/radix"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(Number\.)?parseInt\([^,]*\)$'
+message = "missing radix parameter"
+'''
+
+[[rules]]
+id = "ward:javascript/no-implied-eval"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.|globalThis\.)?(setTimeout|setInterval|setImmediate)\(("|\x27|\x60)'
+message = "implied eval; pass a function instead of a string"
+'''

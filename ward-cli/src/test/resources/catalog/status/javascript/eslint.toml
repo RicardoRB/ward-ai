@@ -69,7 +69,7 @@ no-func-assign = "implemented"
 no-global-assign = "implemented"
 no-implicit-coercion = { status = "planned", issue = "#296" }
 no-implicit-globals = { status = "planned", issue = "#326" }
-no-implied-eval = { status = "planned", issue = "#326" }
+no-implied-eval = "implemented"
 no-import-assign = "implemented"
 no-inner-declarations = { status = "planned", issue = "#326" }
 no-invalid-regexp = { status = "planned", issue = "#326" }
@@ -109,11 +109,11 @@ no-return-assign = { status = "planned", issue = "#326" }
 no-script-url = "implemented"
 no-self-assign = "implemented"
 no-self-compare = "implemented"
-no-sequences = { status = "planned", issue = "#326" }
+no-sequences = "implemented"
 no-setter-return = { status = "planned", issue = "#326" }
 no-shadow-restricted-names = "implemented"
 no-sparse-arrays = "implemented"
-no-template-curly-in-string = { status = "planned", issue = "#326" }
+no-template-curly-in-string = "implemented"
 no-this-before-super = { status = "planned", issue = "#326" }
 no-throw-literal = "implemented"
 no-unassigned-vars = { status = "planned", issue = "#326" }
@@ -161,7 +161,7 @@ prefer-rest-params = { status = "planned", issue = "#326" }
 prefer-spread = "implemented"
 prefer-template = { status = "planned", issue = "#296" }
 preserve-caught-error = { status = "planned", issue = "#326" }
-radix = { status = "planned", issue = "#326" }
+radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }
 require-await = { status = "planned", issue = "#326" }
 require-unicode-regexp = { status = "planned", issue = "#296" }
