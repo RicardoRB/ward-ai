@@ -2,6 +2,7 @@
 
 [[rule]]
 name = "unused-attribute"
+not-applicable = { java = "vulture V101 checks Python attributes; Java and Kotlin unused members are covered by the dead-code rows", kotlin = "vulture V101 checks Python attributes; Java and Kotlin unused members are covered by the dead-code rows" }
 presets = ["standard", "strict"]
 category = "correctness"
 vulture = ["V101"]

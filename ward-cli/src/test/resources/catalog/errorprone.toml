@@ -662,6 +662,7 @@ errorprone = ["DefaultCharset"]
 
 [[rule]]
 name = "default-locale"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
 presets = ["strict"]
 category = "severity-warning"
 errorprone = ["DefaultLocale"]
@@ -2069,6 +2070,7 @@ errorprone = ["MissingSummary"]
 
 [[rule]]
 name = "missing-super-call"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
 presets = ["standard", "strict"]
 category = "severity-error"
 errorprone = ["MissingSuperCall"]
@@ -2825,6 +2827,7 @@ errorprone = ["RequiredModifiers"]
 
 [[rule]]
 name = "restricted-api"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
 presets = ["standard", "strict"]
 category = "severity-error"
 errorprone = ["RestrictedApi"]
