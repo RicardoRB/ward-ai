@@ -120,13 +120,13 @@ final class NodeImportScan {
     final SyntaxNode local =
         binding != null ? NodeLeaves.of(binding).get(0) : exported.get(exported.size() - 1);
     final boolean itemTypeOnly = typeOnly || NodeLeaves.hasChild(item, TYPE_ONLY);
-    bindings.add(
-        new Binding(
-            local,
-            NodeTokens.unquote(NodeLeaves.text(exported.get(0))),
-            specifier,
-            itemTypeOnly,
-            site));
+    bindings.add(new Binding(local, memberName(exported.get(0)), specifier, itemTypeOnly, site));
+  }
+
+  /** The imported name: an identifier as written, or a string name without its quotes. */
+  private static String memberName(final SyntaxNode name) {
+    final String text = NodeLeaves.text(name);
+    return STRING.equals(name.kind()) ? NodeTokens.unquote(text) : text;
   }
 
   /** The module string: a direct child of the block, or of its {@code from} clause. */
