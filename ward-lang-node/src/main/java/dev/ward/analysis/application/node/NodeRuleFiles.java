@@ -10,7 +10,10 @@ import java.util.List;
 public final class NodeRuleFiles implements RuleFileProvider {
 
   private static final List<String> FILES =
-      List.of("dev/ward/analysis/lang/node/rules.toml", "rules/duplication-node.toml");
+      List.of(
+          "dev/ward/analysis/lang/node/rules.toml",
+          "rules/duplication-node.toml",
+          "rules/node/eslint-accessors.toml");
 
   @Override
   public List<String> ruleFiles() {

@@ -21,6 +21,10 @@ enum GenericKind {
       "forbidden-node",
       List.of("text", "with-child", "parent"),
       List.of(option("text", RuleOptionType.REGEX))),
+  FORBIDDEN_DESCENDANT(
+      "forbidden-descendant",
+      List.of("descendant", "skip", "text"),
+      List.of(option("text", RuleOptionType.REGEX))),
   REQUIRED_NODE("required-node", List.of("child", "descendant", "skip", "sibling"), List.of()),
   COUNT("count", List.of("counted", "skip", "max"), List.of(option("max", RuleOptionType.INTEGER))),
   DEPTH("depth", List.of("reset", "max"), List.of(option("max", RuleOptionType.INTEGER))),

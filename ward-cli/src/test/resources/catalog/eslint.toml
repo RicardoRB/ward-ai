@@ -125,9 +125,7 @@ biome = ["useConsistentFunctionStyle"]
 
 [[rule]]
 name = "getter-return"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["getter-return"]
 biome = ["useGetterReturn"]
 
@@ -798,9 +796,7 @@ biome = ["noCommaOperator"]
 
 [[rule]]
 name = "no-setter-return"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-setter-return"]
 biome = ["noSetterReturn"]
 
@@ -942,9 +938,7 @@ biome = ["noUnusedExpressions"]
 
 [[rule]]
 name = "no-unused-labels"
-category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-unused-labels"]
 biome = ["noUnusedLabels"]
 

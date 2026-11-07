@@ -1,0 +1,85 @@
+[[rules]]
+id = "ward:typescript/getter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["getAccessor"]
+descendant = ["returnStatement"]
+skip = ["anonymousFunction", "functionDeclaration", "classDeclaration"]
+message = "a getter must return a value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-setter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-descendant"
+kinds = ["setAccessor"]
+descendant = ["returnStatement"]
+skip = ["anonymousFunction", "functionDeclaration", "classDeclaration"]
+text = '^return[^;]'
+message = "a setter must not return a value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-labels"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-node-label"
+message = "'{value}' is defined but never used"
+'''
+
+[[rules]]
+id = "ward:javascript/getter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["methodDefinition>getter", "propertyAssignment>getter"]
+descendant = ["returnStatement"]
+skip = ["anonymousFunction", "functionDeclaration", "classDeclaration"]
+message = "a getter must return a value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-setter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-descendant"
+kinds = ["methodDefinition>setter", "propertyAssignment>setter"]
+descendant = ["returnStatement"]
+skip = ["anonymousFunction", "functionDeclaration", "classDeclaration"]
+text = '^return[^;]'
+message = "a setter must not return a value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-labels"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-node-label"
+message = "'{value}' is defined but never used"
+'''

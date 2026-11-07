@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.CountCheck;
 import dev.ward.analysis.domain.rule.check.DepthCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateCheck;
+import dev.ward.analysis.domain.rule.check.ForbiddenDescendantCheck;
 import dev.ward.analysis.domain.rule.check.ForbiddenNodeCheck;
 import dev.ward.analysis.domain.rule.check.IdentifierPatternCheck;
 import dev.ward.analysis.domain.rule.check.LiteralCheck;
@@ -59,6 +60,13 @@ final class GenericChecks {
               TomlValues.required(toml, PATTERN),
               message);
       case FORBIDDEN_NODE -> new ForbiddenNodeCheck(filter, condition(toml), message);
+      case FORBIDDEN_DESCENDANT ->
+          new ForbiddenDescendantCheck(
+              filter,
+              TomlValues.strings(toml, "descendant"),
+              TomlValues.optionalStrings(toml, SKIP),
+              Optional.ofNullable(toml.getString("text")).map(Pattern::compile),
+              message);
       case REQUIRED_NODE -> new RequiredNodeCheck(filter, requirement(toml), message);
       case ORDER -> order(filter, toml, message);
       case DUPLICATE ->
