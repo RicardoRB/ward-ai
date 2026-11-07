@@ -284,10 +284,10 @@ description: Rules of the catalog file ruff and their counterparts.
 | `repeated-global` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB154` |
 | `hardcoded-string-charset` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB156` |
 | `verbose-decimal-constructor` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB157` |
-| `bit-count` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB161` |
-| `fromisoformat-replace-z` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB162` |
-| `redundant-log-base` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB163` |
-| `unnecessary-from-float` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB164` |
+| `bit-count` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB161` |
+| `fromisoformat-replace-z` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB162` |
+| `redundant-log-base` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB163` |
+| `unnecessary-from-float` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB164` |
 | `int-on-sliced-str` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB166` |
 | `regex-flag-alias` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB167` |
 | `isinstance-type-none` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB168` |
@@ -299,7 +299,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `list-reverse-copy` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB187` |
 | `slice-to-remove-prefix-or-suffix` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB188` |
 | `subclass-builtin` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB189` |
-| `sorted-min-max` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB192` |
+| `sorted-min-max` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB192` |
 | `logging-string-format` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G001` |
 | `logging-percent-format` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G002` |
 | `logging-string-concat` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G003` |
@@ -965,6 +965,11 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
 | `ward:python/undefined-name` | coding | standard, strict | none | Ruff `F821` |
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
+| `ward:python/bit-count` | coding | strict | none | Ruff `FURB161` |
+| `ward:python/fromisoformat-replace-z` | coding | strict | none | Ruff `FURB162` |
+| `ward:python/redundant-log-base` | coding | strict | none | Ruff `FURB163` |
+| `ward:python/unnecessary-from-float` | coding | strict | none | Ruff `FURB164` |
+| `ward:python/sorted-min-max` | coding | strict | none | Ruff `FURB192` |
 | `ward:python/duplicate-bases` | coding | strict | none | Ruff `PLE0241`; Pylint `duplicate-bases` |
 | `ward:python/invalid-all-format` | coding | strict | none | Ruff `PLE0605`; Pylint `invalid-all-format` |
 | `ward:python/misplaced-bare-raise` | coding | strict | none | Ruff `PLE0704`; Pylint `misplaced-bare-raise` |
