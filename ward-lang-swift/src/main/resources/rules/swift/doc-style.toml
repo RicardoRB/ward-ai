@@ -1,0 +1,14 @@
+# Documentation rules for Swift, the standard preset's Checkstyle JavadocMethod. A documented
+# function must document each parameter, its return value and its thrown errors.
+
+[[rules]]
+id = "ward:swift/javadoc-method"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-method"
+message = "documentation of the function has no {value} tag"
+'''
