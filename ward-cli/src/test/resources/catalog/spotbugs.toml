@@ -20,14 +20,10 @@ spotbugs = ["AM_CREATES_EMPTY_ZIP_FILE_ENTRY"]
 
 [[rule]]
 name = "ase-assertion-with-side-effect"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT"]
 
 [[rule]]
 name = "ase-assertion-with-side-effect-method"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT_METHOD"]
 
 [[rule]]
@@ -303,8 +299,6 @@ spotbugs = ["CWO_CLOSED_WITHOUT_OPENED"]
 
 [[rule]]
 name = "db-duplicate-branches"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DB_DUPLICATE_BRANCHES"]
 
 [[rule]]
@@ -315,8 +309,6 @@ spotbugs = ["DB_DUPLICATE_SWITCH_CLAUSES"]
 
 [[rule]]
 name = "dcn-nullpointer-exception"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DCN_NULLPOINTER_EXCEPTION"]
 
 [[rule]]
@@ -460,8 +452,6 @@ spotbugs = ["DMI_COLLECTION_OF_URLS"]
 
 [[rule]]
 name = "dmi-constant-db-password"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
 
 [[rule]]
@@ -472,8 +462,6 @@ spotbugs = ["DMI_DOH"]
 
 [[rule]]
 name = "dmi-empty-db-password"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["DMI_EMPTY_DB_PASSWORD"]
 
 [[rule]]
@@ -490,8 +478,6 @@ spotbugs = ["DMI_FUTILE_ATTEMPT_TO_CHANGE_MAXPOOL_SIZE_OF_SCHEDULED_THREAD_POOL_
 
 [[rule]]
 name = "dmi-hardcoded-absolute-filename"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_HARDCODED_ABSOLUTE_FILENAME"]
 
 [[rule]]
@@ -552,8 +538,6 @@ spotbugs = ["DMI_UNSUPPORTED_METHOD"]
 
 [[rule]]
 name = "dmi-useless-substring"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_USELESS_SUBSTRING"]
 
 [[rule]]
@@ -599,14 +583,10 @@ spotbugs = ["DM_BOXED_PRIMITIVE_TOSTRING"]
 
 [[rule]]
 name = "dm-convert-case"
-presets = ["standard", "strict"]
-category = "i18-n"
 spotbugs = ["DM_CONVERT_CASE"]
 
 [[rule]]
 name = "dm-default-encoding"
-presets = ["standard", "strict"]
-category = "i18-n"
 spotbugs = ["DM_DEFAULT_ENCODING"]
 
 [[rule]]
@@ -1019,14 +999,10 @@ spotbugs = ["HE_USE_OF_UNHASHABLE_CLASS"]
 
 [[rule]]
 name = "hrs-request-parameter-to-cookie"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["HRS_REQUEST_PARAMETER_TO_COOKIE"]
 
 [[rule]]
 name = "hrs-request-parameter-to-http-header"
-presets = ["standard", "strict"]
-category = "security"
 spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
 
 [[rule]]
@@ -1085,8 +1061,6 @@ spotbugs = ["ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND"]
 
 [[rule]]
 name = "icast-questionable-unsigned-right-shift"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT"]
 
 [[rule]]
@@ -1204,8 +1178,6 @@ spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
 
 [[rule]]
 name = "im-bad-check-for-odd"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["IM_BAD_CHECK_FOR_ODD"]
 
 [[rule]]
@@ -1233,14 +1205,10 @@ spotbugs = ["INT_BAD_COMPARISON_WITH_SIGNED_BYTE"]
 
 [[rule]]
 name = "int-bad-rem-by-1"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["INT_BAD_REM_BY_1"]
 
 [[rule]]
 name = "int-vacuous-bit-operation"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["INT_VACUOUS_BIT_OPERATION"]
 
 [[rule]]
@@ -1436,26 +1404,18 @@ spotbugs = ["MS_FINAL_PKGPROTECT"]
 
 [[rule]]
 name = "ms-mutable-array"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_MUTABLE_ARRAY"]
 
 [[rule]]
 name = "ms-mutable-collection"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_MUTABLE_COLLECTION"]
 
 [[rule]]
 name = "ms-mutable-collection-pkgprotect"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_MUTABLE_COLLECTION_PKGPROTECT"]
 
 [[rule]]
 name = "ms-mutable-hashtable"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_MUTABLE_HASHTABLE"]
 
 [[rule]]
@@ -1466,8 +1426,6 @@ spotbugs = ["MS_OOI_PKGPROTECT"]
 
 [[rule]]
 name = "ms-pkgprotect"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_PKGPROTECT"]
 
 [[rule]]
@@ -1703,8 +1661,6 @@ spotbugs = ["NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH"]
 
 [[rule]]
 name = "np-immediate-dereference-of-readline"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_IMMEDIATE_DEREFERENCE_OF_READLINE"]
 
 [[rule]]
@@ -1847,8 +1803,6 @@ spotbugs = ["NS_DANGEROUS_NON_SHORT_CIRCUIT"]
 
 [[rule]]
 name = "ns-non-short-circuit"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NS_NON_SHORT_CIRCUIT"]
 
 [[rule]]
@@ -2122,8 +2076,6 @@ spotbugs = ["RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE"]
 
 [[rule]]
 name = "rv-check-for-positive-indexof"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_CHECK_FOR_POSITIVE_INDEXOF"]
 
 [[rule]]
@@ -2145,14 +2097,10 @@ spotbugs = ["RV_NEGATING_RESULT_OF_COMPARETO"]
 
 [[rule]]
 name = "rv-rem-of-hashcode"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_REM_OF_HASHCODE"]
 
 [[rule]]
 name = "rv-rem-of-random-int"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_REM_OF_RANDOM_INT"]
 
 [[rule]]
@@ -2193,8 +2141,6 @@ spotbugs = ["RpC_REPEATED_CONDITIONAL_TEST"]
 
 [[rule]]
 name = "sa-field-double-assignment"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SA_FIELD_DOUBLE_ASSIGNMENT"]
 
 [[rule]]
@@ -2214,14 +2160,10 @@ spotbugs = ["SA_FIELD_SELF_COMPUTATION"]
 
 [[rule]]
 name = "sa-local-double-assignment"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SA_LOCAL_DOUBLE_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-local-self-assignment"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT"]
 
 [[rule]]
@@ -2371,14 +2313,10 @@ spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW"]
 
 [[rule]]
 name = "sf-switch-fallthrough"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SF_SWITCH_FALLTHROUGH"]
 
 [[rule]]
 name = "sf-switch-no-default"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SF_SWITCH_NO_DEFAULT"]
 
 [[rule]]
@@ -2645,8 +2583,6 @@ spotbugs = ["TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED"]
 
 [[rule]]
 name = "ucf-useless-control-flow"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["UCF_USELESS_CONTROL_FLOW"]
 
 [[rule]]
