@@ -35,6 +35,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/object-methods.toml",
           "rules/java/pmd-errorprone.toml",
           "rules/java/security.toml",
+          "rules/java/semgrep-crypto.toml",
           "rules/java/size.toml",
           "rules/java/spotbugs-bad-practice.toml",
           "rules/java/strict-declarations.toml",
