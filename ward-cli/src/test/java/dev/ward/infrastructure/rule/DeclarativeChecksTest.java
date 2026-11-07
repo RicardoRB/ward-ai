@@ -30,25 +30,27 @@ class DeclarativeChecksTest {
 
   @Test
   void buildsEachKnownCheck() {
-    assertThat(DeclarativeChecks.build(LINES_CHECK)).isNotNull();
-    assertThat(DeclarativeChecks.build(DESCENDANT_COUNT_CHECK)).isNotNull();
-    assertThat(DeclarativeChecks.build(COGNITIVE_CHECK)).isNotNull();
-    assertThat(DeclarativeChecks.build(TEXT_PATTERN_CHECK)).isNotNull();
-    assertThat(DeclarativeChecks.build("check = \"unreferenced-name\"\nmessage = \"{value}\""))
+    assertThat(DeclarativeChecks.bundled().build(LINES_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(DESCENDANT_COUNT_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(COGNITIVE_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(TEXT_PATTERN_CHECK)).isNotNull();
+    assertThat(
+            DeclarativeChecks.bundled()
+                .build("check = \"unreferenced-name\"\nmessage = \"{value}\""))
         .isNotNull();
-    assertThat(DeclarativeChecks.build(PRECEDING_COMMENT_CHECK)).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(PRECEDING_COMMENT_CHECK)).isNotNull();
   }
 
   @Test
   void unknownCheckNamesTheCheck() {
-    assertThatThrownBy(() -> DeclarativeChecks.build("check = \"nope\"\nmessage = \"m\""))
+    assertThatThrownBy(() -> DeclarativeChecks.bundled().build("check = \"nope\"\nmessage = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("unknown check 'nope'");
   }
 
   @Test
   void missingCheckKeyIsAConfigurationError() {
-    assertThatThrownBy(() -> DeclarativeChecks.build("message = \"m\""))
+    assertThatThrownBy(() -> DeclarativeChecks.bundled().build("message = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'check' must be a string");
   }
@@ -57,8 +59,8 @@ class DeclarativeChecksTest {
   void missingLimitIsAConfigurationError() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build(
-                    "check = \"lines\"\nkinds = [\"methodBody\"]\nmessage = \"m\""))
+                DeclarativeChecks.bundled()
+                    .build("check = \"lines\"\nkinds = [\"methodBody\"]\nmessage = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'max' must be an integer");
   }
@@ -67,8 +69,9 @@ class DeclarativeChecksTest {
   void negativeLimitIsAConfigurationError() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build(
-                    "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = -1\nmessage = \"m\""))
+                DeclarativeChecks.bundled()
+                    .build(
+                        "check = \"lines\"\nkinds = [\"methodBody\"]\nmax = -1\nmessage = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'max' is out of range");
   }
@@ -77,15 +80,15 @@ class DeclarativeChecksTest {
   void malformedRegularExpressionIsAConfigurationError() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build(
-                    TEXT_PATTERN_CHECK.replace("[a-z][a-zA-Z0-9]*", "[unclosed")))
+                DeclarativeChecks.bundled()
+                    .build(TEXT_PATTERN_CHECK.replace("[a-z][a-zA-Z0-9]*", "[unclosed")))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("check 'text-pattern' cannot be used");
   }
 
   @Test
   void bodyThatIsNotTomlIsAConfigurationError() {
-    assertThatThrownBy(() -> DeclarativeChecks.build("check = "))
+    assertThatThrownBy(() -> DeclarativeChecks.bundled().build("check = "))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("not valid TOML");
   }
@@ -94,7 +97,8 @@ class DeclarativeChecksTest {
   void listedKindsMustBeStrings() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build("check = \"lines\"\nkinds = [1]\nmax = 1\nmessage = \"m\""))
+                DeclarativeChecks.bundled()
+                    .build("check = \"lines\"\nkinds = [1]\nmax = 1\nmessage = \"m\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("'kinds' must hold only strings");
   }
