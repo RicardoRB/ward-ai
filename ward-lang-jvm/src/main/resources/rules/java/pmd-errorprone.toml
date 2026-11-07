@@ -985,3 +985,16 @@ body = '''
 check = "detached-test-case"
 message = "method looks like a test but has no annotation; annotate it or make it private"
 '''
+
+[[rules]]
+id = "ward:java/compare-objects-with-equals"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["*"]
+message = "objects compared with == or !=; use equals()"
+'''

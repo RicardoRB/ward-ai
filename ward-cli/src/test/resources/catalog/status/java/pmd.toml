@@ -14,14 +14,12 @@ assignment-to-non-final-static = "implemented"
 at-least-one-constructor = { status = "planned", issue = "#313" }
 avoid-accessibility-alteration = "implemented"
 avoid-array-loops = "implemented"
-avoid-assert-as-identifier = { status = "planned", issue = "#310" }
 avoid-branching-statement-as-last-in-loop = "implemented"
 avoid-calendar-date-creation = "implemented"
 avoid-calling-finalize = "implemented"
 avoid-decimal-literals-in-big-decimal-constructor = "implemented"
 avoid-deeply-nested-if-stmts = "implemented"
 avoid-dollar-signs = "implemented"
-avoid-enum-as-identifier = { status = "planned", issue = "#310" }
 avoid-field-name-matching-method-name = { status = "planned", issue = "#310" }
 avoid-field-name-matching-type-name = "implemented"
 avoid-file-stream = "implemented"
@@ -63,7 +61,7 @@ collection-type-mismatch = { status = "planned", issue = "#310" }
 comment-content = { status = "planned", issue = "#313" }
 comment-default-access-modifier = { status = "planned", issue = "#313" }
 comment-size = { status = "planned", issue = "#313" }
-compare-objects-with-equals = { status = "planned", issue = "#310" }
+compare-objects-with-equals = "implemented"
 comparison-with-na-n = "implemented"
 confusing-argument-to-varargs-method = { status = "planned", issue = "#310" }
 confusing-ternary = "implemented"

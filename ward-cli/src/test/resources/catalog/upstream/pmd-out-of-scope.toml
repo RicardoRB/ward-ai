@@ -27,3 +27,10 @@ rules = [
   "UselessOperationOnImmutable",
   "UselessPureMethodCall",
 ]
+
+[[group]]
+reason = "the name is a Java keyword (assert since 1.4, enum since 5), so source that uses it as an identifier does not parse on any Java release Ward supports (8 and later)"
+rules = [
+  "AvoidAssertAsIdentifier",
+  "AvoidEnumAsIdentifier",
+]

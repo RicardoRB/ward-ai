@@ -17,8 +17,10 @@ import java.util.Set;
 
 /**
  * Reports {@code a == b} and {@code a != b} when both operands have a type from the given set, so
- * the comparison tests identity where the values should be compared with {@code equals}. It reports
- * nothing when a type is unknown.
+ * the comparison tests identity where the values should be compared with {@code equals}. The set
+ * {@code *} stands for any reference type except {@code java.lang.Class} and enums, whose identity
+ * is their equality; an enum is known from the operand's ancestors. It reports nothing when a type
+ * is unknown.
  */
 public final class ReferenceEqualityCheck implements RuleCheck {
 
@@ -26,7 +28,11 @@ public final class ReferenceEqualityCheck implements RuleCheck {
   private static final Set<String> OPERATORS = Set.of("'=='", "'!='");
   private static final int OPERANDS = 3;
   private static final int RIGHT = 2;
-  private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE));
+  private static final String ANY = "*";
+  private static final String CLASS = "java.lang.Class";
+  private static final String ENUM = "java.lang.Enum";
+  private static final FactNeed NEED =
+      new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE, FactKind.MEMBERS));
 
   private final Set<String> types;
   private final String message;
@@ -74,6 +80,20 @@ public final class ReferenceEqualityCheck implements RuleCheck {
 
   private boolean listed(final SyntaxNode operand, final UnitTypeFacts facts) {
     final Optional<TypeRef> type = facts.typeOf(operand.span());
-    return type.isPresent() && type.get().arrayDepth() == 0 && types.contains(type.get().name());
+    if (type.isEmpty() || type.get().arrayDepth() != 0 || type.get().primitive()) {
+      return false;
+    }
+    return types.contains(ANY)
+        ? anyReference(operand, type.get(), facts)
+        : types.contains(type.get().name());
+  }
+
+  private static boolean anyReference(
+      final SyntaxNode operand, final TypeRef type, final UnitTypeFacts facts) {
+    return !CLASS.equals(type.name())
+        && facts
+            .membersOf(operand.span())
+            .map(members -> members.ancestors().stream().noneMatch(a -> ENUM.equals(a.name())))
+            .orElse(false);
   }
 }
