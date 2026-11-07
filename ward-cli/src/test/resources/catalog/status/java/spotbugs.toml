@@ -21,7 +21,7 @@ bc-impossible-downcast-of-toarray = { status = "planned", issue = "#314" }
 bc-impossible-instanceof = { status = "planned", issue = "#314" }
 bc-unconfirmed-cast = { status = "planned", issue = "#316" }
 bc-unconfirmed-cast-of-return-value = { status = "planned", issue = "#316" }
-bc-vacuous-instanceof = { status = "planned", issue = "#316" }
+bc-vacuous-instanceof = "implemented"
 bit-add-of-signed-byte = { status = "planned", issue = "#314" }
 bit-and = "implemented"
 bit-and-zz = "implemented"
@@ -118,7 +118,7 @@ dmi-using-removeall-to-clear-collection = { status = "planned", issue = "#316" }
 dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
 dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316" }
-dp-do-inside-do-privileged = { status = "planned", issue = "#316" }
+dp-do-inside-do-privileged = "implemented"
 e-sync-empty-sync = { status = "planned", issue = "#316" }
 ec-array-and-nonarray = { status = "planned", issue = "#314" }
 ec-bad-array-compare = "implemented"
@@ -130,8 +130,8 @@ ec-unrelated-types = "implemented"
 ec-unrelated-types-using-pointer-equality = { status = "planned", issue = "#314" }
 ei-expose-buf = { status = "planned", issue = "#316" }
 ei-expose-buf2 = { status = "planned", issue = "#316" }
-ei-expose-rep = { status = "planned", issue = "#316" }
-ei-expose-rep2 = { status = "planned", issue = "#316" }
+ei-expose-rep = "implemented"
+ei-expose-rep2 = "implemented"
 ei-expose-static-buf2 = { status = "planned", issue = "#316" }
 ei-expose-static-rep2 = { status = "planned", issue = "#316" }
 env-use-property-instead-of-env = { status = "planned", issue = "#316" }
@@ -153,7 +153,7 @@ eq-unusual = { status = "planned", issue = "#316" }
 es-comparing-parameter-string-with-eq = { status = "planned", issue = "#316" }
 fb-missing-expected-warning = { status = "planned", issue = "#314" }
 fb-unexpected-warning = { status = "planned", issue = "#314" }
-fe-floating-point-equality = { status = "planned", issue = "#316" }
+fe-floating-point-equality = "implemented"
 fe-test-if-equal-to-not-a-number = "implemented"
 fi-empty = { status = "planned", issue = "#316" }
 fi-explicit-invocation = { status = "planned", issue = "#316" }
@@ -161,7 +161,7 @@ fi-finalizer-nulls-fields = { status = "planned", issue = "#316" }
 fi-finalizer-only-nulls-fields = { status = "planned", issue = "#316" }
 fi-missing-super-call = { status = "planned", issue = "#316" }
 fi-nullify-super = { status = "planned", issue = "#316" }
-fi-public-should-be-protected = { status = "planned", issue = "#316" }
+fi-public-should-be-protected = "implemented"
 fi-useless = { status = "planned", issue = "#316" }
 fl-floats-as-loop-counters = "implemented"
 fl-math-using-float-precision = { status = "planned", issue = "#314" }
@@ -313,7 +313,7 @@ np-sync-and-null-check-field = { status = "planned", issue = "#316" }
 np-tostring-could-return-null = { status = "planned", issue = "#316" }
 np-unwritten-field = { status = "planned", issue = "#314" }
 np-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
-ns-dangerous-non-short-circuit = { status = "planned", issue = "#316" }
+ns-dangerous-non-short-circuit = "implemented"
 ns-non-short-circuit = { status = "planned", issue = "#316" }
 obl-unsatisfied-obligation = { status = "planned", issue = "#316" }
 obl-unsatisfied-obligation-exception-edge = { status = "planned", issue = "#316" }
@@ -332,7 +332,7 @@ pi-do-not-reuse-public-identifiers-local-variable-names = { status = "planned", 
 pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = "#316" }
 ps-public-semaphores = { status = "planned", issue = "#316" }
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
-pzla-prefer-zero-length-arrays = { status = "planned", issue = "#316" }
+pzla-prefer-zero-length-arrays = "implemented"
 qba-questionable-boolean-assignment = "implemented"
 qf-questionable-for-loop = { status = "planned", issue = "#316" }
 range-array-index = { status = "planned", issue = "#314" }
@@ -344,15 +344,15 @@ rc-ref-comparison-bad-practice = { status = "planned", issue = "#316" }
 rc-ref-comparison-bad-practice-boolean = { status = "planned", issue = "#316" }
 rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
 rcn-redundant-comparison-two-null-values = { status = "planned", issue = "#316" }
-rcn-redundant-nullcheck-of-nonnull-value = { status = "planned", issue = "#316" }
+rcn-redundant-nullcheck-of-nonnull-value = "implemented"
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
 re-bad-syntax-for-regular-expression = { status = "planned", issue = "#314" }
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
 rec-catch-exception = { status = "planned", issue = "#316" }
-reflc-reflection-may-increase-accessibility-of-class = { status = "planned", issue = "#316" }
-reflf-reflection-may-increase-accessibility-of-field = { status = "planned", issue = "#316" }
+reflc-reflection-may-increase-accessibility-of-class = "implemented"
+reflf-reflection-may-increase-accessibility-of-field = "implemented"
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
 rp-c-repeated-conditional-test = { status = "planned", issue = "#314" }
 rr-not-checked = { status = "planned", issue = "#316" }
@@ -363,7 +363,7 @@ rv-absolute-value-of-hashcode = "implemented"
 rv-absolute-value-of-random-int = "implemented"
 rv-check-compareto-for-specific-return-value = "implemented"
 rv-check-for-positive-indexof = { status = "planned", issue = "#316" }
-rv-dont-just-null-check-readline = { status = "planned", issue = "#316" }
+rv-dont-just-null-check-readline = "implemented"
 rv-exception-not-thrown = "implemented"
 rv-negating-result-of-compareto = { status = "planned", issue = "#316" }
 rv-rem-of-hashcode = { status = "planned", issue = "#316" }
@@ -371,7 +371,7 @@ rv-rem-of-random-int = { status = "planned", issue = "#316" }
 rv-return-value-ignored = { status = "planned", issue = "#314" }
 rv-return-value-ignored-bad-practice = { status = "planned", issue = "#316" }
 rv-return-value-ignored-inferred = { status = "planned", issue = "#316" }
-rv-return-value-ignored-no-side-effect = { status = "planned", issue = "#316" }
+rv-return-value-ignored-no-side-effect = "implemented"
 rv-return-value-of-putifabsent-ignored = { status = "planned", issue = "#316" }
 sa-field-double-assignment = { status = "planned", issue = "#316" }
 sa-field-self-assignment = "implemented"
@@ -397,11 +397,11 @@ se-nonfinal-serialversionid = { status = "planned", issue = "#316" }
 se-nonlong-serialversionid = { status = "planned", issue = "#316" }
 se-nonstatic-serialversionid = { status = "planned", issue = "#316" }
 se-prevent-ext-obj-overwrite = { status = "planned", issue = "#316" }
-se-private-read-resolve-not-inherited = { status = "planned", issue = "#316" }
+se-private-read-resolve-not-inherited = "implemented"
 se-read-resolve-is-static = "implemented"
 se-read-resolve-must-return-object = { status = "planned", issue = "#316" }
 se-transient-field-not-restored = { status = "planned", issue = "#316" }
-se-transient-field-of-nonserializable-class = { status = "planned", issue = "#316" }
+se-transient-field-of-nonserializable-class = "implemented"
 sf-dead-store-due-to-switch-fallthrough = { status = "planned", issue = "#314" }
 sf-dead-store-due-to-switch-fallthrough-to-throw = { status = "planned", issue = "#314" }
 sf-switch-fallthrough = { status = "planned", issue = "#316" }
@@ -495,4 +495,4 @@ wa-not-in-loop = { status = "planned", issue = "#316" }
 wl-using-getclass-rather-than-class-literal = { status = "planned", issue = "#316" }
 wmi-wrong-map-iterator = { status = "planned", issue = "#316" }
 ws-writeobject-sync = { status = "planned", issue = "#316" }
-xfb-xml-factory-bypass = { status = "planned", issue = "#316" }
+xfb-xml-factory-bypass = "implemented"

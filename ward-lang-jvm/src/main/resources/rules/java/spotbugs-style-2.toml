@@ -1,0 +1,226 @@
+# SpotBugs STYLE, I18N, MALICIOUS_CODE and SECURITY patterns for Java (issue 316), standard rows, part 2. Most
+# rules match the compact text of a node (no separators between tokens), so they approximate SpotBugs'
+# detectors: each one notes its limit in its message and fixtures.
+
+[[rules]]
+id = "ward:java/ei-expose-rep"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "method-returns-internal-array"
+message = "returns the internal array of field '{value}'; return a copy"
+'''
+
+[[rules]]
+id = "ward:java/ei-expose-rep2"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "array-is-stored-directly"
+message = "array parameter {value} is stored in a field without a copy"
+'''
+
+[[rules]]
+id = "ward:java/fi-public-should-be-protected"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+modifiers = ["public"]
+text = '^voidfinalize\(\)'
+message = "finalize is public; make it protected"
+'''
+
+[[rules]]
+id = "ward:java/pzla-prefer-zero-length-arrays"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^[\w.]+(?:<[^>]*>)?(?:\[\])+\w+\((?:[^()]|\([^()]*\))*\)(?:throws[\w.,]+)?\{.*returnnull;'
+message = "method returns null for an array; return a zero-length array"
+'''
+
+[[rules]]
+id = "ward:java/se-private-read-resolve-not-inherited"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+not-modifiers = ["final"]
+text = '^class\w+[^{]*implements[^{]*Serializable[^{]*\{.*privateObjectreadResolve\(\)'
+message = "private readResolve is not inherited by subclasses; make it protected or make the class final"
+'''
+
+[[rules]]
+id = "ward:java/se-transient-field-of-nonserializable-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class\w+(?:<[^{>]*>)?(?:implements(?![^{]*Serializable)[^{]*)?\{.*transient'
+message = "transient field of a class that is not Serializable has no effect"
+'''
+
+[[rules]]
+id = "ward:java/xfb-xml-factory-bypass"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new[\w.]*(?:ParserFactoryImpl|BuilderFactoryImpl|TransformerFactoryImpl|InputFactoryImpl)\('
+message = "XML factory implementation is created directly; use the factory's newInstance method"
+'''
+
+[[rules]]
+id = "ward:java/reflc-reflection-may-increase-accessibility-of-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Class\.forName\([a-z]\w*\)$'
+message = "Class.forName is called with a caller-supplied name"
+'''
+
+[[rules]]
+id = "ward:java/reflf-reflection-may-increase-accessibility-of-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*\.getDeclaredField\([a-z]\w*\)$'
+message = "getDeclaredField is called with a caller-supplied name"
+'''
+
+[[rules]]
+id = "ward:java/fe-floating-point-equality"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.()]+(?:==|!=)\d+\.\d+[fFdD]?|\d+\.\d+[fFdD]?(?:==|!=)[\w.()]+)$'
+message = "floating point values are compared with == or !=; compare within a tolerance"
+'''
+
+[[rules]]
+id = "ward:java/rv-dont-just-null-check-readline"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*readLine\(\)!=null$'
+message = "readLine() is only compared with null and its line is dropped"
+'''
+
+[[rules]]
+id = "ward:java/bc-vacuous-instanceof"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\w+instanceofObject$'
+message = "instanceof Object is true for every non-null value"
+'''
+
+[[rules]]
+id = "ward:java/ns-dangerous-non-short-circuit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)(?:!=null&\1[.(]|==null\|\1[.(])'
+message = "non-short-circuit operator evaluates the right operand after the null check fails; use && or ||"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-nullcheck-of-nonnull-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:new[\w.<>]+\(.*\)|"[^"]*"|this)(?:==|!=)null$'
+message = "value that is never null is compared with null"
+'''
+
+[[rules]]
+id = "ward:java/dp-do-inside-do-privileged"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*\.setAccessible\(true\)$'
+message = "setAccessible(true) should run inside a doPrivileged block"
+'''
+
+[[rules]]
+id = "ward:java/rv-return-value-ignored-no-side-effect"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.List", "java.util.Set", "java.util.Map", "java.util.Collection"]
+names = ["size", "isEmpty", "contains", "containsKey", "containsValue", "indexOf"]
+ignored = true
+message = "the result of this call is ignored; the call has no side effect"
+'''
