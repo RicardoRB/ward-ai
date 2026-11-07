@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.analysis.swift;
+package dev.ward.analysis.domain.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /** Checks the inferred and unknown native Swift types against the scenarios of the spec. */
-final class NativeSwiftTypeInferenceTest {
+final class SwiftTypeInferenceTest {
 
   @Test
   void initializersInferDefaultTypesAndDeclaredConstructors() {

@@ -1,11 +1,8 @@
-package dev.ward.infrastructure.analysis.swift;
+package dev.ward.analysis.domain.swift;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.swift.SwiftProjectLayout;
-import dev.ward.analysis.domain.swift.SwiftTarget;
-import dev.ward.analysis.domain.swift.SwiftTypeFacts;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;

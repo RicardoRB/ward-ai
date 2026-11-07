@@ -1,27 +1,14 @@
-package dev.ward.infrastructure.analysis.swift;
+package dev.ward.analysis.domain.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.port.TypeFacts;
-import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
-import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 /** Checks the native Swift type facts against the scenarios of the native type resolution spec. */
-final class NativeSwiftTypesTest {
+final class SwiftTypeFactsTest {
 
   @Test
   void annotatedBindingResolvesToTypeInAnotherModule() {
@@ -105,29 +92,5 @@ final class NativeSwiftTypesTest {
               assertThat(shape.kind()).isEqualTo(TypeShape.Kind.INTERFACE);
               assertThat(shape.isAbstract()).isTrue();
             });
-  }
-
-  @Test
-  void nativeProviderStartsFromProjectFilesWithoutAProcess(@TempDir final Path root)
-      throws IOException {
-    Files.writeString(root.resolve("Session.swift"), "class Session {}\nlet s = Session()\n");
-
-    final Optional<TypeFacts> facts = new NativeSwiftTypes(root).start();
-
-    assertThat(facts).isPresent();
-    final SourceUnit unit =
-        new SourceUnit(
-            "Session.swift",
-            AnalysisLanguage.SWIFT,
-            Files.readString(root.resolve("Session.swift")));
-    final SyntaxNode tree = new AntlrLanguageFrontend().parse(unit).tree();
-    final SyntaxNode binding = SwiftTypeProject.firstNode(tree, "pattern_initializer", "s");
-    assertThat(
-            facts
-                .orElseThrow()
-                .factsOf(unit, List.of(binding.span()), EnumSet.of(FactKind.TYPE))
-                .typeOf(binding.span())
-                .map(TypeRef::name))
-        .contains("Session");
   }
 }
