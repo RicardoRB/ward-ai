@@ -1,0 +1,271 @@
+# Naming rules for Swift. They mirror Checkstyle's TypeName, MethodName, MemberName, ParameterName,
+# LocalVariableName, ConstantName, LambdaParameterName, CatchParameterName and the type parameter
+# checks, with the default patterns of the Java naming rules (the standard preset). Each rule reports
+# the first name of each declaration that its filter selects. Swift's `let` is a final binding, so it
+# is the constant form of each variable rule.
+
+[[rules]]
+id = "ward:swift/type-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[A-Z][a-zA-Z0-9]*'
+message = "type name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/method-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["function_declaration"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[a-z][a-zA-Z0-9]*'
+message = "method name '{value}' does not match the name pattern of this rule"
+'''
+
+# shortcut: the modifier filter does not read variable declarations, so a static var with a bad name is also
+# reported here; static-variable-name reports its name from the declaration line.
+[[rules]]
+id = "ward:swift/member-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declaration", "variable_declaration"]
+not-modifiers = ["static"]
+not-inside = ["code_block", "closure_expression"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[a-z][a-zA-Z0-9]*'
+message = "property name '{value}' does not match the name pattern of this rule"
+'''
+
+# shortcut: reads the declaration line, not the name node, so the column is the line start.
+[[rules]]
+id = "ward:swift/static-variable-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\b(static|class)\s+var\s+(?![a-z][a-zA-Z0-9]*(?![a-zA-Z0-9_]))\w'
+message = "static variable name does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/constant-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declaration"]
+modifiers = ["static"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[A-Z][A-Z0-9]*(_[A-Z0-9]+)*|serialVersionUID|serialPersistentFields'
+message = "constant name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/google-non-constant-field-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declaration", "variable_declaration"]
+not-modifiers = ["static"]
+not-inside = ["code_block", "closure_expression"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '(?![a-z]$)(?![a-z][A-Z])[a-z][a-z0-9]*+(?:[A-Z][a-z0-9]*+)*+'
+message = "field name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/local-variable-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["variable_declaration"]
+inside = ["code_block"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[a-z][a-zA-Z0-9]*'
+message = "local variable name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/local-final-variable-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declaration"]
+inside = ["code_block"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*'
+message = "local constant name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/abbreviation-as-word-in-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration", "function_declaration", "constant_declaration", "variable_declaration", "parameter"]
+not-modifiers = ["static"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '^(?!.*[A-Z]{2}).*$'
+message = "name '{value}' has more than one consecutive capital letter"
+'''
+
+[[rules]]
+id = "ward:swift/google-method-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["function_declaration"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '[a-z][a-z0-9]++(?:[A-Z][a-z0-9]++)*+[A-Z]?'
+message = "method name '{value}' does not match the name pattern of this rule"
+'''
+[[rules]]
+id = "ward:swift/parameter-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["parameter"]
+name = "label_identifier"
+skip = ["attributes", "external_parameter_name"]
+pattern = '[a-z][a-zA-Z0-9]*'
+message = "parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/lambda-parameter-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["closure_parameter_clause_identifier_list"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '_|[a-z]([a-z0-9][a-zA-Z0-9]*)?'
+message = "closure parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/catch-parameter-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["catch_clause"]
+name = "declaration_identifier"
+skip = ["attributes", "code_block"]
+pattern = '_|[a-z]([a-z0-9][a-zA-Z0-9]*)?'
+message = "catch parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/class-type-parameter-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["generic_parameter"]
+inside = ["class_declaration", "struct_declaration", "enum_declaration"]
+not-inside = ["function_declaration"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)'
+message = "type parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:swift/method-type-parameter-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["generic_parameter"]
+inside = ["function_declaration"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = '(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)'
+message = "type parameter name '{value}' does not match the name pattern of this rule"
+'''

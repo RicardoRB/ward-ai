@@ -45,20 +45,21 @@ class GenericChecksTest {
   @EnumSource(GenericKind.class)
   void everyKindBuildsFromItsMinimalBody(final GenericKind kind) {
     assertThat(MINIMAL).containsKey(kind);
-    assertThat(DeclarativeChecks.build(MINIMAL.get(kind))).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(MINIMAL.get(kind))).isNotNull();
   }
 
   @ParameterizedTest
   @EnumSource(GenericKind.class)
   void everyKindRejectsAnUnknownParameter(final GenericKind kind) {
-    assertThatThrownBy(() -> DeclarativeChecks.build(MINIMAL.get(kind) + "\nbogus = 1"))
+    assertThatThrownBy(() -> DeclarativeChecks.bundled().build(MINIMAL.get(kind) + "\nbogus = 1"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("check '" + kind.id() + "' does not accept bogus");
   }
 
   @Test
   void anUnknownKindNamesTheKind() {
-    assertThatThrownBy(() -> DeclarativeChecks.build("check = \"forbidden-thing\"" + MESSAGE))
+    assertThatThrownBy(
+            () -> DeclarativeChecks.bundled().build("check = \"forbidden-thing\"" + MESSAGE))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("unknown check 'forbidden-thing'");
   }
@@ -80,8 +81,8 @@ class GenericChecksTest {
   void aBadSourcesValueIsAConfigurationError() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build(
-                    MINIMAL.get(GenericKind.FORBIDDEN_NODE) + "\nsources = \"some\""))
+                DeclarativeChecks.bundled()
+                    .build(MINIMAL.get(GenericKind.FORBIDDEN_NODE) + "\nsources = \"some\""))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("sources must be all, main or test");
   }
@@ -90,8 +91,8 @@ class GenericChecksTest {
   void anUnknownTextTargetIsAConfigurationError() {
     assertThatThrownBy(
             () ->
-                DeclarativeChecks.build(
-                    MINIMAL.get(GenericKind.TEXT_PATTERN).replace("lines", "words")))
+                DeclarativeChecks.bundled()
+                    .build(MINIMAL.get(GenericKind.TEXT_PATTERN).replace("lines", "words")))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("target must be");
   }
@@ -102,7 +103,7 @@ class GenericChecksTest {
         "check = \"text-pattern\"\nkinds = [\"a\"]\nmodifiers = [\"m\"]\nname = \"n\"\n"
             + "pattern = \"x\"\nmessage = \"m\"";
 
-    assertThat(DeclarativeChecks.build(legacy)).isNotNull();
+    assertThat(DeclarativeChecks.bundled().build(legacy)).isNotNull();
     assertThat(CheckOptions.of(legacy)).isEmpty();
   }
 

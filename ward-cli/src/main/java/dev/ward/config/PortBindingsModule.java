@@ -11,6 +11,7 @@ import dagger.Module;
       ProvenanceBindingsModule.class,
       GateBindingsModule.class,
       GateExtensionBindingsModule.class,
+      RuleBindingsModule.class,
       GateExtensionsModule.class,
       FormatterBindingsModule.class,
       ReportBindingsModule.class,
