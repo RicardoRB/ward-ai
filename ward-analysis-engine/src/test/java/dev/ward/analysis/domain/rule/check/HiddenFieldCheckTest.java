@@ -3,13 +3,12 @@ package dev.ward.analysis.domain.rule.check;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.rule.RuleMatch;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** The hidden-field check on small class bodies: hiding, static contexts and the two options. */
 class HiddenFieldCheckTest extends TreeBuilders {
 
+  private static final String COUNT = "count";
   private static final String MESSAGE = "hides {value}";
   private static final String STATIC = "'static'";
   private static final String VOID = "void";
@@ -20,46 +19,38 @@ class HiddenFieldCheckTest extends TreeBuilders {
   @Test
   void parameterOrLocalNamedAsAFieldIsReported() {
     final SyntaxNode body =
-        classBody(field(false, "count"), method(false, VOID, "run", "count", false));
-    assertThat(Trees.messages(run(new HiddenFieldCheck(false, false, MESSAGE), body)))
+        n(CLASS_BODY, field(false, COUNT), method(false, VOID, "run", COUNT, false));
+    assertThat(Trees.messages(new HiddenFieldCheck(false, false, MESSAGE).check(body, FILE)))
         .containsExactly("hides count");
-    final SyntaxNode local = classBody(field(false, "count"), localMethod(false, "count"));
-    assertThat(run(new HiddenFieldCheck(false, false, MESSAGE), local)).hasSize(1);
+    final SyntaxNode local = n(CLASS_BODY, field(false, COUNT), localMethod(false, COUNT));
+    assertThat(new HiddenFieldCheck(false, false, MESSAGE).check(local, FILE)).hasSize(1);
   }
 
   @Test
   void staticContextHidesOnlyStaticFields() {
-    final SyntaxNode instanceField = classBody(field(false, "count"), localMethod(true, "count"));
-    assertThat(run(new HiddenFieldCheck(false, false, MESSAGE), instanceField)).isEmpty();
-    final SyntaxNode staticField = classBody(field(true, "count"), localMethod(true, "count"));
-    assertThat(run(new HiddenFieldCheck(false, false, MESSAGE), staticField)).hasSize(1);
+    final SyntaxNode instanceField = n(CLASS_BODY, field(false, COUNT), localMethod(true, COUNT));
+    assertThat(new HiddenFieldCheck(false, false, MESSAGE).check(instanceField, FILE)).isEmpty();
+    final SyntaxNode staticField = n(CLASS_BODY, field(true, COUNT), localMethod(true, COUNT));
+    assertThat(new HiddenFieldCheck(false, false, MESSAGE).check(staticField, FILE)).hasSize(1);
   }
 
   @Test
   void setterParameterIsSkippedOnlyWhenTheOptionIsOn() {
     final SyntaxNode setter =
-        classBody(field(false, "count"), method(false, VOID, "setCount", "count", false));
-    assertThat(run(new HiddenFieldCheck(false, false, MESSAGE), setter)).hasSize(1);
-    assertThat(run(new HiddenFieldCheck(false, true, MESSAGE), setter)).isEmpty();
+        n(CLASS_BODY, field(false, COUNT), method(false, VOID, "setCount", COUNT, false));
+    assertThat(new HiddenFieldCheck(false, false, MESSAGE).check(setter, FILE)).hasSize(1);
+    assertThat(new HiddenFieldCheck(false, true, MESSAGE).check(setter, FILE)).isEmpty();
     final SyntaxNode nonVoid =
-        classBody(field(false, "count"), method(false, INT, "setCount", "count", false));
-    assertThat(run(new HiddenFieldCheck(false, true, MESSAGE), nonVoid)).hasSize(1);
+        n(CLASS_BODY, field(false, COUNT), method(false, INT, "setCount", COUNT, false));
+    assertThat(new HiddenFieldCheck(false, true, MESSAGE).check(nonVoid, FILE)).hasSize(1);
   }
 
   @Test
   void constructorParameterIsSkippedOnlyWhenTheOptionIsOn() {
     final SyntaxNode constructor =
-        classBody(field(false, "count"), method(false, "", "Violating", "count", true));
-    assertThat(run(new HiddenFieldCheck(false, false, MESSAGE), constructor)).hasSize(1);
-    assertThat(run(new HiddenFieldCheck(true, false, MESSAGE), constructor)).isEmpty();
-  }
-
-  private static List<RuleMatch> run(final HiddenFieldCheck check, final SyntaxNode root) {
-    return check.check(root, FILE);
-  }
-
-  private static SyntaxNode classBody(final SyntaxNode... members) {
-    return n(CLASS_BODY, members);
+        n(CLASS_BODY, field(false, COUNT), method(false, "", "Violating", COUNT, true));
+    assertThat(new HiddenFieldCheck(false, false, MESSAGE).check(constructor, FILE)).hasSize(1);
+    assertThat(new HiddenFieldCheck(true, false, MESSAGE).check(constructor, FILE)).isEmpty();
   }
 
   private static SyntaxNode member(final boolean isStatic, final SyntaxNode declaration) {

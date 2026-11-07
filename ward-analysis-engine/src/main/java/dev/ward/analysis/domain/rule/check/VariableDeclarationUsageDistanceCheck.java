@@ -19,6 +19,7 @@ import java.util.Set;
 public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
 
   private static final String FINAL = "final";
+  private static final String DECLARATOR = "variableDeclarator";
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody");
   private static final Set<String> NESTED = Set.of("block", "classBody", "lambdaExpression");
 
@@ -112,7 +113,7 @@ public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
   private static List<SyntaxNode> declarators(final SyntaxNode node) {
     final List<SyntaxNode> found = new ArrayList<>();
     for (final SyntaxNode child : node.children()) {
-      if ("variableDeclarator".equals(child.kind())) {
+      if (DECLARATOR.equals(child.kind())) {
         found.add(child);
       } else if (!NOT_ENTERED.contains(child.kind())) {
         found.addAll(declarators(child));

@@ -20,6 +20,7 @@ public final class ParameterAssignmentCheck implements UnitCheck {
   // shortcut: an assignment to a local that shadows a parameter is reported, upgrade by resolving
   // the local's declaration scope before reporting.
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
+  private static final String PARAMETER = "formalParameter";
   private static final Set<String> PARAMETER_OWNERS = Set.of("formalParameters");
 
   private final String message;
@@ -62,7 +63,7 @@ public final class ParameterAssignmentCheck implements UnitCheck {
       final Optional<SyntaxNode> callable = Callables.nearest(visit.ancestors());
       if (callable.isPresent()) {
         for (final SyntaxNode parameter : SyntaxWalk.descendants(visit.node())) {
-          if ("formalParameter".equals(parameter.kind())) {
+          if (PARAMETER.equals(parameter.kind())) {
             SyntaxWalk.firstDescendant(parameter, "variableDeclaratorId", Set.of())
                 .ifPresent(id -> found.add(new Parameter(SyntaxWalk.text(id), callable.get())));
           }
@@ -75,6 +76,9 @@ public final class ParameterAssignmentCheck implements UnitCheck {
   private static boolean isParameter(
       final List<Parameter> parameters, final String name, final SyntaxNode callable) {
     return parameters.stream()
-        .anyMatch(parameter -> parameter.name().equals(name) && parameter.callable() == callable);
+        .anyMatch(
+            parameter ->
+                parameter.name().equals(name)
+                    && parameter.callable().span().equals(callable.span()));
   }
 }
