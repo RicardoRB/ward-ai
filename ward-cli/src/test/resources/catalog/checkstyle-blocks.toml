@@ -24,10 +24,8 @@ biome = ["noEmptyBlockStatements"]
 
 [[rule]]
 name = "empty-catch-block"
-category = "blocks"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["EmptyCatchBlock"]
 pmd = ["EmptyCatchBlock"]
 checkstyle = ["EmptyCatchBlock"]
@@ -35,26 +33,20 @@ ruff = ["S110"]
 
 [[rule]]
 name = "google-right-curly"
-category = "blocks"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["GoogleRightCurly"]
 
 [[rule]]
 name = "left-curly"
-category = "blocks"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["LeftCurly"]
 
 [[rule]]
 name = "need-braces"
-category = "blocks"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]

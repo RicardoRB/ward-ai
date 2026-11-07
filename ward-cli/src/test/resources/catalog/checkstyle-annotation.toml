@@ -2,10 +2,8 @@
 
 [[rule]]
 name = "annotation-location"
-category = "annotation"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["AnnotationLocation"]
 
 [[rule]]
@@ -44,10 +42,7 @@ errorprone = ["MissingOverride"]
 
 [[rule]]
 name = "missing-override-on-record-accessor"
-category = "annotation"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#286" }
+status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["MissingOverrideOnRecordAccessor"]
 

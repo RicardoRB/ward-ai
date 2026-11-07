@@ -1,0 +1,60 @@
+# Block rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the blocks group, with the
+# option names in kebab-case and Checkstyle's defaults. The standard preset keeps the layout of
+# Checkstyle's google_checks.xml. The body of each rule is a TOML description of one check; see
+# DeclarativeChecks.
+
+[[rules]]
+id = "ward:java/need-braces"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+options.allow-empty-loop-body = { type = "boolean" }
+body = '''
+check = "need-braces"
+allow-empty-loop-body = false
+message = "this statement body must be a block with braces"
+'''
+
+[[rules]]
+id = "ward:java/left-curly"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+options.ignore-enums = { type = "boolean" }
+body = '''
+check = "left-curly"
+ignore-enums = true
+message = "left curly brace should be on the same line as the token before it"
+'''
+
+[[rules]]
+id = "ward:java/google-right-curly"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "google-right-curly"
+message = "right curly brace breaks the Google Java Style layout of its block"
+'''
+
+[[rules]]
+id = "ward:java/empty-catch-block"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+options.comment-format = { type = "regex" }
+options.exception-variable-name = { type = "regex" }
+body = '''
+check = "empty-catch-block"
+comment-format = ".*"
+exception-variable-name = "^$"
+message = "empty catch block"
+'''

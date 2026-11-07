@@ -1,0 +1,43 @@
+# Modifier and annotation rules for Java. They mirror Checkstyle 14.3.0 checks of the modifier and
+# annotation groups, with option names in kebab-case and Checkstyle's defaults. The standard preset
+# keeps the checks of Checkstyle's google_checks.xml and of this repository's config/checkstyle.xml.
+
+[[rules]]
+id = "ward:java/modifier-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["standard", "strict"]
+body = '''
+check = "modifier-order"
+message = "modifiers are out of the order of JLS 8.1.1, or an annotation follows a modifier"
+'''
+
+[[rules]]
+id = "ward:java/annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["standard", "strict"]
+options.allow-sameline-single-parameterless-annotation = { type = "boolean" }
+options.allow-sameline-parameterized-annotation = { type = "boolean" }
+body = '''
+check = "annotation-location"
+allow-sameline-single-parameterless-annotation = true
+allow-sameline-parameterized-annotation = false
+message = "annotation should be on a separate line from the declaration"
+'''
+
+[[rules]]
+id = "ward:java/missing-override-on-record-accessor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-override-on-record-accessor"
+message = "record accessor method should have the @Override annotation"
+'''
