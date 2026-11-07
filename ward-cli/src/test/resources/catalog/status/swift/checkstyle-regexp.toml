@@ -1,0 +1,7 @@
+# Status of the checkstyle-regexp rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+regexp = { status = "planned", issue = "#298" }
+regexp-multiline = { status = "planned", issue = "#298" }
+regexp-on-filename = { status = "planned", issue = "#298" }
+regexp-singleline = { status = "planned", issue = "#298" }
+regexp-singleline-java = { status = "planned", issue = "#298" }

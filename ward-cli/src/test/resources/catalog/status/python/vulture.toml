@@ -1,0 +1,6 @@
+# Status of the vulture rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+unused-class = { status = "planned", issue = "#337" }
+unused-function = { status = "planned", issue = "#337" }
+unused-import = { status = "planned", issue = "#337" }
+unused-property = { status = "planned", issue = "#337" }

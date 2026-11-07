@@ -1,0 +1,8 @@
+# Status of the checkstyle-metrics rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+boolean-expression-complexity = { status = "planned", issue = "#298" }
+class-data-abstraction-coupling = "not-applicable"
+class-fan-out-complexity = "not-applicable"
+cyclomatic-complexity = "implemented"
+java-ncss = { status = "planned", issue = "#298" }
+n-path-complexity = { status = "planned", issue = "#298" }

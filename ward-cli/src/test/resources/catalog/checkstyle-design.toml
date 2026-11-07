@@ -4,17 +4,13 @@
 name = "design-for-extension"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java class extension rules; Python classes are open by default" }
-issues = { java = "#287", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["DesignForExtension"]
 
 [[rule]]
 name = "final-class"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287", kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 pmd = ["ClassWithOnlyPrivateConstructorsShouldBeFinal"]
 checkstyle = ["FinalClass"]
@@ -23,8 +19,6 @@ checkstyle = ["FinalClass"]
 name = "hide-utility-class-constructor"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 pmd = ["UseUtilityClass"]
 checkstyle = ["HideUtilityClassConstructor"]
@@ -33,8 +27,6 @@ checkstyle = ["HideUtilityClassConstructor"]
 name = "inner-type-last"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InnerTypeLast"]
 
@@ -42,8 +34,6 @@ checkstyle = ["InnerTypeLast"]
 name = "interface-is-type"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InterfaceIsType"]
 
@@ -51,8 +41,6 @@ checkstyle = ["InterfaceIsType"]
 name = "mutable-exception"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287", kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["MutableException"]
 
@@ -60,8 +48,6 @@ checkstyle = ["MutableException"]
 name = "one-top-level-class"
 category = "design"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["OneTopLevelClass"]
 
@@ -69,8 +55,6 @@ checkstyle = ["OneTopLevelClass"]
 name = "sealed-should-have-permits-list"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["SealedShouldHavePermitsList"]
 
@@ -78,8 +62,6 @@ checkstyle = ["SealedShouldHavePermitsList"]
 name = "throws-count"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#287", kotlin = "#295" }
 not-applicable = { typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 detekt = ["ThrowsCount"]
 checkstyle = ["ThrowsCount"]
@@ -88,7 +70,5 @@ checkstyle = ["ThrowsCount"]
 name = "visibility-modifier"
 category = "design"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java field visibility modifiers; Python has no visibility keywords" }
-issues = { java = "#287", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["VisibilityModifier"]

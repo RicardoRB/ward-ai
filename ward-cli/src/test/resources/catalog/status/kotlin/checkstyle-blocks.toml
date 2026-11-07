@@ -1,0 +1,9 @@
+# Status of the checkstyle-blocks rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+avoid-nested-blocks = { status = "planned", issue = "#294" }
+empty-block = { status = "planned", issue = "#294" }
+empty-catch-block = { status = "planned", issue = "#294" }
+google-right-curly = { status = "planned", issue = "#294" }
+left-curly = { status = "planned", issue = "#294" }
+need-braces = { status = "planned", issue = "#294" }
+right-curly = { status = "planned", issue = "#294" }

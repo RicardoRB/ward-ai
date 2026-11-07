@@ -4,17 +4,13 @@
 name = "annotated-declaration-visibility"
 category = "modifier"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["AnnotatedDeclarationVisibility"]
 
 [[rule]]
 name = "class-member-implied-modifier"
 category = "modifier"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#286" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["ClassMemberImpliedModifier"]
 
@@ -22,8 +18,6 @@ checkstyle = ["ClassMemberImpliedModifier"]
 name = "interface-member-implied-modifier"
 category = "modifier"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#286" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InterfaceMemberImpliedModifier"]
 
@@ -31,9 +25,7 @@ checkstyle = ["InterfaceMemberImpliedModifier"]
 name = "modifier-order"
 category = "modifier"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
 not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["ModifierOrder"]
 pmd = ["ModifierOrder"]
 checkstyle = ["ModifierOrder"]
@@ -44,9 +36,7 @@ swiftlint = ["modifier_order"]
 name = "redundant-modifier"
 category = "modifier"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["RedundantVisibilityModifierRule"]
 pmd = ["UnnecessaryModifier"]
 checkstyle = ["RedundantModifier"]

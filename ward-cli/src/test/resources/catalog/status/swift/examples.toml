@@ -1,0 +1,4 @@
+# Status of the examples rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+example-undefined-name = "implemented"
+example-unused-binding = "implemented"

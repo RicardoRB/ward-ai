@@ -1,0 +1,5 @@
+# Status of the checkstyle-header rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+header = { status = "planned", issue = "#293" }
+multi-file-regexp-header = { status = "planned", issue = "#293" }
+regexp-header = { status = "planned", issue = "#293" }

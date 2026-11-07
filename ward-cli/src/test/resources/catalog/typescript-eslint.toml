@@ -3,268 +3,196 @@
 [[rule]]
 name = "adjacent-overload-signatures"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["adjacent-overload-signatures"]
 biome = ["useAdjacentOverloadSignatures"]
 
 [[rule]]
 name = "await-thenable"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["await-thenable"]
 biome = ["useAwaitThenable"]
 
 [[rule]]
 name = "ban-ts-comment"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["ban-ts-comment"]
 biome = ["noTsIgnore"]
 
 [[rule]]
 name = "ban-tslint-comment"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["ban-tslint-comment"]
 
 [[rule]]
 name = "class-literal-property-style"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["class-literal-property-style"]
 
 [[rule]]
 name = "consistent-generic-constructors"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-generic-constructors"]
 
 [[rule]]
 name = "consistent-indexed-object-style"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-indexed-object-style"]
 
 [[rule]]
 name = "consistent-type-assertions"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-assertions"]
 
 [[rule]]
 name = "consistent-type-definitions"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-definitions"]
 biome = ["useConsistentTypeDefinitions"]
 
 [[rule]]
 name = "consistent-type-exports"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-exports"]
 biome = ["useExportType"]
 
 [[rule]]
 name = "consistent-type-imports"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-imports"]
 biome = ["useImportType"]
 
 [[rule]]
 name = "explicit-function-return-type"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["explicit-function-return-type"]
 
 [[rule]]
 name = "explicit-member-accessibility"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["explicit-member-accessibility"]
 
 [[rule]]
 name = "explicit-module-boundary-types"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["explicit-module-boundary-types"]
 
 [[rule]]
 name = "max-params"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["max-params"]
 biome = ["useMaxParams"]
 
 [[rule]]
 name = "method-signature-style"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["method-signature-style"]
 biome = ["useConsistentMethodSignatures"]
 
 [[rule]]
 name = "naming-convention"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["naming-convention"]
 biome = ["useNamingConvention"]
 
 [[rule]]
 name = "no-array-delete"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-array-delete"]
 
 [[rule]]
 name = "no-base-to-string"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-base-to-string"]
 biome = ["noBaseToString"]
 
 [[rule]]
 name = "no-confusing-non-null-assertion"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["no-confusing-non-null-assertion"]
 
 [[rule]]
 name = "no-confusing-void-expression"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-confusing-void-expression"]
 
 [[rule]]
 name = "no-deprecated"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-deprecated"]
 
 [[rule]]
 name = "no-duplicate-enum-values"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-duplicate-enum-values"]
 biome = ["noDuplicateEnumValues"]
 
 [[rule]]
 name = "no-duplicate-type-constituents"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-duplicate-type-constituents"]
 
 [[rule]]
 name = "no-dynamic-delete"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-dynamic-delete"]
 
 [[rule]]
 name = "no-empty-object-type"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["no-empty-object-type"]
 
 [[rule]]
 name = "no-explicit-any"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-explicit-any"]
 biome = ["noExplicitAny"]
 
 [[rule]]
 name = "no-extra-non-null-assertion"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-extra-non-null-assertion"]
 biome = ["noExtraNonNullAssertion"]
 
 [[rule]]
 name = "no-extraneous-class"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["no-extraneous-class"]
 
 [[rule]]
 name = "no-floating-promises"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-floating-promises"]
 biome = ["noFloatingPromises"]
 
 [[rule]]
 name = "no-for-in-array"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-for-in-array"]
 
 [[rule]]
 name = "no-generated-empty-object-type"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-generated-empty-object-type"]
 
 [[rule]]
 name = "no-import-type-side-effects"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-import-type-side-effects"]
 
 [[rule]]
 name = "no-inferrable-types"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["no-inferrable-types"]
 biome = ["noInferrableTypes"]
 
 [[rule]]
 name = "no-invalid-void-type"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-invalid-void-type"]
 
 [[rule]]
 name = "no-magic-numbers"
 category = "linter"
-status = { typescript = "planned", javascript = "planned", swift = "planned" }
-issues = { typescript = "#299", javascript = "#299", swift = "#338" }
 typescript-eslint = ["no-magic-numbers"]
 swiftlint = ["no_magic_numbers"]
 biome = ["noMagicNumbers"]
@@ -272,512 +200,374 @@ biome = ["noMagicNumbers"]
 [[rule]]
 name = "no-meaningless-void-operator"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-meaningless-void-operator"]
 biome = ["noMeaninglessVoidOperator"]
 
 [[rule]]
 name = "no-misused-new"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-misused-new"]
 
 [[rule]]
 name = "no-misused-promises"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-misused-promises"]
 biome = ["noMisusedPromises"]
 
 [[rule]]
 name = "no-misused-spread"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-misused-spread"]
 
 [[rule]]
 name = "no-mixed-enums"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-mixed-enums"]
 
 [[rule]]
 name = "no-namespace"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["no-namespace"]
 biome = ["noNamespace"]
 
 [[rule]]
 name = "no-non-null-asserted-nullish-coalescing"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
 name = "no-non-null-asserted-optional-chain"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-non-null-asserted-optional-chain"]
 biome = ["noNonNullAssertedOptionalChain"]
 
 [[rule]]
 name = "no-non-null-assertion"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["no-non-null-assertion"]
 biome = ["noNonNullAssertion"]
 
 [[rule]]
 name = "no-redundant-type-constituents"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-redundant-type-constituents"]
 
 [[rule]]
 name = "no-require-imports"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["no-require-imports"]
 
 [[rule]]
 name = "no-restricted-types"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["no-restricted-types"]
 biome = ["noRestrictedTypes"]
 
 [[rule]]
 name = "no-this-alias"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-this-alias"]
 biome = ["noUselessThisAlias"]
 
 [[rule]]
 name = "no-unnecessary-boolean-literal-compare"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-boolean-literal-compare"]
 
 [[rule]]
 name = "no-unnecessary-condition"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-condition"]
 
 [[rule]]
 name = "no-unnecessary-parameter-property-assignment"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-parameter-property-assignment"]
 
 [[rule]]
 name = "no-unnecessary-qualifier"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-qualifier"]
 
 [[rule]]
 name = "no-unnecessary-template-expression"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-unnecessary-template-expression"]
 biome = ["noUnnecessaryTemplateExpression"]
 
 [[rule]]
 name = "no-unnecessary-type-arguments"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-arguments"]
 
 [[rule]]
 name = "no-unnecessary-type-assertion"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-assertion"]
 
 [[rule]]
 name = "no-unnecessary-type-constraint"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-constraint"]
 biome = ["noUselessTypeConstraint"]
 
 [[rule]]
 name = "no-unnecessary-type-conversion"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-conversion"]
 biome = ["noUselessTypeConversion"]
 
 [[rule]]
 name = "no-unnecessary-type-parameters"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-parameters"]
 
 [[rule]]
 name = "no-unsafe-argument"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-argument"]
 
 [[rule]]
 name = "no-unsafe-assignment"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-assignment"]
 
 [[rule]]
 name = "no-unsafe-call"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-call"]
 
 [[rule]]
 name = "no-unsafe-declaration-merging"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-unsafe-declaration-merging"]
 biome = ["noUnsafeDeclarationMerging"]
 
 [[rule]]
 name = "no-unsafe-enum-assignment"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-enum-assignment"]
 
 [[rule]]
 name = "no-unsafe-enum-comparison"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-enum-comparison"]
 
 [[rule]]
 name = "no-unsafe-function-type"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-function-type"]
 
 [[rule]]
 name = "no-unsafe-member-access"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-member-access"]
 
 [[rule]]
 name = "no-unsafe-return"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-return"]
 
 [[rule]]
 name = "no-unsafe-type-assertion"
 category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-unsafe-type-assertion"]
 biome = ["noUnsafeTypeAssertion"]
 
 [[rule]]
 name = "no-unsafe-unary-minus"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-unsafe-unary-minus"]
 
 [[rule]]
 name = "no-useless-default-assignment"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-useless-default-assignment"]
 
 [[rule]]
 name = "no-useless-empty-export"
 category = "suggestion"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#327", javascript = "#329" }
 typescript-eslint = ["no-useless-empty-export"]
 biome = ["noUselessEmptyExport"]
 
 [[rule]]
 name = "no-wrapper-object-types"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["no-wrapper-object-types"]
 
 [[rule]]
 name = "non-nullable-type-assertion-style"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["non-nullable-type-assertion-style"]
 
 [[rule]]
 name = "only-throw-error"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["only-throw-error"]
 biome = ["useThrowOnlyError"]
 
 [[rule]]
 name = "parameter-properties"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["parameter-properties"]
 biome = ["noParameterProperties"]
 
 [[rule]]
 name = "prefer-as-const"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-as-const"]
 biome = ["useAsConstAssertion"]
 
 [[rule]]
 name = "prefer-enum-initializers"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-enum-initializers"]
 biome = ["useEnumInitializers"]
 
 [[rule]]
 name = "prefer-find"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-find"]
 
 [[rule]]
 name = "prefer-for-of"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-for-of"]
 biome = ["useForOf"]
 
 [[rule]]
 name = "prefer-function-type"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-function-type"]
 
 [[rule]]
 name = "prefer-includes"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-includes"]
 biome = ["useIncludes"]
 
 [[rule]]
 name = "prefer-literal-enum-member"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-literal-enum-member"]
 biome = ["useLiteralEnumMembers"]
 
 [[rule]]
 name = "prefer-namespace-keyword"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-namespace-keyword"]
 biome = ["useNamespaceKeyword"]
 
 [[rule]]
 name = "prefer-nullish-coalescing"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-nullish-coalescing"]
 biome = ["useNullishCoalescing"]
 
 [[rule]]
 name = "prefer-optional-chain"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-optional-chain"]
 biome = ["useOptionalChain"]
 
 [[rule]]
 name = "prefer-readonly"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["prefer-readonly"]
 biome = ["useReadonlyClassProperties"]
 
 [[rule]]
 name = "prefer-readonly-parameter-types"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-readonly-parameter-types"]
 
 [[rule]]
 name = "prefer-reduce-type-parameter"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-reduce-type-parameter"]
 
 [[rule]]
 name = "prefer-regexp-exec"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-regexp-exec"]
 biome = ["useRegexpExec"]
 
 [[rule]]
 name = "prefer-return-this-type"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-return-this-type"]
 
 [[rule]]
 name = "prefer-string-starts-ends-with"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["prefer-string-starts-ends-with"]
 biome = ["useStringStartsEndsWith"]
 
 [[rule]]
 name = "promise-function-async"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["promise-function-async"]
 
 [[rule]]
 name = "related-getter-setter-pairs"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["related-getter-setter-pairs"]
 
 [[rule]]
 name = "require-array-sort-compare"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["require-array-sort-compare"]
 biome = ["useArraySortCompare"]
 
 [[rule]]
 name = "restrict-plus-operands"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["restrict-plus-operands"]
 biome = ["noUnsafePlusOperands"]
 
 [[rule]]
 name = "restrict-template-expressions"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["restrict-template-expressions"]
 
 [[rule]]
 name = "return-await"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["return-await"]
 
 [[rule]]
 name = "strict-boolean-expressions"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["strict-boolean-expressions"]
 biome = ["useStrictBooleanExpressions"]
 
 [[rule]]
 name = "strict-void-return"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["strict-void-return"]
 
 [[rule]]
 name = "switch-exhaustiveness-check"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["switch-exhaustiveness-check"]
 
 [[rule]]
 name = "triple-slash-reference"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["triple-slash-reference"]
 
 [[rule]]
 name = "unbound-method"
 category = "problem"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["unbound-method"]
 
 [[rule]]
 name = "unified-signatures"
 category = "linter"
-status = { typescript = "planned" }
-issues = { typescript = "#299" }
 typescript-eslint = ["unified-signatures"]
 biome = ["useUnifiedTypeSignatures"]
 
 [[rule]]
 name = "use-unknown-in-catch-callback-variable"
 category = "suggestion"
-status = { typescript = "planned" }
-issues = { typescript = "#327" }
 typescript-eslint = ["use-unknown-in-catch-callback-variable"]
