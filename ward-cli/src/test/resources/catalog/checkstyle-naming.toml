@@ -63,8 +63,8 @@ checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
 name = "lambda-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["LambdaParameterName"]
 
 [[rule]]
@@ -111,8 +111,9 @@ checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]
 name = "package-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java package declarations; Python packages are directories and module names follow PEP 8" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["PackageNaming"]
 checkstyle = ["PackageName"]
 ktlint = ["package-name"]

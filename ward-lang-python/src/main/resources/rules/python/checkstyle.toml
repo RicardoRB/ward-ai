@@ -203,3 +203,148 @@ kinds = ["classdef"]
 text = "^class(?!_)\\w+(?:\\((?:[^()]|\\([^()]*\\))*\\))?:(?![\\s]*['\"])"
 message = "public class has no docstring"
 '''
+
+[[rules]]
+id = "ward:python/hex-literal-case"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["NUMBER", "INTEGER"]
+text = "^0[xX][0-9a-fA-F]*[a-f]"
+message = "hex digits must be upper case"
+'''
+
+[[rules]]
+id = "ward:python/numerical-prefixes-infixes-suffixes-character-case"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["NUMBER", "INTEGER"]
+text = "^(?:0X|0O|0B|[0-9.]+E)"
+message = "numeric prefix or exponent has the wrong character case"
+'''
+
+[[rules]]
+id = "ward:python/trailing-comment"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^(?:[^'\"#]|'[^']*'|\"[^\"]*\")*[^\\s#'\"](?:[^'\"#]|'[^']*'|\"[^\"]*\")*#"
+message = "trailing comment; put the comment on its own line"
+'''
+
+[[rules]]
+id = "ward:python/avoid-inline-conditionals"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["test"]
+text = "if.*else"
+message = "inline conditional; use an if statement"
+'''
+
+[[rules]]
+id = "ward:python/simplify-boolean-expression"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "(==|!=)\\s*(True|False)\\b|\\b(True|False)\\s*(==|!=)"
+message = "comparison with a boolean literal; simplify the expression"
+'''
+
+[[rules]]
+id = "ward:python/simplify-boolean-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = "^if[^:]*:\\s*return(?:True|False)\\s*else:\\s*return(?:True|False)"
+message = "if statement returns boolean literals; return the condition instead"
+'''
+
+[[rules]]
+id = "ward:python/lambda-parameter-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["lambdef"]
+name = "NAME"
+pattern = "^_*[a-z][a-z0-9_]*$"
+message = "lambda parameter name '{value}' must be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/nested-if-depth"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "depth"
+kinds = ["if_stmt"]
+reset = ["funcdef", "classdef"]
+max = 1
+message = "if statements are nested {value} levels deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/nested-for-depth"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "depth"
+kinds = ["for_stmt"]
+reset = ["funcdef", "classdef"]
+max = 1
+message = "for loops are nested {value} levels deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/nested-try-depth"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "depth"
+kinds = ["try_stmt"]
+reset = ["funcdef", "classdef"]
+max = 1
+message = "try statements are nested {value} levels deep; the limit is {max}"
+'''
+
