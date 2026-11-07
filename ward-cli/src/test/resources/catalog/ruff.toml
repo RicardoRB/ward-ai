@@ -1268,23 +1268,17 @@ ruff = ["E902"]
 
 [[rule]]
 name = "raw-string-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM101"]
 
 [[rule]]
 name = "f-string-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM102"]
 
 [[rule]]
 name = "dot-format-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM103"]
 
 [[rule]]
@@ -1655,9 +1649,7 @@ ruff = ["FURB103"]
 
 [[rule]]
 name = "print-empty-string"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB105"]
 
 [[rule]]
@@ -1781,30 +1773,22 @@ ruff = ["FURB157"]
 
 [[rule]]
 name = "bit-count"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB161"]
 
 [[rule]]
 name = "fromisoformat-replace-z"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB162"]
 
 [[rule]]
 name = "redundant-log-base"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB163"]
 
 [[rule]]
 name = "unnecessary-from-float"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB164"]
 
 [[rule]]
@@ -1816,16 +1800,12 @@ ruff = ["FURB166"]
 
 [[rule]]
 name = "regex-flag-alias"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB167"]
 
 [[rule]]
 name = "isinstance-type-none"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB168"]
 
 [[rule]]
@@ -1844,23 +1824,17 @@ ruff = ["FURB171"]
 
 [[rule]]
 name = "implicit-cwd"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB177"]
 
 [[rule]]
 name = "meta-class-abc-meta"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB180"]
 
 [[rule]]
 name = "hashlib-digest-hex"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB181"]
 
 [[rule]]
@@ -1879,16 +1853,12 @@ ruff = ["FURB188"]
 
 [[rule]]
 name = "subclass-builtin"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB189"]
 
 [[rule]]
 name = "sorted-min-max"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB192"]
 
 [[rule]]
@@ -2005,9 +1975,7 @@ ruff = ["INT003"]
 
 [[rule]]
 name = "single-line-implicit-string-concatenation"
-category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["ISC001"]
 
 [[rule]]
@@ -2019,9 +1987,7 @@ ruff = ["ISC002"]
 
 [[rule]]
 name = "explicit-string-concatenation"
-category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["ISC003"]
 
 [[rule]]
@@ -2313,16 +2279,12 @@ ruff = ["PERF403"]
 
 [[rule]]
 name = "blanket-type-ignore"
-category = "pygrep-hooks"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["PGH003"]
 
 [[rule]]
 name = "blanket-noqa"
-category = "pygrep-hooks"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["PGH004"]
 
 [[rule]]

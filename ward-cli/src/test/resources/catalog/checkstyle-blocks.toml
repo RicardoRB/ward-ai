@@ -4,8 +4,9 @@
 name = "avoid-nested-blocks"
 category = "blocks"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java block statements; Python has no bare nested blocks" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["AvoidNestedBlocks"]
 eslint = ["no-lone-blocks"]
 
@@ -37,25 +38,27 @@ ruff = ["S110"]
 name = "google-right-curly"
 category = "blocks"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["GoogleRightCurly"]
 
 [[rule]]
 name = "left-curly"
 category = "blocks"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["LeftCurly"]
 
 [[rule]]
 name = "need-braces"
 category = "blocks"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
-not-applicable = { swift = "Swift requires braces around every block, so the compiler already enforces it" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit", swift = "Swift requires braces around every block, so the compiler already enforces it" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]
@@ -66,6 +69,7 @@ biome = ["useBlockStatements"]
 name = "right-curly"
 category = "blocks"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["RightCurly"]
