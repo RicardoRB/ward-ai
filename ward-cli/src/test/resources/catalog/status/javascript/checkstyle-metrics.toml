@@ -1,0 +1,8 @@
+# Status of the checkstyle-metrics rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+boolean-expression-complexity = { status = "planned", issue = "#296" }
+class-data-abstraction-coupling = "not-applicable"
+class-fan-out-complexity = "not-applicable"
+cyclomatic-complexity = "implemented"
+java-ncss = { status = "planned", issue = "#296" }
+n-path-complexity = { status = "planned", issue = "#296" }

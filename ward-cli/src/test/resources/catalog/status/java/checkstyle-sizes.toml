@@ -1,0 +1,12 @@
+# Status of the checkstyle-sizes rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+anon-inner-length = "implemented"
+executable-statement-count = "implemented"
+file-length = "implemented"
+lambda-body-length = "implemented"
+line-length = "implemented"
+method-count = "implemented"
+method-length = "implemented"
+outer-type-number = "implemented"
+parameter-number = "implemented"
+record-component-number = "implemented"

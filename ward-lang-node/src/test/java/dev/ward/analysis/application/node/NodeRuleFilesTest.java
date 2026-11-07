@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 /** The rule files this module lists exist on the classpath and declare rules of both languages. */
 class NodeRuleFilesTest {
 
-  private static final String BIOME_FILE = "rules/node/biome.toml";
+  private static final String SUGGESTION_FILE = "rules/node/suggestion.toml";
 
   @Test
   void everyListedFileIsOnTheClasspath() throws IOException {
@@ -20,10 +20,10 @@ class NodeRuleFilesTest {
   }
 
   @Test
-  void biomeFileIsListedAndDeclaresTypeScriptAndJavaScriptRules() throws IOException {
-    assertThat(new NodeRuleFiles().ruleFiles()).contains(BIOME_FILE);
+  void suggestionFileIsListedAndDeclaresTypeScriptAndJavaScriptRules() throws IOException {
+    assertThat(new NodeRuleFiles().ruleFiles()).contains(SUGGESTION_FILE);
 
-    final String text = read(BIOME_FILE);
+    final String text = read(SUGGESTION_FILE);
 
     assertThat(text).contains("id = \"ward:typescript/no-for-each\"");
     assertThat(text).contains("id = \"ward:javascript/no-for-each\"");

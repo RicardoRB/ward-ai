@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +28,38 @@ final class CatalogTables {
 
   /** Returns the status per language, joining each status with its issue or reason. */
   static Map<AnalysisLanguage, LanguageStatus> statuses(final TomlTable row) {
+    return statuses(row, Map.of());
+  }
+
+  /**
+   * Returns the status per language, from the row's own {@code status} table and from the status
+   * files, in the order of {@link AnalysisLanguage}. A language that both name is rejected.
+   */
+  static Map<AnalysisLanguage, LanguageStatus> statuses(
+      final TomlTable row, final Map<AnalysisLanguage, CatalogStatusFiles.Entry> external) {
     final TomlTable status = CatalogValues.table(row, STATUS);
     final TomlTable issues = CatalogValues.table(row, ISSUES);
     final TomlTable reasons = CatalogValues.table(row, NOT_APPLICABLE);
-    final Map<AnalysisLanguage, LanguageStatus> statuses = new LinkedHashMap<>();
+    final Map<AnalysisLanguage, CatalogStatusFiles.Entry> all =
+        new EnumMap<>(AnalysisLanguage.class);
     for (final String key : status.keySet()) {
-      statuses.put(CatalogValues.language(key), languageStatus(key, status, issues, reasons));
+      all.put(CatalogValues.language(key), entryOf(key, status, issues));
     }
+    external.forEach(
+        (language, entry) -> {
+          if (all.put(language, entry) != null) {
+            throw new IllegalArgumentException(
+                "the status of "
+                    + CatalogRow.key(language)
+                    + " is in the row and in a status file");
+          }
+        });
+    final Map<AnalysisLanguage, LanguageStatus> statuses = new EnumMap<>(AnalysisLanguage.class);
+    all.forEach(
+        (language, entry) ->
+            statuses.put(language, languageStatus(CatalogRow.key(language), entry, reasons)));
     rejectUnlisted(issues, status, ISSUES);
-    rejectUnlisted(reasons, status, NOT_APPLICABLE);
+    rejectUnlisted(reasons, all);
     return statuses;
   }
 
@@ -64,14 +88,17 @@ final class CatalogTables {
     return counterparts;
   }
 
+  private static CatalogStatusFiles.Entry entryOf(
+      final String key, final TomlTable status, final TomlTable issues) {
+    return new CatalogStatusFiles.Entry(
+        status.getString(key), CatalogValues.optional(issues.getString(key)));
+  }
+
   private static LanguageStatus languageStatus(
-      final String key, final TomlTable status, final TomlTable issues, final TomlTable reasons) {
+      final String key, final CatalogStatusFiles.Entry entry, final TomlTable reasons) {
     final CatalogStatus value =
-        CatalogStatus.byKey(status.getString(key)).orElseThrow(() -> unknownStatus(key));
-    return new LanguageStatus(
-        value,
-        CatalogValues.optional(issues.getString(key)),
-        CatalogValues.optional(reasons.getString(key)));
+        CatalogStatus.byKey(entry.status()).orElseThrow(() -> unknownStatus(key));
+    return new LanguageStatus(value, entry.issue(), CatalogValues.optional(reasons.getString(key)));
   }
 
   private static IllegalArgumentException unknownStatus(final String key) {
@@ -83,6 +110,16 @@ final class CatalogTables {
     for (final String key : table.keySet()) {
       if (!status.contains(key)) {
         throw new IllegalArgumentException("'" + name + "' names " + key + " with no status");
+      }
+    }
+  }
+
+  private static void rejectUnlisted(
+      final TomlTable reasons, final Map<AnalysisLanguage, CatalogStatusFiles.Entry> all) {
+    for (final String key : reasons.keySet()) {
+      if (!all.containsKey(CatalogValues.language(key))) {
+        throw new IllegalArgumentException(
+            "'" + NOT_APPLICABLE + "' names " + key + " with no status");
       }
     }
   }

@@ -4,9 +4,7 @@
 name = "array-type-style"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
-not-applicable = { python = "Java array declaration syntax; Python has no array declarations" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+not-applicable = { typescript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", javascript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", python = "Java array declaration syntax; Python has no array declarations", swift = "Swift has one array syntax, [Element], so there is no C-style declarator to flag" }
 typescript-eslint = ["array-type"]
 checkstyle = ["ArrayTypeStyle"]
 
@@ -14,8 +12,6 @@ checkstyle = ["ArrayTypeStyle"]
 name = "avoid-escaped-unicode-characters"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#293" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["AvoidEscapedUnicodeCharacters"]
 
@@ -23,18 +19,14 @@ checkstyle = ["AvoidEscapedUnicodeCharacters"]
 name = "descendant-token"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java token-tree check; Python has no equivalent token tree" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["DescendantToken"]
 
 [[rule]]
 name = "final-parameters"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java final parameters; Python has no final modifier" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["MethodArgumentCouldBeFinal"]
 checkstyle = ["FinalParameters"]
 
@@ -42,57 +34,43 @@ checkstyle = ["FinalParameters"]
 name = "hex-literal-case"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["HexLiteralCase"]
 
 [[rule]]
 name = "line-ending"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["LineEnding"]
 
 [[rule]]
 name = "multiline-comment-leading-asterisk-presence"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Javadoc block-comment layout; Python docstrings have no leading asterisks" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["MultilineCommentLeadingAsteriskPresence"]
 
 [[rule]]
 name = "newline-at-end-of-file"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NewlineAtEndOfFile"]
 
 [[rule]]
 name = "no-code-in-file"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NoCodeInFile"]
 
 [[rule]]
 name = "numerical-prefixes-infixes-suffixes-character-case"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NumericalPrefixesInfixesSuffixesCharacterCase"]
 
 [[rule]]
 name = "outer-type-filename"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#293" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["OuterTypeFilename"]
 
@@ -100,8 +78,6 @@ checkstyle = ["OuterTypeFilename"]
 name = "todo-comment"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["ForbiddenComment"]
 checkstyle = ["TodoComment"]
 eslint = ["no-warning-comments"]
@@ -113,8 +89,6 @@ pylint = ["fixme"]
 name = "trailing-comment"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["TrailingComment"]
 eslint = ["no-inline-comments"]
 
@@ -122,8 +96,6 @@ eslint = ["no-inline-comments"]
 name = "uncommented-main"
 category = "misc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#293" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UncommentedMain"]
 
@@ -131,7 +103,5 @@ checkstyle = ["UncommentedMain"]
 name = "upper-ell"
 category = "misc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
-not-applicable = { python = "Java long literal suffix; Python 3 has no long literal suffix" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+not-applicable = { typescript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", javascript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", python = "Java long literal suffix; Python 3 has no long literal suffix", swift = "Swift integer literals have no long suffix" }
 checkstyle = ["UpperEll"]

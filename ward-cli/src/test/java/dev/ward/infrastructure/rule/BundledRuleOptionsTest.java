@@ -25,7 +25,7 @@ class BundledRuleOptionsTest {
 
   /** Sample values of the string-list options whose entries name a grammar. */
   private static final Map<String, List<String>> LIST_SAMPLES =
-      Map.of("rules", List.of("allow java.util.*"));
+      Map.of("rules", List.of("allow java.util.*"), "ignore-numbers", List.of("7"));
 
   @Test
   void everyBundledRuleLoads() {

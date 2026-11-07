@@ -1,0 +1,14 @@
+# Status of the checkstyle-imports rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+avoid-module-import = "implemented"
+avoid-star-import = "implemented"
+avoid-static-import = "implemented"
+custom-import-order = "implemented"
+illegal-import = "implemented"
+import-control = "implemented"
+import-order = "implemented"
+module-directive-order = "implemented"
+module-import-order = "implemented"
+redundant-import = "implemented"
+unnecessary-fully-qualified-type = "implemented"
+unused-imports = "implemented"

@@ -1,0 +1,4 @@
+# Status of the pmd rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+collapsible-if-statements = { status = "planned", issue = "#294" }
+protected-member-in-final-class = { status = "planned", issue = "#294" }

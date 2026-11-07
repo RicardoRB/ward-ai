@@ -1,0 +1,7 @@
+# Status of the checkstyle-modifier rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+annotated-declaration-visibility = "not-applicable"
+class-member-implied-modifier = "not-applicable"
+interface-member-implied-modifier = "not-applicable"
+modifier-order = "not-applicable"
+redundant-modifier = "not-applicable"

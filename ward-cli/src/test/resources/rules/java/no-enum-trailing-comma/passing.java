@@ -1,0 +1,4 @@
+enum Passing {
+  A,
+  B;
+}

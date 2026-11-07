@@ -1,0 +1,99 @@
+# Structural rules of the "coding" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/nesting-depth"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:javascript/nesting-depth"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:typescript/unused-assignment"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = ""
+
+[[rules]]
+id = "ward:javascript/unused-assignment"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = ""
+
+[[rules]]
+id = "ward:typescript/missing-switch-default"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["caseBlock"]
+child = ["defaultClause"]
+message = "switch statement has no default clause"
+'''
+
+[[rules]]
+id = "ward:javascript/missing-switch-default"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["caseBlock"]
+child = ["defaultClause"]
+message = "switch statement has no default clause"
+'''
+
+[[rules]]
+id = "ward:typescript/multiple-variable-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["variableDeclarationList"]
+counted = ["variableDeclaration"]
+skip = ["variableDeclaration"]
+max = 1
+message = "statement declares {value} variables; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:javascript/multiple-variable-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["variableDeclarationList"]
+counted = ["variableDeclaration"]
+skip = ["variableDeclaration"]
+max = 1
+message = "statement declares {value} variables; the limit is {max}"
+'''

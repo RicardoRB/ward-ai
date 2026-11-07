@@ -2,6 +2,9 @@ package dev.ward.analysis.application.python;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckProvider;
+import dev.ward.analysis.application.rule.CheckRegistry;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +15,11 @@ public final class PythonCheckProvider implements CheckProvider {
 
   @Override
   public Map<String, CheckFactory> checks() {
-    return PythonScopeChecks.checks();
+    final Map<String, CheckFactory> checks =
+        new HashMap<>(
+            CheckRegistry.union(List.of(PythonScopeChecks.checks(), PythonOrderChecks.checks())));
+    // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
+    checks.put("unused-definition", toml -> root -> List.of());
+    return Map.copyOf(checks);
   }
 }

@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
+import dev.ward.analysis.domain.graph.ProjectFiles;
 import java.util.List;
 
 /**
@@ -14,4 +15,12 @@ public interface GraphRule {
 
   /** Returns the matches of this rule in {@code graph}, each at the file that creates it. */
   List<GraphMatch> matches(DependencyGraph graph);
+
+  /**
+   * Returns the matches of this rule over the files and entries of the run. A rule that needs the
+   * file list overrides this; the default ignores the files.
+   */
+  default List<GraphMatch> matches(final DependencyGraph graph, final ProjectFiles project) {
+    return matches(graph);
+  }
 }

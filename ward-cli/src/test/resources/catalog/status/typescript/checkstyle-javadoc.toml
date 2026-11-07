@@ -1,0 +1,37 @@
+# Status of the checkstyle-javadoc rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+atclause-order = { status = "planned", issue = "#296" }
+illegal-block-tag = { status = "planned", issue = "#296" }
+inappropriate-javadoc-block-tags-on-field = { status = "planned", issue = "#296" }
+inappropriate-javadoc-block-tags-on-package = "not-applicable"
+inappropriate-javadoc-block-tags-on-type = { status = "planned", issue = "#296" }
+invalid-javadoc-position = { status = "planned", issue = "#296" }
+javadoc-block-tag-location = { status = "planned", issue = "#296" }
+javadoc-content-location = { status = "planned", issue = "#296" }
+javadoc-end-comment-delimiter = { status = "planned", issue = "#296" }
+javadoc-leading-asterisk-align = { status = "planned", issue = "#296" }
+javadoc-link-first-occurrence = { status = "planned", issue = "#296" }
+javadoc-link-well-known-api = { status = "planned", issue = "#296" }
+javadoc-method = { status = "planned", issue = "#296" }
+javadoc-missing-leading-asterisk = { status = "planned", issue = "#296" }
+javadoc-missing-whitespace-after-asterisk = { status = "planned", issue = "#296" }
+javadoc-no-error-in-throws-tag = { status = "planned", issue = "#296" }
+javadoc-package = "not-applicable"
+javadoc-paragraph = { status = "planned", issue = "#296" }
+javadoc-param-order = { status = "planned", issue = "#296" }
+javadoc-regexp = { status = "planned", issue = "#296" }
+javadoc-see-tag-order = { status = "planned", issue = "#296" }
+javadoc-tag-continuation-indentation = { status = "planned", issue = "#296" }
+javadoc-throws-order = { status = "planned", issue = "#296" }
+javadoc-type = { status = "planned", issue = "#296" }
+javadoc-variable = { status = "planned", issue = "#296" }
+missing-javadoc-method = { status = "planned", issue = "#296" }
+missing-javadoc-package = "not-applicable"
+missing-javadoc-type = { status = "planned", issue = "#296" }
+non-empty-atclause-description = { status = "planned", issue = "#296" }
+prefer-code-or-snippet-javadoc-inline-tag = { status = "planned", issue = "#296" }
+prefer-literal-javadoc-inline-tag = { status = "planned", issue = "#296" }
+require-empty-line-before-block-tag-group = { status = "planned", issue = "#296" }
+single-line-javadoc = { status = "planned", issue = "#296" }
+summary-javadoc = { status = "planned", issue = "#296" }
+write-tag = { status = "planned", issue = "#296" }

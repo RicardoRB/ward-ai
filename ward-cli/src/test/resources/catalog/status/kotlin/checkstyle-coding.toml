@@ -1,0 +1,68 @@
+# Status of the checkstyle-coding rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-trailing-comma = { status = "planned", issue = "#294" }
+avoid-inline-conditionals = { status = "planned", issue = "#294" }
+avoid-no-argument-super-constructor-call = { status = "planned", issue = "#294" }
+constructors-declaration-grouping = { status = "planned", issue = "#294" }
+covariant-equals = { status = "planned", issue = "#294" }
+declaration-order = { status = "planned", issue = "#294" }
+default-comes-last = { status = "planned", issue = "#294" }
+empty-statement = { status = "planned", issue = "#294" }
+equals-avoid-null = { status = "planned", issue = "#294" }
+equals-hash-code = { status = "planned", issue = "#294" }
+explicit-initialization = { status = "planned", issue = "#294" }
+expression-over-block-lambda = { status = "planned", issue = "#294" }
+fall-through = { status = "planned", issue = "#294" }
+final-local-variable = { status = "planned", issue = "#294" }
+hidden-field = { status = "planned", issue = "#294" }
+illegal-catch = { status = "planned", issue = "#294" }
+illegal-instantiation = "not-applicable"
+illegal-symbol = { status = "planned", issue = "#294" }
+illegal-throws = { status = "planned", issue = "#294" }
+illegal-token = { status = "planned", issue = "#294" }
+illegal-token-text = { status = "planned", issue = "#294" }
+illegal-type = { status = "planned", issue = "#294" }
+inner-assignment = { status = "planned", issue = "#294" }
+magic-number = { status = "planned", issue = "#294" }
+missing-ctor = { status = "planned", issue = "#294" }
+missing-null-case-in-switch = "not-applicable"
+missing-switch-default = { status = "planned", issue = "#294" }
+modified-control-variable = { status = "planned", issue = "#294" }
+multiple-string-literals = { status = "planned", issue = "#294" }
+multiple-variable-declarations = { status = "planned", issue = "#294" }
+nested-for-depth = { status = "planned", issue = "#294" }
+nested-if-depth = { status = "planned", issue = "#294" }
+nested-try-depth = { status = "planned", issue = "#294" }
+no-array-trailing-comma = { status = "planned", issue = "#294" }
+no-clone = { status = "planned", issue = "#294" }
+no-enum-trailing-comma = { status = "planned", issue = "#294" }
+no-finalizer = { status = "planned", issue = "#294" }
+one-statement-per-line = { status = "planned", issue = "#294" }
+overload-methods-declaration-order = { status = "planned", issue = "#294" }
+package-declaration = "not-applicable"
+parameter-assignment = { status = "planned", issue = "#294" }
+pattern-variable-assignment = "not-applicable"
+require-this = { status = "planned", issue = "#294" }
+return-count = { status = "planned", issue = "#294" }
+simplify-boolean-expression = { status = "planned", issue = "#294" }
+simplify-boolean-return = { status = "planned", issue = "#294" }
+string-literal-equality = { status = "planned", issue = "#294" }
+super-clone = { status = "planned", issue = "#294" }
+super-finalize = { status = "planned", issue = "#294" }
+text-block-google-style-formatting = "not-applicable"
+unnecessary-null-check-with-instance-of = { status = "planned", issue = "#294" }
+unnecessary-parentheses = { status = "planned", issue = "#294" }
+unnecessary-permits-clause = "not-applicable"
+unnecessary-semicolon-after-outer-type-declaration = "not-applicable"
+unnecessary-semicolon-after-type-member-declaration = "not-applicable"
+unnecessary-semicolon-in-enumeration = "not-applicable"
+unnecessary-semicolon-in-try-with-resources = "not-applicable"
+unnecessary-type-arguments-with-record-pattern = "not-applicable"
+unused-catch-parameter-should-be-unnamed = "not-applicable"
+unused-lambda-parameter-should-be-unnamed = "not-applicable"
+unused-local-variable = { status = "planned", issue = "#294" }
+unused-private-field = { status = "planned", issue = "#294" }
+unused-try-resource-should-be-unnamed = "not-applicable"
+use-enhanced-switch = "not-applicable"
+variable-declaration-usage-distance = { status = "planned", issue = "#294" }
+when-should-be-used = "not-applicable"

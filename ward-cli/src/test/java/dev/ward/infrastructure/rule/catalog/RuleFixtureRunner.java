@@ -6,10 +6,13 @@ import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.TypeFactsRun;
+import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -48,6 +51,9 @@ final class RuleFixtureRunner {
       return DuplicateCodeFindings.findings(
           List.of(rule), List.of(new SourceUnit(path, language, text)), frontends);
     }
+    if (UnusedDefinitionFindings.isUnusedDefinitionRule(rule)) {
+      return unusedDefinitions(rule, new SourceUnit(path, language, text));
+    }
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
             .run(
@@ -59,6 +65,19 @@ final class RuleFixtureRunner {
     return result.findings().stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .toList();
+  }
+
+  /** A fixture is one file, so a definition is used when the file itself uses it. */
+  private List<AnalysisFinding> unusedDefinitions(
+      final RuleDefinition rule, final SourceUnit unit) {
+    final FrontendSupport python =
+        frontends.stream()
+            .filter(support -> support.language() == unit.language())
+            .findFirst()
+            .orElseThrow();
+    final FileSummary summary =
+        new PythonFileSummarizer().summarize(unit, python.frontend().parse(unit).tree());
+    return UnusedDefinitionFindings.findings(List.of(rule), Map.of(unit.path(), summary));
   }
 
   private List<FrontendSupport> frontendsFor(final RuleDefinition rule, final TypeFacts typeFacts) {

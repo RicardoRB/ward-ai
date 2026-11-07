@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "atclause-order"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["AtclauseOrder"]
 
@@ -11,8 +9,6 @@ checkstyle = ["AtclauseOrder"]
 name = "illegal-block-tag"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["IllegalBlockTag"]
 
@@ -20,8 +16,6 @@ checkstyle = ["IllegalBlockTag"]
 name = "inappropriate-javadoc-block-tags-on-field"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InappropriateJavadocBlockTagsOnField"]
 
@@ -29,8 +23,6 @@ checkstyle = ["InappropriateJavadocBlockTagsOnField"]
 name = "inappropriate-javadoc-block-tags-on-package"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InappropriateJavadocBlockTagsOnPackage"]
 
@@ -38,8 +30,6 @@ checkstyle = ["InappropriateJavadocBlockTagsOnPackage"]
 name = "inappropriate-javadoc-block-tags-on-type"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InappropriateJavadocBlockTagsOnType"]
 
@@ -47,8 +37,6 @@ checkstyle = ["InappropriateJavadocBlockTagsOnType"]
 name = "invalid-javadoc-position"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InvalidJavadocPosition"]
 
@@ -56,8 +44,6 @@ checkstyle = ["InvalidJavadocPosition"]
 name = "javadoc-block-tag-location"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocBlockTagLocation"]
 
@@ -65,8 +51,6 @@ checkstyle = ["JavadocBlockTagLocation"]
 name = "javadoc-content-location"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocContentLocation"]
 
@@ -74,8 +58,6 @@ checkstyle = ["JavadocContentLocation"]
 name = "javadoc-end-comment-delimiter"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocEndCommentDelimiter"]
 
@@ -83,8 +65,6 @@ checkstyle = ["JavadocEndCommentDelimiter"]
 name = "javadoc-leading-asterisk-align"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLeadingAsteriskAlign"]
 
@@ -92,8 +72,6 @@ checkstyle = ["JavadocLeadingAsteriskAlign"]
 name = "javadoc-link-first-occurrence"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLinkFirstOccurrence"]
 
@@ -101,8 +79,6 @@ checkstyle = ["JavadocLinkFirstOccurrence"]
 name = "javadoc-link-well-known-api"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLinkWellKnownApi"]
 
@@ -110,16 +86,12 @@ checkstyle = ["JavadocLinkWellKnownApi"]
 name = "javadoc-method"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["JavadocMethod"]
 
 [[rule]]
 name = "javadoc-missing-leading-asterisk"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocMissingLeadingAsterisk"]
 
@@ -127,8 +99,6 @@ checkstyle = ["JavadocMissingLeadingAsterisk"]
 name = "javadoc-missing-whitespace-after-asterisk"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocMissingWhitespaceAfterAsterisk"]
 
@@ -136,8 +106,6 @@ checkstyle = ["JavadocMissingWhitespaceAfterAsterisk"]
 name = "javadoc-no-error-in-throws-tag"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocNoErrorInThrowsTag"]
 
@@ -145,8 +113,6 @@ checkstyle = ["JavadocNoErrorInThrowsTag"]
 name = "javadoc-package"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["JavadocPackage"]
 
@@ -154,8 +120,6 @@ checkstyle = ["JavadocPackage"]
 name = "javadoc-paragraph"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocParagraph"]
 
@@ -163,8 +127,6 @@ checkstyle = ["JavadocParagraph"]
 name = "javadoc-param-order"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocParamOrder"]
 
@@ -172,8 +134,6 @@ checkstyle = ["JavadocParamOrder"]
 name = "javadoc-regexp"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocRegexp"]
 
@@ -181,15 +141,11 @@ checkstyle = ["JavadocRegexp"]
 name = "javadoc-see-tag-order"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocSeeTagOrder"]
 
 [[rule]]
 name = "javadoc-tag-continuation-indentation"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocTagContinuationIndentation"]
 
@@ -197,8 +153,6 @@ checkstyle = ["JavadocTagContinuationIndentation"]
 name = "javadoc-throws-order"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocThrowsOrder"]
 
@@ -206,22 +160,16 @@ checkstyle = ["JavadocThrowsOrder"]
 name = "javadoc-type"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["JavadocType"]
 
 [[rule]]
 name = "javadoc-variable"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["JavadocVariable"]
 
 [[rule]]
 name = "missing-javadoc-method"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 ids = { java = "ward:java/missing-javadoc" }
 detekt = ["UndocumentedPublicFunction"]
 pmd = ["CommentRequired"]
@@ -234,8 +182,6 @@ ruff = ["D102", "D103"]
 name = "missing-javadoc-package"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["MissingJavadocPackage"]
 
@@ -243,24 +189,18 @@ checkstyle = ["MissingJavadocPackage"]
 name = "missing-javadoc-type"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["UndocumentedPublicClass"]
 checkstyle = ["MissingJavadocType"]
 ruff = ["D101"]
 
 [[rule]]
 name = "non-empty-atclause-description"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["NonEmptyAtclauseDescription"]
 
 [[rule]]
 name = "prefer-code-or-snippet-javadoc-inline-tag"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["PreferCodeOrSnippetJavadocInlineTag"]
 
@@ -268,8 +208,6 @@ checkstyle = ["PreferCodeOrSnippetJavadocInlineTag"]
 name = "prefer-literal-javadoc-inline-tag"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["PreferLiteralJavadocInlineTag"]
 
@@ -277,8 +215,6 @@ checkstyle = ["PreferLiteralJavadocInlineTag"]
 name = "require-empty-line-before-block-tag-group"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["RequireEmptyLineBeforeBlockTagGroup"]
 
@@ -286,8 +222,6 @@ checkstyle = ["RequireEmptyLineBeforeBlockTagGroup"]
 name = "single-line-javadoc"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["SingleLineJavadoc"]
 
@@ -295,15 +229,11 @@ checkstyle = ["SingleLineJavadoc"]
 name = "summary-javadoc"
 category = "javadoc"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#291", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["SummaryJavadoc"]
 
 [[rule]]
 name = "write-tag"
 category = "javadoc"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["WriteTag"]
