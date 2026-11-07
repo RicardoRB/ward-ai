@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The native Swift type facts of a project. The project's Swift files are parsed on the first
@@ -23,6 +24,7 @@ import java.util.Set;
 public final class NativeSwiftTypes implements TypeFacts {
 
   private final Path projectRoot;
+  private final ReentrantLock lock = new ReentrantLock();
   private SwiftTypeFacts facts;
 
   /** Creates the facts of the project at {@code projectRoot}; nothing is read yet. */
@@ -31,12 +33,21 @@ public final class NativeSwiftTypes implements TypeFacts {
   }
 
   @Override
-  public synchronized UnitTypeFacts factsOf(
+  public UnitTypeFacts factsOf(
       final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
-    if (facts == null) {
-      facts = build();
+    return delegate().factsOf(unit, spans, kinds);
+  }
+
+  private SwiftTypeFacts delegate() {
+    lock.lock();
+    try {
+      if (facts == null) {
+        facts = build();
+      }
+      return facts;
+    } finally {
+      lock.unlock();
     }
-    return facts.factsOf(unit, spans, kinds);
   }
 
   private SwiftTypeFacts build() {
