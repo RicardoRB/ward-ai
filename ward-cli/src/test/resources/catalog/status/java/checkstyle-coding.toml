@@ -1,48 +1,46 @@
 # Status of the checkstyle-coding rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-array-trailing-comma = { status = "planned", issue = "#289" }
-avoid-double-brace-initialization = { status = "planned", issue = "#289" }
+array-trailing-comma = "implemented"
 avoid-inline-conditionals = "implemented"
 avoid-no-argument-super-constructor-call = { status = "planned", issue = "#290" }
-constructors-declaration-grouping = { status = "planned", issue = "#289" }
+constructors-declaration-grouping = "implemented"
 covariant-equals = "implemented"
 declaration-order = { status = "planned", issue = "#289" }
 default-comes-last = { status = "planned", issue = "#288" }
 empty-statement = "implemented"
 equals-avoid-null = "implemented"
 equals-hash-code = "implemented"
-explicit-initialization = { status = "planned", issue = "#289" }
+explicit-initialization = "implemented"
 expression-over-block-lambda = { status = "planned", issue = "#290" }
 fall-through = "implemented"
 final-local-variable = { status = "planned", issue = "#289" }
-hidden-field = { status = "planned", issue = "#289" }
+hidden-field = "implemented"
 illegal-catch = "implemented"
 illegal-instantiation = { status = "planned", issue = "#289" }
 illegal-symbol = { status = "planned", issue = "#289" }
 illegal-throws = "implemented"
-illegal-token = { status = "planned", issue = "#289" }
-illegal-token-text = { status = "planned", issue = "#289" }
+illegal-token = "implemented"
+illegal-token-text = "implemented"
 illegal-type = { status = "planned", issue = "#289" }
 inner-assignment = { status = "planned", issue = "#288" }
-magic-number = { status = "planned", issue = "#289" }
-match-xpath = { status = "planned", issue = "#289" }
+magic-number = "implemented"
 missing-ctor = { status = "planned", issue = "#290" }
 missing-null-case-in-switch = { status = "planned", issue = "#288" }
 missing-switch-default = "implemented"
 modified-control-variable = { status = "planned", issue = "#288" }
-multiple-string-literals = { status = "planned", issue = "#289" }
-multiple-variable-declarations = { status = "planned", issue = "#289" }
+multiple-string-literals = "implemented"
+multiple-variable-declarations = "implemented"
 nested-for-depth = "implemented"
 nested-if-depth = "implemented"
 nested-try-depth = "implemented"
-no-array-trailing-comma = { status = "planned", issue = "#289" }
+no-array-trailing-comma = "implemented"
 no-clone = { status = "planned", issue = "#290" }
-no-enum-trailing-comma = { status = "planned", issue = "#289" }
+no-enum-trailing-comma = "implemented"
 no-finalizer = { status = "planned", issue = "#290" }
-one-statement-per-line = { status = "planned", issue = "#289" }
-overload-methods-declaration-order = { status = "planned", issue = "#289" }
-package-declaration = { status = "planned", issue = "#289" }
-parameter-assignment = { status = "planned", issue = "#289" }
+one-statement-per-line = "implemented"
+overload-methods-declaration-order = "implemented"
+package-declaration = "implemented"
+parameter-assignment = "implemented"
 pattern-variable-assignment = { status = "planned", issue = "#289" }
 require-this = { status = "planned", issue = "#290" }
 return-count = "implemented"
@@ -66,5 +64,5 @@ unused-local-variable = { status = "planned", issue = "#290" }
 unused-private-field = { status = "planned", issue = "#290" }
 unused-try-resource-should-be-unnamed = { status = "planned", issue = "#290" }
 use-enhanced-switch = { status = "planned", issue = "#288" }
-variable-declaration-usage-distance = { status = "planned", issue = "#289" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = { status = "planned", issue = "#288" }

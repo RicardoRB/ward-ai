@@ -1,6 +1,6 @@
 # Status of the checkstyle-annotation rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-annotation-location = { status = "planned", issue = "#298" }
+annotation-location = "implemented"
 annotation-on-same-line = { status = "planned", issue = "#298" }
 annotation-use-style = { status = "planned", issue = "#298" }
 missing-deprecated = { status = "planned", issue = "#298" }

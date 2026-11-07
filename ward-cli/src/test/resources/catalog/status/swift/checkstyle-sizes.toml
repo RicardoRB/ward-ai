@@ -4,7 +4,7 @@ anon-inner-length = "not-applicable"
 executable-statement-count = { status = "planned", issue = "#298" }
 file-length = "implemented"
 lambda-body-length = { status = "planned", issue = "#298" }
-line-length = { status = "planned", issue = "#298" }
+line-length = "implemented"
 method-count = { status = "planned", issue = "#298" }
 method-length = "implemented"
 outer-type-number = "not-applicable"

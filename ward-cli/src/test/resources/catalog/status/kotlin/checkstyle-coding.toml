@@ -1,7 +1,6 @@
 # Status of the checkstyle-coding rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 array-trailing-comma = { status = "planned", issue = "#294" }
-avoid-double-brace-initialization = "not-applicable"
 avoid-inline-conditionals = { status = "planned", issue = "#294" }
 avoid-no-argument-super-constructor-call = { status = "planned", issue = "#294" }
 constructors-declaration-grouping = { status = "planned", issue = "#294" }
@@ -25,7 +24,6 @@ illegal-token-text = { status = "planned", issue = "#294" }
 illegal-type = { status = "planned", issue = "#294" }
 inner-assignment = { status = "planned", issue = "#294" }
 magic-number = { status = "planned", issue = "#294" }
-match-xpath = { status = "planned", issue = "#294" }
 missing-ctor = { status = "planned", issue = "#294" }
 missing-null-case-in-switch = "not-applicable"
 missing-switch-default = { status = "planned", issue = "#294" }

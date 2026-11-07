@@ -73,7 +73,7 @@ constants-in-interface = "implemented"
 constructor-calls-overridable-method = { status = "planned", issue = "#310" }
 control-statement-braces = { status = "planned", issue = "#313" }
 dangling-javadoc = { status = "planned", issue = "#313" }
-data-class = { status = "planned", issue = "#309" }
+data-class = "implemented"
 default-label-not-last-in-switch = "implemented"
 detached-test-case = { status = "planned", issue = "#310" }
 do-not-call-garbage-collection-explicitly = "implemented"
@@ -105,7 +105,7 @@ finalize-should-be-protected = "implemented"
 for-loop-can-be-foreach = "implemented"
 for-loop-should-be-while-loop = { status = "planned", issue = "#313" }
 for-loop-variable-count = "implemented"
-god-class = { status = "planned", issue = "#309" }
+god-class = "implemented"
 guard-log-statement = "implemented"
 hard-coded-crypto-key = { status = "planned", issue = "#312" }
 idempotent-operations = "implemented"
@@ -119,8 +119,8 @@ insecure-crypto-iv = { status = "planned", issue = "#312" }
 instantiable-utility-class = "implemented"
 instantiation-to-get-class = "implemented"
 insufficient-string-buffer-declaration = { status = "planned", issue = "#312" }
-internal-api-usage = { status = "planned", issue = "#309" }
-invalid-java-bean = { status = "planned", issue = "#309" }
+internal-api-usage = "implemented"
+invalid-java-bean = "implemented"
 invalid-log-message-format = { status = "planned", issue = "#311" }
 j-unit-jupiter-test-no-private-modifier = "implemented"
 j-unit-jupiter-test-should-be-package-private = "implemented"
@@ -131,7 +131,7 @@ j-unit4-suites-should-use-suite-annotation = "implemented"
 jumbled-incrementer = { status = "planned", issue = "#311" }
 labeled-statement = "implemented"
 lambda-can-be-method-reference = { status = "planned", issue = "#313" }
-law-of-demeter = { status = "planned", issue = "#309" }
+law-of-demeter = "implemented"
 linguistic-naming = { status = "planned", issue = "#313" }
 literals-first-in-comparisons = "implemented"
 local-home-naming-convention = { status = "planned", issue = "#313" }

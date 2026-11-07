@@ -1,7 +1,6 @@
 # Status of the checkstyle-coding rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 array-trailing-comma = "not-applicable"
-avoid-double-brace-initialization = "not-applicable"
 avoid-inline-conditionals = "implemented"
 avoid-no-argument-super-constructor-call = "not-applicable"
 constructors-declaration-grouping = "not-applicable"
@@ -25,7 +24,6 @@ illegal-token-text = "not-applicable"
 illegal-type = "not-applicable"
 inner-assignment = { status = "planned", issue = "#297" }
 magic-number = "implemented"
-match-xpath = "not-applicable"
 missing-ctor = "not-applicable"
 missing-null-case-in-switch = "not-applicable"
 missing-switch-default = { status = "planned", issue = "#297" }

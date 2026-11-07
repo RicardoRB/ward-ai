@@ -540,3 +540,65 @@ ignored-annotations = ["After", "AfterClass", "Before", "BeforeClass", "Test"]
 required-javadoc-phrase = '.*'
 message = "method '{value}' is designed for extension and has no Javadoc comment"
 '''
+
+[[rules]]
+id = "ward:java/god-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "god-class"
+message = "class is a god class ({value}); split its responsibilities"
+'''
+
+[[rules]]
+id = "ward:java/data-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "data-class"
+message = "class is a data class ({value}); move the behaviour next to its data"
+'''
+
+[[rules]]
+id = "ward:java/law-of-demeter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "law-of-demeter"
+message = "call reaches through an object of another class; talk only to your friends"
+'''
+
+[[rules]]
+id = "ward:java/invalid-java-bean"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.packages = { type = "string-list" }
+body = '''
+check = "invalid-java-bean"
+packages = []
+message = "bean field {value} needs a getter and a setter of its type"
+'''
+
+[[rules]]
+id = "ward:java/internal-api-usage"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "internal-api-usage"
+message = "internal JDK API {value} must not be used"
+'''

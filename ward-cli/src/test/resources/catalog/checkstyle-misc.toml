@@ -4,7 +4,7 @@
 name = "array-type-style"
 category = "misc"
 presets = ["standard", "strict"]
-not-applicable = { typescript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", javascript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", python = "Java array declaration syntax; Python has no array declarations" }
+not-applicable = { typescript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", javascript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", python = "Java array declaration syntax; Python has no array declarations", swift = "Swift has one array syntax, [Element], so there is no C-style declarator to flag" }
 typescript-eslint = ["array-type"]
 checkstyle = ["ArrayTypeStyle"]
 
@@ -103,5 +103,5 @@ checkstyle = ["UncommentedMain"]
 name = "upper-ell"
 category = "misc"
 presets = ["standard", "strict"]
-not-applicable = { typescript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", javascript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", python = "Java long literal suffix; Python 3 has no long literal suffix" }
+not-applicable = { typescript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", javascript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", python = "Java long literal suffix; Python 3 has no long literal suffix", swift = "Swift integer literals have no long suffix" }
 checkstyle = ["UpperEll"]

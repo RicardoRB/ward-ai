@@ -1,7 +1,6 @@
 # Status of the checkstyle-coding rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 array-trailing-comma = { status = "planned", issue = "#298" }
-avoid-double-brace-initialization = "not-applicable"
 avoid-inline-conditionals = { status = "planned", issue = "#298" }
 avoid-no-argument-super-constructor-call = "not-applicable"
 constructors-declaration-grouping = { status = "planned", issue = "#298" }
@@ -13,10 +12,10 @@ equals-avoid-null = "not-applicable"
 equals-hash-code = "not-applicable"
 explicit-initialization = { status = "planned", issue = "#298" }
 expression-over-block-lambda = { status = "planned", issue = "#298" }
-fall-through = { status = "planned", issue = "#298" }
+fall-through = "not-applicable"
 final-local-variable = { status = "planned", issue = "#298" }
 hidden-field = { status = "planned", issue = "#298" }
-illegal-catch = { status = "planned", issue = "#298" }
+illegal-catch = "not-applicable"
 illegal-instantiation = "not-applicable"
 illegal-symbol = { status = "planned", issue = "#298" }
 illegal-throws = { status = "planned", issue = "#298" }
@@ -24,14 +23,13 @@ illegal-token = { status = "planned", issue = "#298" }
 illegal-token-text = "not-applicable"
 illegal-type = { status = "planned", issue = "#298" }
 inner-assignment = { status = "planned", issue = "#298" }
-magic-number = { status = "planned", issue = "#298" }
-match-xpath = { status = "planned", issue = "#298" }
+magic-number = "implemented"
 missing-ctor = "not-applicable"
 missing-null-case-in-switch = "not-applicable"
-missing-switch-default = { status = "planned", issue = "#298" }
+missing-switch-default = "implemented"
 modified-control-variable = { status = "planned", issue = "#298" }
 multiple-string-literals = { status = "planned", issue = "#298" }
-multiple-variable-declarations = { status = "planned", issue = "#298" }
+multiple-variable-declarations = "implemented"
 nested-for-depth = { status = "planned", issue = "#298" }
 nested-if-depth = { status = "planned", issue = "#298" }
 nested-try-depth = { status = "planned", issue = "#298" }
@@ -39,7 +37,7 @@ no-array-trailing-comma = { status = "planned", issue = "#298" }
 no-clone = "not-applicable"
 no-enum-trailing-comma = { status = "planned", issue = "#298" }
 no-finalizer = "not-applicable"
-one-statement-per-line = { status = "planned", issue = "#298" }
+one-statement-per-line = "implemented"
 overload-methods-declaration-order = "implemented"
 package-declaration = "not-applicable"
 parameter-assignment = { status = "planned", issue = "#298" }

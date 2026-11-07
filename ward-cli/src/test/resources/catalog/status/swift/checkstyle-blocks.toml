@@ -2,8 +2,8 @@
 
 avoid-nested-blocks = { status = "planned", issue = "#298" }
 empty-block = { status = "planned", issue = "#298" }
-empty-catch-block = { status = "planned", issue = "#298" }
-google-right-curly = { status = "planned", issue = "#298" }
-left-curly = { status = "planned", issue = "#298" }
-need-braces = { status = "planned", issue = "#298" }
+empty-catch-block = "implemented"
+google-right-curly = "implemented"
+left-curly = "implemented"
+need-braces = "not-applicable"
 right-curly = { status = "planned", issue = "#298" }

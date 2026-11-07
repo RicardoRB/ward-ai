@@ -1,0 +1,220 @@
+# Style rules for Swift, the standard preset: Checkstyle's default checks (google_checks.xml and
+# config/checkstyle.xml) applied to Swift's syntax tree, its lines and its comments. Compact node
+# text drops whitespace, so spacing and line breaks are read from the lines or comments instead.
+
+[[rules]]
+id = "ward:swift/annotation-location"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^\s*(@\w+\([^)]*\)\s+\S|@\w+\s+@)'
+message = "annotation with arguments, or several annotations, shares a line with the declaration"
+'''
+
+[[rules]]
+id = "ward:swift/empty-catch-block"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catch_clause"]
+text = '\{\}$'
+message = "empty catch block; handle or rethrow the error"
+'''
+
+[[rules]]
+id = "ward:swift/google-right-curly"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^\s*(else|catch)\b'
+message = "else and catch must follow the closing brace on the same line"
+'''
+
+[[rules]]
+id = "ward:swift/left-curly"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^\s*\{\s*$'
+message = "opening brace must be on the same line as the statement it opens"
+'''
+
+[[rules]]
+id = "ward:swift/magic-number"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "literal"
+kinds = ["numeric_literal"]
+ignore = ["-1", "0", "1", "2"]
+message = "'{value}' is a magic number"
+'''
+
+[[rules]]
+id = "ward:swift/missing-switch-default"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["switch_statement"]
+descendant = ["default_label"]
+message = "switch statement has no default case"
+'''
+
+[[rules]]
+id = "ward:swift/multiple-variable-declarations"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["constant_declaration"]
+counted = ["pattern_initializer"]
+skip = ["pattern_initializer"]
+max = 1
+message = "statement declares {value} constants; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:swift/one-statement-per-line"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^(?!\s*//).*;[ \t]*[^\s/]'
+message = "more than one statement on a line; put each statement on its own line"
+'''
+
+[[rules]]
+id = "ward:swift/todo-comment"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:swift/multiline-comment-leading-asterisk-presence"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '(?s)^/\*(?!\*).*\n(?![ \t]*\*)[ \t]*\S'
+message = "line of a multi-line comment does not start with an asterisk"
+'''
+
+[[rules]]
+id = "ward:swift/regexp-singleline"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '[ \t]+$'
+message = "line has trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:swift/summary-javadoc"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^(///|/\*\*(?![^\n]*\*/))[ \t]*[^\n]*[^.!?\s*/][ \t]*(\n|$)'
+message = "first sentence of the documentation comment must end with a period"
+'''
+
+[[rules]]
+id = "ward:swift/non-empty-atclause-description"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '-\s*(Parameter\s+\w+|Returns|Throws)\s*:[ \t]*(\n|$)'
+message = "documentation tag has no description"
+'''
+
+[[rules]]
+id = "ward:swift/missing-javadoc-type"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "preceding-comment"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "protocol_declaration"]
+modifiers = ["access_level_modifier"]
+required = "public"
+message = "public type has no documentation comment"
+'''
+
+[[rules]]
+id = "ward:swift/line-length"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+options.tab-width = { type = "integer", min = 1 }
+options.ignore-pattern = { type = "regex" }
+body = '''
+check = "line-length"
+max = 100
+tab-width = 8
+ignore-pattern = '^import.*|https?://'
+message = "line is {value} characters long; the limit is {max}"
+'''

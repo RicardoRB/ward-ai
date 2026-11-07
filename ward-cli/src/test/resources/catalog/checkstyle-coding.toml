@@ -8,14 +8,6 @@ not-applicable = { python = "Java-only construct with no counterpart in this lan
 checkstyle = ["ArrayTrailingComma"]
 
 [[rule]]
-name = "avoid-double-brace-initialization"
-category = "coding"
-presets = ["strict"]
-not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
-pmd = ["DoubleBraceInitialization"]
-checkstyle = ["AvoidDoubleBraceInitialization"]
-
-[[rule]]
 name = "avoid-inline-conditionals"
 ids = { java = "ward:java/avoid-inline-conditionals" }
 checkstyle = ["AvoidInlineConditionals"]
@@ -101,7 +93,7 @@ checkstyle = ["ExpressionOverBlockLambda"]
 [[rule]]
 name = "fall-through"
 ids = { java = "ward:java/fall-through" }
-not-applicable = { python = "Python match and if statements never fall through to the next case" }
+not-applicable = { python = "Python match and if statements never fall through to the next case", swift = "Swift cases never fall through implicitly; the fallthrough keyword is explicit" }
 pmd = ["ImplicitSwitchFallThrough"]
 checkstyle = ["FallThrough"]
 eslint = ["no-fallthrough"]
@@ -128,7 +120,7 @@ pylint = ["redefined-outer-name"]
 [[rule]]
 name = "illegal-catch"
 ids = { java = "ward:java/illegal-catch" }
-not-applicable = { typescript = "TypeScript and JavaScript catch clauses declare no exception type to restrict", javascript = "TypeScript and JavaScript catch clauses declare no exception type to restrict" }
+not-applicable = { typescript = "TypeScript and JavaScript catch clauses declare no exception type to restrict", javascript = "TypeScript and JavaScript catch clauses declare no exception type to restrict", swift = "Checkstyle names Java exception classes; Swift errors have no class hierarchy to match" }
 detekt = ["TooGenericExceptionCaught"]
 pmd = ["AvoidCatchingGenericException"]
 checkstyle = ["IllegalCatch"]
@@ -196,13 +188,6 @@ ruff = ["PLR2004"]
 pylint = ["magic-value-comparison"]
 
 [[rule]]
-name = "match-xpath"
-category = "coding"
-presets = ["standard", "strict"]
-not-applicable = { typescript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", javascript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", python = "Checkstyle XPath over the Java AST; Python has no equivalent tree" }
-checkstyle = ["MatchXpath"]
-
-[[rule]]
 name = "missing-ctor"
 category = "coding"
 presets = ["strict"]
@@ -231,8 +216,6 @@ checkstyle = ["ModifiedControlVariable"]
 
 [[rule]]
 name = "multiple-string-literals"
-category = "coding"
-presets = ["strict"]
 pmd = ["AvoidDuplicateLiterals"]
 checkstyle = ["MultipleStringLiterals"]
 
@@ -302,8 +285,6 @@ checkstyle = ["OverloadMethodsDeclarationOrder"]
 
 [[rule]]
 name = "package-declaration"
-category = "coding"
-presets = ["standard", "strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["PackageDeclaration"]
 

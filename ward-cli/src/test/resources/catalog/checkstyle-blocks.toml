@@ -35,7 +35,7 @@ checkstyle = ["LeftCurly"]
 
 [[rule]]
 name = "need-braces"
-not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit" }
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit", swift = "Swift requires braces around every block, so the compiler already enforces it" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]

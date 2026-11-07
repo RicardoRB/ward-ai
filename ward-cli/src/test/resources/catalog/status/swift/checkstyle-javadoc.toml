@@ -27,11 +27,11 @@ javadoc-type = { status = "planned", issue = "#298" }
 javadoc-variable = { status = "planned", issue = "#298" }
 missing-javadoc-method = { status = "planned", issue = "#298" }
 missing-javadoc-package = "not-applicable"
-missing-javadoc-type = { status = "planned", issue = "#298" }
-non-empty-atclause-description = { status = "planned", issue = "#298" }
+missing-javadoc-type = "implemented"
+non-empty-atclause-description = "implemented"
 prefer-code-or-snippet-javadoc-inline-tag = "not-applicable"
 prefer-literal-javadoc-inline-tag = "not-applicable"
 require-empty-line-before-block-tag-group = "not-applicable"
 single-line-javadoc = "not-applicable"
-summary-javadoc = { status = "planned", issue = "#298" }
+summary-javadoc = "implemented"
 write-tag = "not-applicable"
