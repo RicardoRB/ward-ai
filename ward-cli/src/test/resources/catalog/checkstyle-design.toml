@@ -2,73 +2,53 @@
 
 [[rule]]
 name = "design-for-extension"
-category = "design"
-presets = ["strict"]
 not-applicable = { python = "Java class extension rules; Python classes are open by default" }
 checkstyle = ["DesignForExtension"]
 
 [[rule]]
 name = "final-class"
-category = "design"
-presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 pmd = ["ClassWithOnlyPrivateConstructorsShouldBeFinal"]
 checkstyle = ["FinalClass"]
 
 [[rule]]
 name = "hide-utility-class-constructor"
-category = "design"
-presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 pmd = ["UseUtilityClass"]
 checkstyle = ["HideUtilityClassConstructor"]
 
 [[rule]]
 name = "inner-type-last"
-category = "design"
-presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InnerTypeLast"]
 
 [[rule]]
 name = "interface-is-type"
-category = "design"
-presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InterfaceIsType"]
 
 [[rule]]
 name = "mutable-exception"
-category = "design"
-presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["MutableException"]
 
 [[rule]]
 name = "one-top-level-class"
-category = "design"
-presets = ["standard", "strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["OneTopLevelClass"]
 
 [[rule]]
 name = "sealed-should-have-permits-list"
-category = "design"
-presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["SealedShouldHavePermitsList"]
 
 [[rule]]
 name = "throws-count"
-category = "design"
-presets = ["strict"]
 not-applicable = { typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 detekt = ["ThrowsCount"]
 checkstyle = ["ThrowsCount"]
 
 [[rule]]
 name = "visibility-modifier"
-category = "design"
-presets = ["strict"]
 not-applicable = { python = "Java field visibility modifiers; Python has no visibility keywords" }
 checkstyle = ["VisibilityModifier"]

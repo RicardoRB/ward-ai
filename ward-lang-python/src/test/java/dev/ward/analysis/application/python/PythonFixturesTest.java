@@ -130,6 +130,10 @@ class PythonFixturesTest {
     final Map<String, CheckFactory> factories = new PythonCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
     final AnalysisLanguage language = rule.languages().iterator().next();
+    if (PythonFixtureFrontends.isDeadCode(rule)) {
+      return PythonFixtureFrontends.unusedPositions(
+          rule, file.getFileName().toString(), Files.readString(file, StandardCharsets.UTF_8));
+    }
     final RuleRunResult result =
         new RuleEngine(matcher)
             .run(

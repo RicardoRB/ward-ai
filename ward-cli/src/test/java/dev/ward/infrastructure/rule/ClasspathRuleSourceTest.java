@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
 
+  private static final List<String> SCOPE_CHECKS =
+      List.of("reassigned-binding", "undefined-name", "unused-binding");
+
   /** The Java rules that read the type facts of a file. */
   private static final java.util.Set<String> TYPE_AWARE =
       java.util.Set.of(
@@ -140,6 +143,13 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
+    if (rule.body().contains("check = \"unreachable-code\"")) {
+      return RuleCapability.CFG;
+    }
+    if (SCOPE_CHECKS.stream()
+        .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
+      return RuleCapability.SCOPES;
+    }
     if (TYPE_AWARE.contains(rule.id()) || rule.id().endsWith("/equals-on-unrelated-types")) {
       return RuleCapability.TYPES;
     }

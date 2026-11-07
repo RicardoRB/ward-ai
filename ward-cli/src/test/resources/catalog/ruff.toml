@@ -247,7 +247,6 @@ ruff = ["ASYNC251"]
 
 [[rule]]
 name = "unary-prefix-increment-decrement"
-category = "flake8-bugbear"
 ruff = ["B002"]
 
 [[rule]]
@@ -268,7 +267,6 @@ ruff = ["B006"]
 
 [[rule]]
 name = "unused-loop-control-variable"
-category = "flake8-bugbear"
 ruff = ["B007"]
 
 [[rule]]
@@ -285,7 +283,6 @@ ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-category = "flake8-bugbear"
 ruff = ["B012"]
 
 [[rule]]
@@ -294,7 +291,6 @@ ruff = ["B013"]
 
 [[rule]]
 name = "duplicate-handler-exception"
-category = "flake8-bugbear"
 ruff = ["B014"]
 
 [[rule]]
@@ -315,17 +311,14 @@ ruff = ["B018"]
 
 [[rule]]
 name = "cached-instance-method"
-category = "flake8-bugbear"
 ruff = ["B019"]
 
 [[rule]]
 name = "loop-variable-overrides-iterator"
-category = "flake8-bugbear"
 ruff = ["B020"]
 
 [[rule]]
 name = "f-string-docstring"
-category = "flake8-bugbear"
 ruff = ["B021"]
 
 [[rule]]
@@ -334,7 +327,6 @@ ruff = ["B022"]
 
 [[rule]]
 name = "function-uses-loop-variable"
-category = "flake8-bugbear"
 ruff = ["B023"]
 
 [[rule]]
@@ -343,7 +335,6 @@ ruff = ["B024"]
 
 [[rule]]
 name = "duplicate-try-block-exception"
-category = "flake8-bugbear"
 ruff = ["B025"]
 
 [[rule]]
@@ -352,7 +343,6 @@ ruff = ["B026"]
 
 [[rule]]
 name = "empty-method-without-abstract-decorator"
-category = "flake8-bugbear"
 ruff = ["B027"]
 
 [[rule]]
@@ -379,7 +369,6 @@ ruff = ["B032"]
 
 [[rule]]
 name = "duplicate-value"
-category = "flake8-bugbear"
 ruff = ["B033"]
 pylint = ["duplicate-value"]
 
@@ -412,7 +401,6 @@ ruff = ["B903"]
 
 [[rule]]
 name = "raise-without-from-inside-except"
-category = "flake8-bugbear"
 ruff = ["B904"]
 
 [[rule]]
@@ -885,12 +873,10 @@ ruff = ["E712"]
 
 [[rule]]
 name = "not-in-test"
-category = "pycodestyle"
 ruff = ["E713"]
 
 [[rule]]
 name = "not-is-test"
-category = "pycodestyle"
 ruff = ["E714"]
 
 [[rule]]
@@ -967,7 +953,6 @@ ruff = ["EXE005"]
 
 [[rule]]
 name = "import-shadowed-by-loop-var"
-category = "pyflakes"
 ruff = ["F402"]
 
 [[rule]]
@@ -997,7 +982,6 @@ ruff = ["F502"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
-category = "pyflakes"
 ruff = ["F503"]
 
 [[rule]]
@@ -1054,7 +1038,6 @@ ruff = ["F601"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
-category = "pyflakes"
 ruff = ["F602"]
 
 [[rule]]
@@ -1072,7 +1055,6 @@ ruff = ["F631"]
 
 [[rule]]
 name = "is-literal"
-category = "pyflakes"
 ruff = ["F632"]
 
 [[rule]]
@@ -1103,7 +1085,6 @@ pylint = ["return-outside-function"]
 
 [[rule]]
 name = "default-except-not-last"
-category = "pyflakes"
 ruff = ["F707"]
 
 [[rule]]
@@ -1121,12 +1102,10 @@ ruff = ["F821"]
 
 [[rule]]
 name = "undefined-export"
-category = "pyflakes"
 ruff = ["F822"]
 
 [[rule]]
 name = "undefined-local"
-category = "pyflakes"
 ruff = ["F823"]
 
 [[rule]]
@@ -3350,7 +3329,6 @@ ruff = ["S101"]
 
 [[rule]]
 name = "exec-builtin"
-category = "flake8-bandit"
 ruff = ["S102"]
 
 [[rule]]
@@ -3360,42 +3338,33 @@ ruff = ["S103"]
 
 [[rule]]
 name = "hardcoded-bind-all-interfaces"
-category = "flake8-bandit"
 ruff = ["S104"]
 
 [[rule]]
 name = "hardcoded-password-string"
-category = "flake8-bandit"
 ruff = ["S105"]
 
 [[rule]]
 name = "hardcoded-password-func-arg"
-category = "flake8-bandit"
 ruff = ["S106"]
 
 [[rule]]
 name = "hardcoded-password-default"
-category = "flake8-bandit"
 ruff = ["S107"]
 
 [[rule]]
 name = "hardcoded-temp-file"
-category = "flake8-bandit"
 ruff = ["S108"]
 
 [[rule]]
 name = "try-except-continue"
-category = "flake8-bandit"
 ruff = ["S112"]
-
 [[rule]]
 name = "request-without-timeout"
-category = "flake8-bandit"
 ruff = ["S113"]
 
 [[rule]]
 name = "flask-debug-true"
-category = "flake8-bandit"
 ruff = ["S201"]
 
 [[rule]]
@@ -3405,17 +3374,14 @@ ruff = ["S202"]
 
 [[rule]]
 name = "suspicious-pickle-usage"
-category = "flake8-bandit"
 ruff = ["S301"]
 
 [[rule]]
 name = "suspicious-marshal-usage"
-category = "flake8-bandit"
 ruff = ["S302"]
 
 [[rule]]
 name = "suspicious-insecure-hash-usage"
-category = "flake8-bandit"
 ruff = ["S303"]
 
 [[rule]]
@@ -3435,7 +3401,6 @@ ruff = ["S306"]
 
 [[rule]]
 name = "suspicious-eval-usage"
-category = "flake8-bandit"
 ruff = ["S307"]
 
 [[rule]]
@@ -3450,7 +3415,6 @@ ruff = ["S310"]
 
 [[rule]]
 name = "suspicious-non-cryptographic-random-usage"
-category = "flake8-bandit"
 ruff = ["S311"]
 
 [[rule]]
@@ -3505,7 +3469,6 @@ ruff = ["S323"]
 
 [[rule]]
 name = "hashlib-insecure-hash-function"
-category = "flake8-bandit"
 ruff = ["S324"]
 
 [[rule]]
@@ -3600,7 +3563,6 @@ ruff = ["S505"]
 
 [[rule]]
 name = "unsafe-yaml-load"
-category = "flake8-bandit"
 ruff = ["S506"]
 
 [[rule]]
@@ -3625,12 +3587,10 @@ ruff = ["S601"]
 
 [[rule]]
 name = "subprocess-popen-with-shell-equals-true"
-category = "flake8-bandit"
 ruff = ["S602"]
 
 [[rule]]
 name = "subprocess-without-shell-equals-true"
-category = "flake8-bandit"
 ruff = ["S603"]
 
 [[rule]]
@@ -3700,12 +3660,10 @@ ruff = ["SIM101"]
 
 [[rule]]
 name = "collapsible-if"
-category = "flake8-simplify"
 ruff = ["SIM102"]
 
 [[rule]]
 name = "suppressible-exception"
-category = "flake8-simplify"
 ruff = ["SIM105"]
 
 [[rule]]

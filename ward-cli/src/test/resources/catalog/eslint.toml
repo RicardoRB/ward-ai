@@ -197,7 +197,6 @@ biome = ["noSwitchDeclarations"]
 
 [[rule]]
 name = "no-class-assign"
-category = "problem"
 eslint = ["no-class-assign"]
 biome = ["noClassAssign"]
 
@@ -214,7 +213,6 @@ biome = ["noConsole"]
 
 [[rule]]
 name = "no-const-assign"
-category = "problem"
 eslint = ["no-const-assign"]
 biome = ["noConstAssign"]
 
@@ -226,7 +224,6 @@ biome = ["noConstantBinaryExpressions"]
 
 [[rule]]
 name = "no-constant-condition"
-category = "problem"
 eslint = ["no-constant-condition"]
 biome = ["noConstantCondition"]
 
@@ -361,7 +358,6 @@ biome = ["noUselessLabel"]
 
 [[rule]]
 name = "no-func-assign"
-category = "problem"
 eslint = ["no-func-assign"]
 biome = ["noFunctionAssign"]
 
@@ -390,7 +386,6 @@ biome = ["noImpliedEval"]
 
 [[rule]]
 name = "no-import-assign"
-category = "problem"
 eslint = ["no-import-assign"]
 biome = ["noImportAssign"]
 
@@ -641,7 +636,6 @@ eslint = ["no-unassigned-vars"]
 
 [[rule]]
 name = "no-undef"
-category = "problem"
 eslint = ["no-undef"]
 biome = ["noUndeclaredVariables"]
 
@@ -679,7 +673,6 @@ biome = ["noUselessTernary"]
 
 [[rule]]
 name = "no-unreachable"
-category = "problem"
 eslint = ["no-unreachable"]
 biome = ["noUnreachable"]
 
@@ -950,7 +943,6 @@ biome = ["useIsNan"]
 
 [[rule]]
 name = "valid-typeof"
-category = "problem"
 eslint = ["valid-typeof"]
 biome = ["useValidTypeof"]
 

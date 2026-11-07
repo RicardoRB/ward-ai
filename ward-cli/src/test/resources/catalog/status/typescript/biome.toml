@@ -1,7 +1,7 @@
 # Status of the biome rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 no-access-key = { status = "planned", issue = "#329" }
-no-accumulating-spread = { status = "planned", issue = "#329" }
+no-accumulating-spread = "implemented"
 no-adjacent-spaces-in-regex = { status = "planned", issue = "#329" }
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
 no-approximative-numeric-constant = { status = "planned", issue = "#329" }
@@ -12,7 +12,7 @@ no-assign-in-expressions = { status = "planned", issue = "#329" }
 no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
 no-astro-set-html-directive = { status = "planned", issue = "#329" }
 no-autofocus = { status = "planned", issue = "#329" }
-no-banned-types = { status = "planned", issue = "#329" }
+no-banned-types = "implemented"
 no-barrel-file = { status = "planned", issue = "#329" }
 no-before-interactive-script-outside-document = { status = "planned", issue = "#329" }
 no-blank-target = { status = "planned", issue = "#329" }
@@ -41,7 +41,7 @@ no-duplicate-jsx-props = { status = "planned", issue = "#329" }
 no-duplicate-test-hooks = { status = "planned", issue = "#329" }
 no-duplicated-spread-props = { status = "planned", issue = "#329" }
 no-dynamic-namespace-import-access = { status = "planned", issue = "#329" }
-no-empty-interface = { status = "planned", issue = "#329" }
+no-empty-interface = "implemented"
 no-empty-source = { status = "planned", issue = "#329" }
 no-empty-type-parameters = { status = "planned", issue = "#329" }
 no-enum = { status = "planned", issue = "#299" }
@@ -70,7 +70,7 @@ no-implicit-boolean = { status = "planned", issue = "#299" }
 no-import-cycles = { status = "planned", issue = "#329" }
 no-inline-styles = { status = "planned", issue = "#329" }
 no-interactive-element-to-noninteractive-role = { status = "planned", issue = "#329" }
-no-invalid-builtin-instantiation = { status = "planned", issue = "#329" }
+no-invalid-builtin-instantiation = "implemented"
 no-invalid-file-input-accept = { status = "planned", issue = "#329" }
 no-js-restricted-properties = { status = "planned", issue = "#329" }
 no-jsx-leaked-dollar = { status = "planned", issue = "#329" }
@@ -164,11 +164,11 @@ no-unused-function-parameters = { status = "planned", issue = "#329" }
 no-unused-instantiation = { status = "planned", issue = "#329" }
 no-unused-template-literal = { status = "planned", issue = "#299" }
 no-unwanted-polyfillio = { status = "planned", issue = "#329" }
-no-useless-catch-binding = { status = "planned", issue = "#329" }
+no-useless-catch-binding = "implemented"
 no-useless-continue = { status = "planned", issue = "#329" }
 no-useless-fragments = { status = "planned", issue = "#329" }
 no-useless-lone-block-statements = { status = "planned", issue = "#329" }
-no-useless-string-raw = { status = "planned", issue = "#329" }
+no-useless-string-raw = "implemented"
 no-useless-switch-case = { status = "planned", issue = "#329" }
 no-useless-undefined = { status = "planned", issue = "#329" }
 no-void-elements-with-children = { status = "planned", issue = "#329" }
@@ -189,7 +189,7 @@ use-anchor-content = { status = "planned", issue = "#329" }
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
 use-aria-props-for-role = { status = "planned", issue = "#329" }
 use-aria-props-supported-by-role = { status = "planned", issue = "#329" }
-use-array-find = { status = "planned", issue = "#329" }
+use-array-find = "implemented"
 use-array-some = { status = "planned", issue = "#329" }
 use-at-index = { status = "planned", issue = "#299" }
 use-better-dom-traversing = { status = "planned", issue = "#329" }
@@ -204,7 +204,7 @@ use-consistent-member-accessibility = { status = "planned", issue = "#299" }
 use-consistent-object-definitions = { status = "planned", issue = "#299" }
 use-consistent-test-it = { status = "planned", issue = "#329" }
 use-control-label = { status = "planned", issue = "#329" }
-use-date-now = { status = "planned", issue = "#329" }
+use-date-now = "implemented"
 use-default-switch-clause = { status = "planned", issue = "#299" }
 use-default-switch-clause-last = { status = "planned", issue = "#329" }
 use-disposables = { status = "planned", issue = "#329" }
@@ -220,7 +220,7 @@ use-explicit-return-type = { status = "planned", issue = "#329" }
 use-explicit-type = { status = "planned", issue = "#329" }
 use-exports-last = { status = "planned", issue = "#299" }
 use-filenaming-convention = { status = "planned", issue = "#299" }
-use-flat-map = { status = "planned", issue = "#329" }
+use-flat-map = "implemented"
 use-flat-math-min-max = { status = "planned", issue = "#329" }
 use-focusable-interactive = { status = "planned", issue = "#329" }
 use-fragment-syntax = { status = "planned", issue = "#299" }
@@ -235,9 +235,9 @@ use-iframe-title = { status = "planned", issue = "#329" }
 use-image-size = { status = "planned", issue = "#329" }
 use-import-extensions = { status = "planned", issue = "#329" }
 use-imports-first = { status = "planned", issue = "#329" }
-use-index-of = { status = "planned", issue = "#329" }
+use-index-of = "implemented"
 use-inline-script-id = { status = "planned", issue = "#329" }
-use-is-array = { status = "planned", issue = "#329" }
+use-is-array = "implemented"
 use-json-import-attributes = { status = "planned", issue = "#329" }
 use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
 use-key-with-click-events = { status = "planned", issue = "#329" }
@@ -248,7 +248,7 @@ use-modern-math-apis = { status = "planned", issue = "#329" }
 use-node-assert-strict = { status = "planned", issue = "#299" }
 use-nodejs-import-protocol = { status = "planned", issue = "#299" }
 use-number-namespace = { status = "planned", issue = "#299" }
-use-number-to-fixed-digits-argument = { status = "planned", issue = "#329" }
+use-number-to-fixed-digits-argument = "implemented"
 use-numeric-separators = { status = "planned", issue = "#299" }
 use-playwright-valid-describe-callback = { status = "planned", issue = "#329" }
 use-qwik-classlist = { status = "planned", issue = "#329" }
@@ -286,7 +286,7 @@ use-valid-aria-props = { status = "planned", issue = "#329" }
 use-valid-aria-role = { status = "planned", issue = "#329" }
 use-valid-aria-values = { status = "planned", issue = "#329" }
 use-valid-autocomplete = { status = "planned", issue = "#329" }
-use-valid-for-direction = { status = "planned", issue = "#329" }
+use-valid-for-direction = "implemented"
 use-valid-lang = { status = "planned", issue = "#329" }
 use-valid-test-title = { status = "planned", issue = "#329" }
 use-vue-base-import = { status = "planned", issue = "#329" }
@@ -294,4 +294,4 @@ use-vue-consistent-define-props-declaration = { status = "planned", issue = "#32
 use-vue-define-macros-order = { status = "planned", issue = "#299" }
 use-vue-multi-word-component-names = { status = "planned", issue = "#299" }
 use-vue-next-tick-promise = { status = "planned", issue = "#329" }
-use-while = { status = "planned", issue = "#329" }
+use-while = "implemented"

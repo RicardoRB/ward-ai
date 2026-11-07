@@ -7,7 +7,6 @@ biome = ["noAccessKey"]
 
 [[rule]]
 name = "no-accumulating-spread"
-category = "performance"
 biome = ["noAccumulatingSpread"]
 
 [[rule]]
@@ -62,7 +61,7 @@ biome = ["noAutofocus"]
 
 [[rule]]
 name = "no-banned-types"
-category = "complexity"
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 biome = ["noBannedTypes"]
 
 [[rule]]
@@ -205,7 +204,7 @@ biome = ["noDynamicNamespaceImportAccess"]
 
 [[rule]]
 name = "no-empty-interface"
-category = "suspicious"
+not-applicable = { javascript = "TypeScript interface declarations have no JavaScript counterpart" }
 biome = ["noEmptyInterface"]
 
 [[rule]]
@@ -344,7 +343,6 @@ biome = ["noInteractiveElementToNoninteractiveRole"]
 
 [[rule]]
 name = "no-invalid-builtin-instantiation"
-category = "correctness"
 biome = ["noInvalidBuiltinInstantiation"]
 
 [[rule]]
@@ -810,7 +808,6 @@ biome = ["noUnwantedPolyfillio"]
 
 [[rule]]
 name = "no-useless-catch-binding"
-category = "complexity"
 biome = ["noUselessCatchBinding"]
 
 [[rule]]
@@ -830,7 +827,6 @@ biome = ["noUselessLoneBlockStatements"]
 
 [[rule]]
 name = "no-useless-string-raw"
-category = "complexity"
 biome = ["noUselessStringRaw"]
 
 [[rule]]
@@ -935,7 +931,6 @@ biome = ["useAriaPropsSupportedByRole"]
 
 [[rule]]
 name = "use-array-find"
-category = "complexity"
 biome = ["useArrayFind"]
 
 [[rule]]
@@ -1010,7 +1005,6 @@ biome = ["useControlLabel"]
 
 [[rule]]
 name = "use-date-now"
-category = "complexity"
 biome = ["useDateNow"]
 
 [[rule]]
@@ -1090,7 +1084,6 @@ biome = ["useFilenamingConvention"]
 
 [[rule]]
 name = "use-flat-map"
-category = "complexity"
 biome = ["useFlatMap"]
 
 [[rule]]
@@ -1165,7 +1158,6 @@ biome = ["useImportsFirst"]
 
 [[rule]]
 name = "use-index-of"
-category = "complexity"
 biome = ["useIndexOf"]
 
 [[rule]]
@@ -1175,7 +1167,6 @@ biome = ["useInlineScriptId"]
 
 [[rule]]
 name = "use-is-array"
-category = "suspicious"
 biome = ["useIsArray"]
 
 [[rule]]
@@ -1230,7 +1221,6 @@ biome = ["useNumberNamespace"]
 
 [[rule]]
 name = "use-number-to-fixed-digits-argument"
-category = "suspicious"
 biome = ["useNumberToFixedDigitsArgument"]
 
 [[rule]]
@@ -1420,7 +1410,6 @@ biome = ["useValidAutocomplete"]
 
 [[rule]]
 name = "use-valid-for-direction"
-category = "correctness"
 biome = ["useValidForDirection"]
 
 [[rule]]
@@ -1460,6 +1449,5 @@ biome = ["useVueNextTickPromise"]
 
 [[rule]]
 name = "use-while"
-category = "complexity"
 biome = ["useWhile"]
 

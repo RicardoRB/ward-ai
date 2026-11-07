@@ -835,3 +835,241 @@ kinds = ["singleExpression"]
 text = '\.flatMap\(\s*(\w+)\s*=>\s*\1\s*\)'
 message = "flatMap with an identity callback; use flat instead"
 '''
+
+[[rules]]
+id = "ward:typescript/use-date-now"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^newDate\(\)\.getTime\(\)$'
+message = "use Date.now() instead of new Date().getTime()"
+'''
+
+[[rules]]
+id = "ward:javascript/use-date-now"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^newDate\(\)\.getTime\(\)$'
+message = "use Date.now() instead of new Date().getTime()"
+'''
+
+[[rules]]
+id = "ward:typescript/use-flat-map"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.map\(.*\)\.flat\(\)$'
+message = "use flatMap instead of map followed by flat"
+'''
+
+[[rules]]
+id = "ward:javascript/use-flat-map"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.map\(.*\)\.flat\(\)$'
+message = "use flatMap instead of map followed by flat"
+'''
+
+[[rules]]
+id = "ward:typescript/use-array-find"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.filter\(.*\)\[0\]$'
+message = "use find instead of filter followed by the first element"
+'''
+
+[[rules]]
+id = "ward:javascript/use-array-find"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.filter\(.*\)\[0\]$'
+message = "use find instead of filter followed by the first element"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-string-raw"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^String\.raw`[^\\`$]*`$'
+message = "String.raw is useless without escape sequences"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-string-raw"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^String\.raw`[^\\`$]*`$'
+message = "String.raw is useless without escape sequences"
+'''
+
+[[rules]]
+id = "ward:typescript/no-accumulating-spread"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.reduce\(\(?([\w$]+),[\w$]+\)?=>[\w$]*\(?\{\.\.\.\1'
+message = "do not spread the accumulator in reduce; it copies it on every step"
+'''
+
+[[rules]]
+id = "ward:javascript/no-accumulating-spread"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.reduce\(\(?([\w$]+),[\w$]+\)?=>[\w$]*\(?\{\.\.\.\1'
+message = "do not spread the accumulator in reduce; it copies it on every step"
+'''
+
+[[rules]]
+id = "ward:typescript/use-index-of"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.findIndex\(\(?([\w$]+)\)?=>\1===[\w$.]+\)$'
+message = "use indexOf instead of findIndex with a strict equality check"
+'''
+
+[[rules]]
+id = "ward:javascript/use-index-of"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.findIndex\(\(?([\w$]+)\)?=>\1===[\w$.]+\)$'
+message = "use indexOf instead of findIndex with a strict equality check"
+'''
+
+[[rules]]
+id = "ward:typescript/use-while"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:javascript/use-while"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-catch-binding"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-catch-binding"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:typescript/no-banned-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeReference"]
+text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
+message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
+'''

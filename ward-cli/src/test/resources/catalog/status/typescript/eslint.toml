@@ -35,12 +35,12 @@ no-await-in-loop = { status = "planned", issue = "#326" }
 no-bitwise = { status = "planned", issue = "#299" }
 no-caller = "implemented"
 no-case-declarations = { status = "planned", issue = "#326" }
-no-class-assign = { status = "planned", issue = "#326" }
+no-class-assign = "implemented"
 no-compare-neg-zero = "implemented"
 no-console = { status = "planned", issue = "#326" }
-no-const-assign = { status = "planned", issue = "#326" }
+no-const-assign = "implemented"
 no-constant-binary-expression = { status = "planned", issue = "#326" }
-no-constant-condition = { status = "planned", issue = "#326" }
+no-constant-condition = "implemented"
 no-constructor-return = { status = "planned", issue = "#326" }
 no-continue = { status = "planned", issue = "#299" }
 no-control-regex = "implemented"
@@ -65,12 +65,12 @@ no-extend-native = "implemented"
 no-extra-bind = { status = "planned", issue = "#326" }
 no-extra-boolean-cast = { status = "planned", issue = "#299" }
 no-extra-label = { status = "planned", issue = "#326" }
-no-func-assign = { status = "planned", issue = "#326" }
+no-func-assign = "implemented"
 no-global-assign = { status = "planned", issue = "#326" }
 no-implicit-coercion = { status = "planned", issue = "#299" }
 no-implicit-globals = { status = "planned", issue = "#326" }
 no-implied-eval = { status = "planned", issue = "#326" }
-no-import-assign = { status = "planned", issue = "#326" }
+no-import-assign = "implemented"
 no-inner-declarations = { status = "planned", issue = "#326" }
 no-invalid-regexp = { status = "planned", issue = "#326" }
 no-invalid-this = { status = "planned", issue = "#326" }
@@ -117,14 +117,14 @@ no-template-curly-in-string = { status = "planned", issue = "#326" }
 no-this-before-super = { status = "planned", issue = "#326" }
 no-throw-literal = "implemented"
 no-unassigned-vars = { status = "planned", issue = "#326" }
-no-undef = { status = "planned", issue = "#326" }
+no-undef = "implemented"
 no-undef-init = "implemented"
 no-undefined = { status = "planned", issue = "#299" }
 no-underscore-dangle = { status = "planned", issue = "#299" }
 no-unexpected-multiline = { status = "planned", issue = "#326" }
 no-unmodified-loop-condition = { status = "planned", issue = "#326" }
 no-unneeded-ternary = { status = "planned", issue = "#299" }
-no-unreachable = { status = "planned", issue = "#326" }
+no-unreachable = "implemented"
 no-unreachable-loop = { status = "planned", issue = "#326" }
 no-unsafe-finally = "implemented"
 no-unsafe-negation = { status = "planned", issue = "#326" }
@@ -171,6 +171,6 @@ sort-vars = { status = "planned", issue = "#299" }
 strict = { status = "planned", issue = "#326" }
 symbol-description = "implemented"
 use-isnan = "implemented"
-valid-typeof = { status = "planned", issue = "#326" }
+valid-typeof = "implemented"
 vars-on-top = { status = "planned", issue = "#299" }
 yoda = { status = "planned", issue = "#299" }

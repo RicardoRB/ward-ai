@@ -20,7 +20,7 @@ import org.apache.fory.json.annotation.JsonType;
  * miss.
  */
 public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
-  static final int FORMAT_VERSION = 2;
+  static final int FORMAT_VERSION = 3;
   private final JsonCodec codec;
   private final JsonDependencyCodec dependencies;
 

@@ -12,10 +12,12 @@ import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
+import dev.ward.analysis.domain.rule.check.ReassignedBindingCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
+import dev.ward.analysis.domain.rule.check.UnreachableCodeCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
@@ -69,6 +71,14 @@ public final class CoreCheckProvider implements CheckProvider {
                     TomlValues.required(toml, MESSAGE),
                     Set.copyOf(TomlValues.optionalStrings(toml, "env")))),
         entry("unused-binding", toml -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unreachable-code",
+            toml -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "reassigned-binding",
+            toml ->
+                ReassignedBindingCheck.of(
+                    TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE))),
         entry(
             "taint",
             toml ->

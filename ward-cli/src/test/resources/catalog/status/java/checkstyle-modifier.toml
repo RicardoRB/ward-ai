@@ -1,7 +1,7 @@
 # Status of the checkstyle-modifier rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-annotated-declaration-visibility = { status = "planned", issue = "#286" }
-class-member-implied-modifier = { status = "planned", issue = "#286" }
-interface-member-implied-modifier = { status = "planned", issue = "#286" }
-modifier-order = { status = "planned", issue = "#286" }
-redundant-modifier = { status = "planned", issue = "#286" }
+annotated-declaration-visibility = "implemented"
+class-member-implied-modifier = "implemented"
+interface-member-implied-modifier = "implemented"
+modifier-order = "implemented"
+redundant-modifier = "implemented"

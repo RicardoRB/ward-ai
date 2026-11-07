@@ -24,7 +24,7 @@ ambiguous-variable-name = "implemented"
 any-eq-ne-annotation = { status = "planned", issue = "#335" }
 any-type = { status = "planned", issue = "#300" }
 argument-default-in-stub = { status = "planned", issue = "#335" }
-assert = { status = "planned", issue = "#333" }
+assert = { status = "planned", issue = "#334" }
 assert-on-string-literal = { status = "planned", issue = "#334" }
 assert-raises-exception = "implemented"
 assert-tuple = "implemented"
@@ -80,7 +80,7 @@ builtin-lambda-argument-shadowing = { status = "planned", issue = "#334" }
 builtin-open = { status = "planned", issue = "#334" }
 builtin-variable-shadowing = { status = "planned", issue = "#334" }
 byte-string-usage = { status = "planned", issue = "#335" }
-cached-instance-method = { status = "planned", issue = "#332" }
+cached-instance-method = "implemented"
 call-date-fromtimestamp = { status = "planned", issue = "#335" }
 call-date-today = { status = "planned", issue = "#335" }
 call-datetime-fromtimestamp = { status = "planned", issue = "#335" }
@@ -99,7 +99,7 @@ check-and-remove-from-set = { status = "planned", issue = "#334" }
 class-as-data-structure = { status = "planned", issue = "#332" }
 class-with-mixed-type-vars = { status = "planned", issue = "#334" }
 collapsible-else-if = { status = "planned", issue = "#334" }
-collapsible-if = { status = "planned", issue = "#334" }
+collapsible-if = "implemented"
 collection-literal-concatenation = { status = "planned", issue = "#334" }
 collections-named-tuple = { status = "planned", issue = "#335" }
 commented-out-code = { status = "planned", issue = "#300" }
@@ -122,7 +122,7 @@ datetime-min-max = { status = "planned", issue = "#335" }
 datetime-timezone-utc = { status = "planned", issue = "#334" }
 debugger = "implemented"
 decimal-from-float-literal = { status = "planned", issue = "#334" }
-default-except-not-last = { status = "planned", issue = "#332" }
+default-except-not-last = "implemented"
 default-factory-kwarg = { status = "planned", issue = "#334" }
 del-attr-with-constant = { status = "planned", issue = "#332" }
 delete-full-slice = { status = "planned", issue = "#334" }
@@ -161,17 +161,17 @@ dunder-function-name = { status = "planned", issue = "#300" }
 duplicate-bases = "implemented"
 duplicate-class-field-definition = { status = "planned", issue = "#334" }
 duplicate-entry-in-dunder-all = { status = "planned", issue = "#334" }
-duplicate-handler-exception = { status = "planned", issue = "#332" }
+duplicate-handler-exception = "implemented"
 duplicate-isinstance-call = { status = "planned", issue = "#334" }
 duplicate-literal-member = { status = "planned", issue = "#335" }
-duplicate-try-block-exception = { status = "planned", issue = "#332" }
+duplicate-try-block-exception = "implemented"
 duplicate-union-member = { status = "planned", issue = "#335" }
-duplicate-value = { status = "planned", issue = "#332" }
+duplicate-value = "implemented"
 ellipsis-in-non-empty-class-body = { status = "planned", issue = "#335" }
 empty-comment = { status = "planned", issue = "#334" }
 empty-docstring = { status = "planned", issue = "#300" }
 empty-docstring-section = { status = "planned", issue = "#300" }
-empty-method-without-abstract-decorator = { status = "planned", issue = "#332" }
+empty-method-without-abstract-decorator = "implemented"
 empty-type-checking-block = { status = "planned", issue = "#335" }
 enumerate-for-loop = { status = "planned", issue = "#334" }
 error-instead-of-exception = { status = "planned", issue = "#334" }
@@ -180,7 +180,7 @@ exc-info-outside-except-handler = { status = "planned", issue = "#335" }
 except-with-empty-tuple = "implemented"
 except-with-non-exception-classes = "implemented"
 exception-without-exc-info = { status = "planned", issue = "#335" }
-exec-builtin = { status = "planned", issue = "#333" }
+exec-builtin = "implemented"
 explicit-f-string-type-conversion = { status = "planned", issue = "#334" }
 explicit-string-concatenation = "implemented"
 expr-and-false = { status = "planned", issue = "#334" }
@@ -190,7 +190,7 @@ expr-or-true = { status = "planned", issue = "#334" }
 expressions-in-star-assignment = { status = "planned", issue = "#332" }
 extraneous-parentheses = { status = "planned", issue = "#334" }
 f-string = { status = "planned", issue = "#334" }
-f-string-docstring = { status = "planned", issue = "#332" }
+f-string-docstring = "implemented"
 f-string-in-exception = "implemented"
 f-string-in-get-text-func-call = { status = "planned", issue = "#335" }
 f-string-missing-placeholders = "implemented"
@@ -202,7 +202,7 @@ fast-api-non-annotated-dependency = { status = "planned", issue = "#334" }
 fast-api-redundant-response-model = { status = "planned", issue = "#334" }
 fast-api-unused-path-parameter = { status = "planned", issue = "#334" }
 first-word-uncapitalized = { status = "planned", issue = "#300" }
-flask-debug-true = { status = "planned", issue = "#333" }
+flask-debug-true = "implemented"
 float-equality-comparison = { status = "planned", issue = "#334" }
 for-loop-set-mutations = { status = "planned", issue = "#334" }
 for-loop-writes = { status = "planned", issue = "#334" }
@@ -212,7 +212,7 @@ forward-annotation-syntax-error = { status = "planned", issue = "#332" }
 fromisoformat-replace-z = "implemented"
 function-call-in-dataclass-default-argument = { status = "planned", issue = "#334" }
 function-call-in-default-argument = "implemented"
-function-uses-loop-variable = { status = "planned", issue = "#332" }
+function-uses-loop-variable = "implemented"
 future-annotations-in-stub = { status = "planned", issue = "#335" }
 future-feature-not-defined = "implemented"
 future-required-type-annotation = { status = "planned", issue = "#334" }
@@ -224,15 +224,15 @@ glob = { status = "planned", issue = "#334" }
 global-at-module-level = { status = "planned", issue = "#334" }
 global-statement = { status = "planned", issue = "#334" }
 global-variable-not-assigned = { status = "planned", issue = "#334" }
-hardcoded-bind-all-interfaces = { status = "planned", issue = "#333" }
-hardcoded-password-default = { status = "planned", issue = "#333" }
-hardcoded-password-func-arg = { status = "planned", issue = "#333" }
-hardcoded-password-string = { status = "planned", issue = "#333" }
+hardcoded-bind-all-interfaces = "implemented"
+hardcoded-password-default = "implemented"
+hardcoded-password-func-arg = "implemented"
+hardcoded-password-string = "implemented"
 hardcoded-sql-expression = { status = "planned", issue = "#333" }
 hardcoded-string-charset = { status = "planned", issue = "#334" }
-hardcoded-temp-file = { status = "planned", issue = "#333" }
+hardcoded-temp-file = "implemented"
 hashlib-digest-hex = "implemented"
-hashlib-insecure-hash-function = { status = "planned", issue = "#333" }
+hashlib-insecure-hash-function = "implemented"
 if-else-block-instead-of-dict-get = { status = "planned", issue = "#334" }
 if-else-block-instead-of-dict-lookup = { status = "planned", issue = "#334" }
 if-else-block-instead-of-if-exp = { status = "planned", issue = "#334" }
@@ -255,7 +255,7 @@ implicit-string-concatenation-in-collection-literal = { status = "planned", issu
 import-outside-top-level = { status = "planned", issue = "#334" }
 import-private-name = { status = "planned", issue = "#334" }
 import-self = { status = "planned", issue = "#334" }
-import-shadowed-by-loop-var = { status = "planned", issue = "#332" }
+import-shadowed-by-loop-var = "implemented"
 in-dict-keys = "implemented"
 in-empty-collection = { status = "planned", issue = "#334" }
 incorrect-blank-line-after-class = { status = "planned", issue = "#300" }
@@ -298,12 +298,12 @@ invalid-suppression-comment = { status = "planned", issue = "#334" }
 invalid-todo-capitalization = { status = "planned", issue = "#300" }
 invalid-todo-tag = { status = "planned", issue = "#300" }
 io-error = { status = "planned", issue = "#332" }
-is-literal = { status = "planned", issue = "#332" }
+is-literal = "implemented"
 isinstance-type-none = "implemented"
 iter-method-return-iterable = { status = "planned", issue = "#335" }
 iteration-over-set = { status = "planned", issue = "#334" }
 jinja2-autoescape-false = { status = "planned", issue = "#333" }
-jump-statement-in-finally = { status = "planned", issue = "#332" }
+jump-statement-in-finally = "implemented"
 lambda-assignment = "implemented"
 late-future-import = "implemented"
 lazy-import-immediately-resolved = { status = "planned", issue = "#300" }
@@ -332,7 +332,7 @@ logging-too-many-args = "implemented"
 logging-warn = { status = "planned", issue = "#335" }
 long-sleep-not-forever = { status = "planned", issue = "#335" }
 loop-iterator-mutation = { status = "planned", issue = "#332" }
-loop-variable-overrides-iterator = { status = "planned", issue = "#332" }
+loop-variable-overrides-iterator = "implemented"
 lowercase-imported-as-non-lowercase = { status = "planned", issue = "#300" }
 lru-cache-with-maxsize-none = { status = "planned", issue = "#334" }
 lru-cache-without-parameters = { status = "planned", issue = "#334" }
@@ -380,7 +380,7 @@ multi-line-implicit-string-concatenation = { status = "planned", issue = "#334" 
 multi-line-summary-first-line = { status = "planned", issue = "#300" }
 multi-line-summary-second-line = { status = "planned", issue = "#300" }
 multi-value-repeated-key-literal = "implemented"
-multi-value-repeated-key-variable = { status = "planned", issue = "#332" }
+multi-value-repeated-key-variable = "implemented"
 multiple-imports-on-one-line = "implemented"
 multiple-starred-expressions = "implemented"
 multiple-starts-ends-with = { status = "planned", issue = "#334" }
@@ -432,8 +432,8 @@ none-not-at-end-of-union = { status = "planned", issue = "#334" }
 nonlocal-and-global = { status = "planned", issue = "#332" }
 nonlocal-without-binding = { status = "planned", issue = "#332" }
 noqa-comments = { status = "planned", issue = "#334" }
-not-in-test = { status = "planned", issue = "#332" }
-not-is-test = { status = "planned", issue = "#332" }
+not-in-test = "implemented"
+not-is-test = "implemented"
 numeric-literal-too-long = { status = "planned", issue = "#335" }
 numpy-deprecated-function = { status = "planned", issue = "#334" }
 numpy-deprecated-type-alias = { status = "planned", issue = "#334" }
@@ -499,7 +499,7 @@ patch-version-comparison = { status = "planned", issue = "#335" }
 path-constructor-current-directory = { status = "planned", issue = "#334" }
 pep484-style-positional-only-parameter = { status = "planned", issue = "#335" }
 percent-format-expected-mapping = "implemented"
-percent-format-expected-sequence = { status = "planned", issue = "#332" }
+percent-format-expected-sequence = "implemented"
 percent-format-extra-named-arguments = "implemented"
 percent-format-invalid-format = "implemented"
 percent-format-missing-argument = "implemented"
@@ -559,7 +559,7 @@ raise-not-implemented = "implemented"
 raise-vanilla-args = { status = "planned", issue = "#334" }
 raise-vanilla-class = { status = "planned", issue = "#334" }
 raise-within-try = { status = "planned", issue = "#334" }
-raise-without-from-inside-except = { status = "planned", issue = "#332" }
+raise-without-from-inside-except = "implemented"
 raw-string-in-exception = "implemented"
 re-sub-positional-args = "implemented"
 read-whole-file = { status = "planned", issue = "#334" }
@@ -593,7 +593,7 @@ replace-stdout-stderr = { status = "planned", issue = "#334" }
 replace-str-enum = { status = "planned", issue = "#334" }
 replace-universal-newlines = { status = "planned", issue = "#334" }
 request-with-no-cert-validation = { status = "planned", issue = "#333" }
-request-without-timeout = { status = "planned", issue = "#333" }
+request-without-timeout = "implemented"
 return-in-generator = { status = "planned", issue = "#332" }
 return-in-init = { status = "planned", issue = "#332" }
 return-in-try-except-finally = { status = "planned", issue = "#334" }
@@ -654,30 +654,30 @@ strip-with-multi-characters = "implemented"
 stub-body-multiple-statements = { status = "planned", issue = "#335" }
 subclass-builtin = "implemented"
 subprocess-popen-preexec-fn = { status = "planned", issue = "#334" }
-subprocess-popen-with-shell-equals-true = { status = "planned", issue = "#333" }
+subprocess-popen-with-shell-equals-true = "implemented"
 subprocess-run-without-check = { status = "planned", issue = "#334" }
-subprocess-without-shell-equals-true = { status = "planned", issue = "#333" }
+subprocess-without-shell-equals-true = "implemented"
 super-call-with-parameters = { status = "planned", issue = "#334" }
 super-without-brackets = { status = "planned", issue = "#334" }
 superfluous-else-break = { status = "planned", issue = "#334" }
 superfluous-else-continue = { status = "planned", issue = "#334" }
 superfluous-else-raise = { status = "planned", issue = "#334" }
 superfluous-else-return = { status = "planned", issue = "#334" }
-suppressible-exception = { status = "planned", issue = "#334" }
+suppressible-exception = "implemented"
 surrounding-whitespace = { status = "planned", issue = "#300" }
-suspicious-eval-usage = { status = "planned", issue = "#333" }
+suspicious-eval-usage = "implemented"
 suspicious-ftp-lib-usage = { status = "planned", issue = "#333" }
 suspicious-ftplib-import = { status = "planned", issue = "#333" }
 suspicious-httpoxy-import = { status = "planned", issue = "#333" }
 suspicious-insecure-cipher-mode-usage = { status = "planned", issue = "#333" }
 suspicious-insecure-cipher-usage = { status = "planned", issue = "#333" }
-suspicious-insecure-hash-usage = { status = "planned", issue = "#333" }
+suspicious-insecure-hash-usage = "implemented"
 suspicious-mark-safe-usage = { status = "planned", issue = "#333" }
-suspicious-marshal-usage = { status = "planned", issue = "#333" }
+suspicious-marshal-usage = "implemented"
 suspicious-mktemp-usage = { status = "planned", issue = "#333" }
-suspicious-non-cryptographic-random-usage = { status = "planned", issue = "#333" }
+suspicious-non-cryptographic-random-usage = "implemented"
 suspicious-pickle-import = { status = "planned", issue = "#333" }
-suspicious-pickle-usage = { status = "planned", issue = "#333" }
+suspicious-pickle-usage = "implemented"
 suspicious-pycrypto-import = { status = "planned", issue = "#333" }
 suspicious-pyghmi-import = { status = "planned", issue = "#333" }
 suspicious-subprocess-import = { status = "planned", issue = "#333" }
@@ -725,7 +725,7 @@ trio-sync-call = { status = "planned", issue = "#335" }
 triple-single-quotes = { status = "planned", issue = "#300" }
 true-false-comparison = "implemented"
 try-consider-else = { status = "planned", issue = "#334" }
-try-except-continue = { status = "planned", issue = "#333" }
+try-except-continue = "implemented"
 try-except-in-loop = { status = "planned", issue = "#334" }
 type-alias-without-annotation = { status = "planned", issue = "#335" }
 type-bivariance = { status = "planned", issue = "#334" }
@@ -742,12 +742,12 @@ typing-only-third-party-import = { status = "planned", issue = "#335" }
 typing-text-str-alias = { status = "planned", issue = "#334" }
 unaliased-collections-abc-set-import = { status = "planned", issue = "#335" }
 unannotated-assignment-in-stub = { status = "planned", issue = "#335" }
-unary-prefix-increment-decrement = { status = "planned", issue = "#332" }
+unary-prefix-increment-decrement = "implemented"
 unassigned-special-variable-in-stub = { status = "planned", issue = "#335" }
 uncapitalized-environment-variables = { status = "planned", issue = "#334" }
 unconventional-import-alias = { status = "planned", issue = "#300" }
-undefined-export = { status = "planned", issue = "#332" }
-undefined-local = { status = "planned", issue = "#332" }
+undefined-export = "implemented"
+undefined-local = "implemented"
 undefined-local-with-import-star-usage = "implemented"
 undefined-local-with-nested-import-star-usage = { status = "planned", issue = "#332" }
 undefined-name = "implemented"
@@ -823,7 +823,7 @@ unrecognized-platform-name = { status = "planned", issue = "#335" }
 unrecognized-version-info-check = { status = "planned", issue = "#335" }
 unreliable-callable-check = "implemented"
 unsafe-markup-use = { status = "planned", issue = "#333" }
-unsafe-yaml-load = { status = "planned", issue = "#333" }
+unsafe-yaml-load = "implemented"
 unsorted-dunder-all = { status = "planned", issue = "#334" }
 unsorted-dunder-slots = { status = "planned", issue = "#334" }
 unspecified-encoding = { status = "planned", issue = "#334" }
@@ -833,7 +833,7 @@ unused-async = { status = "planned", issue = "#334" }
 unused-class-method-argument = { status = "planned", issue = "#334" }
 unused-function-argument = { status = "planned", issue = "#334" }
 unused-lambda-argument = { status = "planned", issue = "#334" }
-unused-loop-control-variable = { status = "planned", issue = "#332" }
+unused-loop-control-variable = "implemented"
 unused-method-argument = { status = "planned", issue = "#334" }
 unused-noqa = { status = "planned", issue = "#334" }
 unused-private-protocol = { status = "planned", issue = "#335" }

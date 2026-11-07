@@ -3,10 +3,14 @@ package dev.ward.analysis.application.python;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.TypeFactsFixture;
 import dev.ward.analysis.application.rule.TypeFactsRun;
+import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.FileSummary;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.BuiltinNames;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -66,5 +70,21 @@ final class PythonFixtureFrontends {
     final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
     sources.put(language, facts);
     return new TypeFactsRun(sources).withTypes(frontends);
+  }
+
+  /** Whether the rule is a whole-run dead-code rule, which the engine does not run per unit. */
+  static boolean isDeadCode(final RuleDefinition rule) {
+    return UnusedDefinitionFindings.isUnusedDefinitionRule(rule);
+  }
+
+  /** A fixture is one file, so a definition is used when the file itself uses it. */
+  static List<String> unusedPositions(
+      final RuleDefinition rule, final String path, final String text) {
+    final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.PYTHON, text);
+    final FileSummary summary =
+        new PythonFileSummarizer().summarize(unit, new AntlrLanguageFrontend().parse(unit).tree());
+    return UnusedDefinitionFindings.findings(List.of(rule), Map.of(path, summary)).stream()
+        .map(finding -> finding.line() + ":" + finding.column())
+        .toList();
   }
 }

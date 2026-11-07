@@ -1,9 +1,9 @@
 # Status of the checkstyle-blocks rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-avoid-nested-blocks = { status = "planned", issue = "#286" }
-empty-block = { status = "planned", issue = "#286" }
-empty-catch-block = { status = "planned", issue = "#286" }
-google-right-curly = { status = "planned", issue = "#286" }
-left-curly = { status = "planned", issue = "#286" }
-need-braces = { status = "planned", issue = "#286" }
-right-curly = { status = "planned", issue = "#286" }
+avoid-nested-blocks = "implemented"
+empty-block = "implemented"
+empty-catch-block = "implemented"
+google-right-curly = "implemented"
+left-curly = "implemented"
+need-braces = "implemented"
+right-curly = "implemented"

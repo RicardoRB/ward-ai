@@ -633,3 +633,339 @@ kinds = ["singleExpression"]
 text = '^(__dirname|__filename)$'
 message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
 '''
+
+[[rules]]
+id = "ward:typescript/use-is-array"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+instanceofArray$'
+message = "use Array.isArray instead of instanceof Array"
+'''
+
+[[rules]]
+id = "ward:javascript/use-is-array"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+instanceofArray$'
+message = "use Array.isArray instead of instanceof Array"
+'''
+
+[[rules]]
+id = "ward:typescript/use-number-to-fixed-digits-argument"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.toFixed\(\)$'
+message = "pass the digits argument to toFixed"
+'''
+
+[[rules]]
+id = "ward:javascript/use-number-to-fixed-digits-argument"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.toFixed\(\)$'
+message = "pass the digits argument to toFixed"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-interface"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["interfaceDeclaration"]
+text = '^(export)?(declare)?interface[\w$]+(<[^{]*>)?(extends[\w$.,<>]+)?\{\};?$'
+message = "an empty interface is the same as {}; remove it or add members"
+'''
+
+[[rules]]
+id = "ward:typescript/no-invalid-builtin-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:javascript/no-invalid-builtin-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-for-direction"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-for-direction"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:typescript/no-const-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:javascript/no-const-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:typescript/no-func-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-func-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-class-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:javascript/no-class-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:typescript/no-import-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-import-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-undef"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unreachable"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unreachable"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-undef"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/valid-typeof"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:javascript/valid-typeof"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-condition"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-condition"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''

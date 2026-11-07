@@ -6,7 +6,9 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AncestorCheck;
+import dev.ward.analysis.domain.rule.check.CollapsibleIfCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
+import dev.ward.analysis.domain.rule.check.HandlerBodyCheck;
 import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.ModuleOrderCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
@@ -49,7 +51,9 @@ final class PythonScopeChecks {
         entry("dot-format", PythonScopeChecks::dotFormat),
         entry("ancestor-check", PythonScopeChecks::ancestorCheck),
         entry("module-order", PythonScopeChecks::moduleOrder),
-        entry("logging-args", PythonScopeChecks::loggingArgs));
+        entry("logging-args", PythonScopeChecks::loggingArgs),
+        entry("collapsible-if", toml -> new CollapsibleIfCheck(TomlValues.required(toml, MESSAGE))),
+        entry("handler-body", PythonScopeChecks::handlerBody));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {
@@ -99,5 +103,12 @@ final class PythonScopeChecks {
         TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new LoggingArgsCheck(
         LoggingArgsCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck handlerBody(final TomlParseResult toml) {
+    return new HandlerBodyCheck(
+        Pattern.compile(TomlValues.required(toml, "body")),
+        Boolean.TRUE.equals(toml.getBoolean("sole")),
+        TomlValues.required(toml, MESSAGE));
   }
 }
