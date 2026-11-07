@@ -112,3 +112,236 @@ kinds = ["expr_stmt"]
 text = '^\*[^=]*\*[^=]*='
 message = "two starred expressions in an assignment"
 '''
+
+[[rules]]
+id = "ward:python/undefined-name"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "undefined name '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/yield-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["yield_expr"]
+within = ["FUNCTION", "LAMBDA"]
+message = "yield statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/return-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["return_stmt"]
+within = ["FUNCTION"]
+message = "return statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/redefined-while-unused"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefinition"
+message = "redefinition of unused '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local-with-import-star-usage"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "star-import-usage"
+message = "'{value}' may be undefined, or defined from star imports"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "invalid"
+message = "invalid % format literal: incomplete format"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-expected-mapping"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "expected-mapping"
+message = "% format expected a mapping but got a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unused-keys"
+message = "% format has unused named argument"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-missing-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "missing-keys"
+message = "% format is missing an argument for a named placeholder"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-mixed-positional-and-named"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "mixed"
+message = "% format mixes positional and named placeholders"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-positional-count-mismatch"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "count"
+message = "% format has a different number of placeholders and substitutions"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-star-requires-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "star-mapping"
+message = "% format * specifier requires a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-unsupported-format-character"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unsupported"
+message = "% format has an unsupported format character"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "invalid"
+message = "invalid .format string: unbalanced braces"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-named"
+message = "unused named argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-positional-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-positional"
+message = "unused positional argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-missing-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "missing"
+message = "missing argument for a placeholder in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-mixing-automatic"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "mixed"
+message = ".format string mixes automatic and manual numbering"
+'''
