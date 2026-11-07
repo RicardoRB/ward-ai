@@ -34,7 +34,7 @@ bshift-wrong-add-priority = "implemented"
 bx-boxing-immediately-unboxed = { status = "planned", issue = "#316" }
 bx-boxing-immediately-unboxed-to-perform-coercion = { status = "planned", issue = "#316" }
 bx-unboxed-and-coerced-for-ternary-operator = { status = "planned", issue = "#316" }
-bx-unboxing-immediately-reboxed = { status = "planned", issue = "#316" }
+bx-unboxing-immediately-reboxed = "implemented"
 caa-covariant-array-element-store = { status = "planned", issue = "#314" }
 caa-covariant-array-field = { status = "planned", issue = "#316" }
 caa-covariant-array-local = { status = "planned", issue = "#316" }
@@ -53,7 +53,7 @@ ct-constructor-throw = { status = "planned", issue = "#316" }
 cwo-closed-without-opened = { status = "planned", issue = "#316" }
 db-duplicate-branches = { status = "planned", issue = "#316" }
 db-duplicate-switch-clauses = { status = "planned", issue = "#316" }
-dc-doublecheck = { status = "planned", issue = "#316" }
+dc-doublecheck = "implemented"
 dc-partially-constructed = { status = "planned", issue = "#316" }
 dcn-nullpointer-exception = { status = "planned", issue = "#316" }
 de-might-drop = { status = "planned", issue = "#316" }
@@ -356,7 +356,7 @@ reflf-reflection-may-increase-accessibility-of-field = { status = "planned", iss
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
 rp-c-repeated-conditional-test = { status = "planned", issue = "#314" }
 rr-not-checked = { status = "planned", issue = "#316" }
-rs-readobject-sync = { status = "planned", issue = "#316" }
+rs-readobject-sync = "implemented"
 ru-invoke-run = { status = "planned", issue = "#316" }
 rv-01-to-int = "implemented"
 rv-absolute-value-of-hashcode = "implemented"
@@ -419,11 +419,11 @@ sing-singleton-implements-serializable = { status = "planned", issue = "#314" }
 sing-singleton-indirectly-implements-cloneable = { status = "planned", issue = "#314" }
 sio-superfluous-instanceof = { status = "planned", issue = "#314" }
 skipped-class-too-big = { status = "planned", issue = "#316" }
-sp-spin-on-field = { status = "planned", issue = "#316" }
+sp-spin-on-field = "implemented"
 sql-bad-prepared-statement-access = { status = "planned", issue = "#314" }
 sql-bad-resultset-access = { status = "planned", issue = "#314" }
 sr-not-checked = { status = "planned", issue = "#316" }
-ss-should-be-static = { status = "planned", issue = "#316" }
+ss-should-be-static = "implemented"
 ssd-do-not-use-instance-lock-on-shared-static-data = { status = "planned", issue = "#316" }
 st-write-to-static-from-instance-method = { status = "planned", issue = "#316" }
 stcal-invoke-on-static-calendar-instance = { status = "planned", issue = "#316" }
@@ -464,7 +464,7 @@ ul-unreleased-lock-exception-path = { status = "planned", issue = "#316" }
 um-unnecessary-math = { status = "planned", issue = "#316" }
 umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314" }
 unknown = { status = "planned", issue = "#316" }
-upm-uncalled-private-method = { status = "planned", issue = "#316" }
+upm-uncalled-private-method = "implemented"
 ur-uninit-read = { status = "planned", issue = "#314" }
 ur-uninit-read-called-from-super-constructor = { status = "planned", issue = "#314" }
 urf-unread-field = { status = "planned", issue = "#316" }
@@ -487,12 +487,12 @@ uwf-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
 va-format-string-uses-newline = { status = "planned", issue = "#316" }
 va-primitive-array-passed-to-object-vararg = { status = "planned", issue = "#314" }
 vo-volatile-increment = { status = "planned", issue = "#316" }
-vo-volatile-reference-to-array = { status = "planned", issue = "#316" }
+vo-volatile-reference-to-array = "implemented"
 vr-unresolvable-reference = { status = "planned", issue = "#314" }
 vsc-vulnerable-security-check-methods = { status = "planned", issue = "#316" }
 wa-await-not-in-loop = { status = "planned", issue = "#316" }
 wa-not-in-loop = { status = "planned", issue = "#316" }
 wl-using-getclass-rather-than-class-literal = { status = "planned", issue = "#316" }
 wmi-wrong-map-iterator = { status = "planned", issue = "#316" }
-ws-writeobject-sync = { status = "planned", issue = "#316" }
+ws-writeobject-sync = "implemented"
 xfb-xml-factory-bypass = { status = "planned", issue = "#316" }
