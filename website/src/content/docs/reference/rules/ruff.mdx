@@ -685,28 +685,28 @@ description: Rules of the catalog file ruff and their counterparts.
 | `rule-codes-in-suppression-comments` | ruff-specific-rules | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `RUF106` |
 | `invalid-pyproject-toml` | ruff-specific-rules | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `RUF200` |
 | `rule-codes-in-selectors` | ruff-specific-rules | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `RUF201` |
-| `assert` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S101` |
-| `exec-builtin` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S102` |
+| `assert` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S101` |
+| `exec-builtin` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S102` |
 | `bad-file-permissions` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S103` |
-| `hardcoded-bind-all-interfaces` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S104` |
-| `hardcoded-password-string` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S105` |
-| `hardcoded-password-func-arg` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S106` |
-| `hardcoded-password-default` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S107` |
-| `hardcoded-temp-file` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S108` |
-| `try-except-continue` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S112` |
-| `request-without-timeout` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S113` |
-| `flask-debug-true` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S201` |
+| `hardcoded-bind-all-interfaces` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S104` |
+| `hardcoded-password-string` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S105` |
+| `hardcoded-password-func-arg` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S106` |
+| `hardcoded-password-default` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S107` |
+| `hardcoded-temp-file` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S108` |
+| `try-except-continue` | flake8-bandit | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `S112` |
+| `request-without-timeout` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S113` |
+| `flask-debug-true` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S201` |
 | `tarfile-unsafe-members` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S202` |
-| `suspicious-pickle-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S301` |
-| `suspicious-marshal-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S302` |
-| `suspicious-insecure-hash-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S303` |
+| `suspicious-pickle-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S301` |
+| `suspicious-marshal-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S302` |
+| `suspicious-insecure-hash-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S303` |
 | `suspicious-insecure-cipher-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S304` |
 | `suspicious-insecure-cipher-mode-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S305` |
 | `suspicious-mktemp-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S306` |
-| `suspicious-eval-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S307` |
+| `suspicious-eval-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S307` |
 | `suspicious-mark-safe-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S308` |
 | `suspicious-url-open-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S310` |
-| `suspicious-non-cryptographic-random-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S311` |
+| `suspicious-non-cryptographic-random-usage` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S311` |
 | `suspicious-telnet-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S312` |
 | `suspicious-xmlc-element-tree-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S313` |
 | `suspicious-xml-element-tree-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S314` |
@@ -717,7 +717,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `suspicious-xml-pull-dom-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S319` |
 | `suspicious-ftp-lib-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S321` |
 | `suspicious-unverified-context-usage` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S323` |
-| `hashlib-insecure-hash-function` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S324` |
+| `hashlib-insecure-hash-function` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S324` |
 | `suspicious-telnetlib-import` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S401` |
 | `suspicious-ftplib-import` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S402` |
 | `suspicious-pickle-import` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S403` |
@@ -736,13 +736,13 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ssl-with-bad-defaults` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S503` |
 | `ssl-with-no-version` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S504` |
 | `weak-cryptographic-key` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S505` |
-| `unsafe-yaml-load` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S506` |
+| `unsafe-yaml-load` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S506` |
 | `ssh-no-host-key-verification` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S507` |
 | `snmp-insecure-version` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S508` |
 | `snmp-weak-cryptography` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S509` |
 | `paramiko-call` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S601` |
-| `subprocess-popen-with-shell-equals-true` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S602` |
-| `subprocess-without-shell-equals-true` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S603` |
+| `subprocess-popen-with-shell-equals-true` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S602` |
+| `subprocess-without-shell-equals-true` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `S603` |
 | `call-with-shell-equals-true` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S604` |
 | `start-process-with-a-shell` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S605` |
 | `start-process-with-no-shell` | flake8-bandit | n/a | n/a | n/a | n/a | [#333](https://github.com/RicardoRB/ward-ai/issues/333) | n/a | Ruff `S606` |
@@ -1000,6 +1000,24 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/invalid-character-esc` | coding | strict | none | Ruff `PLE2513`; Pylint `invalid-character-esc` |
 | `ward:python/invalid-character-nul` | coding | strict | none | Ruff `PLE2514`; Pylint `invalid-character-nul` |
 | `ward:python/invalid-character-zero-width-space` | coding | strict | none | Ruff `PLE2515`; Pylint `invalid-character-zero-width-space` |
+| `ward:python/assert` | coding | strict | none | Ruff `S101` |
+| `ward:python/exec-builtin` | coding | strict | none | Ruff `S102` |
+| `ward:python/hardcoded-bind-all-interfaces` | coding | strict | none | Ruff `S104` |
+| `ward:python/hardcoded-password-string` | coding | strict | none | Ruff `S105` |
+| `ward:python/hardcoded-password-func-arg` | coding | strict | none | Ruff `S106` |
+| `ward:python/hardcoded-password-default` | coding | strict | none | Ruff `S107` |
+| `ward:python/hardcoded-temp-file` | coding | strict | none | Ruff `S108` |
+| `ward:python/request-without-timeout` | coding | strict | none | Ruff `S113` |
+| `ward:python/flask-debug-true` | coding | strict | none | Ruff `S201` |
+| `ward:python/suspicious-pickle-usage` | coding | strict | none | Ruff `S301` |
+| `ward:python/suspicious-marshal-usage` | coding | strict | none | Ruff `S302` |
+| `ward:python/suspicious-insecure-hash-usage` | coding | strict | none | Ruff `S303` |
+| `ward:python/suspicious-eval-usage` | coding | strict | none | Ruff `S307` |
+| `ward:python/suspicious-non-cryptographic-random-usage` | coding | strict | none | Ruff `S311` |
+| `ward:python/hashlib-insecure-hash-function` | coding | strict | none | Ruff `S324` |
+| `ward:python/unsafe-yaml-load` | coding | strict | none | Ruff `S506` |
+| `ward:python/subprocess-popen-with-shell-equals-true` | coding | strict | none | Ruff `S602` |
+| `ward:python/subprocess-without-shell-equals-true` | coding | strict | none | Ruff `S603` |
 | `ward:python/debugger` | coding | strict | none | Ruff `T100` |
 | `ward:python/invalid-escape-sequence` | coding | strict | none | Ruff `W605` |
 | `ward:python/sys-version-slice3` | coding | strict | none | Ruff `YTT101` |
