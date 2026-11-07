@@ -1,0 +1,238 @@
+# Design rules for Java, mirroring PMD 7's design category. Each rule is a generic check over the
+# syntax tree; a few are approximations that match on the text of a node, noted in the PR.
+
+[[rules]]
+id = "ward:java/abstract-class-without-any-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["classDeclaration"]
+modifiers = ["abstract"]
+descendant = ["methodDeclaration", "constructorDeclaration"]
+skip = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
+message = "abstract class declares no method or constructor"
+'''
+
+[[rules]]
+id = "ward:java/avoid-rethrowing-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchClause"]
+text = '(?s)^catch\((?:final)?[\w.<>?,&|]+?(\w+)\)\{throw\1;\}$'
+message = "catch block only rethrows the exception; remove the catch or handle the exception"
+'''
+
+[[rules]]
+id = "ward:java/avoid-throwing-new-instance-of-same-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchClause"]
+text = '(?s)^catch\((?:final)?([\w.]+?)(\w+)\)\{thrownew\1\([^;]*\b\2\b[^;]*\);\}$'
+message = "catch block throws a new instance of the same exception; rethrow it or add context"
+'''
+
+[[rules]]
+id = "ward:java/avoid-throwing-null-pointer-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^thrownew(java\.lang\.)?NullPointerException\('
+message = "throws a NullPointerException manually; use Objects.requireNonNull or IllegalArgumentException"
+'''
+
+[[rules]]
+id = "ward:java/avoid-unchecked-exceptions-in-signatures"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["qualifiedNameList"]
+parent = ["methodDeclaration"]
+text = '(^|,)\s*(java\.lang\.)?(RuntimeException|IllegalArgumentException|IllegalStateException|NullPointerException|IndexOutOfBoundsException|UnsupportedOperationException|ClassCastException|ArithmeticException|NumberFormatException)\s*($|,)'
+message = "method declares an unchecked exception in its throws clause; document it in the Javadoc instead"
+'''
+
+[[rules]]
+id = "ward:java/collapsible-if-statements"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '(?s)^if\s*\([^{]*\)\s*\{\s*if\s*\([^{]*\)\s*\{[^{}]*\}\s*\}$'
+message = "nested if statements without else can be merged with &&"
+'''
+
+[[rules]]
+id = "ward:java/do-not-extend-java-lang-error"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeType"]
+parent = ["classDeclaration"]
+text = '^(java\.lang\.)?Error$'
+message = "class extends java.lang.Error; extend Exception or RuntimeException instead"
+'''
+
+[[rules]]
+id = "ward:java/excessive-imports"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.minimum = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "count"
+kinds = ["compilationunit"]
+counted = ["importDeclaration"]
+max = 30
+message = "file has {value} imports; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/excessive-parameter-list"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.minimum = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "descendant-count"
+kinds = ["formalParameters"]
+counted = ["formalParameter"]
+max = 10
+message = "method declares {value} parameters; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/final-field-could-be-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["final"]
+not-modifiers = ["static"]
+text = '(?s)=\s*(?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d[\w.]*|true|false)\s*;\s*$'
+message = "final field initialized with a constant could be static"
+'''
+
+[[rules]]
+id = "ward:java/logic-inversion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '(?s)^!\((?!.*(&&|\|\|)).*(==|!=|<=|>=|<|>).*\)$'
+message = "negated comparison; use the opposite operator instead of !"
+'''
+
+[[rules]]
+id = "ward:java/mutable-static-state"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["static"]
+not-modifiers = ["private", "final"]
+message = "static field that is neither private nor final; keep static state private or immutable"
+'''
+
+[[rules]]
+id = "ward:java/signature-declare-throws-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["qualifiedNameList"]
+parent = ["methodDeclaration"]
+text = '(^|,)\s*(java\.lang\.)?(Exception|Throwable)\s*($|,)'
+message = "method declares Exception or Throwable in its throws clause; declare the specific exception"
+'''
+
+[[rules]]
+id = "ward:java/simplified-ternary"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[^?]*\?\s*(true|false)\s*:|^[^?]*\?[^:]*:\s*(true|false)\s*$'
+message = "conditional expression with a boolean literal can be simplified with && or ||"
+'''
+
+[[rules]]
+id = "ward:java/simplify-conditional"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)!=null&&\1instanceof'
+message = "null check before instanceof is redundant; instanceof already returns false for null"
+'''
+
+[[rules]]
+id = "ward:java/useless-overriding-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '(?s)^(?![^{]*@)[^{(]*?(\w+)\([^)]*\)[^{]*\{(?:return)?super\.\1\([^)]*\);?\}$'
+message = "method only calls the overridden method with the same name; remove the override"
+'''

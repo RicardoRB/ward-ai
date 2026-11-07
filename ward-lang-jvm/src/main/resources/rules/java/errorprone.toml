@@ -1,0 +1,129 @@
+# Error Prone checks at ERROR severity for Java, as generic syntax checks. Each rule is on by
+# default in Error Prone, so it belongs to the standard preset. Approximations that match the text
+# of one node are noted in the rule's message comment.
+
+[[rules]]
+id = "ward:java/zone-id-of-z"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^ZoneId\.of\("Z"\)$'
+message = "ZoneId.of(\"Z\") names the UTC zone; use ZoneOffset.UTC instead"
+'''
+
+[[rules]]
+id = "ward:java/long-literal-lower-case-suffix"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^(0[xX][0-9a-fA-F_]+|[0-9][0-9_]*)l$'
+message = "long literal {value} uses a lower-case l suffix that reads like the digit 1; use L"
+'''
+
+[[rules]]
+id = "ward:java/throw-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^throw\s*null;?$'
+message = "throws null, which fails with a NullPointerException; throw a real exception"
+'''
+
+[[rules]]
+id = "ward:java/empty-if"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\s*\(.*\)\s*(;|\{\s*\})$'
+message = "if statement with an empty body; remove it or put the intended code in the body"
+'''
+
+[[rules]]
+id = "ward:java/string-builder-init-with-char"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(java\.lang\.)?String(Builder|Buffer)\(\x27[^\x27]\x27\)$'
+message = "builder created from a char, which is read as a capacity; pass a String instead"
+'''
+
+[[rules]]
+id = "ward:java/dead-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^new\s*[\w.]*(Exception|Error|Throwable)\s*\((?:[^;()]|\([^;()]*\))*\)\s*;?$'
+message = "exception created but never thrown; add the throw or remove the statement"
+'''
+
+[[rules]]
+id = "ward:java/equals-na-n"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.()]+\s*(?:==|!=)\s*(?:java\.lang\.)?(?:Double|Float)\.NaN|(?:java\.lang\.)?(?:Double|Float)\.NaN\s*(?:==|!=)\s*[\w.()]+)$'
+message = "comparison with NaN is always unequal; use Double.isNaN or Float.isNaN"
+'''
+
+[[rules]]
+id = "ward:java/double-brace-initialization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new[^{]*\(\s*\)\s*\{\s*\{'
+message = "double-brace initialization creates an anonymous subclass; fill a collection with its constructor or a factory"
+'''
+
+[[rules]]
+id = "ward:java/get-class-on-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.class\.getClass\(\)$'
+message = "getClass() on a class literal always returns Class.class; drop the call"
+'''
