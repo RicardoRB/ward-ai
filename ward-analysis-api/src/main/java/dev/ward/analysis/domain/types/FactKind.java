@@ -1,6 +1,6 @@
 package dev.ward.analysis.domain.types;
 
-/** The questions a rule can ask about a span; a sidecar answers only the kinds it is asked. */
+/** The questions a rule can ask about a span; a resolver answers only the kinds it is asked. */
 public enum FactKind {
   /** The type of an expression. */
   TYPE,
@@ -16,9 +16,4 @@ public enum FactKind {
   THROWS,
   /** The compile-time constant value of an expression. */
   CONSTANT;
-
-  /** Returns the name the sidecar protocol uses for this kind. */
-  public String wireName() {
-    return name().toLowerCase(java.util.Locale.ROOT);
-  }
 }

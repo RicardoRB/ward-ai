@@ -20,7 +20,7 @@ public final class NodeToolchainFinding implements ToolchainFinding {
     if (detected.buildTool() == BuildTool.BUN) {
       return List.of(
           executableFinding(detected.buildExecutable(), facts),
-          TypeScriptTypeSidecarFinding.finding(facts));
+          TypeScriptTypeInputsFinding.finding(facts));
     }
     final List<Finding> findings =
         new ArrayList<>(
@@ -30,7 +30,7 @@ public final class NodeToolchainFinding implements ToolchainFinding {
     NodeSupport.warning(detected)
         .map(message -> new Finding("node-version", Status.WARNING, message))
         .ifPresent(findings::add);
-    findings.add(TypeScriptTypeSidecarFinding.finding(facts));
+    findings.add(TypeScriptTypeInputsFinding.finding(facts));
     return findings;
   }
 
