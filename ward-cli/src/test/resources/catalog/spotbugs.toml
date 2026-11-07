@@ -195,7 +195,6 @@ spotbugs = ["BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR"]
 
 [[rule]]
 name = "bx-unboxing-immediately-reboxed"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["BX_UNBOXING_IMMEDIATELY_REBOXED"]
 
@@ -310,7 +309,6 @@ spotbugs = ["DCN_NULLPOINTER_EXCEPTION"]
 
 [[rule]]
 name = "dc-doublecheck"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["DC_DOUBLECHECK"]
 
@@ -1984,7 +1982,6 @@ spotbugs = ["RR_NOT_CHECKED"]
 
 [[rule]]
 name = "rs-readobject-sync"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["RS_READOBJECT_SYNC"]
 
@@ -2330,7 +2327,6 @@ spotbugs = ["SKIPPED_CLASS_TOO_BIG"]
 
 [[rule]]
 name = "sp-spin-on-field"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["SP_SPIN_ON_FIELD"]
 
@@ -2358,7 +2354,6 @@ spotbugs = ["SSD_DO_NOT_USE_INSTANCE_LOCK_ON_SHARED_STATIC_DATA"]
 
 [[rule]]
 name = "ss-should-be-static"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["SS_SHOULD_BE_STATIC"]
 
@@ -2587,7 +2582,6 @@ spotbugs = ["UNKNOWN"]
 
 [[rule]]
 name = "upm-uncalled-private-method"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["UPM_UNCALLED_PRIVATE_METHOD"]
 
@@ -2724,7 +2718,6 @@ spotbugs = ["VO_VOLATILE_INCREMENT"]
 
 [[rule]]
 name = "vo-volatile-reference-to-array"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["VO_VOLATILE_REFERENCE_TO_ARRAY"]
 
@@ -2765,7 +2758,6 @@ spotbugs = ["WMI_WRONG_MAP_ITERATOR"]
 
 [[rule]]
 name = "ws-writeobject-sync"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["WS_WRITEOBJECT_SYNC"]
 

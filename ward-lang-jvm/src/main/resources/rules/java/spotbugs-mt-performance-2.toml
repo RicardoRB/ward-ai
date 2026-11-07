@@ -1,0 +1,114 @@
+# SpotBugs multithreaded-correctness and performance rules for Java (standard preset).
+
+[[rules]]
+id = "ward:java/rs-readobject-sync"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?:private|public|protected|final|static)*synchronized(?:private|public|protected|final|static)*voidreadObject\('
+message = "synchronized readObject can deadlock during deserialization; remove synchronized"
+'''
+
+[[rules]]
+id = "ward:java/ws-writeobject-sync"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?:private|public|protected|final|static)*synchronized(?:private|public|protected|final|static)*voidwriteObject\('
+message = "synchronized writeObject without a synchronized readObject is inconsistent; remove synchronized"
+'''
+
+[[rules]]
+id = "ward:java/dc-doublecheck"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'if'"]
+text = '^if\((\w+)==null\)\{synchronized\([^)]*\)\{if\(\1==null\)'
+message = "double-checked locking is broken unless the field is volatile; use a holder class"
+'''
+
+[[rules]]
+id = "ward:java/sp-spin-on-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'while'"]
+text = '^while\(!?[\w.]+\)(\{\}|;)$'
+message = "empty loop spins on a field; use a lock, a condition or a latch"
+'''
+
+[[rules]]
+id = "ward:java/vo-volatile-reference-to-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["volatile"]
+text = '^[\w.<>]+\[\]'
+message = "volatile array field; the elements are not volatile, use an atomic array"
+'''
+
+[[rules]]
+id = "ward:java/ss-should-be-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["final"]
+not-modifiers = ["static"]
+text = '^(?:int|long|short|byte|char|boolean|float|double|String)\w+=(?:-?[\d.]+[LlFfDd]?|"[^"]*"|true|false);?$'
+message = "final instance field with a constant value; make it static"
+'''
+
+[[rules]]
+id = "ward:java/bx-unboxing-immediately-reboxed"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(Byte|Short|Integer|Long|Character|Float|Double|Boolean)\.valueOf\(.*\.(byte|short|int|long|char|float|double|boolean)Value\(\)\)$'
+message = "value unboxed and boxed again; use the original object"
+'''
+
+[[rules]]
+id = "ward:java/upm-uncalled-private-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-private-method"
+message = "private method '{value}' is never called"
+'''
