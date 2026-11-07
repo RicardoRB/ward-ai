@@ -58,6 +58,11 @@ public final class GraphRuleBody {
     return List.copyOf(tables);
   }
 
+  /** Reads a body of comma-separated names, which may be empty. */
+  public static List<String> decodeNames(final String body) {
+    return names(body);
+  }
+
   private static List<String> names(final String text) {
     return text.isEmpty() ? List.of() : List.of(text.split(NAME_SEPARATOR, -1));
   }

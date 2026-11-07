@@ -9,7 +9,9 @@ import dev.ward.analysis.domain.rule.check.AccessorClassGenerationCheck;
 import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
 import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
 import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
+import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
 import dev.ward.analysis.domain.rule.check.GuardLogStatementCheck;
+import dev.ward.analysis.domain.rule.check.NonExhaustiveSwitchCheck;
 import dev.ward.analysis.domain.rule.check.UseEnumCollectionsCheck;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +58,12 @@ final class TypeAwareChecks {
             toml -> new UseEnumCollectionsCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "guard-log-statement",
-            toml -> new GuardLogStatementCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new GuardLogStatementCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "exhaustive-switch-has-default",
+            toml -> new ExhaustiveSwitchHasDefaultCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "non-exhaustive-switch",
+            toml -> new NonExhaustiveSwitchCheck(TomlValues.required(toml, MESSAGE))));
   }
 }

@@ -713,3 +713,27 @@ body = '''
 check = "guard-log-statement"
 message = "log message built by concatenation; guard the call or pass arguments"
 '''
+
+[[rules]]
+id = "ward:java/exhaustive-switch-has-default"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "exhaustive-switch-has-default"
+message = "default label is unnecessary; the switch already covers every constant of the enum"
+'''
+
+[[rules]]
+id = "ward:java/non-exhaustive-switch"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "non-exhaustive-switch"
+message = "switch over an enum has no default and misses a constant"
+'''
