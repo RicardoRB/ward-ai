@@ -114,7 +114,7 @@ class NodeStructuralGateTest {
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        unused -> Map.of());
+        (unused, classpath) -> Map.of());
   }
 
   private Project project() {

@@ -53,7 +53,7 @@ class NodeDependencyGateTest {
             AnalysisCacheFixtures.codec(),
             "0.6.0",
             new NodeDependencyAdapters(),
-            unused -> Map.of());
+            (unused, classpath) -> Map.of());
     final Project project = new Project(root, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE);
 
     final GateResult result = new AnalysisGate("ward", List.of(), ports).execute(project);

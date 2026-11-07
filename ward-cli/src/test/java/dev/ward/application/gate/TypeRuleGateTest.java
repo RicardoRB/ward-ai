@@ -24,8 +24,9 @@ import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import org.junit.jupiter.api.Test;
 
 /** A rule that needs types is never passed without a native type resolver for its language. */
@@ -43,7 +44,7 @@ class TypeRuleGateTest {
 
   @Test
   void typeRuleWithoutNativeResolverIsNotRunAndTheGateIsUnavailable() {
-    final GateResult result = gate(root -> Map.of()).execute(PROJECT);
+    final GateResult result = gate((root, classpath) -> Map.of()).execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.stderr())
@@ -55,14 +56,14 @@ class TypeRuleGateTest {
   void typeRuleRunsWhenANativeResolverIsRegisteredForItsLanguage() {
     final TypeFacts resolver = (unit, spans, kinds) -> UnitTypeFacts.none();
     final GateResult result =
-        gate(root -> Map.of(AnalysisLanguage.JAVA, resolver)).execute(PROJECT);
+        gate((root, classpath) -> Map.of(AnalysisLanguage.JAVA, resolver)).execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.stderr()).doesNotContain("not run");
   }
 
   private static AnalysisGate gate(
-      final Function<Path, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
+      final BiFunction<Path, Optional<Path>, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(TYPED), List.of()),
