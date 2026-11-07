@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public final class PatternVariableAssignmentCheck implements UnitCheck {
 
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
+  private static final String INSTANCEOF = "'instanceof'";
   private static final Set<String> CALLABLES =
       Set.of("methodDeclaration", "constructorDeclaration");
 
@@ -56,25 +57,45 @@ public final class PatternVariableAssignmentCheck implements UnitCheck {
     return List.copyOf(matches);
   }
 
+  /**
+   * Finds the names an {@code instanceof} pattern declares. The frontend parses {@code x instanceof
+   * Type name} with the name inside the type's tree, after the type's name, so the name is the
+   * identifier leaf that follows a leaf other than a dot.
+   */
   private static List<PatternVariable> patternVariables(final SyntaxNode root) {
     final List<PatternVariable> found = new ArrayList<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("pattern"))) {
+    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       final Optional<SyntaxNode> callable = nearestCallable(visit.ancestors());
-      if (callable.isPresent()) {
-        for (final SyntaxNode id : SyntaxWalk.descendants(visit.node())) {
-          if ("variableDeclaratorId".equals(id.kind())) {
-            found.add(new PatternVariable(SyntaxWalk.text(id), callable.get()));
-          }
+      final List<SyntaxNode> children = visit.node().children();
+      for (int index = 0; index + 1 < children.size() && callable.isPresent(); index++) {
+        if (INSTANCEOF.equals(children.get(index).kind())
+            && "typeType".equals(children.get(index + 1).kind())) {
+          patternName(children.get(index + 1))
+              .ifPresent(name -> found.add(new PatternVariable(name, callable.get())));
         }
       }
     }
     return found;
   }
 
+  private static Optional<String> patternName(final SyntaxNode type) {
+    final List<SyntaxNode> leaves = SyntaxWalk.leaves(type);
+    if (leaves.size() < 2) {
+      return Optional.empty();
+    }
+    final SyntaxNode last = leaves.get(leaves.size() - 1);
+    final String before = SyntaxWalk.text(leaves.get(leaves.size() - 2));
+    return NAME.matcher(SyntaxWalk.text(last)).matches() && !".".equals(before)
+        ? Optional.of(SyntaxWalk.text(last))
+        : Optional.empty();
+  }
+
   private static boolean declares(
       final List<PatternVariable> variables, final String name, final SyntaxNode callable) {
     return variables.stream()
-        .anyMatch(variable -> variable.name().equals(name) && variable.callable() == callable);
+        .anyMatch(
+            variable ->
+                variable.name().equals(name) && variable.callable().span().equals(callable.span()));
   }
 
   private static Optional<SyntaxNode> nearestCallable(final List<SyntaxNode> ancestors) {
