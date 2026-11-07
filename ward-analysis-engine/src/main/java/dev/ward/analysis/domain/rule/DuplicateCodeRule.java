@@ -1,6 +1,4 @@
-package dev.ward.analysis.domain.rule.duplicate;
-
-import dev.ward.analysis.domain.rule.RuleDefinition;
+package dev.ward.analysis.domain.rule;
 
 /**
  * The {@code ward:<language>/duplicate-code} rules. They compare the tokens of every file of their

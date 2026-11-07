@@ -1,16 +1,19 @@
-package dev.ward.analysis.domain.rule.duplicate;
+package dev.ward.analysis.domain.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.rule.duplicate.CloneDetector.Clone;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateTokens.Token;
+import dev.ward.analysis.domain.rule.CloneDetector.Clone;
+import dev.ward.analysis.domain.rule.DuplicateTokens.Token;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
 class CloneDetectorTest {
+
+  private static final int REPEAT_LENGTH = 8;
+  private static final int TOO_LONG = 9;
 
   @Test
   void reportsASequenceRepeatedInTwoFilesOnceWithEveryCopy() {
@@ -20,7 +23,7 @@ class CloneDetectorTest {
     final List<Clone> clones = CloneDetector.detect(new TreeMap<>(files), 4);
 
     assertThat(clones).hasSize(1);
-    assertThat(clones.get(0).length()).isEqualTo(8);
+    assertThat(clones.get(0).length()).isEqualTo(REPEAT_LENGTH);
     assertThat(clones.get(0).copies())
         .extracting(CloneDetector.Copy::path)
         .containsExactly("a.txt", "b.txt");
@@ -31,7 +34,7 @@ class CloneDetectorTest {
     final Map<String, List<Token>> files =
         Map.of("a.txt", tokens("x y z w p q r s"), "b.txt", tokens("x y z w p q r s"));
 
-    assertThat(CloneDetector.detect(new TreeMap<>(files), 9)).isEmpty();
+    assertThat(CloneDetector.detect(new TreeMap<>(files), TOO_LONG)).isEmpty();
   }
 
   @Test
@@ -47,8 +50,7 @@ class CloneDetectorTest {
     final Token[] tokens = new Token[words.length];
     for (int index = 0; index < words.length; index++) {
       final int column = index + 1;
-      tokens[index] =
-          new Token(words[index], new Span(1, column, 1, column + 1, index, index + 1));
+      tokens[index] = new Token(words[index], new Span(1, column, 1, column + 1, index, index + 1));
     }
     return List.of(tokens);
   }

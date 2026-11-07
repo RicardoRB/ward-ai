@@ -1,4 +1,4 @@
-package dev.ward.analysis.domain.rule.duplicate;
+package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.Span;
@@ -9,8 +9,8 @@ import java.util.Set;
 
 /**
  * Turns the syntax tree of a unit into the tokens that duplicate detection compares. The leaves of
- * the tree are the tokens in source order; comments and error nodes are left out, as copy
- * detectors do. The grammar of each language names its literal, identifier and annotation kinds.
+ * the tree are the tokens in source order; comments and error nodes are left out, as copy detectors
+ * do. The grammar of each language names its literal, identifier and annotation kinds.
  */
 public final class DuplicateTokens {
 
@@ -18,6 +18,7 @@ public final class DuplicateTokens {
   private static final String IDENTIFIER = "<identifier>";
   private static final String SEPARATOR = "\u0000";
   private static final String TEXT = "text";
+
   /** Newline tokens are layout: copies start and end on real tokens, as copy detectors need. */
   private static final Set<String> SKIPPED = Set.of("comment", "error", "NL");
 
@@ -44,10 +45,12 @@ public final class DuplicateTokens {
         || options.ignoreAnnotations() && vocabulary.annotations().contains(node.kind())) {
       return;
     }
-    if (!node.children().isEmpty()) {
+    if (node.children().isEmpty()) {
+      if (node.fields().containsKey(TEXT)) {
+        tokens.add(new Token(value(node, vocabulary, options), node.span()));
+      }
+    } else {
       node.children().forEach(child -> collect(child, vocabulary, options, tokens));
-    } else if (node.fields().containsKey(TEXT)) {
-      tokens.add(new Token(value(node, vocabulary, options), node.span()));
     }
   }
 
@@ -65,7 +68,8 @@ public final class DuplicateTokens {
   }
 
   /** The token kinds and annotation rules of one grammar that the options act on. */
-  private record Vocabulary(Set<String> literals, Set<String> identifiers, Set<String> annotations) {
+  private record Vocabulary(
+      Set<String> literals, Set<String> identifiers, Set<String> annotations) {
 
     static Vocabulary of(final AnalysisLanguage language) {
       return switch (language) {

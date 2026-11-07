@@ -1,4 +1,4 @@
-package dev.ward.analysis.domain.rule.duplicate;
+package dev.ward.analysis.domain.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 class DuplicateCodeOptionsTest {
+
+  private static final int CUSTOM_MIN_TOKENS = 12;
 
   @Test
   void readsEveryOptionFromTheBody() {
@@ -19,15 +21,16 @@ class DuplicateCodeOptionsTest {
             ignore-annotations = true
             """);
 
-    assertThat(options)
-        .isEqualTo(new DuplicateCodeOptions(12, true, true, true));
+    assertThat(options).isEqualTo(new DuplicateCodeOptions(CUSTOM_MIN_TOKENS, true, true, true));
   }
 
   @Test
   void keepsTheDefaultsForKeysTheBodyLeavesOut() {
     final DuplicateCodeOptions options = DuplicateCodeOptions.parse("check = \"duplicate-code\"");
 
-    assertThat(options).isEqualTo(new DuplicateCodeOptions(100, false, false, false));
+    assertThat(options)
+        .isEqualTo(
+            new DuplicateCodeOptions(DuplicateCodeOptions.DEFAULT_MIN_TOKENS, false, false, false));
   }
 
   @Test

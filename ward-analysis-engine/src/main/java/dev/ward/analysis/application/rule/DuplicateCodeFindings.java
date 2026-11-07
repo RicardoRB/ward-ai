@@ -5,11 +5,11 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.CloneDetector;
+import dev.ward.analysis.domain.rule.DuplicateCodeOptions;
+import dev.ward.analysis.domain.rule.DuplicateCodeRule;
+import dev.ward.analysis.domain.rule.DuplicateTokens;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.duplicate.CloneDetector;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateCodeOptions;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateCodeRule;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateTokens;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +51,10 @@ public final class DuplicateCodeFindings {
       final List<FrontendSupport> frontends) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     final FrontendSupport frontend =
-        frontends.stream().filter(support -> support.language() == language).findFirst().orElse(null);
+        frontends.stream()
+            .filter(support -> support.language() == language)
+            .findFirst()
+            .orElse(null);
     if (frontend == null) {
       return List.of();
     }

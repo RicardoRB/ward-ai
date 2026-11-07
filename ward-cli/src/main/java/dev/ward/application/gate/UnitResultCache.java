@@ -12,10 +12,10 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
+import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateCodeRule;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
@@ -95,8 +95,8 @@ final class UnitResultCache {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
-    final List<AnalysisFinding> wholeRunFindings = new ArrayList<>(
-        ArchitectureGraphRules.findings(rules, snapshot.graph()));
+    final List<AnalysisFinding> wholeRunFindings =
+        new ArrayList<>(ArchitectureGraphRules.findings(rules, snapshot.graph()));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
   }

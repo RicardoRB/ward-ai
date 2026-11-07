@@ -1,7 +1,7 @@
-package dev.ward.analysis.domain.rule.duplicate;
+package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.rule.duplicate.DuplicateTokens.Token;
+import dev.ward.analysis.domain.rule.DuplicateTokens.Token;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -10,26 +10,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Finds the token sequences that repeat across files, as PMD CPD and jscpd do. Windows of the
  * minimum length are hashed with a rolling polynomial hash and grouped by exact comparison, and
  * each group is reported once, at the place where its copies first differ before them, extended to
- * the longest run that all copies share. Copies that overlap inside one file are kept once.
+ * the longest run that all copies share. A run whose copies would overlap in one file is shortened
+ * to the distance between them.
  */
 public final class CloneDetector {
+
+  private static final long BASE = 1_000_003L;
+  private static final int MIN_LENGTH = 1;
+  private static final int MIN_COPIES = 2;
+  private static final Comparator<Clone> ORDER =
+      Comparator.comparing((Clone clone) -> clone.copies().get(0).path())
+          .thenComparingInt(clone -> clone.copies().get(0).span().startLine())
+          .thenComparingInt(clone -> clone.copies().get(0).span().startColumn());
 
   /** One place where a repeated sequence occurs: its file and the span of the whole copy. */
   public record Copy(String path, Span span) {}
 
   /** A token sequence of {@code length} tokens that occurs at two or more places. */
-  public record Clone(int length, List<Copy> copies) {}
+  public record Clone(int length, List<Copy> copies) {
 
-  private static final long BASE = 1_000_003L;
-  private static final Comparator<Clone> ORDER =
-      Comparator.comparing((Clone clone) -> clone.copies().get(0).path())
-          .thenComparingInt(clone -> clone.copies().get(0).span().startLine())
-          .thenComparingInt(clone -> clone.copies().get(0).span().startColumn());
+    /** Copies the list of copies. */
+    public Clone {
+      copies = List.copyOf(copies);
+    }
+  }
 
   private CloneDetector() {}
 
@@ -39,21 +50,30 @@ public final class CloneDetector {
    *
    * @throws IllegalArgumentException if {@code minTokens} is below one
    */
-  public static List<Clone> detect(final SortedMap<String, List<Token>> files, final int minTokens) {
-    if (minTokens < 1) {
+  public static List<Clone> detect(
+      final SortedMap<String, List<Token>> files, final int minTokens) {
+    if (minTokens < MIN_LENGTH) {
       throw new IllegalArgumentException("minTokens must be at least 1");
     }
     final Corpus corpus = new Corpus(files);
     final List<Clone> clones = new ArrayList<>();
     for (final List<Integer> bucket : corpus.windowsByHash(minTokens).values()) {
       for (final List<Integer> members : corpus.sequenceClasses(bucket, minTokens)) {
-        if (members.size() >= 2) {
+        if (members.size() >= MIN_COPIES) {
           corpus.clone(members, minTokens).ifPresent(clones::add);
         }
       }
     }
     clones.sort(ORDER);
     return List.copyOf(clones);
+  }
+
+  private static long power(final int length) {
+    long power = 1;
+    for (int step = 0; step < length; step++) {
+      power *= BASE;
+    }
+    return power;
   }
 
   /** The tokens of every file in one array, with the file and end of each position. */
@@ -94,15 +114,15 @@ public final class CloneDetector {
 
     /** The starts of every window of {@code length} tokens inside one file, grouped by hash. */
     Map<Long, List<Integer>> windowsByHash(final int length) {
-      final Map<Long, List<Integer>> buckets = new LinkedHashMap<>();
       final long power = power(length);
-      for (int start = 0; start < ids.length; start++) {
-        if (fits(start, length)) {
-          final long hash = prefix[start + length] - prefix[start] * power;
-          buckets.computeIfAbsent(hash, key -> new ArrayList<>()).add(start);
-        }
-      }
-      return buckets;
+      return IntStream.range(0, ids.length)
+          .filter(start -> fits(start, length))
+          .boxed()
+          .collect(
+              Collectors.groupingBy(
+                  start -> prefix[start + length] - prefix[start] * power,
+                  LinkedHashMap::new,
+                  Collectors.toList()));
     }
 
     /** Splits the starts of one hash bucket into groups whose windows are equal token for token. */
@@ -114,10 +134,14 @@ public final class CloneDetector {
         if (same.isPresent()) {
           same.get().add(start);
         } else {
-          classes.add(new ArrayList<>(List.of(start)));
+          classes.add(startingWith(start));
         }
       }
       return classes;
+    }
+
+    private static List<Integer> startingWith(final int start) {
+      return new ArrayList<>(List.of(start));
     }
 
     /**
@@ -132,27 +156,16 @@ public final class CloneDetector {
       if (extended < length) {
         return Optional.empty();
       }
-      final List<Copy> copies = new ArrayList<>();
-      for (final int member : members) {
-        copies.add(new Copy(paths.get(fileOf[member]), span(member, extended)));
-      }
-      return Optional.of(new Clone(extended, copies));
-    }
-
-    /**
-     * Shortens {@code extended} to the distance between neighbouring copies in one file, so that
-     * no two copies of the clone overlap; a run that overlaps itself is a shorter clone, if any.
-     */
-    private int capToNonOverlapping(final List<Integer> members, final int extended) {
-      int capped = extended;
-      for (int index = 1; index < members.size(); index++) {
-        final int before = members.get(index - 1);
-        final int after = members.get(index);
-        if (fileOf[before] == fileOf[after]) {
-          capped = Math.min(capped, after - before);
-        }
-      }
-      return capped;
+      return Optional.of(
+          new Clone(
+              extended,
+              members.stream()
+                  .map(
+                      member ->
+                          new Copy(
+                              paths.get(fileOf[member]),
+                              copySpan(spans[member], spans[member + extended - 1])))
+                  .toList()));
     }
 
     /** Whether every member has a token before it in its file, and all those tokens are equal. */
@@ -196,6 +209,22 @@ public final class CloneDetector {
       return true;
     }
 
+    /**
+     * Shortens {@code extended} to the distance between neighbouring copies in one file, so that no
+     * two copies of the clone overlap; a run that overlaps itself is a shorter clone, if any.
+     */
+    private int capToNonOverlapping(final List<Integer> members, final int extended) {
+      int capped = extended;
+      for (int index = 1; index < members.size(); index++) {
+        final int before = members.get(index - 1);
+        final int after = members.get(index);
+        if (fileOf[before] == fileOf[after]) {
+          capped = Math.min(capped, after - before);
+        }
+      }
+      return capped;
+    }
+
     private boolean sameWindow(final int left, final int right, final int length) {
       for (int offset = 0; offset < length; offset++) {
         if (ids[left + offset] != ids[right + offset]) {
@@ -209,25 +238,16 @@ public final class CloneDetector {
     private boolean fits(final int start, final int length) {
       return start + length <= fileEnd[start];
     }
+  }
 
-    private Span span(final int start, final int length) {
-      final Span first = spans[start];
-      final Span last = spans[start + length - 1];
-      return new Span(
-          first.startLine(),
-          first.startColumn(),
-          last.endLine(),
-          last.endColumn(),
-          first.startOffset(),
-          last.endOffset());
-    }
-
-    private static long power(final int length) {
-      long power = 1;
-      for (int step = 0; step < length; step++) {
-        power *= BASE;
-      }
-      return power;
-    }
+  /** The span from the start of {@code first} to the end of {@code last}. */
+  private static Span copySpan(final Span first, final Span last) {
+    return new Span(
+        first.startLine(),
+        first.startColumn(),
+        last.endLine(),
+        last.endColumn(),
+        first.startOffset(),
+        last.endOffset());
   }
 }

@@ -1,4 +1,4 @@
-package dev.ward.analysis.domain.rule.duplicate;
+package dev.ward.analysis.domain.rule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +21,8 @@ public record DuplicateCodeOptions(
   /** The copy length that PMD CPD and jscpd default to. */
   public static final int DEFAULT_MIN_TOKENS = 100;
 
+  private static final int MIN_LENGTH = 1;
+
   private static final Pattern LINE =
       Pattern.compile("^\\s*([a-z-]+)\\s*=\\s*(\\S+)\\s*$", Pattern.MULTILINE);
   private static final String MIN_TOKENS = "min-tokens";
@@ -34,7 +36,7 @@ public record DuplicateCodeOptions(
    * @throws IllegalArgumentException if the minimum is below one
    */
   public DuplicateCodeOptions {
-    if (minTokens < 1) {
+    if (minTokens < MIN_LENGTH) {
       throw new IllegalArgumentException("min-tokens must be at least 1");
     }
   }
@@ -59,7 +61,8 @@ public record DuplicateCodeOptions(
         flag(values, IGNORE_ANNOTATIONS));
   }
 
-  private static int number(final Map<String, String> values, final String key, final int fallback) {
+  private static int number(
+      final Map<String, String> values, final String key, final int fallback) {
     final String text = values.get(key);
     return text == null ? fallback : Integer.parseInt(text);
   }
