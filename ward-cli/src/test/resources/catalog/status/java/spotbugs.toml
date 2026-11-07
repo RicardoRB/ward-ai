@@ -260,8 +260,6 @@ nm-class-naming-convention = "implemented"
 nm-class-not-exception = "implemented"
 nm-confusing = { status = "planned", issue = "#316" }
 nm-field-naming-convention = { status = "planned", issue = "#316" }
-nm-future-keyword-used-as-identifier = { status = "planned", issue = "#316" }
-nm-future-keyword-used-as-member-identifier = { status = "planned", issue = "#316" }
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
 nm-method-constructor-confusion = "implemented"
@@ -467,11 +465,6 @@ ur-uninit-read = "implemented"
 ur-uninit-read-called-from-super-constructor = "implemented"
 urf-unread-field = "implemented"
 urf-unread-public-or-protected-field = { status = "planned", issue = "#316" }
-us-useless-suppression-on-class = { status = "planned", issue = "#316" }
-us-useless-suppression-on-field = { status = "planned", issue = "#316" }
-us-useless-suppression-on-method = { status = "planned", issue = "#316" }
-us-useless-suppression-on-method-parameter = { status = "planned", issue = "#316" }
-us-useless-suppression-on-package = { status = "planned", issue = "#316" }
 usc-potential-security-check-based-on-untrusted-source = { status = "planned", issue = "#316" }
 usm-useless-abstract-method = { status = "planned", issue = "#316" }
 usm-useless-subclass-method = { status = "planned", issue = "#316" }

@@ -1380,18 +1380,6 @@ category = "bad-practice"
 spotbugs = ["NM_FIELD_NAMING_CONVENTION"]
 
 [[rule]]
-name = "nm-future-keyword-used-as-identifier"
-presets = ["standard", "strict"]
-category = "bad-practice"
-spotbugs = ["NM_FUTURE_KEYWORD_USED_AS_IDENTIFIER"]
-
-[[rule]]
-name = "nm-future-keyword-used-as-member-identifier"
-presets = ["standard", "strict"]
-category = "bad-practice"
-spotbugs = ["NM_FUTURE_KEYWORD_USED_AS_MEMBER_IDENTIFIER"]
-
-[[rule]]
 name = "nm-lcase-hashcode"
 category = "correctness"
 spotbugs = ["NM_LCASE_HASHCODE"]
@@ -2511,36 +2499,6 @@ name = "usm-useless-subclass-method"
 presets = ["strict"]
 category = "style"
 spotbugs = ["USM_USELESS_SUBCLASS_METHOD"]
-
-[[rule]]
-name = "us-useless-suppression-on-class"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["US_USELESS_SUPPRESSION_ON_CLASS"]
-
-[[rule]]
-name = "us-useless-suppression-on-field"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["US_USELESS_SUPPRESSION_ON_FIELD"]
-
-[[rule]]
-name = "us-useless-suppression-on-method"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["US_USELESS_SUPPRESSION_ON_METHOD"]
-
-[[rule]]
-name = "us-useless-suppression-on-method-parameter"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["US_USELESS_SUPPRESSION_ON_METHOD_PARAMETER"]
-
-[[rule]]
-name = "us-useless-suppression-on-package"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["US_USELESS_SUPPRESSION_ON_PACKAGE"]
 
 [[rule]]
 name = "uuf-unused-field"
