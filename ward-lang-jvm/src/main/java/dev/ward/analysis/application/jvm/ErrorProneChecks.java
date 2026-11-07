@@ -4,6 +4,7 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.AnnotationStructureCheck;
 import dev.ward.analysis.domain.rule.check.AssignmentToNonFinalStaticCheck;
 import dev.ward.analysis.domain.rule.check.CallArgumentsCheck;
 import dev.ward.analysis.domain.rule.check.CompactConstructorAccessorCheck;
@@ -15,16 +16,16 @@ import dev.ward.analysis.domain.rule.check.MemberNamedAfterClassCheck;
 import dev.ward.analysis.domain.rule.check.ReturnEmptyCollectionCheck;
 import dev.ward.analysis.domain.rule.check.SingleMethodSingletonCheck;
 import dev.ward.analysis.domain.rule.check.StaticEjbFieldCheck;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
-import dev.ward.analysis.domain.rule.check.AnnotationStructureCheck;
-import java.util.List;
 
 /** Builds the class-level checks of the PMD error-prone rules that read the members of a class. */
 final class ErrorProneChecks {
 
   private static final String MESSAGE = "message";
+  private static final String MEMBERS = "members";
   private static final String MEMBER = "member";
 
   private ErrorProneChecks() {}
