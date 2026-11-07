@@ -22,6 +22,9 @@ class RuleCatalogContractTest {
   private static final int LAST_STYLE_ISSUE = 301;
   private static final int FIRST_TOOL_ISSUE = 308;
   private static final int LAST_TOOL_ISSUE = 341;
+  // Per-language issues split from the multi-language ones when the roadmaps were split (2026-11-07).
+  private static final int FIRST_SPLIT_ISSUE = 446;
+  private static final int LAST_SPLIT_ISSUE = 453;
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
@@ -139,6 +142,7 @@ class RuleCatalogContractTest {
   private static boolean roadmapIssue(final String issue) {
     final int number = Integer.parseInt(issue.substring(1));
     return number >= FIRST_STYLE_ISSUE && number <= LAST_STYLE_ISSUE
-        || number >= FIRST_TOOL_ISSUE && number <= LAST_TOOL_ISSUE;
+        || number >= FIRST_TOOL_ISSUE && number <= LAST_TOOL_ISSUE
+        || number >= FIRST_SPLIT_ISSUE && number <= LAST_SPLIT_ISSUE;
   }
 }
