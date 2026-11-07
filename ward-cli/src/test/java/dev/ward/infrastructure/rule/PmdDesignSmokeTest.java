@@ -18,11 +18,11 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 /**
- * Runs a real PMD command-line tool with each PMD design rule that Ward implements over its
- * fixture directory, and compares the lines PMD reports for {@code violating.java} with the lines
- * in the fixture's {@code expected.txt}. Skipped unless {@code -Dward.pmd.binary} names the {@code
- * pmd} executable of the PMD version the repository pins. Every difference is listed in the failure
- * and belongs in the pull request with its reason.
+ * Runs a real PMD command-line tool with each PMD design rule that Ward implements over its fixture
+ * directory, and compares the lines PMD reports for {@code violating.java} with the lines in the
+ * fixture's {@code expected.txt}. Skipped unless {@code -Dward.pmd.binary} names the {@code pmd}
+ * executable of the PMD version the repository pins. Every difference is listed in the failure and
+ * belongs in the pull request with its reason.
  */
 class PmdDesignSmokeTest {
 
@@ -39,10 +39,13 @@ class PmdDesignSmokeTest {
       Map.ofEntries(
           Map.entry("abstract-class-without-any-method", "AbstractClassWithoutAnyMethod"),
           Map.entry("avoid-rethrowing-exception", "AvoidRethrowingException"),
-          Map.entry("avoid-throwing-new-instance-of-same-exception", "AvoidThrowingNewInstanceOfSameException"),
+          Map.entry(
+              "avoid-throwing-new-instance-of-same-exception",
+              "AvoidThrowingNewInstanceOfSameException"),
           Map.entry("avoid-throwing-null-pointer-exception", "AvoidThrowingNullPointerException"),
           Map.entry("collapsible-if-statements", "CollapsibleIfStatements"),
-          Map.entry("avoid-unchecked-exceptions-in-signatures", "AvoidUncheckedExceptionsInSignatures"),
+          Map.entry(
+              "avoid-unchecked-exceptions-in-signatures", "AvoidUncheckedExceptionsInSignatures"),
           Map.entry("do-not-extend-java-lang-error", "DoNotExtendJavaLangError"),
           Map.entry("excessive-imports", "ExcessiveImports"),
           Map.entry("excessive-parameter-list", "ExcessiveParameterList"),
