@@ -7,9 +7,14 @@ import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.BitMaskComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
+import dev.ward.analysis.domain.rule.check.EqualsHashCodeCheck;
+import dev.ward.analysis.domain.rule.check.FallThroughCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
+import dev.ward.analysis.domain.rule.check.IllegalCatchCheck;
+import dev.ward.analysis.domain.rule.check.IllegalThrowsCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
+import dev.ward.analysis.domain.rule.check.MissingSwitchDefaultCheck;
 import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TypeNameMismatchCheck;
@@ -87,8 +92,31 @@ final class ReviewChecks {
       case "array-is-stored-directly" ->
           new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE));
       case "type-name-mismatch" -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE));
+      default -> codingCheck(name, toml);
+    };
+  }
+
+  /** The checks over switch and catch structure and over equality methods. */
+  private static RuleCheck codingCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "fall-through" ->
+          new FallThroughCheck(toml.getBoolean("check-last-group", () -> false), message(toml));
+      case "missing-switch-default" -> new MissingSwitchDefaultCheck(message(toml));
+      case "illegal-catch" ->
+          new IllegalCatchCheck(TomlValues.strings(toml, "illegal-classes"), message(toml));
+      case "illegal-throws" ->
+          new IllegalThrowsCheck(
+              TomlValues.strings(toml, "illegal-classes"),
+              TomlValues.strings(toml, "ignored-method-names"),
+              toml.getBoolean("ignore-overridden-methods", () -> true),
+              message(toml));
+      case "equals-hash-code" -> new EqualsHashCodeCheck(message(toml));
       default -> reviewCheck(name, toml);
     };
+  }
+
+  private static String message(final TomlParseResult toml) {
+    return TomlValues.required(toml, MESSAGE);
   }
 
   /** The checks over unused names, loops and suppressions; other names go to the metrics. */

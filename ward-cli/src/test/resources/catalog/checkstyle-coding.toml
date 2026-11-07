@@ -20,10 +20,9 @@ checkstyle = ["AvoidDoubleBraceInitialization"]
 
 [[rule]]
 name = "avoid-inline-conditionals"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/avoid-inline-conditionals" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["AvoidInlineConditionals"]
 eslint = ["no-ternary"]
 
@@ -76,10 +75,9 @@ eslint = ["default-case-last"]
 
 [[rule]]
 name = "empty-statement"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/empty-statement" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["UnnecessarySemicolon"]
 checkstyle = ["EmptyStatement"]
 pylint = ["unnecessary-semicolon"]
@@ -95,10 +93,9 @@ checkstyle = ["EqualsAvoidNull"]
 
 [[rule]]
 name = "equals-hash-code"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#288", kotlin = "#294" }
+status = { java = "implemented", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+ids = { java = "ward:java/equals-hash-code" }
+issues = { kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 detekt = ["EqualsWithHashCodeExist"]
 pmd = ["OverrideBothEqualsAndHashCodeOnComparable"]
@@ -126,10 +123,9 @@ checkstyle = ["ExpressionOverBlockLambda"]
 
 [[rule]]
 name = "fall-through"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/fall-through" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["ImplicitSwitchFallThrough"]
 checkstyle = ["FallThrough"]
 eslint = ["no-fallthrough"]
@@ -158,10 +154,9 @@ pylint = ["redefined-outer-name"]
 
 [[rule]]
 name = "illegal-catch"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/illegal-catch" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["TooGenericExceptionCaught"]
 pmd = ["AvoidCatchingGenericException"]
 checkstyle = ["IllegalCatch"]
@@ -187,10 +182,9 @@ checkstyle = ["IllegalSymbol"]
 
 [[rule]]
 name = "illegal-throws"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/illegal-throws" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 detekt = ["TooGenericExceptionThrown"]
 pmd = ["AvoidThrowingRawExceptionTypes"]
 checkstyle = ["IllegalThrows"]
@@ -268,10 +262,9 @@ checkstyle = ["MissingNullCaseInSwitch"]
 
 [[rule]]
 name = "missing-switch-default"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/missing-switch-default" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["SwitchStmtsShouldHaveDefault"]
 checkstyle = ["MissingSwitchDefault"]
 eslint = ["default-case"]
@@ -439,20 +432,18 @@ pylint = ["simplify-boolean-expression"]
 
 [[rule]]
 name = "simplify-boolean-return"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+ids = { java = "ward:java/simplify-boolean-return" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["SimplifyBooleanReturns"]
 checkstyle = ["SimplifyBooleanReturn"]
 ruff = ["SIM103"]
 
 [[rule]]
 name = "string-literal-equality"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#288", kotlin = "#294" }
+status = { java = "implemented", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+ids = { java = "ward:java/string-literal-equality" }
+issues = { kotlin = "#294" }
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["StringLiteralEquality"]
 spotbugs = ["ES_COMPARING_STRINGS_WITH_EQ"]
