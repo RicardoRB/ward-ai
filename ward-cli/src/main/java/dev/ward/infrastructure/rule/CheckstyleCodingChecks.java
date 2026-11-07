@@ -1,0 +1,82 @@
+package dev.ward.infrastructure.rule;
+
+import dev.ward.analysis.domain.rule.check.ArrayTrailingCommaCheck;
+import dev.ward.analysis.domain.rule.check.ConstructorsDeclarationGroupingCheck;
+import dev.ward.analysis.domain.rule.check.ExplicitInitializationCheck;
+import dev.ward.analysis.domain.rule.check.MagicNumberCheck;
+import dev.ward.analysis.domain.rule.check.NoEnumTrailingCommaCheck;
+import dev.ward.analysis.domain.rule.check.OneStatementPerLineCheck;
+import dev.ward.analysis.domain.rule.check.OverloadMethodsDeclarationOrderCheck;
+import dev.ward.analysis.domain.rule.check.RuleCheck;
+import java.util.Optional;
+import java.util.Set;
+import org.tomlj.TomlParseResult;
+
+/**
+ * Builds the Java coding checks that a rule body names, with their parameters. Each parameter is a
+ * rule option, named after the Checkstyle property in kebab-case.
+ */
+final class CheckstyleCodingChecks {
+
+  private static final String MESSAGE = "message";
+  private static final String ORDER_BY_ARITY = "order-by-increasing-parameter-count";
+
+  private static final Set<String> CHECKS =
+      Set.of(
+          "one-statement-per-line",
+          "constructors-declaration-grouping",
+          "overload-methods-declaration-order",
+          "magic-number",
+          "explicit-initialization",
+          "array-trailing-comma",
+          "no-enum-trailing-comma");
+
+  private CheckstyleCodingChecks() {}
+
+  /** Returns whether {@code name} is one of the Java coding checks. */
+  static boolean isCodingCheck(final String name) {
+    return CHECKS.contains(name);
+  }
+
+  /**
+   * Builds the check named {@code name}.
+   *
+   * @throws dev.ward.analysis.domain.rule.RuleConfigurationException if a parameter is invalid
+   */
+  static RuleCheck build(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "one-statement-per-line" ->
+          new OneStatementPerLineCheck(
+              flag(toml, "treat-try-resources-as-statement", false), message(toml));
+      case "constructors-declaration-grouping" ->
+          new ConstructorsDeclarationGroupingCheck(
+              flag(toml, ORDER_BY_ARITY, false), message(toml));
+      case "array-trailing-comma" ->
+          new ArrayTrailingCommaCheck(
+              flag(toml, "always-demand-trailing-comma", false), message(toml));
+      case "no-enum-trailing-comma" -> new NoEnumTrailingCommaCheck(message(toml));
+      case "explicit-initialization" ->
+          new ExplicitInitializationCheck(
+              flag(toml, "only-object-references", false), message(toml));
+      case "magic-number" ->
+          new MagicNumberCheck(
+              TomlLists.optional(toml, "ignore-numbers"),
+              flag(toml, "ignore-field-declaration", false),
+              flag(toml, "ignore-annotation", false),
+              flag(toml, "ignore-hash-code-method", false),
+              message(toml));
+      default ->
+          new OverloadMethodsDeclarationOrderCheck(
+              flag(toml, ORDER_BY_ARITY, false), message(toml));
+    };
+  }
+
+  private static boolean flag(
+      final TomlParseResult toml, final String key, final boolean fallback) {
+    return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
+  }
+
+  private static String message(final TomlParseResult toml) {
+    return TomlValues.required(toml, MESSAGE);
+  }
+}

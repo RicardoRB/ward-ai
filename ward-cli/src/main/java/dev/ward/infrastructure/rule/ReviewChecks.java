@@ -87,7 +87,8 @@ final class ReviewChecks {
       case "array-is-stored-directly" ->
           new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE));
       case "type-name-mismatch" -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE));
-      default -> reviewCheck(name, toml);
+      default ->
+          CodingChecks.isCoding(name) ? CodingChecks.build(name, toml) : reviewCheck(name, toml);
     };
   }
 
