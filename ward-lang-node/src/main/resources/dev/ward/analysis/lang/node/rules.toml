@@ -1376,34 +1376,6 @@ message = "use the spread operator instead of .apply()"
 '''
 
 [[rules]]
-id = "ward:typescript/magic-number"
-language = "TYPESCRIPT"
-capability = "SYNTAX"
-severity = "ERROR"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "literal"
-kinds = ["numericLiteral"]
-ignore = ["0", "1", "2"]
-message = "'{value}' is a magic number"
-'''
-
-[[rules]]
-id = "ward:javascript/magic-number"
-language = "JAVASCRIPT"
-capability = "SYNTAX"
-severity = "ERROR"
-category = "coding"
-presets = ["standard", "strict"]
-body = '''
-check = "literal"
-kinds = ["numericLiteral"]
-ignore = ["0", "1", "2"]
-message = "'{value}' is a magic number"
-'''
-
-[[rules]]
 id = "ward:typescript/regexp-singleline"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
