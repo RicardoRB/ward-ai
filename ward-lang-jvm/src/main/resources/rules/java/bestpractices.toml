@@ -625,3 +625,31 @@ body = '''
 check = "unnecessary-warning-suppression"
 message = "suppression {value} is not allowed; fix the code instead"
 '''
+
+[[rules]]
+id = "ward:java/accessor-class-generation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.java-release = { type = "integer", min = 0 }
+body = '''
+check = "accessor-class-generation"
+java-release = 0
+message = "private constructor of '{value}' is called from outside its class; before Java 11 this needs an accessor class"
+'''
+
+[[rules]]
+id = "ward:java/accessor-method-generation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+options.java-release = { type = "integer", min = 0 }
+body = '''
+check = "accessor-method-generation"
+java-release = 0
+message = "private method '{value}' is called from outside its class; before Java 11 this needs an accessor method"
+'''

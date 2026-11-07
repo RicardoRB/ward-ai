@@ -61,7 +61,7 @@ public final class AnalysisGate implements QualityGate {
       final AnalysisPorts ports,
       final String javaClasspath,
       final List<String> focus) {
-    this(name, root -> RuleSet.of(rules), ports, javaClasspath, focus);
+    this(name, (root, javaRelease) -> RuleSet.of(rules), ports, javaClasspath, focus);
   }
 
   /**
@@ -88,7 +88,7 @@ public final class AnalysisGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project) {
-    final RuleSet set = setup.resolve(project.root());
+    final RuleSet set = setup.resolve(project.root(), JavaRelease.of(project));
     if (!set.problems().isEmpty()) {
       return AnalysisGateResults.configurationError(name, set.problems());
     }

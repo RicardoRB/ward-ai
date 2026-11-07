@@ -14,20 +14,12 @@ pmd = ["AbstractClassWithoutAnyMethod"]
 
 [[rule]]
 name = "accessor-class-generation"
-category = "bestpractices"
-# Not applicable (review): Java 11 nestmates removed the synthetic accessor classes this rule reports; no supported target emits them
-# Planned: flags private access by nested classes, which only matters below Java 11 targets; Ward has no target-level setting to gate it
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AccessorClassGeneration"]
 
 [[rule]]
 name = "accessor-method-generation"
-category = "bestpractices"
-# Not applicable (review): Java 11 nestmates removed the synthetic accessor methods this rule reports; no supported target emits them
-# Planned: flags private method access by nested classes, which only matters below Java 11 targets; Ward has no target-level setting to gate it
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AccessorMethodGeneration"]
 
 [[rule]]

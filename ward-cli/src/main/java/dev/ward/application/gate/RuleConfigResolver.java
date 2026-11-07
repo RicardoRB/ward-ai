@@ -26,25 +26,29 @@ final class RuleConfigResolver {
 
   private final RuleConfigFile file;
   private final List<RuleDefinition> catalog;
+  private final int javaRelease;
   private final RuleProblems problems;
   private final Map<String, List<Pattern>> excludes = new LinkedHashMap<>();
   private final Map<String, RuleDefinition> configured = new LinkedHashMap<>();
 
-  private RuleConfigResolver(final RuleConfigFile file, final List<RuleDefinition> catalog) {
+  private RuleConfigResolver(
+      final RuleConfigFile file, final List<RuleDefinition> catalog, final int javaRelease) {
     this.file = file;
     this.catalog = catalog;
+    this.javaRelease = javaRelease;
     this.problems = new RuleProblems(file.name(), file.problems());
   }
 
   /** Resolves {@code file} against {@code catalog}; the result has problems or rules, not both. */
-  static RuleSet resolve(final RuleConfigFile file, final List<RuleDefinition> catalog) {
-    return new RuleConfigResolver(file, catalog).run();
+  static RuleSet resolve(
+      final RuleConfigFile file, final List<RuleDefinition> catalog, final int javaRelease) {
+    return new RuleConfigResolver(file, catalog, javaRelease).run();
   }
 
   private RuleSet run() {
     final Map<String, RuleDefinition> selected =
         new RuleSelector(file.select(), catalog, problems).selected();
-    configured.putAll(selected);
+    selected.forEach((id, rule) -> configured.put(id, JavaRelease.withDefault(rule, javaRelease)));
     file.rules().forEach((id, table) -> tune(id, table, selected));
     if (problems.isEmpty()) {
       return new RuleSet(new ArrayList<>(configured.values()), excludes, List.of());
@@ -86,6 +90,9 @@ final class RuleConfigResolver {
       } else if (option(rule, where, key, value)) {
         options.put(key, value);
       }
+    }
+    if (rule.option(JavaRelease.OPTION).isPresent() && !options.containsKey(JavaRelease.OPTION)) {
+      options.put(JavaRelease.OPTION, Long.valueOf(javaRelease));
     }
     apply(rule, where, severity, options);
   }

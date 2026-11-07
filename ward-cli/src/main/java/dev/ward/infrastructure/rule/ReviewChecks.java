@@ -1,6 +1,8 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.check.AbstractClassWithoutAbstractMethodCheck;
+import dev.ward.analysis.domain.rule.check.AccessorClassGenerationCheck;
+import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
 import dev.ward.analysis.domain.rule.check.ArrayIsStoredDirectlyCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
@@ -30,6 +32,7 @@ final class ReviewChecks {
 
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
+  private static final String JAVA_RELEASE = "java-release";
 
   private ReviewChecks() {}
 
@@ -101,6 +104,19 @@ final class ReviewChecks {
           new ForLoopCanBeForeachCheck(TomlValues.required(toml, MESSAGE));
       case "unnecessary-warning-suppression" ->
           new UnnecessaryWarningSuppressionCheck(TomlValues.required(toml, MESSAGE));
+      default -> accessorCheck(name, toml);
+    };
+  }
+
+  /** The checks over private members that a release before 11 reaches through accessors. */
+  private static RuleCheck accessorCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "accessor-class-generation" ->
+          new AccessorClassGenerationCheck(
+              TomlValues.integer(toml, JAVA_RELEASE), TomlValues.required(toml, MESSAGE));
+      case "accessor-method-generation" ->
+          new AccessorMethodGenerationCheck(
+              TomlValues.integer(toml, JAVA_RELEASE), TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

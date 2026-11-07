@@ -11,8 +11,8 @@ description: Rules of the catalog file pmd and their counterparts.
 |---|---|---|---|---|---|---|---|---|
 | `abstract-class-without-abstract-method` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `AbstractClassWithoutAbstractMethod` |
 | `abstract-class-without-any-method` | design | [#309](https://github.com/RicardoRB/ward-ai/issues/309) | n/a | n/a | n/a | n/a | n/a | PMD `AbstractClassWithoutAnyMethod` |
-| `accessor-class-generation` | bestpractices | [#308](https://github.com/RicardoRB/ward-ai/issues/308) | n/a | n/a | n/a | n/a | n/a | PMD `AccessorClassGeneration` |
-| `accessor-method-generation` | bestpractices | [#308](https://github.com/RicardoRB/ward-ai/issues/308) | n/a | n/a | n/a | n/a | n/a | PMD `AccessorMethodGeneration` |
+| `accessor-class-generation` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `AccessorClassGeneration` |
+| `accessor-method-generation` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `AccessorMethodGeneration` |
 | `add-empty-string` | performance | [#312](https://github.com/RicardoRB/ward-ai/issues/312) | n/a | n/a | n/a | n/a | n/a | PMD `AddEmptyString` |
 | `append-character-with-char` | performance | [#312](https://github.com/RicardoRB/ward-ai/issues/312) | n/a | n/a | n/a | n/a | n/a | PMD `AppendCharacterWithChar` |
 | `array-is-stored-directly` | bestpractices | implemented | n/a | n/a | n/a | n/a | n/a | PMD `ArrayIsStoredDirectly` |
@@ -274,6 +274,8 @@ description: Rules of the catalog file pmd and their counterparts.
 | Rule | Category | Presets | Options | Counterparts |
 |---|---|---|---|---|
 | `ward:java/abstract-class-without-abstract-method` | bestpractices | standard, strict | none | PMD `AbstractClassWithoutAbstractMethod` |
+| `ward:java/accessor-class-generation` | bestpractices | standard, strict | `java-release` | PMD `AccessorClassGeneration` |
+| `ward:java/accessor-method-generation` | bestpractices | standard, strict | `java-release` | PMD `AccessorMethodGeneration` |
 | `ward:java/array-is-stored-directly` | bestpractices | standard, strict | none | PMD `ArrayIsStoredDirectly` |
 | `ward:java/assert-statement-in-test` | bestpractices | standard, strict | none | PMD `AssertStatementInTest` |
 | `ward:java/avoid-message-digest-field` | bestpractices | standard, strict | none | PMD `AvoidMessageDigestField` |
