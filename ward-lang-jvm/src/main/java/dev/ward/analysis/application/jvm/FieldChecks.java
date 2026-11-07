@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.FieldAccessCheck;
+import dev.ward.analysis.domain.rule.check.InheritedMemberCheck;
 import dev.ward.analysis.domain.rule.check.NonTerminatingLoopCheck;
 import dev.ward.analysis.domain.rule.check.SuperConstructorReadCheck;
 import java.util.Locale;
@@ -30,6 +31,15 @@ final class FieldChecks {
         entry(
             "super-constructor-read",
             toml -> new SuperConstructorReadCheck(TomlValues.required(toml, "message"))),
+        entry(
+            "inherited-member",
+            toml ->
+                new InheritedMemberCheck(
+                    InheritedMemberCheck.Mode.valueOf(
+                        TomlValues.required(toml, "mode")
+                            .replace('-', '_')
+                            .toUpperCase(Locale.ROOT)),
+                    TomlValues.required(toml, "message"))),
         entry(
             "non-terminating-loop",
             toml -> new NonTerminatingLoopCheck(TomlValues.required(toml, "message"))));

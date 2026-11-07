@@ -55,21 +55,37 @@ final class FactTypeMembers {
     for (final JvmMethod method : type.methods()) {
       FactMembers.target(type, method).ifPresent(methods::add);
     }
+    final List<JvmClass> above = ancestorClasses(type);
+    final List<CallTarget> inheritedMethods = new ArrayList<>();
+    final List<FieldRef> inheritedFields = new ArrayList<>();
+    for (final JvmClass owner : above) {
+      InheritedMemberReader.methods(owner).forEach(inheritedMethods::add);
+      InheritedMemberReader.fields(owner).forEach(inheritedFields::add);
+    }
     return new TypeMembers(
-        methods, fields(type), ancestors(type), FactRefs.displayAll(type.annotations()));
+        methods,
+        fields(type),
+        ancestors(type),
+        FactRefs.displayAll(type.annotations()),
+        inheritedMethods,
+        inheritedFields);
+  }
+
+  /** Returns the classes of the ancestors of {@code type} that the hierarchy holds. */
+  private List<JvmClass> ancestorClasses(final JvmClass type) {
+    return ancestorNames(type).stream().map(hierarchy::find).flatMap(Optional::stream).toList();
   }
 
   private static List<FieldRef> fields(final JvmClass type) {
-    final Map<String, JType> bounds = Map.of();
-    return type.fields().stream()
-        .map(
-            field ->
-                new FieldRef(
-                    field.name(),
-                    FactRefs.erased(field.type(), bounds).orElse(null),
-                    field.isStatic(),
-                    FactRefs.displayAll(field.annotations())))
-        .toList();
+    return type.fields().stream().map(FactTypeMembers::fieldRef).toList();
+  }
+
+  static FieldRef fieldRef(final JvmField field) {
+    return new FieldRef(
+        field.name(),
+        FactRefs.erased(field.type(), Map.of()).orElse(null),
+        field.isStatic(),
+        FactRefs.displayAll(field.annotations()));
   }
 
   /**
@@ -77,6 +93,10 @@ final class FactTypeMembers {
    * always among them.
    */
   private List<TypeRef> ancestors(final JvmClass type) {
+    return ancestorNames(type).stream().map(name -> TypeRef.of(FactRefs.display(name))).toList();
+  }
+
+  private Set<String> ancestorNames(final JvmClass type) {
     final Set<String> seen = new LinkedHashSet<>();
     final Deque<JType.ClassType> pending = new ArrayDeque<>(type.supertypes());
     final Set<String> visited = new HashSet<>();
@@ -90,6 +110,6 @@ final class FactTypeMembers {
     if (!Types.OBJECT.equals(type.name())) {
       seen.add(Types.OBJECT);
     }
-    return seen.stream().map(name -> TypeRef.of(FactRefs.display(name))).toList();
+    return seen;
   }
 }

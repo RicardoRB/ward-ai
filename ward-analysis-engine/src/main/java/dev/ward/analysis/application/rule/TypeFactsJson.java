@@ -45,7 +45,11 @@ final class TypeFactsJson {
         JsonValues.list(members.get("methods")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(members.get("fields")).stream().map(TypeFactsJson::field).toList(),
         JsonValues.list(members.get("ancestors")).stream().map(TypeFactsJson::typeRef).toList(),
-        JsonValues.strings(members.get("annotations")));
+        JsonValues.strings(members.get("annotations")),
+        JsonValues.list(members.get("inheritedMethods")).stream().map(TypeFactsJson::call).toList(),
+        JsonValues.list(members.get("inheritedFields")).stream()
+            .map(TypeFactsJson::field)
+            .toList());
   }
 
   private static FieldRef field(final Object value) {

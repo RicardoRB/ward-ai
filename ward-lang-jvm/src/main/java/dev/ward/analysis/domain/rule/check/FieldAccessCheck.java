@@ -24,7 +24,9 @@ public final class FieldAccessCheck implements UnitCheck {
     /** A member of a private, never written field is selected. */
     DEREFERENCED,
     /** A constructor reads a field before it writes it. */
-    UNINITIALIZED_READ
+    UNINITIALIZED_READ,
+    /** A local variable has the name of a field that is never written. */
+    LOCAL_MASKS
   }
 
   private static final String CLASS_DECLARATION = "classDeclaration";
@@ -52,6 +54,9 @@ public final class FieldAccessCheck implements UnitCheck {
         case UNWRITTEN -> unwritten(accesses, matches);
         case NULL_ONLY -> nullOnly(accesses, matches);
         case DEREFERENCED -> dereferenced(accesses, matches);
+        case LOCAL_MASKS ->
+            LocalMasks.of(visit.node(), accesses)
+                .forEach(node -> matches.add(report(node, LocalMasks.name(node))));
         default -> uninitializedReads(accesses, matches);
       }
     }
