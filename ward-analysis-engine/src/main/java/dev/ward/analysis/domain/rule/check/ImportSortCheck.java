@@ -29,7 +29,7 @@ public final class ImportSortCheck implements RuleCheck {
    * Returns the module name after the {@code import} keyword, past any attribute such as
    * {@code @testable}.
    */
-  private static String moduleName(final String text) {
+  static String moduleName(final String text) {
     return text.substring(text.indexOf(KEYWORD) + KEYWORD.length());
   }
 

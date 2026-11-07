@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.rule.check.ConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.HiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
+import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ public final class SwiftCheckProvider implements CheckProvider {
         toml -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE)),
         "import-sort",
         toml -> new ImportSortCheck(TomlValues.required(toml, MESSAGE)),
+        "unused-import",
+        toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE)),
         "variable-declaration-usage-distance",
         toml ->
             new VariableDistanceCheck(

@@ -36,3 +36,15 @@ body = '''
 check = "import-sort"
 message = "import '{value}' is out of order; sort the imports by name"
 '''
+
+[[rules]]
+id = "ward:swift/unused-imports"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-import"
+message = "import '{value}' is not referenced in this file"
+'''
