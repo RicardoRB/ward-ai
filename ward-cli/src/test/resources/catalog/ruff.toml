@@ -4584,14 +4584,12 @@ ruff = ["RUF201"]
 name = "assert"
 category = "flake8-bandit"
 status = { python = "planned" }
-issues = { python = "#333" }
+issues = { python = "#334" }
 ruff = ["S101"]
 
 [[rule]]
 name = "exec-builtin"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S102"]
 
 [[rule]]
@@ -4603,58 +4601,43 @@ ruff = ["S103"]
 
 [[rule]]
 name = "hardcoded-bind-all-interfaces"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S104"]
 
 [[rule]]
 name = "hardcoded-password-string"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S105"]
 
 [[rule]]
 name = "hardcoded-password-func-arg"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S106"]
 
 [[rule]]
 name = "hardcoded-password-default"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S107"]
 
 [[rule]]
 name = "hardcoded-temp-file"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S108"]
 
 [[rule]]
 name = "try-except-continue"
 category = "flake8-bandit"
 status = { python = "planned" }
-issues = { python = "#333" }
+issues = { python = "#334" }
 ruff = ["S112"]
-
 [[rule]]
 name = "request-without-timeout"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S113"]
 
 [[rule]]
 name = "flask-debug-true"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S201"]
 
 [[rule]]
@@ -4666,23 +4649,17 @@ ruff = ["S202"]
 
 [[rule]]
 name = "suspicious-pickle-usage"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S301"]
 
 [[rule]]
 name = "suspicious-marshal-usage"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S302"]
 
 [[rule]]
 name = "suspicious-insecure-hash-usage"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S303"]
 
 [[rule]]
@@ -4708,9 +4685,7 @@ ruff = ["S306"]
 
 [[rule]]
 name = "suspicious-eval-usage"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S307"]
 
 [[rule]]
@@ -4729,9 +4704,7 @@ ruff = ["S310"]
 
 [[rule]]
 name = "suspicious-non-cryptographic-random-usage"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S311"]
 
 [[rule]]
@@ -4806,9 +4779,7 @@ ruff = ["S323"]
 
 [[rule]]
 name = "hashlib-insecure-hash-function"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S324"]
 
 [[rule]]
@@ -4939,9 +4910,7 @@ ruff = ["S505"]
 
 [[rule]]
 name = "unsafe-yaml-load"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S506"]
 
 [[rule]]
@@ -4974,16 +4943,12 @@ ruff = ["S601"]
 
 [[rule]]
 name = "subprocess-popen-with-shell-equals-true"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S602"]
 
 [[rule]]
 name = "subprocess-without-shell-equals-true"
-category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
+status = { python = "implemented" }
 ruff = ["S603"]
 
 [[rule]]
