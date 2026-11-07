@@ -124,8 +124,6 @@ spotbugs = ["BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"]
 
 [[rule]]
 name = "bc-vacuous-instanceof"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_VACUOUS_INSTANCEOF"]
 
 [[rule]]
@@ -642,8 +640,6 @@ spotbugs = ["DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
 name = "dp-do-inside-do-privileged"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["DP_DO_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
@@ -705,14 +701,10 @@ spotbugs = ["EI_EXPOSE_BUF2"]
 
 [[rule]]
 name = "ei-expose-rep"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_REP"]
 
 [[rule]]
 name = "ei-expose-rep2"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_REP2"]
 
 [[rule]]
@@ -840,8 +832,6 @@ spotbugs = ["FB_UNEXPECTED_WARNING"]
 
 [[rule]]
 name = "fe-floating-point-equality"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["FE_FLOATING_POINT_EQUALITY"]
 
 [[rule]]
@@ -882,8 +872,6 @@ spotbugs = ["FI_NULLIFY_SUPER"]
 
 [[rule]]
 name = "fi-public-should-be-protected"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["FI_PUBLIC_SHOULD_BE_PROTECTED"]
 
 [[rule]]
@@ -1737,8 +1725,6 @@ spotbugs = ["NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "ns-dangerous-non-short-circuit"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NS_DANGEROUS_NON_SHORT_CIRCUIT"]
 
 [[rule]]
@@ -1843,8 +1829,6 @@ spotbugs = ["PS_PUBLIC_SEMAPHORES"]
 
 [[rule]]
 name = "pzla-prefer-zero-length-arrays"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["PZLA_PREFER_ZERO_LENGTH_ARRAYS"]
 
 [[rule]]
@@ -1902,8 +1886,6 @@ spotbugs = ["RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-of-nonnull-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"]
 
 [[rule]]
@@ -1943,14 +1925,10 @@ spotbugs = ["REC_CATCH_EXCEPTION"]
 
 [[rule]]
 name = "reflc-reflection-may-increase-accessibility-of-class"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["REFLC_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_CLASS"]
 
 [[rule]]
 name = "reflf-reflection-may-increase-accessibility-of-field"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD"]
 
 [[rule]]
@@ -2016,8 +1994,6 @@ spotbugs = ["RV_CHECK_FOR_POSITIVE_INDEXOF"]
 
 [[rule]]
 name = "rv-dont-just-null-check-readline"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_DONT_JUST_NULL_CHECK_READLINE"]
 
 [[rule]]
@@ -2057,8 +2033,6 @@ spotbugs = ["RV_RETURN_VALUE_IGNORED_INFERRED"]
 
 [[rule]]
 name = "rv-return-value-ignored-no-side-effect"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"]
 
 [[rule]]
@@ -2203,8 +2177,6 @@ spotbugs = ["SE_PREVENT_EXT_OBJ_OVERWRITE"]
 
 [[rule]]
 name = "se-private-read-resolve-not-inherited"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SE_PRIVATE_READ_RESOLVE_NOT_INHERITED"]
 
 [[rule]]
@@ -2226,8 +2198,6 @@ spotbugs = ["SE_TRANSIENT_FIELD_NOT_RESTORED"]
 
 [[rule]]
 name = "se-transient-field-of-nonserializable-class"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS"]
 
 [[rule]]
@@ -2763,6 +2733,4 @@ spotbugs = ["WS_WRITEOBJECT_SYNC"]
 
 [[rule]]
 name = "xfb-xml-factory-bypass"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["XFB_XML_FACTORY_BYPASS"]
