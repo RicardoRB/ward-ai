@@ -1,0 +1,71 @@
+# Ruff's refurb rules (FURB) for Python that a call's text decides: the call has a simpler standard form.
+
+[[rules]]
+id = "ward:python/bit-count"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^bin\\(.*\\)\\.count\\([\"']1[\"']\\)$"
+message = "bin(x).count('1') counts set bits; use int.bit_count()"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-from-float"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(Fraction|Decimal)\\.from_float\\(\\d+\\.\\d*\\)$"
+message = "from_float() of a float literal; pass the literal to the constructor instead"
+'''
+
+[[rules]]
+id = "ward:python/fromisoformat-replace-z"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "fromisoformat\\(.*\\.replace\\([\"']Z[\"'],[\"']\\+00:00[\"']\\)\\)$"
+message = "fromisoformat() accepts a trailing Z since Python 3.11; drop the replace()"
+'''
+
+[[rules]]
+id = "ward:python/sorted-min-max"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^sorted\\(.*\\)\\[(0|-1)\\]$"
+message = "sorted()[0] or sorted()[-1] sorts to find one item; use min() or max()"
+'''
+
+[[rules]]
+id = "ward:python/redundant-log-base"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(math\\.)?log\\(.+,(2|10)\\)$"
+message = "log with base 2 or 10; use math.log2() or math.log10()"
+'''
