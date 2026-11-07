@@ -1,0 +1,2 @@
+allow-public-immutable-fields = true
+immutable-class-canonical-names = ["Money"]
