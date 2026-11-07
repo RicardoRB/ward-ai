@@ -133,7 +133,8 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
-    if (rule.body().contains("check = \"unreachable-code\"")) {
+    if (rule.capability() == RuleCapability.CFG
+        || rule.body().contains("check = \"unreachable-code\"")) {
       return RuleCapability.CFG;
     }
     if (SCOPE_CHECKS.stream()
