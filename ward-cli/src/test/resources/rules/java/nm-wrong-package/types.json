@@ -1,0 +1,68 @@
+{
+  "1:1-4:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "handle",
+          "params": [
+            {
+              "name": "app.other.Event"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "2:15-2:19": {
+    "type": {
+      "name": "java.awt.Event"
+    }
+  },
+  "2:1-5:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "handle",
+          "params": [
+            {
+              "name": "app.other.Event"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "3:15-3:19": {
+    "type": {
+      "name": "app.other.Event"
+    }
+  }
+}

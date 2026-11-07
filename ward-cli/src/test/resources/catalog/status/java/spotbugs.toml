@@ -124,10 +124,10 @@ ec-array-and-nonarray = "implemented"
 ec-bad-array-compare = "implemented"
 ec-incompatible-array-compare = "implemented"
 ec-null-arg = "implemented"
-ec-unrelated-class-and-interface = { status = "planned", issue = "#314" }
-ec-unrelated-interfaces = { status = "planned", issue = "#314" }
+ec-unrelated-class-and-interface = "implemented"
+ec-unrelated-interfaces = "implemented"
 ec-unrelated-types = "implemented"
-ec-unrelated-types-using-pointer-equality = { status = "planned", issue = "#314" }
+ec-unrelated-types-using-pointer-equality = "implemented"
 ei-expose-buf = { status = "planned", issue = "#316" }
 ei-expose-buf2 = { status = "planned", issue = "#316" }
 ei-expose-rep = "implemented"
@@ -165,13 +165,13 @@ fl-floats-as-loop-counters = "implemented"
 fl-math-using-float-precision = { status = "planned", issue = "#314" }
 fs-bad-date-format-flag-combo = { status = "planned", issue = "#316" }
 gc-unchecked-type-in-generic-call = { status = "planned", issue = "#316" }
-gc-unrelated-types = { status = "planned", issue = "#314" }
+gc-unrelated-types = "implemented"
 he-equals-use-hashcode = { status = "planned", issue = "#316" }
 he-hashcode-no-equals = { status = "planned", issue = "#316" }
 he-hashcode-use-object-equals = { status = "planned", issue = "#316" }
 he-inherits-equals-use-hashcode = { status = "planned", issue = "#316" }
-he-signature-declares-hashing-of-unhashable-class = { status = "planned", issue = "#314" }
-he-use-of-unhashable-class = { status = "planned", issue = "#314" }
+he-signature-declares-hashing-of-unhashable-class = "implemented"
+he-use-of-unhashable-class = "implemented"
 hrs-request-parameter-to-cookie = "implemented"
 hrs-request-parameter-to-http-header = "implemented"
 hsc-huge-shared-string-constant = { status = "planned", issue = "#316" }
@@ -270,7 +270,7 @@ nm-same-simple-name-as-interface = "implemented"
 nm-same-simple-name-as-superclass = "implemented"
 nm-very-confusing = "implemented"
 nm-very-confusing-intentional = { status = "planned", issue = "#316" }
-nm-wrong-package = { status = "planned", issue = "#314" }
+nm-wrong-package = "implemented"
 nm-wrong-package-intentional = { status = "planned", issue = "#316" }
 nn-naked-notify = { status = "planned", issue = "#316" }
 no-notify-not-notifyall = "implemented"
@@ -319,7 +319,7 @@ odr-open-database-resource = { status = "planned", issue = "#316" }
 odr-open-database-resource-exception-path = { status = "planned", issue = "#316" }
 os-open-stream = { status = "planned", issue = "#316" }
 os-open-stream-exception-path = { status = "planned", issue = "#316" }
-overriding-methods-must-invoke-super = { status = "planned", issue = "#314" }
+overriding-methods-must-invoke-super = "implemented"
 pa-public-array-attribute = { status = "planned", issue = "#316" }
 pa-public-mutable-object-attribute = { status = "planned", issue = "#316" }
 pa-public-primitive-attribute = { status = "planned", issue = "#316" }
@@ -414,7 +414,7 @@ sing-singleton-has-nonprivate-constructor = "implemented"
 sing-singleton-implements-clone-method = "implemented"
 sing-singleton-implements-cloneable = "implemented"
 sing-singleton-implements-serializable = "implemented"
-sing-singleton-indirectly-implements-cloneable = { status = "planned", issue = "#314" }
+sing-singleton-indirectly-implements-cloneable = "implemented"
 sio-superfluous-instanceof = "implemented"
 skipped-class-too-big = { status = "planned", issue = "#316" }
 sp-spin-on-field = "implemented"
