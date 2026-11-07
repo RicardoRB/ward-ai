@@ -56,15 +56,15 @@ final class NodeImportScan {
   }
 
   private void importStatement(final SyntaxNode statement) {
-    final SyntaxNode block = child(statement, IMPORT_FROM_BLOCK);
-    final boolean typeOnly = hasChild(block, TYPE_ONLY);
+    final SyntaxNode block = NodeLeaves.child(statement, IMPORT_FROM_BLOCK);
+    final boolean typeOnly = NodeLeaves.hasChild(block, TYPE_ONLY);
     final SyntaxNode literal = moduleLiteral(block);
     if (literal == null) {
       sites.add(statement.span());
       return;
     }
-    final String specifier = NodeTokens.unquote(text(literal));
-    final Span site = site(statement, literal);
+    final String specifier = NodeTokens.unquote(NodeLeaves.text(literal));
+    final Span site = NodeLeaves.site(statement, literal);
     for (final SyntaxNode part : block.children()) {
       if (IMPORT_DEFAULT.equals(part.kind())) {
         addDefault(part, typeOnly, specifier, site);
@@ -89,8 +89,9 @@ final class NodeImportScan {
     final SyntaxNode literal =
         leaves.stream().filter(leaf -> STRING.equals(leaf.kind())).findFirst().orElseThrow();
     final SyntaxNode name = leaves.get(1);
-    final Span site = site(declaration, literal);
-    bindings.add(new Binding(name, STAR, NodeTokens.unquote(text(literal)), false, site));
+    final Span site = NodeLeaves.site(declaration, literal);
+    bindings.add(
+        new Binding(name, STAR, NodeTokens.unquote(NodeLeaves.text(literal)), false, site));
     sites.add(declaration.span());
   }
 
@@ -104,7 +105,7 @@ final class NodeImportScan {
   private void addNamespace(
       final SyntaxNode part, final boolean typeOnly, final String specifier, final Span site) {
     final List<SyntaxNode> leaves = NodeLeaves.of(part);
-    if (STAR.equals(text(leaves.get(0)))) {
+    if (STAR.equals(NodeLeaves.text(leaves.get(0)))) {
       bindings.add(new Binding(leaves.get(leaves.size() - 1), STAR, specifier, false, site));
     } else {
       bindings.add(new Binding(leaves.get(0), DEFAULT, specifier, typeOnly, site));
@@ -114,19 +115,23 @@ final class NodeImportScan {
   /** {@code name}, {@code name as local}, {@code type name} or {@code "string" as local}. */
   private void addNamed(
       final SyntaxNode item, final boolean typeOnly, final String specifier, final Span site) {
-    final List<SyntaxNode> exported = NodeLeaves.of(child(item, MODULE_EXPORT_NAME));
-    final SyntaxNode binding = child(item, IMPORTED_BINDING);
+    final List<SyntaxNode> exported = NodeLeaves.of(NodeLeaves.child(item, MODULE_EXPORT_NAME));
+    final SyntaxNode binding = NodeLeaves.child(item, IMPORTED_BINDING);
     final SyntaxNode local =
         binding != null ? NodeLeaves.of(binding).get(0) : exported.get(exported.size() - 1);
-    final boolean itemTypeOnly = typeOnly || hasChild(item, TYPE_ONLY);
+    final boolean itemTypeOnly = typeOnly || NodeLeaves.hasChild(item, TYPE_ONLY);
     bindings.add(
         new Binding(
-            local, NodeTokens.unquote(text(exported.get(0))), specifier, itemTypeOnly, site));
+            local,
+            NodeTokens.unquote(NodeLeaves.text(exported.get(0))),
+            specifier,
+            itemTypeOnly,
+            site));
   }
 
   /** The module string: a direct child of the block, or of its {@code from} clause. */
   private static SyntaxNode moduleLiteral(final SyntaxNode block) {
-    final SyntaxNode from = child(block, IMPORT_FROM);
+    final SyntaxNode from = NodeLeaves.child(block, IMPORT_FROM);
     if (from != null) {
       return NodeLeaves.of(from).stream()
           .filter(leaf -> STRING.equals(leaf.kind()))
@@ -137,33 +142,6 @@ final class NodeImportScan {
         .filter(leaf -> STRING.equals(leaf.kind()))
         .findFirst()
         .orElse(null);
-  }
-
-  private static SyntaxNode child(final SyntaxNode node, final String kind) {
-    return node.children().stream()
-        .filter(child -> kind.equals(child.kind()))
-        .findFirst()
-        .orElse(null);
-  }
-
-  private static boolean hasChild(final SyntaxNode node, final String kind) {
-    return child(node, kind) != null;
-  }
-
-  private static String text(final SyntaxNode leaf) {
-    return leaf.fields().getOrDefault("text", "");
-  }
-
-  private static Span site(final SyntaxNode from, final SyntaxNode to) {
-    final Span first = NodeLeaves.of(from).get(0).span();
-    final Span last = to.span();
-    return new Span(
-        first.startLine(),
-        first.startColumn(),
-        last.endLine(),
-        last.endColumn(),
-        first.startOffset(),
-        last.endOffset());
   }
 
   /**

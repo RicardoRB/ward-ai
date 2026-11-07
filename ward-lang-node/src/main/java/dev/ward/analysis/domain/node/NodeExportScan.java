@@ -90,12 +90,8 @@ final class NodeExportScan {
   private void addExportedName(final List<SyntaxNode> leaves) {
     final SyntaxNode last = leaves.get(leaves.size() - 1);
     if (IDENTIFIER.equals(last.kind()) || STRING.equals(last.kind())) {
-      exports.add(new Symbol(NodeTokens.unquote(text(last)), last.span()));
+      exports.add(new Symbol(NodeTokens.unquote(NodeLeaves.text(last)), last.span()));
     }
-  }
-
-  private static String text(final SyntaxNode leaf) {
-    return leaf.fields().getOrDefault("text", "");
   }
 
   /** Adds {@code export default} and the name of an exported declaration. */
