@@ -77,4 +77,25 @@ public interface CompiledRule {
       final SourceUnit unit) {
     return matches(root, dependencies, flow, unit);
   }
+
+  /** What this rule reads from the type facts; none unless it has capability {@code TYPES}. */
+  default FactNeed factNeed() {
+    return FactNeed.NONE;
+  }
+
+  /**
+   * Returns the matches of this rule in the tree rooted at {@code root} of the file {@code unit},
+   * given everything the other overloads take and the type facts of the unit. A rule that reads no
+   * type facts needs only the overload without them, which this default method delegates to.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final UnitViews views,
+      final SourceUnit unit) {
+    return matches(root, dependencies, views.flow(), views.scopes(), unit);
+  }
 }

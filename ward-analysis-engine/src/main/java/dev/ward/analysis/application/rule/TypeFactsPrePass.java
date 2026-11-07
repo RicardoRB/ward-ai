@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.ArrayDeque;
