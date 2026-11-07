@@ -40,8 +40,8 @@ per check:
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
 | `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |
-| `java-type-sidecar` | `OK` / `WARNING` | For Java and Kotlin projects: `javac` is on `PATH`, so the optional Java type sidecar can run. `WARNING` names the missing piece: type-aware Java rules are not run until a JDK with `javac` is on `PATH`. The warning is optional and does not change the exit status. See [Type sidecars](#type-sidecars). |
-| `typescript-type-sidecar` | `OK` / `WARNING` | For TypeScript and JavaScript projects, Bun included: `node` is on `PATH` and the project's `typescript` package resolves from the project root, so the optional TypeScript type sidecar can run. `WARNING` names what is missing: type-aware rules for the project are skipped until `node` is on `PATH` or `typescript` is installed. The warning is optional and does not change the exit status. See [Type sidecars](#type-sidecars). |
+| `java-type-inputs` | `OK` / `WARNING` | For Java and Kotlin projects: a JDK with `javac` is on `PATH`, the JDK image that native Java type resolution reads. `WARNING` is a hint and does not change the exit status. See [Native type resolution](#native-type-resolution). |
+| `typescript-type-inputs` | `OK` / `WARNING` | For TypeScript and JavaScript projects, Bun included: the project's `typescript` package resolves from the project root, so `node_modules` declares the declarations that native TypeScript type resolution reads. `WARNING` is a hint and does not change the exit status. See [Native type resolution](#native-type-resolution). |
 | `python` | `OK` / `ERROR` / `WARNING` | For Python projects: `python3` or `python` is on `PATH`. For uv a missing interpreter is a `WARNING`, because uv installs its own. No `maven` or `gradle` line is printed for Python projects. |
 | `uv` / `poetry` | `OK` / `ERROR` | For uv and Poetry projects: the manager's executable is on `PATH`. |
 | `venv` | `OK` / `WARNING` | For pip projects: the project root has a `.venv`. Otherwise the warning shows how to create one, `python3 -m venv .venv`. |
@@ -76,22 +76,19 @@ OpenSpec diagnosis is conditional and read-only:
 - Relative executable paths are resolved against the target root. Bare names use `PATH`, and
   absolute paths are used as supplied.
 
-## Type sidecars
+## Native type resolution
 
-Rules that need static types for Java or TypeScript run a type sidecar: a small helper process that
-uses the project's own `java` or `node` and `typescript`. The sidecar is optional. When
-`java-type-sidecar` or `typescript-type-sidecar` is a `WARNING`, the rules that need types for that
-language are reported as not run, naming the unavailable type sidecar, and the `ward` gate still
-passes or fails only on its other findings. Syntax and dependency analysis do not depend on
-sidecars.
+Rules that need static types (the `TYPES` capability) read their facts from a native resolver for
+their language, which runs inside Ward with no external process. Until a language's native resolver
+is available, its `TYPES` rules are reported as not run, naming the missing resolver, and the `ward`
+gate is `UNAVAILABLE`: such a rule is never reported as passed. Syntax, scope and dependency analysis
+do not depend on native resolvers.
 
-The Java sidecar resolves the JDK and the project's own sources; with the gate's `java-classpath` file
-it also resolves library types, and without it they are unknown (a hint, not a failure). A sidecar answers, in one request per source
-file, the type of an expression, the shape and supertypes of a type, the target of a call, the
-annotations and nullness of a declaration, the methods a method overrides, the checked exceptions it
-throws and compile-time constants. A fact it cannot resolve is unknown, and a rule never reports a
-finding that depends on one. Python and Swift have no type sidecar, so their type-aware rules are
-reported as not run.
+`ward doctor` hints at the inputs the resolvers read. For Java and Kotlin these are a JDK image and
+the gate's `java-classpath` file, which names the library jars; without that file, library types stay
+unknown. For TypeScript and JavaScript it is the `typescript` declarations in `node_modules`. A missing
+input is a hint, not a failure. A fact a resolver cannot resolve is unknown, and a rule never reports
+a finding that depends on one.
 
 ## Verbose diagnostics
 

@@ -48,8 +48,7 @@ top_level
 // GRAMMAR OF A STATEMENT
 
 statement
-    : expression ';'?
-    | declaration ';'?
+    : declaration ';'?
     | loop_statement ';'?
     | branch_statement ';'?
     | labeled_statement ';'?
@@ -57,6 +56,7 @@ statement
     | defer_statement ';'?
     | do_statement ';'?
     | compiler_control_statement ';'?
+    | expression ';'?
     // proper logic with semicolons is not supported yet. compiler_control_statement should be separated with a newline, but not with a semicolon
     ;
 
@@ -129,8 +129,8 @@ case_condition
     ;
 
 optional_binding_condition
-    : 'let' pattern initializer
-    | 'var' pattern initializer
+    : 'let' pattern initializer?
+    | 'var' pattern initializer?
     ;
 
 // GRAMMAR OF A REPEAT-WHILE STATEMENT
@@ -414,7 +414,9 @@ generic_parameter_list
 
 generic_parameter
     : type_name
+    | contextual_keyword type_name
     | type_name ':' type_identifier
+    | type_name ':' '~' type_identifier
     | type_name ':' protocol_composition_type
     ;
 
@@ -470,6 +472,7 @@ declaration
     | enum_declaration
     | struct_declaration
     | class_declaration
+    | macro_declaration
     | protocol_declaration
     | initializer_declaration
     | deinitializer_declaration
@@ -524,7 +527,7 @@ import_path_identifier
 // GRAMMAR OF A CONSTANT DECLARATION
 
 constant_declaration
-    : attributes? declaration_modifiers? 'let' pattern_initializer_list
+    : attributes? declaration_modifiers? 'async'? 'let' pattern_initializer_list
     ;
 
 pattern_initializer_list
@@ -634,7 +637,7 @@ function_name
     ;
 
 function_signature
-    : parameter_clause 'async'? 'throws'? function_result?
+    : parameter_clause 'async'? throws_clause? function_result?
     | parameter_clause 'async'? 'rethrows' function_result?
     ;
 
@@ -771,6 +774,16 @@ struct_member
     | compiler_control_statement
     ;
 
+// GRAMMAR OF A MACRO DECLARATION
+
+macro_declaration
+    : attributes? access_level_modifier? contextual_macro declaration_identifier generic_parameter_clause? function_signature? generic_where_clause? ('=' expression)?
+    ;
+
+contextual_macro
+    : {_input.LT(1).getText().equals("macro")}? Identifier
+    ;
+
 // GRAMMAR OF A CLASS DECLARATION
 
 class_declaration
@@ -836,7 +849,7 @@ protocol_method_declaration
 // GRAMMAR OF A PROTOCOL INITIALIZER DECLARATION
 
 protocol_initializer_declaration
-    : initializer_head generic_parameter_clause? parameter_clause 'throws'? generic_where_clause?
+    : initializer_head generic_parameter_clause? parameter_clause throws_clause? generic_where_clause?
     | initializer_head generic_parameter_clause? parameter_clause 'rethrows' generic_where_clause?
     ;
 
@@ -855,7 +868,7 @@ protocol_associated_type_declaration
 // GRAMMAR OF AN INITIALIZER DECLARATION
 
 initializer_declaration
-    : initializer_head generic_parameter_clause? parameter_clause 'throws'? generic_where_clause? initializer_body
+    : initializer_head generic_parameter_clause? parameter_clause throws_clause? generic_where_clause? initializer_body
     | initializer_head generic_parameter_clause? parameter_clause 'rethrows' generic_where_clause? initializer_body
     ;
 
@@ -971,8 +984,13 @@ precedence_group_name
     ;
 
 // GRAMMAR OF A DECLARATION MODIFIER
+
+nonisolated_modifier
+    : {_input.LT(1).getText().equals("nonisolated")}? Identifier ('(' 'unsafe' ')')?
+    ;
 declaration_modifier
-    : 'class'
+    : nonisolated_modifier
+    | 'class'
     | 'convenience'
     | 'dynamic'
     | 'final'
@@ -1007,6 +1025,7 @@ access_level_modifier
     | 'public' '(' 'set' ')'
     | 'open'
     | 'open' '(' 'set' ')'
+    | {_input.LT(1).getText().equals("package")}? Identifier
     ;
 
 mutation_modifier
@@ -1155,10 +1174,17 @@ expression_list
 // GRAMMAR OF A PREFIX EXPRESSION
 
 prefix_expression
-    : prefix_operator postfix_expression
+    : contextual_operator postfix_expression
+    | prefix_operator postfix_expression
     | 'await' postfix_expression
     | postfix_expression
     | in_out_expression
+    | 'repeat' prefix_expression
+    ;
+
+// `consume x` and `each t` are prefix operators only before an identifier
+contextual_operator
+    : {SwiftContextualKeywords.isContextualOperator(_input)}? Identifier
     ;
 
 in_out_expression
@@ -1216,6 +1242,9 @@ primary_expression
     | selector_expression
     | key_path_expression
     | key_path_literal
+    | '#' declaration_identifier generic_argument_clause?
+    | if_statement
+    | switch_statement
     ;
 
 // GRAMMAR OF A LITERAL EXPRESSION
@@ -1324,7 +1353,7 @@ closure_expression
     ;
 
 closure_signature
-    : capture_list? closure_parameter_clause 'throws'? function_result? 'in'
+    : capture_list? closure_parameter_clause throws_clause? function_result? 'in'
     | capture_list 'in'
     ;
 
@@ -1491,6 +1520,7 @@ dynamic_type_expression
 
 type_
     : contextual_keyword type_  # the_existential_type
+    | 'repeat' type_            # the_pack_expansion_type
     | array_type                # the_array_type
     | dictionary_type           # the_dictionary_type
     | function_type             # the_function_type
@@ -1515,7 +1545,7 @@ type_annotation
 
 // `any` and `some` are contextual keywords, so they stay identifiers everywhere else
 contextual_keyword
-    : {_input.LT(1).getText().equals("any") || _input.LT(1).getText().equals("some")}? Identifier
+    : {SwiftContextualKeywords.isContextualTypeKeyword(_input)}? Identifier
     ;
 
 type_identifier
@@ -1546,10 +1576,15 @@ element_name
     : label_identifier
     ;
 
+// GRAMMAR OF A THROWS CLAUSE
+throws_clause
+    : 'throws' ('(' type_ ')')?
+    ;
+
 // GRAMMAR OF A FUNCTION TYPE
 
 function_type
-    : attributes? function_type_argument_clause 'throws'? arrow_operator type_
+    : attributes? function_type_argument_clause throws_clause? arrow_operator type_
     | attributes? function_type_argument_clause 'rethrows' arrow_operator type_
     ;
 
@@ -1621,8 +1656,13 @@ type_inheritance_clause
     ;
 
 type_inheritance_list
-    : type_identifier
-    | type_identifier ',' type_inheritance_list
+    : type_inheritance_item
+    | type_inheritance_item ',' type_inheritance_list
+    ;
+
+type_inheritance_item
+    : attributes? type_identifier
+    | '~' type_identifier
     ;
 
 class_requirement

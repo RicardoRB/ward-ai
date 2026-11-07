@@ -21,12 +21,4 @@ public record RuleRunResult(
     executionErrors = List.copyOf(executionErrors);
     notRun = List.copyOf(notRun);
   }
-
-  /**
-   * The skipped rules that fail the gate. A rule that needs types is skipped without failing it,
-   * because type sidecars are optional.
-   */
-  public List<RuleNotRun> notRunFailingGate() {
-    return notRun.stream().filter(skipped -> skipped.missing() != RuleCapability.TYPES).toList();
-  }
 }

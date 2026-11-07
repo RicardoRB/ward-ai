@@ -5,6 +5,7 @@ import dev.ward.analysis.frontend.antlr.java.JavaLexer;
 import dev.ward.analysis.frontend.antlr.java.JavaParser;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Function;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
@@ -35,6 +36,16 @@ record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts 
    * @return the parse
    */
   static JavaFormatParse parse(final String source) {
+    final JavaFormatParse unit = parse(source, JavaParser::compilationunit);
+    if (unit.errorLine().isEmpty()) {
+      return unit;
+    }
+    final JavaFormatParse compact = parse(source, JavaParser::compactCompilationUnit);
+    return compact.errorLine().isEmpty() ? compact : unit;
+  }
+
+  private static JavaFormatParse parse(
+      final String source, final Function<JavaParser, ParserRuleContext> start) {
     final JavaLexer lexer = new JavaLexer(CharStreams.fromString(source));
     lexer.removeErrorListeners();
     lexer.startFindings(UNIT_PATH);
@@ -43,7 +54,7 @@ record JavaFormatParse(List<Token> tokens, OptionalInt errorLine, JavaTreeFacts 
     parser.removeErrorListeners();
     final FirstErrorLine errors = new FirstErrorLine();
     parser.setErrorHandler(errors);
-    final ParserRuleContext root = parser.compilationunit();
+    final ParserRuleContext root = start.apply(parser);
     stream.fill();
     final int line = Math.min(lexerErrorLine(lexer), errors.line());
     final OptionalInt errorLine = line == NO_LINE ? OptionalInt.empty() : OptionalInt.of(line);

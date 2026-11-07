@@ -93,4 +93,19 @@ final class SwiftTypeFactsTest {
               assertThat(shape.isAbstract()).isTrue();
             });
   }
+
+  @Test
+  void finalClassIsReportedAsFinal() {
+    final SwiftTypeProject.Project project =
+        SwiftTypeProject.project(Map.of("App/Token.swift", "final class Token {}\n"));
+
+    assertThat(
+            SwiftTypeProject.shapeOf(
+                project, "App/Token.swift", "class_declaration", "finalclassToken"))
+        .hasValueSatisfying(
+            shape -> {
+              assertThat(shape.kind()).isEqualTo(TypeShape.Kind.CLASS);
+              assertThat(shape.isFinal()).isTrue();
+            });
+  }
 }

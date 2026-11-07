@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Remembers the facts a sidecar answered for the life of a run, by the unit's content hash, the
+ * Remembers the facts a resolver answered for the life of a run, by the unit's content hash, the
  * hash of the classpath file, and the spans and kinds asked, so an unchanged unit is asked once.
  */
 public final class CachedTypeFacts implements TypeFacts {
@@ -28,7 +28,7 @@ public final class CachedTypeFacts implements TypeFacts {
   /**
    * Creates the cache over {@code delegate}.
    *
-   * @param delegate the sidecar's facts
+   * @param delegate the resolver's facts
    * @param classpathHash the hash of the classpath file's content, or empty text when there is none
    */
   public CachedTypeFacts(final TypeFacts delegate, final String classpathHash) {

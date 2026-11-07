@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -28,9 +27,8 @@ final class NativeSwiftTypesProviderTest {
       throws IOException {
     Files.writeString(root.resolve("Session.swift"), "class Session {}\nlet s = Session()\n");
 
-    final Optional<TypeFacts> facts = new NativeSwiftTypes(root).start();
+    final TypeFacts facts = new NativeSwiftTypes(root);
 
-    assertThat(facts).isPresent();
     final SourceUnit unit =
         new SourceUnit(
             "Session.swift",
@@ -39,7 +37,6 @@ final class NativeSwiftTypesProviderTest {
     final SyntaxNode binding = findBinding(new AntlrLanguageFrontend().parse(unit).tree());
     assertThat(
             facts
-                .orElseThrow()
                 .factsOf(unit, List.of(binding.span()), EnumSet.of(FactKind.TYPE))
                 .typeOf(binding.span())
                 .map(TypeRef::name))

@@ -24,7 +24,7 @@ public final class UnitTypeFacts {
     this.facts = Map.copyOf(Objects.requireNonNull(facts, "facts"));
   }
 
-  /** Returns the facts of a unit that no sidecar answered. */
+  /** Returns the facts of a unit that no resolver answered. */
   public static UnitTypeFacts none() {
     return NONE;
   }
