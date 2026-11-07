@@ -47,6 +47,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/architecture.toml",
           "rules/java/errorprone-part2.toml",
           "rules/java/errorprone.toml",
+          "rules/java/declarations.toml",
           "rules/java/pmd-errorprone.toml",
           "rules/duplication-jvm.toml",
           "rules/duplication-node.toml",
