@@ -236,8 +236,8 @@ me-enum-field-setter = "implemented"
 me-mutable-enum-field = "implemented"
 mf-class-masks-field = { status = "planned", issue = "#314" }
 mf-method-masks-field = { status = "planned", issue = "#314" }
-ml-sync-on-field-to-guard-changing-that-field = { status = "planned", issue = "#316" }
-ml-sync-on-updated-field = { status = "planned", issue = "#316" }
+ml-sync-on-field-to-guard-changing-that-field = "implemented"
+ml-sync-on-updated-field = "implemented"
 ms-cannot-be-final = { status = "planned", issue = "#316" }
 ms-expose-buf = { status = "planned", issue = "#316" }
 ms-expose-rep = { status = "planned", issue = "#316" }
@@ -253,8 +253,8 @@ ms-should-be-refactored-to-be-final = { status = "planned", issue = "#316" }
 msf-mutable-servlet-field = { status = "planned", issue = "#316" }
 mtia-suspect-servlet-instance-field = { status = "planned", issue = "#316" }
 mtia-suspect-struts-instance-field = { status = "planned", issue = "#316" }
-mwn-mismatched-notify = { status = "planned", issue = "#316" }
-mwn-mismatched-wait = { status = "planned", issue = "#316" }
+mwn-mismatched-notify = "implemented"
+mwn-mismatched-wait = "implemented"
 nm-bad-equal = "implemented"
 nm-class-naming-convention = "implemented"
 nm-class-not-exception = { status = "planned", issue = "#316" }
@@ -431,7 +431,7 @@ stcal-static-simple-date-format-instance = "implemented"
 sti-interrupted-on-currentthread = "implemented"
 sti-interrupted-on-unknownthread = "implemented"
 sw-swing-methods-invoked-in-swing-thread = { status = "planned", issue = "#316" }
-swl-sleep-with-lock-held = { status = "planned", issue = "#316" }
+swl-sleep-with-lock-held = "implemented"
 testing = { status = "planned", issue = "#316" }
 testing1 = { status = "planned", issue = "#316" }
 testing2 = { status = "planned", issue = "#316" }
@@ -465,7 +465,7 @@ unknown = { status = "planned", issue = "#316" }
 upm-uncalled-private-method = "implemented"
 ur-uninit-read = "implemented"
 ur-uninit-read-called-from-super-constructor = "implemented"
-urf-unread-field = { status = "planned", issue = "#316" }
+urf-unread-field = "implemented"
 urf-unread-public-or-protected-field = { status = "planned", issue = "#316" }
 us-useless-suppression-on-class = { status = "planned", issue = "#316" }
 us-useless-suppression-on-field = { status = "planned", issue = "#316" }
@@ -475,7 +475,7 @@ us-useless-suppression-on-package = { status = "planned", issue = "#316" }
 usc-potential-security-check-based-on-untrusted-source = { status = "planned", issue = "#316" }
 usm-useless-abstract-method = { status = "planned", issue = "#316" }
 usm-useless-subclass-method = { status = "planned", issue = "#316" }
-uuf-unused-field = { status = "planned", issue = "#316" }
+uuf-unused-field = "implemented"
 uuf-unused-public-or-protected-field = { status = "planned", issue = "#316" }
 uw-uncond-wait = { status = "planned", issue = "#316" }
 uwf-field-not-initialized-in-constructor = { status = "planned", issue = "#316" }
@@ -484,13 +484,13 @@ uwf-unwritten-field = "implemented"
 uwf-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
 va-format-string-uses-newline = "implemented"
 va-primitive-array-passed-to-object-vararg = "implemented"
-vo-volatile-increment = { status = "planned", issue = "#316" }
+vo-volatile-increment = "implemented"
 vo-volatile-reference-to-array = "implemented"
 vr-unresolvable-reference = { status = "planned", issue = "#314" }
 vsc-vulnerable-security-check-methods = { status = "planned", issue = "#316" }
 wa-await-not-in-loop = { status = "planned", issue = "#316" }
-wa-not-in-loop = { status = "planned", issue = "#316" }
+wa-not-in-loop = "implemented"
 wl-using-getclass-rather-than-class-literal = "implemented"
-wmi-wrong-map-iterator = { status = "planned", issue = "#316" }
+wmi-wrong-map-iterator = "implemented"
 ws-writeobject-sync = "implemented"
 xfb-xml-factory-bypass = "implemented"
