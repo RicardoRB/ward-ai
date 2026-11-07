@@ -2,7 +2,9 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
+import dev.ward.analysis.domain.rule.duplicate.DuplicateCodeRule;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -38,6 +40,10 @@ final class RuleFixtureRunner {
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
     final AnalysisLanguage language = rule.languages().iterator().next();
+    if (DuplicateCodeRule.isDuplicateRule(rule)) {
+      return DuplicateCodeFindings.findings(
+          List.of(rule), List.of(new SourceUnit(path, language, text)), frontends);
+    }
     final RuleRunResult result =
         new RuleEngine(BundledRuleMatchers.create())
             .run(List.of(new SourceUnit(path, language, text)), frontends, List.of(rule));
