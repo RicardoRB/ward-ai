@@ -29,6 +29,9 @@ jobs:
       native-runners: ${{ github.base_ref == 'main' && '["ubuntu-24.04", "macos-15", "windows-latest"]' || '["ubuntu-24.04"]' }}
       harness-compatibility: ${{ github.base_ref == 'main' }}
       compatibility-matrices: ${{ github.base_ref == 'main' }}
+      # Temporary while 0.6.0 is built: PRs to other branches skip the gates that do not check the code
+      # (mutation, dependency-check, trivy, license, enforcer); PRs to main run the full ci profile.
+      ward-profile: ${{ github.base_ref == 'main' && 'ci' || 'pr' }}
 
   changelog:
     runs-on: ubuntu-24.04
