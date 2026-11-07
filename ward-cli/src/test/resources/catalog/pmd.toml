@@ -120,7 +120,6 @@ pmd = ["AvoidFieldNameMatchingMethodName"]
 name = "avoid-field-name-matching-type-name"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the enclosing type name compared with each field name; no generic check compares a node with its enclosing declaration
 pmd = ["AvoidFieldNameMatchingTypeName"]
 
 [[rule]]
@@ -642,7 +641,6 @@ pmd = ["JUnitUseExpected"]
 name = "jumbled-incrementer"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the loop variables of nested for loops; no generic check relates a loop to its enclosing loop
 pmd = ["JumbledIncrementer"]
 
 [[rule]]
@@ -723,7 +721,6 @@ pmd = ["MethodReturnsInternalArray"]
 name = "method-with-same-name-as-enclosing-class"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the enclosing class name compared with each method name; no generic check compares a node with its enclosing declaration
 pmd = ["MethodWithSameNameAsEnclosingClass"]
 
 [[rule]]
@@ -878,7 +875,6 @@ pmd = ["ReplaceJavaUtilVector"]
 name = "return-empty-collection-rather-than-null"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the return type of a method tied to the return statements of its body; no generic check relates the two
 pmd = ["ReturnEmptyCollectionRatherThanNull"]
 
 [[rule]]
@@ -927,7 +923,6 @@ pmd = ["SimplifyConditional"]
 name = "single-method-singleton"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the other getInstance overloads of the class; no generic check compares sibling methods
 pmd = ["SingleMethodSingleton"]
 
 [[rule]]
@@ -942,7 +937,6 @@ pmd = ["SingularField"]
 name = "static-ejb-field-should-be-final"
 presets = ["standard", "strict"]
 category = "errorprone"
-# Planned: needs the EJB annotations of the enclosing class; no generic check looks at the enclosing class
 pmd = ["StaticEJBFieldShouldBeFinal"]
 
 [[rule]]
