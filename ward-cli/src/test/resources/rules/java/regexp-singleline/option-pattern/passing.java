@@ -1,0 +1,3 @@
+class Passing {
+  int x;   
+}
