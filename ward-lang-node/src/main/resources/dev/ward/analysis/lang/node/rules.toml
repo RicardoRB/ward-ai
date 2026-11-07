@@ -2251,3 +2251,212 @@ kinds = ["typeReference"]
 text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
 message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
 '''
+[[rules]]
+id = "ward:typescript/no-const-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:javascript/no-const-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:typescript/no-func-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-func-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-class-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:javascript/no-class-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:typescript/no-import-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-import-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-undef"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unreachable"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unreachable"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-undef"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/valid-typeof"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:javascript/valid-typeof"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-condition"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-condition"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
