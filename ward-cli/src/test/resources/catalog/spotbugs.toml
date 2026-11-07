@@ -875,18 +875,6 @@ category = "mt-correctness"
 spotbugs = ["ESync_EMPTY_SYNC"]
 
 [[rule]]
-name = "fb-missing-expected-warning"
-presets = ["standard", "strict"]
-category = "correctness"
-spotbugs = ["FB_MISSING_EXPECTED_WARNING"]
-
-[[rule]]
-name = "fb-unexpected-warning"
-presets = ["standard", "strict"]
-category = "correctness"
-spotbugs = ["FB_UNEXPECTED_WARNING"]
-
-[[rule]]
 name = "fe-floating-point-equality"
 presets = ["standard", "strict"]
 category = "style"
@@ -1809,7 +1797,6 @@ spotbugs = ["NP_TOSTRING_COULD_RETURN_NULL"]
 
 [[rule]]
 name = "np-unwritten-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_UNWRITTEN_FIELD"]
 
@@ -2719,7 +2706,6 @@ spotbugs = ["URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]
 name = "ur-uninit-read"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UR_UNINIT_READ"]
 
@@ -2797,13 +2783,11 @@ spotbugs = ["UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "uwf-null-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UWF_NULL_FIELD"]
 
 [[rule]]
 name = "uwf-unwritten-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UWF_UNWRITTEN_FIELD"]
 
