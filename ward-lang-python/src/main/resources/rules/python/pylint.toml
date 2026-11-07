@@ -117,3 +117,69 @@ kinds = ["STRING"]
 pattern = "\\u200B"
 message = "zero-width space in a string literal; use the escape instead"
 '''
+
+[[rules]]
+id = "ward:python/logging-too-many-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "logging-args"
+problem = "too-many"
+message = "too many arguments for the logging format string"
+'''
+
+[[rules]]
+id = "ward:python/logging-too-few-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "logging-args"
+problem = "too-few"
+message = "not enough arguments for the logging format string"
+'''
+
+[[rules]]
+id = "ward:python/bad-string-format-character"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "dot-format"
+problem = "bad-character"
+message = "unsupported format character in the format spec"
+'''
+
+[[rules]]
+id = "ward:python/bad-string-format-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "percent-format"
+problem = "type-mismatch"
+message = "format type does not match the argument type"
+'''
+
+[[rules]]
+id = "ward:python/bad-str-strip-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^[\"'][^\"']*[\"']\\.(?:strip|lstrip|rstrip)\\([\"'][^\"']*(.)[^\"']*\\1"
+message = "strip call contains duplicate characters"
+'''

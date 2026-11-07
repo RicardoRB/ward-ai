@@ -118,9 +118,11 @@ final class DeclarativeChecks {
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
       default ->
-          ImportChecks.isImportCheck(name)
-              ? ImportChecks.build(name, toml)
-              : ReviewChecks.build(name, toml);
+          ScopeAndFormatChecks.isCheck(name)
+              ? ScopeAndFormatChecks.build(name, toml)
+              : ImportChecks.isImportCheck(name)
+                  ? ImportChecks.build(name, toml)
+                  : ReviewChecks.build(name, toml);
     };
   }
 
