@@ -56,7 +56,7 @@ class DoctorToolchainTest {
 
     assertThat(findings)
         .extracting(Finding::name, Finding::status)
-        .contains(tuple("typescript-type-sidecar", Status.WARNING));
+        .contains(tuple("typescript-type-inputs", Status.WARNING));
   }
 
   @Test
@@ -67,7 +67,7 @@ class DoctorToolchainTest {
 
     assertThat(findings)
         .extracting(Finding::name, Finding::status)
-        .contains(tuple("java-type-sidecar", Status.WARNING));
+        .contains(tuple("java-type-inputs", Status.WARNING));
   }
 
   private static List<Finding> diagnose(final Project project, final String... executables) {

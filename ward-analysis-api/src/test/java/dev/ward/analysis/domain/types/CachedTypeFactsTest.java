@@ -17,7 +17,7 @@ class CachedTypeFactsTest {
   private static final List<Span> SPANS = List.of(AT);
 
   private final AtomicInteger requests = new AtomicInteger();
-  private final TypeFacts sidecar =
+  private final TypeFacts resolver =
       (unit, spans, kinds) -> {
         requests.incrementAndGet();
         return UnitTypeFacts.none();
@@ -25,7 +25,7 @@ class CachedTypeFactsTest {
 
   @Test
   void anUnchangedUnitIsAskedOnce() {
-    final TypeFacts cached = new CachedTypeFacts(sidecar, "classpath-1");
+    final TypeFacts cached = new CachedTypeFacts(resolver, "classpath-1");
     final SourceUnit unit = new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}");
 
     cached.factsOf(unit, SPANS, EnumSet.of(FactKind.TYPE));
@@ -36,7 +36,7 @@ class CachedTypeFactsTest {
 
   @Test
   void changedContentOrOtherKindsAreAskedAgain() {
-    final TypeFacts cached = new CachedTypeFacts(sidecar, "classpath-1");
+    final TypeFacts cached = new CachedTypeFacts(resolver, "classpath-1");
 
     cached.factsOf(
         new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}"),
@@ -58,8 +58,8 @@ class CachedTypeFactsTest {
   void aDifferentClasspathHashDoesNotShareAnswers() {
     final SourceUnit unit = new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}");
 
-    new CachedTypeFacts(sidecar, "one").factsOf(unit, SPANS, EnumSet.of(FactKind.TYPE));
-    new CachedTypeFacts(sidecar, "two").factsOf(unit, SPANS, EnumSet.of(FactKind.TYPE));
+    new CachedTypeFacts(resolver, "one").factsOf(unit, SPANS, EnumSet.of(FactKind.TYPE));
+    new CachedTypeFacts(resolver, "two").factsOf(unit, SPANS, EnumSet.of(FactKind.TYPE));
 
     assertThat(requests).hasValue(2);
   }

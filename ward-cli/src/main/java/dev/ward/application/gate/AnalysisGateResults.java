@@ -18,9 +18,6 @@ import java.util.stream.Stream;
 
 /** Turns a {@code ward} gate run into its gate result: status, summary, details and findings. */
 final class AnalysisGateResults {
-  private static final String TYPES_UNAVAILABLE =
-      "the type sidecar is unavailable (Java needs a JDK with javac;"
-          + " TypeScript needs node and the project's typescript package)";
   private static final String TOOL = "ward";
 
   private AnalysisGateResults() {}
@@ -44,7 +41,7 @@ final class AnalysisGateResults {
     final int warnings = countOf(findings, FindingSeverity.WARNING);
     return GateResult.builder(name, status(run, errors))
         .summary(summary(run, findings, rules))
-        .stderr(details(run))
+        .stderr(details(run, rules))
         .errors(errors)
         .warnings(warnings)
         .build()
@@ -56,7 +53,7 @@ final class AnalysisGateResults {
     if (!run.executionErrors().isEmpty()) {
       return GateStatus.EXECUTION_ERROR;
     }
-    if (!run.notRunFailingGate().isEmpty()) {
+    if (!run.notRun().isEmpty()) {
       return GateStatus.UNAVAILABLE;
     }
     return errors > 0 ? GateStatus.FAILED : GateStatus.PASSED;
@@ -67,26 +64,39 @@ final class AnalysisGateResults {
     if (!run.executionErrors().isEmpty()) {
       return run.executionErrors().size() + " analysis error(s)";
     }
-    if (!run.notRunFailingGate().isEmpty()) {
-      return run.notRunFailingGate().size() + " rule(s) not run";
+    if (!run.notRun().isEmpty()) {
+      return run.notRun().size() + " rule(s) not run";
     }
     return rules.size() + " rule(s), " + findings.size() + " finding(s)";
   }
 
   /** One line per unit or rule that did not run, without source text. */
-  private static String details(final RuleRunResult run) {
+  private static String details(final RuleRunResult run, final List<RuleDefinition> rules) {
     final List<String> lines = new ArrayList<>();
     for (final RuleExecutionError error : run.executionErrors()) {
       lines.add(errorLine(error));
     }
-    run.notRun().forEach(skipped -> lines.add(skipped.ruleId() + " not run: " + reason(skipped)));
+    run.notRun()
+        .forEach(skipped -> lines.add(skipped.ruleId() + " not run: " + reason(skipped, rules)));
     return String.join("\n", lines);
   }
 
-  private static String reason(final RuleNotRun skipped) {
+  private static String reason(final RuleNotRun skipped, final List<RuleDefinition> rules) {
     return skipped.missing() == RuleCapability.TYPES
-        ? TYPES_UNAVAILABLE
+        ? noTypeResolver(skipped.ruleId(), rules)
         : "its frontend lacks " + skipped.missing();
+  }
+
+  /** Names the languages of the rule that have no native type resolver registered yet. */
+  private static String noTypeResolver(final String ruleId, final List<RuleDefinition> rules) {
+    final String languages =
+        rules.stream()
+            .filter(rule -> rule.id().equals(ruleId))
+            .flatMap(rule -> rule.languages().stream())
+            .map(Enum::name)
+            .sorted()
+            .collect(Collectors.joining(", "));
+    return "no native type resolver is registered for " + languages + " yet";
   }
 
   private static String errorLine(final RuleExecutionError error) {
