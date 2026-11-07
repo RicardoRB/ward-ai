@@ -114,3 +114,53 @@ not-inside = ["functionBody"]
 text = '^(?:(?:private|internal|protected|public|override|open)\s*)*lateinit'
 message = "lateinit property; use a nullable type or constructor injection"
 '''
+
+[[rules]]
+id = "ward:kotlin/useless-postfix-expression"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(\w+)=\1(?:\+\+|--)$'
+message = "the postfix expression assigns the old value back; remove the assignment"
+'''
+
+[[rules]]
+id = "ward:kotlin/invalid-range"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-invalid-range"
+message = "the range is always empty"
+'''
+
+[[rules]]
+id = "ward:kotlin/unreachable-code"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unreachable-code"
+message = "this statement can never run"
+'''
+
+[[rules]]
+id = "ward:kotlin/unused-unary-operator"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-unary-operator"
+message = "unary operator on its own line; its value is unused"
+'''
