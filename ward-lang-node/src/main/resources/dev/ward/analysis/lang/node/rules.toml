@@ -1374,3 +1374,33 @@ with-child = ["arguments"]
 text = '^[\w$.]+\.apply\((undefined|null),'
 message = "use the spread operator instead of .apply()"
 '''
+
+[[rules]]
+id = "ward:typescript/need-braces"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
+
+[[rules]]
+id = "ward:javascript/need-braces"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
