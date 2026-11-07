@@ -1,0 +1,48 @@
+# Javadoc rules for Java. They mirror Checkstyle's AtclauseOrder, NonEmptyAtclauseDescription and
+# JavadocTagContinuationIndentation with their default settings.
+
+[[rules]]
+id = "ward:java/atclause-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+options.tag-order = { type = "string-list" }
+options.target = { type = "string-list" }
+options.modifiers = { type = "string-list" }
+body = '''
+check = "atclause-order"
+tag-order = ["@author", "@version", "@param", "@return", "@throws", "@exception", "@see", "@since", "@serial", "@serialField", "@serialData", "@deprecated"]
+target = ["CLASS_DEF", "COMPACT_CTOR_DEF", "CTOR_DEF", "ENUM_DEF", "INTERFACE_DEF", "METHOD_DEF", "RECORD_DEF", "VARIABLE_DEF"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+message = "block tag '{value}' is out of the order of the block tags"
+'''
+
+[[rules]]
+id = "ward:java/non-empty-atclause-description"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+options.javadoc-tokens = { type = "string-list" }
+body = '''
+check = "non-empty-atclause-description"
+javadoc-tokens = ["@param", "@return", "@throws", "@exception", "@deprecated", "@since"]
+message = "block tag '{value}' has no description"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-tag-continuation-indentation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+options.offset = { type = "integer", min = 0 }
+body = '''
+check = "javadoc-tag-continuation-indentation"
+offset = 4
+message = "continuation line of a block tag must be indented by at least {max} spaces"
+'''
