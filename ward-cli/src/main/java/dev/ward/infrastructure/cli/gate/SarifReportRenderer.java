@@ -21,7 +21,7 @@ import org.apache.fory.json.annotation.JsonType;
 public class SarifReportRenderer {
   static final String SCHEMA = "https://json.schemastore.org/sarif-2.1.0.json";
   static final String VERSION = "2.1.0";
-  private static final Map<String, String> TOOLS = Map.of("compile", "javac", "format", "spotless");
+  private static final Map<String, String> TOOLS = Map.of("compile", "javac");
 
   private final JsonCodec codec;
 

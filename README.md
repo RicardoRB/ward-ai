@@ -38,10 +38,10 @@ team, and Ward checks every change against them, from the first edit to producti
 |---|---|---|---|
 | Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, ArchUnit |
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
-| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Prettier, Stryker, dependency-cruiser |
+| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Stryker, dependency-cruiser |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
-| Swift | SwiftPM, Xcode | Any | swift-format, SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov, Harmonize |
+| Swift | SwiftPM, Xcode | Any | SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov, Harmonize |
 
 <div align="center">
   <a href="https://youtu.be/ETuomU8HxXw">
@@ -190,13 +190,13 @@ ward check --profile ci --format json > ward-report.json
 | Category | Tools |
 |---|---|
 | Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
-| Code quality | Checkstyle, PMD, SpotBugs, SonarQube, Spotless |
+| Code quality | Checkstyle, PMD, SpotBugs, SonarQube |
 | Architecture | ArchUnit (Layered, Hexagonal, or Clean), Maven Enforcer / Gradle checks |
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
-| TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Prettier, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
+| TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Stryker mutation testing, dependency-cruiser, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ruff (format and lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
-| Swift | swift-format, SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Harmonize architecture rules |
+| Swift | SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Harmonize architecture rules |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.io.TempDir;
 class WardCliContract2Test extends WardCliIntegrationSupport {
   @Test
   void checkJsonWritesOnlyJsonToStdout() {
-    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
+    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString()))
         .isZero();
     out.getBuffer().setLength(0);
 
@@ -26,7 +26,7 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
 
   @Test
   void loopCommandUsesProductionCompositionAndRuntimeRequestOptions() {
-    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
+    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString()))
         .isZero();
     out.getBuffer().setLength(0);
 
@@ -52,7 +52,7 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
   void initDoesNotOverwriteAndExitsCleanly() throws IOException {
     Files.writeString(project.resolve(WARD_TOML), "version = 2\n");
 
-    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString()))
+    assertThat(run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString()))
         .isZero();
 
     assertThat(out.toString()).contains("Kept existing ward.toml. No changes were made.");
@@ -76,24 +76,23 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
 
   @Test
   void initThenFailingCheckExitsWithOne() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "checkstyle", "-C", project.toString());
     Files.createFile(project.resolve("FAIL"));
     out.getBuffer().setLength(0);
 
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.FAILED);
     assertThat(out.toString())
         .contains(
-            "✗ format",
+            "✗ Checkstyle",
             "FAILED",
             "Quality Gate: FAILED",
             "Command:",
-            "./mvnw spotless:check",
-            "BUILD FAILURE");
+            "./mvnw checkstyle:check");
   }
 
   @Test
   void jsonOutputIsValidJsonAndNothingElse() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "format", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "checkstyle", "-C", project.toString());
     Files.createFile(project.resolve("FAIL"));
     out.getBuffer().setLength(0);
 
@@ -103,8 +102,7 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
     final JsonTree json = JsonTree.parse(out.toString()); // fails on any extra text
     assertThat(json.get(STATUS).asString()).isEqualTo("FAILED");
     assertThat(json.get(CHECKS).get(0).get("exitCode").asInt()).isEqualTo(1);
-    assertThat(json.get(CHECKS).get(0).get("output").asString())
-        .contains("stub mvnw: spotless:check");
+    assertThat(json.get(CHECKS).get(0).get("command").asString()).contains("checkstyle:check");
     assertThat(json.get(CHECKS).get(0).has("stdout")).isFalse();
     assertThat(json.get(CHECKS).get(0).has("stderr")).isFalse();
   }

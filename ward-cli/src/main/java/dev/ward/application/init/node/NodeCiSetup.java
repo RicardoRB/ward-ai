@@ -28,7 +28,7 @@ final class NodeCiSetup {
         + "Set up Node\n"
         + "        uses: actions/setup-node@v5\n"
         + WITH
-        // Double quotes, as Prettier formats YAML.
+        // Double quotes, the YAML style the generated workflows use.
         + "          node-version: \""
         + project.languageVersion()
         + "\"\n"

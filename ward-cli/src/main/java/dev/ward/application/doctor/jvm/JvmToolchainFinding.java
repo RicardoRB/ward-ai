@@ -43,7 +43,7 @@ public final class JvmToolchainFinding implements ToolchainFinding {
             wrapper || facts.hasExecutable(executable) ? Status.OK : Status.ERROR,
             toolMessage));
     context.buildTools().ifPresent(tools -> findings.addAll(jdkFindings(detected, tools, context)));
-    findings.add(JavaTypeSidecarFinding.finding(facts));
+    findings.add(JavaTypeInputsFinding.finding(facts));
     if (detected.framework() == Framework.ANDROID) {
       findings.addAll(AndroidFindings.findings(detected, facts, context));
     }

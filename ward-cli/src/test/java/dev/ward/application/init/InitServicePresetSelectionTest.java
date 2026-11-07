@@ -13,12 +13,14 @@ import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The selected gate list is final: presets order it but never add unselected gates back. */
 class InitServicePresetSelectionTest {
-  private static final String FORMAT = "format";
   private static final String WARD_TOML = "ward.toml";
 
   private final InitService service =
@@ -38,7 +39,8 @@ class InitServicePresetSelectionTest {
               new PomToolConfigurator(),
               new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
               new ArchitectureTestGenerator(),
-              new FileConfigurationStorage()));
+              new FileConfigurationStorage(),
+              new OwnedSectionWriter()));
 
   @Test
   void ordersSelectedPresetGatesBeforeOtherGates(@TempDir final Path dir) throws Exception {
@@ -49,20 +51,20 @@ class InitServicePresetSelectionTest {
             new InitSelection(
                 List.of("none"),
                 List.of(
-                    "gitleaks",
-                    "tests",
-                    "compile",
-                    "coverage",
-                    "spotbugs",
-                    "checkstyle",
-                    "pmd",
-                    FORMAT),
+                    "gitleaks", "tests", "compile", "coverage", "spotbugs", "checkstyle", "pmd"),
                 null,
                 QualityPreset.STANDARD));
     assertThat(result.gates())
         .extracting(InitGateOption::id)
         .containsExactly(
-            "compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage", "gitleaks");
+            "compile",
+            "tests",
+            "checkstyle",
+            "pmd",
+            "spotbugs",
+            "coverage",
+            "gitleaks",
+            "ward-format");
     assertThat(Files.readString(dir.resolve(WARD_TOML))).contains("version = 2\n");
     assertThat(dir.resolve("config/pmd-ruleset.xml")).exists();
   }
@@ -79,9 +81,9 @@ class InitServicePresetSelectionTest {
             new InitSelection(
                 List.of("none"), strictWithoutMutation, "layered", QualityPreset.STRICT));
 
-    assertThat(result.gates())
-        .extracting(InitGateOption::id)
-        .containsExactlyElementsOf(strictWithoutMutation);
+    final List<String> expected = new ArrayList<>(strictWithoutMutation);
+    expected.add("ward-format");
+    assertThat(result.gates()).extracting(InitGateOption::id).containsExactlyElementsOf(expected);
     assertThat(Files.readString(dir.resolve(WARD_TOML)))
         .doesNotContain("preset")
         .doesNotContain("[checks.mutation]");

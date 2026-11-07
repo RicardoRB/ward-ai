@@ -1,0 +1,29 @@
+# Idiomatic rules for Swift, part 2 of SwiftLint's idiomatic rules that match a node's compact text.
+
+[[rules]]
+id = "ward:swift/unavailable-condition"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_statement"]
+text = '^if#(available|unavailable)\([^)]*\)\{\}'
+message = "use #unavailable or #available instead of an empty #available or #unavailable body"
+'''
+
+[[rules]]
+id = "ward:swift/pattern-matching-keywords"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enum_case_pattern"]
+text = '\((let|var)\w+,(let|var)\w+'
+message = "combine the pattern matching keywords before the case pattern"
+'''

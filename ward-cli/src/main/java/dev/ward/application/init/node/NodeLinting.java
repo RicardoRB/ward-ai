@@ -7,8 +7,8 @@ import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 
 /**
- * Which lint and format tools a Node project uses. Biome replaces Prettier and ESLint, and a
- * project's own ESLint config stays beside it.
+ * Which lint tools a Node project uses. Biome lints and ESLint keeps its place when a project uses
+ * Biome, so a project's own ESLint config stays beside it. Formatting is ward-format's.
  *
  * @param biome whether the project uses Biome
  * @param ownEslintConfig whether the project keeps its own ESLint config
@@ -24,24 +24,19 @@ public record NodeLinting(boolean biome, boolean ownEslintConfig) {
   /** Returns the preset gate IDs for lint and format, in configuration order. */
   List<String> presetIds() {
     if (!biome) {
-      return List.of("prettier", "eslint");
+      return List.of("eslint");
     }
     return ownEslintConfig ? List.of("biome", "eslint") : List.of("biome");
   }
 
   /**
-   * Returns the lint and format gates in wizard order. {@code eslint} is the language's own ESLint
-   * option, since the languages describe it differently.
+   * Returns the lint gates in wizard order. {@code eslint} is the language's own ESLint option,
+   * since the languages describe it differently.
    */
   List<InitGateOption> gates(final NodeTools node, final InitGateOption eslint) {
     if (biome) {
       return ownEslintConfig ? List.of(node.biomeGate(), eslint) : List.of(node.biomeGate());
     }
-    return List.of(
-        eslint,
-        node.option(
-            "prettier",
-            "Checks formatting with Prettier.",
-            node.command("prettier", "--check", ".")));
+    return List.of(eslint);
   }
 }

@@ -8,12 +8,11 @@ import java.util.List;
 /** Java's gates on Maven and Gradle: the shared JVM gates plus Java's analysis tools. */
 final class JavaGates implements SourceLanguageGates<BuildToolGates> {
   private static final List<String> STANDARD =
-      List.of("compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage");
+      List.of("compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage");
   private static final List<String> STRICT =
       List.of(
           "compile",
           "tests",
-          "format",
           "checkstyle",
           "pmd",
           "spotbugs",
@@ -46,12 +45,7 @@ final class JavaGates implements SourceLanguageGates<BuildToolGates> {
         jvm.sonar(),
         jvm.dependencyCheck(),
         jvm.archunit(),
-        jvm.mutation(),
-        jvm.tool(
-            "format",
-            "Checks formatting with Spotless and google-java-format.",
-            "spotlessCheck",
-            "spotless:check"));
+        jvm.mutation());
   }
 
   @Override

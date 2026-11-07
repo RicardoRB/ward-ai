@@ -14,6 +14,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -76,7 +77,8 @@ class SelectedGatesOfflineTrivyTest {
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
                 new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()))
+                new FileConfigurationStorage(),
+                new OwnedSectionWriter()))
         .initialize(dir, new InitSelection(List.of("none"), List.of("tests", "trivy")));
 
     assertThat(Files.readString(dir.resolve("ward.toml")))

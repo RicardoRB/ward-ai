@@ -1,16 +1,16 @@
 import ShopKit
-import XCTest
+import Testing
 
-final class CartTests: XCTestCase {
-    func testAddsAnItem() {
+@Suite final class CartTests {
+    @Test func addsAnItem() {
         var cart = Cart()
         cart.add("Book")
-        XCTAssertEqual(cart.items, ["Book"])
+        #expect(cart.items == ["Book"])
     }
 
-    func testServiceSavesTheAddedItem() {
+    @Test func serviceSavesTheAddedItem() {
         let repository = InMemoryCartRepository()
         CartService(repository: repository).addItem("Book")
-        XCTAssertEqual(repository.load().items, ["Book"])
+        #expect(repository.load().items == ["Book"])
     }
 }

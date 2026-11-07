@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +52,7 @@ class PartialNarrowingToolMatchingTest {
     Files.writeString(
         file,
         ConfigurationTemplate.render(
-            List.of(gate("checkstyle"), gate("format")),
+            List.of(gate("checkstyle"), gate("pmd")),
             QualityPreset.STANDARD,
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE)));
     gates = new TomlConfigurationReader().read(file).checks();
@@ -71,20 +70,6 @@ class PartialNarrowingToolMatchingTest {
   @Test
   void rootRelativeCheckstyleIncludesWouldAnalyzeNothing() throws IOException {
     assertThat(checkstyleFiles(ORDER)).isEmpty();
-  }
-
-  @Test
-  void spotlessFilesSelectExactlyTheEditedFile() {
-    final String patterns = value(narrowed("format", ORDER), "-DspotlessFiles=");
-
-    assertThat(spotlessMatches(patterns, ORDER)).isTrue();
-    assertThat(spotlessMatches(patterns, INVOICE)).isFalse();
-    assertThat(spotlessMatches(value(narrowed("format", ORDER, INVOICE), "="), INVOICE)).isTrue();
-  }
-
-  @Test
-  void rootRelativeSpotlessFilesWouldCheckNothing() {
-    assertThat(spotlessMatches(ORDER, ORDER)).isFalse();
   }
 
   private List<String> narrowed(final String gate, final String... paths) {
@@ -108,12 +93,6 @@ class PartialNarrowingToolMatchingTest {
 
   private List<File> checkstyleFiles(final String includes) throws IOException {
     return FileUtils.getFiles(root.resolve(SOURCES).toFile(), includes, null);
-  }
-
-  private boolean spotlessMatches(final String patterns, final String source) {
-    final String absolute = root.resolve(source).toFile().getAbsolutePath();
-    return List.of(patterns.split(",")).stream()
-        .anyMatch(pattern -> Pattern.compile(pattern).matcher(absolute).matches());
   }
 
   private static InitGateOption gate(final String id) {

@@ -19,7 +19,7 @@ final class ArchitectureBoundarySupport {
   static final Set<String> CONFIG_MODULES =
       Set.of(
           "dev.ward.config.WardComponent",
-          "dev.ward.config.TypeSidecarBindings",
+          "dev.ward.config.NativeTypeFactsBindings",
           "dev.ward.config.PortBindingsModule",
           "dev.ward.config.ProcessBindingsModule",
           "dev.ward.config.ProjectBindingsModule",

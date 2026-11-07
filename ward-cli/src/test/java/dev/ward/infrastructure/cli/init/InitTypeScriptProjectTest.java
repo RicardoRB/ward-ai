@@ -42,17 +42,15 @@ class InitTypeScriptProjectTest {
         .contains(
             "[checks.tsc]",
             "[checks.vitest]",
-            "[checks.prettier]",
+            "[checks.ward-format]",
             "[checks.eslint]",
-            "command = \"npx vitest run --coverage\"",
-            "command = [\"npx\", \"prettier\", \"--check\"]")
+            "command = \"npx vitest run --coverage\"")
         .doesNotContain("checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
         .contains(
             "\"typescript\": \"^5.9.3\",",
             "\"eslint\": \"10.12.0\"",
             "\"typescript-eslint\": \"8.71.1\"",
-            "\"prettier\": \"3.9.10\"",
             "\"@vitest/coverage-v8\": \"4.0.18\"");
     assertThat(fixture.read("package-lock.json")).contains("\"stub\": \"installed\"");
     assertThat(fixture.read("eslint.config.mjs"))

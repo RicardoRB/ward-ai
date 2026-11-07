@@ -95,6 +95,9 @@ IMPORT          : 'import';
 CLASS           : 'class';
 INTERFACE       : 'interface';
 CONTEXT         : 'context';
+VALUE           : 'value';
+EXPECT          : 'expect';
+ACTUAL          : 'actual';
 FUN             : 'fun';
 OBJECT          : 'object';
 VAL             : 'val';
@@ -170,8 +173,8 @@ REIFIED     : 'reified';
 
 //
 
-QUOTE_OPEN        : '"'   -> pushMode(LineString);
-TRIPLE_QUOTE_OPEN : '"""' -> pushMode(MultiLineString);
+QUOTE_OPEN        : '$'* '"'   -> pushMode(LineString);
+TRIPLE_QUOTE_OPEN : '$'* '"""' -> pushMode(MultiLineString);
 
 RealLiteral: FloatLiteral | DoubleLiteral;
 

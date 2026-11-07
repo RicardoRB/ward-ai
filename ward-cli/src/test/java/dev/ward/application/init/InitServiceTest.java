@@ -18,8 +18,7 @@ import dev.ward.domain.init.InitResult;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
-import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.InitFixtures;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -32,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class InitServiceTest {
-  private static final String FORMAT = "format";
+  private static final String FORMAT = "ward-format";
   private static final String WARD_TOML = "ward.toml";
 
   private final InitService service =
@@ -40,11 +39,7 @@ class InitServiceTest {
           new ProjectDetector(new FileSystemProjectInspection()),
           Set.of(),
           new InitSetupCatalog(new FakeEnvironmentInspection()),
-          new InitProjectFiles(
-              new PomToolConfigurator(),
-              RuleFileTargetsFixtures.writer(),
-              new ArchitectureTestGenerator(),
-              new FileConfigurationStorage()));
+          InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
 
   @Test
   void generatedConfigurationAssignsCumulativeProfiles(@TempDir final Path dir) throws Exception {
@@ -62,9 +57,9 @@ class InitServiceTest {
     assertThat(configuration.forProfiles(List.of()).checks()).containsOnlyKeys(FORMAT);
     assertThat(configuration.forProfiles(List.of("pre-commit")).checks()).containsOnlyKeys(FORMAT);
     assertThat(configuration.forProfiles(List.of("pre-push")).checks())
-        .containsOnlyKeys("format", "tests");
+        .containsOnlyKeys("ward-format", "tests");
     assertThat(configuration.forProfiles(List.of("ci")).checks())
-        .containsOnlyKeys("format", "tests", "mutation");
+        .containsOnlyKeys("ward-format", "tests", "mutation");
   }
 
   @Test
@@ -76,11 +71,7 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            new InitProjectFiles(
-                new PomToolConfigurator(),
-                RuleFileTargetsFixtures.writer(),
-                new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()),
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()),
             new UnavailableToolInstaller());
 
     qualityService.initialize(
@@ -96,7 +87,6 @@ class InitServiceTest {
             true,
             null,
             false,
-            null,
             null,
             null));
 
@@ -149,11 +139,7 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(conflict),
             new InitSetupCatalog(new FakeEnvironmentInspection()),
-            new InitProjectFiles(
-                new PomToolConfigurator(),
-                RuleFileTargetsFixtures.writer(),
-                new ArchitectureTestGenerator(),
-                new FileConfigurationStorage()));
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
     assertThatThrownBy(
             () ->
                 conflicting.initialize(

@@ -3,12 +3,14 @@ package dev.ward.infrastructure.cli;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.InitService;
 import dev.ward.application.init.InitSetupCatalog;
+import dev.ward.application.init.NoRuleFileGeneration;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.agent.OpenCodeIntegration;
 import dev.ward.infrastructure.doctor.SystemEnvironmentInspection;
 import dev.ward.infrastructure.init.ArchitectureTestGenerator;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
+import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
@@ -26,7 +28,9 @@ final class CliInitServices {
         new InitSetupCatalog(new SystemEnvironmentInspection(new ProcessCommandExecutor())),
         new InitProjectFiles(
             new PomToolConfigurator(),
+            new NoRuleFileGeneration(),
             new ArchitectureTestGenerator(),
-            new FileConfigurationStorage()));
+            new FileConfigurationStorage(),
+            new OwnedSectionWriter()));
   }
 }

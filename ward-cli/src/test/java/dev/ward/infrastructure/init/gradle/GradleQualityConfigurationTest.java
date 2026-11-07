@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 class GradleQualityConfigurationTest {
   private static final List<String> STRICT_GATES =
       List.of(
-          "format",
           "checkstyle",
           "pmd",
           "spotbugs",
@@ -38,10 +37,7 @@ class GradleQualityConfigurationTest {
         configure("build.gradle", "plugins {\n    id 'java'\n}\n\nrepositories {}\n", null);
 
     assertThat(script)
-        .startsWith(
-            "plugins {\n    "
-                + GradlePluginsBlock.MARKER
-                + "\n    id 'com.diffplug.spotless' version '8.10.4'\n")
+        .startsWith("plugins {\n    " + GradlePluginsBlock.MARKER + "\n    id 'checkstyle'\n")
         .contains("    id 'info.solidsoft.pitest' version '1.19.0'\n    id 'java'\n}\n");
     assertThat(script.indexOf("plugins {")).isEqualTo(script.lastIndexOf("plugins {"));
   }
@@ -77,7 +73,6 @@ class GradleQualityConfigurationTest {
                 + "    sourceSets = [project.sourceSets.main]\n}",
             "pmd {\n    toolVersion = '7.17.0'\n    ruleSetFiles = files('config/pmd-ruleset.xml')\n"
                 + "    ruleSets = []\n",
-            "spotless {\n    java {\n        googleJavaFormat('1.36.1')\n",
             "spotbugs {\n    toolVersion = '4.9.7'\n}",
             "jacoco {\n    toolVersion = '0.8.13'\n}\njacocoTestCoverageVerification {\n",
             "counter = 'BRANCH'\n                minimum = 0.75",
@@ -95,11 +90,10 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "    id(\"com.diffplug.spotless\") version \"8.10.4\"\n",
+            "    id(\"checkstyle\")\n",
             "configFile = file(\"config/checkstyle.xml\")",
             "sourceSets = listOf(project.sourceSets.main.get())",
             "ruleSets = listOf()",
-            "googleJavaFormat(\"1.36.1\")",
             "toolVersion = \"4.9.7\"",
             "\ntasks.jacocoTestCoverageVerification {\n",
             "minimum = \"0.85\".toBigDecimal()",

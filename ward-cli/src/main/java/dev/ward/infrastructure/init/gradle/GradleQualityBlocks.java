@@ -86,12 +86,6 @@ final class GradleQualityBlocks {
         : "    sourceSets = [project.sourceSets.main]\n";
   }
 
-  static String spotless(final boolean kotlin, final String formatterVersion) {
-    return "spotless {\n    java {\n        googleJavaFormat("
-        + quote(kotlin, formatterVersion)
-        + ")\n    }\n}";
-  }
-
   /** One limit per counter, the preset's minimums or a line ratio of 0.80 without a preset. */
   static String coverage(final boolean kotlin, final QualityPreset preset, final String version) {
     final Map<String, Double> minimums =

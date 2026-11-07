@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * Builds fake {@link UnitTypeFacts} from the {@code types.json} next to a rule fixture, so
- * type-aware rules are tested without a sidecar, a classpath or {@code node_modules}.
+ * type-aware rules are tested without a resolver, a classpath or {@code node_modules}.
  *
  * <p>The file is one object whose keys are {@code line:column} (every span starting there) or
  * {@code line:column-line:column} (that exact span), and whose values are fact objects:
@@ -54,7 +54,7 @@ public final class TypeFactsFixture {
    * @throws IllegalArgumentException if it is not well-formed facts
    */
   public static UnitTypeFacts parse(final String json) {
-    final Object root = new TypeSidecarJsonReader(json).read();
+    final Object root = new TypeFactsJsonReader(json).read();
     if (!(root instanceof Map<?, ?> object)) {
       throw new IllegalArgumentException("types.json must be an object");
     }

@@ -7,7 +7,6 @@ import dev.ward.domain.project.WorkspaceMembers;
 import dev.ward.infrastructure.finding.jvm.CheckstyleXmlFindings;
 import dev.ward.infrastructure.finding.jvm.JavacOutputFindings;
 import dev.ward.infrastructure.finding.jvm.PmdXmlFindings;
-import dev.ward.infrastructure.finding.jvm.SpotlessOutputFindings;
 import dev.ward.infrastructure.finding.node.BiomeCheckstyleFindings;
 import dev.ward.infrastructure.finding.node.EslintJsonFindings;
 import dev.ward.infrastructure.finding.node.TscOutputFindings;
@@ -15,7 +14,6 @@ import dev.ward.infrastructure.finding.node.turbo.TurborepoFindings;
 import dev.ward.infrastructure.finding.python.MypyJsonFindings;
 import dev.ward.infrastructure.finding.python.RuffJsonFindings;
 import dev.ward.infrastructure.finding.swift.SwiftFindingSources;
-import dev.ward.infrastructure.finding.swift.SwiftFormatOutputFindings;
 import dev.ward.infrastructure.finding.swift.SwiftLintJsonFindings;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.util.stream.Stream;
@@ -33,20 +31,17 @@ class FindingSourceContractTest {
                         new PmdXmlFindings(),
                         new GitleaksSarifFindings(new ForyJsonCodec()),
                         new JavacOutputFindings(),
-                        new SpotlessOutputFindings(),
                         new EslintJsonFindings(new ForyJsonCodec()),
                         new TscOutputFindings(),
                         new BiomeCheckstyleFindings(),
                         new RuffJsonFindings(new ForyJsonCodec()),
                         new MypyJsonFindings(new ForyJsonCodec())),
-                    new SwiftFindingSources(
-                            new SwiftLintJsonFindings(new ForyJsonCodec()),
-                            new SwiftFormatOutputFindings())
+                    new SwiftFindingSources(new SwiftLintJsonFindings(new ForyJsonCodec()))
                         .sources().stream())
                 .toList());
 
     assertThat(extractor.gates())
-        .contains("swiftlint", "swift-format", "swift-build", "xcodebuild-test")
+        .contains("swiftlint", "swift-build", "xcodebuild-test")
         .allSatisfy(
             gate ->
                 assertThat(QualityGateDefinitions.find(gate))

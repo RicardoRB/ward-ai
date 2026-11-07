@@ -81,11 +81,11 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_21, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(SPOTBUGS, "spotless-maven-plugin", "google-java-format"));
+            List.of(SPOTBUGS));
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
-        .containsExactly("4" + ".9.7.0", "3.10.3", "1.36.1");
+        .containsExactly("4" + ".9.7.0");
   }
 
   @Test
@@ -94,11 +94,11 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_27, Optional.of(MAVEN), Optional.empty(), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(SPOTBUGS, "spotless-maven-plugin", "google-java-format"));
+            List.of(SPOTBUGS));
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
-        .containsExactly("4" + ".9.7.0", "3.10.3", "1.36.1");
+        .containsExactly("4" + ".9.7.0");
   }
 
   @Test
