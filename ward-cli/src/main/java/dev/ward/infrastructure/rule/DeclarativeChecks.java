@@ -107,7 +107,9 @@ final class DeclarativeChecks {
               ? ScopeAndFormatChecks.build(name, toml)
               : ImportChecks.isImportCheck(name)
                   ? ImportChecks.build(name, toml)
-                  : ReviewChecks.build(name, toml);
+                  : DesignChecks.isDesignCheck(name)
+                      ? DesignChecks.build(name, toml)
+                      : ReviewChecks.build(name, toml);
     };
   }
 

@@ -1,0 +1,153 @@
+# Class design rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the design group,
+# with the same option names in kebab-case. The standard preset keeps the one-top-level-class check
+# of google_checks.xml; the other defaults are Checkstyle's. Names are simple names, not canonical.
+
+[[rules]]
+id = "ward:java/one-top-level-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "one-top-level-class"
+message = "file declares more than one top-level type; move '{value}' to its own file"
+'''
+
+[[rules]]
+id = "ward:java/final-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+body = '''
+check = "final-class"
+message = "class '{value}' has only private constructors and should be final"
+'''
+
+[[rules]]
+id = "ward:java/hide-utility-class-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.ignore-annotated-by = { type = "string-list" }
+body = '''
+check = "hide-utility-class-constructor"
+ignore-annotated-by = []
+message = "utility class '{value}' should hide its constructor"
+'''
+
+[[rules]]
+id = "ward:java/inner-type-last"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+body = '''
+check = "inner-type-last"
+message = "inner type '{value}' must be declared after the other members"
+'''
+
+[[rules]]
+id = "ward:java/interface-is-type"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.allow-marker-interfaces = { type = "boolean" }
+body = '''
+check = "interface-is-type"
+allow-marker-interfaces = true
+message = "interface '{value}' declares constants only and is not a type"
+'''
+
+[[rules]]
+id = "ward:java/mutable-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.format = { type = "regex" }
+options.extended-class-name-format = { type = "regex" }
+body = '''
+check = "mutable-exception"
+format = '^.*Exception$|^.*Error$|^.*Throwable$'
+extended-class-name-format = '^.*Exception$|^.*Error$|^.*Throwable$'
+message = "exception field '{value}' must be final"
+'''
+
+[[rules]]
+id = "ward:java/sealed-should-have-permits-list"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+body = '''
+check = "sealed-should-have-permits-list"
+message = "sealed type '{value}' has no permits clause"
+'''
+
+[[rules]]
+id = "ward:java/throws-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+options.ignore-private-methods = { type = "boolean" }
+body = '''
+check = "throws-count"
+max = 4
+ignore-private-methods = true
+message = "method declares {value} exceptions in its throws clause; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/visibility-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.allow-public-final-fields = { type = "boolean" }
+options.allow-public-immutable-fields = { type = "boolean" }
+options.package-allowed = { type = "boolean" }
+options.protected-allowed = { type = "boolean" }
+options.public-member-pattern = { type = "regex" }
+options.ignore-annotation-canonical-names = { type = "string-list" }
+options.immutable-class-canonical-names = { type = "string-list" }
+body = '''
+check = "visibility-modifier"
+allow-public-final-fields = false
+allow-public-immutable-fields = false
+package-allowed = false
+protected-allowed = false
+public-member-pattern = '^serialVersionUID$'
+ignore-annotation-canonical-names = ["VisibleForTesting", "ClassRule", "Rule"]
+immutable-class-canonical-names = ["File", "Boolean", "Byte", "Character", "Double", "Float", "Integer", "Long", "Short", "StackTraceElement", "String", "BigDecimal", "BigInteger", "Inet4Address", "Inet6Address", "InetSocketAddress", "URI", "URL", "Locale", "UUID"]
+message = "field '{value}' must be private"
+'''
+
+[[rules]]
+id = "ward:java/design-for-extension"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["strict"]
+options.ignored-annotations = { type = "string-list" }
+options.required-javadoc-phrase = { type = "regex" }
+body = '''
+check = "design-for-extension"
+ignored-annotations = ["After", "AfterClass", "Before", "BeforeClass", "Test"]
+required-javadoc-phrase = '.*'
+message = "method '{value}' is designed for extension and has no Javadoc comment"
+'''

@@ -1,0 +1,7 @@
+allow-public-final-fields = true
+allow-public-immutable-fields = true
+package-allowed = true
+protected-allowed = true
+public-member-pattern = '^ID$'
+ignore-annotation-canonical-names = ["Inject"]
+immutable-class-canonical-names = ["Money"]
