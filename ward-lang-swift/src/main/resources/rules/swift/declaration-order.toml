@@ -1,0 +1,17 @@
+# Declaration order for Swift, the standard preset's Checkstyle grouping check. Overloaded methods must be
+# declared together. shortcut: the grouping only breaks on another method, so a property between two
+# overloads is not reported; upgrade when the grouping reads every member name.
+
+[[rules]]
+id = "ward:swift/overload-methods-declaration-order"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "order"
+kinds = ["class_body", "struct_body", "extension_body", "protocol_body"]
+group-by = "function_name"
+message = "method '{value}' is not declared with its overloads"
+'''

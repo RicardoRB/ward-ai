@@ -23,6 +23,7 @@ final class NodeScopeExpressions {
   private static final Set<String> UPDATE_OPERATORS = Set.of("++", "--");
   private static final String EQUALS = "=";
   private static final String EVAL = "eval";
+  private static final Set<String> CONTEXTUAL_WORDS = Set.of("as", "satisfies");
 
   final ScopeBuilder builder;
   private final NodeScopeNames names;
@@ -46,9 +47,26 @@ final class NodeScopeExpressions {
       triple(parts);
     } else if (parts.size() == PAIR && updates(parts)) {
       names.target(parts.get(0).children().isEmpty() ? parts.get(1) : parts.get(0), true);
+    } else if (parts.size() == PAIR && isLeadingName(parts.get(0))) {
+      leadingName(parts);
     } else {
       parts.forEach(visit);
     }
+  }
+
+  /**
+   * The grammar reads {@code f(x)} as the name {@code f} followed by the expression {@code (x)}.
+   */
+  private static boolean isLeadingName(final SyntaxNode part) {
+    final SyntaxNode name = NodeScopeNames.nameOf(part);
+    return "identifierName".equals(part.kind())
+        && name != null
+        && !CONTEXTUAL_WORDS.contains(NodeFlowSyntax.text(name));
+  }
+
+  private void leadingName(final List<SyntaxNode> parts) {
+    read(NodeScopeNames.nameOf(parts.get(0)));
+    visit.accept(parts.get(1));
   }
 
   private void single(final SyntaxNode node, final SyntaxNode only) {

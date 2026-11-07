@@ -205,9 +205,7 @@ biome = ["noDefaultExport"]
 
 [[rule]]
 name = "no-delete"
-category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noDelete"]
 
 [[rule]]
@@ -226,9 +224,7 @@ biome = ["noDistractingElements"]
 
 [[rule]]
 name = "no-document-cookie"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noDocumentCookie"]
 
 [[rule]]
@@ -366,16 +362,12 @@ biome = ["noExportsInTest"]
 
 [[rule]]
 name = "no-flat-map-identity"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noFlatMapIdentity"]
 
 [[rule]]
 name = "no-focused-tests"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noFocusedTests"]
 
 [[rule]]
@@ -394,30 +386,22 @@ biome = ["noForIn"]
 
 [[rule]]
 name = "no-global-dirname-filename"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalDirnameFilename"]
 
 [[rule]]
 name = "no-global-eval"
-category = "security"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalEval"]
 
 [[rule]]
 name = "no-global-is-finite"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalIsFinite"]
 
 [[rule]]
 name = "no-global-is-nan"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalIsNan"]
 
 [[rule]]
@@ -772,9 +756,7 @@ biome = ["noPrivateImports"]
 
 [[rule]]
 name = "no-process-env"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noProcessEnv"]
 
 [[rule]]
@@ -933,9 +915,7 @@ biome = ["noShoutyConstants"]
 
 [[rule]]
 name = "no-skipped-tests"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noSkippedTests"]
 
 [[rule]]
@@ -968,9 +948,7 @@ biome = ["noStringCaseMismatch"]
 
 [[rule]]
 name = "no-substr"
-category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noSubstr"]
 
 [[rule]]
@@ -1031,9 +1009,7 @@ biome = ["noTernary"]
 
 [[rule]]
 name = "no-then-property"
-category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noThenProperty"]
 
 [[rule]]

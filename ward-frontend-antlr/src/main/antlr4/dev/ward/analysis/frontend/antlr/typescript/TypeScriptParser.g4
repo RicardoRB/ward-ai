@@ -123,6 +123,7 @@ primaryType
     | '[' tupleElementTypes ']'                  # TuplePrimType
     | typeQuery                                  # QueryPrimType
     | This                                       # ThisPrimType
+    | {this.n("asserts")}? identifier (This | typeReference) (Is primaryType)? # AssertsPrimType
     | typeReference Is primaryType               # RedefinitionOfType
     | KeyOf primaryType                          # KeyOfType
     | ReadOnly primaryType                       # ReadonlyPrimType
@@ -187,6 +188,8 @@ typeMember
     | callSignature
     | constructSignature
     | indexSignature
+    | getter '(' ')' typeAnnotation?
+    | setter '(' parameterList? ')'
     | methodSignature ('=>' type_)?
     ;
 
@@ -203,7 +206,7 @@ tupleElementTypes
     : tupleElementType (',' tupleElementType)* ','?
     ;
 tupleElementType
-    : Ellipsis? type_
+    : Ellipsis? (identifier '?'? ':')? type_
     ;
 functionType
     : typeParameters? '(' parameterList? ')' '=>' type_
@@ -283,7 +286,7 @@ constructSignature
     ;
 
 indexSignature
-    : '[' identifier ':' (Number | String) ']' typeAnnotation
+    : ReadOnly? '[' identifier ':' (Number | String) ']' typeAnnotation
     ;
 
 methodSignature
@@ -336,7 +339,7 @@ enumMember
 // A.8 Namespaces
 
 namespaceDeclaration
-    : Declare? (Namespace namespaceName | Module (StringLiteral | namespaceName)) '{' statementList? '}'
+    : Declare? (Namespace namespaceName | Module (StringLiteral | namespaceName) | {this.n("global")}? identifier) '{' statementList? '}'
     ;
 
 namespaceName
@@ -381,13 +384,13 @@ statement
     | usingDeclaration
     | typeAliasDeclaration
     | namespaceDeclaration //ADDED
+    | classDeclaration
     | variableStatement
     | importStatement
     | importEqualsDeclaration
     | exportStatement
     | emptyStatement_
     | abstractDeclaration //ADDED
-    | classDeclaration
     | functionDeclaration
     | interfaceDeclaration //ADDED
     | ifStatement
@@ -609,12 +612,12 @@ debuggerStatement
     ;
 
 functionDeclaration
-    : Async? Function_ '*'? identifier callSignature (('{' functionBody '}') | SemiColon)
+    : Declare? Async? Function_ '*'? identifier callSignature (('{' functionBody '}') | SemiColon)
     ;
 
 //Ovveride ECMA
 classDeclaration
-    : decoratorList? (Export Default?)? Abstract? Class identifier typeParameters? classHeritage classTail
+    : decoratorList? (Export Default?)? Declare? Abstract? Class identifier typeParameters? classHeritage classTail
     ;
 
 classHeritage
@@ -649,7 +652,7 @@ propertyMemberDeclaration
     ;
 
 propertyMemberBase
-    : accessibilityModifier? Async? Static? ReadOnly? accessorModifier?
+    : accessibilityModifier? Abstract? Async? Static? ReadOnly? accessorModifier?
     ;
 accessorModifier
     : {this.n("accessor")}? identifier
