@@ -20,8 +20,7 @@ public final class ConfigurationTemplate {
   private static final String VERSION = "version = 2\n";
 
   /** Types written with {@code uses} even when their command would infer them. */
-  private static final Set<String> CRITICAL_USES =
-      Set.of("archunit", "openspec", "openspec-archived");
+  private static final Set<String> CRITICAL_USES = Set.of("openspec", "openspec-archived");
 
   private ConfigurationTemplate() {}
 
@@ -40,7 +39,7 @@ public final class ConfigurationTemplate {
       final QualityPreset preset,
       final Project project,
       final String openSpecRoot) {
-    return render(gates, preset, project, openSpecRoot, EngineArchitecture.NONE);
+    return render(gates, preset, project, openSpecRoot, WardArchitecture.NONE);
   }
 
   /**
@@ -52,7 +51,7 @@ public final class ConfigurationTemplate {
       final QualityPreset preset,
       final Project project,
       final String openSpecRoot,
-      final EngineArchitecture architecture) {
+      final WardArchitecture architecture) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {

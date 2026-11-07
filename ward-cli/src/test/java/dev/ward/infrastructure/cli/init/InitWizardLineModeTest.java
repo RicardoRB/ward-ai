@@ -32,6 +32,10 @@ import picocli.CommandLine;
 class InitWizardLineModeTest {
   // ward-format, checkstyle, and pmd each add a [checks.<id>.paths] table.
   private static final int STANDARD_PARTIAL_TABLES = 3;
+
+  /** The ward gate and its layer table, which every configuration writes. */
+  private static final int WARD_TABLE_SECTIONS = 3;
+
   @TempDir Path root;
 
   private final StringWriter output = new StringWriter();
@@ -134,7 +138,8 @@ class InitWizardLineModeTest {
       assertThat(configuration).contains("[checks." + gate + "]");
     }
     assertThat(configuration.split("\\[checks\\.", -1))
-        .hasSize(JavaPresetGates.STANDARD.size() + 1 + STANDARD_PARTIAL_TABLES + 1);
+        .hasSize(
+            JavaPresetGates.STANDARD.size() + 1 + STANDARD_PARTIAL_TABLES + WARD_TABLE_SECTIONS);
   }
 
   @Test
@@ -152,8 +157,8 @@ class InitWizardLineModeTest {
     assertThat(exit).as(output.toString()).isZero();
     assertThat(output.toString()).doesNotContain("Select an architecture style");
     assertThat(Files.readString(root.resolve("ward.toml")))
-        .contains("[checks.archunit]", "[checks.mutation]");
-    assertThat(output.toString()).contains("Generated layered ArchUnit test");
+        .contains("[checks.enforcer]", "[checks.mutation]", "[[checks.ward.layers]]");
+    assertThat(output.toString()).doesNotContain("Select an architecture style");
   }
 
   private int execute(final InputStream input, final String... args) {

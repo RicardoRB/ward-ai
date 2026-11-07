@@ -68,7 +68,6 @@ class CoverageProjectMutationTest {
             "sonar-maven-plugin",
             "jacoco-maven-plugin",
             "dependency-check-maven",
-            "archunit-junit5",
             "pitest-maven",
             "maven-enforcer-plugin",
             "license-maven-plugin",
@@ -80,7 +79,6 @@ class CoverageProjectMutationTest {
             "spotbugs-maven-plugin",
             "sonar-maven-plugin",
             "dependency-check-maven",
-            "archunit-junit5",
             "pitest-maven",
             "maven-enforcer-plugin");
     configurator.rollback(change);
@@ -121,7 +119,7 @@ class CoverageProjectMutationTest {
         new PomToolConfigurator()
             .apply(
                 project,
-                List.of(catalog.gate(project, "checkstyle"), catalog.gate(project, "archunit")));
+                List.of(catalog.gate(project, "checkstyle"), catalog.gate(project, "pmd")));
     assertThat(change.changed()).isTrue();
     assertThat(Files.readString(root.resolve("pom.xml"))).contains("<plugins>", "<dependencies>");
   }

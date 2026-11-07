@@ -57,7 +57,7 @@ class JavaCompatibilityMatrixTest {
   private static final int PATTERN_SWITCH = 21;
   private static final List<String> STANDARD =
       List.of("compile", "tests", "checkstyle", "pmd", "spotbugs", "coverage", "ward-format");
-  private static final List<String> STRICT_EXTRAS = List.of("archunit", "enforcer", "mutation");
+  private static final List<String> STRICT_EXTRAS = List.of("enforcer", "mutation");
 
   /** Gates the seeded violations do not target: the clean check proves the last two measure. */
   private static final Set<String> NOT_SEEDED = Set.of("compile", "coverage", "mutation");

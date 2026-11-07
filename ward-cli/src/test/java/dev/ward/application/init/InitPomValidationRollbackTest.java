@@ -10,7 +10,7 @@ import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.InitSelection;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
@@ -43,7 +43,7 @@ class InitPomValidationRollbackTest {
             new InitProjectFiles(
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
-                new ArchitectureTestGenerator(),
+                ArchitectureTablesFixtures.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));
 

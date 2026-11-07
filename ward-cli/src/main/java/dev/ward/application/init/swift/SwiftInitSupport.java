@@ -6,7 +6,6 @@ import dev.ward.application.init.PartialCheckDefaults.Table;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
 import dev.ward.application.init.ToolchainInitSupport;
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -28,12 +27,7 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
   @Override
   public Optional<String> gitignoreEntries(
       final Project project, final List<InitGateOption> gates) {
-    // Harmonize builds its own package, whose build output is Git-ignored only when it is checked.
-    return Optional.of(
-        ".ward/reports/\n.ward/swift-tools/.build/\n"
-            + (gates.stream().anyMatch(gate -> SwiftTools.HARMONIZE.equals(gate.id()))
-                ? ArchitectureGates.HARMONIZE_PACKAGE + "/.build/\n"
-                : ""));
+    return Optional.of(".ward/reports/\n.ward/swift-tools/.build/\n");
   }
 
   @Override
@@ -85,7 +79,7 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
 
   @Override
   public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
-    return SwiftCiSetup.steps(project, facts.harmonize());
+    return SwiftCiSetup.steps(project);
   }
 
   /** Swift builds need macOS, and Xcode 26 is the default on the macos-26 image. */

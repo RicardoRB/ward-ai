@@ -26,11 +26,7 @@ import java.util.stream.Collectors;
 public final class JvmInitSupport implements ToolchainInitSupport {
   private static final JavaGates JAVA = new JavaGates();
   private static final int DEFAULT_CI_JDK = 25;
-  private static final String ARCHUNIT = "archunit";
   private static final String COVERAGE = "coverage";
-  private static final String MULTI_MODULE_NO_ARCHUNIT =
-      "archunit is not offered for this Gradle build: its modules already enforce the dependency"
-          + " direction between them.";
   private static final String SKIPPED_MODULES =
       "These modules are left out of the gates that init places per module, because they have no"
           + " Java sources or apply no Java or Kotlin JVM plugin: ";
@@ -46,13 +42,11 @@ public final class JvmInitSupport implements ToolchainInitSupport {
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment());
-    final boolean multiModule = multiModuleKotlin(project, inputs.environment());
     final boolean android = project.framework() == Framework.ANDROID;
     return new Gates(
-        analysisGates(project, buildTool, multiModule, android),
+        analysisGates(project, buildTool, android),
         buildTool.policyGates().stream()
             .filter(gate -> !"api-compat".equals(gate.id()) || project.hasApiBaseline())
-            .filter(gate -> !(multiModule && ARCHUNIT.equals(gate.id())))
             .toList());
   }
 
@@ -61,13 +55,9 @@ public final class JvmInitSupport implements ToolchainInitSupport {
    * an Android project, whose root build has no JaCoCo verification task.
    */
   private static List<InitGateOption> analysisGates(
-      final Project project,
-      final BuildToolGates buildTool,
-      final boolean multiModule,
-      final boolean android) {
+      final Project project, final BuildToolGates buildTool, final boolean android) {
     final List<InitGateOption> gates =
         SourceLanguages.of(LANGUAGES, project).analysisGates(buildTool).stream()
-            .filter(gate -> !(multiModule && ARCHUNIT.equals(gate.id())))
             .filter(gate -> !(android && COVERAGE.equals(gate.id())))
             .collect(Collectors.toCollection(ArrayList::new));
     if (android) {
@@ -79,26 +69,15 @@ public final class JvmInitSupport implements ToolchainInitSupport {
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final boolean multiModule = multiModuleKotlin(project, inputs.environment());
     final boolean android = project.framework() == Framework.ANDROID;
     final List<String> gates =
         SourceLanguages.of(LANGUAGES, project).presetGates(preset).stream()
-            .filter(gate -> !(multiModule && ARCHUNIT.equals(gate)))
             .filter(gate -> !(android && COVERAGE.equals(gate)))
             .collect(Collectors.toCollection(ArrayList::new));
     if (android) {
       gates.addAll(ANDROID_GATES);
     }
     return gates;
-  }
-
-  /**
-   * Returns whether a Gradle build has a Kotlin module below its root. Its module boundaries
-   * already enforce the dependency direction, so ArchUnit is not offered there.
-   */
-  static boolean multiModuleKotlin(final Project project, final EnvironmentInspection environment) {
-    return project.buildTool() == BuildTool.GRADLE
-        && !environment.gradleKotlinModules(project.root()).isEmpty();
   }
 
   @Override
@@ -118,12 +97,6 @@ public final class JvmInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public List<InitGateOption> reuseTests(
-      final Project project, final List<InitGateOption> gates, final List<String> tests) {
-    return ArchUnitGateReuse.rewrite(project, gates, tests);
-  }
-
-  @Override
   public List<GateOmission> omissions(
       final Project project, final List<String> gateIds, final InitInputs inputs) {
     return new JdkGates(inputs).omissions(project, gateIds);
@@ -134,9 +107,6 @@ public final class JvmInitSupport implements ToolchainInitSupport {
       final Project project, final QualityPreset preset, final InitInputs inputs) {
     final List<String> notes = new ArrayList<>();
     final EnvironmentInspection environment = inputs.environment();
-    if (preset == QualityPreset.STRICT && multiModuleKotlin(project, environment)) {
-      notes.add(MULTI_MODULE_NO_ARCHUNIT);
-    }
     final List<String> skipped = environment.skippedJvmModules(project.root());
     if (!skipped.isEmpty()) {
       notes.add(SKIPPED_MODULES + String.join(", ", skipped) + ".");

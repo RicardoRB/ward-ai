@@ -25,16 +25,6 @@ public final class GradleBuildBlocks {
               "",
               (kotlin, preset, versions, module) -> GradleQualityBlocks.enforcement(kotlin)),
           new Block(
-              "archunit",
-              false,
-              false,
-              "archunit-junit5",
-              "archunit-junit5",
-              GradleToolCatalog.ARCHUNIT,
-              (kotlin, preset, versions, module) ->
-                  GradleQualityBlocks.archunit(
-                      kotlin, versions.version(GradleToolCatalog.ARCHUNIT))),
-          new Block(
               "dependency-check",
               false,
               false,

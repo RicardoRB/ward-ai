@@ -47,7 +47,6 @@ class PomToolMatrixTest {
           "sonar",
           "coverage",
           "dependency-check",
-          "archunit",
           "mutation",
           "enforcer",
           "format",

@@ -19,7 +19,7 @@ class SwiftStrictGatesTest {
     final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STRICT, false));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swiftlint", "swift-build", "swift-test", "swift-coverage", "harmonize");
+        .containsExactly("swiftlint", "swift-build", "swift-test", "swift-coverage");
     assertThat(command(gates, "swiftlint"))
         .endsWith("lint", "--reporter", "json", "--quiet", "--strict")
         .doesNotContain("--config");

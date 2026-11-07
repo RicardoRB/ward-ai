@@ -59,7 +59,6 @@ prerequisites, its learning keys, and whether `--exclude-spec` selects it. The n
 command = "./mvnw checkstyle:check" # inferred: checkstyle
 
 [checks.archunit]
-uses = "archunit"
 command = "./mvnw -Dtest=ArchitectureBoundaryTest test" # a filtered test run is not inferred as tests
 
 [checks.lint]

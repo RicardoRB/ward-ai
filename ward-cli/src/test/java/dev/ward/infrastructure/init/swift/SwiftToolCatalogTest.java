@@ -13,7 +13,6 @@ class SwiftToolCatalogTest {
     assertThat(SwiftToolCatalog.forXcode(SwiftToolCatalog.SWIFTLINT, "26.0")).isPresent();
     assertThat(SwiftToolCatalog.forXcode(SwiftToolCatalog.SWIFTLINT, "27.2")).isPresent();
     assertThat(SwiftToolCatalog.forXcode(SwiftToolCatalog.SWIFTLINT, "28.0")).isEmpty();
-    assertThat(SwiftToolCatalog.forXcode(SwiftToolCatalog.HARMONIZE, "25.9")).isEmpty();
   }
 
   @Test
@@ -56,12 +55,5 @@ class SwiftToolCatalogTest {
     assertThat(SwiftToolCatalog.SWIFTLINT_PLUGINS_VERSION).isEqualTo("0.65.1");
     assertThat(SwiftToolCatalog.SWIFTLINT_PLUGINS_URL)
         .isEqualTo("https://github.com/SimplyDanny/SwiftLintPlugins");
-  }
-
-  @Test
-  void pinsHarmonize130ExactlyFromItsRepository() {
-    assertThat(SwiftToolCatalog.HARMONIZE_VERSION).isEqualTo("1.3.0");
-    assertThat(SwiftToolCatalog.HARMONIZE_URL)
-        .isEqualTo("https://github.com/perrystreetsoftware/Harmonize.git");
   }
 }

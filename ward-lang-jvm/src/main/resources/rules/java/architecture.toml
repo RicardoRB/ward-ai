@@ -1,0 +1,31 @@
+# Architecture rules for Java that the ArchUnit tests of the strict preset used to enforce: no
+# field injection, and no access to the standard streams. Each rule is one check over the syntax
+# tree; the modifier names in [texts] of rules/modifiers/java.toml list the annotations.
+
+[[rules]]
+id = "ward:java/no-field-di"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "architecture"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["field-injection"]
+message = "field is injected; receive the dependency through the constructor"
+'''
+
+[[rules]]
+id = "ward:java/no-standard-streams"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "architecture"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^System\s*\.\s*(out|err|in)$'
+message = "access to a standard stream; write through the logger or an injected port"
+'''

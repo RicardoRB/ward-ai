@@ -28,7 +28,7 @@ class PomToolJdkVersionsTest {
   private static final int JAVA_25 = 25;
   private static final int JAVA_27 = 27;
   private static final List<String> STRICT_GATES =
-      List.of("checkstyle", "pmd", "spotbugs", "coverage", "archunit", "enforcer", "mutation");
+      List.of("checkstyle", "pmd", "spotbugs", "coverage", "enforcer", "mutation");
 
   @Test
   void jdk8StrictProjectGetsTheJdk8Rows(@TempDir final Path root) throws IOException {
@@ -38,14 +38,12 @@ class PomToolJdkVersionsTest {
         .contains(
             "<artifactId>checkstyle</artifactId><version>9.3</version>",
             "<artifactId>spotbugs-maven-plugin</artifactId><version>4" + ".8.6.6</version>",
-            "<version>1.17.4</version>",
-            "<version>1.5.1</version>")
+            "<version>1.17.4</version>")
         .doesNotContain("ENGINE_VERSION");
   }
 
   @Test
-  void jdk25StrictProjectKeepsTheCurrentPinsWithANewerArchUnit(@TempDir final Path root)
-      throws IOException {
+  void jdk25StrictProjectKeepsTheCurrentPins(@TempDir final Path root) throws IOException {
     final String pom = strictPom(root, JAVA_25);
 
     assertThat(pom)
@@ -53,9 +51,7 @@ class PomToolJdkVersionsTest {
             "<version>3.6.0</version>",
             "<artifactId>checkstyle</artifactId><version>10.20.2</version>",
             "<artifactId>spotbugs-maven-plugin</artifactId><version>4" + ".9.7.0</version>",
-            "<version>1.30.1</version>",
-            "<artifactId>archunit-junit5</artifactId>",
-            "<version>1.5.1</version>");
+            "<version>1.30.1</version>");
   }
 
   @Test

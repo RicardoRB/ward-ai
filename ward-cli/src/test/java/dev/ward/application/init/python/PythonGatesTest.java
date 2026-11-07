@@ -52,13 +52,13 @@ class PythonGatesTest {
   }
 
   @Test
-  void standardPresetSelectsFiveGatesAndKeepsAuditAndMutationOptIn() {
+  void standardPresetSelectsFourGatesAndKeepsAuditAndMutationOptIn() {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STANDARD))
         .containsExactly("ruff", "mypy", "pytest", "coverage");
     assertThat(gates(BuildTool.UV, QualityPreset.STANDARD, false).stream().map(InitGateOption::id))
-        .contains("pip-audit", "mutmut", "import-linter");
+        .contains("pip-audit", "mutmut");
   }
 
   @Test
@@ -66,7 +66,7 @@ class PythonGatesTest {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STRICT))
-        .containsExactly("ruff", "mypy", "pytest", "coverage", "import-linter", "mutmut");
+        .containsExactly("ruff", "mypy", "pytest", "coverage", "mutmut");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STRICT, false), "mutmut", "minimum"))
         .isEqualTo("60");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STANDARD, false), "mutmut", "minimum"))

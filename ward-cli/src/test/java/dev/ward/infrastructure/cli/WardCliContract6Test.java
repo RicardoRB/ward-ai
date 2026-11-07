@@ -67,7 +67,7 @@ uses = "zap"
     out.getBuffer().setLength(0);
 
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.OK);
-    assertThat(project.resolve(".ward")).doesNotExist();
+    assertThat(project.resolve(".ward/learning.json")).doesNotExist();
   }
 
   @Test

@@ -3,14 +3,11 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.application.init.PreviousChoices;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.ArchitectureEngine;
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,21 +69,7 @@ final class InitQuestions {
     final QualityPreset preset = preset(gatesGiven);
     final List<String> integrations = integrations();
     final List<String> gates = gates(gatesGiven, preset);
-    // A preset given as an option or by default keeps its architecture default; only chosen gates
-    // prompt for a style.
-    final List<String> chosenGates =
-        gatesGiven
-            ? Objects.requireNonNullElse(answers.gates(), List.<String>of())
-            : useDefaults ? List.of() : gates;
-    final String architecture = architecture(chosenGates, gates);
-    final ArchitectureEngine engine =
-        new EngineQuestions(
-                answers.architectureEngine(),
-                new ArchitectureEngineQuestion(wizard.answering, wizard.prompt, wizard.out),
-                progress,
-                useDefaults,
-                project)
-            .resolve(architecture, gates);
+    final String architecture = architecture(preset, gatesGiven);
     final ToolQuestions.Selection tools =
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
             .resolve(catalog, project, gates);
@@ -104,8 +87,7 @@ final class InitQuestions {
         answers.ci(),
         answers.agentRules(),
         new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
-            .scheme(catalog, project),
-        engine);
+            .scheme(catalog, project));
   }
 
   private QualityPreset preset(final boolean gatesGiven) {
@@ -171,18 +153,15 @@ final class InitQuestions {
             : catalog.presetGates(project, preset));
   }
 
-  private String architecture(final List<String> chosenGates, final List<String> gates) {
-    if (Collections.disjoint(chosenGates, ArchitectureGates.IDS)) {
-      return answers.architecture() == null
-              && useDefaults
-              && !Collections.disjoint(gates, ArchitectureGates.IDS)
-          ? DEFAULT_ARCHITECTURE
-          : answers.architecture();
-    }
+  /**
+   * The architecture style: the option when given, the default with defaults, outside a strict
+   * wizard, or when the preset was given as an option; otherwise asked.
+   */
+  private String architecture(final QualityPreset preset, final boolean gatesGiven) {
     final String selected;
     if (answers.architecture() != null) {
       selected = answers.architecture();
-    } else if (useDefaults) {
+    } else if (useDefaults || gatesGiven || preset != QualityPreset.STRICT) {
       selected = DEFAULT_ARCHITECTURE;
     } else {
       progress.expect(1);
@@ -232,8 +211,7 @@ final class InitQuestions {
       String ci,
       boolean agentRules,
       boolean yes,
-      String scheme,
-      String architectureEngine) {
+      String scheme) {
     boolean setupGiven() {
       return preset != null || gates != null || integrations != null;
     }
