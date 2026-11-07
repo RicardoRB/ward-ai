@@ -28,8 +28,8 @@ checkstyle = ["LambdaBodyLength"]
 
 [[rule]]
 name = "line-length"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["MaxLineLength"]
 checkstyle = ["LineLength"]
 ktlint = ["max-line-length"]
