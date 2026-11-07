@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -72,7 +73,7 @@ public final class EqualsAvoidNullCheck implements UnitCheck {
   }
 
   private boolean reported(final String text) {
-    final var matcher = CALL.matcher(text);
+    final Matcher matcher = CALL.matcher(text);
     return matcher.matches()
         && !(ignoreEqualsIgnoreCase && "equalsIgnoreCase".equals(matcher.group(1)));
   }
