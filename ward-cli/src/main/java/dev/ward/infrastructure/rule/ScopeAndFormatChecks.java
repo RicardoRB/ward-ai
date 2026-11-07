@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.check.AncestorCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
+import dev.ward.analysis.domain.rule.check.HiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.ModuleOrderCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
@@ -9,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
 import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
+import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.scope.ScopeKind;
 import java.util.Locale;
 import java.util.Optional;
@@ -35,7 +37,9 @@ final class ScopeAndFormatChecks {
           "dot-format",
           "logging-args",
           "ancestor-check",
-          "module-order" ->
+          "module-order",
+          "hidden-field",
+          "variable-declaration-usage-distance" ->
           true;
       default -> false;
     };
@@ -51,6 +55,10 @@ final class ScopeAndFormatChecks {
       case "dot-format" -> dotFormat(toml);
       case "ancestor-check" -> ancestorCheck(toml);
       case "module-order" -> moduleOrder(toml);
+      case "hidden-field" -> new HiddenFieldCheck(TomlValues.required(toml, MESSAGE));
+      case "variable-declaration-usage-distance" ->
+          new VariableDistanceCheck(
+              TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE));
       default -> loggingArgs(toml);
     };
   }

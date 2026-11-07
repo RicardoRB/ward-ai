@@ -70,6 +70,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/swift/part-3.toml",
           "rules/swift/modifier-order.toml",
           "rules/swift/declaration-order.toml",
+          "rules/swift/scope-style.toml",
           "rules/swift/performance.toml",
           "rules/swift/idiomatic.toml",
           "rules/swift/lint.toml",
