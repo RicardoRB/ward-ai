@@ -44,11 +44,23 @@ final class MemberReader {
           case "constructorDeclaration" -> constructor(part);
           case "propertyMemberDeclaration" -> classMember(part, decorators);
           case "indexMemberDeclaration" -> indexSignature(TreeKit.child(part, "indexSignature"));
+          case "methodDefinition" -> scriptMethod(part, decorators);
           default -> {
             // decorators were read above; statements in a class body declare no members
           }
         }
       }
+    }
+  }
+
+  /** Reads a method of a JavaScript class, whose parameters carry no types. */
+  private void scriptMethod(final SyntaxNode node, final List<String> decorators) {
+    final String name = TreeKit.text(TreeKit.child(node, "classElementName"));
+    final Sig sig = new Sig(List.of(), SigReader.params(node), Ty.UNKNOWN);
+    if (isConstructor(name)) {
+      constructs.add(sig);
+    } else {
+      method(name, sig, TreeKit.hasToken(node, "static") ? Member.STATIC : 0, decorators);
     }
   }
 
@@ -167,13 +179,18 @@ final class MemberReader {
     final SyntaxNode modifier = TreeKit.child(argument, "accessibilityModifier");
     if (modifier != null) {
       final int hidden = "public".equals(TreeKit.text(modifier)) ? 0 : Member.HIDDEN;
-      final Param param = SigReader.params(wrap(argument)).get(0);
-      members.add(new Member(param.name(), param.type(), List.of(), hidden, List.of()));
+      SigReader.params(wrap(argument))
+          .forEach(
+              param ->
+                  members.add(
+                      new Member(param.name(), param.type(), List.of(), hidden, List.of())));
     }
   }
 
   private static SyntaxNode wrap(final SyntaxNode argument) {
-    return new SyntaxNode("formalParameterList", argument.span(), Map.of(), List.of(argument));
+    final SyntaxNode list =
+        new SyntaxNode("formalParameterList", argument.span(), Map.of(), List.of(argument));
+    return new SyntaxNode("holder", argument.span(), Map.of(), List.of(list));
   }
 
   private void classMember(final SyntaxNode node, final List<String> decorators) {

@@ -54,24 +54,14 @@ final class CallTyper {
   private Optional<Call> resolve(final SyntaxNode node) {
     final List<SyntaxNode> parts = TreeKit.parts(node);
     final SyntaxNode callee = parts.get(0);
-    final List<SyntaxNode> arguments =
-        Exprs.arguments(Exprs.IDENTIFIER_NAME.equals(callee.kind()) ? parts.get(1) : parts.get(1));
-    final List<Ty> types = argumentTypes(arguments, contextSigs(parts.get(0)));
+    final List<Ty> types = argumentTypes(Exprs.arguments(parts.get(1)), contextSigs(callee));
     final List<SyntaxNode> calleeParts = TreeKit.parts(callee);
     final String name = Exprs.memberName(calleeParts);
-    if (!Exprs.IDENTIFIER_NAME.equals(callee.kind()) && name != null) {
+    final SyntaxNode target = Exprs.nameOf(callee);
+    if (target == null && name != null) {
       return viaMember(calleeParts, name, types);
     }
-    final SyntaxNode target =
-        Exprs.IDENTIFIER_NAME.equals(callee.kind()) ? callee : unwrapName(callee);
     return target == null ? viaType(typer.typeOf(callee), types) : viaName(target, types);
-  }
-
-  private static SyntaxNode unwrapName(final SyntaxNode callee) {
-    final List<SyntaxNode> parts = TreeKit.parts(callee);
-    return parts.size() == 1 && Exprs.IDENTIFIER_NAME.equals(parts.get(0).kind())
-        ? parts.get(0)
-        : null;
   }
 
   /**
@@ -151,8 +141,7 @@ final class CallTyper {
     return switch (type) {
       case Ty.Fn fn -> List.of(fn.sig());
       case Ty.Typeof typeOf -> functionSigs(typeOf);
-      case Ty.Named named when named.ref() != null && named.ref().sym() != null ->
-          interfaceCalls(named);
+      case Ty.Named named -> interfaceCalls(named);
       case Ty.Obj obj ->
           obj.members().stream()
               .filter(member -> "()".equals(member.name()))
@@ -179,7 +168,11 @@ final class CallTyper {
 
   private static List<Sig> interfaceCalls(final Ty.Named named) {
     final List<Sig> sigs = new ArrayList<>();
-    for (final Sym.Located located : named.ref().sym().types()) {
+    final Sym sym = named.ref() == null ? null : named.ref().sym();
+    if (sym == null) {
+      return sigs;
+    }
+    for (final Sym.Located located : sym.types()) {
       final Map<String, Ty> subst =
           Members.substitution(located.decl().header().typeParams(), named.args());
       located
@@ -202,7 +195,7 @@ final class CallTyper {
     final List<SyntaxNode> parts = TreeKit.parts(node);
     final SyntaxNode target = parts.get(1);
     final List<SyntaxNode> targetParts = TreeKit.parts(target);
-    final SyntaxNode nameNode = nameOf(target, targetParts);
+    final SyntaxNode nameNode = nameOf(target);
     if (nameNode == null) {
       return Optional.empty();
     }
@@ -234,16 +227,13 @@ final class CallTyper {
     return call;
   }
 
-  private static SyntaxNode nameOf(final SyntaxNode target, final List<SyntaxNode> parts) {
-    if (Exprs.IDENTIFIER_NAME.equals(target.kind())) {
-      return target;
+  private static SyntaxNode nameOf(final SyntaxNode target) {
+    SyntaxNode current = target;
+    while (current != null && !Exprs.isNameKind(current.kind())) {
+      final List<SyntaxNode> parts = TreeKit.parts(current);
+      current = parts.isEmpty() || Exprs.memberName(parts) != null ? null : parts.get(0);
     }
-    if (parts.isEmpty()) {
-      return null;
-    }
-    return Exprs.IDENTIFIER_NAME.equals(parts.get(0).kind())
-        ? parts.get(0)
-        : nameOf(parts.get(0), TreeKit.parts(parts.get(0)));
+    return current;
   }
 
   private List<Ty> typeArguments(final List<SyntaxNode> targetParts) {

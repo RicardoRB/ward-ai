@@ -24,7 +24,7 @@ final class Globals implements Lookup {
 
   private final Program program;
   private final Set<String> projectDeclarationFiles;
-  private Map<String, Sym> index;
+  private Map<String, Sym> symbols;
   private Map<String, List<Decl>> ambient;
   private Map<String, Module> ambientModules;
 
@@ -51,19 +51,20 @@ final class Globals implements Lookup {
       return null;
     }
     return ambientModules.computeIfAbsent(
-        specifier, key -> new Module(program, "module:" + key, FileDecls.EMPTY, decls, true));
+        specifier,
+        key -> new Module(program, "module:" + key, FileDecls.EMPTY, decls, Module.Kind.AMBIENT));
   }
 
   private synchronized Map<String, Sym> index() {
-    if (index == null) {
-      index = new HashMap<>();
+    if (symbols == null) {
+      symbols = new HashMap<>();
       ambient = new HashMap<>();
       ambientModules = new HashMap<>();
       for (final Module module : modules()) {
-        module.names().forEach(name -> index.merge(name, module.own(name), Sym::join));
+        module.names().forEach(name -> symbols.merge(name, module.own(name), Sym::join));
       }
     }
-    return index;
+    return symbols;
   }
 
   private List<Module> modules() {
@@ -84,11 +85,11 @@ final class Globals implements Lookup {
   private void load(final String path, final List<Module> modules, final List<String> queue) {
     final FileDecls file = program.file(path);
     if (!file.isModule()) {
-      modules.add(new Module(program, path, file, file.decls(), true));
+      modules.add(new Module(program, path, file, file.decls(), Module.Kind.GLOBAL));
     }
     final List<Decl> augmentation = file.modules().get(DeclReader.globalKey());
     if (augmentation != null) {
-      modules.add(new Module(program, path + "#global", file, augmentation, true));
+      modules.add(new Module(program, path + "#global", file, augmentation, Module.Kind.GLOBAL));
     }
     file.modules()
         .forEach(

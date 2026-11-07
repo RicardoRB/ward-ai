@@ -8,6 +8,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Repairs the expressions that the grammar reads as a name followed by an expression: {@code f(x)},
@@ -21,6 +22,8 @@ final class Reassociate {
   private static final String SINGLE = "singleExpression";
   private static final String ARGUMENTS = "arguments";
   private static final String SEQUENCE = "expressionSequence";
+  private static final int INDEX_PARTS = 3;
+  private static final Set<String> MEMBER_TOKENS = Set.of(".", "?.", "!", "?");
   private static final Map<String, Integer> PRECEDENCE =
       Map.ofEntries(
           Map.entry("*", 13),
@@ -72,7 +75,40 @@ final class Reassociate {
     }
     final SyntaxNode current =
         changed ? new SyntaxNode(node.kind(), node.span(), node.fields(), children) : node;
-    return SINGLE.equals(node.kind()) ? repair(current).orElse(current) : current;
+    if (!SINGLE.equals(node.kind())) {
+      return current;
+    }
+    return rotate(repair(current).orElse(current));
+  }
+
+  /**
+   * The grammar hands the tail of {@code a * b + c} to {@code b}, which leaves a right operand that
+   * binds looser than its operator; this turns it into {@code (a * b) + c}.
+   */
+  private static SyntaxNode rotate(final SyntaxNode node) {
+    final List<SyntaxNode> parts = TreeKit.parts(node);
+    if (parts.size() != INDEX_PARTS || !PRECEDENCE.containsKey(Exprs.token(parts.get(1)))) {
+      return node;
+    }
+    final List<SyntaxNode> right = TreeKit.parts(parts.get(2));
+    final boolean looser =
+        right.size() == INDEX_PARTS
+            && !Exprs.isParenthesized(right)
+            && PRECEDENCE.containsKey(Exprs.token(right.get(1)))
+            && PRECEDENCE.get(Exprs.token(right.get(1)))
+                <= PRECEDENCE.get(Exprs.token(parts.get(1)));
+    if (!looser) {
+      return node;
+    }
+    final SyntaxNode left =
+        new SyntaxNode(
+            SINGLE,
+            cover(parts.get(0).span(), right.get(0).span()),
+            Map.of(),
+            List.of(parts.get(0), parts.get(1), right.get(0)));
+    return rotate(
+        new SyntaxNode(
+            SINGLE, node.span(), Map.of(), List.of(rotate(left), right.get(1), right.get(2))));
   }
 
   private static Optional<SyntaxNode> repair(final SyntaxNode node) {
@@ -131,6 +167,11 @@ final class Reassociate {
   }
 
   private static Optional<Item> suffix(final List<SyntaxNode> rest) {
+    final Optional<Item> postfix = postfixItem(rest);
+    return postfix.isPresent() ? postfix : binaryItem(rest);
+  }
+
+  private static Optional<Item> postfixItem(final List<SyntaxNode> rest) {
     final String first = Exprs.token(rest.get(0));
     if (rest.size() == 1 && ARGUMENTS.equals(rest.get(0).kind())) {
       return Optional.of(new Item(Kind.CALL, "", List.of(rest.get(0))));
@@ -138,16 +179,19 @@ final class Reassociate {
     if (rest.size() == 1 && "!".equals(first)) {
       return Optional.of(new Item(Kind.NONNULL, first, rest));
     }
-    if (".".equals(first) || "?.".equals(first) || "!".equals(first) || "?".equals(first)) {
+    if (MEMBER_TOKENS.contains(first)) {
       return Optional.of(new Item(Kind.MEMBER, first, rest));
     }
-    if ("[".equals(first) && rest.size() == 3) {
-      return Optional.of(new Item(Kind.INDEX, "", rest));
-    }
-    if (rest.size() == 2 && PRECEDENCE.containsKey(first)) {
-      return Optional.of(new Item(Kind.BINARY, first, List.of(rest.get(1))));
-    }
-    return Optional.empty();
+    return "[".equals(first) && rest.size() == INDEX_PARTS
+        ? Optional.of(new Item(Kind.INDEX, "", rest))
+        : Optional.empty();
+  }
+
+  private static Optional<Item> binaryItem(final List<SyntaxNode> rest) {
+    final String first = Exprs.token(rest.get(0));
+    return rest.size() == 2 && PRECEDENCE.containsKey(first)
+        ? Optional.of(new Item(Kind.BINARY, first, List.of(rest.get(1))))
+        : Optional.empty();
   }
 
   private static SyntaxNode arguments(final SyntaxNode group) {

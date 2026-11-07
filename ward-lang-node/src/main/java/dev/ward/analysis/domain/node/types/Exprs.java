@@ -29,6 +29,21 @@ final class Exprs {
     return EXPRESSION_KINDS.contains(kind);
   }
 
+  /** Returns whether a node of {@code kind} is a name used as an expression. */
+  static boolean isNameKind(final String kind) {
+    return IDENTIFIER_NAME.equals(kind) || "identifier".equals(kind);
+  }
+
+  /** Returns the name node when {@code node} is, or wraps exactly, a name expression; else null. */
+  static SyntaxNode nameOf(final SyntaxNode node) {
+    SyntaxNode current = node;
+    while (current != null && !isNameKind(current.kind())) {
+      final List<SyntaxNode> parts = TreeKit.parts(current);
+      current = parts.size() == 1 ? parts.get(0) : null;
+    }
+    return current;
+  }
+
   /** Returns the text of {@code node} when it is a single token, else empty. */
   static String token(final SyntaxNode node) {
     final List<String> leaves = TreeKit.leaves(node);

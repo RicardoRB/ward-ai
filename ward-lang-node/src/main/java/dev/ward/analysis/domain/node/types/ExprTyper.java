@@ -18,6 +18,8 @@ final class ExprTyper {
   private static final String STRING = Literals.STRING;
   private static final String BOOLEAN = Literals.BOOLEAN;
   private static final String TYPE_ANNOTATION = "typeAnnotation";
+  private static final int BINARY_PARTS = 3;
+  private static final int TERNARY_PARTS = 5;
 
   private final UnitModel model;
   private final Program program;
@@ -63,7 +65,7 @@ final class ExprTyper {
     return switch (node.kind()) {
       case "expressionSequence" -> sequence(node);
       case "literal" -> Literals.of(node).orElse(Ty.UNKNOWN);
-      case Exprs.IDENTIFIER_NAME -> identifier(node);
+      case Exprs.IDENTIFIER_NAME, "identifier" -> identifier(node);
       case "arrayLiteral" -> arrayLiteral(node);
       case "objectLiteral" -> objectLiteral(node);
       case "anonymousFunction", "arrowFunctionDeclaration", "functionDeclaration" ->
@@ -116,17 +118,18 @@ final class ExprTyper {
   }
 
   private Ty infix(final SyntaxNode node, final List<SyntaxNode> parts) {
-    final SyntaxNode left = parts.get(0);
-    if (Exprs.IDENTIFIER_NAME.equals(left.kind())) {
-      return leadingName(node, parts);
+    if (Exprs.IDENTIFIER_NAME.equals(parts.get(0).kind())) {
+      return leadingCast(parts);
     }
     if (calls.isCall(parts)) {
       return calls.call(node).map(CallTyper.Call::returns).orElse(Ty.UNKNOWN);
     }
+    return Exprs.memberName(parts) != null ? member(parts) : operator(parts);
+  }
+
+  private Ty operator(final List<SyntaxNode> parts) {
+    final SyntaxNode left = parts.get(0);
     final String operator = Exprs.token(parts.get(1));
-    if (Exprs.memberName(parts) != null) {
-      return member(parts);
-    }
     return switch (operator) {
       case "[" -> element(parts);
       case "!" -> nonNull(typeOf(left));
@@ -134,23 +137,21 @@ final class ExprTyper {
       case "?" -> ternary(parts);
       case "=" -> typeOf(parts.get(parts.size() - 1));
       case "++", "--" -> Ty.named(NUMBER);
-      default -> parts.size() == 3 ? binary(operator, left, parts.get(2)) : Ty.UNKNOWN;
+      default ->
+          parts.size() == BINARY_PARTS
+              ? Operators.binary(operator, typeOf(left), typeOf(parts.get(2)))
+              : Ty.UNKNOWN;
     };
   }
 
-  private Ty leadingName(final SyntaxNode node, final List<SyntaxNode> parts) {
-    if (parts.size() == 2) {
-      final SyntaxNode next = parts.get(1);
-      final String token =
-          Exprs.token(TreeKit.parts(next).isEmpty() ? next : TreeKit.parts(next).get(0));
-      if ("(".equals(token)) {
-        return calls.call(node).map(CallTyper.Call::returns).orElse(Ty.UNKNOWN);
-      }
-      if ("as".equals(TreeKit.text(TreeKit.parts(next).get(0)))) {
-        return castTo(TreeKit.parts(next).get(1));
-      }
-    }
-    return Ty.UNKNOWN;
+  /**
+   * The grammar reads {@code a as T} as the name {@code a} followed by the expression {@code as T}.
+   */
+  private Ty leadingCast(final List<SyntaxNode> parts) {
+    final List<SyntaxNode> rest = parts.size() == 2 ? TreeKit.parts(parts.get(1)) : List.of();
+    return rest.size() == 2 && "as".equals(TreeKit.text(rest.get(0)))
+        ? castTo(rest.get(1))
+        : Ty.UNKNOWN;
   }
 
   private Ty asType(final List<SyntaxNode> parts, final SyntaxNode left) {
@@ -207,7 +208,7 @@ final class ExprTyper {
       case Ty.Tuple tuple -> tupleElement(tuple, parts);
       case Ty.Obj obj ->
           members.find(obj, "[]") == null ? Ty.UNKNOWN : members.find(obj, "[]").type();
-      case Ty.Named named when "string".equals(named.name()) -> Ty.named(STRING);
+      case Ty.Named named -> "string".equals(named.name()) ? Ty.named(STRING) : Ty.UNKNOWN;
       default -> Ty.UNKNOWN;
     };
   }
@@ -221,65 +222,10 @@ final class ExprTyper {
   }
 
   private Ty ternary(final List<SyntaxNode> parts) {
-    if (parts.size() != 5) {
+    if (parts.size() != TERNARY_PARTS) {
       return Ty.UNKNOWN;
     }
-    return join(typeOf(parts.get(2)), typeOf(parts.get(4)));
-  }
-
-  private static Ty join(final Ty first, final Ty second) {
-    if (!first.isKnown() || !second.isKnown()) {
-      return Ty.UNKNOWN;
-    }
-    return first.print().equals(second.print()) ? first : new Ty.Union(List.of(first, second));
-  }
-
-  private Ty binary(final String operator, final SyntaxNode leftNode, final SyntaxNode rightNode) {
-    final Ty left = typeOf(leftNode);
-    final Ty right = typeOf(rightNode);
-    return switch (operator) {
-      case "+" -> plus(left, right);
-      case "-", "*", "/", "%", "**", "<<", ">>", ">>>", "&", "|", "^" -> arithmetic(left, right);
-      case "==", "!=", "===", "!==", "<", ">", "<=", ">=", "instanceof", "in" -> Ty.named(BOOLEAN);
-      case "??" -> left.isKnown() ? join(nonNull(left), right) : Ty.UNKNOWN;
-      case "||" -> left.isKnown() ? join(withoutFalsy(left), right) : Ty.UNKNOWN;
-      case "&&" ->
-          left.isKnown() && right.isKnown() && left.print().equals(right.print())
-              ? left
-              : Ty.UNKNOWN;
-      default -> Ty.UNKNOWN;
-    };
-  }
-
-  private static Ty withoutFalsy(final Ty type) {
-    if (type instanceof Ty.Union union) {
-      final List<Ty> kept =
-          union.parts().stream()
-              .filter(part -> !Members.isNullish(part) && !"false".equals(part.print()))
-              .toList();
-      return kept.size() == 1 ? kept.get(0) : new Ty.Union(kept);
-    }
-    return type;
-  }
-
-  private static Ty plus(final Ty left, final Ty right) {
-    final String l = Literals.widen(left).print();
-    final String r = Literals.widen(right).print();
-    if (!left.isKnown() || !right.isKnown()) {
-      return STRING.equals(l) || STRING.equals(r) ? Ty.named(STRING) : Ty.UNKNOWN;
-    }
-    if (STRING.equals(l) || STRING.equals(r)) {
-      return Ty.named(STRING);
-    }
-    return NUMBER.equals(l) && NUMBER.equals(r)
-        ? Ty.named(NUMBER)
-        : "bigint".equals(l) && "bigint".equals(r) ? left : Ty.UNKNOWN;
-  }
-
-  private static Ty arithmetic(final Ty left, final Ty right) {
-    return "bigint".equals(left.print()) && "bigint".equals(right.print())
-        ? left
-        : Ty.named(NUMBER);
+    return Operators.join(typeOf(parts.get(2)), typeOf(parts.get(TERNARY_PARTS - 1)));
   }
 
   private Ty arrayLiteral(final SyntaxNode node) {
@@ -325,6 +271,9 @@ final class ExprTyper {
 
   private Ty identifier(final SyntaxNode node) {
     final String name = TreeKit.text(node);
+    if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
+      return Ty.named(name);
+    }
     final NameReference reference = model.reference(node.span());
     if (reference != null && reference.resolved().isPresent()) {
       return bindingValue(reference.resolved().get(), name);

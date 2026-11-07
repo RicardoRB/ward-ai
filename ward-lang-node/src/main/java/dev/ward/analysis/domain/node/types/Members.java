@@ -38,15 +38,24 @@ final class Members {
     }
     return switch (receiver) {
       case Ty.Named named -> named(named, name, depth);
-      case Ty.Arr arr -> inSym(global(ARRAY), List.of(arr.element()), name, depth);
-      case Ty.Tuple tuple -> inSym(global(ARRAY), List.of(common(tuple.elements())), name, depth);
-      case Ty.Fn fn -> inSym(global("Function"), List.of(), name, depth);
       case Ty.Obj obj -> object(obj, name);
       case Ty.Union union -> union(union, name, depth);
       case Ty.Inter inter -> inter(inter, name, depth);
       case Ty.Typeof typeOf -> statics(typeOf, name, depth);
       case Ty.Unknown unknown -> null;
+      default -> viaGlobal(receiver, name, depth);
     };
+  }
+
+  /** Arrays, tuples and functions have the members of the global interfaces of the library. */
+  private Found viaGlobal(final Ty receiver, final String name, final int depth) {
+    if (receiver instanceof Ty.Arr arr) {
+      return inSym(global(ARRAY), List.of(arr.element()), name, depth);
+    }
+    if (receiver instanceof Ty.Tuple tuple) {
+      return inSym(global(ARRAY), List.of(common(tuple.elements())), name, depth);
+    }
+    return inSym(global("Function"), List.of(), name, depth);
   }
 
   private Sym global(final String name) {
@@ -132,6 +141,9 @@ final class Members {
   }
 
   private Found inSym(final Sym sym, final List<Ty> args, final String name, final int depth) {
+    if (sym == null) {
+      return null;
+    }
     final List<Member> own = new ArrayList<>();
     final List<Sig> sigs = new ArrayList<>();
     Sym.Located owner = null;

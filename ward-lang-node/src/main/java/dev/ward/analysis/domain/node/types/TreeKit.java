@@ -110,6 +110,18 @@ final class TreeKit {
     return leaves.isEmpty() ? "" : leaves.get(0);
   }
 
+  /** Returns the name of a variable declaration, or null when it declares a pattern. */
+  static SyntaxNode variableName(final SyntaxNode declaration) {
+    SyntaxNode name = child(declaration, "identifierOrKeyWord");
+    if (name == null) {
+      name = child(declaration, "assignable");
+    }
+    if (name == null) {
+      return null;
+    }
+    return "identifier".equals(name.kind()) ? name : find(name, "identifier");
+  }
+
   /** Removes the quotes of a string literal. */
   static String unquote(final String literal) {
     final boolean quoted =

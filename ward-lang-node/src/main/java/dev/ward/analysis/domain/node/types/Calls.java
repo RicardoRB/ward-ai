@@ -51,7 +51,7 @@ final class Calls {
     if (!expected.isPrimitive() || !Literals.widen(argument).isPrimitive()) {
       return false;
     }
-    return !Literals.widen(argument).print().equals(expected.print());
+    return !Literals.widen(argument).print().equals(declared.print());
   }
 
   private static Ty returns(final Sig sig, final List<Ty> args) {
@@ -73,23 +73,28 @@ final class Calls {
 
   private static void unify(
       final Ty declared, final Ty argument, final List<String> params, final Map<String, Ty> out) {
-    switch (declared) {
-      case Ty.Named named when named.args().isEmpty() && params.contains(named.name()) ->
-          out.putIfAbsent(named.name(), Literals.widen(argument));
-      case Ty.Named named
-          when argument instanceof Ty.Named other && other.name().equals(named.name()) ->
-          pairwise(named.args(), other.args(), params, out);
-      case Ty.Arr arr when argument instanceof Ty.Arr other ->
-          unify(arr.element(), other.element(), params, out);
-      case Ty.Fn fn when argument instanceof Ty.Fn other ->
-          unify(fn.sig().returns(), other.sig().returns(), params, out);
-      case Ty.Union union ->
-          union.parts().stream()
-              .filter(part -> !Members.isNullish(part))
-              .forEach(part -> unify(part, argument, params, out));
-      default -> {
-        // nothing to learn from this pair
-      }
+    if (declared instanceof Ty.Named named) {
+      unifyNamed(named, argument, params, out);
+    } else if (declared instanceof Ty.Arr arr && argument instanceof Ty.Arr other) {
+      unify(arr.element(), other.element(), params, out);
+    } else if (declared instanceof Ty.Fn fn && argument instanceof Ty.Fn other) {
+      unify(fn.sig().returns(), other.sig().returns(), params, out);
+    } else if (declared instanceof Ty.Union union) {
+      union.parts().stream()
+          .filter(part -> !Members.isNullish(part))
+          .forEach(part -> unify(part, argument, params, out));
+    }
+  }
+
+  private static void unifyNamed(
+      final Ty.Named named,
+      final Ty argument,
+      final List<String> params,
+      final Map<String, Ty> out) {
+    if (named.args().isEmpty() && params.contains(named.name())) {
+      out.putIfAbsent(named.name(), Literals.widen(argument));
+    } else if (argument instanceof Ty.Named other && other.name().equals(named.name())) {
+      pairwise(named.args(), other.args(), params, out);
     }
   }
 

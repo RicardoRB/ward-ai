@@ -162,7 +162,7 @@ public final class Program {
     try {
       final FileDecls decls = file(path);
       return modules.computeIfAbsent(
-          path, key -> new Module(this, key, decls, decls.decls(), false));
+          path, key -> new Module(this, key, decls, decls.decls(), Module.Kind.FILE));
     } finally {
       lock.unlock();
     }
@@ -170,7 +170,7 @@ public final class Program {
 
   /** Returns the scope of a unit whose text was given rather than read. */
   Module unitModule(final String path, final FileDecls decls) {
-    return new Module(this, path, decls, decls.decls(), false);
+    return new Module(this, path, decls, decls.decls(), Module.Kind.FILE);
   }
 
   /** Returns the module that {@code specifier}, written in file {@code from}, names, or null. */

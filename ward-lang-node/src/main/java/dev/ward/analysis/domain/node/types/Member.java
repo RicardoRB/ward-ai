@@ -17,16 +17,16 @@ public record Member(String name, Ty type, List<Sig> sigs, int flags, List<Strin
   public static final int OPTIONAL = 1;
 
   /** The member is static. */
-  public static final int STATIC = 1 << 1;
+  public static final int STATIC = OPTIONAL << 1;
 
   /** The member is abstract. */
-  public static final int ABSTRACT = 1 << 2;
+  public static final int ABSTRACT = STATIC << 1;
 
   /** The member is read-only. */
-  public static final int READONLY = 1 << 3;
+  public static final int READONLY = ABSTRACT << 1;
 
   /** The member is private or protected. */
-  public static final int HIDDEN = 1 << 4;
+  public static final int HIDDEN = READONLY << 1;
 
   /** Copies the lists. */
   public Member {

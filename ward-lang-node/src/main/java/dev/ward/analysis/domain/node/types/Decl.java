@@ -26,16 +26,16 @@ public record Decl(
   public static final int EXPORTED = 1;
 
   /** The class is abstract. */
-  public static final int ABSTRACT = 1 << 1;
+  public static final int ABSTRACT = EXPORTED << 1;
 
   /** The declaration is the default export. */
-  public static final int DEFAULT = 1 << 2;
+  public static final int DEFAULT = ABSTRACT << 1;
 
   /** The constant is declared with {@code const}. */
-  public static final int CONST = 1 << 3;
+  public static final int CONST = DEFAULT << 1;
 
   /** The namespace stands for a whole module, imported with {@code * as}. */
-  public static final int MODULE = 1 << 4;
+  public static final int MODULE = CONST << 1;
 
   /** What a declaration declares. */
   public enum Kind {

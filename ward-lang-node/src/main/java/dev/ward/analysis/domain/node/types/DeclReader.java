@@ -18,6 +18,7 @@ public final class DeclReader {
   private static final Pattern REFERENCE =
       Pattern.compile("^///\\s*<reference\\s+(lib|path|types)\\s*=\\s*[\"']([^\"']+)[\"']");
   private static final String GLOBAL = "*global*";
+  private static final int ASSIGNMENT_PARTS = 3;
   private static final String STATEMENT = "statement";
   private static final String EXPORT = "export";
   private static final String DEFAULT = "default";
@@ -193,7 +194,7 @@ public final class DeclReader {
     final List<SyntaxNode> parts = TreeKit.parts(expression);
     if (parts.size() == 2 && DEFAULT.equals(TreeKit.text(parts.get(0)))) {
       defaultExpression(parts.get(1), flags | Decl.EXPORTED | Decl.DEFAULT, into, exportsInto);
-    } else if (parts.size() == 3
+    } else if (parts.size() == ASSIGNMENT_PARTS
         && EXPORT.equals(TreeKit.text(parts.get(0)))
         && "=".equals(TreeKit.text(parts.get(1)))) {
       exportsInto.add(new FileDecls.Export("=", TreeKit.text(parts.get(2)), ""));
@@ -227,7 +228,7 @@ public final class DeclReader {
       return found;
     }
     for (final SyntaxNode declaration : TreeKit.children(list, "variableDeclaration")) {
-      final SyntaxNode name = TreeKit.child(declaration, "identifierOrKeyWord");
+      final SyntaxNode name = TreeKit.variableName(declaration);
       if (name != null) {
         found.add(variable(declaration, TreeKit.text(name), flags | (isConst ? Decl.CONST : 0)));
       }
@@ -274,6 +275,10 @@ public final class DeclReader {
     final SyntaxNode heritage = TreeKit.child(node, "classHeritage");
     final List<Ty> extended = new ArrayList<>();
     final List<Ty> implemented = new ArrayList<>();
+    if (tail != null && TreeKit.hasToken(tail, "extends")) {
+      final SyntaxNode base = TreeKit.child(tail, "singleExpression");
+      extended.add(base == null ? Ty.UNKNOWN : TyParser.parse(TreeKit.leaves(base)));
+    }
     if (heritage != null) {
       final SyntaxNode extendsClause = TreeKit.child(heritage, "classExtendsClause");
       if (extendsClause != null) {

@@ -123,7 +123,7 @@ final class UnitModel {
         final SyntaxNode list = parents.get(node);
         final boolean isConst =
             declaresConst(list) || list != null && declaresConst(parents.get(list));
-        site(TreeKit.child(node, "identifierOrKeyWord"), SiteKind.VARIABLE, node, isConst);
+        site(TreeKit.variableName(node), SiteKind.VARIABLE, node, isConst);
       }
       case "functionDeclaration" ->
           site(TreeKit.child(node, "identifier"), SiteKind.FUNCTION, node, false);

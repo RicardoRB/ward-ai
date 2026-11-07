@@ -60,7 +60,7 @@ public final class NativeNodeTypeFacts implements TypeFacts {
     final Module module = program.unitModule(unit.path(), DeclReader.read(tree, unit.text()));
     final UnitModel model = new UnitModel(unit, tree, unitScopes, module);
     final ExprTyper typer = new ExprTyper(model, program, new Members(program));
-    final FactBuilder builder = new FactBuilder(model, typer, program);
+    final FactBuilder builder = new FactBuilder(model, typer);
     final Map<String, SpanFacts> facts = new HashMap<>();
     for (final Span span : spans) {
       final SpanFacts known = builder.at(span, kinds);

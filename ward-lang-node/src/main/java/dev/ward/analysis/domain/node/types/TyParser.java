@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.node.types;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -205,41 +206,50 @@ public final class TyParser {
 
   private List<String> typeParams() {
     final List<String> names = new ArrayList<>();
-    if (accept(LESS)) {
-      int depth = 1;
-      boolean expectName = true;
-      while (!failed && depth > 0 && position < tokens.size()) {
-        final String token = tokens.get(position++);
-        if (LESS.equals(token)) {
-          depth++;
-        } else if (GREATER.equals(token)) {
-          depth--;
-        } else if (expectName && depth == 1 && !isPunctuation(token) && !"const".equals(token)) {
-          names.add(token);
-          expectName = false;
-        } else if (COMMA.equals(token) && depth == 1) {
-          expectName = true;
-        }
-      }
-      failed |= depth > 0;
+    if (!accept(LESS)) {
+      return names;
     }
+    int depth = 1;
+    boolean expectName = true;
+    while (!failed && depth > 0 && position < tokens.size()) {
+      final String token = tokens.get(position++);
+      depth += depthChange(token);
+      if (depth == 1 && COMMA.equals(token)) {
+        expectName = true;
+      } else if (expectName && depth == 1 && isTypeParameterName(token)) {
+        names.add(token);
+        expectName = false;
+      }
+    }
+    failed |= depth > 0;
     return names;
   }
 
-  private java.util.Optional<Param> param() {
+  private static int depthChange(final String token) {
+    if (LESS.equals(token)) {
+      return 1;
+    }
+    return GREATER.equals(token) ? -1 : 0;
+  }
+
+  private static boolean isTypeParameterName(final String token) {
+    return !isPunctuation(token) && !"const".equals(token);
+  }
+
+  private Optional<Param> param() {
     final boolean rest = accept("...");
     final String name = peek(0);
     if (isPunctuation(name) || name.isEmpty()) {
       failed = true;
-      return java.util.Optional.empty();
+      return Optional.empty();
     }
     position++;
     final boolean optional = accept(QUESTION);
     final Ty type = accept(COLON) ? type() : Ty.UNKNOWN;
     if ("this".equals(name)) {
-      return java.util.Optional.empty();
+      return Optional.empty();
     }
-    return java.util.Optional.of(new Param(name, type, optional, rest));
+    return Optional.of(new Param(name, type, optional, rest));
   }
 
   private Ty tuple() {
@@ -247,10 +257,7 @@ public final class TyParser {
     final List<Ty> elements = new ArrayList<>();
     while (!failed && !at(CLOSE_BRACKET)) {
       accept("...");
-      if (!isPunctuation(peek(0))
-          && (COLON.equals(peek(1)) || QUESTION.equals(peek(1)) && COLON.equals(peek(2)))) {
-        position += COLON.equals(peek(1)) ? 2 : 3;
-      }
+      skipLabel();
       elements.add(type());
       accept(QUESTION);
       if (!at(CLOSE_BRACKET)) {
@@ -259,6 +266,14 @@ public final class TyParser {
     }
     expect(CLOSE_BRACKET);
     return failed ? Ty.UNKNOWN : new Ty.Tuple(elements);
+  }
+
+  /** Skips the label of a named tuple element: {@code name:} or {@code name?:}. */
+  private void skipLabel() {
+    final boolean optional = QUESTION.equals(peek(1));
+    if (!isPunctuation(peek(0)) && COLON.equals(peek(optional ? 2 : 1))) {
+      position += optional ? 2 + 1 : 2;
+    }
   }
 
   private Ty objectType() {
@@ -275,21 +290,15 @@ public final class TyParser {
   }
 
   private Member member() {
-    int flags = 0;
-    if (at("readonly") && !isPunctuation(peek(1)) && !COLON.equals(peek(1))) {
-      position++;
-      flags |= Member.READONLY;
-    }
+    int flags = readonlyFlag();
     if (at(OPEN_PAREN) || at(LESS)) {
-      final Sig sig = signature(COLON);
-      return new Member("()", new Ty.Fn(sig), List.of(sig), flags, List.of());
+      return callable("()", flags);
     }
     if (at(OPEN_BRACKET)) {
       return indexMember(flags);
     }
     final String name = unquote(peek(0));
-    if (name.isEmpty()
-        || NEW.equals(name) && at(NEW) && (OPEN_PAREN.equals(peek(1)) || LESS.equals(peek(1)))) {
+    if (name.isEmpty() || isConstructSignature(name)) {
       failed = true;
       return new Member("?", Ty.UNKNOWN, List.of(), 0, List.of());
     }
@@ -298,11 +307,27 @@ public final class TyParser {
       flags |= Member.OPTIONAL;
     }
     if (at(OPEN_PAREN) || at(LESS)) {
-      final Sig sig = signature(COLON);
-      return new Member(name, new Ty.Fn(sig), List.of(sig), flags, List.of());
+      return callable(name, flags);
     }
     expect(COLON);
     return new Member(name, type(), List.of(), flags, List.of());
+  }
+
+  private int readonlyFlag() {
+    if (at("readonly") && !isPunctuation(peek(1)) && !COLON.equals(peek(1))) {
+      position++;
+      return Member.READONLY;
+    }
+    return 0;
+  }
+
+  private boolean isConstructSignature(final String name) {
+    return NEW.equals(name) && (OPEN_PAREN.equals(peek(1)) || LESS.equals(peek(1)));
+  }
+
+  private Member callable(final String name, final int flags) {
+    final Sig sig = signature(COLON);
+    return new Member(name, new Ty.Fn(sig), List.of(sig), flags, List.of());
   }
 
   private Member indexMember(final int flags) {
@@ -333,6 +358,11 @@ public final class TyParser {
       name.append(DOT).append(peek(1));
       position += 2;
     }
+    final List<Ty> args = typeArguments();
+    return failed ? Ty.UNKNOWN : new Ty.Named(name.toString(), args, null);
+  }
+
+  private List<Ty> typeArguments() {
     final List<Ty> args = new ArrayList<>();
     if (accept(LESS)) {
       while (!failed && !at(GREATER)) {
@@ -343,6 +373,6 @@ public final class TyParser {
       }
       expect(GREATER);
     }
-    return failed ? Ty.UNKNOWN : new Ty.Named(name.toString(), args, null);
+    return args;
   }
 }

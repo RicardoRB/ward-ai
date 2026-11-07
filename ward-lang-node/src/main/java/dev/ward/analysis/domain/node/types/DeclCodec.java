@@ -60,7 +60,7 @@ public final class DeclCodec {
       read(in, DeclCodec::readModule)
           .forEach(entry -> modules.put(entry.getKey(), entry.getValue()));
       return Optional.of(new FileDecls(isModule, imports, decls, exports, modules, references));
-    } catch (IOException | RuntimeException corrupt) {
+    } catch (IOException | IllegalArgumentException | IndexOutOfBoundsException corrupt) {
       return Optional.empty();
     }
   }

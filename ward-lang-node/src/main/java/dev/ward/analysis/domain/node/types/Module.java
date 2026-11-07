@@ -7,8 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** The scope of one file, or of one ambient module declared in a file. */
+/** The scope of one file, of one ambient module declared in a file, or of global declarations. */
 final class Module implements Lookup {
+
+  /** What a module scope stands for. */
+  enum Kind {
+    /** A source or declaration file. */
+    FILE,
+    /** A module declared with {@code declare module "name"}. */
+    AMBIENT,
+    /** Declarations that are visible everywhere. */
+    GLOBAL
+  }
+
   private static final String DEFAULT = "default";
   private static final String STAR = "*";
   private static final String ASSIGNMENT = "=";
@@ -17,7 +28,7 @@ final class Module implements Lookup {
   private final String path;
   private final FileDecls file;
   private final List<Decl> decls;
-  private final boolean ambient;
+  private final Kind kind;
   private final Map<String, Sym> declared = new HashMap<>();
   private final Set<String> resolving = new HashSet<>();
 
@@ -26,12 +37,12 @@ final class Module implements Lookup {
       final String path,
       final FileDecls file,
       final List<Decl> decls,
-      final boolean ambient) {
+      final Kind kind) {
     this.program = program;
     this.path = path;
     this.file = file;
     this.decls = List.copyOf(decls);
-    this.ambient = ambient;
+    this.kind = kind;
     final Map<String, List<Decl>> byName = new HashMap<>();
     for (final Decl decl : this.decls) {
       byName.computeIfAbsent(decl.name(), key -> new ArrayList<>()).add(decl);
@@ -49,6 +60,9 @@ final class Module implements Lookup {
 
   @Override
   public Sym find(final String name) {
+    if (kind == Kind.GLOBAL) {
+      return program.globals().find(name);
+    }
     final Sym own = declared.get(name);
     final Sym imported = imported(name);
     final Sym local = own == null ? imported : own.join(imported);
@@ -116,7 +130,7 @@ final class Module implements Lookup {
 
   private Sym explicit(final String name) {
     final boolean implicit =
-        (ambient || path.endsWith(".d.ts"))
+        (kind != Kind.FILE || path.endsWith(".d.ts"))
             && file.exports().isEmpty()
             && decls.stream().noneMatch(decl -> decl.has(Decl.EXPORTED));
     final List<Decl> found = new ArrayList<>();
