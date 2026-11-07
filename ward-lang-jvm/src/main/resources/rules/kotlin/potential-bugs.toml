@@ -99,3 +99,18 @@ not-inside = ["functionBody"]
 text = '^(?:(?:override|open|final|public)\s*)*val\w*?\s*(:\s*(MutableList|MutableMap|MutableSet|ArrayList|HashMap|HashSet|LinkedHashMap|LinkedHashSet)|=\s*(mutableListOf|mutableMapOf|mutableSetOf|arrayListOf|hashMapOf|hashSetOf|linkedMapOf|linkedSetOf))'
 message = "public val exposes a mutable collection; expose a read-only type instead"
 '''
+
+[[rules]]
+id = "ward:kotlin/lateinit-usage"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyDeclaration"]
+not-inside = ["functionBody"]
+text = '^(?:(?:private|internal|protected|public|override|open)\s*)*lateinit'
+message = "lateinit property; use a nullable type or constructor injection"
+'''

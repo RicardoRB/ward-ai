@@ -73,3 +73,31 @@ kinds = ["jumpExpression"]
 text = '^throw\s*(ArrayIndexOutOfBoundsException|Exception|IllegalArgumentException|IllegalMonitorStateException|IllegalStateException|IndexOutOfBoundsException|NullPointerException|RuntimeException|Throwable)\s*\(\s*\)$'
 message = "exception is thrown without a message or a cause"
 '''
+
+[[rules]]
+id = "ward:kotlin/object-extends-throwable"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["objectDeclaration"]
+text = '^object\w*:(?:[\w.]+\.)?(\w*Exception|\w*Error|Throwable)\('
+message = "object extends Throwable; declare a class instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/not-implemented-declaration"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^TODO\('
+message = "TODO() call left in the code; implement it or remove it"
+'''

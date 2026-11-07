@@ -28,3 +28,31 @@ kinds = ["functionDeclaration"]
 text = 'suspendfun[^{=]*:(?:[\w.]+\.)?Flow<'
 message = "suspend function returns a Flow; a Flow is cold, so drop the suspend modifier"
 '''
+
+[[rules]]
+id = "ward:kotlin/global-coroutine-usage"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coroutines"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^GlobalScope\.'
+message = "GlobalScope starts a coroutine that nothing cancels; use a structured scope"
+'''
+
+[[rules]]
+id = "ward:kotlin/suspend-fun-with-coroutine-scope-receiver"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coroutines"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'suspendfun(?:<[^>]*>)?(?:[\w.]+\.)?CoroutineScope\.'
+message = "suspend function takes a CoroutineScope receiver; use coroutineScope instead"
+'''

@@ -419,9 +419,7 @@ detekt = ["FunctionOnlyReturningConstant"]
 
 [[rule]]
 name = "global-coroutine-usage"
-category = "coroutines"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["GlobalCoroutineUsage"]
 
 [[rule]]
@@ -516,9 +514,7 @@ detekt = ["LargeClass"]
 
 [[rule]]
 name = "lateinit-usage"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["LateinitUsage"]
 
 [[rule]]
@@ -649,9 +645,7 @@ detekt = ["NonBooleanPropertyPrefixedWithIs"]
 
 [[rule]]
 name = "not-implemented-declaration"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["NotImplementedDeclaration"]
 
 [[rule]]
@@ -677,9 +671,7 @@ detekt = ["NullableToStringCall"]
 
 [[rule]]
 name = "object-extends-throwable"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ObjectExtendsThrowable"]
 
 [[rule]]
@@ -830,9 +822,7 @@ detekt = ["SuspendFunSwallowedCancellation"]
 
 [[rule]]
 name = "suspend-fun-with-coroutine-scope-receiver"
-category = "coroutines"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["SuspendFunWithCoroutineScopeReceiver"]
 
 [[rule]]
