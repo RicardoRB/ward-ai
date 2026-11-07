@@ -22,7 +22,8 @@ class RuleCatalogContractTest {
   private static final int LAST_STYLE_ISSUE = 301;
   private static final int FIRST_TOOL_ISSUE = 308;
   private static final int LAST_TOOL_ISSUE = 341;
-  // Per-language issues split from the multi-language ones when the roadmaps were split (2026-11-07).
+  // Per-language issues split from the multi-language ones when the roadmaps were split
+  // (2026-11-07).
   private static final int FIRST_SPLIT_ISSUE = 446;
   private static final int LAST_SPLIT_ISSUE = 453;
 
