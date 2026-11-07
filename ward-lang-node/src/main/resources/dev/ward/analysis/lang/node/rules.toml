@@ -1376,6 +1376,344 @@ message = "use the spread operator instead of .apply()"
 '''
 
 [[rules]]
+id = "ward:typescript/no-global-is-nan"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isNaN\('
+message = "use Number.isNaN instead of the global isNaN"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-is-nan"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isNaN\('
+message = "use Number.isNaN instead of the global isNaN"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-is-finite"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isFinite\('
+message = "use Number.isFinite instead of the global isFinite"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-is-finite"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isFinite\('
+message = "use Number.isFinite instead of the global isFinite"
+'''
+
+[[rules]]
+id = "ward:typescript/no-focused-tests"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.only|f(describe|it|test))\('
+message = "focused test left in the code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-focused-tests"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.only|f(describe|it|test))\('
+message = "focused test left in the code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-skipped-tests"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.skip|x(describe|it|test))\('
+message = "skipped test left in the code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-skipped-tests"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.skip|x(describe|it|test))\('
+message = "skipped test left in the code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-then-property"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^then\s*:'
+message = "do not add a then property; it makes the object look like a thenable"
+'''
+
+[[rules]]
+id = "ward:javascript/no-then-property"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^then\s*:'
+message = "do not add a then property; it makes the object look like a thenable"
+'''
+
+[[rules]]
+id = "ward:typescript/no-document-cookie"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?document\.cookie$'
+message = "use a cookie library or the Cookie Store API instead of document.cookie"
+'''
+
+[[rules]]
+id = "ward:javascript/no-document-cookie"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?document\.cookie$'
+message = "use a cookie library or the Cookie Store API instead of document.cookie"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-eval"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^eval\('
+message = "do not call the global eval"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-eval"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^eval\('
+message = "do not call the global eval"
+'''
+
+[[rules]]
+id = "ward:typescript/no-process-env"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^process\.env(\.|\[)'
+message = "read configuration through the project's config, not process.env"
+'''
+
+[[rules]]
+id = "ward:javascript/no-process-env"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^process\.env(\.|\[)'
+message = "read configuration through the project's config, not process.env"
+'''
+
+[[rules]]
+id = "ward:typescript/no-substr"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.substr\('
+message = "use slice instead of the deprecated substr"
+'''
+
+[[rules]]
+id = "ward:javascript/no-substr"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.substr\('
+message = "use slice instead of the deprecated substr"
+'''
+
+[[rules]]
+id = "ward:typescript/no-delete"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete'
+message = "do not use the delete operator; it changes the object's shape"
+'''
+
+[[rules]]
+id = "ward:javascript/no-delete"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'delete'"]
+text = '^delete'
+message = "do not use the delete operator; it changes the object's shape"
+'''
+
+[[rules]]
+id = "ward:typescript/no-flat-map-identity"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.flatMap\(\s*(\w+)\s*=>\s*\1\s*\)'
+message = "flatMap with an identity callback; use flat instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-flat-map-identity"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.flatMap\(\s*(\w+)\s*=>\s*\1\s*\)'
+message = "flatMap with an identity callback; use flat instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-dirname-filename"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(__dirname|__filename)$'
+message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-dirname-filename"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(__dirname|__filename)$'
+message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
+'''
+
+[[rules]]
 id = "ward:typescript/regexp-singleline"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
