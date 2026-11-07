@@ -16,6 +16,8 @@ public final class ArrayTrailingCommaCheck implements UnitCheck {
 
   private static final String COMMA = "','";
   private static final String CLOSE = "'}'";
+  private static final String OPEN = "'{'";
+  private static final int MIN_CHILDREN = 3;
 
   private final boolean alwaysDemand;
   private final String message;
@@ -36,12 +38,12 @@ public final class ArrayTrailingCommaCheck implements UnitCheck {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("arrayInitializer"))) {
       final List<SyntaxNode> children = visit.node().children();
-      if (children.size() < 3) {
+      if (children.size() < MIN_CHILDREN) {
         continue;
       }
       final SyntaxNode close = children.get(children.size() - 1);
       final SyntaxNode last = children.get(children.size() - 2);
-      if (!CLOSE.equals(close.kind()) || COMMA.equals(last.kind()) || "'{'".equals(last.kind())) {
+      if (!CLOSE.equals(close.kind()) || COMMA.equals(last.kind()) || OPEN.equals(last.kind())) {
         continue;
       }
       if (alwaysDemand || close.span().startLine() > last.span().endLine()) {

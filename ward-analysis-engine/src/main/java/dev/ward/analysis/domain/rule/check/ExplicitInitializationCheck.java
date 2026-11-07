@@ -20,6 +20,8 @@ public final class ExplicitInitializationCheck implements UnitCheck {
   private static final Set<String> NUMERIC =
       Set.of("byte", "short", "int", "long", "float", "double");
   private static final Set<String> CHAR_ZEROES = Set.of("'\\0'", "'\\u0000'");
+  private static final String DECLARATOR = "variableDeclarator";
+  private static final String NULL = "null";
   private static final Set<String> NOT_ENTERED = Set.of("classBody", "block");
 
   private final boolean onlyObjectReferences;
@@ -58,7 +60,7 @@ public final class ExplicitInitializationCheck implements UnitCheck {
   private static List<SyntaxNode> declarators(final SyntaxNode node) {
     final List<SyntaxNode> found = new ArrayList<>();
     for (final SyntaxNode child : node.children()) {
-      if ("variableDeclarator".equals(child.kind())) {
+      if (DECLARATOR.equals(child.kind())) {
         found.add(child);
       } else if (!NOT_ENTERED.contains(child.kind())) {
         found.addAll(declarators(child));
@@ -75,7 +77,7 @@ public final class ExplicitInitializationCheck implements UnitCheck {
   }
 
   private boolean isDefault(final String type, final String value) {
-    if ("null".equals(value)) {
+    if (NULL.equals(value)) {
       return true;
     }
     if (onlyObjectReferences) {

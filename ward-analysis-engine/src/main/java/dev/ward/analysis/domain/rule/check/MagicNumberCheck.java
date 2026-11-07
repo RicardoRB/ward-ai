@@ -33,6 +33,11 @@ public final class MagicNumberCheck implements UnitCheck {
   private static final String ANNOTATION = "annotation";
   private static final String METHOD = "methodDeclaration";
   private static final String HASH_CODE = "hashCode";
+  private static final String LONG_SUFFIX = "[lL]$";
+  private static final String NUMBER_SUFFIX = "[lLfFdD]$";
+  private static final String HEX_PREFIX = "0x";
+  private static final String BINARY_PREFIX = "0b";
+  private static final int PREFIX_LENGTH = 2;
   private static final int RADIX_HEX = 16;
   private static final int RADIX_BINARY = 2;
   private static final int RADIX_OCTAL = 8;
@@ -131,20 +136,29 @@ public final class MagicNumberCheck implements UnitCheck {
 
   /** The value of a literal or a number written in source, or none when it is not one. */
   static OptionalDouble value(final String literal) {
-    final String digits = literal.replace("_", "").replaceAll("[lLfFdD]$", "");
+    final String cleaned = literal.replace("_", "");
+    final String digits = cleaned.replaceAll(isHex(cleaned) ? LONG_SUFFIX : NUMBER_SUFFIX, "");
     try {
-      if (digits.startsWith("0x") || digits.startsWith("0X")) {
-        return OptionalDouble.of(Long.parseLong(digits.substring(2), RADIX_HEX));
-      }
-      if (digits.startsWith("0b") || digits.startsWith("0B")) {
-        return OptionalDouble.of(Long.parseLong(digits.substring(2), RADIX_BINARY));
-      }
-      if (digits.length() > 1 && digits.startsWith("0") && !digits.contains(".")) {
-        return OptionalDouble.of(Long.parseLong(digits.substring(1), RADIX_OCTAL));
-      }
-      return OptionalDouble.of(Double.parseDouble(digits));
+      return OptionalDouble.of(parse(digits));
     } catch (final NumberFormatException exception) {
       return OptionalDouble.empty();
     }
+  }
+
+  private static double parse(final String digits) {
+    if (isHex(digits)) {
+      return Long.parseLong(digits.substring(PREFIX_LENGTH), RADIX_HEX);
+    }
+    if (digits.regionMatches(true, 0, BINARY_PREFIX, 0, PREFIX_LENGTH)) {
+      return Long.parseLong(digits.substring(PREFIX_LENGTH), RADIX_BINARY);
+    }
+    if (digits.length() > 1 && digits.startsWith("0") && !digits.contains(".")) {
+      return Long.parseLong(digits.substring(1), RADIX_OCTAL);
+    }
+    return Double.parseDouble(digits);
+  }
+
+  private static boolean isHex(final String text) {
+    return text.regionMatches(true, 0, HEX_PREFIX, 0, PREFIX_LENGTH);
   }
 }
