@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.application.rule.RuleDefinitions;
+import dev.ward.analysis.application.rule.RuleFileProvider;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
@@ -31,56 +32,6 @@ import org.tomlj.TomlTable;
  */
 public final class ClasspathRuleSource implements AnalysisRuleSource {
 
-  /** The rule files packaged with Ward, in load order. */
-  static final List<String> RULE_FILES =
-      List.of(
-          "rules/java/size.toml",
-          "rules/java/imports.toml",
-          "rules/java/design.toml",
-          "rules/java/naming.toml",
-          "rules/java/javadoc.toml",
-          "rules/java/dataflow.toml",
-          "rules/java/security.toml",
-          "rules/java/bestpractices.toml",
-          "rules/java/correctness.toml",
-          "rules/java/architecture.toml",
-          "rules/java/errorprone-part2.toml",
-          "rules/java/errorprone.toml",
-          "rules/java/pmd-errorprone.toml",
-          "rules/duplication-jvm.toml",
-          "rules/duplication-node.toml",
-          "rules/duplication-python.toml",
-          "rules/duplication-swift.toml",
-          "dev/ward/analysis/lang/node/rules.toml",
-          "rules/python-structural.toml",
-          "rules/python/pycodestyle.toml",
-          "rules/python/bugbear.toml",
-          "rules/python/checkstyle.toml",
-          "rules/python/flake8-comprehensions.toml",
-          "rules/python/flake8-errmsg.toml",
-          "rules/python/flake8-implicit-str-concat.toml",
-          "rules/python/pygrep-hooks.toml",
-          "rules/python/refurb.toml",
-          "rules/python/pyflakes.toml",
-          "rules/python/pylint.toml",
-          "rules/python/flake8-2020.toml",
-          "rules/python/flake8-debugger.toml",
-          "rules/python/refurb-calls.toml",
-          "rules/swift-structural.toml",
-          "rules/swift/part-3.toml",
-          "rules/swift/modifier-order.toml",
-          "rules/swift/declaration-order.toml",
-          "rules/swift/performance.toml",
-          "rules/swift/idiomatic.toml",
-          "rules/swift/lint.toml",
-          "rules/swift/idiomatic-2.toml",
-          "rules/kotlin/size.toml",
-          "rules/kotlin/naming.toml",
-          "rules/kotlin/exceptions.toml",
-          "rules/kotlin/coroutines.toml",
-          "rules/kotlin/performance.toml",
-          "rules/kotlin/potential-bugs.toml");
-
   private static final String RULES = "rules";
   private static final String ID = "id";
   private static final String LANGUAGE = "language";
@@ -90,10 +41,15 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
 
   private final List<String> resources;
 
-  /** Creates the source that loads the packaged rule files. */
-  @Inject
+  /** Creates the source that loads the packaged rule files of the bundled language modules. */
   public ClasspathRuleSource() {
-    this(RULE_FILES);
+    this(Set.copyOf(BundledLanguages.ruleFiles()));
+  }
+
+  /** Creates the source that loads the rule files of every given language module, sorted. */
+  @Inject
+  public ClasspathRuleSource(final Set<RuleFileProvider> providers) {
+    this(RuleFileProvider.sortedFiles(providers));
   }
 
   /** Creates the source that loads the given classpath resources, in order. */
