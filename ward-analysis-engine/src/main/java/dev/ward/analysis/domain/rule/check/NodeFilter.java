@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
  * child of kind {@code child}; the child may be a quoted token such as {@code '>'}. A node passes
  * when it has all of {@code modifiers} and none of {@code notModifiers}, some ancestor is in {@code
  * inside} (when given), no ancestor is in {@code notInside}, and the file passes {@code sources}.
+ * The {@code inside} and {@code notInside} kinds may be written {@code parent>child} too, so that
+ * {@code statement>'for'} names a loop.
  *
  * @param kinds the node kinds to look at
  * @param table how the language spells modifiers
@@ -66,8 +68,12 @@ public record NodeFilter(
 
   private boolean contextAdmits(final SyntaxWalk.Visit visit) {
     final boolean inOk =
-        inside.isEmpty() || visit.ancestors().stream().anyMatch(a -> inside.contains(a.kind()));
-    return inOk && visit.ancestors().stream().noneMatch(a -> notInside.contains(a.kind()));
+        inside.isEmpty() || inside.stream().anyMatch(selector -> hasAncestor(visit, selector));
+    return inOk && notInside.stream().noneMatch(selector -> hasAncestor(visit, selector));
+  }
+
+  private static boolean hasAncestor(final SyntaxWalk.Visit visit, final String selector) {
+    return visit.ancestors().stream().anyMatch(ancestor -> selects(selector, ancestor));
   }
 
   private boolean modifiersAdmit(final SyntaxWalk.Visit visit) {

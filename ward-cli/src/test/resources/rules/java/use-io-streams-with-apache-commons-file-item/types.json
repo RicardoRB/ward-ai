@@ -1,0 +1,31 @@
+{
+  "4:12-4:27": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.fileupload.FileItem"
+      },
+      "name": "getString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "4:12-4:15": {
+    "type": {
+      "name": "org.apache.commons.fileupload.FileItem"
+    }
+  },
+  "4:12-4:25": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.fileupload.FileItem"
+      },
+      "name": "getName",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}
