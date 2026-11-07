@@ -4,32 +4,35 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.rule.check.AnnotationStructureCheck;
 import dev.ward.analysis.domain.rule.check.AssignmentToNonFinalStaticCheck;
+import dev.ward.analysis.domain.rule.check.CallArgumentsCheck;
+import dev.ward.analysis.domain.rule.check.CompactConstructorAccessorCheck;
 import dev.ward.analysis.domain.rule.check.ConstructorCallsOverridableMethodCheck;
 import dev.ward.analysis.domain.rule.check.DetachedTestCaseCheck;
+import dev.ward.analysis.domain.rule.check.EnclosingMethodCheck;
 import dev.ward.analysis.domain.rule.check.JumbledIncrementerCheck;
 import dev.ward.analysis.domain.rule.check.MemberNamedAfterClassCheck;
 import dev.ward.analysis.domain.rule.check.ReturnEmptyCollectionCheck;
 import dev.ward.analysis.domain.rule.check.SingleMethodSingletonCheck;
 import dev.ward.analysis.domain.rule.check.StaticEjbFieldCheck;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
+import dev.ward.analysis.domain.rule.check.AnnotationStructureCheck;
+import java.util.List;
 
 /** Builds the class-level checks of the PMD error-prone rules that read the members of a class. */
 final class ErrorProneChecks {
 
   private static final String MESSAGE = "message";
   private static final String MEMBER = "member";
-  private static final String MEMBERS = "members";
 
   private ErrorProneChecks() {}
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
+        entry("annotation-structure", ErrorProneChecks::annotationStructure),
         entry(
             "member-named-after-class",
             toml ->
@@ -53,10 +56,37 @@ final class ErrorProneChecks {
         entry(
             "detached-test-case",
             toml -> new DetachedTestCaseCheck(TomlValues.required(toml, MESSAGE))),
-        entry("annotation-structure", ErrorProneChecks::annotationStructure),
+        entry("call-arguments", ErrorProneChecks::callArguments),
+        entry("enclosing-method", ErrorProneChecks::enclosingMethod),
+        entry(
+            "compact-constructor-accessor",
+            toml -> new CompactConstructorAccessorCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "jumbled-incrementer",
             toml -> new JumbledIncrementerCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static CallArgumentsCheck callArguments(final TomlParseResult toml) {
+    return new CallArgumentsCheck(
+        new CallArgumentsCheck.Criteria(
+            TomlValues.optionalStrings(toml, "declaring-types"),
+            TomlValues.optionalStrings(toml, "names"),
+            TomlValues.optionalStrings(toml, "argument-types"),
+            toml.getBoolean("odd-arguments", () -> false),
+            toml.getBoolean("null-varargs", () -> false)),
+        TomlValues.required(toml, MESSAGE));
+  }
+
+  private static EnclosingMethodCheck enclosingMethod(final TomlParseResult toml) {
+    final String text = toml.getString("text", () -> "");
+    final String annotation = toml.getString("annotation", () -> "");
+    return new EnclosingMethodCheck(
+        new EnclosingMethodCheck.Criteria(
+            TomlValues.optionalStrings(toml, "kinds"),
+            text.isEmpty() ? null : Pattern.compile(text),
+            TomlValues.optionalStrings(toml, "methods"),
+            annotation.isEmpty() ? null : Pattern.compile(annotation)),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static AnnotationStructureCheck annotationStructure(final TomlParseResult toml) {

@@ -1,0 +1,143 @@
+# Error Prone checks at ERROR severity for Java that depend on the context of a node: the enclosing
+# method, the argument list of a resolved call, or the components of a record. Each is on by default
+# in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/should-have-even-args"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments"
+declaring-types = ["com.google.common.truth.MapSubject"]
+names = ["containsExactly", "containsAtLeast"]
+odd-arguments = true
+message = "a map subject takes key and value pairs, so an odd number of arguments is missing a value"
+'''
+
+[[rules]]
+id = "ward:java/throw-if-unchecked-known-checked"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments"
+declaring-types = ["com.google.common.base.Throwables"]
+names = ["throwIfUnchecked"]
+argument-types = ["java.io.IOException", "java.lang.InterruptedException", "java.util.concurrent.ExecutionException", "java.util.concurrent.TimeoutException", "java.sql.SQLException", "java.lang.CloneNotSupportedException", "java.lang.ClassNotFoundException", "java.lang.ReflectiveOperationException", "java.security.GeneralSecurityException", "java.net.URISyntaxException"]
+message = "this exception is checked, so throwIfUnchecked never throws it; throw it or wrap it instead"
+'''
+
+[[rules]]
+id = "ward:java/null-needs-cast-for-varargs"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments"
+null-varargs = true
+message = "null passed for a variadic parameter is taken as the array itself; cast it to the element type or the array type"
+'''
+
+[[rules]]
+id = "ward:java/system-exit-outside-main"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "enclosing-method"
+kinds = ["expression"]
+text = '^(?:java\.lang\.)?System\.exit\('
+methods = ["main"]
+message = "System.exit outside main makes the code impossible to test; throw an exception or return a status instead"
+'''
+
+[[rules]]
+id = "ward:java/no-allocation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "enclosing-method"
+kinds = ["creator"]
+annotation = '^@(?:[\w.]*\.)?NoAllocation\b'
+message = "a method annotated @NoAllocation must not allocate; this creates an object"
+'''
+
+[[rules]]
+id = "ward:java/record-accessor-in-compact-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "compact-constructor-accessor"
+message = "the fields of a record are not assigned yet in its compact constructor, so the accessor returns the default value; use the parameter"
+'''
+
+[[rules]]
+id = "ward:java/try-fail-throwable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^try\{(?:.*;)?(?:Assert\.)?fail\([^;]*\);\}catch\((?:final)?(?:java\.lang\.)?Throwable\w+\)'
+message = "fail() throws an AssertionError that this catch of Throwable swallows; catch a narrower type or use assertThrows"
+'''
+
+[[rules]]
+id = "ward:java/unicode-in-code"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["identifier"]
+text = '[^\x00-\x7F]'
+message = "identifier uses a non-ASCII character; use ASCII letters and digits"
+'''
+
+[[rules]]
+id = "ward:java/unused-anonymous-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '(?s)^new[\w.<>,?]+\([^;]*\)\{(?!\{).*\};?$'
+message = "an anonymous class instance is created and dropped; use it or remove it"
+'''
+
+[[rules]]
+id = "ward:java/mislabeled-android-string"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^android\.R\.string\.(?:yes|no)$'
+message = "android.R.string.yes and android.R.string.no show the labels OK and Cancel; use your own string resources"
+'''
