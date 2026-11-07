@@ -25,6 +25,32 @@ import org.junit.jupiter.api.Test;
 
 class SwiftStyleChecksTest {
 
+  private static final int VALUE_3 = 3;
+  private static final int VALUE_5 = 5;
+  private static final int VALUE_6 = 6;
+  private static final int VALUE_10 = 10;
+  private static final int VALUE_11 = 11;
+  private static final int VALUE_15 = 15;
+  private static final int VALUE_20 = 20;
+  private static final int VALUE_21 = 21;
+  private static final int VALUE_25 = 25;
+  private static final int VALUE_30 = 30;
+  private static final int VALUE_40 = 40;
+  private static final int VALUE_41 = 41;
+  private static final int VALUE_42 = 42;
+  private static final int VALUE_43 = 43;
+  private static final int VALUE_45 = 45;
+  private static final int VALUE_46 = 46;
+  private static final int VALUE_47 = 47;
+  private static final int VALUE_50 = 50;
+  private static final int VALUE_51 = 51;
+  private static final int VALUE_60 = 60;
+  private static final int VALUE_61 = 61;
+  private static final int VALUE_65 = 65;
+  private static final int VALUE_80 = 80;
+  private static final int VALUE_90 = 90;
+  private static final int VALUE_100 = 100;
+
   private static final SyntaxNode ROOT = node("file", 0, 0);
   private static final SourceUnit EMPTY = new SourceUnit("m.swift", AnalysisLanguage.SWIFT, "");
   private static final String INIT_TEXT = "init(x: Int) {}";
@@ -66,11 +92,11 @@ class SwiftStyleChecksTest {
   }
 
   private static UnitScopes memberThenParameter(final String memberName, final String paramName) {
-    final ScopeBuilder builder = new ScopeBuilder(span(0, 100), ClassScopes.VISIBLE);
-    builder.open(ScopeKind.CLASS, span(0, 90));
-    builder.declare(memberName, BindingKind.VARIABLE, span(10, 11), Set.of());
-    builder.open(ScopeKind.FUNCTION, span(51, 80));
-    builder.declare(paramName, BindingKind.PARAMETER, span(60, 61), Set.of());
+    final ScopeBuilder builder = new ScopeBuilder(span(0, VALUE_100), ClassScopes.VISIBLE);
+    builder.open(ScopeKind.CLASS, span(0, VALUE_90));
+    builder.declare(memberName, BindingKind.VARIABLE, span(VALUE_10, VALUE_11), Set.of());
+    builder.open(ScopeKind.FUNCTION, span(VALUE_51, VALUE_80));
+    builder.declare(paramName, BindingKind.PARAMETER, span(VALUE_60, VALUE_61), Set.of());
     builder.close();
     builder.close();
     return builder.build();
@@ -82,17 +108,17 @@ class SwiftStyleChecksTest {
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).message()).isEqualTo("x hides");
-    assertThat(found.get(0).span().startOffset()).isEqualTo(60);
+    assertThat(found.get(0).span().startOffset()).isEqualTo(VALUE_60);
   }
 
   @Test
   void hiddenFieldIgnoresInitializerParameters() {
     final SourceUnit init = new SourceUnit("m.swift", AnalysisLanguage.SWIFT, INIT_TEXT);
-    final ScopeBuilder builder = new ScopeBuilder(span(0, 100), ClassScopes.VISIBLE);
-    builder.open(ScopeKind.CLASS, span(0, 90));
-    builder.declare("x", BindingKind.VARIABLE, span(10, 11), Set.of());
-    builder.open(ScopeKind.FUNCTION, span(0, 15));
-    builder.declare("x", BindingKind.PARAMETER, span(5, 6), Set.of());
+    final ScopeBuilder builder = new ScopeBuilder(span(0, VALUE_100), ClassScopes.VISIBLE);
+    builder.open(ScopeKind.CLASS, span(0, VALUE_90));
+    builder.declare("x", BindingKind.VARIABLE, span(VALUE_10, VALUE_11), Set.of());
+    builder.open(ScopeKind.FUNCTION, span(0, VALUE_15));
+    builder.declare("x", BindingKind.PARAMETER, span(VALUE_5, VALUE_6), Set.of());
     builder.close();
     builder.close();
 
@@ -101,11 +127,11 @@ class SwiftStyleChecksTest {
 
   @Test
   void hiddenFieldReportsLocalNamedLikeMember() {
-    final ScopeBuilder builder = new ScopeBuilder(span(0, 100), ClassScopes.VISIBLE);
-    builder.open(ScopeKind.CLASS, span(0, 90));
-    builder.declare("count", BindingKind.VARIABLE, span(10, 15), Set.of());
-    builder.open(ScopeKind.BLOCK, span(51, 80));
-    builder.declare("count", BindingKind.CONSTANT, span(60, 65), Set.of());
+    final ScopeBuilder builder = new ScopeBuilder(span(0, VALUE_100), ClassScopes.VISIBLE);
+    builder.open(ScopeKind.CLASS, span(0, VALUE_90));
+    builder.declare("count", BindingKind.VARIABLE, span(VALUE_10, VALUE_15), Set.of());
+    builder.open(ScopeKind.BLOCK, span(VALUE_51, VALUE_80));
+    builder.declare("count", BindingKind.CONSTANT, span(VALUE_60, VALUE_65), Set.of());
     builder.close();
     builder.close();
 
@@ -124,9 +150,9 @@ class SwiftStyleChecksTest {
   }
 
   private static UnitScopes useAfterDeclaration(final int use) {
-    final ScopeBuilder builder = new ScopeBuilder(span(0, 60), ClassScopes.VISIBLE);
-    builder.open(ScopeKind.BLOCK, span(0, 60));
-    builder.declare("total", BindingKind.VARIABLE, span(2, 5), Set.of());
+    final ScopeBuilder builder = new ScopeBuilder(span(0, VALUE_60), ClassScopes.VISIBLE);
+    builder.open(ScopeKind.BLOCK, span(0, VALUE_60));
+    builder.declare("total", BindingKind.VARIABLE, span(2, VALUE_5), Set.of());
     builder.reference("total", span(use, use + 1), ReferenceAccess.READ);
     builder.close();
     return builder.build();
@@ -136,12 +162,12 @@ class SwiftStyleChecksTest {
     return node(
         "file",
         0,
-        60,
-        node("statement", 0, 10),
-        node("statement", 10, 20),
-        node("statement", 20, 30),
-        node("statement", 30, 40),
-        node("statement", 40, 50));
+        VALUE_60,
+        node("statement", 0, VALUE_10),
+        node("statement", VALUE_10, VALUE_20),
+        node("statement", VALUE_20, VALUE_30),
+        node("statement", VALUE_30, VALUE_40),
+        node("statement", VALUE_40, VALUE_50));
   }
 
   private static List<RuleMatch> distance(final int max, final UnitScopes scopes) {
@@ -151,7 +177,7 @@ class SwiftStyleChecksTest {
 
   @Test
   void variableDistanceReportsFirstReadBeyondTheLimit() {
-    final List<RuleMatch> found = distance(2, useAfterDeclaration(42));
+    final List<RuleMatch> found = distance(2, useAfterDeclaration(VALUE_42));
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).message()).isEqualTo("total read after 2");
@@ -160,7 +186,7 @@ class SwiftStyleChecksTest {
 
   @Test
   void variableDistanceAcceptsAFirstReadWithinTheLimit() {
-    assertThat(distance(3, useAfterDeclaration(42))).isEmpty();
+    assertThat(distance(VALUE_3, useAfterDeclaration(VALUE_42))).isEmpty();
   }
 
   @Test
@@ -170,10 +196,10 @@ class SwiftStyleChecksTest {
 
   @Test
   void variableDistanceIgnoresConstants() {
-    final ScopeBuilder builder = new ScopeBuilder(span(0, 60), ClassScopes.VISIBLE);
-    builder.open(ScopeKind.BLOCK, span(0, 60));
-    builder.declare("total", BindingKind.CONSTANT, span(2, 5), Set.of());
-    builder.reference("total", span(42, 43), ReferenceAccess.READ);
+    final ScopeBuilder builder = new ScopeBuilder(span(0, VALUE_60), ClassScopes.VISIBLE);
+    builder.open(ScopeKind.BLOCK, span(0, VALUE_60));
+    builder.declare("total", BindingKind.CONSTANT, span(2, VALUE_5), Set.of());
+    builder.reference("total", span(VALUE_42, VALUE_43), ReferenceAccess.READ);
     builder.close();
 
     assertThat(distance(0, builder.build())).isEmpty();
@@ -199,24 +225,29 @@ class SwiftStyleChecksTest {
       params[index] =
           node(
               "parameter",
-              20 + index,
-              25 + index,
+              VALUE_20 + index,
+              VALUE_25 + index,
               node(
                   "local_parameter_name",
-                  20 + index,
-                  21 + index,
-                  leaf("label_identifier", parameters[index], 20 + index)));
+                  VALUE_20 + index,
+                  VALUE_21 + index,
+                  leaf("label_identifier", parameters[index], VALUE_20 + index)));
     }
     final SyntaxNode[] signature = new SyntaxNode[params.length + 2];
     System.arraycopy(params, 0, signature, 0, params.length);
-    signature[params.length] = returns ? node("function_result", 40, 45) : node("filler", 40, 41);
+    signature[params.length] =
+        returns ? node("function_result", VALUE_40, VALUE_45) : node("filler", VALUE_40, VALUE_41);
     signature[params.length + 1] =
-        throwing ? node("throws_clause", 46, 50) : node("filler", 46, 47);
+        throwing ? node("throws_clause", VALUE_46, VALUE_50) : node("filler", VALUE_46, VALUE_47);
     final SyntaxNode function =
-        node("function_declaration", 60, 100, node("function_signature", 15, 90, signature));
+        node(
+            "function_declaration",
+            VALUE_60,
+            VALUE_100,
+            node("function_signature", VALUE_15, VALUE_90, signature));
     final SyntaxNode doc =
-        new SyntaxNode("comment", span(0, 10), Map.of("text", comment), List.of());
-    return node("file", 0, 100, doc, function);
+        new SyntaxNode("comment", span(0, VALUE_10), Map.of("text", comment), List.of());
+    return node("file", 0, VALUE_100, doc, function);
   }
 
   private static List<RuleMatch> javadoc(final SyntaxNode file) {
@@ -257,20 +288,24 @@ class SwiftStyleChecksTest {
         node(
             "file",
             0,
-            100,
+            VALUE_100,
             node(
                 "function_declaration",
-                60,
-                100,
+                VALUE_60,
+                VALUE_100,
                 node(
                     "function_signature",
-                    15,
-                    90,
+                    VALUE_15,
+                    VALUE_90,
                     node(
                         "parameter",
-                        20,
-                        25,
-                        node("local_parameter_name", 20, 21, leaf("label_identifier", "a", 20))))));
+                        VALUE_20,
+                        VALUE_25,
+                        node(
+                            "local_parameter_name",
+                            VALUE_20,
+                            VALUE_21,
+                            leaf("label_identifier", "a", VALUE_20))))));
 
     assertThat(javadoc(undocumented)).isEmpty();
   }
@@ -281,16 +316,19 @@ class SwiftStyleChecksTest {
 
   private static List<RuleMatch> grouping(final SyntaxNode... members) {
     return new ConstructorGroupCheck("{value} misplaced")
-        .matches(node("file", 0, 100, node("struct_body", 0, 100, members)));
+        .matches(node("file", 0, VALUE_100, node("struct_body", 0, VALUE_100, members)));
   }
 
   @Test
   void constructorGroupReportsAnInitializerAfterAnotherMember() {
     final List<RuleMatch> found =
-        grouping(member("init(x:Int){}", 1), member("func scale(){}", 20), member("init(){}", 40));
+        grouping(
+            member("init(x:Int){}", 1),
+            member("func scale(){}", VALUE_20),
+            member("init(){}", VALUE_40));
 
     assertThat(found).hasSize(1);
-    assertThat(found.get(0).span().startOffset()).isEqualTo(40);
+    assertThat(found.get(0).span().startOffset()).isEqualTo(VALUE_40);
   }
 
   @Test
@@ -298,8 +336,8 @@ class SwiftStyleChecksTest {
     assertThat(
             grouping(
                 member("@objcinit(x:Int){}", 1),
-                member("publicinit(){}", 20),
-                member("var y=0", 40)))
+                member("publicinit(){}", VALUE_20),
+                member("var y=0", VALUE_40)))
         .isEmpty();
   }
 
@@ -307,17 +345,18 @@ class SwiftStyleChecksTest {
     return node(
         "import_declaration",
         start,
-        start + 6 + name.length(),
+        start + VALUE_6 + name.length(),
         leaf("token", "import" + name, start));
   }
 
   private static List<RuleMatch> imports(final SyntaxNode... imports) {
-    return new ImportSortCheck("{value} unsorted").matches(node("file", 0, 100, imports));
+    return new ImportSortCheck("{value} unsorted").matches(node("file", 0, VALUE_100, imports));
   }
 
   @Test
   void importSortReportsAnImportBeforeItsPredecessor() {
-    final List<RuleMatch> found = imports(importNode("Foundation", 0), importNode("Combine", 30));
+    final List<RuleMatch> found =
+        imports(importNode("Foundation", 0), importNode("Combine", VALUE_30));
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).message()).isEqualTo("Combine unsorted");
@@ -326,13 +365,13 @@ class SwiftStyleChecksTest {
   @Test
   void importSortIgnoresAttributesBeforeTheKeyword() {
     final SyntaxNode testable =
-        node("import_declaration", 0, 20, leaf("token", "@testableimportShop", 0));
+        node("import_declaration", 0, VALUE_20, leaf("token", "@testableimportShop", 0));
 
-    assertThat(imports(importNode("Combine", 30), testable)).isEmpty();
+    assertThat(imports(importNode("Combine", VALUE_30), testable)).isEmpty();
   }
 
   @Test
   void importSortAcceptsSortedImports() {
-    assertThat(imports(importNode("Combine", 0), importNode("Foundation", 30))).isEmpty();
+    assertThat(imports(importNode("Combine", 0), importNode("Foundation", VALUE_30))).isEmpty();
   }
 }
