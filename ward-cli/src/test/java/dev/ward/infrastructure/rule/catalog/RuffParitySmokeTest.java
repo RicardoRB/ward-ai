@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
@@ -24,6 +25,7 @@ final class RuffParitySmokeTest {
 
   private static final String RUFF_PROPERTY = "ward.ruff.binary";
   private static final Pattern ROW = Pattern.compile(":(\\d+):\\d+: ");
+  private static final Pattern TARGET = Pattern.compile("target-version\\s*=\\s*\"(py\\d+)\"");
   private static final int LINE_GROUP = 1;
 
   /** Whether the opt-in property names a Ruff binary. */
@@ -56,15 +58,55 @@ final class RuffParitySmokeTest {
       throws IOException, InterruptedException {
     final List<String> problems = new ArrayList<>();
     final List<Integer> expected = expectedLines(directory.resolve("expected.txt"));
-    final List<Integer> violating = reportedLines(ruff, id, directory.resolve("violating.py"));
+    final List<Integer> violating =
+        reportedLines(ruff, id, directory.resolve("violating.py"), List.of());
     if (!violating.equals(expected)) {
       problems.add(id + " violating: ruff " + violating + ", fixture " + expected);
     }
-    final List<Integer> passing = reportedLines(ruff, id, directory.resolve("passing.py"));
+    final List<Integer> passing =
+        reportedLines(ruff, id, directory.resolve("passing.py"), List.of());
     if (!passing.isEmpty()) {
       problems.add(id + " passing: ruff reports " + passing);
     }
+    for (final String caseName : caseNames(directory)) {
+      problems.addAll(compareCase(ruff, id, directory, caseName));
+    }
     return problems;
+  }
+
+  /** The names of the extra cases: {@code violating-<case>.py} files of the directory. */
+  private static List<String> caseNames(final Path directory) throws IOException {
+    try (Stream<Path> files = Files.list(directory)) {
+      return files
+          .map(file -> file.getFileName().toString())
+          .filter(name -> name.startsWith("violating-") && name.endsWith(".py"))
+          .map(name -> name.substring("violating-".length(), name.length() - ".py".length()))
+          .sorted()
+          .toList();
+    }
+  }
+
+  /**
+   * Compares one case, passing the case's {@code target-version} option to Ruff when it has one.
+   */
+  private static List<String> compareCase(
+      final String ruff, final String id, final Path directory, final String caseName)
+      throws IOException, InterruptedException {
+    final Path options = directory.resolve("options-" + caseName + ".toml");
+    final List<String> extra = new ArrayList<>();
+    if (Files.exists(options)) {
+      final Matcher target = TARGET.matcher(Files.readString(options, StandardCharsets.UTF_8));
+      if (target.find()) {
+        extra.addAll(List.of("--target-version", target.group(1)));
+      }
+    }
+    final List<Integer> expected =
+        expectedLines(directory.resolve("expected-" + caseName + ".txt"));
+    final List<Integer> reported =
+        reportedLines(ruff, id, directory.resolve("violating-" + caseName + ".py"), extra);
+    return reported.equals(expected)
+        ? List.of()
+        : List.of(id + " case " + caseName + ": ruff " + reported + ", fixture " + expected);
   }
 
   private static List<Integer> expectedLines(final Path file) throws IOException {
@@ -74,10 +116,12 @@ final class RuffParitySmokeTest {
         .toList();
   }
 
-  private static List<Integer> reportedLines(final String ruff, final String id, final Path file)
+  private static List<Integer> reportedLines(
+      final String ruff, final String id, final Path file, final List<String> extra)
       throws IOException, InterruptedException {
-    final Process process =
-        new ProcessBuilder(
+    final List<String> command =
+        new ArrayList<>(
+            List.of(
                 ruff,
                 "check",
                 "--isolated",
@@ -85,10 +129,10 @@ final class RuffParitySmokeTest {
                 "--select",
                 id,
                 "--output-format",
-                "concise",
-                file.toString())
-            .redirectErrorStream(false)
-            .start();
+                "concise"));
+    command.addAll(extra);
+    command.add(file.toString());
+    final Process process = new ProcessBuilder(command).redirectErrorStream(false).start();
     final String output =
         new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     process.waitFor();
