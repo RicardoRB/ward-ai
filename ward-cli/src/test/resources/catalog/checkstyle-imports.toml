@@ -9,8 +9,9 @@ checkstyle = ["AvoidModuleImport"]
 
 [[rule]]
 name = "avoid-star-import"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift has no wildcard import, so there is no star import to avoid" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 ids = { java = "ward:java/star-import" }
 detekt = ["WildcardImport"]
 pmd = ["OnDemandImport"]
