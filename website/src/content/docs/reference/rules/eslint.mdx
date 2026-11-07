@@ -49,7 +49,7 @@ description: Rules of the catalog file eslint and their counterparts.
 | `no-console` | suggestion | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `no-console`; Biome `noConsole` |
 | `no-const-assign` | problem | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `no-const-assign`; Biome `noConstAssign` |
 | `no-constant-binary-expression` | problem | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `no-constant-binary-expression`; Biome `noConstantBinaryExpressions` |
-| `no-constant-condition` | problem | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `no-constant-condition`; Biome `noConstantCondition` |
+| `no-constant-condition` | problem | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `no-constant-condition`; Biome `noConstantCondition` |
 | `no-constructor-return` | problem | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `no-constructor-return`; Biome `noConstructorReturn` |
 | `no-continue` | linter | n/a | n/a | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | n/a | n/a | ESLint `no-continue`; Biome `noContinue` |
 | `no-control-regex` | problem | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `no-control-regex`; Biome `noControlCharactersInRegex` |
@@ -180,7 +180,7 @@ description: Rules of the catalog file eslint and their counterparts.
 | `strict` | suggestion | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `strict`; Biome `noRedundantUseStrict`, `useStrictMode` |
 | `symbol-description` | suggestion | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `symbol-description`; Biome `useSymbolDescription` |
 | `use-isnan` | problem | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `use-isnan`; Biome `useIsNan` |
-| `valid-typeof` | problem | n/a | n/a | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | [#326](https://github.com/RicardoRB/ward-ai/issues/326) | n/a | n/a | ESLint `valid-typeof`; Biome `useValidTypeof` |
+| `valid-typeof` | problem | n/a | n/a | implemented | implemented | n/a | n/a | ESLint `valid-typeof`; Biome `useValidTypeof` |
 | `vars-on-top` | linter | n/a | n/a | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | n/a | n/a | ESLint `vars-on-top`; Biome `useVarsOnTop` |
 | `yoda` | linter | n/a | n/a | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | [#299](https://github.com/RicardoRB/ward-ai/issues/299) | n/a | n/a | ESLint `yoda`; Biome `noYodaExpression` |
 
@@ -202,6 +202,8 @@ description: Rules of the catalog file eslint and their counterparts.
 | `ward:javascript/no-compare-neg-zero` | problem | standard, strict | none | ESLint `no-compare-neg-zero`; Biome `noCompareNegZero` |
 | `ward:typescript/no-const-assign` | problem | standard, strict | none | ESLint `no-const-assign`; Biome `noConstAssign` |
 | `ward:javascript/no-const-assign` | problem | standard, strict | none | ESLint `no-const-assign`; Biome `noConstAssign` |
+| `ward:typescript/no-constant-condition` | problem | standard, strict | none | ESLint `no-constant-condition`; Biome `noConstantCondition` |
+| `ward:javascript/no-constant-condition` | problem | standard, strict | none | ESLint `no-constant-condition`; Biome `noConstantCondition` |
 | `ward:typescript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex`; Biome `noControlCharactersInRegex` |
 | `ward:javascript/no-control-regex` | problem | standard, strict | none | ESLint `no-control-regex`; Biome `noControlCharactersInRegex` |
 | `ward:typescript/no-debugger` | problem | standard, strict | none | ESLint `no-debugger`; Biome `noDebugger` |
@@ -280,3 +282,5 @@ description: Rules of the catalog file eslint and their counterparts.
 | `ward:javascript/symbol-description` | suggestion | strict | none | ESLint `symbol-description`; Biome `useSymbolDescription` |
 | `ward:typescript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan`; Biome `useIsNan` |
 | `ward:javascript/use-isnan` | problem | standard, strict | none | ESLint `use-isnan`; Biome `useIsNan` |
+| `ward:typescript/valid-typeof` | problem | standard, strict | none | ESLint `valid-typeof`; Biome `useValidTypeof` |
+| `ward:javascript/valid-typeof` | problem | standard, strict | none | ESLint `valid-typeof`; Biome `useValidTypeof` |

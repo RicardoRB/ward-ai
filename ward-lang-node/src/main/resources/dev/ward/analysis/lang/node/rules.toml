@@ -1866,3 +1866,61 @@ check = "undefined-name"
 env = ["es2024"]
 message = "'{value}' is not defined"
 '''
+
+[[rules]]
+id = "ward:typescript/valid-typeof"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:javascript/valid-typeof"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-condition"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-condition"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''

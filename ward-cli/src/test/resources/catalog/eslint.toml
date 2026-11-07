@@ -297,9 +297,7 @@ biome = ["noConstantBinaryExpressions"]
 
 [[rule]]
 name = "no-constant-condition"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-constant-condition"]
 biome = ["noConstantCondition"]
 
@@ -1240,9 +1238,7 @@ biome = ["useIsNan"]
 
 [[rule]]
 name = "valid-typeof"
-category = "problem"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#326", javascript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["valid-typeof"]
 biome = ["useValidTypeof"]
 
