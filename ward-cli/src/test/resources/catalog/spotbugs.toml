@@ -228,8 +228,6 @@ spotbugs = ["CD_CIRCULAR_DEPENDENCY"]
 
 [[rule]]
 name = "ci-confused-inheritance"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["CI_CONFUSED_INHERITANCE"]
 
 [[rule]]
@@ -334,14 +332,10 @@ spotbugs = ["DLS_DEAD_LOCAL_INCREMENT_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE"]
 
 [[rule]]
 name = "dls-dead-local-store-in-return"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
 
 [[rule]]
@@ -634,8 +628,6 @@ spotbugs = ["DM_USELESS_THREAD"]
 
 [[rule]]
 name = "dp-create-classloader-inside-do-privileged"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"]
 
 [[rule]]
@@ -1348,8 +1340,6 @@ spotbugs = ["MS_PKGPROTECT"]
 
 [[rule]]
 name = "ms-should-be-final"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_SHOULD_BE_FINAL"]
 
 [[rule]]
@@ -1549,8 +1539,6 @@ spotbugs = ["NP_CLOSING_NULL"]
 
 [[rule]]
 name = "np-dereference-of-readline-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_DEREFERENCE_OF_READLINE_VALUE"]
 
 [[rule]]
@@ -1804,8 +1792,6 @@ spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_METHOD_NAMES"]
 
 [[rule]]
 name = "ps-public-semaphores"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["PS_PUBLIC_SEMAPHORES"]
 
 [[rule]]
@@ -1861,8 +1847,6 @@ spotbugs = ["RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-comparison-two-null-values"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES"]
 
 [[rule]]
@@ -2450,8 +2434,6 @@ spotbugs = ["UCF_USELESS_CONTROL_FLOW"]
 
 [[rule]]
 name = "ucf-useless-control-flow-next-line"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["UCF_USELESS_CONTROL_FLOW_NEXT_LINE"]
 
 [[rule]]

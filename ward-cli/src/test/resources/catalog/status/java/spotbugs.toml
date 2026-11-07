@@ -40,7 +40,7 @@ caa-covariant-array-field = { status = "planned", issue = "#316" }
 caa-covariant-array-local = { status = "planned", issue = "#316" }
 caa-covariant-array-return = { status = "planned", issue = "#316" }
 cd-circular-dependency = { status = "planned", issue = "#316" }
-ci-confused-inheritance = { status = "planned", issue = "#316" }
+ci-confused-inheritance = "implemented"
 cn-idiom = { status = "planned", issue = "#316" }
 cn-idiom-no-super-call = { status = "planned", issue = "#316" }
 cn-implements-clone-but-not-cloneable = { status = "planned", issue = "#316" }
@@ -64,8 +64,8 @@ dl-synchronization-on-interned-string = "implemented"
 dl-synchronization-on-shared-constant = "implemented"
 dl-synchronization-on-unshared-boxed-primitive = { status = "planned", issue = "#316" }
 dls-dead-local-increment-in-return = "implemented"
-dls-dead-local-store = { status = "planned", issue = "#316" }
-dls-dead-local-store-in-return = { status = "planned", issue = "#316" }
+dls-dead-local-store = "implemented"
+dls-dead-local-store-in-return = "implemented"
 dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
 dls-dead-local-store-shadows-field = { status = "planned", issue = "#316" }
 dls-dead-store-of-class-literal = { status = "planned", issue = "#314" }
@@ -117,7 +117,7 @@ dmi-useless-substring = "implemented"
 dmi-using-removeall-to-clear-collection = "implemented"
 dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
 dmi-vacuous-self-collection-call = "implemented"
-dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316" }
+dp-create-classloader-inside-do-privileged = "implemented"
 dp-do-inside-do-privileged = "implemented"
 e-sync-empty-sync = "implemented"
 ec-array-and-nonarray = "implemented"
@@ -248,7 +248,7 @@ ms-mutable-collection-pkgprotect = "implemented"
 ms-mutable-hashtable = "implemented"
 ms-ooi-pkgprotect = { status = "planned", issue = "#316" }
 ms-pkgprotect = "implemented"
-ms-should-be-final = { status = "planned", issue = "#316" }
+ms-should-be-final = "implemented"
 ms-should-be-refactored-to-be-final = { status = "planned", issue = "#316" }
 msf-mutable-servlet-field = { status = "planned", issue = "#316" }
 mtia-suspect-servlet-instance-field = { status = "planned", issue = "#316" }
@@ -284,7 +284,7 @@ np-argument-might-be-null = { status = "planned", issue = "#314" }
 np-boolean-return-null = { status = "planned", issue = "#316" }
 np-clone-could-return-null = { status = "planned", issue = "#316" }
 np-closing-null = { status = "planned", issue = "#314" }
-np-dereference-of-readline-value = { status = "planned", issue = "#316" }
+np-dereference-of-readline-value = "implemented"
 np-equals-should-handle-null-argument = { status = "planned", issue = "#316" }
 np-guaranteed-deref = { status = "planned", issue = "#314" }
 np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
@@ -328,7 +328,7 @@ pi-do-not-reuse-public-identifiers-class-names = { status = "planned", issue = "
 pi-do-not-reuse-public-identifiers-field-names = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-local-variable-names = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = "#316" }
-ps-public-semaphores = { status = "planned", issue = "#316" }
+ps-public-semaphores = "implemented"
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
 pzla-prefer-zero-length-arrays = "implemented"
 qba-questionable-boolean-assignment = "implemented"
@@ -341,7 +341,7 @@ rc-ref-comparison = "implemented"
 rc-ref-comparison-bad-practice = { status = "planned", issue = "#316" }
 rc-ref-comparison-bad-practice-boolean = { status = "planned", issue = "#316" }
 rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
-rcn-redundant-comparison-two-null-values = { status = "planned", issue = "#316" }
+rcn-redundant-comparison-two-null-values = "implemented"
 rcn-redundant-nullcheck-of-nonnull-value = "implemented"
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
@@ -454,7 +454,7 @@ uc-useless-object = { status = "planned", issue = "#316" }
 uc-useless-object-stack = { status = "planned", issue = "#316" }
 uc-useless-void-method = { status = "planned", issue = "#316" }
 ucf-useless-control-flow = "implemented"
-ucf-useless-control-flow-next-line = { status = "planned", issue = "#316" }
+ucf-useless-control-flow-next-line = "implemented"
 ug-sync-set-unsync-get = { status = "planned", issue = "#316" }
 ui-inheritance-unsafe-getresource = "implemented"
 ul-unreleased-lock = { status = "planned", issue = "#316" }
