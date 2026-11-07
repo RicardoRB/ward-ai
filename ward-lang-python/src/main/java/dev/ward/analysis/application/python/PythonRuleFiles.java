@@ -13,6 +13,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
       List.of(
           "rules/duplication-python.toml",
           "rules/python-structural.toml",
+          "rules/python-unused.toml",
           "rules/python/bugbear.toml",
           "rules/python/checkstyle.toml",
           "rules/python/flake8-2020.toml",

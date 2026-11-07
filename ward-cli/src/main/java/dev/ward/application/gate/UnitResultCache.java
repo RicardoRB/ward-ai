@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
@@ -71,6 +72,7 @@ final class UnitResultCache {
         rules.stream()
             .filter(rule -> !GraphRules.isGraphRule(rule))
             .filter(rule -> !DuplicateCodeRule.isDuplicateRule(rule))
+            .filter(rule -> !UnusedDefinitionFindings.isUnusedDefinitionRule(rule))
             .toList();
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
@@ -103,6 +105,7 @@ final class UnitResultCache {
                 snapshot.graph(),
                 new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
+    wholeRunFindings.addAll(UnusedDefinitionFindings.findings(rules, snapshot.summaries()));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
   }
 

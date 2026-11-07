@@ -63,7 +63,7 @@ final class PythonExports {
   }
 
   /** The statements directly in the module: definitions and simple statements. */
-  private static List<SyntaxNode> topLevelStatements(final SyntaxNode tree) {
+  static List<SyntaxNode> topLevelStatements(final SyntaxNode tree) {
     final List<SyntaxNode> statements = new ArrayList<>();
     for (final SyntaxNode stmt : PythonSyntax.children(tree, "stmt")) {
       for (final SyntaxNode part : stmt.children()) {

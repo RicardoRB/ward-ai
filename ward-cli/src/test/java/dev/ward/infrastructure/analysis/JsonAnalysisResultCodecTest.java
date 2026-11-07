@@ -70,7 +70,7 @@ class JsonAnalysisResultCodecTest {
   @Test
   void previousFormatVersionIsAMiss() {
     final String value =
-        codec.encode(KEY, List.of(FINDING)).replace("\"formatVersion\":2", "\"formatVersion\":1");
+        codec.encode(KEY, List.of(FINDING)).replace("\"formatVersion\":3", "\"formatVersion\":2");
 
     assertThat(codec.decode(KEY, value)).isEmpty();
   }
@@ -78,7 +78,7 @@ class JsonAnalysisResultCodecTest {
   @Test
   void otherFormatVersionIsAMiss() {
     final String value =
-        codec.encode(KEY, List.of()).replace("\"formatVersion\":2", "\"formatVersion\":99");
+        codec.encode(KEY, List.of()).replace("\"formatVersion\":3", "\"formatVersion\":99");
 
     assertThat(codec.decode(KEY, value)).isEmpty();
   }
