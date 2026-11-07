@@ -6,7 +6,6 @@ import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.graph.DependencyGraph;
-import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -97,11 +96,7 @@ final class UnitResultCache {
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
     final List<AnalysisFinding> wholeRunFindings =
-        new ArrayList<>(
-            ArchitectureGraphRules.findings(
-                rules,
-                snapshot.graph(),
-                new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
+        new ArrayList<>(ArchitectureGraphRules.findings(rules, snapshot.graph()));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
   }

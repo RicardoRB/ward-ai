@@ -6,9 +6,6 @@ import java.nio.file.Path;
 @FunctionalInterface
 public interface RuleSetup {
 
-  /**
-   * Returns the rules to run in the project at {@code root}, or the problems that stop the run. The
-   * detected Java release is the default of a rule's {@code java-release} option.
-   */
-  RuleSet resolve(Path root, int javaRelease);
+  /** Returns the rules to run in the project at {@code root}, or the problems that stop the run. */
+  RuleSet resolve(Path root);
 }

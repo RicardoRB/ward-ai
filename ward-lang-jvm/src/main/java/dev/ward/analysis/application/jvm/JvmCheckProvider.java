@@ -16,12 +16,12 @@ public final class JvmCheckProvider implements CheckProvider {
   public Map<String, CheckFactory> checks() {
     return CheckRegistry.union(
         List.of(
+            ClassDesignChecks.checks(),
             CodingChecks.checks(),
             DesignChecks.checks(),
             ImportChecks.checks(),
             JavadocChecks.checks(),
             MetricChecks.checks(),
-            ReviewChecks.checks(),
-            TypeAwareChecks.checks()));
+            ReviewChecks.checks()));
   }
 }

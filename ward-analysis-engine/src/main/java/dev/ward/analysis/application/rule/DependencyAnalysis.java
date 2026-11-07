@@ -54,8 +54,7 @@ public final class DependencyAnalysis {
         ResolverGroups.of(dependencies).entrySet()) {
       edges.addAll(group.getKey().resolve(summariesOf(units, group.getValue(), summaries)));
     }
-    return new DependencySnapshot(
-        new DependencyGraph(edges), summaries, DependencyEntries.of(dependencies));
+    return new DependencySnapshot(new DependencyGraph(edges), summaries);
   }
 
   private static List<FileSummary> summariesOf(

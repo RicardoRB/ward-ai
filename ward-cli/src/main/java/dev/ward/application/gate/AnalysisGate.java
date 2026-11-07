@@ -61,7 +61,7 @@ public final class AnalysisGate implements QualityGate {
       final AnalysisPorts ports,
       final String javaClasspath,
       final List<String> focus) {
-    this(name, (root, javaRelease) -> RuleSet.of(rules), ports, javaClasspath, focus);
+    this(name, root -> RuleSet.of(rules), ports, javaClasspath, focus);
   }
 
   /**
@@ -88,7 +88,7 @@ public final class AnalysisGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project) {
-    final RuleSet set = setup.resolve(project.root(), JavaRelease.of(project));
+    final RuleSet set = setup.resolve(project.root());
     if (!set.problems().isEmpty()) {
       return AnalysisGateResults.configurationError(name, set.problems());
     }
@@ -99,13 +99,6 @@ public final class AnalysisGate implements QualityGate {
             .collect(Collectors.toUnmodifiableSet());
     final List<SourceUnit> units = ports.sources().read(project.root(), languages);
     final AnalysisCache cache = ports.caches().open(project.root());
-    final TypeFactsRun types =
-        new TypeFactsRun(
-            ports
-                .nativeTypeFacts()
-                .apply(
-                    project.root(),
-                    Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
     final UnitResultCache results =
         new UnitResultCache(
             new RuleEngine(ports.matcher()),
@@ -114,6 +107,13 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
+    final TypeFactsRun types =
+        new TypeFactsRun(
+            ports
+                .nativeTypeFacts()
+                .apply(
+                    project.root(),
+                    Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
     final UnitResultCache.CachedRun run =
         results.analyze(cache, units, types.withTypes(ports.frontends()), rules);
     return AnalysisGateResults.result(name, focused(ExcludedFindings.drop(run, set), rules), rules);

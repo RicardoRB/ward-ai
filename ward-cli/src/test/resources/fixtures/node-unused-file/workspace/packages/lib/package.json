@@ -1,6 +1,0 @@
-{
-  "name": "@acme/lib",
-  "exports": {
-    ".": "./src/api.ts"
-  }
-}

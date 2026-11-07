@@ -1,6 +1,0 @@
-{
-  "5:5": {
-    "call": {"declaring": {"name": "org.slf4j.Logger"}, "name": "debug", "params": [{"name": "java.lang.String"}],
-             "returns": {"name": "void", "primitive": true}}
-  }
-}

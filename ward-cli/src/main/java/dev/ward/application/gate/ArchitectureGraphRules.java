@@ -1,7 +1,6 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
-import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.Span;
@@ -12,7 +11,6 @@ import dev.ward.analysis.domain.rule.IndependenceRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.SliceCycleRule;
-import dev.ward.analysis.domain.rule.UnusedFileRule;
 import dev.ward.domain.init.ArchitectureLayers;
 import java.util.List;
 
@@ -30,11 +28,6 @@ final class ArchitectureGraphRules {
     return definition(SliceCycleRule.ID, GraphRuleBody.encodeRoots(roots));
   }
 
-  /** Returns the unused-file rule, with {@code entries} as entry globs. */
-  static RuleDefinition unusedFiles(final List<String> entries) {
-    return definition(UnusedFileRule.ID, GraphRuleBody.encodeRoots(entries));
-  }
-
   /** Returns the independence rule over {@code tables}, one module list per table. */
   static RuleDefinition independence(final List<List<String>> tables) {
     return definition(IndependenceRule.ID, GraphRuleBody.encodeTables(tables));
@@ -43,20 +36,11 @@ final class ArchitectureGraphRules {
   /** The findings of every graph rule among {@code rules}, over {@code graph}. */
   static List<AnalysisFinding> findings(
       final List<RuleDefinition> rules, final DependencyGraph graph) {
-    return findings(rules, graph, ProjectFiles.EMPTY);
-  }
-
-  /**
-   * The findings of every graph rule among {@code rules}, over {@code graph} and {@code project}.
-   */
-  static List<AnalysisFinding> findings(
-      final List<RuleDefinition> rules, final DependencyGraph graph, final ProjectFiles project) {
     return rules.stream()
         .filter(GraphRules::isGraphRule)
         .flatMap(
             rule ->
-                GraphRules.compile(rule).matches(graph, project).stream()
-                    .map(match -> finding(rule, match)))
+                GraphRules.compile(rule).matches(graph).stream().map(match -> finding(rule, match)))
         .toList();
   }
 

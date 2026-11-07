@@ -1,6 +1,0 @@
-{
-  "5:5": {
-    "call": {"declaring": {"name": "java.sql.ResultSet"}, "name": "next", "params": [],
-             "returns": {"name": "boolean", "primitive": true}}
-  }
-}

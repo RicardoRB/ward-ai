@@ -1,3 +1,0 @@
-try {
-  run();
-} catch (error) {}
