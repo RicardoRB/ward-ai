@@ -44,9 +44,7 @@ final class Calls {
 
   /** Whether both types are known primitives that differ, so the argument cannot be passed. */
   private static boolean clash(final TsType declared, final TsType argument) {
-    final TsType expected =
-        declared instanceof TsType.Arr arr && !arr.element().isPrimitive() ? declared : declared;
-    if (!expected.isPrimitive() || !Literals.widen(argument).isPrimitive()) {
+    if (!declared.isPrimitive() || !Literals.widen(argument).isPrimitive()) {
       return false;
     }
     return !Literals.widen(argument).print().equals(declared.print());

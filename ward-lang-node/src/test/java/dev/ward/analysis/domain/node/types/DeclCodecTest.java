@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that a declaration index survives being written and read back. */
 class DeclCodecTest {
+  private static final byte UNKNOWN_VERSION = 99;
+  private static final int TRUNCATED = 6;
   private static final String SOURCE =
       """
       import { a as b } from "./a";
@@ -73,9 +75,10 @@ class DeclCodecTest {
 
   @Test
   void rejectsBytesOfAnotherVersionOrACorruptIndex() {
-    assertThat(DeclCodec.decode(new byte[] {0, 0, 0, 99})).isEmpty();
+    assertThat(DeclCodec.decode(new byte[] {0, 0, 0, UNKNOWN_VERSION})).isEmpty();
     assertThat(DeclCodec.decode(new byte[] {1})).isEmpty();
-    assertThat(DeclCodec.decode(Arrays.copyOf(DeclCodec.encode(FileDecls.EMPTY), 6))).isEmpty();
+    assertThat(DeclCodec.decode(Arrays.copyOf(DeclCodec.encode(FileDecls.EMPTY), TRUNCATED)))
+        .isEmpty();
   }
 
   @Test

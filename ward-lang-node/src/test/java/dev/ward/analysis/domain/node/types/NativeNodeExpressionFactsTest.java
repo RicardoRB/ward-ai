@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 class NativeNodeExpressionFactsTest {
   private static final String UNIT = TypeScenarios.UNIT;
   private static final String NUMBER = "number";
+  private static final long TEN = 10L;
+  private static final double RATIO = 1.5;
 
   @Test
   void typesVariablesCallsAndMembersFromDeclarationsAndInitializers() {
@@ -136,10 +138,11 @@ class NativeNodeExpressionFactsTest {
     final UnitTypeFacts facts = project.answer(UNIT, cls, "10", "\"svc\"", "1.5", "true");
 
     assertThat(facts.at(TypeProject.span(unit, cls)).annotations()).containsExactly("Injectable");
-    assertThat(facts.constant(TypeProject.span(unit, "10")).orElseThrow().value()).isEqualTo(10L);
+    assertThat(facts.constant(TypeProject.span(unit, "10")).orElseThrow().value()).isEqualTo(TEN);
     assertThat(facts.constant(TypeProject.span(unit, "\"svc\"")).orElseThrow().value())
         .isEqualTo("svc");
-    assertThat(facts.constant(TypeProject.span(unit, "1.5")).orElseThrow().value()).isEqualTo(1.5);
+    assertThat(facts.constant(TypeProject.span(unit, "1.5")).orElseThrow().value())
+        .isEqualTo(RATIO);
     assertThat(facts.constant(TypeProject.span(unit, "true")).orElseThrow().value())
         .isEqualTo(true);
   }
