@@ -45,7 +45,9 @@ class JavaStructuralRulesTest {
         "method-name",
         "member-name",
         "parameter-name",
-        "local-variable-name"
+        "local-variable-name",
+        "no-field-di",
+        "no-standard-streams"
       })
   void violatingFixtureReportsItsRule(final String rule) throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, VIOLATING)).isNotEmpty();
@@ -66,7 +68,9 @@ class JavaStructuralRulesTest {
         "method-name",
         "member-name",
         "parameter-name",
-        "local-variable-name"
+        "local-variable-name",
+        "no-field-di",
+        "no-standard-streams"
       })
   void passingFixtureDoesNotReportItsRule(final String rule)
       throws IOException, URISyntaxException {

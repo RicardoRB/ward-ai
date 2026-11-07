@@ -46,3 +46,11 @@ spotbugs = ["PT_ABSOLUTE_PATH_TRAVERSAL", "PT_RELATIVE_PATH_TRAVERSAL"]
 name = "xss"
 status = { typescript = "implemented", javascript = "implemented" }
 spotbugs = ["XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER", "XSS_REQUEST_PARAMETER_TO_JSP_WRITER", "XSS_REQUEST_PARAMETER_TO_SEND_ERROR"]
+
+[[rule]]
+name = "no-field-di"
+status = { java = "implemented" }
+
+[[rule]]
+name = "no-standard-streams"
+status = { java = "implemented" }

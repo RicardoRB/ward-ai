@@ -1,8 +1,10 @@
 # How Java spells the modifiers that rule filters name (`modifiers`, `not-modifiers`). A modifier
-# name without an entry under [texts] means the token of that name.
+# name without an entry under [texts] means the token of that name. An annotation is read token by
+# token, so `@javax.inject.Inject` contributes the token `Inject`.
 kinds = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
 
 [texts]
 static = ["static"]
 final = ["final"]
 abstract = ["abstract"]
+field-injection = ["Inject", "Autowired", "Resource"]
