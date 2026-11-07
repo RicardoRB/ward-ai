@@ -57,7 +57,11 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/swift/lint.toml",
           "rules/swift/idiomatic-2.toml",
           "rules/kotlin/size.toml",
-          "rules/kotlin/naming.toml");
+          "rules/kotlin/naming.toml",
+          "rules/kotlin/exceptions.toml",
+          "rules/kotlin/coroutines.toml",
+          "rules/kotlin/performance.toml",
+          "rules/kotlin/potential-bugs.toml");
 
   private static final String RULES = "rules";
   private static final String ID = "id";

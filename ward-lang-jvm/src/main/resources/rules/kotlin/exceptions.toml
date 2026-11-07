@@ -1,0 +1,75 @@
+# Exception rules for Kotlin, from detekt's exceptions set (standard preset). Each rule is one
+# check over the syntax tree. Exception names are detekt's defaults: the options that take a
+# list are not declared, because the generic checks have no list parameter.
+
+[[rules]]
+id = "ward:kotlin/print-stack-trace"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^printStackTrace\s*\(\s*\)$'
+message = "printStackTrace() writes to the standard error; log the exception instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/return-from-finally"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jumpExpression"]
+inside = ["finallyBlock"]
+text = '^return'
+message = "return inside a finally block discards the exception of the try block"
+'''
+
+[[rules]]
+id = "ward:kotlin/throwing-exception-from-finally"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jumpExpression"]
+inside = ["finallyBlock"]
+text = '^throw'
+message = "throw inside a finally block hides the exception of the try block"
+'''
+
+[[rules]]
+id = "ward:kotlin/rethrow-caught-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchBlock"]
+text = '^catch\s*\(\s*(\w+)\s*:[^)]*\)\s*\{\s*throw\s*\1\s*\}$'
+message = "the caught exception is only rethrown; remove the catch block"
+'''
+
+[[rules]]
+id = "ward:kotlin/throwing-exceptions-without-message-or-cause"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jumpExpression"]
+text = '^throw\s*(ArrayIndexOutOfBoundsException|Exception|IllegalArgumentException|IllegalMonitorStateException|IllegalStateException|IndexOutOfBoundsException|NullPointerException|RuntimeException|Throwable)\s*\(\s*\)$'
+message = "exception is thrown without a message or a cause"
+'''

@@ -16,9 +16,7 @@ detekt = ["AlsoCouldBeApply"]
 
 [[rule]]
 name = "array-primitive"
-category = "performance"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ArrayPrimitive"]
 
 [[rule]]
@@ -170,9 +168,7 @@ detekt = ["DontDowncastCollectionTypes"]
 
 [[rule]]
 name = "double-mutability-for-collection"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["DoubleMutabilityForCollection"]
 
 [[rule]]
@@ -296,9 +292,7 @@ detekt = ["EnumNaming"]
 
 [[rule]]
 name = "equals-always-returns-true-or-false"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["EqualsAlwaysReturnsTrueOrFalse"]
 
 [[rule]]
@@ -338,9 +332,7 @@ detekt = ["ExplicitCollectionElementAccessMethod"]
 
 [[rule]]
 name = "explicit-garbage-collection-call"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ExplicitGarbageCollectionCall"]
 
 [[rule]]
@@ -359,9 +351,7 @@ detekt = ["ExpressionBodySyntax"]
 
 [[rule]]
 name = "for-each-on-range"
-category = "performance"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ForEachOnRange"]
 
 [[rule]]
@@ -450,9 +440,7 @@ detekt = ["IgnoredReturnValue"]
 
 [[rule]]
 name = "implicit-default-locale"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ImplicitDefaultLocale"]
 
 [[rule]]
@@ -464,9 +452,7 @@ detekt = ["ImplicitUnitReturnType"]
 
 [[rule]]
 name = "inject-dispatcher"
-category = "coroutines"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["InjectDispatcher"]
 
 [[rule]]
@@ -492,16 +478,12 @@ detekt = ["InvalidRange"]
 
 [[rule]]
 name = "iterator-has-next-calls-next-method"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["IteratorHasNextCallsNextMethod"]
 
 [[rule]]
 name = "iterator-not-throwing-no-such-element-exception"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["IteratorNotThrowingNoSuchElementException"]
 
 [[rule]]
@@ -744,9 +726,7 @@ detekt = ["PreferToOverPairSyntax"]
 
 [[rule]]
 name = "print-stack-trace"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["PrintStackTrace"]
 
 [[rule]]
@@ -786,16 +766,12 @@ detekt = ["ReplaceSafeCallChainWithRun"]
 
 [[rule]]
 name = "rethrow-caught-exception"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["RethrowCaughtException"]
 
 [[rule]]
 name = "return-from-finally"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ReturnFromFinally"]
 
 [[rule]]
@@ -828,9 +804,7 @@ detekt = ["SpacingBetweenPackageAndImports"]
 
 [[rule]]
 name = "spread-operator"
-category = "performance"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["SpreadOperator"]
 
 [[rule]]
@@ -863,9 +837,7 @@ detekt = ["SuspendFunWithCoroutineScopeReceiver"]
 
 [[rule]]
 name = "suspend-fun-with-flow-return-type"
-category = "coroutines"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["SuspendFunWithFlowReturnType"]
 
 [[rule]]
@@ -877,9 +849,7 @@ detekt = ["SwallowedException"]
 
 [[rule]]
 name = "throwing-exception-from-finally"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ThrowingExceptionFromFinally"]
 
 [[rule]]
@@ -891,9 +861,7 @@ detekt = ["ThrowingExceptionInMain"]
 
 [[rule]]
 name = "throwing-exceptions-without-message-or-cause"
-category = "exceptions"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["ThrowingExceptionsWithoutMessageOrCause"]
 
 [[rule]]
@@ -1252,7 +1220,5 @@ detekt = ["VariableMinLength"]
 
 [[rule]]
 name = "wrong-equals-type-parameter"
-category = "potential-bugs"
-status = { kotlin = "planned" }
-issues = { kotlin = "#324" }
+status = { kotlin = "implemented" }
 detekt = ["WrongEqualsTypeParameter"]
