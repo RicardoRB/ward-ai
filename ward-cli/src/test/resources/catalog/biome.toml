@@ -12,8 +12,6 @@ biome = ["noAccumulatingSpread"]
 
 [[rule]]
 name = "no-adjacent-spaces-in-regex"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noAdjacentSpacesInRegex"]
 
 [[rule]]
@@ -48,8 +46,6 @@ biome = ["noArrayIndexKey"]
 
 [[rule]]
 name = "no-assign-in-expressions"
-presets = ["standard", "strict"]
-category = "suspicious"
 biome = ["noAssignInExpressions"]
 
 [[rule]]
@@ -131,8 +127,6 @@ biome = ["noConditionalExpect"]
 
 [[rule]]
 name = "no-confusing-labels"
-presets = ["standard", "strict"]
-category = "suspicious"
 biome = ["noConfusingLabels"]
 
 [[rule]]
@@ -143,8 +137,7 @@ biome = ["noConfusingVoidType"]
 
 [[rule]]
 name = "no-const-enum"
-presets = ["standard", "strict"]
-category = "suspicious"
+not-applicable = { javascript = "TypeScript enum declarations have no JavaScript counterpart" }
 biome = ["noConstEnum"]
 
 [[rule]]
@@ -167,8 +160,6 @@ biome = ["noDangerouslySetInnerHtmlWithChildren"]
 
 [[rule]]
 name = "no-default-export"
-presets = ["strict"]
-category = "linter"
 biome = ["noDefaultExport"]
 
 [[rule]]
@@ -314,14 +305,10 @@ biome = ["noFocusedTests"]
 
 [[rule]]
 name = "no-for-each"
-presets = ["strict"]
-category = "complexity"
 biome = ["noForEach"]
 
 [[rule]]
 name = "no-for-in"
-presets = ["strict"]
-category = "suspicious"
 biome = ["noForIn"]
 
 [[rule]]
@@ -478,8 +465,6 @@ biome = ["noMisplacedListElements"]
 
 [[rule]]
 name = "no-misrefactored-shorthand-assign"
-presets = ["standard", "strict"]
-category = "suspicious"
 biome = ["noMisrefactoredShorthandAssign"]
 
 [[rule]]
@@ -490,8 +475,6 @@ biome = ["noMultilineString"]
 
 [[rule]]
 name = "no-namespace-import"
-presets = ["strict"]
-category = "performance"
 biome = ["noNamespaceImport"]
 
 [[rule]]
@@ -656,8 +639,6 @@ biome = ["noQwikUseVisibleTask"]
 
 [[rule]]
 name = "no-re-export-all"
-presets = ["strict"]
-category = "performance"
 biome = ["noReExportAll"]
 
 [[rule]]
@@ -728,8 +709,6 @@ biome = ["noRedundantRoles"]
 
 [[rule]]
 name = "no-render-return-value"
-presets = ["strict"]
-category = "correctness"
 biome = ["noRenderReturnValue"]
 
 [[rule]]
@@ -798,8 +777,6 @@ biome = ["noStaticOnlyClass"]
 
 [[rule]]
 name = "no-string-case-mismatch"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noStringCaseMismatch"]
 
 [[rule]]
@@ -860,8 +837,6 @@ biome = ["noThenProperty"]
 
 [[rule]]
 name = "no-this-in-static"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noThisInStatic"]
 
 [[rule]]
@@ -938,14 +913,10 @@ biome = ["noUnusedFunctionParameters"]
 
 [[rule]]
 name = "no-unused-instantiation"
-presets = ["strict"]
-category = "correctness"
 biome = ["noUnusedInstantiation"]
 
 [[rule]]
 name = "no-unused-template-literal"
-presets = ["strict"]
-category = "linter"
 biome = ["noUnusedTemplateLiteral"]
 
 [[rule]]
@@ -960,8 +931,6 @@ biome = ["noUselessCatchBinding"]
 
 [[rule]]
 name = "no-useless-continue"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noUselessContinue"]
 
 [[rule]]
@@ -982,8 +951,6 @@ biome = ["noUselessStringRaw"]
 
 [[rule]]
 name = "no-useless-switch-case"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noUselessSwitchCase"]
 
 [[rule]]
@@ -1066,8 +1033,6 @@ biome = ["noVueSetupPropsReactivityLoss"]
 
 [[rule]]
 name = "no-xor-as-exponentiation"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["noXorAsExponentiation"]
 
 [[rule]]
@@ -1306,8 +1271,6 @@ biome = ["useFragmentSyntax"]
 
 [[rule]]
 name = "use-global-this"
-presets = ["strict"]
-category = "linter"
 biome = ["useGlobalThis"]
 
 [[rule]]
@@ -1386,8 +1349,6 @@ biome = ["useIsArray"]
 
 [[rule]]
 name = "use-json-import-attributes"
-presets = ["strict"]
-category = "correctness"
 biome = ["useJsonImportAttributes"]
 
 [[rule]]
@@ -1434,8 +1395,6 @@ biome = ["useNodeAssertStrict"]
 
 [[rule]]
 name = "use-nodejs-import-protocol"
-presets = ["standard", "strict"]
-category = "linter"
 biome = ["useNodejsImportProtocol"]
 
 [[rule]]
@@ -1546,8 +1505,7 @@ biome = ["useSemanticElements"]
 
 [[rule]]
 name = "use-shorthand-function-type"
-presets = ["standard", "strict"]
-category = "linter"
+not-applicable = { javascript = "TypeScript interface declarations have no JavaScript counterpart" }
 biome = ["useShorthandFunctionType"]
 
 [[rule]]
@@ -1618,8 +1576,6 @@ biome = ["useTestHooksOnTop"]
 
 [[rule]]
 name = "use-throw-new-error"
-presets = ["strict"]
-category = "linter"
 biome = ["useThrowNewError"]
 
 [[rule]]
@@ -1630,8 +1586,6 @@ biome = ["useTopLevelRegex"]
 
 [[rule]]
 name = "use-trim-start-end"
-presets = ["strict"]
-category = "linter"
 biome = ["useTrimStartEnd"]
 
 [[rule]]

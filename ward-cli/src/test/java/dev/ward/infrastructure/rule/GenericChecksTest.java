@@ -84,7 +84,7 @@ class GenericChecksTest {
                 DeclarativeChecks.bundled()
                     .build(MINIMAL.get(GenericKind.FORBIDDEN_NODE) + "\nsources = \"some\""))
         .isInstanceOf(RuleConfigurationException.class)
-        .hasMessageContaining("sources must be all, main or test");
+        .hasMessageContaining("sources must be all, main, test or app");
   }
 
   @Test

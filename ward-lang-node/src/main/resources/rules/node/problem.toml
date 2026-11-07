@@ -969,3 +969,185 @@ kinds = ["ifStatement", "iterationStatement", "singleExpression"]
 text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
 message = "unexpected constant condition"
 '''
+
+[[rules]]
+id = "ward:typescript/no-const-enum"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enumDeclaration"]
+text = '^(declare)?constenum'
+message = "avoid const enum; use a regular enum or a union of literals"
+'''
+
+[[rules]]
+id = "ward:typescript/no-assign-in-expressions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-assign-in-expressions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:typescript/no-misrefactored-shorthand-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:javascript/no-misrefactored-shorthand-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:typescript/no-string-case-mismatch"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-string-case-mismatch"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:typescript/no-render-return-value"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:javascript/no-render-return-value"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-xor-as-exponentiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''
+
+[[rules]]
+id = "ward:javascript/no-xor-as-exponentiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''

@@ -2,13 +2,13 @@
 
 no-access-key = { status = "planned", issue = "#329" }
 no-accumulating-spread = "implemented"
-no-adjacent-spaces-in-regex = { status = "planned", issue = "#329" }
+no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
 no-approximative-numeric-constant = { status = "planned", issue = "#329" }
 no-aria-hidden-on-focusable = { status = "planned", issue = "#329" }
 no-aria-unsupported-elements = { status = "planned", issue = "#329" }
 no-array-index-key = { status = "planned", issue = "#329" }
-no-assign-in-expressions = { status = "planned", issue = "#329" }
+no-assign-in-expressions = "implemented"
 no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
 no-astro-set-html-directive = { status = "planned", issue = "#329" }
 no-autofocus = { status = "planned", issue = "#329" }
@@ -24,11 +24,11 @@ no-component-hook-factories = { status = "planned", issue = "#329" }
 no-conditional-expect = { status = "planned", issue = "#329" }
 no-confusing-labels = { status = "planned", issue = "#329" }
 no-confusing-void-type = { status = "planned", issue = "#329" }
-no-const-enum = { status = "planned", issue = "#329" }
+no-const-enum = "implemented"
 no-constant-math-min-max-clamp = { status = "planned", issue = "#329" }
 no-dangerously-set-inner-html = { status = "planned", issue = "#329" }
 no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#329" }
-no-default-export = { status = "planned", issue = "#296" }
+no-default-export = "implemented"
 no-delete = "implemented"
 no-deprecated-imports = { status = "planned", issue = "#329" }
 no-distracting-elements = { status = "planned", issue = "#329" }
@@ -54,8 +54,8 @@ no-exported-imports = { status = "planned", issue = "#296" }
 no-exports-in-test = { status = "planned", issue = "#329" }
 no-flat-map-identity = "implemented"
 no-focused-tests = "implemented"
-no-for-each = { status = "planned", issue = "#329" }
-no-for-in = { status = "planned", issue = "#329" }
+no-for-each = "implemented"
+no-for-in = "implemented"
 no-global-dirname-filename = "implemented"
 no-global-eval = "implemented"
 no-global-is-finite = "implemented"
@@ -83,9 +83,9 @@ no-misleading-instantiator = { status = "planned", issue = "#329" }
 no-misleading-return-type = { status = "planned", issue = "#329" }
 no-misplaced-assertion = { status = "planned", issue = "#329" }
 no-misplaced-list-elements = { status = "planned", issue = "#329" }
-no-misrefactored-shorthand-assign = { status = "planned", issue = "#329" }
+no-misrefactored-shorthand-assign = "implemented"
 no-multiline-string = { status = "planned", issue = "#296" }
-no-namespace-import = { status = "planned", issue = "#329" }
+no-namespace-import = "implemented"
 no-negation-in-equality-check = { status = "planned", issue = "#329" }
 no-nested-component-definitions = { status = "planned", issue = "#329" }
 no-nested-promises = { status = "planned", issue = "#329" }
@@ -113,7 +113,7 @@ no-private-imports = { status = "planned", issue = "#329" }
 no-process-env = "implemented"
 no-process-global = { status = "planned", issue = "#329" }
 no-qwik-use-visible-task = { status = "planned", issue = "#329" }
-no-re-export-all = { status = "planned", issue = "#329" }
+no-re-export-all = "implemented"
 no-react-forward-ref = { status = "planned", issue = "#329" }
 no-react-native-deep-imports = { status = "planned", issue = "#329" }
 no-react-native-literal-colors = { status = "planned", issue = "#329" }
@@ -125,7 +125,7 @@ no-react-string-refs = { status = "planned", issue = "#329" }
 no-redundant-alt = { status = "planned", issue = "#329" }
 no-redundant-default-export = { status = "planned", issue = "#329" }
 no-redundant-roles = { status = "planned", issue = "#329" }
-no-render-return-value = { status = "planned", issue = "#329" }
+no-render-return-value = "implemented"
 no-restricted-elements = { status = "planned", issue = "#329" }
 no-restricted-imports = { status = "planned", issue = "#296" }
 no-return-in-finally = { status = "planned", issue = "#329" }
@@ -137,7 +137,7 @@ no-skipped-tests = "implemented"
 no-solid-destructured-props = { status = "planned", issue = "#329" }
 no-static-element-interactions = { status = "planned", issue = "#329" }
 no-static-only-class = { status = "planned", issue = "#329" }
-no-string-case-mismatch = { status = "planned", issue = "#329" }
+no-string-case-mismatch = "implemented"
 no-substr = "implemented"
 no-suspicious-semicolon-in-jsx = { status = "planned", issue = "#329" }
 no-svelte-export-let = { status = "planned", issue = "#329" }
@@ -148,7 +148,7 @@ no-tailwind-arbitrary-value = { status = "planned", issue = "#329" }
 no-tailwind-raw-colors = { status = "planned", issue = "#329" }
 no-ternary = { status = "planned", issue = "#296" }
 no-then-property = "implemented"
-no-this-in-static = { status = "planned", issue = "#329" }
+no-this-in-static = "implemented"
 no-this-outside-of-class = { status = "planned", issue = "#329" }
 no-unassigned-variables = { status = "planned", issue = "#329" }
 no-undeclared-classes = { status = "planned", issue = "#329" }
@@ -161,15 +161,15 @@ no-unreachable-super = { status = "planned", issue = "#329" }
 no-unresolved-imports = { status = "planned", issue = "#329" }
 no-unsafe-iframe-sandbox = { status = "planned", issue = "#329" }
 no-unused-function-parameters = { status = "planned", issue = "#329" }
-no-unused-instantiation = { status = "planned", issue = "#329" }
-no-unused-template-literal = { status = "planned", issue = "#296" }
+no-unused-instantiation = "implemented"
+no-unused-template-literal = "implemented"
 no-unwanted-polyfillio = { status = "planned", issue = "#329" }
 no-useless-catch-binding = "implemented"
-no-useless-continue = { status = "planned", issue = "#329" }
+no-useless-continue = "implemented"
 no-useless-fragments = { status = "planned", issue = "#329" }
 no-useless-lone-block-statements = { status = "planned", issue = "#329" }
 no-useless-string-raw = "implemented"
-no-useless-switch-case = { status = "planned", issue = "#329" }
+no-useless-switch-case = "implemented"
 no-useless-undefined = { status = "planned", issue = "#329" }
 no-void-elements-with-children = { status = "planned", issue = "#329" }
 no-void-type-return = { status = "planned", issue = "#329" }
@@ -183,7 +183,7 @@ no-vue-ref-as-operand = { status = "planned", issue = "#329" }
 no-vue-reserved-keys = { status = "planned", issue = "#329" }
 no-vue-reserved-props = { status = "planned", issue = "#329" }
 no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
-no-xor-as-exponentiation = { status = "planned", issue = "#329" }
+no-xor-as-exponentiation = "implemented"
 use-alt-text = { status = "planned", issue = "#329" }
 use-anchor-content = { status = "planned", issue = "#329" }
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
@@ -224,7 +224,7 @@ use-flat-map = "implemented"
 use-flat-math-min-max = { status = "planned", issue = "#329" }
 use-focusable-interactive = { status = "planned", issue = "#329" }
 use-fragment-syntax = { status = "planned", issue = "#296" }
-use-global-this = { status = "planned", issue = "#296" }
+use-global-this = "implemented"
 use-google-font-display = { status = "planned", issue = "#329" }
 use-google-font-preconnect = { status = "planned", issue = "#329" }
 use-heading-content = { status = "planned", issue = "#329" }
@@ -238,7 +238,7 @@ use-imports-first = { status = "planned", issue = "#329" }
 use-index-of = "implemented"
 use-inline-script-id = { status = "planned", issue = "#329" }
 use-is-array = "implemented"
-use-json-import-attributes = { status = "planned", issue = "#329" }
+use-json-import-attributes = "implemented"
 use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
 use-key-with-click-events = { status = "planned", issue = "#329" }
 use-key-with-mouse-events = { status = "planned", issue = "#329" }
@@ -246,7 +246,7 @@ use-math-min-max = { status = "planned", issue = "#329" }
 use-media-caption = { status = "planned", issue = "#329" }
 use-modern-math-apis = { status = "planned", issue = "#329" }
 use-node-assert-strict = { status = "planned", issue = "#296" }
-use-nodejs-import-protocol = { status = "planned", issue = "#296" }
+use-nodejs-import-protocol = "implemented"
 use-number-namespace = { status = "planned", issue = "#296" }
 use-number-to-fixed-digits-argument = "implemented"
 use-numeric-separators = { status = "planned", issue = "#296" }
@@ -265,7 +265,7 @@ use-reduce-type-parameter = { status = "planned", issue = "#329" }
 use-regexp-test = { status = "planned", issue = "#329" }
 use-self-closing-elements = { status = "planned", issue = "#296" }
 use-semantic-elements = { status = "planned", issue = "#329" }
-use-shorthand-function-type = { status = "planned", issue = "#296" }
+use-shorthand-function-type = "implemented"
 use-simple-number-keys = { status = "planned", issue = "#329" }
 use-simplified-logic-expression = { status = "planned", issue = "#329" }
 use-single-js-doc-asterisk = { status = "planned", issue = "#329" }
@@ -277,9 +277,9 @@ use-svelte-kit-rune-imports = { status = "planned", issue = "#329" }
 use-tailwind-shorthand-classes = { status = "planned", issue = "#329" }
 use-test-hooks-in-order = { status = "planned", issue = "#329" }
 use-test-hooks-on-top = { status = "planned", issue = "#329" }
-use-throw-new-error = { status = "planned", issue = "#296" }
+use-throw-new-error = "implemented"
 use-top-level-regex = { status = "planned", issue = "#329" }
-use-trim-start-end = { status = "planned", issue = "#296" }
+use-trim-start-end = "implemented"
 use-unique-element-ids = { status = "planned", issue = "#329" }
 use-valid-anchor = { status = "planned", issue = "#329" }
 use-valid-aria-props = { status = "planned", issue = "#329" }
