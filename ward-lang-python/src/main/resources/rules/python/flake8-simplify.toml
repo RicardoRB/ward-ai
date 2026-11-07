@@ -1,0 +1,71 @@
+# Ruff's flake8-simplify rules (SIM) for Python that a call, comparison or literal's text decides.
+
+[[rules]]
+id = "ward:python/in-dict-keys"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "in[\\w.]+\\.keys\\(\\)"
+message = "membership test on dict.keys(); test the dict itself"
+'''
+
+[[rules]]
+id = "ward:python/yoda-conditions"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "^([\\\"'][^\\\"']*[\\\"']|\\d+)=="
+message = "literal on the left of ==; put the variable first"
+'''
+
+[[rules]]
+id = "ward:python/split-static-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^[\\\"'][^\\\"']*[\\\"']\\.split\\([\\\"'][^\\\"']*[\\\"']\\)$"
+message = "split of a literal string with a literal separator; write the list"
+'''
+
+[[rules]]
+id = "ward:python/dict-get-with-none-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.get\\([^,()]+,None\\)"
+message = "dict.get() with a None default; drop the default"
+'''
+
+[[rules]]
+id = "ward:python/zip-dict-keys-and-values"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^zip\\((\\w+)\\.keys\\(\\),\\1\\.values\\(\\)\\)"
+message = "zip of keys and values; iterate over items()"
+'''
