@@ -45,6 +45,7 @@ public final class ClasspathRuleSource implements AnalysisRuleSource {
           "rules/java/architecture.toml",
           "rules/java/errorprone-part2.toml",
           "rules/java/errorprone.toml",
+          "rules/java/pmd-errorprone.toml",
           "dev/ward/analysis/lang/node/rules.toml",
           "rules/python-structural.toml",
           "rules/python/pycodestyle.toml",
