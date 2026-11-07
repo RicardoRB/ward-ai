@@ -429,3 +429,28 @@ kinds = ["atom"]
 text = '^\{(?:[^{}]*,)*?([A-Za-z_]\w*):(?:[^{}]*,)*?\1:'
 message = "dictionary key repeated; the first value is lost"
 '''
+
+[[rules]]
+id = "ward:python/import-shadowed-by-loop-var"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "shadows-import"
+message = "import shadowed by loop variable"
+'''
+
+[[rules]]
+id = "ward:python/undefined-export"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-export"
+message = "undefined name '{value}' in __all__"
+'''

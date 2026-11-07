@@ -349,3 +349,29 @@ kinds = ["expr"]
 text = '^(\+\+|--)'
 message = "Python has no ++ or -- operator; use += or -="
 '''
+
+[[rules]]
+id = "ward:python/unused-loop-control-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "unused"
+message = "loop control variable is not used within the loop body"
+'''
+
+[[rules]]
+id = "ward:python/loop-variable-overrides-iterator"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "overrides-iterator"
+message = "loop control variable overrides the iterable it iterates"
+'''

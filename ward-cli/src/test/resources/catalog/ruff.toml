@@ -370,9 +370,7 @@ ruff = ["B006"]
 
 [[rule]]
 name = "unused-loop-control-variable"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B007"]
 
 [[rule]]
@@ -438,9 +436,7 @@ ruff = ["B019"]
 
 [[rule]]
 name = "loop-variable-overrides-iterator"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B020"]
 
 [[rule]]
@@ -1311,9 +1307,7 @@ ruff = ["EXE005"]
 
 [[rule]]
 name = "import-shadowed-by-loop-var"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F402"]
 
 [[rule]]
@@ -1503,9 +1497,7 @@ ruff = ["F821"]
 
 [[rule]]
 name = "undefined-export"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F822"]
 
 [[rule]]
