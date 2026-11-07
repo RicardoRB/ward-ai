@@ -1282,8 +1282,6 @@ errorprone = ["ImplementAssertionWithChaining"]
 
 [[rule]]
 name = "impossible-null-comparison"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ImpossibleNullComparison"]
 
 [[rule]]
@@ -1542,8 +1540,6 @@ errorprone = ["InvalidZoneId"]
 
 [[rule]]
 name = "is-instance-incompatible-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IsInstanceIncompatibleType"]
 
 [[rule]]
