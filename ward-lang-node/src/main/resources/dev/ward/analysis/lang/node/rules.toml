@@ -1980,3 +1980,129 @@ parent = ["ifStatement"]
 text = '^(?!\{|if\()'
 message = "if branch needs braces around its statement"
 '''
+
+[[rules]]
+id = "ward:typescript/no-invalid-builtin-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:javascript/no-invalid-builtin-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-for-direction"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-for-direction"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:typescript/use-while"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:javascript/use-while"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\(;[^;]+;\)'
+message = "a for loop with only a condition is a while loop; use while"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-catch-binding"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-catch-binding"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchProduction"]
+text = '^catch\(([\w$]+)\)\{throw\1;?\}$'
+message = "the catch clause only rethrows the error; remove the catch clause"
+'''
+
+[[rules]]
+id = "ward:typescript/no-banned-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeReference"]
+text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
+message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
+'''
