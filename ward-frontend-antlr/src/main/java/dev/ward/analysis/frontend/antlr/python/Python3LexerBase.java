@@ -8,23 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
-import org.antlr.v4.runtime.IntStream;
 import org.antlr.v4.runtime.Token;
 
 /** Lexer state and helpers used by the Python grammar's actions and predicates. */
 abstract class Python3LexerBase extends WardLexerBase {
-  private static final int TRIPLE_QUOTES = 3;
-  private static final int ESCAPE_LENGTH = 2;
-  private static final int BACKSLASH = '\\';
-  private static final int OPEN_BRACE = '{';
-  private static final int CLOSE_BRACE = '}';
-  private static final int OPEN_PAREN = '(';
-  private static final int CLOSE_PAREN = ')';
-  private static final int OPEN_BRACKET = '[';
-  private static final int CLOSE_BRACKET = ']';
-  private static final int SINGLE_QUOTE = '\'';
-  private static final int DOUBLE_QUOTE = '"';
-
   // A queue where extra tokens are pushed on (see the NEWLINE lexer rule).
   private List<Token> tokens = new LinkedList<>();
   // The stack that keeps track of the indentation level.
@@ -137,114 +124,6 @@ abstract class Python3LexerBase extends WardLexerBase {
         this.emit(createDedent());
         indents.pop();
       }
-    }
-  }
-
-  /**
-   * Consumes the body of an f-string or t-string whose prefix and opening quotes were just matched.
-   * A replacement field is scanned as code, so it may reuse the enclosing quote (PEP 701).
-   */
-  void scanTemplateString() {
-    final String opening = getText();
-    final int quote = opening.charAt(opening.length() - 1);
-    scanTemplateBody(quote, isTripleQuoted(opening, quote));
-  }
-
-  private static boolean isTripleQuoted(final String opening, final int quote) {
-    return opening.length() > TRIPLE_QUOTES
-        && opening.endsWith(String.valueOf((char) quote).repeat(TRIPLE_QUOTES));
-  }
-
-  private void scanTemplateBody(final int quote, final boolean triple) {
-    int next = _input.LA(1);
-    while (next != IntStream.EOF
-        && !closesAt(next, quote, triple)
-        && (triple || !isLineBreak(next))) {
-      if (next == BACKSLASH) {
-        consumeChars(ESCAPE_LENGTH);
-      } else if (next == OPEN_BRACE) {
-        scanBrace();
-      } else {
-        consumeChars(1);
-      }
-      next = _input.LA(1);
-    }
-    if (closesAt(next, quote, triple)) {
-      consumeChars(quoteLength(triple));
-    }
-  }
-
-  /**
-   * Consumes an escaped brace, or a replacement field whose opening brace is the next character.
-   */
-  private void scanBrace() {
-    consumeChars(1);
-    if (_input.LA(1) == OPEN_BRACE) {
-      consumeChars(1);
-    } else {
-      scanReplacementField();
-    }
-  }
-
-  private void scanReplacementField() {
-    int depth = 0;
-    int next = _input.LA(1);
-    while (next != IntStream.EOF && (depth > 0 || next != CLOSE_BRACE)) {
-      if (next == SINGLE_QUOTE || next == DOUBLE_QUOTE) {
-        scanNestedString(next);
-      } else {
-        depth = nestingDepth(next, depth);
-        consumeChars(1);
-      }
-      next = _input.LA(1);
-    }
-    consumeChars(1);
-  }
-
-  private static int nestingDepth(final int next, final int depth) {
-    if (next == OPEN_BRACE || next == OPEN_PAREN || next == OPEN_BRACKET) {
-      return depth + 1;
-    }
-    if (next == CLOSE_BRACE || next == CLOSE_PAREN || next == CLOSE_BRACKET) {
-      return Math.max(0, depth - 1);
-    }
-    return depth;
-  }
-
-  /** Consumes a string literal inside a replacement field. */
-  private void scanNestedString(final int quote) {
-    final boolean triple = _input.LA(2) == quote && _input.LA(3) == quote;
-    consumeChars(quoteLength(triple));
-    int next = _input.LA(1);
-    while (next != IntStream.EOF
-        && !closesAt(next, quote, triple)
-        && (triple || !isLineBreak(next))) {
-      consumeChars(next == BACKSLASH ? ESCAPE_LENGTH : 1);
-      next = _input.LA(1);
-    }
-    if (closesAt(next, quote, triple)) {
-      consumeChars(quoteLength(triple));
-    }
-  }
-
-  /**
-   * Whether the character at the cursor, {@code next}, closes a string opened with {@code quote}.
-   */
-  private boolean closesAt(final int next, final int quote, final boolean triple) {
-    return next == quote && (!triple || _input.LA(2) == quote && _input.LA(3) == quote);
-  }
-
-  private static boolean isLineBreak(final int next) {
-    return next == '\n' || next == '\r';
-  }
-
-  private static int quoteLength(final boolean triple) {
-    return triple ? TRIPLE_QUOTES : 1;
-  }
-
-  private void consumeChars(final int count) {
-    for (int index = 0; index < count && _input.LA(1) != IntStream.EOF; index++) {
-      getInterpreter().consume(_input);
     }
   }
 

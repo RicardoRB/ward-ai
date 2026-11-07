@@ -111,7 +111,7 @@ STRING_LITERAL: ( [rR] | [uU])? ( SHORT_STRING | LONG_STRING);
 
 /// f-strings and t-strings (PEP 701, PEP 750): the body is scanned by the lexer base, so a replacement
 /// field may reuse the enclosing quote.
-TEMPLATE_STRING_LITERAL: ( [fFtT] | ( [fFtT] [rR]) | ( [rR] [fFtT]) ) ( '"""' | '\'\'\'' | '"' | '\'' ) { scanTemplateString(); } -> type(STRING);
+TEMPLATE_STRING_LITERAL: ( [fFtT] | ( [fFtT] [rR]) | ( [rR] [fFtT]) ) ( '"""' | '\'\'\'' | '"' | '\'' ) { new PythonTemplateString(_input, getInterpreter()).scan(getText()); } -> type(STRING);
 
 /// bytesliteral   ::=  bytesprefix(shortbytes | longbytes)
 /// bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB"
