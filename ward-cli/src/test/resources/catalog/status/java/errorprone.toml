@@ -223,7 +223,7 @@ immutable-member-collection = { status = "planned", issue = "#319" }
 immutable-refactoring = { status = "planned", issue = "#319" }
 immutable-set-for-contains = { status = "planned", issue = "#319" }
 implement-assertion-with-chaining = { status = "planned", issue = "#319" }
-impossible-null-comparison = { status = "planned", issue = "#319" }
+impossible-null-comparison = "implemented"
 incomparable = "implemented"
 incompatible-argument-type = { status = "planned", issue = "#319" }
 incompatible-modifiers = "implemented"
@@ -271,7 +271,7 @@ invalid-throws = { status = "planned", issue = "#319" }
 invalid-throws-link = { status = "planned", issue = "#319" }
 invalid-time-zone-id = "implemented"
 invalid-zone-id = "implemented"
-is-instance-incompatible-type = { status = "planned", issue = "#319" }
+is-instance-incompatible-type = "implemented"
 is-instance-of-class = "implemented"
 is-loggable-tag-length = "implemented"
 iterable-and-iterator = { status = "planned", issue = "#319" }

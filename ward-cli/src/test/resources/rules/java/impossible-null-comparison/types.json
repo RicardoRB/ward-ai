@@ -1,0 +1,81 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "example.Message"
+      },
+      "name": "getName",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:12-3:18": {
+    "type": {
+      "name": "example.Message"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageOrBuilder"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:12-5:26": {
+    "call": {
+      "declaring": {
+        "name": "example.Other"
+      },
+      "name": "getName",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "5:12-5:16": {
+    "type": {
+      "name": "example.Other"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:39-5:56": {
+    "call": {
+      "declaring": {
+        "name": "example.Message"
+      },
+      "name": "getCount",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "5:39-5:45": {
+    "type": {
+      "name": "example.Message"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageOrBuilder"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

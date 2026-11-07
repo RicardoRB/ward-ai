@@ -1,0 +1,116 @@
+{
+  "3:12-3:32": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Class"
+      },
+      "name": "isInstance",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "3:12-3:15": {
+    "type": {
+      "name": "java.lang.Class",
+      "args": [
+        {
+          "name": "java.lang.Integer"
+        }
+      ]
+    }
+  },
+  "3:28-3:31": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true,
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.io.Serializable"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ]
+    }
+  },
+  "5:12-5:32": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Class"
+      },
+      "name": "isInstance",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "5:12-5:15": {
+    "type": {
+      "name": "java.lang.Class",
+      "args": [
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ]
+    }
+  },
+  "5:28-5:31": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true,
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.io.Serializable"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ]
+    }
+  }
+}
