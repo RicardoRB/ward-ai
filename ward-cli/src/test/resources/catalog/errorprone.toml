@@ -1990,14 +1990,10 @@ errorprone = ["MislabeledAndroidString"]
 
 [[rule]]
 name = "misleading-empty-varargs"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MisleadingEmptyVarargs"]
 
 [[rule]]
 name = "misleading-escaped-space"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MisleadingEscapedSpace"]
 
 [[rule]]
@@ -2069,14 +2065,10 @@ errorprone = ["MissingTestCall"]
 
 [[rule]]
 name = "misused-day-of-year"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MisusedDayOfYear"]
 
 [[rule]]
 name = "misused-week-year"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MisusedWeekYear"]
 
 [[rule]]
@@ -2117,8 +2109,6 @@ errorprone = ["MockitoDoSetup"]
 
 [[rule]]
 name = "mockito-usage"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MockitoUsage"]
 
 [[rule]]
@@ -2141,8 +2131,6 @@ errorprone = ["ModifySourceCollectionInStream"]
 
 [[rule]]
 name = "modifying-collection-with-itself"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ModifyingCollectionWithItself"]
 
 [[rule]]
@@ -2213,8 +2201,6 @@ errorprone = ["MutablePublicArray"]
 
 [[rule]]
 name = "n-copies-of-char"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NCopiesOfChar"]
 
 [[rule]]
@@ -2267,8 +2253,6 @@ errorprone = ["NoAllocation"]
 
 [[rule]]
 name = "no-can-ignore-return-value-on-classes"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NoCanIgnoreReturnValueOnClasses"]
 
 [[rule]]
@@ -2451,8 +2435,6 @@ errorprone = ["OptionalNotPresent"]
 
 [[rule]]
 name = "optional-of-redundant-method"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OptionalOfRedundantMethod"]
 
 [[rule]]
@@ -2569,8 +2551,6 @@ errorprone = ["PreconditionsCheckNotNullRepeated"]
 
 [[rule]]
 name = "preconditions-invalid-placeholder"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PreconditionsInvalidPlaceholder"]
 
 [[rule]]
@@ -2707,14 +2687,10 @@ errorprone = ["QualifierWithTypeUse"]
 
 [[rule]]
 name = "random-cast"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RandomCast"]
 
 [[rule]]
 name = "random-mod-integer"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RandomModInteger"]
 
 [[rule]]
@@ -2896,8 +2872,6 @@ errorprone = ["SelfAlwaysReturnsThis"]
 
 [[rule]]
 name = "self-assertion"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SelfAssertion"]
 
 [[rule]]
@@ -2950,8 +2924,6 @@ errorprone = ["SingleTestParameter"]
 
 [[rule]]
 name = "size-greater-than-or-equals-zero"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SizeGreaterThanOrEqualsZero"]
 
 [[rule]]
@@ -3082,8 +3054,6 @@ errorprone = ["SuperCallToObjectMethod"]
 
 [[rule]]
 name = "suppress-warnings-deprecated"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SuppressWarningsDeprecated"]
 
 [[rule]]
@@ -3160,8 +3130,6 @@ errorprone = ["TheoryButNoTheories"]
 
 [[rule]]
 name = "thread-builder-name-with-placeholder"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ThreadBuilderNameWithPlaceholder"]
 
 [[rule]]
@@ -3398,8 +3366,6 @@ errorprone = ["UngroupedOverloads"]
 
 [[rule]]
 name = "unicode-directionality-characters"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnicodeDirectionalityCharacters"]
 
 [[rule]]
@@ -3476,8 +3442,6 @@ errorprone = ["UnnecessaryBreakInSwitch"]
 
 [[rule]]
 name = "unnecessary-check-not-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnnecessaryCheckNotNull"]
 
 [[rule]]
@@ -3702,8 +3666,6 @@ errorprone = ["Var"]
 
 [[rule]]
 name = "var-type-name"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["VarTypeName"]
 
 [[rule]]
@@ -3763,8 +3725,6 @@ errorprone = ["WrongOneof"]
 
 [[rule]]
 name = "xor-power"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["XorPower"]
 
 [[rule]]
