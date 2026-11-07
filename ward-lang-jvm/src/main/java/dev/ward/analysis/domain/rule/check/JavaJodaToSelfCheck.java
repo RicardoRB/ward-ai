@@ -52,7 +52,9 @@ public final class JavaJodaToSelfCheck implements RuleCheck {
                         false,
                         NO_ARGUMENTS,
                         false,
-                        Set.of()),
+                        Set.of(),
+                        Set.of(),
+                        false),
                     message)));
     checks = List.copyOf(built);
   }
