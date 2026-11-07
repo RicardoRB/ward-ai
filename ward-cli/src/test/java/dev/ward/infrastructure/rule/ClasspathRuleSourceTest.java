@@ -143,10 +143,22 @@ class ClasspathRuleSourceTest {
     if (rule.capability() == RuleCapability.TYPES) {
       return RuleCapability.TYPES;
     }
+    if (isNullnessFlow(rule.id())) {
+      return RuleCapability.DATAFLOW;
+    }
     return rule.id().endsWith("/unused-assignment")
             || isJavaInjection(rule.id())
             || rule.body().contains("check = \"taint\"")
         ? RuleCapability.DATAFLOW
         : RuleCapability.SYNTAX;
+  }
+
+  /**
+   * The SpotBugs null-pointer, redundant-comparison and type-qualifier rules that read data flow.
+   */
+  private static boolean isNullnessFlow(final String id) {
+    return id.startsWith("ward:java/np-")
+        || id.startsWith("ward:java/tq-")
+        || id.endsWith("/rcn-redundant-nullcheck-would-have-been-a-npe");
   }
 }
