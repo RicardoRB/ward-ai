@@ -163,8 +163,6 @@ typescript-eslint = ["no-dynamic-delete"]
 
 [[rule]]
 name = "no-empty-object-type"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["no-empty-object-type"]
 
 [[rule]]
@@ -267,8 +265,7 @@ typescript-eslint = ["no-mixed-enums"]
 
 [[rule]]
 name = "no-namespace"
-presets = ["standard", "strict"]
-category = "linter"
+not-applicable = { javascript = "JavaScript has no TypeScript namespaces" }
 typescript-eslint = ["no-namespace"]
 biome = ["noNamespace"]
 
@@ -300,8 +297,6 @@ typescript-eslint = ["no-redundant-type-constituents"]
 
 [[rule]]
 name = "no-require-imports"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["no-require-imports"]
 
 [[rule]]
@@ -537,8 +532,6 @@ biome = ["useLiteralEnumMembers"]
 
 [[rule]]
 name = "prefer-namespace-keyword"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-namespace-keyword"]
 biome = ["useNamespaceKeyword"]
 
@@ -654,8 +647,6 @@ typescript-eslint = ["switch-exhaustiveness-check"]
 
 [[rule]]
 name = "triple-slash-reference"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["triple-slash-reference"]
 
 [[rule]]

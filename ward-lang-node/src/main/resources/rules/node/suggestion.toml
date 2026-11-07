@@ -1073,3 +1073,185 @@ kinds = ["typeReference"]
 text = '^(String|Boolean|Number|Symbol|BigInt|Object|Function)$'
 message = "use the primitive type (string, boolean, number, ...) instead of its wrapper object type"
 '''
+
+[[rules]]
+id = "ward:typescript/no-namespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["namespaceDeclaration"]
+text = '^(namespace|module[A-Za-z_$])'
+message = "do not use TypeScript namespaces; use ES modules"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-namespace-keyword"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["namespaceDeclaration"]
+text = '^module[A-Za-z_$]'
+message = "use the namespace keyword instead of module for namespaces"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-object-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["objectType"]
+text = '^\{\}$'
+message = "the empty object type {} accepts any non-nullish value; use a specific type"
+'''
+
+[[rules]]
+id = "ward:typescript/no-require-imports"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression", "importEqualsDeclaration"]
+text = '^(require\(|import[\w$]+=require\()'
+message = "use an ES import instead of require()"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-exponentiation-operator"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.pow\('
+message = "use the ** operator instead of Math.pow()"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-exponentiation-operator"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.pow\('
+message = "use the ** operator instead of Math.pow()"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-numeric-literals"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(Number\.)?parseInt\((?:[\"\x27][01]+[\"\x27],2|[\"\x27][0-7]+[\"\x27],8|[\"\x27][0-9a-fA-F]+[\"\x27],16)\)$'
+message = "use a binary, octal or hexadecimal literal instead of parseInt()"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-numeric-literals"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(Number\.)?parseInt\((?:[\"\x27][01]+[\"\x27],2|[\"\x27][0-7]+[\"\x27],8|[\"\x27][0-9a-fA-F]+[\"\x27],16)\)$'
+message = "use a binary, octal or hexadecimal literal instead of parseInt()"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unneeded-ternary"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^.+\?(true:false|false:true)$'
+message = "unnecessary conditional expression; use the condition itself"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unneeded-ternary"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^.+\?(true:false|false:true)$'
+message = "unnecessary conditional expression; use the condition itself"
+'''
+
+[[rules]]
+id = "ward:typescript/use-nodejs-import-protocol"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importFrom"]
+text = '^from[\"\x27](assert|async_hooks|buffer|child_process|cluster|crypto|dgram|dns|events|fs|http|http2|https|net|os|path|perf_hooks|process|querystring|readline|stream|string_decoder|timers|tls|tty|url|util|vm|worker_threads|zlib)(/[\w/]+)?[\"\x27]$'
+message = "import Node.js built-in modules with the node: protocol"
+'''
+
+[[rules]]
+id = "ward:javascript/use-nodejs-import-protocol"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importFrom"]
+text = '^from[\"\x27](assert|async_hooks|buffer|child_process|cluster|crypto|dgram|dns|events|fs|http|http2|https|net|os|path|perf_hooks|process|querystring|readline|stream|string_decoder|timers|tls|tty|url|util|vm|worker_threads|zlib)(/[\w/]+)?[\"\x27]$'
+message = "import Node.js built-in modules with the node: protocol"
+'''
+
+[[rules]]
+id = "ward:typescript/triple-slash-reference"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^///\s*<reference\s+(path|types|lib)='
+message = "do not use a triple-slash reference; use an import"
+'''

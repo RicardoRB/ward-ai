@@ -1434,8 +1434,6 @@ biome = ["useNodeAssertStrict"]
 
 [[rule]]
 name = "use-nodejs-import-protocol"
-presets = ["standard", "strict"]
-category = "linter"
 biome = ["useNodejsImportProtocol"]
 
 [[rule]]

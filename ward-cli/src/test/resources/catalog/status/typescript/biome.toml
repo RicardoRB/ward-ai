@@ -246,7 +246,7 @@ use-math-min-max = { status = "planned", issue = "#329" }
 use-media-caption = { status = "planned", issue = "#329" }
 use-modern-math-apis = { status = "planned", issue = "#329" }
 use-node-assert-strict = { status = "planned", issue = "#296" }
-use-nodejs-import-protocol = { status = "planned", issue = "#296" }
+use-nodejs-import-protocol = "implemented"
 use-number-namespace = { status = "planned", issue = "#296" }
 use-number-to-fixed-digits-argument = "implemented"
 use-numeric-separators = { status = "planned", issue = "#296" }

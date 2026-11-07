@@ -9,7 +9,7 @@ no-inferrable-types = { status = "planned", issue = "#296" }
 no-magic-numbers = { status = "planned", issue = "#296" }
 no-meaningless-void-operator = { status = "planned", issue = "#329" }
 no-misused-promises = { status = "planned", issue = "#329" }
-no-namespace = { status = "planned", issue = "#296" }
+no-namespace = "not-applicable"
 no-non-null-asserted-optional-chain = { status = "planned", issue = "#329" }
 no-non-null-assertion = { status = "planned", issue = "#296" }
 no-restricted-types = { status = "planned", issue = "#296" }
