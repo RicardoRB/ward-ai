@@ -17,18 +17,13 @@ final class NameTypes {
 
   private final Function<SyntaxNode, TsType> typer;
   private final UnitModel model;
-  private final Program program;
   private final ConstructTyper calls;
   private final Map<SyntaxNode, TsType> contextual = new IdentityHashMap<>();
 
   NameTypes(
-      final Function<SyntaxNode, TsType> typer,
-      final UnitModel model,
-      final Program program,
-      final ConstructTyper calls) {
+      final Function<SyntaxNode, TsType> typer, final UnitModel model, final ConstructTyper calls) {
     this.typer = typer;
     this.model = model;
-    this.program = program;
     this.calls = calls;
   }
 
@@ -58,7 +53,7 @@ final class NameTypes {
   private TsType unbound(final SyntaxNode node, final String name) {
     return "this".equals(name)
         ? calls.thisType(node)
-        : MemberValues.valueOf(program.globals().find(name), name);
+        : MemberValues.valueOf(model.module().find(name), name);
   }
 
   private TsType bindingValue(final Binding binding, final String name) {
@@ -67,7 +62,7 @@ final class NameTypes {
     }
     final UnitModel.Site site = model.site(binding.declaration());
     if (site == null) {
-      return TsType.UNKNOWN;
+      return MemberValues.valueOf(model.module().find(name), name);
     }
     return switch (site.kind()) {
       case VARIABLE -> variable(site);

@@ -33,7 +33,8 @@ final class Reassociate {
     if (!SINGLE.equals(node.kind())) {
       return current;
     }
-    return rotate(repair(current).orElse(current));
+    final SyntaxNode repaired = repair(current).orElse(current);
+    return NewExpressions.repair(repaired).orElseGet(() -> rotate(repaired));
   }
 
   /**

@@ -27,7 +27,7 @@ final class ExprTyper {
   private final OperatorTypes operators;
   private final NameTypes names;
 
-  ExprTyper(final UnitModel model, final Program program, final Members members) {
+  ExprTyper(final UnitModel model, final Members members) {
     this.members = members;
     final ArgumentTyper arguments = new ArgumentTyper(this, members);
     this.calls = new CallTyper(this, model, members, arguments);
@@ -36,7 +36,7 @@ final class ExprTyper {
     this.literals = new LiteralTypes(this::typeOf);
     this.memberTypes = new MemberTypes(this::typeOf, members);
     this.operators = new OperatorTypes(this::typeOf, model, memberTypes);
-    this.names = new NameTypes(this::typeOf, model, program, constructs);
+    this.names = new NameTypes(this::typeOf, model, constructs);
   }
 
   /** Finds a member of a type, or returns null. */

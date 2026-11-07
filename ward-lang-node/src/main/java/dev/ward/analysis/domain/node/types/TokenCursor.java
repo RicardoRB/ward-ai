@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.node.types;
 
 import java.util.List;
-import java.util.Set;
 
 /** A position in the tokens of a type, with the failure flag the parsers share. */
 final class TokenCursor {
@@ -45,13 +44,6 @@ final class TokenCursor {
 
   void skip(final int count) {
     position += count;
-  }
-
-  /** Skips modifier words that precede a type. */
-  void skipModifiers(final Set<String> modifiers) {
-    while (modifiers.contains(peek(0)) && !peek(1).isEmpty() && !isPunctuation(peek(1))) {
-      position++;
-    }
   }
 
   /** Marks the parse as failed and returns the unknown type. */

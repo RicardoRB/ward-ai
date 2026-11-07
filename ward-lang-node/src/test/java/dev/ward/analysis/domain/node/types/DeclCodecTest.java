@@ -63,10 +63,10 @@ class DeclCodecTest {
         .forEach(
             member ->
                 out.append(' ').append(member.name()).append(':').append(member.type().print()));
-    decl.header().calls().forEach(sig -> out.append(' ').append(TsType.printSig(sig, "=>")));
+    decl.header().calls().forEach(sig -> out.append(' ').append(TypePrinter.printSig(sig, "=>")));
     decl.header()
         .constructs()
-        .forEach(sig -> out.append(" new").append(TsType.printSig(sig, "=>")));
+        .forEach(sig -> out.append(" new").append(TypePrinter.printSig(sig, "=>")));
     decl.header().extendsTypes().forEach(type -> out.append(" extends ").append(type.print()));
     out.append(' ').append(decl.type().print());
     decl.body().forEach(inner -> out.append(" {").append(printed(inner)).append('}'));

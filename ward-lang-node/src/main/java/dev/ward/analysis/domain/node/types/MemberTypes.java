@@ -34,7 +34,7 @@ final class MemberTypes {
 
   /** Returns the type of {@code receiver[index]}. */
   TsType element(final List<SyntaxNode> parts) {
-    final TsType receiver = typer.apply(parts.get(0));
+    final TsType receiver = Literals.widen(typer.apply(parts.get(0)));
     return switch (receiver) {
       case TsType.Arr arr -> arr.element();
       case TsType.Tuple tuple -> tupleElement(tuple, parts);

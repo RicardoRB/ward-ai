@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.node.types;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A TypeScript type as far as Ward models it. A type that needs full checking is {@link #UNKNOWN}.
@@ -153,68 +152,14 @@ public sealed interface TsType
   default String print() {
     return switch (this) {
       case Unknown unknown -> "unknown";
-      case Named named -> printNamed(named);
-      case Union union -> join(union.parts(), " | ");
-      case Inter inter -> join(inter.parts(), " & ");
-      case Arr arr -> wrap(arr.element()) + "[]";
-      case Tuple tuple -> "[" + join(tuple.elements(), ", ") + "]";
-      case Fn fn -> printSig(fn.sig(), " => ");
-      case Obj obj -> printObject(obj);
+      case Named named -> TypePrinter.printNamed(named);
+      case Union union -> TypePrinter.join(union.parts(), " | ");
+      case Inter inter -> TypePrinter.join(inter.parts(), " & ");
+      case Arr arr -> TypePrinter.wrap(arr.element()) + "[]";
+      case Tuple tuple -> "[" + TypePrinter.join(tuple.elements(), ", ") + "]";
+      case Fn fn -> TypePrinter.printSig(fn.sig(), " => ");
+      case Obj obj -> TypePrinter.printObject(obj);
       case Typeof typeOf -> "typeof " + typeOf.name();
     };
-  }
-
-  private static String printNamed(final Named named) {
-    return named.args().isEmpty()
-        ? named.name()
-        : named.name() + "<" + join(named.args(), ", ") + ">";
-  }
-
-  private static String join(final List<TsType> types, final String separator) {
-    return types.stream()
-        .map(
-            type ->
-                type instanceof Fn && !",".equals(separator.trim())
-                    ? "(" + type.print() + ")"
-                    : type.print())
-        .collect(Collectors.joining(separator));
-  }
-
-  private static String wrap(final TsType element) {
-    final boolean parens =
-        element instanceof Union || element instanceof Inter || element instanceof Fn;
-    return parens ? "(" + element.print() + ")" : element.print();
-  }
-
-  /** Writes a signature with {@code arrow} between the parameters and the return type. */
-  static String printSig(final Sig sig, final String arrow) {
-    final String generics =
-        sig.typeParams().isEmpty() ? "" : "<" + String.join(", ", sig.typeParams()) + ">";
-    final String params =
-        sig.params().stream().map(TsType::printParam).collect(Collectors.joining(", "));
-    return generics + "(" + params + ")" + arrow + sig.returns().print();
-  }
-
-  private static String printParam(final Param param) {
-    final String optional = param.optional() ? "?" : "";
-    return (param.rest() ? "..." : "") + param.name() + optional + ": " + param.type().print();
-  }
-
-  private static String printObject(final Obj obj) {
-    if (obj.members().isEmpty()) {
-      return "{}";
-    }
-    return obj.members().stream()
-        .map(member -> printMember(member) + ";")
-        .collect(Collectors.joining(" ", "{ ", " }"));
-  }
-
-  private static String printMember(final Member member) {
-    if (member.isMethod()) {
-      return member.name() + printSig(member.sigs().get(0), ": ");
-    }
-    final String optional = member.has(Member.OPTIONAL) ? "?" : "";
-    final String readonly = member.has(Member.READONLY) ? "readonly " : "";
-    return readonly + member.name() + optional + ": " + member.type().print();
   }
 }

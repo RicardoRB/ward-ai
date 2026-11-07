@@ -16,7 +16,7 @@ final class TypeRefs {
     }
     TsType current = type;
     int depth = 0;
-    while (current instanceof TsType.Arr arr) {
+    while (current instanceof TsType.Arr arr && !needsParentheses(arr.element())) {
       depth++;
       current = arr.element();
     }
@@ -37,5 +37,11 @@ final class TypeRefs {
     }
     return new CallTarget(
         TypeRef.of(owner), name, params, of(sig.returns()), isStatic, sig.isVarargs());
+  }
+
+  private static boolean needsParentheses(final TsType element) {
+    return element instanceof TsType.Union
+        || element instanceof TsType.Inter
+        || element instanceof TsType.Fn;
   }
 }

@@ -86,7 +86,7 @@ public final class TyParser {
     if (token.isEmpty() || KEYWORDS.contains(token)) {
       return cursor.fail();
     }
-    cursor.skipModifiers(MODIFIERS);
+    skipModifiers();
     return switch (cursor.peek(0)) {
       case OPEN_PAREN -> parenthesized();
       case LESS -> function();
@@ -94,6 +94,14 @@ public final class TyParser {
       case OPEN_BRACKET -> tuples.tuple();
       default -> named();
     };
+  }
+
+  private void skipModifiers() {
+    while (MODIFIERS.contains(cursor.peek(0))
+        && !cursor.peek(1).isEmpty()
+        && !TokenCursor.isPunctuation(cursor.peek(1))) {
+      cursor.skip(1);
+    }
   }
 
   private TsType parenthesized() {
