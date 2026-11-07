@@ -236,15 +236,6 @@ ruff = ["PLR2004"]
 pylint = ["magic-value-comparison"]
 
 [[rule]]
-name = "match-xpath"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-not-applicable = { typescript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", javascript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", python = "Checkstyle XPath over the Java AST; Python has no equivalent tree", swift = "XPath queries the Java syntax tree; Swift has no XPath form" }
-issues = { java = "#289", kotlin = "#294" }
-checkstyle = ["MatchXpath"]
-
-[[rule]]
 name = "missing-ctor"
 category = "coding"
 presets = ["strict"]
