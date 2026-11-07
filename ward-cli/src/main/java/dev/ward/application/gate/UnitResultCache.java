@@ -2,6 +2,7 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.DependencyAnalysis;
 import dev.ward.analysis.application.rule.DependencySnapshot;
+import dev.ward.analysis.application.rule.DuplicateCodeFindings;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.graph.DependencyGraph;
@@ -12,6 +13,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
+import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -66,7 +68,10 @@ final class UnitResultCache {
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
     final List<RuleDefinition> unitRules =
-        rules.stream().filter(rule -> !GraphRules.isGraphRule(rule)).toList();
+        rules.stream()
+            .filter(rule -> !GraphRules.isGraphRule(rule))
+            .filter(rule -> !DuplicateCodeRule.isDuplicateRule(rule))
+            .toList();
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
@@ -91,12 +96,14 @@ final class UnitResultCache {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
-    final List<AnalysisFinding> graphFindings =
-        ArchitectureGraphRules.findings(
-            rules,
-            snapshot.graph(),
-            new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries()));
-    return new CachedRun(merged(reused, analyzed, graphFindings), snapshot.graph());
+    final List<AnalysisFinding> wholeRunFindings =
+        new ArrayList<>(
+            ArchitectureGraphRules.findings(
+                rules,
+                snapshot.graph(),
+                new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
+    wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
+    return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
   }
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {

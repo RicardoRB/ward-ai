@@ -1,0 +1,1 @@
+isinstance(x, type(None))

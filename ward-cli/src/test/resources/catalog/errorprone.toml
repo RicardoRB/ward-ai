@@ -654,9 +654,7 @@ errorprone = ["CompareToZero"]
 
 [[rule]]
 name = "comparing-this-with-null"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["ComparingThisWithNull"]
 
 [[rule]]
@@ -3443,23 +3441,17 @@ errorprone = ["SelfAssertion"]
 
 [[rule]]
 name = "self-assignment"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["SelfAssignment"]
 
 [[rule]]
 name = "self-comparison"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["SelfComparison"]
 
 [[rule]]
 name = "self-equals"
-category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
+status = { java = "implemented" }
 errorprone = ["SelfEquals"]
 
 [[rule]]
