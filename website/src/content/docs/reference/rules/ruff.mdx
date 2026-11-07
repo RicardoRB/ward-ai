@@ -203,9 +203,9 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ambiguous-class-name` | naming | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E742` |
 | `ambiguous-function-name` | naming | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `E743` |
 | `io-error` | pycodestyle | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `E902` |
-| `raw-string-in-exception` | flake8-errmsg | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EM101` |
-| `f-string-in-exception` | flake8-errmsg | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EM102` |
-| `dot-format-in-exception` | flake8-errmsg | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EM103` |
+| `raw-string-in-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `EM101` |
+| `f-string-in-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `EM102` |
+| `dot-format-in-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `EM103` |
 | `commented-out-code` | linter | n/a | n/a | n/a | n/a | [#300](https://github.com/RicardoRB/ward-ai/issues/300) | n/a | Ruff `ERA001` |
 | `shebang-not-executable` | flake8-executable | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EXE001` |
 | `shebang-missing-executable-file` | flake8-executable | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `EXE002` |
@@ -266,7 +266,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `static-join-to-f-string` | flynt | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FLY002` |
 | `read-whole-file` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB101` |
 | `write-whole-file` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB103` |
-| `print-empty-string` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB105` |
+| `print-empty-string` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB105` |
 | `if-exp-instead-of-or-operator` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB110` |
 | `repeated-append` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB113` |
 | `f-string-number-format` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB116` |
@@ -284,22 +284,22 @@ description: Rules of the catalog file ruff and their counterparts.
 | `repeated-global` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB154` |
 | `hardcoded-string-charset` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB156` |
 | `verbose-decimal-constructor` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB157` |
-| `bit-count` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB161` |
-| `fromisoformat-replace-z` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB162` |
-| `redundant-log-base` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB163` |
-| `unnecessary-from-float` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB164` |
+| `bit-count` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB161` |
+| `fromisoformat-replace-z` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB162` |
+| `redundant-log-base` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB163` |
+| `unnecessary-from-float` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB164` |
 | `int-on-sliced-str` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB166` |
-| `regex-flag-alias` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB167` |
-| `isinstance-type-none` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB168` |
+| `regex-flag-alias` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB167` |
+| `isinstance-type-none` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB168` |
 | `type-none-comparison` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB169` |
 | `single-item-membership-test` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB171` |
-| `implicit-cwd` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB177` |
-| `meta-class-abc-meta` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB180` |
-| `hashlib-digest-hex` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB181` |
+| `implicit-cwd` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB177` |
+| `meta-class-abc-meta` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB180` |
+| `hashlib-digest-hex` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB181` |
 | `list-reverse-copy` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB187` |
 | `slice-to-remove-prefix-or-suffix` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB188` |
-| `subclass-builtin` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB189` |
-| `sorted-min-max` | refurb | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FURB192` |
+| `subclass-builtin` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB189` |
+| `sorted-min-max` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `FURB192` |
 | `logging-string-format` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G001` |
 | `logging-percent-format` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G002` |
 | `logging-string-concat` | flake8-logging-format | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `G003` |
@@ -316,9 +316,9 @@ description: Rules of the catalog file ruff and their counterparts.
 | `f-string-in-get-text-func-call` | flake8-gettext | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `INT001` |
 | `format-in-get-text-func-call` | flake8-gettext | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `INT002` |
 | `printf-in-get-text-func-call` | flake8-gettext | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `INT003` |
-| `single-line-implicit-string-concatenation` | flake8-implicit-str-concat | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `ISC001` |
+| `single-line-implicit-string-concatenation` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `ISC001` |
 | `multi-line-implicit-string-concatenation` | flake8-implicit-str-concat | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `ISC002` |
-| `explicit-string-concatenation` | flake8-implicit-str-concat | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `ISC003` |
+| `explicit-string-concatenation` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `ISC003` |
 | `implicit-string-concatenation-in-collection-literal` | flake8-implicit-str-concat | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `ISC004` |
 | `direct-logger-instantiation` | flake8-logging | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `LOG001` |
 | `invalid-get-logger-argument` | flake8-logging | n/a | n/a | n/a | n/a | [#335](https://github.com/RicardoRB/ward-ai/issues/335) | n/a | Ruff `LOG002` |
@@ -360,8 +360,8 @@ description: Rules of the catalog file ruff and their counterparts.
 | `manual-list-comprehension` | perflint | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PERF401` |
 | `manual-list-copy` | perflint | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PERF402` |
 | `manual-dict-comprehension` | perflint | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PERF403` |
-| `blanket-type-ignore` | pygrep-hooks | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PGH003` |
-| `blanket-noqa` | pygrep-hooks | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PGH004` |
+| `blanket-type-ignore` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PGH003` |
+| `blanket-noqa` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `PGH004` |
 | `invalid-mock-access` | pygrep-hooks | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PGH005` |
 | `unnecessary-placeholder` | flake8-pie | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PIE790` |
 | `duplicate-class-field-definition` | flake8-pie | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `PIE794` |
@@ -940,6 +940,9 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/ambiguous-variable-name` | naming | standard, strict | none | Ruff `E741` |
 | `ward:python/ambiguous-class-name` | naming | standard, strict | none | Ruff `E742` |
 | `ward:python/ambiguous-function-name` | naming | standard, strict | none | Ruff `E743` |
+| `ward:python/raw-string-in-exception` | coding | strict | none | Ruff `EM101` |
+| `ward:python/f-string-in-exception` | coding | strict | none | Ruff `EM102` |
+| `ward:python/dot-format-in-exception` | coding | strict | none | Ruff `EM103` |
 | `ward:python/late-future-import` | imports | standard, strict | none | Ruff `F404` |
 | `ward:python/undefined-local-with-import-star-usage` | coding | standard, strict | none | Ruff `F405` |
 | `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
@@ -969,6 +972,22 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
 | `ward:python/undefined-name` | coding | standard, strict | none | Ruff `F821` |
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
+| `ward:python/print-empty-string` | coding | strict | none | Ruff `FURB105` |
+| `ward:python/bit-count` | coding | strict | none | Ruff `FURB161` |
+| `ward:python/fromisoformat-replace-z` | coding | strict | none | Ruff `FURB162` |
+| `ward:python/redundant-log-base` | coding | strict | none | Ruff `FURB163` |
+| `ward:python/unnecessary-from-float` | coding | strict | none | Ruff `FURB164` |
+| `ward:python/regex-flag-alias` | coding | strict | none | Ruff `FURB167` |
+| `ward:python/isinstance-type-none` | coding | strict | none | Ruff `FURB168` |
+| `ward:python/implicit-cwd` | coding | strict | none | Ruff `FURB177` |
+| `ward:python/meta-class-abc-meta` | coding | strict | none | Ruff `FURB180` |
+| `ward:python/hashlib-digest-hex` | coding | strict | none | Ruff `FURB181` |
+| `ward:python/subclass-builtin` | coding | strict | none | Ruff `FURB189` |
+| `ward:python/sorted-min-max` | coding | strict | none | Ruff `FURB192` |
+| `ward:python/single-line-implicit-string-concatenation` | coding | strict | none | Ruff `ISC001` |
+| `ward:python/explicit-string-concatenation` | coding | strict | none | Ruff `ISC003` |
+| `ward:python/blanket-type-ignore` | coding | strict | none | Ruff `PGH003` |
+| `ward:python/blanket-noqa` | coding | strict | none | Ruff `PGH004` |
 | `ward:python/duplicate-bases` | coding | strict | none | Ruff `PLE0241`; Pylint `duplicate-bases` |
 | `ward:python/invalid-all-format` | coding | strict | none | Ruff `PLE0605`; Pylint `invalid-all-format` |
 | `ward:python/misplaced-bare-raise` | coding | strict | none | Ruff `PLE0704`; Pylint `misplaced-bare-raise` |
