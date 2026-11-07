@@ -234,13 +234,11 @@ spotbugs = ["CNT_ROUGH_CONSTANT_VALUE"]
 
 [[rule]]
 name = "cn-idiom"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["CN_IDIOM"]
 
 [[rule]]
 name = "cn-idiom-no-super-call"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["CN_IDIOM_NO_SUPER_CALL"]
 
@@ -311,7 +309,6 @@ spotbugs = ["DC_PARTIALLY_CONSTRUCTED"]
 
 [[rule]]
 name = "de-might-drop"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DE_MIGHT_DROP"]
 
@@ -735,7 +732,6 @@ spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
 
 [[rule]]
 name = "eq-compareto-use-object-equals"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_COMPARETO_USE_OBJECT_EQUALS"]
 
@@ -835,7 +831,6 @@ spotbugs = ["FI_MISSING_SUPER_CALL"]
 
 [[rule]]
 name = "fi-nullify-super"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_NULLIFY_SUPER"]
 
@@ -1161,7 +1156,6 @@ spotbugs = ["ITA_INEFFICIENT_TO_ARRAY"]
 
 [[rule]]
 name = "it-no-such-element"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["IT_NO_SUCH_ELEMENT"]
 
@@ -2016,7 +2010,6 @@ spotbugs = ["SBSC_USE_STRINGBUFFER_CONCATENATION"]
 
 [[rule]]
 name = "sc-start-in-ctor"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["SC_START_IN_CTOR"]
 
@@ -2238,13 +2231,11 @@ spotbugs = ["SS_SHOULD_BE_STATIC"]
 
 [[rule]]
 name = "stcal-invoke-on-static-calendar-instance"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE"]
 
 [[rule]]
 name = "stcal-invoke-on-static-date-format-instance"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE"]
 
@@ -2429,13 +2420,11 @@ spotbugs = ["UI_INHERITANCE_UNSAFE_GETRESOURCE"]
 
 [[rule]]
 name = "ul-unreleased-lock"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["UL_UNRELEASED_LOCK"]
 
 [[rule]]
 name = "ul-unreleased-lock-exception-path"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["UL_UNRELEASED_LOCK_EXCEPTION_PATH"]
 
@@ -2573,7 +2562,6 @@ spotbugs = ["VSC_VULNERABLE_SECURITY_CHECK_METHODS"]
 
 [[rule]]
 name = "wa-await-not-in-loop"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["WA_AWAIT_NOT_IN_LOOP"]
 

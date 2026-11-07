@@ -32,6 +32,7 @@ public final class CallMatchCheck implements RuleCheck {
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE));
 
   private final Criteria criteria;
+  private final CallMatchContext context;
   private final String message;
 
   /**
@@ -76,7 +77,20 @@ public final class CallMatchCheck implements RuleCheck {
    * @param message the message reported at the call
    */
   public CallMatchCheck(final Criteria criteria, final String message) {
+    this(criteria, CallMatchContext.ANYWHERE, message);
+  }
+
+  /**
+   * Creates the check for calls in a given place.
+   *
+   * @param criteria what a reported call meets
+   * @param context where a reported call sits
+   * @param message the message reported at the call
+   */
+  public CallMatchCheck(
+      final Criteria criteria, final CallMatchContext context, final String message) {
     this.criteria = Objects.requireNonNull(criteria, "criteria");
+    this.context = Objects.requireNonNull(context, "context");
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -111,8 +125,8 @@ public final class CallMatchCheck implements RuleCheck {
       final SyntaxNode call, final SyntaxWalk.Visit visit, final UnitTypeFacts types) {
     final Optional<CallTarget> target = types.callTarget(call.span());
     return target.isPresent()
+        && context.admits(visit.ancestors())
         && declares(target.get())
-        && (criteria.names().isEmpty() || criteria.names().contains(target.get().name()))
         && receiverMeets(call, types)
         && argumentMeets(call, types)
         && anyArgumentsMeet(call, types)
@@ -121,8 +135,9 @@ public final class CallMatchCheck implements RuleCheck {
   }
 
   private boolean declares(final CallTarget target) {
-    return criteria.declaringTypes().isEmpty()
-        || criteria.declaringTypes().contains(target.declaringType().name());
+    return (criteria.declaringTypes().isEmpty()
+            || criteria.declaringTypes().contains(target.declaringType().name()))
+        && (criteria.names().isEmpty() || criteria.names().contains(target.name()));
   }
 
   private boolean receiverMeets(final SyntaxNode call, final UnitTypeFacts types) {
