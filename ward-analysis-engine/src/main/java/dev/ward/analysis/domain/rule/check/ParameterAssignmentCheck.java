@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 
 /**
  * Reports each assignment whose target is a parameter of the method or constructor it sits in, as
- * Checkstyle's ParameterAssignment does. Only a plain name is a target, so assigning a field through
- * {@code this} is not reported. A local variable of the same name is not recognized, so an
+ * Checkstyle's ParameterAssignment does. Only a plain name is a target, so assigning a field
+ * through {@code this} is not reported. A local variable of the same name is not recognized, so an
  * assignment to a shadowing local is reported too. Lambda parameters are not checked.
  */
 public final class ParameterAssignmentCheck implements UnitCheck {
@@ -64,10 +64,7 @@ public final class ParameterAssignmentCheck implements UnitCheck {
         for (final SyntaxNode parameter : SyntaxWalk.descendants(visit.node())) {
           if ("formalParameter".equals(parameter.kind())) {
             SyntaxWalk.firstDescendant(parameter, "variableDeclaratorId", Set.of())
-                .ifPresent(
-                    id ->
-                        found.add(
-                            new Parameter(SyntaxWalk.text(id), callable.get())));
+                .ifPresent(id -> found.add(new Parameter(SyntaxWalk.text(id), callable.get())));
           }
         }
       }

@@ -15,3 +15,29 @@ body = '''
 check = "hidden-field"
 message = "'{value}' hides a field"
 '''
+
+[[rules]]
+id = "ward:java/parameter-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "parameter-assignment"
+message = "parameter {value} should not be assigned"
+'''
+
+[[rules]]
+id = "ward:java/variable-declaration-usage-distance"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.allowed-distance = { type = "integer" }
+options.ignore-finals = { type = "boolean" }
+body = '''
+check = "variable-declaration-usage-distance"
+message = "distance between declaration of {value} and its first usage is more than {max}"
+'''
