@@ -1,0 +1,15 @@
+# Ruff's flake8-self rules (SLF) for Python: private members of other objects.
+
+[[rules]]
+id = "ward:python/private-member-access"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?!self\\.|cls\\.)\\w+\\._(?!_)\\w+"
+message = "access to a private member of another object"
+'''
