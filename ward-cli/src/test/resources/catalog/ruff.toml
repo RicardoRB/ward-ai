@@ -345,9 +345,7 @@ ruff = ["ASYNC251"]
 
 [[rule]]
 name = "unary-prefix-increment-decrement"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B002"]
 
 [[rule]]
@@ -372,9 +370,7 @@ ruff = ["B006"]
 
 [[rule]]
 name = "unused-loop-control-variable"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B007"]
 
 [[rule]]
@@ -394,9 +390,7 @@ ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B012"]
 
 [[rule]]
@@ -406,9 +400,7 @@ ruff = ["B013"]
 
 [[rule]]
 name = "duplicate-handler-exception"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B014"]
 
 [[rule]]
@@ -433,23 +425,17 @@ ruff = ["B018"]
 
 [[rule]]
 name = "cached-instance-method"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B019"]
 
 [[rule]]
 name = "loop-variable-overrides-iterator"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B020"]
 
 [[rule]]
 name = "f-string-docstring"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B021"]
 
 [[rule]]
@@ -459,9 +445,7 @@ ruff = ["B022"]
 
 [[rule]]
 name = "function-uses-loop-variable"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B023"]
 
 [[rule]]
@@ -471,9 +455,7 @@ ruff = ["B024"]
 
 [[rule]]
 name = "duplicate-try-block-exception"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B025"]
 
 [[rule]]
@@ -483,9 +465,7 @@ ruff = ["B026"]
 
 [[rule]]
 name = "empty-method-without-abstract-decorator"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B027"]
 
 [[rule]]
@@ -519,9 +499,7 @@ ruff = ["B032"]
 
 [[rule]]
 name = "duplicate-value"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B033"]
 pylint = ["duplicate-value"]
 
@@ -563,9 +541,7 @@ ruff = ["B903"]
 
 [[rule]]
 name = "raise-without-from-inside-except"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B904"]
 
 [[rule]]
@@ -1210,16 +1186,12 @@ ruff = ["E712"]
 
 [[rule]]
 name = "not-in-test"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E713"]
 
 [[rule]]
 name = "not-is-test"
-category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["E714"]
 
 [[rule]]
@@ -1319,9 +1291,7 @@ ruff = ["EXE005"]
 
 [[rule]]
 name = "import-shadowed-by-loop-var"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F402"]
 
 [[rule]]
@@ -1358,9 +1328,7 @@ ruff = ["F502"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F503"]
 
 [[rule]]
@@ -1430,9 +1398,7 @@ ruff = ["F601"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F602"]
 
 [[rule]]
@@ -1454,9 +1420,7 @@ ruff = ["F631"]
 
 [[rule]]
 name = "is-literal"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F632"]
 
 [[rule]]
@@ -1493,9 +1457,7 @@ pylint = ["return-outside-function"]
 
 [[rule]]
 name = "default-except-not-last"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F707"]
 
 [[rule]]
@@ -1517,16 +1479,12 @@ ruff = ["F821"]
 
 [[rule]]
 name = "undefined-export"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F822"]
 
 [[rule]]
 name = "undefined-local"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F823"]
 
 [[rule]]

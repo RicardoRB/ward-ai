@@ -2,6 +2,8 @@ package dev.ward.analysis.application.python;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckProvider;
+import dev.ward.analysis.application.rule.CheckRegistry;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +14,6 @@ public final class PythonCheckProvider implements CheckProvider {
 
   @Override
   public Map<String, CheckFactory> checks() {
-    return PythonScopeChecks.checks();
+    return CheckRegistry.union(List.of(PythonScopeChecks.checks(), PythonOrderChecks.checks()));
   }
 }
