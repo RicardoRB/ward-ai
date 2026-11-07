@@ -21,6 +21,8 @@ import org.junit.jupiter.api.io.TempDir;
 /** Checks that the native Swift provider reads a project's files without starting a process. */
 final class NativeSwiftTypesProviderTest {
 
+  private static final String BINDING = "pattern_initializer";
+
   @Test
   void nativeProviderStartsFromProjectFilesWithoutAProcess(@TempDir final Path root)
       throws IOException {
@@ -45,7 +47,7 @@ final class NativeSwiftTypesProviderTest {
   }
 
   private static SyntaxNode findBinding(final SyntaxNode node) {
-    if ("pattern_initializer".equals(node.kind())) {
+    if (BINDING.equals(node.kind())) {
       return node;
     }
     for (final SyntaxNode child : node.children()) {
