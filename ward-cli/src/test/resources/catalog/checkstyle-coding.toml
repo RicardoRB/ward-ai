@@ -4,9 +4,9 @@
 name = "array-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["ArrayTrailingComma"]
 
 [[rule]]
@@ -14,8 +14,8 @@ name = "avoid-double-brace-initialization"
 category = "coding"
 presets = ["strict"]
 status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#289" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+issues = { java = "#289" }
 pmd = ["DoubleBraceInitialization"]
 checkstyle = ["AvoidDoubleBraceInitialization"]
 
@@ -41,9 +41,9 @@ checkstyle = ["AvoidNoArgumentSuperConstructorCall"]
 name = "constructors-declaration-grouping"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java constructors; Python has a single __init__ per class" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["ConstructorsDeclarationGrouping"]
 
 [[rule]]
@@ -109,9 +109,9 @@ ruff = ["PLW1641"]
 name = "explicit-initialization"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java field default values; Python has no field declarations" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["RedundantFieldInitializer"]
 checkstyle = ["ExplicitInitialization"]
 
@@ -201,18 +201,18 @@ checkstyle = ["IllegalThrows"]
 name = "illegal-token"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["IllegalToken"]
 
 [[rule]]
 name = "illegal-token-text"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { python = "Java-only construct with no counterpart in this language", swift = "Checkstyle defines no default tokens for IllegalTokenText, so the standard preset checks nothing" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 checkstyle = ["IllegalTokenText"]
 
 [[rule]]
@@ -237,8 +237,8 @@ eslint = ["no-cond-assign"]
 name = "magic-number"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
@@ -291,10 +291,8 @@ checkstyle = ["ModifiedControlVariable"]
 
 [[rule]]
 name = "multiple-string-literals"
-category = "coding"
-presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 pmd = ["AvoidDuplicateLiterals"]
 checkstyle = ["MultipleStringLiterals"]
 
@@ -302,9 +300,9 @@ checkstyle = ["MultipleStringLiterals"]
 name = "multiple-variable-declarations"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration" }
-issues = { java = "#289", kotlin = "#294", swift = "#298" }
+issues = { kotlin = "#294", swift = "#298" }
 pmd = ["OneDeclarationPerLine"]
 checkstyle = ["MultipleVariableDeclarations"]
 eslint = ["one-var"]
@@ -334,9 +332,9 @@ checkstyle = ["NestedTryDepth"]
 name = "no-array-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NoArrayTrailingComma"]
 
 [[rule]]
@@ -352,9 +350,9 @@ checkstyle = ["NoClone"]
 name = "no-enum-trailing-comma"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NoEnumTrailingComma"]
 
 [[rule]]
@@ -370,24 +368,21 @@ checkstyle = ["NoFinalizer"]
 name = "one-statement-per-line"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["OneStatementPerLine"]
 
 [[rule]]
 name = "overload-methods-declaration-order"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["OverloadMethodsDeclarationOrder"]
 
 [[rule]]
 name = "package-declaration"
-category = "coding"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#289" }
+status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["PackageDeclaration"]
 

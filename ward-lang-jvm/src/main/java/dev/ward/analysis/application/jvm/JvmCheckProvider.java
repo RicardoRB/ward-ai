@@ -20,6 +20,7 @@ public final class JvmCheckProvider implements CheckProvider {
             ClassDesignChecks.checks(),
             CodingChecks.checks(),
             CheckstyleDesignChecks.checks(),
+            CheckstyleCodingChecks.checks(),
             DesignChecks.checks(),
             ImportChecks.checks(),
             JavadocChecks.checks(),
