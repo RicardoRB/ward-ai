@@ -9,7 +9,7 @@ import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.infrastructure.analysis.jvm.NativeJvmTypes;
 import dev.ward.infrastructure.analysis.python.PythonStubFiles;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ final class NativeTypeFactsBindings {
    */
   static Map<AnalysisLanguage, TypeFacts> forProject(
       final Path projectRoot, final LanguageFrontend frontend, final Optional<Path> classpathFile) {
-    final Map<AnalysisLanguage, TypeFacts> sources = new HashMap<>();
+    final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
     new NativeJvmTypes(projectRoot)
         .facts(classpathFile)
         .ifPresent(
