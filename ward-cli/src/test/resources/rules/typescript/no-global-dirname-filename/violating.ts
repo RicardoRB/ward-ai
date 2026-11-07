@@ -1,0 +1,1 @@
+const here = __dirname;

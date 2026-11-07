@@ -6,6 +6,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["adjacent-overload-signatures"]
+biome = ["useAdjacentOverloadSignatures"]
 
 [[rule]]
 name = "await-thenable"
@@ -13,6 +14,7 @@ category = "problem"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["await-thenable"]
+biome = ["useAwaitThenable"]
 
 [[rule]]
 name = "ban-ts-comment"
@@ -20,6 +22,7 @@ category = "problem"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["ban-ts-comment"]
+biome = ["noTsIgnore"]
 
 [[rule]]
 name = "ban-tslint-comment"
@@ -62,6 +65,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-definitions"]
+biome = ["useConsistentTypeDefinitions"]
 
 [[rule]]
 name = "consistent-type-exports"
@@ -69,6 +73,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-exports"]
+biome = ["useExportType"]
 
 [[rule]]
 name = "consistent-type-imports"
@@ -76,6 +81,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["consistent-type-imports"]
+biome = ["useImportType"]
 
 [[rule]]
 name = "explicit-function-return-type"
@@ -104,6 +110,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["max-params"]
+biome = ["useMaxParams"]
 
 [[rule]]
 name = "method-signature-style"
@@ -111,6 +118,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["method-signature-style"]
+biome = ["useConsistentMethodSignatures"]
 
 [[rule]]
 name = "naming-convention"
@@ -118,6 +126,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["naming-convention"]
+biome = ["useNamingConvention"]
 
 [[rule]]
 name = "no-array-delete"
@@ -356,6 +365,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["no-this-alias"]
+biome = ["noUselessThisAlias"]
 
 [[rule]]
 name = "no-unnecessary-boolean-literal-compare"
@@ -413,6 +423,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-constraint"]
+biome = ["noUselessTypeConstraint"]
 
 [[rule]]
 name = "no-unnecessary-type-conversion"
@@ -420,6 +431,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["no-unnecessary-type-conversion"]
+biome = ["noUselessTypeConversion"]
 
 [[rule]]
 name = "no-unnecessary-type-parameters"
@@ -542,6 +554,7 @@ category = "problem"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["only-throw-error"]
+biome = ["useThrowOnlyError"]
 
 [[rule]]
 name = "parameter-properties"
@@ -549,6 +562,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["parameter-properties"]
+biome = ["noParameterProperties"]
 
 [[rule]]
 name = "prefer-as-const"
@@ -556,6 +570,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["prefer-as-const"]
+biome = ["useAsConstAssertion"]
 
 [[rule]]
 name = "prefer-enum-initializers"
@@ -563,6 +578,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["prefer-enum-initializers"]
+biome = ["useEnumInitializers"]
 
 [[rule]]
 name = "prefer-find"
@@ -577,6 +593,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-for-of"]
+biome = ["useForOf"]
 
 [[rule]]
 name = "prefer-function-type"
@@ -591,6 +608,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["prefer-includes"]
+biome = ["useIncludes"]
 
 [[rule]]
 name = "prefer-literal-enum-member"
@@ -598,6 +616,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-literal-enum-member"]
+biome = ["useLiteralEnumMembers"]
 
 [[rule]]
 name = "prefer-namespace-keyword"
@@ -605,6 +624,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-namespace-keyword"]
+biome = ["useNamespaceKeyword"]
 
 [[rule]]
 name = "prefer-nullish-coalescing"
@@ -612,6 +632,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-nullish-coalescing"]
+biome = ["useNullishCoalescing"]
 
 [[rule]]
 name = "prefer-optional-chain"
@@ -619,6 +640,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-optional-chain"]
+biome = ["useOptionalChain"]
 
 [[rule]]
 name = "prefer-readonly"
@@ -626,6 +648,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["prefer-readonly"]
+biome = ["useReadonlyClassProperties"]
 
 [[rule]]
 name = "prefer-readonly-parameter-types"
@@ -647,6 +670,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["prefer-regexp-exec"]
+biome = ["useRegexpExec"]
 
 [[rule]]
 name = "prefer-return-this-type"
@@ -661,6 +685,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["prefer-string-starts-ends-with"]
+biome = ["useStringStartsEndsWith"]
 
 [[rule]]
 name = "promise-function-async"
@@ -682,6 +707,7 @@ category = "problem"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["require-array-sort-compare"]
+biome = ["useArraySortCompare"]
 
 [[rule]]
 name = "restrict-plus-operands"
@@ -689,6 +715,7 @@ category = "problem"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["restrict-plus-operands"]
+biome = ["noUnsafePlusOperands"]
 
 [[rule]]
 name = "restrict-template-expressions"
@@ -710,6 +737,7 @@ category = "suggestion"
 status = { typescript = "planned" }
 issues = { typescript = "#327" }
 typescript-eslint = ["strict-boolean-expressions"]
+biome = ["useStrictBooleanExpressions"]
 
 [[rule]]
 name = "strict-void-return"
@@ -745,6 +773,7 @@ category = "linter"
 status = { typescript = "planned" }
 issues = { typescript = "#299" }
 typescript-eslint = ["unified-signatures"]
+biome = ["useUnifiedTypeSignatures"]
 
 [[rule]]
 name = "use-unknown-in-catch-callback-variable"

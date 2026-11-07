@@ -16,6 +16,7 @@ import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.tomlj.TomlInvalidTypeException;
@@ -82,6 +83,8 @@ final class DeclarativeChecks {
               TomlValues.required(toml, MESSAGE),
               Optional.ofNullable(toml.getBoolean(COUNT_EMPTY)).orElse(true));
       case "descendant-count" -> descendantCount(toml);
+      // A whole-run rule: DuplicateCodeFindings reports its copies, so no unit has a match here.
+      case "duplicate-code" -> root -> List.of();
       case "cognitive-complexity" -> cognitiveComplexity(toml);
       case "text-pattern" -> textPattern(toml);
       case "unreferenced-name" -> new UnreferencedNameCheck(TomlValues.required(toml, MESSAGE));
@@ -105,10 +108,12 @@ final class DeclarativeChecks {
       default ->
           ScopeAndFormatChecks.isCheck(name)
               ? ScopeAndFormatChecks.build(name, toml)
-              : ImportChecks.isImportCheck(name)
-                  ? ImportChecks.build(name, toml)
-                  : CodingChecks.isCodingCheck(name)
-                      ? CodingChecks.build(name, toml)
+              : JavadocChecks.isJavadocCheck(name)
+                  ? JavadocChecks.build(name, toml)
+                  : ImportChecks.isImportCheck(name)
+                      ? ImportChecks.build(name, toml)
+                      : CodingChecks.isCodingCheck(name)
+                          ? CodingChecks.build(name, toml)
                       : ReviewChecks.build(name, toml);
     };
   }
