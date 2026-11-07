@@ -1,17 +1,19 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 
 /** Builds the configuration errors that name the rule file they come from. */
-final class RuleFileProblems {
+public final class RuleFileProblems {
 
   private RuleFileProblems() {}
 
-  static RuleConfigurationException problem(final String resource, final String detail) {
+  /** Returns the error for a rule file that cannot be used, naming the file. */
+  public static RuleConfigurationException problem(final String resource, final String detail) {
     return new RuleConfigurationException(message(resource, detail));
   }
 
-  static RuleConfigurationException problem(
+  /** Returns the error for a rule file that cannot be used, with its cause. */
+  public static RuleConfigurationException problem(
       final String resource, final String detail, final Throwable cause) {
     return new RuleConfigurationException(message(resource, detail), cause);
   }

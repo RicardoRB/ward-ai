@@ -1,11 +1,8 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import dev.ward.analysis.application.rule.CheckFactory;
-import dev.ward.analysis.application.rule.CheckProvider;
-import dev.ward.analysis.application.rule.CheckRegistry;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -15,8 +12,12 @@ class CheckRegistryTest {
   private static final CheckFactory FACTORY = toml -> root -> List.of();
 
   @Test
-  void bundledProvidersRegisterEveryCheckNameOnce() {
-    assertThat(BundledLanguages.checkRegistry().names()).contains("lines", "static-import");
+  void findsARegisteredCheckAndListsItsName() {
+    final CheckRegistry registry = new CheckRegistry(List.of(() -> Map.of("one", FACTORY)));
+
+    assertThat(registry.find("one")).containsSame(FACTORY);
+    assertThat(registry.find("two")).isEmpty();
+    assertThat(registry.names()).containsExactly("one");
   }
 
   @Test

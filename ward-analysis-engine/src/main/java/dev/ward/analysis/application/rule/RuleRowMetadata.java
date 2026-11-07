@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.rule;
+package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.rule.RuleOption;
 import dev.ward.analysis.domain.rule.RuleOptionType;
@@ -14,7 +14,7 @@ import org.tomlj.TomlTable;
  * Reads the {@code category}, {@code presets} and {@code options} keys of a rule row. Every problem
  * is an {@link IllegalArgumentException} whose message the caller attaches to the rule file.
  */
-final class RuleRowMetadata {
+public final class RuleRowMetadata {
   private static final String CATEGORY = "category";
   private static final String PRESETS = "presets";
   private static final String OPTIONS = "options";
@@ -24,7 +24,7 @@ final class RuleRowMetadata {
   private RuleRowMetadata() {}
 
   /** Returns the category, or the empty text when the row has none. */
-  static String category(final TomlTable row) {
+  public static String category(final TomlTable row) {
     if (!row.contains(CATEGORY)) {
       return "";
     }
@@ -36,7 +36,7 @@ final class RuleRowMetadata {
   }
 
   /** Returns the presets the row lists, or none when it lists none. */
-  static Set<RulePreset> presets(final TomlTable row) {
+  public static Set<RulePreset> presets(final TomlTable row) {
     final Set<RulePreset> presets = EnumSet.noneOf(RulePreset.class);
     for (final String key : strings(row, PRESETS)) {
       presets.add(
@@ -51,7 +51,7 @@ final class RuleRowMetadata {
   }
 
   /** Returns the options the row declares, in the order of its table. */
-  static List<RuleOption> options(final TomlTable row) {
+  public static List<RuleOption> options(final TomlTable row) {
     if (!row.contains(OPTIONS)) {
       return List.of();
     }
