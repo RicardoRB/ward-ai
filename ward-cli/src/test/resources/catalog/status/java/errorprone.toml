@@ -342,7 +342,7 @@ misformatted-test-data = { status = "planned", issue = "#319" }
 mislabeled-android-string = { status = "planned", issue = "#319" }
 misleading-empty-varargs = "implemented"
 misleading-escaped-space = "implemented"
-misplaced-scope-annotations = { status = "planned", issue = "#319" }
+misplaced-scope-annotations = "implemented"
 missing-braces = { status = "planned", issue = "#319" }
 missing-cases-in-enum-switch = { status = "planned", issue = "#319" }
 missing-default = { status = "planned", issue = "#319" }
@@ -352,7 +352,7 @@ missing-refaster-annotation = { status = "planned", issue = "#319" }
 missing-runtime-retention = { status = "planned", issue = "#319" }
 missing-summary = { status = "planned", issue = "#319" }
 missing-super-call = { status = "planned", issue = "#319" }
-missing-test-call = { status = "planned", issue = "#319" }
+missing-test-call = "implemented"
 misused-day-of-year = "implemented"
 misused-week-year = "implemented"
 mixed-array-dimensions = { status = "planned", issue = "#319" }
@@ -367,7 +367,7 @@ modify-collection-in-enhanced-for-loop = { status = "planned", issue = "#319" }
 modify-source-collection-in-stream = { status = "planned", issue = "#319" }
 modifying-collection-with-itself = "implemented"
 more-than-one-injectable-constructor = { status = "planned", issue = "#319" }
-more-than-one-qualifier = { status = "planned", issue = "#319" }
+more-than-one-qualifier = "implemented"
 multi-variable-declaration = { status = "planned", issue = "#319" }
 multimap-keys = { status = "planned", issue = "#319" }
 multiple-nullness-annotations = { status = "planned", issue = "#319" }
@@ -395,7 +395,7 @@ non-canonical-type = { status = "planned", issue = "#319" }
 non-final-compile-time-constant = { status = "planned", issue = "#319" }
 non-final-static-field = { status = "planned", issue = "#319" }
 non-overriding-equals = { status = "planned", issue = "#319" }
-non-runtime-annotation = { status = "planned", issue = "#319" }
+non-runtime-annotation = "implemented"
 not-javadoc = { status = "planned", issue = "#319" }
 null-argument-for-non-null-parameter = { status = "planned", issue = "#319" }
 null-needs-cast-for-varargs = { status = "planned", issue = "#319" }
@@ -426,7 +426,7 @@ overrides = { status = "planned", issue = "#319" }
 overrides-guice-injectable-method = { status = "planned", issue = "#319" }
 overrides-javax-injectable-method = { status = "planned", issue = "#319" }
 overriding-method-inconsistent-argument-names-checker = { status = "planned", issue = "#319" }
-package-info = { status = "planned", issue = "#319" }
+package-info = "implemented"
 package-location = { status = "planned", issue = "#319" }
 parameter-comment = { status = "planned", issue = "#319" }
 parameter-missing-nullable = { status = "planned", issue = "#319" }
@@ -570,7 +570,7 @@ try-with-resources-variable = { status = "planned", issue = "#319" }
 type-equals = { status = "planned", issue = "#319" }
 type-name-shadowing = { status = "planned", issue = "#319" }
 type-parameter-naming = { status = "planned", issue = "#319" }
-type-parameter-qualifier = { status = "planned", issue = "#319" }
+type-parameter-qualifier = "implemented"
 type-parameter-shadowing = { status = "planned", issue = "#319" }
 type-parameter-unused-in-formals = { status = "planned", issue = "#319" }
 type-to-string = { status = "planned", issue = "#319" }
@@ -594,7 +594,7 @@ unnecessary-check-not-null = "implemented"
 unnecessary-copy = { status = "planned", issue = "#319" }
 unnecessary-default-in-enum-switch = { status = "planned", issue = "#319" }
 unnecessary-final = { status = "planned", issue = "#319" }
-unnecessary-lambda = { status = "planned", issue = "#319" }
+unnecessary-lambda = "implemented"
 unnecessary-long-to-int-conversion = { status = "planned", issue = "#319" }
 unnecessary-method-invocation-matcher = { status = "planned", issue = "#319" }
 unnecessary-method-reference = { status = "planned", issue = "#319" }
@@ -613,12 +613,10 @@ unsafe-reflective-construction-cast = { status = "planned", issue = "#319" }
 unsafe-wildcard = { status = "planned", issue = "#319" }
 unsynchronized-overrides-synchronized = { status = "planned", issue = "#319" }
 unused-anonymous-class = { status = "planned", issue = "#319" }
-unused-collection-modified-in-place = { status = "planned", issue = "#319" }
+unused-collection-modified-in-place = "implemented"
 unused-exception = { status = "planned", issue = "#319" }
-unused-method = { status = "planned", issue = "#319" }
 unused-nested-class = { status = "planned", issue = "#319" }
 unused-type-parameter = { status = "planned", issue = "#319" }
-unused-variable = { status = "planned", issue = "#319" }
 url-equals-hash-code = { status = "planned", issue = "#319" }
 url-in-see = { status = "planned", issue = "#319" }
 use-binds = { status = "planned", issue = "#319" }

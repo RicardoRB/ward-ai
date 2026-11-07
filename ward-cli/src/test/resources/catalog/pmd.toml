@@ -1137,6 +1137,7 @@ pmd = ["UnusedNullCheckInEquals"]
 [[rule]]
 name = "unused-private-method"
 pmd = ["UnusedPrivateMethod"]
+errorprone = ["UnusedMethod"]
 
 [[rule]]
 name = "unused-return-value"

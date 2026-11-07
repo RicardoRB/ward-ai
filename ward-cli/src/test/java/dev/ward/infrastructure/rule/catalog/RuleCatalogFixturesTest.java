@@ -100,13 +100,21 @@ class RuleCatalogFixturesTest {
       final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, file.getFileName().toString(), Files.readString(file), typeFacts);
+        runner.run(rule, unitName(file), Files.readString(file), typeFacts);
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
         findings);
+  }
+
+  /** The path the rule sees: the first line of {@code filename.txt} beside the fixture, if any. */
+  private static String unitName(final Path file) throws IOException {
+    final Path named = file.resolveSibling("filename.txt");
+    return Files.isRegularFile(named)
+        ? Files.readString(named).strip()
+        : file.getFileName().toString();
   }
 
   private static List<Pair> implemented() {

@@ -1966,8 +1966,6 @@ errorprone = ["MisleadingEscapedSpace"]
 
 [[rule]]
 name = "misplaced-scope-annotations"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MisplacedScopeAnnotations"]
 
 [[rule]]
@@ -2027,8 +2025,6 @@ errorprone = ["MissingSuperCall"]
 
 [[rule]]
 name = "missing-test-call"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MissingTestCall"]
 
 [[rule]]
@@ -2109,8 +2105,6 @@ errorprone = ["MoreThanOneInjectableConstructor"]
 
 [[rule]]
 name = "more-than-one-qualifier"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MoreThanOneQualifier"]
 
 [[rule]]
@@ -2273,8 +2267,6 @@ errorprone = ["NonOverridingEquals"]
 
 [[rule]]
 name = "non-runtime-annotation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NonRuntimeAnnotation"]
 
 [[rule]]
@@ -2455,8 +2447,6 @@ errorprone = ["OverridingMethodInconsistentArgumentNamesChecker"]
 
 [[rule]]
 name = "package-info"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PackageInfo"]
 
 [[rule]]
@@ -3278,8 +3268,6 @@ errorprone = ["TypeParameterNaming"]
 
 [[rule]]
 name = "type-parameter-qualifier"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TypeParameterQualifier"]
 
 [[rule]]
@@ -3424,8 +3412,6 @@ errorprone = ["UnnecessaryFinal"]
 
 [[rule]]
 name = "unnecessary-lambda"
-presets = ["standard", "strict"]
-category = "severity-warning"
 errorprone = ["UnnecessaryLambda"]
 ruff = ["PLW0108"]
 pylint = ["unnecessary-lambda"]
@@ -3540,8 +3526,6 @@ errorprone = ["UnusedAnonymousClass"]
 
 [[rule]]
 name = "unused-collection-modified-in-place"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnusedCollectionModifiedInPlace"]
 
 [[rule]]
@@ -3549,13 +3533,6 @@ name = "unused-exception"
 presets = ["strict"]
 category = "severity-warning"
 errorprone = ["UnusedException"]
-
-[[rule]]
-name = "unused-method"
-presets = ["standard", "strict"]
-category = "severity-warning"
-errorprone = ["UnusedMethod"]
-vulture = ["V105"]
 
 [[rule]]
 name = "unused-nested-class"
@@ -3568,13 +3545,6 @@ name = "unused-type-parameter"
 presets = ["strict"]
 category = "severity-warning"
 errorprone = ["UnusedTypeParameter"]
-
-[[rule]]
-name = "unused-variable"
-presets = ["standard", "strict"]
-category = "severity-warning"
-errorprone = ["UnusedVariable"]
-vulture = ["V107"]
 
 [[rule]]
 name = "url-in-see"
