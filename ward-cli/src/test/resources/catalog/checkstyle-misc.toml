@@ -2,16 +2,12 @@
 
 [[rule]]
 name = "array-type-style"
-category = "misc"
-presets = ["standard", "strict"]
 not-applicable = { typescript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", javascript = "C-style array declarators such as a[] after the name do not exist in JavaScript or TypeScript", python = "Java array declaration syntax; Python has no array declarations", swift = "Swift has one array syntax, [Element], so there is no C-style declarator to flag" }
 typescript-eslint = ["array-type"]
 checkstyle = ["ArrayTypeStyle"]
 
 [[rule]]
 name = "avoid-escaped-unicode-characters"
-category = "misc"
-presets = ["standard", "strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["AvoidEscapedUnicodeCharacters"]
 
@@ -101,7 +97,5 @@ checkstyle = ["UncommentedMain"]
 
 [[rule]]
 name = "upper-ell"
-category = "misc"
-presets = ["standard", "strict"]
 not-applicable = { typescript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", javascript = "JavaScript and TypeScript have no long-literal L suffix; it belongs to Java and Kotlin", python = "Java long literal suffix; Python 3 has no long literal suffix", swift = "Swift integer literals have no long suffix" }
 checkstyle = ["UpperEll"]
