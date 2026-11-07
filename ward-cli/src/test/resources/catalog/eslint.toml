@@ -13,6 +13,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["array-callback-return"]
+biome = ["useIterableCallbackReturn"]
 
 [[rule]]
 name = "arrow-body-style"
@@ -42,6 +43,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 typescript-eslint = ["class-methods-use-this"]
 eslint = ["class-methods-use-this"]
+biome = ["useThisInClassMethods"]
 
 [[rule]]
 name = "consistent-return"
@@ -64,6 +66,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["constructor-super"]
+biome = ["noInvalidConstructorSuper"]
 
 [[rule]]
 name = "default-param-last"
@@ -72,6 +75,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#326" }
 typescript-eslint = ["default-param-last"]
 eslint = ["default-param-last"]
+biome = ["useDefaultParameterLast"]
 
 [[rule]]
 name = "dot-notation"
@@ -80,6 +84,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["dot-notation"]
 eslint = ["dot-notation"]
+biome = ["useLiteralKeys"]
 
 [[rule]]
 name = "eqeqeq"
@@ -87,6 +92,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["eqeqeq"]
+biome = ["noDoubleEquals"]
 
 [[rule]]
 name = "for-direction"
@@ -115,6 +121,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["func-style"]
+biome = ["useConsistentFunctionStyle"]
 
 [[rule]]
 name = "getter-return"
@@ -122,6 +129,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["getter-return"]
+biome = ["useGetterReturn"]
 
 [[rule]]
 name = "grouped-accessor-pairs"
@@ -129,6 +137,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["grouped-accessor-pairs"]
+biome = ["useGroupedAccessorPairs"]
 
 [[rule]]
 name = "guard-for-in"
@@ -136,6 +145,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["guard-for-in"]
+biome = ["useGuardForIn"]
 
 [[rule]]
 name = "id-denylist"
@@ -179,6 +189,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["max-classes-per-file"]
+biome = ["noExcessiveClassesPerFile"]
 
 [[rule]]
 name = "max-nested-callbacks"
@@ -186,6 +197,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["max-nested-callbacks"]
+biome = ["noExcessiveNestedCallbacks"]
 
 [[rule]]
 name = "max-statements"
@@ -212,6 +224,7 @@ name = "no-array-constructor"
 status = { typescript = "implemented", javascript = "implemented" }
 typescript-eslint = ["no-array-constructor"]
 eslint = ["no-array-constructor"]
+biome = ["useArrayLiterals"]
 
 [[rule]]
 name = "no-async-promise-executor"
@@ -225,6 +238,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-await-in-loop"]
+biome = ["noAwaitInLoops"]
 
 [[rule]]
 name = "no-bitwise"
@@ -232,6 +246,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-bitwise"]
+biome = ["noBitwiseOperators"]
 
 [[rule]]
 name = "no-caller"
@@ -244,6 +259,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-case-declarations"]
+biome = ["noSwitchDeclarations"]
 
 [[rule]]
 name = "no-class-assign"
@@ -281,6 +297,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-constant-binary-expression"]
+biome = ["noConstantBinaryExpressions"]
 
 [[rule]]
 name = "no-constant-condition"
@@ -310,6 +327,7 @@ biome = ["noContinue"]
 name = "no-control-regex"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-control-regex"]
+biome = ["noControlCharactersInRegex"]
 
 [[rule]]
 name = "no-debugger"
@@ -334,6 +352,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-dupe-args"]
+biome = ["noDuplicateParameters"]
 
 [[rule]]
 name = "no-dupe-class-members"
@@ -342,6 +361,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 typescript-eslint = ["no-dupe-class-members"]
 eslint = ["no-dupe-class-members"]
+biome = ["noDuplicateClassMembers"]
 
 [[rule]]
 name = "no-dupe-else-if"
@@ -349,6 +369,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-dupe-else-if"]
+biome = ["noDuplicateElseIf"]
 
 [[rule]]
 name = "no-dupe-keys"
@@ -375,11 +396,13 @@ status = { typescript = "planned", javascript = "planned", python = "planned" }
 issues = { typescript = "#299", javascript = "#299", python = "#336" }
 eslint = ["no-else-return"]
 pylint = ["no-else-return"]
+biome = ["noUselessElse"]
 
 [[rule]]
 name = "no-empty-character-class"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-empty-character-class"]
+biome = ["noEmptyCharacterClassInRegex"]
 
 [[rule]]
 name = "no-empty-function"
@@ -408,6 +431,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-eq-null"]
+biome = ["noEqualsToNull"]
 
 [[rule]]
 name = "no-eval"
@@ -420,6 +444,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-ex-assign"]
+biome = ["noCatchAssign"]
 
 [[rule]]
 name = "no-extend-native"
@@ -447,6 +472,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-extra-label"]
+biome = ["noUselessLabel"]
 
 [[rule]]
 name = "no-func-assign"
@@ -454,6 +480,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-func-assign"]
+biome = ["noFunctionAssign"]
 
 [[rule]]
 name = "no-global-assign"
@@ -468,6 +495,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-implicit-coercion"]
+biome = ["noImplicitCoercions"]
 
 [[rule]]
 name = "no-implicit-globals"
@@ -550,6 +578,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-lonely-if"]
+biome = ["useCollapsedIf", "useCollapsedElseIf"]
 
 [[rule]]
 name = "no-loop-func"
@@ -565,6 +594,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-loss-of-precision"]
+biome = ["noPrecisionLoss"]
 
 [[rule]]
 name = "no-misleading-character-class"
@@ -595,6 +625,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-negated-condition"]
+biome = ["noNegationElse"]
 
 [[rule]]
 name = "no-nested-ternary"
@@ -638,6 +669,7 @@ biome = ["noNonoctalDecimalEscape"]
 name = "no-obj-calls"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-obj-calls"]
+biome = ["noGlobalObjectCalls"]
 
 [[rule]]
 name = "no-object-constructor"
@@ -666,6 +698,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-plusplus"]
+biome = ["noIncrementDecrement"]
 
 [[rule]]
 name = "no-promise-executor-return"
@@ -761,6 +794,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-sequences"]
+biome = ["noCommaOperator"]
 
 [[rule]]
 name = "no-setter-return"
@@ -780,6 +814,7 @@ biome = ["noShadowRestrictedNames"]
 name = "no-sparse-arrays"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-sparse-arrays"]
+biome = ["noSparseArray"]
 
 [[rule]]
 name = "no-template-curly-in-string"
@@ -814,11 +849,13 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-undef"]
+biome = ["noUndeclaredVariables"]
 
 [[rule]]
 name = "no-undef-init"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-undef-init"]
+biome = ["noUselessUndefinedInitialization"]
 
 [[rule]]
 name = "no-undefined"
@@ -855,6 +892,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-unneeded-ternary"]
+biome = ["noUselessTernary"]
 
 [[rule]]
 name = "no-unreachable"
@@ -926,6 +964,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 typescript-eslint = ["no-use-before-define"]
 eslint = ["no-use-before-define"]
+biome = ["noInvalidUseBeforeDeclaration"]
 
 [[rule]]
 name = "no-useless-backreference"
@@ -933,6 +972,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-useless-backreference"]
+biome = ["noUselessRegexBackrefs"]
 
 [[rule]]
 name = "no-useless-call"
@@ -958,6 +998,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["no-useless-concat"]
+biome = ["noUselessStringConcat"]
 
 [[rule]]
 name = "no-useless-constructor"
@@ -974,6 +1015,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["no-useless-escape"]
+biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
 
 [[rule]]
 name = "no-useless-rename"
@@ -1026,6 +1068,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["operator-assignment"]
+biome = ["useShorthandAssign"]
 
 [[rule]]
 name = "prefer-arrow-callback"
@@ -1033,6 +1076,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-arrow-callback"]
+biome = ["useArrowFunction"]
 
 [[rule]]
 name = "prefer-const"
@@ -1040,6 +1084,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-const"]
+biome = ["useConst"]
 
 [[rule]]
 name = "prefer-destructuring"
@@ -1048,6 +1093,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 typescript-eslint = ["prefer-destructuring"]
 eslint = ["prefer-destructuring"]
+biome = ["useDestructuring"]
 
 [[rule]]
 name = "prefer-exponentiation-operator"
@@ -1055,6 +1101,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-exponentiation-operator"]
+biome = ["useExponentiationOperator"]
 
 [[rule]]
 name = "prefer-named-capture-group"
@@ -1062,6 +1109,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["prefer-named-capture-group"]
+biome = ["useNamedCaptureGroup"]
 
 [[rule]]
 name = "prefer-numeric-literals"
@@ -1069,6 +1117,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-numeric-literals"]
+biome = ["useNumericLiterals"]
 
 [[rule]]
 name = "prefer-object-has-own"
@@ -1081,6 +1130,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-object-spread"]
+biome = ["useObjectSpread"]
 
 [[rule]]
 name = "prefer-promise-reject-errors"
@@ -1089,6 +1139,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 typescript-eslint = ["prefer-promise-reject-errors"]
 eslint = ["prefer-promise-reject-errors"]
+biome = ["usePromiseRejectErrors"]
 
 [[rule]]
 name = "prefer-regex-literals"
@@ -1096,6 +1147,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["prefer-regex-literals"]
+biome = ["useRegexLiterals"]
 
 [[rule]]
 name = "prefer-rest-params"
@@ -1103,11 +1155,13 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["prefer-rest-params"]
+biome = ["noArguments"]
 
 [[rule]]
 name = "prefer-spread"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["prefer-spread"]
+biome = ["useSpreadOverApply"]
 
 [[rule]]
 name = "prefer-template"
@@ -1115,6 +1169,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["prefer-template"]
+biome = ["useTemplate"]
 
 [[rule]]
 name = "preserve-caught-error"
@@ -1129,6 +1184,7 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["radix"]
+biome = ["useParseIntRadix"]
 
 [[rule]]
 name = "require-atomic-updates"
@@ -1144,6 +1200,7 @@ status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 typescript-eslint = ["require-await"]
 eslint = ["require-await"]
+biome = ["useAwait"]
 
 [[rule]]
 name = "require-unicode-regexp"
@@ -1151,11 +1208,13 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["require-unicode-regexp"]
+biome = ["useUnicodeRegex"]
 
 [[rule]]
 name = "require-yield"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["require-yield"]
+biome = ["useYield"]
 
 [[rule]]
 name = "sort-keys"
@@ -1177,16 +1236,19 @@ category = "suggestion"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["strict"]
+biome = ["noRedundantUseStrict", "useStrictMode"]
 
 [[rule]]
 name = "symbol-description"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["symbol-description"]
+biome = ["useSymbolDescription"]
 
 [[rule]]
 name = "use-isnan"
 status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["use-isnan"]
+biome = ["useIsNan"]
 
 [[rule]]
 name = "valid-typeof"
@@ -1194,6 +1256,7 @@ category = "problem"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#326", javascript = "#326" }
 eslint = ["valid-typeof"]
+biome = ["useValidTypeof"]
 
 [[rule]]
 name = "vars-on-top"
@@ -1201,6 +1264,7 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["vars-on-top"]
+biome = ["useVarsOnTop"]
 
 [[rule]]
 name = "yoda"
@@ -1208,3 +1272,4 @@ category = "linter"
 status = { typescript = "planned", javascript = "planned" }
 issues = { typescript = "#299", javascript = "#299" }
 eslint = ["yoda"]
+biome = ["noYodaExpression"]

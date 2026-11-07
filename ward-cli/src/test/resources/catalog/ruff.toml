@@ -600,136 +600,98 @@ ruff = ["B912"]
 
 [[rule]]
 name = "unnecessary-generator-list"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C400"]
 
 [[rule]]
 name = "unnecessary-generator-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C401"]
 
 [[rule]]
 name = "unnecessary-generator-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C402"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C403"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C404"]
 
 [[rule]]
 name = "unnecessary-literal-set"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C405"]
 
 [[rule]]
 name = "unnecessary-literal-dict"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C406"]
 
 [[rule]]
 name = "unnecessary-collection-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C408"]
 
 [[rule]]
 name = "unnecessary-literal-within-tuple-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C409"]
 
 [[rule]]
 name = "unnecessary-literal-within-list-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C410"]
 
 [[rule]]
 name = "unnecessary-list-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C411"]
 
 [[rule]]
 name = "unnecessary-call-around-sorted"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C413"]
 
 [[rule]]
 name = "unnecessary-double-cast-or-process"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C414"]
 
 [[rule]]
 name = "unnecessary-subscript-reversal"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C415"]
 
 [[rule]]
 name = "unnecessary-comprehension"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C416"]
 pylint = ["unnecessary-comprehension"]
 
 [[rule]]
 name = "unnecessary-map"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C417"]
 
 [[rule]]
 name = "unnecessary-literal-within-dict-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C418"]
 
 [[rule]]
 name = "unnecessary-comprehension-in-call"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C419"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
-category = "flake8-comprehensions"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["C420"]
 
 [[rule]]
@@ -1306,23 +1268,17 @@ ruff = ["E902"]
 
 [[rule]]
 name = "raw-string-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM101"]
 
 [[rule]]
 name = "f-string-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM102"]
 
 [[rule]]
 name = "dot-format-in-exception"
-category = "flake8-errmsg"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["EM103"]
 
 [[rule]]
@@ -1523,16 +1479,12 @@ ruff = ["F634"]
 
 [[rule]]
 name = "break-outside-loop"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F701"]
 
 [[rule]]
 name = "continue-outside-loop"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F702"]
 
 [[rule]]
@@ -1697,9 +1649,7 @@ ruff = ["FURB103"]
 
 [[rule]]
 name = "print-empty-string"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB105"]
 
 [[rule]]
@@ -1858,16 +1808,12 @@ ruff = ["FURB166"]
 
 [[rule]]
 name = "regex-flag-alias"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB167"]
 
 [[rule]]
 name = "isinstance-type-none"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB168"]
 
 [[rule]]
@@ -1886,23 +1832,17 @@ ruff = ["FURB171"]
 
 [[rule]]
 name = "implicit-cwd"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB177"]
 
 [[rule]]
 name = "meta-class-abc-meta"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB180"]
 
 [[rule]]
 name = "hashlib-digest-hex"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB181"]
 
 [[rule]]
@@ -1921,9 +1861,7 @@ ruff = ["FURB188"]
 
 [[rule]]
 name = "subclass-builtin"
-category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["FURB189"]
 
 [[rule]]
@@ -2047,9 +1985,7 @@ ruff = ["INT003"]
 
 [[rule]]
 name = "single-line-implicit-string-concatenation"
-category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["ISC001"]
 
 [[rule]]
@@ -2061,9 +1997,7 @@ ruff = ["ISC002"]
 
 [[rule]]
 name = "explicit-string-concatenation"
-category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["ISC003"]
 
 [[rule]]
@@ -2355,16 +2289,12 @@ ruff = ["PERF403"]
 
 [[rule]]
 name = "blanket-type-ignore"
-category = "pygrep-hooks"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["PGH003"]
 
 [[rule]]
 name = "blanket-noqa"
-category = "pygrep-hooks"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["PGH004"]
 
 [[rule]]
@@ -2680,9 +2610,7 @@ pylint = ["potential-index-error"]
 
 [[rule]]
 name = "misplaced-bare-raise"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE0704"]
 pylint = ["misplaced-bare-raise"]
 
@@ -2703,9 +2631,7 @@ pylint = ["dict-iter-missing-items"]
 
 [[rule]]
 name = "await-outside-async"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1142"]
 pylint = ["await-outside-async"]
 
@@ -2764,9 +2690,7 @@ pylint = ["singledispatchmethod-function"]
 
 [[rule]]
 name = "yield-from-in-async-function"
-category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["PLE1700"]
 
 [[rule]]
