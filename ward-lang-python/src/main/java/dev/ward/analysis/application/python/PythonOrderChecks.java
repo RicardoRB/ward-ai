@@ -11,16 +11,21 @@ import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
 import dev.ward.analysis.domain.rule.check.FStringDocstringCheck;
 import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
+import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
+import dev.ward.analysis.domain.rule.check.StrictCallCheck;
+import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedExportCheck;
+import dev.ward.analysis.domain.rule.check.UnusedAnnotationCheck;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -61,13 +66,30 @@ final class PythonOrderChecks {
             "empty-abstract-method",
             toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
         entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE))),
+        entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))));
+            "unused-annotation",
+            toml -> new UnusedAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+        entry("groupby-reuse", toml -> new GroupbyReuseCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "string-annotation",
+            toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+        entry("strict-call", PythonOrderChecks::strictCall));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {
     return new ComparisonOperatorCheck(
         ComparisonOperatorCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck strictCall(final TomlParseResult toml) {
+    final StrictCallCheck.Rule rule =
+        new StrictCallCheck.Rule(
+            Pattern.compile(TomlValues.required(toml, "call")),
+            TomlValues.integer(toml, "minimum-minor"),
+            TomlValues.integer(toml, "minimum-arguments"));
+    return new StrictCallCheck(
+        rule, TomlValues.required(toml, "target"), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck loopVariable(final TomlParseResult toml) {

@@ -408,14 +408,10 @@ ruff = ["B030"]
 
 [[rule]]
 name = "reuse-of-groupby-generator"
-presets = ["strict"]
-category = "flake8-bugbear"
 ruff = ["B031"]
 
 [[rule]]
 name = "unintentional-type-annotation"
-presets = ["strict"]
-category = "flake8-bugbear"
 ruff = ["B032"]
 
 [[rule]]
@@ -469,14 +465,10 @@ ruff = ["B909"]
 
 [[rule]]
 name = "batched-without-explicit-strict"
-presets = ["strict"]
-category = "flake8-bugbear"
 ruff = ["B911"]
 
 [[rule]]
 name = "map-without-explicit-strict"
-presets = ["strict"]
-category = "flake8-bugbear"
 ruff = ["B912"]
 
 [[rule]]
@@ -1033,12 +1025,6 @@ name = "ambiguous-function-name"
 ruff = ["E743"]
 
 [[rule]]
-name = "io-error"
-presets = ["standard", "strict"]
-category = "pycodestyle"
-ruff = ["E902"]
-
-[[rule]]
 name = "raw-string-in-exception"
 ruff = ["EM101"]
 
@@ -1100,8 +1086,6 @@ ruff = ["F405"]
 
 [[rule]]
 name = "undefined-local-with-nested-import-star-usage"
-presets = ["standard", "strict"]
-category = "pyflakes"
 ruff = ["F406"]
 
 [[rule]]
@@ -1226,8 +1210,6 @@ ruff = ["F707"]
 
 [[rule]]
 name = "forward-annotation-syntax-error"
-presets = ["standard", "strict"]
-category = "pyflakes"
 ruff = ["F722"]
 
 [[rule]]
@@ -1248,8 +1230,6 @@ ruff = ["F823"]
 
 [[rule]]
 name = "unused-annotation"
-presets = ["standard", "strict"]
-category = "pyflakes"
 ruff = ["F842"]
 
 [[rule]]

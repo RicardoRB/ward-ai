@@ -479,3 +479,44 @@ check = "percent-format"
 problem = "expected-sequence"
 message = "% format expected a sequence but got a mapping"
 '''
+
+[[rules]]
+id = "ward:python/undefined-local-with-nested-import-star-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["import_from"]
+allowed = ["funcdef", "classdef"]
+stop = []
+mode = "inside"
+text = '^from.*import\*$'
+message = "from ... import * is only allowed at module level"
+'''
+
+[[rules]]
+id = "ward:python/forward-annotation-syntax-error"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "string-annotation"
+message = "syntax error in forward annotation"
+'''
+
+[[rules]]
+id = "ward:python/unused-annotation"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-annotation"
+message = "local variable '{value}' is annotated but never used"
+'''
