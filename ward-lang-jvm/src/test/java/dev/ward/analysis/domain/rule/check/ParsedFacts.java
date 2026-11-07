@@ -87,11 +87,6 @@ final class ParsedFacts {
         new TypeMembers(List.of(), List.of(), List.of(above), List.of()));
   }
 
-  static SpanFacts overriding(final CallTarget... overridden) {
-    return new SpanFacts(
-        null, null, null, List.of(), List.of(), List.of(overridden), List.of(), null, null);
-  }
-
   static CallTarget method(
       final String owner,
       final String name,

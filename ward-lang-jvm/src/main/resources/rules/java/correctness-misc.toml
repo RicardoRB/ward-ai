@@ -1,0 +1,142 @@
+# SpotBugs CORRECTNESS patterns for Java that each need a check of their own.
+
+[[rules]]
+id = "ward:java/dmi-annotation-is-not-visible-to-reflection"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-reflection"
+message = "the annotation is not kept at run time, so this reflective query always answers no"
+'''
+
+[[rules]]
+id = "ward:java/dls-dead-store-of-class-literal"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-class-literal"
+message = "a class literal is stored in a variable that is never used"
+'''
+
+[[rules]]
+id = "ward:java/bac-bad-applet-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "applet-constructor"
+message = "the applet stub is not set during construction; move this call to init()"
+'''
+
+[[rules]]
+id = "ward:java/dmi-arguments-wrong-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(?:checkNotNull|requireNonNull)\("(?:[^"\\]|\\.)*",[^"]'
+message = "the message and the reference are swapped: the reference to check comes first"
+'''
+
+[[rules]]
+id = "ward:java/bit-add-of-signed-byte"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "byte-add"
+message = "the byte is sign-extended, so a negative byte also changes the bits the shift cleared; mask it with 0xff"
+'''
+
+[[rules]]
+id = "ward:java/icast-int-cast-to-float-passed-to-round"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "casted-argument"
+receiver = "Math"
+method = "round"
+cast = "float"
+operand-types = ["int", "long", "short", "byte", "char"]
+message = "an integral value cast to float is rounded; the cast already lost precision and the round does nothing"
+'''
+
+[[rules]]
+id = "ward:java/icast-int-2-long-as-instant"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "time-from-int"
+message = "the int product overflows before it is widened to long; multiply by a long"
+'''
+
+[[rules]]
+id = "ward:java/range-string-index"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "string-range"
+message = "the index is outside the constant string, so this throws StringIndexOutOfBoundsException"
+'''
+
+[[rules]]
+id = "ward:java/range-array-index"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-range"
+mode = "index"
+message = "the index is outside the array, so this throws ArrayIndexOutOfBoundsException"
+'''
+
+[[rules]]
+id = "ward:java/range-array-offset"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-range"
+mode = "offset"
+message = "the offset is outside the array, so this throws IndexOutOfBoundsException"
+'''
+
+[[rules]]
+id = "ward:java/range-array-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-range"
+mode = "length"
+message = "the length does not fit the array from this offset, so this throws IndexOutOfBoundsException"
+'''
