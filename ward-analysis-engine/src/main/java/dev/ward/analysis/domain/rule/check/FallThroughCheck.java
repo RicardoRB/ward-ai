@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Reports a case group with statements whose last statement neither leaves the switch nor continues
@@ -23,8 +22,8 @@ public final class FallThroughCheck implements UnitCheck {
   private static final String GROUP = "switchBlockStatementGroup";
   private static final String LABEL = "switchLabel";
   private static final String STATEMENT = "blockStatement";
-  private static final Pattern LEAVING =
-      Pattern.compile("return.*|throw.*|yield.*|(?:break|continue)[\\w$]*;.*", Pattern.DOTALL);
+  private static final Set<String> LEAVING =
+      Set.of("'break'", "'continue'", "'return'", "'throw'", "'yield'");
 
   private final boolean checkLastGroup;
   private final String message;
@@ -60,10 +59,14 @@ public final class FallThroughCheck implements UnitCheck {
         continue;
       }
       final SyntaxNode lastStatement = group.statements().get(group.statements().size() - 1);
-      if (!LEAVING.matcher(SyntaxWalk.text(lastStatement)).matches()) {
+      if (!LEAVING.contains(firstLeaf(lastStatement).kind())) {
         matches.add(CheckSupport.at(reportSpan(groups, index), message));
       }
     }
+  }
+
+  private static SyntaxNode firstLeaf(final SyntaxNode node) {
+    return node.children().isEmpty() ? node : firstLeaf(node.children().get(0));
   }
 
   private static Span reportSpan(final List<Group> groups, final int index) {
