@@ -1,0 +1,26 @@
+{
+  "3:12-3:27": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:12-3:23": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "trim",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "3:5-3:11": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Thread"
+      },
+      "name": "run",
+      "params": [],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "3:5-3:13": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Thread"
+      },
+      "name": "start",
+      "params": [],
+      "returns": {
+        "name": "void"
+      }
+    }
+  }
+}

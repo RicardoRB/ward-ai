@@ -34,6 +34,8 @@ public final class JvmCheckProvider implements CheckProvider {
             ObjectMethodChecks.checks(),
             ReviewChecks.checks(),
             StrictDeclarationChecks.checks(),
+            StringBuilderChecks.checks(),
+            ThreadChecks.checks(),
             TypeAwareChecks.checks()));
   }
 }

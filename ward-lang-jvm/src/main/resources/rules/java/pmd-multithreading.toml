@@ -1,0 +1,142 @@
+# Multithreading checks for Java that mirror PMD 7.29.0 multithreading rules, as generic syntax
+# checks over the syntax tree and type facts. Each is a text approximation of PMD's rule; the
+# catalog row and the message name what differs.
+
+[[rules]]
+id = "ward:java/avoid-synchronized-at-method-level"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+modifiers = ["synchronized"]
+message = "method-level synchronization locks the whole method; synchronize only the code that needs it"
+'''
+
+[[rules]]
+id = "ward:java/avoid-synchronized-statement"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^synchronized\('
+message = "synchronized block; a ReentrantLock gives explicit lock and unlock calls"
+'''
+
+[[rules]]
+id = "ward:java/avoid-thread-group"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.lang\.)?ThreadGroup\((?:[^()]|\([^()]*\))*\)$|^[\w.()]*\.getThreadGroup\(\)$'
+message = "ThreadGroup is not thread-safe; use an ExecutorService instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-using-volatile"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["volatile"]
+message = "volatile fields are discouraged; use an atomic class such as AtomicReference"
+'''
+
+[[rules]]
+id = "ward:java/dont-call-thread-run"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.Thread"]
+names = ["run"]
+message = "Thread.run runs the body on the current thread; call start to run it on a new thread"
+'''
+
+[[rules]]
+id = "ward:java/double-checked-locking"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'if'"]
+text = '^if\((\w+)==null\)\{synchronized\(.*?\)\{if\(\1==null\)'
+message = "double-checked locking is not thread-safe; use a volatile field or a holder class"
+'''
+
+[[rules]]
+id = "ward:java/non-thread-safe-singleton"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'if'"]
+text = '^if\((\w+)==null\)\{?\1=new[\w.]+\('
+message = "lazy initialization of a field is not thread-safe; initialize it eagerly or hold it in a holder class"
+'''
+
+[[rules]]
+id = "ward:java/unsynchronized-static-formatter"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["static"]
+text = '(?:SimpleDateFormat|DateFormat|DecimalFormat|NumberFormat|MessageFormat|ChoiceFormat)\w*[=;]'
+message = "a static formatter is shared across threads but is not thread-safe; synchronize its use"
+'''
+
+[[rules]]
+id = "ward:java/use-notify-all-instead-of-notify"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^notify\(\)$'
+message = "notify wakes one arbitrary waiting thread; call notifyAll unless exactly one is intended"
+'''
+
+[[rules]]
+id = "ward:java/overriding-thread-run"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "multithreading"
+presets = ["standard", "strict"]
+body = '''
+check = "overriding-thread-run"
+message = "run is overridden in a Thread subclass; implement Runnable and pass it to a Thread instead"
+'''
