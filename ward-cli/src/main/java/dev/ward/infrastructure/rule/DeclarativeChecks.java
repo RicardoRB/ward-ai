@@ -104,6 +104,17 @@ final class DeclarativeChecks {
   private static RuleCheck dataFlowCheck(final String name, final TomlParseResult toml) {
     return switch (name) {
       case "unused-assignment" -> new UnusedAssignmentCheck(TomlValues.required(toml, MESSAGE));
+      case "taint" ->
+          new TaintCheck(
+              TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
+      case "preceding-comment" -> precedingComment(toml);
+      default -> scopeCheck(name, toml);
+    };
+  }
+
+  /** The checks that read scopes or control flow, and the remaining checks. */
+  private static RuleCheck scopeCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
       case "undefined-name" ->
           new UndefinedNameCheck(
               TomlValues.required(toml, MESSAGE),
@@ -113,10 +124,6 @@ final class DeclarativeChecks {
       case "reassigned-binding" ->
           ReassignedBindingCheck.of(
               TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE));
-      case "taint" ->
-          new TaintCheck(
-              TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
-      case "preceding-comment" -> precedingComment(toml);
       default ->
           ScopeAndFormatChecks.isCheck(name)
               ? ScopeAndFormatChecks.build(name, toml)
