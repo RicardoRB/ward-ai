@@ -12,20 +12,12 @@ pmd = ["AbstractClassWithoutAnyMethod"]
 
 [[rule]]
 name = "accessor-class-generation"
-category = "bestpractices"
-# Not applicable (review): Java 11 nestmates removed the synthetic accessor classes this rule reports; no supported target emits them
-# Planned: flags private access by nested classes, which only matters below Java 11 targets; Ward has no target-level setting to gate it
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AccessorClassGeneration"]
 
 [[rule]]
 name = "accessor-method-generation"
-category = "bestpractices"
-# Not applicable (review): Java 11 nestmates removed the synthetic accessor methods this rule reports; no supported target emits them
-# Planned: flags private method access by nested classes, which only matters below Java 11 targets; Ward has no target-level setting to gate it
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["AccessorMethodGeneration"]
 
 [[rule]]
@@ -325,11 +317,8 @@ pmd = ["CallSuperLast"]
 
 [[rule]]
 name = "check-result-set"
-category = "bestpractices"
 # Not applicable (review): needs the static type of the receiver and whether the result is used
-# Planned: needs the static type of the ResultSet receiver; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["CheckResultSet"]
 
 [[rule]]
@@ -557,11 +546,8 @@ pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 
 [[rule]]
 name = "enum-comparison"
-category = "bestpractices"
 # Not applicable (review): needs the static type of the receiver to know it is an enum
-# Planned: needs the static types of the receiver and argument; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["EnumComparison"]
 
 [[rule]]
@@ -592,11 +578,8 @@ pmd = ["ExcessivePublicCount"]
 
 [[rule]]
 name = "exhaustive-switch-has-default"
-category = "bestpractices"
 # Not applicable (review): needs the type of the switch selector to know it is an enum or sealed type
-# Planned: needs the type of the switch selector; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
@@ -666,11 +649,8 @@ pmd = ["GodClass"]
 
 [[rule]]
 name = "guard-log-statement"
-category = "bestpractices"
 # Not applicable (review): needs the logger type and the guard conditions the rule recognizes
-# Planned: needs the logger's type and the guard conditions; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["GuardLogStatement"]
 
 [[rule]]
@@ -946,11 +926,8 @@ pmd = ["NonCaseLabelInSwitch"]
 
 [[rule]]
 name = "non-exhaustive-switch"
-category = "bestpractices"
 # Not applicable (review): needs the type of the switch selector to know which constants must be covered
-# Planned: needs the type of the switch selector; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]
@@ -1463,11 +1440,8 @@ pmd = ["UseDiamondOperator"]
 
 [[rule]]
 name = "use-enum-collections"
-category = "bestpractices"
 # Not applicable (review): needs the type argument of each collection to know it is an enum
-# Planned: needs the type argument of each collection; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseEnumCollections"]
 
 [[rule]]

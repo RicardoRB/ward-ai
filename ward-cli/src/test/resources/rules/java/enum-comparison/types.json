@@ -1,0 +1,7 @@
+{
+  "7:12": {
+    "call": {"declaring": {"name": "java.lang.Object"}, "name": "equals",
+             "params": [{"name": "java.lang.Object"}], "returns": {"name": "boolean", "primitive": true}},
+    "shape": {"kind": "enum", "final": true, "supertypes": [{"name": "java.lang.Enum"}]}
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "5:24": {
+    "shape": {"kind": "enum", "final": true, "supertypes": [{"name": "java.lang.Enum"}]}
+  }
+}
