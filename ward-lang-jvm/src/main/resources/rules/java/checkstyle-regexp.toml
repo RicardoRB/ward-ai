@@ -1,0 +1,16 @@
+# Java rules for the Checkstyle regexp checks.
+
+[[rules]]
+id = "ward:java/regexp-singleline"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "regexp"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''

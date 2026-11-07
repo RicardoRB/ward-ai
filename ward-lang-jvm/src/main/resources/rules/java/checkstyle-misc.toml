@@ -41,3 +41,42 @@ kinds = ["variableDeclaratorId"]
 text = '\]$'
 message = "array brackets follow the name; put them on the type"
 '''
+
+[[rules]]
+id = "ward:java/todo-comment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:java/multiline-comment-leading-asterisk-presence"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "multiline-comment-leading-asterisk-presence"
+message = "every row of a multi-line comment starts with an asterisk"
+'''
+
+[[rules]]
+id = "ward:java/outer-type-filename"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "outer-type-filename"
+message = "the type '{value}' must be declared in a file named after it, '{max}.java'"
+'''

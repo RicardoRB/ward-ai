@@ -4,8 +4,10 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.BlockCommentAsteriskCheck;
 import dev.ward.analysis.domain.rule.check.JavadocAsteriskCheck;
 import dev.ward.analysis.domain.rule.check.JavadocLayoutCheck;
+import dev.ward.analysis.domain.rule.check.OuterTypeFilenameCheck;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
 
@@ -31,6 +33,12 @@ final class JavadocLayoutChecks {
         entry(
             "javadoc-missing-whitespace-after-asterisk",
             toml -> asterisk(JavadocAsteriskCheck.Mode.WHITESPACE, toml)),
+        entry(
+            "multiline-comment-leading-asterisk-presence",
+            toml -> new BlockCommentAsteriskCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "outer-type-filename",
+            toml -> new OuterTypeFilenameCheck(TomlValues.required(toml, MESSAGE))),
         entry("single-line-javadoc", toml -> layout(JavadocLayoutCheck.Mode.SINGLE_LINE, toml)),
         entry(
             "javadoc-content-location",
