@@ -74,6 +74,13 @@ final class EcmaDocBuilder {
       if (close >= 0 && close < to) {
         parts.add(container(index));
         index = close + 1;
+      } else if (context == Context.GROUP
+          && index == to - 1
+          && COMMA.equals(text(index))
+          && EcmaText.endsValue(text(index - 1))) {
+        // A comma that ends a grouped list is kept only when the list breaks.
+        parts.add(Document.ifBreak(Document.text(COMMA), Document.text(EMPTY)));
+        index++;
       } else {
         parts.add(Document.text(text(index)));
         index++;
