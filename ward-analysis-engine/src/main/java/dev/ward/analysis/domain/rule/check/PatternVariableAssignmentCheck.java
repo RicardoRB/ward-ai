@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 public final class PatternVariableAssignmentCheck implements UnitCheck {
 
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
+  private static final int MIN_LEAVES = 2;
   private static final String INSTANCEOF = "'instanceof'";
   private static final Set<String> CALLABLES =
       Set.of("methodDeclaration", "constructorDeclaration");
@@ -80,11 +81,11 @@ public final class PatternVariableAssignmentCheck implements UnitCheck {
 
   private static Optional<String> patternName(final SyntaxNode type) {
     final List<SyntaxNode> leaves = SyntaxWalk.leaves(type);
-    if (leaves.size() < 2) {
+    if (leaves.size() < MIN_LEAVES) {
       return Optional.empty();
     }
     final SyntaxNode last = leaves.get(leaves.size() - 1);
-    final String before = SyntaxWalk.text(leaves.get(leaves.size() - 2));
+    final String before = SyntaxWalk.text(leaves.get(leaves.size() - MIN_LEAVES));
     return NAME.matcher(SyntaxWalk.text(last)).matches() && !".".equals(before)
         ? Optional.of(SyntaxWalk.text(last))
         : Optional.empty();

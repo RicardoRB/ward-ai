@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 class FinalLocalVariableCheckTest extends TreeBuilders {
 
   private static final String MESSAGE = "final {value}";
+  private static final String STATEMENT = "statement";
   private static final String BLOCK_STATEMENT = "blockStatement";
 
   @Test
@@ -19,8 +20,14 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
 
   @Test
   void reassignedOrIncrementedLocalsAreNotReported() {
-    assertThat(findings(block(initialized(false, "x"), assignmentStatement("x", "y")))).isEmpty();
-    assertThat(findings(block(initialized(false, "x"), incrementStatement("x")))).isEmpty();
+    assertThat(findings(block(initialized(false, "x"), n(STATEMENT, assignment("x", "y")))))
+        .isEmpty();
+    assertThat(
+            findings(
+                block(
+                    initialized(false, "x"),
+                    n(STATEMENT, n(EXPRESSION, id("x"), t("'++'", "++"))))))
+        .isEmpty();
   }
 
   @Test
@@ -67,13 +74,5 @@ class FinalLocalVariableCheckTest extends TreeBuilders {
 
   private static SyntaxNode other() {
     return n(STATEMENT, t(TOKEN_IDENTIFIER, "other"));
-  }
-
-  private static SyntaxNode assignmentStatement(final String target, final String value) {
-    return n(STATEMENT, assignment(target, value));
-  }
-
-  private static SyntaxNode incrementStatement(final String name) {
-    return n(STATEMENT, n(EXPRESSION, id(name), t("'++'", "++")));
   }
 }

@@ -20,6 +20,8 @@ public final class FinalLocalVariableCheck implements UnitCheck {
 
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
   private static final String FINAL = "final";
+  private static final String DECLARATOR = "variableDeclarator";
+  private static final int OPERAND_COUNT = 2;
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody");
   private static final Set<String> INCREMENTS = Set.of("'++'", "'--'");
 
@@ -81,7 +83,7 @@ public final class FinalLocalVariableCheck implements UnitCheck {
   }
 
   private static boolean increments(final SyntaxNode node, final String name) {
-    if (node.children().size() != 2) {
+    if (node.children().size() != OPERAND_COUNT) {
       return false;
     }
     final SyntaxNode first = node.children().get(0);
@@ -99,7 +101,7 @@ public final class FinalLocalVariableCheck implements UnitCheck {
   private static List<SyntaxNode> declarators(final SyntaxNode node) {
     final List<SyntaxNode> found = new ArrayList<>();
     for (final SyntaxNode child : node.children()) {
-      if ("variableDeclarator".equals(child.kind())) {
+      if (DECLARATOR.equals(child.kind())) {
         found.add(child);
       } else if (!NOT_ENTERED.contains(child.kind())) {
         found.addAll(declarators(child));

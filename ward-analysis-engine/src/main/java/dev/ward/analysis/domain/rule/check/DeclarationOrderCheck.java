@@ -25,6 +25,7 @@ public final class DeclarationOrderCheck implements UnitCheck {
   private static final int CONSTRUCTOR_GROUP = 2;
   private static final int METHOD_GROUP = 3;
   private static final int PACKAGE_ACCESS = 2;
+  private static final int PRIVATE_ACCESS = 3;
   private static final int NONE = -1;
 
   private final String message;
@@ -129,7 +130,7 @@ public final class DeclarationOrderCheck implements UnitCheck {
     return switch (access) {
       case "public" -> 0;
       case "protected" -> 1;
-      default -> 3;
+      default -> PRIVATE_ACCESS;
     };
   }
 }

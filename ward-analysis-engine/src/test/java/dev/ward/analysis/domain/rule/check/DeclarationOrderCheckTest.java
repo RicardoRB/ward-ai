@@ -13,6 +13,11 @@ class DeclarationOrderCheckTest extends TreeBuilders {
   private static final String MESSAGE = "out of order";
   private static final int MODIFIER_OFFSET = 0;
   private static final int MEMBER_OFFSET = 10;
+  private static final int MEMBER_LENGTH = 10;
+  private static final int FIELD_NAME_OFFSET = 4;
+  private static final int METHOD_NAME_OFFSET = 5;
+  private static final int OPEN_OFFSET = 9;
+  private static final int CLOSE_OFFSET = 10;
 
   @Test
   void methodBeforeInstanceVariableIsReported() {
@@ -54,12 +59,14 @@ class DeclarationOrderCheckTest extends TreeBuilders {
         Trees.node(
             MEMBER_DECLARATION,
             MEMBER_OFFSET,
-            MEMBER_OFFSET + 10,
+            MEMBER_OFFSET + MEMBER_LENGTH,
             1,
             n(
                 "fieldDeclaration",
                 Trees.leaf("int", "int", MEMBER_OFFSET),
-                n("variableDeclarator", Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + 4)))));
+                n(
+                    "variableDeclarator",
+                    Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + FIELD_NAME_OFFSET)))));
   }
 
   private static SyntaxNode method(final String name) {
@@ -68,14 +75,14 @@ class DeclarationOrderCheckTest extends TreeBuilders {
         Trees.node(
             MEMBER_DECLARATION,
             MEMBER_OFFSET,
-            MEMBER_OFFSET + 10,
+            MEMBER_OFFSET + MEMBER_LENGTH,
             1,
             n(
                 METHOD_DECLARATION,
                 Trees.leaf("void", "void", MEMBER_OFFSET),
-                Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + 5),
-                Trees.leaf(TOKEN_OPEN, "(", MEMBER_OFFSET + 9),
-                Trees.leaf(TOKEN_CLOSE, ")", MEMBER_OFFSET + 10))));
+                Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + METHOD_NAME_OFFSET),
+                Trees.leaf(TOKEN_OPEN, "(", MEMBER_OFFSET + OPEN_OFFSET),
+                Trees.leaf(TOKEN_CLOSE, ")", MEMBER_OFFSET + CLOSE_OFFSET))));
   }
 
   private static SyntaxNode member(final String modifier, final SyntaxNode declaration) {
