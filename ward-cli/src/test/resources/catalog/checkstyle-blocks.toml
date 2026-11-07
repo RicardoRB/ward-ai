@@ -44,9 +44,9 @@ checkstyle = ["LeftCurly"]
 
 [[rule]]
 name = "need-braces"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { kotlin = "#294", swift = "#298" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]
