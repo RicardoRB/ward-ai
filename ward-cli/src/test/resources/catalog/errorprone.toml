@@ -1983,8 +1983,6 @@ errorprone = ["MixedArrayDimensions"]
 
 [[rule]]
 name = "mixed-descriptors"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MixedDescriptors"]
 
 [[rule]]
@@ -2183,8 +2181,6 @@ errorprone = ["NonCanonicalType"]
 
 [[rule]]
 name = "non-final-compile-time-constant"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NonFinalCompileTimeConstant"]
 
 [[rule]]
@@ -2808,14 +2804,10 @@ errorprone = ["StaticMockMember"]
 
 [[rule]]
 name = "static-or-default-interface-method"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["StaticOrDefaultInterfaceMethod"]
 
 [[rule]]
 name = "static-qualified-using-expression"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["StaticQualifiedUsingExpression"]
 
 [[rule]]
@@ -2952,8 +2944,6 @@ errorprone = ["SystemOut"]
 
 [[rule]]
 name = "temporal-accessor-get-chrono-field"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TemporalAccessorGetChronoField"]
 
 [[rule]]

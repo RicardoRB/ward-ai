@@ -11,7 +11,9 @@ import dev.ward.analysis.domain.rule.check.JavaJdk8ApiCheck;
 import dev.ward.analysis.domain.rule.check.JavaJodaToSelfCheck;
 import dev.ward.analysis.domain.rule.check.JavaLenientFormatCheck;
 import dev.ward.analysis.domain.rule.check.JavaLossyCompareCheck;
+import dev.ward.analysis.domain.rule.check.JavaNonFinalConstantCheck;
 import dev.ward.analysis.domain.rule.check.JavaProtoNullComparisonCheck;
+import dev.ward.analysis.domain.rule.check.JavaStaticQualifiedCheck;
 import dev.ward.analysis.domain.rule.check.JavaVarargsConditionalCheck;
 import java.util.Map;
 
@@ -31,6 +33,12 @@ final class ErrorProneTypedChecks {
         entry(
             "is-instance-incompatible-type",
             toml -> new JavaIsInstanceIncompatibleCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "non-final-compile-time-constant",
+            toml -> new JavaNonFinalConstantCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "static-qualified-using-expression",
+            toml -> new JavaStaticQualifiedCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "proto-null-comparison",
             toml -> new JavaProtoNullComparisonCheck(TomlValues.required(toml, MESSAGE))),

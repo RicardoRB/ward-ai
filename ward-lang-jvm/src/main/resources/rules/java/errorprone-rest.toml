@@ -1,0 +1,69 @@
+# Error Prone checks at ERROR severity for Java, G to Z, leftovers: patterns over the text of a node and
+# checks of parameters and static calls. A fact that is unknown never produces a finding.
+
+[[rules]]
+id = "ward:java/mixed-descriptors"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.getDescriptor\(\)\.findFieldByNumber\((?!\1\.)(?:\w+\.)*\w+_FIELD_NUMBER\)$'
+message = "the field number belongs to a different proto than the descriptor"
+'''
+
+[[rules]]
+id = "ward:java/static-or-default-interface-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["interfaceBodyDeclaration"]
+text = '^(?:@\w+(?:\([^()]*\))?|public|abstract|strictfp)*(?:default|static)(?!class|interface|enum|record|@interface)(?:<[^>]*>)?[\w.<>,?\[\]]+\('
+message = "static and default interface methods are not supported on Android before 7.0"
+'''
+
+[[rules]]
+id = "ward:java/temporal-accessor-get-chrono-field"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.DayOfWeek", "java.time.Month"]
+names = ["get"]
+text = '\.get\(ChronoField\.(?!DAY_OF_WEEK\)|MONTH_OF_YEAR\))'
+message = "this ChronoField is not supported by the type and throws UnsupportedTemporalTypeException"
+'''
+
+[[rules]]
+id = "ward:java/non-final-compile-time-constant"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "non-final-compile-time-constant"
+message = "a @CompileTimeConstant parameter should be final or effectively final"
+'''
+
+[[rules]]
+id = "ward:java/static-qualified-using-expression"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "static-qualified-using-expression"
+message = "{value} is static; qualify it with the class name, not an expression"
+'''

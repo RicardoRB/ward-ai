@@ -1,0 +1,41 @@
+{
+  "6:12-6:49": {
+    "call": {
+      "declaring": {
+        "name": "java.time.DayOfWeek"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalField"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "6:12-6:14": {
+    "type": {
+      "name": "java.time.DayOfWeek"
+    }
+  },
+  "6:12-6:43": {
+    "call": {
+      "declaring": {
+        "name": "java.time.DayOfWeek"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalField"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}

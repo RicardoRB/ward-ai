@@ -356,7 +356,7 @@ missing-test-call = "implemented"
 misused-day-of-year = "implemented"
 misused-week-year = "implemented"
 mixed-array-dimensions = { status = "planned", issue = "#319" }
-mixed-descriptors = { status = "planned", issue = "#319" }
+mixed-descriptors = "implemented"
 mixed-mutability-return-type = { status = "planned", issue = "#319" }
 mock-illegal-throws = { status = "planned", issue = "#319" }
 mock-not-used-in-production = { status = "planned", issue = "#319" }
@@ -392,7 +392,7 @@ non-atomic-volatile-update = { status = "planned", issue = "#319" }
 non-canonical-static-import = { status = "planned", issue = "#319" }
 non-canonical-static-member-import = { status = "planned", issue = "#319" }
 non-canonical-type = { status = "planned", issue = "#319" }
-non-final-compile-time-constant = { status = "planned", issue = "#319" }
+non-final-compile-time-constant = "implemented"
 non-final-static-field = { status = "planned", issue = "#319" }
 non-overriding-equals = { status = "planned", issue = "#319" }
 non-runtime-annotation = "implemented"
@@ -508,8 +508,8 @@ static-assignment-in-constructor = { status = "planned", issue = "#319" }
 static-assignment-of-throwable = { status = "planned", issue = "#319" }
 static-guarded-by-instance = { status = "planned", issue = "#319" }
 static-mock-member = { status = "planned", issue = "#319" }
-static-or-default-interface-method = { status = "planned", issue = "#319" }
-static-qualified-using-expression = { status = "planned", issue = "#319" }
+static-or-default-interface-method = "implemented"
+static-qualified-using-expression = "implemented"
 stream-resource-leak = { status = "planned", issue = "#319" }
 stream-to-iterable = { status = "planned", issue = "#319" }
 stream-to-string = "implemented"
@@ -534,7 +534,7 @@ synchronize-on-non-final-field = { status = "planned", issue = "#319" }
 system-console-null = { status = "planned", issue = "#319" }
 system-exit-outside-main = "implemented"
 system-out = { status = "planned", issue = "#319" }
-temporal-accessor-get-chrono-field = { status = "planned", issue = "#319" }
+temporal-accessor-get-chrono-field = "implemented"
 test-exception-checker = "implemented"
 test-parameters-not-initialized = "implemented"
 theory-but-no-theories = "implemented"

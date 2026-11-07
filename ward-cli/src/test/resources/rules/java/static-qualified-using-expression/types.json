@@ -1,0 +1,43 @@
+{
+  "3:12-3:30": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Integer"
+      },
+      "name": "parseInt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      },
+      "static": true
+    }
+  },
+  "3:12-3:16": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "3:12-3:32": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Integer"
+      },
+      "name": "parseInt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      },
+      "static": true
+    }
+  }
+}
