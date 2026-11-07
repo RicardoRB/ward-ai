@@ -18,7 +18,7 @@ final class AnnotationReader {
   private static final char STRING = 's';
 
   private final ConstantPool pool;
-  private String compatible = "";
+  private final List<String> compatible = new ArrayList<>();
 
   AnnotationReader(final ByteBuffer in, final ConstantPool pool) {
     this.in = in;
@@ -41,7 +41,7 @@ final class AnnotationReader {
       in.getShort();
       if (marked && in.get(in.position()) == STRING) {
         in.get();
-        compatible = pool.utf8(in.getShort() & UNSIGNED_SHORT);
+        compatible.add(pool.utf8(in.getShort() & UNSIGNED_SHORT));
       } else {
         skipValue();
       }
@@ -69,14 +69,15 @@ final class AnnotationReader {
   void parameters(final List<List<String>> into, final List<String> compatibleWith) {
     final int parameters = in.get() & UNSIGNED_BYTE;
     for (int index = 0; index < parameters; index++) {
-      compatible = "";
+      compatible.clear();
       final List<String> names = list();
+      final String value = compatible.isEmpty() ? "" : compatible.get(0);
       if (index < compatibleWith.size()) {
-        if (!compatible.isEmpty()) {
-          compatibleWith.set(index, compatible);
+        if (!value.isEmpty()) {
+          compatibleWith.set(index, value);
         }
       } else {
-        compatibleWith.add(compatible);
+        compatibleWith.add(value);
       }
       if (index < into.size()) {
         into.get(index).addAll(names);
