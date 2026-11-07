@@ -1,0 +1,8 @@
+# Rules of spotbugs-4.9.7 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "SpotBugs test-harness patterns, not checks of user code"
+rules = [
+  "FB_MISSING_EXPECTED_WARNING",
+  "FB_UNEXPECTED_WARNING",
+]
