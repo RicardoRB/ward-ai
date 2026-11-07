@@ -5163,9 +5163,7 @@ ruff = ["SIM117"]
 
 [[rule]]
 name = "in-dict-keys"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM118"]
 
 [[rule]]
@@ -5240,9 +5238,7 @@ ruff = ["SIM223"]
 
 [[rule]]
 name = "yoda-conditions"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM300"]
 
 [[rule]]
@@ -5254,51 +5250,37 @@ ruff = ["SIM401"]
 
 [[rule]]
 name = "split-static-string"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM905"]
 
 [[rule]]
 name = "dict-get-with-none-default"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM910"]
 
 [[rule]]
 name = "zip-dict-keys-and-values"
-category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SIM911"]
 
 [[rule]]
 name = "private-member-access"
-category = "flake8-self"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SLF001"]
 
 [[rule]]
 name = "no-slots-in-str-subclass"
-category = "flake8-slots"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SLOT000"]
 
 [[rule]]
 name = "no-slots-in-tuple-subclass"
-category = "flake8-slots"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SLOT001"]
 
 [[rule]]
 name = "no-slots-in-namedtuple-subclass"
-category = "flake8-slots"
-status = { python = "planned" }
-issues = { python = "#334" }
+status = { python = "implemented" }
 ruff = ["SLOT002"]
 
 [[rule]]
