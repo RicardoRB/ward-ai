@@ -141,9 +141,7 @@ class JvmFixturesTest {
             .run(
                 List.of(
                     new SourceUnit(
-                        file.getFileName().toString(),
-                        language,
-                        Files.readString(file, StandardCharsets.UTF_8))),
+                        unitName(file), language, Files.readString(file, StandardCharsets.UTF_8))),
                 JvmFixtureFrontends.forRule(rule, language, directory),
                 List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
@@ -152,6 +150,14 @@ class JvmFixturesTest {
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .map(JvmFixturesTest::position)
         .toList();
+  }
+
+  /** The path the rule sees: the text of {@code filename.txt} beside the fixture, if any. */
+  private static String unitName(final Path file) throws IOException {
+    final Path named = file.resolveSibling("filename.txt");
+    return Files.isRegularFile(named)
+        ? Files.readString(named, StandardCharsets.UTF_8).strip()
+        : file.getFileName().toString();
   }
 
   private static CompiledRule compile(

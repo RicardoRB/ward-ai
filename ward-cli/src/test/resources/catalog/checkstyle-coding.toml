@@ -439,14 +439,16 @@ checkstyle = ["UnusedLambdaParameterShouldBeUnnamed"]
 [[rule]]
 name = "unused-local-variable"
 category = "coding"
-presets = ["strict"]
+presets = ["standard", "strict"]
 pmd = ["UnusedLocalVariable"]
+errorprone = ["UnusedVariable"]
 typescript-eslint = ["no-unused-vars"]
 checkstyle = ["UnusedLocalVariable"]
 eslint = ["no-unused-vars"]
 biome = ["noUnusedVariables"]
 ruff = ["F841"]
 pylint = ["unused-variable"]
+vulture = ["V107"]
 
 [[rule]]
 name = "unused-private-field"

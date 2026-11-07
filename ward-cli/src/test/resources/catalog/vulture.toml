@@ -18,6 +18,12 @@ pylint = ["unused-import"]
 vulture = ["V104"]
 
 [[rule]]
+name = "unused-method"
+presets = ["standard", "strict"]
+category = "dead-code"
+vulture = ["V105"]
+
+[[rule]]
 name = "unused-property"
 presets = ["standard", "strict"]
 category = "dead-code"

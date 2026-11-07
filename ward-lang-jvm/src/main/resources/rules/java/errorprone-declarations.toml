@@ -1,0 +1,100 @@
+# Error Prone checks at ERROR severity for Java that read what one file declares: annotations, fields and type
+# parameters. Each is on by default in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/package-info"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "package-info-types"
+message = "a package-info.java file should only carry the package declaration and its annotations, not types"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-lambda"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "private-lambda-field"
+message = "a private constant that holds a lambda is read once; write the lambda where it is used or use a method reference"
+'''
+
+[[rules]]
+id = "ward:java/unused-collection-modified-in-place"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-collection-modified"
+message = "this collection is only added to or changed and never read; remove it or use its contents"
+'''
+
+[[rules]]
+id = "ward:java/misplaced-scope-annotations"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "misplaced-scope"
+message = "a scope annotation on a parameter or an injection site has no effect; put it on the class or the binding method"
+'''
+
+[[rules]]
+id = "ward:java/more-than-one-qualifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "qualifier-count"
+message = "a declaration can have only one qualifier annotation"
+'''
+
+[[rules]]
+id = "ward:java/non-runtime-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "non-runtime-annotation-lookup"
+message = "this annotation is not kept at run time, so the lookup always finds nothing; add @Retention(RUNTIME)"
+'''
+
+[[rules]]
+id = "ward:java/missing-test-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?!.*testEquals\(\))new(?:[\w.]*\.)?EqualsTester\('
+message = "an EqualsTester checks nothing until testEquals() is called on it"
+'''
+
+[[rules]]
+id = "ward:java/type-parameter-qualifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "type-parameter-qualifier"
+message = "a type parameter cannot qualify a nested type; write the nested type's own name"
+'''
