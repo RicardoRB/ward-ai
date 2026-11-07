@@ -12,3 +12,27 @@ body = '''
 check = "javadoc-method"
 message = "documentation of the function has no {value} tag"
 '''
+
+[[rules]]
+id = "ward:swift/constructors-declaration-grouping"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-group"
+message = "initializer is declared after other members; group the initializers together"
+'''
+
+[[rules]]
+id = "ward:swift/custom-import-order"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "import-sort"
+message = "import '{value}' is out of order; sort the imports by name"
+'''

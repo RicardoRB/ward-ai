@@ -29,9 +29,9 @@ checkstyle = ["AvoidStaticImport"]
 
 [[rule]]
 name = "custom-import-order"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
 ids = { java = "ward:java/custom-import-order" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["CustomImportOrder"]
 ktlint = ["import-ordering"]
 eslint = ["sort-imports"]

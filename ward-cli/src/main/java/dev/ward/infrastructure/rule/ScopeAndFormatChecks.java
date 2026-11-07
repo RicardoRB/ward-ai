@@ -1,8 +1,10 @@
 package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.rule.check.AncestorCheck;
+import dev.ward.analysis.domain.rule.check.ConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.DotFormatCheck;
 import dev.ward.analysis.domain.rule.check.HiddenFieldCheck;
+import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.ModuleOrderCheck;
@@ -41,7 +43,9 @@ final class ScopeAndFormatChecks {
           "module-order",
           "hidden-field",
           "variable-declaration-usage-distance",
-          "javadoc-method" ->
+          "javadoc-method",
+          "constructor-group",
+          "import-sort" ->
           true;
       default -> false;
     };
@@ -59,6 +63,8 @@ final class ScopeAndFormatChecks {
       case "module-order" -> moduleOrder(toml);
       case "hidden-field" -> new HiddenFieldCheck(TomlValues.required(toml, MESSAGE));
       case "javadoc-method" -> new JavadocMethodCheck(TomlValues.required(toml, MESSAGE));
+      case "constructor-group" -> new ConstructorGroupCheck(TomlValues.required(toml, MESSAGE));
+      case "import-sort" -> new ImportSortCheck(TomlValues.required(toml, MESSAGE));
       case "variable-declaration-usage-distance" ->
           new VariableDistanceCheck(
               TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE));
