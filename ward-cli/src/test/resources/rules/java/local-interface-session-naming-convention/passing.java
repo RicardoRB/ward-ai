@@ -1,0 +1,2 @@
+interface PassingLocal extends EJBLocalObject {
+}
