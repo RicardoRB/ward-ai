@@ -1,0 +1,6 @@
+[[rules]]
+id = "ward:x/y"
+language = "cobol"
+capability = "SYNTAX"
+severity = "warning"
+body = "check = 'lines'"
