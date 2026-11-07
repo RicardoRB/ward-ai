@@ -5,7 +5,7 @@ avoid-inline-conditionals = "implemented"
 avoid-no-argument-super-constructor-call = { status = "planned", issue = "#289" }
 constructors-declaration-grouping = "implemented"
 covariant-equals = "implemented"
-declaration-order = { status = "planned", issue = "#289" }
+declaration-order = "implemented"
 default-comes-last = { status = "planned", issue = "#288" }
 empty-statement = "implemented"
 equals-avoid-null = "implemented"
@@ -13,15 +13,15 @@ equals-hash-code = "implemented"
 explicit-initialization = "implemented"
 expression-over-block-lambda = { status = "planned", issue = "#289" }
 fall-through = "implemented"
-final-local-variable = { status = "planned", issue = "#289" }
+final-local-variable = "implemented"
 hidden-field = "implemented"
 illegal-catch = "implemented"
-illegal-instantiation = { status = "planned", issue = "#289" }
+illegal-instantiation = "implemented"
 illegal-symbol = { status = "planned", issue = "#289" }
 illegal-throws = "implemented"
 illegal-token = "implemented"
 illegal-token-text = "implemented"
-illegal-type = { status = "planned", issue = "#289" }
+illegal-type = "implemented"
 inner-assignment = { status = "planned", issue = "#288" }
 magic-number = "implemented"
 missing-ctor = { status = "planned", issue = "#289" }
@@ -34,21 +34,21 @@ nested-for-depth = "implemented"
 nested-if-depth = "implemented"
 nested-try-depth = "implemented"
 no-array-trailing-comma = "implemented"
-no-clone = { status = "planned", issue = "#289" }
+no-clone = "implemented"
 no-enum-trailing-comma = "implemented"
-no-finalizer = { status = "planned", issue = "#289" }
+no-finalizer = "implemented"
 one-statement-per-line = "implemented"
 overload-methods-declaration-order = "implemented"
 package-declaration = "implemented"
 parameter-assignment = "implemented"
-pattern-variable-assignment = { status = "planned", issue = "#289" }
+pattern-variable-assignment = "implemented"
 require-this = { status = "planned", issue = "#289" }
 return-count = "implemented"
 simplify-boolean-expression = { status = "planned", issue = "#288" }
 simplify-boolean-return = "implemented"
 string-literal-equality = "implemented"
-super-clone = { status = "planned", issue = "#289" }
-super-finalize = { status = "planned", issue = "#289" }
+super-clone = "implemented"
+super-finalize = "implemented"
 text-block-google-style-formatting = { status = "planned", issue = "#289" }
 unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
 unnecessary-parentheses = { status = "planned", issue = "#289" }

@@ -12,7 +12,7 @@ javadoc-end-comment-delimiter = "not-applicable"
 javadoc-leading-asterisk-align = "not-applicable"
 javadoc-link-first-occurrence = "not-applicable"
 javadoc-link-well-known-api = "not-applicable"
-javadoc-method = { status = "planned", issue = "#298" }
+javadoc-method = "implemented"
 javadoc-missing-leading-asterisk = "not-applicable"
 javadoc-missing-whitespace-after-asterisk = "not-applicable"
 javadoc-no-error-in-throws-tag = "not-applicable"

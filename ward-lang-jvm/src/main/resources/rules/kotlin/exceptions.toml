@@ -101,3 +101,59 @@ kinds = ["postfixUnaryExpression"]
 text = '^TODO\('
 message = "TODO() call left in the code; implement it or remove it"
 '''
+
+[[rules]]
+id = "ward:kotlin/throwing-new-instance-of-same-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchBlock"]
+text = '^catch\s*\(\s*(\w+)\s*:\s*(\w+)\s*\)\s*\{[\s\S]*throw\2\(\1\)'
+message = "a new instance of the caught exception type is thrown; rethrow the caught one"
+'''
+
+[[rules]]
+id = "ward:kotlin/instance-of-check-for-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchBlock"]
+text = '^catch\s*\(\s*(\w+)\s*:[^)]*\)\s*\{[\s\S]*(?:(?<![A-Za-z0-9_.])\1!?is[A-Z]|when\(\1\)\{[^}]*is[A-Z])'
+message = "the caught exception is checked with is; use one catch block per exception type"
+'''
+
+[[rules]]
+id = "ward:kotlin/swallowed-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchBlock"]
+text = '^catch\s*\(\s*(?!_|ignore|expected)(\w+)\s*:\s*(?!(?:InterruptedException|MalformedURLException|NumberFormatException|ParseException)\))[\w.]+\s*\)\s*\{(?![\s\S]*(?:(?<![A-Za-z0-9_])|throw)\1(?![A-Za-z0-9_]))[\s\S]+\}$'
+message = "the caught exception is swallowed; log it, pass it as a cause, or rethrow it"
+'''
+
+[[rules]]
+id = "ward:kotlin/exception-raised-in-unexpected-location"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "exceptions"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'fun(?:equals|finalize|hashCode|toString)\([^)]*\)[^{=]*[{=][\s\S]*throw'
+message = "this method should not throw an exception"
+'''

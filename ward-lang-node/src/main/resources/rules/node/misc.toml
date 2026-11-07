@@ -133,3 +133,33 @@ target = "comments"
 pattern = "TODO:"
 message = "resolve the TODO: comment before merging"
 '''
+
+[[rules]]
+id = "ward:typescript/no-default-export"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+sources = "app"
+kinds = ["sourceElement"]
+text = '^exportdefault'
+message = "use a named export instead of a default export"
+'''
+
+[[rules]]
+id = "ward:javascript/no-default-export"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+sources = "app"
+kinds = ["exportStatement"]
+text = '^exportdefault'
+message = "use a named export instead of a default export"
+'''

@@ -1,0 +1,73 @@
+# Javadoc layout rules for Java. Each rule mirrors one Checkstyle 14.3.0 check.
+
+[[rules]]
+id = "ward:java/javadoc-leading-asterisk-align"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-leading-asterisk-align"
+message = "the leading asterisk is not aligned with the first asterisk of the opening delimiter"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-missing-leading-asterisk"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-missing-leading-asterisk"
+message = "the Javadoc row has no leading asterisk"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-missing-whitespace-after-asterisk"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["strict"]
+body = '''
+check = "javadoc-missing-whitespace-after-asterisk"
+message = "the leading asterisk is not followed by a space"
+'''
+
+[[rules]]
+id = "ward:java/single-line-javadoc"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "single-line-javadoc"
+message = "a single-line Javadoc comment must not hold a block tag"
+'''
+
+[[rules]]
+id = "ward:java/javadoc-content-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-content-location"
+message = "the Javadoc text must start on the second line"
+'''
+
+[[rules]]
+id = "ward:java/require-empty-line-before-block-tag-group"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "require-empty-line-before-block-tag-group"
+message = "the first block tag must follow an empty line"
+'''

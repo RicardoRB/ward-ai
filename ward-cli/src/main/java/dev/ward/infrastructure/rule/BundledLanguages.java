@@ -8,6 +8,7 @@ import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
+import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import java.util.List;
 
@@ -28,7 +29,11 @@ public final class BundledLanguages {
 
   /** Returns the check providers of the shared checks and of every bundled language module. */
   public static List<CheckProvider> checkProviders() {
-    return List.of(new CoreCheckProvider(), new JvmCheckProvider(), new PythonCheckProvider());
+    return List.of(
+        new CoreCheckProvider(),
+        new JvmCheckProvider(),
+        new PythonCheckProvider(),
+        new SwiftCheckProvider());
   }
 
   /** Returns the registry of every bundled check. */

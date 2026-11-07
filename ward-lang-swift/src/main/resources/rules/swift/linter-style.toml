@@ -1,0 +1,269 @@
+# SwiftLint rules for Swift whose checks fit the generic kinds, plus identifier_name. Each rule matches the
+# compact text of a node (its tokens without spaces) or a line, so positions are node starts or line starts.
+
+[[rules]]
+id = "ward:swift/closure-parameter-position"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^(?!\s*for\b)\s*[\w, ]+\s+in\s*$'
+message = "closure parameters should be on the same line as the opening brace"
+'''
+
+[[rules]]
+id = "ward:swift/computed-accessors-order"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^[^{]*\{(?:nonmutating)?set[({]'
+message = "the getter should come before the setter"
+'''
+
+[[rules]]
+id = "ward:swift/control-statement"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_statement", "while_statement", "guard_statement", "switch_statement"]
+text = '^(?:(?:if|while|switch)\((?:[^()]|\([^()]*\))*\)\{|guard\((?:[^()]|\([^()]*\))*\)else\{)'
+message = "condition should not be wrapped in parentheses"
+'''
+
+[[rules]]
+id = "ward:swift/empty-enum-arguments"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enum_case_pattern"]
+text = '\((?:let|var)?_\)$'
+message = "omit the argument of an enum case pattern that ignores it"
+'''
+
+[[rules]]
+id = "ward:swift/empty-parameters"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_type"]
+text = '^\(Void\)->'
+message = "prefer () -> over (Void) ->"
+'''
+
+[[rules]]
+id = "ward:swift/function-name-whitespace"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\bfunc\s{2,}\S|\bfunc\s+[^\s(<]+\s+[(<]'
+message = "function name should be followed directly by its parameters and preceded by one space"
+'''
+
+[[rules]]
+id = "ward:swift/implicit-getter"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '^[^{]*\{get\{(?!.*\}set[({]).*\}\}$'
+message = "omit the get keyword of a read-only computed property"
+'''
+
+[[rules]]
+id = "ward:swift/implicit-optional-initialization"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variable_declaration"]
+text = '\?=nil$'
+message = "omit the nil initializer of an optional variable"
+'''
+
+[[rules]]
+id = "ward:swift/inclusive-language"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '(?i)(whitelist|blacklist|master|slave)'
+message = "use inclusive language: allow list, deny list, primary or replica"
+'''
+
+[[rules]]
+id = "ward:swift/large-tuple"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["tuple_type"]
+text = '^\([^(),]+,[^(),]+,[^(),]+'
+message = "tuple has more than two members; use a struct"
+'''
+
+[[rules]]
+id = "ward:swift/multiple-closures-with-trailing-closure"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '\(\w+:\{[^{}]*\}\)\{'
+message = "trailing closure syntax should not be used when passing more than one closure"
+'''
+
+[[rules]]
+id = "ward:swift/nesting"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "depth"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration"]
+reset = []
+max = 1
+message = "type is nested {value} levels deep; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:swift/protocol-property-accessors-order"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["protocol_property_declaration"]
+text = '\{setget\}'
+message = "a protocol property should declare get before set"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-discardable-let"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constant_declaration"]
+text = '^let_='
+message = "discard the result with _ = instead of let _ ="
+'''
+
+[[rules]]
+id = "ward:swift/shorthand-operator"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)=\1[-+*/]\w'
+message = "use the shorthand operator, for example +="
+'''
+
+[[rules]]
+id = "ward:swift/unused-optional-binding"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["optional_binding_condition"]
+text = '^(?:let|var)_='
+message = "use != nil instead of binding the value to _"
+'''
+
+[[rules]]
+id = "ward:swift/void-return"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["function_result"]
+text = '^->\(\)$'
+message = "prefer -> Void over -> ()"
+'''
+
+[[rules]]
+id = "ward:swift/identifier-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "severity-warning"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["constant_declaration", "variable_declaration", "function_declaration", "enum_case_name"]
+name = "declaration_identifier"
+skip = ["attributes"]
+pattern = 'id|URL|GlobalAPIKey|_|[a-z][A-Za-z0-9_]{2,39}'
+message = "name '{value}' must start with a lowercase letter and be 3 to 40 characters long"
+'''
+
+[[rules]]
+id = "ward:swift/vertical-parameter-alignment"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-parameter-alignment"
+message = "parameter should align with the first parameter of the multi-line signature"
+'''

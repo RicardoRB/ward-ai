@@ -84,8 +84,6 @@ biome = ["noDoubleEquals"]
 
 [[rule]]
 name = "for-direction"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["for-direction"]
 
 [[rule]]
@@ -221,8 +219,6 @@ eslint = ["no-caller"]
 
 [[rule]]
 name = "no-case-declarations"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-case-declarations"]
 biome = ["noSwitchDeclarations"]
 
@@ -295,8 +291,6 @@ biome = ["noDivRegex"]
 
 [[rule]]
 name = "no-dupe-args"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-dupe-args"]
 biome = ["noDuplicateParameters"]
 
@@ -352,8 +346,6 @@ eslint = ["no-empty-function"]
 
 [[rule]]
 name = "no-empty-pattern"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-empty-pattern"]
 biome = ["noEmptyPattern"]
 
@@ -428,8 +420,6 @@ eslint = ["no-implicit-globals"]
 
 [[rule]]
 name = "no-implied-eval"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-implied-eval"]
 eslint = ["no-implied-eval"]
 biome = ["noImpliedEval"]
@@ -670,8 +660,6 @@ biome = ["noSelfCompare"]
 
 [[rule]]
 name = "no-sequences"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-sequences"]
 biome = ["noCommaOperator"]
 
@@ -694,8 +682,6 @@ biome = ["noSparseArray"]
 
 [[rule]]
 name = "no-template-curly-in-string"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-template-curly-in-string"]
 biome = ["noTemplateCurlyInString"]
 
@@ -1004,8 +990,6 @@ eslint = ["preserve-caught-error"]
 
 [[rule]]
 name = "radix"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["radix"]
 biome = ["useParseIntRadix"]
 

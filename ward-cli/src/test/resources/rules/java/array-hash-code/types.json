@@ -1,0 +1,40 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "hashCode",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "4:12-4:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "hashCode",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "3:12-3:17": {
+    "type": {
+      "name": "int",
+      "primitive": true,
+      "array": 1
+    }
+  },
+  "4:12-4:17": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

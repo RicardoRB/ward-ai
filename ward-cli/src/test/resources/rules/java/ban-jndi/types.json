@@ -1,0 +1,34 @@
+{
+  "3:12-3:33": {
+    "call": {
+      "declaring": {
+        "name": "javax.naming.Context"
+      },
+      "name": "lookup",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "4:12-4:28": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

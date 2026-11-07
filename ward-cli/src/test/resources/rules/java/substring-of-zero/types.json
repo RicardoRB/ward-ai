@@ -1,0 +1,36 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "substring",
+      "params": [
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "4:12-4:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "substring",
+      "params": [
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

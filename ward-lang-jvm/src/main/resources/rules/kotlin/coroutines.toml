@@ -56,3 +56,17 @@ kinds = ["functionDeclaration"]
 text = 'suspendfun(?:<[^>]*>)?(?:[\w.]+\.)?CoroutineScope\.'
 message = "suspend function takes a CoroutineScope receiver; use coroutineScope instead"
 '''
+
+[[rules]]
+id = "ward:kotlin/sleep-instead-of-delay"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coroutines"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'suspendfun[\s\S]*Thread\.sleep\('
+message = "Thread.sleep blocks the thread of a suspend function; use delay"
+'''

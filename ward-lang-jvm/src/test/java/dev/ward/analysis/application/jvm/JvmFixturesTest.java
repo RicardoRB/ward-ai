@@ -41,7 +41,8 @@ class JvmFixturesTest {
 
   private static final Path FIXTURES =
       Path.of("..", "ward-cli", "src", "test", "resources", "rules");
-  private static final String EXTENSION = "java";
+  private static final String JAVA_EXTENSION = "java";
+  private static final String KOTLIN_EXTENSION = "kt";
   private static final String CHECK = "check";
   private static final String VIOLATING = "violating";
 
@@ -98,17 +99,22 @@ class JvmFixturesTest {
       assertThat(
               run(
                   rule,
-                  owned.directory().resolve(VIOLATING + suffix + "." + EXTENSION),
+                  owned.directory().resolve(VIOLATING + suffix + "." + extension(owned.rule())),
                   owned.directory()))
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
-      final Path passing = owned.directory().resolve("passing" + suffix + "." + EXTENSION);
+      final Path passing =
+          owned.directory().resolve("passing" + suffix + "." + extension(owned.rule()));
       if (Files.isRegularFile(passing)) {
         assertThat(run(rule, passing, owned.directory()))
             .as("%s passing%s", owned, suffix)
             .isEmpty();
       }
     }
+  }
+
+  private static String extension(final RuleDefinition rule) {
+    return rule.languages().contains(AnalysisLanguage.KOTLIN) ? KOTLIN_EXTENSION : JAVA_EXTENSION;
   }
 
   private static Map<String, Object> options(final OwnedRule owned, final String suffix)

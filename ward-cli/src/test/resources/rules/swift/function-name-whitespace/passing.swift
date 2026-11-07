@@ -1,0 +1,2 @@
+func spaced() {}
+func other() {}

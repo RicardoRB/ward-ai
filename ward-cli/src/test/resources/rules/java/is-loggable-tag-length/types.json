@@ -1,0 +1,46 @@
+{
+  "3:12-3:71": {
+    "call": {
+      "declaring": {
+        "name": "android.util.Log"
+      },
+      "name": "isLoggable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      },
+      "static": true
+    }
+  },
+  "4:12-4:50": {
+    "call": {
+      "declaring": {
+        "name": "android.util.Log"
+      },
+      "name": "isLoggable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      },
+      "static": true
+    }
+  }
+}

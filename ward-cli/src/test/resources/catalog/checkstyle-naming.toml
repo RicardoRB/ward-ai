@@ -16,7 +16,7 @@ checkstyle = ["CatchParameterName"]
 
 [[rule]]
 name = "class-type-parameter-name"
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
 checkstyle = ["ClassTypeParameterName"]
 
 [[rule]]
@@ -42,7 +42,7 @@ checkstyle = ["IllegalIdentifierName"]
 
 [[rule]]
 name = "interface-type-parameter-name"
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
 checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
@@ -78,7 +78,7 @@ ruff = ["N802"]
 
 [[rule]]
 name = "method-type-parameter-name"
-not-applicable = { python = "Java generic type parameters; Python generics are not declared with names" }
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
 checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]

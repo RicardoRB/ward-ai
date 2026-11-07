@@ -496,7 +496,6 @@ spotbugs = ["DMI_HARDCODED_ABSOLUTE_FILENAME"]
 
 [[rule]]
 name = "dmi-invoking-hashcode-on-array"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_INVOKING_HASHCODE_ON_ARRAY"]
 
@@ -507,7 +506,6 @@ spotbugs = ["DMI_INVOKING_TOSTRING_ON_ANONYMOUS_ARRAY"]
 
 [[rule]]
 name = "dmi-invoking-tostring-on-array"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_INVOKING_TOSTRING_ON_ARRAY"]
 
@@ -708,7 +706,6 @@ spotbugs = ["EC_ARRAY_AND_NONARRAY"]
 
 [[rule]]
 name = "ec-bad-array-compare"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EC_BAD_ARRAY_COMPARE"]
 
@@ -1511,7 +1508,6 @@ spotbugs = ["MWN_MISMATCHED_WAIT"]
 
 [[rule]]
 name = "nm-bad-equal"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_BAD_EQUAL"]
 
@@ -1553,13 +1549,11 @@ spotbugs = ["NM_FUTURE_KEYWORD_USED_AS_MEMBER_IDENTIFIER"]
 
 [[rule]]
 name = "nm-lcase-hashcode"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_LCASE_HASHCODE"]
 
 [[rule]]
 name = "nm-lcase-tostring"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_LCASE_TOSTRING"]
 
@@ -1967,7 +1961,6 @@ spotbugs = ["PZ_DONT_REUSE_ENTRY_OBJECTS_IN_ITERATORS"]
 
 [[rule]]
 name = "qba-questionable-boolean-assignment"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT"]
 
@@ -2075,13 +2068,11 @@ spotbugs = ["RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION"]
 
 [[rule]]
 name = "re-cant-use-file-separator-as-regular-expression"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RE_CANT_USE_FILE_SEPARATOR_AS_REGULAR_EXPRESSION"]
 
 [[rule]]
 name = "re-possible-unintended-pattern"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RE_POSSIBLE_UNINTENDED_PATTERN"]
 
@@ -2111,25 +2102,21 @@ spotbugs = ["RU_INVOKE_RUN"]
 
 [[rule]]
 name = "rv-01-to-int"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_01_TO_INT"]
 
 [[rule]]
 name = "rv-absolute-value-of-hashcode"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_ABSOLUTE_VALUE_OF_HASHCODE"]
 
 [[rule]]
 name = "rv-absolute-value-of-random-int"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_ABSOLUTE_VALUE_OF_RANDOM_INT"]
 
 [[rule]]
 name = "rv-check-compareto-for-specific-return-value"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE"]
 
@@ -2147,7 +2134,6 @@ spotbugs = ["RV_DONT_JUST_NULL_CHECK_READLINE"]
 
 [[rule]]
 name = "rv-exception-not-thrown"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_EXCEPTION_NOT_THROWN"]
 
@@ -2213,19 +2199,16 @@ spotbugs = ["SA_FIELD_DOUBLE_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-field-self-assignment"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_FIELD_SELF_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-field-self-comparison"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_FIELD_SELF_COMPARISON"]
 
 [[rule]]
 name = "sa-field-self-computation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_FIELD_SELF_COMPUTATION"]
 
@@ -2243,19 +2226,16 @@ spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT"]
 
 [[rule]]
 name = "sa-local-self-assignment-instead-of-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT_INSTEAD_OF_FIELD"]
 
 [[rule]]
 name = "sa-local-self-comparison"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_LOCAL_SELF_COMPARISON"]
 
 [[rule]]
 name = "sa-local-self-computation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SA_LOCAL_SELF_COMPUTATION"]
 
@@ -2303,7 +2283,6 @@ spotbugs = ["SE_INNER_CLASS"]
 
 [[rule]]
 name = "se-method-must-be-private"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SE_METHOD_MUST_BE_PRIVATE"]
 
@@ -2357,7 +2336,6 @@ spotbugs = ["SE_PRIVATE_READ_RESOLVE_NOT_INHERITED"]
 
 [[rule]]
 name = "se-read-resolve-is-static"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SE_READ_RESOLVE_IS_STATIC"]
 
@@ -2543,13 +2521,11 @@ spotbugs = ["STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE"]
 
 [[rule]]
 name = "sti-interrupted-on-currentthread"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["STI_INTERRUPTED_ON_CURRENTTHREAD"]
 
 [[rule]]
 name = "sti-interrupted-on-unknownthread"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["STI_INTERRUPTED_ON_UNKNOWNTHREAD"]
 

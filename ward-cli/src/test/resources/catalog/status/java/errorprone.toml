@@ -14,11 +14,11 @@ annotation-mirror-to-string = { status = "planned", issue = "#319" }
 annotation-position = { status = "planned", issue = "#319" }
 annotation-value-to-string = { status = "planned", issue = "#319" }
 argument-selection-defect-checker = { status = "planned", issue = "#319" }
-array-equals = { status = "planned", issue = "#319" }
+array-equals = "implemented"
 array-fill-incompatible-type = { status = "planned", issue = "#319" }
-array-hash-code = { status = "planned", issue = "#319" }
+array-hash-code = "implemented"
 array-record-component = { status = "planned", issue = "#319" }
-array-to-string = { status = "planned", issue = "#319" }
+array-to-string = "implemented"
 arrays-as-list-primitive-array = { status = "planned", issue = "#319" }
 assert-equals-argument-order-checker = { status = "planned", issue = "#319" }
 assert-false = { status = "planned", issue = "#319" }
@@ -50,8 +50,8 @@ bad-import = { status = "planned", issue = "#319" }
 bad-instanceof = { status = "planned", issue = "#319" }
 bad-shift-amount = { status = "planned", issue = "#319" }
 ban-class-loader = { status = "planned", issue = "#319" }
-ban-jndi = { status = "planned", issue = "#319" }
-ban-serializable-read = { status = "planned", issue = "#319" }
+ban-jndi = "implemented"
+ban-serializable-read = "implemented"
 bare-dot-metacharacter = { status = "planned", issue = "#319" }
 big-decimal-equals = { status = "planned", issue = "#319" }
 big-decimal-literal-double = { status = "planned", issue = "#319" }
@@ -60,7 +60,7 @@ binding-to-unqualified-common-type = { status = "planned", issue = "#319" }
 boolean-literal = { status = "planned", issue = "#319" }
 boolean-parameter = { status = "planned", issue = "#319" }
 boxed-primitive-constructor = { status = "planned", issue = "#319" }
-boxed-primitive-equality = { status = "planned", issue = "#319" }
+boxed-primitive-equality = "implemented"
 boxing-comparator = { status = "planned", issue = "#319" }
 bug-pattern-naming = { status = "planned", issue = "#319" }
 builder-return-this = { status = "planned", issue = "#319" }
@@ -109,7 +109,7 @@ dangerous-literal-null = { status = "planned", issue = "#319" }
 date-checker = { status = "planned", issue = "#319" }
 date-format-constant = { status = "planned", issue = "#319" }
 dead-exception = "implemented"
-dead-thread = { status = "planned", issue = "#319" }
+dead-thread = "implemented"
 deduplicate-constants = { status = "planned", issue = "#319" }
 deeply-nested = { status = "planned", issue = "#319" }
 default-charset = { status = "planned", issue = "#319" }
@@ -133,8 +133,8 @@ duplicate-branches = { status = "planned", issue = "#319" }
 duplicate-date-format-field = { status = "planned", issue = "#319" }
 duplicate-map-keys = { status = "planned", issue = "#319" }
 duration-from = { status = "planned", issue = "#319" }
-duration-get-temporal-unit = { status = "planned", issue = "#319" }
-duration-temporal-unit = { status = "planned", issue = "#319" }
+duration-get-temporal-unit = "implemented"
+duration-temporal-unit = "implemented"
 duration-to-long-time-unit = { status = "planned", issue = "#319" }
 effectively-private = { status = "planned", issue = "#319" }
 empty-block-tag = { status = "planned", issue = "#319" }
@@ -207,7 +207,7 @@ guice-inject-on-final-field = { status = "planned", issue = "#319" }
 guice-nested-combine = { status = "planned", issue = "#319" }
 hard-coded-sd-card-path = { status = "planned", issue = "#319" }
 hash-code-in-objects-hash = { status = "planned", issue = "#319" }
-hashtable-contains = { status = "planned", issue = "#319" }
+hashtable-contains = "implemented"
 hiding-field = { status = "planned", issue = "#319" }
 icc-profile-get-instance = { status = "planned", issue = "#319" }
 identifier-name = { status = "planned", issue = "#319" }
@@ -252,7 +252,7 @@ inline-trivial-constant = { status = "planned", issue = "#319" }
 input-stream-slow-multibyte-read = { status = "planned", issue = "#319" }
 insecure-crypto-usage = { status = "planned", issue = "#319" }
 instance-of-and-cast-match-wrong-type = { status = "planned", issue = "#319" }
-instant-temporal-unit = { status = "planned", issue = "#319" }
+instant-temporal-unit = "implemented"
 int-float-conversion = { status = "planned", issue = "#319" }
 int-literal-cast = { status = "planned", issue = "#319" }
 int-long-math = { status = "planned", issue = "#319" }
@@ -273,7 +273,7 @@ invalid-time-zone-id = { status = "planned", issue = "#319" }
 invalid-zone-id = { status = "planned", issue = "#319" }
 is-instance-incompatible-type = { status = "planned", issue = "#319" }
 is-instance-of-class = { status = "planned", issue = "#319" }
-is-loggable-tag-length = { status = "planned", issue = "#319" }
+is-loggable-tag-length = "implemented"
 iterable-and-iterator = { status = "planned", issue = "#319" }
 iterable-path-parameter = { status = "planned", issue = "#319" }
 j-unit-ambiguous-test-class = { status = "planned", issue = "#319" }
@@ -322,7 +322,7 @@ lite-enum-value-of = { status = "planned", issue = "#319" }
 lite-proto-to-string = { status = "planned", issue = "#319" }
 local-date-temporal-amount = { status = "planned", issue = "#319" }
 lock-not-before-try = { status = "planned", issue = "#319" }
-lock-on-boxed-primitive = { status = "planned", issue = "#319" }
+lock-on-boxed-primitive = "implemented"
 lock-on-non-enclosing-class-literal = { status = "planned", issue = "#319" }
 logical-assignment = { status = "planned", issue = "#319" }
 long-double-conversion = { status = "planned", issue = "#319" }
@@ -336,7 +336,7 @@ malformed-inline-tag = { status = "planned", issue = "#319" }
 math-absolute-negative = { status = "planned", issue = "#319" }
 math-round-int-long = { status = "planned", issue = "#319" }
 memoize-constant-visitor-state-lookups = { status = "planned", issue = "#319" }
-memory-segment-reference-equality = { status = "planned", issue = "#319" }
+memory-segment-reference-equality = "implemented"
 method-can-be-static = { status = "planned", issue = "#319" }
 misformatted-test-data = { status = "planned", issue = "#319" }
 mislabeled-android-string = { status = "planned", issue = "#319" }
@@ -413,7 +413,7 @@ object-equals-for-primitives = { status = "planned", issue = "#319" }
 object-to-string = { status = "planned", issue = "#319" }
 objects-hash-code-primitive = { status = "planned", issue = "#319" }
 operator-precedence = { status = "planned", issue = "#319" }
-optional-equality = { status = "planned", issue = "#319" }
+optional-equality = "implemented"
 optional-map-to-optional = { status = "planned", issue = "#319" }
 optional-map-unused-value = { status = "planned", issue = "#319" }
 optional-not-present = { status = "planned", issue = "#319" }
@@ -434,7 +434,7 @@ parameters-but-not-parameterized = { status = "planned", issue = "#319" }
 parcelable-creator = { status = "planned", issue = "#319" }
 pattern-matching-instanceof = { status = "planned", issue = "#319" }
 period-from = { status = "planned", issue = "#319" }
-period-get-temporal-unit = { status = "planned", issue = "#319" }
+period-get-temporal-unit = "implemented"
 period-time-math = { status = "planned", issue = "#319" }
 preconditions-check-not-null-repeated = { status = "planned", issue = "#319" }
 preconditions-invalid-placeholder = { status = "planned", issue = "#319" }
@@ -466,7 +466,7 @@ reachability-fence-usage = { status = "planned", issue = "#319" }
 record-accessor-in-compact-constructor = { status = "planned", issue = "#319" }
 record-component-accessor-annotation-conflict = { status = "planned", issue = "#319" }
 record-component-override = { status = "planned", issue = "#319" }
-rect-intersect-return-value-ignored = { status = "planned", issue = "#319" }
+rect-intersect-return-value-ignored = "implemented"
 redundant-control-flow = { status = "planned", issue = "#319" }
 redundant-null-check = { status = "planned", issue = "#319" }
 redundant-override = { status = "planned", issue = "#319" }
@@ -483,7 +483,7 @@ rethrow-reflective-operation-exception-as-linkage-error = { status = "planned", 
 return-at-the-end-of-void-function = { status = "planned", issue = "#319" }
 return-from-void = { status = "planned", issue = "#319" }
 return-missing-nullable = { status = "planned", issue = "#319" }
-return-value-ignored = { status = "planned", issue = "#319" }
+return-value-ignored = "implemented"
 returns-null-collection = { status = "planned", issue = "#319" }
 robolectric-shadow-directly-on = { status = "planned", issue = "#319" }
 rule-not-run = { status = "planned", issue = "#319" }
@@ -512,7 +512,7 @@ static-or-default-interface-method = { status = "planned", issue = "#319" }
 static-qualified-using-expression = { status = "planned", issue = "#319" }
 stream-resource-leak = { status = "planned", issue = "#319" }
 stream-to-iterable = { status = "planned", issue = "#319" }
-stream-to-string = { status = "planned", issue = "#319" }
+stream-to-string = "implemented"
 string-builder-init-with-char = "implemented"
 string-case-locale-usage = { status = "planned", issue = "#319" }
 string-charset = { status = "planned", issue = "#319" }
@@ -522,7 +522,7 @@ string-join = { status = "planned", issue = "#319" }
 string-splitter = { status = "planned", issue = "#319" }
 strongly-type-byte-string = { status = "planned", issue = "#319" }
 strongly-type-time = { status = "planned", issue = "#319" }
-substring-of-zero = { status = "planned", issue = "#319" }
+substring-of-zero = "implemented"
 sun-api = { status = "planned", issue = "#319" }
 super-call-to-object-method = { status = "planned", issue = "#319" }
 suppress-warnings-deprecated = { status = "planned", issue = "#319" }

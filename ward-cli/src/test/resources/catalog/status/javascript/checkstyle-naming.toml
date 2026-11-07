@@ -2,23 +2,23 @@
 
 abbreviation-as-word-in-name = { status = "planned", issue = "#296" }
 abstract-class-name = { status = "planned", issue = "#296" }
-catch-parameter-name = { status = "planned", issue = "#296" }
-class-type-parameter-name = { status = "planned", issue = "#296" }
+catch-parameter-name = "implemented"
+class-type-parameter-name = "not-applicable"
 constant-name = { status = "planned", issue = "#296" }
 google-method-name = { status = "planned", issue = "#296" }
 google-non-constant-field-name = { status = "planned", issue = "#296" }
 illegal-identifier-name = { status = "planned", issue = "#296" }
-interface-type-parameter-name = { status = "planned", issue = "#296" }
+interface-type-parameter-name = "not-applicable"
 lambda-parameter-name = { status = "planned", issue = "#296" }
 local-final-variable-name = { status = "planned", issue = "#296" }
-local-variable-name = { status = "planned", issue = "#296" }
-member-name = { status = "planned", issue = "#296" }
-method-name = { status = "planned", issue = "#296" }
-method-type-parameter-name = { status = "planned", issue = "#296" }
+local-variable-name = "implemented"
+member-name = "implemented"
+method-name = "implemented"
+method-type-parameter-name = "not-applicable"
 package-name = { status = "planned", issue = "#296" }
-parameter-name = { status = "planned", issue = "#296" }
+parameter-name = "implemented"
 pattern-variable-name = "not-applicable"
 record-component-name = "not-applicable"
 record-type-parameter-name = "not-applicable"
 static-variable-name = { status = "planned", issue = "#296" }
-type-name = { status = "planned", issue = "#296" }
+type-name = "implemented"

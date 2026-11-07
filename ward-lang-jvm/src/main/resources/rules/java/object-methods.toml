@@ -1,0 +1,50 @@
+# Rules for the clone and finalize methods of Java classes. Each rule mirrors one Checkstyle 14.3.0
+# check.
+
+[[rules]]
+id = "ward:java/no-finalizer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "no-finalizer"
+message = "a finalize() method should not be declared"
+'''
+
+[[rules]]
+id = "ward:java/super-finalize"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "super-finalize"
+message = "finalize() should call super.finalize()"
+'''
+
+[[rules]]
+id = "ward:java/no-clone"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "no-clone"
+message = "a clone() method should not be declared"
+'''
+
+[[rules]]
+id = "ward:java/super-clone"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "super-clone"
+message = "clone() should call super.clone()"
+'''

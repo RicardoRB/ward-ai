@@ -59,3 +59,31 @@ category = "sizes"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = ""
+
+[[rules]]
+id = "ward:typescript/line-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^.{101,}$"
+message = "line is longer than 100 characters"
+'''
+
+[[rules]]
+id = "ward:javascript/line-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^.{101,}$"
+message = "line is longer than 100 characters"
+'''

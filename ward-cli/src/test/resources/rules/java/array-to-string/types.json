@@ -1,0 +1,38 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "4:12-4:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:12-3:17": {
+    "type": {
+      "name": "int",
+      "primitive": true,
+      "array": 1
+    }
+  },
+  "4:12-4:17": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

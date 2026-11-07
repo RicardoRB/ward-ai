@@ -52,7 +52,7 @@ banned-import-alias = { status = "planned", issue = "#297" }
 banned-import-from = { status = "planned", issue = "#297" }
 banned-module-level-imports = { status = "planned", issue = "#297" }
 bare-except = "implemented"
-batched-without-explicit-strict = { status = "planned", issue = "#332" }
+batched-without-explicit-strict = "implemented"
 bidirectional-unicode = "implemented"
 binary-op-exception = { status = "planned", issue = "#334" }
 bit-count = "implemented"
@@ -208,7 +208,7 @@ for-loop-set-mutations = { status = "planned", issue = "#334" }
 for-loop-writes = { status = "planned", issue = "#334" }
 format-in-get-text-func-call = { status = "planned", issue = "#334" }
 format-literals = { status = "planned", issue = "#334" }
-forward-annotation-syntax-error = { status = "planned", issue = "#332" }
+forward-annotation-syntax-error = "implemented"
 fromisoformat-replace-z = "implemented"
 function-call-in-dataclass-default-argument = { status = "planned", issue = "#334" }
 function-call-in-default-argument = "implemented"
@@ -297,7 +297,6 @@ invalid-str-return-type = { status = "planned", issue = "#332" }
 invalid-suppression-comment = { status = "planned", issue = "#334" }
 invalid-todo-capitalization = { status = "planned", issue = "#297" }
 invalid-todo-tag = { status = "planned", issue = "#297" }
-io-error = { status = "planned", issue = "#332" }
 is-literal = "implemented"
 isinstance-type-none = "implemented"
 iter-method-return-iterable = { status = "planned", issue = "#334" }
@@ -342,7 +341,7 @@ manual-from-import = { status = "planned", issue = "#334" }
 manual-list-comprehension = { status = "planned", issue = "#334" }
 manual-list-copy = { status = "planned", issue = "#334" }
 map-int-version-parsing = { status = "planned", issue = "#334" }
-map-without-explicit-strict = { status = "planned", issue = "#332" }
+map-without-explicit-strict = "implemented"
 math-constant = { status = "planned", issue = "#334" }
 meta-class-abc-meta = "implemented"
 method-receiver-default = { status = "planned", issue = "#334" }
@@ -598,7 +597,7 @@ return-in-generator = { status = "planned", issue = "#332" }
 return-in-init = { status = "planned", issue = "#332" }
 return-in-try-except-finally = { status = "planned", issue = "#334" }
 return-outside-function = "implemented"
-reuse-of-groupby-generator = { status = "planned", issue = "#332" }
+reuse-of-groupby-generator = "implemented"
 root-logger-call = { status = "planned", issue = "#334" }
 rule-codes-in-selectors = { status = "planned", issue = "#334" }
 rule-codes-in-suppression-comments = { status = "planned", issue = "#334" }
@@ -749,7 +748,7 @@ unconventional-import-alias = { status = "planned", issue = "#297" }
 undefined-export = "implemented"
 undefined-local = "implemented"
 undefined-local-with-import-star-usage = "implemented"
-undefined-local-with-nested-import-star-usage = { status = "planned", issue = "#332" }
+undefined-local-with-nested-import-star-usage = "implemented"
 undefined-name = "implemented"
 under-indentation = { status = "planned", issue = "#297" }
 undocumented-magic-method = { status = "planned", issue = "#297" }
@@ -761,7 +760,7 @@ undocumented-public-package = { status = "planned", issue = "#297" }
 undocumented-warn = { status = "planned", issue = "#334" }
 unexpected-special-method-signature = { status = "planned", issue = "#332" }
 unicode-kind-prefix = { status = "planned", issue = "#334" }
-unintentional-type-annotation = { status = "planned", issue = "#332" }
+unintentional-type-annotation = "implemented"
 unix-command-wildcard-injection = { status = "planned", issue = "#334" }
 unmatched-suppression-comment = { status = "planned", issue = "#334" }
 unnecessary-assign = { status = "planned", issue = "#334" }
@@ -828,7 +827,7 @@ unsorted-dunder-all = { status = "planned", issue = "#334" }
 unsorted-dunder-slots = { status = "planned", issue = "#334" }
 unspecified-encoding = { status = "planned", issue = "#334" }
 unsupported-method-call-on-all = { status = "planned", issue = "#334" }
-unused-annotation = { status = "planned", issue = "#332" }
+unused-annotation = "implemented"
 unused-async = { status = "planned", issue = "#334" }
 unused-class-method-argument = { status = "planned", issue = "#334" }
 unused-function-argument = { status = "planned", issue = "#334" }

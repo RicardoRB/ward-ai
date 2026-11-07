@@ -12,7 +12,7 @@ constructor-super = { status = "planned", issue = "#326" }
 default-param-last = { status = "planned", issue = "#296" }
 dot-notation = { status = "planned", issue = "#296" }
 eqeqeq = { status = "planned", issue = "#296" }
-for-direction = { status = "planned", issue = "#326" }
+for-direction = "implemented"
 func-name-matching = { status = "planned", issue = "#296" }
 func-names = { status = "planned", issue = "#296" }
 func-style = { status = "planned", issue = "#296" }
@@ -34,7 +34,7 @@ no-async-promise-executor = "implemented"
 no-await-in-loop = { status = "planned", issue = "#326" }
 no-bitwise = { status = "planned", issue = "#296" }
 no-caller = "implemented"
-no-case-declarations = { status = "planned", issue = "#326" }
+no-case-declarations = "implemented"
 no-class-assign = "implemented"
 no-compare-neg-zero = "implemented"
 no-console = { status = "planned", issue = "#326" }
@@ -47,7 +47,7 @@ no-control-regex = "implemented"
 no-debugger = "implemented"
 no-delete-var = "implemented"
 no-div-regex = "implemented"
-no-dupe-args = { status = "planned", issue = "#326" }
+no-dupe-args = "implemented"
 no-dupe-class-members = { status = "planned", issue = "#326" }
 no-dupe-else-if = { status = "planned", issue = "#326" }
 no-dupe-keys = "implemented"
@@ -56,7 +56,7 @@ no-duplicate-imports = { status = "planned", issue = "#326" }
 no-else-return = { status = "planned", issue = "#296" }
 no-empty-character-class = "implemented"
 no-empty-function = { status = "planned", issue = "#296" }
-no-empty-pattern = { status = "planned", issue = "#326" }
+no-empty-pattern = "implemented"
 no-empty-static-block = "implemented"
 no-eq-null = { status = "planned", issue = "#296" }
 no-eval = "implemented"
@@ -69,7 +69,7 @@ no-func-assign = "implemented"
 no-global-assign = { status = "planned", issue = "#326" }
 no-implicit-coercion = { status = "planned", issue = "#296" }
 no-implicit-globals = { status = "planned", issue = "#326" }
-no-implied-eval = { status = "planned", issue = "#326" }
+no-implied-eval = "implemented"
 no-import-assign = "implemented"
 no-inner-declarations = { status = "planned", issue = "#326" }
 no-invalid-regexp = { status = "planned", issue = "#326" }
@@ -109,11 +109,11 @@ no-return-assign = { status = "planned", issue = "#326" }
 no-script-url = "implemented"
 no-self-assign = "implemented"
 no-self-compare = "implemented"
-no-sequences = { status = "planned", issue = "#326" }
+no-sequences = "implemented"
 no-setter-return = { status = "planned", issue = "#326" }
 no-shadow-restricted-names = "implemented"
 no-sparse-arrays = "implemented"
-no-template-curly-in-string = { status = "planned", issue = "#326" }
+no-template-curly-in-string = "implemented"
 no-this-before-super = { status = "planned", issue = "#326" }
 no-throw-literal = "implemented"
 no-unassigned-vars = { status = "planned", issue = "#326" }
@@ -161,7 +161,7 @@ prefer-rest-params = { status = "planned", issue = "#326" }
 prefer-spread = "implemented"
 prefer-template = { status = "planned", issue = "#296" }
 preserve-caught-error = { status = "planned", issue = "#326" }
-radix = { status = "planned", issue = "#326" }
+radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }
 require-await = { status = "planned", issue = "#326" }
 require-unicode-regexp = { status = "planned", issue = "#296" }
