@@ -334,7 +334,7 @@ loop-to-test-parameter = { status = "planned", issue = "#319" }
 lossy-primitive-compare = { status = "planned", issue = "#319" }
 malformed-inline-tag = { status = "planned", issue = "#319" }
 math-absolute-negative = { status = "planned", issue = "#319" }
-math-round-int-long = { status = "planned", issue = "#319" }
+math-round-int-long = "implemented"
 memoize-constant-visitor-state-lookups = { status = "planned", issue = "#319" }
 memory-segment-reference-equality = "implemented"
 method-can-be-static = { status = "planned", issue = "#319" }
@@ -433,9 +433,9 @@ parameter-missing-nullable = { status = "planned", issue = "#319" }
 parameters-but-not-parameterized = { status = "planned", issue = "#319" }
 parcelable-creator = { status = "planned", issue = "#319" }
 pattern-matching-instanceof = { status = "planned", issue = "#319" }
-period-from = { status = "planned", issue = "#319" }
+period-from = "implemented"
 period-get-temporal-unit = "implemented"
-period-time-math = { status = "planned", issue = "#319" }
+period-time-math = "implemented"
 preconditions-check-not-null-repeated = { status = "planned", issue = "#319" }
 preconditions-invalid-placeholder = { status = "planned", issue = "#319" }
 prefer-charset-overload = { status = "planned", issue = "#319" }
@@ -474,7 +474,7 @@ redundant-setter-call = { status = "planned", issue = "#319" }
 redundant-throws = { status = "planned", issue = "#319" }
 refactor-switch = { status = "planned", issue = "#319" }
 reference-equality = { status = "planned", issue = "#319" }
-refers-to-dagger-codegen = { status = "planned", issue = "#319" }
+refers-to-dagger-codegen = "implemented"
 remove-unused-imports = { status = "planned", issue = "#319" }
 require-non-null-refactoring = { status = "planned", issue = "#319" }
 required-modifiers = { status = "planned", issue = "#319" }
@@ -558,7 +558,7 @@ too-many-parameters = { status = "planned", issue = "#319" }
 traditional-javadoc-to-markdown = { status = "planned", issue = "#319" }
 traditional-switch-expression = { status = "planned", issue = "#319" }
 transient-misuse = { status = "planned", issue = "#319" }
-tree-to-string = { status = "planned", issue = "#319" }
+tree-to-string = "implemented"
 truth-assert-expected = { status = "planned", issue = "#319" }
 truth-constant-asserts = { status = "planned", issue = "#319" }
 truth-contains-exactly-elements-in-usage = { status = "planned", issue = "#319" }

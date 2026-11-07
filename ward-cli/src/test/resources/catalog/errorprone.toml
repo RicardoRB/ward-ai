@@ -1970,8 +1970,6 @@ errorprone = ["MathAbsoluteNegative"]
 
 [[rule]]
 name = "math-round-int-long"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MathRoundIntLong"]
 
 [[rule]]
@@ -2561,8 +2559,6 @@ errorprone = ["PatternMatchingInstanceof"]
 
 [[rule]]
 name = "period-from"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PeriodFrom"]
 
 [[rule]]
@@ -2571,8 +2567,6 @@ errorprone = ["PeriodGetTemporalUnit"]
 
 [[rule]]
 name = "period-time-math"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PeriodTimeMath"]
 
 [[rule]]
@@ -2803,8 +2797,6 @@ errorprone = ["ReferenceEquality"]
 
 [[rule]]
 name = "refers-to-dagger-codegen"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RefersToDaggerCodegen"]
 
 [[rule]]
@@ -3292,8 +3284,6 @@ errorprone = ["TransientMisuse"]
 
 [[rule]]
 name = "tree-to-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TreeToString"]
 
 [[rule]]
