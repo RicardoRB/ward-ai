@@ -11,6 +11,7 @@ import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
@@ -129,7 +130,7 @@ final class InitCommandFixture {
                         new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
                         new FileSystemNodeToolConfigs(),
                         new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs())),
-                ProductionArchitectureRules.create(),
+                ArchitectureTablesFixtures.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()));
     final CommandLine command =

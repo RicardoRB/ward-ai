@@ -8,7 +8,7 @@ import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.doctor.OpenSpecIgnoreWarning;
 import dev.ward.domain.init.InitResult;
 import dev.ward.domain.init.InitSelection;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
@@ -63,7 +63,7 @@ class InitOpenSpecIgnoreWarningTest {
             new InitProjectFiles(
                 new PomToolConfigurator(),
                 new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
-                new ArchitectureTestGenerator(),
+                ArchitectureTablesFixtures.create(),
                 new FileConfigurationStorage(),
                 new OwnedSectionWriter()))
         .initialize(
@@ -79,7 +79,6 @@ class InitOpenSpecIgnoreWarningTest {
                 false,
                 null,
                 false,
-                null,
                 null));
   }
 }

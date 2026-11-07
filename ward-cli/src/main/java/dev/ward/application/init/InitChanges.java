@@ -2,8 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.ArchitectureGates;
-import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.InitGateOption;
@@ -35,7 +33,6 @@ final class InitChanges {
   private final List<OwnedSectionChange> sectionChanges = new ArrayList<>();
   private BuildFileChange pomChange;
   private RuleFileChange ruleFileChange;
-  private ArchitectureTestChange architectureTest;
   private QualityHookChange qualityHookChange;
 
   InitChanges(
@@ -72,16 +69,6 @@ final class InitChanges {
     members.apply(project, gates, preset, replaceScripts, approval);
     pomChange = files.buildTools().apply(project, gates, preset, approval);
     ruleFileChange = files.ruleFiles().apply(project, preset, gates);
-    if (gates.stream().anyMatch(gate -> ArchitectureGates.IDS.contains(gate.id()))
-        && ArchitectureToolPlan.generatesTool(project, selection)) {
-      architectureTest =
-          files
-              .architectureTests()
-              .apply(
-                  project,
-                  ArchitectureToolPlan.style(selection),
-                  ArchitectureToolPlan.extras(project, selection));
-    }
     for (final OwnedSection section :
         OwnedSections.withEditorConfig(
             OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
@@ -109,7 +96,6 @@ final class InitChanges {
         gates,
         installed,
         appliedPom.tools(),
-        architectureTest,
         ruleFileChange == null ? List.of() : ruleFileChange.preserved(),
         Stream.of(appliedPom.warnings().stream(), warnings.stream(), members.kept().stream())
             .flatMap(stream -> stream)
@@ -122,7 +108,6 @@ final class InitChanges {
 
   void rollback() {
     sectionChanges.reversed().forEach(files.sections()::rollback);
-    files.architectureTests().rollback(architectureTest);
     files.ruleFiles().rollback(ruleFileChange);
     files.buildTools().rollback(pomChange);
     members.rollback();

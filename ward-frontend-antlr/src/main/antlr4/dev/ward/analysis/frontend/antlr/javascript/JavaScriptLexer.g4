@@ -80,6 +80,7 @@ Modulus                    : '%';
 Power                      : '**';
 NullCoalesce               : '??';
 Hashtag                    : '#';
+At                       : '@';
 RightShiftArithmetic       : '>>';
 LeftShiftArithmetic        : '<<';
 RightShiftLogical          : '>>>';

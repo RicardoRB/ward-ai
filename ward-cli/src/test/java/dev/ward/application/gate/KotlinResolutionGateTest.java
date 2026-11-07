@@ -67,7 +67,7 @@ class KotlinResolutionGateTest {
         AnalysisCacheFixtures.codec(),
         "test",
         new JvmDependencyAdapters(),
-        unused -> Map.of());
+        (unused, classpath) -> Map.of());
   }
 
   /** Maps each depended-on file to the files that depend on it, as the gate stored them. */

@@ -34,13 +34,7 @@ class SwiftGatesTest {
       new Project(ROOT, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
   private static final int MINIMUM = 80;
   private static final List<String> TYPES =
-      List.of(
-          "swiftlint",
-          "swift-build",
-          "swift-test",
-          "xcodebuild-test",
-          "swift-coverage",
-          "harmonize");
+      List.of("swiftlint", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
   private static QualityGateFactory factory(final FakeCommandExecutor executor) {
     return new QualityGateFactory(
@@ -104,21 +98,5 @@ class SwiftGatesTest {
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(executor.commands).containsExactly(command);
     assertThat(executor.workingDirectories).containsExactly(ROOT);
-  }
-
-  @Test
-  void harmonizeRunsTheRulesPackageAndFailsWhenItsTestsFail() {
-    final FakeCommandExecutor executor = new FakeCommandExecutor(1, "", "");
-    final List<String> command =
-        List.of("swift", "test", "--package-path", ".ward/swift-architecture");
-
-    final GateResult result =
-        factory(executor)
-            .create(new WardConfiguration(1, Map.of("rules", check("harmonize", command))))
-            .getFirst()
-            .execute(PROJECT);
-
-    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
-    assertThat(executor.commands).containsExactly(command);
   }
 }

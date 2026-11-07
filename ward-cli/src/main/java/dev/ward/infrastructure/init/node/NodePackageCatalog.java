@@ -35,10 +35,6 @@ public final class NodePackageCatalog {
   private static final String STRYKER_CORE = "@stryker-mutator/core";
   private static final String STRYKER_VERSION = "10.1.1";
   private static final String STRYKER_NODE = ">=22.0.0";
-  private static final String DEPENDENCY_CRUISER = "dependency-cruiser";
-  private static final String DEPENDENCY_CRUISER_VERSION = "18.6.0";
-  private static final String DEPENDENCY_CRUISER_NODE = "^22.0.0 || ^24.0.0 || >=26.0.0";
-  private static final String DEPENDENCY_CRUISER_TYPESCRIPT = ">=2.0.0 <7.0.0";
   private static final String BIOME = "biome";
   static final String BIOME_PACKAGE = "@biomejs/biome";
   static final String BIOME_VERSION = "2.5.15";
@@ -97,13 +93,7 @@ public final class NodePackageCatalog {
           // Vitest 5, so every strict run scored 0. 10.1.1 supports Vitest 4 and 5.
           entry(new Package(STRYKER_CORE, STRYKER_VERSION, STRYKER_NODE, null)),
           entry(new Package(STRYKER_RUNNERS.get("vitest"), STRYKER_VERSION, STRYKER_NODE, null)),
-          entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null)),
-          entry(
-              new Package(
-                  DEPENDENCY_CRUISER,
-                  DEPENDENCY_CRUISER_VERSION,
-                  DEPENDENCY_CRUISER_NODE,
-                  DEPENDENCY_CRUISER_TYPESCRIPT)));
+          entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null)));
 
   // typescript-eslint needs the compiler as a peer, so ESLint adds it when it is missing.
   private static final Map<String, List<String>> GATES =
@@ -115,7 +105,6 @@ public final class NodePackageCatalog {
           Map.entry("jest", List.of()),
           Map.entry("bun-test", List.of()),
           Map.entry(STRYKER, List.of(STRYKER_CORE)),
-          Map.entry(DEPENDENCY_CRUISER, List.of(DEPENDENCY_CRUISER, TYPESCRIPT)),
           Map.entry(BIOME, List.of(BIOME_PACKAGE)),
           Map.entry("vue-tsc", List.of("vue-tsc", TYPESCRIPT)),
           Map.entry("svelte-check", List.of("svelte-check", TYPESCRIPT)),
@@ -123,14 +112,7 @@ public final class NodePackageCatalog {
 
   /** Rows that replace a {@link #GATES} row for one language; other gates are shared. */
   private static final Map<Language, Map<String, List<String>>> LANGUAGE_GATES =
-      Map.of(
-          Language.JAVASCRIPT,
-          Map.of(
-              ESLINT,
-              List.of(ESLINT, ESLINT_JS, GLOBALS),
-              DEPENDENCY_CRUISER,
-              // The parser reads .js without the compiler.
-              List.of(DEPENDENCY_CRUISER)));
+      Map.of(Language.JAVASCRIPT, Map.of(ESLINT, List.of(ESLINT, ESLINT_JS, GLOBALS)));
 
   /**
    * One pinned package.

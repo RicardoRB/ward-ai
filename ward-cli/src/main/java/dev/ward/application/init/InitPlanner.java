@@ -2,7 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.init.ArchitectureGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
@@ -14,7 +13,6 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -63,13 +61,8 @@ final class InitPlanner {
     final boolean installs = selection.installTools().contains(OpenSpecInstallation.TOOL);
     final String executable =
         installs ? OpenSpecDistribution.executable(Path.of("")).toString() : "openspec";
-    final List<String> existingArchUnitTests =
-        files.architectureTests().existingArchUnitTests(project);
     final List<InitGateOption> gates =
-        InitToolchains.reuseTests(
-            project,
-            SelectedGates.resolve(catalog.get(), project, selection, executable),
-            existingArchUnitTests);
+        SelectedGates.resolve(catalog.get(), project, selection, executable);
     final List<PlannedGateInstallation> gateInstallations = gateInstallations(project, gates);
     final List<PlannedFileChange> changes = new ArrayList<>();
     changes.add(
@@ -78,7 +71,7 @@ final class InitPlanner {
             project.root().resolve("ward.toml"),
             gates,
             selection.preset(),
-            EngineArchitecture.of(selection, project, files.architectureTests())));
+            WardArchitecture.of(selection, project, files.architectureTables())));
     changes.addAll(installer.plan(project, selection.integrations()));
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
@@ -94,7 +87,6 @@ final class InitPlanner {
     final List<PlannedFileChange> ruleFiles =
         files.ruleFiles().plan(project, selection.preset(), gates);
     changes.addAll(ruleFiles);
-    changes.addAll(architectureFiles(project, selection, existingArchUnitTests));
     changes.addAll(ownedSectionChanges(project, selection, gates, ruleFiles));
     return new InitPlan(
         changes,
@@ -127,28 +119,6 @@ final class InitPlanner {
         .map(gate -> catalog.get().gateInstallation(project, gate))
         .flatMap(Optional::stream)
         .toList();
-  }
-
-  private List<PlannedFileChange> architectureFiles(
-      final Project project, final InitSelection selection, final List<String> existing) {
-    if (Collections.disjoint(selection.gates(), ArchitectureGates.IDS)
-        || !ArchitectureToolPlan.generatesTool(project, selection)) {
-      return List.of();
-    }
-    if (!existing.isEmpty()) {
-      return List.of(
-          new PlannedFileChange(
-              project.root().resolve("src/test/java"),
-              PlannedFileChange.Action.UNCHANGED,
-              List.of("Reusing existing ArchUnit tests: " + String.join(", ", existing))));
-    }
-    return List.of(
-        files
-            .architectureTests()
-            .plan(
-                project,
-                ArchitectureToolPlan.style(selection),
-                ArchitectureToolPlan.extras(project, selection)));
   }
 
   /**
@@ -203,7 +173,7 @@ final class InitPlanner {
       final Path file,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final EngineArchitecture architecture) {
+      final WardArchitecture architecture) {
     final Optional<String> existing = files.configuration().read(file);
     final List<String> notes = OmissionNotes.of(catalog.get(), project, preset);
     if (existing.isEmpty()) {

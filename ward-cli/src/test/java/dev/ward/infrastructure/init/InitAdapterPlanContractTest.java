@@ -27,8 +27,6 @@ class InitAdapterPlanContractTest {
       Stream.of("pmd", "checkstyle", "spotbugs", "enforcer", "archunit", "coverage")
           .map(id -> new InitGateOption(id, id, List.of("mvn", id), true, "available"))
           .toList();
-  private static final QualityPreset.ArchitectureExtras EXTRAS =
-      QualityPreset.STRICT.rules().architectureExtras();
 
   @TempDir Path root;
 
@@ -64,20 +62,6 @@ class InitAdapterPlanContractTest {
         root,
         () -> rules.plan(maven(), QualityPreset.STRICT, GATES),
         () -> rules.apply(maven(), QualityPreset.STRICT, GATES));
-  }
-
-  @Test
-  void architectureTestMatchesPlan() {
-    final ArchitectureTestGenerator architecture = new ArchitectureTestGenerator();
-
-    assertPlanMatches(
-        root,
-        () -> List.of(architecture.plan(maven(), "hexagonal", EXTRAS)),
-        () -> architecture.apply(maven(), "hexagonal", EXTRAS));
-    assertPlanMatches(
-        root,
-        () -> List.of(architecture.plan(maven(), "clean", EXTRAS)),
-        () -> architecture.apply(maven(), "clean", EXTRAS));
   }
 
   @Test

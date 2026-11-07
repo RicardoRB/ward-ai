@@ -3,6 +3,7 @@ package dev.ward.analysis.frontend.antlr.format.ecma;
 import dev.ward.analysis.domain.format.FormatRule;
 import dev.ward.analysis.domain.format.FormatSyntaxTree;
 import dev.ward.analysis.domain.format.FormatToken;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 
@@ -21,6 +22,8 @@ record EcmaParse(
     List<FormatRule> rules,
     OptionalInt errorLine) {
 
+  private static final String COMMA = ",";
+
   /** Copies the lists. */
   EcmaParse {
     tokens = List.copyOf(tokens);
@@ -34,6 +37,31 @@ record EcmaParse(
    * @return the syntax tree view
    */
   FormatSyntaxTree toSyntaxTree() {
-    return new FormatSyntaxTree(errorLine, syntaxTokens, rules);
+    return new FormatSyntaxTree(errorLine, withoutListEndingCommas(syntaxTokens), rules);
+  }
+
+  /**
+   * Drops a comma that ends a list before its closing bracket. In ECMAScript such a comma does not
+   * change the meaning, so the safety checks compare the lists without it. A comma after another
+   * comma or an opener is a hole in an array, and stays.
+   */
+  private static List<FormatToken> withoutListEndingCommas(final List<FormatToken> tokens) {
+    final List<FormatToken> kept = new ArrayList<>();
+    for (int i = 0; i < tokens.size(); i++) {
+      if (!isListEndingComma(tokens, i)) {
+        kept.add(tokens.get(i));
+      }
+    }
+    return kept;
+  }
+
+  private static boolean isListEndingComma(final List<FormatToken> tokens, final int index) {
+    if (!COMMA.equals(tokens.get(index).text()) || index == 0 || index + 1 >= tokens.size()) {
+      return false;
+    }
+    final String before = tokens.get(index - 1).text();
+    return EcmaText.isCloser(tokens.get(index + 1).text())
+        && !COMMA.equals(before)
+        && !EcmaText.isOpener(before);
   }
 }

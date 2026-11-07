@@ -27,8 +27,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
-| Architecture | `archunit` | ArchUnit | Run architecture rules/tests. |
-| | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids. |
+| Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
 | Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
@@ -40,11 +39,9 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `biome` | Biome | Lint sources in one run with Biome's formatter off; replaces `eslint` where the project uses Biome. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
-| | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
 | | `ruff` | Ruff | Lint Python sources. |
 | | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
-| | `import-linter` | Import Linter | Check import contracts. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
 | | `swiftlint` | SwiftLint | Lint Swift sources. |
@@ -52,7 +49,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
-| | `harmonize` | Harmonize | Check architecture rules in the generated `.ward/swift-architecture` package. |
 | Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
@@ -78,7 +74,7 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | Preset | Gates | Minimums |
 |---|---|---|
 | `standard` | compile, tests, Checkstyle, PMD, SpotBugs, coverage, and `ward-format` | 70% line coverage |
-| `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `strict` | `standard` plus the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
@@ -131,7 +127,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## TypeScript and JavaScript gates
 
-`tsc`, `eslint`, `biome`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
+`tsc`, `eslint`, `biome`, `vitest`, `jest`, `bun-test`, and `stryker`
 run their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
@@ -153,8 +149,7 @@ run their `command` from the project root, exactly as written, and pass when it 
   with the project's own ESLint config. The `biome` command is
   `<runner> biome ci --colors=off --reporter=checkstyle .`; under `strict` it adds
   `--error-on-warnings`. See [Node projects](/commands/init/#biome).
-- Init also offers `stryker`, in the `ci` profile, and `strict` selects it. It offers
-  `dependency-cruiser` too, which `strict` selects; see [Node projects](/commands/init/#node-projects).
+- Init also offers `stryker`, in the `ci` profile, and `strict` selects it.
 
 ```toml
 [checks.eslint]
@@ -191,14 +186,14 @@ command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-o
 
 ## Python gates
 
-`ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
+`ruff`, `mypy`, `pytest`, `coverage`, `pip-audit`, and `mutmut` run
 their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `uv run` or `poetry run`, so the project's own environment runs the tool.
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
-  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `coverage report` is `coverage`, `mutmut run` is `mutmut`, `lint-imports` is `import-linter`, and
-  `pytest` is `pytest`, including `coverage run -m pytest`.
+  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `coverage report` is `coverage`, `mutmut run` is `mutmut`, and `pytest`
+  is `pytest`, including `coverage run -m pytest`.
 - `ruff` and `mypy` findings are read from their output; see
   [structured findings](#structured-findings).
 
@@ -324,14 +319,6 @@ profiles = ["pre-push", "ci"]
   and `android-unit-test` gates need no block, since they run AGP's own tasks.
 - The report path, `build/reports/coverage/test/debug/report.xml`, is assumed and not yet checked
   against a live AGP build.
-
-### Harmonize architecture rules
-
-`harmonize` runs `swift test --package-path .ward/swift-architecture` from the project root and passes
-when it exits with code 0. `ward init` writes the package and its rules for the chosen style; see the
-Swift projects section of the init command. A failing rule is reported in the Swift test output, which
-Ward does not parse. Init writes `uses = "harmonize"`, because the command alone does not identify the
-gate. The first run compiles Harmonize and swift-syntax, so it is slower than later runs.
 
 ## Stryker mutation score
 
@@ -496,6 +483,12 @@ tasks.register("writeClasspath") {
 Then run `./gradlew writeClasspath` and set `java-classpath = "build/classpath.txt"`. Binding
 resolution uses Eclipse JDT, which is part of the `ward` binary. It parses every Java file on each
 run, so it is slower than the default; the result cache still reuses unchanged results.
+
+The same classpath file gives the type-aware rules their library types. Ward reads the class files
+of the jars and directories it lists, and the JDK's `lib/modules` image, without starting `javac`
+or any other process; an entry that is missing or unreadable makes its types unknown, not an error.
+It indexes each jar once and keeps the index under `.ward/cache/types/`, named by the SHA-256 of the
+jar's content.
 
 ### Result cache
 
@@ -688,8 +681,7 @@ forbidden = ["adapter", "infrastructure"]
 
 Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript and
 JavaScript. Java and Swift test sources are not checked. Swift is not yet covered, because its type
-name edges are not in this release. `ward init --architecture-engine ward` writes this table for the
-chosen style.
+name edges are not in this release. `ward init` writes this table for the chosen style.
 
 ## Slice cycles and feature independence
 
@@ -717,10 +709,8 @@ modules = ["shop/orders", "shop/billing"]
 ```
 
 Both lists are validated: `roots` is non-empty and holds project-relative directories, and each
-`modules` list has at least two entries. `ward init --preset strict --architecture-engine ward`
-writes these tables. The external rules they replace are then not generated: ArchUnit's
-`beFreeOfCycles`, dependency-cruiser's `no-circular`, and Import Linter's independence contract. With
-`--architecture-engine tool`, init writes none of these tables.
+`modules` list has at least two entries. `ward init --preset strict` writes these tables. Init
+writes no external cycle or independence rule.
 
 ## Swift structural rules
 
@@ -1041,7 +1031,7 @@ root = "../.."
 
 ## Legacy identifiers
 
-The legacy identifiers `architecture` (use `archunit`) and `compliance` (use `enforcer`; license
+The legacy identifiers `compliance` (use `enforcer`; license
 checks now use `license`) are still read, so existing configurations need no change.
 
 Ward validates registry identifiers; the configured command is the gate-specific part and must be

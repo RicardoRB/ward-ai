@@ -94,7 +94,7 @@ final class FixtureProject {
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            unused -> Map.of());
+            (unused, classpath) -> Map.of());
     return AnalysisGates.create(check, ports).execute(project());
   }
 

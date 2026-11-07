@@ -65,18 +65,10 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
   }
 
   @Test
-  void initRejectsInvalidArchitectureAndDefaultsToLayeredAtEof() throws IOException {
-    assertThat(runInitWithInput("3\n1\n9\nnope\n", "-C", project.toString()))
-        .isEqualTo(ExitCodes.ERROR);
-    assertThat(err.toString()).contains("Invalid architecture selection");
-    err.getBuffer().setLength(0);
-    assertThat(runInitWithInput("3\n1\n9\n10\n", "-C", project.toString()))
-        .isEqualTo(ExitCodes.ERROR);
-    assertThat(err.toString()).contains("Invalid architecture selection");
-    err.getBuffer().setLength(0);
+  void initDefaultsToLayeredArchitectureAtEof() throws IOException {
     assertThat(runInitWithInput("3\n1\n9\n", "-C", project.toString())).isEqualTo(ExitCodes.OK);
-    assertThat(out.toString()).contains("Generated layered ArchUnit test");
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("[checks.archunit]");
+    assertThat(Files.readString(project.resolve(WARD_TOML)))
+        .contains("[[checks.ward.layers]]", "from = [\"controller\"]");
   }
 
   @Test

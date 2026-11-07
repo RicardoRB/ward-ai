@@ -2,7 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
@@ -35,12 +34,8 @@ public final class CiWorkflowTemplate {
    * @param manifest the Node package manifest, or {@link PackageManifest#EMPTY}
    * @param runtimeJdk the JDK that runs a JVM build, when init could read it
    */
-  /**
-   * The facts a workflow step depends on: the manifest, the runtime JDK, and whether the Harmonize
-   * architecture rules are selected, which Swift's CI caches the package for.
-   */
-  public record ProjectFacts(
-      PackageManifest manifest, Optional<Integer> runtimeJdk, boolean harmonize) {}
+  /** The facts a workflow step depends on: the manifest and the runtime JDK. */
+  public record ProjectFacts(PackageManifest manifest, Optional<Integer> runtimeJdk) {}
 
   /**
    * Returns the workflow for {@code provider}, installing the tools the selected gates run.
@@ -63,14 +58,7 @@ public final class CiWorkflowTemplate {
       final String wardVersion,
       final PackageManifest manifest) {
     return render(
-        provider,
-        project,
-        gates,
-        wardVersion,
-        new ProjectFacts(
-            manifest,
-            Optional.empty(),
-            gates.stream().anyMatch(gate -> SupportedQualityGates.HARMONIZE.equals(gate.id()))));
+        provider, project, gates, wardVersion, new ProjectFacts(manifest, Optional.empty()));
   }
 
   /** Returns the workflow for the project's {@code facts}: its manifest and runtime JDK. */

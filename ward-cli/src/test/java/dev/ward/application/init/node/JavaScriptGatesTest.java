@@ -74,7 +74,7 @@ class JavaScriptGatesTest {
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("vitest", ESLINT, "stryker", "dependency-cruiser");
+        .containsExactly("vitest", ESLINT, "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }

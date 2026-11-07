@@ -56,7 +56,7 @@ class NodeGatesTest {
   @Test
   void everyNodeGateIdentifierIsAccepted() {
     final Map<String, List<String>> commands = new LinkedHashMap<>();
-    List.of("tsc", "eslint", "vitest", "jest", "bun-test", "stryker", "dependency-cruiser")
+    List.of("tsc", "eslint", "vitest", "jest", "bun-test", "stryker")
         .forEach(id -> commands.put(id, List.of(id)));
 
     final List<QualityGate> gates =
@@ -84,7 +84,6 @@ class NodeGatesTest {
 
     assertThatThrownBy(() -> factory.create(config(Map.of("nope", List.of("x")))))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining(
-            "tsc", "eslint", "vitest", "jest", "bun-test", "stryker", "dependency-cruiser");
+        .hasMessageContaining("tsc", "eslint", "vitest", "jest", "bun-test", "stryker");
   }
 }

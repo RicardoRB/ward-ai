@@ -25,7 +25,6 @@ record JavaScriptGates(String testGate, NodeLinting linting)
                 "eslint",
                 "Lints sources with ESLint's recommended JavaScript rules.",
                 node.command("eslint", ".", "--format", "json"))));
-    gates.add(node.dependencyCruiser());
     gates.add(node.stryker());
     return List.copyOf(gates);
   }
@@ -35,7 +34,7 @@ record JavaScriptGates(String testGate, NodeLinting linting)
     final List<String> gates = new ArrayList<>(List.of(testGate));
     gates.addAll(linting.presetIds());
     if (preset == QualityPreset.STRICT) {
-      gates.addAll(List.of("stryker", "dependency-cruiser"));
+      gates.add("stryker");
     }
     return List.copyOf(gates);
   }

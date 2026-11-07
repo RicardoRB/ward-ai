@@ -1,7 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.init.ArchitectureEngine;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
@@ -34,7 +32,8 @@ public final class OwnedSections {
       final List<Path> userOwnedRuleFiles) {
     final List<OwnedSection> sections =
         new ArrayList<>(ciSections(catalog, project, selection, gates));
-    final String analysisCache = analysisCacheEntries(selection, gates);
+    // The ward gate always runs, so its analysis cache is always Git-ignored.
+    final String analysisCache = ".ward/cache/\n";
     if (project.toolchain() == Toolchain.NODE) {
       sections.add(
           new OwnedSection(
@@ -82,12 +81,7 @@ public final class OwnedSections {
     }
     if (selection.agentRules()) {
       sections.add(
-          AgentRulesTemplate.render(
-              project,
-              gates,
-              selection.preset(),
-              userOwnedRuleFiles,
-              selection.architectureEngine() == ArchitectureEngine.WARD));
+          AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));
     }
     return sections;
   }
@@ -120,19 +114,6 @@ public final class OwnedSections {
       return List.of();
     }
     return List.of(catalog.ciWorkflow(selection.ci(), project, gates));
-  }
-
-  /**
-   * Returns the Git ignore entry for the analysis result cache, or nothing when the project has no
-   * {@code ward} gate. The entry shares the one ignore section that init owns in the file.
-   */
-  private static String analysisCacheEntries(
-      final InitSelection selection, final List<InitGateOption> gates) {
-    final boolean wardEngine = selection.architectureEngine() == ArchitectureEngine.WARD;
-    return wardEngine
-            || gates.stream().anyMatch(gate -> SupportedQualityGates.ANALYSIS.equals(gate.id()))
-        ? ".ward/cache/\n"
-        : "";
   }
 
   private static boolean isGitignore(final OwnedSection section) {

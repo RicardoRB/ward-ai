@@ -31,9 +31,6 @@ public final class GradleToolCatalog {
   /** The PIT engine. */
   public static final String PITEST_ENGINE = "pitest";
 
-  /** The ArchUnit test dependency. */
-  public static final String ARCHUNIT = "archunit";
-
   private static final int JDK_8 = 8;
   private static final int JDK_10 = 10;
   private static final int JDK_11 = 11;
@@ -53,7 +50,6 @@ public final class GradleToolCatalog {
           row(PITEST, "1.19.0", JDK_11, JDK_25, "8.4"),
           row(PITEST_ENGINE, "1.17.4", JDK_8, JDK_10, "6.4"),
           row(PITEST_ENGINE, "1.30.1", JDK_11, JDK_25, "6.4"),
-          row(ARCHUNIT, "1.5.1", JDK_8, JDK_25, ANY_GRADLE),
           row("org.owasp.dependencycheck", "12.1.0", JDK_11, JDK_25, ANY_GRADLE),
           row("org.sonarqube", "5.1.0.4882", JDK_11, JDK_25, ANY_GRADLE),
           row("com.github.jk1.dependency-license-report", "3.1.4", JDK_8, JDK_25, ANY_GRADLE),

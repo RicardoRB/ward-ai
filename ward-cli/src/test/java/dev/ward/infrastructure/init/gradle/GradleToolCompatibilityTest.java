@@ -37,8 +37,7 @@ class GradleToolCompatibilityTest {
           GradleToolCatalog.SPOTBUGS_ENGINE,
           GradleToolCatalog.JACOCO_ENGINE,
           GradleToolCatalog.PITEST,
-          GradleToolCatalog.PITEST_ENGINE,
-          GradleToolCatalog.ARCHUNIT);
+          GradleToolCatalog.PITEST_ENGINE);
 
   @TempDir Path root;
 
@@ -86,11 +85,9 @@ class GradleToolCompatibilityTest {
     return new Configured(Files.readString(script), change);
   }
 
-  /** How the build file writes {@code row}: ArchUnit as a coordinate, the rest quoted. */
+  /** How the build file writes {@code row}: a quoted version. */
   private static String written(final String file, final ManagedPluginCandidate row) {
-    return GradleToolCatalog.ARCHUNIT.equals(row.tool())
-        ? "archunit-junit5:" + row.version()
-        : quoted(file, row.version());
+    return quoted(file, row.version());
   }
 
   /** A version as the DSL writes it, so {@code 1.7} does not match inside {@code 1.17.4}. */

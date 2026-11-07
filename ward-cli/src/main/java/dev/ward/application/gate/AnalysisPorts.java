@@ -7,7 +7,8 @@ import dev.ward.analysis.domain.rule.RuleMatcher;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Optional;
+import java.util.function.BiFunction;
 
 /**
  * What the analysis gate needs from its adapters.
@@ -33,7 +34,7 @@ public record AnalysisPorts(
     AnalysisResultCodec codec,
     String engineVersion,
     DependencyAdapters dependencies,
-    Function<Path, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
+    BiFunction<Path, Optional<Path>, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
 
   /** Copies the frontends. */
   public AnalysisPorts {

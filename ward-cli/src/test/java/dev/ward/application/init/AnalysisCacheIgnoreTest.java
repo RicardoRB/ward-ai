@@ -29,11 +29,6 @@ class AnalysisCacheIgnoreTest {
   }
 
   @Test
-  void projectWithoutWardGateDoesNotIgnoreTheCacheDirectory() {
-    assertThat(bodies(List.of(gate("checkstyle")))).noneMatch(body -> body.contains(CACHE));
-  }
-
-  @Test
   void cacheEntryIsWrittenOnceInTheIgnoreFile() {
     final List<String> bodies = bodies(List.of(gate("ward")));
 
@@ -63,7 +58,6 @@ class AnalysisCacheIgnoreTest {
             false,
             null,
             false,
-            null,
             null);
     return OwnedSections.of(catalog, JAVA, selection, gates, List.of()).stream()
         .filter(section -> section.file().endsWith(".gitignore"))

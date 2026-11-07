@@ -31,6 +31,17 @@ final class EcmaText {
   private EcmaText() {}
 
   /**
+   * Tells whether a comma after this token ends a value, so dropping the comma before a closer
+   * keeps the list: a comma after another comma or an opener is an array hole.
+   *
+   * @param before the token before the comma
+   * @return true when the token is a value, not a comma or an opener
+   */
+  static boolean endsValue(final String before) {
+    return !",".equals(before) && !isOpener(before);
+  }
+
+  /**
    * Tells whether the text opens a bracket.
    *
    * @param text the token text

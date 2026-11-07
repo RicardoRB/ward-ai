@@ -11,7 +11,7 @@ import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
@@ -37,7 +37,7 @@ class InitSetupCatalogPreviousChoicesTest {
           new InitProjectFiles(
               new PomToolConfigurator(),
               new NoRuleFileGeneration(),
-              new ArchitectureTestGenerator(),
+              ArchitectureTablesFixtures.create(),
               new FileConfigurationStorage(),
               new OwnedSectionWriter()));
 
@@ -79,7 +79,6 @@ class InitSetupCatalogPreviousChoicesTest {
             false,
             null,
             false,
-            null,
             null));
 
     assertThat(catalog.previousChoices(project(dir)))
