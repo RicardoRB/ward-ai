@@ -1,0 +1,21 @@
+# Duplicate-code rule for Swift, replacing PMD CPD. The body is read by the whole-run duplicate
+# detector, which compares the tokens of every file of the language.
+
+[[rules]]
+id = "ward:swift/duplicate-code"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "duplication"
+presets = ["standard", "strict"]
+options.min-tokens = { type = "integer", min = 1 }
+options.ignore-literals = { type = "boolean" }
+options.ignore-identifiers = { type = "boolean" }
+options.ignore-annotations = { type = "boolean" }
+body = '''
+check = "duplicate-code"
+min-tokens = 100
+ignore-literals = false
+ignore-identifiers = false
+ignore-annotations = false
+'''

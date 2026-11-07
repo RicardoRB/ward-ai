@@ -1,3 +1,3 @@
 const total = (a, b) => a + b;
 
-module.exports = { total, port: process.env.PORT };
+module.exports = { total, port: 3000 };
