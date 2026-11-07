@@ -30,6 +30,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/pmd-errorprone.toml",
           "rules/java/security.toml",
           "rules/java/size.toml",
+          "rules/java/strict-declarations.toml",
           "rules/kotlin/coroutines.toml",
           "rules/kotlin/exceptions.toml",
           "rules/kotlin/naming.toml",

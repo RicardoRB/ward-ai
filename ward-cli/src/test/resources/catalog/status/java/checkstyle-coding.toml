@@ -5,7 +5,7 @@ avoid-inline-conditionals = "implemented"
 avoid-no-argument-super-constructor-call = { status = "planned", issue = "#289" }
 constructors-declaration-grouping = "implemented"
 covariant-equals = "implemented"
-declaration-order = { status = "planned", issue = "#289" }
+declaration-order = "implemented"
 default-comes-last = { status = "planned", issue = "#288" }
 empty-statement = "implemented"
 equals-avoid-null = "implemented"
@@ -13,15 +13,15 @@ equals-hash-code = "implemented"
 explicit-initialization = "implemented"
 expression-over-block-lambda = { status = "planned", issue = "#289" }
 fall-through = "implemented"
-final-local-variable = { status = "planned", issue = "#289" }
+final-local-variable = "implemented"
 hidden-field = "implemented"
 illegal-catch = "implemented"
-illegal-instantiation = { status = "planned", issue = "#289" }
+illegal-instantiation = "implemented"
 illegal-symbol = { status = "planned", issue = "#289" }
 illegal-throws = "implemented"
 illegal-token = "implemented"
 illegal-token-text = "implemented"
-illegal-type = { status = "planned", issue = "#289" }
+illegal-type = "implemented"
 inner-assignment = { status = "planned", issue = "#288" }
 magic-number = "implemented"
 missing-ctor = { status = "planned", issue = "#289" }
@@ -41,7 +41,7 @@ one-statement-per-line = "implemented"
 overload-methods-declaration-order = "implemented"
 package-declaration = "implemented"
 parameter-assignment = "implemented"
-pattern-variable-assignment = { status = "planned", issue = "#289" }
+pattern-variable-assignment = "implemented"
 require-this = { status = "planned", issue = "#289" }
 return-count = "implemented"
 simplify-boolean-expression = { status = "planned", issue = "#288" }
