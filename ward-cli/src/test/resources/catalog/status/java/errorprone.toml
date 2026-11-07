@@ -82,7 +82,7 @@ check-return-value = { status = "planned", issue = "#319" }
 checked-exception-not-thrown = { status = "planned", issue = "#319" }
 class-can-be-static = { status = "planned", issue = "#319" }
 class-initialization-deadlock = { status = "planned", issue = "#319" }
-class-name = { status = "planned", issue = "#319" }
+class-name = "implemented"
 class-named-like-type-parameter = { status = "planned", issue = "#319" }
 class-new-instance = { status = "planned", issue = "#319" }
 closeable-provides = { status = "planned", issue = "#319" }
@@ -120,7 +120,7 @@ deprecated-variable = { status = "planned", issue = "#319" }
 dereference-with-null-branch = { status = "planned", issue = "#319" }
 different-name-but-same = { status = "planned", issue = "#319" }
 direct-invocation-on-mock = { status = "planned", issue = "#319" }
-discarded-postfix-expression = { status = "planned", issue = "#319" }
+discarded-postfix-expression = "implemented"
 distinct-varargs-checker = { status = "planned", issue = "#319" }
 do-not-call = { status = "planned", issue = "#319" }
 do-not-call-suggester = { status = "planned", issue = "#319" }
@@ -203,7 +203,7 @@ get-class-on-enum = { status = "planned", issue = "#319" }
 guarded-by = { status = "planned", issue = "#319" }
 guice-assisted-inject-scoping = { status = "planned", issue = "#319" }
 guice-assisted-parameters = { status = "planned", issue = "#319" }
-guice-inject-on-final-field = { status = "planned", issue = "#319" }
+guice-inject-on-final-field = "implemented"
 guice-nested-combine = { status = "planned", issue = "#319" }
 hard-coded-sd-card-path = { status = "planned", issue = "#319" }
 hash-code-in-objects-hash = { status = "planned", issue = "#319" }
@@ -211,7 +211,7 @@ hashtable-contains = "implemented"
 hiding-field = { status = "planned", issue = "#319" }
 icc-profile-get-instance = { status = "planned", issue = "#319" }
 identifier-name = { status = "planned", issue = "#319" }
-identity-binary-expression = { status = "planned", issue = "#319" }
+identity-binary-expression = "implemented"
 identity-hash-map-boxing = { status = "planned", issue = "#319" }
 identity-hash-map-usage = { status = "planned", issue = "#319" }
 if-chain-to-switch = { status = "planned", issue = "#319" }
@@ -277,13 +277,13 @@ is-loggable-tag-length = "implemented"
 iterable-and-iterator = { status = "planned", issue = "#319" }
 iterable-path-parameter = { status = "planned", issue = "#319" }
 j-unit-ambiguous-test-class = { status = "planned", issue = "#319" }
-j-unit-assert-same-check = { status = "planned", issue = "#319" }
+j-unit-assert-same-check = "implemented"
 j-unit-incompatible-type = { status = "planned", issue = "#319" }
 j-unit-method-invoked = { status = "planned", issue = "#319" }
 j-unit-parameter-method-not-found = { status = "planned", issue = "#319" }
 j-unit3-floating-point-comparison-without-delta = { status = "planned", issue = "#319" }
 j-unit3-test-not-run = { status = "planned", issue = "#319" }
-j-unit4-class-annotation-non-static = { status = "planned", issue = "#319" }
+j-unit4-class-annotation-non-static = "implemented"
 j-unit4-class-used-in-j-unit3 = { status = "planned", issue = "#319" }
 j-unit4-empty-methods = { status = "planned", issue = "#319" }
 j-unit4-set-up-not-run = { status = "planned", issue = "#319" }
@@ -301,7 +301,7 @@ java-period-get-days = { status = "planned", issue = "#319" }
 java-time-default-time-zone = { status = "planned", issue = "#319" }
 java-util-date = { status = "planned", issue = "#319" }
 java8-api-checker = { status = "planned", issue = "#319" }
-javax-inject-on-abstract-method = { status = "planned", issue = "#319" }
+javax-inject-on-abstract-method = "implemented"
 javax-inject-on-final-field = { status = "planned", issue = "#319" }
 jdk-obsolete = { status = "planned", issue = "#319" }
 joda-constructors = { status = "planned", issue = "#319" }

@@ -4,6 +4,7 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.AnnotatedMemberCheck;
 import dev.ward.analysis.domain.rule.check.HiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.ParameterAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.VariableDeclarationUsageDistanceCheck;
@@ -25,6 +26,7 @@ final class DeclarationChecks {
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
+        entry("annotated-member", DeclarationChecks::annotatedMember),
         entry(
             "hidden-field",
             toml ->
@@ -47,5 +49,15 @@ final class DeclarationChecks {
   private static boolean flag(
       final TomlParseResult toml, final String key, final boolean fallback) {
     return toml.getBoolean(key, () -> fallback);
+  }
+
+  private static AnnotatedMemberCheck annotatedMember(final TomlParseResult toml) {
+    return new AnnotatedMemberCheck(
+        new AnnotatedMemberCheck.Criteria(
+            TomlValues.required(toml, "declaration"),
+            TomlValues.strings(toml, "annotations"),
+            TomlValues.optionalStrings(toml, "modifiers"),
+            TomlValues.optionalStrings(toml, "absent-modifiers")),
+        TomlValues.required(toml, MESSAGE));
   }
 }

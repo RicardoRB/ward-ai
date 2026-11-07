@@ -1,0 +1,103 @@
+# Error Prone checks at ERROR severity for Java, A to L, second batch: syntax patterns over the compact
+# text of a node, a call-match over type facts, and annotated members. Each is on by default in Error
+# Prone.
+
+[[rules]]
+id = "ward:java/class-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "type-name-mismatch"
+message = "class name does not match the name of its source file"
+'''
+
+[[rules]]
+id = "ward:java/identity-binary-expression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?<v>[\w.]+)(?:&&|\|\||&|\||\^|-|/|%)\k<v>$'
+message = "both operands are the same; the result is constant or equal to the operand"
+'''
+
+[[rules]]
+id = "ward:java/discarded-postfix-expression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?<v>\w+)=\k<v>(?:\+\+|--);?$'
+message = "the postfix increment is discarded by the assignment; write x++ alone"
+'''
+
+[[rules]]
+id = "ward:java/j-unit-assert-same-check"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["org.junit.Assert", "junit.framework.Assert", "junit.framework.TestCase"]
+names = ["assertSame"]
+text = 'assertSame\((?<v>[\w.]+),\k<v>\)$'
+message = "an object is compared by reference with itself, so the assertion always passes"
+'''
+
+[[rules]]
+id = "ward:java/guice-inject-on-final-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotated-member"
+declaration = "fieldDeclaration"
+annotations = ["Inject"]
+modifiers = ["final"]
+message = "a final field cannot be injected; remove final or inject through the constructor"
+'''
+
+[[rules]]
+id = "ward:java/javax-inject-on-abstract-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotated-member"
+declaration = "methodDeclaration"
+annotations = ["Inject"]
+modifiers = ["abstract"]
+message = "an abstract method cannot be injected; the subclass method needs its own annotation"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-class-annotation-non-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotated-member"
+declaration = "methodDeclaration"
+annotations = ["BeforeClass", "AfterClass"]
+absent-modifiers = ["static"]
+message = "a JUnit 4 class-level fixture method must be public and static"
+'''
