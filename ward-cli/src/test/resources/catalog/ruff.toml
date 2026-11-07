@@ -390,9 +390,7 @@ ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B012"]
 
 [[rule]]
@@ -447,9 +445,7 @@ ruff = ["B022"]
 
 [[rule]]
 name = "function-uses-loop-variable"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B023"]
 
 [[rule]]
@@ -469,9 +465,7 @@ ruff = ["B026"]
 
 [[rule]]
 name = "empty-method-without-abstract-decorator"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B027"]
 
 [[rule]]
@@ -505,9 +499,7 @@ ruff = ["B032"]
 
 [[rule]]
 name = "duplicate-value"
-category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["B033"]
 pylint = ["duplicate-value"]
 
@@ -1336,9 +1328,7 @@ ruff = ["F502"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F503"]
 
 [[rule]]
@@ -1494,9 +1484,7 @@ ruff = ["F822"]
 
 [[rule]]
 name = "undefined-local"
-category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
+status = { python = "implemented" }
 ruff = ["F823"]
 
 [[rule]]

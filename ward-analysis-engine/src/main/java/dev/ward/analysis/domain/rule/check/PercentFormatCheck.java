@@ -34,7 +34,9 @@ public final class PercentFormatCheck implements RuleCheck {
     /** Named conversions whose key the dictionary does not have. */
     MISSING_KEYS,
     /** A numeric conversion with a string literal operand. */
-    TYPE_MISMATCH
+    TYPE_MISMATCH,
+    /** Several positional conversions with a dictionary operand. */
+    EXPECTED_SEQUENCE
   }
 
   private static final Set<String> EXPRESSION = Set.of("expr");
@@ -109,6 +111,7 @@ public final class PercentFormatCheck implements RuleCheck {
         case UNSUPPORTED -> format.unsupported().isPresent();
         case STAR_MAPPING -> starMapping();
         case TYPE_MISMATCH -> typeMismatch();
+        case EXPECTED_SEQUENCE -> expectedSequence();
         default -> violatesWithArguments(kind);
       };
     }
@@ -139,6 +142,10 @@ public final class PercentFormatCheck implements RuleCheck {
       return !hasNamed()
           && argument.kind() == PercentArgument.Kind.TUPLE
           && format.positional() != argument.count();
+    }
+
+    private boolean expectedSequence() {
+      return !hasNamed() && argument.kind() == PercentArgument.Kind.DICT && format.positional() > 1;
     }
 
     private boolean typeMismatch() {

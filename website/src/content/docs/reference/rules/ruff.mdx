@@ -67,7 +67,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `function-call-in-default-argument` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B008` |
 | `get-attr-with-constant` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B009` |
 | `set-attr-with-constant` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B010` |
-| `jump-statement-in-finally` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B012` |
+| `jump-statement-in-finally` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B012` |
 | `redundant-tuple-in-exception-handler` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B013` |
 | `duplicate-handler-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B014` |
 | `useless-comparison` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B015` |
@@ -78,17 +78,17 @@ description: Rules of the catalog file ruff and their counterparts.
 | `loop-variable-overrides-iterator` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B020` |
 | `f-string-docstring` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B021` |
 | `useless-contextlib-suppress` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B022` |
-| `function-uses-loop-variable` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B023` |
+| `function-uses-loop-variable` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B023` |
 | `abstract-base-class-without-abstract-method` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B024` |
 | `duplicate-try-block-exception` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B025` |
 | `star-arg-unpacking-after-keyword-arg` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B026` |
-| `empty-method-without-abstract-decorator` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B027` |
+| `empty-method-without-abstract-decorator` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B027` |
 | `no-explicit-stacklevel` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B028` |
 | `except-with-empty-tuple` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B029` |
 | `except-with-non-exception-classes` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B030` |
 | `reuse-of-groupby-generator` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B031` |
 | `unintentional-type-annotation` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B032` |
-| `duplicate-value` | flake8-bugbear | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `B033`; Pylint `duplicate-value` |
+| `duplicate-value` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B033`; Pylint `duplicate-value` |
 | `re-sub-positional-args` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B034` |
 | `static-key-dict-comprehension` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B035` |
 | `mutable-contextvar-default` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `B039` |
@@ -219,7 +219,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `future-feature-not-defined` | imports | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F407` |
 | `percent-format-invalid-format` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F501` |
 | `percent-format-expected-mapping` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F502` |
-| `percent-format-expected-sequence` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F503` |
+| `percent-format-expected-sequence` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F503` |
 | `percent-format-extra-named-arguments` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F504` |
 | `percent-format-missing-argument` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F505` |
 | `percent-format-mixed-positional-and-named` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F506` |
@@ -249,7 +249,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `redefined-while-unused` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F811` |
 | `undefined-name` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F821` |
 | `undefined-export` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F822` |
-| `undefined-local` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F823` |
+| `undefined-local` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F823` |
 | `unused-annotation` | pyflakes | n/a | n/a | n/a | n/a | [#332](https://github.com/RicardoRB/ward-ai/issues/332) | n/a | Ruff `F842` |
 | `raise-not-implemented` | coding | n/a | n/a | n/a | n/a | implemented | n/a | Ruff `F901` |
 | `future-rewritable-type-annotation` | flake8-future-annotations | n/a | n/a | n/a | n/a | [#334](https://github.com/RicardoRB/ward-ai/issues/334) | n/a | Ruff `FA100` |
@@ -898,6 +898,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/function-call-in-default-argument` | coding | standard, strict | none | Ruff `B008` |
 | `ward:python/get-attr-with-constant` | coding | standard, strict | none | Ruff `B009` |
 | `ward:python/set-attr-with-constant` | coding | standard, strict | none | Ruff `B010` |
+| `ward:python/jump-statement-in-finally` | coding | standard, strict | none | Ruff `B012` |
 | `ward:python/redundant-tuple-in-exception-handler` | coding | standard, strict | none | Ruff `B013` |
 | `ward:python/duplicate-handler-exception` | coding | standard, strict | none | Ruff `B014` |
 | `ward:python/useless-comparison` | coding | standard, strict | none | Ruff `B015` |
@@ -908,12 +909,15 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/loop-variable-overrides-iterator` | coding | standard, strict | none | Ruff `B020` |
 | `ward:python/f-string-docstring` | coding | standard, strict | none | Ruff `B021` |
 | `ward:python/useless-contextlib-suppress` | coding | standard, strict | none | Ruff `B022` |
+| `ward:python/function-uses-loop-variable` | coding | standard, strict | none | Ruff `B023` |
 | `ward:python/abstract-base-class-without-abstract-method` | coding | standard, strict | none | Ruff `B024` |
 | `ward:python/duplicate-try-block-exception` | coding | standard, strict | none | Ruff `B025` |
 | `ward:python/star-arg-unpacking-after-keyword-arg` | coding | standard, strict | none | Ruff `B026` |
+| `ward:python/empty-method-without-abstract-decorator` | coding | standard, strict | none | Ruff `B027` |
 | `ward:python/no-explicit-stacklevel` | coding | standard, strict | none | Ruff `B028` |
 | `ward:python/except-with-empty-tuple` | coding | standard, strict | none | Ruff `B029` |
 | `ward:python/except-with-non-exception-classes` | coding | standard, strict | none | Ruff `B030` |
+| `ward:python/duplicate-value` | coding | standard, strict | none | Ruff `B033`; Pylint `duplicate-value` |
 | `ward:python/re-sub-positional-args` | coding | standard, strict | none | Ruff `B034` |
 | `ward:python/static-key-dict-comprehension` | coding | standard, strict | none | Ruff `B035` |
 | `ward:python/mutable-contextvar-default` | coding | standard, strict | none | Ruff `B039` |
@@ -959,6 +963,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/future-feature-not-defined` | imports | standard, strict | none | Ruff `F407` |
 | `ward:python/percent-format-invalid-format` | coding | standard, strict | none | Ruff `F501` |
 | `ward:python/percent-format-expected-mapping` | coding | standard, strict | none | Ruff `F502` |
+| `ward:python/percent-format-expected-sequence` | coding | standard, strict | none | Ruff `F503` |
 | `ward:python/percent-format-extra-named-arguments` | coding | standard, strict | none | Ruff `F504` |
 | `ward:python/percent-format-missing-argument` | coding | standard, strict | none | Ruff `F505` |
 | `ward:python/percent-format-mixed-positional-and-named` | coding | standard, strict | none | Ruff `F506` |
@@ -986,6 +991,7 @@ description: Rules of the catalog file ruff and their counterparts.
 | `ward:python/redefined-while-unused` | coding | standard, strict | none | Ruff `F811` |
 | `ward:python/undefined-name` | coding | standard, strict | none | Ruff `F821` |
 | `ward:python/undefined-export` | coding | standard, strict | none | Ruff `F822` |
+| `ward:python/undefined-local` | coding | standard, strict | none | Ruff `F823` |
 | `ward:python/raise-not-implemented` | coding | standard, strict | none | Ruff `F901` |
 | `ward:python/print-empty-string` | coding | strict | none | Ruff `FURB105` |
 | `ward:python/bit-count` | coding | strict | none | Ruff `FURB161` |

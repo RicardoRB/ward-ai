@@ -430,3 +430,51 @@ body = '''
 check = "fstring-docstring"
 message = "f-string used as docstring; Python does not treat it as one"
 '''
+
+[[rules]]
+id = "ward:python/function-uses-loop-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-closure"
+message = "function definition does not bind loop variable '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/empty-method-without-abstract-decorator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "empty-abstract-method"
+message = "empty method in an abstract base class, but has no abstract decorator"
+'''
+
+[[rules]]
+id = "ward:python/jump-statement-in-finally"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "finally-jump"
+message = "return, break or continue inside a finally block silences the exception"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-value"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "set-duplicates"
+message = "set should not contain duplicate item"
+'''
