@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -85,7 +86,10 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
         .map(
             dir -> {
               try (Stream<Path> entries = Files.list(dir)) {
-                return entries.map(entry -> entry.getFileName().toString()).sorted().toList();
+                return entries
+                    .map(entry -> Objects.toString(entry.getFileName(), ""))
+                    .sorted()
+                    .toList();
               } catch (IOException unreadable) {
                 return List.<String>of();
               }
@@ -128,13 +132,14 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
           public FileVisitResult preVisitDirectory(
               final Path dir, final BasicFileAttributes attrs) {
             final boolean nested =
-                !dir.equals(directory) && NODE_MODULES.equals(dir.getFileName().toString());
+                !dir.equals(directory)
+                    && NODE_MODULES.equals(Objects.toString(dir.getFileName(), ""));
             return nested ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
           }
 
           @Override
           public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
-            final String name = file.getFileName().toString();
+            final String name = Objects.toString(file.getFileName(), "");
             if (attrs.isRegularFile()
                 && ("package.json".equals(name)
                     || name.endsWith(".d.ts")

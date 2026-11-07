@@ -21,6 +21,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -98,7 +99,7 @@ public final class NativeNodeTypes {
             @Override
             public FileVisitResult preVisitDirectory(
                 final Path dir, final BasicFileAttributes attrs) {
-              final String name = dir.getFileName() == null ? "" : dir.getFileName().toString();
+              final String name = Objects.toString(dir.getFileName(), "");
               final boolean skipped =
                   !dir.equals(projectRoot)
                       && (SKIPPED_DIRECTORIES.contains(name) || name.startsWith("."));
@@ -107,7 +108,7 @@ public final class NativeNodeTypes {
 
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
-              final String name = file.getFileName().toString();
+              final String name = Objects.toString(file.getFileName(), "");
               if (attrs.isRegularFile() && EXTENSIONS.stream().anyMatch(name::endsWith)) {
                 found.add(projectRoot.relativize(file).toString().replace('\\', '/'));
               }
