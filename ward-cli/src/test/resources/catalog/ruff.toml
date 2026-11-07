@@ -4582,7 +4582,9 @@ ruff = ["RUF201"]
 
 [[rule]]
 name = "assert"
-status = { python = "implemented" }
+category = "flake8-bandit"
+status = { python = "planned" }
+issues = { python = "#334" }
 ruff = ["S101"]
 
 [[rule]]

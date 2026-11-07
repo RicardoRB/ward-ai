@@ -2,20 +2,6 @@
 # decides. Each is an approximation of the bandit check, as its fixture shows.
 
 [[rules]]
-id = "ward:python/assert"
-language = "python"
-capability = "SYNTAX"
-severity = "error"
-category = "coding"
-presets = ["strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["assert_stmt"]
-text = "^assert"
-message = "assert is removed under -O; raise an exception instead"
-'''
-
-[[rules]]
 id = "ward:python/exec-builtin"
 language = "python"
 capability = "SYNTAX"
