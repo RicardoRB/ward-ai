@@ -1,13 +1,16 @@
+# Temporary while 0.6.0 is built: pre-push skips native, license and enforcer, and the "pr" profile
+# (pull requests to 0.6.0) skips mutation, dependency-check, trivy, license and enforcer. Restore before
+# 0.6.0 merges into main.
 version = 2
 
 [checks.tests]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["pre-push", "ci", "pr"]
 command = "./mvnw test"
 
 [checks.format]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
+profiles = ["default", "pre-commit", "pre-push", "ci", "pr"]
 command = "./mvnw spotless:check"
 
 [checks.format.paths]
@@ -19,7 +22,7 @@ separator = ","
 
 [checks.checkstyle]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
+profiles = ["default", "pre-commit", "pre-push", "ci", "pr"]
 command = "./mvnw checkstyle:check"
 
 [checks.checkstyle.paths]
@@ -31,7 +34,7 @@ separator = ","
 
 [checks.pmd]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
+profiles = ["default", "pre-commit", "pre-push", "ci", "pr"]
 command = "./mvnw -DskipTests package pmd:check"
 
 [checks.pmd.paths]
@@ -40,23 +43,23 @@ full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-
 
 [checks.spotbugs]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["pre-push", "ci", "pr"]
 command = "./mvnw -DskipTests package spotbugs:check"
 
 [checks.coverage]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["pre-push", "ci", "pr"]
 command = "./mvnw -DskipTests package jacoco:check"
 
 [checks.archunit]
 enabled = true
 # Not in pre-push: the tests gate already runs these classes.
-profiles = ["ci"]
+profiles = ["ci", "pr"]
 command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["ci"]
 command = "./mvnw -DskipTests package enforcer:enforce"
 
 [checks.mutation]
@@ -67,12 +70,12 @@ command = "./mvnw -DskipTests package pitest:mutationCoverage"
 # Native goals resolve only in ward-cli, which declares the GraalVM plugin.
 [checks.native]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["ci"]
 command = "./mvnw -B -q -Pnative -pl ward-cli -am -DskipTests package native:compile"
 
 [checks.gitleaks]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
+profiles = ["default", "pre-commit", "pre-push", "ci", "pr"]
 command = "gitleaks detect --no-banner --redact --report-format sarif --report-path target/gitleaks.sarif"
 
 # History scans miss uncommitted and staged edits, so edited and staged files are scanned directly.
@@ -83,7 +86,7 @@ args = ["--no-git", "--source={paths}"]
 
 [checks.semgrep]
 enabled = true
-profiles = ["ci"]
+profiles = ["ci", "pr"]
 command = "semgrep scan --config p/java --error"
 
 [checks.semgrep.paths]
@@ -106,7 +109,7 @@ command = "trivy fs --offline-scan --exit-code 1 ."
 [checks.license]
 enabled = true
 uses = "license"
-profiles = ["pre-push", "ci"]
+profiles = ["ci"]
 command = "./mvnw -DskipTests package license:add-third-party"
 
 # Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.

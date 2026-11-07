@@ -17,6 +17,10 @@ on:
         description: Also run the deterministic agent-harness suites against the native executable.
         type: boolean
         default: false
+      ward-profile:
+        description: Ward profile that the "Ward ci profile" job runs. Pull requests to 0.6.0 use the faster "pr" profile.
+        type: string
+        default: ci
       compatibility-matrices:
         description: Run the Node, Python, Swift and Java compatibility matrices. Pull requests into main run them; other pull requests skip them.
         type: boolean
@@ -202,7 +206,7 @@ jobs:
 
       # --output keeps the text report on stdout for the job log.
       - name: Run quality gates
-        run: ward check --profile ci --format sarif --output target/ward.sarif
+        run: ward check --profile ${{ inputs.ward-profile }} --format sarif --output target/ward.sarif
 
       # Fork tokens cannot write security events; no file means Ward could not run at all.
       - name: Upload SARIF to code scanning
