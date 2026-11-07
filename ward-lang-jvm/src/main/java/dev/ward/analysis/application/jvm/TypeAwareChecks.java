@@ -104,7 +104,9 @@ final class TypeAwareChecks {
             TomlValues.optionalStrings(toml, "receiver-types"),
             toml.getBoolean("receiver-array", () -> false),
             Pattern.compile(toml.getString("text", () -> "")),
-            toml.getBoolean("ignored", () -> false));
+            toml.getBoolean("ignored", () -> false),
+            TomlValues.optionalStrings(toml, "argument-types"),
+            toml.getBoolean("argument-primitive-array", () -> false));
     return new CallMatchCheck(criteria, TomlValues.required(toml, MESSAGE));
   }
 }

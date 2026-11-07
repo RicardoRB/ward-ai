@@ -26,6 +26,8 @@ public final class CallMatchCheck implements RuleCheck {
 
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
+  private static final String METHOD_CALL = "methodCall";
+  private static final String EXPRESSION_LIST = "expressionList";
   private static final String SEMICOLON = "';'";
   private static final int STATEMENT_PARTS = 2;
   private static final FactNeed NEED =
@@ -43,6 +45,8 @@ public final class CallMatchCheck implements RuleCheck {
    * @param receiverArray whether the receiver must be an array
    * @param text a pattern found in the compact text of the call, empty for any text
    * @param ignored whether the call must be a statement, so that its result is dropped
+   * @param argumentTypes qualified names of the type of at least one argument
+   * @param argumentPrimitiveArray whether at least one argument must be an array of primitives
    */
   public record Criteria(
       Set<String> declaringTypes,
@@ -50,13 +54,16 @@ public final class CallMatchCheck implements RuleCheck {
       Set<String> receiverTypes,
       boolean receiverArray,
       Pattern text,
-      boolean ignored) {
+      boolean ignored,
+      Set<String> argumentTypes,
+      boolean argumentPrimitiveArray) {
 
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
       names = Set.copyOf(names);
       receiverTypes = Set.copyOf(receiverTypes);
+      argumentTypes = Set.copyOf(argumentTypes);
       Objects.requireNonNull(text, "text");
     }
   }
@@ -106,6 +113,7 @@ public final class CallMatchCheck implements RuleCheck {
         && declares(target.get())
         && (criteria.names().isEmpty() || criteria.names().contains(target.get().name()))
         && receiverMeets(call, types)
+        && argumentsMeet(call, types)
         && criteria.text().matcher(SyntaxWalk.text(call)).find()
         && (!criteria.ignored() || isStatement(call, visit));
   }
@@ -131,6 +139,37 @@ public final class CallMatchCheck implements RuleCheck {
   }
 
   /** Tells whether the call is a whole expression statement, as in {@code call();}. */
+  private boolean argumentsMeet(final SyntaxNode call, final UnitTypeFacts types) {
+    return criteria.argumentTypes().isEmpty() && !criteria.argumentPrimitiveArray()
+        || arguments(call).stream()
+            .map(argument -> types.typeOf(argument.span()))
+            .flatMap(Optional::stream)
+            .anyMatch(this::argumentMeets);
+  }
+
+  private boolean argumentMeets(final TypeRef type) {
+    final boolean array = type.arrayDepth() > 0;
+    final boolean typeOk =
+        criteria.argumentTypes().isEmpty()
+            || !array && criteria.argumentTypes().contains(type.name());
+    final boolean arrayOk = !criteria.argumentPrimitiveArray() || array && type.primitive();
+    return typeOk && arrayOk;
+  }
+
+  /** The argument expressions of the call, in order; none when the call has no method part. */
+  private static List<SyntaxNode> arguments(final SyntaxNode call) {
+    return call.children().stream()
+        .filter(part -> METHOD_CALL.equals(part.kind()))
+        .flatMap(method -> SyntaxWalk.descendants(method).stream())
+        .filter(node -> EXPRESSION_LIST.equals(node.kind()))
+        .findFirst()
+        .map(SyntaxNode::children)
+        .orElse(List.of())
+        .stream()
+        .filter(node -> EXPRESSION.equals(node.kind()))
+        .toList();
+  }
+
   private static boolean isStatement(final SyntaxNode call, final SyntaxWalk.Visit visit) {
     final List<SyntaxNode> up = visit.ancestors();
     if (up.isEmpty()) {

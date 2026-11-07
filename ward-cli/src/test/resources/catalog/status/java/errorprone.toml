@@ -19,7 +19,7 @@ array-fill-incompatible-type = { status = "planned", issue = "#319" }
 array-hash-code = "implemented"
 array-record-component = { status = "planned", issue = "#319" }
 array-to-string = "implemented"
-arrays-as-list-primitive-array = { status = "planned", issue = "#319" }
+arrays-as-list-primitive-array = "implemented"
 assert-equals-argument-order-checker = { status = "planned", issue = "#319" }
 assert-false = { status = "planned", issue = "#319" }
 assert-same-incompatible = { status = "planned", issue = "#319" }
@@ -115,7 +115,7 @@ deeply-nested = { status = "planned", issue = "#319" }
 default-charset = { status = "planned", issue = "#319" }
 default-locale = { status = "planned", issue = "#319" }
 default-package = { status = "planned", issue = "#319" }
-dep-ann = { status = "planned", issue = "#319" }
+dep-ann = "implemented"
 deprecated-variable = { status = "planned", issue = "#319" }
 dereference-with-null-branch = { status = "planned", issue = "#319" }
 different-name-but-same = { status = "planned", issue = "#319" }
@@ -132,7 +132,7 @@ duplicate-assertion = { status = "planned", issue = "#319" }
 duplicate-branches = { status = "planned", issue = "#319" }
 duplicate-date-format-field = { status = "planned", issue = "#319" }
 duplicate-map-keys = { status = "planned", issue = "#319" }
-duration-from = { status = "planned", issue = "#319" }
+duration-from = "implemented"
 duration-get-temporal-unit = "implemented"
 duration-temporal-unit = "implemented"
 duration-to-long-time-unit = { status = "planned", issue = "#319" }
@@ -195,7 +195,7 @@ functional-interface-clash = { status = "planned", issue = "#319" }
 functional-interface-method-changed = { status = "planned", issue = "#319" }
 future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
-futures-get-checked-illegal-exception-type = { status = "planned", issue = "#319" }
+futures-get-checked-illegal-exception-type = "implemented"
 fuzzy-equals-should-not-be-used-in-equals-method = { status = "planned", issue = "#319" }
 get-class-on-annotation = { status = "planned", issue = "#319" }
 get-class-on-class = "implemented"

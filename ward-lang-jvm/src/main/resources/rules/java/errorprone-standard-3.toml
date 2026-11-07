@@ -1,0 +1,62 @@
+# Error Prone checks at ERROR severity for Java, A to F, third batch: calls matched on argument types and
+# the Javadoc deprecation check. Each is on by default in Error Prone.
+
+[[rules]]
+id = "ward:java/arrays-as-list-primitive-array"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.Arrays"]
+names = ["asList"]
+argument-primitive-array = true
+message = "Arrays.asList of a primitive array gives a list with one element, the array; box the values first"
+'''
+
+[[rules]]
+id = "ward:java/duration-from"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Duration"]
+names = ["from"]
+argument-types = ["java.time.Duration", "java.time.Period"]
+message = "Duration.from of a Duration returns it unchanged and of a Period throws; use the value directly"
+'''
+
+[[rules]]
+id = "ward:java/futures-get-checked-illegal-exception-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["com.google.common.util.concurrent.Futures"]
+names = ["getChecked"]
+text = ',(?:java\.lang\.)?(?:RuntimeException|IllegalArgumentException|IllegalStateException|UnsupportedOperationException|NullPointerException|ArithmeticException|IndexOutOfBoundsException|ClassCastException)\.class\)$'
+message = "Futures.getChecked needs a checked exception type; this unchecked type is rejected at run time"
+'''
+
+[[rules]]
+id = "ward:java/dep-ann"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-deprecated"
+tag = "@deprecated"
+annotation = "@Deprecated"
+methods-only = false
+message = "Javadoc has @deprecated but the declaration lacks the @Deprecated annotation"
+'''
