@@ -9,15 +9,11 @@ import dev.ward.analysis.domain.rule.check.DeclarationFilter;
 import dev.ward.analysis.domain.rule.check.DescendantCountCheck;
 import dev.ward.analysis.domain.rule.check.LinesCheck;
 import dev.ward.analysis.domain.rule.check.PrecedingCommentCheck;
-import dev.ward.analysis.domain.rule.check.ReassignedBindingCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.TaintCheck;
 import dev.ward.analysis.domain.rule.check.TextPatternCheck;
-import dev.ward.analysis.domain.rule.check.UndefinedNameCheck;
-import dev.ward.analysis.domain.rule.check.UnreachableCodeCheck;
 import dev.ward.analysis.domain.rule.check.UnreferencedNameCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
-import dev.ward.analysis.domain.rule.check.UnusedBindingCheck;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -102,30 +98,7 @@ final class DeclarativeChecks {
           new TaintCheck(
               TaintSpecFiles.load(SpecPaths.of(toml, SPECS)), TomlValues.required(toml, MESSAGE));
       case "preceding-comment" -> precedingComment(toml);
-      default -> scopeCheck(name, toml);
-    };
-  }
-
-  /** The checks that read scopes or control flow, and the remaining checks. */
-  private static RuleCheck scopeCheck(final String name, final TomlParseResult toml) {
-    return switch (name) {
-      case "undefined-name" ->
-          new UndefinedNameCheck(
-              TomlValues.required(toml, MESSAGE),
-              Set.copyOf(TomlValues.optionalStrings(toml, "env")));
-      case "unused-binding" -> new UnusedBindingCheck(TomlValues.required(toml, MESSAGE));
-      case "unreachable-code" -> new UnreachableCodeCheck(TomlValues.required(toml, MESSAGE));
-      case "reassigned-binding" ->
-          ReassignedBindingCheck.of(
-              TomlValues.strings(toml, "binding-kinds"), TomlValues.required(toml, MESSAGE));
-      default ->
-          ScopeAndFormatChecks.isCheck(name)
-              ? ScopeAndFormatChecks.build(name, toml)
-              : JavadocChecks.isJavadocCheck(name)
-                  ? JavadocChecks.build(name, toml)
-                  : ImportChecks.isImportCheck(name)
-                      ? ImportChecks.build(name, toml)
-                      : ReviewChecks.build(name, toml);
+      default -> ScopeChecks.build(name, toml);
     };
   }
 
