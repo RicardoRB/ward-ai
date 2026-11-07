@@ -1,0 +1,44 @@
+# Ruff's flake8-errmsg rules (EM) for Python: the message passed to an exception. Each is a text check
+# on a raise statement, whose text has no whitespace, so spacing is not part of the pattern.
+
+[[rules]]
+id = "ward:python/raw-string-in-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise[\\w.]+\\([\"']"
+message = "exception message is a string literal; assign it to a variable first"
+'''
+
+[[rules]]
+id = "ward:python/f-string-in-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise[\\w.]+\\(f[\"']"
+message = "exception message is an f-string; assign it to a variable first"
+'''
+
+[[rules]]
+id = "ward:python/dot-format-in-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise[\\w.]+\\([\"'][^\"']*[\"']\\.format\\("
+message = "exception message uses str.format(); assign it to a variable first"
+'''
