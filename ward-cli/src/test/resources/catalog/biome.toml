@@ -84,9 +84,8 @@ biome = ["noAutofocus"]
 
 [[rule]]
 name = "no-banned-types"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "not-applicable" }
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 biome = ["noBannedTypes"]
 
 [[rule]]
@@ -473,9 +472,7 @@ biome = ["noInteractiveElementToNoninteractiveRole"]
 
 [[rule]]
 name = "no-invalid-builtin-instantiation"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noInvalidBuiltinInstantiation"]
 
 [[rule]]
@@ -1123,9 +1120,7 @@ biome = ["noUnwantedPolyfillio"]
 
 [[rule]]
 name = "no-useless-catch-binding"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessCatchBinding"]
 
 [[rule]]
@@ -1963,9 +1958,7 @@ biome = ["useValidAutocomplete"]
 
 [[rule]]
 name = "use-valid-for-direction"
-category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useValidForDirection"]
 
 [[rule]]
@@ -2019,8 +2012,6 @@ biome = ["useVueNextTickPromise"]
 
 [[rule]]
 name = "use-while"
-category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
+status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useWhile"]
 
