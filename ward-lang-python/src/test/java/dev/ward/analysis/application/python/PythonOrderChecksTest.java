@@ -25,7 +25,11 @@ final class PythonOrderChecksTest {
           "loop-closure",
           "empty-abstract-method",
           "finally-jump",
-          "set-duplicates");
+          "set-duplicates",
+          "unused-annotation",
+          "groupby-reuse",
+          "string-annotation",
+          "strict-call");
 
   @Test
   void everyOrderCheckIsRegisteredAndBuilds() {
@@ -41,6 +45,8 @@ final class PythonOrderChecksTest {
     return switch (name) {
       case "comparison-operator" -> "message = \"m\"\nproblem = \"not-in\"\n";
       case "loop-variable" -> "message = \"m\"\nproblem = \"unused\"\n";
+      case "strict-call" ->
+          "message = \"m\"\ncall = \"^map\\\\(\"\nminimum-minor = 14\nminimum-arguments = 3\ntarget = \"py314\"\n";
       default -> "message = \"m\"\n";
     };
   }

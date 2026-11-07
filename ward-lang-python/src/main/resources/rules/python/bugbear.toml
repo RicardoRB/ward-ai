@@ -478,3 +478,63 @@ body = '''
 check = "set-duplicates"
 message = "set should not contain duplicate item"
 '''
+
+[[rules]]
+id = "ward:python/reuse-of-groupby-generator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "groupby-reuse"
+message = "the generator from itertools.groupby is used more than once; the second use sees nothing"
+'''
+
+[[rules]]
+id = "ward:python/unintentional-type-annotation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[A-Za-z_]\w*(?:\.[A-Za-z_]\w*|\[[^\]]*\])+:[^=]*$'
+message = "possible unintentional type annotation (:) where an assignment (=) was meant"
+'''
+
+[[rules]]
+id = "ward:python/batched-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.target-version = { type = "enum", values = ["py39", "py310", "py311", "py312", "py313", "py314", "py315"], parameter = "target" }
+body = '''
+check = "strict-call"
+call = '^(itertools\.)?batched\('
+minimum-minor = 13
+minimum-arguments = 0
+target = "py310"
+message = "itertools.batched without an explicit strict argument"
+'''
+
+[[rules]]
+id = "ward:python/map-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.target-version = { type = "enum", values = ["py39", "py310", "py311", "py312", "py313", "py314", "py315"], parameter = "target" }
+body = '''
+check = "strict-call"
+call = '^map\('
+minimum-minor = 14
+minimum-arguments = 3
+target = "py310"
+message = "map with several iterables without an explicit strict argument"
+'''
