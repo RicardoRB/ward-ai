@@ -1,0 +1,3 @@
+for (; running;) {
+  step();
+}

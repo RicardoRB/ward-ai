@@ -1,0 +1,24 @@
+# Status of the checkstyle-naming rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+abbreviation-as-word-in-name = "implemented"
+abstract-class-name = { status = "planned", issue = "#297" }
+catch-parameter-name = { status = "planned", issue = "#297" }
+class-type-parameter-name = "not-applicable"
+constant-name = { status = "planned", issue = "#297" }
+google-method-name = "not-applicable"
+google-non-constant-field-name = "not-applicable"
+illegal-identifier-name = { status = "planned", issue = "#297" }
+interface-type-parameter-name = "not-applicable"
+lambda-parameter-name = "implemented"
+local-final-variable-name = "not-applicable"
+local-variable-name = "implemented"
+member-name = { status = "planned", issue = "#297" }
+method-name = "implemented"
+method-type-parameter-name = "not-applicable"
+package-name = "not-applicable"
+parameter-name = "implemented"
+pattern-variable-name = "not-applicable"
+record-component-name = "not-applicable"
+record-type-parameter-name = "not-applicable"
+static-variable-name = { status = "planned", issue = "#297" }
+type-name = "implemented"

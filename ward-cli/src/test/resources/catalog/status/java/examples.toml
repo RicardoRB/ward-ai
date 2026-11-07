@@ -1,0 +1,14 @@
+# Status of the examples rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+example-constant-name = "implemented"
+example-inline-conditional = "implemented"
+example-magic-number = "implemented"
+example-method-count = "implemented"
+example-modifier-order = "implemented"
+example-nested-if = "implemented"
+example-overload-order = "implemented"
+example-redundant-import = "implemented"
+example-switch-default = "implemented"
+example-todo-comment = "implemented"
+example-undefined-name = "implemented"
+example-unused-binding = "implemented"

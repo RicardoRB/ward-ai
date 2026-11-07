@@ -2,13 +2,13 @@ package dev.ward.infrastructure.analysis.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.TypeFactsFixture;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
-import dev.ward.infrastructure.analysis.TypeFactsFixture;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

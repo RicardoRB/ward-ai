@@ -1,0 +1,17 @@
+# Status of the checkstyle-misc rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-type-style = "not-applicable"
+avoid-escaped-unicode-characters = "not-applicable"
+descendant-token = { status = "planned", issue = "#298" }
+final-parameters = { status = "planned", issue = "#298" }
+hex-literal-case = { status = "planned", issue = "#298" }
+line-ending = { status = "planned", issue = "#298" }
+multiline-comment-leading-asterisk-presence = "implemented"
+newline-at-end-of-file = { status = "planned", issue = "#298" }
+no-code-in-file = { status = "planned", issue = "#298" }
+numerical-prefixes-infixes-suffixes-character-case = { status = "planned", issue = "#298" }
+outer-type-filename = "not-applicable"
+todo-comment = "implemented"
+trailing-comment = { status = "planned", issue = "#298" }
+uncommented-main = "not-applicable"
+upper-ell = "not-applicable"

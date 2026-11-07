@@ -11,9 +11,16 @@ public final class NodeRuleFiles implements RuleFileProvider {
 
   private static final List<String> FILES =
       List.of(
-          "dev/ward/analysis/lang/node/rules.toml",
           "rules/duplication-node.toml",
-          "rules/node/checkstyle-members.toml");
+          "rules/node/blocks.toml",
+          "rules/node/coding.toml",
+          "rules/node/metrics.toml",
+          "rules/node/misc.toml",
+          "rules/node/naming.toml",
+          "rules/node/problem.toml",
+          "rules/node/regexp.toml",
+          "rules/node/sizes.toml",
+          "rules/node/suggestion.toml");
 
   @Override
   public List<String> ruleFiles() {

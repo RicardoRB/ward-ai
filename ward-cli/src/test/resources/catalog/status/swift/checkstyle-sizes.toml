@@ -1,0 +1,12 @@
+# Status of the checkstyle-sizes rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+anon-inner-length = "not-applicable"
+executable-statement-count = { status = "planned", issue = "#298" }
+file-length = "implemented"
+lambda-body-length = { status = "planned", issue = "#298" }
+line-length = "implemented"
+method-count = { status = "planned", issue = "#298" }
+method-length = "implemented"
+outer-type-number = "not-applicable"
+parameter-number = "implemented"
+record-component-number = "not-applicable"

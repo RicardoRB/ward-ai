@@ -1,0 +1,12 @@
+# Status of the checkstyle-design rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+design-for-extension = "implemented"
+final-class = "implemented"
+hide-utility-class-constructor = "implemented"
+inner-type-last = "implemented"
+interface-is-type = "implemented"
+mutable-exception = "implemented"
+one-top-level-class = "implemented"
+sealed-should-have-permits-list = "implemented"
+throws-count = "implemented"
+visibility-modifier = "implemented"

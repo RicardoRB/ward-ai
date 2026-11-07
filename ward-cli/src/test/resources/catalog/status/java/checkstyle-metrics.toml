@@ -1,0 +1,8 @@
+# Status of the checkstyle-metrics rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+boolean-expression-complexity = "implemented"
+class-data-abstraction-coupling = "implemented"
+class-fan-out-complexity = "implemented"
+cyclomatic-complexity = "implemented"
+java-ncss = "implemented"
+n-path-complexity = "implemented"

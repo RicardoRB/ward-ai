@@ -1,0 +1,13 @@
+# Status of the examples rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+example-block-order = "implemented"
+example-duplicate-import = "implemented"
+example-function-name = "implemented"
+example-magic-number = "implemented"
+example-nested-if = "implemented"
+example-return-count = "implemented"
+example-trailing-whitespace = "implemented"
+example-try-needs-except = "implemented"
+example-undefined-name = "implemented"
+example-unused-binding = "implemented"
+example-wildcard-import = "implemented"

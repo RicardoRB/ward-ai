@@ -2,8 +2,7 @@
 
 [[rule]]
 name = "unused-attribute"
+presets = ["standard", "strict"]
 category = "correctness"
-status = { java = "planned", kotlin = "planned", python = "planned" }
-issues = { java = "#325", kotlin = "#325", python = "#337" }
 vulture = ["V101"]
 

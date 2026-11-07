@@ -1,0 +1,11 @@
+# Status of the checkstyle-annotation rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+annotation-location = { status = "planned", issue = "#294" }
+annotation-on-same-line = { status = "planned", issue = "#294" }
+annotation-use-style = { status = "planned", issue = "#294" }
+missing-deprecated = { status = "planned", issue = "#294" }
+missing-override = { status = "planned", issue = "#294" }
+missing-override-on-record-accessor = "not-applicable"
+openjdk-annotation-location = "not-applicable"
+package-annotation = "not-applicable"
+suppress-warnings = { status = "planned", issue = "#294" }

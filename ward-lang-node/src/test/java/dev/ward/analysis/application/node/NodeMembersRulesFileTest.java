@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 /** The class-member and type-parameter naming rules are listed and name both languages. */
 class NodeMembersRulesFileTest {
 
-  private static final String FILE = "rules/node/checkstyle-members.toml";
+  private static final String FILE = "rules/node/naming.toml";
 
   @Test
   void ruleFilesListTheMembersFile() {
