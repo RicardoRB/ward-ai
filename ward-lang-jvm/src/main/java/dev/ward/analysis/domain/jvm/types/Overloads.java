@@ -96,7 +96,10 @@ final class Overloads {
           .map(shape -> shape.parameters().size() == argument.arity())
           .orElse(false);
     }
-    return argument.type().map(type -> assignability.assignable(type, parameter, loose)).orElse(true);
+    return argument
+        .type()
+        .map(type -> assignability.assignable(type, parameter, loose))
+        .orElse(true);
   }
 
   /** The parameter types as the call site sees them: class arguments applied, variables erased. */

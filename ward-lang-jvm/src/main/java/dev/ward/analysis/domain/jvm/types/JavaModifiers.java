@@ -53,5 +53,4 @@ final class JavaModifiers {
   private static String annotationName(final String written, final TypeScope scope) {
     return scope.resolve(List.of(written.split("\\."))).orElse(written);
   }
-
 }

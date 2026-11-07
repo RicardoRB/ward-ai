@@ -52,7 +52,9 @@ final class TypeScope {
     return enclosing;
   }
 
-  /** Returns the scope inside the class {@code binaryName} with the type parameters {@code names}. */
+  /**
+   * Returns the scope inside the class {@code binaryName} with the type parameters {@code names}.
+   */
   TypeScope inClass(final String binaryName, final Collection<String> names) {
     final List<String> classes = new ArrayList<>();
     classes.add(binaryName);
@@ -95,8 +97,7 @@ final class TypeScope {
       }
     }
     final String imported = imports.single().get(name);
-    final Optional<String> viaImport =
-        imported == null ? Optional.empty() : binaryOf(imported);
+    final Optional<String> viaImport = imported == null ? Optional.empty() : binaryOf(imported);
     if (viaImport.isPresent()) {
       return viaImport;
     }
@@ -122,7 +123,8 @@ final class TypeScope {
   /** Returns the binary names of the classes that may declare the static member {@code name}. */
   List<String> staticOwners(final String name) {
     final List<String> owners = new ArrayList<>();
-    final List<String> declared = new ArrayList<>(imports.staticSingle().getOrDefault(name, List.of()));
+    final List<String> declared =
+        new ArrayList<>(imports.staticSingle().getOrDefault(name, List.of()));
     declared.addAll(imports.staticOnDemand());
     for (final String owner : declared) {
       binaryOf(owner).ifPresent(owners::add);

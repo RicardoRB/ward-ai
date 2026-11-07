@@ -59,7 +59,7 @@ public final class NativeJvmTypeFacts implements TypeFacts {
     } else {
       final KotlinUnitModel model = KotlinUnitModel.of(tree, classes::exists);
       session = new Session(classes.withLocal(model.declared()), analysis.analyze(unit, tree));
-      new KotlinTyper(session).run(model, tree);
+      new KotlinTyper(session).run(model);
     }
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("event=native-type-facts language=" + unit.language() + " spans=" + spans.size());

@@ -49,9 +49,7 @@ final class JavaCalls {
       case JType.TypeVariable variable -> {
         final JType bound = ctx.bounds().get(variable.name());
         final Ctx outer = new Ctx(ctx.scope(), Map.of(), List.of(), Optional.empty());
-        yield bound == null
-            ? Optional.of(JType.ClassType.of(Types.OBJECT))
-            : siteOf(bound, outer);
+        yield bound == null ? Optional.of(JType.ClassType.of(Types.OBJECT)) : siteOf(bound, outer);
       }
       case JType.Wildcard wildcard ->
           wildcard.bound() != null && wildcard.upper()
@@ -125,7 +123,8 @@ final class JavaCalls {
   private Overloads.Argument argument(final SyntaxNode node, final Ctx ctx) {
     final Optional<SyntaxNode> lambda = JavaLambdas.lambdaOf(node);
     if (lambda.isPresent()) {
-      return new Overloads.Argument(Optional.empty(), lambdas.parameters(lambda.get()).size(), false);
+      return new Overloads.Argument(
+          Optional.empty(), lambdas.parameters(lambda.get()).size(), false);
     }
     if (JavaLambdas.isReference(node)) {
       return new Overloads.Argument(Optional.empty(), -1, true);

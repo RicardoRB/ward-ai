@@ -45,12 +45,24 @@ final class JavaMemberReader {
     if (BLOCK.equals(nodeKind)) {
       return Optional.of(
           new SourceModel.Member(
-              node, entry.outer(), scope, Optional.empty(), List.of(), List.of(), Optional.of(node)));
+              node,
+              entry.outer(),
+              scope,
+              Optional.empty(),
+              List.of(),
+              List.of(),
+              Optional.of(node)));
     }
     if (COMPACT.equals(nodeKind)) {
       return Optional.of(
           new SourceModel.Member(
-              node, entry.outer(), scope, Optional.empty(), List.of(), List.of(), Syntax.child(node, BLOCK)));
+              node,
+              entry.outer(),
+              scope,
+              Optional.empty(),
+              List.of(),
+              List.of(),
+              Syntax.child(node, BLOCK)));
     }
     return JavaClassReader.isType(node)
         ? Optional.empty()
@@ -91,7 +103,8 @@ final class JavaMemberReader {
         .flatMap(
             child ->
                 switch (child.kind()) {
-                  case "variableDeclarators" -> Syntax.children(child, "variableDeclarator").stream();
+                  case "variableDeclarators" ->
+                      Syntax.children(child, "variableDeclarator").stream();
                   case "constantDeclarator" -> java.util.stream.Stream.of(child);
                   default -> java.util.stream.Stream.<SyntaxNode>empty();
                 })
@@ -99,7 +112,8 @@ final class JavaMemberReader {
   }
 
   static int dimensions(final SyntaxNode id) {
-    return (int) id.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
+    return (int)
+        id.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
   }
 
   private static Optional<Object> constantOf(final SyntaxNode declarator) {

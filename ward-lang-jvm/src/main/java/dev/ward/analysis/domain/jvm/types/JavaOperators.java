@@ -18,8 +18,7 @@ final class JavaOperators {
   private final JavaExpressions expressions;
   private final JavaTyper typer;
 
-  JavaOperators(
-      final Session session, final JavaExpressions expressions, final JavaTyper typer) {
+  JavaOperators(final Session session, final JavaExpressions expressions, final JavaTyper typer) {
     this.session = session;
     this.expressions = expressions;
     this.typer = typer;
@@ -28,7 +27,8 @@ final class JavaOperators {
   Typed index(final List<SyntaxNode> parts, final Ctx ctx) {
     final Typed array = expressions.expression(parts.get(0), ctx, Optional.empty());
     expressions.expression(parts.get(2), ctx, Optional.empty());
-    return array.type()
+    return array
+        .type()
         .filter(JType.ArrayType.class::isInstance)
         .map(found -> Typed.of(((JType.ArrayType) found).component()))
         .orElse(Typed.UNKNOWN);
@@ -106,8 +106,7 @@ final class JavaOperators {
 
   Typed binary(final List<SyntaxNode> parts, final Ctx ctx) {
     final Typed left = expressions.expression(parts.get(0), ctx, Optional.empty());
-    final Typed right =
-        expressions.expression(parts.get(parts.size() - 1), ctx, Optional.empty());
+    final Typed right = expressions.expression(parts.get(parts.size() - 1), ctx, Optional.empty());
     final List<String> tokens = new ArrayList<>();
     parts.subList(1, parts.size() - 1).forEach(part -> tokens.add(Syntax.token(part)));
     final String operator = String.join("", tokens);

@@ -41,7 +41,11 @@ final class Inference {
     for (int index = 0; index < arguments.size(); index++) {
       final Overloads.Argument argument = arguments.get(index);
       if (!argument.deferred() && argument.type().isPresent()) {
-        unify(Overloads.parameterAt(parameters, index, varargs), argument.type().get(), variables, bound);
+        unify(
+            Overloads.parameterAt(parameters, index, varargs),
+            argument.type().get(),
+            variables,
+            bound);
       }
     }
     return bound;
@@ -55,7 +59,8 @@ final class Inference {
       final Map<String, JType> bound) {
     if (pattern instanceof JType.TypeVariable variable && variables.contains(variable.name())) {
       bind(variable.name(), Types.boxed(actual), bound);
-    } else if (pattern instanceof JType.ArrayType array && actual instanceof JType.ArrayType other) {
+    } else if (pattern instanceof JType.ArrayType array
+        && actual instanceof JType.ArrayType other) {
       unify(array.component(), other.component(), variables, bound);
     } else if (pattern instanceof JType.Wildcard wildcard && wildcard.bound() != null) {
       unify(wildcard.bound(), actual, variables, bound);

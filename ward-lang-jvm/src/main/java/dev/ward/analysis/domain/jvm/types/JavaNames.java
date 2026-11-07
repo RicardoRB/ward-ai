@@ -75,7 +75,8 @@ final class JavaNames {
   }
 
   private Optional<Typed> field(final JType.ClassType site, final String name) {
-    return session.hierarchy
+    return session
+        .hierarchy
         .field(site, name)
         .map(
             found -> {
@@ -116,7 +117,8 @@ final class JavaNames {
     return field(owner, name)
         .or(
             () ->
-                session.hierarchy
+                session
+                    .hierarchy
                     .memberClass(owner.name(), name)
                     .map(binary -> Typed.naming(JType.ClassType.of(binary))))
         .orElse(Typed.UNKNOWN);
@@ -132,7 +134,9 @@ final class JavaNames {
   /** Records the variable that {@code x instanceof T v} declares, or types a plain type. */
   void instanceOf(final SyntaxNode pattern, final Ctx ctx) {
     final Optional<SyntaxNode> written =
-        "typeType".equals(pattern.kind()) ? Optional.of(pattern) : Syntax.child(pattern, "typeType");
+        "typeType".equals(pattern.kind())
+            ? Optional.of(pattern)
+            : Syntax.child(pattern, "typeType");
     if (written.isEmpty()) {
       return;
     }
@@ -144,7 +148,8 @@ final class JavaNames {
       final List<String> segments =
           identifiers.subList(0, identifiers.size() - 1).stream().map(Syntax::text).toList();
       session.variable(
-          identifiers.get(identifiers.size() - 1), ctx.scope().resolve(segments).map(JType.ClassType::of));
+          identifiers.get(identifiers.size() - 1),
+          ctx.scope().resolve(segments).map(JType.ClassType::of));
       return;
     }
     typer.declarePattern(pattern, ctx);

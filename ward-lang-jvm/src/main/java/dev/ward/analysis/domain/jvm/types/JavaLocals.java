@@ -66,7 +66,8 @@ final class JavaLocals {
         (int) id.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
     Syntax.child(id, IDENTIFIER)
         .ifPresent(
-            name -> session.variable(name, base.map(found -> JavaTypes.arrayOf(found, dimensions))));
+            name ->
+                session.variable(name, base.map(found -> JavaTypes.arrayOf(found, dimensions))));
     declarator(declarator, ctx);
   }
 
@@ -88,11 +89,13 @@ final class JavaLocals {
       return Optional.of(array.component());
     }
     if (iterable.isPresent() && iterable.get() instanceof JType.ClassType site) {
-      return session.hierarchy
+      return session
+          .hierarchy
           .asSuper(site, "java.lang.Iterable")
           .filter(view -> view.arguments().size() == 1)
           .map(view -> view.arguments().get(0))
-          .map(argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
+          .map(
+              argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
           .filter(Objects::nonNull);
     }
     return Optional.empty();

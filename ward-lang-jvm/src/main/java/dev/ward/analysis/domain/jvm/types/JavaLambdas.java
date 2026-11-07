@@ -18,8 +18,7 @@ final class JavaLambdas {
   private final JavaTyper typer;
   private final JavaExpressions expressions;
 
-  JavaLambdas(
-      final Session session, final JavaTyper typer, final JavaExpressions expressions) {
+  JavaLambdas(final Session session, final JavaTyper typer, final JavaExpressions expressions) {
     this.session = session;
     this.typer = typer;
     this.expressions = expressions;
@@ -55,7 +54,8 @@ final class JavaLambdas {
     final Optional<JType> body = body(lambda.get(), parameters, ctx);
     shape.ifPresent(
         found ->
-            body.ifPresent(type -> session.inference.unify(found.returns(), type, variables, bound)));
+            body.ifPresent(
+                type -> session.inference.unify(found.returns(), type, variables, bound)));
     session.record(node, Typed.of(declared));
     session.record(lambda.get(), Typed.of(declared));
   }
@@ -67,7 +67,9 @@ final class JavaLambdas {
     for (int index = 0; index < count; index++) {
       final int at = index;
       types.add(
-          shape.filter(found -> at < found.parameters().size()).map(found -> found.parameters().get(at)));
+          shape
+              .filter(found -> at < found.parameters().size())
+              .map(found -> found.parameters().get(at)));
     }
     return types;
   }
@@ -127,7 +129,8 @@ final class JavaLambdas {
               ? parameter
               : Syntax.find(parameter, IDENTIFIER).orElse(parameter);
       final Optional<JType> explicit =
-          Syntax.child(parameter, "typeType").flatMap(written -> JavaTypes.type(written, ctx.scope()));
+          Syntax.child(parameter, "typeType")
+              .flatMap(written -> JavaTypes.type(written, ctx.scope()));
       final Optional<JType> inferred = parameterTypes.get(index);
       session.variable(name, explicit.or(() -> inferred));
     }

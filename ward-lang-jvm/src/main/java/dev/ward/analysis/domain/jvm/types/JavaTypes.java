@@ -63,8 +63,7 @@ final class JavaTypes {
     for (final SyntaxNode child : node.children()) {
       switch (child.kind()) {
         case "packageName" ->
-            segments.addAll(
-                Syntax.children(child, IDENTIFIER).stream().map(Syntax::text).toList());
+            segments.addAll(Syntax.children(child, IDENTIFIER).stream().map(Syntax::text).toList());
         case "typeIdentifier" -> {
           segments.add(Syntax.text(child));
           arguments = List.of();

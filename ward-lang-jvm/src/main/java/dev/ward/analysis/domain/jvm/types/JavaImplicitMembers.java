@@ -99,8 +99,7 @@ final class JavaImplicitMembers {
       final JType self = JType.ClassType.of(owner);
       methods.add(implicit("values", Flags.STATIC, List.of(), new JType.ArrayType(self)));
       methods.add(
-          implicit(
-              "valueOf", Flags.STATIC, List.of(JType.ClassType.of(Types.STRING)), self));
+          implicit("valueOf", Flags.STATIC, List.of(JType.ClassType.of(Types.STRING)), self));
     }
     if (kind == JvmClass.Kind.RECORD) {
       addRecordMembers(members, methods);
@@ -111,7 +110,14 @@ final class JavaImplicitMembers {
   private static JvmMethod implicit(
       final String name, final int extra, final List<JType> parameters, final JType returns) {
     return new JvmMethod(
-        name, Flags.PUBLIC | extra, List.of(), parameters, returns, List.of(), List.of(), List.of());
+        name,
+        Flags.PUBLIC | extra,
+        List.of(),
+        parameters,
+        returns,
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static void addRecordMembers(

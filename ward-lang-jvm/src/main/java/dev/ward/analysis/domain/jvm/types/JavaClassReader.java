@@ -89,7 +89,8 @@ final class JavaClassReader {
   }
 
   /** Reads {@code entry}, whose binary name is {@code prefix} followed by its name. */
-  static SourceModel.ClassDecl read(final Entry entry, final String prefix, final TypeScope outerScope) {
+  static SourceModel.ClassDecl read(
+      final Entry entry, final String prefix, final TypeScope outerScope) {
     final SyntaxNode declaration = entry.declaration();
     final String binary = prefix + entry.name();
     final List<String> variables =

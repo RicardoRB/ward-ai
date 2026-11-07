@@ -26,6 +26,7 @@ final class ConstantPool {
   private static final int LOW_FOUR_BITS = 0x0F;
   private static final int SIX = 6;
   private static final int TWELVE = 12;
+
   /** Tags of four-byte entries: field, method, interface method, name and type, dynamic. */
   private static final int[] FOUR_BYTE_TAGS = {9, 10, 11, 12, 17, 18};
 
@@ -112,7 +113,9 @@ final class ConstantPool {
     return ascii ? new String(bytes, StandardCharsets.US_ASCII) : modifiedUtf8(bytes);
   }
 
-  /** Decodes the modified UTF-8 of class files: two-byte NUL, and surrogates as three bytes each. */
+  /**
+   * Decodes the modified UTF-8 of class files: two-byte NUL, and surrogates as three bytes each.
+   */
   private static String modifiedUtf8(final byte[] bytes) {
     final StringBuilder text = new StringBuilder(bytes.length);
     int at = 0;

@@ -19,8 +19,8 @@ final class SignatureParser {
   private static final char THROWS = '^';
   private static final Map<Character, String> PRIMITIVES =
       Map.of(
-          'B', "byte", 'C', "char", 'D', "double", 'F', "float", 'I', "int", 'J', "long",
-          'S', "short", 'Z', "boolean", 'V', "void");
+          'B', "byte", 'C', "char", 'D', "double", 'F', "float", 'I', "int", 'J', "long", 'S',
+          "short", 'Z', "boolean", 'V', "void");
 
   private final String text;
   private int position;

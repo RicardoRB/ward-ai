@@ -33,7 +33,11 @@ final class JavaTyper {
     final JvmClass jvm = declaration.jvm();
     final DeclInfo info =
         new DeclInfo(
-            Optional.of(jvm), Optional.empty(), Optional.empty(), Optional.empty(), outer.annotations());
+            Optional.of(jvm),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            outer.annotations());
     session.declare(declaration.outer(), info);
     session.declare(declaration.node(), info);
     final Ctx inside =
