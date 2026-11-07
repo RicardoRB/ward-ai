@@ -1,0 +1,12 @@
+{
+  "3:12-3:12": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "3:17-3:17": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  }
+}

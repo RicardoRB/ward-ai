@@ -26,7 +26,7 @@ bit-add-of-signed-byte = { status = "planned", issue = "#314" }
 bit-and = "implemented"
 bit-and-zz = "implemented"
 bit-ior = "implemented"
-bit-ior-of-signed-byte = { status = "planned", issue = "#314" }
+bit-ior-of-signed-byte = "implemented"
 bit-signed-check = { status = "planned", issue = "#316" }
 bit-signed-check-high-bit = "implemented"
 boa-badly-overridden-adapter = { status = "planned", issue = "#314" }
@@ -63,7 +63,7 @@ dl-synchronization-on-boxed-primitive = { status = "planned", issue = "#316" }
 dl-synchronization-on-interned-string = { status = "planned", issue = "#316" }
 dl-synchronization-on-shared-constant = { status = "planned", issue = "#316" }
 dl-synchronization-on-unshared-boxed-primitive = { status = "planned", issue = "#316" }
-dls-dead-local-increment-in-return = { status = "planned", issue = "#314" }
+dls-dead-local-increment-in-return = "implemented"
 dls-dead-local-store = { status = "planned", issue = "#316" }
 dls-dead-local-store-in-return = { status = "planned", issue = "#316" }
 dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
@@ -101,12 +101,12 @@ dmi-constant-db-password = { status = "planned", issue = "#316" }
 dmi-doh = { status = "planned", issue = "#314" }
 dmi-empty-db-password = { status = "planned", issue = "#316" }
 dmi-entry-sets-may-reuse-entry-objects = { status = "planned", issue = "#316" }
-dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor = { status = "planned", issue = "#314" }
+dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor = "implemented"
 dmi-hardcoded-absolute-filename = { status = "planned", issue = "#316" }
 dmi-invoking-hashcode-on-array = "implemented"
 dmi-invoking-tostring-on-anonymous-array = "implemented"
 dmi-invoking-tostring-on-array = "implemented"
-dmi-long-bits-to-double-invoked-on-int = { status = "planned", issue = "#314" }
+dmi-long-bits-to-double-invoked-on-int = "implemented"
 dmi-misleading-substring = { status = "planned", issue = "#316" }
 dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
 dmi-random-used-only-once = "implemented"
@@ -148,7 +148,7 @@ eq-getclass-and-class-constant = { status = "planned", issue = "#316" }
 eq-other-no-object = "implemented"
 eq-overriding-equals-not-symmetric = { status = "planned", issue = "#314" }
 eq-self-no-object = { status = "planned", issue = "#316" }
-eq-self-use-object = { status = "planned", issue = "#314" }
+eq-self-use-object = "implemented"
 eq-unusual = { status = "planned", issue = "#316" }
 es-comparing-parameter-string-with-eq = { status = "planned", issue = "#316" }
 fb-missing-expected-warning = { status = "planned", issue = "#314" }
@@ -181,10 +181,10 @@ hsm-hiding-method = { status = "planned", issue = "#314" }
 ia-ambiguous-invocation-of-inherited-or-outer-method = { status = "planned", issue = "#316" }
 ic-init-circularity = { status = "planned", issue = "#316" }
 ic-superclass-uses-subclass-during-initialization = { status = "planned", issue = "#316" }
-icast-bad-shift-amount = { status = "planned", issue = "#314" }
+icast-bad-shift-amount = "implemented"
 icast-idiv-cast-to-double = { status = "planned", issue = "#316" }
 icast-int-2-long-as-instant = { status = "planned", issue = "#314" }
-icast-int-cast-to-double-passed-to-ceil = { status = "planned", issue = "#314" }
+icast-int-cast-to-double-passed-to-ceil = "implemented"
 icast-int-cast-to-float-passed-to-round = { status = "planned", issue = "#314" }
 icast-integer-multiply-cast-to-long = { status = "planned", issue = "#316" }
 icast-questionable-unsigned-right-shift = { status = "planned", issue = "#316" }
@@ -202,15 +202,15 @@ iju-suite-not-static = "implemented"
 iju-teardown-no-super = "implemented"
 il-container-added-to-itself = "implemented"
 il-infinite-loop = { status = "planned", issue = "#314" }
-il-infinite-recursive-loop = { status = "planned", issue = "#314" }
+il-infinite-recursive-loop = "implemented"
 im-average-computation-could-overflow = { status = "planned", issue = "#316" }
 im-bad-check-for-odd = { status = "planned", issue = "#316" }
 im-multiplying-result-of-irem = { status = "planned", issue = "#314" }
 ima-inefficient-member-access = { status = "planned", issue = "#316" }
 imse-dont-catch-imse = "implemented"
-int-bad-comparison-with-int-value = { status = "planned", issue = "#314" }
+int-bad-comparison-with-int-value = "implemented"
 int-bad-comparison-with-nonnegative-value = "implemented"
-int-bad-comparison-with-signed-byte = { status = "planned", issue = "#314" }
+int-bad-comparison-with-signed-byte = "implemented"
 int-bad-rem-by-1 = { status = "planned", issue = "#316" }
 int-vacuous-bit-operation = { status = "planned", issue = "#316" }
 int-vacuous-comparison = { status = "planned", issue = "#316" }
@@ -266,7 +266,7 @@ nm-future-keyword-used-as-identifier = { status = "planned", issue = "#316" }
 nm-future-keyword-used-as-member-identifier = { status = "planned", issue = "#316" }
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
-nm-method-constructor-confusion = { status = "planned", issue = "#314" }
+nm-method-constructor-confusion = "implemented"
 nm-method-naming-convention = "implemented"
 nm-same-simple-name-as-interface = "implemented"
 nm-same-simple-name-as-superclass = "implemented"
@@ -298,7 +298,7 @@ np-method-return-relaxing-annotation = { status = "planned", issue = "#316" }
 np-nonnull-field-not-initialized-in-constructor = { status = "planned", issue = "#314" }
 np-nonnull-param-violation = { status = "planned", issue = "#314" }
 np-nonnull-return-violation = { status = "planned", issue = "#314" }
-np-null-instanceof = { status = "planned", issue = "#314" }
+np-null-instanceof = "implemented"
 np-null-on-some-path = { status = "planned", issue = "#314" }
 np-null-on-some-path-exception = { status = "planned", issue = "#314" }
 np-null-on-some-path-from-return-value = { status = "planned", issue = "#316" }
@@ -306,7 +306,7 @@ np-null-on-some-path-might-be-infeasible = { status = "planned", issue = "#316" 
 np-null-param-deref = { status = "planned", issue = "#314" }
 np-null-param-deref-all-targets-dangerous = { status = "planned", issue = "#314" }
 np-null-param-deref-nonvirtual = { status = "planned", issue = "#314" }
-np-optional-return-null = { status = "planned", issue = "#314" }
+np-optional-return-null = "implemented"
 np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
 np-store-into-nonnull-field = { status = "planned", issue = "#314" }
 np-sync-and-null-check-field = { status = "planned", issue = "#316" }
@@ -339,7 +339,7 @@ range-array-index = { status = "planned", issue = "#314" }
 range-array-length = { status = "planned", issue = "#314" }
 range-array-offset = { status = "planned", issue = "#314" }
 range-string-index = { status = "planned", issue = "#314" }
-rc-ref-comparison = { status = "planned", issue = "#314" }
+rc-ref-comparison = "implemented"
 rc-ref-comparison-bad-practice = { status = "planned", issue = "#316" }
 rc-ref-comparison-bad-practice-boolean = { status = "planned", issue = "#316" }
 rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
@@ -347,7 +347,7 @@ rcn-redundant-comparison-two-null-values = { status = "planned", issue = "#316" 
 rcn-redundant-nullcheck-of-nonnull-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
-re-bad-syntax-for-regular-expression = { status = "planned", issue = "#314" }
+re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
 rec-catch-exception = { status = "planned", issue = "#316" }
@@ -368,7 +368,7 @@ rv-exception-not-thrown = "implemented"
 rv-negating-result-of-compareto = "implemented"
 rv-rem-of-hashcode = { status = "planned", issue = "#316" }
 rv-rem-of-random-int = { status = "planned", issue = "#316" }
-rv-return-value-ignored = { status = "planned", issue = "#314" }
+rv-return-value-ignored = "implemented"
 rv-return-value-ignored-bad-practice = { status = "planned", issue = "#316" }
 rv-return-value-ignored-inferred = { status = "planned", issue = "#316" }
 rv-return-value-ignored-no-side-effect = { status = "planned", issue = "#316" }
@@ -413,15 +413,15 @@ sic-inner-should-be-static-needs-this = { status = "planned", issue = "#316" }
 sic-threadlocal-deadly-embrace = { status = "planned", issue = "#314" }
 sing-singleton-getter-not-synchronized = { status = "planned", issue = "#314" }
 sing-singleton-has-nonprivate-constructor = { status = "planned", issue = "#314" }
-sing-singleton-implements-clone-method = { status = "planned", issue = "#314" }
-sing-singleton-implements-cloneable = { status = "planned", issue = "#314" }
-sing-singleton-implements-serializable = { status = "planned", issue = "#314" }
+sing-singleton-implements-clone-method = "implemented"
+sing-singleton-implements-cloneable = "implemented"
+sing-singleton-implements-serializable = "implemented"
 sing-singleton-indirectly-implements-cloneable = { status = "planned", issue = "#314" }
 sio-superfluous-instanceof = { status = "planned", issue = "#314" }
 skipped-class-too-big = { status = "planned", issue = "#316" }
 sp-spin-on-field = { status = "planned", issue = "#316" }
-sql-bad-prepared-statement-access = { status = "planned", issue = "#314" }
-sql-bad-resultset-access = { status = "planned", issue = "#314" }
+sql-bad-prepared-statement-access = "implemented"
+sql-bad-resultset-access = "implemented"
 sr-not-checked = { status = "planned", issue = "#316" }
 ss-should-be-static = { status = "planned", issue = "#316" }
 ssd-do-not-use-instance-lock-on-shared-static-data = { status = "planned", issue = "#316" }

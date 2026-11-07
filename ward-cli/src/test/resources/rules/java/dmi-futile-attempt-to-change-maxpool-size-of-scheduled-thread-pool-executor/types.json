@@ -1,0 +1,7 @@
+{
+  "3:5-3:8": {
+    "type": {
+      "name": "java.util.concurrent.ScheduledThreadPoolExecutor"
+    }
+  }
+}

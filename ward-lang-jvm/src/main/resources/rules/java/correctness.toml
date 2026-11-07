@@ -781,3 +781,307 @@ method = "equals"
 arguments = 1
 message = "equals() on an array compares references; use Arrays.equals"
 '''
+
+[[rules]]
+id = "ward:java/bit-ior-of-signed-byte"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["|"]
+types = ["byte"]
+message = "bitwise OR of a signed byte is sign-extended; mask it with 0xff first"
+'''
+
+[[rules]]
+id = "ward:java/int-bad-comparison-with-signed-byte"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["==", "!="]
+types = ["byte"]
+literal-min = "-128"
+literal-max = "127"
+message = "a signed byte is never equal to a value above 127; mask it with 0xff first"
+'''
+
+[[rules]]
+id = "ward:java/int-bad-comparison-with-int-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["==", "!=", "<", ">", "<=", ">="]
+types = ["int"]
+literal-min = "-2147483648"
+literal-max = "2147483647"
+message = "an int is compared with a long constant outside the int range"
+'''
+
+[[rules]]
+id = "ward:java/icast-bad-shift-amount"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["<<", ">>", ">>>"]
+types = ["int"]
+literal-min = "-31"
+literal-max = "31"
+message = "an int is shifted by an amount outside -31 to 31"
+'''
+
+[[rules]]
+id = "ward:java/rc-ref-comparison"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["==", "!="]
+types = ["java.lang.Integer", "java.lang.Long", "java.lang.Short", "java.lang.Byte", "java.lang.Character"]
+both = true
+message = "boxed numbers are compared by reference; use equals"
+'''
+
+[[rules]]
+id = "ward:java/icast-int-cast-to-double-passed-to-ceil"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "typed-call"
+method = "ceil"
+receiver-text = "Math"
+argument = 0
+argument-types = ["int", "long", "short", "byte"]
+message = "Math.ceil of an integral value rounds nothing; the division already truncated"
+'''
+
+[[rules]]
+id = "ward:java/dmi-long-bits-to-double-invoked-on-int"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "typed-call"
+method = "longBitsToDouble"
+receiver-text = "Double"
+argument = 0
+argument-types = ["int", "short", "byte", "char"]
+message = "Double.longBitsToDouble is called with an int; pass a long"
+'''
+
+[[rules]]
+id = "ward:java/sql-bad-resultset-access"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "typed-call"
+method = "(get|update)\\w+"
+receiver-type = "java\\.sql\\.ResultSet"
+argument = 0
+argument-text = "0"
+message = "ResultSet columns start at 1, not 0"
+'''
+
+[[rules]]
+id = "ward:java/sql-bad-prepared-statement-access"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "typed-call"
+method = "set\\w+"
+receiver-type = "java\\.sql\\.PreparedStatement"
+argument = 0
+argument-text = "0"
+message = "PreparedStatement parameters start at 1, not 0"
+'''
+
+[[rules]]
+id = "ward:java/dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "typed-call"
+method = "setMaximumPoolSize"
+receiver-type = "java\\.util\\.concurrent\\.ScheduledThreadPoolExecutor"
+message = "setMaximumPoolSize has no effect on a ScheduledThreadPoolExecutor"
+'''
+
+[[rules]]
+id = "ward:java/rv-return-value-ignored"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "ignored-result"
+types = ["java.lang.String", "java.math.BigInteger", "java.math.BigDecimal", "java.lang.Integer", "java.lang.Long", "java.lang.Double", "java.lang.Boolean", "java.util.Optional", "java.nio.file.Path"]
+message = "the result of this call is ignored; the receiver is immutable, so the call does nothing"
+'''
+
+[[rules]]
+id = "ward:java/re-bad-syntax-for-regular-expression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-regex-literal"
+message = "the regular expression is not valid"
+'''
+
+[[rules]]
+id = "ward:java/il-infinite-recursive-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "self-recursive-method"
+message = "method calls itself as its first statement, so it never returns"
+'''
+
+[[rules]]
+id = "ward:java/np-null-instanceof"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^nullinstanceof'
+message = "instanceof test of a null literal is always false"
+'''
+
+[[rules]]
+id = "ward:java/np-optional-return-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?:java\.util\.)?Optional(?:Int|Long|Double)?(?:<[^(]*>)?\w+\([^)]*\)(?:throws[\w.,]+)?\{.*returnnull;'
+message = "method returns Optional but returns null; return Optional.empty()"
+'''
+
+[[rules]]
+id = "ward:java/eq-self-use-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?![\s\S]*booleanequals\((?:final)?Object)[\s\S]*booleanequals\((?:final)?(?!Object)[\w.<>]+\w+\)'
+message = "class defines equals with a parameter type other than Object and inherits equals(Object)"
+'''
+
+[[rules]]
+id = "ward:java/sing-singleton-implements-cloneable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)(?=[^{]*Cloneable)(?=[\s\S]*private\1\()(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])'
+message = "singleton implements Cloneable, so clone() can create a second instance"
+'''
+
+[[rules]]
+id = "ward:java/sing-singleton-implements-clone-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)(?=[\s\S]*private\1\()(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])(?=[\s\S]*Objectclone\(\))'
+message = "singleton declares clone(), which can create a second instance"
+'''
+
+[[rules]]
+id = "ward:java/sing-singleton-implements-serializable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)(?=[^{]*Serializable)(?=[\s\S]*private\1\()(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])(?![\s\S]*readResolve\()'
+message = "serializable singleton has no readResolve, so deserializing creates a second instance"
+'''
+
+[[rules]]
+id = "ward:java/dls-dead-local-increment-in-return"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '(?:int|long|short|byte|char|Integer|Long)(\w+)[=;,)][\s\S]*return\1(?:\+\+|--);'
+message = "the increment of a local variable in a return statement is lost"
+'''
+
+[[rules]]
+id = "ward:java/nm-method-constructor-confusion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)(?=[\s\S]*(?:void|int|long|boolean|String|Object)\1\()'
+message = "method has the name of its class; it is not a constructor"
+'''

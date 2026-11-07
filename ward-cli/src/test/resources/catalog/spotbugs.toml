@@ -155,7 +155,6 @@ spotbugs = ["BIT_IOR"]
 
 [[rule]]
 name = "bit-ior-of-signed-byte"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BIT_IOR_OF_SIGNED_BYTE"]
 
@@ -343,7 +342,6 @@ spotbugs = ["DE_MIGHT_IGNORE"]
 
 [[rule]]
 name = "dls-dead-local-increment-in-return"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DLS_DEAD_LOCAL_INCREMENT_IN_RETURN"]
 
@@ -482,7 +480,6 @@ spotbugs = ["DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS"]
 
 [[rule]]
 name = "dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_FUTILE_ATTEMPT_TO_CHANGE_MAXPOOL_SIZE_OF_SCHEDULED_THREAD_POOL_EXECUTOR"]
 
@@ -509,7 +506,6 @@ spotbugs = ["DMI_INVOKING_TOSTRING_ON_ARRAY"]
 
 [[rule]]
 name = "dmi-long-bits-to-double-invoked-on-int"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT"]
 
@@ -852,7 +848,6 @@ spotbugs = ["EQ_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "eq-self-use-object"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["EQ_SELF_USE_OBJECT"]
 
@@ -1036,7 +1031,6 @@ spotbugs = ["IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD"]
 
 [[rule]]
 name = "icast-bad-shift-amount"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
 
@@ -1060,7 +1054,6 @@ spotbugs = ["ICAST_INT_2_LONG_AS_INSTANT"]
 
 [[rule]]
 name = "icast-int-cast-to-double-passed-to-ceil"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["ICAST_INT_CAST_TO_DOUBLE_PASSED_TO_CEIL"]
 
@@ -1167,7 +1160,6 @@ spotbugs = ["IL_INFINITE_LOOP"]
 
 [[rule]]
 name = "il-infinite-recursive-loop"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["IL_INFINITE_RECURSIVE_LOOP"]
 
@@ -1202,7 +1194,6 @@ spotbugs = ["IM_MULTIPLYING_RESULT_OF_IREM"]
 
 [[rule]]
 name = "int-bad-comparison-with-int-value"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["INT_BAD_COMPARISON_WITH_INT_VALUE"]
 
@@ -1213,7 +1204,6 @@ spotbugs = ["INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE"]
 
 [[rule]]
 name = "int-bad-comparison-with-signed-byte"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["INT_BAD_COMPARISON_WITH_SIGNED_BYTE"]
 
@@ -1542,7 +1532,6 @@ spotbugs = ["NM_LCASE_TOSTRING"]
 
 [[rule]]
 name = "nm-method-constructor-confusion"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_METHOD_CONSTRUCTOR_CONFUSION"]
 
@@ -1731,7 +1720,6 @@ spotbugs = ["NP_NONNULL_RETURN_VIOLATION"]
 
 [[rule]]
 name = "np-null-instanceof"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_INSTANCEOF"]
 
@@ -1779,7 +1767,6 @@ spotbugs = ["NP_NULL_PARAM_DEREF_NONVIRTUAL"]
 
 [[rule]]
 name = "np-optional-return-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_OPTIONAL_RETURN_NULL"]
 
@@ -2006,7 +1993,6 @@ spotbugs = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"]
 
 [[rule]]
 name = "rc-ref-comparison"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RC_REF_COMPARISON"]
 
@@ -2042,7 +2028,6 @@ spotbugs = ["REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD"]
 
 [[rule]]
 name = "re-bad-syntax-for-regular-expression"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION"]
 
@@ -2136,7 +2121,6 @@ spotbugs = ["RV_REM_OF_RANDOM_INT"]
 
 [[rule]]
 name = "rv-return-value-ignored"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RV_RETURN_VALUE_IGNORED"]
 
@@ -2395,19 +2379,16 @@ spotbugs = ["SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"]
 
 [[rule]]
 name = "sing-singleton-implements-cloneable"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONEABLE"]
 
 [[rule]]
 name = "sing-singleton-implements-clone-method"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONE_METHOD"]
 
 [[rule]]
 name = "sing-singleton-implements-serializable"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SING_SINGLETON_IMPLEMENTS_SERIALIZABLE"]
 
@@ -2443,13 +2424,11 @@ spotbugs = ["SP_SPIN_ON_FIELD"]
 
 [[rule]]
 name = "sql-bad-prepared-statement-access"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SQL_BAD_PREPARED_STATEMENT_ACCESS"]
 
 [[rule]]
 name = "sql-bad-resultset-access"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["SQL_BAD_RESULTSET_ACCESS"]
 
