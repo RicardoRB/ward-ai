@@ -2,10 +2,8 @@
 
 [[rule]]
 name = "atclause-order"
-category = "javadoc"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["AtclauseOrder"]
 
@@ -190,10 +188,8 @@ checkstyle = ["JavadocSeeTagOrder"]
 
 [[rule]]
 name = "javadoc-tag-continuation-indentation"
-category = "javadoc"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocTagContinuationIndentation"]
 
@@ -255,10 +251,8 @@ ruff = ["D101"]
 
 [[rule]]
 name = "non-empty-atclause-description"
-category = "javadoc"
-presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
-issues = { java = "#292", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["NonEmptyAtclauseDescription"]
 
 [[rule]]

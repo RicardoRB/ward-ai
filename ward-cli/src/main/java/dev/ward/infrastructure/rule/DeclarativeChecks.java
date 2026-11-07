@@ -108,9 +108,11 @@ final class DeclarativeChecks {
       default ->
           ScopeAndFormatChecks.isCheck(name)
               ? ScopeAndFormatChecks.build(name, toml)
-              : ImportChecks.isImportCheck(name)
-                  ? ImportChecks.build(name, toml)
-                  : ReviewChecks.build(name, toml);
+              : JavadocChecks.isJavadocCheck(name)
+                  ? JavadocChecks.build(name, toml)
+                  : ImportChecks.isImportCheck(name)
+                      ? ImportChecks.build(name, toml)
+                      : ReviewChecks.build(name, toml);
     };
   }
 
