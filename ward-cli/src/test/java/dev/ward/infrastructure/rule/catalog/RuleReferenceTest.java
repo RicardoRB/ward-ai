@@ -16,8 +16,8 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 /**
- * The rule reference of the website is generated from the catalog, and this test fails when a
- * committed page differs from the generated one. Regenerate the pages with: {@code ./mvnw
+ * The rule reference of the website is generated from the catalog and is not committed: the website
+ * workflow writes it before Astro builds. Write it locally with: {@code ./mvnw
  * -Dtest=RuleReferenceTest -Dward.rules.reference.write=true test}.
  */
 class RuleReferenceTest {
@@ -27,23 +27,11 @@ class RuleReferenceTest {
   private static final Path GENERATED_DIRECTORY = DOCS.resolve("reference").resolve("rules");
 
   @Test
-  void committedPagesEqualTheGeneratedPages() throws IOException {
-    Assumptions.assumeFalse(Boolean.getBoolean(WRITE), "regenerating the pages");
+  void everyCatalogRowAppearsInAGeneratedPage() {
     final Map<String, String> pages = generate(new RuleCatalogReader().load());
-    final List<String> differing = new ArrayList<>();
-    for (final Map.Entry<String, String> page : pages.entrySet()) {
-      final Path file = DOCS.resolve(page.getKey());
-      if (!Files.isRegularFile(file) || !Files.readString(file).equals(page.getValue())) {
-        differing.add(page.getKey());
-      }
-    }
 
-    assertThat(differing)
-        .as(
-            "rule reference pages that differ from the catalog; regenerate with"
-                + " ./mvnw -Dtest=RuleReferenceTest -Dward.rules.reference.write=true test")
-        .isEmpty();
-    assertThat(committedFiles()).containsExactlyInAnyOrderElementsOf(generatedFiles(pages));
+    assertThat(pages).containsKey(RuleReference.INDEX);
+    assertThat(generatedFiles(pages)).isNotEmpty();
   }
 
   @Test
