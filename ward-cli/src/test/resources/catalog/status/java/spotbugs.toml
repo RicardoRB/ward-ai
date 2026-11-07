@@ -47,7 +47,7 @@ cn-implements-clone-but-not-cloneable = { status = "planned", issue = "#316" }
 cnt-rough-constant-value = { status = "planned", issue = "#316" }
 co-abstract-self = { status = "planned", issue = "#316" }
 co-compareto-incorrect-floating = { status = "planned", issue = "#316" }
-co-compareto-results-min-value = { status = "planned", issue = "#316" }
+co-compareto-results-min-value = "implemented"
 co-self-no-object = { status = "planned", issue = "#316" }
 ct-constructor-throw = { status = "planned", issue = "#316" }
 cwo-closed-without-opened = { status = "planned", issue = "#316" }
@@ -57,7 +57,7 @@ dc-doublecheck = { status = "planned", issue = "#316" }
 dc-partially-constructed = { status = "planned", issue = "#316" }
 dcn-nullpointer-exception = { status = "planned", issue = "#316" }
 de-might-drop = { status = "planned", issue = "#316" }
-de-might-ignore = { status = "planned", issue = "#316" }
+de-might-ignore = "implemented"
 dl-synchronization-on-boolean = { status = "planned", issue = "#316" }
 dl-synchronization-on-boxed-primitive = { status = "planned", issue = "#316" }
 dl-synchronization-on-interned-string = { status = "planned", issue = "#316" }
@@ -76,7 +76,7 @@ dm-boxed-primitive-for-parsing = { status = "planned", issue = "#316" }
 dm-boxed-primitive-tostring = { status = "planned", issue = "#316" }
 dm-convert-case = { status = "planned", issue = "#316" }
 dm-default-encoding = { status = "planned", issue = "#316" }
-dm-exit = { status = "planned", issue = "#316" }
+dm-exit = "implemented"
 dm-fp-number-ctor = { status = "planned", issue = "#316" }
 dm-gc = { status = "planned", issue = "#316" }
 dm-invalid-min-max = "implemented"
@@ -84,7 +84,7 @@ dm-monitor-wait-on-condition = { status = "planned", issue = "#316" }
 dm-new-for-getclass = { status = "planned", issue = "#316" }
 dm-nextint-via-nextdouble = { status = "planned", issue = "#316" }
 dm-number-ctor = { status = "planned", issue = "#316" }
-dm-run-finalizers-on-exit = { status = "planned", issue = "#316" }
+dm-run-finalizers-on-exit = "implemented"
 dm-string-ctor = { status = "planned", issue = "#316" }
 dm-string-tostring = { status = "planned", issue = "#316" }
 dm-string-void-ctor = { status = "planned", issue = "#316" }
@@ -109,12 +109,12 @@ dmi-invoking-tostring-on-array = "implemented"
 dmi-long-bits-to-double-invoked-on-int = { status = "planned", issue = "#314" }
 dmi-misleading-substring = { status = "planned", issue = "#316" }
 dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
-dmi-random-used-only-once = { status = "planned", issue = "#316" }
+dmi-random-used-only-once = "implemented"
 dmi-scheduled-thread-pool-executor-with-zero-core-threads = "implemented"
 dmi-thread-passed-where-runnable-expected = { status = "planned", issue = "#316" }
 dmi-unsupported-method = { status = "planned", issue = "#316" }
 dmi-useless-substring = { status = "planned", issue = "#316" }
-dmi-using-removeall-to-clear-collection = { status = "planned", issue = "#316" }
+dmi-using-removeall-to-clear-collection = "implemented"
 dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
 dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316" }
@@ -134,7 +134,7 @@ ei-expose-rep = { status = "planned", issue = "#316" }
 ei-expose-rep2 = { status = "planned", issue = "#316" }
 ei-expose-static-buf2 = { status = "planned", issue = "#316" }
 ei-expose-static-rep2 = { status = "planned", issue = "#316" }
-env-use-property-instead-of-env = { status = "planned", issue = "#316" }
+env-use-property-instead-of-env = "implemented"
 eos-bad-end-of-stream-check = "implemented"
 eq-abstract-self = { status = "planned", issue = "#316" }
 eq-always-false = "implemented"
@@ -155,14 +155,14 @@ fb-missing-expected-warning = { status = "planned", issue = "#314" }
 fb-unexpected-warning = { status = "planned", issue = "#314" }
 fe-floating-point-equality = { status = "planned", issue = "#316" }
 fe-test-if-equal-to-not-a-number = "implemented"
-fi-empty = { status = "planned", issue = "#316" }
-fi-explicit-invocation = { status = "planned", issue = "#316" }
-fi-finalizer-nulls-fields = { status = "planned", issue = "#316" }
-fi-finalizer-only-nulls-fields = { status = "planned", issue = "#316" }
-fi-missing-super-call = { status = "planned", issue = "#316" }
+fi-empty = "implemented"
+fi-explicit-invocation = "implemented"
+fi-finalizer-nulls-fields = "implemented"
+fi-finalizer-only-nulls-fields = "implemented"
+fi-missing-super-call = "implemented"
 fi-nullify-super = { status = "planned", issue = "#316" }
 fi-public-should-be-protected = { status = "planned", issue = "#316" }
-fi-useless = { status = "planned", issue = "#316" }
+fi-useless = "implemented"
 fl-floats-as-loop-counters = "implemented"
 fl-math-using-float-precision = { status = "planned", issue = "#314" }
 fs-bad-date-format-flag-combo = { status = "planned", issue = "#316" }
@@ -207,7 +207,7 @@ im-average-computation-could-overflow = { status = "planned", issue = "#316" }
 im-bad-check-for-odd = { status = "planned", issue = "#316" }
 im-multiplying-result-of-irem = { status = "planned", issue = "#314" }
 ima-inefficient-member-access = { status = "planned", issue = "#316" }
-imse-dont-catch-imse = { status = "planned", issue = "#316" }
+imse-dont-catch-imse = "implemented"
 int-bad-comparison-with-int-value = { status = "planned", issue = "#314" }
 int-bad-comparison-with-nonnegative-value = "implemented"
 int-bad-comparison-with-signed-byte = { status = "planned", issue = "#314" }
@@ -234,8 +234,8 @@ li-lazy-init-update-static = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-clone = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-constructor = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-read-object = { status = "planned", issue = "#316" }
-me-enum-field-setter = { status = "planned", issue = "#316" }
-me-mutable-enum-field = { status = "planned", issue = "#316" }
+me-enum-field-setter = "implemented"
+me-mutable-enum-field = "implemented"
 mf-class-masks-field = { status = "planned", issue = "#314" }
 mf-method-masks-field = { status = "planned", issue = "#314" }
 ml-sync-on-field-to-guard-changing-that-field = { status = "planned", issue = "#316" }
@@ -258,7 +258,7 @@ mtia-suspect-struts-instance-field = { status = "planned", issue = "#316" }
 mwn-mismatched-notify = { status = "planned", issue = "#316" }
 mwn-mismatched-wait = { status = "planned", issue = "#316" }
 nm-bad-equal = "implemented"
-nm-class-naming-convention = { status = "planned", issue = "#316" }
+nm-class-naming-convention = "implemented"
 nm-class-not-exception = { status = "planned", issue = "#316" }
 nm-confusing = { status = "planned", issue = "#316" }
 nm-field-naming-convention = { status = "planned", issue = "#316" }
@@ -267,9 +267,9 @@ nm-future-keyword-used-as-member-identifier = { status = "planned", issue = "#31
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
 nm-method-constructor-confusion = { status = "planned", issue = "#314" }
-nm-method-naming-convention = { status = "planned", issue = "#316" }
-nm-same-simple-name-as-interface = { status = "planned", issue = "#316" }
-nm-same-simple-name-as-superclass = { status = "planned", issue = "#316" }
+nm-method-naming-convention = "implemented"
+nm-same-simple-name-as-interface = "implemented"
+nm-same-simple-name-as-superclass = "implemented"
 nm-very-confusing = { status = "planned", issue = "#314" }
 nm-very-confusing-intentional = { status = "planned", issue = "#316" }
 nm-wrong-package = { status = "planned", issue = "#314" }
@@ -365,7 +365,7 @@ rv-check-compareto-for-specific-return-value = "implemented"
 rv-check-for-positive-indexof = { status = "planned", issue = "#316" }
 rv-dont-just-null-check-readline = { status = "planned", issue = "#316" }
 rv-exception-not-thrown = "implemented"
-rv-negating-result-of-compareto = { status = "planned", issue = "#316" }
+rv-negating-result-of-compareto = "implemented"
 rv-rem-of-hashcode = { status = "planned", issue = "#316" }
 rv-rem-of-random-int = { status = "planned", issue = "#316" }
 rv-return-value-ignored = { status = "planned", issue = "#314" }
@@ -393,9 +393,9 @@ se-method-must-be-private = "implemented"
 se-no-serialversionid = { status = "planned", issue = "#316" }
 se-no-suitable-constructor = { status = "planned", issue = "#316" }
 se-no-suitable-constructor-for-externalization = { status = "planned", issue = "#316" }
-se-nonfinal-serialversionid = { status = "planned", issue = "#316" }
-se-nonlong-serialversionid = { status = "planned", issue = "#316" }
-se-nonstatic-serialversionid = { status = "planned", issue = "#316" }
+se-nonfinal-serialversionid = "implemented"
+se-nonlong-serialversionid = "implemented"
+se-nonstatic-serialversionid = "implemented"
 se-prevent-ext-obj-overwrite = { status = "planned", issue = "#316" }
 se-private-read-resolve-not-inherited = { status = "planned", issue = "#316" }
 se-read-resolve-is-static = "implemented"
@@ -438,9 +438,9 @@ testing = { status = "planned", issue = "#316" }
 testing1 = { status = "planned", issue = "#316" }
 testing2 = { status = "planned", issue = "#316" }
 testing3 = { status = "planned", issue = "#316" }
-throws-method-throws-clause-basic-exception = { status = "planned", issue = "#316" }
-throws-method-throws-clause-throwable = { status = "planned", issue = "#316" }
-throws-method-throws-runtimeexception = { status = "planned", issue = "#316" }
+throws-method-throws-clause-basic-exception = "implemented"
+throws-method-throws-clause-throwable = "implemented"
+throws-method-throws-runtimeexception = "implemented"
 tlw-two-lock-wait = { status = "planned", issue = "#316" }
 tq-always-value-used-where-never-required = { status = "planned", issue = "#314" }
 tq-comparing-values-with-incompatible-type-qualifiers = { status = "planned", issue = "#314" }
@@ -458,7 +458,7 @@ uc-useless-void-method = { status = "planned", issue = "#316" }
 ucf-useless-control-flow = { status = "planned", issue = "#316" }
 ucf-useless-control-flow-next-line = { status = "planned", issue = "#316" }
 ug-sync-set-unsync-get = { status = "planned", issue = "#316" }
-ui-inheritance-unsafe-getresource = { status = "planned", issue = "#316" }
+ui-inheritance-unsafe-getresource = "implemented"
 ul-unreleased-lock = { status = "planned", issue = "#316" }
 ul-unreleased-lock-exception-path = { status = "planned", issue = "#316" }
 um-unnecessary-math = { status = "planned", issue = "#316" }
@@ -484,7 +484,7 @@ uwf-field-not-initialized-in-constructor = { status = "planned", issue = "#316" 
 uwf-null-field = { status = "planned", issue = "#314" }
 uwf-unwritten-field = { status = "planned", issue = "#314" }
 uwf-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
-va-format-string-uses-newline = { status = "planned", issue = "#316" }
+va-format-string-uses-newline = "implemented"
 va-primitive-array-passed-to-object-vararg = { status = "planned", issue = "#314" }
 vo-volatile-increment = { status = "planned", issue = "#316" }
 vo-volatile-reference-to-array = { status = "planned", issue = "#316" }

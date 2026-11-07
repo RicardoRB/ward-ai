@@ -279,7 +279,6 @@ spotbugs = ["CO_COMPARETO_INCORRECT_FLOATING"]
 
 [[rule]]
 name = "co-compareto-results-min-value"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
 
@@ -339,7 +338,6 @@ spotbugs = ["DE_MIGHT_DROP"]
 
 [[rule]]
 name = "de-might-ignore"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DE_MIGHT_IGNORE"]
 
@@ -529,7 +527,6 @@ spotbugs = ["DMI_NONSERIALIZABLE_OBJECT_WRITTEN"]
 
 [[rule]]
 name = "dmi-random-used-only-once"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DMI_RANDOM_USED_ONLY_ONCE"]
 
@@ -558,7 +555,6 @@ spotbugs = ["DMI_USELESS_SUBSTRING"]
 
 [[rule]]
 name = "dmi-using-removeall-to-clear-collection"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
 
@@ -611,7 +607,6 @@ spotbugs = ["DM_DEFAULT_ENCODING"]
 
 [[rule]]
 name = "dm-exit"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DM_EXIT"]
 
@@ -658,7 +653,6 @@ spotbugs = ["DM_NUMBER_CTOR"]
 
 [[rule]]
 name = "dm-run-finalizers-on-exit"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["DM_RUN_FINALIZERS_ON_EXIT"]
 
@@ -781,7 +775,6 @@ spotbugs = ["EI_EXPOSE_STATIC_REP2"]
 
 [[rule]]
 name = "env-use-property-instead-of-env"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ENV_USE_PROPERTY_INSTEAD_OF_ENV"]
 
@@ -906,31 +899,26 @@ spotbugs = ["FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER"]
 
 [[rule]]
 name = "fi-empty"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_EMPTY"]
 
 [[rule]]
 name = "fi-explicit-invocation"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_EXPLICIT_INVOCATION"]
 
 [[rule]]
 name = "fi-finalizer-nulls-fields"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_FINALIZER_NULLS_FIELDS"]
 
 [[rule]]
 name = "fi-finalizer-only-nulls-fields"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_FINALIZER_ONLY_NULLS_FIELDS"]
 
 [[rule]]
 name = "fi-missing-super-call"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_MISSING_SUPER_CALL"]
 
@@ -948,7 +936,6 @@ spotbugs = ["FI_PUBLIC_SHOULD_BE_PROTECTED"]
 
 [[rule]]
 name = "fi-useless"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["FI_USELESS"]
 
@@ -1192,7 +1179,6 @@ spotbugs = ["IMA_INEFFICIENT_MEMBER_ACCESS"]
 
 [[rule]]
 name = "imse-dont-catch-imse"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["IMSE_DONT_CATCH_IMSE"]
 
@@ -1370,13 +1356,11 @@ spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_READ_OBJECT"]
 
 [[rule]]
 name = "me-enum-field-setter"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ME_ENUM_FIELD_SETTER"]
 
 [[rule]]
 name = "me-mutable-enum-field"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ME_MUTABLE_ENUM_FIELD"]
 
@@ -1513,7 +1497,6 @@ spotbugs = ["NM_BAD_EQUAL"]
 
 [[rule]]
 name = "nm-class-naming-convention"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NM_CLASS_NAMING_CONVENTION"]
 
@@ -1565,19 +1548,16 @@ spotbugs = ["NM_METHOD_CONSTRUCTOR_CONFUSION"]
 
 [[rule]]
 name = "nm-method-naming-convention"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NM_METHOD_NAMING_CONVENTION"]
 
 [[rule]]
 name = "nm-same-simple-name-as-interface"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NM_SAME_SIMPLE_NAME_AS_INTERFACE"]
 
 [[rule]]
 name = "nm-same-simple-name-as-superclass"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"]
 
@@ -2139,7 +2119,6 @@ spotbugs = ["RV_EXCEPTION_NOT_THROWN"]
 
 [[rule]]
 name = "rv-negating-result-of-compareto"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["RV_NEGATING_RESULT_OF_COMPARETO"]
 
@@ -2288,19 +2267,16 @@ spotbugs = ["SE_METHOD_MUST_BE_PRIVATE"]
 
 [[rule]]
 name = "se-nonfinal-serialversionid"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_NONFINAL_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-nonlong-serialversionid"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_NONLONG_SERIALVERSIONID"]
 
 [[rule]]
 name = "se-nonstatic-serialversionid"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["SE_NONSTATIC_SERIALVERSIONID"]
 
@@ -2573,19 +2549,16 @@ spotbugs = ["TESTING3"]
 
 [[rule]]
 name = "throws-method-throws-clause-basic-exception"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"]
 
 [[rule]]
 name = "throws-method-throws-clause-throwable"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_THROWABLE"]
 
 [[rule]]
 name = "throws-method-throws-runtimeexception"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"]
 
@@ -2693,7 +2666,6 @@ spotbugs = ["UG_SYNC_SET_UNSYNC_GET"]
 
 [[rule]]
 name = "ui-inheritance-unsafe-getresource"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["UI_INHERITANCE_UNSAFE_GETRESOURCE"]
 
@@ -2849,7 +2821,6 @@ spotbugs = ["UW_UNCOND_WAIT"]
 
 [[rule]]
 name = "va-format-string-uses-newline"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["VA_FORMAT_STRING_USES_NEWLINE"]
 

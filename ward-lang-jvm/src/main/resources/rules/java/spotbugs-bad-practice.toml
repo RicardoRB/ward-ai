@@ -1,0 +1,415 @@
+# SpotBugs BAD_PRACTICE patterns for Java, part 1. Most rules match the text of a node, so they approximate
+# SpotBugs' detectors; node text has no separators between tokens, so patterns match adjacent words.
+
+[[rules]]
+id = "ward:java/dm-exit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(System\.exit|Runtime\.getRuntime\(\)\.(exit|halt))\('
+message = "{value} ends the JVM; return or throw instead"
+'''
+
+[[rules]]
+id = "ward:java/dm-run-finalizers-on-exit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(System|Runtime(\.getRuntime\(\))?)\.runFinalizersOnExit\('
+message = "runFinalizersOnExit is deprecated and unsafe"
+'''
+
+[[rules]]
+id = "ward:java/fi-empty"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(throws[\w.,]+)?\{\}$'
+message = "empty finalize() method; remove it"
+'''
+
+[[rules]]
+id = "ward:java/fi-explicit-invocation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?!super\.)[\w.()]+\.finalize\(\)$'
+message = "finalize() is invoked explicitly"
+'''
+
+[[rules]]
+id = "ward:java/fi-useless"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(throws[\w.,]+)?\{super\.finalize\(\);\}$'
+message = "finalize() only calls super.finalize(); remove it"
+'''
+
+[[rules]]
+id = "ward:java/fi-missing-super-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(throws[\w.,]+)?\{(?!\})(?!.*super\.finalize\(\))'
+message = "finalize() does not call super.finalize()"
+'''
+
+[[rules]]
+id = "ward:java/fi-finalizer-only-nulls-fields"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(throws[\w.,]+)?\{((this\.)?\w+=null;)+\}$'
+message = "finalize() only sets fields to null, which does not help the collector"
+'''
+
+[[rules]]
+id = "ward:java/fi-finalizer-nulls-fields"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(throws[\w.,]+)?\{(?!((this\.)?\w+=null;)+\}$)(?=.*(this\.)?\w+=null;)'
+message = "finalize() sets fields to null, which does not help the collector"
+'''
+
+[[rules]]
+id = "ward:java/dmi-random-used-only-once"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^newRandom\([^()]*\)\.next\w+\('
+message = "a new Random is used for one value; keep and reuse one instance"
+'''
+
+[[rules]]
+id = "ward:java/dmi-using-removeall-to-clear-collection"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(\w+)\.removeAll\(\1\)$'
+message = "removeAll on the collection itself; use clear()"
+'''
+
+[[rules]]
+id = "ward:java/env-use-property-instead-of-env"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^System\.getenv\("(HOME|USER|USERNAME|TMP|TEMP|TMPDIR|JAVA_HOME|PWD)"\)$'
+message = "read this from a system property instead of the environment"
+'''
+
+[[rules]]
+id = "ward:java/va-format-string-uses-newline"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.]+\.)?(?:format|printf|formatted)\("[^"]*\\n'
+message = "format string contains \\n; use %n"
+'''
+
+[[rules]]
+id = "ward:java/ui-inheritance-unsafe-getresource"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^getClass\(\)\.getResource(AsStream)?\('
+message = "getClass().getResource breaks in subclasses; use the class literal"
+'''
+
+[[rules]]
+id = "ward:java/imse-dont-catch-imse"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchType"]
+text = '(^|[.|])IllegalMonitorStateException($|\|)'
+message = "IllegalMonitorStateException is caught; fix the locking instead"
+'''
+
+[[rules]]
+id = "ward:java/de-might-ignore"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchClause"]
+text = '^catch\([^()]*\)\{\}$'
+message = "exception is caught and ignored"
+'''
+
+[[rules]]
+id = "ward:java/co-compareto-results-min-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^returnInteger\.MIN_VALUE;$'
+message = "compareTo returns Integer.MIN_VALUE, which cannot be negated"
+'''
+
+[[rules]]
+id = "ward:java/rv-negating-result-of-compareto"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^-[\w.()]*\.compareTo\([^()]*\)$'
+message = "the result of compareTo is negated; swap the operands instead"
+'''
+
+[[rules]]
+id = "ward:java/throws-method-throws-clause-basic-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["qualifiedNameList"]
+text = '(^|,)(java\.lang\.)?Exception(,|$)'
+message = "method declares throws Exception; declare the specific exceptions"
+'''
+
+[[rules]]
+id = "ward:java/throws-method-throws-clause-throwable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["qualifiedNameList"]
+text = '(^|,)(java\.lang\.)?Throwable(,|$)'
+message = "method declares throws Throwable; declare the specific exceptions"
+'''
+
+[[rules]]
+id = "ward:java/throws-method-throws-runtimeexception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["qualifiedNameList"]
+text = '(^|,)(java\.lang\.)?RuntimeException(,|$)'
+message = "method declares throws RuntimeException; declare the specific exceptions"
+'''
+
+[[rules]]
+id = "ward:java/nm-class-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
+name = "identifier"
+pattern = '[A-Z].*'
+message = "class name {value} should start with an upper-case letter"
+'''
+
+[[rules]]
+id = "ward:java/nm-method-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = '[a-z].*'
+message = "method name {value} should start with a lower-case letter"
+'''
+
+[[rules]]
+id = "ward:java/me-mutable-enum-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+inside = ["enumDeclaration"]
+not-modifiers = ["final"]
+text = '.'
+message = "enum field {value} is not final; enum state should not change"
+'''
+
+[[rules]]
+id = "ward:java/me-enum-field-setter"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+inside = ["enumDeclaration"]
+modifiers = ["public"]
+text = '^voidset[A-Z]\w*\('
+message = "enum has a public setter; enum state should not change"
+'''
+
+[[rules]]
+id = "ward:java/nm-same-simple-name-as-superclass"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)extends(?:\w+\.)+\1(?![\w<])'
+message = "class has the same simple name as its superclass"
+'''
+
+[[rules]]
+id = "ward:java/nm-same-simple-name-as-interface"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class(\w+)(?:extends[\w.]+)?implements(?:[\w.]+,)*(?:\w+\.)+\1|interface(\w+)extends(?:[\w.]+,)*(?:\w+\.)+\2)(?![\w<])'
+message = "type has the same simple name as an interface it extends or implements"
+'''
+
+[[rules]]
+id = "ward:java/se-nonstatic-serialversionid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?!.*static)\w*serialVersionUID(=|;)'
+message = "serialVersionUID must be static"
+'''
+
+[[rules]]
+id = "ward:java/se-nonfinal-serialversionid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?=.*static)(?!.*final)\w*serialVersionUID(=|;)'
+message = "serialVersionUID must be final"
+'''
+
+[[rules]]
+id = "ward:java/se-nonlong-serialversionid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^\w*(?<!long)serialVersionUID(=|;)'
+message = "serialVersionUID must be a long"
+'''
