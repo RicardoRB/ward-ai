@@ -1,0 +1,14 @@
+{
+  "3:12-3:17": {
+    "type": {
+      "name": "int",
+      "primitive": true,
+      "array": 1
+    }
+  },
+  "3:26-3:29": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}
