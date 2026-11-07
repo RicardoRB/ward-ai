@@ -2,6 +2,7 @@ package dev.ward.infrastructure.analysis.jvm;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,15 +11,9 @@ import java.util.Optional;
  * a hit.
  */
 final class JimageIndex {
-  /** Position of the offset of a resource, in the attributes of a location. */
-  static final int OFFSET = 5;
-
-  /** Position of the compressed size, which is zero for a resource that is stored as it is. */
-  static final int COMPRESSED = 6;
-
-  /** Position of the size of a resource after decompression. */
-  static final int UNCOMPRESSED = 7;
-
+  private static final int OFFSET = 5;
+  private static final int COMPRESSED = 6;
+  private static final int UNCOMPRESSED = 7;
   private static final int HEADER_SIZE = 28;
   private static final int TABLE_LENGTH_AT = 16;
   private static final int LOCATIONS_SIZE_AT = 20;
@@ -43,6 +38,18 @@ final class JimageIndex {
   private final int stringsStart;
   private final int indexSize;
 
+  /**
+   * Where a resource is.
+   *
+   * @param offset where its content starts, after the index
+   * @param compressed whether it is stored compressed
+   * @param size its size once decompressed
+   */
+  record Location(int offset, boolean compressed, int size) {}
+
+  /** A location with the string-table offsets of the parts of its name. */
+  private record Entry(List<Integer> names, Location location) {}
+
   JimageIndex(final ByteBuffer image) {
     this.image = image;
     this.tableLength = image.getInt(TABLE_LENGTH_AT);
@@ -59,7 +66,7 @@ final class JimageIndex {
    * Returns the attributes of the resource {@code name}, such as {@code
    * /java.base/java/lang/Object.class}.
    */
-  Optional<long[]> locate(final String name) {
+  Optional<Location> locate(final String name) {
     if (tableLength == 0) {
       return Optional.empty();
     }
@@ -69,14 +76,14 @@ final class JimageIndex {
       return Optional.empty();
     }
     final int index = redirect < 0 ? -1 - redirect : hash(name, redirect) % tableLength;
-    final long[] attributes = attributes(image.getInt(offsetsStart + index * Integer.BYTES));
-    return fullName(attributes).equals(name) ? Optional.of(attributes) : Optional.empty();
+    final Entry entry = entry(image.getInt(offsetsStart + index * Integer.BYTES));
+    return fullName(entry).equals(name) ? Optional.of(entry.location()) : Optional.empty();
   }
 
   /** Reads the content of a resource that is stored as it is. */
-  byte[] content(final long[] attributes) {
-    final byte[] bytes = new byte[(int) attributes[UNCOMPRESSED]];
-    image.get(indexSize + (int) attributes[OFFSET], bytes);
+  byte[] content(final Location location) {
+    final byte[] bytes = new byte[location.size()];
+    image.get(indexSize + location.offset(), bytes);
     return bytes;
   }
 
@@ -92,9 +99,9 @@ final class JimageIndex {
     return new String(bytes, StandardCharsets.UTF_8);
   }
 
-  /** Returns the offset into the image of the integers of a resource. */
-  int integerAt(final long[] attributes, final int position) {
-    return image.getInt(indexSize + (int) attributes[OFFSET] + position);
+  /** Reads the integer at {@code position} in the content of a resource. */
+  int integerAt(final Location location, final int position) {
+    return image.getInt(indexSize + location.offset() + position);
   }
 
   private static int hash(final String text, final int seed) {
@@ -105,7 +112,7 @@ final class JimageIndex {
     return value & POSITIVE_MASK;
   }
 
-  private long[] attributes(final int offset) {
+  private Entry entry(final int offset) {
     final long[] attributes = new long[ATTRIBUTES];
     int at = locationsStart + offset;
     int data = image.get(at) & BYTE_MASK;
@@ -115,7 +122,14 @@ final class JimageIndex {
       at += 1 + length;
       data = image.get(at) & BYTE_MASK;
     }
-    return attributes;
+    return new Entry(
+        List.of(
+            (int) attributes[MODULE],
+            (int) attributes[PARENT],
+            (int) attributes[BASE],
+            (int) attributes[EXTENSION]),
+        new Location(
+            (int) attributes[OFFSET], attributes[COMPRESSED] != 0, (int) attributes[UNCOMPRESSED]));
   }
 
   private long bigEndian(final int position, final int length) {
@@ -126,18 +140,18 @@ final class JimageIndex {
     return value;
   }
 
-  private String fullName(final long[] attributes) {
+  private String fullName(final Entry entry) {
     final StringBuilder name = new StringBuilder();
-    final String module = string((int) attributes[MODULE]);
+    final String module = string(entry.names().get(0));
     if (!module.isEmpty()) {
       name.append('/').append(module).append('/');
     }
-    final String parent = string((int) attributes[PARENT]);
+    final String parent = string(entry.names().get(1));
     if (!parent.isEmpty()) {
       name.append(parent).append('/');
     }
-    name.append(string((int) attributes[BASE]));
-    final String extension = string((int) attributes[EXTENSION]);
+    name.append(string(entry.names().get(2)));
+    final String extension = string(entry.names().get(3));
     if (!extension.isEmpty()) {
       name.append('.').append(extension);
     }

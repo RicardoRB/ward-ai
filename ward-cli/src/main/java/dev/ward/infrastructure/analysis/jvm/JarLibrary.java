@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.jvm.types.ClassFileException;
 import dev.ward.analysis.domain.jvm.types.ClassFileReader;
 import dev.ward.analysis.domain.jvm.types.JvmClass;
 import dev.ward.analysis.domain.jvm.types.JvmLibrary;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -30,7 +28,7 @@ import java.util.zip.ZipFile;
  * a warm run knows which classes the jar holds without opening it again; the jar is opened only to
  * read a class that a rule asked about.
  */
-public final class JarLibrary implements JvmLibrary, Closeable {
+public final class JarLibrary implements JvmLibrary {
   private static final Logger LOGGER = Logger.getLogger(JarLibrary.class.getName());
   private static final String CLASS_SUFFIX = ".class";
   private static final String INDEX_PREFIX = "jar-";
@@ -41,7 +39,6 @@ public final class JarLibrary implements JvmLibrary, Closeable {
 
   private final Path jar;
   private final Set<String> names;
-  private final AtomicReference<ZipFile> zip = new AtomicReference<>();
 
   private JarLibrary(final Path jar, final Set<String> names) {
     this.jar = jar;
@@ -127,8 +124,7 @@ public final class JarLibrary implements JvmLibrary, Closeable {
     if (!names.contains(name)) {
       return Optional.empty();
     }
-    try {
-      final ZipFile file = opened();
+    try (ZipFile file = new ZipFile(jar.toFile())) {
       final ZipEntry entry = file.getEntry(name.replace('.', '/') + CLASS_SUFFIX);
       if (entry == null) {
         return Optional.empty();
@@ -139,27 +135,6 @@ public final class JarLibrary implements JvmLibrary, Closeable {
     } catch (IOException | ClassFileException unreadable) {
       LOGGER.log(Level.FINE, "event=jar-class-unreadable");
       return Optional.empty();
-    }
-  }
-
-  private ZipFile opened() throws IOException {
-    final ZipFile current = zip.get();
-    if (current != null) {
-      return current;
-    }
-    final ZipFile fresh = new ZipFile(jar.toFile());
-    if (zip.compareAndSet(null, fresh)) {
-      return fresh;
-    }
-    fresh.close();
-    return zip.get();
-  }
-
-  @Override
-  public void close() throws IOException {
-    final ZipFile current = zip.getAndSet(null);
-    if (current != null) {
-      current.close();
     }
   }
 }

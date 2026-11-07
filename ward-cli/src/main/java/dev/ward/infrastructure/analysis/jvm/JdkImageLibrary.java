@@ -84,8 +84,8 @@ public final class JdkImageLibrary implements JvmLibrary, Closeable {
 
   @Override
   public Optional<JvmClass> find(final String name) {
-    final Optional<long[]> found = resourceName(name).flatMap(index::locate);
-    if (found.isEmpty() || found.get()[JimageIndex.COMPRESSED] != 0) {
+    final Optional<JimageIndex.Location> found = resourceName(name).flatMap(index::locate);
+    if (found.isEmpty() || found.get().compressed()) {
       return Optional.empty();
     }
     try {
@@ -113,11 +113,11 @@ public final class JdkImageLibrary implements JvmLibrary, Closeable {
     if (packageName.isEmpty()) {
       return Optional.empty();
     }
-    final Optional<long[]> found = index.locate("/packages/" + packageName);
-    if (found.isEmpty() || found.get()[JimageIndex.COMPRESSED] != 0) {
+    final Optional<JimageIndex.Location> found = index.locate("/packages/" + packageName);
+    if (found.isEmpty() || found.get().compressed()) {
       return Optional.empty();
     }
-    final int size = (int) found.get()[JimageIndex.UNCOMPRESSED];
+    final int size = found.get().size();
     for (int at = 0; at + 2 * Integer.BYTES <= size; at += 2 * Integer.BYTES) {
       if (index.integerAt(found.get(), at) == 0) {
         return Optional.of(index.string(index.integerAt(found.get(), at + Integer.BYTES)));

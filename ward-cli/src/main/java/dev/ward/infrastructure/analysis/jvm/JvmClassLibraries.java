@@ -2,6 +2,7 @@ package dev.ward.infrastructure.analysis.jvm;
 
 import dev.ward.analysis.domain.jvm.types.JvmClass;
 import dev.ward.analysis.domain.jvm.types.JvmLibrary;
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,10 +25,10 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
   private static final String ZIP_SUFFIX = ".zip";
 
   private final List<JvmLibrary> libraries;
-  private final List<java.io.Closeable> owned;
+  private final List<Closeable> owned;
   private final ConcurrentMap<String, Optional<JvmClass>> parsed = new ConcurrentHashMap<>();
 
-  private JvmClassLibraries(final List<JvmLibrary> libraries, final List<java.io.Closeable> owned) {
+  private JvmClassLibraries(final List<JvmLibrary> libraries, final List<Closeable> owned) {
     this.libraries = List.copyOf(libraries);
     this.owned = List.copyOf(owned);
   }
@@ -47,10 +48,10 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
       final Optional<Path> javaHome,
       final Optional<Path> cacheDirectory) {
     final List<JvmLibrary> libraries = new ArrayList<>();
-    final List<java.io.Closeable> owned = new ArrayList<>();
+    final List<Closeable> owned = new ArrayList<>();
     for (final String entry : classpath) {
       final Path path = projectRoot.resolve(entry).toAbsolutePath().normalize();
-      addEntry(path, cacheDirectory, libraries, owned);
+      addEntry(path, cacheDirectory, libraries);
     }
     javaHome
         .map(home -> home.resolve("lib").resolve("modules"))
@@ -67,21 +68,13 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
   }
 
   private static void addEntry(
-      final Path path,
-      final Optional<Path> cacheDirectory,
-      final List<JvmLibrary> libraries,
-      final List<java.io.Closeable> owned) {
+      final Path path, final Optional<Path> cacheDirectory, final List<JvmLibrary> libraries) {
     final String name = path.getFileName() == null ? "" : path.getFileName().toString();
     if (Files.isDirectory(path)) {
       libraries.add(new DirectoryLibrary(path));
     } else if (Files.isRegularFile(path)
         && (name.endsWith(JAR_SUFFIX) || name.endsWith(ZIP_SUFFIX))) {
-      JarLibrary.open(path, cacheDirectory)
-          .ifPresent(
-              jar -> {
-                libraries.add(jar);
-                owned.add(jar);
-              });
+      JarLibrary.open(path, cacheDirectory).ifPresent(libraries::add);
     }
   }
 
@@ -118,12 +111,14 @@ public final class JvmClassLibraries implements JvmLibrary, AutoCloseable {
 
   @Override
   public void close() {
-    for (final java.io.Closeable library : owned) {
-      try {
-        library.close();
-      } catch (IOException failed) {
-        LOGGER.log(Level.FINE, "event=library-close-failed");
-      }
+    owned.forEach(JvmClassLibraries::closeQuietly);
+  }
+
+  private static void closeQuietly(final Closeable library) {
+    try {
+      library.close();
+    } catch (IOException failed) {
+      LOGGER.log(Level.FINE, "event=library-close-failed");
     }
   }
 }

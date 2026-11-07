@@ -77,16 +77,14 @@ class JvmClassLibrariesTest {
     final Path jar = jarOf(String.class, List.class);
     final Path cache = temp.resolve("cache");
 
-    try (JarLibrary first = JarLibrary.open(jar, Optional.of(cache)).orElseThrow()) {
-      assertThat(first.find("java.lang.String")).isPresent();
-      assertThat(first.exists("java.lang.Integer")).isFalse();
-    }
+    final JarLibrary first = JarLibrary.open(jar, Optional.of(cache)).orElseThrow();
+    assertThat(first.find("java.lang.String")).isPresent();
+    assertThat(first.exists("java.lang.Integer")).isFalse();
     assertThat(cache).isDirectoryContaining("glob:**/jar-*.idx");
     final Path moved = Files.move(jar, temp.resolve("renamed.jar"));
-    try (JarLibrary warm = JarLibrary.open(moved, Optional.of(cache)).orElseThrow()) {
-      assertThat(warm.exists("java.util.List")).isTrue();
-      assertThat(warm.find("java.util.List")).isPresent();
-    }
+    final JarLibrary warm = JarLibrary.open(moved, Optional.of(cache)).orElseThrow();
+    assertThat(warm.exists("java.util.List")).isTrue();
+    assertThat(warm.find("java.util.List")).isPresent();
   }
 
   @Test
