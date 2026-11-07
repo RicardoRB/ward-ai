@@ -130,6 +130,9 @@ class ClasspathRuleSourceTest {
   }
 
   private static RuleCapability capabilityOf(final RuleDefinition rule) {
+    if (rule.id().endsWith("/equals-on-unrelated-types")) {
+      return RuleCapability.TYPES;
+    }
     return rule.id().endsWith("/unused-assignment")
             || isJavaInjection(rule.id())
             || rule.body().contains("check = \"taint\"")

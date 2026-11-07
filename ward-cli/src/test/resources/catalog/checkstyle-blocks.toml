@@ -14,8 +14,9 @@ eslint = ["no-lone-blocks"]
 name = "empty-block"
 category = "blocks"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Python requires a statement in every block, and pass is one; there is no empty block to report" }
+issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["EmptyFunctionBlock"]
 pmd = ["EmptyControlStatement"]
 checkstyle = ["EmptyBlock"]
@@ -56,9 +57,9 @@ checkstyle = ["LeftCurly"]
 name = "need-braces"
 category = "blocks"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "planned" }
 not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit" }
-issues = { java = "#286", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
+issues = { java = "#286", kotlin = "#294", swift = "#298" }
 detekt = ["BracesOnIfStatements"]
 checkstyle = ["NeedBraces"]
 ktlint = ["if-else-bracing"]

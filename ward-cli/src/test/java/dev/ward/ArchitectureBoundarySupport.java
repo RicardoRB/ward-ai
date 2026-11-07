@@ -35,6 +35,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
+          "dev.ward.config.RuleBindingsModule",
           "dev.ward.config.GateExtensionsModule",
           "dev.ward.config.FormatterBindingsModule",
           "dev.ward.config.ReportBindingsModule",
@@ -209,7 +210,7 @@ final class ArchitectureBoundarySupport {
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|application\\.(?:jvm|node|python|swift)|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {
