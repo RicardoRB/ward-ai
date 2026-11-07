@@ -74,33 +74,19 @@ final class EcmaDocBuilder {
       if (close >= 0 && close < to) {
         parts.add(container(index));
         index = close + 1;
+      } else if (context == Context.GROUP
+          && index == to - 1
+          && COMMA.equals(text(index))
+          && EcmaText.endsValue(text(index - 1))) {
+        // A comma that ends a grouped list is kept only when the list breaks.
+        parts.add(Document.ifBreak(Document.text(COMMA), Document.text(EMPTY)));
+        index++;
       } else {
-        parts.add(itemText(index, to, context));
+        parts.add(Document.text(text(index)));
         index++;
       }
     }
     return Document.concat(parts.toArray(Document[]::new));
-  }
-
-  /**
-   * The text of one token. A comma that ends a grouped list is kept only when the list breaks, so a
-   * list that collapses to one line does not end with a comma.
-   */
-  private Document itemText(final int index, final int to, final Context context) {
-    if (context == Context.GROUP && index == to - 1 && isListEndingComma(index)) {
-      return Document.ifBreak(Document.text(COMMA), Document.text(EMPTY));
-    }
-    return Document.text(text(index));
-  }
-
-  /**
-   * A comma after a value, not after another comma or an opener, where a hole would change the
-   * list.
-   */
-  private boolean isListEndingComma(final int index) {
-    return COMMA.equals(text(index))
-        && !COMMA.equals(text(index - 1))
-        && !EcmaText.isOpener(text(index - 1));
   }
 
   /** A bracket with its content: a block, a group, or a flat list. */
