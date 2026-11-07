@@ -1,0 +1,27 @@
+{
+  "1:7-4:1": {
+    "members": {
+      "methods": [],
+      "fields": [],
+      "ancestors": [
+        {
+          "name": "app.Base"
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "util",
+          "params": [],
+          "returns": {
+            "name": "void"
+          },
+          "static": true
+        }
+      ],
+      "inheritedFields": []
+    }
+  }
+}

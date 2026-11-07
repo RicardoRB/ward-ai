@@ -92,6 +92,25 @@ class TypeFactsFixtureTest {
   }
 
   @Test
+  void readsTheInheritedMembersOfAType() {
+    final UnitTypeFacts facts =
+        TypeFactsFixture.parse(
+            """
+            {"5:9-5:25": {"members": {
+              "inheritedFields": [{"name": "count", "static": true}],
+              "inheritedMethods": [{"declaring": {"name": "app.Base"}, "name": "run",
+                                    "params": [], "static": false}]}}}
+            """);
+
+    assertThat(facts.membersOf(CALL).orElseThrow().inheritedFields())
+        .extracting("name", "isStatic")
+        .containsExactly(org.assertj.core.groups.Tuple.tuple("count", true));
+    assertThat(facts.membersOf(CALL).orElseThrow().inheritedMethods())
+        .extracting("name")
+        .containsExactly("run");
+  }
+
+  @Test
   void aSpanWithoutAFactIsUnknown() {
     assertThat(TypeFactsFixture.parse("{}").typeOf(CALL)).isEmpty();
   }

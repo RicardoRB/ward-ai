@@ -165,7 +165,6 @@ spotbugs = ["BIT_SIGNED_CHECK_HIGH_BIT"]
 
 [[rule]]
 name = "boa-badly-overridden-adapter"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BOA_BADLY_OVERRIDDEN_ADAPTER"]
 
@@ -945,7 +944,6 @@ spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
 
 [[rule]]
 name = "hsm-hiding-method"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["HSM_HIDING_METHOD"]
 
@@ -1268,13 +1266,11 @@ spotbugs = ["ME_MUTABLE_ENUM_FIELD"]
 
 [[rule]]
 name = "mf-class-masks-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["MF_CLASS_MASKS_FIELD"]
 
 [[rule]]
 name = "mf-method-masks-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["MF_METHOD_MASKS_FIELD"]
 
@@ -1454,7 +1450,6 @@ spotbugs = ["NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"]
 
 [[rule]]
 name = "nm-very-confusing"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NM_VERY_CONFUSING"]
 

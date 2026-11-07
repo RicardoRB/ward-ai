@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.FieldAccessCheck;
+import dev.ward.analysis.domain.rule.check.InheritedMemberCheck;
 import dev.ward.analysis.domain.rule.check.NonTerminatingLoopCheck;
 import java.util.Locale;
 import java.util.Map;
@@ -22,6 +23,15 @@ final class FieldChecks {
             toml ->
                 new FieldAccessCheck(
                     FieldAccessCheck.Mode.valueOf(
+                        TomlValues.required(toml, "mode")
+                            .replace('-', '_')
+                            .toUpperCase(Locale.ROOT)),
+                    TomlValues.required(toml, "message"))),
+        entry(
+            "inherited-member",
+            toml ->
+                new InheritedMemberCheck(
+                    InheritedMemberCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
                             .toUpperCase(Locale.ROOT)),
