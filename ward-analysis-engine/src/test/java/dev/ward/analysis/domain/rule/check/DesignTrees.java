@@ -2,67 +2,86 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/** Builders for the type and member trees that the class design check tests run over. */
+/**
+ * Builds the declaration trees the design checks read, shaped as the Java frontend shapes them. The
+ * tests extend it, as the other check tests extend {@link TreeBuilders}.
+ */
 class DesignTrees extends TreeBuilders {
 
-  private static final int UNIT_LENGTH = 100;
+  private static final String CLASS_NAME = "Sample";
 
   protected DesignTrees() {
     super();
   }
 
-  static SyntaxNode root(final SyntaxNode... declarations) {
-    return Trees.node("compilationunit", 0, UNIT_LENGTH, 1, declarations);
+  static SyntaxNode compilationUnit(final SyntaxNode... children) {
+    return n("compilationunit", children);
   }
 
-  static SyntaxNode mod(final String text) {
-    return n("modifier", t("'" + text + "'", text));
+  static SyntaxNode topLevel(final String modifier, final SyntaxNode clazz) {
+    final SyntaxNode wrapper =
+        modifier == null
+            ? n("typeDeclaration", clazz)
+            : n(
+                "typeDeclaration",
+                n("classOrInterfaceModifier", t(quoted(modifier), modifier)),
+                clazz);
+    return compilationUnit(wrapper);
   }
 
-  static SyntaxNode classDecl(final String name, final SyntaxNode... members) {
-    return n("classDeclaration", t("'class'", "class"), id(name), n("classBody", members));
+  static SyntaxNode classOf(final SyntaxNode... members) {
+    return classWith(List.of(), members);
   }
 
-  static SyntaxNode classNode(final String name, final SyntaxNode... members) {
-    return typeDeclaration(List.of(), classDecl(name, members));
+  static SyntaxNode classWith(final List<SyntaxNode> header, final SyntaxNode... members) {
+    final List<SyntaxNode> children = new ArrayList<>();
+    children.add(t("'class'", "class"));
+    children.add(id(CLASS_NAME));
+    children.addAll(header);
+    children.add(n("classBody", members));
+    return n("classDeclaration", children.toArray(SyntaxNode[]::new));
   }
 
-  static SyntaxNode classNode(
-      final List<SyntaxNode> modifiers, final String name, final SyntaxNode... members) {
-    return typeDeclaration(modifiers, classDecl(name, members));
-  }
-
-  static SyntaxNode classWithSuper(
-      final String name, final String superName, final SyntaxNode... members) {
-    final SyntaxNode decl =
-        n(
-            "classDeclaration",
-            t("'class'", "class"),
-            id(name),
-            n("typeType", t(TOKEN_IDENTIFIER, superName)),
-            n("classBody", members));
-    return typeDeclaration(List.of(), decl);
-  }
-
-  static SyntaxNode typeDeclaration(final List<SyntaxNode> modifiers, final SyntaxNode decl) {
-    final List<SyntaxNode> children = new ArrayList<>(modifiers);
-    children.add(decl);
-    return n("typeDeclaration", children.toArray(SyntaxNode[]::new));
-  }
-
-  static SyntaxNode member(final List<SyntaxNode> modifiers, final SyntaxNode declaration) {
-    final List<SyntaxNode> children = new ArrayList<>(modifiers);
+  static SyntaxNode member(final SyntaxNode declaration, final String... modifiers) {
+    final List<SyntaxNode> children = new ArrayList<>();
+    for (final String text : modifiers) {
+      children.add(n("modifier", t(quoted(text), text)));
+    }
     children.add(n("memberDeclaration", declaration));
     return n("classBodyDeclaration", children.toArray(SyntaxNode[]::new));
   }
 
-  static SyntaxNode innerMember() {
-    return member(List.of(), classDecl("Inner"));
+  static SyntaxNode method(final String name, final SyntaxNode... statements) {
+    final SyntaxNode[] blockStatements =
+        Arrays.stream(statements).map(s -> n("blockStatement", s)).toArray(SyntaxNode[]::new);
+    return n("methodDeclaration", t("'void'", "void"), id(name), n("block", blockStatements));
   }
 
-  static SyntaxNode comment(final String text) {
-    return Trees.leaf("comment", text, 0);
+  static SyntaxNode constructor(final String... parameters) {
+    return n("constructorDeclaration", id(CLASS_NAME), parameters(parameters));
+  }
+
+  static SyntaxNode field(final String name) {
+    return n(
+        "fieldDeclaration",
+        t("'int'", "int"),
+        n("variableDeclarator", n("variableDeclaratorId", id(name))));
+  }
+
+  static SyntaxNode parameters(final String... names) {
+    final SyntaxNode[] params =
+        Arrays.stream(names)
+            .map(
+                name ->
+                    n("formalParameter", t("'int'", "int"), n("variableDeclaratorId", id(name))))
+            .toArray(SyntaxNode[]::new);
+    return n("formalParameters", params);
+  }
+
+  private static String quoted(final String text) {
+    return "'" + text + "'";
   }
 }

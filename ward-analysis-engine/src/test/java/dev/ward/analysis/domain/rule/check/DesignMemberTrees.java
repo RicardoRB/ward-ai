@@ -4,7 +4,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 
 /** Builders for the method and field trees that the class design check tests run over. */
-class DesignMemberTrees extends DesignTrees {
+class DesignMemberTrees extends ClassDesignTrees {
 
   private static final String VOID = "void";
   private static final String PRIVATE = "private";

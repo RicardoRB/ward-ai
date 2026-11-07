@@ -110,12 +110,10 @@ capability = "SYNTAX"
 severity = "error"
 category = "design"
 presets = ["standard", "strict"]
-options.minimum = { type = "integer", min = 0, parameter = "max" }
+options.minimum = { type = "integer", min = 0 }
 body = '''
-check = "count"
-kinds = ["compilationunit"]
-counted = ["importDeclaration"]
-max = 30
+check = "import-count"
+minimum = 30
 message = "file has {value} imports; the limit is {max}"
 '''
 
@@ -126,12 +124,10 @@ capability = "SYNTAX"
 severity = "error"
 category = "design"
 presets = ["standard", "strict"]
-options.minimum = { type = "integer", min = 0, parameter = "max" }
+options.minimum = { type = "integer", min = 0 }
 body = '''
-check = "descendant-count"
-kinds = ["formalParameters"]
-counted = ["formalParameter"]
-max = 10
+check = "parameter-limit"
+minimum = 10
 message = "method declares {value} parameters; the limit is {max}"
 '''
 
@@ -236,6 +232,163 @@ kinds = ["methodDeclaration"]
 text = '(?s)^(?![^{]*@)[^{(]*?(\w+)\([^)]*\)[^{]*\{(?:return)?super\.\1\([^)]*\);?\}$'
 message = "method only calls the overridden method with the same name; remove the override"
 '''
+
+[[rules]]
+id = "ward:java/avoid-deeply-nested-if-stmts"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.problem-depth = { type = "integer", min = 1 }
+body = '''
+check = "nested-if"
+problem-depth = 3
+message = "if statement nested {max} levels deep; extract a method or return early"
+'''
+
+[[rules]]
+id = "ward:java/too-many-fields"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.max-fields = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "field-limit"
+max = 15
+message = "class declares {value} fields that are not final or static; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/too-many-methods"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.max-methods = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "method-limit"
+max = 10
+message = "class declares {value} methods that are not simple accessors; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/excessive-public-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.minimum = { type = "integer", min = 0 }
+body = '''
+check = "public-count"
+minimum = 45
+message = "class has {value} public methods and fields; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/protected-member-in-final-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "protected-in-final"
+message = "protected member in a final class; use private or package access"
+'''
+
+[[rules]]
+id = "ward:java/public-member-in-non-public-type"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "public-in-non-public"
+message = "public member in a type that is not public; drop the public modifier"
+'''
+
+[[rules]]
+id = "ward:java/switch-density"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.minimum = { type = "integer", min = 0 }
+body = '''
+check = "switch-density"
+minimum = 10
+message = "switch has a density of {value} statements per label; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/exception-as-flow-control"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "exception-flow"
+message = "exception thrown and caught in the same method; use a control structure instead"
+'''
+
+[[rules]]
+id = "ward:java/immutable-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "immutable-field"
+message = "private field is never assigned after construction; declare it final"
+'''
+
+[[rules]]
+id = "ward:java/singular-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "singular-field"
+message = "private field is only used in one method; make it a local variable"
+'''
+
+[[rules]]
+id = "ward:java/instantiable-utility-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+body = '''
+check = "utility-class"
+message = "utility class has no private constructor; add one"
+'''
+
+[[rules]]
+id = "ward:java/loose-package-coupling"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "design"
+presets = ["standard", "strict"]
+options.packages = { type = "string-list" }
+body = '''
+check = "package-coupling"
+packages = []
+message = "use of {value} outside its package hierarchy is not recommended"
+'''
+
 
 # Class design rules for Java (Checkstyle design group).
 [[rules]]

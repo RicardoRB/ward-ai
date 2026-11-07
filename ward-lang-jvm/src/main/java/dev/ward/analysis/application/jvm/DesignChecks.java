@@ -5,105 +5,97 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.rule.check.DesignForExtensionCheck;
-import dev.ward.analysis.domain.rule.check.FinalClassCheck;
-import dev.ward.analysis.domain.rule.check.HideUtilityClassConstructorCheck;
-import dev.ward.analysis.domain.rule.check.InnerTypeLastCheck;
-import dev.ward.analysis.domain.rule.check.InterfaceIsTypeCheck;
-import dev.ward.analysis.domain.rule.check.MutableExceptionCheck;
-import dev.ward.analysis.domain.rule.check.OneTopLevelClassCheck;
-import dev.ward.analysis.domain.rule.check.SealedShouldHavePermitsListCheck;
-import dev.ward.analysis.domain.rule.check.ThrowsCountCheck;
-import dev.ward.analysis.domain.rule.check.VisibilityModifierCheck;
+import dev.ward.analysis.domain.rule.check.ExceptionFlowCheck;
+import dev.ward.analysis.domain.rule.check.FieldLimitCheck;
+import dev.ward.analysis.domain.rule.check.ImmutableFieldCheck;
+import dev.ward.analysis.domain.rule.check.ImportCountCheck;
+import dev.ward.analysis.domain.rule.check.MethodLimitCheck;
+import dev.ward.analysis.domain.rule.check.NestedIfCheck;
+import dev.ward.analysis.domain.rule.check.PackageCouplingCheck;
+import dev.ward.analysis.domain.rule.check.ParameterCountCheck;
+import dev.ward.analysis.domain.rule.check.ProtectedInFinalCheck;
+import dev.ward.analysis.domain.rule.check.PublicCountCheck;
+import dev.ward.analysis.domain.rule.check.PublicInNonPublicCheck;
+import dev.ward.analysis.domain.rule.check.SingularFieldCheck;
+import dev.ward.analysis.domain.rule.check.SwitchDensityCheck;
+import dev.ward.analysis.domain.rule.check.UtilityClassCheck;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Pattern;
-import org.tomlj.TomlParseResult;
 
 /**
- * Builds the Java class design checks that a rule body names, with their parameters. Each parameter
- * is a rule option, named after the Checkstyle property in kebab-case.
+ * Builds the checks of the PMD design rules, which read class members, imports, switch statements
+ * and try blocks. Each parameter is a rule option, named after the PMD property in kebab-case.
  */
 final class DesignChecks {
 
   private static final String MESSAGE = "message";
-  private static final String FORMAT = "format";
-  private static final String EXTENDED_FORMAT = "extended-class-name-format";
-  private static final String IGNORE_PRIVATE = "ignore-private-methods";
+  private static final String MAX = "max";
+  private static final String MINIMUM = "minimum";
 
   private DesignChecks() {}
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return CheckRegistry.union(List.of(types(), members()));
+    return CheckRegistry.union(List.of(limits(), members()));
   }
 
-  private static Map<String, CheckFactory> types() {
+  private static Map<String, CheckFactory> limits() {
     return Map.ofEntries(
-        entry("one-top-level-class", toml -> new OneTopLevelClassCheck(message(toml))),
-        entry("final-class", toml -> new FinalClassCheck(message(toml))),
-        entry("inner-type-last", toml -> new InnerTypeLastCheck(message(toml))),
         entry(
-            "sealed-should-have-permits-list",
-            toml -> new SealedShouldHavePermitsListCheck(message(toml))),
-        entry(
-            "hide-utility-class-constructor",
+            "nested-if",
             toml ->
-                new HideUtilityClassConstructorCheck(
-                    TomlValues.optionalStrings(toml, "ignore-annotated-by"), message(toml))),
+                new NestedIfCheck(
+                    TomlValues.integer(toml, "problem-depth"), TomlValues.required(toml, MESSAGE))),
         entry(
-            "interface-is-type",
+            "import-count",
             toml ->
-                new InterfaceIsTypeCheck(
-                    flag(toml, "allow-marker-interfaces", true), message(toml))),
+                new ImportCountCheck(
+                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
         entry(
-            "mutable-exception",
+            "parameter-limit",
             toml ->
-                new MutableExceptionCheck(
-                    Pattern.compile(TomlValues.required(toml, FORMAT)),
-                    Pattern.compile(TomlValues.required(toml, EXTENDED_FORMAT)),
-                    message(toml))));
+                new ParameterCountCheck(
+                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "field-limit",
+            toml ->
+                new FieldLimitCheck(
+                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "method-limit",
+            toml ->
+                new MethodLimitCheck(
+                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "public-count",
+            toml ->
+                new PublicCountCheck(
+                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "switch-density",
+            toml ->
+                new SwitchDensityCheck(
+                    TomlValues.integer(toml, MINIMUM), TomlValues.required(toml, MESSAGE))));
   }
 
   private static Map<String, CheckFactory> members() {
     return Map.ofEntries(
         entry(
-            "throws-count",
-            toml ->
-                new ThrowsCountCheck(
-                    TomlValues.integer(toml, "max"),
-                    flag(toml, IGNORE_PRIVATE, true),
-                    message(toml))),
+            "protected-in-final",
+            toml -> new ProtectedInFinalCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "visibility-modifier",
-            toml -> new VisibilityModifierCheck(visibility(toml), message(toml))),
+            "public-in-non-public",
+            toml -> new PublicInNonPublicCheck(TomlValues.required(toml, MESSAGE))),
+        entry("exception-flow", toml -> new ExceptionFlowCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "design-for-extension",
+            "immutable-field", toml -> new ImmutableFieldCheck(TomlValues.required(toml, MESSAGE))),
+        entry("singular-field", toml -> new SingularFieldCheck(TomlValues.required(toml, MESSAGE))),
+        entry("utility-class", toml -> new UtilityClassCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "package-coupling",
             toml ->
-                new DesignForExtensionCheck(
-                    TomlValues.optionalStrings(toml, "ignored-annotations"),
-                    Pattern.compile(TomlValues.required(toml, "required-javadoc-phrase")),
-                    message(toml))));
-  }
-
-  private static VisibilityModifierCheck.FieldVisibility visibility(final TomlParseResult toml) {
-    return new VisibilityModifierCheck.FieldVisibility(
-        flag(toml, "allow-public-final-fields", false),
-        flag(toml, "allow-public-immutable-fields", false),
-        flag(toml, "package-allowed", false),
-        flag(toml, "protected-allowed", false),
-        Pattern.compile(TomlValues.required(toml, "public-member-pattern")),
-        TomlValues.optionalStrings(toml, "ignore-annotation-canonical-names"),
-        TomlValues.optionalStrings(toml, "immutable-class-canonical-names"));
-  }
-
-  private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
-    return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
-  }
-
-  private static String message(final TomlParseResult toml) {
-    return TomlValues.required(toml, MESSAGE);
+                new PackageCouplingCheck(
+                    List.copyOf(TomlValues.optionalStrings(toml, "packages")),
+                    TomlValues.required(toml, MESSAGE))));
   }
 }
