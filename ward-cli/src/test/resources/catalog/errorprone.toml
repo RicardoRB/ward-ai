@@ -482,8 +482,6 @@ errorprone = ["ClassInitializationDeadlock"]
 
 [[rule]]
 name = "class-name"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ClassName"]
 
 [[rule]]
@@ -704,8 +702,6 @@ errorprone = ["DirectInvocationOnMock"]
 
 [[rule]]
 name = "discarded-postfix-expression"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DiscardedPostfixExpression"]
 
 [[rule]]
@@ -1192,8 +1188,6 @@ errorprone = ["GuiceAssistedParameters"]
 
 [[rule]]
 name = "guice-inject-on-final-field"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["GuiceInjectOnFinalField"]
 
 [[rule]]
@@ -1239,8 +1233,6 @@ errorprone = ["IdentifierName"]
 
 [[rule]]
 name = "identity-binary-expression"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IdentityBinaryExpression"]
 
 [[rule]]
@@ -1637,8 +1629,6 @@ errorprone = ["JUnit3TestNotRun"]
 
 [[rule]]
 name = "j-unit4-class-annotation-non-static"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit4ClassAnnotationNonStatic"]
 
 [[rule]]
@@ -1685,8 +1675,6 @@ errorprone = ["JUnitAmbiguousTestClass"]
 
 [[rule]]
 name = "j-unit-assert-same-check"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnitAssertSameCheck"]
 
 [[rule]]
@@ -1775,8 +1763,6 @@ errorprone = ["JavaUtilDate"]
 
 [[rule]]
 name = "javax-inject-on-abstract-method"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JavaxInjectOnAbstractMethod"]
 
 [[rule]]
