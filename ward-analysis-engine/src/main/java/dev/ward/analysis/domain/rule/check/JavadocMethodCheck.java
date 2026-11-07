@@ -17,7 +17,11 @@ import java.util.regex.Pattern;
 public final class JavadocMethodCheck implements RuleCheck {
 
   private static final String FUNCTION = "function_declaration";
-  private static final String MESSAGE = "documentation has no {value} tag";
+  private static final String SIGNATURE = "function_signature";
+  private static final String RESULT = "function_result";
+  private static final String THROWS = "throws_clause";
+  private static final String PARAMETER = "parameter";
+  private static final String LOCAL_NAME = "local_parameter_name";
   private static final String TAG = "{value}";
 
   private final String message;
@@ -54,32 +58,34 @@ public final class JavadocMethodCheck implements RuleCheck {
 
   private static List<String> missingTags(final SyntaxNode function, final String comment) {
     final List<String> missing = new ArrayList<>();
-    for (final SyntaxNode signature : function.children()) {
-      if ("function_signature".equals(signature.kind())) {
-        for (final String name : parameterNames(signature)) {
-          if (!hasTag(comment, "Parameter\\s*" + Pattern.quote(name))) {
-            missing.add("- Parameter " + name + ":");
-          }
-        }
-        if (hasNode(signature, "function_result") && !hasTag(comment, "Returns")) {
-          missing.add("- Returns:");
-        }
-        if (hasNode(signature, "throws_clause") && !hasTag(comment, "Throws")) {
-          missing.add("- Throws:");
-        }
-      }
-    }
+    function.children().stream()
+        .filter(child -> SIGNATURE.equals(child.kind()))
+        .forEach(signature -> missing.addAll(missingInSignature(signature, comment)));
     return missing;
+  }
+
+  private static List<String> missingInSignature(final SyntaxNode signature, final String comment) {
+    final List<String> missing = new ArrayList<>();
+    parameterNames(signature).stream()
+        .filter(name -> !hasTag(comment, "Parameter\\s*" + Pattern.quote(name)))
+        .forEach(name -> missing.add("- Parameter " + name + ":"));
+    missing.addAll(missingTag(signature, comment, RESULT, "Returns"));
+    missing.addAll(missingTag(signature, comment, THROWS, "Throws"));
+    return missing;
+  }
+
+  private static List<String> missingTag(
+      final SyntaxNode signature, final String comment, final String kind, final String tag) {
+    final boolean missing = hasNode(signature, kind) && !hasTag(comment, tag);
+    return missing ? List.of("- " + tag + ":") : List.of();
   }
 
   private static List<String> parameterNames(final SyntaxNode signature) {
     final List<String> names = new ArrayList<>();
-    for (final SyntaxWalk.Visit parameter : SyntaxWalk.visits(signature, Set.of("parameter"))) {
-      for (final SyntaxNode child : parameter.node().children()) {
-        if ("local_parameter_name".equals(child.kind())) {
-          names.add(SyntaxWalk.text(child));
-        }
-      }
+    for (final SyntaxWalk.Visit parameter : SyntaxWalk.visits(signature, Set.of(PARAMETER))) {
+      parameter.node().children().stream()
+          .filter(child -> LOCAL_NAME.equals(child.kind()))
+          .forEach(child -> names.add(SyntaxWalk.text(child)));
     }
     return names;
   }
