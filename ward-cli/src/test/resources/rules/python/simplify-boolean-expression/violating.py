@@ -1,0 +1,2 @@
+if flag == True:
+    run()

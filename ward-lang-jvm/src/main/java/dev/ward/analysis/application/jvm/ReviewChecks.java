@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
 import dev.ward.analysis.domain.rule.check.BitMaskComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
+import dev.ward.analysis.domain.rule.check.EqualsOnUnrelatedTypesCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
@@ -120,6 +121,9 @@ final class ReviewChecks {
         entry(
             "unused-private-method",
             toml -> new UnusedPrivateMethodCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "equals-on-unrelated-types",
+            toml -> new EqualsOnUnrelatedTypesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-formal-parameter",
             toml ->

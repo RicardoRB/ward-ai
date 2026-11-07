@@ -21,9 +21,9 @@ checkstyle = ["AvoidDoubleBraceInitialization"]
 
 [[rule]]
 name = "avoid-inline-conditionals"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
 ids = { java = "ward:java/avoid-inline-conditionals" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["AvoidInlineConditionals"]
 eslint = ["no-ternary"]
 
@@ -59,8 +59,9 @@ spotbugs = ["EQ_OTHER_USE_OBJECT"]
 name = "declaration-order"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java member declaration order; Python class bodies have no declaration-order rule of this kind" }
+issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
 typescript-eslint = ["member-ordering"]
 checkstyle = ["DeclarationOrder"]
@@ -233,8 +234,10 @@ eslint = ["no-cond-assign"]
 
 [[rule]]
 name = "magic-number"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+category = "coding"
+presets = ["standard", "strict"]
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
@@ -305,23 +308,23 @@ eslint = ["one-var"]
 
 [[rule]]
 name = "nested-for-depth"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
 ids = { java = "ward:java/nested-for-depth" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NestedForDepth"]
 
 [[rule]]
 name = "nested-if-depth"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
 ids = { java = "ward:java/nested-if-depth" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NestedIfDepth"]
 
 [[rule]]
 name = "nested-try-depth"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
 ids = { java = "ward:java/nested-try-depth" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 checkstyle = ["NestedTryDepth"]
 
 [[rule]]
@@ -426,8 +429,8 @@ pylint = ["too-many-return-statements"]
 name = "simplify-boolean-expression"
 category = "coding"
 presets = ["strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
+issues = { java = "#288", kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["SimplifyBooleanExpressions"]
 checkstyle = ["SimplifyBooleanExpression"]
 biome = ["noExtraBooleanCast"]
@@ -435,9 +438,9 @@ pylint = ["simplify-boolean-expression"]
 
 [[rule]]
 name = "simplify-boolean-return"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "planned" }
 ids = { java = "ward:java/simplify-boolean-return" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["SimplifyBooleanReturns"]
 checkstyle = ["SimplifyBooleanReturn"]
 ruff = ["SIM103"]
