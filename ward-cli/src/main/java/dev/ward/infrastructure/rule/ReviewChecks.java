@@ -6,8 +6,11 @@ import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
 import dev.ward.analysis.domain.rule.check.ArrayIsStoredDirectlyCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningCatchVariablesCheck;
 import dev.ward.analysis.domain.rule.check.AvoidReassigningLoopVariablesCheck;
+import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
 import dev.ward.analysis.domain.rule.check.DefaultLabelNotLastCheck;
+import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ForLoopCanBeForeachCheck;
+import dev.ward.analysis.domain.rule.check.GuardLogStatementCheck;
 import dev.ward.analysis.domain.rule.check.ImplicitFunctionalInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.MethodReturnsInternalArrayCheck;
 import dev.ward.analysis.domain.rule.check.PreserveStackTraceCheck;
@@ -21,6 +24,7 @@ import dev.ward.analysis.domain.rule.check.UnnecessaryWarningSuppressionCheck;
 import dev.ward.analysis.domain.rule.check.UnusedFormalParameterCheck;
 import dev.ward.analysis.domain.rule.check.UnusedLabelCheck;
 import dev.ward.analysis.domain.rule.check.UnusedPrivateMethodCheck;
+import dev.ward.analysis.domain.rule.check.UseEnumCollectionsCheck;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
@@ -117,6 +121,18 @@ final class ReviewChecks {
       case "accessor-method-generation" ->
           new AccessorMethodGenerationCheck(
               TomlValues.integer(toml, JAVA_RELEASE), TomlValues.required(toml, MESSAGE));
+      default -> typedCheck(name, toml);
+    };
+  }
+
+  /** The checks that read the type facts of the file; other names go to the metrics. */
+  private static RuleCheck typedCheck(final String name, final TomlParseResult toml) {
+    return switch (name) {
+      case "check-result-set" -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE));
+      case "enum-comparison" -> new EnumComparisonCheck(TomlValues.required(toml, MESSAGE));
+      case "use-enum-collections" ->
+          new UseEnumCollectionsCheck(TomlValues.required(toml, MESSAGE));
+      case "guard-log-statement" -> new GuardLogStatementCheck(TomlValues.required(toml, MESSAGE));
       default -> MetricChecks.build(name, toml);
     };
   }

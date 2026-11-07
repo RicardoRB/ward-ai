@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TypeFactsRun;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
@@ -14,6 +15,7 @@ import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -39,12 +41,20 @@ final class RuleFixtureRunner {
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     final RuleRunResult result =
-        new RuleEngine(BundledRuleMatchers.create())
-            .run(List.of(new SourceUnit(path, language, text)), frontends, List.of(rule));
+        new RuleEngine(BundledRuleMatchers.create(), types(language, typeFacts))
+            .run(
+                List.of(new SourceUnit(path, language, text)),
+                types(language, typeFacts).withTypes(frontends),
+                List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     return result.findings().stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .toList();
+  }
+
+  /** The type facts of the fixture for {@code language}, as the engine's type run. */
+  private static TypeFactsRun types(final AnalysisLanguage language, final TypeFacts typeFacts) {
+    return new TypeFactsRun(Map.of(language, typeFacts));
   }
 }

@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.Set;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
 public interface CompiledRule {
@@ -76,5 +77,24 @@ public interface CompiledRule {
       final ScopeView scopes,
       final SourceUnit unit) {
     return matches(root, dependencies, flow, unit);
+  }
+
+  /** The type facts this rule reads; empty for a rule that reads no types. */
+  default Set<TypeNeed> typeNeeds() {
+    return Set.of();
+  }
+
+  /**
+   * Returns the matches given the type facts of the unit. A rule that reads no types needs only
+   * {@link #matches(SyntaxNode, DependencyView, FlowView, ScopeView, SourceUnit)}, which this
+   * default method delegates to.
+   */
+  default List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final ScopeView scopes,
+      final TypedUnit typed) {
+    return matches(root, dependencies, flow, scopes, typed.unit());
   }
 }

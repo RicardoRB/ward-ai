@@ -344,11 +344,8 @@ pmd = ["CallSuperLast"]
 
 [[rule]]
 name = "check-result-set"
-category = "bestpractices"
 # Not applicable (review): needs the static type of the receiver and whether the result is used
-# Planned: needs the static type of the ResultSet receiver; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["CheckResultSet"]
 
 [[rule]]
@@ -596,11 +593,8 @@ pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 
 [[rule]]
 name = "enum-comparison"
-category = "bestpractices"
 # Not applicable (review): needs the static type of the receiver to know it is an enum
-# Planned: needs the static types of the receiver and argument; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["EnumComparison"]
 
 [[rule]]
@@ -724,11 +718,8 @@ pmd = ["GodClass"]
 
 [[rule]]
 name = "guard-log-statement"
-category = "bestpractices"
 # Not applicable (review): needs the logger type and the guard conditions the rule recognizes
-# Planned: needs the logger's type and the guard conditions; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["GuardLogStatement"]
 
 [[rule]]
@@ -1596,11 +1587,8 @@ pmd = ["UseDiamondOperator"]
 
 [[rule]]
 name = "use-enum-collections"
-category = "bestpractices"
 # Not applicable (review): needs the type argument of each collection to know it is an enum
-# Planned: needs the type argument of each collection; the rule API does not receive type facts yet
-status = { java = "planned" }
-issues = { java = "#308" }
+status = { java = "implemented" }
 pmd = ["UseEnumCollections"]
 
 [[rule]]

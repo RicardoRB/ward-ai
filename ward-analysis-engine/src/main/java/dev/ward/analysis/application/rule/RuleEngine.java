@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleNotRun;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.analysis.domain.rule.TypedUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,9 +26,16 @@ import java.util.stream.Collectors;
 public final class RuleEngine {
 
   private final RuleMatcher matcher;
+  private final TypeFactsRun types;
 
   /** Creates an engine that builds its rules with {@code matcher}. */
   public RuleEngine(final RuleMatcher matcher) {
+    this(matcher, new TypeFactsRun(Map.of()));
+  }
+
+  /** Creates the engine over {@code matcher}, reading the type facts of {@code types}. */
+  public RuleEngine(final RuleMatcher matcher, final TypeFactsRun types) {
+    this.types = types;
     this.matcher = matcher;
   }
 
@@ -114,8 +122,7 @@ public final class RuleEngine {
     }
   }
 
-  private static void runOnUnit(
-      final CompiledRule rule, final SourceUnit unit, final RunState state) {
+  private void runOnUnit(final CompiledRule rule, final SourceUnit unit, final RunState state) {
     final RuleRunCollector collector = state.collector();
     final Optional<SyntaxNode> root = state.trees().parse(unit, collector);
     if (root.isEmpty()) {
@@ -128,7 +135,7 @@ public final class RuleEngine {
               dependencies,
               state.trees().flows(rule, unit, root.get(), collector),
               state.trees().scopes(rule, unit, root.get(), dependencies, collector),
-              unit)
+              new TypedUnit(unit, UnitTypeFactsRead.of(types, rule, unit, root.get())))
           .forEach(match -> collector.finding(RuleFindings.of(rule.definition(), unit, match)));
     } catch (final AnalysisFailedException exception) {
       collector.recordError(

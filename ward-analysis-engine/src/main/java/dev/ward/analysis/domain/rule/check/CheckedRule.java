@@ -8,8 +8,11 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.rule.TypeNeed;
+import dev.ward.analysis.domain.rule.TypedUnit;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** A rule whose matches come from one {@link RuleCheck}. */
 public final class CheckedRule implements CompiledRule {
@@ -60,5 +63,20 @@ public final class CheckedRule implements CompiledRule {
       final ScopeView scopes,
       final SourceUnit unit) {
     return check.matches(root, flow, scopes, unit);
+  }
+
+  @Override
+  public Set<TypeNeed> typeNeeds() {
+    return check.typeNeeds();
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow,
+      final ScopeView scopes,
+      final TypedUnit typed) {
+    return check.matches(root, flow, scopes, typed.unit(), typed.types());
   }
 }

@@ -653,3 +653,51 @@ check = "accessor-method-generation"
 java-release = 0
 message = "private method '{value}' is called from outside its class; before Java 11 this needs an accessor method"
 '''
+
+[[rules]]
+id = "ward:java/check-result-set"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "check-result-set"
+message = "the result of ResultSet.next() is ignored; test it before reading the row"
+'''
+
+[[rules]]
+id = "ward:java/enum-comparison"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "enum-comparison"
+message = "enum compared with equals; compare enum constants with =="
+'''
+
+[[rules]]
+id = "ward:java/use-enum-collections"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "use-enum-collections"
+message = "collection keyed by an enum; use EnumMap or EnumSet"
+'''
+
+[[rules]]
+id = "ward:java/guard-log-statement"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bestpractices"
+presets = ["standard", "strict"]
+body = '''
+check = "guard-log-statement"
+message = "log message built by concatenation; guard the call or pass arguments"
+'''

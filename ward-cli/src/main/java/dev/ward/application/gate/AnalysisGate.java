@@ -99,14 +99,6 @@ public final class AnalysisGate implements QualityGate {
             .collect(Collectors.toUnmodifiableSet());
     final List<SourceUnit> units = ports.sources().read(project.root(), languages);
     final AnalysisCache cache = ports.caches().open(project.root());
-    final UnitResultCache results =
-        new UnitResultCache(
-            new RuleEngine(ports.matcher()),
-            ports.codec(),
-            ports.engineVersion(),
-            ports
-                .dependencies()
-                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
     final TypeFactsRun types =
         new TypeFactsRun(
             ports
@@ -114,6 +106,14 @@ public final class AnalysisGate implements QualityGate {
                 .apply(
                     project.root(),
                     Optional.ofNullable(javaClasspath).map(project.root()::resolve)));
+    final UnitResultCache results =
+        new UnitResultCache(
+            new RuleEngine(ports.matcher(), types),
+            ports.codec(),
+            ports.engineVersion(),
+            ports
+                .dependencies()
+                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
     final UnitResultCache.CachedRun run =
         results.analyze(cache, units, types.withTypes(ports.frontends()), rules);
     return AnalysisGateResults.result(name, focused(ExcludedFindings.drop(run, set), rules), rules);
