@@ -1,0 +1,43 @@
+# Java rules for the Checkstyle miscellaneous checks.
+
+[[rules]]
+id = "ward:java/upper-ell"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["integerLiteral"]
+text = 'l$'
+message = "long literal ends with a lowercase l; use an uppercase L"
+'''
+
+[[rules]]
+id = "ward:java/avoid-escaped-unicode-characters"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["STRING_LITERAL", "CHAR_LITERAL", "TEXT_BLOCK"]
+text = '(?<!\\)(\\\\)*\\u+[0-9a-fA-F]{4}'
+message = "literal uses a Unicode escape; write the character itself"
+'''
+
+[[rules]]
+id = "ward:java/array-type-style"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaratorId"]
+text = '\]$'
+message = "array brackets follow the name; put them on the type"
+'''
