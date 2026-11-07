@@ -18,6 +18,8 @@ description: Rules of the catalog file ward-own and their counterparts.
 | `command-injection` | misc | implemented | n/a | implemented | implemented | n/a | n/a | none |
 | `path-traversal` | misc | implemented | n/a | implemented | implemented | n/a | n/a | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
 | `xss` | misc | n/a | n/a | implemented | implemented | n/a | n/a | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+| `no-field-di` | architecture | implemented | n/a | n/a | n/a | n/a | n/a | none |
+| `no-standard-streams` | architecture | implemented | n/a | n/a | n/a | n/a | n/a | none |
 
 ## Implemented rules
 
@@ -44,3 +46,5 @@ description: Rules of the catalog file ward-own and their counterparts.
 | `ward:javascript/path-traversal` | misc | standard, strict | none | SpotBugs `PT_ABSOLUTE_PATH_TRAVERSAL`, `PT_RELATIVE_PATH_TRAVERSAL` |
 | `ward:typescript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
 | `ward:javascript/xss` | misc | standard, strict | none | SpotBugs `XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER`, `XSS_REQUEST_PARAMETER_TO_JSP_WRITER`, `XSS_REQUEST_PARAMETER_TO_SEND_ERROR` |
+| `ward:java/no-field-di` | architecture | strict | none | none |
+| `ward:java/no-standard-streams` | architecture | strict | none | none |

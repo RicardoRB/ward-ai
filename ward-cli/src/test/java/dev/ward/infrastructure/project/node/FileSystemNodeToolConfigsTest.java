@@ -25,7 +25,6 @@ class FileSystemNodeToolConfigsTest {
     "stryker, stryker.config.mjs",
     "eslint, eslint.config.js",
     "eslint, .eslintrc.json",
-    "dependency-cruiser, .dependency-cruiser.cjs",
     "biome, biome.json",
     "biome, .biome.jsonc"
   })
@@ -44,22 +43,10 @@ class FileSystemNodeToolConfigsTest {
   }
 
   @Test
-  void wardOwnedDependencyCruiserConfigDoesNotCount() throws IOException {
-    Files.writeString(root.resolve(".dependency-cruiser.mjs"), "// managed-by: ward\n");
-
-    assertThat(configs.userConfig(root, "dependency-cruiser")).isEmpty();
-  }
-
-  @Test
   void wardOwnedBiomeConfigDoesNotCount() throws IOException {
     Files.writeString(root.resolve("biome.jsonc"), "// managed-by: ward preset=standard\n{}\n");
 
     assertThat(configs.userConfig(root, "biome")).isEmpty();
-  }
-
-  @Test
-  void emptyRootHasNoDependencyCruiserConfig() {
-    assertThat(configs.userConfig(root, "dependency-cruiser")).isEmpty();
   }
 
   @Test

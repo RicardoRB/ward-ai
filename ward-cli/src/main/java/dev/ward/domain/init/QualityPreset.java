@@ -28,7 +28,7 @@ public enum QualityPreset {
           List.of(
               "dependencyConvergence", "banDuplicatePomDependencyVersions", "requireMavenVersion"),
           null,
-          new ArchitectureExtras(false, false, false))),
+          false)),
   STRICT(
       "strict",
       new PresetRules(
@@ -83,7 +83,7 @@ public enum QualityPreset {
               "requirePluginVersions",
               "banDynamicVersions"),
           60,
-          new ArchitectureExtras(true, true, true)));
+          true));
 
   private final String id;
 
@@ -105,22 +105,6 @@ public enum QualityPreset {
     return rules;
   }
 
-  /**
-   * Optional rules added to the generated ArchUnit test.
-   *
-   * @param cycles whether packages must be free of cycles
-   * @param noFieldInjection whether field injection is forbidden
-   * @param noStandardStreams whether writing to System.out and System.err is forbidden
-   */
-  public record ArchitectureExtras(
-      boolean cycles, boolean noFieldInjection, boolean noStandardStreams) {
-
-    /** Returns whether any extra rule is on. */
-    public boolean any() {
-      return cycles || noFieldInjection || noStandardStreams;
-    }
-  }
-
   /** The tool rules a preset writes into rule files and the build. */
   public record PresetRules(
       List<String> pmdRules,
@@ -132,7 +116,7 @@ public enum QualityPreset {
       Map<String, Double> jacocoMinimums,
       List<String> enforcerRules,
       Integer mutationThreshold,
-      ArchitectureExtras architectureExtras) {
+      boolean architectureCycles) {
     /** Copies the collections. */
     public PresetRules {
       pmdRules = List.copyOf(pmdRules);

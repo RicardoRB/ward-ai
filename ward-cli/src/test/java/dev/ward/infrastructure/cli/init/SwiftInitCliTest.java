@@ -56,26 +56,7 @@ class SwiftInitCliTest {
   }
 
   @Test
-  void strictSwiftPackageGetsHarmonizeRulesForTheChosenStyle() throws IOException {
-    copyFixture("swift-package", root);
-    final InitCommandFixture init = swiftInit();
-
-    final int exit = init.run("", "--preset", "strict", "--architecture", "hexagonal", "--yes");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(Files.readString(root.resolve("ward.toml")))
-        .contains("[checks.harmonize]", "uses = \"harmonize\"");
-    assertThat(
-            Files.readString(
-                root.resolve(".ward/swift-architecture/Tests/ArchitectureRules/LayerRules.swift")))
-        .contains("func domainLayerRespectsRules()", "func applicationLayerRespectsRules()");
-    assertThat(root.resolve(".harmonize.yaml")).exists();
-    assertThat(Files.readString(root.resolve(".gitignore")))
-        .contains(".ward/swift-architecture/.build/");
-  }
-
-  @Test
-  void standardSwiftPackageWithoutHarmonizeWritesNoArchitecturePackage() throws IOException {
+  void standardSwiftPackageWritesNoArchitecturePackage() throws IOException {
     copyFixture("swift-package", root);
     final InitCommandFixture init = swiftInit();
 
@@ -88,25 +69,16 @@ class SwiftInitCliTest {
   }
 
   @Test
-  void strictSwiftPackageWithTheWardEngineWritesBoundariesAndNoHarmonizeRules() throws IOException {
+  void strictSwiftPackageWritesTheLayerBoundariesAndNoExternalRules() throws IOException {
     copyFixture("swift-package", root);
     final InitCommandFixture init = swiftInit();
 
-    final int exit =
-        init.run(
-            "",
-            "--preset",
-            "strict",
-            "--architecture",
-            "hexagonal",
-            "--architecture-engine",
-            "ward",
-            "--yes");
+    final int exit = init.run("", "--preset", "strict", "--architecture", "hexagonal", "--yes");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward.toml")))
         .contains("[[checks.ward.layers]]")
-        .doesNotContain("[checks.harmonize]");
+        .doesNotContain("harmonize");
     assertThat(root.resolve(".ward/swift-architecture")).doesNotExist();
   }
 

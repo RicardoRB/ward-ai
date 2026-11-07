@@ -3,7 +3,6 @@ package dev.ward.infrastructure.cli.init;
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.init.ArchitectureTestChange;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitResult;
@@ -169,24 +168,7 @@ final class InitResultPrinter {
         .forEach(file -> out.println("Preserved user-owned rule file: " + file));
     result.pomWarnings().forEach(warning -> out.println("Warning: " + warning));
     result.ownedSections().forEach(file -> out.println("Wrote Ward section: " + file));
-    printArchitectureTest(result.architectureTest());
     printIntegrations(result);
-  }
-
-  private void printArchitectureTest(final ArchitectureTestChange test) {
-    if (test == null) {
-      return;
-    }
-    final String file = test.file().toString();
-    final String tool =
-        file.endsWith(".java")
-            ? "ArchUnit test"
-            : file.endsWith(".swift") ? "Harmonize rules" : "dependency-cruiser config";
-    if (test.created() || test.previous() != null) {
-      out.println("Generated " + test.architecture() + " " + tool + ": " + test.file());
-    } else {
-      out.println("Preserved existing " + tool + ": " + test.file());
-    }
   }
 
   private void printIntegrations(final InitResult result) {

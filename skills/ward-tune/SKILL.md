@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ArchUnit architecture rules, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Ruff and mypy rules, Import Linter contracts, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Ruff and mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -55,18 +55,14 @@ List the gates with `enabled = true`. This skill tunes these:
 | `pmd` | PMD rules and categories | [references/pmd.md](references/pmd.md) |
 | `coverage`, `swift-coverage`, `android-coverage` | JaCoCo minimum ratios, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
-| `archunit` | ArchUnit architecture rules | [references/archunit.md](references/archunit.md) |
-| `dependency-cruiser` | Layer paths, added layers and cycle rules of the import-boundary config | [references/dependency-cruiser.md](references/dependency-cruiser.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
 | `biome` | Biome rules in `biome.jsonc` or the project's own Biome config | [references/biome.md](references/biome.md) |
 | `ruff` | Ruff rule sets and complexity in `ruff.toml` or the project's own Ruff config | [references/ruff.md](references/ruff.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
-| `import-linter` | Layer and feature contracts in `.importlinter` | [references/import-linter.md](references/import-linter.md) |
-| `ward` | `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init --architecture-engine ward`; the slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
+| `ward` | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `swiftlint` | SwiftLint rules in `.swiftlint.yml` | [references/swiftlint.md](references/swiftlint.md) |
-| `harmonize` | Layer rules in the generated `.ward/swift-architecture` package and the root `.harmonize.yaml` | [references/harmonize.md](references/harmonize.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a
@@ -119,15 +115,15 @@ that later `ward init` runs keep your tuned rules?" A yes means you remove the m
 the same approved edit** as the tuning. A no means the file is not edited at all. Never edit a
 managed file and keep its marker.
 
-Build files (`pom.xml`, `build.gradle(.kts)`) and existing ArchUnit test classes carry no marker.
-Init does not rewrite an existing JaCoCo configuration or an existing ArchUnit test.
+Build files (`pom.xml`, `build.gradle(.kts)`) carry no marker.
+Init does not rewrite an existing JaCoCo configuration.
 
 ## Step 5: Propose changes, one at a time
 
 Turn the evidence into proposals. Put each one in a class, using the tables in the references:
 
 - **strengthen**: it accepts less code than today. Examples: add a rule, raise a minimum, add an
-  architecture constraint, fix an ArchUnit test that analyzes too little.
+  architecture constraint in `ward.toml`.
 - **neutral**: same accepted code. Examples: comments, ordering.
 - **weaken**: it accepts more code than today. Examples: remove or relax a rule, raise a limit,
   lower a minimum, add an exclusion.
@@ -160,8 +156,7 @@ the backlog. These are suppressions under the guardrails.
 Edit only the approved files, exactly as shown. Keep the file's existing formatting and indentation.
 If a managed file's ownership was transferred, the marker line is removed in this same edit.
 
-If an edit touches `ward.toml`, for example a Gradle coverage gate command or a new ArchUnit
-class name, tell the user that a later `ward init --overwrite` regenerates `ward.toml`, and
+If an edit touches `ward.toml`, for example a Gradle coverage gate command or a layer boundary, tell the user that a later `ward init --overwrite` regenerates `ward.toml`, and
 that this edit would then need to be made again.
 
 If `AGENTS.md` has a `<!-- ward-owned: agent-rules v1 begin -->` section and an approved change

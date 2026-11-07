@@ -4,7 +4,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.init.InitProjectFiles;
-import dev.ward.domain.init.ArchitectureTestGeneration;
+import dev.ward.domain.init.ArchitectureTables;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.ConfigurationStorage;
 import dev.ward.domain.init.OwnedSectionGeneration;
@@ -20,7 +20,7 @@ import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargets;
-import dev.ward.infrastructure.init.ToolchainArchitectureRules;
+import dev.ward.infrastructure.init.ToolchainArchitectureTables;
 import dev.ward.infrastructure.init.node.NodeRuleFileTargets;
 import dev.ward.infrastructure.init.python.PythonRuleFileTargets;
 import dev.ward.infrastructure.init.swift.SwiftRuleFileTargets;
@@ -46,7 +46,7 @@ interface InitBindingsModule {
   TerminalCapabilities terminalCapabilities(JdkTerminalCapabilities implementation);
 
   @Binds
-  ArchitectureTestGeneration architectureTestGeneration(ToolchainArchitectureRules implementation);
+  ArchitectureTables architectureTables(ToolchainArchitectureTables implementation);
 
   @Binds
   RuleFileGeneration ruleFileGeneration(PresetRuleFileWriter implementation);
@@ -73,9 +73,9 @@ interface InitBindingsModule {
   static InitProjectFiles initProjectFiles(
       final BuildToolConfiguration buildTools,
       final RuleFileGeneration ruleFiles,
-      final ArchitectureTestGeneration architectureTests,
+      final ArchitectureTables architectureTables,
       final ConfigurationStorage configuration,
       final OwnedSectionGeneration sections) {
-    return new InitProjectFiles(buildTools, ruleFiles, architectureTests, configuration, sections);
+    return new InitProjectFiles(buildTools, ruleFiles, architectureTables, configuration, sections);
   }
 }

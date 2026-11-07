@@ -14,8 +14,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Finds a Python project's root package and its feature packages, the packages import-linter
- * contracts name. A package is a directory with an {@code __init__.py}.
+ * Finds a Python project's root package and its feature packages, the packages the architecture
+ * tables name. A package is a directory with an {@code __init__.py}.
  */
 final class PythonPackages {
   private static final String SRC = "src";
@@ -45,8 +45,9 @@ final class PythonPackages {
   }
 
   /**
-   * Returns the root packages import-linter names. A Django project has several: each top-level
-   * package, its settings package and its apps. Any other project has the one root package.
+   * Returns the root packages the architecture tables name. A Django project has several: each
+   * top-level package, its settings package and its apps. Any other project has the one root
+   * package.
    *
    * @throws WardException if a non-Django project has no root package
    */
@@ -59,8 +60,8 @@ final class PythonPackages {
         .orElseThrow(
             () ->
                 new WardException(
-                    "import-linter needs the project's root package, and init finds none: keep one"
-                        + " package under src/ or set [project] name to it."));
+                    "The architecture tables need the project's root package, and init finds none:"
+                        + " keep one package under src/ or set [project] name to it."));
   }
 
   /** Returns the Django apps: the top-level packages that define an {@code apps.py}. */

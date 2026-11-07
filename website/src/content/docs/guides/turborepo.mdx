@@ -35,9 +35,7 @@ command = ["gitleaks", "git", "--redact", "--report-format", "sarif", "--report-
 ```
 
 `tsc`, lint, test, and `stryker` are the turbo gates, with the tasks `check-types`, `lint`, `test`,
-and `mutation`. `gitleaks`, `dependency-cruiser`, and the OpenAPI gates are unchanged and run once
-from the root; the dependency-cruiser config covers every member's sources, so imports between
-members are checked. The lint tool is chosen once from the root and every member gets its script.
+and `mutation`. `gitleaks`, and the OpenAPI gates are unchanged and run once from the root. The lint tool is chosen once from the root and every member gets its script.
 The test gate is named after the members' majority runner.
 
 Init adds the tasks the gates need to `turbo.json` when they are missing, without changing an

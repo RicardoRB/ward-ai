@@ -32,7 +32,6 @@ class InitSetupCatalogTest {
           "jest",
           "bun-test",
           "stryker",
-          "dependency-cruiser",
           "vue-tsc",
           "svelte-check",
           "astro-check",
@@ -41,7 +40,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("ruff", "mypy", "pytest", "mutmut", "import-linter", "pip-audit", "django-check");
+      Set.of("ruff", "mypy", "pytest", "mutmut", "pip-audit", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(
@@ -136,7 +135,7 @@ class InitSetupCatalogTest {
         .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
-    assertThat(QualityPreset.STRICT.rules().architectureExtras().cycles()).isTrue();
+    assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();
     assertThatThrownBy(() -> catalog.preset("paranoid")).hasMessageContaining("standard", "strict");
   }
 
@@ -250,8 +249,6 @@ class InitSetupCatalogTest {
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
         .containsExactly("gradle", "jacocoTestCoverageVerification");
-    assertThat(catalog.gate(project, "archunit").command())
-        .containsExactly("gradle", "test", "--tests", "*ArchitectureTest");
     assertThat(catalog.gate(project, "dependency-check").command())
         .containsExactly("gradle", "dependencyCheckAnalyze");
     assertThat(catalog.gate(project, "gitleaks").command())

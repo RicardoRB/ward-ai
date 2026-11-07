@@ -46,8 +46,6 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
           "{stryker,.stryker}.{conf,config}.*",
           "eslint",
           "{eslint.config.*,.eslintrc*}",
-          "dependency-cruiser",
-          ".dependency-cruiser.{json,js,cjs,mjs,ts,cts,mts}",
           "biome",
           "{biome,.biome}.{json,jsonc}");
 

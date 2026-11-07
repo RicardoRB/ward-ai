@@ -109,7 +109,7 @@ order:
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
 2. **Preset.** `standard` (fast, offline gates), `strict` (adds deeper analysis such as SpotBugs,
-   coverage, ArchUnit, enforcer, and mutation testing), or a custom selection. To show exactly which
+   coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 
@@ -124,9 +124,7 @@ order:
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
    script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd` and `enforcer` are
    written into each of those module scripts, and the root script declares their versions with
-   `apply false`. `archunit` is not offered there, because module boundaries already enforce the
-   dependency direction; a single-module Kotlin project keeps it. Do not offer `archunit` for such
-   a build, even under `strict`.
+   `apply false`.
    In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`
    and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
@@ -168,17 +166,15 @@ order:
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
      the gates and `vacuum` as above.
-   - `archunit` when the layering checks in the inspection found violations: the gate fails on its
-     first run.
+   - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
+     Tell the user before the first check, and do not remove the boundaries to make it pass.
 
    Removing a preset gate means a custom selection. See
    [references/option-map.md](references/option-map.md#how-presets-and-gates-combine).
-4. **Architecture style** (only when `archunit` is selected and no ArchUnit tests exist). `layered`,
-   `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote the packages.
-   Then, when the project's languages are all supported by the `ward` engine, ask which checker
-   enforces the style: `tool` (the default, and the recommendation until the engine's verdict is
-   proven on the project) or `ward` (`--architecture-engine ward`, boundaries, slice cycles and
-   feature independence in `ward.toml`; the strict cycle rules are then not generated externally).
+4. **Architecture style** (only when `strict` is selected and no `--architecture` was given).
+   `layered`, `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote
+   the packages. Init always writes the layer boundaries of the style, the slice cycle check and the
+   feature independence table into `ward.toml`; no external tool is generated.
    Formatting is always checked by the `ward-format` gate, which init adds to every selection.
    Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
    Ward's defaults only when the project has none; an existing one is kept unchanged.
@@ -311,7 +307,7 @@ Tell the user:
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
    the `ward.toml`, so it is trusted. Ask first anyway, because it runs the build.
-4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `biome`, `vitest`, `jest`, or
+4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `eslint`, `biome`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
    When the check fails, offer the `ward-fix` skill to fix the code rule by rule.

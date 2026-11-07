@@ -107,7 +107,7 @@ class ConfigurationTemplatePartialTest {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
 
     for (final String gate :
-        List.of("compile", "tests", "coverage", "archunit", "mutation", "spotbugs")) {
+        List.of("compile", "tests", "coverage", "license", "mutation", "spotbugs")) {
       assertThat(gates.get(gate).partial()).as(gate).isNull();
     }
   }
@@ -122,7 +122,7 @@ class ConfigurationTemplatePartialTest {
                 PMD,
                 "spotbugs",
                 "coverage",
-                "archunit",
+                "license",
                 "mutation",
                 "gitleaks",
                 "semgrep")

@@ -54,12 +54,13 @@ class InitServiceTest {
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(configuration.checks().get("tests").profiles()).containsExactly("pre-push", "ci");
     assertThat(configuration.checks().get("mutation").profiles()).containsExactly("ci");
-    assertThat(configuration.forProfiles(List.of()).checks()).containsOnlyKeys(FORMAT);
-    assertThat(configuration.forProfiles(List.of("pre-commit")).checks()).containsOnlyKeys(FORMAT);
+    assertThat(configuration.forProfiles(List.of()).checks()).containsOnlyKeys(FORMAT, "ward");
+    assertThat(configuration.forProfiles(List.of("pre-commit")).checks())
+        .containsOnlyKeys(FORMAT, "ward");
     assertThat(configuration.forProfiles(List.of("pre-push")).checks())
-        .containsOnlyKeys("ward-format", "tests");
+        .containsOnlyKeys("ward-format", "ward", "tests");
     assertThat(configuration.forProfiles(List.of("ci")).checks())
-        .containsOnlyKeys("ward-format", "tests", "mutation");
+        .containsOnlyKeys("ward-format", "ward", "tests", "mutation");
   }
 
   @Test
@@ -87,7 +88,6 @@ class InitServiceTest {
             true,
             null,
             false,
-            null,
             null));
 
     final String configuration = Files.readString(dir.resolve(WARD_TOML));

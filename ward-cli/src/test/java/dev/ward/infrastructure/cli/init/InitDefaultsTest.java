@@ -29,9 +29,10 @@ class InitDefaultsTest {
   void emptyArchitectureAnswerSelectsLayered() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    assertThat(init.run("3\n1\n9\n\n\n\n")).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(init.run("2\n1\n\n\n\n\n")).as(init.output()).isEqualTo(ExitCodes.OK);
 
-    assertThat(init.output()).contains("Enter=layered]", "Generated layered ArchUnit test");
+    assertThat(init.output()).contains("Enter=layered]");
+    assertThat(init.configuration()).contains("from = [\"controller\"]");
   }
 
   @Test

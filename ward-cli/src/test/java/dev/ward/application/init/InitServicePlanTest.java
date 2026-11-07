@@ -14,7 +14,7 @@ import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
-import dev.ward.infrastructure.init.ArchitectureTestGenerator;
+import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
@@ -122,7 +122,6 @@ class InitServicePlanTest {
         hooks,
         null,
         false,
-        null,
         null);
   }
 
@@ -134,7 +133,7 @@ class InitServicePlanTest {
         new InitProjectFiles(
             pom,
             RuleFileTargetsFixtures.writer(),
-            new ArchitectureTestGenerator(),
+            ArchitectureTablesFixtures.create(),
             new FileConfigurationStorage(),
             new OwnedSectionWriter()));
   }

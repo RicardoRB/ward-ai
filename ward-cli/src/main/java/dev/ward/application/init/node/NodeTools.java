@@ -20,8 +20,6 @@ import java.util.List;
  * @param preset the selected preset, or {@code null} for a custom selection
  * @param ownTestConfig whether the project keeps its own test runner config, which init leaves
  *     unchanged
- * @param dependencyCruiserConfig the dependency-cruiser config file name the gate reads: the
- *     project's own, or {@code .dependency-cruiser.mjs}
  * @param biome whether the project uses Biome for linting and formatting
  * @param ownEslintConfig whether the project keeps its own ESLint config
  */
@@ -31,7 +29,6 @@ public record NodeTools(
     boolean available,
     QualityPreset preset,
     boolean ownTestConfig,
-    String dependencyCruiserConfig,
     boolean biome,
     boolean ownEslintConfig) {
   public static final String VITEST = "vitest";
@@ -41,8 +38,6 @@ public record NodeTools(
   static final String LINE = "LINE";
   static final String BRANCH = "BRANCH";
   private static final int PERCENT = 100;
-  private static final String DEPENDENCY_CRUISER = "dependency-cruiser";
-  private static final String WARD_DEPENDENCY_CRUISER = ".dependency-cruiser.mjs";
   private static final String BIOME_PACKAGE = "@biomejs/biome";
   private static final String BIOME = "biome";
   private static final String ESLINT = "eslint";
@@ -64,11 +59,6 @@ public record NodeTools(
         inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
         preset,
         inputs.configs().userConfig(project.root(), testGate).isPresent(),
-        inputs
-            .configs()
-            .userConfig(project.root(), DEPENDENCY_CRUISER)
-            .map(config -> String.valueOf(config.getFileName()))
-            .orElse(WARD_DEPENDENCY_CRUISER),
         linting.biome(),
         linting.ownEslintConfig());
   }
@@ -106,22 +96,13 @@ public record NodeTools(
         available,
         preset,
         ownTestConfig,
-        dependencyCruiserConfig,
         linting.biome(),
         linting.ownEslintConfig());
   }
 
   /** Returns these tools with {@code gate} as the test runner gate. */
   NodeTools withTestGate(final String gate) {
-    return new NodeTools(
-        manager,
-        gate,
-        available,
-        preset,
-        ownTestConfig,
-        dependencyCruiserConfig,
-        biome,
-        ownEslintConfig);
+    return new NodeTools(manager, gate, available, preset, ownTestConfig, biome, ownEslintConfig);
   }
 
   /**
@@ -221,14 +202,6 @@ public record NodeTools(
       }
     }
     return command(arguments.toArray(String[]::new));
-  }
-
-  /** The import-boundary gate; the config it reads enforces the architecture style. */
-  InitGateOption dependencyCruiser() {
-    return option(
-        DEPENDENCY_CRUISER,
-        "Checks import boundaries with dependency-cruiser (pre-push, ci).",
-        command("depcruise", ".", "--config", dependencyCruiserConfig, "--output-type", "err"));
   }
 
   /** The Stryker mutation gate; its config file sets the minimum score. */

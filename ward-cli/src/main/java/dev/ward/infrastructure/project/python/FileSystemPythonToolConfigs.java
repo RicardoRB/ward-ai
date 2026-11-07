@@ -24,25 +24,15 @@ public final class FileSystemPythonToolConfigs implements PythonToolConfigs {
           "ruff", List.of("ruff.toml", ".ruff.toml"),
           "mypy", List.of("mypy.ini", ".mypy.ini"),
           "coverage", List.of(".coveragerc"),
-          "import-linter", List.of(".importlinter"),
           "pytest", List.of("pytest.ini", ".pytest.ini"));
   private static final Map<String, String> TABLES =
       Map.of(
           "ruff", "tool.ruff",
           "mypy", "tool.mypy",
           "coverage", "tool.coverage",
-          "import-linter", "tool.importlinter",
           "pytest", "tool.pytest.ini_options");
   private static final Map<String, String> INI_SECTIONS =
-      Map.of(
-          "mypy",
-          "mypy",
-          "coverage",
-          "coverage:",
-          "import-linter",
-          "importlinter",
-          "pytest",
-          "pytest");
+      Map.of("mypy", "mypy", "coverage", "coverage:", "pytest", "pytest");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject

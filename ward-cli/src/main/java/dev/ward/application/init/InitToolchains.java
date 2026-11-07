@@ -5,7 +5,6 @@ import dev.ward.application.init.node.NodeInitSupport;
 import dev.ward.application.init.python.PythonInitSupport;
 import dev.ward.application.init.swift.SwiftInitSupport;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.util.EnumMap;
@@ -34,12 +33,6 @@ public final class InitToolchains {
   /** Returns every toolchain's init support, in toolchain order. */
   static List<ToolchainInitSupport> all() {
     return List.copyOf(SUPPORTS.values());
-  }
-
-  /** Returns {@code gates} with the user's existing {@code tests} reused by the toolchain. */
-  static List<InitGateOption> reuseTests(
-      final Project project, final List<InitGateOption> gates, final List<String> tests) {
-    return find(project).map(support -> support.reuseTests(project, gates, tests)).orElse(gates);
   }
 
   /** Returns the init support for {@code project}'s toolchain, or empty when there is none. */

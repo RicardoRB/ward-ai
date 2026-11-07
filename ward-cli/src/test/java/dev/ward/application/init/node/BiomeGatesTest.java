@@ -79,7 +79,7 @@ class BiomeGatesTest {
     final Project project = project(Language.JAVASCRIPT, BuildTool.NPM);
 
     assertThat(catalog.presetGates(project, QualityPreset.STRICT))
-        .containsExactly("vitest", BIOME, "eslint", "stryker", "dependency-cruiser");
+        .containsExactly("vitest", BIOME, "eslint", "stryker");
     assertThat(ids(catalog, project, QualityPreset.STRICT))
         .contains(BIOME, "eslint")
         .doesNotContain("prettier");

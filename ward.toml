@@ -50,10 +50,9 @@ command = "./mvnw -DskipTests package jacoco:check"
 
 [checks.archunit]
 enabled = true
-uses = "archunit"
 # Not in pre-push: the tests gate already runs these classes.
 profiles = ["ci"]
-command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,ArchitectureTestGeneratorTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,WardCliContract4Test test"
 
 [checks.enforcer]
 enabled = true

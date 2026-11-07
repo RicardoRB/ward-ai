@@ -37,8 +37,7 @@ final class ArchitectureToolchainTest {
           Map.entry(
               "CompositeToolInstaller",
               "routes tool installation to the adapter of each toolchain"),
-          Map.entry(
-              "ToolchainArchitectureRules", "generates each toolchain's architecture test config"),
+          Map.entry("ToolchainArchitectureTables", "answers each toolchain's architecture tables"),
           Map.entry(
               "FileSystemProjectInspection",
               "detects a directory's project with each toolchain's check"),

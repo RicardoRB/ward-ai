@@ -54,12 +54,10 @@ class TypeScriptFrameworkGatesTest {
   }
 
   @Test
-  void angularStrictPresetOmitsStrykerAndStillKeepsDependencyCruiser() {
+  void angularStrictPresetOmitsStryker() {
     final Project angular = project(BuildTool.NPM, Framework.ANGULAR);
 
-    assertThat(catalog().presetGates(angular, QualityPreset.STRICT))
-        .doesNotContain("stryker")
-        .contains("dependency-cruiser");
+    assertThat(catalog().presetGates(angular, QualityPreset.STRICT)).doesNotContain("stryker");
     assertThat(catalog().gates(angular, null))
         .extracting(InitGateOption::id)
         .doesNotContain("stryker");

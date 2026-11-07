@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.python.PythonTypeFacts;
 import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.infrastructure.analysis.jvm.NativeJvmTypes;
 import dev.ward.infrastructure.analysis.python.PythonStubFiles;
+import dev.ward.infrastructure.analysis.swift.NativeSwiftTypes;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
@@ -15,9 +16,9 @@ import java.util.Optional;
 
 /**
  * Wires the native type-fact sources of one project, by language. The JVM resolver (#367) answers
- * Java and Kotlin; the Python resolver (#369) answers Python; the TypeScript and Swift resolvers
- * (#368, #370) register here too. A language without a source keeps its {@code TYPES} rules
- * reported as not run.
+ * Java and Kotlin, the Swift resolver (#370) answers Swift, and the Python resolver (#369) answers
+ * Python. The TypeScript resolver (#368) registers here too, and until then its {@code TYPES} rules
+ * are reported as not run.
  */
 final class NativeTypeFactsBindings {
   private NativeTypeFactsBindings() {}
@@ -39,6 +40,7 @@ final class NativeTypeFactsBindings {
               sources.put(AnalysisLanguage.JAVA, facts);
               sources.put(AnalysisLanguage.KOTLIN, facts);
             });
+    sources.put(AnalysisLanguage.SWIFT, new NativeSwiftTypes(projectRoot));
     final PythonStubs stubs = new PythonStubs(frontend, new PythonStubFiles(projectRoot)::text);
     sources.put(
         AnalysisLanguage.PYTHON, new CachedTypeFacts(new PythonTypeFacts(frontend, stubs), ""));

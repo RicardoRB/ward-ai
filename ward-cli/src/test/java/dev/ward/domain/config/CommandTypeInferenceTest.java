@@ -30,7 +30,6 @@ class CommandTypeInferenceTest {
         "pytest|uv run coverage run -m pytest",
         "mutmut|uv run mutmut run",
         "mutmut|poetry run mutmut run",
-        "import-linter|uv run lint-imports",
         "pip-audit|uv run pip-audit",
         "mutation|./mvnw pitest:mutationCoverage",
         "stryker|npx stryker run",
