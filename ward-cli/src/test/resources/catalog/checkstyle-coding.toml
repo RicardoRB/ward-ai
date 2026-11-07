@@ -159,10 +159,10 @@ pylint = ["redefined-outer-name"]
 
 [[rule]]
 name = "illegal-catch"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "not-applicable" }
-not-applicable = { swift = "Checkstyle names Java exception classes; Swift errors have no class hierarchy to match" }
+status = { java = "implemented", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "implemented", swift = "not-applicable" }
 ids = { java = "ward:java/illegal-catch" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
+not-applicable = { typescript = "TypeScript and JavaScript catch clauses declare no exception type to restrict", javascript = "TypeScript and JavaScript catch clauses declare no exception type to restrict", swift = "Checkstyle names Java exception classes; Swift errors have no class hierarchy to match" }
+issues = { kotlin = "#294" }
 detekt = ["TooGenericExceptionCaught"]
 pmd = ["AvoidCatchingGenericException"]
 checkstyle = ["IllegalCatch"]
@@ -249,9 +249,9 @@ pylint = ["magic-value-comparison"]
 name = "match-xpath"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "not-applicable" }
-not-applicable = { python = "Checkstyle XPath over the Java AST; Python has no equivalent tree", swift = "XPath queries the Java syntax tree; Swift has no XPath form" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "planned", kotlin = "planned", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
+not-applicable = { typescript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", javascript = "XPath queries the Checkstyle Java syntax tree; Ward expresses structural matches with its generic check kinds", python = "Checkstyle XPath over the Java AST; Python has no equivalent tree", swift = "XPath queries the Java syntax tree; Swift has no XPath form" }
+issues = { java = "#289", kotlin = "#294" }
 checkstyle = ["MatchXpath"]
 
 [[rule]]
@@ -274,9 +274,9 @@ checkstyle = ["MissingNullCaseInSwitch"]
 
 [[rule]]
 name = "missing-switch-default"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+status = { java = "implemented", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "planned", swift = "implemented" }
 ids = { java = "ward:java/missing-switch-default" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
+issues = { kotlin = "#294", python = "#297" }
 pmd = ["SwitchStmtsShouldHaveDefault"]
 checkstyle = ["MissingSwitchDefault"]
 eslint = ["default-case"]
@@ -302,9 +302,9 @@ checkstyle = ["MultipleStringLiterals"]
 name = "multiple-variable-declarations"
 category = "coding"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "implemented" }
+status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "not-applicable", swift = "implemented" }
 not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration" }
-issues = { java = "#289", kotlin = "#294", typescript = "#296", javascript = "#296" }
+issues = { java = "#289", kotlin = "#294" }
 pmd = ["OneDeclarationPerLine"]
 checkstyle = ["MultipleVariableDeclarations"]
 eslint = ["one-var"]

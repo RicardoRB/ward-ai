@@ -1742,3 +1742,149 @@ parent = ["ifStatement"]
 text = '^(?!\{|if\()'
 message = "if branch needs braces around its statement"
 '''
+
+[[rules]]
+id = "ward:typescript/regexp-singleline"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:javascript/regexp-singleline"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:typescript/todo-comment"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:javascript/todo-comment"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:typescript/empty-catch-block"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+parent = ["catchProduction"]
+text = '^\{\}$'
+message = "empty catch block; handle or rethrow the error"
+'''
+
+[[rules]]
+id = "ward:javascript/empty-catch-block"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+parent = ["catchProduction"]
+text = '^\{\}$'
+message = "empty catch block; handle or rethrow the error"
+'''
+
+[[rules]]
+id = "ward:typescript/missing-switch-default"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["caseBlock"]
+child = ["defaultClause"]
+message = "switch statement has no default clause"
+'''
+
+[[rules]]
+id = "ward:javascript/missing-switch-default"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["caseBlock"]
+child = ["defaultClause"]
+message = "switch statement has no default clause"
+'''
+
+[[rules]]
+id = "ward:typescript/multiple-variable-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["variableDeclarationList"]
+counted = ["variableDeclaration"]
+skip = ["variableDeclaration"]
+max = 1
+message = "statement declares {value} variables; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:javascript/multiple-variable-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["variableDeclarationList"]
+counted = ["variableDeclaration"]
+skip = ["variableDeclaration"]
+max = 1
+message = "statement declares {value} variables; the limit is {max}"
+'''

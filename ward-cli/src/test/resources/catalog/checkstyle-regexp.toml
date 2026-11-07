@@ -28,8 +28,8 @@ checkstyle = ["RegexpOnFilename"]
 name = "regexp-singleline"
 category = "regexp"
 presets = ["standard", "strict"]
-status = { java = "planned", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
-issues = { java = "#293", kotlin = "#294", typescript = "#296", javascript = "#296" }
+status = { java = "planned", kotlin = "planned", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
+issues = { java = "#293", kotlin = "#294" }
 checkstyle = ["RegexpSingleline"]
 
 [[rule]]
