@@ -30,7 +30,7 @@ public final class PythonFormatter implements SourceFormatter {
   private static final String SPACE = "space";
   private static final String TAB = "tab";
   private static final String TAB_UNIT = "\t";
-  private static final String DEFAULT_MAX_BLANK_LINES = "1";
+  private static final String DEFAULT_MAX_BLANK_LINES = "2";
   private static final String NEWLINE = "\n";
 
   @Override

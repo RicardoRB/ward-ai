@@ -2,7 +2,7 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.port.TypeSidecar;
+import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import java.nio.file.Path;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @param engineVersion the Ward version, which invalidates cached results when it changes
  * @param dependencies builds the dependency adapters of each run; {@link DependencyAdapters#none()}
  *     when no language resolves dependencies
- * @param typeSidecars opens the optional type sidecars of a project, by language; a language
+ * @param nativeTypeFacts returns the native type-fact sources of a project, by language; a language
  *     without one has no types
  */
 public record AnalysisPorts(
@@ -33,7 +33,7 @@ public record AnalysisPorts(
     AnalysisResultCodec codec,
     String engineVersion,
     DependencyAdapters dependencies,
-    Function<Path, Map<AnalysisLanguage, TypeSidecar>> typeSidecars) {
+    Function<Path, Map<AnalysisLanguage, TypeFacts>> nativeTypeFacts) {
 
   /** Copies the frontends. */
   public AnalysisPorts {

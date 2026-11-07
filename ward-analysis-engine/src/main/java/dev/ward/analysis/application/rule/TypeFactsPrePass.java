@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  * The pre-pass that fetches the type facts of one unit: the rules' needs are merged, and the
- * sidecar is asked once for every span of a needed node kind, whatever the number of rules.
+ * resolver is asked once for every span of a needed node kind, whatever the number of rules.
  */
 public final class TypeFactsPrePass {
   private static final Logger LOGGER = Logger.getLogger(TypeFactsPrePass.class.getName());
@@ -33,7 +33,7 @@ public final class TypeFactsPrePass {
 
   /**
    * Returns the facts for {@code unit} whose syntax tree is {@code root}. Without a need or a
-   * matching node, the sidecar is not asked at all.
+   * matching node, the resolver is not asked at all.
    */
   public UnitTypeFacts run(
       final SourceUnit unit, final SyntaxNode root, final Collection<FactNeed> needs) {
