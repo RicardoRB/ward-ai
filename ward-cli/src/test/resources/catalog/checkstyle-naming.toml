@@ -2,85 +2,88 @@
 
 [[rule]]
 name = "abbreviation-as-word-in-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["AbbreviationAsWordInName"]
 
 [[rule]]
 name = "abstract-class-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift has no abstract class modifier; protocols and base classes cover that role" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["AbstractClassName"]
 ruff = ["N818"]
 
 [[rule]]
 name = "catch-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["CatchParameterName"]
 
 [[rule]]
 name = "class-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["ClassTypeParameterName"]
 
 [[rule]]
 name = "constant-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 detekt = ["TopLevelPropertyNaming"]
 checkstyle = ["ConstantName"]
 ktlint = ["property-naming"]
 
 [[rule]]
 name = "google-method-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["GoogleMethodName"]
 
 [[rule]]
 name = "google-non-constant-field-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["GoogleNonConstantFieldName"]
 
 [[rule]]
 name = "illegal-identifier-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift identifiers cannot contain $, and the compiler already rejects reserved words as names" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["IllegalIdentifierName"]
 
 [[rule]]
 name = "interface-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift protocols take associated types, not generic parameters" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["InterfaceTypeParameterName"]
 
 [[rule]]
 name = "lambda-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["LambdaParameterName"]
 
 [[rule]]
 name = "local-final-variable-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["LocalFinalVariableName"]
 
 [[rule]]
 name = "local-variable-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 pmd = ["LocalVariableNamingConventions"]
 checkstyle = ["LocalVariableName"]
 ruff = ["N806"]
 
 [[rule]]
 name = "member-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { typescript = "#296", javascript = "#296", python = "#297" }
 ids = { kotlin = "ward:kotlin/property-name" }
 detekt = ["VariableNaming"]
 pmd = ["FieldNamingConventions"]
@@ -88,8 +91,8 @@ checkstyle = ["MemberName"]
 
 [[rule]]
 name = "method-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { typescript = "#296", javascript = "#296", python = "#297" }
 ids = { kotlin = "ward:kotlin/function-name" }
 detekt = ["FunctionNaming"]
 pmd = ["MethodNamingConventions"]
@@ -99,22 +102,23 @@ ruff = ["N802"]
 
 [[rule]]
 name = "method-type-parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["MethodTypeParameterName"]
 
 [[rule]]
 name = "package-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "not-applicable" }
+not-applicable = { swift = "Swift has no package declaration; module names come from the package manifest" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 detekt = ["PackageNaming"]
 checkstyle = ["PackageName"]
 ktlint = ["package-name"]
 
 [[rule]]
 name = "parameter-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 detekt = ["FunctionParameterNaming"]
 pmd = ["FormalParameterNamingConventions"]
 checkstyle = ["ParameterName"]
@@ -141,14 +145,14 @@ checkstyle = ["RecordTypeParameterName"]
 
 [[rule]]
 name = "static-variable-name"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297" }
 checkstyle = ["StaticVariableName"]
 
 [[rule]]
 name = "type-name"
-status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "implemented", typescript = "planned", javascript = "planned", python = "planned", swift = "implemented" }
+issues = { typescript = "#296", javascript = "#296", python = "#297" }
 detekt = ["ClassNaming"]
 pmd = ["ClassNamingConventions"]
 checkstyle = ["TypeName"]
