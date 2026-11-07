@@ -3,2015 +3,1451 @@
 [[rule]]
 name = "no-access-key"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAccessKey"]
 
 [[rule]]
 name = "no-accumulating-spread"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noAccumulatingSpread"]
 
 [[rule]]
 name = "no-adjacent-spaces-in-regex"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAdjacentSpacesInRegex"]
 
 [[rule]]
 name = "no-ambiguous-anchor-text"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAmbiguousAnchorText"]
 
 [[rule]]
 name = "no-approximative-numeric-constant"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noApproximativeNumericConstant"]
 
 [[rule]]
 name = "no-aria-hidden-on-focusable"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAriaHiddenOnFocusable"]
 
 [[rule]]
 name = "no-aria-unsupported-elements"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAriaUnsupportedElements"]
 
 [[rule]]
 name = "no-array-index-key"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noArrayIndexKey"]
 
 [[rule]]
 name = "no-assign-in-expressions"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAssignInExpressions"]
 
 [[rule]]
 name = "no-astro-conflicting-set-directives"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAstroConflictingSetDirectives"]
 
 [[rule]]
 name = "no-astro-set-html-directive"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAstroSetHtmlDirective"]
 
 [[rule]]
 name = "no-autofocus"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noAutofocus"]
 
 [[rule]]
 name = "no-banned-types"
-status = { typescript = "implemented", javascript = "not-applicable" }
 not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 biome = ["noBannedTypes"]
 
 [[rule]]
 name = "no-barrel-file"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noBarrelFile"]
 
 [[rule]]
 name = "no-before-interactive-script-outside-document"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noBeforeInteractiveScriptOutsideDocument"]
 
 [[rule]]
 name = "no-blank-target"
 category = "security"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noBlankTarget"]
 
 [[rule]]
 name = "no-bun-modules"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noBunModules"]
 
 [[rule]]
 name = "no-children-prop"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noChildrenProp"]
 
 [[rule]]
 name = "no-comment-text"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noCommentText"]
 
 [[rule]]
 name = "no-common-js"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noCommonJs"]
 
 [[rule]]
 name = "no-component-hook-factories"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noComponentHookFactories"]
 
 [[rule]]
 name = "no-conditional-expect"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noConditionalExpect"]
 
 [[rule]]
 name = "no-confusing-labels"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noConfusingLabels"]
 
 [[rule]]
 name = "no-confusing-void-type"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noConfusingVoidType"]
 
 [[rule]]
 name = "no-const-enum"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noConstEnum"]
 
 [[rule]]
 name = "no-constant-math-min-max-clamp"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noConstantMathMinMaxClamp"]
 
 [[rule]]
 name = "no-dangerously-set-inner-html"
 category = "security"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDangerouslySetInnerHtml"]
 
 [[rule]]
 name = "no-dangerously-set-inner-html-with-children"
 category = "security"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDangerouslySetInnerHtmlWithChildren"]
 
 [[rule]]
 name = "no-default-export"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noDefaultExport"]
 
 [[rule]]
 name = "no-delete"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noDelete"]
 
 [[rule]]
 name = "no-deprecated-imports"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDeprecatedImports"]
 
 [[rule]]
 name = "no-distracting-elements"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDistractingElements"]
 
 [[rule]]
 name = "no-document-cookie"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noDocumentCookie"]
 
 [[rule]]
 name = "no-document-import-in-page"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDocumentImportInPage"]
 
 [[rule]]
 name = "no-done-callback"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noDoneCallback"]
 
 [[rule]]
 name = "no-drizzle-delete-without-where"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDrizzleDeleteWithoutWhere"]
 
 [[rule]]
 name = "no-drizzle-update-without-where"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDrizzleUpdateWithoutWhere"]
 
 [[rule]]
 name = "no-duplicate-jsx-props"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDuplicateJsxProps"]
 
 [[rule]]
 name = "no-duplicate-test-hooks"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDuplicateTestHooks"]
 
 [[rule]]
 name = "no-duplicated-spread-props"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDuplicatedSpreadProps"]
 
 [[rule]]
 name = "no-dynamic-namespace-import-access"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noDynamicNamespaceImportAccess"]
 
 [[rule]]
 name = "no-empty-interface"
-status = { typescript = "implemented", javascript = "not-applicable" }
 not-applicable = { javascript = "TypeScript interface declarations have no JavaScript counterpart" }
 biome = ["noEmptyInterface"]
 
 [[rule]]
 name = "no-empty-source"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noEmptySource"]
 
 [[rule]]
 name = "no-empty-type-parameters"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noEmptyTypeParameters"]
 
 [[rule]]
 name = "no-enum"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noEnum"]
 
 [[rule]]
 name = "no-evolving-types"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noEvolvingTypes"]
 
 [[rule]]
 name = "no-excessive-cognitive-complexity"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noExcessiveCognitiveComplexity"]
 
 [[rule]]
 name = "no-excessive-lines-per-file"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noExcessiveLinesPerFile"]
 
 [[rule]]
 name = "no-excessive-lines-per-function"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noExcessiveLinesPerFunction"]
 
 [[rule]]
 name = "no-excessive-nested-test-suites"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noExcessiveNestedTestSuites"]
 
 [[rule]]
 name = "no-exported-imports"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noExportedImports"]
 
 [[rule]]
 name = "no-exports-in-test"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noExportsInTest"]
 
 [[rule]]
 name = "no-flat-map-identity"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noFlatMapIdentity"]
 
 [[rule]]
 name = "no-focused-tests"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noFocusedTests"]
 
 [[rule]]
 name = "no-for-each"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noForEach"]
 
 [[rule]]
 name = "no-for-in"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noForIn"]
 
 [[rule]]
 name = "no-global-dirname-filename"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalDirnameFilename"]
 
 [[rule]]
 name = "no-global-eval"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalEval"]
 
 [[rule]]
 name = "no-global-is-finite"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalIsFinite"]
 
 [[rule]]
 name = "no-global-is-nan"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noGlobalIsNan"]
 
 [[rule]]
 name = "no-head-element"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noHeadElement"]
 
 [[rule]]
 name = "no-head-import-in-document"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noHeadImportInDocument"]
 
 [[rule]]
 name = "no-header-scope"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noHeaderScope"]
 
 [[rule]]
 name = "no-identical-test-title"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noIdenticalTestTitle"]
 
 [[rule]]
 name = "no-img-element"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noImgElement"]
 
 [[rule]]
 name = "no-implicit-any-let"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noImplicitAnyLet"]
 
 [[rule]]
 name = "no-implicit-boolean"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noImplicitBoolean"]
 
 [[rule]]
 name = "no-import-cycles"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noImportCycles"]
 
 [[rule]]
 name = "no-inline-styles"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noInlineStyles"]
 
 [[rule]]
 name = "no-interactive-element-to-noninteractive-role"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noInteractiveElementToNoninteractiveRole"]
 
 [[rule]]
 name = "no-invalid-builtin-instantiation"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noInvalidBuiltinInstantiation"]
 
 [[rule]]
 name = "no-invalid-file-input-accept"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noInvalidFileInputAccept"]
 
 [[rule]]
 name = "no-js-restricted-properties"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noJsRestrictedProperties"]
 
 [[rule]]
 name = "no-jsx-leaked-dollar"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noJsxLeakedDollar"]
 
 [[rule]]
 name = "no-jsx-literals"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noJsxLiterals"]
 
 [[rule]]
 name = "no-jsx-namespace"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noJsxNamespace"]
 
 [[rule]]
 name = "no-jsx-props-bind"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noJsxPropsBind"]
 
 [[rule]]
 name = "no-label-without-control"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noLabelWithoutControl"]
 
 [[rule]]
 name = "no-leaked-render"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noLeakedRender"]
 
 [[rule]]
 name = "no-misleading-instantiator"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noMisleadingInstantiator"]
 
 [[rule]]
 name = "no-misleading-return-type"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noMisleadingReturnType"]
 
 [[rule]]
 name = "no-misplaced-assertion"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noMisplacedAssertion"]
 
 [[rule]]
 name = "no-misplaced-list-elements"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noMisplacedListElements"]
 
 [[rule]]
 name = "no-misrefactored-shorthand-assign"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noMisrefactoredShorthandAssign"]
 
 [[rule]]
 name = "no-multiline-string"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noMultilineString"]
 
 [[rule]]
 name = "no-namespace-import"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNamespaceImport"]
 
 [[rule]]
 name = "no-negation-in-equality-check"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNegationInEqualityCheck"]
 
 [[rule]]
 name = "no-nested-component-definitions"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNestedComponentDefinitions"]
 
 [[rule]]
 name = "no-nested-promises"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNestedPromises"]
 
 [[rule]]
 name = "no-next-async-client-component"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNextAsyncClientComponent"]
 
 [[rule]]
 name = "no-nodejs-modules"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNodejsModules"]
 
 [[rule]]
 name = "no-non-scalable-viewport"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNonScalableViewport"]
 
 [[rule]]
 name = "no-noninteractive-element-interactions"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNoninteractiveElementInteractions"]
 
 [[rule]]
 name = "no-noninteractive-element-to-interactive-role"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNoninteractiveElementToInteractiveRole"]
 
 [[rule]]
 name = "no-noninteractive-tabindex"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noNoninteractiveTabindex"]
 
 [[rule]]
 name = "no-obsolete-tags"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noObsoleteTags"]
 
 [[rule]]
 name = "no-parameter-assign"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noParameterAssign"]
 
 [[rule]]
 name = "no-parameters-only-used-in-recursion"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noParametersOnlyUsedInRecursion"]
 
 [[rule]]
 name = "no-playwright-element-handle"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightElementHandle"]
 
 [[rule]]
 name = "no-playwright-eval"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightEval"]
 
 [[rule]]
 name = "no-playwright-force-option"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightForceOption"]
 
 [[rule]]
 name = "no-playwright-missing-await"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightMissingAwait"]
 
 [[rule]]
 name = "no-playwright-networkidle"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightNetworkidle"]
 
 [[rule]]
 name = "no-playwright-page-pause"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightPagePause"]
 
 [[rule]]
 name = "no-playwright-useless-await"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightUselessAwait"]
 
 [[rule]]
 name = "no-playwright-wait-for-navigation"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightWaitForNavigation"]
 
 [[rule]]
 name = "no-playwright-wait-for-selector"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightWaitForSelector"]
 
 [[rule]]
 name = "no-playwright-wait-for-timeout"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPlaywrightWaitForTimeout"]
 
 [[rule]]
 name = "no-positive-tabindex"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPositiveTabindex"]
 
 [[rule]]
 name = "no-private-imports"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noPrivateImports"]
 
 [[rule]]
 name = "no-process-env"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noProcessEnv"]
 
 [[rule]]
 name = "no-process-global"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noProcessGlobal"]
 
 [[rule]]
 name = "no-qwik-use-visible-task"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noQwikUseVisibleTask"]
 
 [[rule]]
 name = "no-re-export-all"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReExportAll"]
 
 [[rule]]
 name = "no-react-forward-ref"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactForwardRef"]
 
 [[rule]]
 name = "no-react-native-deep-imports"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactNativeDeepImports"]
 
 [[rule]]
 name = "no-react-native-literal-colors"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactNativeLiteralColors"]
 
 [[rule]]
 name = "no-react-native-raw-text"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactNativeRawText"]
 
 [[rule]]
 name = "no-react-object-type-as-default-prop"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactObjectTypeAsDefaultProp"]
 
 [[rule]]
 name = "no-react-prop-assignments"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactPropAssignments"]
 
 [[rule]]
 name = "no-react-specific-props"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactSpecificProps"]
 
 [[rule]]
 name = "no-react-string-refs"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReactStringRefs"]
 
 [[rule]]
 name = "no-redundant-alt"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noRedundantAlt"]
 
 [[rule]]
 name = "no-redundant-default-export"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noRedundantDefaultExport"]
 
 [[rule]]
 name = "no-redundant-roles"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noRedundantRoles"]
 
 [[rule]]
 name = "no-render-return-value"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noRenderReturnValue"]
 
 [[rule]]
 name = "no-restricted-elements"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noRestrictedElements"]
 
 [[rule]]
 name = "no-restricted-imports"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noRestrictedImports"]
 
 [[rule]]
 name = "no-return-in-finally"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noReturnInFinally"]
 
 [[rule]]
 name = "no-secrets"
 category = "security"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSecrets"]
 
 [[rule]]
 name = "no-self-import"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSelfImport"]
 
 [[rule]]
 name = "no-shadow"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noShadow"]
 
 [[rule]]
 name = "no-shouty-constants"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noShoutyConstants"]
 
 [[rule]]
 name = "no-skipped-tests"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noSkippedTests"]
 
 [[rule]]
 name = "no-solid-destructured-props"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSolidDestructuredProps"]
 
 [[rule]]
 name = "no-static-element-interactions"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noStaticElementInteractions"]
 
 [[rule]]
 name = "no-static-only-class"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noStaticOnlyClass"]
 
 [[rule]]
 name = "no-string-case-mismatch"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noStringCaseMismatch"]
 
 [[rule]]
 name = "no-substr"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noSubstr"]
 
 [[rule]]
 name = "no-suspicious-semicolon-in-jsx"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSuspiciousSemicolonInJsx"]
 
 [[rule]]
 name = "no-svelte-export-let"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSvelteExportLet"]
 
 [[rule]]
 name = "no-svelte-unnecessary-state-wrap"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSvelteUnnecessaryStateWrap"]
 
 [[rule]]
 name = "no-svg-without-title"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSvgWithoutTitle"]
 
 [[rule]]
 name = "no-sync-scripts"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noSyncScripts"]
 
 [[rule]]
 name = "no-tailwind-arbitrary-value"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noTailwindArbitraryValue"]
 
 [[rule]]
 name = "no-tailwind-raw-colors"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noTailwindRawColors"]
 
 [[rule]]
 name = "no-ternary"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noTernary"]
 
 [[rule]]
 name = "no-then-property"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noThenProperty"]
 
 [[rule]]
 name = "no-this-in-static"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noThisInStatic"]
 
 [[rule]]
 name = "no-this-outside-of-class"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noThisOutsideOfClass"]
 
 [[rule]]
 name = "no-unassigned-variables"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnassignedVariables"]
 
 [[rule]]
 name = "no-undeclared-classes"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUndeclaredClasses"]
 
 [[rule]]
 name = "no-undeclared-custom-properties"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUndeclaredCustomProperties"]
 
 [[rule]]
 name = "no-undeclared-dependencies"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUndeclaredDependencies"]
 
 [[rule]]
 name = "no-undeclared-env-vars"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUndeclaredEnvVars"]
 
 [[rule]]
 name = "no-unknown-attribute"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnknownAttribute"]
 
 [[rule]]
 name = "no-unnecessary-conditions"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnnecessaryConditions"]
 
 [[rule]]
 name = "no-unreachable-super"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnreachableSuper"]
 
 [[rule]]
 name = "no-unresolved-imports"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnresolvedImports"]
 
 [[rule]]
 name = "no-unsafe-iframe-sandbox"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
 name = "no-unused-function-parameters"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnusedFunctionParameters"]
 
 [[rule]]
 name = "no-unused-instantiation"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnusedInstantiation"]
 
 [[rule]]
 name = "no-unused-template-literal"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noUnusedTemplateLiteral"]
 
 [[rule]]
 name = "no-unwanted-polyfillio"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUnwantedPolyfillio"]
 
 [[rule]]
 name = "no-useless-catch-binding"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessCatchBinding"]
 
 [[rule]]
 name = "no-useless-continue"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUselessContinue"]
 
 [[rule]]
 name = "no-useless-fragments"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUselessFragments"]
 
 [[rule]]
 name = "no-useless-lone-block-statements"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUselessLoneBlockStatements"]
 
 [[rule]]
 name = "no-useless-string-raw"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["noUselessStringRaw"]
 
 [[rule]]
 name = "no-useless-switch-case"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUselessSwitchCase"]
 
 [[rule]]
 name = "no-useless-undefined"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noUselessUndefined"]
 
 [[rule]]
 name = "no-void-elements-with-children"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVoidElementsWithChildren"]
 
 [[rule]]
 name = "no-void-type-return"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVoidTypeReturn"]
 
 [[rule]]
 name = "no-vue-arrow-func-in-watch"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueArrowFuncInWatch"]
 
 [[rule]]
 name = "no-vue-data-object-declaration"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueDataObjectDeclaration"]
 
 [[rule]]
 name = "no-vue-deprecated-scoped-slots"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueDeprecatedScopedSlots"]
 
 [[rule]]
 name = "no-vue-duplicate-keys"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueDuplicateKeys"]
 
 [[rule]]
 name = "no-vue-import-compiler-macros"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueImportCompilerMacros"]
 
 [[rule]]
 name = "no-vue-options-api"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["noVueOptionsApi"]
 
 [[rule]]
 name = "no-vue-ref-as-operand"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueRefAsOperand"]
 
 [[rule]]
 name = "no-vue-reserved-keys"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueReservedKeys"]
 
 [[rule]]
 name = "no-vue-reserved-props"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueReservedProps"]
 
 [[rule]]
 name = "no-vue-setup-props-reactivity-loss"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noVueSetupPropsReactivityLoss"]
 
 [[rule]]
 name = "no-xor-as-exponentiation"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["noXorAsExponentiation"]
 
 [[rule]]
 name = "use-alt-text"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useAltText"]
 
 [[rule]]
 name = "use-anchor-content"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useAnchorContent"]
 
 [[rule]]
 name = "use-aria-activedescendant-with-tabindex"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useAriaActivedescendantWithTabindex"]
 
 [[rule]]
 name = "use-aria-props-for-role"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useAriaPropsForRole"]
 
 [[rule]]
 name = "use-aria-props-supported-by-role"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useAriaPropsSupportedByRole"]
 
 [[rule]]
 name = "use-array-find"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useArrayFind"]
 
 [[rule]]
 name = "use-array-some"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useArraySome"]
 
 [[rule]]
 name = "use-at-index"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useAtIndex"]
 
 [[rule]]
 name = "use-better-dom-traversing"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useBetterDomTraversing"]
 
 [[rule]]
 name = "use-button-type"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useButtonType"]
 
 [[rule]]
 name = "use-component-export-only-modules"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useComponentExportOnlyModules"]
 
 [[rule]]
 name = "use-consistent-array-type"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentArrayType"]
 
 [[rule]]
 name = "use-consistent-arrow-return"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentArrowReturn"]
 
 [[rule]]
 name = "use-consistent-builtin-instantiation"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentBuiltinInstantiation"]
 
 [[rule]]
 name = "use-consistent-curly-braces"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentCurlyBraces"]
 
 [[rule]]
 name = "use-consistent-enum-value-type"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentEnumValueType"]
 
 [[rule]]
 name = "use-consistent-member-accessibility"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentMemberAccessibility"]
 
 [[rule]]
 name = "use-consistent-object-definitions"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useConsistentObjectDefinitions"]
 
 [[rule]]
 name = "use-consistent-test-it"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useConsistentTestIt"]
 
 [[rule]]
 name = "use-control-label"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useControlLabel"]
 
 [[rule]]
 name = "use-date-now"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useDateNow"]
 
 [[rule]]
 name = "use-default-switch-clause"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useDefaultSwitchClause"]
 
 [[rule]]
 name = "use-default-switch-clause-last"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useDefaultSwitchClauseLast"]
 
 [[rule]]
 name = "use-disposables"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useDisposables"]
 
 [[rule]]
 name = "use-dom-node-text-content"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useDomNodeTextContent"]
 
 [[rule]]
 name = "use-dom-query-selector"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useDomQuerySelector"]
 
 [[rule]]
 name = "use-error-cause"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useErrorCause"]
 
 [[rule]]
 name = "use-error-message"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useErrorMessage"]
 
 [[rule]]
 name = "use-exhaustive-dependencies"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useExhaustiveDependencies"]
 
 [[rule]]
 name = "use-exhaustive-switch-cases"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useExhaustiveSwitchCases"]
 
 [[rule]]
 name = "use-expect"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useExpect"]
 
 [[rule]]
 name = "use-explicit-length-check"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useExplicitLengthCheck"]
 
 [[rule]]
 name = "use-explicit-return-type"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useExplicitReturnType"]
 
 [[rule]]
 name = "use-explicit-type"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useExplicitType"]
 
 [[rule]]
 name = "use-exports-last"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useExportsLast"]
 
 [[rule]]
 name = "use-filenaming-convention"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useFilenamingConvention"]
 
 [[rule]]
 name = "use-flat-map"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useFlatMap"]
 
 [[rule]]
 name = "use-flat-math-min-max"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useFlatMathMinMax"]
 
 [[rule]]
 name = "use-focusable-interactive"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useFocusableInteractive"]
 
 [[rule]]
 name = "use-fragment-syntax"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useFragmentSyntax"]
 
 [[rule]]
 name = "use-global-this"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useGlobalThis"]
 
 [[rule]]
 name = "use-google-font-display"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useGoogleFontDisplay"]
 
 [[rule]]
 name = "use-google-font-preconnect"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useGoogleFontPreconnect"]
 
 [[rule]]
 name = "use-heading-content"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useHeadingContent"]
 
 [[rule]]
 name = "use-hook-at-top-level"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useHookAtTopLevel"]
 
 [[rule]]
 name = "use-html-lang"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useHtmlLang"]
 
 [[rule]]
 name = "use-iframe-sandbox"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useIframeSandbox"]
 
 [[rule]]
 name = "use-iframe-title"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useIframeTitle"]
 
 [[rule]]
 name = "use-image-size"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useImageSize"]
 
 [[rule]]
 name = "use-import-extensions"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useImportExtensions"]
 
 [[rule]]
 name = "use-imports-first"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useImportsFirst"]
 
 [[rule]]
 name = "use-index-of"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useIndexOf"]
 
 [[rule]]
 name = "use-inline-script-id"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useInlineScriptId"]
 
 [[rule]]
 name = "use-is-array"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useIsArray"]
 
 [[rule]]
 name = "use-json-import-attributes"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useJsonImportAttributes"]
 
 [[rule]]
 name = "use-jsx-key-in-iterable"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useJsxKeyInIterable"]
 
 [[rule]]
 name = "use-key-with-click-events"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useKeyWithClickEvents"]
 
 [[rule]]
 name = "use-key-with-mouse-events"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useKeyWithMouseEvents"]
 
 [[rule]]
 name = "use-math-min-max"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useMathMinMax"]
 
 [[rule]]
 name = "use-media-caption"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useMediaCaption"]
 
 [[rule]]
 name = "use-modern-math-apis"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useModernMathApis"]
 
 [[rule]]
 name = "use-node-assert-strict"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useNodeAssertStrict"]
 
 [[rule]]
 name = "use-nodejs-import-protocol"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useNodejsImportProtocol"]
 
 [[rule]]
 name = "use-number-namespace"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useNumberNamespace"]
 
 [[rule]]
 name = "use-number-to-fixed-digits-argument"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useNumberToFixedDigitsArgument"]
 
 [[rule]]
 name = "use-numeric-separators"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useNumericSeparators"]
 
 [[rule]]
 name = "use-playwright-valid-describe-callback"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["usePlaywrightValidDescribeCallback"]
 
 [[rule]]
 name = "use-qwik-classlist"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useQwikClasslist"]
 
 [[rule]]
 name = "use-qwik-loader-location"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useQwikLoaderLocation"]
 
 [[rule]]
 name = "use-qwik-method-usage"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useQwikMethodUsage"]
 
 [[rule]]
 name = "use-qwik-valid-lexical-scope"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useQwikValidLexicalScope"]
 
 [[rule]]
 name = "use-react-async-server-function"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReactAsyncServerFunction"]
 
 [[rule]]
 name = "use-react-compiler"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReactCompiler"]
 
 [[rule]]
 name = "use-react-function-component-definition"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReactFunctionComponentDefinition"]
 
 [[rule]]
 name = "use-react-function-components"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useReactFunctionComponents"]
 
 [[rule]]
 name = "use-react-naming-convention"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReactNamingConvention"]
 
 [[rule]]
 name = "use-react-native-platform-components"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReactNativePlatformComponents"]
 
 [[rule]]
 name = "use-reduce-type-parameter"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useReduceTypeParameter"]
 
 [[rule]]
 name = "use-regexp-test"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useRegexpTest"]
 
 [[rule]]
 name = "use-self-closing-elements"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useSelfClosingElements"]
 
 [[rule]]
 name = "use-semantic-elements"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSemanticElements"]
 
 [[rule]]
 name = "use-shorthand-function-type"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useShorthandFunctionType"]
 
 [[rule]]
 name = "use-simple-number-keys"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSimpleNumberKeys"]
 
 [[rule]]
 name = "use-simplified-logic-expression"
 category = "complexity"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSimplifiedLogicExpression"]
 
 [[rule]]
 name = "use-single-js-doc-asterisk"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSingleJsDocAsterisk"]
 
 [[rule]]
 name = "use-single-var-declarator"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useSingleVarDeclarator"]
 
 [[rule]]
 name = "use-solid-for-component"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSolidForComponent"]
 
 [[rule]]
 name = "use-sorted-classes"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSortedClasses"]
 
 [[rule]]
 name = "use-static-response-methods"
 category = "suspicious"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useStaticResponseMethods"]
 
 [[rule]]
 name = "use-svelte-kit-rune-imports"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useSvelteKitRuneImports"]
 
 [[rule]]
 name = "use-tailwind-shorthand-classes"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useTailwindShorthandClasses"]
 
 [[rule]]
 name = "use-test-hooks-in-order"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useTestHooksInOrder"]
 
 [[rule]]
 name = "use-test-hooks-on-top"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useTestHooksOnTop"]
 
 [[rule]]
 name = "use-throw-new-error"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useThrowNewError"]
 
 [[rule]]
 name = "use-top-level-regex"
 category = "performance"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useTopLevelRegex"]
 
 [[rule]]
 name = "use-trim-start-end"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useTrimStartEnd"]
 
 [[rule]]
 name = "use-unique-element-ids"
 category = "correctness"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useUniqueElementIds"]
 
 [[rule]]
 name = "use-valid-anchor"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidAnchor"]
 
 [[rule]]
 name = "use-valid-aria-props"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidAriaProps"]
 
 [[rule]]
 name = "use-valid-aria-role"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidAriaRole"]
 
 [[rule]]
 name = "use-valid-aria-values"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidAriaValues"]
 
 [[rule]]
 name = "use-valid-autocomplete"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidAutocomplete"]
 
 [[rule]]
 name = "use-valid-for-direction"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useValidForDirection"]
 
 [[rule]]
 name = "use-valid-lang"
 category = "a11y"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidLang"]
 
 [[rule]]
 name = "use-valid-test-title"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useValidTestTitle"]
 
 [[rule]]
 name = "use-vue-base-import"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useVueBaseImport"]
 
 [[rule]]
 name = "use-vue-consistent-define-props-declaration"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useVueConsistentDefinePropsDeclaration"]
 
 [[rule]]
 name = "use-vue-define-macros-order"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useVueDefineMacrosOrder"]
 
 [[rule]]
 name = "use-vue-multi-word-component-names"
 category = "linter"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#299", javascript = "#299" }
 biome = ["useVueMultiWordComponentNames"]
 
 [[rule]]
 name = "use-vue-next-tick-promise"
 category = "nursery"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#329", javascript = "#329" }
 biome = ["useVueNextTickPromise"]
 
 [[rule]]
 name = "use-while"
-status = { typescript = "implemented", javascript = "implemented" }
 biome = ["useWhile"]
 

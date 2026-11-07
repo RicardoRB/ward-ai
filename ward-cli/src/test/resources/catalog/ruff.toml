@@ -3,5848 +3,4275 @@
 [[rule]]
 name = "builtin-variable-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A001"]
 
 [[rule]]
 name = "builtin-argument-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A002"]
 
 [[rule]]
 name = "builtin-attribute-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A003"]
 
 [[rule]]
 name = "builtin-import-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A004"]
 
 [[rule]]
 name = "stdlib-module-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A005"]
 
 [[rule]]
 name = "builtin-lambda-argument-shadowing"
 category = "flake8-builtins"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["A006"]
 
 [[rule]]
 name = "airflow-variable-name-task-id-mismatch"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR001"]
 
 [[rule]]
 name = "airflow-dag-no-schedule-argument"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR002"]
 
 [[rule]]
 name = "airflow-variable-get-outside-task"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR003"]
 
 [[rule]]
 name = "airflow-task-branch-as-short-circuit"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR004"]
 
 [[rule]]
 name = "airflow-xcom-pull-in-template-string"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR201"]
 
 [[rule]]
 name = "airflow-task-implicit-multiple-outputs"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR202"]
 
 [[rule]]
 name = "airflow3-removal"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR301"]
 
 [[rule]]
 name = "airflow3-moved-to-provider"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR302"]
 
 [[rule]]
 name = "airflow3-incompatible-function-signature"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR303"]
 
 [[rule]]
 name = "airflow3-dag-dynamic-value"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR304"]
 
 [[rule]]
 name = "airflow3-suggested-update"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR311"]
 
 [[rule]]
 name = "airflow3-suggested-to-move-to-provider"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR312"]
 
 [[rule]]
 name = "airflow31-moved"
 category = "airflow"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["AIR321"]
 
 [[rule]]
 name = "missing-type-function-argument"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN001"]
 
 [[rule]]
 name = "missing-type-args"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN002"]
 
 [[rule]]
 name = "missing-type-kwargs"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN003"]
 
 [[rule]]
 name = "missing-return-type-undocumented-public-function"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN201"]
 
 [[rule]]
 name = "missing-return-type-private-function"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN202"]
 
 [[rule]]
 name = "missing-return-type-special-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN204"]
 
 [[rule]]
 name = "missing-return-type-static-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN205"]
 
 [[rule]]
 name = "missing-return-type-class-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN206"]
 
 [[rule]]
 name = "any-type"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ANN401"]
 
 [[rule]]
 name = "unused-function-argument"
 category = "flake8-unused-arguments"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ARG001"]
 
 [[rule]]
 name = "unused-method-argument"
 category = "flake8-unused-arguments"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ARG002"]
 
 [[rule]]
 name = "unused-class-method-argument"
 category = "flake8-unused-arguments"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ARG003"]
 
 [[rule]]
 name = "unused-static-method-argument"
 category = "flake8-unused-arguments"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ARG004"]
 
 [[rule]]
 name = "unused-lambda-argument"
 category = "flake8-unused-arguments"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ARG005"]
 
 [[rule]]
 name = "cancel-scope-no-checkpoint"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC100"]
 
 [[rule]]
 name = "trio-sync-call"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC105"]
 
 [[rule]]
 name = "async-function-with-timeout"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC109"]
 
 [[rule]]
 name = "async-busy-wait"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC110"]
 
 [[rule]]
 name = "async-zero-sleep"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC115"]
 
 [[rule]]
 name = "long-sleep-not-forever"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC116"]
 
 [[rule]]
 name = "yield-in-context-manager-in-async-generator"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC119"]
 
 [[rule]]
 name = "blocking-http-call-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC210"]
 
 [[rule]]
 name = "blocking-http-call-httpx-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC212"]
 
 [[rule]]
 name = "create-subprocess-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC220"]
 
 [[rule]]
 name = "run-process-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC221"]
 
 [[rule]]
 name = "wait-for-process-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC222"]
 
 [[rule]]
 name = "blocking-open-call-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC230"]
 
 [[rule]]
 name = "blocking-path-method-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC240"]
 
 [[rule]]
 name = "blocking-input-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC250"]
 
 [[rule]]
 name = "blocking-sleep-in-async-function"
 category = "flake8-async"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["ASYNC251"]
 
 [[rule]]
 name = "unary-prefix-increment-decrement"
-status = { python = "implemented" }
 ruff = ["B002"]
 
 [[rule]]
 name = "assignment-to-os-environ"
-status = { python = "implemented" }
 ruff = ["B003"]
 
 [[rule]]
 name = "unreliable-callable-check"
-status = { python = "implemented" }
 ruff = ["B004"]
 
 [[rule]]
 name = "strip-with-multi-characters"
-status = { python = "implemented" }
 ruff = ["B005"]
 
 [[rule]]
 name = "mutable-argument-default"
-status = { python = "implemented" }
 ruff = ["B006"]
 
 [[rule]]
 name = "unused-loop-control-variable"
-status = { python = "implemented" }
 ruff = ["B007"]
 
 [[rule]]
 name = "function-call-in-default-argument"
-status = { python = "implemented" }
 ruff = ["B008"]
 
 [[rule]]
 name = "get-attr-with-constant"
-status = { python = "implemented" }
 ruff = ["B009"]
 
 [[rule]]
 name = "set-attr-with-constant"
-status = { python = "implemented" }
 ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-status = { python = "implemented" }
 ruff = ["B012"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
-status = { python = "implemented" }
 ruff = ["B013"]
 
 [[rule]]
 name = "duplicate-handler-exception"
-status = { python = "implemented" }
 ruff = ["B014"]
 
 [[rule]]
 name = "useless-comparison"
-status = { python = "implemented" }
 ruff = ["B015"]
 
 [[rule]]
 name = "raise-literal"
-status = { python = "implemented" }
 ruff = ["B016"]
 
 [[rule]]
 name = "assert-raises-exception"
-status = { python = "implemented" }
 ruff = ["B017"]
 
 [[rule]]
 name = "useless-expression"
-status = { python = "implemented" }
 ruff = ["B018"]
 
 [[rule]]
 name = "cached-instance-method"
-status = { python = "implemented" }
 ruff = ["B019"]
 
 [[rule]]
 name = "loop-variable-overrides-iterator"
-status = { python = "implemented" }
 ruff = ["B020"]
 
 [[rule]]
 name = "f-string-docstring"
-status = { python = "implemented" }
 ruff = ["B021"]
 
 [[rule]]
 name = "useless-contextlib-suppress"
-status = { python = "implemented" }
 ruff = ["B022"]
 
 [[rule]]
 name = "function-uses-loop-variable"
-status = { python = "implemented" }
 ruff = ["B023"]
 
 [[rule]]
 name = "abstract-base-class-without-abstract-method"
-status = { python = "implemented" }
 ruff = ["B024"]
 
 [[rule]]
 name = "duplicate-try-block-exception"
-status = { python = "implemented" }
 ruff = ["B025"]
 
 [[rule]]
 name = "star-arg-unpacking-after-keyword-arg"
-status = { python = "implemented" }
 ruff = ["B026"]
 
 [[rule]]
 name = "empty-method-without-abstract-decorator"
-status = { python = "implemented" }
 ruff = ["B027"]
 
 [[rule]]
 name = "no-explicit-stacklevel"
-status = { python = "implemented" }
 ruff = ["B028"]
 
 [[rule]]
 name = "except-with-empty-tuple"
-status = { python = "implemented" }
 ruff = ["B029"]
 
 [[rule]]
 name = "except-with-non-exception-classes"
-status = { python = "implemented" }
 ruff = ["B030"]
 
 [[rule]]
 name = "reuse-of-groupby-generator"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B031"]
 
 [[rule]]
 name = "unintentional-type-annotation"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B032"]
 
 [[rule]]
 name = "duplicate-value"
-status = { python = "implemented" }
 ruff = ["B033"]
 pylint = ["duplicate-value"]
 
 [[rule]]
 name = "re-sub-positional-args"
-status = { python = "implemented" }
 ruff = ["B034"]
 
 [[rule]]
 name = "static-key-dict-comprehension"
-status = { python = "implemented" }
 ruff = ["B035"]
 
 [[rule]]
 name = "mutable-contextvar-default"
-status = { python = "implemented" }
 ruff = ["B039"]
 
 [[rule]]
 name = "del-attr-with-constant"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B043"]
 
 [[rule]]
 name = "return-in-generator"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B901"]
 
 [[rule]]
 name = "class-as-data-structure"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B903"]
 
 [[rule]]
 name = "raise-without-from-inside-except"
-status = { python = "implemented" }
 ruff = ["B904"]
 
 [[rule]]
 name = "zip-without-explicit-strict"
-status = { python = "implemented" }
 ruff = ["B905"]
 
 [[rule]]
 name = "loop-iterator-mutation"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B909"]
 
 [[rule]]
 name = "batched-without-explicit-strict"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B911"]
 
 [[rule]]
 name = "map-without-explicit-strict"
 category = "flake8-bugbear"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["B912"]
 
 [[rule]]
 name = "unnecessary-generator-list"
-status = { python = "implemented" }
 ruff = ["C400"]
 
 [[rule]]
 name = "unnecessary-generator-set"
-status = { python = "implemented" }
 ruff = ["C401"]
 
 [[rule]]
 name = "unnecessary-generator-dict"
-status = { python = "implemented" }
 ruff = ["C402"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-set"
-status = { python = "implemented" }
 ruff = ["C403"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-dict"
-status = { python = "implemented" }
 ruff = ["C404"]
 
 [[rule]]
 name = "unnecessary-literal-set"
-status = { python = "implemented" }
 ruff = ["C405"]
 
 [[rule]]
 name = "unnecessary-literal-dict"
-status = { python = "implemented" }
 ruff = ["C406"]
 
 [[rule]]
 name = "unnecessary-collection-call"
-status = { python = "implemented" }
 ruff = ["C408"]
 
 [[rule]]
 name = "unnecessary-literal-within-tuple-call"
-status = { python = "implemented" }
 ruff = ["C409"]
 
 [[rule]]
 name = "unnecessary-literal-within-list-call"
-status = { python = "implemented" }
 ruff = ["C410"]
 
 [[rule]]
 name = "unnecessary-list-call"
-status = { python = "implemented" }
 ruff = ["C411"]
 
 [[rule]]
 name = "unnecessary-call-around-sorted"
-status = { python = "implemented" }
 ruff = ["C413"]
 
 [[rule]]
 name = "unnecessary-double-cast-or-process"
-status = { python = "implemented" }
 ruff = ["C414"]
 
 [[rule]]
 name = "unnecessary-subscript-reversal"
-status = { python = "implemented" }
 ruff = ["C415"]
 
 [[rule]]
 name = "unnecessary-comprehension"
-status = { python = "implemented" }
 ruff = ["C416"]
 pylint = ["unnecessary-comprehension"]
 
 [[rule]]
 name = "unnecessary-map"
-status = { python = "implemented" }
 ruff = ["C417"]
 
 [[rule]]
 name = "unnecessary-literal-within-dict-call"
-status = { python = "implemented" }
 ruff = ["C418"]
 
 [[rule]]
 name = "unnecessary-comprehension-in-call"
-status = { python = "implemented" }
 ruff = ["C419"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
-status = { python = "implemented" }
 ruff = ["C420"]
 
 [[rule]]
 name = "missing-copyright-notice"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["CPY001"]
 
 [[rule]]
 name = "undocumented-public-module"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D100"]
 
 [[rule]]
 name = "undocumented-public-package"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D104"]
 
 [[rule]]
 name = "undocumented-magic-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D105"]
 
 [[rule]]
 name = "undocumented-public-nested-class"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D106"]
 
 [[rule]]
 name = "undocumented-public-init"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D107"]
 
 [[rule]]
 name = "unnecessary-multiline-docstring"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D200"]
 
 [[rule]]
 name = "blank-line-before-function"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D201"]
 
 [[rule]]
 name = "blank-line-after-function"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D202"]
 
 [[rule]]
 name = "incorrect-blank-line-before-class"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D203"]
 
 [[rule]]
 name = "incorrect-blank-line-after-class"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D204"]
 
 [[rule]]
 name = "missing-blank-line-after-summary"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D205"]
 
 [[rule]]
 name = "docstring-tab-indentation"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D206"]
 
 [[rule]]
 name = "under-indentation"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D207"]
 
 [[rule]]
 name = "over-indentation"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D208"]
 
 [[rule]]
 name = "new-line-after-last-paragraph"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D209"]
 
 [[rule]]
 name = "surrounding-whitespace"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D210"]
 
 [[rule]]
 name = "blank-line-before-class"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D211"]
 
 [[rule]]
 name = "multi-line-summary-first-line"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D212"]
 
 [[rule]]
 name = "multi-line-summary-second-line"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D213"]
 
 [[rule]]
 name = "overindented-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D214"]
 
 [[rule]]
 name = "overindented-section-underline"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D215"]
 
 [[rule]]
 name = "triple-single-quotes"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D300"]
 
 [[rule]]
 name = "escape-sequence-in-docstring"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D301"]
 
 [[rule]]
 name = "missing-trailing-period"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D400"]
 
 [[rule]]
 name = "non-imperative-mood"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D401"]
 
 [[rule]]
 name = "signature-in-docstring"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D402"]
 
 [[rule]]
 name = "first-word-uncapitalized"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D403"]
 
 [[rule]]
 name = "docstring-starts-with-this"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D404"]
 
 [[rule]]
 name = "non-capitalized-section-name"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D405"]
 
 [[rule]]
 name = "missing-new-line-after-section-name"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D406"]
 
 [[rule]]
 name = "missing-dashed-underline-after-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D407"]
 
 [[rule]]
 name = "missing-section-underline-after-name"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D408"]
 
 [[rule]]
 name = "mismatched-section-underline-length"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D409"]
 
 [[rule]]
 name = "no-blank-line-after-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D410"]
 
 [[rule]]
 name = "no-blank-line-before-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D411"]
 
 [[rule]]
 name = "blank-lines-between-header-and-content"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D412"]
 
 [[rule]]
 name = "missing-blank-line-after-last-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D413"]
 
 [[rule]]
 name = "empty-docstring-section"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D414"]
 
 [[rule]]
 name = "missing-terminal-punctuation"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D415"]
 
 [[rule]]
 name = "missing-section-name-colon"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D416"]
 
 [[rule]]
 name = "undocumented-param"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D417"]
 
 [[rule]]
 name = "overload-with-docstring"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D418"]
 
 [[rule]]
 name = "empty-docstring"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D419"]
 pylint = ["empty-docstring"]
 
 [[rule]]
 name = "incorrect-section-order"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D420"]
 
 [[rule]]
 name = "property-docstring-starts-with-verb"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["D421"]
 
 [[rule]]
 name = "django-nullable-model-string-field"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ001"]
 
 [[rule]]
 name = "django-locals-in-render-function"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ003"]
 
 [[rule]]
 name = "django-exclude-with-model-form"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ006"]
 
 [[rule]]
 name = "django-all-with-model-form"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ007"]
 
 [[rule]]
 name = "django-model-without-dunder-str"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ008"]
 
 [[rule]]
 name = "django-unordered-body-content-in-model"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ012"]
 
 [[rule]]
 name = "django-non-leading-receiver-decorator"
 category = "flake8-django"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DJ013"]
 
 [[rule]]
 name = "docstring-extraneous-parameter"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC102"]
 
 [[rule]]
 name = "docstring-missing-returns"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC201"]
 
 [[rule]]
 name = "docstring-extraneous-returns"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC202"]
 
 [[rule]]
 name = "docstring-missing-yields"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC402"]
 
 [[rule]]
 name = "docstring-extraneous-yields"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC403"]
 
 [[rule]]
 name = "docstring-missing-exception"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC501"]
 
 [[rule]]
 name = "docstring-extraneous-exception"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["DOC502"]
 
 [[rule]]
 name = "call-datetime-without-tzinfo"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ001"]
 
 [[rule]]
 name = "call-datetime-today"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ002"]
 
 [[rule]]
 name = "call-datetime-utcnow"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ003"]
 
 [[rule]]
 name = "call-datetime-utcfromtimestamp"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ004"]
 
 [[rule]]
 name = "call-datetime-now-without-tzinfo"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ005"]
 
 [[rule]]
 name = "call-datetime-fromtimestamp"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ006"]
 
 [[rule]]
 name = "call-datetime-strptime-without-zone"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ007"]
 
 [[rule]]
 name = "call-date-today"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ011"]
 
 [[rule]]
 name = "call-date-fromtimestamp"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ012"]
 
 [[rule]]
 name = "datetime-min-max"
 category = "flake8-datetimez"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["DTZ901"]
 
 [[rule]]
 name = "multiple-imports-on-one-line"
-status = { python = "implemented" }
 ruff = ["E401"]
 
 [[rule]]
 name = "module-import-not-at-top-of-file"
-status = { python = "implemented" }
 ruff = ["E402"]
 
 [[rule]]
 name = "redundant-backslash"
 category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["E502"]
 
 [[rule]]
 name = "none-comparison"
-status = { python = "implemented" }
 ruff = ["E711"]
 
 [[rule]]
 name = "true-false-comparison"
-status = { python = "implemented" }
 ruff = ["E712"]
 
 [[rule]]
 name = "not-in-test"
-status = { python = "implemented" }
 ruff = ["E713"]
 
 [[rule]]
 name = "not-is-test"
-status = { python = "implemented" }
 ruff = ["E714"]
 
 [[rule]]
 name = "type-comparison"
-status = { python = "implemented" }
 ruff = ["E721"]
 
 [[rule]]
 name = "bare-except"
-status = { python = "implemented" }
 ruff = ["E722"]
 pylint = ["bare-except"]
 
 [[rule]]
 name = "lambda-assignment"
-status = { python = "implemented" }
 ruff = ["E731"]
 
 [[rule]]
 name = "ambiguous-variable-name"
-status = { python = "implemented" }
 ruff = ["E741"]
 
 [[rule]]
 name = "ambiguous-class-name"
-status = { python = "implemented" }
 ruff = ["E742"]
 
 [[rule]]
 name = "ambiguous-function-name"
-status = { python = "implemented" }
 ruff = ["E743"]
 
 [[rule]]
 name = "io-error"
 category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["E902"]
 
 [[rule]]
 name = "raw-string-in-exception"
-status = { python = "implemented" }
 ruff = ["EM101"]
 
 [[rule]]
 name = "f-string-in-exception"
-status = { python = "implemented" }
 ruff = ["EM102"]
 
 [[rule]]
 name = "dot-format-in-exception"
-status = { python = "implemented" }
 ruff = ["EM103"]
 
 [[rule]]
 name = "commented-out-code"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ERA001"]
 
 [[rule]]
 name = "shebang-not-executable"
 category = "flake8-executable"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["EXE001"]
 
 [[rule]]
 name = "shebang-missing-executable-file"
 category = "flake8-executable"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["EXE002"]
 
 [[rule]]
 name = "shebang-missing-python"
 category = "flake8-executable"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["EXE003"]
 
 [[rule]]
 name = "shebang-leading-whitespace"
 category = "flake8-executable"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["EXE004"]
 
 [[rule]]
 name = "shebang-not-first-line"
 category = "flake8-executable"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["EXE005"]
 
 [[rule]]
 name = "import-shadowed-by-loop-var"
-status = { python = "implemented" }
 ruff = ["F402"]
 
 [[rule]]
 name = "late-future-import"
-status = { python = "implemented" }
 ruff = ["F404"]
 
 [[rule]]
 name = "undefined-local-with-import-star-usage"
-status = { python = "implemented" }
 ruff = ["F405"]
 
 [[rule]]
 name = "undefined-local-with-nested-import-star-usage"
 category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["F406"]
 
 [[rule]]
 name = "future-feature-not-defined"
-status = { python = "implemented" }
 ruff = ["F407"]
 
 [[rule]]
 name = "percent-format-invalid-format"
-status = { python = "implemented" }
 ruff = ["F501"]
 
 [[rule]]
 name = "percent-format-expected-mapping"
-status = { python = "implemented" }
 ruff = ["F502"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
-status = { python = "implemented" }
 ruff = ["F503"]
 
 [[rule]]
 name = "percent-format-extra-named-arguments"
-status = { python = "implemented" }
 ruff = ["F504"]
 
 [[rule]]
 name = "percent-format-missing-argument"
-status = { python = "implemented" }
 ruff = ["F505"]
 
 [[rule]]
 name = "percent-format-mixed-positional-and-named"
-status = { python = "implemented" }
 ruff = ["F506"]
 
 [[rule]]
 name = "percent-format-positional-count-mismatch"
-status = { python = "implemented" }
 ruff = ["F507"]
 
 [[rule]]
 name = "percent-format-star-requires-sequence"
-status = { python = "implemented" }
 ruff = ["F508"]
 
 [[rule]]
 name = "percent-format-unsupported-format-character"
-status = { python = "implemented" }
 ruff = ["F509"]
 
 [[rule]]
 name = "string-dot-format-invalid-format"
-status = { python = "implemented" }
 ruff = ["F521"]
 
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
-status = { python = "implemented" }
 ruff = ["F522"]
 
 [[rule]]
 name = "string-dot-format-extra-positional-arguments"
-status = { python = "implemented" }
 ruff = ["F523"]
 
 [[rule]]
 name = "string-dot-format-missing-arguments"
-status = { python = "implemented" }
 ruff = ["F524"]
 
 [[rule]]
 name = "string-dot-format-mixing-automatic"
-status = { python = "implemented" }
 ruff = ["F525"]
 
 [[rule]]
 name = "f-string-missing-placeholders"
-status = { python = "implemented" }
 ruff = ["F541"]
 
 [[rule]]
 name = "multi-value-repeated-key-literal"
-status = { python = "implemented" }
 ruff = ["F601"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
-status = { python = "implemented" }
 ruff = ["F602"]
 
 [[rule]]
 name = "expressions-in-star-assignment"
 category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["F621"]
 
 [[rule]]
 name = "multiple-starred-expressions"
-status = { python = "implemented" }
 ruff = ["F622"]
 
 [[rule]]
 name = "assert-tuple"
-status = { python = "implemented" }
 ruff = ["F631"]
 
 [[rule]]
 name = "is-literal"
-status = { python = "implemented" }
 ruff = ["F632"]
 
 [[rule]]
 name = "invalid-print-syntax"
-status = { python = "implemented" }
 ruff = ["F633"]
 
 [[rule]]
 name = "if-tuple"
-status = { python = "implemented" }
 ruff = ["F634"]
 
 [[rule]]
 name = "break-outside-loop"
-status = { python = "implemented" }
 ruff = ["F701"]
 
 [[rule]]
 name = "continue-outside-loop"
-status = { python = "implemented" }
 ruff = ["F702"]
 
 [[rule]]
 name = "yield-outside-function"
-status = { python = "implemented" }
 ruff = ["F704"]
 pylint = ["yield-outside-function"]
 
 [[rule]]
 name = "return-outside-function"
-status = { python = "implemented" }
 ruff = ["F706"]
 pylint = ["return-outside-function"]
 
 [[rule]]
 name = "default-except-not-last"
-status = { python = "implemented" }
 ruff = ["F707"]
 
 [[rule]]
 name = "forward-annotation-syntax-error"
 category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["F722"]
 
 [[rule]]
 name = "redefined-while-unused"
-status = { python = "implemented" }
 ruff = ["F811"]
 
 [[rule]]
 name = "undefined-name"
-status = { python = "implemented" }
 ruff = ["F821"]
 
 [[rule]]
 name = "undefined-export"
-status = { python = "implemented" }
 ruff = ["F822"]
 
 [[rule]]
 name = "undefined-local"
-status = { python = "implemented" }
 ruff = ["F823"]
 
 [[rule]]
 name = "unused-annotation"
 category = "pyflakes"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["F842"]
 
 [[rule]]
 name = "raise-not-implemented"
-status = { python = "implemented" }
 ruff = ["F901"]
 
 [[rule]]
 name = "future-rewritable-type-annotation"
 category = "flake8-future-annotations"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FA100"]
 
 [[rule]]
 name = "future-required-type-annotation"
 category = "flake8-future-annotations"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FA102"]
 
 [[rule]]
 name = "fast-api-redundant-response-model"
 category = "fastapi"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FAST001"]
 
 [[rule]]
 name = "fast-api-non-annotated-dependency"
 category = "fastapi"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FAST002"]
 
 [[rule]]
 name = "fast-api-unused-path-parameter"
 category = "fastapi"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FAST003"]
 
 [[rule]]
 name = "boolean-type-hint-positional-argument"
 category = "flake8-boolean-trap"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FBT001"]
 
 [[rule]]
 name = "boolean-default-value-positional-argument"
 category = "flake8-boolean-trap"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FBT002"]
 
 [[rule]]
 name = "boolean-positional-value-in-call"
 category = "flake8-boolean-trap"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FBT003"]
 
 [[rule]]
 name = "line-contains-fixme"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["FIX001"]
 
 [[rule]]
 name = "line-contains-xxx"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["FIX003"]
 
 [[rule]]
 name = "line-contains-hack"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["FIX004"]
 
 [[rule]]
 name = "static-join-to-f-string"
 category = "flynt"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FLY002"]
 
 [[rule]]
 name = "read-whole-file"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB101"]
 
 [[rule]]
 name = "write-whole-file"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB103"]
 
 [[rule]]
 name = "print-empty-string"
-status = { python = "implemented" }
 ruff = ["FURB105"]
 
 [[rule]]
 name = "if-exp-instead-of-or-operator"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB110"]
 
 [[rule]]
 name = "repeated-append"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB113"]
 
 [[rule]]
 name = "f-string-number-format"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB116"]
 
 [[rule]]
 name = "reimplemented-operator"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB118"]
 
 [[rule]]
 name = "for-loop-writes"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB122"]
 
 [[rule]]
 name = "readlines-in-for"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB129"]
 
 [[rule]]
 name = "delete-full-slice"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB131"]
 
 [[rule]]
 name = "check-and-remove-from-set"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB132"]
 
 [[rule]]
 name = "if-expr-min-max"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB136"]
 
 [[rule]]
 name = "reimplemented-starmap"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB140"]
 
 [[rule]]
 name = "for-loop-set-mutations"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB142"]
 
 [[rule]]
 name = "slice-copy"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB145"]
 
 [[rule]]
 name = "unnecessary-enumerate"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB148"]
 
 [[rule]]
 name = "math-constant"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB152"]
 
 [[rule]]
 name = "repeated-global"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB154"]
 
 [[rule]]
 name = "hardcoded-string-charset"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB156"]
 
 [[rule]]
 name = "verbose-decimal-constructor"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB157"]
 
 [[rule]]
 name = "bit-count"
-status = { python = "implemented" }
 ruff = ["FURB161"]
 
 [[rule]]
 name = "fromisoformat-replace-z"
-status = { python = "implemented" }
 ruff = ["FURB162"]
 
 [[rule]]
 name = "redundant-log-base"
-status = { python = "implemented" }
 ruff = ["FURB163"]
 
 [[rule]]
 name = "unnecessary-from-float"
-status = { python = "implemented" }
 ruff = ["FURB164"]
 
 [[rule]]
 name = "int-on-sliced-str"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB166"]
 
 [[rule]]
 name = "regex-flag-alias"
-status = { python = "implemented" }
 ruff = ["FURB167"]
 
 [[rule]]
 name = "isinstance-type-none"
-status = { python = "implemented" }
 ruff = ["FURB168"]
 
 [[rule]]
 name = "type-none-comparison"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB169"]
 
 [[rule]]
 name = "single-item-membership-test"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB171"]
 
 [[rule]]
 name = "implicit-cwd"
-status = { python = "implemented" }
 ruff = ["FURB177"]
 
 [[rule]]
 name = "meta-class-abc-meta"
-status = { python = "implemented" }
 ruff = ["FURB180"]
 
 [[rule]]
 name = "hashlib-digest-hex"
-status = { python = "implemented" }
 ruff = ["FURB181"]
 
 [[rule]]
 name = "list-reverse-copy"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB187"]
 
 [[rule]]
 name = "slice-to-remove-prefix-or-suffix"
 category = "refurb"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["FURB188"]
 
 [[rule]]
 name = "subclass-builtin"
-status = { python = "implemented" }
 ruff = ["FURB189"]
 
 [[rule]]
 name = "sorted-min-max"
-status = { python = "implemented" }
 ruff = ["FURB192"]
 
 [[rule]]
 name = "logging-string-format"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G001"]
 
 [[rule]]
 name = "logging-percent-format"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G002"]
 
 [[rule]]
 name = "logging-string-concat"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G003"]
 
 [[rule]]
 name = "logging-f-string"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G004"]
 
 [[rule]]
 name = "logging-warn"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G010"]
 
 [[rule]]
 name = "logging-extra-attr-clash"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G101"]
 
 [[rule]]
 name = "logging-exc-info"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G201"]
 
 [[rule]]
 name = "logging-redundant-exc-info"
 category = "flake8-logging-format"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["G202"]
 
 [[rule]]
 name = "missing-required-import"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["I002"]
 
 [[rule]]
 name = "unconventional-import-alias"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ICN001"]
 
 [[rule]]
 name = "banned-import-alias"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ICN002"]
 
 [[rule]]
 name = "banned-import-from"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["ICN003"]
 
 [[rule]]
 name = "implicit-namespace-package"
 category = "flake8-no-pep420"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["INP001"]
 
 [[rule]]
 name = "f-string-in-get-text-func-call"
 category = "flake8-gettext"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["INT001"]
 
 [[rule]]
 name = "format-in-get-text-func-call"
 category = "flake8-gettext"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["INT002"]
 
 [[rule]]
 name = "printf-in-get-text-func-call"
 category = "flake8-gettext"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["INT003"]
 
 [[rule]]
 name = "single-line-implicit-string-concatenation"
-status = { python = "implemented" }
 ruff = ["ISC001"]
 
 [[rule]]
 name = "multi-line-implicit-string-concatenation"
 category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ISC002"]
 
 [[rule]]
 name = "explicit-string-concatenation"
-status = { python = "implemented" }
 ruff = ["ISC003"]
 
 [[rule]]
 name = "implicit-string-concatenation-in-collection-literal"
 category = "flake8-implicit-str-concat"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["ISC004"]
 
 [[rule]]
 name = "direct-logger-instantiation"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG001"]
 
 [[rule]]
 name = "invalid-get-logger-argument"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG002"]
 
 [[rule]]
 name = "log-exception-outside-except-handler"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG004"]
 
 [[rule]]
 name = "exception-without-exc-info"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG007"]
 
 [[rule]]
 name = "undocumented-warn"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG009"]
 
 [[rule]]
 name = "exc-info-outside-except-handler"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG014"]
 
 [[rule]]
 name = "root-logger-call"
 category = "flake8-logging"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["LOG015"]
 
 [[rule]]
 name = "invalid-first-argument-name-for-class-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N804"]
 
 [[rule]]
 name = "invalid-first-argument-name-for-method"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N805"]
 
 [[rule]]
 name = "dunder-function-name"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N807"]
 
 [[rule]]
 name = "constant-imported-as-non-constant"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N811"]
 
 [[rule]]
 name = "lowercase-imported-as-non-lowercase"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N812"]
 
 [[rule]]
 name = "camelcase-imported-as-lowercase"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N813"]
 
 [[rule]]
 name = "camelcase-imported-as-constant"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N814"]
 
 [[rule]]
 name = "mixed-case-variable-in-class-scope"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N815"]
 
 [[rule]]
 name = "mixed-case-variable-in-global-scope"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N816"]
 
 [[rule]]
 name = "camelcase-imported-as-acronym"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N817"]
 
 [[rule]]
 name = "invalid-module-name"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["N999"]
 
 [[rule]]
 name = "numpy-deprecated-type-alias"
 category = "numpy-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["NPY001"]
 
 [[rule]]
 name = "numpy-legacy-random"
 category = "numpy-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["NPY002"]
 
 [[rule]]
 name = "numpy-deprecated-function"
 category = "numpy-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["NPY003"]
 
 [[rule]]
 name = "numpy2-deprecation"
 category = "numpy-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["NPY201"]
 
 [[rule]]
 name = "pandas-use-of-inplace-argument"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD002"]
 
 [[rule]]
 name = "pandas-use-of-dot-is-null"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD003"]
 
 [[rule]]
 name = "pandas-use-of-dot-not-null"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD004"]
 
 [[rule]]
 name = "pandas-use-of-dot-ix"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD007"]
 
 [[rule]]
 name = "pandas-use-of-dot-at"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD008"]
 
 [[rule]]
 name = "pandas-use-of-dot-iat"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD009"]
 
 [[rule]]
 name = "pandas-use-of-dot-pivot-or-unstack"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD010"]
 
 [[rule]]
 name = "pandas-use-of-dot-values"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD011"]
 
 [[rule]]
 name = "pandas-use-of-dot-read-table"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD012"]
 
 [[rule]]
 name = "pandas-use-of-dot-stack"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD013"]
 
 [[rule]]
 name = "pandas-use-of-pd-merge"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD015"]
 
 [[rule]]
 name = "pandas-nunique-constant-series-check"
 category = "pandas-vet"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PD101"]
 
 [[rule]]
 name = "unnecessary-list-cast"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF101"]
 
 [[rule]]
 name = "incorrect-dict-iterator"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF102"]
 
 [[rule]]
 name = "try-except-in-loop"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF203"]
 
 [[rule]]
 name = "manual-list-comprehension"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF401"]
 
 [[rule]]
 name = "manual-list-copy"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF402"]
 
 [[rule]]
 name = "manual-dict-comprehension"
 category = "perflint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PERF403"]
 
 [[rule]]
 name = "blanket-type-ignore"
-status = { python = "implemented" }
 ruff = ["PGH003"]
 
 [[rule]]
 name = "blanket-noqa"
-status = { python = "implemented" }
 ruff = ["PGH004"]
 
 [[rule]]
 name = "invalid-mock-access"
 category = "pygrep-hooks"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PGH005"]
 
 [[rule]]
 name = "unnecessary-placeholder"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE790"]
 
 [[rule]]
 name = "duplicate-class-field-definition"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE794"]
 
 [[rule]]
 name = "non-unique-enums"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE796"]
 
 [[rule]]
 name = "unnecessary-spread"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE800"]
 
 [[rule]]
 name = "unnecessary-dict-kwargs"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE804"]
 
 [[rule]]
 name = "reimplemented-container-builtin"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE807"]
 
 [[rule]]
 name = "unnecessary-range-start"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE808"]
 
 [[rule]]
 name = "multiple-starts-ends-with"
 category = "flake8-pie"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PIE810"]
 
 [[rule]]
 name = "type-name-incorrect-variance"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0105"]
 
 [[rule]]
 name = "type-bivariance"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0131"]
 
 [[rule]]
 name = "type-param-name-mismatch"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0132"]
 
 [[rule]]
 name = "single-string-slots"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0205"]
 
 [[rule]]
 name = "dict-index-missing-items"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0206"]
 
 [[rule]]
 name = "missing-maxsplit-arg"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0207"]
 
 [[rule]]
 name = "iteration-over-set"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0208"]
 
 [[rule]]
 name = "useless-import-alias"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0414"]
 pylint = ["useless-import-alias"]
 
 [[rule]]
 name = "import-outside-top-level"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC0415"]
 
 [[rule]]
 name = "len-test"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC1802"]
 
 [[rule]]
 name = "compare-to-empty-string"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC1901"]
 
 [[rule]]
 name = "non-ascii-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC2401"]
 pylint = ["non-ascii-name"]
 
 [[rule]]
 name = "non-ascii-import-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC2403"]
 
 [[rule]]
 name = "import-private-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC2701"]
 pylint = ["import-private-name"]
 
 [[rule]]
 name = "unnecessary-dunder-call"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC2801"]
 pylint = ["unnecessary-dunder-call"]
 
 [[rule]]
 name = "unnecessary-direct-lambda-call"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLC3002"]
 pylint = ["unnecessary-direct-lambda-call"]
 
 [[rule]]
 name = "yield-in-init"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0100"]
 
 [[rule]]
 name = "return-in-init"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0101"]
 pylint = ["return-in-init"]
 
 [[rule]]
 name = "nonlocal-and-global"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0115"]
 pylint = ["nonlocal-and-global"]
 
 [[rule]]
 name = "continue-in-finally"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0116"]
 pylint = ["continue-in-finally"]
 
 [[rule]]
 name = "nonlocal-without-binding"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0117"]
 pylint = ["nonlocal-without-binding"]
 
 [[rule]]
 name = "load-before-global-declaration"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0118"]
 
 [[rule]]
 name = "non-slot-assignment"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0237"]
 
 [[rule]]
 name = "duplicate-bases"
-status = { python = "implemented" }
 ruff = ["PLE0241"]
 pylint = ["duplicate-bases"]
 
 [[rule]]
 name = "unexpected-special-method-signature"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0302"]
 pylint = ["unexpected-special-method-signature"]
 
 [[rule]]
 name = "invalid-length-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0303"]
 
 [[rule]]
 name = "invalid-bool-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0304"]
 
 [[rule]]
 name = "invalid-index-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0305"]
 
 [[rule]]
 name = "invalid-str-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0307"]
 
 [[rule]]
 name = "invalid-bytes-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0308"]
 
 [[rule]]
 name = "invalid-hash-return-type"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0309"]
 
 [[rule]]
 name = "invalid-all-object"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0604"]
 pylint = ["invalid-all-object"]
 
 [[rule]]
 name = "invalid-all-format"
-status = { python = "implemented" }
 ruff = ["PLE0605"]
 pylint = ["invalid-all-format"]
 
 [[rule]]
 name = "potential-index-error"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE0643"]
 pylint = ["potential-index-error"]
 
 [[rule]]
 name = "misplaced-bare-raise"
-status = { python = "implemented" }
 ruff = ["PLE0704"]
 pylint = ["misplaced-bare-raise"]
 
 [[rule]]
 name = "repeated-keyword-argument"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE1132"]
 
 [[rule]]
 name = "dict-iter-missing-items"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE1141"]
 pylint = ["dict-iter-missing-items"]
 
 [[rule]]
 name = "await-outside-async"
-status = { python = "implemented" }
 ruff = ["PLE1142"]
 pylint = ["await-outside-async"]
 
 [[rule]]
 name = "logging-too-many-args"
-status = { python = "implemented" }
 ruff = ["PLE1205"]
 pylint = ["logging-too-many-args"]
 
 [[rule]]
 name = "logging-too-few-args"
-status = { python = "implemented" }
 ruff = ["PLE1206"]
 pylint = ["logging-too-few-args"]
 
 [[rule]]
 name = "bad-string-format-character"
-status = { python = "implemented" }
 ruff = ["PLE1300"]
 
 [[rule]]
 name = "bad-string-format-type"
-status = { python = "implemented" }
 ruff = ["PLE1307"]
 pylint = ["bad-string-format-type"]
 
 [[rule]]
 name = "bad-str-strip-call"
-status = { python = "implemented" }
 ruff = ["PLE1310"]
 pylint = ["bad-str-strip-call"]
 
 [[rule]]
 name = "invalid-envvar-value"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE1507"]
 pylint = ["invalid-envvar-value"]
 
 [[rule]]
 name = "singledispatch-method"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE1519"]
 pylint = ["singledispatch-method"]
 
 [[rule]]
 name = "singledispatchmethod-function"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE1520"]
 pylint = ["singledispatchmethod-function"]
 
 [[rule]]
 name = "yield-from-in-async-function"
-status = { python = "implemented" }
 ruff = ["PLE1700"]
 
 [[rule]]
 name = "bidirectional-unicode"
-status = { python = "implemented" }
 ruff = ["PLE2502"]
 pylint = ["bidirectional-unicode"]
 
 [[rule]]
 name = "invalid-character-backspace"
-status = { python = "implemented" }
 ruff = ["PLE2510"]
 pylint = ["invalid-character-backspace"]
 
 [[rule]]
 name = "invalid-character-sub"
-status = { python = "implemented" }
 ruff = ["PLE2512"]
 pylint = ["invalid-character-sub"]
 
 [[rule]]
 name = "invalid-character-esc"
-status = { python = "implemented" }
 ruff = ["PLE2513"]
 pylint = ["invalid-character-esc"]
 
 [[rule]]
 name = "invalid-character-nul"
-status = { python = "implemented" }
 ruff = ["PLE2514"]
 pylint = ["invalid-character-nul"]
 
 [[rule]]
 name = "invalid-character-zero-width-space"
-status = { python = "implemented" }
 ruff = ["PLE2515"]
 pylint = ["invalid-character-zero-width-space"]
 
 [[rule]]
 name = "modified-iterating-set"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["PLE4703"]
 pylint = ["modified-iterating-set"]
 
 [[rule]]
 name = "comparison-with-itself"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0124"]
 pylint = ["comparison-with-itself"]
 
 [[rule]]
 name = "comparison-of-constant"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0133"]
 
 [[rule]]
 name = "no-classmethod-decorator"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0202"]
 pylint = ["no-classmethod-decorator"]
 
 [[rule]]
 name = "no-staticmethod-decorator"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0203"]
 pylint = ["no-staticmethod-decorator"]
 
 [[rule]]
 name = "property-with-parameters"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0206"]
 pylint = ["property-with-parameters"]
 
 [[rule]]
 name = "manual-from-import"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0402"]
 
 [[rule]]
 name = "too-many-public-methods"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0904"]
 pylint = ["too-many-public-methods"]
 
 [[rule]]
 name = "too-many-branches"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0912"]
 pylint = ["too-many-branches"]
 
 [[rule]]
 name = "too-many-locals"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0914"]
 pylint = ["too-many-locals"]
 
 [[rule]]
 name = "too-many-statements"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0915"]
 pylint = ["too-many-statements"]
 
 [[rule]]
 name = "too-many-boolean-expressions"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0916"]
 pylint = ["too-many-boolean-expressions"]
 
 [[rule]]
 name = "too-many-positional-arguments"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR0917"]
 pylint = ["too-many-positional-arguments"]
 
 [[rule]]
 name = "too-many-nested-blocks"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1702"]
 pylint = ["too-many-nested-blocks"]
 
 [[rule]]
 name = "redefined-argument-from-local"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1704"]
 pylint = ["redefined-argument-from-local"]
 
 [[rule]]
 name = "stop-iteration-return"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1708"]
 pylint = ["stop-iteration-return"]
 
 [[rule]]
 name = "useless-return"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1711"]
 pylint = ["useless-return"]
 
 [[rule]]
 name = "swap-with-temporary-variable"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1712"]
 
 [[rule]]
 name = "repeated-equality-comparison"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1714"]
 
 [[rule]]
 name = "boolean-chained-comparison"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1716"]
 
 [[rule]]
 name = "sys-exit-alias"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1722"]
 
 [[rule]]
 name = "if-stmt-min-max"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1730"]
 
 [[rule]]
 name = "unnecessary-dict-index-lookup"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1733"]
 pylint = ["unnecessary-dict-index-lookup"]
 
 [[rule]]
 name = "unnecessary-list-index-lookup"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR1736"]
 pylint = ["unnecessary-list-index-lookup"]
 
 [[rule]]
 name = "empty-comment"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR2044"]
 pylint = ["empty-comment"]
 
 [[rule]]
 name = "collapsible-else-if"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR5501"]
 
 [[rule]]
 name = "non-augmented-assignment"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR6104"]
 
 [[rule]]
 name = "literal-membership"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR6201"]
 
 [[rule]]
 name = "no-self-use"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLR6301"]
 pylint = ["no-self-use"]
 
 [[rule]]
 name = "useless-else-on-loop"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0120"]
 pylint = ["useless-else-on-loop"]
 
 [[rule]]
 name = "self-assigning-variable"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0127"]
 pylint = ["self-assigning-variable"]
 
 [[rule]]
 name = "redeclared-assigned-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0128"]
 pylint = ["redeclared-assigned-name"]
 
 [[rule]]
 name = "assert-on-string-literal"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0129"]
 pylint = ["assert-on-string-literal"]
 
 [[rule]]
 name = "named-expr-without-context"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0131"]
 pylint = ["named-expr-without-context"]
 
 [[rule]]
 name = "useless-exception-statement"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0133"]
 
 [[rule]]
 name = "nan-comparison"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0177"]
 pylint = ["nan-comparison"]
 
 [[rule]]
 name = "bad-staticmethod-argument"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0211"]
 pylint = ["bad-staticmethod-argument"]
 
 [[rule]]
 name = "redefined-slots-in-subclass"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0244"]
 pylint = ["redefined-slots-in-subclass"]
 
 [[rule]]
 name = "super-without-brackets"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0245"]
 pylint = ["super-without-brackets"]
 
 [[rule]]
 name = "import-self"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0406"]
 pylint = ["import-self"]
 
 [[rule]]
 name = "global-variable-not-assigned"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0602"]
 pylint = ["global-variable-not-assigned"]
 
 [[rule]]
 name = "global-statement"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0603"]
 pylint = ["global-statement"]
 
 [[rule]]
 name = "global-at-module-level"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0604"]
 pylint = ["global-at-module-level"]
 
 [[rule]]
 name = "self-or-cls-assignment"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0642"]
 
 [[rule]]
 name = "binary-op-exception"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0711"]
 pylint = ["binary-op-exception"]
 
 [[rule]]
 name = "too-many-statements-in-try-clause"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW0717"]
 
 [[rule]]
 name = "bad-open-mode"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1501"]
 pylint = ["bad-open-mode"]
 
 [[rule]]
 name = "shallow-copy-environ"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1507"]
 pylint = ["shallow-copy-environ"]
 
 [[rule]]
 name = "invalid-envvar-default"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1508"]
 pylint = ["invalid-envvar-default"]
 
 [[rule]]
 name = "subprocess-popen-preexec-fn"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1509"]
 pylint = ["subprocess-popen-preexec-fn"]
 
 [[rule]]
 name = "subprocess-run-without-check"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1510"]
 
 [[rule]]
 name = "unspecified-encoding"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW1514"]
 pylint = ["unspecified-encoding"]
 
 [[rule]]
 name = "useless-with-lock"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW2101"]
 pylint = ["useless-with-lock"]
 
 [[rule]]
 name = "redefined-loop-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW2901"]
 pylint = ["redefined-loop-name"]
 
 [[rule]]
 name = "bad-dunder-method-name"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW3201"]
 
 [[rule]]
 name = "nested-min-max"
 category = "pylint"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PLW3301"]
 pylint = ["nested-min-max"]
 
 [[rule]]
 name = "pytest-fixture-incorrect-parentheses-style"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT001"]
 
 [[rule]]
 name = "pytest-fixture-positional-args"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT002"]
 
 [[rule]]
 name = "pytest-extraneous-scope-function"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT003"]
 
 [[rule]]
 name = "pytest-parametrize-names-wrong-type"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT006"]
 
 [[rule]]
 name = "pytest-parametrize-values-wrong-type"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT007"]
 
 [[rule]]
 name = "pytest-patch-with-lambda"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT008"]
 
 [[rule]]
 name = "pytest-unittest-assertion"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT009"]
 
 [[rule]]
 name = "pytest-raises-without-exception"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT010"]
 
 [[rule]]
 name = "pytest-raises-too-broad"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT011"]
 
 [[rule]]
 name = "pytest-raises-with-multiple-statements"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT012"]
 
 [[rule]]
 name = "pytest-incorrect-pytest-import"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT013"]
 
 [[rule]]
 name = "pytest-duplicate-parametrize-test-cases"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT014"]
 
 [[rule]]
 name = "pytest-assert-always-false"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT015"]
 
 [[rule]]
 name = "pytest-fail-without-message"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT016"]
 
 [[rule]]
 name = "pytest-assert-in-except"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT017"]
 
 [[rule]]
 name = "pytest-composite-assertion"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT018"]
 
 [[rule]]
 name = "pytest-fixture-param-without-value"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT019"]
 
 [[rule]]
 name = "pytest-deprecated-yield-fixture"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT020"]
 
 [[rule]]
 name = "pytest-fixture-finalizer-callback"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT021"]
 
 [[rule]]
 name = "pytest-useless-yield-fixture"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT022"]
 
 [[rule]]
 name = "pytest-incorrect-mark-parentheses-style"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT023"]
 
 [[rule]]
 name = "pytest-unnecessary-asyncio-mark-on-fixture"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT024"]
 
 [[rule]]
 name = "pytest-erroneous-use-fixtures-on-fixture"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT025"]
 
 [[rule]]
 name = "pytest-use-fixtures-without-parameters"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT026"]
 
 [[rule]]
 name = "pytest-unittest-raises-assertion"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT027"]
 
 [[rule]]
 name = "pytest-parameter-with-default-argument"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT028"]
 
 [[rule]]
 name = "pytest-warns-without-warning"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT029"]
 
 [[rule]]
 name = "pytest-warns-too-broad"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT030"]
 
 [[rule]]
 name = "pytest-warns-with-multiple-statements"
 category = "flake8-pytest-style"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PT031"]
 
 [[rule]]
 name = "os-path-abspath"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH100"]
 
 [[rule]]
 name = "os-chmod"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH101"]
 
 [[rule]]
 name = "os-mkdir"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH102"]
 
 [[rule]]
 name = "os-makedirs"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH103"]
 
 [[rule]]
 name = "os-rename"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH104"]
 
 [[rule]]
 name = "os-replace"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH105"]
 
 [[rule]]
 name = "os-rmdir"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH106"]
 
 [[rule]]
 name = "os-remove"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH107"]
 
 [[rule]]
 name = "os-unlink"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH108"]
 
 [[rule]]
 name = "os-getcwd"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH109"]
 
 [[rule]]
 name = "os-path-exists"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH110"]
 
 [[rule]]
 name = "os-path-expanduser"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH111"]
 
 [[rule]]
 name = "os-path-isdir"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH112"]
 
 [[rule]]
 name = "os-path-isfile"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH113"]
 
 [[rule]]
 name = "os-path-islink"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH114"]
 
 [[rule]]
 name = "os-readlink"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH115"]
 
 [[rule]]
 name = "os-stat"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH116"]
 
 [[rule]]
 name = "os-path-isabs"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH117"]
 
 [[rule]]
 name = "os-path-join"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH118"]
 
 [[rule]]
 name = "os-path-basename"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH119"]
 
 [[rule]]
 name = "os-path-dirname"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH120"]
 
 [[rule]]
 name = "os-path-samefile"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH121"]
 
 [[rule]]
 name = "os-path-splitext"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH122"]
 
 [[rule]]
 name = "builtin-open"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH123"]
 
 [[rule]]
 name = "py-path"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH124"]
 
 [[rule]]
 name = "path-constructor-current-directory"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH201"]
 
 [[rule]]
 name = "os-path-getsize"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH202"]
 
 [[rule]]
 name = "os-path-getatime"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH203"]
 
 [[rule]]
 name = "os-path-getmtime"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH204"]
 
 [[rule]]
 name = "os-path-getctime"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH205"]
 
 [[rule]]
 name = "os-sep-split"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH206"]
 
 [[rule]]
 name = "glob"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH207"]
 
 [[rule]]
 name = "os-listdir"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH208"]
 
 [[rule]]
 name = "invalid-pathlib-with-suffix"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH210"]
 
 [[rule]]
 name = "os-symlink"
 category = "flake8-use-pathlib"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["PTH211"]
 
 [[rule]]
 name = "unprefixed-type-param"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI001"]
 
 [[rule]]
 name = "complex-if-statement-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI002"]
 
 [[rule]]
 name = "unrecognized-version-info-check"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI003"]
 
 [[rule]]
 name = "patch-version-comparison"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI004"]
 
 [[rule]]
 name = "wrong-tuple-length-version-comparison"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI005"]
 
 [[rule]]
 name = "bad-version-info-comparison"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI006"]
 
 [[rule]]
 name = "unrecognized-platform-check"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI007"]
 
 [[rule]]
 name = "unrecognized-platform-name"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI008"]
 
 [[rule]]
 name = "pass-statement-stub-body"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI009"]
 
 [[rule]]
 name = "non-empty-stub-body"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI010"]
 
 [[rule]]
 name = "typed-argument-default-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI011"]
 
 [[rule]]
 name = "pass-in-class-body"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI012"]
 
 [[rule]]
 name = "ellipsis-in-non-empty-class-body"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI013"]
 
 [[rule]]
 name = "argument-default-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI014"]
 
 [[rule]]
 name = "assignment-default-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI015"]
 
 [[rule]]
 name = "duplicate-union-member"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI016"]
 
 [[rule]]
 name = "complex-assignment-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI017"]
 
 [[rule]]
 name = "unused-private-type-var"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI018"]
 
 [[rule]]
 name = "custom-type-var-for-self"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI019"]
 
 [[rule]]
 name = "quoted-annotation-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI020"]
 
 [[rule]]
 name = "docstring-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI021"]
 
 [[rule]]
 name = "collections-named-tuple"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI024"]
 
 [[rule]]
 name = "unaliased-collections-abc-set-import"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI025"]
 
 [[rule]]
 name = "type-alias-without-annotation"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI026"]
 
 [[rule]]
 name = "str-or-repr-defined-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI029"]
 
 [[rule]]
 name = "unnecessary-literal-union"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI030"]
 
 [[rule]]
 name = "any-eq-ne-annotation"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI032"]
 
 [[rule]]
 name = "legacy-type-comment"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI033"]
 
 [[rule]]
 name = "non-self-return-type"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI034"]
 
 [[rule]]
 name = "unassigned-special-variable-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI035"]
 
 [[rule]]
 name = "bad-exit-annotation"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI036"]
 
 [[rule]]
 name = "redundant-numeric-union"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI041"]
 
 [[rule]]
 name = "snake-case-type-alias"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI042"]
 
 [[rule]]
 name = "t-suffixed-type-alias"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI043"]
 
 [[rule]]
 name = "future-annotations-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI044"]
 
 [[rule]]
 name = "iter-method-return-iterable"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI045"]
 
 [[rule]]
 name = "unused-private-protocol"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI046"]
 
 [[rule]]
 name = "unused-private-type-alias"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI047"]
 
 [[rule]]
 name = "stub-body-multiple-statements"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI048"]
 
 [[rule]]
 name = "unused-private-typed-dict"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI049"]
 
 [[rule]]
 name = "no-return-argument-annotation-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI050"]
 
 [[rule]]
 name = "redundant-literal-union"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI051"]
 
 [[rule]]
 name = "unannotated-assignment-in-stub"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI052"]
 
 [[rule]]
 name = "string-or-bytes-too-long"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI053"]
 
 [[rule]]
 name = "numeric-literal-too-long"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI054"]
 
 [[rule]]
 name = "unnecessary-type-union"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI055"]
 
 [[rule]]
 name = "unsupported-method-call-on-all"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI056"]
 
 [[rule]]
 name = "byte-string-usage"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI057"]
 
 [[rule]]
 name = "generator-return-from-iter-method"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI058"]
 
 [[rule]]
 name = "generic-not-last-base-class"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI059"]
 
 [[rule]]
 name = "redundant-none-literal"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI061"]
 
 [[rule]]
 name = "duplicate-literal-member"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI062"]
 
 [[rule]]
 name = "pep484-style-positional-only-parameter"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI063"]
 
 [[rule]]
 name = "redundant-final-literal"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI064"]
 
 [[rule]]
 name = "bad-version-info-order"
 category = "flake8-pyi"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["PYI066"]
 
 [[rule]]
 name = "unnecessary-return-none"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET501"]
 
 [[rule]]
 name = "implicit-return-value"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET502"]
 
 [[rule]]
 name = "implicit-return"
 category = "flake8-return"
-status = { python = "planned", swift = "planned" }
-issues = { python = "#334", swift = "#301" }
 swiftlint = ["implicit_return"]
 ruff = ["RET503"]
 
 [[rule]]
 name = "unnecessary-assign"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET504"]
 
 [[rule]]
 name = "superfluous-else-return"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET505"]
 
 [[rule]]
 name = "superfluous-else-raise"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET506"]
 
 [[rule]]
 name = "superfluous-else-continue"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET507"]
 
 [[rule]]
 name = "superfluous-else-break"
 category = "flake8-return"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RET508"]
 
 [[rule]]
 name = "unnecessary-paren-on-raise-exception"
 category = "flake8-raise"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RSE102"]
 
 [[rule]]
 name = "ambiguous-unicode-character-string"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF001"]
 
 [[rule]]
 name = "ambiguous-unicode-character-docstring"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF002"]
 
 [[rule]]
 name = "ambiguous-unicode-character-comment"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF003"]
 
 [[rule]]
 name = "collection-literal-concatenation"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF005"]
 
 [[rule]]
 name = "asyncio-dangling-task"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF006"]
 
 [[rule]]
 name = "zip-instead-of-pairwise"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF007"]
 
 [[rule]]
 name = "mutable-dataclass-default"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF008"]
 
 [[rule]]
 name = "function-call-in-dataclass-default-argument"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF009"]
 
 [[rule]]
 name = "explicit-f-string-type-conversion"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF010"]
 
 [[rule]]
 name = "mutable-class-default"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF012"]
 
 [[rule]]
 name = "implicit-optional"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF013"]
 
 [[rule]]
 name = "unnecessary-iterable-allocation-for-first-element"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF015"]
 
 [[rule]]
 name = "invalid-index-type"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF016"]
 
 [[rule]]
 name = "quadratic-list-summation"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF017"]
 
 [[rule]]
 name = "assignment-in-assert"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF018"]
 
 [[rule]]
 name = "unnecessary-key-check"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF019"]
 
 [[rule]]
 name = "never-union"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF020"]
 
 [[rule]]
 name = "parenthesize-chained-operators"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF021"]
 
 [[rule]]
 name = "unsorted-dunder-all"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF022"]
 
 [[rule]]
 name = "unsorted-dunder-slots"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF023"]
 
 [[rule]]
 name = "mutable-fromkeys-value"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF024"]
 
 [[rule]]
 name = "default-factory-kwarg"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF026"]
 
 [[rule]]
 name = "missing-f-string-syntax"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF027"]
 
 [[rule]]
 name = "invalid-formatter-suppression-comment"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF028"]
 
 [[rule]]
 name = "unused-async"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF029"]
 
 [[rule]]
 name = "assert-with-print-message"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF030"]
 
 [[rule]]
 name = "incorrectly-parenthesized-tuple-in-subscript"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF031"]
 
 [[rule]]
 name = "decimal-from-float-literal"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF032"]
 
 [[rule]]
 name = "post-init-default"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF033"]
 
 [[rule]]
 name = "useless-if-else"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF034"]
 
 [[rule]]
 name = "none-not-at-end-of-union"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF036"]
 
 [[rule]]
 name = "unnecessary-empty-iterable-within-deque-call"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF037"]
 
 [[rule]]
 name = "redundant-bool-literal"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF038"]
 
 [[rule]]
 name = "unraw-re-pattern"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF039"]
 
 [[rule]]
 name = "invalid-assert-message-literal-argument"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF040"]
 
 [[rule]]
 name = "unnecessary-nested-literal"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF041"]
 
 [[rule]]
 name = "pytest-raises-ambiguous-pattern"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF043"]
 
 [[rule]]
 name = "implicit-class-var-in-dataclass"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF045"]
 
 [[rule]]
 name = "unnecessary-cast-to-int"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF046"]
 
 [[rule]]
 name = "needless-else"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF047"]
 
 [[rule]]
 name = "map-int-version-parsing"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF048"]
 
 [[rule]]
 name = "dataclass-enum"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF049"]
 
 [[rule]]
 name = "unnecessary-if"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF050"]
 
 [[rule]]
 name = "if-key-in-dict-del"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF051"]
 
 [[rule]]
 name = "used-dummy-variable"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF052"]
 
 [[rule]]
 name = "class-with-mixed-type-vars"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF053"]
 
 [[rule]]
 name = "indented-form-feed"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF054"]
 
 [[rule]]
 name = "unnecessary-regular-expression"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF055"]
 
 [[rule]]
 name = "falsy-dict-get-fallback"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF056"]
 
 [[rule]]
 name = "unnecessary-round"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF057"]
 
 [[rule]]
 name = "starmap-zip"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF058"]
 
 [[rule]]
 name = "unused-unpacked-variable"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF059"]
 
 [[rule]]
 name = "in-empty-collection"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF060"]
 
 [[rule]]
 name = "legacy-form-pytest-raises"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF061"]
 
 [[rule]]
 name = "access-annotations-from-class-dict"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF063"]
 
 [[rule]]
 name = "non-octal-permissions"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF064"]
 
 [[rule]]
 name = "logging-eager-conversion"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF065"]
 
 [[rule]]
 name = "property-without-return"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF066"]
 
 [[rule]]
 name = "non-empty-init-module"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF067"]
 
 [[rule]]
 name = "duplicate-entry-in-dunder-all"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF068"]
 
 [[rule]]
 name = "float-equality-comparison"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF069"]
 
 [[rule]]
 name = "unnecessary-assign-before-yield"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF070"]
 
 [[rule]]
 name = "os-path-commonprefix"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF071"]
 
 [[rule]]
 name = "useless-finally"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF072"]
 
 [[rule]]
 name = "f-string-percent-format"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF073"]
 
 [[rule]]
 name = "incorrect-decorator-order"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF074"]
 
 [[rule]]
 name = "fallible-context-manager"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF075"]
 
 [[rule]]
 name = "method-receiver-default"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF077"]
 
 [[rule]]
 name = "unused-noqa"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF100"]
 
 [[rule]]
 name = "redirected-noqa"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF101"]
 
 [[rule]]
 name = "invalid-rule-code"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF102"]
 
 [[rule]]
 name = "invalid-suppression-comment"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF103"]
 
 [[rule]]
 name = "unmatched-suppression-comment"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF104"]
 
 [[rule]]
 name = "noqa-comments"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF105"]
 
 [[rule]]
 name = "rule-codes-in-suppression-comments"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF106"]
 
 [[rule]]
 name = "invalid-pyproject-toml"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF200"]
 
 [[rule]]
 name = "rule-codes-in-selectors"
 category = "ruff-specific-rules"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["RUF201"]
 
 [[rule]]
 name = "assert"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["S101"]
 
 [[rule]]
 name = "exec-builtin"
-status = { python = "implemented" }
 ruff = ["S102"]
 
 [[rule]]
 name = "bad-file-permissions"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S103"]
 
 [[rule]]
 name = "hardcoded-bind-all-interfaces"
-status = { python = "implemented" }
 ruff = ["S104"]
 
 [[rule]]
 name = "hardcoded-password-string"
-status = { python = "implemented" }
 ruff = ["S105"]
 
 [[rule]]
 name = "hardcoded-password-func-arg"
-status = { python = "implemented" }
 ruff = ["S106"]
 
 [[rule]]
 name = "hardcoded-password-default"
-status = { python = "implemented" }
 ruff = ["S107"]
 
 [[rule]]
 name = "hardcoded-temp-file"
-status = { python = "implemented" }
 ruff = ["S108"]
 
 [[rule]]
 name = "try-except-continue"
-status = { python = "implemented" }
 ruff = ["S112"]
 [[rule]]
 name = "request-without-timeout"
-status = { python = "implemented" }
 ruff = ["S113"]
 
 [[rule]]
 name = "flask-debug-true"
-status = { python = "implemented" }
 ruff = ["S201"]
 
 [[rule]]
 name = "tarfile-unsafe-members"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S202"]
 
 [[rule]]
 name = "suspicious-pickle-usage"
-status = { python = "implemented" }
 ruff = ["S301"]
 
 [[rule]]
 name = "suspicious-marshal-usage"
-status = { python = "implemented" }
 ruff = ["S302"]
 
 [[rule]]
 name = "suspicious-insecure-hash-usage"
-status = { python = "implemented" }
 ruff = ["S303"]
 
 [[rule]]
 name = "suspicious-insecure-cipher-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S304"]
 
 [[rule]]
 name = "suspicious-insecure-cipher-mode-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S305"]
 
 [[rule]]
 name = "suspicious-mktemp-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S306"]
 
 [[rule]]
 name = "suspicious-eval-usage"
-status = { python = "implemented" }
 ruff = ["S307"]
 
 [[rule]]
 name = "suspicious-mark-safe-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S308"]
 
 [[rule]]
 name = "suspicious-url-open-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S310"]
 
 [[rule]]
 name = "suspicious-non-cryptographic-random-usage"
-status = { python = "implemented" }
 ruff = ["S311"]
 
 [[rule]]
 name = "suspicious-telnet-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S312"]
 
 [[rule]]
 name = "suspicious-xmlc-element-tree-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S313"]
 
 [[rule]]
 name = "suspicious-xml-element-tree-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S314"]
 
 [[rule]]
 name = "suspicious-xml-expat-reader-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S315"]
 
 [[rule]]
 name = "suspicious-xml-expat-builder-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S316"]
 
 [[rule]]
 name = "suspicious-xml-sax-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S317"]
 
 [[rule]]
 name = "suspicious-xml-mini-dom-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S318"]
 
 [[rule]]
 name = "suspicious-xml-pull-dom-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S319"]
 
 [[rule]]
 name = "suspicious-ftp-lib-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S321"]
 
 [[rule]]
 name = "suspicious-unverified-context-usage"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S323"]
 
 [[rule]]
 name = "hashlib-insecure-hash-function"
-status = { python = "implemented" }
 ruff = ["S324"]
 
 [[rule]]
 name = "suspicious-telnetlib-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S401"]
 
 [[rule]]
 name = "suspicious-ftplib-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S402"]
 
 [[rule]]
 name = "suspicious-pickle-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S403"]
 
 [[rule]]
 name = "suspicious-subprocess-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S404"]
 
 [[rule]]
 name = "suspicious-xml-etree-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S405"]
 
 [[rule]]
 name = "suspicious-xml-sax-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S406"]
 
 [[rule]]
 name = "suspicious-xml-expat-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S407"]
 
 [[rule]]
 name = "suspicious-xml-minidom-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S408"]
 
 [[rule]]
 name = "suspicious-xml-pulldom-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S409"]
 
 [[rule]]
 name = "suspicious-xmlrpc-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S411"]
 
 [[rule]]
 name = "suspicious-httpoxy-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S412"]
 
 [[rule]]
 name = "suspicious-pycrypto-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S413"]
 
 [[rule]]
 name = "suspicious-pyghmi-import"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S415"]
 
 [[rule]]
 name = "request-with-no-cert-validation"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S501"]
 
 [[rule]]
 name = "ssl-insecure-version"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S502"]
 
 [[rule]]
 name = "ssl-with-bad-defaults"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S503"]
 
 [[rule]]
 name = "ssl-with-no-version"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S504"]
 
 [[rule]]
 name = "weak-cryptographic-key"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S505"]
 
 [[rule]]
 name = "unsafe-yaml-load"
-status = { python = "implemented" }
 ruff = ["S506"]
 
 [[rule]]
 name = "ssh-no-host-key-verification"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S507"]
 
 [[rule]]
 name = "snmp-insecure-version"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S508"]
 
 [[rule]]
 name = "snmp-weak-cryptography"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S509"]
 
 [[rule]]
 name = "paramiko-call"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S601"]
 
 [[rule]]
 name = "subprocess-popen-with-shell-equals-true"
-status = { python = "implemented" }
 ruff = ["S602"]
 
 [[rule]]
 name = "subprocess-without-shell-equals-true"
-status = { python = "implemented" }
 ruff = ["S603"]
 
 [[rule]]
 name = "call-with-shell-equals-true"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S604"]
 
 [[rule]]
 name = "start-process-with-a-shell"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S605"]
 
 [[rule]]
 name = "start-process-with-no-shell"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S606"]
 
 [[rule]]
 name = "start-process-with-partial-path"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S607"]
 
 [[rule]]
 name = "hardcoded-sql-expression"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S608"]
 
 [[rule]]
 name = "unix-command-wildcard-injection"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S609"]
 
 [[rule]]
 name = "django-extra"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S610"]
 
 [[rule]]
 name = "django-raw-sql"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S611"]
 
 [[rule]]
 name = "logging-config-insecure-listen"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S612"]
 
 [[rule]]
 name = "jinja2-autoescape-false"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S701"]
 
 [[rule]]
 name = "mako-templates"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S702"]
 
 [[rule]]
 name = "unsafe-markup-use"
 category = "flake8-bandit"
-status = { python = "planned" }
-issues = { python = "#333" }
 ruff = ["S704"]
 
 [[rule]]
 name = "duplicate-isinstance-call"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM101"]
 
 [[rule]]
 name = "collapsible-if"
-status = { python = "implemented" }
 ruff = ["SIM102"]
 
 [[rule]]
 name = "suppressible-exception"
-status = { python = "implemented" }
 ruff = ["SIM105"]
 
 [[rule]]
 name = "return-in-try-except-finally"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM107"]
 
 [[rule]]
 name = "if-else-block-instead-of-if-exp"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM108"]
 
 [[rule]]
 name = "compare-with-tuple"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM109"]
 
 [[rule]]
 name = "reimplemented-builtin"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM110"]
 
 [[rule]]
 name = "uncapitalized-environment-variables"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM112"]
 
 [[rule]]
 name = "enumerate-for-loop"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM113"]
 
 [[rule]]
 name = "if-with-same-arms"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM114"]
 
 [[rule]]
 name = "open-file-with-context-handler"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM115"]
 
 [[rule]]
 name = "if-else-block-instead-of-dict-lookup"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM116"]
 
 [[rule]]
 name = "multiple-with-statements"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM117"]
 
 [[rule]]
 name = "in-dict-keys"
-status = { python = "implemented" }
 ruff = ["SIM118"]
 
 [[rule]]
 name = "negate-equal-op"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM201"]
 
 [[rule]]
 name = "negate-not-equal-op"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM202"]
 
 [[rule]]
 name = "double-negation"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM208"]
 
 [[rule]]
 name = "if-expr-with-true-false"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM210"]
 
 [[rule]]
 name = "if-expr-with-false-true"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM211"]
 
 [[rule]]
 name = "if-expr-with-twisted-arms"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM212"]
 
 [[rule]]
 name = "expr-and-not-expr"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM220"]
 
 [[rule]]
 name = "expr-or-not-expr"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM221"]
 
 [[rule]]
 name = "expr-or-true"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM222"]
 
 [[rule]]
 name = "expr-and-false"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM223"]
 
 [[rule]]
 name = "yoda-conditions"
-status = { python = "implemented" }
 ruff = ["SIM300"]
 
 [[rule]]
 name = "if-else-block-instead-of-dict-get"
 category = "flake8-simplify"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["SIM401"]
 
 [[rule]]
 name = "split-static-string"
-status = { python = "implemented" }
 ruff = ["SIM905"]
 
 [[rule]]
 name = "dict-get-with-none-default"
-status = { python = "implemented" }
 ruff = ["SIM910"]
 
 [[rule]]
 name = "zip-dict-keys-and-values"
-status = { python = "implemented" }
 ruff = ["SIM911"]
 
 [[rule]]
 name = "private-member-access"
-status = { python = "implemented" }
 ruff = ["SLF001"]
 
 [[rule]]
 name = "no-slots-in-str-subclass"
-status = { python = "implemented" }
 ruff = ["SLOT000"]
 
 [[rule]]
 name = "no-slots-in-tuple-subclass"
-status = { python = "implemented" }
 ruff = ["SLOT001"]
 
 [[rule]]
 name = "no-slots-in-namedtuple-subclass"
-status = { python = "implemented" }
 ruff = ["SLOT002"]
 
 [[rule]]
 name = "debugger"
-status = { python = "implemented" }
 ruff = ["T100"]
 
 [[rule]]
 name = "print"
 category = "flake8-print"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["T201"]
 
 [[rule]]
 name = "p-print"
 category = "flake8-print"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["T203"]
 
 [[rule]]
 name = "typing-only-first-party-import"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC001"]
 
 [[rule]]
 name = "typing-only-third-party-import"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC002"]
 
 [[rule]]
 name = "typing-only-standard-library-import"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC003"]
 
 [[rule]]
 name = "runtime-import-in-type-checking-block"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC004"]
 
 [[rule]]
 name = "empty-type-checking-block"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC005"]
 
 [[rule]]
 name = "runtime-cast-value"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC006"]
 
 [[rule]]
 name = "unquoted-type-alias"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC007"]
 
 [[rule]]
 name = "quoted-type-alias"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC008"]
 
 [[rule]]
 name = "runtime-string-union"
 category = "flake8-type-checking"
-status = { python = "planned" }
-issues = { python = "#335" }
 ruff = ["TC010"]
 
 [[rule]]
 name = "invalid-todo-tag"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD001"]
 
 [[rule]]
 name = "missing-todo-author"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD002"]
 
 [[rule]]
 name = "missing-todo-colon"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD004"]
 
 [[rule]]
 name = "missing-todo-description"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD005"]
 
 [[rule]]
 name = "invalid-todo-capitalization"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD006"]
 
 [[rule]]
 name = "missing-space-after-todo-colon"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TD007"]
 
 [[rule]]
 name = "banned-api"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TID251"]
 
 [[rule]]
 name = "relative-imports"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TID252"]
 
 [[rule]]
 name = "banned-module-level-imports"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TID253"]
 
 [[rule]]
 name = "lazy-import-mismatch"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TID254"]
 
 [[rule]]
 name = "lazy-import-immediately-resolved"
 category = "linter"
-status = { python = "planned" }
-issues = { python = "#300" }
 ruff = ["TID255"]
 
 [[rule]]
 name = "raise-vanilla-class"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY002"]
 
 [[rule]]
 name = "raise-vanilla-args"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY003"]
 
 [[rule]]
 name = "type-check-without-type-error"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY004"]
 
 [[rule]]
 name = "verbose-raise"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY201"]
 
 [[rule]]
 name = "useless-try-except"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY203"]
 
 [[rule]]
 name = "try-consider-else"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY300"]
 
 [[rule]]
 name = "raise-within-try"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY301"]
 
 [[rule]]
 name = "error-instead-of-exception"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY400"]
 
 [[rule]]
 name = "verbose-log-message"
 category = "tryceratops"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["TRY401"]
 
 [[rule]]
 name = "useless-metaclass-type"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP001"]
 
 [[rule]]
 name = "type-of-primitive"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP003"]
 
 [[rule]]
 name = "useless-object-inheritance"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP004"]
 pylint = ["useless-object-inheritance"]
 
 [[rule]]
 name = "deprecated-unittest-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP005"]
 
 [[rule]]
 name = "non-pep585-annotation"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP006"]
 
 [[rule]]
 name = "non-pep604-annotation-union"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP007"]
 
 [[rule]]
 name = "super-call-with-parameters"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP008"]
 
 [[rule]]
 name = "utf8-encoding-declaration"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP009"]
 
 [[rule]]
 name = "unnecessary-future-import"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP010"]
 
 [[rule]]
 name = "lru-cache-without-parameters"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP011"]
 
 [[rule]]
 name = "unnecessary-encode-utf8"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP012"]
 
 [[rule]]
 name = "convert-typed-dict-functional-to-class"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP013"]
 
 [[rule]]
 name = "convert-named-tuple-functional-to-class"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP014"]
 
 [[rule]]
 name = "redundant-open-modes"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP015"]
 
 [[rule]]
 name = "datetime-timezone-utc"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP017"]
 
 [[rule]]
 name = "native-literals"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP018"]
 
 [[rule]]
 name = "typing-text-str-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP019"]
 
 [[rule]]
 name = "open-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP020"]
 
 [[rule]]
 name = "replace-universal-newlines"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP021"]
 
 [[rule]]
 name = "replace-stdout-stderr"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP022"]
 
 [[rule]]
 name = "deprecated-c-element-tree"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP023"]
 
 [[rule]]
 name = "os-error-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP024"]
 
 [[rule]]
 name = "unicode-kind-prefix"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP025"]
 
 [[rule]]
 name = "deprecated-mock-import"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP026"]
 
 [[rule]]
 name = "yield-in-for-loop"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP028"]
 
 [[rule]]
 name = "unnecessary-builtin-import"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP029"]
 
 [[rule]]
 name = "format-literals"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP030"]
 
 [[rule]]
 name = "printf-string-formatting"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP031"]
 
 [[rule]]
 name = "f-string"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP032"]
 
 [[rule]]
 name = "lru-cache-with-maxsize-none"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP033"]
 
 [[rule]]
 name = "extraneous-parentheses"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP034"]
 
 [[rule]]
 name = "deprecated-import"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP035"]
 
 [[rule]]
 name = "outdated-version-block"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP036"]
 
 [[rule]]
 name = "quoted-annotation"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP037"]
 
 [[rule]]
 name = "unnecessary-class-parentheses"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP039"]
 
 [[rule]]
 name = "non-pep695-type-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP040"]
 
 [[rule]]
 name = "timeout-error-alias"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP041"]
 
 [[rule]]
 name = "replace-str-enum"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP042"]
 
 [[rule]]
 name = "unnecessary-default-type-args"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP043"]
 
 [[rule]]
 name = "non-pep646-unpack"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP044"]
 
 [[rule]]
 name = "non-pep604-annotation-optional"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP045"]
 
 [[rule]]
 name = "non-pep695-generic-class"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP046"]
 
 [[rule]]
 name = "non-pep695-generic-function"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP047"]
 
 [[rule]]
 name = "while-one"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP048"]
 
 [[rule]]
 name = "private-type-parameter"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP049"]
 
 [[rule]]
 name = "useless-class-metaclass-type"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP050"]
 
 [[rule]]
 name = "deprecated-abc-decorator"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP051"]
 
 [[rule]]
 name = "context-manager-iterator"
 category = "pyupgrade"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["UP052"]
 
 [[rule]]
 name = "doc-line-too-long"
 category = "pycodestyle"
-status = { python = "planned" }
-issues = { python = "#332" }
 ruff = ["W505"]
 
 [[rule]]
 name = "invalid-escape-sequence"
-status = { python = "implemented" }
 ruff = ["W605"]
 
 [[rule]]
 name = "sys-version-slice3"
-status = { python = "implemented" }
 ruff = ["YTT101"]
 
 [[rule]]
 name = "sys-version2"
-status = { python = "implemented" }
 ruff = ["YTT102"]
 
 [[rule]]
 name = "sys-version-cmp-str3"
-status = { python = "implemented" }
 ruff = ["YTT103"]
 
 [[rule]]
 name = "sys-version-info0-eq3"
-status = { python = "implemented" }
 ruff = ["YTT201"]
 
 [[rule]]
 name = "six-py3"
-status = { python = "implemented" }
 ruff = ["YTT202"]
 
 [[rule]]
 name = "sys-version-info1-cmp-int"
-status = { python = "implemented" }
 ruff = ["YTT203"]
 
 [[rule]]
 name = "sys-version-info-minor-cmp-int"
-status = { python = "implemented" }
 ruff = ["YTT204"]
 
 [[rule]]
 name = "sys-version0"
-status = { python = "implemented" }
 ruff = ["YTT301"]
 
 [[rule]]
 name = "sys-version-cmp-str10"
-status = { python = "implemented" }
 ruff = ["YTT302"]
 
 [[rule]]
 name = "sys-version-slice1"
-status = { python = "implemented" }
 ruff = ["YTT303"]
 
 [[rule]]
 name = "pytest-fixture-autouse"
 category = "preview"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["pytest-fixture-autouse"]
 
 [[rule]]
 name = "shared-clock-mock"
 category = "preview"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["shared-clock-mock"]
 
 [[rule]]
 name = "tarfile-ignore-zeros-true"
 category = "preview"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["tarfile-ignore-zeros-true"]
 
 [[rule]]
 name = "unnecessary-regular-expression-compile"
 category = "preview"
-status = { python = "planned" }
-issues = { python = "#334" }
 ruff = ["unnecessary-regular-expression-compile"]

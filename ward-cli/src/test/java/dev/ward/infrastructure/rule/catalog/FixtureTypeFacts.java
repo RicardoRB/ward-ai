@@ -1,8 +1,8 @@
 package dev.ward.infrastructure.rule.catalog;
 
+import dev.ward.analysis.application.rule.TypeFactsFixture;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
-import dev.ward.infrastructure.analysis.TypeFactsFixture;
 import java.nio.file.Path;
 import java.util.Optional;
 

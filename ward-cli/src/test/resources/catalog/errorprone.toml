@@ -3,892 +3,639 @@
 [[rule]]
 name = "ast-helpers-suggestions"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ASTHelpersSuggestions"]
 
 [[rule]]
 name = "add-null-marked-to-class"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["AddNullMarkedToClass"]
 
 [[rule]]
 name = "add-null-marked-to-package-info"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["AddNullMarkedToPackageInfo"]
 
 [[rule]]
 name = "address-selection"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AddressSelection"]
 
 [[rule]]
 name = "almost-exhaustive-test-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["AlmostExhaustiveTestParameter"]
 
 [[rule]]
 name = "almost-javadoc"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AlmostJavadoc"]
 
 [[rule]]
 name = "already-checked"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AlreadyChecked"]
 
 [[rule]]
 name = "always-throws"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AlwaysThrows"]
 
 [[rule]]
 name = "ambiguous-method-reference"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AmbiguousMethodReference"]
 
 [[rule]]
 name = "android-injection-before-super"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AndroidInjectionBeforeSuper"]
 
 [[rule]]
 name = "annotate-format-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AnnotateFormatMethod"]
 
 [[rule]]
 name = "annotation-mirror-to-string"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["AnnotationMirrorToString"]
 
 [[rule]]
 name = "annotation-position"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AnnotationPosition"]
 
 [[rule]]
 name = "annotation-value-to-string"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["AnnotationValueToString"]
 
 [[rule]]
 name = "argument-selection-defect-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ArgumentSelectionDefectChecker"]
 
 [[rule]]
 name = "array-equals"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ArrayEquals"]
 
 [[rule]]
 name = "array-fill-incompatible-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ArrayFillIncompatibleType"]
 
 [[rule]]
 name = "array-hash-code"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ArrayHashCode"]
 
 [[rule]]
 name = "array-record-component"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ArrayRecordComponent"]
 
 [[rule]]
 name = "array-to-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ArrayToString"]
 
 [[rule]]
 name = "arrays-as-list-primitive-array"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ArraysAsListPrimitiveArray"]
 
 [[rule]]
 name = "assert-equals-argument-order-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertEqualsArgumentOrderChecker"]
 
 [[rule]]
 name = "assert-false"
 category = "coding"
-status = { java = "planned", python = "implemented" }
-issues = { java = "#320" }
 errorprone = ["AssertFalse"]
 ruff = ["B011"]
 
 [[rule]]
 name = "assert-same-incompatible"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertSameIncompatible"]
 
 [[rule]]
 name = "assert-throws-block-to-expression"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertThrowsBlockToExpression"]
 
 [[rule]]
 name = "assert-throws-minimizer"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertThrowsMinimizer"]
 
 [[rule]]
 name = "assert-throws-multiple-statements"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertThrowsMultipleStatements"]
 
 [[rule]]
 name = "assertion-failure-ignored"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssertionFailureIgnored"]
 
 [[rule]]
 name = "assignment-expression"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssignmentExpression"]
 
 [[rule]]
 name = "assisted-inject-and-inject-on-constructors"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssistedInjectAndInjectOnConstructors"]
 
 [[rule]]
 name = "assisted-inject-and-inject-on-same-constructor"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AssistedInjectAndInjectOnSameConstructor"]
 
 [[rule]]
 name = "async-callable-returns-null"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AsyncCallableReturnsNull"]
 
 [[rule]]
 name = "async-function-returns-null"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AsyncFunctionReturnsNull"]
 
 [[rule]]
 name = "attempted-negative-zero"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AttemptedNegativeZero"]
 
 [[rule]]
 name = "auto-factory-at-inject"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AutoFactoryAtInject"]
 
 [[rule]]
 name = "auto-value-boxed-values"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AutoValueBoxedValues"]
 
 [[rule]]
 name = "auto-value-builder-defaults-in-constructor"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AutoValueBuilderDefaultsInConstructor"]
 
 [[rule]]
 name = "auto-value-constructor-order-checker"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["AutoValueConstructorOrderChecker"]
 
 [[rule]]
 name = "auto-value-final-methods"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AutoValueFinalMethods"]
 
 [[rule]]
 name = "auto-value-immutable-fields"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AutoValueImmutableFields"]
 
 [[rule]]
 name = "auto-value-subclass-leaked"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AutoValueSubclassLeaked"]
 
 [[rule]]
 name = "avoid-common-type-names"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AvoidCommonTypeNames"]
 
 [[rule]]
 name = "avoid-object-arrays"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AvoidObjectArrays"]
 
 [[rule]]
 name = "avoid-value-setter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["AvoidValueSetter"]
 
 [[rule]]
 name = "bad-annotation-implementation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BadAnnotationImplementation"]
 
 [[rule]]
 name = "bad-comparable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BadComparable"]
 
 [[rule]]
 name = "bad-import"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BadImport"]
 
 [[rule]]
 name = "bad-instanceof"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BadInstanceof"]
 
 [[rule]]
 name = "bad-shift-amount"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BadShiftAmount"]
 
 [[rule]]
 name = "ban-class-loader"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BanClassLoader"]
 
 [[rule]]
 name = "ban-jndi"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BanJNDI"]
 
 [[rule]]
 name = "ban-serializable-read"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BanSerializableRead"]
 
 [[rule]]
 name = "bare-dot-metacharacter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BareDotMetacharacter"]
 
 [[rule]]
 name = "big-decimal-equals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BigDecimalEquals"]
 
 [[rule]]
 name = "big-decimal-literal-double"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BigDecimalLiteralDouble"]
 
 [[rule]]
 name = "binder-identity-restored-dangerously"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BinderIdentityRestoredDangerously"]
 
 [[rule]]
 name = "binding-to-unqualified-common-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BindingToUnqualifiedCommonType"]
 
 [[rule]]
 name = "boolean-literal"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BooleanLiteral"]
 
 [[rule]]
 name = "boolean-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["BooleanParameter"]
 
 [[rule]]
 name = "boxed-primitive-constructor"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BoxedPrimitiveConstructor"]
 
 [[rule]]
 name = "boxed-primitive-equality"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BoxedPrimitiveEquality"]
 
 [[rule]]
 name = "boxing-comparator"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BoxingComparator"]
 
 [[rule]]
 name = "bug-pattern-naming"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BugPatternNaming"]
 
 [[rule]]
 name = "builder-return-this"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["BuilderReturnThis"]
 
 [[rule]]
 name = "bundle-deserialization-cast"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["BundleDeserializationCast"]
 
 [[rule]]
 name = "byte-buffer-backing-array"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ByteBufferBackingArray"]
 
 [[rule]]
 name = "cache-loader-null"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CacheLoaderNull"]
 
 [[rule]]
 name = "can-ignore-return-value-suggester"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CanIgnoreReturnValueSuggester"]
 
 [[rule]]
 name = "cannot-mock-final-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CannotMockFinalClass"]
 
 [[rule]]
 name = "cannot-mock-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CannotMockMethod"]
 
 [[rule]]
 name = "canonical-duration"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CanonicalDuration"]
 
 [[rule]]
 name = "catch-and-print-stack-trace"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CatchAndPrintStackTrace"]
 
 [[rule]]
 name = "catch-fail"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CatchFail"]
 
 [[rule]]
 name = "catching-unchecked"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CatchingUnchecked"]
 
 [[rule]]
 name = "chained-assertion-loses-context"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ChainedAssertionLosesContext"]
 
 [[rule]]
 name = "chaining-constructor-ignores-parameter"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ChainingConstructorIgnoresParameter"]
 
 [[rule]]
 name = "character-get-numeric-value"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CharacterGetNumericValue"]
 
 [[rule]]
 name = "check-not-null-multiple-times"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CheckNotNullMultipleTimes"]
 
 [[rule]]
 name = "check-return-value"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CheckReturnValue"]
 
 [[rule]]
 name = "checked-exception-not-thrown"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CheckedExceptionNotThrown"]
 
 [[rule]]
 name = "class-can-be-static"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ClassCanBeStatic"]
 
 [[rule]]
 name = "class-initialization-deadlock"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ClassInitializationDeadlock"]
 
 [[rule]]
 name = "class-name"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ClassName"]
 
 [[rule]]
 name = "class-named-like-type-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ClassNamedLikeTypeParameter"]
 
 [[rule]]
 name = "class-new-instance"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ClassNewInstance"]
 
 [[rule]]
 name = "closeable-provides"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CloseableProvides"]
 
 [[rule]]
 name = "closing-standard-output-streams"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ClosingStandardOutputStreams"]
 
 [[rule]]
 name = "collection-incompatible-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CollectionIncompatibleType"]
 
 [[rule]]
 name = "collection-to-array-safe-parameter"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CollectionToArraySafeParameter"]
 
 [[rule]]
 name = "collector-should-not-use-state"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["CollectorShouldNotUseState"]
 
 [[rule]]
 name = "comparable-and-comparator"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ComparableAndComparator"]
 
 [[rule]]
 name = "comparable-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ComparableType"]
 
 [[rule]]
 name = "compare-to-zero"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CompareToZero"]
 
 [[rule]]
 name = "comparing-this-with-null"
-status = { java = "implemented" }
 errorprone = ["ComparingThisWithNull"]
 
 [[rule]]
 name = "comparison-contract-violated"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ComparisonContractViolated"]
 
 [[rule]]
 name = "comparison-out-of-range"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ComparisonOutOfRange"]
 
 [[rule]]
 name = "compatible-with-annotation-misuse"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CompatibleWithAnnotationMisuse"]
 
 [[rule]]
 name = "compile-time-constant"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["CompileTimeConstant"]
 
 [[rule]]
 name = "complex-boolean-constant"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ComplexBooleanConstant"]
 
 [[rule]]
 name = "compute-if-absent-ambiguous-reference"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ComputeIfAbsentAmbiguousReference"]
 
 [[rule]]
 name = "conditional-expression-numeric-promotion"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ConditionalExpressionNumericPromotion"]
 
 [[rule]]
 name = "constant-field"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ConstantField"]
 
 [[rule]]
 name = "constant-overflow"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ConstantOverflow"]
 
 [[rule]]
 name = "constant-pattern-compile"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ConstantPatternCompile"]
 
 [[rule]]
 name = "dagger-provides-null"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DaggerProvidesNull"]
 
 [[rule]]
 name = "dangerous-literal-null"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DangerousLiteralNull"]
 
 [[rule]]
 name = "date-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DateChecker"]
 
 [[rule]]
 name = "date-format-constant"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DateFormatConstant"]
 
 [[rule]]
 name = "dead-exception"
-status = { java = "implemented" }
 errorprone = ["DeadException"]
 
 [[rule]]
 name = "dead-thread"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DeadThread"]
 
 [[rule]]
 name = "deduplicate-constants"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DeduplicateConstants"]
 
 [[rule]]
 name = "deeply-nested"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DeeplyNested"]
 
 [[rule]]
 name = "default-charset"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DefaultCharset"]
 
 [[rule]]
 name = "default-locale"
 category = "severity-warning"
-status = { java = "planned", kotlin = "planned" }
-issues = { java = "#320", kotlin = "#325" }
 errorprone = ["DefaultLocale"]
 
 [[rule]]
 name = "default-package"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DefaultPackage"]
 
 [[rule]]
 name = "dep-ann"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DepAnn"]
 
 [[rule]]
 name = "deprecated-variable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DeprecatedVariable"]
 
 [[rule]]
 name = "dereference-with-null-branch"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DereferenceWithNullBranch"]
 
 [[rule]]
 name = "different-name-but-same"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DifferentNameButSame"]
 
 [[rule]]
 name = "direct-invocation-on-mock"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DirectInvocationOnMock"]
 
 [[rule]]
 name = "discarded-postfix-expression"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DiscardedPostfixExpression"]
 
 [[rule]]
 name = "distinct-varargs-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DistinctVarargsChecker"]
 
 [[rule]]
 name = "do-not-call"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DoNotCall"]
 
 [[rule]]
 name = "do-not-call-suggester"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DoNotCallSuggester"]
 
 [[rule]]
 name = "do-not-claim-annotations"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DoNotClaimAnnotations"]
 
 [[rule]]
 name = "do-not-mock"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DoNotMock"]
 
 [[rule]]
 name = "do-not-mock-auto-value"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DoNotMockAutoValue"]
 
 [[rule]]
 name = "double-brace-initialization"
-status = { java = "implemented" }
 pmd = ["DoubleBraceInitialization"]
 errorprone = ["DoubleBraceInitialization"]
 checkstyle = ["AvoidDoubleBraceInitialization"]
@@ -896,3260 +643,2333 @@ checkstyle = ["AvoidDoubleBraceInitialization"]
 [[rule]]
 name = "duplicate-assertion"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DuplicateAssertion"]
 
 [[rule]]
 name = "duplicate-branches"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DuplicateBranches"]
 
 [[rule]]
 name = "duplicate-date-format-field"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["DuplicateDateFormatField"]
 
 [[rule]]
 name = "duplicate-map-keys"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DuplicateMapKeys"]
 
 [[rule]]
 name = "duration-from"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DurationFrom"]
 
 [[rule]]
 name = "duration-get-temporal-unit"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DurationGetTemporalUnit"]
 
 [[rule]]
 name = "duration-temporal-unit"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DurationTemporalUnit"]
 
 [[rule]]
 name = "duration-to-long-time-unit"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["DurationToLongTimeUnit"]
 
 [[rule]]
 name = "effectively-private"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EffectivelyPrivate"]
 
 [[rule]]
 name = "empty-block-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EmptyBlockTag"]
 
 [[rule]]
 name = "empty-catch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EmptyCatch"]
 
 [[rule]]
 name = "empty-if"
-status = { java = "implemented" }
 errorprone = ["EmptyIf"]
 
 [[rule]]
 name = "empty-set-multibinding-contributions"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EmptySetMultibindingContributions"]
 
 [[rule]]
 name = "empty-top-level-declaration"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EmptyTopLevelDeclaration"]
 
 [[rule]]
 name = "enum-ordinal"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EnumOrdinal"]
 
 [[rule]]
 name = "equals-broken-for-null"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EqualsBrokenForNull"]
 
 [[rule]]
 name = "equals-get-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EqualsGetClass"]
 
 [[rule]]
 name = "equals-incompatible-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EqualsIncompatibleType"]
 
 [[rule]]
 name = "equals-missing-nullable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["EqualsMissingNullable"]
 
 [[rule]]
 name = "equals-na-n"
-status = { java = "implemented" }
 errorprone = ["EqualsNaN"]
 
 [[rule]]
 name = "equals-reference"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["EqualsReference"]
 
 [[rule]]
 name = "equals-unsafe-cast"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EqualsUnsafeCast"]
 
 [[rule]]
 name = "equals-using-hash-code"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EqualsUsingHashCode"]
 
 [[rule]]
 name = "equals-wrong-thing"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["EqualsWrongThing"]
 
 [[rule]]
 name = "erroneous-bitwise-expression"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ErroneousBitwiseExpression"]
 
 [[rule]]
 name = "erroneous-thread-pool-constructor-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ErroneousThreadPoolConstructorChecker"]
 
 [[rule]]
 name = "escaped-entity"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["EscapedEntity"]
 
 [[rule]]
 name = "expected-exception-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ExpectedExceptionChecker"]
 
 [[rule]]
 name = "expensive-lenient-format-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ExpensiveLenientFormatString"]
 
 [[rule]]
 name = "explicit-array-for-varargs"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ExplicitArrayForVarargs"]
 
 [[rule]]
 name = "exposed-private-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ExposedPrivateType"]
 
 [[rule]]
 name = "extending-j-unit-assert"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ExtendingJUnitAssert"]
 
 [[rule]]
 name = "extends-auto-value"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ExtendsAutoValue"]
 
 [[rule]]
 name = "field-can-be-final"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["FieldCanBeFinal"]
 
 [[rule]]
 name = "field-can-be-local"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["FieldCanBeLocal"]
 
 [[rule]]
 name = "field-can-be-static"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["FieldCanBeStatic"]
 
 [[rule]]
 name = "field-missing-nullable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["FieldMissingNullable"]
 
 [[rule]]
 name = "finalize"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Finalize"]
 
 [[rule]]
 name = "finally"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Finally"]
 
 [[rule]]
 name = "float-cast"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloatCast"]
 
 [[rule]]
 name = "floating-point-assertion-within-epsilon"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloatingPointAssertionWithinEpsilon"]
 
 [[rule]]
 name = "floating-point-literal-precision"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloatingPointLiteralPrecision"]
 
 [[rule]]
 name = "flogger-argument-to-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerArgumentToString"]
 
 [[rule]]
 name = "flogger-format-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FloggerFormatString"]
 
 [[rule]]
 name = "flogger-log-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FloggerLogString"]
 
 [[rule]]
 name = "flogger-log-varargs"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FloggerLogVarargs"]
 
 [[rule]]
 name = "flogger-log-with-cause"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerLogWithCause"]
 
 [[rule]]
 name = "flogger-message-format"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerMessageFormat"]
 
 [[rule]]
 name = "flogger-per-without-rate-limit"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerPerWithoutRateLimit"]
 
 [[rule]]
 name = "flogger-redundant-is-enabled"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerRedundantIsEnabled"]
 
 [[rule]]
 name = "flogger-required-modifiers"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerRequiredModifiers"]
 
 [[rule]]
 name = "flogger-split-log-statement"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FloggerSplitLogStatement"]
 
 [[rule]]
 name = "flogger-string-concatenation"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerStringConcatenation"]
 
 [[rule]]
 name = "flogger-with-cause"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FloggerWithCause"]
 
 [[rule]]
 name = "flogger-without-cause"
 category = "severity-bug-pattern"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["FloggerWithoutCause"]
 
 [[rule]]
 name = "for-each-iterable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ForEachIterable"]
 
 [[rule]]
 name = "for-override"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ForOverride"]
 
 [[rule]]
 name = "format-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FormatString"]
 
 [[rule]]
 name = "format-string-annotation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FormatStringAnnotation"]
 
 [[rule]]
 name = "format-string-should-use-placeholders"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FormatStringShouldUsePlaceholders"]
 
 [[rule]]
 name = "fragment-injection"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FragmentInjection"]
 
 [[rule]]
 name = "fragment-not-instantiable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FragmentNotInstantiable"]
 
 [[rule]]
 name = "from-temporal-accessor"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FromTemporalAccessor"]
 
 [[rule]]
 name = "functional-interface-clash"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FunctionalInterfaceClash"]
 
 [[rule]]
 name = "functional-interface-method-changed"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FunctionalInterfaceMethodChanged"]
 
 [[rule]]
 name = "future-return-value-ignored"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FutureReturnValueIgnored"]
 
 [[rule]]
 name = "future-transform-async"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["FutureTransformAsync"]
 
 [[rule]]
 name = "futures-get-checked-illegal-exception-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FuturesGetCheckedIllegalExceptionType"]
 
 [[rule]]
 name = "fuzzy-equals-should-not-be-used-in-equals-method"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["FuzzyEqualsShouldNotBeUsedInEqualsMethod"]
 
 [[rule]]
 name = "get-class-on-annotation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["GetClassOnAnnotation"]
 
 [[rule]]
 name = "get-class-on-class"
-status = { java = "implemented" }
 errorprone = ["GetClassOnClass"]
 
 [[rule]]
 name = "get-class-on-enum"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["GetClassOnEnum"]
 
 [[rule]]
 name = "guarded-by"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["GuardedBy"]
 
 [[rule]]
 name = "guice-assisted-inject-scoping"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["GuiceAssistedInjectScoping"]
 
 [[rule]]
 name = "guice-assisted-parameters"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["GuiceAssistedParameters"]
 
 [[rule]]
 name = "guice-inject-on-final-field"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["GuiceInjectOnFinalField"]
 
 [[rule]]
 name = "guice-nested-combine"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["GuiceNestedCombine"]
 
 [[rule]]
 name = "hard-coded-sd-card-path"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["HardCodedSdCardPath"]
 
 [[rule]]
 name = "hash-code-in-objects-hash"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["HashCodeInObjectsHash"]
 
 [[rule]]
 name = "hashtable-contains"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["HashtableContains"]
 
 [[rule]]
 name = "hiding-field"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["HidingField"]
 
 [[rule]]
 name = "icc-profile-get-instance"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ICCProfileGetInstance"]
 
 [[rule]]
 name = "identifier-name"
 category = "severity-warning"
-status = { java = "planned", swift = "planned" }
-issues = { java = "#320", swift = "#301" }
 swiftlint = ["identifier_name"]
 errorprone = ["IdentifierName"]
 
 [[rule]]
 name = "identity-binary-expression"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IdentityBinaryExpression"]
 
 [[rule]]
 name = "identity-hash-map-boxing"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IdentityHashMapBoxing"]
 
 [[rule]]
 name = "identity-hash-map-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IdentityHashMapUsage"]
 
 [[rule]]
 name = "if-chain-to-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IfChainToSwitch"]
 
 [[rule]]
 name = "ignored-pure-getter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IgnoredPureGetter"]
 
 [[rule]]
 name = "immutable"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["Immutable"]
 
 [[rule]]
 name = "immutable-annotation-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ImmutableAnnotationChecker"]
 
 [[rule]]
 name = "immutable-enum-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ImmutableEnumChecker"]
 
 [[rule]]
 name = "immutable-member-collection"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ImmutableMemberCollection"]
 
 [[rule]]
 name = "immutable-refactoring"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ImmutableRefactoring"]
 
 [[rule]]
 name = "immutable-set-for-contains"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ImmutableSetForContains"]
 
 [[rule]]
 name = "implement-assertion-with-chaining"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ImplementAssertionWithChaining"]
 
 [[rule]]
 name = "impossible-null-comparison"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ImpossibleNullComparison"]
 
 [[rule]]
 name = "incomparable"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["Incomparable"]
 
 [[rule]]
 name = "incompatible-argument-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IncompatibleArgumentType"]
 
 [[rule]]
 name = "incompatible-modifiers"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IncompatibleModifiers"]
 
 [[rule]]
 name = "inconsistent-capitalization"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InconsistentCapitalization"]
 
 [[rule]]
 name = "inconsistent-hash-code"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InconsistentHashCode"]
 
 [[rule]]
 name = "inconsistent-overloads"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InconsistentOverloads"]
 
 [[rule]]
 name = "incorrect-main-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IncorrectMainMethod"]
 
 [[rule]]
 name = "increment-in-for-loop-and-header"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IncrementInForLoopAndHeader"]
 
 [[rule]]
 name = "index-of-char"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IndexOfChar"]
 
 [[rule]]
 name = "inexact-varargs-conditional"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InexactVarargsConditional"]
 
 [[rule]]
 name = "infinite-recursion"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InfiniteRecursion"]
 
 [[rule]]
 name = "inherit-doc"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InheritDoc"]
 
 [[rule]]
 name = "initialize-inline"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InitializeInline"]
 
 [[rule]]
 name = "inject-invalid-targeting-on-scoping-annotation"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InjectInvalidTargetingOnScopingAnnotation"]
 
 [[rule]]
 name = "inject-more-than-one-scope-annotation-on-class"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InjectMoreThanOneScopeAnnotationOnClass"]
 
 [[rule]]
 name = "inject-on-bug-checkers"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InjectOnBugCheckers"]
 
 [[rule]]
 name = "inject-on-constructor-of-abstract-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InjectOnConstructorOfAbstractClass"]
 
 [[rule]]
 name = "inject-on-member-and-constructor"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InjectOnMemberAndConstructor"]
 
 [[rule]]
 name = "inject-scope-annotation-on-interface-or-abstract-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InjectScopeAnnotationOnInterfaceOrAbstractClass"]
 
 [[rule]]
 name = "injected-constructor-annotations"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InjectedConstructorAnnotations"]
 
 [[rule]]
 name = "inline-format-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InlineFormatString"]
 
 [[rule]]
 name = "inline-me-inliner"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InlineMeInliner"]
 
 [[rule]]
 name = "inline-me-suggester"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InlineMeSuggester"]
 
 [[rule]]
 name = "inline-me-validator"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InlineMeValidator"]
 
 [[rule]]
 name = "inline-trivial-constant"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InlineTrivialConstant"]
 
 [[rule]]
 name = "input-stream-slow-multibyte-read"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InputStreamSlowMultibyteRead"]
 
 [[rule]]
 name = "insecure-crypto-usage"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InsecureCryptoUsage"]
 
 [[rule]]
 name = "instance-of-and-cast-match-wrong-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InstanceOfAndCastMatchWrongType"]
 
 [[rule]]
 name = "instant-temporal-unit"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InstantTemporalUnit"]
 
 [[rule]]
 name = "int-float-conversion"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IntFloatConversion"]
 
 [[rule]]
 name = "int-literal-cast"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IntLiteralCast"]
 
 [[rule]]
 name = "int-long-math"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IntLongMath"]
 
 [[rule]]
 name = "interface-with-only-statics"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InterfaceWithOnlyStatics"]
 
 [[rule]]
 name = "interrupted-exception-swallowed"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InterruptedExceptionSwallowed"]
 
 [[rule]]
 name = "interrupted-in-catch-block"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InterruptedInCatchBlock"]
 
 [[rule]]
 name = "interruption"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Interruption"]
 
 [[rule]]
 name = "invalid-block-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidBlockTag"]
 
 [[rule]]
 name = "invalid-inline-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidInlineTag"]
 
 [[rule]]
 name = "invalid-java-time-constant"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InvalidJavaTimeConstant"]
 
 [[rule]]
 name = "invalid-link"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidLink"]
 
 [[rule]]
 name = "invalid-param"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidParam"]
 
 [[rule]]
 name = "invalid-pattern-syntax"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InvalidPatternSyntax"]
 
 [[rule]]
 name = "invalid-snippet"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidSnippet"]
 
 [[rule]]
 name = "invalid-throws"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidThrows"]
 
 [[rule]]
 name = "invalid-throws-link"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["InvalidThrowsLink"]
 
 [[rule]]
 name = "invalid-time-zone-id"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InvalidTimeZoneID"]
 
 [[rule]]
 name = "invalid-zone-id"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["InvalidZoneId"]
 
 [[rule]]
 name = "is-instance-incompatible-type"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IsInstanceIncompatibleType"]
 
 [[rule]]
 name = "is-instance-of-class"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IsInstanceOfClass"]
 
 [[rule]]
 name = "is-loggable-tag-length"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IsLoggableTagLength"]
 
 [[rule]]
 name = "iterable-and-iterator"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["IterableAndIterator"]
 
 [[rule]]
 name = "iterable-path-parameter"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["IterablePathParameter"]
 
 [[rule]]
 name = "j-unit3-floating-point-comparison-without-delta"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnit3FloatingPointComparisonWithoutDelta"]
 
 [[rule]]
 name = "j-unit3-test-not-run"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit3TestNotRun"]
 
 [[rule]]
 name = "j-unit4-class-annotation-non-static"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit4ClassAnnotationNonStatic"]
 
 [[rule]]
 name = "j-unit4-class-used-in-j-unit3"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnit4ClassUsedInJUnit3"]
 
 [[rule]]
 name = "j-unit4-empty-methods"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnit4EmptyMethods"]
 
 [[rule]]
 name = "j-unit4-set-up-not-run"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit4SetUpNotRun"]
 
 [[rule]]
 name = "j-unit4-tear-down-not-run"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit4TearDownNotRun"]
 
 [[rule]]
 name = "j-unit4-test-not-run"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit4TestNotRun"]
 
 [[rule]]
 name = "j-unit4-tests-not-run-within-enclosed"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnit4TestsNotRunWithinEnclosed"]
 
 [[rule]]
 name = "j-unit-ambiguous-test-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnitAmbiguousTestClass"]
 
 [[rule]]
 name = "j-unit-assert-same-check"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnitAssertSameCheck"]
 
 [[rule]]
 name = "j-unit-incompatible-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnitIncompatibleType"]
 
 [[rule]]
 name = "j-unit-method-invoked"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JUnitMethodInvoked"]
 
 [[rule]]
 name = "j-unit-parameter-method-not-found"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JUnitParameterMethodNotFound"]
 
 [[rule]]
 name = "java8-api-checker"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["Java8ApiChecker"]
 
 [[rule]]
 name = "java-duration-get-seconds-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaDurationGetSecondsGetNano"]
 
 [[rule]]
 name = "java-duration-get-seconds-to-to-seconds"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaDurationGetSecondsToToSeconds"]
 
 [[rule]]
 name = "java-duration-with-nanos"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaDurationWithNanos"]
 
 [[rule]]
 name = "java-duration-with-seconds"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaDurationWithSeconds"]
 
 [[rule]]
 name = "java-instant-get-seconds-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaInstantGetSecondsGetNano"]
 
 [[rule]]
 name = "java-local-date-time-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaLocalDateTimeGetNano"]
 
 [[rule]]
 name = "java-local-time-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaLocalTimeGetNano"]
 
 [[rule]]
 name = "java-period-get-days"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaPeriodGetDays"]
 
 [[rule]]
 name = "java-time-default-time-zone"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaTimeDefaultTimeZone"]
 
 [[rule]]
 name = "java-util-date"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaUtilDate"]
 
 [[rule]]
 name = "javax-inject-on-abstract-method"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JavaxInjectOnAbstractMethod"]
 
 [[rule]]
 name = "javax-inject-on-final-field"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JavaxInjectOnFinalField"]
 
 [[rule]]
 name = "jdk-obsolete"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JdkObsolete"]
 
 [[rule]]
 name = "joda-constructors"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaConstructors"]
 
 [[rule]]
 name = "joda-date-time-constants"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaDateTimeConstants"]
 
 [[rule]]
 name = "joda-duration-with-millis"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaDurationWithMillis"]
 
 [[rule]]
 name = "joda-instant-with-millis"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaInstantWithMillis"]
 
 [[rule]]
 name = "joda-new-period"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaNewPeriod"]
 
 [[rule]]
 name = "joda-plus-minus-long"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaPlusMinusLong"]
 
 [[rule]]
 name = "joda-time-converter-manager"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaTimeConverterManager"]
 
 [[rule]]
 name = "joda-to-self"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["JodaToSelf"]
 
 [[rule]]
 name = "joda-with-duration-added-long"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["JodaWithDurationAddedLong"]
 
 [[rule]]
 name = "labelled-break-target"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LabelledBreakTarget"]
 
 [[rule]]
 name = "lambda-functional-interface"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["LambdaFunctionalInterface"]
 
 [[rule]]
 name = "lenient-format-string-validation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LenientFormatStringValidation"]
 
 [[rule]]
 name = "list-remove-ambiguous"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ListRemoveAmbiguous"]
 
 [[rule]]
 name = "lite-byte-string-utf8"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LiteByteStringUtf8"]
 
 [[rule]]
 name = "lite-enum-value-of"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LiteEnumValueOf"]
 
 [[rule]]
 name = "lite-proto-to-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LiteProtoToString"]
 
 [[rule]]
 name = "local-date-temporal-amount"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LocalDateTemporalAmount"]
 
 [[rule]]
 name = "lock-not-before-try"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LockNotBeforeTry"]
 
 [[rule]]
 name = "lock-on-boxed-primitive"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LockOnBoxedPrimitive"]
 
 [[rule]]
 name = "lock-on-non-enclosing-class-literal"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LockOnNonEnclosingClassLiteral"]
 
 [[rule]]
 name = "logical-assignment"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LogicalAssignment"]
 
 [[rule]]
 name = "long-double-conversion"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LongDoubleConversion"]
 
 [[rule]]
 name = "long-float-conversion"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LongFloatConversion"]
 
 [[rule]]
 name = "long-literal-lower-case-suffix"
-status = { java = "implemented" }
 errorprone = ["LongLiteralLowerCaseSuffix"]
 
 [[rule]]
 name = "loop-condition-checker"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LoopConditionChecker"]
 
 [[rule]]
 name = "loop-over-char-array"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["LoopOverCharArray"]
 
 [[rule]]
 name = "loop-to-test-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["LoopToTestParameter"]
 
 [[rule]]
 name = "lossy-primitive-compare"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["LossyPrimitiveCompare"]
 
 [[rule]]
 name = "malformed-inline-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MalformedInlineTag"]
 
 [[rule]]
 name = "math-absolute-negative"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MathAbsoluteNegative"]
 
 [[rule]]
 name = "math-round-int-long"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MathRoundIntLong"]
 
 [[rule]]
 name = "memoize-constant-visitor-state-lookups"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MemoizeConstantVisitorStateLookups"]
 
 [[rule]]
 name = "memory-segment-reference-equality"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MemorySegmentReferenceEquality"]
 
 [[rule]]
 name = "method-can-be-static"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["MethodCanBeStatic"]
 
 [[rule]]
 name = "misformatted-test-data"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MisformattedTestData"]
 
 [[rule]]
 name = "mislabeled-android-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MislabeledAndroidString"]
 
 [[rule]]
 name = "misleading-empty-varargs"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MisleadingEmptyVarargs"]
 
 [[rule]]
 name = "misleading-escaped-space"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MisleadingEscapedSpace"]
 
 [[rule]]
 name = "misplaced-scope-annotations"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MisplacedScopeAnnotations"]
 
 [[rule]]
 name = "missing-braces"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["MissingBraces"]
 
 [[rule]]
 name = "missing-cases-in-enum-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingCasesInEnumSwitch"]
 
 [[rule]]
 name = "missing-default"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingDefault"]
 
 [[rule]]
 name = "missing-fail"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingFail"]
 
 [[rule]]
 name = "missing-implements-comparable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingImplementsComparable"]
 
 [[rule]]
 name = "missing-refaster-annotation"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingRefasterAnnotation"]
 
 [[rule]]
 name = "missing-runtime-retention"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MissingRuntimeRetention"]
 
 [[rule]]
 name = "missing-summary"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MissingSummary"]
 
 [[rule]]
 name = "missing-super-call"
 category = "severity-error"
-status = { java = "planned", kotlin = "planned" }
-issues = { java = "#319", kotlin = "#325" }
 errorprone = ["MissingSuperCall"]
 
 [[rule]]
 name = "missing-test-call"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MissingTestCall"]
 
 [[rule]]
 name = "misused-day-of-year"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MisusedDayOfYear"]
 
 [[rule]]
 name = "misused-week-year"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MisusedWeekYear"]
 
 [[rule]]
 name = "mixed-array-dimensions"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["MixedArrayDimensions"]
 
 [[rule]]
 name = "mixed-descriptors"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MixedDescriptors"]
 
 [[rule]]
 name = "mixed-mutability-return-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MixedMutabilityReturnType"]
 
 [[rule]]
 name = "mock-illegal-throws"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MockIllegalThrows"]
 
 [[rule]]
 name = "mock-not-used-in-production"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MockNotUsedInProduction"]
 
 [[rule]]
 name = "mockito-do-setup"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MockitoDoSetup"]
 
 [[rule]]
 name = "mockito-usage"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MockitoUsage"]
 
 [[rule]]
 name = "modified-but-not-used"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ModifiedButNotUsed"]
 
 [[rule]]
 name = "modify-collection-in-enhanced-for-loop"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ModifyCollectionInEnhancedForLoop"]
 
 [[rule]]
 name = "modify-source-collection-in-stream"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ModifySourceCollectionInStream"]
 
 [[rule]]
 name = "modifying-collection-with-itself"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ModifyingCollectionWithItself"]
 
 [[rule]]
 name = "more-than-one-injectable-constructor"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MoreThanOneInjectableConstructor"]
 
 [[rule]]
 name = "more-than-one-qualifier"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MoreThanOneQualifier"]
 
 [[rule]]
 name = "multi-variable-declaration"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["MultiVariableDeclaration"]
 
 [[rule]]
 name = "multimap-keys"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MultimapKeys"]
 
 [[rule]]
 name = "multiple-nullness-annotations"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MultipleNullnessAnnotations"]
 
 [[rule]]
 name = "multiple-parallel-or-sequential-calls"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MultipleParallelOrSequentialCalls"]
 
 [[rule]]
 name = "multiple-top-level-classes"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["MultipleTopLevelClasses"]
 
 [[rule]]
 name = "multiple-unary-operators-in-method-call"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MultipleUnaryOperatorsInMethodCall"]
 
 [[rule]]
 name = "must-be-closed-checker"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["MustBeClosedChecker"]
 
 [[rule]]
 name = "mutable-guice-module"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MutableGuiceModule"]
 
 [[rule]]
 name = "mutable-public-array"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["MutablePublicArray"]
 
 [[rule]]
 name = "n-copies-of-char"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NCopiesOfChar"]
 
 [[rule]]
 name = "named-like-contextual-keyword"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NamedLikeContextualKeyword"]
 
 [[rule]]
 name = "narrow-calculation"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NarrowCalculation"]
 
 [[rule]]
 name = "narrowing-compound-assignment"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NarrowingCompoundAssignment"]
 
 [[rule]]
 name = "negative-boolean"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NegativeBoolean"]
 
 [[rule]]
 name = "negative-char-literal"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NegativeCharLiteral"]
 
 [[rule]]
 name = "nested-instance-of-conditions"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NestedInstanceOfConditions"]
 
 [[rule]]
 name = "new-file-system"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NewFileSystem"]
 
 [[rule]]
 name = "no-allocation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NoAllocation"]
 
 [[rule]]
 name = "no-can-ignore-return-value-on-classes"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NoCanIgnoreReturnValueOnClasses"]
 
 [[rule]]
 name = "non-api-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonApiType"]
 
 [[rule]]
 name = "non-atomic-volatile-update"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonAtomicVolatileUpdate"]
 
 [[rule]]
 name = "non-canonical-static-import"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NonCanonicalStaticImport"]
 
 [[rule]]
 name = "non-canonical-static-member-import"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonCanonicalStaticMemberImport"]
 
 [[rule]]
 name = "non-canonical-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonCanonicalType"]
 
 [[rule]]
 name = "non-final-compile-time-constant"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NonFinalCompileTimeConstant"]
 
 [[rule]]
 name = "non-final-static-field"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonFinalStaticField"]
 
 [[rule]]
 name = "non-overriding-equals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NonOverridingEquals"]
 
 [[rule]]
 name = "non-runtime-annotation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NonRuntimeAnnotation"]
 
 [[rule]]
 name = "not-javadoc"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NotJavadoc"]
 
 [[rule]]
 name = "null-argument-for-non-null-parameter"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NullArgumentForNonNullParameter"]
 
 [[rule]]
 name = "null-needs-cast-for-varargs"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NullNeedsCastForVarargs"]
 
 [[rule]]
 name = "null-optional"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullOptional"]
 
 [[rule]]
 name = "null-ternary"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NullTernary"]
 
 [[rule]]
 name = "nullable-constructor"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullableConstructor"]
 
 [[rule]]
 name = "nullable-on-containing-class"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["NullableOnContainingClass"]
 
 [[rule]]
 name = "nullable-optional"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullableOptional"]
 
 [[rule]]
 name = "nullable-primitive"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullablePrimitive"]
 
 [[rule]]
 name = "nullable-primitive-array"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullablePrimitiveArray"]
 
 [[rule]]
 name = "nullable-type-parameter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullableTypeParameter"]
 
 [[rule]]
 name = "nullable-void"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullableVoid"]
 
 [[rule]]
 name = "nullable-wildcard"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["NullableWildcard"]
 
 [[rule]]
 name = "object-equals-for-primitives"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ObjectEqualsForPrimitives"]
 
 [[rule]]
 name = "object-to-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ObjectToString"]
 
 [[rule]]
 name = "objects-hash-code-primitive"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ObjectsHashCodePrimitive"]
 
 [[rule]]
 name = "operator-precedence"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OperatorPrecedence"]
 
 [[rule]]
 name = "optional-equality"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["OptionalEquality"]
 
 [[rule]]
 name = "optional-map-to-optional"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OptionalMapToOptional"]
 
 [[rule]]
 name = "optional-map-unused-value"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["OptionalMapUnusedValue"]
 
 [[rule]]
 name = "optional-not-present"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OptionalNotPresent"]
 
 [[rule]]
 name = "optional-of-redundant-method"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["OptionalOfRedundantMethod"]
 
 [[rule]]
 name = "orphaned-format-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OrphanedFormatString"]
 
 [[rule]]
 name = "outline-none"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OutlineNone"]
 
 [[rule]]
 name = "overlapping-qualifier-and-scope-annotation"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["OverlappingQualifierAndScopeAnnotation"]
 
 [[rule]]
 name = "override-throwable-to-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OverrideThrowableToString"]
 
 [[rule]]
 name = "overrides"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Overrides"]
 
 [[rule]]
 name = "overrides-guice-injectable-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OverridesGuiceInjectableMethod"]
 
 [[rule]]
 name = "overrides-javax-injectable-method"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["OverridesJavaxInjectableMethod"]
 
 [[rule]]
 name = "overriding-method-inconsistent-argument-names-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["OverridingMethodInconsistentArgumentNamesChecker"]
 
 [[rule]]
 name = "package-info"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PackageInfo"]
 
 [[rule]]
 name = "package-location"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["PackageLocation"]
 
 [[rule]]
 name = "parameter-comment"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ParameterComment"]
 
 [[rule]]
 name = "parameter-missing-nullable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ParameterMissingNullable"]
 
 [[rule]]
 name = "parameters-but-not-parameterized"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ParametersButNotParameterized"]
 
 [[rule]]
 name = "parcelable-creator"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ParcelableCreator"]
 
 [[rule]]
 name = "pattern-matching-instanceof"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PatternMatchingInstanceof"]
 
 [[rule]]
 name = "period-from"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PeriodFrom"]
 
 [[rule]]
 name = "period-get-temporal-unit"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PeriodGetTemporalUnit"]
 
 [[rule]]
 name = "period-time-math"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PeriodTimeMath"]
 
 [[rule]]
 name = "preconditions-check-not-null-repeated"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreconditionsCheckNotNullRepeated"]
 
 [[rule]]
 name = "preconditions-invalid-placeholder"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PreconditionsInvalidPlaceholder"]
 
 [[rule]]
 name = "prefer-charset-overload"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferCharsetOverload"]
 
 [[rule]]
 name = "prefer-instanceof-over-get-kind"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferInstanceofOverGetKind"]
 
 [[rule]]
 name = "prefer-java-time-overload"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferJavaTimeOverload"]
 
 [[rule]]
 name = "prefer-preconditions"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferPreconditions"]
 
 [[rule]]
 name = "prefer-throws-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferThrowsTag"]
 
 [[rule]]
 name = "preferred-interface-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PreferredInterfaceType"]
 
 [[rule]]
 name = "primitive-array-passed-to-varargs-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PrimitiveArrayPassedToVarargsMethod"]
 
 [[rule]]
 name = "primitive-atomic-reference"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["PrimitiveAtomicReference"]
 
 [[rule]]
 name = "private-constructor-for-noninstantiable-module"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["PrivateConstructorForNoninstantiableModule"]
 
 [[rule]]
 name = "private-constructor-for-utility-class"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["PrivateConstructorForUtilityClass"]
 
 [[rule]]
 name = "private-security-contract-proto-access"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["PrivateSecurityContractProtoAccess"]
 
 [[rule]]
 name = "protected-members-in-final-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ProtectedMembersInFinalClass"]
 
 [[rule]]
 name = "proto-builder-return-value-ignored"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ProtoBuilderReturnValueIgnored"]
 
 [[rule]]
 name = "proto-duration-get-seconds-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ProtoDurationGetSecondsGetNano"]
 
 [[rule]]
 name = "proto-string-field-reference-equality"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ProtoStringFieldReferenceEquality"]
 
 [[rule]]
 name = "proto-timestamp-get-seconds-get-nano"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ProtoTimestampGetSecondsGetNano"]
 
 [[rule]]
 name = "proto-truth-mixed-descriptors"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ProtoTruthMixedDescriptors"]
 
 [[rule]]
 name = "protocol-buffer-ordinal"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ProtocolBufferOrdinal"]
 
 [[rule]]
 name = "provides-method-outside-of-module"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ProvidesMethodOutsideOfModule"]
 
 [[rule]]
 name = "public-api-named-stream-should-return-stream"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["PublicApiNamedStreamShouldReturnStream"]
 
 [[rule]]
 name = "qualifier-or-scope-on-inject-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["QualifierOrScopeOnInjectMethod"]
 
 [[rule]]
 name = "qualifier-with-type-use"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["QualifierWithTypeUse"]
 
 [[rule]]
 name = "random-cast"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RandomCast"]
 
 [[rule]]
 name = "random-mod-integer"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RandomModInteger"]
 
 [[rule]]
 name = "reachability-fence-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ReachabilityFenceUsage"]
 
 [[rule]]
 name = "record-accessor-in-compact-constructor"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RecordAccessorInCompactConstructor"]
 
 [[rule]]
 name = "record-component-accessor-annotation-conflict"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RecordComponentAccessorAnnotationConflict"]
 
 [[rule]]
 name = "record-component-override"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RecordComponentOverride"]
 
 [[rule]]
 name = "rect-intersect-return-value-ignored"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RectIntersectReturnValueIgnored"]
 
 [[rule]]
 name = "redundant-control-flow"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RedundantControlFlow"]
 
 [[rule]]
 name = "redundant-null-check"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RedundantNullCheck"]
 
 [[rule]]
 name = "redundant-override"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RedundantOverride"]
 
 [[rule]]
 name = "redundant-setter-call"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RedundantSetterCall"]
 
 [[rule]]
 name = "redundant-throws"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RedundantThrows"]
 
 [[rule]]
 name = "refactor-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RefactorSwitch"]
 
 [[rule]]
 name = "reference-equality"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ReferenceEquality"]
 
 [[rule]]
 name = "refers-to-dagger-codegen"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RefersToDaggerCodegen"]
 
 [[rule]]
 name = "remove-unused-imports"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["RemoveUnusedImports"]
 
 [[rule]]
 name = "require-non-null-refactoring"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["RequireNonNullRefactoring"]
 
 [[rule]]
 name = "required-modifiers"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["RequiredModifiers"]
 
 [[rule]]
 name = "restricted-api"
 category = "severity-error"
-status = { java = "planned", kotlin = "planned" }
-issues = { java = "#319", kotlin = "#325" }
 errorprone = ["RestrictedApi"]
 
 [[rule]]
 name = "rethrow-reflective-operation-exception-as-linkage-error"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RethrowReflectiveOperationExceptionAsLinkageError"]
 
 [[rule]]
 name = "return-at-the-end-of-void-function"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ReturnAtTheEndOfVoidFunction"]
 
 [[rule]]
 name = "return-from-void"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ReturnFromVoid"]
 
 [[rule]]
 name = "return-missing-nullable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ReturnMissingNullable"]
 
 [[rule]]
 name = "return-value-ignored"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ReturnValueIgnored"]
 
 [[rule]]
 name = "returns-null-collection"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ReturnsNullCollection"]
 
 [[rule]]
 name = "robolectric-shadow-directly-on"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RobolectricShadowDirectlyOn"]
 
 [[rule]]
 name = "rule-not-run"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RuleNotRun"]
 
 [[rule]]
 name = "rx-return-value-ignored"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["RxReturnValueIgnored"]
 
 [[rule]]
 name = "same-name-but-different"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SameNameButDifferent"]
 
 [[rule]]
 name = "scanner-use-delimiter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ScannerUseDelimiter"]
 
 [[rule]]
 name = "scope-on-module"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ScopeOnModule"]
 
 [[rule]]
 name = "self-always-returns-this"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SelfAlwaysReturnsThis"]
 
 [[rule]]
 name = "self-assertion"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SelfAssertion"]
 
 [[rule]]
 name = "self-assignment"
-status = { java = "implemented" }
 errorprone = ["SelfAssignment"]
 
 [[rule]]
 name = "self-comparison"
-status = { java = "implemented" }
 errorprone = ["SelfComparison"]
 
 [[rule]]
 name = "self-equals"
-status = { java = "implemented" }
 errorprone = ["SelfEquals"]
 
 [[rule]]
 name = "self-set"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SelfSet"]
 
 [[rule]]
 name = "set-unrecognized"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SetUnrecognized"]
 
 [[rule]]
 name = "short-circuit-boolean"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ShortCircuitBoolean"]
 
 [[rule]]
 name = "should-have-even-args"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ShouldHaveEvenArgs"]
 
 [[rule]]
 name = "simplify-test-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["SimplifyTestParameter"]
 
 [[rule]]
 name = "single-test-parameter"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["SingleTestParameter"]
 
 [[rule]]
 name = "size-greater-than-or-equals-zero"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SizeGreaterThanOrEqualsZero"]
 
 [[rule]]
 name = "statement-switch-to-expression-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StatementSwitchToExpressionSwitch"]
 
 [[rule]]
 name = "static-assignment-in-constructor"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StaticAssignmentInConstructor"]
 
 [[rule]]
 name = "static-assignment-of-throwable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StaticAssignmentOfThrowable"]
 
 [[rule]]
 name = "static-guarded-by-instance"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StaticGuardedByInstance"]
 
 [[rule]]
 name = "static-mock-member"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StaticMockMember"]
 
 [[rule]]
 name = "static-or-default-interface-method"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["StaticOrDefaultInterfaceMethod"]
 
 [[rule]]
 name = "static-qualified-using-expression"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["StaticQualifiedUsingExpression"]
 
 [[rule]]
 name = "stream-resource-leak"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StreamResourceLeak"]
 
 [[rule]]
 name = "stream-to-iterable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StreamToIterable"]
 
 [[rule]]
 name = "stream-to-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["StreamToString"]
 
 [[rule]]
 name = "string-builder-init-with-char"
-status = { java = "implemented" }
 errorprone = ["StringBuilderInitWithChar"]
 
 [[rule]]
 name = "string-case-locale-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StringCaseLocaleUsage"]
 
 [[rule]]
 name = "string-charset"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StringCharset"]
 
 [[rule]]
 name = "string-concat-to-text-block"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StringConcatToTextBlock"]
 
 [[rule]]
 name = "string-format-with-literal"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StringFormatWithLiteral"]
 
 [[rule]]
 name = "string-join"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["StringJoin"]
 
 [[rule]]
 name = "string-splitter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StringSplitter"]
 
 [[rule]]
 name = "strongly-type-byte-string"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StronglyTypeByteString"]
 
 [[rule]]
 name = "strongly-type-time"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["StronglyTypeTime"]
 
 [[rule]]
 name = "substring-of-zero"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SubstringOfZero"]
 
 [[rule]]
 name = "sun-api"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SunApi"]
 
 [[rule]]
 name = "super-call-to-object-method"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SuperCallToObjectMethod"]
 
 [[rule]]
 name = "suppress-warnings-deprecated"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SuppressWarningsDeprecated"]
 
 [[rule]]
 name = "suppress-warnings-without-explanation"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SuppressWarningsWithoutExplanation"]
 
 [[rule]]
 name = "swig-memory-leak"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SwigMemoryLeak"]
 
 [[rule]]
 name = "switch-default"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["SwitchDefault"]
 
 [[rule]]
 name = "symbol-to-string"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["SymbolToString"]
 
 [[rule]]
 name = "synchronize-on-non-final-field"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SynchronizeOnNonFinalField"]
 
 [[rule]]
 name = "system-console-null"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SystemConsoleNull"]
 
 [[rule]]
 name = "system-exit-outside-main"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["SystemExitOutsideMain"]
 
 [[rule]]
 name = "system-out"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["SystemOut"]
 
 [[rule]]
 name = "temporal-accessor-get-chrono-field"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TemporalAccessorGetChronoField"]
 
 [[rule]]
 name = "test-exception-checker"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TestExceptionChecker"]
 
 [[rule]]
 name = "test-parameters-not-initialized"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TestParametersNotInitialized"]
 
 [[rule]]
 name = "theory-but-no-theories"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TheoryButNoTheories"]
 
 [[rule]]
 name = "thread-builder-name-with-placeholder"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ThreadBuilderNameWithPlaceholder"]
 
 [[rule]]
 name = "thread-join-loop"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThreadJoinLoop"]
 
 [[rule]]
 name = "thread-local-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThreadLocalUsage"]
 
 [[rule]]
 name = "thread-priority-check"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThreadPriorityCheck"]
 
 [[rule]]
 name = "thread-safe"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ThreadSafe"]
 
 [[rule]]
 name = "three-letter-time-zone-id"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThreeLetterTimeZoneID"]
 
 [[rule]]
 name = "throw-if-unchecked-known-checked"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ThrowIfUncheckedKnownChecked"]
 
 [[rule]]
 name = "throw-if-unchecked-known-unchecked"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThrowIfUncheckedKnownUnchecked"]
 
 [[rule]]
 name = "throw-null"
-status = { java = "implemented" }
 errorprone = ["ThrowNull"]
 
 [[rule]]
 name = "throw-specific-exceptions"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThrowSpecificExceptions"]
 
 [[rule]]
 name = "throwable-equals-hash-code"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ThrowableEqualsHashCode"]
 
 [[rule]]
 name = "throws-unchecked-exception"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["ThrowsUncheckedException"]
 
 [[rule]]
 name = "time-in-static-initializer"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TimeInStaticInitializer"]
 
 [[rule]]
 name = "time-unit-conversion-checker"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TimeUnitConversionChecker"]
 
 [[rule]]
 name = "time-unit-mismatch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TimeUnitMismatch"]
 
 [[rule]]
 name = "to-string-returns-null"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ToStringReturnsNull"]
 
 [[rule]]
 name = "too-many-parameters"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TooManyParameters"]
 
 [[rule]]
 name = "traditional-javadoc-to-markdown"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["TraditionalJavadocToMarkdown"]
 
 [[rule]]
 name = "traditional-switch-expression"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TraditionalSwitchExpression"]
 
 [[rule]]
 name = "transient-misuse"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TransientMisuse"]
 
 [[rule]]
 name = "tree-to-string"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TreeToString"]
 
 [[rule]]
 name = "truth-assert-expected"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TruthAssertExpected"]
 
 [[rule]]
 name = "truth-constant-asserts"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TruthConstantAsserts"]
 
 [[rule]]
 name = "truth-contains-exactly-elements-in-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TruthContainsExactlyElementsInUsage"]
 
 [[rule]]
 name = "truth-get-or-default"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TruthGetOrDefault"]
 
 [[rule]]
 name = "truth-incompatible-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TruthIncompatibleType"]
 
 [[rule]]
 name = "try-fail-refactoring"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["TryFailRefactoring"]
 
 [[rule]]
 name = "try-fail-throwable"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TryFailThrowable"]
 
 [[rule]]
 name = "try-with-resources-variable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TryWithResourcesVariable"]
 
 [[rule]]
 name = "type-equals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TypeEquals"]
 
 [[rule]]
 name = "type-name-shadowing"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TypeNameShadowing"]
 
 [[rule]]
 name = "type-parameter-naming"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["TypeParameterNaming"]
 
 [[rule]]
 name = "type-parameter-qualifier"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["TypeParameterQualifier"]
 
 [[rule]]
 name = "type-parameter-shadowing"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TypeParameterShadowing"]
 
 [[rule]]
 name = "type-parameter-unused-in-formals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["TypeParameterUnusedInFormals"]
 
 [[rule]]
 name = "type-to-string"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["TypeToString"]
 
 [[rule]]
 name = "url-equals-hash-code"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["URLEqualsHashCode"]
 
 [[rule]]
 name = "undefined-equals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UndefinedEquals"]
 
 [[rule]]
 name = "unescaped-entity"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnescapedEntity"]
 
 [[rule]]
 name = "ungrouped-overloads"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UngroupedOverloads"]
 
 [[rule]]
 name = "unicode-directionality-characters"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnicodeDirectionalityCharacters"]
 
 [[rule]]
 name = "unicode-escape"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnicodeEscape"]
 
 [[rule]]
 name = "unicode-in-code"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnicodeInCode"]
 
 [[rule]]
 name = "unnamed-variable"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnamedVariable"]
 
 [[rule]]
 name = "unnecessarily-fully-qualified"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessarilyFullyQualified"]
 
 [[rule]]
 name = "unnecessarily-used-value"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessarilyUsedValue"]
 
 [[rule]]
 name = "unnecessarily-visible"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessarilyVisible"]
 
 [[rule]]
 name = "unnecessary-anonymous-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryAnonymousClass"]
 
 [[rule]]
 name = "unnecessary-assignment"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryAssignment"]
 
 [[rule]]
 name = "unnecessary-async"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryAsync"]
 
 [[rule]]
 name = "unnecessary-boxed-assignment"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UnnecessaryBoxedAssignment"]
 
 [[rule]]
 name = "unnecessary-boxed-variable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UnnecessaryBoxedVariable"]
 
 [[rule]]
 name = "unnecessary-break-in-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryBreakInSwitch"]
 
 [[rule]]
 name = "unnecessary-check-not-null"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnnecessaryCheckNotNull"]
 
 [[rule]]
 name = "unnecessary-copy"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryCopy"]
 
 [[rule]]
 name = "unnecessary-default-in-enum-switch"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryDefaultInEnumSwitch"]
 
 [[rule]]
 name = "unnecessary-final"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryFinal"]
 
 [[rule]]
 name = "unnecessary-lambda"
 category = "severity-warning"
-status = { java = "planned", python = "planned" }
-issues = { java = "#320", python = "#334" }
 errorprone = ["UnnecessaryLambda"]
 ruff = ["PLW0108"]
 pylint = ["unnecessary-lambda"]
@@ -4157,316 +2977,227 @@ pylint = ["unnecessary-lambda"]
 [[rule]]
 name = "unnecessary-long-to-int-conversion"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryLongToIntConversion"]
 
 [[rule]]
 name = "unnecessary-method-invocation-matcher"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryMethodInvocationMatcher"]
 
 [[rule]]
 name = "unnecessary-method-reference"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryMethodReference"]
 
 [[rule]]
 name = "unnecessary-optional-get"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryOptionalGet"]
 
 [[rule]]
 name = "unnecessary-qualifier"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryQualifier"]
 
 [[rule]]
 name = "unnecessary-semicolon"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessarySemicolon"]
 
 [[rule]]
 name = "unnecessary-set-default"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UnnecessarySetDefault"]
 
 [[rule]]
 name = "unnecessary-static-import"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UnnecessaryStaticImport"]
 
 [[rule]]
 name = "unnecessary-string-builder"
 category = "severity-bug-pattern"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UnnecessaryStringBuilder"]
 
 [[rule]]
 name = "unnecessary-test-method-prefix"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnnecessaryTestMethodPrefix"]
 
 [[rule]]
 name = "unnecessary-type-argument"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnnecessaryTypeArgument"]
 
 [[rule]]
 name = "unrecognised-javadoc-tag"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnrecognisedJavadocTag"]
 
 [[rule]]
 name = "unsafe-finalization"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnsafeFinalization"]
 
 [[rule]]
 name = "unsafe-locale-usage"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnsafeLocaleUsage"]
 
 [[rule]]
 name = "unsafe-reflective-construction-cast"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnsafeReflectiveConstructionCast"]
 
 [[rule]]
 name = "unsafe-wildcard"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnsafeWildcard"]
 
 [[rule]]
 name = "unsynchronized-overrides-synchronized"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnsynchronizedOverridesSynchronized"]
 
 [[rule]]
 name = "unused-anonymous-class"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnusedAnonymousClass"]
 
 [[rule]]
 name = "unused-collection-modified-in-place"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UnusedCollectionModifiedInPlace"]
 
 [[rule]]
 name = "unused-exception"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnusedException"]
 
 [[rule]]
 name = "unused-method"
 category = "severity-warning"
-status = { java = "planned", python = "planned" }
-issues = { java = "#320", python = "#337" }
 errorprone = ["UnusedMethod"]
 vulture = ["V105"]
 
 [[rule]]
 name = "unused-nested-class"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnusedNestedClass"]
 
 [[rule]]
 name = "unused-type-parameter"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UnusedTypeParameter"]
 
 [[rule]]
 name = "unused-variable"
 category = "severity-warning"
-status = { java = "planned", python = "planned" }
-issues = { java = "#320", python = "#337" }
 errorprone = ["UnusedVariable"]
 vulture = ["V107"]
 
 [[rule]]
 name = "url-in-see"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UrlInSee"]
 
 [[rule]]
 name = "use-binds"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UseBinds"]
 
 [[rule]]
 name = "use-correct-assert-in-tests"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["UseCorrectAssertInTests"]
 
 [[rule]]
 name = "use-enum-switch"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["UseEnumSwitch"]
 
 [[rule]]
 name = "using-jsr305-check-return-value"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["UsingJsr305CheckReturnValue"]
 
 [[rule]]
 name = "value-class-equals"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["ValueClassEquals"]
 
 [[rule]]
 name = "value-class-identity"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["ValueClassIdentity"]
 
 [[rule]]
 name = "var"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Var"]
 
 [[rule]]
 name = "var-type-name"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["VarTypeName"]
 
 [[rule]]
 name = "var-with-primitive"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["VarWithPrimitive"]
 
 [[rule]]
 name = "variable-name-same-as-type"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["VariableNameSameAsType"]
 
 [[rule]]
 name = "varifier"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["Varifier"]
 
 [[rule]]
 name = "void-missing-nullable"
 category = "severity-suggestion"
-status = { java = "planned" }
-issues = { java = "#321" }
 errorprone = ["VoidMissingNullable"]
 
 [[rule]]
 name = "void-used"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["VoidUsed"]
 
 [[rule]]
 name = "wait-not-in-loop"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["WaitNotInLoop"]
 
 [[rule]]
 name = "wakelock-released-dangerously"
 category = "severity-warning"
-status = { java = "planned" }
-issues = { java = "#320" }
 errorprone = ["WakelockReleasedDangerously"]
 
 [[rule]]
 name = "wildcard-import"
 category = "severity-suggestion"
-status = { java = "planned", python = "planned" }
-issues = { java = "#321", python = "#336" }
 errorprone = ["WildcardImport"]
 pylint = ["wildcard-import"]
 
 [[rule]]
 name = "wrong-oneof"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["WrongOneof"]
 
 [[rule]]
 name = "xor-power"
 category = "severity-error"
-status = { java = "planned" }
-issues = { java = "#319" }
 errorprone = ["XorPower"]
 
 [[rule]]
 name = "yoda-condition"
 category = "severity-warning"
-status = { java = "planned", swift = "planned" }
-issues = { java = "#320", swift = "#338" }
 swiftlint = ["yoda_condition"]
 errorprone = ["YodaCondition"]
 
 [[rule]]
 name = "zone-id-of-z"
-status = { java = "implemented" }
 errorprone = ["ZoneIdOfZ"]

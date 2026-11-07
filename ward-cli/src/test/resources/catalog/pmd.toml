@@ -2,357 +2,272 @@
 
 [[rule]]
 name = "abstract-class-without-abstract-method"
-status = { java = "implemented" }
 pmd = ["AbstractClassWithoutAbstractMethod"]
 
 [[rule]]
 name = "abstract-class-without-any-method"
-status = { java = "implemented" }
 pmd = ["AbstractClassWithoutAnyMethod"]
 
 [[rule]]
 name = "accessor-class-generation"
-status = { java = "implemented" }
 pmd = ["AccessorClassGeneration"]
 
 [[rule]]
 name = "accessor-method-generation"
-status = { java = "implemented" }
 pmd = ["AccessorMethodGeneration"]
 
 [[rule]]
 name = "add-empty-string"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AddEmptyString"]
 
 [[rule]]
 name = "append-character-with-char"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AppendCharacterWithChar"]
 
 [[rule]]
 name = "array-is-stored-directly"
-status = { java = "implemented" }
 pmd = ["ArrayIsStoredDirectly"]
 
 [[rule]]
 name = "assert-equals-argument-order"
-status = { java = "implemented" }
 pmd = ["AssertEqualsArgumentOrder"]
 
 [[rule]]
 name = "assert-statement-in-test"
-status = { java = "implemented" }
 pmd = ["AssertStatementInTest"]
 
 [[rule]]
 name = "assignment-in-operand"
-status = { java = "implemented" }
 pmd = ["AssignmentInOperand"]
 
 [[rule]]
 name = "assignment-to-non-final-static"
 category = "errorprone"
 # Planned: needs the static non-final fields of the file bound to each assignment through the scopes; no Java rule reads scopes for this yet
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["AssignmentToNonFinalStatic"]
 
 [[rule]]
 name = "at-least-one-constructor"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["AtLeastOneConstructor"]
 
 [[rule]]
 name = "avoid-accessibility-alteration"
-status = { java = "implemented" }
 pmd = ["AvoidAccessibilityAlteration"]
 
 [[rule]]
 name = "avoid-array-loops"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidArrayLoops"]
 
 [[rule]]
 name = "avoid-assert-as-identifier"
 category = "errorprone"
 # Planned: not applicable (review): assert is a keyword since Java 1.4 and the parser rejects it as an identifier, so no Java source reaches the rule
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["AvoidAssertAsIdentifier"]
 
 [[rule]]
 name = "avoid-branching-statement-as-last-in-loop"
-status = { java = "implemented" }
 pmd = ["AvoidBranchingStatementAsLastInLoop"]
 
 [[rule]]
 name = "avoid-calendar-date-creation"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidCalendarDateCreation"]
 
 [[rule]]
 name = "avoid-calling-finalize"
-status = { java = "implemented" }
 pmd = ["AvoidCallingFinalize"]
 
 [[rule]]
 name = "avoid-decimal-literals-in-big-decimal-constructor"
-status = { java = "implemented" }
 pmd = ["AvoidDecimalLiteralsInBigDecimalConstructor"]
 
 [[rule]]
 name = "avoid-deeply-nested-if-stmts"
-status = { java = "implemented" }
 pmd = ["AvoidDeeplyNestedIfStmts"]
 
 [[rule]]
 name = "avoid-dollar-signs"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["AvoidDollarSigns"]
 
 [[rule]]
 name = "avoid-enum-as-identifier"
 category = "errorprone"
 # Planned: not applicable (review): enum is a keyword since Java 5 and the parser rejects it as an identifier, so no Java source reaches the rule
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["AvoidEnumAsIdentifier"]
 
 [[rule]]
 name = "avoid-field-name-matching-method-name"
 category = "errorprone"
 # Planned: needs the method names of the enclosing class compared with each field name; no generic check compares sibling declarations
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["AvoidFieldNameMatchingMethodName"]
 
 [[rule]]
 name = "avoid-field-name-matching-type-name"
 category = "errorprone"
 # Planned: needs the enclosing type name compared with each field name; no generic check compares a node with its enclosing declaration
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["AvoidFieldNameMatchingTypeName"]
 
 [[rule]]
 name = "avoid-file-stream"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidFileStream"]
 
 [[rule]]
 name = "avoid-instanceof-checks-in-catch-clause"
-status = { java = "implemented" }
 pmd = ["AvoidInstanceofChecksInCatchClause"]
 
 [[rule]]
 name = "avoid-instantiating-objects-in-loops"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidInstantiatingObjectsInLoops"]
 
 [[rule]]
 name = "avoid-literals-in-if-condition"
-status = { java = "implemented" }
 pmd = ["AvoidLiteralsInIfCondition"]
 
 [[rule]]
 name = "avoid-message-digest-field"
-status = { java = "implemented" }
 pmd = ["AvoidMessageDigestField"]
 
 [[rule]]
 name = "avoid-multiple-unary-operators"
-status = { java = "implemented" }
 pmd = ["AvoidMultipleUnaryOperators"]
 
 [[rule]]
 name = "avoid-print-stack-trace"
-status = { java = "implemented" }
 pmd = ["AvoidPrintStackTrace"]
 
 [[rule]]
 name = "avoid-reassigning-catch-variables"
-status = { java = "implemented" }
 pmd = ["AvoidReassigningCatchVariables"]
 
 [[rule]]
 name = "avoid-reassigning-loop-variables"
-status = { java = "implemented" }
 pmd = ["AvoidReassigningLoopVariables"]
 
 [[rule]]
 name = "avoid-rethrowing-exception"
-status = { java = "implemented" }
 pmd = ["AvoidRethrowingException"]
 
 [[rule]]
 name = "avoid-string-buffer-field"
-status = { java = "implemented" }
 pmd = ["AvoidStringBufferField"]
 
 [[rule]]
 name = "avoid-synchronized-at-method-level"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidSynchronizedAtMethodLevel"]
 
 [[rule]]
 name = "avoid-synchronized-statement"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidSynchronizedStatement"]
 
 [[rule]]
 name = "avoid-thread-group"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidThreadGroup"]
 
 [[rule]]
 name = "avoid-throwing-new-instance-of-same-exception"
-status = { java = "implemented" }
 pmd = ["AvoidThrowingNewInstanceOfSameException"]
 
 [[rule]]
 name = "avoid-throwing-null-pointer-exception"
-status = { java = "implemented" }
 pmd = ["AvoidThrowingNullPointerException"]
 
 [[rule]]
 name = "avoid-unchecked-exceptions-in-signatures"
-status = { java = "implemented" }
 pmd = ["AvoidUncheckedExceptionsInSignatures"]
 
 [[rule]]
 name = "avoid-using-hard-coded-ip"
-status = { java = "implemented" }
 pmd = ["AvoidUsingHardCodedIP"]
 
 [[rule]]
 name = "avoid-using-native-code"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["AvoidUsingNativeCode"]
 
 [[rule]]
 name = "avoid-using-octal-values"
-status = { java = "implemented" }
 pmd = ["AvoidUsingOctalValues"]
 
 [[rule]]
 name = "avoid-using-volatile"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["AvoidUsingVolatile"]
 
 [[rule]]
 name = "big-integer-instantiation"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["BigIntegerInstantiation"]
 
 [[rule]]
 name = "boolean-get-method-name"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["BooleanGetMethodName"]
 
 [[rule]]
 name = "broken-null-check"
-status = { java = "implemented" }
 pmd = ["BrokenNullCheck"]
 
 [[rule]]
 name = "c-style-array-declaration"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["CStyleArrayDeclaration"]
 
 [[rule]]
 name = "call-super-first"
 category = "errorprone"
 # Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["CallSuperFirst"]
 
 [[rule]]
 name = "call-super-in-constructor"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["CallSuperInConstructor"]
 
 [[rule]]
 name = "call-super-last"
 category = "errorprone"
 # Planned: not applicable (review): PMD says it is for Android lifecycle methods only; Ward targets general Java (review this)
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["CallSuperLast"]
 
 [[rule]]
 name = "check-result-set"
 # Not applicable (review): needs the static type of the receiver and whether the result is used
-status = { java = "implemented" }
 pmd = ["CheckResultSet"]
 
 [[rule]]
 name = "class-cast-exception-with-to-array"
-status = { java = "implemented" }
 pmd = ["ClassCastExceptionWithToArray"]
 
 [[rule]]
 name = "clone-method-must-be-public"
-status = { java = "implemented" }
 pmd = ["CloneMethodMustBePublic"]
 
 [[rule]]
 name = "clone-method-must-implement-cloneable"
-status = { java = "implemented" }
 pmd = ["CloneMethodMustImplementCloneable"]
 
 [[rule]]
 name = "clone-method-return-type-must-match-class-name"
-status = { java = "implemented" }
 pmd = ["CloneMethodReturnTypeMustMatchClassName"]
 
 [[rule]]
 name = "close-resource"
 category = "errorprone"
 # Planned: needs resolved types (AutoCloseable and the declared resource type); no Java rule consumes TYPES facts yet
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["CloseResource"]
 
 [[rule]]
 name = "collapsible-if-statements"
-status = { java = "implemented", kotlin = "planned" }
-issues = { kotlin = "#295" }
 detekt = ["CollapsibleIfStatements"]
 pmd = ["CollapsibleIfStatements"]
 
@@ -360,1196 +275,910 @@ pmd = ["CollapsibleIfStatements"]
 name = "collection-type-mismatch"
 category = "errorprone"
 # Planned: needs resolved collection and argument types; no Java rule consumes TYPES facts yet
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["CollectionTypeMismatch"]
 
 [[rule]]
 name = "comment-content"
 category = "documentation"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["CommentContent"]
 
 [[rule]]
 name = "comment-default-access-modifier"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["CommentDefaultAccessModifier"]
 
 [[rule]]
 name = "comment-size"
 category = "documentation"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["CommentSize"]
 
 [[rule]]
 name = "compare-objects-with-equals"
 category = "errorprone"
 # Planned: needs resolved reference types of both operands; no Java rule consumes TYPES facts yet
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["CompareObjectsWithEquals"]
 
 [[rule]]
 name = "comparison-with-na-n"
-status = { java = "implemented" }
 pmd = ["ComparisonWithNaN"]
 
 [[rule]]
 name = "confusing-argument-to-varargs-method"
 category = "errorprone"
 # Planned: needs the varargs signature and argument types of the called method; no Java rule consumes TYPES facts yet
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["ConfusingArgumentToVarargsMethod"]
 
 [[rule]]
 name = "confusing-ternary"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ConfusingTernary"]
 
 [[rule]]
 name = "consecutive-appends-should-reuse"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["ConsecutiveAppendsShouldReuse"]
 
 [[rule]]
 name = "consecutive-literal-appends"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["ConsecutiveLiteralAppends"]
 
 [[rule]]
 name = "constants-in-interface"
-status = { java = "implemented" }
 pmd = ["ConstantsInInterface"]
 
 [[rule]]
 name = "constructor-calls-overridable-method"
 category = "errorprone"
 # Planned: needs the class hierarchy and each method overridability from symbols and types
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["ConstructorCallsOverridableMethod"]
 
 [[rule]]
 name = "control-statement-braces"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ControlStatementBraces"]
 
 [[rule]]
 name = "dangling-javadoc"
 category = "documentation"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["DanglingJavadoc"]
 
 [[rule]]
 name = "data-class"
-status = { java = "implemented" }
 pmd = ["DataClass"]
 
 [[rule]]
 name = "default-label-not-last-in-switch"
-status = { java = "implemented" }
 pmd = ["DefaultLabelNotLastInSwitch"]
 
 [[rule]]
 name = "detached-test-case"
 category = "errorprone"
 # Planned: needs the JUnit test methods of the enclosing class; no generic check looks across members
-status = { java = "planned" }
-issues = { java = "#310" }
 pmd = ["DetachedTestCase"]
 
 [[rule]]
 name = "do-not-call-garbage-collection-explicitly"
-status = { java = "implemented" }
 pmd = ["DoNotCallGarbageCollectionExplicitly"]
 
 [[rule]]
 name = "do-not-extend-java-lang-error"
-status = { java = "implemented" }
 pmd = ["DoNotExtendJavaLangError"]
 
 [[rule]]
 name = "do-not-extend-java-lang-throwable"
-status = { java = "implemented" }
 pmd = ["DoNotExtendJavaLangThrowable"]
 
 [[rule]]
 name = "do-not-hard-code-sd-card"
-status = { java = "implemented" }
 pmd = ["DoNotHardCodeSDCard"]
 
 [[rule]]
 name = "do-not-terminate-vm"
-status = { java = "implemented" }
 pmd = ["DoNotTerminateVM"]
 
 [[rule]]
 name = "do-not-throw-exception-in-finally"
-status = { java = "implemented" }
 pmd = ["DoNotThrowExceptionInFinally"]
 
 [[rule]]
 name = "do-not-use-threads"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["DoNotUseThreads"]
 
 [[rule]]
 name = "dont-call-thread-run"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["DontCallThreadRun"]
 
 [[rule]]
 name = "dont-use-float-type-for-loop-indices"
-status = { java = "implemented" }
 pmd = ["DontUseFloatTypeForLoopIndices"]
 
 [[rule]]
 name = "double-checked-locking"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["DoubleCheckedLocking"]
 errorprone = ["DoubleCheckedLocking"]
 
 [[rule]]
 name = "empty-finalizer"
-status = { java = "implemented" }
 pmd = ["EmptyFinalizer"]
 
 [[rule]]
 name = "empty-method-in-abstract-class-should-be-abstract"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 
 [[rule]]
 name = "enum-comparison"
 # Not applicable (review): needs the static type of the receiver to know it is an enum
-status = { java = "implemented" }
 pmd = ["EnumComparison"]
 
 [[rule]]
 name = "equals-null"
-status = { java = "implemented" }
 pmd = ["EqualsNull"]
 errorprone = ["EqualsNull"]
 
 [[rule]]
 name = "exception-as-flow-control"
-status = { java = "implemented" }
 pmd = ["ExceptionAsFlowControl"]
 
 [[rule]]
 name = "excessive-imports"
-status = { java = "implemented" }
 pmd = ["ExcessiveImports"]
 
 [[rule]]
 name = "excessive-parameter-list"
-status = { java = "implemented" }
 pmd = ["ExcessiveParameterList"]
 
 [[rule]]
 name = "excessive-public-count"
-status = { java = "implemented" }
 pmd = ["ExcessivePublicCount"]
 
 [[rule]]
 name = "exhaustive-switch-has-default"
 # Not applicable (review): needs the type of the switch selector to know it is an enum or sealed type
-status = { java = "implemented" }
 pmd = ["ExhaustiveSwitchHasDefault"]
 
 [[rule]]
 name = "extends-object"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ExtendsObject"]
 errorprone = ["ExtendsObject"]
 
 [[rule]]
 name = "final-field-could-be-static"
-status = { java = "implemented" }
 pmd = ["FinalFieldCouldBeStatic"]
 
 [[rule]]
 name = "final-parameter-in-abstract-method"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["FinalParameterInAbstractMethod"]
 
 [[rule]]
 name = "finalize-does-not-call-super-finalize"
-status = { java = "implemented" }
 pmd = ["FinalizeDoesNotCallSuperFinalize"]
 
 [[rule]]
 name = "finalize-only-calls-super-finalize"
-status = { java = "implemented" }
 pmd = ["FinalizeOnlyCallsSuperFinalize"]
 
 [[rule]]
 name = "finalize-overloaded"
-status = { java = "implemented" }
 pmd = ["FinalizeOverloaded"]
 
 [[rule]]
 name = "finalize-should-be-protected"
-status = { java = "implemented" }
 pmd = ["FinalizeShouldBeProtected"]
 
 [[rule]]
 name = "for-loop-can-be-foreach"
-status = { java = "implemented" }
 pmd = ["ForLoopCanBeForeach"]
 
 [[rule]]
 name = "for-loop-should-be-while-loop"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ForLoopShouldBeWhileLoop"]
 
 [[rule]]
 name = "for-loop-variable-count"
-status = { java = "implemented" }
 pmd = ["ForLoopVariableCount"]
 
 [[rule]]
 name = "god-class"
-status = { java = "implemented" }
 pmd = ["GodClass"]
 
 [[rule]]
 name = "guard-log-statement"
 # Not applicable (review): needs the logger type and the guard conditions the rule recognizes
-status = { java = "implemented" }
 pmd = ["GuardLogStatement"]
 
 [[rule]]
 name = "hard-coded-crypto-key"
 category = "security"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["HardCodedCryptoKey"]
 
 [[rule]]
 name = "idempotent-operations"
-status = { java = "implemented" }
 pmd = ["IdempotentOperations"]
 
 [[rule]]
 name = "identical-catch-branches"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["IdenticalCatchBranches"]
 
 [[rule]]
 name = "identical-conditional-branches"
-status = { java = "implemented" }
 pmd = ["IdenticalConditionalBranches"]
 
 [[rule]]
 name = "immutable-field"
-status = { java = "implemented" }
 pmd = ["ImmutableField"]
 
 [[rule]]
 name = "implicit-functional-interface"
-status = { java = "implemented" }
 pmd = ["ImplicitFunctionalInterface"]
 
 [[rule]]
 name = "inefficient-empty-string-check"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["InefficientEmptyStringCheck"]
 
 [[rule]]
 name = "inefficient-string-buffering"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["InefficientStringBuffering"]
 
 [[rule]]
 name = "insecure-crypto-iv"
 category = "security"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["InsecureCryptoIv"]
 
 [[rule]]
 name = "instantiable-utility-class"
-status = { java = "implemented" }
 pmd = ["InstantiableUtilityClass"]
 
 [[rule]]
 name = "instantiation-to-get-class"
-status = { java = "implemented" }
 pmd = ["InstantiationToGetClass"]
 
 [[rule]]
 name = "insufficient-string-buffer-declaration"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["InsufficientStringBufferDeclaration"]
 
 [[rule]]
 name = "internal-api-usage"
-status = { java = "implemented" }
 pmd = ["InternalApiUsage"]
 
 [[rule]]
 name = "invalid-java-bean"
-status = { java = "implemented" }
 pmd = ["InvalidJavaBean"]
 
 [[rule]]
 name = "invalid-log-message-format"
 category = "errorprone"
 # Planned: needs the placeholder count of the message and the argument count of the logger call; LoggingArgsCheck only judges Python
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["InvalidLogMessageFormat"]
 
 [[rule]]
 name = "j-unit4-suites-should-use-suite-annotation"
-status = { java = "implemented" }
 pmd = ["JUnit4SuitesShouldUseSuiteAnnotation"]
 
 [[rule]]
 name = "j-unit-jupiter-test-no-private-modifier"
-status = { java = "implemented" }
 pmd = ["JUnitJupiterTestNoPrivateModifier"]
 
 [[rule]]
 name = "j-unit-jupiter-test-should-be-package-private"
-status = { java = "implemented" }
 pmd = ["JUnitJupiterTestShouldBePackagePrivate"]
 
 [[rule]]
 name = "j-unit-spelling"
-status = { java = "implemented" }
 pmd = ["JUnitSpelling"]
 
 [[rule]]
 name = "j-unit-static-suite"
-status = { java = "implemented" }
 pmd = ["JUnitStaticSuite"]
 
 [[rule]]
 name = "j-unit-use-expected"
-status = { java = "implemented" }
 pmd = ["JUnitUseExpected"]
 
 [[rule]]
 name = "jumbled-incrementer"
 category = "errorprone"
 # Planned: needs the loop variables of nested for loops; no generic check relates a loop to its enclosing loop
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["JumbledIncrementer"]
 
 [[rule]]
 name = "labeled-statement"
-status = { java = "implemented" }
 pmd = ["LabeledStatement"]
 
 [[rule]]
 name = "lambda-can-be-method-reference"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LambdaCanBeMethodReference"]
 
 [[rule]]
 name = "law-of-demeter"
-status = { java = "implemented" }
 pmd = ["LawOfDemeter"]
 
 [[rule]]
 name = "linguistic-naming"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LinguisticNaming"]
 
 [[rule]]
 name = "literals-first-in-comparisons"
-status = { java = "implemented" }
 pmd = ["LiteralsFirstInComparisons"]
 
 [[rule]]
 name = "local-home-naming-convention"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LocalHomeNamingConvention"]
 
 [[rule]]
 name = "local-interface-session-naming-convention"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LocalInterfaceSessionNamingConvention"]
 
 [[rule]]
 name = "local-variable-declaration-should-be-at-start-of-block"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LocalVariableDeclarationShouldBeAtStartOfBlock"]
 
 [[rule]]
 name = "logic-inversion"
-status = { java = "implemented" }
 pmd = ["LogicInversion"]
 
 [[rule]]
 name = "long-literal-ending-with-lowercase-l"
-status = { java = "implemented" }
 pmd = ["LongLiteralEndingWithLowercaseL"]
 
 [[rule]]
 name = "long-variable"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["LongVariable"]
 
 [[rule]]
 name = "loose-coupling"
-status = { java = "implemented" }
 pmd = ["LooseCoupling"]
 
 [[rule]]
 name = "loose-package-coupling"
-status = { java = "implemented" }
 pmd = ["LoosePackageCoupling"]
 
 [[rule]]
 name = "mdb-and-session-bean-naming-convention"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["MDBAndSessionBeanNamingConvention"]
 
 [[rule]]
 name = "method-returns-internal-array"
-status = { java = "implemented" }
 pmd = ["MethodReturnsInternalArray"]
 
 [[rule]]
 name = "method-with-same-name-as-enclosing-class"
 category = "errorprone"
 # Planned: needs the enclosing class name compared with each method name; no generic check compares a node with its enclosing declaration
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["MethodWithSameNameAsEnclosingClass"]
 
 [[rule]]
 name = "misplaced-null-check"
-status = { java = "implemented" }
 pmd = ["MisplacedNullCheck"]
 
 [[rule]]
 name = "missing-serial-version-uid"
-status = { java = "implemented" }
 pmd = ["MissingSerialVersionUID"]
 
 [[rule]]
 name = "missing-static-method-in-non-instantiatable-class"
-status = { java = "implemented" }
 pmd = ["MissingStaticMethodInNonInstantiatableClass"]
 
 [[rule]]
 name = "more-than-one-logger"
-status = { java = "implemented" }
 pmd = ["MoreThanOneLogger"]
 
 [[rule]]
 name = "mutable-static-state"
-status = { java = "implemented" }
 pmd = ["MutableStaticState"]
 
 [[rule]]
 name = "no-package"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["NoPackage"]
 
 [[rule]]
 name = "non-case-label-in-switch"
-status = { java = "implemented" }
 pmd = ["NonCaseLabelInSwitch"]
 
 [[rule]]
 name = "non-exhaustive-switch"
 # Not applicable (review): needs the type of the switch selector to know which constants must be covered
-status = { java = "implemented" }
 pmd = ["NonExhaustiveSwitch"]
 
 [[rule]]
 name = "non-serializable-class"
 category = "errorprone"
 # Planned: strict only; needs the resolved types of every field of a Serializable class
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["NonSerializableClass"]
 
 [[rule]]
 name = "non-static-initializer"
-status = { java = "implemented" }
 pmd = ["NonStaticInitializer"]
 
 [[rule]]
 name = "non-thread-safe-singleton"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["NonThreadSafeSingleton"]
 
 [[rule]]
 name = "null-assignment"
-status = { java = "implemented" }
 pmd = ["NullAssignment"]
 
 [[rule]]
 name = "optimizable-to-array-call"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["OptimizableToArrayCall"]
 
 [[rule]]
 name = "override-both-equals-and-hashcode"
-status = { java = "implemented" }
 pmd = ["OverrideBothEqualsAndHashcode"]
 
 [[rule]]
 name = "overriding-thread-run"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["OverridingThreadRun"]
 
 [[rule]]
 name = "package-case"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["PackageCase"]
 
 [[rule]]
 name = "premature-declaration"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["PrematureDeclaration"]
 
 [[rule]]
 name = "preserve-stack-trace"
-status = { java = "implemented" }
 pmd = ["PreserveStackTrace"]
 
 [[rule]]
 name = "primitive-wrapper-instantiation"
-status = { java = "implemented" }
 pmd = ["PrimitiveWrapperInstantiation"]
 
 [[rule]]
 name = "proper-clone-implementation"
-status = { java = "implemented" }
 pmd = ["ProperCloneImplementation"]
 
 [[rule]]
 name = "proper-logger"
 category = "errorprone"
 # Planned: the rule takes three string options (static-logger-name, logger-name, logger-class) that no generic check accepts, and the logger type needs types
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["ProperLogger"]
 
 [[rule]]
 name = "protected-member-in-final-class"
-status = { java = "implemented", kotlin = "planned" }
-issues = { kotlin = "#295" }
 detekt = ["ProtectedMemberInFinalClass"]
 pmd = ["ProtectedMemberInFinalClass"]
 
 [[rule]]
 name = "public-member-in-non-public-type"
-status = { java = "implemented" }
 pmd = ["PublicMemberInNonPublicType"]
 
 [[rule]]
 name = "reliance-on-default-charset"
-status = { java = "implemented" }
 pmd = ["RelianceOnDefaultCharset"]
 
 [[rule]]
 name = "remote-interface-naming-convention"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["RemoteInterfaceNamingConvention"]
 
 [[rule]]
 name = "remote-session-interface-naming-convention"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["RemoteSessionInterfaceNamingConvention"]
 
 [[rule]]
 name = "replace-enumeration-with-iterator"
-status = { java = "implemented" }
 pmd = ["ReplaceEnumerationWithIterator"]
 
 [[rule]]
 name = "replace-hashtable-with-map"
-status = { java = "implemented" }
 pmd = ["ReplaceHashtableWithMap"]
 
 [[rule]]
 name = "replace-java-util-calendar"
-status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilCalendar"]
 
 [[rule]]
 name = "replace-java-util-date"
-status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilDate"]
 
 [[rule]]
 name = "replace-java-util-vector"
-status = { java = "implemented" }
 pmd = ["ReplaceJavaUtilVector"]
 
 [[rule]]
 name = "return-empty-collection-rather-than-null"
 category = "errorprone"
 # Planned: needs the return type of a method tied to the return statements of its body; no generic check relates the two
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["ReturnEmptyCollectionRatherThanNull"]
 
 [[rule]]
 name = "return-from-finally-block"
-status = { java = "implemented" }
 pmd = ["ReturnFromFinallyBlock"]
 
 [[rule]]
 name = "short-class-name"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ShortClassName"]
 
 [[rule]]
 name = "short-method-name"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ShortMethodName"]
 
 [[rule]]
 name = "short-variable"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["ShortVariable"]
 
 [[rule]]
 name = "signature-declare-throws-exception"
-status = { java = "implemented" }
 pmd = ["SignatureDeclareThrowsException"]
 
 [[rule]]
 name = "simple-date-format-needs-locale"
-status = { java = "implemented" }
 pmd = ["SimpleDateFormatNeedsLocale"]
 
 [[rule]]
 name = "simplifiable-test-assertion"
-status = { java = "implemented" }
 pmd = ["SimplifiableTestAssertion"]
 
 [[rule]]
 name = "simplified-ternary"
-status = { java = "implemented" }
 pmd = ["SimplifiedTernary"]
 
 [[rule]]
 name = "simplify-conditional"
-status = { java = "implemented" }
 pmd = ["SimplifyConditional"]
 
 [[rule]]
 name = "single-method-singleton"
 category = "errorprone"
 # Planned: needs the other getInstance overloads of the class; no generic check compares sibling methods
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["SingleMethodSingleton"]
 
 [[rule]]
 name = "singleton-class-returning-new-instance"
-status = { java = "implemented" }
 pmd = ["SingletonClassReturningNewInstance"]
 
 [[rule]]
 name = "singular-field"
-status = { java = "implemented" }
 pmd = ["SingularField"]
 
 [[rule]]
 name = "static-ejb-field-should-be-final"
 category = "errorprone"
 # Planned: needs the EJB annotations of the enclosing class; no generic check looks at the enclosing class
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["StaticEJBFieldShouldBeFinal"]
 
 [[rule]]
 name = "string-buffer-instantiation-with-char"
-status = { java = "implemented" }
 pmd = ["StringBufferInstantiationWithChar"]
 
 [[rule]]
 name = "string-instantiation"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["StringInstantiation"]
 
 [[rule]]
 name = "string-to-string"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["StringToString"]
 
 [[rule]]
 name = "suspicious-equals-method-name"
-status = { java = "implemented" }
 pmd = ["SuspiciousEqualsMethodName"]
 
 [[rule]]
 name = "suspicious-hashcode-method-name"
-status = { java = "implemented" }
 pmd = ["SuspiciousHashcodeMethodName"]
 
 [[rule]]
 name = "suspicious-octal-escape"
-status = { java = "implemented" }
 pmd = ["SuspiciousOctalEscape"]
 
 [[rule]]
 name = "switch-density"
-status = { java = "implemented" }
 pmd = ["SwitchDensity"]
 
 [[rule]]
 name = "system-println"
-status = { java = "implemented" }
 pmd = ["SystemPrintln"]
 
 [[rule]]
 name = "test-class-without-test-cases"
-status = { java = "implemented" }
 pmd = ["TestClassWithoutTestCases"]
 
 [[rule]]
 name = "too-few-branches-for-switch"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["TooFewBranchesForSwitch"]
 
 [[rule]]
 name = "too-many-fields"
-status = { java = "implemented" }
 pmd = ["TooManyFields"]
 
 [[rule]]
 name = "too-many-methods"
-status = { java = "implemented" }
 pmd = ["TooManyMethods"]
 
 [[rule]]
 name = "too-many-static-imports"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["TooManyStaticImports"]
 
 [[rule]]
 name = "type-name-mismatch"
-status = { java = "implemented" }
 pmd = ["TypeNameMismatch"]
 
 [[rule]]
 name = "type-parameter-naming-conventions"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["TypeParameterNamingConventions"]
 
 [[rule]]
 name = "uncommented-empty-constructor"
 category = "documentation"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UncommentedEmptyConstructor"]
 
 [[rule]]
 name = "uncommented-empty-method-body"
 category = "documentation"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UncommentedEmptyMethodBody"]
 
 [[rule]]
 name = "unconditional-if-statement"
-status = { java = "implemented" }
 pmd = ["UnconditionalIfStatement"]
 
 [[rule]]
 name = "unit-test-assertions-should-include-message"
-status = { java = "implemented" }
 pmd = ["UnitTestAssertionsShouldIncludeMessage"]
 
 [[rule]]
 name = "unit-test-contains-too-many-asserts"
-status = { java = "implemented" }
 pmd = ["UnitTestContainsTooManyAsserts"]
 
 [[rule]]
 name = "unit-test-should-include-assert"
-status = { java = "implemented" }
 pmd = ["UnitTestShouldIncludeAssert"]
 
 [[rule]]
 name = "unit-test-should-use-after-annotation"
-status = { java = "implemented" }
 pmd = ["UnitTestShouldUseAfterAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-before-annotation"
-status = { java = "implemented" }
 pmd = ["UnitTestShouldUseBeforeAnnotation"]
 
 [[rule]]
 name = "unit-test-should-use-test-annotation"
-status = { java = "implemented" }
 pmd = ["UnitTestShouldUseTestAnnotation"]
 
 [[rule]]
 name = "unnecessary-annotation-value-element"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryAnnotationValueElement"]
 
 [[rule]]
 name = "unnecessary-block"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryBlock"]
 
 [[rule]]
 name = "unnecessary-boolean-assertion"
-status = { java = "implemented" }
 pmd = ["UnnecessaryBooleanAssertion"]
 
 [[rule]]
 name = "unnecessary-boxing"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryBoxing"]
 
 [[rule]]
 name = "unnecessary-case-change"
-status = { java = "implemented" }
 pmd = ["UnnecessaryCaseChange"]
 
 [[rule]]
 name = "unnecessary-cast"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryCast"]
 
 [[rule]]
 name = "unnecessary-conversion-temporary"
-status = { java = "implemented" }
 pmd = ["UnnecessaryConversionTemporary"]
 
 [[rule]]
 name = "unnecessary-fully-qualified-name"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryFullyQualifiedName"]
 
 [[rule]]
 name = "unnecessary-interface-declaration"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryInterfaceDeclaration"]
 
 [[rule]]
 name = "unnecessary-return"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UnnecessaryReturn"]
 
 [[rule]]
 name = "unnecessary-varargs-array-creation"
-status = { java = "implemented" }
 pmd = ["UnnecessaryVarargsArrayCreation"]
 
 [[rule]]
 name = "unnecessary-warning-suppression"
-status = { java = "implemented" }
 pmd = ["UnnecessaryWarningSuppression"]
 
 [[rule]]
 name = "unsupported-jdk-api-usage"
 category = "errorprone"
 # Planned: needs resolved types to see uses of sun.* and jdk.internal.* classes; imports alone do not show the uses
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["UnsupportedJdkApiUsage"]
 
 [[rule]]
 name = "unsynchronized-static-formatter"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UnsynchronizedStaticFormatter"]
 
 [[rule]]
 name = "unused-formal-parameter"
-status = { java = "implemented" }
 pmd = ["UnusedFormalParameter"]
 
 [[rule]]
 name = "unused-label"
-status = { java = "implemented" }
 pmd = ["UnusedLabel"]
 errorprone = ["UnusedLabel"]
 
 [[rule]]
 name = "unused-null-check-in-equals"
-status = { java = "implemented" }
 pmd = ["UnusedNullCheckInEquals"]
 
 [[rule]]
 name = "unused-private-method"
-status = { java = "implemented" }
 pmd = ["UnusedPrivateMethod"]
 
 [[rule]]
 name = "unused-return-value"
 category = "errorprone"
 # Planned: needs the return type and mutation-by-copy API of the called method from types
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["UnusedReturnValue"]
 
 [[rule]]
 name = "use-arrays-as-list"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseArraysAsList"]
 
 [[rule]]
 name = "use-collection-is-empty"
-status = { java = "implemented" }
 pmd = ["UseCollectionIsEmpty"]
 
 [[rule]]
 name = "use-concurrent-hash-map"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseConcurrentHashMap"]
 
 [[rule]]
 name = "use-correct-exception-logging"
 category = "errorprone"
 # Planned: needs the logger type (Apache Commons Log) and the argument type (Throwable) from types
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["UseCorrectExceptionLogging"]
 
 [[rule]]
 name = "use-diamond-operator"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UseDiamondOperator"]
 
 [[rule]]
 name = "use-enum-collections"
 # Not applicable (review): needs the type argument of each collection to know it is an enum
-status = { java = "implemented" }
 pmd = ["UseEnumCollections"]
 
 [[rule]]
 name = "use-equals-to-compare-strings"
-status = { java = "implemented" }
 pmd = ["UseEqualsToCompareStrings"]
 
 [[rule]]
 name = "use-explicit-types"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UseExplicitTypes"]
 
 [[rule]]
 name = "use-io-streams-with-apache-commons-file-item"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseIOStreamsWithApacheCommonsFileItem"]
 
 [[rule]]
 name = "use-index-of-char"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseIndexOfChar"]
 
 [[rule]]
 name = "use-locale-with-case-conversions"
-status = { java = "implemented" }
 pmd = ["UseLocaleWithCaseConversions"]
 
 [[rule]]
 name = "use-notify-all-instead-of-notify"
 category = "multithreading"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseNotifyAllInsteadOfNotify"]
 
 [[rule]]
 name = "use-proper-class-loader"
-status = { java = "implemented" }
 pmd = ["UseProperClassLoader"]
 
 [[rule]]
 name = "use-short-array-initializer"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UseShortArrayInitializer"]
 
 [[rule]]
 name = "use-standard-charsets"
-status = { java = "implemented" }
 pmd = ["UseStandardCharsets"]
 
 [[rule]]
 name = "use-string-buffer-for-string-appends"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseStringBufferForStringAppends"]
 
 [[rule]]
 name = "use-string-buffer-length"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UseStringBufferLength"]
 
 [[rule]]
 name = "use-try-with-resources"
-status = { java = "implemented" }
 pmd = ["UseTryWithResources"]
 
 [[rule]]
 name = "use-underscores-in-numeric-literals"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UseUnderscoresInNumericLiterals"]
 
 [[rule]]
 name = "use-varargs"
-status = { java = "implemented" }
 pmd = ["UseVarargs"]
 
 [[rule]]
 name = "useless-overriding-method"
-status = { java = "implemented" }
 pmd = ["UselessOverridingMethod"]
 
 [[rule]]
 name = "useless-qualified-this"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["UselessQualifiedThis"]
 
 [[rule]]
 name = "useless-string-value-of"
 category = "performance"
-status = { java = "planned" }
-issues = { java = "#312" }
 pmd = ["UselessStringValueOf"]
 
 [[rule]]
 name = "variable-can-be-inlined"
 category = "codestyle"
-status = { java = "planned" }
-issues = { java = "#313" }
 pmd = ["VariableCanBeInlined"]
 
 [[rule]]
 name = "while-loop-with-literal-boolean"
-status = { java = "implemented" }
 pmd = ["WhileLoopWithLiteralBoolean"]
 
 [[rule]]
 name = "wrong-test-annotation"
 category = "errorprone"
 # Planned: needs the imports of the file paired with each test annotation; no generic check pairs them
-status = { java = "planned" }
-issues = { java = "#311" }
 pmd = ["WrongTestAnnotation"]

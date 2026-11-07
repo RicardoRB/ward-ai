@@ -1,0 +1,61 @@
+# Structural rules of the "blocks" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/need-braces"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
+
+[[rules]]
+id = "ward:javascript/need-braces"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["ifStatement"]
+text = '^(?!\{|if\()'
+message = "if branch needs braces around its statement"
+'''
+
+[[rules]]
+id = "ward:typescript/empty-catch-block"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+parent = ["catchProduction"]
+text = '^\{\}$'
+message = "empty catch block; handle or rethrow the error"
+'''
+
+[[rules]]
+id = "ward:javascript/empty-catch-block"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["block"]
+parent = ["catchProduction"]
+text = '^\{\}$'
+message = "empty catch block; handle or rethrow the error"
+'''

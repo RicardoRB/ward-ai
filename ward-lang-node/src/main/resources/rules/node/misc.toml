@@ -1,0 +1,135 @@
+# Structural rules of the "misc" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/command-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/command.toml"]
+message = "untrusted data from {source} reaches the command of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/command-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/command.toml"]
+message = "untrusted data from {source} reaches the command of {sink}"
+'''
+
+[[rules]]
+id = "ward:typescript/path-traversal"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/path.toml"]
+message = "untrusted data from {source} reaches the file path of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/path-traversal"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/path.toml"]
+message = "untrusted data from {source} reaches the file path of {sink}"
+'''
+
+[[rules]]
+id = "ward:typescript/xss"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the HTML sink {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/xss"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the HTML sink {sink}"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-eval"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^eval\('
+message = "do not call the global eval"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-eval"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^eval\('
+message = "do not call the global eval"
+'''
+
+[[rules]]
+id = "ward:typescript/todo-comment"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:javascript/todo-comment"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''

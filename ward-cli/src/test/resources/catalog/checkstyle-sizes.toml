@@ -2,19 +2,15 @@
 
 [[rule]]
 name = "anon-inner-length"
-status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["AnonInnerLength"]
 
 [[rule]]
 name = "executable-statement-count"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["ExecutableStatementCount"]
 
 [[rule]]
 name = "file-length"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 checkstyle = ["FileLength"]
 eslint = ["max-lines"]
 swiftlint = ["file_length"]
@@ -22,14 +18,10 @@ pylint = ["too-many-lines"]
 
 [[rule]]
 name = "lambda-body-length"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["LambdaBodyLength"]
 
 [[rule]]
 name = "line-length"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "implemented", swift = "implemented" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296" }
 detekt = ["MaxLineLength"]
 checkstyle = ["LineLength"]
 ktlint = ["max-line-length"]
@@ -40,13 +32,10 @@ pylint = ["line-too-long"]
 
 [[rule]]
 name = "method-count"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
 checkstyle = ["MethodCount"]
 
 [[rule]]
 name = "method-length"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 ids = { kotlin = "ward:kotlin/function-length", typescript = "ward:typescript/function-length", javascript = "ward:javascript/function-length", python = "ward:python/function-length", swift = "ward:swift/function-length" }
 detekt = ["LongMethod"]
 checkstyle = ["MethodLength"]
@@ -55,13 +44,11 @@ swiftlint = ["function_body_length"]
 
 [[rule]]
 name = "outer-type-number"
-status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["OuterTypeNumber"]
 
 [[rule]]
 name = "parameter-number"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 ids = { java = "ward:java/parameter-count", kotlin = "ward:kotlin/parameter-count", typescript = "ward:typescript/parameter-count", javascript = "ward:javascript/parameter-count", python = "ward:python/parameter-count", swift = "ward:swift/parameter-count" }
 detekt = ["LongParameterList"]
 checkstyle = ["ParameterNumber"]
@@ -72,6 +59,5 @@ pylint = ["too-many-arguments"]
 
 [[rule]]
 name = "record-component-number"
-status = { java = "implemented", kotlin = "not-applicable", typescript = "not-applicable", javascript = "not-applicable", python = "not-applicable", swift = "not-applicable" }
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["RecordComponentNumber"]

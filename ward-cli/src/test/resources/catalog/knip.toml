@@ -3,118 +3,84 @@
 [[rule]]
 name = "knip-binaries"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["binaries"]
 
 [[rule]]
 name = "knip-catalog"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["catalog"]
 
 [[rule]]
 name = "knip-catalog-references"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["catalogReferences"]
 
 [[rule]]
 name = "knip-cycles"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["cycles"]
 
 [[rule]]
 name = "knip-dependencies"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["dependencies"]
 
 [[rule]]
 name = "knip-dev-dependencies"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["devDependencies"]
 
 [[rule]]
 name = "knip-duplicates"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["duplicates"]
 
 [[rule]]
 name = "knip-enum-members"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["enumMembers"]
 
 [[rule]]
 name = "knip-exports"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["exports"]
 
 [[rule]]
 name = "knip-files"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["files"]
 
 [[rule]]
 name = "knip-namespace-members"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["namespaceMembers"]
 
 [[rule]]
 name = "knip-ns-exports"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["nsExports"]
 
 [[rule]]
 name = "knip-ns-types"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["nsTypes"]
 
 [[rule]]
 name = "knip-optional-peer-dependencies"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["optionalPeerDependencies"]
 
 [[rule]]
 name = "knip-types"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["types"]
 
 [[rule]]
 name = "knip-unlisted"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["unlisted"]
 
 [[rule]]
 name = "knip-unresolved"
 category = "dead-code"
-status = { typescript = "planned", javascript = "planned" }
-issues = { typescript = "#331", javascript = "#331" }
 knip = ["unresolved"]

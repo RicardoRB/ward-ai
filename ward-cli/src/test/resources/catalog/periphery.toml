@@ -3,27 +3,19 @@
 [[rule]]
 name = "assign-only-property"
 category = "dead-code"
-status = { swift = "planned" }
-issues = { swift = "#339" }
 periphery = ["assign-only-property"]
 
 [[rule]]
 name = "redundant-protocol"
 category = "dead-code"
-status = { swift = "planned" }
-issues = { swift = "#339" }
 periphery = ["redundant-protocol"]
 
 [[rule]]
 name = "redundant-public-accessibility"
 category = "dead-code"
-status = { swift = "planned" }
-issues = { swift = "#339" }
 periphery = ["redundant-public-accessibility"]
 
 [[rule]]
 name = "superfluous-ignore-command"
 category = "dead-code"
-status = { swift = "planned" }
-issues = { swift = "#339" }
 periphery = ["superfluous-ignore-command"]

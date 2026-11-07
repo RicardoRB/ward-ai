@@ -2,7 +2,6 @@
 
 [[rule]]
 name = "duplicate-code"
-status = { java = "implemented", kotlin = "implemented", typescript = "implemented", javascript = "implemented", python = "implemented", swift = "implemented" }
 jscpd = ["duplicate-code"]
 cpd = ["duplicate-tokens"]
 pylint = ["duplicate-code"]

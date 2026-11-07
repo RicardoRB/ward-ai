@@ -1,0 +1,11 @@
+# Status of the checkstyle-annotation rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+annotation-location = "implemented"
+annotation-on-same-line = "implemented"
+annotation-use-style = "implemented"
+missing-deprecated = "implemented"
+missing-override = "implemented"
+missing-override-on-record-accessor = "implemented"
+openjdk-annotation-location = "implemented"
+package-annotation = "implemented"
+suppress-warnings = "implemented"

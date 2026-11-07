@@ -1,0 +1,19 @@
+# Status of the typescript-eslint rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+no-base-to-string = { status = "planned", issue = "#329" }
+no-duplicate-enum-values = { status = "planned", issue = "#329" }
+no-explicit-any = { status = "planned", issue = "#329" }
+no-extra-non-null-assertion = { status = "planned", issue = "#329" }
+no-floating-promises = { status = "planned", issue = "#329" }
+no-inferrable-types = { status = "planned", issue = "#299" }
+no-magic-numbers = { status = "planned", issue = "#299" }
+no-meaningless-void-operator = { status = "planned", issue = "#329" }
+no-misused-promises = { status = "planned", issue = "#329" }
+no-namespace = { status = "planned", issue = "#299" }
+no-non-null-asserted-optional-chain = { status = "planned", issue = "#329" }
+no-non-null-assertion = { status = "planned", issue = "#299" }
+no-restricted-types = { status = "planned", issue = "#299" }
+no-unnecessary-template-expression = { status = "planned", issue = "#329" }
+no-unsafe-declaration-merging = { status = "planned", issue = "#329" }
+no-unsafe-type-assertion = { status = "planned", issue = "#329" }
+no-useless-empty-export = { status = "planned", issue = "#329" }

@@ -1,0 +1,7 @@
+[[rules]]
+id = "ward:java/z"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+options.max = { type = "integer", bogus = 1 }
+body = "check = 1"
