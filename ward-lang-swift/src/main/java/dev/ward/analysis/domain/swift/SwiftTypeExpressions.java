@@ -38,16 +38,16 @@ final class SwiftTypeExpressions {
    * gives it. Null when neither is known.
    */
   TypeRef bindingType(final SyntaxNode binding, final String file, final String scope) {
-    final SyntaxNode pattern = SwiftTypeSyntax.child(binding, "pattern");
+    final SyntaxNode pattern = SwiftNodes.child(binding, "pattern");
     final SyntaxNode annotation =
-        pattern == null ? null : SwiftTypeSyntax.child(pattern, "type_annotation");
+        pattern == null ? null : SwiftNodes.child(pattern, "type_annotation");
     if (annotation != null) {
-      final SyntaxNode type = SwiftTypeSyntax.typeChild(annotation);
+      final SyntaxNode type = SwiftNodes.typeChild(annotation);
       return type == null ? null : refs.of(type, file, scope);
     }
-    final SyntaxNode initializer = SwiftTypeSyntax.child(binding, "initializer");
+    final SyntaxNode initializer = SwiftNodes.child(binding, "initializer");
     final SyntaxNode expression =
-        initializer == null ? null : SwiftTypeSyntax.child(initializer, "expression");
+        initializer == null ? null : SwiftNodes.child(initializer, "expression");
     if (expression == null) {
       return null;
     }
@@ -89,10 +89,10 @@ final class SwiftTypeExpressions {
   }
 
   private static TypeRef numericType(final SyntaxNode numeric) {
-    if (SwiftTypeSyntax.hasChild(numeric, "integer_literal")) {
+    if (SwiftNodes.hasChild(numeric, "integer_literal")) {
       return new TypeRef("Int", List.of(), 0, false);
     }
-    return SwiftTypeSyntax.hasChild(numeric, "Floating_point_literal")
+    return SwiftNodes.hasChild(numeric, "Floating_point_literal")
         ? new TypeRef("Double", List.of(), 0, false)
         : null;
   }
@@ -107,7 +107,7 @@ final class SwiftTypeExpressions {
     final boolean call =
         "postfix_expression".equals(node.kind())
             && node.children().size() == 2
-            && SwiftTypeSyntax.hasChild(node, CALL_ARGUMENTS);
+            && SwiftNodes.hasChild(node, CALL_ARGUMENTS);
     return call ? Optional.of(node) : Optional.empty();
   }
 

@@ -7,18 +7,16 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reads the syntax the native Swift type resolver needs: the walk that records each node's type
- * scope, declaration names, dotted type paths and inheritance clauses.
+ * Walks a Swift syntax tree once and records, for every node, the type scope it sits in. Type
+ * declarations in function or closure bodies and inside extensions are marked, because the type
+ * rules do not declare or resolve them.
  */
 final class SwiftTypeSyntax {
 
   /** The separator of nested type names, as in {@code Outer.Inner}. */
   static final String NAME_SEPARATOR = ".";
 
-  private static final String TYPE_IDENTIFIER = "type_identifier";
-  private static final String TYPE_WRAPPER = "type_";
-  private static final String ARRAY_TYPE = "array_type";
-  private static final String INHERITANCE_CLAUSE = "type_inheritance_clause";
+  private static final String TYPE_IDENTIFIER = SwiftNodes.TYPE_IDENTIFIER;
   private static final String EXTENSION = "extension_declaration";
   private static final String EXTENSION_BODY = "extension_body";
   private static final String BODY_SUFFIX = "_body";
@@ -44,10 +42,13 @@ final class SwiftTypeSyntax {
   record Visit(
       SyntaxNode node, String scope, String parentKind, boolean local, boolean inExtension) {}
 
+  /** The context a node inherits from its ancestors while the walk descends. */
+  private record Context(String scope, String parentKind, boolean local, boolean inExtension) {}
+
   /** Returns every node of {@code root} with its scope, in document order. */
   static List<Visit> visits(final SyntaxNode root) {
     final List<Visit> visits = new ArrayList<>();
-    collect(root, "", "", false, false, visits);
+    collect(root, new Context("", "", false, false), visits);
     return visits;
   }
 
@@ -66,6 +67,30 @@ final class SwiftTypeSyntax {
     return findName(declaration).map(SwiftScopeWalk::text);
   }
 
+  /** Returns {@code name} qualified by the enclosing type scope. */
+  static String qualify(final String scope, final String name) {
+    return scope.isEmpty() ? name : scope + NAME_SEPARATOR + name;
+  }
+
+  /** Tells whether {@code visit} is a type identifier that continues a dotted type name. */
+  static boolean isChained(final Visit visit) {
+    return TYPE_IDENTIFIER.equals(visit.parentKind());
+  }
+
+  /** The candidate names of {@code first} from the innermost enclosing scope outwards. */
+  static List<String> enclosingNames(final String scope, final String first) {
+    final List<String> names = new ArrayList<>();
+    String current = scope;
+    while (true) {
+      names.add(qualify(current, first));
+      if (current.isEmpty()) {
+        return names;
+      }
+      final int dot = current.lastIndexOf(NAME_SEPARATOR);
+      current = dot < 0 ? "" : current.substring(0, dot);
+    }
+  }
+
   /** Finds the name node before any body, where an enum keeps its name under a wrapper. */
   private static Optional<SyntaxNode> findName(final SyntaxNode node) {
     for (final SyntaxNode child : node.children()) {
@@ -81,106 +106,23 @@ final class SwiftTypeSyntax {
     return Optional.empty();
   }
 
-  /** Returns {@code name} qualified by the enclosing type scope. */
-  static String qualify(final String scope, final String name) {
-    return scope.isEmpty() ? name : scope + NAME_SEPARATOR + name;
-  }
-
-  /** Returns the dotted name segments of a type identifier, without generic arguments. */
-  static List<String> pathOf(final SyntaxNode identifier) {
-    final List<String> path = new ArrayList<>();
-    SyntaxNode current = identifier;
-    while (current != null) {
-      final SyntaxNode name = child(current, "type_name");
-      if (name == null) {
-        return List.of();
-      }
-      path.add(SwiftScopeWalk.text(name));
-      current = child(current, TYPE_IDENTIFIER);
-    }
-    return path;
-  }
-
-  /** Returns the type identifiers named by the inheritance clauses directly under {@code node}. */
-  static List<SyntaxNode> inheritedTypes(final SyntaxNode node) {
-    final List<SyntaxNode> types = new ArrayList<>();
-    for (final SyntaxNode child : node.children()) {
-      if (INHERITANCE_CLAUSE.equals(child.kind())) {
-        collectIdentifiers(child, types);
-      }
-    }
-    return types;
-  }
-
-  /** Returns the first child of {@code node} that is a type, a type wrapper or an array type. */
-  static SyntaxNode typeChild(final SyntaxNode node) {
-    return node.children().stream()
-        .filter(
-            child ->
-                TYPE_IDENTIFIER.equals(child.kind())
-                    || TYPE_WRAPPER.equals(child.kind())
-                    || ARRAY_TYPE.equals(child.kind()))
-        .findFirst()
-        .orElse(null);
-  }
-
-  /** Returns the first direct child of {@code node} with {@code kind}, or null. */
-  static SyntaxNode child(final SyntaxNode node, final String kind) {
-    return node.children().stream()
-        .filter(child -> kind.equals(child.kind()))
-        .findFirst()
-        .orElse(null);
-  }
-
-  /** Tells whether {@code node} has a direct child of {@code kind}. */
-  static boolean hasChild(final SyntaxNode node, final String kind) {
-    return child(node, kind) != null;
-  }
-
-  /** Returns the outermost descendants of {@code node} with {@code kind}, in order. */
-  static List<SyntaxNode> outermost(final SyntaxNode node, final String kind) {
-    final List<SyntaxNode> found = new ArrayList<>();
-    for (final SyntaxNode child : node.children()) {
-      if (kind.equals(child.kind())) {
-        found.add(child);
-      } else {
-        found.addAll(outermost(child, kind));
-      }
-    }
-    return found;
-  }
-
-  /** Tells whether {@code visit} is a type identifier that continues a dotted type name. */
-  static boolean isChained(final Visit visit) {
-    return TYPE_IDENTIFIER.equals(visit.parentKind());
-  }
-
   private static void collect(
-      final SyntaxNode node,
-      final String scope,
-      final String parentKind,
-      final boolean local,
-      final boolean inExtension,
-      final List<Visit> visits) {
-    visits.add(new Visit(node, scope, parentKind, local, inExtension));
+      final SyntaxNode node, final Context context, final List<Visit> visits) {
+    visits.add(
+        new Visit(
+            node, context.scope(), context.parentKind(), context.local(), context.inExtension()));
     final String inner =
         isTypeDeclaration(node.kind())
-            ? nameOf(node).map(name -> qualify(scope, name)).orElse(scope)
-            : scope;
-    final boolean nestedLocal = local || LOCAL_BODIES.contains(node.kind());
-    final boolean nestedExtension = inExtension || EXTENSION_BODY.equals(node.kind());
+            ? nameOf(node).map(name -> qualify(context.scope(), name)).orElse(context.scope())
+            : context.scope();
+    final Context nested =
+        new Context(
+            inner,
+            node.kind(),
+            context.local() || LOCAL_BODIES.contains(node.kind()),
+            context.inExtension() || EXTENSION_BODY.equals(node.kind()));
     for (final SyntaxNode child : node.children()) {
-      collect(child, inner, node.kind(), nestedLocal, nestedExtension, visits);
-    }
-  }
-
-  private static void collectIdentifiers(final SyntaxNode node, final List<SyntaxNode> types) {
-    for (final SyntaxNode child : node.children()) {
-      if (TYPE_IDENTIFIER.equals(child.kind())) {
-        types.add(child);
-      } else {
-        collectIdentifiers(child, types);
-      }
+      collect(child, nested, visits);
     }
   }
 }
