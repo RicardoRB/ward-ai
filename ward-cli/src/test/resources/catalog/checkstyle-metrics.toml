@@ -34,8 +34,9 @@ ruff = ["C901"]
 
 [[rule]]
 name = "java-ncss"
-status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "planned", swift = "planned" }
-issues = { kotlin = "#294", typescript = "#296", javascript = "#296", python = "#297", swift = "#298" }
+status = { java = "implemented", kotlin = "planned", typescript = "planned", javascript = "planned", python = "not-applicable", swift = "planned" }
+not-applicable = { python = "Java NCSS statement metric; Python size is covered by function-length and file-length" }
+issues = { kotlin = "#294", typescript = "#296", javascript = "#296", swift = "#298" }
 pmd = ["NcssCount"]
 checkstyle = ["JavaNCSS"]
 
