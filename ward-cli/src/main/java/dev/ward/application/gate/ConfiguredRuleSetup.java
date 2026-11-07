@@ -65,10 +65,10 @@ final class ConfiguredRuleSetup implements RuleSetup {
   }
 
   @Override
-  public RuleSet resolve(final Path root) {
+  public RuleSet resolve(final Path root, final int javaRelease) {
     final Optional<RuleConfigFile> file = source.configuration(root, ruleFile);
     if (file.isEmpty()) {
-      return RuleSet.of(concat(choices.listed()));
+      return RuleSet.of(concat(withDefaults(choices.listed(), javaRelease)));
     }
     if (choices.listsRules()) {
       final String name = file.get().name();
@@ -87,8 +87,14 @@ final class ConfiguredRuleSetup implements RuleSetup {
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine("event=rule-config-file check=" + checkName + " file=" + file.get().name());
     }
-    final RuleSet resolved = RuleConfigResolver.resolve(file.get(), choices.available());
+    final RuleSet resolved =
+        RuleConfigResolver.resolve(file.get(), choices.available(), javaRelease);
     return new RuleSet(concat(resolved.rules()), resolved.excludePaths(), resolved.problems());
+  }
+
+  private static List<RuleDefinition> withDefaults(
+      final List<RuleDefinition> rules, final int javaRelease) {
+    return rules.stream().map(rule -> JavaRelease.withDefault(rule, javaRelease)).toList();
   }
 
   private List<RuleDefinition> concat(final List<RuleDefinition> rules) {
