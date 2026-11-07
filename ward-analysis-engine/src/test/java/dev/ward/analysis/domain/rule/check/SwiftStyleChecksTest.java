@@ -324,6 +324,14 @@ class SwiftStyleChecksTest {
   }
 
   @Test
+  void importSortIgnoresAttributesBeforeTheKeyword() {
+    final SyntaxNode testable =
+        node("import_declaration", 0, 20, leaf("token", "@testableimportShop", 0));
+
+    assertThat(imports(importNode("Combine", 30), testable)).isEmpty();
+  }
+
+  @Test
   void importSortAcceptsSortedImports() {
     assertThat(imports(importNode("Combine", 0), importNode("Foundation", 30))).isEmpty();
   }

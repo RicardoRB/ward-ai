@@ -65,12 +65,15 @@ final class ScopeAndFormatChecks {
           "javadoc-method",
           "constructor-group",
           "import-sort",
-          "variable-declaration-usage-distance" -> structure(name, toml);
+          "variable-declaration-usage-distance" ->
+          structure(name, toml);
       default -> loggingArgs(toml);
     };
   }
 
-  /** Builds the checks of declarations, documentation and imports that read the scopes or the tree. */
+  /**
+   * Builds the checks of declarations, documentation and imports that read the scopes or the tree.
+   */
   private static RuleCheck structure(final String name, final TomlParseResult toml) {
     return switch (name) {
       case "hidden-field" -> new HiddenFieldCheck(TomlValues.required(toml, MESSAGE));
