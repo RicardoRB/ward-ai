@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * Gives a fixture its type facts. A rule that needs types puts a {@code types.json} beside its
  * fixtures; {@link TypeFactsFixture} (#350) reads it, and the facts are answered for every unit and
- * span the rule asks about, with no sidecar, classpath or {@code node_modules}. Without a {@code
+ * span the rule asks about, with no resolver, classpath or {@code node_modules}. Without a {@code
  * types.json} the facts are unknown, so a rule that needs types reports not run, never a pass.
  */
 final class FixtureTypeFacts {

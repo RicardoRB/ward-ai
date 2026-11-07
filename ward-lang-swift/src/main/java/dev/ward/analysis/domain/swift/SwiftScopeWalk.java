@@ -66,6 +66,7 @@ final class SwiftScopeWalk {
     handlers.put("import_declaration", types::importDeclaration);
     handlers.put("function_declaration", types::function);
     handlers.put("initializer_declaration", node -> scoped(node, ScopeKind.FUNCTION, false));
+    handlers.put("macro_declaration", node -> scoped(node, ScopeKind.FUNCTION, false));
     handlers.put("deinitializer_declaration", node -> scoped(node, ScopeKind.FUNCTION, false));
     handlers.put("subscript_declaration", node -> scoped(node, ScopeKind.FUNCTION, false));
     handlers.put("parameter", types::parameter);

@@ -73,6 +73,6 @@ interface GateExtensionBindingsModule {
                 new PythonDependencyAdapters(),
                 new SwiftDependencyAdapters(),
                 new JvmDependencyAdapters())),
-        projectRoot -> TypeSidecarBindings.forProject(projectRoot, wardVersion));
+        NativeTypeFactsBindings::forProject);
   }
 }

@@ -33,7 +33,7 @@ public record TypeRef(String name, List<TypeRef> arguments, int arrayDepth, bool
     return new TypeRef(name, List.of(), 0, false);
   }
 
-  /** Returns the name with its array brackets, as the type-name view of a sidecar shows it. */
+  /** Returns the name with its array brackets, as the type-name view of a resolver shows it. */
   public String display() {
     return name + "[]".repeat(arrayDepth);
   }

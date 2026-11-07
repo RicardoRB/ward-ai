@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.jvm.KotlinScopeAnalysis;
 import dev.ward.analysis.domain.jvm.types.JvmClasses;
 import dev.ward.analysis.domain.jvm.types.NativeJvmTypeFacts;
 import dev.ward.analysis.domain.port.TypeFacts;
-import dev.ward.analysis.domain.port.TypeSidecar;
 import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.ClasspathBuiltinNames;
@@ -28,7 +27,7 @@ import java.util.logging.Logger;
  * its {@code java-classpath} and the JDK's {@code lib/modules}. It starts no process and needs no
  * JDK on the machine: without one, JDK types are unknown.
  */
-public final class NativeJvmTypes implements TypeSidecar {
+public final class NativeJvmTypes {
   private static final Logger LOGGER = Logger.getLogger(NativeJvmTypes.class.getName());
   private static final String CACHE_DIRECTORY = ".ward/cache/types";
 
@@ -44,14 +43,11 @@ public final class NativeJvmTypes implements TypeSidecar {
     this.projectRoot = projectRoot.toAbsolutePath().normalize();
   }
 
-  /** Starts without a classpath: library types then resolve as unknown. */
-  @Override
-  public Optional<TypeFacts> start() {
-    return start(Optional.empty());
-  }
-
-  @Override
-  public Optional<TypeFacts> start(final Optional<Path> classpathFile) {
+  /**
+   * Returns the type facts, opening the libraries on the first call. Without a classpath file,
+   * library types resolve as unknown.
+   */
+  public Optional<TypeFacts> facts(final Optional<Path> classpathFile) {
     lock.lock();
     try {
       if (running.get() == null) {
@@ -104,7 +100,7 @@ public final class NativeJvmTypes implements TypeSidecar {
     return new Running(libraries, facts);
   }
 
-  @Override
+  /** Closes the libraries if they are open. */
   public void close() {
     final Running current = running.getAndSet(null);
     if (current != null) {

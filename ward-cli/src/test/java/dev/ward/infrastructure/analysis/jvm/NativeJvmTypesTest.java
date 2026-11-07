@@ -60,7 +60,7 @@ class NativeJvmTypesTest {
 
     final NativeJvmTypes types = new NativeJvmTypes(project);
     try {
-      final TypeFacts facts = types.start().orElseThrow();
+      final TypeFacts facts = types.facts(Optional.empty()).orElseThrow();
       final UnitTypeFacts actual =
           facts.factsOf(
               new SourceUnit(PATH, AnalysisLanguage.JAVA, text),
@@ -105,7 +105,7 @@ class NativeJvmTypesTest {
 
     final NativeJvmTypes types = new NativeJvmTypes(project);
     try {
-      final TypeFacts facts = types.start(Optional.of(classpath)).orElseThrow();
+      final TypeFacts facts = types.facts(Optional.of(classpath)).orElseThrow();
       final Span jdk = span(text, "Objects.equals(1, 2)");
       final Span sources = span(text, "Helper.name()");
       final Span library = span(text, "lib.Library.make()");
