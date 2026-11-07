@@ -36,14 +36,14 @@ class WardCliFormatLanguagesTest extends WardCliIntegrationSupport {
   }
 
   @Test
-  void typeScriptKeepsItsQuotesSemicolonsAndCommas() throws IOException {
+  void typeScriptKeepsItsQuotesAndDropsTheTrailingCommaOfACollapsedList() throws IOException {
     write(project, "web/app.ts", "const a = \"x\"\nconst b = [1, 2,]\n");
 
     assertThat(run(FORMAT, "-C", project.toString())).isEqualTo(ExitCodes.OK);
 
     assertThat(read(project, "web/app.ts"))
         .contains("\"x\"")
-        .contains("[1, 2,]")
+        .contains("[1, 2]")
         .doesNotContain(";");
   }
 

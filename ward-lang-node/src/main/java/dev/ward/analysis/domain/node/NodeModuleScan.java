@@ -24,6 +24,7 @@ final class NodeModuleScan {
   NodeModuleScan(final SyntaxNode tree) {
     this.tokens = new NodeTokens(NodeLeaves.of(tree));
     this.exports = new NodeExportScan(tokens);
+    this.exports.exportLists(tree);
     this.references = new NodeReferenceScan(tokens, exports);
   }
 

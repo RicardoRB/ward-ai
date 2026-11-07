@@ -50,6 +50,18 @@ public abstract class TypeScriptParserBase extends Parser {
         && nextTokenType != TypeScriptParser.Interface;
   }
 
+  /**
+   * Whether the tokens after an {@code export} start an export clause, such as {@code { a }} or
+   * {@code type { a }}. Such a clause is an export statement, not an exported block.
+   */
+  protected boolean notExportClauseAhead() {
+    int offset = 2;
+    if (_input.LT(offset).getType() == TypeScriptParser.TypeAlias) {
+      offset++;
+    }
+    return _input.LT(offset).getType() != TypeScriptParser.OpenBrace;
+  }
+
   protected boolean closeBrace() {
     return _input.LT(1).getType() == TypeScriptParser.CloseBrace;
   }
