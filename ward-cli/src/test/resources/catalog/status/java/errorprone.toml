@@ -400,9 +400,9 @@ not-javadoc = { status = "planned", issue = "#319" }
 null-argument-for-non-null-parameter = { status = "planned", issue = "#319" }
 null-needs-cast-for-varargs = "implemented"
 null-optional = { status = "planned", issue = "#319" }
-null-ternary = { status = "planned", issue = "#319" }
+null-ternary = "implemented"
 nullable-constructor = { status = "planned", issue = "#319" }
-nullable-on-containing-class = { status = "planned", issue = "#319" }
+nullable-on-containing-class = "implemented"
 nullable-optional = { status = "planned", issue = "#319" }
 nullable-primitive = { status = "planned", issue = "#319" }
 nullable-primitive-array = { status = "planned", issue = "#319" }
@@ -415,7 +415,7 @@ objects-hash-code-primitive = { status = "planned", issue = "#319" }
 operator-precedence = { status = "planned", issue = "#319" }
 optional-equality = "implemented"
 optional-map-to-optional = { status = "planned", issue = "#319" }
-optional-map-unused-value = { status = "planned", issue = "#319" }
+optional-map-unused-value = "implemented"
 optional-not-present = { status = "planned", issue = "#319" }
 optional-of-redundant-method = "implemented"
 orphaned-format-string = { status = "planned", issue = "#319" }
@@ -535,7 +535,7 @@ system-console-null = { status = "planned", issue = "#319" }
 system-exit-outside-main = "implemented"
 system-out = { status = "planned", issue = "#319" }
 temporal-accessor-get-chrono-field = { status = "planned", issue = "#319" }
-test-exception-checker = { status = "planned", issue = "#319" }
+test-exception-checker = "implemented"
 test-parameters-not-initialized = "implemented"
 theory-but-no-theories = "implemented"
 thread-builder-name-with-placeholder = "implemented"
@@ -622,7 +622,7 @@ unused-variable = { status = "planned", issue = "#319" }
 url-equals-hash-code = { status = "planned", issue = "#319" }
 url-in-see = { status = "planned", issue = "#319" }
 use-binds = { status = "planned", issue = "#319" }
-use-correct-assert-in-tests = { status = "planned", issue = "#319" }
+use-correct-assert-in-tests = "implemented"
 use-enum-switch = { status = "planned", issue = "#319" }
 using-jsr305-check-return-value = { status = "planned", issue = "#319" }
 value-class-equals = { status = "planned", issue = "#319" }

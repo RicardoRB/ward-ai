@@ -2283,8 +2283,6 @@ errorprone = ["NullOptional"]
 
 [[rule]]
 name = "null-ternary"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullTernary"]
 
 [[rule]]
@@ -2295,8 +2293,6 @@ errorprone = ["NullableConstructor"]
 
 [[rule]]
 name = "nullable-on-containing-class"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NullableOnContainingClass"]
 
 [[rule]]
@@ -2371,8 +2367,6 @@ errorprone = ["OptionalMapToOptional"]
 
 [[rule]]
 name = "optional-map-unused-value"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OptionalMapUnusedValue"]
 
 [[rule]]
@@ -3040,8 +3034,6 @@ errorprone = ["TemporalAccessorGetChronoField"]
 
 [[rule]]
 name = "test-exception-checker"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["TestExceptionChecker"]
 
 [[rule]]
@@ -3544,8 +3536,6 @@ errorprone = ["UseBinds"]
 
 [[rule]]
 name = "use-correct-assert-in-tests"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UseCorrectAssertInTests"]
 
 [[rule]]
