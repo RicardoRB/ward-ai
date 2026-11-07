@@ -1,0 +1,41 @@
+{
+  "2:13-2:26": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "init",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "annotations": [
+          "javax.inject.Inject"
+        ]
+      }
+    ]
+  },
+  "2:21-2:34": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "init",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "annotations": [
+          "javax.inject.Inject"
+        ]
+      }
+    ],
+    "annotations": [
+      "javax.inject.Inject"
+    ]
+  }
+}
