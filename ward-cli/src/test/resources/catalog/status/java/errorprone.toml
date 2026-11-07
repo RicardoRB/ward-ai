@@ -200,9 +200,9 @@ fuzzy-equals-should-not-be-used-in-equals-method = { status = "planned", issue =
 get-class-on-annotation = "implemented"
 get-class-on-class = "implemented"
 get-class-on-enum = { status = "planned", issue = "#319" }
-guarded-by = { status = "planned", issue = "#319" }
+guarded-by = "implemented"
 guice-assisted-inject-scoping = "implemented"
-guice-assisted-parameters = { status = "planned", issue = "#319" }
+guice-assisted-parameters = "implemented"
 guice-inject-on-final-field = "implemented"
 guice-nested-combine = { status = "planned", issue = "#319" }
 hard-coded-sd-card-path = { status = "planned", issue = "#319" }
@@ -216,7 +216,7 @@ identity-hash-map-boxing = "implemented"
 identity-hash-map-usage = { status = "planned", issue = "#319" }
 if-chain-to-switch = { status = "planned", issue = "#319" }
 ignored-pure-getter = { status = "planned", issue = "#319" }
-immutable = { status = "planned", issue = "#319" }
+immutable = "implemented"
 immutable-annotation-checker = { status = "planned", issue = "#319" }
 immutable-enum-checker = { status = "planned", issue = "#319" }
 immutable-member-collection = { status = "planned", issue = "#319" }
@@ -226,7 +226,7 @@ implement-assertion-with-chaining = { status = "planned", issue = "#319" }
 impossible-null-comparison = { status = "planned", issue = "#319" }
 incomparable = { status = "planned", issue = "#319" }
 incompatible-argument-type = { status = "planned", issue = "#319" }
-incompatible-modifiers = { status = "planned", issue = "#319" }
+incompatible-modifiers = "implemented"
 inconsistent-capitalization = { status = "planned", issue = "#319" }
 inconsistent-hash-code = { status = "planned", issue = "#319" }
 inconsistent-overloads = { status = "planned", issue = "#319" }
@@ -247,7 +247,7 @@ injected-constructor-annotations = { status = "planned", issue = "#319" }
 inline-format-string = { status = "planned", issue = "#319" }
 inline-me-inliner = { status = "planned", issue = "#319" }
 inline-me-suggester = { status = "planned", issue = "#319" }
-inline-me-validator = { status = "planned", issue = "#319" }
+inline-me-validator = "implemented"
 inline-trivial-constant = { status = "planned", issue = "#319" }
 input-stream-slow-multibyte-read = { status = "planned", issue = "#319" }
 insecure-crypto-usage = "implemented"
@@ -275,7 +275,7 @@ is-instance-incompatible-type = { status = "planned", issue = "#319" }
 is-instance-of-class = { status = "planned", issue = "#319" }
 is-loggable-tag-length = "implemented"
 iterable-and-iterator = { status = "planned", issue = "#319" }
-iterable-path-parameter = { status = "planned", issue = "#319" }
+iterable-path-parameter = "implemented"
 j-unit-ambiguous-test-class = { status = "planned", issue = "#319" }
 j-unit-assert-same-check = "implemented"
 j-unit-incompatible-type = { status = "planned", issue = "#319" }
@@ -289,7 +289,7 @@ j-unit4-empty-methods = { status = "planned", issue = "#319" }
 j-unit4-set-up-not-run = "implemented"
 j-unit4-tear-down-not-run = "implemented"
 j-unit4-test-not-run = "implemented"
-j-unit4-tests-not-run-within-enclosed = { status = "planned", issue = "#319" }
+j-unit4-tests-not-run-within-enclosed = "implemented"
 java-duration-get-seconds-get-nano = { status = "planned", issue = "#319" }
 java-duration-get-seconds-to-to-seconds = { status = "planned", issue = "#319" }
 java-duration-with-nanos = { status = "planned", issue = "#319" }
@@ -313,7 +313,7 @@ joda-plus-minus-long = { status = "planned", issue = "#319" }
 joda-time-converter-manager = { status = "planned", issue = "#319" }
 joda-to-self = { status = "planned", issue = "#319" }
 joda-with-duration-added-long = { status = "planned", issue = "#319" }
-labelled-break-target = { status = "planned", issue = "#319" }
+labelled-break-target = "implemented"
 lambda-functional-interface = { status = "planned", issue = "#319" }
 lenient-format-string-validation = { status = "planned", issue = "#319" }
 list-remove-ambiguous = { status = "planned", issue = "#319" }

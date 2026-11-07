@@ -1161,8 +1161,6 @@ errorprone = ["GetClassOnEnum"]
 
 [[rule]]
 name = "guarded-by"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["GuardedBy"]
 
 [[rule]]
@@ -1171,8 +1169,6 @@ errorprone = ["GuiceAssistedInjectScoping"]
 
 [[rule]]
 name = "guice-assisted-parameters"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["GuiceAssistedParameters"]
 
 [[rule]]
@@ -1246,8 +1242,6 @@ errorprone = ["IgnoredPureGetter"]
 
 [[rule]]
 name = "immutable"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["Immutable"]
 
 [[rule]]
@@ -1306,8 +1300,6 @@ errorprone = ["IncompatibleArgumentType"]
 
 [[rule]]
 name = "incompatible-modifiers"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IncompatibleModifiers"]
 
 [[rule]]
@@ -1424,8 +1416,6 @@ errorprone = ["InlineMeSuggester"]
 
 [[rule]]
 name = "inline-me-validator"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InlineMeValidator"]
 
 [[rule]]
@@ -1578,8 +1568,6 @@ errorprone = ["IterableAndIterator"]
 
 [[rule]]
 name = "iterable-path-parameter"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IterablePathParameter"]
 
 [[rule]]
@@ -1622,8 +1610,6 @@ errorprone = ["JUnit4TestNotRun"]
 
 [[rule]]
 name = "j-unit4-tests-not-run-within-enclosed"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["JUnit4TestsNotRunWithinEnclosed"]
 
 [[rule]]
@@ -1790,8 +1776,6 @@ errorprone = ["JodaWithDurationAddedLong"]
 
 [[rule]]
 name = "labelled-break-target"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LabelledBreakTarget"]
 
 [[rule]]
