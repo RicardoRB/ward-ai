@@ -1,52 +1,52 @@
 # Status of the semgrep rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-blowfish-insufficient-key-size = { status = "planned", issue = "#323" }
+blowfish-insufficient-key-size = "implemented"
 cbc-padding-oracle = "implemented"
-crlf-injection-logs = { status = "planned", issue = "#323" }
+crlf-injection-logs = "implemented"
 des-is-deprecated = "implemented"
 desede-is-deprecated = "implemented"
-documentbuilderfactory-disallow-doctype-decl-false = { status = "planned", issue = "#323" }
-documentbuilderfactory-disallow-doctype-decl-missing = { status = "planned", issue = "#323" }
-documentbuilderfactory-external-general-entities-true = { status = "planned", issue = "#323" }
-documentbuilderfactory-external-parameter-entities-true = { status = "planned", issue = "#323" }
+documentbuilderfactory-disallow-doctype-decl-false = "implemented"
+documentbuilderfactory-disallow-doctype-decl-missing = "implemented"
+documentbuilderfactory-external-general-entities-true = "implemented"
+documentbuilderfactory-external-parameter-entities-true = "implemented"
 ecb-cipher = "implemented"
-find-sql-string-concatenation = { status = "planned", issue = "#323" }
-formatted-sql-string = { status = "planned", issue = "#323" }
-gcm-nonce-reuse = { status = "planned", issue = "#323" }
-http-response-splitting = { status = "planned", issue = "#323" }
+find-sql-string-concatenation = "implemented"
+formatted-sql-string = "implemented"
+gcm-nonce-reuse = "implemented"
+http-response-splitting = "implemented"
 httpget-http-request = "implemented"
-httpservlet-path-traversal = { status = "planned", issue = "#323" }
-insecure-jms-deserialization = { status = "planned", issue = "#323" }
-insecure-smtp-connection = { status = "planned", issue = "#323" }
+httpservlet-path-traversal = "implemented"
+insecure-jms-deserialization = "implemented"
+insecure-smtp-connection = "implemented"
 jackson-unsafe-deserialization = "implemented"
-java-jwt-decode-without-verify = { status = "planned", issue = "#323" }
+java-jwt-decode-without-verify = "implemented"
 java-jwt-hardcoded-secret = "implemented"
 java-jwt-none-alg = "implemented"
-jax-rs-path-traversal = { status = "planned", issue = "#323" }
-md5-used-as-password = { status = "planned", issue = "#323" }
-no-direct-response-writer = { status = "planned", issue = "#323" }
+jax-rs-path-traversal = "implemented"
+md5-used-as-password = "implemented"
+no-direct-response-writer = "implemented"
 no-null-cipher = "implemented"
 no-static-initialization-vector = "implemented"
 rsa-no-padding = "implemented"
-saxparserfactory-disallow-doctype-decl-missing = { status = "planned", issue = "#323" }
-servletresponse-writer-xss = { status = "planned", issue = "#323" }
-spring-sqli = { status = "planned", issue = "#323" }
-spring-unvalidated-redirect = { status = "planned", issue = "#323" }
-tainted-cmd-from-http-request = { status = "planned", issue = "#323" }
-tainted-env-from-http-request = { status = "planned", issue = "#323" }
-tainted-file-path = { status = "planned", issue = "#323" }
-tainted-html-string = { status = "planned", issue = "#323" }
-tainted-ldapi-from-http-request = { status = "planned", issue = "#323" }
-tainted-session-from-http-request = { status = "planned", issue = "#323" }
-tainted-sql-from-http-request = { status = "planned", issue = "#323" }
-tainted-sql-string = { status = "planned", issue = "#323" }
-tainted-sqli = { status = "planned", issue = "#323" }
-tainted-system-command = { status = "planned", issue = "#323" }
-tainted-url-host = { status = "planned", issue = "#323" }
-tainted-xpath-from-http-request = { status = "planned", issue = "#323" }
-transformerfactory-dtds-not-disabled = { status = "planned", issue = "#323" }
+saxparserfactory-disallow-doctype-decl-missing = "implemented"
+servletresponse-writer-xss = "implemented"
+spring-sqli = "implemented"
+spring-unvalidated-redirect = "implemented"
+tainted-cmd-from-http-request = "implemented"
+tainted-env-from-http-request = "implemented"
+tainted-file-path = "implemented"
+tainted-html-string = "implemented"
+tainted-ldapi-from-http-request = "implemented"
+tainted-session-from-http-request = "implemented"
+tainted-sql-from-http-request = "implemented"
+tainted-sql-string = "implemented"
+tainted-sqli = "implemented"
+tainted-system-command = "implemented"
+tainted-url-host = "implemented"
+tainted-xpath-from-http-request = "implemented"
+transformerfactory-dtds-not-disabled = "implemented"
 unencrypted-socket = "implemented"
-unvalidated-redirect = { status = "planned", issue = "#323" }
+unvalidated-redirect = "implemented"
 use-of-aes-ecb = "implemented"
 use-of-blowfish = "implemented"
 use-of-default-aes = "implemented"
@@ -56,6 +56,6 @@ use-of-rc2 = "implemented"
 use-of-rc4 = "implemented"
 use-of-sha1 = "implemented"
 use-of-sha224 = "implemented"
-use-of-weak-rsa-key = { status = "planned", issue = "#323" }
+use-of-weak-rsa-key = "implemented"
 weak-ssl-context = "implemented"
-xmlinputfactory-possible-xxe = { status = "planned", issue = "#323" }
+xmlinputfactory-possible-xxe = "implemented"

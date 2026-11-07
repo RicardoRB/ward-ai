@@ -1,0 +1,26 @@
+# Redirect sinks: the location the browser is sent to.
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "javax.servlet.http.HttpServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "jakarta.servlet.http.HttpServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.springframework.web.servlet.view.RedirectView"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.springframework.web.servlet.ModelAndView"
+arguments = [0]
+

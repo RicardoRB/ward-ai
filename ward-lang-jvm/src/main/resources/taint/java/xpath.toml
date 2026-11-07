@@ -1,0 +1,14 @@
+# XPath sinks: the expression that an XPath engine evaluates.
+
+[[sinks]]
+kind = "call"
+name = "evaluate"
+receiver = "javax.xml.xpath.XPath"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+receiver = "javax.xml.xpath.XPath"
+arguments = [0]
+

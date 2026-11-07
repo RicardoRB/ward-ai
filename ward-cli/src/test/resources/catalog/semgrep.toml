@@ -2,20 +2,14 @@
 
 [[rule]]
 name = "tainted-sql-string"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.aws-lambda.security.tainted-sql-string.tainted-sql-string", "java.spring.security.injection.tainted-sql-string.tainted-sql-string"]
 
 [[rule]]
 name = "tainted-sqli"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.aws-lambda.security.tainted-sqli.tainted-sqli"]
 
 [[rule]]
 name = "java-jwt-decode-without-verify"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.java-jwt.security.audit.jwt-decode-without-verify.java-jwt-decode-without-verify"]
 
 [[rule]]
@@ -28,20 +22,14 @@ semgrep = ["java.java-jwt.security.jwt-none-alg.java-jwt-none-alg"]
 
 [[rule]]
 name = "jax-rs-path-traversal"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.jax-rs.security.jax-rs-path-traversal.jax-rs-path-traversal"]
 
 [[rule]]
 name = "find-sql-string-concatenation"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.jboss.security.session_sqli.find-sql-string-concatenation"]
 
 [[rule]]
 name = "blowfish-insufficient-key-size"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.blowfish-insufficient-key-size.blowfish-insufficient-key-size"]
 
 [[rule]]
@@ -50,8 +38,6 @@ semgrep = ["java.lang.security.audit.cbc-padding-oracle.cbc-padding-oracle"]
 
 [[rule]]
 name = "crlf-injection-logs"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.crlf-injection-logs.crlf-injection-logs"]
 
 [[rule]]
@@ -68,8 +54,6 @@ semgrep = ["java.lang.security.audit.crypto.ecb-cipher.ecb-cipher"]
 
 [[rule]]
 name = "gcm-nonce-reuse"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.crypto.gcm-nonce-reuse.gcm-nonce-reuse"]
 
 [[rule]]
@@ -126,74 +110,50 @@ semgrep = ["java.lang.security.audit.crypto.use-of-sha224.use-of-sha224"]
 
 [[rule]]
 name = "use-of-weak-rsa-key"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.crypto.weak-rsa.use-of-weak-rsa-key"]
 
 [[rule]]
 name = "formatted-sql-string"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.formatted-sql-string.formatted-sql-string"]
 
 [[rule]]
 name = "http-response-splitting"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.http-response-splitting.http-response-splitting"]
 
 [[rule]]
 name = "insecure-smtp-connection"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.insecure-smtp-connection.insecure-smtp-connection"]
 
 [[rule]]
 name = "md5-used-as-password"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.md5-used-as-password.md5-used-as-password"]
 
 [[rule]]
 name = "tainted-sql-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.sqli.tainted-sql-from-http-request.tainted-sql-from-http-request"]
 
 [[rule]]
 name = "tainted-cmd-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.tainted-cmd-from-http-request.tainted-cmd-from-http-request"]
 
 [[rule]]
 name = "tainted-env-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.tainted-env-from-http-request.tainted-env-from-http-request"]
 
 [[rule]]
 name = "tainted-ldapi-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.tainted-ldapi-from-http-request.tainted-ldapi-from-http-request"]
 
 [[rule]]
 name = "tainted-session-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.tainted-session-from-http-request.tainted-session-from-http-request"]
 
 [[rule]]
 name = "tainted-xpath-from-http-request"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.tainted-xpath-from-http-request.tainted-xpath-from-http-request"]
 
 [[rule]]
 name = "unvalidated-redirect"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.unvalidated-redirect.unvalidated-redirect"]
 
 [[rule]]
@@ -202,56 +162,38 @@ semgrep = ["java.lang.security.audit.weak-ssl-context.weak-ssl-context"]
 
 [[rule]]
 name = "no-direct-response-writer"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xss.no-direct-response-writer.no-direct-response-writer"]
 
 [[rule]]
 name = "documentbuilderfactory-disallow-doctype-decl-false"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.documentbuilderfactory-disallow-doctype-decl-false.documentbuilderfactory-disallow-doctype-decl-false"]
 
 [[rule]]
 name = "documentbuilderfactory-disallow-doctype-decl-missing"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.documentbuilderfactory-disallow-doctype-decl-missing.documentbuilderfactory-disallow-doctype-decl-missing"]
 
 [[rule]]
 name = "documentbuilderfactory-external-general-entities-true"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.documentbuilderfactory-external-general-entities-true.documentbuilderfactory-external-general-entities-true"]
 
 [[rule]]
 name = "documentbuilderfactory-external-parameter-entities-true"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.documentbuilderfactory-external-parameter-entities-true.documentbuilderfactory-external-parameter-entities-true"]
 
 [[rule]]
 name = "saxparserfactory-disallow-doctype-decl-missing"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.saxparserfactory-disallow-doctype-decl-missing.saxparserfactory-disallow-doctype-decl-missing"]
 
 [[rule]]
 name = "transformerfactory-dtds-not-disabled"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.audit.xxe.transformerfactory-dtds-not-disabled.transformerfactory-dtds-not-disabled"]
 
 [[rule]]
 name = "httpservlet-path-traversal"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.httpservlet-path-traversal.httpservlet-path-traversal"]
 
 [[rule]]
 name = "insecure-jms-deserialization"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.insecure-jms-deserialization.insecure-jms-deserialization"]
 
 [[rule]]
@@ -260,50 +202,34 @@ semgrep = ["java.lang.security.jackson-unsafe-deserialization.jackson-unsafe-des
 
 [[rule]]
 name = "servletresponse-writer-xss"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.servletresponse-writer-xss.servletresponse-writer-xss"]
 
 [[rule]]
 name = "xmlinputfactory-possible-xxe"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.lang.security.xmlinputfactory-possible-xxe.xmlinputfactory-possible-xxe"]
 
 [[rule]]
 name = "spring-sqli"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.audit.spring-sqli.spring-sqli"]
 
 [[rule]]
 name = "spring-unvalidated-redirect"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.audit.spring-unvalidated-redirect.spring-unvalidated-redirect"]
 
 [[rule]]
 name = "tainted-file-path"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.injection.tainted-file-path.tainted-file-path"]
 
 [[rule]]
 name = "tainted-html-string"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.injection.tainted-html-string.tainted-html-string", "javascript.aws-lambda.security.tainted-html-string.tainted-html-string"]
 
 [[rule]]
 name = "tainted-system-command"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.injection.tainted-system-command.tainted-system-command"]
 
 [[rule]]
 name = "tainted-url-host"
-presets = ["standard", "strict"]
-category = "security"
 semgrep = ["java.spring.security.injection.tainted-url-host.tainted-url-host"]
 
 [[rule]]
