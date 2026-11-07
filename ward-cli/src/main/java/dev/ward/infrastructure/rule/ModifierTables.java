@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.ModifierTable;
