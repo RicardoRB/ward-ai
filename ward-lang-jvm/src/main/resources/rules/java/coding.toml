@@ -1,0 +1,92 @@
+# Coding rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the coding group, with the
+# same option names in kebab-case and Checkstyle's defaults. The standard preset keeps the settings
+# of google_checks.xml and this repository's config/checkstyle.xml, so presets follow that file.
+
+[[rules]]
+id = "ward:java/package-declaration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["compilationunit", "compactCompilationUnit"]
+child = ["packageDeclaration"]
+message = "file has no package declaration"
+'''
+
+[[rules]]
+id = "ward:java/multiple-variable-declarations"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "count"
+kinds = ["localVariableDeclaration", "fieldDeclaration"]
+counted = ["variableDeclarator"]
+skip = ["block", "classBody"]
+max = 1
+message = "declaration of {value} variables; declare each variable in its own statement"
+'''
+
+[[rules]]
+id = "ward:java/illegal-token-text"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+# Checkstyle's format option is named text here: the first standard module forbids whitespace other
+# than the ASCII space, and the second the octal and unicode escapes of the same literal tokens.
+options.text = { type = "regex" }
+body = '''
+check = "forbidden-node"
+kinds = ["STRING_LITERAL", "CHAR_LITERAL", "TEXT_BLOCK"]
+text = '[\t\x0B\f\x85\xA0  -     　]|\\u00(08|09|0[aA]|0[cC]|0[dD]|20|22|27|5[cC])|\\(0(10|11|12|14|15|40|42|47)|134)'
+message = "literal contains whitespace or an escape that must be spelled out with a special escape"
+'''
+
+[[rules]]
+id = "ward:java/one-statement-per-line"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.treat-try-resources-as-statement = { type = "boolean" }
+body = '''
+check = "one-statement-per-line"
+treat-try-resources-as-statement = false
+message = "more than one statement on a line; put each statement on its own line"
+'''
+
+[[rules]]
+id = "ward:java/constructors-declaration-grouping"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.order-by-increasing-parameter-count = { type = "boolean" }
+body = '''
+check = "constructors-declaration-grouping"
+order-by-increasing-parameter-count = false
+message = "constructor is not grouped with the other constructors, or is out of parameter-count order"
+'''
+
+[[rules]]
+id = "ward:java/overload-methods-declaration-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.order-by-increasing-parameter-count = { type = "boolean" }
+body = '''
+check = "overload-methods-declaration-order"
+order-by-increasing-parameter-count = false
+message = "overloaded method is not declared next to the other overloads, or is out of parameter-count order"
+'''
