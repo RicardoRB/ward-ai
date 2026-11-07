@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.MagicNumberCheck;
 import dev.ward.analysis.domain.rule.check.NoEnumTrailingCommaCheck;
 import dev.ward.analysis.domain.rule.check.OneStatementPerLineCheck;
 import dev.ward.analysis.domain.rule.check.OverloadMethodsDeclarationOrderCheck;
+import dev.ward.analysis.domain.rule.check.TextBlockFormatCheck;
 import java.util.List;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
@@ -44,7 +45,10 @@ final class CheckstyleCodingChecks {
                     TomlValues.required(toml, MESSAGE))),
         entry(
             "no-enum-trailing-comma",
-            toml -> new NoEnumTrailingCommaCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new NoEnumTrailingCommaCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "text-block-google-style-formatting",
+            toml -> new TextBlockFormatCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static Map<String, CheckFactory> declarations() {

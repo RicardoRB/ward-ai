@@ -198,3 +198,15 @@ kinds = ["statement"]
 text = '^(?!assert)[A-Za-z_$][\w$]*:'
 message = "labeled statement is illegal; restructure the code without a label"
 '''
+
+[[rules]]
+id = "ward:java/text-block-google-style-formatting"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-block-google-style-formatting"
+message = "text block format problem: {value}"
+'''
