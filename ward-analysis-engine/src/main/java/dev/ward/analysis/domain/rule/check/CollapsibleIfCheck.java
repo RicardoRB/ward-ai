@@ -34,12 +34,10 @@ public final class CollapsibleIfCheck implements RuleCheck {
   }
 
   private static boolean collapsible(final SyntaxNode outer) {
-    if (!plain(outer)) {
-      return false;
-    }
-    return StatementShapes.soleIf(StatementShapes.blocks(outer).get(0))
-        .filter(CollapsibleIfCheck::plain)
-        .isPresent();
+    return plain(outer)
+        && StatementShapes.soleIf(StatementShapes.blocks(outer).get(0))
+            .filter(CollapsibleIfCheck::plain)
+            .isPresent();
   }
 
   private static boolean plain(final SyntaxNode node) {

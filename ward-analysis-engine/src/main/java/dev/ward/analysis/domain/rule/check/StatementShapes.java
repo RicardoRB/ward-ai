@@ -8,6 +8,8 @@ import java.util.Optional;
 /** Reads the shape of Python blocks: statement counts and the keywords a statement carries. */
 final class StatementShapes {
 
+  private static final int SOLE = 1;
+
   private static final String BLOCK = "block";
   private static final String SIMPLE_STMTS = "simple_stmts";
   private static final String SIMPLE_STMT = "simple_stmt";
@@ -33,7 +35,7 @@ final class StatementShapes {
   /** Returns the {@code if_stmt} that is the only statement of {@code block}, if there is one. */
   static Optional<SyntaxNode> soleIf(final SyntaxNode block) {
     final List<SyntaxNode> statements = statements(block);
-    if (statements.size() != 1) {
+    if (statements.size() != SOLE) {
       return Optional.empty();
     }
     SyntaxNode node = statements.get(0);
