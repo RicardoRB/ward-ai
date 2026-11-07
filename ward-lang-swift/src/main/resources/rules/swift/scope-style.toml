@@ -1,0 +1,27 @@
+# Scope-based style rules for Swift, the standard preset's Checkstyle HiddenField. They read the lexical
+# scopes of the file: a parameter or local that has the name of a property of its enclosing type.
+
+[[rules]]
+id = "ward:swift/hidden-field"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "hidden-field"
+message = "'{value}' hides a property of the enclosing type"
+'''
+
+[[rules]]
+id = "ward:swift/variable-declaration-usage-distance"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "variable-declaration-usage-distance"
+max = 3
+message = "variable '{value}' is first used more than {max} statements after its declaration"
+'''
