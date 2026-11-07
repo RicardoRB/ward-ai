@@ -1,0 +1,33 @@
+import java.util.function.Function0;
+import java.util.function.Function1;
+import java.util.function.Function2;
+import java.util.function.Function3;
+import java.util.function.Function4;
+import java.util.function.Function5;
+import java.util.function.Function6;
+import java.util.function.Function7;
+import java.util.function.Function8;
+import java.util.function.Function9;
+import java.util.function.Function10;
+import java.util.function.Function11;
+import java.util.function.Function12;
+import java.util.function.Function13;
+import java.util.function.Function14;
+import java.util.function.Function15;
+import java.util.function.Function16;
+import java.util.function.Function17;
+import java.util.function.Function18;
+import java.util.function.Function19;
+import java.util.function.Function20;
+import java.util.function.Function21;
+import java.util.function.Function22;
+import java.util.function.Function23;
+import java.util.function.Function24;
+import java.util.function.Function25;
+import java.util.function.Function26;
+import java.util.function.Function27;
+import java.util.function.Function28;
+import java.util.function.Function29;
+import java.util.function.Function30;
+
+final class Wide {}
