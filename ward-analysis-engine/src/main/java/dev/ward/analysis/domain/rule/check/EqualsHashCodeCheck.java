@@ -31,24 +31,24 @@ public final class EqualsHashCodeCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, TypeMethods.TYPES)) {
-      final List<SyntaxNode> methods = TypeMethods.of(visit.node());
-      final Optional<SyntaxNode> equals = find(methods, EQUALS, true);
-      final Optional<SyntaxNode> hashCode = find(methods, HASH_CODE, false);
+      final List<TypeMethods.Member> members = TypeMethods.of(visit.node());
+      final Optional<TypeMethods.Member> equals = find(members, EQUALS, true);
+      final Optional<TypeMethods.Member> hashCode = find(members, HASH_CODE, false);
       equals
           .filter(m -> hashCode.isEmpty())
-          .ifPresent(m -> matches.add(CheckSupport.at(m.span(), message)));
+          .ifPresent(m -> matches.add(CheckSupport.at(m.declaration().span(), message)));
       hashCode
           .filter(m -> equals.isEmpty())
-          .ifPresent(m -> matches.add(CheckSupport.at(m.span(), message)));
+          .ifPresent(m -> matches.add(CheckSupport.at(m.declaration().span(), message)));
     }
     return List.copyOf(matches);
   }
 
-  private static Optional<SyntaxNode> find(
-      final List<SyntaxNode> methods, final String name, final boolean withObjectParameter) {
-    return methods.stream()
-        .filter(m -> name.equals(TypeMethods.name(m)))
-        .filter(m -> matchesParameters(m, withObjectParameter))
+  private static Optional<TypeMethods.Member> find(
+      final List<TypeMethods.Member> members, final String name, final boolean withObject) {
+    return members.stream()
+        .filter(m -> name.equals(TypeMethods.name(m.method())))
+        .filter(m -> matchesParameters(m.method(), withObject))
         .findFirst();
   }
 

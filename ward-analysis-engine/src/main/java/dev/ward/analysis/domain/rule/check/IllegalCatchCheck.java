@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Reports a catch clause that catches one of the illegal exception types, by the name written in
- * the clause. The user option is {@code illegal-classes}.
+ * the clause, at the {@code catch} keyword. The user option is {@code illegal-classes}.
  */
 public final class IllegalCatchCheck implements UnitCheck {
 
@@ -36,18 +36,19 @@ public final class IllegalCatchCheck implements UnitCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("catchClause"))) {
       for (final SyntaxNode type : visit.node().children()) {
         if (CATCH_TYPE.equals(type.kind())) {
-          addIllegal(type, matches);
+          addIllegal(visit.node(), type, matches);
         }
       }
     }
     return List.copyOf(matches);
   }
 
-  private void addIllegal(final SyntaxNode catchType, final List<RuleMatch> matches) {
+  private void addIllegal(
+      final SyntaxNode clause, final SyntaxNode catchType, final List<RuleMatch> matches) {
     for (final SyntaxNode name : catchType.children()) {
       final String text = SyntaxWalk.text(name);
       if (QUALIFIED_NAME.equals(name.kind()) && illegalClasses.contains(text)) {
-        matches.add(CheckSupport.at(name.span(), CheckSupport.fill(message, text, "")));
+        matches.add(CheckSupport.at(clause.span(), CheckSupport.fill(message, text, "")));
       }
     }
   }

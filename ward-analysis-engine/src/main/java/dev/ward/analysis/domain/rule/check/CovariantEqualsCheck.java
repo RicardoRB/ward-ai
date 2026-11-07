@@ -30,13 +30,17 @@ public final class CovariantEqualsCheck implements UnitCheck {
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, TypeMethods.TYPES)) {
-      final List<SyntaxNode> equals =
+      final List<TypeMethods.Member> equals =
           TypeMethods.of(visit.node()).stream()
-              .filter(m -> EQUALS.equals(TypeMethods.name(m)))
-              .filter(m -> TypeMethods.parameterTypes(m).size() == 1)
+              .filter(m -> EQUALS.equals(TypeMethods.name(m.method())))
+              .filter(m -> TypeMethods.parameterTypes(m.method()).size() == 1)
               .toList();
-      if (equals.stream().noneMatch(CovariantEqualsCheck::overridesObject)) {
-        equals.forEach(m -> matches.add(CheckSupport.at(m.span(), message)));
+      if (equals.stream().noneMatch(m -> overridesObject(m.method()))) {
+        equals.forEach(
+            m ->
+                matches.add(
+                    CheckSupport.at(
+                        TypeMethods.identifier(m.method()).orElse(m.method()).span(), message)));
       }
     }
     return List.copyOf(matches);

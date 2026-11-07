@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
@@ -18,6 +19,9 @@ import java.util.regex.Pattern;
 public final class EqualsAvoidNullCheck implements UnitCheck {
 
   private static final String DOT = "'.'";
+  private static final String METHOD_CALL = "methodCall";
+  private static final String ARGUMENTS = "arguments";
+  private static final String OPEN = "'('";
   private static final Pattern CALL =
       Pattern.compile(
           "[^\"]*\\.(equals|equalsIgnoreCase)\\((?:\"(?:[^\"\\\\]|\\\\.)*\"\\+?)+\\)",
@@ -44,7 +48,7 @@ public final class EqualsAvoidNullCheck implements UnitCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, EXPRESSION)) {
       final SyntaxNode node = visit.node();
       if (hasDot(node) && reported(SyntaxWalk.text(node))) {
-        matches.add(CheckSupport.at(node.span(), message));
+        matches.add(CheckSupport.at(openParenthesis(node), message));
       }
     }
     return List.copyOf(matches);
@@ -52,6 +56,19 @@ public final class EqualsAvoidNullCheck implements UnitCheck {
 
   private static boolean hasDot(final SyntaxNode node) {
     return node.children().stream().anyMatch(c -> DOT.equals(c.kind()));
+  }
+
+  /** The span of the parenthesis that opens the call's argument list, where Checkstyle reports. */
+  private static Span openParenthesis(final SyntaxNode node) {
+    return node.children().stream()
+        .filter(c -> METHOD_CALL.equals(c.kind()))
+        .flatMap(c -> c.children().stream())
+        .filter(c -> ARGUMENTS.equals(c.kind()))
+        .flatMap(c -> c.children().stream())
+        .filter(c -> OPEN.equals(c.kind()))
+        .map(SyntaxNode::span)
+        .findFirst()
+        .orElseGet(node::span);
   }
 
   private boolean reported(final String text) {

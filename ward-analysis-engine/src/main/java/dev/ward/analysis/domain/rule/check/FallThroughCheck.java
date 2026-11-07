@@ -61,16 +61,14 @@ public final class FallThroughCheck implements UnitCheck {
       }
       final SyntaxNode lastStatement = group.statements().get(group.statements().size() - 1);
       if (!LEAVING.matcher(SyntaxWalk.text(lastStatement)).matches()) {
-        matches.add(CheckSupport.at(reportSpan(groups, index, group), message));
+        matches.add(CheckSupport.at(reportSpan(groups, index), message));
       }
     }
   }
 
-  private static Span reportSpan(final List<Group> groups, final int index, final Group group) {
-    if (index + 1 < groups.size()) {
-      return groups.get(index + 1).labels().get(0).span();
-    }
-    return group.statements().get(group.statements().size() - 1).span();
+  private static Span reportSpan(final List<Group> groups, final int index) {
+    final int target = index + 1 < groups.size() ? index + 1 : index;
+    return groups.get(target).labels().get(0).span();
   }
 
   private static List<Group> groups(final SyntaxNode switchNode) {

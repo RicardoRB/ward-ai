@@ -14,6 +14,7 @@ final class TypeMethods {
       Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
 
   private static final String METHOD = "methodDeclaration";
+  private static final String DECLARATION = "classBodyDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String PARAMETERS = "formalParameters";
   private static final String PARAMETER = "formalParameter";
@@ -24,16 +25,27 @@ final class TypeMethods {
 
   private TypeMethods() {}
 
+  /**
+   * A method declared directly in a type's body, with the declaration that holds it. The
+   * declaration starts at the method's modifiers and annotations.
+   */
+  record Member(SyntaxNode declaration, SyntaxNode method) {}
+
   /** Returns the methods declared directly in the body of {@code type}, in source order. */
-  static List<SyntaxNode> of(final SyntaxNode type) {
-    final List<SyntaxNode> methods = new ArrayList<>();
-    collect(type, methods);
-    return methods;
+  static List<Member> of(final SyntaxNode type) {
+    final List<Member> members = new ArrayList<>();
+    collect(type, null, members);
+    return members;
+  }
+
+  /** Returns the name node of {@code method}, if it has one. */
+  static Optional<SyntaxNode> identifier(final SyntaxNode method) {
+    return child(method, IDENTIFIER);
   }
 
   /** Returns the name of {@code method}, or an empty string if it has none. */
   static String name(final SyntaxNode method) {
-    return child(method, IDENTIFIER).map(SyntaxWalk::text).orElse("");
+    return identifier(method).map(SyntaxWalk::text).orElse("");
   }
 
   /** Returns the declared type of each parameter of {@code method}, as written. */
@@ -54,12 +66,14 @@ final class TypeMethods {
     return OBJECT.contains(type);
   }
 
-  private static void collect(final SyntaxNode node, final List<SyntaxNode> methods) {
+  private static void collect(
+      final SyntaxNode node, final SyntaxNode declaration, final List<Member> members) {
+    final SyntaxNode scope = DECLARATION.equals(node.kind()) ? node : declaration;
     for (final SyntaxNode child : node.children()) {
       if (METHOD.equals(child.kind())) {
-        methods.add(child);
+        members.add(new Member(scope, child));
       } else if (MEMBER_CONTAINERS.contains(child.kind())) {
-        collect(child, methods);
+        collect(child, scope, members);
       }
     }
   }
