@@ -837,8 +837,7 @@ eslint = ["no-unassigned-vars"]
 
 [[rule]]
 name = "no-undef"
-status = { typescript = "planned", javascript = "implemented" }
-issues = { typescript = "#326" }
+status = { typescript = "implemented", javascript = "implemented" }
 eslint = ["no-undef"]
 biome = ["noUndeclaredVariables"]
 

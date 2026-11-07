@@ -1515,3 +1515,16 @@ body = '''
 check = "unreachable-code"
 message = "unreachable code"
 '''
+
+[[rules]]
+id = "ward:typescript/no-undef"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+env = ["es2024"]
+message = "'{value}' is not defined"
+'''

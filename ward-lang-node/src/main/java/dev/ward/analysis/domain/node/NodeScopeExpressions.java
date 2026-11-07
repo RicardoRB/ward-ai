@@ -46,6 +46,9 @@ final class NodeScopeExpressions {
       triple(parts);
     } else if (parts.size() == PAIR && updates(parts)) {
       names.target(parts.get(0).children().isEmpty() ? parts.get(1) : parts.get(0), true);
+    } else if (parts.size() == PAIR && leadsWithName(parts)) {
+      read(NodeSyntax.leafOf(parts.get(0)));
+      visit.accept(parts.get(1));
     } else {
       parts.forEach(visit);
     }
@@ -74,6 +77,16 @@ final class NodeScopeExpressions {
 
   private static boolean isAssignment(final SyntaxNode part) {
     return NodeSyntax.isAssignment(part);
+  }
+
+  /**
+   * Reports whether a pair is a name followed by its operand, which the TypeScript grammar builds
+   * for a binary or call expression: {@code a + 1} is {@code [a, (+ 1)]}.
+   */
+  private static boolean leadsWithName(final List<SyntaxNode> parts) {
+    return "identifierName".equals(parts.get(0).kind())
+        && NodeSyntax.leafOf(parts.get(0)) != null
+        && "singleExpression".equals(parts.get(1).kind());
   }
 
   private static boolean updates(final List<SyntaxNode> parts) {
