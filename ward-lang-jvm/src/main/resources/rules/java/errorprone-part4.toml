@@ -1,0 +1,75 @@
+# Error Prone checks at ERROR severity for Java, part 4: calls selected by the type of the receiver or
+# of the first argument. Each is on by default in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/math-round-int-long"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.Math"]
+names = ["round"]
+argument-types = ["int", "long"]
+message = "Math.round on an int or long converts it to a float first and loses precision; cast to double or avoid rounding"
+'''
+
+[[rules]]
+id = "ward:java/period-from"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Period"]
+names = ["from"]
+argument-types = ["java.time.Period"]
+message = "Period.from of a Period returns it unchanged; use the Period itself"
+'''
+
+[[rules]]
+id = "ward:java/period-time-math"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Period"]
+names = ["plus", "minus"]
+argument-types = ["java.time.Duration"]
+message = "a Period cannot add or subtract a Duration; this call throws"
+'''
+
+[[rules]]
+id = "ward:java/tree-to-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["toString"]
+receiver-types = ["com.sun.source.tree.Tree", "com.sun.source.tree.ExpressionTree", "com.sun.source.tree.StatementTree", "com.sun.source.tree.MethodTree", "com.sun.source.tree.ClassTree", "com.sun.source.tree.VariableTree", "com.sun.tools.javac.tree.JCTree"]
+message = "toString() on a javac tree is not a stable source form; use the tree's own printing or its source positions"
+'''
+
+[[rules]]
+id = "ward:java/refers-to-dagger-codegen"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importDeclaration"]
+text = '^import(?:static)?(?:dagger\.(?:internal|producers\.internal)\.|[\w.]*\.\w+_(?:Factory|MembersInjector))'
+message = "import of Dagger internal or generated code; depend on the public Dagger API instead"
+'''

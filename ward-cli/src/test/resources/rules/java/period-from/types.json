@@ -1,0 +1,44 @@
+{
+  "3:12-3:25": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Period"
+      },
+      "name": "from",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAmount"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Period"
+      }
+    }
+  },
+  "3:24-3:24": {
+    "type": {
+      "name": "java.time.Period"
+    }
+  },
+  "4:12-4:25": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Period"
+      },
+      "name": "from",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAmount"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Period"
+      }
+    }
+  },
+  "4:24-4:24": {
+    "type": {
+      "name": "java.time.temporal.TemporalAmount"
+    }
+  }
+}

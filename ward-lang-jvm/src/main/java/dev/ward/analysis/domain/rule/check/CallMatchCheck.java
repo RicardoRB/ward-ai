@@ -43,6 +43,7 @@ public final class CallMatchCheck implements RuleCheck {
    * @param receiverArray whether the receiver must be an array
    * @param text a pattern found in the compact text of the call, empty for any text
    * @param ignored whether the call must be a statement, so that its result is dropped
+   * @param argumentTypes qualified names of the type of the first argument
    */
   public record Criteria(
       Set<String> declaringTypes,
@@ -50,13 +51,15 @@ public final class CallMatchCheck implements RuleCheck {
       Set<String> receiverTypes,
       boolean receiverArray,
       Pattern text,
-      boolean ignored) {
+      boolean ignored,
+      Set<String> argumentTypes) {
 
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
       names = Set.copyOf(names);
       receiverTypes = Set.copyOf(receiverTypes);
+      argumentTypes = Set.copyOf(argumentTypes);
       Objects.requireNonNull(text, "text");
     }
   }
@@ -106,6 +109,7 @@ public final class CallMatchCheck implements RuleCheck {
         && declares(target.get())
         && (criteria.names().isEmpty() || criteria.names().contains(target.get().name()))
         && receiverMeets(call, types)
+        && argumentMeets(call, types)
         && criteria.text().matcher(SyntaxWalk.text(call)).find()
         && (!criteria.ignored() || isStatement(call, visit));
   }
@@ -128,6 +132,27 @@ public final class CallMatchCheck implements RuleCheck {
         && (!criteria.receiverArray() || receiver.get().arrayDepth() > 0)
         && (criteria.receiverTypes().isEmpty()
             || criteria.receiverTypes().contains(receiver.get().name()));
+  }
+
+  private boolean argumentMeets(final SyntaxNode call, final UnitTypeFacts types) {
+    return criteria.argumentTypes().isEmpty()
+        || firstArgument(call)
+            .flatMap(argument -> types.typeOf(argument.span()))
+            .filter(type -> criteria.argumentTypes().contains(type.name()))
+            .isPresent();
+  }
+
+  private static Optional<SyntaxNode> firstArgument(final SyntaxNode call) {
+    return call.children().stream()
+        .filter(part -> "methodCall".equals(part.kind()))
+        .findFirst()
+        .flatMap(
+            invoked ->
+                SyntaxWalk.descendants(invoked).stream()
+                    .filter(node -> "expressionList".equals(node.kind()))
+                    .findFirst())
+        .flatMap(
+            list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).findFirst());
   }
 
   /** Tells whether the call is a whole expression statement, as in {@code call();}. */
