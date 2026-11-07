@@ -103,9 +103,9 @@ dmi-empty-db-password = { status = "planned", issue = "#316" }
 dmi-entry-sets-may-reuse-entry-objects = { status = "planned", issue = "#316" }
 dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor = { status = "planned", issue = "#314" }
 dmi-hardcoded-absolute-filename = { status = "planned", issue = "#316" }
-dmi-invoking-hashcode-on-array = { status = "planned", issue = "#314" }
+dmi-invoking-hashcode-on-array = "implemented"
 dmi-invoking-tostring-on-anonymous-array = "implemented"
-dmi-invoking-tostring-on-array = { status = "planned", issue = "#314" }
+dmi-invoking-tostring-on-array = "implemented"
 dmi-long-bits-to-double-invoked-on-int = { status = "planned", issue = "#314" }
 dmi-misleading-substring = { status = "planned", issue = "#316" }
 dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
@@ -121,7 +121,7 @@ dp-create-classloader-inside-do-privileged = { status = "planned", issue = "#316
 dp-do-inside-do-privileged = { status = "planned", issue = "#316" }
 e-sync-empty-sync = { status = "planned", issue = "#316" }
 ec-array-and-nonarray = { status = "planned", issue = "#314" }
-ec-bad-array-compare = { status = "planned", issue = "#314" }
+ec-bad-array-compare = "implemented"
 ec-incompatible-array-compare = { status = "planned", issue = "#314" }
 ec-null-arg = "implemented"
 ec-unrelated-class-and-interface = { status = "planned", issue = "#314" }
@@ -257,15 +257,15 @@ mtia-suspect-servlet-instance-field = { status = "planned", issue = "#316" }
 mtia-suspect-struts-instance-field = { status = "planned", issue = "#316" }
 mwn-mismatched-notify = { status = "planned", issue = "#316" }
 mwn-mismatched-wait = { status = "planned", issue = "#316" }
-nm-bad-equal = { status = "planned", issue = "#314" }
+nm-bad-equal = "implemented"
 nm-class-naming-convention = { status = "planned", issue = "#316" }
 nm-class-not-exception = { status = "planned", issue = "#316" }
 nm-confusing = { status = "planned", issue = "#316" }
 nm-field-naming-convention = { status = "planned", issue = "#316" }
 nm-future-keyword-used-as-identifier = { status = "planned", issue = "#316" }
 nm-future-keyword-used-as-member-identifier = { status = "planned", issue = "#316" }
-nm-lcase-hashcode = { status = "planned", issue = "#314" }
-nm-lcase-tostring = { status = "planned", issue = "#314" }
+nm-lcase-hashcode = "implemented"
+nm-lcase-tostring = "implemented"
 nm-method-constructor-confusion = { status = "planned", issue = "#314" }
 nm-method-naming-convention = { status = "planned", issue = "#316" }
 nm-same-simple-name-as-interface = { status = "planned", issue = "#316" }
@@ -333,7 +333,7 @@ pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = 
 ps-public-semaphores = { status = "planned", issue = "#316" }
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
 pzla-prefer-zero-length-arrays = { status = "planned", issue = "#316" }
-qba-questionable-boolean-assignment = { status = "planned", issue = "#314" }
+qba-questionable-boolean-assignment = "implemented"
 qf-questionable-for-loop = { status = "planned", issue = "#316" }
 range-array-index = { status = "planned", issue = "#314" }
 range-array-length = { status = "planned", issue = "#314" }
@@ -348,8 +348,8 @@ rcn-redundant-nullcheck-of-nonnull-value = { status = "planned", issue = "#316" 
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
 rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
 re-bad-syntax-for-regular-expression = { status = "planned", issue = "#314" }
-re-cant-use-file-separator-as-regular-expression = { status = "planned", issue = "#314" }
-re-possible-unintended-pattern = { status = "planned", issue = "#314" }
+re-cant-use-file-separator-as-regular-expression = "implemented"
+re-possible-unintended-pattern = "implemented"
 rec-catch-exception = { status = "planned", issue = "#316" }
 reflc-reflection-may-increase-accessibility-of-class = { status = "planned", issue = "#316" }
 reflf-reflection-may-increase-accessibility-of-field = { status = "planned", issue = "#316" }
@@ -358,13 +358,13 @@ rp-c-repeated-conditional-test = { status = "planned", issue = "#314" }
 rr-not-checked = { status = "planned", issue = "#316" }
 rs-readobject-sync = { status = "planned", issue = "#316" }
 ru-invoke-run = { status = "planned", issue = "#316" }
-rv-01-to-int = { status = "planned", issue = "#314" }
-rv-absolute-value-of-hashcode = { status = "planned", issue = "#314" }
-rv-absolute-value-of-random-int = { status = "planned", issue = "#314" }
-rv-check-compareto-for-specific-return-value = { status = "planned", issue = "#314" }
+rv-01-to-int = "implemented"
+rv-absolute-value-of-hashcode = "implemented"
+rv-absolute-value-of-random-int = "implemented"
+rv-check-compareto-for-specific-return-value = "implemented"
 rv-check-for-positive-indexof = { status = "planned", issue = "#316" }
 rv-dont-just-null-check-readline = { status = "planned", issue = "#316" }
-rv-exception-not-thrown = { status = "planned", issue = "#314" }
+rv-exception-not-thrown = "implemented"
 rv-negating-result-of-compareto = { status = "planned", issue = "#316" }
 rv-rem-of-hashcode = { status = "planned", issue = "#316" }
 rv-rem-of-random-int = { status = "planned", issue = "#316" }
@@ -374,14 +374,14 @@ rv-return-value-ignored-inferred = { status = "planned", issue = "#316" }
 rv-return-value-ignored-no-side-effect = { status = "planned", issue = "#316" }
 rv-return-value-of-putifabsent-ignored = { status = "planned", issue = "#316" }
 sa-field-double-assignment = { status = "planned", issue = "#316" }
-sa-field-self-assignment = { status = "planned", issue = "#314" }
-sa-field-self-comparison = { status = "planned", issue = "#314" }
-sa-field-self-computation = { status = "planned", issue = "#314" }
+sa-field-self-assignment = "implemented"
+sa-field-self-comparison = "implemented"
+sa-field-self-computation = "implemented"
 sa-local-double-assignment = { status = "planned", issue = "#316" }
 sa-local-self-assignment = { status = "planned", issue = "#316" }
-sa-local-self-assignment-instead-of-field = { status = "planned", issue = "#314" }
-sa-local-self-comparison = { status = "planned", issue = "#314" }
-sa-local-self-computation = { status = "planned", issue = "#314" }
+sa-local-self-assignment-instead-of-field = "implemented"
+sa-local-self-comparison = "implemented"
+sa-local-self-computation = "implemented"
 sbsc-use-stringbuffer-concatenation = { status = "planned", issue = "#316" }
 sc-start-in-ctor = { status = "planned", issue = "#316" }
 se-bad-field = { status = "planned", issue = "#316" }
@@ -389,7 +389,7 @@ se-bad-field-inner-class = { status = "planned", issue = "#316" }
 se-bad-field-store = { status = "planned", issue = "#316" }
 se-comparator-should-be-serializable = { status = "planned", issue = "#316" }
 se-inner-class = { status = "planned", issue = "#316" }
-se-method-must-be-private = { status = "planned", issue = "#314" }
+se-method-must-be-private = "implemented"
 se-no-serialversionid = { status = "planned", issue = "#316" }
 se-no-suitable-constructor = { status = "planned", issue = "#316" }
 se-no-suitable-constructor-for-externalization = { status = "planned", issue = "#316" }
@@ -398,7 +398,7 @@ se-nonlong-serialversionid = { status = "planned", issue = "#316" }
 se-nonstatic-serialversionid = { status = "planned", issue = "#316" }
 se-prevent-ext-obj-overwrite = { status = "planned", issue = "#316" }
 se-private-read-resolve-not-inherited = { status = "planned", issue = "#316" }
-se-read-resolve-is-static = { status = "planned", issue = "#314" }
+se-read-resolve-is-static = "implemented"
 se-read-resolve-must-return-object = { status = "planned", issue = "#316" }
 se-transient-field-not-restored = { status = "planned", issue = "#316" }
 se-transient-field-of-nonserializable-class = { status = "planned", issue = "#316" }
@@ -430,8 +430,8 @@ stcal-invoke-on-static-calendar-instance = { status = "planned", issue = "#316" 
 stcal-invoke-on-static-date-format-instance = { status = "planned", issue = "#316" }
 stcal-static-calendar-instance = { status = "planned", issue = "#316" }
 stcal-static-simple-date-format-instance = { status = "planned", issue = "#316" }
-sti-interrupted-on-currentthread = { status = "planned", issue = "#314" }
-sti-interrupted-on-unknownthread = { status = "planned", issue = "#314" }
+sti-interrupted-on-currentthread = "implemented"
+sti-interrupted-on-unknownthread = "implemented"
 sw-swing-methods-invoked-in-swing-thread = { status = "planned", issue = "#316" }
 swl-sleep-with-lock-held = { status = "planned", issue = "#316" }
 testing = { status = "planned", issue = "#316" }
