@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Repairs the expressions that the grammar reads as a name followed by an expression: {@code f(x)},
@@ -16,10 +15,7 @@ import java.util.Set;
  */
 final class Reassociate {
   private static final String SINGLE = "singleExpression";
-  private static final String ARGUMENTS = "arguments";
-  private static final String SEQUENCE = "expressionSequence";
   private static final int INDEX_PARTS = 3;
-  private static final Set<String> MEMBER_TOKENS = Set.of(".", "?.", "!", "?");
 
   private Reassociate() {}
 

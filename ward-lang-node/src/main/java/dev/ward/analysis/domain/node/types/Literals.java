@@ -16,11 +16,15 @@ final class Literals {
   /** Returns the type of a {@code literal} node, or empty if it is not a simple literal. */
   static Optional<TsType> of(final SyntaxNode literal) {
     final List<String> tokens = TreeText.leaves(literal);
-    if (tokens.size() != 1) {
+    if (!isSingle(tokens)) {
       return Optional.of(TsType.named(STRING)).filter(ignored -> isTemplate(tokens));
     }
     final String token = tokens.get(0);
     return Optional.of(typeOfToken(token, literal));
+  }
+
+  private static boolean isSingle(final List<String> tokens) {
+    return tokens.size() == 1;
   }
 
   private static boolean isTemplate(final List<String> tokens) {
@@ -50,21 +54,26 @@ final class Literals {
   /** Returns the type with literal types widened to their primitive. */
   static TsType widen(final TsType type) {
     if (type instanceof TsType.Named named && named.args().isEmpty()) {
-      final String name = named.name();
-      if (name.startsWith("\"")) {
-        return TsType.named(STRING);
-      }
-      if ("true".equals(name) || "false".equals(name)) {
-        return TsType.named(BOOLEAN);
-      }
-      if (!name.isEmpty() && (Character.isDigit(name.charAt(0)) || name.charAt(0) == '-')) {
-        return TsType.named(NUMBER);
-      }
-      return type;
+      return widenName(named);
     }
     if (type instanceof TsType.Union union) {
       return new TsType.Union(union.parts().stream().map(Literals::widen).toList());
     }
     return type;
+  }
+
+  private static TsType widenName(final TsType.Named named) {
+    final String name = named.name();
+    if (name.startsWith("\"")) {
+      return TsType.named(STRING);
+    }
+    if ("true".equals(name) || "false".equals(name)) {
+      return TsType.named(BOOLEAN);
+    }
+    return isNumber(name) ? TsType.named(NUMBER) : named;
+  }
+
+  private static boolean isNumber(final String name) {
+    return !name.isEmpty() && (Character.isDigit(name.charAt(0)) || name.charAt(0) == '-');
   }
 }

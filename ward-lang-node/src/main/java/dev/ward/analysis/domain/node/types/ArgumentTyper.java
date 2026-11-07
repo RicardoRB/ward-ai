@@ -39,7 +39,8 @@ final class ArgumentTyper {
         continue;
       }
       if (!fitting.isEmpty() && index < fitting.get(0).params().size()) {
-        typer.functions().contextualize(value, fitting.get(0).params().get(index).type());
+        ParamContext.contextualize(
+            value, fitting.get(0).params().get(index).type(), typer.names()::contextualize);
       }
       types.add(typer.typeOf(value));
     }

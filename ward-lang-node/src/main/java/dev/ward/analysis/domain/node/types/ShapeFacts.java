@@ -8,8 +8,6 @@ import java.util.Map;
 
 /** Helpers split out of {@link DeclarationFacts}. */
 final class ShapeFacts {
-  private static final String CLASS = "classDeclaration";
-
   private ShapeFacts() {}
 
   static Sym ofType(final TsType type) {

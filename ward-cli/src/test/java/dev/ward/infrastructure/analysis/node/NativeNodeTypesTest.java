@@ -30,7 +30,9 @@ class NativeNodeTypesTest {
 
   @TempDir Path project;
 
-  /** Every TypeScript {@code types.json} fixture must be compared below; a new one fails this test. */
+  /**
+   * Every TypeScript {@code types.json} fixture must be compared below; a new one fails this test.
+   */
   @Test
   void everyTypeScriptTypesJsonFixtureIsCovered() throws IOException {
     try (Stream<Path> files = Files.walk(Path.of("src/test/resources"))) {
@@ -52,7 +54,9 @@ class NativeNodeTypesTest {
     final UnitTypeFacts expected = TypeFactsFixture.read(FIXTURES.resolve("typescript/types.json"));
     final Span max = span(text, "Math.max(1, 2)");
     final Span base =
-        span(text, text.substring(text.indexOf("abstract class Base"), text.indexOf("class Impl") - 1));
+        span(
+            text,
+            text.substring(text.indexOf("abstract class Base"), text.indexOf("class Impl") - 1));
     final Span impl =
         span(text, text.substring(text.indexOf("class Impl"), text.indexOf("const biggest") - 1));
     final Span run = span(text, "run(): number {\n    return 1;\n  }");

@@ -91,7 +91,7 @@ final class ParamReader {
 
   static boolean isIdentifier(final String text) {
     return !text.isEmpty()
-        && (Character.isJavaIdentifierStart(text.charAt(0)))
+        && Character.isJavaIdentifierStart(text.charAt(0))
         && text.chars().allMatch(Character::isJavaIdentifierPart);
   }
 }

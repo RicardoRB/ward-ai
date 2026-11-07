@@ -23,27 +23,28 @@ final class ChainFlattener {
     if (parts.isEmpty()) {
       return Optional.empty();
     }
+    final Optional<ChainItem> leading = leading(rest, parts);
+    if (leading.isPresent()) {
+      return Optional.of(new ArrayList<>(List.of(leading.get())));
+    }
+    return SINGLE.equals(parts.get(0).kind()) ? spine(parts) : Optional.empty();
+  }
+
+  /**
+   * Reads the operand that starts the chain: a call, an index or a sign turned into an operator.
+   */
+  private static Optional<ChainItem> leading(final SyntaxNode rest, final List<SyntaxNode> parts) {
     if (Exprs.isParenthesized(parts)) {
-      return Optional.of(
-          new ArrayList<>(
-              List.of(new ChainItem(ChainItem.Kind.CALL, "", List.of(arguments(rest))))));
+      return Optional.of(new ChainItem(ChainItem.Kind.CALL, "", List.of(arguments(rest))));
     }
     if (parts.size() == 1 && "arrayLiteral".equals(parts.get(0).kind())) {
-      return Optional.of(
-          new ArrayList<>(List.of(new ChainItem(ChainItem.Kind.INDEX, "", index(parts.get(0))))));
+      return Optional.of(new ChainItem(ChainItem.Kind.INDEX, "", index(parts.get(0))));
     }
     final String first = Exprs.token(parts.get(0));
-    if (parts.size() == 2
-        && ("+".equals(first) || "-".equals(first))
-        && SINGLE.equals(parts.get(1).kind())) {
-      return Optional.of(
-          new ArrayList<>(
-              List.of(new ChainItem(ChainItem.Kind.BINARY, first, List.of(parts.get(1))))));
-    }
-    if (SINGLE.equals(parts.get(0).kind())) {
-      return spine(parts);
-    }
-    return Optional.empty();
+    final boolean sign = "+".equals(first) || "-".equals(first);
+    return sign && parts.size() == 2 && SINGLE.equals(parts.get(1).kind())
+        ? Optional.of(new ChainItem(ChainItem.Kind.BINARY, first, List.of(parts.get(1))))
+        : Optional.empty();
   }
 
   static Optional<List<ChainItem>> spine(final List<SyntaxNode> parts) {

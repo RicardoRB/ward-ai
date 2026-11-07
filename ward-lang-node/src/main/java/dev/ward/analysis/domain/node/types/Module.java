@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** The scope of one file, of one ambient module declared in a file, or of global declarations. */
 final class Module implements Lookup {
@@ -43,11 +44,9 @@ final class Module implements Lookup {
     this.file = file;
     this.decls = List.copyOf(decls);
     this.kind = kind;
-    final Map<String, List<Decl>> byName = new HashMap<>();
-    for (final Decl decl : this.decls) {
-      byName.computeIfAbsent(decl.name(), key -> new ArrayList<>()).add(decl);
-    }
-    byName.forEach((name, list) -> declared.put(name, Sym.of(list, this)));
+    this.decls.stream()
+        .collect(Collectors.groupingBy(Decl::name))
+        .forEach((name, list) -> declared.put(name, Sym.of(list, this)));
   }
 
   List<Decl> decls() {

@@ -66,7 +66,7 @@ public final class ProjectDeclarationFiles implements DeclarationFiles {
                 return Files.size(file) > MAX_BYTES
                     ? Optional.empty()
                     : Optional.of(Files.readString(file, StandardCharsets.UTF_8));
-              } catch (IOException | RuntimeException unreadable) {
+              } catch (IOException unreadable) {
                 LOGGER.log(Level.FINE, "event=declaration-file-unreadable");
                 return Optional.empty();
               }

@@ -55,14 +55,16 @@ class DeclCodecTest {
   }
 
   private static String printed(final Decl decl) {
-    final StringBuilder out =
-        new StringBuilder(decl.kind() + " " + decl.name() + " " + decl.flags());
+    final StringBuilder out = new StringBuilder();
+    out.append(decl.kind()).append(' ').append(decl.name()).append(' ').append(decl.flags());
     decl.members()
         .forEach(
             member ->
                 out.append(' ').append(member.name()).append(':').append(member.type().print()));
-    decl.header().calls().forEach(sig -> out.append(' ').append(Ty.printSig(sig, "=>")));
-    decl.header().constructs().forEach(sig -> out.append(" new").append(Ty.printSig(sig, "=>")));
+    decl.header().calls().forEach(sig -> out.append(' ').append(TsType.printSig(sig, "=>")));
+    decl.header()
+        .constructs()
+        .forEach(sig -> out.append(" new").append(TsType.printSig(sig, "=>")));
     decl.header().extendsTypes().forEach(type -> out.append(" extends ").append(type.print()));
     out.append(' ').append(decl.type().print());
     decl.body().forEach(inner -> out.append(" {").append(printed(inner)).append('}'));

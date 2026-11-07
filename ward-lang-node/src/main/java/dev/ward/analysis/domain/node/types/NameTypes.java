@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.scope.NameReference;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /** Types names: variables, parameters, functions, classes, imports and globals. */
@@ -39,19 +40,25 @@ final class NameTypes {
   /** Returns the type of a name used as an expression. */
   TsType identifier(final SyntaxNode node) {
     final String name = TreeText.text(node);
-    if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
-      return TsType.named(name);
-    }
     final NameReference reference = model.reference(node.span());
     if (reference != null && reference.resolved().isPresent()) {
       return bindingValue(reference.resolved().get(), name);
     }
+    return keyword(name).orElseGet(() -> unbound(node, name));
+  }
+
+  private static Optional<TsType> keyword(final String name) {
     return switch (name) {
-      case UNDEFINED -> TsType.named(UNDEFINED);
-      case "NaN", "Infinity" -> TsType.named(Literals.NUMBER);
-      case "this" -> calls.thisType(node);
-      default -> MemberValues.valueOf(program.globals().find(name), name);
+      case "true", "false", "null", UNDEFINED -> Optional.of(TsType.named(name));
+      case "NaN", "Infinity" -> Optional.of(TsType.named(Literals.NUMBER));
+      default -> Optional.empty();
     };
+  }
+
+  private TsType unbound(final SyntaxNode node, final String name) {
+    return "this".equals(name)
+        ? calls.thisType(node)
+        : MemberValues.valueOf(program.globals().find(name), name);
   }
 
   private TsType bindingValue(final Binding binding, final String name) {

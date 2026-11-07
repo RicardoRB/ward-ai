@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.node.types;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +24,7 @@ final class SymMembers {
     }
     final List<Member> own = new ArrayList<>();
     final List<Sig> sigs = new ArrayList<>();
-    Sym.Located owner = null;
-    TsType type = TsType.UNKNOWN;
+    String owner = "";
     for (final Sym.Located located : sym.types()) {
       final Decl decl = located.decl();
       final Map<String, TsType> subst = MemberValues.substitution(decl.header().typeParams(), args);
@@ -38,20 +36,22 @@ final class SymMembers {
         }
         continue;
       }
-      for (final Member member : decl.members()) {
-        if (member.name().equals(name) && !member.has(Member.STATIC)) {
-          final Member applied = Instantiate.member(member, subst, located.scope());
-          own.add(applied);
-          sigs.addAll(applied.sigs());
-          owner = owner == null ? located : owner;
-          type = own.size() == 1 ? applied.type() : type;
-        }
-      }
+      final List<Member> found = declared(located, subst, name);
+      owner = owner.isEmpty() && !found.isEmpty() ? decl.name() : owner;
+      own.addAll(found);
+      found.forEach(member -> sigs.addAll(member.sigs()));
     }
-    if (!own.isEmpty()) {
-      return new Members.Found(own.get(0), sigs, type, owner.decl().name());
-    }
-    return heritage(sym, args, name, depth);
+    return own.isEmpty()
+        ? heritage(sym, args, name, depth)
+        : new Members.Found(own.get(0), sigs, own.get(0).type(), owner);
+  }
+
+  private static List<Member> declared(
+      final Sym.Located located, final Map<String, TsType> subst, final String name) {
+    return located.decl().members().stream()
+        .filter(member -> member.name().equals(name) && !member.has(Member.STATIC))
+        .map(member -> Instantiate.member(member, subst, located.scope()))
+        .toList();
   }
 
   private Members.Found heritage(
@@ -80,7 +80,7 @@ final class SymMembers {
       for (final Member member : decl.members()) {
         final boolean isStatic = decl.kind() == Decl.Kind.ENUM || member.has(Member.STATIC);
         if (isStatic && member.name().equals(name)) {
-          final Member applied = Instantiate.member(member, new HashMap<>(), located.scope());
+          final Member applied = Instantiate.member(member, Map.of(), located.scope());
           return new Members.Found(applied, applied.sigs(), applied.type(), decl.name());
         }
       }

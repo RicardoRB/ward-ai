@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** Collects the members, constructors and call signatures a reader finds. */
 final class MemberSink {
@@ -90,20 +91,16 @@ final class MemberSink {
 
   /** Returns the decorator names of a {@code decoratorList}, without {@code @}. */
   static List<String> decorators(final SyntaxNode list) {
-    final List<String> names = new ArrayList<>();
     if (list == null) {
-      return names;
+      return new ArrayList<>();
     }
-    for (final SyntaxNode decorator : TreeKit.children(list, "decorator")) {
-      final StringBuilder name = new StringBuilder();
-      final List<String> leaves = TreeText.leaves(decorator);
-      int index = 1;
-      while (index < leaves.size() && !"(".equals(leaves.get(index))) {
-        name.append(leaves.get(index));
-        index++;
-      }
-      names.add(name.toString());
-    }
-    return names;
+    return TreeKit.children(list, "decorator").stream()
+        .map(
+            decorator ->
+                TreeText.leaves(decorator).stream()
+                    .skip(1)
+                    .takeWhile(leaf -> !"(".equals(leaf))
+                    .collect(Collectors.joining()))
+        .toList();
   }
 }

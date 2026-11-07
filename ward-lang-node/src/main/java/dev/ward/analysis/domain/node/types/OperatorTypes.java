@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.node.types;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /** Types unary operators, casts, conditionals and the other operator forms of expressions. */
@@ -31,8 +32,21 @@ final class OperatorTypes {
     return parts.isEmpty() ? TsType.UNKNOWN : typer.apply(parts.get(parts.size() - 1));
   }
 
+  /**
+   * Returns the type of a prefix form such as {@code typeof x} or {@code -x}, if the parts are one.
+   */
+  Optional<TsType> prefix(final String first, final List<SyntaxNode> parts) {
+    return switch (first) {
+      case "typeof" -> Optional.of(TsType.named(Literals.STRING));
+      case "void" -> Optional.of(TsType.named("undefined"));
+      case "!", "delete" -> Optional.of(TsType.named(Literals.BOOLEAN));
+      case "-", "+", "~", "++", "--" -> Optional.of(unary(first, parts.get(1)));
+      default -> Optional.empty();
+    };
+  }
+
   /** Returns the type of a prefix operator applied to {@code operand}. */
-  TsType unary(final String operator, final SyntaxNode operand) {
+  private TsType unary(final String operator, final SyntaxNode operand) {
     final TsType type = typer.apply(operand);
     final boolean negatedNumber =
         "-".equals(operator)

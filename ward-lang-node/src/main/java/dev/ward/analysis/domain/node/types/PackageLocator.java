@@ -50,22 +50,22 @@ final class PackageLocator {
     }
     final String name = String.join("/", List.of(segments).subList(0, length));
     final String subpath = String.join("/", List.of(segments).subList(length, segments.length));
-    String directory = from.contains("/") ? from.substring(0, from.lastIndexOf('/')) : "";
-    while (true) {
-      final String root = directory.isEmpty() ? NODE_MODULES : directory + "/" + NODE_MODULES;
-      final Optional<String> own = entry(root + "/" + name, subpath);
-      if (own.isPresent()) {
-        return own;
-      }
-      final Optional<String> types = entry(root + "/@types/" + typesName(name), subpath);
-      if (types.isPresent()) {
-        return types;
-      }
-      if (directory.isEmpty()) {
-        return Optional.empty();
-      }
-      directory = directory.contains("/") ? directory.substring(0, directory.lastIndexOf('/')) : "";
-    }
+    return search(parent(from), name, subpath);
+  }
+
+  private static String parent(final String path) {
+    return path.contains("/") ? path.substring(0, path.lastIndexOf('/')) : "";
+  }
+
+  /** Looks in {@code node_modules} of {@code directory}, then of each directory above it. */
+  private Optional<String> search(final String directory, final String name, final String subpath) {
+    final String root = directory.isEmpty() ? NODE_MODULES : directory + "/" + NODE_MODULES;
+    final Optional<String> found =
+        entry(root + "/" + name, subpath)
+            .or(() -> entry(root + "/@types/" + typesName(name), subpath));
+    return found.isPresent() || directory.isEmpty()
+        ? found
+        : search(parent(directory), name, subpath);
   }
 
   private Optional<String> entry(final String packageDirectory, final String subpath) {
@@ -100,5 +100,25 @@ final class PackageLocator {
   /** Returns the name of the {@code @types} directory of a package. */
   static String typesName(final String packageName) {
     return packageName.startsWith("@") ? packageName.substring(1).replace("/", "__") : packageName;
+  }
+
+  static String packageDirectory(final String path) {
+    final int marker = path.lastIndexOf(NODE_MODULES + "/");
+    if (marker < 0) {
+      return null;
+    }
+    final String[] segments = path.substring(marker + NODE_MODULES.length() + 1).split("/");
+    final int length = segments.length > 0 && segments[0].startsWith("@") ? 2 : 1;
+    if (segments.length <= length) {
+      return null;
+    }
+    return path.substring(0, marker)
+        + NODE_MODULES
+        + "/"
+        + String.join("/", List.of(segments).subList(0, length));
+  }
+
+  static String bare(final String specifier) {
+    return specifier.startsWith("node:") ? specifier.substring("node:".length()) : specifier;
   }
 }

@@ -4,14 +4,16 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Types the expressions of one unit on its scope model: literals, names, members, calls, operators
  * and function expressions. An expression that needs full checking is {@link TsType#UNKNOWN}.
  */
 final class ExprTyper {
-  private static final String STRING = Literals.STRING;
-  private static final String UNDEFINED = "undefined";
+  private static final int WRAPPED = 1;
+  private static final Set<String> FUNCTION_KINDS =
+      Set.of("anonymousFunction", "arrowFunctionDeclaration", "functionDeclaration");
 
   private final Members members;
   private final Map<SyntaxNode, TsType> memo = new IdentityHashMap<>();
@@ -68,18 +70,26 @@ final class ExprTyper {
   }
 
   private TsType compute(final SyntaxNode node) {
-    return switch (node.kind()) {
+    final String kind = node.kind();
+    if (FUNCTION_KINDS.contains(kind)) {
+      return functions.of(node);
+    }
+    return switch (kind) {
       case "expressionSequence" -> operators.sequence(node);
       case "literal" -> Literals.of(node).orElse(TsType.UNKNOWN);
       case Exprs.IDENTIFIER_NAME, "identifier" -> names.identifier(node);
       case "arrayLiteral" -> literals.arrayLiteral(node);
       case "objectLiteral" -> literals.objectLiteral(node);
-      case "anonymousFunction", "arrowFunctionDeclaration", "functionDeclaration" ->
-          functions.of(node);
-      case "argument" -> typeOf(Exprs.argumentValue(node));
       case Exprs.SINGLE -> single(node);
-      default -> "this".equals(Exprs.token(node)) ? constructs.thisType(node) : TsType.UNKNOWN;
+      default -> other(node);
     };
+  }
+
+  private TsType other(final SyntaxNode node) {
+    if ("argument".equals(node.kind())) {
+      return typeOf(Exprs.argumentValue(node));
+    }
+    return "this".equals(Exprs.token(node)) ? constructs.thisType(node) : TsType.UNKNOWN;
   }
 
   private TsType single(final SyntaxNode node) {
@@ -87,7 +97,7 @@ final class ExprTyper {
     if (parts.isEmpty()) {
       return TsType.UNKNOWN;
     }
-    if (parts.size() == 1) {
+    if (parts.size() == WRAPPED) {
       return typeOf(parts.get(0));
     }
     final String first = Exprs.token(parts.get(0));
@@ -95,12 +105,8 @@ final class ExprTyper {
       case "new" ->
           constructs.constructed(node).map(CallTyper.Call::returns).orElse(TsType.UNKNOWN);
       case "await" -> OperatorTypes.awaited(typeOf(parts.get(1)));
-      case "typeof" -> TsType.named(STRING);
-      case "void" -> TsType.named(UNDEFINED);
-      case "!", "delete" -> TsType.named(Literals.BOOLEAN);
-      case "-", "+", "~", "++", "--" -> operators.unary(first, parts.get(1));
       case "(" -> typeOf(parts.get(1));
-      default -> infix(node, parts);
+      default -> operators.prefix(first, parts).orElseGet(() -> infix(node, parts));
     };
   }
 

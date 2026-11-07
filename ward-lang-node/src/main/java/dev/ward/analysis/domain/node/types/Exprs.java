@@ -36,12 +36,11 @@ final class Exprs {
 
   /** Returns the name node when {@code node} is, or wraps exactly, a name expression; else null. */
   static SyntaxNode nameOf(final SyntaxNode node) {
-    SyntaxNode current = node;
-    while (current != null && !isNameKind(current.kind())) {
-      final List<SyntaxNode> parts = TreeKit.parts(current);
-      current = parts.size() == 1 ? parts.get(0) : null;
+    if (isNameKind(node.kind())) {
+      return node;
     }
-    return current;
+    final List<SyntaxNode> parts = TreeKit.parts(node);
+    return parts.size() == 1 ? nameOf(parts.get(0)) : null;
   }
 
   /** Returns the text of {@code node} when it is a single token, else empty. */

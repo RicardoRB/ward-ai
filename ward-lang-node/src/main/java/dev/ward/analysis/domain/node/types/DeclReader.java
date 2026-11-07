@@ -3,11 +3,11 @@ package dev.ward.analysis.domain.node.types;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeImportBindings;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Reads the declaration index of a file from its parse tree: what it declares, imports, exports and
@@ -37,10 +37,13 @@ public final class DeclReader {
   public static FileDecls read(final SyntaxNode tree, final String text) {
     final DeclSink sink = new DeclSink();
     new DeclReader(sink).elements(tree);
-    final Map<String, FileDecls.Import> imports = new HashMap<>();
-    for (final NodeImportBindings.Import binding : NodeImportBindings.of(tree)) {
-      imports.put(binding.local(), new FileDecls.Import(binding.specifier(), binding.member()));
-    }
+    final Map<String, FileDecls.Import> imports =
+        NodeImportBindings.of(tree).stream()
+            .collect(
+                Collectors.toMap(
+                    NodeImportBindings.Import::local,
+                    binding -> new FileDecls.Import(binding.specifier(), binding.member()),
+                    (first, second) -> second));
     final boolean isModule =
         !imports.isEmpty()
             || !sink.exports().isEmpty()

@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.LanguageFrontend;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -115,27 +114,11 @@ public final class Program {
 
   /** The key of a file of a package, which changes when the package does, or null for no cache. */
   private String cacheKey(final String path) {
-    final String directory = packageDirectory(path);
+    final String directory = PackageLocator.packageDirectory(path);
     if (directory == null) {
       return null;
     }
     return files.packageHash(directory).map(hash -> hash + ":" + path).orElse(null);
-  }
-
-  private static String packageDirectory(final String path) {
-    final int marker = path.lastIndexOf(NODE_MODULES + "/");
-    if (marker < 0) {
-      return null;
-    }
-    final String[] segments = path.substring(marker + NODE_MODULES.length() + 1).split("/");
-    final int length = segments.length > 0 && segments[0].startsWith("@") ? 2 : 1;
-    if (segments.length <= length) {
-      return null;
-    }
-    return path.substring(0, marker)
-        + NODE_MODULES
-        + "/"
-        + String.join("/", List.of(segments).subList(0, length));
   }
 
   /** Returns the scope of the file at {@code path}. */
@@ -168,10 +151,6 @@ public final class Program {
     final Optional<String> installed = locator.installed(from, specifier);
     return installed.isPresent()
         ? fileModule(installed.get())
-        : globals.ambientModule(bare(specifier));
-  }
-
-  private static String bare(final String specifier) {
-    return specifier.startsWith("node:") ? specifier.substring("node:".length()) : specifier;
+        : globals.ambientModule(PackageLocator.bare(specifier));
   }
 }

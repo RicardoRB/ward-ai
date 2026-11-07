@@ -10,6 +10,12 @@ import java.util.Optional;
 /** Resolves calls and constructions to the signature they use. */
 final class CallTyper {
 
+  private final ExprTyper typer;
+  private final UnitModel model;
+  private final Members members;
+  private final ArgumentTyper arguments;
+  private final Map<SyntaxNode, Optional<Call>> memo = new IdentityHashMap<>();
+
   /**
    * A resolved call.
    *
@@ -20,12 +26,6 @@ final class CallTyper {
    * @param isStatic whether the callee needs no instance
    */
   record Call(String owner, String name, Sig sig, TsType returns, boolean isStatic) {}
-
-  private final ExprTyper typer;
-  private final UnitModel model;
-  private final Members members;
-  private final ArgumentTyper arguments;
-  private final Map<SyntaxNode, Optional<Call>> memo = new IdentityHashMap<>();
 
   CallTyper(
       final ExprTyper typer,

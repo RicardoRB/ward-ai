@@ -28,7 +28,7 @@ class ReassociateTest {
   private static String render(final SyntaxNode node) {
     final List<SyntaxNode> parts = TreeKit.parts(node);
     if (!"singleExpression".equals(node.kind()) || parts.size() <= 1) {
-      return TreeKit.text(node);
+      return TreeText.text(node);
     }
     final StringBuilder out = new StringBuilder("(");
     for (final SyntaxNode part : parts) {

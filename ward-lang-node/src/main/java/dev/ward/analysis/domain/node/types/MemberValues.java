@@ -7,6 +7,14 @@ import java.util.Map;
 /** Helpers split out of {@link Members}. */
 final class MemberValues {
 
+  private static final Map<String, String> BOXES =
+      Map.of(
+          "boolean", "Boolean",
+          "true", "Boolean",
+          "false", "Boolean",
+          "bigint", "BigInt",
+          "symbol", "Symbol");
+
   private MemberValues() {}
 
   static TsType common(final List<TsType> types) {
@@ -18,18 +26,18 @@ final class MemberValues {
     if (name.isEmpty()) {
       return null;
     }
-    if ("string".equals(name) || name.charAt(0) == '"') {
+    if (isStringLiteral(name)) {
       return "String";
     }
-    if ("number".equals(name) || Character.isDigit(name.charAt(0)) || name.charAt(0) == '-') {
-      return "Number";
-    }
-    return switch (name) {
-      case "boolean", "true", "false" -> "Boolean";
-      case "bigint" -> "BigInt";
-      case "symbol" -> "Symbol";
-      default -> null;
-    };
+    return isNumeric(name) ? "Number" : BOXES.get(name);
+  }
+
+  private static boolean isStringLiteral(final String name) {
+    return "string".equals(name) || name.charAt(0) == '"';
+  }
+
+  private static boolean isNumeric(final String name) {
+    return "number".equals(name) || Character.isDigit(name.charAt(0)) || name.charAt(0) == '-';
   }
 
   static boolean isNullish(final TsType type) {
@@ -52,9 +60,13 @@ final class MemberValues {
     if (sym == null) {
       return TsType.UNKNOWN;
     }
-    for (final Sym.Located located : sym.of(Decl.Kind.VARIABLE)) {
-      return Instantiate.apply(located.decl().type(), Map.of(), located.scope());
-    }
+    return sym.of(Decl.Kind.VARIABLE).stream()
+        .findFirst()
+        .map(located -> Instantiate.apply(located.decl().type(), Map.of(), located.scope()))
+        .orElseGet(() -> typeofValue(sym, name));
+  }
+
+  private static TsType typeofValue(final Sym sym, final String name) {
     final boolean isValue = sym.parts().stream().anyMatch(located -> located.decl().isValue());
     return isValue ? new TsType.Typeof(name, new NameRef(sym, name)) : TsType.UNKNOWN;
   }

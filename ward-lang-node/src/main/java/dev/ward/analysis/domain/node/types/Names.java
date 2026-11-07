@@ -28,16 +28,18 @@ final class Names {
 
   /** Returns the declarations of {@code name} exported by the namespaces in {@code sym}. */
   static Sym member(final Sym sym, final String name) {
-    Sym found = null;
-    for (final Sym.Located located : sym.parts()) {
-      if (located.decl().kind() == Decl.Kind.NAMESPACE) {
-        final Sym inner =
-            located.decl().has(Decl.MODULE) && located.scope() instanceof Module module
-                ? module.exported(name)
-                : new Namespace(located.decl(), located.scope()).exported(name);
-        found = inner == null ? found : inner.join(found);
-      }
+    return sym.parts().stream()
+        .filter(located -> located.decl().kind() == Decl.Kind.NAMESPACE)
+        .map(located -> exportedBy(located, name))
+        .filter(inner -> inner != null)
+        .reduce((first, second) -> second.join(first))
+        .orElse(null);
+  }
+
+  private static Sym exportedBy(final Sym.Located located, final String name) {
+    if (located.decl().has(Decl.MODULE) && located.scope() instanceof Module module) {
+      return module.exported(name);
     }
-    return found;
+    return new Namespace(located.decl(), located.scope()).exported(name);
   }
 }

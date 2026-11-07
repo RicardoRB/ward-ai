@@ -19,12 +19,10 @@ final class Calls {
 
   /** Returns the first overload of {@code sigs} that accepts {@code args}. */
   static Optional<Picked> pick(final List<Sig> sigs, final List<TsType> args) {
-    for (final Sig sig : sigs) {
-      if (sig.accepts(args.size()) && compatible(sig, args)) {
-        return Optional.of(new Picked(sig, returns(sig, args)));
-      }
-    }
-    return Optional.empty();
+    return sigs.stream()
+        .filter(sig -> sig.accepts(args.size()) && compatible(sig, args))
+        .findFirst()
+        .map(sig -> new Picked(sig, returns(sig, args)));
   }
 
   private static boolean compatible(final Sig sig, final List<TsType> args) {

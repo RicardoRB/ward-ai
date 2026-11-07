@@ -1,12 +1,15 @@
 package dev.ward.analysis.domain.node.types;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +25,7 @@ final class Globals implements Lookup {
   private static final Pattern TYPES_FIELD =
       Pattern.compile("\"(?:types|typings)\"\\s*:\\s*\"([^\"]+)\"");
 
+  private final ReentrantLock lock = new ReentrantLock();
   private final Program program;
   private final Set<String> projectDeclarationFiles;
   private Map<String, Sym> symbols;
@@ -55,26 +59,31 @@ final class Globals implements Lookup {
         key -> new Module(program, "module:" + key, FileDecls.EMPTY, decls, Module.Kind.AMBIENT));
   }
 
-  private synchronized Map<String, Sym> index() {
-    if (symbols == null) {
-      symbols = new HashMap<>();
-      ambient = new HashMap<>();
-      ambientModules = new HashMap<>();
-      for (final Module module : modules()) {
-        module.names().forEach(name -> symbols.merge(name, module.own(name), Sym::join));
+  private Map<String, Sym> index() {
+    lock.lock();
+    try {
+      if (symbols == null) {
+        symbols = new HashMap<>();
+        ambient = new HashMap<>();
+        ambientModules = new HashMap<>();
+        for (final Module module : modules()) {
+          module.names().forEach(name -> symbols.merge(name, module.own(name), Sym::join));
+        }
       }
+      return symbols;
+    } finally {
+      lock.unlock();
     }
-    return symbols;
   }
 
   private List<Module> modules() {
     final List<Module> modules = new ArrayList<>();
     final Set<String> seen = new HashSet<>();
-    final List<String> queue = new ArrayList<>(libraryEntries());
+    final Deque<String> queue = new ArrayDeque<>(libraryEntries());
     queue.addAll(projectDeclarationFiles.stream().sorted().toList());
     queue.addAll(typesEntries());
-    for (int index = 0; index < queue.size(); index++) {
-      final String path = queue.get(index);
+    while (!queue.isEmpty()) {
+      final String path = queue.poll();
       if (seen.add(path)) {
         load(path, modules, queue);
       }
@@ -82,7 +91,7 @@ final class Globals implements Lookup {
     return modules;
   }
 
-  private void load(final String path, final List<Module> modules, final List<String> queue) {
+  private void load(final String path, final List<Module> modules, final Deque<String> queue) {
     final FileDecls file = program.file(path);
     if (!file.isModule()) {
       modules.add(new Module(program, path, file, file.decls(), Module.Kind.GLOBAL));

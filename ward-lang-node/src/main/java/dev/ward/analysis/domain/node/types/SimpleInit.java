@@ -10,6 +10,9 @@ import java.util.List;
  */
 final class SimpleInit {
   private static final String SINGLE_EXPRESSION = "singleExpression";
+  private static final String NEW = "new";
+  private static final int MIN_NEW_PARTS = 2;
+  private static final int ONE_PART = 1;
 
   private SimpleInit() {}
 
@@ -24,7 +27,7 @@ final class SimpleInit {
       return keepLiteral ? type : Literals.widen(type);
     }
     final List<SyntaxNode> parts = TreeKit.parts(expression);
-    if (parts.size() >= 2 && "new".equals(TreeText.text(parts.get(0)))) {
+    if (parts.size() >= MIN_NEW_PARTS && NEW.equals(TreeText.text(parts.get(0)))) {
       return newed(parts.get(1));
     }
     return TsType.UNKNOWN;
@@ -32,11 +35,11 @@ final class SimpleInit {
 
   private static TsType newed(final SyntaxNode target) {
     final List<SyntaxNode> parts = TreeKit.parts(target);
-    if (parts.size() != 1) {
+    if (parts.size() != ONE_PART) {
       return TsType.UNKNOWN;
     }
     final SyntaxNode only = parts.get(0);
-    if ("identifierName".equals(only.kind())) {
+    if (Exprs.IDENTIFIER_NAME.equals(only.kind())) {
       return TsType.named(TreeText.text(only));
     }
     return SINGLE_EXPRESSION.equals(only.kind()) ? newed(only) : TsType.UNKNOWN;

@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -17,23 +16,23 @@ import java.util.function.Supplier;
 /** Answers the facts of the nodes of one unit. */
 final class FactBuilder {
   private final UnitModel model;
-  private final ExprTyper typer;
   private final DeclarationFacts declarations;
+  private final ExpressionFacts expressions;
 
   FactBuilder(final UnitModel model, final ExprTyper typer) {
     this.model = model;
-    this.typer = typer;
     this.declarations = new DeclarationFacts(model, typer);
+    this.expressions = new ExpressionFacts(model, typer);
   }
 
   /** Returns what is known about {@code span}, or null when nothing is. */
   SpanFacts at(final Span span, final Set<FactKind> kinds) {
     final List<SyntaxNode> nodes = model.nodesAt(span);
-    final TypeRef type = asked(kinds, FactKind.TYPE, () -> first(nodes, this::type));
+    final TypeRef type = asked(kinds, FactKind.TYPE, () -> first(nodes, expressions::type));
     final TypeShape shape = asked(kinds, FactKind.SHAPE, () -> first(nodes, declarations::shape));
-    final CallTarget call = asked(kinds, FactKind.CALL, () -> first(nodes, this::call));
+    final CallTarget call = asked(kinds, FactKind.CALL, () -> first(nodes, expressions::call));
     final ConstantValue constant =
-        asked(kinds, FactKind.CONSTANT, () -> first(nodes, this::constant));
+        asked(kinds, FactKind.CONSTANT, () -> first(nodes, expressions::constant));
     final List<String> annotations =
         list(kinds, FactKind.ANNOTATIONS, () -> firstList(nodes, declarations::decorators));
     final List<String> scopes =
@@ -76,49 +75,5 @@ final class FactBuilder {
       }
     }
     return List.of();
-  }
-
-  private TypeRef type(final SyntaxNode node) {
-    if (Exprs.isExpression(node.kind())) {
-      return TypeRefs.of(typer.typeOf(node));
-    }
-    if ("variableDeclaration".equals(node.kind())) {
-      return Optional.ofNullable(siteOf(node))
-          .map(typer.names()::variable)
-          .map(TypeRefs::of)
-          .orElse(null);
-    }
-    return null;
-  }
-
-  private UnitModel.Site siteOf(final SyntaxNode declaration) {
-    final SyntaxNode identifier = TreeText.variableName(declaration);
-    return identifier == null ? null : model.site(identifier.span());
-  }
-
-  private CallTarget call(final SyntaxNode node) {
-    if (!Exprs.SINGLE.equals(node.kind())) {
-      return null;
-    }
-    final List<SyntaxNode> parts = TreeKit.parts(node);
-    if (parts.size() < 2) {
-      return null;
-    }
-    final boolean constructs = "new".equals(Exprs.token(parts.get(0)));
-    final Optional<CallTyper.Call> resolved =
-        constructs
-            ? typer.constructs().constructed(node)
-            : typer.calls().isCall(parts) ? typer.calls().call(node) : Optional.empty();
-    return resolved
-        .map(call -> TypeRefs.target(ownerName(call), call.name(), call.sig(), call.isStatic()))
-        .orElse(null);
-  }
-
-  private String ownerName(final CallTyper.Call call) {
-    return call.owner().isEmpty() ? model.unit().path() : call.owner();
-  }
-
-  private ConstantValue constant(final SyntaxNode node) {
-    return Exprs.isExpression(node.kind()) ? ConstantFacts.of(typer.typeOf(node)) : null;
   }
 }

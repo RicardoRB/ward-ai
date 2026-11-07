@@ -69,17 +69,15 @@ final class Members {
   }
 
   private Found object(final TsType.Obj obj, final String name) {
-    for (final Member member : obj.members()) {
-      if (member.name().equals(name)) {
-        return new Found(member, member.sigs(), member.type(), obj.print());
-      }
-    }
-    return null;
+    return obj.members().stream()
+        .filter(member -> member.name().equals(name))
+        .findFirst()
+        .map(member -> new Found(member, member.sigs(), member.type(), obj.print()))
+        .orElse(null);
   }
 
   private Found union(final TsType.Union union, final String name, final int depth) {
-    final List<TsType> types = new ArrayList<>();
-    Found first = null;
+    final List<Found> founds = new ArrayList<>();
     for (final TsType part : union.parts()) {
       if (MemberValues.isNullish(part)) {
         continue;
@@ -88,17 +86,24 @@ final class Members {
       if (found == null || !found.type().isKnown()) {
         return null;
       }
-      first = first == null ? found : first;
-      if (types.stream().noneMatch(seen -> seen.print().equals(found.type().print()))) {
-        types.add(found.type());
-      }
+      founds.add(found);
     }
-    if (first == null) {
-      return null;
-    }
-    final TsType type = types.size() == 1 ? types.get(0) : new TsType.Union(types);
+    return founds.isEmpty() ? null : merged(founds);
+  }
+
+  private static Found merged(final List<Found> founds) {
+    final List<TsType> types = new ArrayList<>();
+    founds.stream()
+        .map(Found::type)
+        .filter(type -> types.stream().noneMatch(seen -> seen.print().equals(type.print())))
+        .forEach(types::add);
+    final Found first = founds.get(0);
+    final boolean single = types.size() == 1;
     return new Found(
-        first.member(), types.size() == 1 ? first.sigs() : List.of(), type, first.owner());
+        first.member(),
+        single ? first.sigs() : List.of(),
+        single ? types.get(0) : new TsType.Union(types),
+        first.owner());
   }
 
   private Found inter(final TsType.Inter inter, final String name, final int depth) {

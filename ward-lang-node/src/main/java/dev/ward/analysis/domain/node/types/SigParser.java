@@ -65,17 +65,28 @@ final class SigParser {
     while (!cursor.hasFailed() && depth > 0 && cursor.isOpen()) {
       final String token = cursor.take();
       depth += depthChange(token);
-      if (depth == 1 && COMMA.equals(token)) {
-        expectName = true;
-      } else if (expectName && depth == 1 && isTypeParameterName(token)) {
-        names.add(token);
-        expectName = false;
-      }
+      expectName = nextExpectation(token, depth, expectName, names);
     }
     if (depth > 0) {
       cursor.fail();
     }
     return names;
+  }
+
+  /** Records a type parameter name when one is expected; returns whether another is expected. */
+  private static boolean nextExpectation(
+      final String token, final int depth, final boolean expecting, final List<String> names) {
+    if (depth != 1) {
+      return expecting;
+    }
+    if (COMMA.equals(token)) {
+      return true;
+    }
+    if (expecting && isTypeParameterName(token)) {
+      names.add(token);
+      return false;
+    }
+    return expecting;
   }
 
   private static int depthChange(final String token) {
