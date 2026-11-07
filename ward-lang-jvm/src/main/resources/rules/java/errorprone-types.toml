@@ -1,0 +1,285 @@
+# Error Prone checks at ERROR severity for Java that read the type facts of a file. Each is on by
+# default in Error Prone. Approximations are named in the pull request.
+
+[[rules]]
+id = "ward:java/return-value-ignored"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.String", "java.math.BigInteger", "java.math.BigDecimal", "java.nio.file.Path"]
+ignored = true
+message = "the result of this call is ignored; the receiver is immutable, so the call has no effect"
+'''
+
+[[rules]]
+id = "ward:java/rect-intersect-return-value-ignored"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["android.graphics.Rect"]
+names = ["intersect"]
+ignored = true
+message = "the result of Rect.intersect is ignored; it says whether the rectangles overlap and leaves the rectangle unchanged when they do not"
+'''
+
+[[rules]]
+id = "ward:java/ban-jndi"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["javax.naming.Context", "javax.naming.InitialContext", "javax.naming.directory.DirContext", "javax.naming.directory.InitialDirContext"]
+names = ["lookup", "bind", "rebind", "rename", "list", "listBindings", "createSubcontext"]
+message = "JNDI lookups can load attacker-chosen objects; use dependency injection instead"
+'''
+
+[[rules]]
+id = "ward:java/hashtable-contains"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.Hashtable", "java.util.concurrent.ConcurrentHashMap"]
+names = ["contains"]
+message = "contains() on a Hashtable or ConcurrentHashMap tests values, not keys; use containsKey or containsValue"
+'''
+
+[[rules]]
+id = "ward:java/stream-to-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["toString"]
+receiver-types = ["java.util.stream.Stream", "java.util.stream.IntStream", "java.util.stream.LongStream", "java.util.stream.DoubleStream"]
+message = "toString() on a stream prints its identity, not its elements; collect the stream first"
+'''
+
+[[rules]]
+id = "ward:java/array-to-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["toString"]
+receiver-array = true
+message = "toString() on an array uses the identity of the array, not its contents; use the matching method of java.util.Arrays"
+'''
+
+[[rules]]
+id = "ward:java/array-hash-code"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["hashCode"]
+receiver-array = true
+message = "hashCode() on an array uses the identity of the array, not its contents; use the matching method of java.util.Arrays"
+'''
+
+[[rules]]
+id = "ward:java/array-equals"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["equals"]
+receiver-array = true
+message = "equals() on an array uses the identity of the array, not its contents; use the matching method of java.util.Arrays"
+'''
+
+[[rules]]
+id = "ward:java/substring-of-zero"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.String"]
+names = ["substring"]
+text = '\.substring\(0\)$'
+message = "substring(0) returns the same string; drop the call"
+'''
+
+[[rules]]
+id = "ward:java/period-get-temporal-unit"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Period"]
+names = ["get"]
+text = '\.get\((?:java\.time\.temporal\.)?ChronoUnit\.(?!YEARS|MONTHS|DAYS)\w+\)$'
+message = "Period supports only the units YEARS, MONTHS and DAYS; get() with another unit throws"
+'''
+
+[[rules]]
+id = "ward:java/duration-get-temporal-unit"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Duration"]
+names = ["get"]
+text = '\.get\((?:java\.time\.temporal\.)?ChronoUnit\.(?!SECONDS|NANOS)\w+\)$'
+message = "Duration supports only the units SECONDS and NANOS; get() with another unit throws"
+'''
+
+[[rules]]
+id = "ward:java/instant-temporal-unit"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Instant"]
+names = ["plus", "minus", "until"]
+text = 'ChronoUnit\.(WEEKS|MONTHS|YEARS|DECADES|CENTURIES|MILLENNIA|ERAS|FOREVER)\)$'
+message = "Instant does not support units longer than days; this call throws"
+'''
+
+[[rules]]
+id = "ward:java/duration-temporal-unit"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.Duration"]
+names = ["plus", "minus"]
+text = 'ChronoUnit\.(WEEKS|MONTHS|YEARS|DECADES|CENTURIES|MILLENNIA|ERAS|FOREVER)\)$'
+message = "a unit with an estimated duration cannot be used with Duration; this call throws"
+'''
+
+[[rules]]
+id = "ward:java/is-loggable-tag-length"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["android.util.Log"]
+names = ["isLoggable"]
+text = 'isLoggable\("[^"]{24,}"'
+message = "Log.isLoggable throws for a tag longer than 23 characters"
+'''
+
+[[rules]]
+id = "ward:java/ban-serializable-read"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.io.ObjectInputStream", "java.io.ObjectInput"]
+names = ["readObject", "readUnshared"]
+message = "reading a serialized object can run attacker-chosen code; read a data format such as JSON instead"
+'''
+
+[[rules]]
+id = "ward:java/boxed-primitive-equality"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["java.lang.Boolean", "java.lang.Byte", "java.lang.Short", "java.lang.Integer", "java.lang.Long", "java.lang.Character", "java.lang.Float", "java.lang.Double"]
+message = "boxed values compared with ==; compare them with equals or unbox one side"
+'''
+
+[[rules]]
+id = "ward:java/optional-equality"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["java.util.Optional", "java.util.OptionalInt", "java.util.OptionalLong", "java.util.OptionalDouble"]
+message = "Optional values compared with ==; compare them with equals"
+'''
+
+[[rules]]
+id = "ward:java/memory-segment-reference-equality"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "reference-equality"
+types = ["java.lang.foreign.MemorySegment"]
+message = "memory segments compared with ==; compare them with equals"
+'''
+
+[[rules]]
+id = "ward:java/lock-on-boxed-primitive"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-on-type"
+types = ["java.lang.Boolean", "java.lang.Byte", "java.lang.Short", "java.lang.Integer", "java.lang.Long", "java.lang.Character", "java.lang.Float", "java.lang.Double"]
+message = "synchronized on a boxed value that other code may share; lock a private object"
+'''
+
+[[rules]]
+id = "ward:java/dead-thread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^new(?:java\.lang\.)?Thread\((?:[^;()]|\([^;()]*\))*\);?$'
+message = "thread created but never started; call start() on it or remove the statement"
+'''

@@ -1,0 +1,36 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "4:12-4:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Object"
+      },
+      "name": "toString",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:12-3:17": {
+    "type": {
+      "name": "java.util.stream.Stream"
+    }
+  },
+  "4:12-4:15": {
+    "type": {
+      "name": "java.util.List"
+    }
+  }
+}

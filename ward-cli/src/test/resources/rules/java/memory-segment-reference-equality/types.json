@@ -1,0 +1,22 @@
+{
+  "3:12-3:15": {
+    "type": {
+      "name": "java.lang.foreign.MemorySegment"
+    }
+  },
+  "3:20-3:24": {
+    "type": {
+      "name": "java.lang.foreign.MemorySegment"
+    }
+  },
+  "4:12-4:15": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "4:20-4:24": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}

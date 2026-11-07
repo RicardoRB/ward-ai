@@ -28,6 +28,9 @@ class ClasspathRuleSourceTest {
           "ward:java/law-of-demeter",
           "ward:java/internal-api-usage");
 
+  private static final java.util.Set<String> TYPE_CHECKS =
+      java.util.Set.of("call-match", "reference-equality", "synchronized-on-type");
+
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
     final AnalysisRuleLoad load =
@@ -153,7 +156,10 @@ class ClasspathRuleSourceTest {
         .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
       return RuleCapability.SCOPES;
     }
-    if (TYPE_AWARE.contains(rule.id()) || rule.id().endsWith("/equals-on-unrelated-types")) {
+    if (TYPE_AWARE.contains(rule.id())
+        || rule.id().endsWith("/equals-on-unrelated-types")
+        || TYPE_CHECKS.stream()
+            .anyMatch(check -> rule.body().contains("check = \"" + check + "\""))) {
       return RuleCapability.TYPES;
     }
     return rule.id().endsWith("/unused-assignment")

@@ -92,8 +92,6 @@ errorprone = ["ArgumentSelectionDefectChecker"]
 
 [[rule]]
 name = "array-equals"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArrayEquals"]
 
 [[rule]]
@@ -104,8 +102,6 @@ errorprone = ["ArrayFillIncompatibleType"]
 
 [[rule]]
 name = "array-hash-code"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArrayHashCode"]
 
 [[rule]]
@@ -116,8 +112,6 @@ errorprone = ["ArrayRecordComponent"]
 
 [[rule]]
 name = "array-to-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArrayToString"]
 
 [[rule]]
@@ -302,14 +296,10 @@ errorprone = ["BanClassLoader"]
 
 [[rule]]
 name = "ban-jndi"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BanJNDI"]
 
 [[rule]]
 name = "ban-serializable-read"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BanSerializableRead"]
 
 [[rule]]
@@ -362,8 +352,6 @@ errorprone = ["BoxedPrimitiveConstructor"]
 
 [[rule]]
 name = "boxed-primitive-equality"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BoxedPrimitiveEquality"]
 
 [[rule]]
@@ -652,8 +640,6 @@ errorprone = ["DeadException"]
 
 [[rule]]
 name = "dead-thread"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DeadThread"]
 
 [[rule]]
@@ -796,14 +782,10 @@ errorprone = ["DurationFrom"]
 
 [[rule]]
 name = "duration-get-temporal-unit"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DurationGetTemporalUnit"]
 
 [[rule]]
 name = "duration-temporal-unit"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DurationTemporalUnit"]
 
 [[rule]]
@@ -1234,8 +1216,6 @@ errorprone = ["HashCodeInObjectsHash"]
 
 [[rule]]
 name = "hashtable-contains"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["HashtableContains"]
 
 [[rule]]
@@ -1505,8 +1485,6 @@ errorprone = ["InstanceOfAndCastMatchWrongType"]
 
 [[rule]]
 name = "instant-temporal-unit"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["InstantTemporalUnit"]
 
 [[rule]]
@@ -1631,8 +1609,6 @@ errorprone = ["IsInstanceOfClass"]
 
 [[rule]]
 name = "is-loggable-tag-length"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IsLoggableTagLength"]
 
 [[rule]]
@@ -1925,8 +1901,6 @@ errorprone = ["LockNotBeforeTry"]
 
 [[rule]]
 name = "lock-on-boxed-primitive"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["LockOnBoxedPrimitive"]
 
 [[rule]]
@@ -2007,8 +1981,6 @@ errorprone = ["MemoizeConstantVisitorStateLookups"]
 
 [[rule]]
 name = "memory-segment-reference-equality"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["MemorySegmentReferenceEquality"]
 
 [[rule]]
@@ -2469,8 +2441,6 @@ errorprone = ["OperatorPrecedence"]
 
 [[rule]]
 name = "optional-equality"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["OptionalEquality"]
 
 [[rule]]
@@ -2595,8 +2565,6 @@ errorprone = ["PeriodFrom"]
 
 [[rule]]
 name = "period-get-temporal-unit"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PeriodGetTemporalUnit"]
 
 [[rule]]
@@ -2787,8 +2755,6 @@ errorprone = ["RecordComponentOverride"]
 
 [[rule]]
 name = "rect-intersect-return-value-ignored"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RectIntersectReturnValueIgnored"]
 
 [[rule]]
@@ -2889,8 +2855,6 @@ errorprone = ["ReturnMissingNullable"]
 
 [[rule]]
 name = "return-value-ignored"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ReturnValueIgnored"]
 
 [[rule]]
@@ -3057,8 +3021,6 @@ errorprone = ["StreamToIterable"]
 
 [[rule]]
 name = "stream-to-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["StreamToString"]
 
 [[rule]]
@@ -3115,8 +3077,6 @@ errorprone = ["StronglyTypeTime"]
 
 [[rule]]
 name = "substring-of-zero"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["SubstringOfZero"]
 
 [[rule]]

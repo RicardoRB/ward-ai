@@ -1,0 +1,36 @@
+{
+  "3:12-3:30": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Hashtable"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "4:12-4:35": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "containsValue",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  }
+}
