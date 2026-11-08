@@ -14,6 +14,8 @@ import java.util.List;
  * @param inheritedMethods the methods of the ancestors that a subtype can see: not private, not
  *     synthetic and not constructors
  * @param inheritedFields the fields of the ancestors that a subtype can see
+ * @param components the types this one is built from: its type arguments in order, or the element
+ *     type of an array
  */
 public record TypeMembers(
     List<CallTarget> methods,
@@ -21,7 +23,8 @@ public record TypeMembers(
     List<TypeRef> ancestors,
     List<String> annotations,
     List<CallTarget> inheritedMethods,
-    List<FieldRef> inheritedFields) {
+    List<FieldRef> inheritedFields,
+    List<TypeComponent> components) {
 
   /**
    * Creates the members of a type whose inherited members are not known.
@@ -33,7 +36,7 @@ public record TypeMembers(
       final List<FieldRef> fields,
       final List<TypeRef> ancestors,
       final List<String> annotations) {
-    this(methods, fields, ancestors, annotations, List.of(), List.of());
+    this(methods, fields, ancestors, annotations, List.of(), List.of(), List.of());
   }
 
   /**
@@ -48,5 +51,6 @@ public record TypeMembers(
     annotations = List.copyOf(annotations);
     inheritedMethods = List.copyOf(inheritedMethods);
     inheritedFields = List.copyOf(inheritedFields);
+    components = List.copyOf(components);
   }
 }

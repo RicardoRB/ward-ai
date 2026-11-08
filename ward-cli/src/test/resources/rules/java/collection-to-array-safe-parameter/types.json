@@ -1,0 +1,611 @@
+{
+  "5:12-5:40": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "5:12-5:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.String"
+          },
+          "shape": {
+            "kind": "class",
+            "final": true
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              },
+              {
+                "name": "java.lang.CharSequence"
+              },
+              {
+                "name": "java.lang.Comparable"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "5:26-5:39": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Integer"
+          },
+          "shape": {
+            "kind": "class",
+            "final": true
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Number"
+              },
+              {
+                "name": "java.lang.Object"
+              },
+              {
+                "name": "java.lang.Comparable"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "9:12-9:38": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "9:12-9:15": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.Number"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Number"
+          },
+          "shape": {
+            "kind": "class"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "9:25-9:37": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.String"
+          },
+          "shape": {
+            "kind": "class",
+            "final": true
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              },
+              {
+                "name": "java.lang.CharSequence"
+              },
+              {
+                "name": "java.lang.Comparable"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "6:12-6:39": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "6:12-6:15": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.Number"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Number"
+          },
+          "shape": {
+            "kind": "class"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "6:25-6:38": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Integer"
+          },
+          "shape": {
+            "kind": "class",
+            "final": true
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Number"
+              },
+              {
+                "name": "java.lang.Object"
+              },
+              {
+                "name": "java.lang.Comparable"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "10:12-10:38": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "10:12-10:15": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Object"
+          },
+          "shape": {
+            "kind": "class"
+          },
+          "members": {
+            "ancestors": []
+          }
+        }
+      ]
+    }
+  },
+  "10:25-10:37": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.String"
+          },
+          "shape": {
+            "kind": "class",
+            "final": true
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              },
+              {
+                "name": "java.lang.CharSequence"
+              },
+              {
+                "name": "java.lang.Comparable"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "14:12-14:39": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "14:12-14:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.Runnable"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Runnable"
+          },
+          "shape": {
+            "kind": "interface"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "14:26-14:38": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Thread"
+          },
+          "shape": {
+            "kind": "class"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Runnable"
+              },
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "18:12-18:42": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "18:12-18:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.Runnable"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.lang.Runnable"
+          },
+          "shape": {
+            "kind": "interface"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "18:26-18:41": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {
+          "type": {
+            "name": "java.util.ArrayList"
+          },
+          "shape": {
+            "kind": "class"
+          },
+          "members": {
+            "ancestors": [
+              {
+                "name": "java.util.List"
+              },
+              {
+                "name": "java.util.Collection"
+              },
+              {
+                "name": "java.lang.Object"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "22:12-22:39": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "toArray",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object",
+        "array": 1
+      },
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "22:12-22:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "E"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        },
+        {
+          "name": "java.lang.Iterable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "components": [
+        {}
+      ]
+    }
+  }
+}

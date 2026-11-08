@@ -490,8 +490,6 @@ errorprone = ["CollectionIncompatibleType"]
 
 [[rule]]
 name = "collection-to-array-safe-parameter"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CollectionToArraySafeParameter"]
 
 [[rule]]

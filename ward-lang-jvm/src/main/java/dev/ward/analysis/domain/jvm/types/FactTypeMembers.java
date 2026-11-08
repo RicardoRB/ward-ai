@@ -22,9 +22,11 @@ import java.util.Set;
  */
 final class FactTypeMembers {
   private final Hierarchy hierarchy;
+  private final FactComponents components;
 
   FactTypeMembers(final Hierarchy hierarchy) {
     this.hierarchy = hierarchy;
+    this.components = new FactComponents(hierarchy, this);
   }
 
   /** Returns the shape of the type a span declares or whose value it is, if a class holds it. */
@@ -34,7 +36,10 @@ final class FactTypeMembers {
 
   /** Returns the members of the type a span declares or whose value it is, if a class holds it. */
   Optional<TypeMembers> of(final Typed typed, final Optional<DeclInfo> declaration) {
-    return classOf(typed, declaration).map(this::of);
+    return classOf(typed, declaration)
+        .map(this::of)
+        .or(() -> components.arrayOnly(typed, declaration))
+        .map(members -> components.add(members, typed, declaration));
   }
 
   private Optional<JvmClass> classOf(final Typed typed, final Optional<DeclInfo> declaration) {
@@ -68,7 +73,8 @@ final class FactTypeMembers {
         ancestors(type),
         FactRefs.displayAll(type.annotations()),
         inheritedMethods,
-        inheritedFields);
+        inheritedFields,
+        List.of());
   }
 
   /** Returns the classes of the ancestors of {@code type} that the hierarchy holds. */
@@ -92,7 +98,7 @@ final class FactTypeMembers {
    * Every supertype above {@code type}, the direct ones first, each once, with {@code Object}
    * always among them.
    */
-  private List<TypeRef> ancestors(final JvmClass type) {
+  List<TypeRef> ancestors(final JvmClass type) {
     return ancestorNames(type).stream().map(name -> TypeRef.of(FactRefs.display(name))).toList();
   }
 
