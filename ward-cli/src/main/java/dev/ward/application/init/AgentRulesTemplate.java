@@ -5,6 +5,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.QualityPreset.PresetRules;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
@@ -76,6 +77,12 @@ public final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.PYTHON
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
+    }
+    if (project.languages().contains(Language.JAVA)) {
+      lines.add(
+          "- Java: the `ward` check applies the Ward "
+              + (preset == null ? QualityPreset.STANDARD : preset).id()
+              + " rules selected in `ward-rules.toml`; fix each finding at its cause.");
     }
     lines.add(
         "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"

@@ -29,20 +29,12 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
   }
 
   @Test
-  void selectedCheckstyleAddsMissingMavenPluginAndReportsIt() throws IOException {
+  void selectedCoverageAddsMissingMavenPluginAndReportsIt() throws IOException {
     assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                "checkstyle",
-                "-C",
-                project.toString()))
+            run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString()))
         .isZero();
-    assertThat(Files.readString(project.resolve("pom.xml"))).contains("maven-checkstyle-plugin");
-    assertThat(out.toString())
-        .contains("Updated pom.xml with Maven tools", "maven-checkstyle-plugin");
+    assertThat(Files.readString(project.resolve("pom.xml"))).contains("jacoco-maven-plugin");
+    assertThat(out.toString()).contains("Updated pom.xml with Maven tools", "jacoco-maven-plugin");
   }
 
   @Test
@@ -54,22 +46,15 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
         original.replace(
             "</project>",
             """
-                <build><plugins><plugin><artifactId>maven-checkstyle-plugin</artifactId></plugin></plugins></build>
+                <build><plugins><plugin><artifactId>jacoco-maven-plugin</artifactId></plugin></plugins></build>
                 </project>"""));
 
     assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                "checkstyle",
-                "-C",
-                project.toString()))
+            run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString()))
         .isZero();
     final String updated = Files.readString(pom);
-    assertThat(updated.indexOf("<artifactId>maven-checkstyle-plugin</artifactId>"))
-        .isEqualTo(updated.lastIndexOf("<artifactId>maven-checkstyle-plugin</artifactId>"));
+    assertThat(updated.indexOf("<artifactId>jacoco-maven-plugin</artifactId>"))
+        .isEqualTo(updated.lastIndexOf("<artifactId>jacoco-maven-plugin</artifactId>"));
     assertThat(out.toString()).doesNotContain("Updated pom.xml with Maven tools");
   }
 

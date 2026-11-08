@@ -14,6 +14,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
@@ -54,7 +55,7 @@ class NodeLayeredConfigTest {
     Files.writeString(root.resolve(CONFIG), USER_ESLINT);
 
     final List<PlannedFileChange> plan =
-        writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT));
+        RuleFilePlans.tools(writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT)));
     final RuleFileChange change = writer.apply(typeScript(), QualityPreset.STRICT, gates(ESLINT));
 
     assertThat(plan)
@@ -126,7 +127,7 @@ class NodeLayeredConfigTest {
     final String layer = Files.readString(root.resolve(CONFIG));
 
     final List<PlannedFileChange> plan =
-        writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT));
+        RuleFilePlans.tools(writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT)));
     writer.apply(typeScript(), QualityPreset.STRICT, gates(ESLINT));
 
     assertThat(plan)
@@ -142,7 +143,7 @@ class NodeLayeredConfigTest {
     Files.writeString(root.resolve(BASE), "owned by the user\n");
 
     final List<PlannedFileChange> plan =
-        writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT));
+        RuleFilePlans.tools(writer.plan(typeScript(), QualityPreset.STRICT, gates(ESLINT)));
 
     assertThat(plan)
         .containsExactly(

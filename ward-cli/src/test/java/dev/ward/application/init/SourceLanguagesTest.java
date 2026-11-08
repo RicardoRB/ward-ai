@@ -24,12 +24,15 @@ class SourceLanguagesTest {
   private static final Path ROOT = Path.of("app");
 
   @Test
-  void javaKotlinAndMixedProjectsGetTheSameGatesInTheSameOrder() {
+  void javaUsesWardRulesWhileKotlinAndMixedProjectsKeepTheExternalTools() {
     final List<String> java = gateIds(project(Language.JAVA, Set.of()));
+    final List<String> kotlin = gateIds(project(Language.KOTLIN, Set.of()));
+    final List<String> mixed = gateIds(project(Language.JAVA, Set.of(Language.KOTLIN)));
 
-    assertThat(gateIds(project(Language.KOTLIN, Set.of()))).isEqualTo(java);
-    assertThat(gateIds(project(Language.JAVA, Set.of(Language.KOTLIN)))).isEqualTo(java);
-    assertThat(java).startsWith("tests", "compile", "coverage", "spotbugs").doesNotHaveDuplicates();
+    assertThat(java).startsWith("tests", "compile", "coverage").doesNotHaveDuplicates();
+    assertThat(java).doesNotContain("checkstyle", "pmd", "spotbugs");
+    assertThat(kotlin).containsAll(java).contains("checkstyle", "pmd", "spotbugs");
+    assertThat(mixed).containsExactlyInAnyOrderElementsOf(kotlin).doesNotHaveDuplicates();
   }
 
   @Test

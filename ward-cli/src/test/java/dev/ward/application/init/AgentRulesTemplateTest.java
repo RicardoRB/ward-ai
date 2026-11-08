@@ -31,14 +31,7 @@ class AgentRulesTemplateTest {
 
     assertThat(body)
         .contains(
-            "files of at most 500 lines",
-            "methods of at most 60 lines",
-            "at most 5 parameters",
-            "cyclomatic complexity of at most 10",
-            "no magic numbers",
-            "final parameters",
-            "no `var`",
-            "effort Max, threshold Low",
+            "Java: the `ward` check applies the Ward strict rules selected in `ward-rules.toml`",
             "branch at least 75%, line at least 85%",
             "at least 60% of mutants killed",
             "- Architecture: `ward:architecture/layers` enforces",

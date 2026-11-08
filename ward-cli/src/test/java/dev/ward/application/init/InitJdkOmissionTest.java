@@ -33,9 +33,8 @@ import org.junit.jupiter.api.io.TempDir;
 /** Init on a runtime JDK that cannot run a gate's tool. */
 class InitJdkOmissionTest {
   private static final String POM = "<project><modelVersion>4.0.0</modelVersion></project>";
-  private static final String REASON =
-      "maven-checkstyle-plugin needs JDK 11+; this project builds on JDK 8";
-  private static final String NOTE = "checkstyle omitted: " + REASON;
+  private static final String REASON = "pitest-maven needs JDK 11+; this project builds on JDK 8";
+  private static final String NOTE = "mutation omitted: " + REASON;
 
   @TempDir Path root;
   private InitService service;
@@ -44,19 +43,19 @@ class InitJdkOmissionTest {
   @BeforeEach
   void setUp() throws IOException {
     Files.writeString(root.resolve("pom.xml"), POM);
-    catalog = JdkCatalogs.reading(new CheckstyleOmittedOnJdk8());
+    catalog = JdkCatalogs.reading(new MutationOmittedOnJdk8());
     service =
         new InitService(
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             catalog,
-            InitFixtures.projectFiles(new CheckstyleOmittedOnJdk8(), new NoRuleFileGeneration()));
+            InitFixtures.projectFiles(new MutationOmittedOnJdk8(), new NoRuleFileGeneration()));
   }
 
   @Test
   void strictOnAJdkThatCannotRunOneGateKeepsTheOtherGatesInOrder() {
     assertThat(catalog.presetGates(service.project(root), QualityPreset.STRICT))
-        .containsExactly("compile", "tests", "pmd", "spotbugs", "coverage", "enforcer", "mutation");
+        .containsExactly("compile", "tests", "coverage", "enforcer");
   }
 
   @Test
@@ -75,7 +74,7 @@ class InitJdkOmissionTest {
     final InitResult result = service.initialize(root, strict(), false, false, finding -> true);
 
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[checks.pmd]").doesNotContain("[checks.checkstyle]");
+    assertThat(configuration).contains("[checks.enforcer]").doesNotContain("[checks.mutation]");
     assertThat(result.pomWarnings()).contains(NOTE);
   }
 
@@ -83,11 +82,11 @@ class InitJdkOmissionTest {
   void explicitlyRequestedGateWithNoVersionForTheRuntimeJdkFailsBeforeAnyWrite()
       throws IOException {
     final InitSelection selection =
-        new InitSelection(List.of("none"), List.of("checkstyle", "pmd"));
+        new InitSelection(List.of("none"), List.of("mutation", "coverage"));
 
     assertThatThrownBy(() -> service.initialize(root, selection, false, false, finding -> true))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("'checkstyle'", "JDK 8", "JDK 11+");
+        .hasMessageContaining("'mutation'", "JDK 8", "JDK 11+");
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(POM);
     assertThat(root.resolve("ward.toml")).doesNotExist();
   }
@@ -107,8 +106,8 @@ class InitJdkOmissionTest {
         null);
   }
 
-  /** Writes Maven tools with their default versions, and omits {@code checkstyle} as on JDK 8. */
-  private static final class CheckstyleOmittedOnJdk8 implements BuildToolConfiguration {
+  /** Writes Maven tools with their default versions, and omits {@code mutation} as on JDK 8. */
+  private static final class MutationOmittedOnJdk8 implements BuildToolConfiguration {
     private final PomToolConfigurator maven = new PomToolConfigurator();
 
     @Override
@@ -136,8 +135,8 @@ class InitJdkOmissionTest {
 
     @Override
     public List<GateOmission> omissions(final Project project, final List<String> gateIds) {
-      return gateIds.contains("checkstyle")
-          ? List.of(new GateOmission("checkstyle", REASON))
+      return gateIds.contains("mutation")
+          ? List.of(new GateOmission("mutation", REASON))
           : List.of();
     }
 

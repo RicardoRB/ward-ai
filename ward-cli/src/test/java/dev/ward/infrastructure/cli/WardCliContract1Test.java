@@ -86,9 +86,11 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
             run(INIT, "--preset", "standard", INTEGRATION_OPTION, NONE, "-C", project.toString()))
         .isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML)))
-        .contains("version = 2", "[checks.pmd]")
-        .doesNotContain("preset");
-    assertThat(project.resolve("config/pmd-ruleset.xml")).exists();
+        .contains("version = 2", "[checks.coverage]")
+        .doesNotContain("preset", "[checks.pmd]");
+    assertThat(project.resolve("ward-rules.toml"))
+        .content()
+        .contains("version = 1", "preset = \"standard\"", "languages = [\"java\"]");
   }
 
   @Test

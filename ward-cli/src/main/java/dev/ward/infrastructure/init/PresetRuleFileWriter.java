@@ -22,6 +22,8 @@ import javax.inject.Inject;
  * and the Node tool configs in the project root.
  */
 public final class PresetRuleFileWriter implements RuleFileGeneration {
+  private static final String WARD_RULES = "ward-rules.toml";
+
   private final Map<Toolchain, RuleFileTargets> toolchains;
 
   /**
@@ -44,9 +46,10 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
       final List<RuleFileActions.Decision> decisions =
           RuleFileActions.decide(targets(project, preset, gates));
       RuleFileActions.refuseConflicts(decisions);
-      // Node and Python configs live in the project root, so only JVM presets need config/.
+      // Node and Python configs live in the project root; only the Maven rule files need config/.
       final boolean createdDirectory =
-          preset != null && project.toolchain() == Toolchain.JVM && !Files.exists(config);
+          decisions.stream().anyMatch(decision -> decision.target().file().startsWith(config))
+              && !Files.exists(config);
       if (createdDirectory) {
         Files.createDirectories(config);
       }
@@ -83,16 +86,23 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
   private List<ConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
+    final List<ConfigTarget> targets = new ArrayList<>();
     final RuleFileTargets toolchain = toolchains.get(project.toolchain());
     if (toolchain != null) {
-      return toolchain.targets(project, preset, gates);
+      targets.addAll(toolchain.targets(project, preset, gates));
+    } else {
+      jvmTargets(project, preset, gates)
+          .forEach(
+              (file, content) ->
+                  targets.add(
+                      new ConfigTarget(file, ConfigTarget.Disposition.WRITE, content, null)));
     }
-    return jvmTargets(project, preset, gates).entrySet().stream()
-        .map(
-            entry ->
-                new ConfigTarget(
-                    entry.getKey(), ConfigTarget.Disposition.WRITE, entry.getValue(), null))
-        .toList();
+    targets.add(
+        ConfigTarget.write(
+            project.root().resolve(WARD_RULES),
+            ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
+                + PresetRuleFileContent.wardRules(preset)));
+    return targets;
   }
 
   private static Map<Path, String> jvmTargets(

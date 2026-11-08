@@ -53,7 +53,7 @@ class InitGeneratedFilesCliTest {
         .contains("WARD_VERSION: v1.2.3", "ward check --profile ci --format sarif");
     assertThat(Files.readString(root.resolve("AGENTS.md")))
         .startsWith("# Team rules\n\nUse records.\n\n<!-- ward-owned: agent-rules v1 begin")
-        .contains("files of at most 500 lines", "line at least 85%");
+        .contains("line at least 85%", "rules selected in `ward-rules.toml`");
     assertThat(init.output()).contains("Wrote Ward section: ");
   }
 

@@ -12,6 +12,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
@@ -62,7 +63,7 @@ class NodeLayeredBiomeConfigTest {
     writer.apply(typeScript(), QualityPreset.STRICT, gates(BIOME));
 
     final List<PlannedFileChange> plan =
-        writer.plan(typeScript(), QualityPreset.STRICT, gates(BIOME));
+        RuleFilePlans.tools(writer.plan(typeScript(), QualityPreset.STRICT, gates(BIOME)));
 
     assertThat(plan)
         .containsExactly(
@@ -75,7 +76,7 @@ class NodeLayeredBiomeConfigTest {
     Files.writeString(root.resolve("biome.json"), USER_BIOME);
 
     final List<PlannedFileChange> plan =
-        writer.plan(typeScript(), QualityPreset.STANDARD, gates(BIOME));
+        RuleFilePlans.tools(writer.plan(typeScript(), QualityPreset.STANDARD, gates(BIOME)));
 
     assertThat(plan)
         .containsExactly(

@@ -26,6 +26,17 @@ final class PresetRuleFileContent {
 
   private PresetRuleFileContent() {}
 
+  /**
+   * The rule selection of the {@code ward} gate: the Ward rules of the preset, for the languages
+   * whose external linters Ward has replaced. Other languages keep their own tools until their
+   * migration lands, so selecting their Ward rules would report each finding twice.
+   */
+  static String wardRules(final QualityPreset preset) {
+    return "version = 1\n\n[select]\npreset = \""
+        + (preset == null ? QualityPreset.STANDARD : preset).id()
+        + "\"\nlanguages = [\"java\"]\n";
+  }
+
   static String pmd(final QualityPreset preset) {
     return "<ruleset name=\"Ward "
         + preset.id()

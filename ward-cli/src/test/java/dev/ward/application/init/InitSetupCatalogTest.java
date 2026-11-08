@@ -18,6 +18,7 @@ import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -106,8 +107,7 @@ class InitSetupCatalogTest {
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
     assertThat(catalog.presets(maven))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
-    assertThat(JavaPresetGates.STANDARD)
-        .containsExactly(COMPILE, TESTS, "checkstyle", "pmd", "spotbugs", "coverage");
+    assertThat(JavaPresetGates.STANDARD).containsExactly(COMPILE, TESTS, "coverage");
     assertThat(QualityPreset.STRICT.rules().jacocoMinimums())
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
@@ -235,6 +235,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
+                // Ward's Java rules replace these tools, so a Java project is not offered them.
+                .filter(id -> !List.of("checkstyle", "pmd", "spotbugs").contains(id))
                 // The analysis gate is written by hand in ward.toml; init does not offer it.
                 .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
                 // Node gates are run by check only; init does not offer them for JVM projects.

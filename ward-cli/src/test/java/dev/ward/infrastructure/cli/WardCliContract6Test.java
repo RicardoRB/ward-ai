@@ -15,6 +15,13 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
   private static final String CHECKSTYLE = "checkstyle";
   private static final String LINE_LENGTH_KEY = "checkstyle:LineLength";
 
+  /** The checkstyle gate type stays supported until Ward's own configuration drops it. */
+  private void useCheckstyleGate() throws IOException {
+    Files.writeString(
+        project.resolve(WARD_TOML),
+        "version = 2\n\n[checks.checkstyle]\nenabled = true\ncommand = \"./mvnw checkstyle:check\"\n");
+  }
+
   @Test
   void checkRejectsZapWithoutTargetAsConfigurationError() throws IOException {
     Files.writeString(
@@ -82,7 +89,7 @@ uses = "zap"
 
   @Test
   void learningPromptEmittedAfterFailPassFailPassInJson() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, CHECKSTYLE, "-C", project.toString());
+    useCheckstyleGate();
 
     fail();
     out.getBuffer().setLength(0);
@@ -123,7 +130,7 @@ uses = "zap"
 
   @Test
   void learningTextReportShowsSectionAndLeavesAgentsMdUntouched() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, CHECKSTYLE, "-C", project.toString());
+    useCheckstyleGate();
     final Path agents = project.resolve("AGENTS.md");
     Files.writeString(agents, "project contract\n");
 
