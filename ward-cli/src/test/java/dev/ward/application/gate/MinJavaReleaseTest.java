@@ -16,6 +16,10 @@ import org.junit.jupiter.api.Test;
  */
 class MinJavaReleaseTest {
 
+  private static final int JAVA_8 = 8;
+  private static final int JAVA_10 = 10;
+  private static final int JAVA_11 = 11;
+
   private static final String USE_EXPLICIT_TYPES = "ward:java/use-explicit-types";
   private static final Map<String, Integer> SEEDED =
       Map.ofEntries(
@@ -54,8 +58,8 @@ class MinJavaReleaseTest {
   void aKnownLowerReleaseSkipsTheRuleAndAnUnknownOneKeepsIt() {
     final RuleDefinition rule = rule(USE_EXPLICIT_TYPES);
 
-    assertThat(rule.runsOn(8)).isFalse();
-    assertThat(rule.runsOn(10)).isTrue();
+    assertThat(rule.runsOn(JAVA_8)).isFalse();
+    assertThat(rule.runsOn(JAVA_10)).isTrue();
     assertThat(rule.runsOn(JavaRelease.UNKNOWN)).isTrue();
   }
 
@@ -72,8 +76,8 @@ class MinJavaReleaseTest {
                 List.of()),
             new ClasspathRuleSource());
 
-    assertThat(setup.resolve(java.nio.file.Path.of("."), 8).rules()).isEmpty();
-    assertThat(setup.resolve(java.nio.file.Path.of("."), 11).rules()).hasSize(1);
+    assertThat(setup.resolve(java.nio.file.Path.of("."), JAVA_8).rules()).isEmpty();
+    assertThat(setup.resolve(java.nio.file.Path.of("."), JAVA_11).rules()).hasSize(1);
     assertThat(setup.resolve(java.nio.file.Path.of("."), JavaRelease.UNKNOWN).rules()).hasSize(1);
   }
 
@@ -88,8 +92,8 @@ class MinJavaReleaseTest {
             List.of());
     final List<RuleDefinition> catalog = List.of(rule(USE_EXPLICIT_TYPES));
 
-    assertThat(RuleConfigResolver.resolve(file, catalog, 8).rules()).isEmpty();
-    assertThat(RuleConfigResolver.resolve(file, catalog, 11).rules()).hasSize(1);
+    assertThat(RuleConfigResolver.resolve(file, catalog, JAVA_8).rules()).isEmpty();
+    assertThat(RuleConfigResolver.resolve(file, catalog, JAVA_11).rules()).hasSize(1);
   }
 
   private static RuleDefinition rule(final String id) {
