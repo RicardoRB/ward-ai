@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.HiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.ParameterAssignmentCheck;
 import dev.ward.analysis.domain.rule.check.VariableDeclarationUsageDistanceCheck;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
 /**
@@ -57,7 +58,9 @@ final class DeclarationChecks {
             TomlValues.required(toml, "declaration"),
             TomlValues.strings(toml, "annotations"),
             TomlValues.optionalStrings(toml, "modifiers"),
-            TomlValues.optionalStrings(toml, "absent-modifiers")),
+            TomlValues.optionalStrings(toml, "absent-modifiers"),
+            TomlValues.optionalStrings(toml, "absent-annotations"),
+            Pattern.compile(toml.getString("text", () -> ""))),
         TomlValues.required(toml, MESSAGE));
   }
 }

@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -29,9 +30,8 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE));
 
   private final Set<String> operators;
-  private final Set<String> types;
+  private final Map<String, Range> types;
   private final boolean both;
-  private final Range range;
   private final String message;
 
   /**
@@ -69,21 +69,19 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
    * Creates the check.
    *
    * @param operators the operators, such as {@code |} or {@code ==}
-   * @param types the names of the types of the left operand
+   * @param types the names of the types of the left operand, each with the literals that are
+   *     allowed on the right for that type, or {@link Range#ANY}
    * @param both whether the right operand must have one of the types as well
-   * @param range the literals that are allowed on the right, or {@link Range#ANY}
    * @param message the message reported at the expression
    */
   public BinaryOperandTypeCheck(
       final Set<String> operators,
-      final Set<String> types,
+      final Map<String, Range> types,
       final boolean both,
-      final Range range,
       final String message) {
     this.operators = Set.copyOf(operators);
-    this.types = Set.copyOf(types);
+    this.types = Map.copyOf(types);
     this.both = both;
-    this.range = Objects.requireNonNull(range, "range");
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -124,17 +122,18 @@ public final class BinaryOperandTypeCheck implements RuleCheck {
         parts.subList(1, parts.size() - 1).stream()
             .map(SyntaxWalk::text)
             .collect(Collectors.joining());
+    final Optional<Range> range = typeOf(left, facts).map(types::get);
     return operators.contains(operator)
-        && hasType(left, facts)
-        && (!both || hasType(right, facts))
-        && outsideRange(right);
+        && range.isPresent()
+        && (!both || typeOf(right, facts).filter(types::containsKey).isPresent())
+        && outsideRange(right, range.get());
   }
 
-  private boolean hasType(final SyntaxNode operand, final UnitTypeFacts facts) {
-    return facts.typeOf(operand.span()).map(TypeRef::name).filter(types::contains).isPresent();
+  private static Optional<String> typeOf(final SyntaxNode operand, final UnitTypeFacts facts) {
+    return facts.typeOf(operand.span()).map(TypeRef::name);
   }
 
-  private boolean outsideRange(final SyntaxNode right) {
+  private static boolean outsideRange(final SyntaxNode right, final Range range) {
     if (!range.limits()) {
       return true;
     }

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -31,16 +32,22 @@ public final class AnnotatedMemberCheck implements RuleCheck {
    * @param annotations simple names of annotations, at least one of which the member has
    * @param modifiers modifiers the member must have
    * @param absentModifiers modifiers the member must not have
+   * @param absentAnnotations simple names of annotations the member must have none of
+   * @param text a pattern found in the compact text of the member's declaration, empty for any
    */
   public record Criteria(
       String declaration,
       Set<String> annotations,
       Set<String> modifiers,
-      Set<String> absentModifiers) {
+      Set<String> absentModifiers,
+      Set<String> absentAnnotations,
+      Pattern text) {
 
     /** Copies the sets. */
     public Criteria {
       Objects.requireNonNull(declaration, "declaration");
+      Objects.requireNonNull(text, "text");
+      absentAnnotations = Set.copyOf(absentAnnotations);
       annotations = Set.copyOf(annotations);
       modifiers = Set.copyOf(modifiers);
       absentModifiers = Set.copyOf(absentModifiers);
@@ -79,7 +86,10 @@ public final class AnnotatedMemberCheck implements RuleCheck {
 
   private boolean meets(final SyntaxNode member) {
     final Set<String> keywords = keywords(member);
-    return !Collections.disjoint(JUnitMembers.annotations(member), criteria.annotations())
+    final Set<String> annotations = JUnitMembers.annotations(member);
+    return !Collections.disjoint(annotations, criteria.annotations())
+        && Collections.disjoint(annotations, criteria.absentAnnotations())
+        && criteria.text().matcher(declarationText(member)).find()
         && keywords.containsAll(criteria.modifiers())
         && Collections.disjoint(keywords, criteria.absentModifiers());
   }
@@ -90,5 +100,12 @@ public final class AnnotatedMemberCheck implements RuleCheck {
         .map(SyntaxWalk::text)
         .filter(text -> !text.startsWith(ANNOTATION_MARK))
         .collect(Collectors.toUnmodifiableSet());
+  }
+
+  private String declarationText(final SyntaxNode member) {
+    return member.children().stream()
+        .filter(child -> MEMBER_DECLARATION.equals(child.kind()))
+        .map(SyntaxWalk::text)
+        .collect(Collectors.joining());
   }
 }

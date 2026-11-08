@@ -8,14 +8,14 @@ almost-javadoc = { status = "planned", issue = "#319" }
 already-checked = { status = "planned", issue = "#319" }
 always-throws = { status = "planned", issue = "#319" }
 ambiguous-method-reference = { status = "planned", issue = "#319" }
-android-injection-before-super = { status = "planned", issue = "#319" }
+android-injection-before-super = "implemented"
 annotate-format-method = { status = "planned", issue = "#319" }
 annotation-mirror-to-string = { status = "planned", issue = "#319" }
 annotation-position = { status = "planned", issue = "#319" }
 annotation-value-to-string = { status = "planned", issue = "#319" }
 argument-selection-defect-checker = { status = "planned", issue = "#319" }
 array-equals = "implemented"
-array-fill-incompatible-type = { status = "planned", issue = "#319" }
+array-fill-incompatible-type = "implemented"
 array-hash-code = "implemented"
 array-record-component = { status = "planned", issue = "#319" }
 array-to-string = "implemented"
@@ -48,7 +48,7 @@ bad-annotation-implementation = { status = "planned", issue = "#319" }
 bad-comparable = { status = "planned", issue = "#319" }
 bad-import = { status = "planned", issue = "#319" }
 bad-instanceof = { status = "planned", issue = "#319" }
-bad-shift-amount = { status = "planned", issue = "#319" }
+bad-shift-amount = "implemented"
 ban-class-loader = "implemented"
 ban-jndi = "implemented"
 ban-serializable-read = "implemented"
@@ -77,7 +77,7 @@ catching-unchecked = { status = "planned", issue = "#319" }
 chained-assertion-loses-context = { status = "planned", issue = "#319" }
 chaining-constructor-ignores-parameter = { status = "planned", issue = "#319" }
 character-get-numeric-value = { status = "planned", issue = "#319" }
-check-not-null-multiple-times = { status = "planned", issue = "#319" }
+check-not-null-multiple-times = "implemented"
 check-return-value = "implemented"
 checked-exception-not-thrown = { status = "planned", issue = "#319" }
 class-can-be-static = { status = "planned", issue = "#319" }
@@ -87,7 +87,7 @@ class-named-like-type-parameter = { status = "planned", issue = "#319" }
 class-new-instance = { status = "planned", issue = "#319" }
 closeable-provides = { status = "planned", issue = "#319" }
 closing-standard-output-streams = { status = "planned", issue = "#319" }
-collection-incompatible-type = { status = "planned", issue = "#319" }
+collection-incompatible-type = "implemented"
 collection-to-array-safe-parameter = { status = "planned", issue = "#319" }
 collector-should-not-use-state = { status = "planned", issue = "#319" }
 comparable-and-comparator = { status = "planned", issue = "#319" }
@@ -95,16 +95,16 @@ comparable-type = { status = "planned", issue = "#319" }
 compare-to-zero = { status = "planned", issue = "#319" }
 comparing-this-with-null = "implemented"
 comparison-contract-violated = { status = "planned", issue = "#319" }
-comparison-out-of-range = { status = "planned", issue = "#319" }
+comparison-out-of-range = "implemented"
 compatible-with-annotation-misuse = { status = "planned", issue = "#319" }
 compile-time-constant = { status = "planned", issue = "#319" }
 complex-boolean-constant = { status = "planned", issue = "#319" }
 compute-if-absent-ambiguous-reference = { status = "planned", issue = "#319" }
-conditional-expression-numeric-promotion = { status = "planned", issue = "#319" }
+conditional-expression-numeric-promotion = "implemented"
 constant-field = { status = "planned", issue = "#319" }
-constant-overflow = { status = "planned", issue = "#319" }
+constant-overflow = "implemented"
 constant-pattern-compile = { status = "planned", issue = "#319" }
-dagger-provides-null = { status = "planned", issue = "#319" }
+dagger-provides-null = "implemented"
 dangerous-literal-null = { status = "planned", issue = "#319" }
 date-checker = { status = "planned", issue = "#319" }
 date-format-constant = { status = "planned", issue = "#319" }

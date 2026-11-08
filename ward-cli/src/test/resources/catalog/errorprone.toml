@@ -56,8 +56,6 @@ errorprone = ["AmbiguousMethodReference"]
 
 [[rule]]
 name = "android-injection-before-super"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["AndroidInjectionBeforeSuper"]
 
 [[rule]]
@@ -96,8 +94,6 @@ errorprone = ["ArrayEquals"]
 
 [[rule]]
 name = "array-fill-incompatible-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ArrayFillIncompatibleType"]
 
 [[rule]]
@@ -278,8 +274,6 @@ errorprone = ["BadInstanceof"]
 
 [[rule]]
 name = "bad-shift-amount"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BadShiftAmount"]
 
 [[rule]]
@@ -444,8 +438,6 @@ errorprone = ["CharacterGetNumericValue"]
 
 [[rule]]
 name = "check-not-null-multiple-times"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CheckNotNullMultipleTimes"]
 
 [[rule]]
@@ -500,8 +492,6 @@ errorprone = ["ClosingStandardOutputStreams"]
 
 [[rule]]
 name = "collection-incompatible-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CollectionIncompatibleType"]
 
 [[rule]]
@@ -546,8 +536,6 @@ errorprone = ["ComparisonContractViolated"]
 
 [[rule]]
 name = "comparison-out-of-range"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComparisonOutOfRange"]
 
 [[rule]]
@@ -576,8 +564,6 @@ errorprone = ["ComputeIfAbsentAmbiguousReference"]
 
 [[rule]]
 name = "conditional-expression-numeric-promotion"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ConditionalExpressionNumericPromotion"]
 
 [[rule]]
@@ -588,8 +574,6 @@ errorprone = ["ConstantField"]
 
 [[rule]]
 name = "constant-overflow"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ConstantOverflow"]
 
 [[rule]]
@@ -600,8 +584,6 @@ errorprone = ["ConstantPatternCompile"]
 
 [[rule]]
 name = "dagger-provides-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DaggerProvidesNull"]
 
 [[rule]]
