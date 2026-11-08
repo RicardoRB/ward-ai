@@ -18,6 +18,7 @@ final class WildcardTypes {
 
   private static final String TYPE_PARAMETER = "typeParameter";
   private static final String TYPE_TYPE = "typeType";
+  private static final int BOUNDED = 3;
   private static final Set<String> DECLARATIONS =
       Set.of("classDeclaration", "interfaceDeclaration", "recordDeclaration");
 
@@ -82,7 +83,7 @@ final class WildcardTypes {
   /** A {@code ? super U} argument where U is unbounded and the parameter has a real bound. */
   private boolean unsafeArgument(final SyntaxNode argument, final String bound) {
     final List<SyntaxNode> parts = argument.children();
-    final boolean lower = parts.size() == 3 && "super".equals(SyntaxWalk.text(parts.get(1)));
+    final boolean lower = parts.size() == BOUNDED && "super".equals(SyntaxWalk.text(parts.get(1)));
     return lower
         && TYPE_TYPE.equals(parts.get(2).kind())
         && unbounded.contains(SyntaxWalk.text(parts.get(2)))

@@ -20,6 +20,11 @@ import java.util.Set;
 public final class UnsafeWildcardCheck implements RuleCheck {
 
   private static final String TYPE_TYPE = "typeType";
+  private static final String DECLARATOR = "variableDeclarator";
+  private static final String NULL = "null";
+  private static final String FIELD = "fieldDeclaration";
+  private static final int CAST_PARTS = 4;
+  private static final int CAST_OPERAND = 3;
 
   private final String message;
 
@@ -67,16 +72,16 @@ public final class UnsafeWildcardCheck implements RuleCheck {
     }
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxNode declarator : SyntaxWalk.descendants(node)) {
-      if ("variableDeclarator".equals(declarator.kind())) {
+      if (DECLARATOR.equals(declarator.kind())) {
         initializer(declarator)
             .ifPresentOrElse(
                 value -> {
-                  if ("null".equals(SyntaxWalk.text(value))) {
+                  if (NULL.equals(SyntaxWalk.text(value))) {
                     found.add(CheckSupport.at(value.span(), message));
                   }
                 },
                 () -> {
-                  if ("fieldDeclaration".equals(node.kind())) {
+                  if (FIELD.equals(node.kind())) {
                     found.add(CheckSupport.at(type.get().span(), message));
                   }
                 });
@@ -106,7 +111,7 @@ public final class UnsafeWildcardCheck implements RuleCheck {
     final List<SyntaxNode> parts = visit.node().children();
     if (parts.size() < 2
         || !"return".equals(SyntaxWalk.text(parts.get(0)))
-        || !"null".equals(SyntaxWalk.text(parts.get(1)))) {
+        || !NULL.equals(SyntaxWalk.text(parts.get(1)))) {
       return List.of();
     }
     final boolean unsafe =
@@ -123,11 +128,11 @@ public final class UnsafeWildcardCheck implements RuleCheck {
   private List<RuleMatch> cast(final SyntaxNode node, final WildcardTypes types) {
     final List<SyntaxNode> parts = node.children();
     final boolean unsafe =
-        parts.size() == 4
+        parts.size() == CAST_PARTS
             && "(".equals(SyntaxWalk.text(parts.get(0)))
             && TYPE_TYPE.equals(parts.get(1).kind())
-            && "null".equals(SyntaxWalk.text(parts.get(3)))
+            && NULL.equals(SyntaxWalk.text(parts.get(CAST_OPERAND)))
             && types.unsafe(parts.get(1));
-    return unsafe ? List.of(CheckSupport.at(parts.get(3).span(), message)) : List.of();
+    return unsafe ? List.of(CheckSupport.at(parts.get(CAST_OPERAND).span(), message)) : List.of();
   }
 }

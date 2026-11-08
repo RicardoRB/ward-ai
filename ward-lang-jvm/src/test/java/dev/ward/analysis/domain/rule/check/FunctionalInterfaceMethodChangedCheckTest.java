@@ -16,6 +16,8 @@ class FunctionalInterfaceMethodChangedCheckTest {
   private static final String SOURCE =
       "@FunctionalInterface\ninterface Task extends Handler {\n  void run2();\n"
           + "  default void handle() {\n    log();\n  }\n}\n";
+  private static final String HANDLER = "Handler";
+  private static final String HANDLE = "handle";
   private static final String METHOD = "defaultvoidhandle(){log();}";
 
   private static CallTarget target(
@@ -44,7 +46,7 @@ class FunctionalInterfaceMethodChangedCheckTest {
 
   private static SpanFacts handler(final String annotation) {
     return new SpanFacts(
-        TypeRef.of("Handler"),
+        TypeRef.of(HANDLER),
         null,
         null,
         List.of(),
@@ -75,25 +77,25 @@ class FunctionalInterfaceMethodChangedCheckTest {
       final SpanFacts supertype) {
     return new ParsedFacts(source)
         .at("interfaceMethodDeclaration", method, overridden)
-        .at("typeType", "Handler", supertype)
+        .at("typeType", HANDLER, supertype)
         .run(CHECK);
   }
 
   @Test
   void aDefaultMethodThatDoesMoreThanCallTheAbstractMethodIsReported() {
-    final SpanFacts overridden = overrides(target("Handler", "handle", true));
+    final SpanFacts overridden = overrides(target(HANDLER, HANDLE, true));
     assertThat(run(SOURCE, METHOD, overridden, handler("java.lang.FunctionalInterface")))
         .containsExactly("4:3");
   }
 
   @Test
   void aDefaultMethodThatOnlyCallsTheAbstractMethodIsNotReported() {
-    final SpanFacts overridden = overrides(target("Handler", "handle", true));
+    final SpanFacts overridden = overrides(target(HANDLER, HANDLE, true));
     final String source = SOURCE.replace("log()", "run2()");
     final ParsedFacts parsed =
         new ParsedFacts(source)
             .at("interfaceMethodDeclaration", "defaultvoidhandle(){run2();}", overridden)
-            .at("typeType", "Handler", handler("java.lang.FunctionalInterface"))
+            .at("typeType", HANDLER, handler("java.lang.FunctionalInterface"))
             .at("expression", "run2()", call("Task", "run2"));
     assertThat(parsed.run(CHECK)).isEmpty();
     final String boxed =
@@ -106,14 +108,14 @@ class FunctionalInterfaceMethodChangedCheckTest {
                     "interfaceMethodDeclaration",
                     "defaultVoidhandle(){run2();returnnull;}",
                     overridden)
-                .at("typeType", "Handler", handler("java.lang.FunctionalInterface"))
+                .at("typeType", HANDLER, handler("java.lang.FunctionalInterface"))
                 .at("expression", "run2()", call("Task", "run2"))
                 .run(CHECK))
         .isEmpty();
     assertThat(
             new ParsedFacts(boxed.replace("    return null;\n", ""))
                 .at("interfaceMethodDeclaration", "defaultVoidhandle(){run2();}", overridden)
-                .at("typeType", "Handler", handler("java.lang.FunctionalInterface"))
+                .at("typeType", HANDLER, handler("java.lang.FunctionalInterface"))
                 .at("expression", "run2()", call("Task", "run2"))
                 .run(CHECK))
         .hasSize(1);
@@ -122,30 +124,27 @@ class FunctionalInterfaceMethodChangedCheckTest {
   @Test
   void unknownFactsAndOtherShapesAreNotReported() {
     final SpanFacts functional = handler("java.lang.FunctionalInterface");
-    assertThat(run(SOURCE, METHOD, overrides(target("Handler", "handle", false)), functional))
+    assertThat(run(SOURCE, METHOD, overrides(target(HANDLER, HANDLE, false)), functional))
         .isEmpty();
-    assertThat(run(SOURCE, METHOD, overrides(target("Handler", "handle", null)), functional))
+    assertThat(run(SOURCE, METHOD, overrides(target(HANDLER, HANDLE, null)), functional)).isEmpty();
+    assertThat(run(SOURCE, METHOD, overrides(target(HANDLER, "toString", true)), functional))
         .isEmpty();
-    assertThat(run(SOURCE, METHOD, overrides(target("Handler", "toString", true)), functional))
-        .isEmpty();
-    assertThat(run(SOURCE, METHOD, overrides(target("Other", "handle", true)), functional))
-        .isEmpty();
-    assertThat(
-            run(SOURCE, METHOD, overrides(target("Handler", "handle", true)), handler("a.Other")))
+    assertThat(run(SOURCE, METHOD, overrides(target("Other", HANDLE, true)), functional)).isEmpty();
+    assertThat(run(SOURCE, METHOD, overrides(target(HANDLER, HANDLE, true)), handler("a.Other")))
         .isEmpty();
     assertThat(run(SOURCE, METHOD, SpanFacts.UNKNOWN, functional)).isEmpty();
     assertThat(
             run(
                 SOURCE.replace("@FunctionalInterface\n", ""),
                 METHOD,
-                overrides(target("Handler", "handle", true)),
+                overrides(target(HANDLER, HANDLE, true)),
                 functional))
         .isEmpty();
     assertThat(
             run(
                 SOURCE.replace("  void run2();\n", "  void run2();\n  void run3();\n"),
                 METHOD,
-                overrides(target("Handler", "handle", true)),
+                overrides(target(HANDLER, HANDLE, true)),
                 functional))
         .isEmpty();
     assertThat(new ParsedFacts(SOURCE).plain(CHECK)).isEmpty();

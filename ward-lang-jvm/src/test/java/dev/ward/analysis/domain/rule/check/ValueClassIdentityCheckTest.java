@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 class ValueClassIdentityCheckTest {
 
   private static final ValueClassIdentityCheck CHECK = new ValueClassIdentityCheck("message");
+  private static final String EXPRESSION = "expression";
   private static final TypeRef INTEGER = TypeRef.of("java.lang.Integer");
   private static final TypeRef STRING = TypeRef.of("java.lang.String");
   private static final TypeRef BOOLEAN = TypeRef.of("java.lang.Boolean");
@@ -53,7 +54,7 @@ class ValueClassIdentityCheckTest {
 
   private static List<String> run(final String body, final String node, final SpanFacts facts) {
     return new ParsedFacts("class C {\n  void t(Integer n) {\n    " + body + "\n  }\n}\n")
-        .at("expression", node, facts)
+        .at(EXPRESSION, node, facts)
         .run(CHECK);
   }
 
@@ -93,21 +94,21 @@ class ValueClassIdentityCheckTest {
         new ParsedFacts(
                 "class C {\n  int t(Integer n) {\n    return System.identityHashCode(n);\n  }\n}\n")
             .at(
-                "expression",
+                EXPRESSION,
                 "System.identityHashCode(n)",
                 call("java.lang.System", "identityHashCode"))
-            .at("expression", "n", type(INTEGER));
+            .at(EXPRESSION, "n", type(INTEGER));
     assertThat(hash.run(CHECK)).containsExactly("3:12");
     final ParsedFacts wait =
         new ParsedFacts(
                 "class C {\n  void t(Integer n) throws Exception {\n    n.wait();\n  }\n}\n")
-            .at("expression", "n.wait()", call("java.lang.Object", "wait"))
-            .at("expression", "n", type(INTEGER));
+            .at(EXPRESSION, "n.wait()", call("java.lang.Object", "wait"))
+            .at(EXPRESSION, "n", type(INTEGER));
     assertThat(wait.run(CHECK)).containsExactly("3:5");
     final ParsedFacts other =
         new ParsedFacts("class C {\n  void t(String n) throws Exception {\n    n.wait();\n  }\n}\n")
-            .at("expression", "n.wait()", call("java.lang.Object", "wait"))
-            .at("expression", "n", type(STRING));
+            .at(EXPRESSION, "n.wait()", call("java.lang.Object", "wait"))
+            .at(EXPRESSION, "n", type(STRING));
     assertThat(other.run(CHECK)).isEmpty();
   }
 
@@ -120,16 +121,16 @@ class ValueClassIdentityCheckTest {
         withType(
             call("com.google.common.cache.CacheBuilder", "build"),
             generic("c.Cache", INTEGER, STRING));
-    assertThat(new ParsedFacts(source).at("expression", node, build).run(CHECK))
+    assertThat(new ParsedFacts(source).at(EXPRESSION, node, build).run(CHECK))
         .containsExactly("3:12");
     final SpanFacts valueKeyed =
         withType(
             call("com.google.common.cache.CacheBuilder", "build"),
             generic("c.Cache", STRING, INTEGER));
-    assertThat(new ParsedFacts(source).at("expression", node, valueKeyed).run(CHECK)).isEmpty();
+    assertThat(new ParsedFacts(source).at(EXPRESSION, node, valueKeyed).run(CHECK)).isEmpty();
     assertThat(
             new ParsedFacts(source.replace("weakKeys", "weakValues"))
-                .at("expression", node.replace("weakKeys", "weakValues"), valueKeyed)
+                .at(EXPRESSION, node.replace("weakKeys", "weakValues"), valueKeyed)
                 .run(CHECK))
         .hasSize(1);
     assertThat(new ParsedFacts("class C {}").plain(CHECK)).isEmpty();

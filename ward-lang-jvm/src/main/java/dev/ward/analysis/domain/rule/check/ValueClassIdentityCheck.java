@@ -27,6 +27,8 @@ import java.util.Set;
 public final class ValueClassIdentityCheck implements RuleCheck {
 
   private static final String EXPRESSION = "expression";
+  private static final String STATEMENT = "statement";
+  private static final int MEMBER_PARTS = 3;
   private static final String BOOLEAN = "java.lang.Boolean";
   private static final Set<String> REFERENCES =
       Set.of(
@@ -37,7 +39,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
   private static final Set<String> BUILDERS =
       Set.of("com.google.common.cache.CacheBuilder", "com.github.benmanes.caffeine.cache.Caffeine");
   private static final FactNeed NEED =
-      new FactNeed(Set.of(EXPRESSION, "statement"), Set.of(FactKind.TYPE, FactKind.CALL));
+      new FactNeed(Set.of(EXPRESSION, STATEMENT), Set.of(FactKind.TYPE, FactKind.CALL));
 
   private final String message;
 
@@ -68,7 +70,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
       final UnitTypeFacts types,
       final SourceUnit unit) {
     final List<RuleMatch> found = new ArrayList<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION, "statement"))) {
+    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION, STATEMENT))) {
       if (relies(visit.node(), types)) {
         found.add(CheckSupport.at(visit.node().span(), message));
       }
@@ -77,7 +79,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
   }
 
   private static boolean relies(final SyntaxNode node, final UnitTypeFacts types) {
-    if ("statement".equals(node.kind())) {
+    if (STATEMENT.equals(node.kind())) {
       return synchronizedOn(node, types);
     }
     final List<SyntaxNode> parts = node.children();
@@ -136,7 +138,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
 
   private static Optional<SyntaxNode> receiver(final SyntaxNode call) {
     final List<SyntaxNode> parts = call.children();
-    return parts.size() == 3 && ".".equals(SyntaxWalk.text(parts.get(1)))
+    return parts.size() == MEMBER_PARTS && ".".equals(SyntaxWalk.text(parts.get(1)))
         ? Optional.of(parts.get(0))
         : Optional.empty();
   }
@@ -166,7 +168,7 @@ public final class ValueClassIdentityCheck implements RuleCheck {
     Optional<SyntaxNode> current = Optional.of(call);
     while (current.isPresent()) {
       final List<SyntaxNode> parts = current.get().children();
-      if (parts.size() == 3 && ".".equals(SyntaxWalk.text(parts.get(1)))) {
+      if (parts.size() == MEMBER_PARTS && ".".equals(SyntaxWalk.text(parts.get(1)))) {
         names.add(NullOperands.methodName(parts.get(2)));
       }
       current = receiver(current.get());
