@@ -671,14 +671,10 @@ spotbugs = ["EC_UNRELATED_TYPES_USING_POINTER_EQUALITY"]
 
 [[rule]]
 name = "ei-expose-buf"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_BUF"]
 
 [[rule]]
 name = "ei-expose-buf2"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_BUF2"]
 
 [[rule]]
@@ -691,14 +687,10 @@ spotbugs = ["EI_EXPOSE_REP2"]
 
 [[rule]]
 name = "ei-expose-static-buf2"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_STATIC_BUF2"]
 
 [[rule]]
 name = "ei-expose-static-rep2"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["EI_EXPOSE_STATIC_REP2"]
 
 [[rule]]
@@ -1167,8 +1159,6 @@ spotbugs = ["IT_NO_SUCH_ELEMENT"]
 
 [[rule]]
 name = "j2-ee-store-of-non-serializable-object-into-session"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION"]
 
 [[rule]]
@@ -1266,32 +1256,22 @@ spotbugs = ["ML_SYNC_ON_UPDATED_FIELD"]
 
 [[rule]]
 name = "msf-mutable-servlet-field"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["MSF_MUTABLE_SERVLET_FIELD"]
 
 [[rule]]
 name = "ms-cannot-be-final"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_CANNOT_BE_FINAL"]
 
 [[rule]]
 name = "ms-expose-buf"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_EXPOSE_BUF"]
 
 [[rule]]
 name = "ms-expose-rep"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_EXPOSE_REP"]
 
 [[rule]]
 name = "ms-final-pkgprotect"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_FINAL_PKGPROTECT"]
 
 [[rule]]
@@ -1312,8 +1292,6 @@ spotbugs = ["MS_MUTABLE_HASHTABLE"]
 
 [[rule]]
 name = "ms-ooi-pkgprotect"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_OOI_PKGPROTECT"]
 
 [[rule]]
@@ -1326,20 +1304,14 @@ spotbugs = ["MS_SHOULD_BE_FINAL"]
 
 [[rule]]
 name = "ms-should-be-refactored-to-be-final"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MS_SHOULD_BE_REFACTORED_TO_BE_FINAL"]
 
 [[rule]]
 name = "mtia-suspect-servlet-instance-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["MTIA_SUSPECT_SERVLET_INSTANCE_FIELD"]
 
 [[rule]]
 name = "mtia-suspect-struts-instance-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["MTIA_SUSPECT_STRUTS_INSTANCE_FIELD"]
 
 [[rule]]
@@ -1710,8 +1682,6 @@ spotbugs = ["PA_PUBLIC_ARRAY_ATTRIBUTE"]
 
 [[rule]]
 name = "pa-public-mutable-object-attribute"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE"]
 
 [[rule]]
@@ -1727,26 +1697,18 @@ spotbugs = ["PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-class-names"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-field-names"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_FIELD_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-local-variable-names"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_LOCAL_VARIABLE_NAMES"]
 
 [[rule]]
 name = "pi-do-not-reuse-public-identifiers-method-names"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_METHOD_NAMES"]
 
 [[rule]]
@@ -2022,20 +1984,14 @@ spotbugs = ["SC_START_IN_CTOR"]
 
 [[rule]]
 name = "se-bad-field"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_BAD_FIELD"]
 
 [[rule]]
 name = "se-bad-field-inner-class"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_BAD_FIELD_INNER_CLASS"]
 
 [[rule]]
 name = "se-bad-field-store"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_BAD_FIELD_STORE"]
 
 [[rule]]
@@ -2045,8 +2001,6 @@ spotbugs = ["SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"]
 
 [[rule]]
 name = "se-inner-class"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_INNER_CLASS"]
 
 [[rule]]
@@ -2088,8 +2042,6 @@ spotbugs = ["SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION"]
 
 [[rule]]
 name = "se-prevent-ext-obj-overwrite"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_PREVENT_EXT_OBJ_OVERWRITE"]
 
 [[rule]]
@@ -2108,8 +2060,6 @@ spotbugs = ["SE_READ_RESOLVE_MUST_RETURN_OBJECT"]
 
 [[rule]]
 name = "se-transient-field-not-restored"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["SE_TRANSIENT_FIELD_NOT_RESTORED"]
 
 [[rule]]
@@ -2136,14 +2086,10 @@ spotbugs = ["SF_SWITCH_NO_DEFAULT"]
 
 [[rule]]
 name = "sic-inner-should-be-static"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["SIC_INNER_SHOULD_BE_STATIC"]
 
 [[rule]]
 name = "sic-inner-should-be-static-anon"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_ANON"]
 
 [[rule]]
