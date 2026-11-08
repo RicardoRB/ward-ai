@@ -74,7 +74,7 @@ record NullScope(
     return type.substring(type.lastIndexOf('.') + 1) + "#" + name + "(" + count + ")";
   }
 
-  private static String key(final SyntaxWalk.Visit visit) {
+  static String key(final SyntaxWalk.Visit visit) {
     final SyntaxNode node = visit.node();
     final boolean constructor = "constructorDeclaration".equals(node.kind());
     final String name = constructor ? "<init>" : identifier(node);
@@ -99,7 +99,7 @@ record NullScope(
     return NullSyntax.first(node, "identifier").map(SyntaxWalk::text).orElse("");
   }
 
-  private static String typeOf(final List<SyntaxNode> ancestors) {
+  static String typeOf(final List<SyntaxNode> ancestors) {
     for (int index = ancestors.size() - 1; index >= 0; index--) {
       if (TYPE_KINDS.contains(ancestors.get(index).kind())) {
         return identifier(ancestors.get(index));

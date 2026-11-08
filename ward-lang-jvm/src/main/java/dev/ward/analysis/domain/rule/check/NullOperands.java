@@ -56,14 +56,12 @@ final class NullOperands {
     final String text = SyntaxWalk.text(node);
     final Span variable = variableOf(node);
     if (NULL_LITERAL.matcher(text).matches()) {
-      return new NullEvent.Operand(null, true, false);
+      return new NullEvent.Operand(null, true, false, node);
     }
     if (variable != null) {
-      return new NullEvent.Operand(variable, false, false);
+      return new NullEvent.Operand(variable, false, false, node);
     }
-    return neverNull(node, text)
-        ? new NullEvent.Operand(null, false, true)
-        : NullEvent.Operand.UNKNOWN;
+    return new NullEvent.Operand(null, false, neverNull(node, text), node);
   }
 
   private static boolean neverNull(final SyntaxNode node, final String text) {
@@ -93,6 +91,11 @@ final class NullOperands {
 
   static String methodName(final SyntaxNode invoked) {
     return NullSyntax.first(invoked, "identifier").map(SyntaxWalk::text).orElse("");
+  }
+
+  /** Tells whether the expression evaluates only its first operand for sure. */
+  static boolean isGuarded(final String operator, final List<SyntaxNode> parts) {
+    return "&&".equals(operator) || "||".equals(operator) || isTernary(parts);
   }
 
   static boolean isTernary(final List<SyntaxNode> parts) {

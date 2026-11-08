@@ -25,6 +25,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/correctness-members.toml",
           "rules/java/correctness-misc.toml",
           "rules/java/correctness-more.toml",
+          "rules/java/correctness-qualifiers.toml",
           "rules/java/correctness.toml",
           "rules/java/dataflow.toml",
           "rules/java/declarations.toml",

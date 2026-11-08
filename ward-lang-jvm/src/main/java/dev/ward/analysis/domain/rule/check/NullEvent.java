@@ -33,7 +33,9 @@ record NullEvent(
     /** A value is stored into a field. */
     STORE,
     /** A local is compared with null. */
-    COMPARE
+    COMPARE,
+    /** Two values are compared for equality. */
+    EQUALITY
   }
 
   /**
@@ -42,10 +44,11 @@ record NullEvent(
    * @param variable the local it names, or null
    * @param isNull whether it is the literal null
    * @param nonNull whether it is never null: a new object, a literal or this
+   * @param node the expression, or null when nothing is known about it
    */
-  record Operand(Span variable, boolean isNull, boolean nonNull) {
+  record Operand(Span variable, boolean isNull, boolean nonNull, SyntaxNode node) {
     /** An expression the analysis knows nothing about. */
-    static final Operand UNKNOWN = new Operand(null, false, false);
+    static final Operand UNKNOWN = new Operand(null, false, false, null);
   }
 
   /**
@@ -82,6 +85,10 @@ record NullEvent(
 
   static NullEvent store(final SyntaxNode node, final Operand operand, final String field) {
     return new NullEvent(Kind.STORE, null, node, operand, List.of(), field);
+  }
+
+  static NullEvent equality(final SyntaxNode node, final Arg left, final Arg right) {
+    return new NullEvent(Kind.EQUALITY, null, node, Operand.UNKNOWN, List.of(left, right), "");
   }
 
   static NullEvent compare(final Span variable, final SyntaxNode node) {

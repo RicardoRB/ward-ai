@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.rule.check.FloatPrecisionCheck;
 import dev.ward.analysis.domain.rule.check.LibraryCallCheck;
 import dev.ward.analysis.domain.rule.check.NonNullFieldInitCheck;
 import dev.ward.analysis.domain.rule.check.NullDataflowCheck;
+import dev.ward.analysis.domain.rule.check.TypeQualifierCheck;
 import dev.ward.analysis.domain.rule.check.UncallableAnonymousMethodCheck;
 import java.util.Locale;
 import java.util.Map;
@@ -38,6 +39,12 @@ final class FinalChecks {
             toml ->
                 new NullDataflowCheck(
                     NullDataflowCheck.Mode.valueOf(mode(toml)),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "type-qualifier",
+            toml ->
+                new TypeQualifierCheck(
+                    TypeQualifierCheck.Mode.valueOf(mode(toml)),
                     TomlValues.required(toml, MESSAGE))),
         entry(
             "nonnull-field-init",
