@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.List;
+import java.util.Map;
 
 /** Runs the null data-flow check over a class body, for the tests of its rules. */
 final class NullTestSupport {
@@ -44,7 +45,9 @@ final class NullTestSupport {
             List.of(),
             List.of(),
             List.of(),
-            null),
+            null,
+            Map.of(),
+            Map.of()),
         List.of(),
         List.of(),
         List.of(),

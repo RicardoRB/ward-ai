@@ -14,6 +14,9 @@ import dev.ward.analysis.domain.rule.check.FormatStringCheck;
 import dev.ward.analysis.domain.rule.check.FromTemporalAccessorCheck;
 import dev.ward.analysis.domain.rule.check.IncompatibleArgumentTypeCheck;
 import dev.ward.analysis.domain.rule.check.NonCanonicalStaticImportCheck;
+import dev.ward.analysis.domain.rule.check.PrivateSecurityContractProtoAccessCheck;
+import dev.ward.analysis.domain.rule.check.ProtoTruthMixedDescriptorsCheck;
+import dev.ward.analysis.domain.rule.check.RestrictedApiCheck;
 import dev.ward.analysis.domain.rule.check.UnnecessaryTypeArgumentCheck;
 import dev.ward.analysis.domain.rule.check.WrongOneofCheck;
 import java.util.Map;
@@ -55,6 +58,14 @@ final class ErrorProneCallChecks {
                     TomlValues.strings(toml, "declaring-types"),
                     TomlValues.strings(toml, "names"),
                     TomlValues.required(toml, MESSAGE))),
+        entry("restricted-api", toml -> new RestrictedApiCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "private-security-contract-proto-access",
+            toml ->
+                new PrivateSecurityContractProtoAccessCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "proto-truth-mixed-descriptors",
+            toml -> new ProtoTruthMixedDescriptorsCheck(TomlValues.required(toml, MESSAGE))),
         entry("for-override", toml -> new ForOverrideCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "from-temporal-accessor",

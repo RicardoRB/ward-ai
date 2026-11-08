@@ -57,7 +57,9 @@ final class FactMembers {
             method.compatibleWith(),
             method.typeParameters().stream().map(TypeParameter::name).toList(),
             owner.typeParameters().stream().map(TypeParameter::name).toList(),
-            (method.access() & Flags.FINAL) != 0));
+            (method.access() & Flags.FINAL) != 0,
+            method.annotationValues(),
+            owner.annotationValues()));
   }
 
   /** Returns what the class is and what it extends. */

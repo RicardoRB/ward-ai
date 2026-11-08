@@ -113,7 +113,8 @@ final class JavaMethodReader {
                     thrown,
                     JavaModifiers.annotations(modifiers, inner),
                     List.of(),
-                    List.of()))
+                    List.of(),
+                    AnnotationSourceValues.of(modifiers, inner)))
             : Optional.empty();
     return new SourceModel.Member(
         core, entry.outer(), inner, method, List.of(), parameters.variables(), body);
