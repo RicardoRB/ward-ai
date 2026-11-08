@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.infrastructure.rule.OptInOnlyRules;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,9 @@ class RuleCatalogContractTest {
         final RuleDefinition rule = byId.get(row.idFor(language));
         assertThat(rule.category()).as("category of %s", rule.id()).isNotBlank();
         assertThat(row.category()).as("category of row %s", row.name()).isIn("", rule.category());
-        assertThat(rule.presets()).as("presets of %s", rule.id()).isNotEmpty();
+        if (!OptInOnlyRules.IDS.contains(rule.id())) {
+          assertThat(rule.presets()).as("presets of %s", rule.id()).isNotEmpty();
+        }
         assertThat(RuleFixtureSet.of(RuleFixtureSet.root(), row, language).complete())
             .as("fixtures of %s", rule.id())
             .isTrue();

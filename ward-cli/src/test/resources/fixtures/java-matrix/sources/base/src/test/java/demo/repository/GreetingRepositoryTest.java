@@ -1,12 +1,13 @@
 package demo.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class GreetingRepositoryTest {
-  @Test
-  void returnsThePrefix() {
-    assertEquals("Hi, ", new GreetingRepository("Hi, ").prefix());
-  }
+    private static final String PREFIX = "Hi, ";
+
+    @Test
+    void returnsThePrefix() {
+        Assertions.assertEquals(PREFIX, new GreetingRepository(PREFIX).prefix(), "prefix");
+    }
 }

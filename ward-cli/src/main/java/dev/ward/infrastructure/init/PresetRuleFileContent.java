@@ -24,6 +24,11 @@ final class PresetRuleFileContent {
           "Translation",
           "UniqueProperties");
 
+  /** The options the strict preset has always set on Checkstyle's {@code HiddenField}. */
+  private static final String HIDDEN_FIELD =
+      "\n[rules.\"ward:java/hidden-field\"]\nignore-constructor-parameter = true\n"
+          + "ignore-setter = true\n";
+
   private PresetRuleFileContent() {}
 
   /**
@@ -32,9 +37,11 @@ final class PresetRuleFileContent {
    * migration lands, so selecting their Ward rules would report each finding twice.
    */
   static String wardRules(final QualityPreset preset) {
+    final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
     return "version = 1\n\n[select]\npreset = \""
-        + (preset == null ? QualityPreset.STANDARD : preset).id()
-        + "\"\nlanguages = [\"java\"]\n";
+        + chosen.id()
+        + "\"\nlanguages = [\"java\"]\n"
+        + (chosen == QualityPreset.STRICT ? HIDDEN_FIELD : "");
   }
 
   static String pmd(final QualityPreset preset) {

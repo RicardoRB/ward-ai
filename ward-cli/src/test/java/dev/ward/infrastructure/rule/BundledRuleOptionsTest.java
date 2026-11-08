@@ -39,6 +39,10 @@ class BundledRuleOptionsTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.category()).as(rule.id()).isNotBlank();
+              if (OptInOnlyRules.IDS.contains(rule.id())) {
+                assertThat(rule.presets()).as(rule.id()).isEmpty();
+                return;
+              }
               assertThat(rule.presets())
                   .as(rule.id())
                   .containsAnyOf(RulePreset.STANDARD, RulePreset.STRICT);

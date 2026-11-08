@@ -58,7 +58,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "codestyle"
-presets = ["standard", "strict"]
 body = '''
 check = "local-declaration-order"
 message = "declare local variables together at the start of the block, without an initializer"

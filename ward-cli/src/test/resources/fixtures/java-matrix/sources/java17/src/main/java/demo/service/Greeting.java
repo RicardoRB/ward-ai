@@ -7,12 +7,12 @@ package demo.service;
  * @param text the greeting
  */
 public record Greeting(String name, String text) {
-  /**
-   * Returns whether the greeting names its person.
-   *
-   * @return whether the text contains the name
-   */
-  public boolean personal() {
-    return text.contains(name);
-  }
+    /**
+     * Returns whether the greeting names its person.
+     *
+     * @return whether the text contains the name
+     */
+    public boolean personal() {
+        return text.contains(name);
+    }
 }

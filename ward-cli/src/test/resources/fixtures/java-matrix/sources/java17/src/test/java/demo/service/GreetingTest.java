@@ -1,18 +1,18 @@
 package demo.service;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class GreetingTest {
-  @Test
-  void personalWhenTheTextNamesThePerson() {
-    assertTrue(new Greeting("Ada", "Hello, Ada").personal());
-  }
+    private static final String NAME = "Ada";
 
-  @Test
-  void notPersonalOtherwise() {
-    assertFalse(new Greeting("Ada", "Hello, world").personal());
-  }
+    @Test
+    void personalWhenTheTextNamesThePerson() {
+        Assertions.assertTrue(new Greeting(NAME, "Hello, Ada").personal(), "names the person");
+    }
+
+    @Test
+    void notPersonalOtherwise() {
+        Assertions.assertFalse(new Greeting(NAME, "Hello, world").personal(), "names nobody");
+    }
 }

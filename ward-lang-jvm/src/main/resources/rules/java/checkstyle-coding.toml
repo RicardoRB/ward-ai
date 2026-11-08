@@ -98,7 +98,7 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "coding"
-presets = ["standard", "strict"]
+presets = ["strict"]
 options.ignore-numbers = { type = "string-list" }
 options.ignore-field-declaration = { type = "boolean" }
 options.ignore-annotation = { type = "boolean" }

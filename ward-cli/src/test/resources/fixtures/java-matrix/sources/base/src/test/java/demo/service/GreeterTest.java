@@ -1,25 +1,26 @@
 package demo.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import demo.repository.GreetingRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class GreeterTest {
-  private final Greeter greeter = new Greeter(new GreetingRepository("Hello, "));
+    private static final String PREFIX = "Hello, ";
+    private static final String HELLO_WORLD = "Hello, world";
+    private final Greeter greeter = new Greeter(new GreetingRepository(PREFIX));
 
-  @Test
-  void greetsByName() {
-    assertEquals("Hello, Ada", greeter.greet("Ada"));
-  }
+    @Test
+    void greetsByName() {
+        Assertions.assertEquals("Hello, Ada", greeter.greet("Ada"), "greeting by name");
+    }
 
-  @Test
-  void greetsWorldWhenNameIsNull() {
-    assertEquals("Hello, world", greeter.greet(null));
-  }
+    @Test
+    void greetsWorldWhenNameIsNull() {
+        Assertions.assertEquals(HELLO_WORLD, greeter.greet(null), "greeting for null");
+    }
 
-  @Test
-  void greetsWorldWhenNameIsEmpty() {
-    assertEquals("Hello, world", greeter.greet(""));
-  }
+    @Test
+    void greetsWorldWhenNameIsEmpty() {
+        Assertions.assertEquals(HELLO_WORLD, greeter.greet(""), "greeting for empty");
+    }
 }

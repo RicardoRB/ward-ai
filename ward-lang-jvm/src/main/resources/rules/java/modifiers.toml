@@ -133,7 +133,6 @@ language = "java"
 capability = "SYNTAX"
 severity = "error"
 category = "annotation"
-presets = ["strict"]
 body = '''
 check = "annotation-on-same-line"
 message = "annotation should be on the same line as its declaration"
