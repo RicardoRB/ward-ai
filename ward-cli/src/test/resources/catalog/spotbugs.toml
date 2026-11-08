@@ -484,8 +484,6 @@ spotbugs = ["DMI_SCHEDULED_THREAD_POOL_EXECUTOR_WITH_ZERO_CORE_THREADS"]
 
 [[rule]]
 name = "dmi-thread-passed-where-runnable-expected"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
 
 [[rule]]
@@ -712,7 +710,6 @@ spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
 
 [[rule]]
 name = "eq-compareto-use-object-equals"
-category = "bad-practice"
 spotbugs = ["EQ_COMPARETO_USE_OBJECT_EQUALS"]
 
 [[rule]]
@@ -1080,8 +1077,6 @@ spotbugs = ["INT_VACUOUS_BIT_OPERATION"]
 
 [[rule]]
 name = "int-vacuous-comparison"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["INT_VACUOUS_COMPARISON"]
 
 [[rule]]
@@ -1314,8 +1309,6 @@ spotbugs = ["NM_CONFUSING"]
 
 [[rule]]
 name = "nm-field-naming-convention"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_FIELD_NAMING_CONVENTION"]
 
 [[rule]]
@@ -1443,8 +1436,6 @@ spotbugs = ["NP_DEREFERENCE_OF_READLINE_VALUE"]
 
 [[rule]]
 name = "np-equals-should-handle-null-argument"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"]
 
 [[rule]]
@@ -1762,8 +1753,6 @@ spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"]
 
 [[rule]]
 name = "rec-catch-exception"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["REC_CATCH_EXCEPTION"]
 
 [[rule]]
@@ -2468,7 +2457,6 @@ spotbugs = ["VSC_VULNERABLE_SECURITY_CHECK_METHODS"]
 
 [[rule]]
 name = "wa-await-not-in-loop"
-category = "mt-correctness"
 spotbugs = ["WA_AWAIT_NOT_IN_LOOP"]
 
 [[rule]]

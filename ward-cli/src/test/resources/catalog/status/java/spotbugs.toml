@@ -111,7 +111,7 @@ dmi-misleading-substring = { status = "planned", issue = "#316" }
 dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
 dmi-random-used-only-once = "implemented"
 dmi-scheduled-thread-pool-executor-with-zero-core-threads = "implemented"
-dmi-thread-passed-where-runnable-expected = { status = "planned", issue = "#316" }
+dmi-thread-passed-where-runnable-expected = "implemented"
 dmi-unsupported-method = { status = "planned", issue = "#316" }
 dmi-useless-substring = "implemented"
 dmi-using-removeall-to-clear-collection = "implemented"
@@ -211,7 +211,7 @@ int-bad-comparison-with-nonnegative-value = "implemented"
 int-bad-comparison-with-signed-byte = "implemented"
 int-bad-rem-by-1 = "implemented"
 int-vacuous-bit-operation = "implemented"
-int-vacuous-comparison = { status = "planned", issue = "#316" }
+int-vacuous-comparison = "implemented"
 io-appending-to-object-output-stream = "implemented"
 ip-parameter-is-dead-but-overwritten = "implemented"
 is-field-not-guarded = { status = "planned", issue = "#316" }
@@ -259,7 +259,7 @@ nm-bad-equal = "implemented"
 nm-class-naming-convention = "implemented"
 nm-class-not-exception = "implemented"
 nm-confusing = { status = "planned", issue = "#316" }
-nm-field-naming-convention = { status = "planned", issue = "#316" }
+nm-field-naming-convention = "implemented"
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
 nm-method-constructor-confusion = "implemented"
@@ -283,7 +283,7 @@ np-boolean-return-null = "implemented"
 np-clone-could-return-null = "implemented"
 np-closing-null = { status = "planned", issue = "#314" }
 np-dereference-of-readline-value = "implemented"
-np-equals-should-handle-null-argument = { status = "planned", issue = "#316" }
+np-equals-should-handle-null-argument = "implemented"
 np-guaranteed-deref = { status = "planned", issue = "#314" }
 np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
 np-immediate-dereference-of-readline = "implemented"
@@ -346,7 +346,7 @@ rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#
 re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
-rec-catch-exception = { status = "planned", issue = "#316" }
+rec-catch-exception = "implemented"
 reflc-reflection-may-increase-accessibility-of-class = "implemented"
 reflf-reflection-may-increase-accessibility-of-field = "implemented"
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
