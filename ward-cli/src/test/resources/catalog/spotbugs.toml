@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "aa-assertion-of-arguments"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
 
 [[rule]]
@@ -61,20 +59,14 @@ spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
 
 [[rule]]
 name = "bc-bad-cast-to-abstract-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"]
 
 [[rule]]
 name = "bc-bad-cast-to-concrete-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_CONCRETE_COLLECTION"]
 
 [[rule]]
 name = "bc-equals-method-should-work-for-all-objects"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS"]
 
 [[rule]]
@@ -104,14 +96,10 @@ spotbugs = ["BC_IMPOSSIBLE_INSTANCEOF"]
 
 [[rule]]
 name = "bc-unconfirmed-cast"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_UNCONFIRMED_CAST"]
 
 [[rule]]
 name = "bc-unconfirmed-cast-of-return-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"]
 
 [[rule]]
@@ -169,14 +157,10 @@ spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed-to-perform-coercion"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION"]
 
 [[rule]]
 name = "bx-unboxed-and-coerced-for-ternary-operator"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR"]
 
 [[rule]]
@@ -239,14 +223,10 @@ spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
 
 [[rule]]
 name = "co-abstract-self"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_ABSTRACT_SELF"]
 
 [[rule]]
 name = "co-compareto-incorrect-floating"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_COMPARETO_INCORRECT_FLOATING"]
 
 [[rule]]
@@ -256,14 +236,10 @@ spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
 
 [[rule]]
 name = "co-self-no-object"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "ct-constructor-throw"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CT_CONSTRUCTOR_THROW"]
 
 [[rule]]
@@ -320,14 +296,10 @@ spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store-of-null"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_OF_NULL"]
 
 [[rule]]
 name = "dls-dead-local-store-shadows-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
 
 [[rule]]
@@ -362,8 +334,6 @@ spotbugs = ["DL_SYNCHRONIZATION_ON_SHARED_CONSTANT"]
 
 [[rule]]
 name = "dl-synchronization-on-unshared-boxed-primitive"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE"]
 
 [[rule]]
@@ -422,8 +392,6 @@ spotbugs = ["DMI_EMPTY_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-entry-sets-may-reuse-entry-objects"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS"]
 
 [[rule]]
@@ -457,14 +425,10 @@ spotbugs = ["DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT"]
 
 [[rule]]
 name = "dmi-misleading-substring"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_MISLEADING_SUBSTRING"]
 
 [[rule]]
 name = "dmi-nonserializable-object-written"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_NONSERIALIZABLE_OBJECT_WRITTEN"]
 
 [[rule]]

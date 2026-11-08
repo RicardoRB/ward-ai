@@ -1,0 +1,121 @@
+{
+  "3:5-3:26": {
+    "call": {
+      "declaring": {
+        "name": "java.io.ObjectOutputStream"
+      },
+      "name": "writeObject",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "3:21-3:25": {
+    "type": {
+      "name": "Plain"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:5-4:25": {
+    "call": {
+      "declaring": {
+        "name": "java.io.ObjectOutputStream"
+      },
+      "name": "writeObject",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "4:21-4:24": {
+    "type": {
+      "name": "Data"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Serializable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:5-5:25": {
+    "call": {
+      "declaring": {
+        "name": "java.io.ObjectOutputStream"
+      },
+      "name": "writeObject",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "5:21-5:24": {
+    "type": {
+      "name": "Open"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "6:5-6:28": {
+    "call": {
+      "declaring": {
+        "name": "java.io.ObjectOutputStream"
+      },
+      "name": "writeObject",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  }
+}

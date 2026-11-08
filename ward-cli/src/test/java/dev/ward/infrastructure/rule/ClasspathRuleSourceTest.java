@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.application.gate.AnalysisRuleLoad;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class ClasspathRuleSourceTest {
@@ -144,11 +145,13 @@ class ClasspathRuleSourceTest {
     if (rule.capability() == RuleCapability.TYPES) {
       return RuleCapability.TYPES;
     }
+    return readsDataFlow(rule) ? RuleCapability.DATAFLOW : RuleCapability.SYNTAX;
+  }
+
+  private static boolean readsDataFlow(final RuleDefinition rule) {
     return rule.id().endsWith("/unused-assignment")
-            || rule.body().contains("check = \"unused-assignment\"")
-            || isJavaInjection(rule.id())
-            || rule.body().contains("check = \"taint\"")
-        ? RuleCapability.DATAFLOW
-        : RuleCapability.SYNTAX;
+        || isJavaInjection(rule.id())
+        || Stream.of("unused-assignment", "dead-store", "taint")
+            .anyMatch(check -> rule.body().contains("check = \"" + check + "\""));
   }
 }

@@ -1,0 +1,29 @@
+{
+  "3:19-3:23": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "3:27-3:31": {
+    "type": {
+      "name": "double",
+      "primitive": true
+    }
+  },
+  "7:19-7:23": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "7:27-7:31": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "3:27-3:32": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  }
+}
