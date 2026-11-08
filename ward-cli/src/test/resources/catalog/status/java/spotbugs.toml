@@ -1,6 +1,6 @@
 # Status of the spotbugs rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-aa-assertion-of-arguments = { status = "planned", issue = "#316" }
+aa-assertion-of-arguments = "implemented"
 am-creates-empty-jar-file-entry = "implemented"
 am-creates-empty-zip-file-entry = "implemented"
 ase-assertion-with-side-effect = "implemented"
@@ -11,8 +11,8 @@ at-operation-sequence-on-concurrent-abstraction = { status = "planned", issue = 
 at-stale-thread-write-of-primitive = { status = "planned", issue = "#316" }
 at-unsafe-resource-access-in-thread = { status = "planned", issue = "#316" }
 bac-bad-applet-constructor = "implemented"
-bc-bad-cast-to-abstract-collection = { status = "planned", issue = "#316" }
-bc-bad-cast-to-concrete-collection = { status = "planned", issue = "#316" }
+bc-bad-cast-to-abstract-collection = "implemented"
+bc-bad-cast-to-concrete-collection = "implemented"
 bc-equals-method-should-work-for-all-objects = { status = "planned", issue = "#316" }
 bc-impossible-cast = "implemented"
 bc-impossible-cast-primitive-array = "implemented"
@@ -32,7 +32,7 @@ bit-signed-check-high-bit = "implemented"
 boa-badly-overridden-adapter = "implemented"
 bshift-wrong-add-priority = "implemented"
 bx-boxing-immediately-unboxed = "implemented"
-bx-boxing-immediately-unboxed-to-perform-coercion = { status = "planned", issue = "#316" }
+bx-boxing-immediately-unboxed-to-perform-coercion = "implemented"
 bx-unboxed-and-coerced-for-ternary-operator = { status = "planned", issue = "#316" }
 bx-unboxing-immediately-reboxed = "implemented"
 caa-covariant-array-element-store = { status = "planned", issue = "#314" }
@@ -45,11 +45,11 @@ cn-idiom = "implemented"
 cn-idiom-no-super-call = "implemented"
 cn-implements-clone-but-not-cloneable = "implemented"
 cnt-rough-constant-value = "implemented"
-co-abstract-self = { status = "planned", issue = "#316" }
+co-abstract-self = "implemented"
 co-compareto-incorrect-floating = { status = "planned", issue = "#316" }
 co-compareto-results-min-value = "implemented"
-co-self-no-object = { status = "planned", issue = "#316" }
-ct-constructor-throw = { status = "planned", issue = "#316" }
+co-self-no-object = "implemented"
+ct-constructor-throw = "implemented"
 cwo-closed-without-opened = { status = "planned", issue = "#316" }
 db-duplicate-branches = "implemented"
 db-duplicate-switch-clauses = "implemented"
@@ -66,8 +66,8 @@ dl-synchronization-on-unshared-boxed-primitive = { status = "planned", issue = "
 dls-dead-local-increment-in-return = "implemented"
 dls-dead-local-store = "implemented"
 dls-dead-local-store-in-return = "implemented"
-dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
-dls-dead-local-store-shadows-field = { status = "planned", issue = "#316" }
+dls-dead-local-store-of-null = "implemented"
+dls-dead-local-store-shadows-field = "implemented"
 dls-dead-store-of-class-literal = "implemented"
 dls-overwritten-increment = "implemented"
 dm-boolean-ctor = "implemented"

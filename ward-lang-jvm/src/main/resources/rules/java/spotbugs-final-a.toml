@@ -1,0 +1,118 @@
+# SpotBugs rules for Java (issue 316) that read class shape, casts and dead stores.
+
+[[rules]]
+id = "ward:java/aa-assertion-of-arguments"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "assert-on-parameter"
+message = "the argument of a public method is checked with assert; throw an exception instead"
+'''
+
+[[rules]]
+id = "ward:java/bc-bad-cast-to-abstract-collection"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "cast-types"
+from = ["java.util.Collection"]
+to = ["List", "Set", "SortedSet", "NavigableSet", "Queue", "Deque"]
+message = "a Collection is cast to a more specific abstract collection type"
+'''
+
+[[rules]]
+id = "ward:java/bc-bad-cast-to-concrete-collection"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "cast-types"
+from = ["java.util.Collection", "java.util.List", "java.util.Set", "java.util.SortedSet", "java.util.NavigableSet", "java.util.Queue", "java.util.Deque", "java.util.Map", "java.util.SortedMap", "java.util.NavigableMap"]
+to = ["ArrayList", "LinkedList", "Vector", "Stack", "HashSet", "LinkedHashSet", "TreeSet", "ArrayDeque", "PriorityQueue", "HashMap", "LinkedHashMap", "TreeMap", "Hashtable"]
+message = "an abstract collection is cast to a concrete implementation"
+'''
+
+[[rules]]
+id = "ward:java/bx-boxing-immediately-unboxed-to-perform-coercion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:newInteger\(|Integer\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!intValue)\w+Value\(\)|(?:newLong\(|Long\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!longValue)\w+Value\(\)|(?:newShort\(|Short\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!shortValue)\w+Value\(\)|(?:newByte\(|Byte\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!byteValue)\w+Value\(\)|(?:newDouble\(|Double\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!doubleValue)\w+Value\(\)|(?:newFloat\(|Float\.valueOf\()(?:[^()]|\([^()]*\))*\)\.(?!floatValue)\w+Value\(\))$'
+message = "a value is boxed and unboxed only to convert it to another primitive type; cast it instead"
+'''
+
+[[rules]]
+id = "ward:java/co-abstract-self"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "covariant-compare-to"
+abstract-class = true
+message = "abstract class defines compareTo with its own type but not compareTo(Object)"
+'''
+
+[[rules]]
+id = "ward:java/co-self-no-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "covariant-compare-to"
+message = "class defines compareTo with its own type but not compareTo(Object)"
+'''
+
+[[rules]]
+id = "ward:java/ct-constructor-throw"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-throw"
+message = "a constructor of a non-final class throws; a subclass can capture the partly built object"
+'''
+
+[[rules]]
+id = "ward:java/dls-dead-local-store-of-null"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "dead-store"
+kind = "null"
+message = "null is stored in local '{value}' and never read"
+'''
+
+[[rules]]
+id = "ward:java/dls-dead-local-store-shadows-field"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "dead-store"
+kind = "shadows_field"
+message = "the value stored in local '{value}' is never read, and a field has the same name"
+'''

@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "aa-assertion-of-arguments"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
 
 [[rule]]
@@ -61,14 +59,10 @@ spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
 
 [[rule]]
 name = "bc-bad-cast-to-abstract-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"]
 
 [[rule]]
 name = "bc-bad-cast-to-concrete-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_CONCRETE_COLLECTION"]
 
 [[rule]]
@@ -169,8 +163,6 @@ spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed-to-perform-coercion"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION"]
 
 [[rule]]
@@ -239,8 +231,6 @@ spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
 
 [[rule]]
 name = "co-abstract-self"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_ABSTRACT_SELF"]
 
 [[rule]]
@@ -256,14 +246,10 @@ spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
 
 [[rule]]
 name = "co-self-no-object"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "ct-constructor-throw"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CT_CONSTRUCTOR_THROW"]
 
 [[rule]]
@@ -320,14 +306,10 @@ spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store-of-null"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_OF_NULL"]
 
 [[rule]]
 name = "dls-dead-local-store-shadows-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
 
 [[rule]]
