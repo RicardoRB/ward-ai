@@ -68,6 +68,8 @@ final class CorrectnessTrees {
             List.of(),
             List.of(),
             null,
+            Map.of(),
+            Map.of(),
             null),
         List.of(),
         List.of(),

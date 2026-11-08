@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class TypeQualifierCheckTest {
@@ -37,6 +38,8 @@ class TypeQualifierCheckTest {
             List.of(),
             List.of(),
             null,
+            Map.of(),
+            Map.of(),
             null),
         List.of(),
         List.of(),

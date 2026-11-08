@@ -4,6 +4,8 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.ComparisonContractCheck;
+import dev.ward.analysis.domain.rule.check.ComputeIfAbsentReferenceCheck;
 import dev.ward.analysis.domain.rule.check.JavaIncomparableCheck;
 import dev.ward.analysis.domain.rule.check.JavaIsInstanceClassCheck;
 import dev.ward.analysis.domain.rule.check.JavaIsInstanceIncompatibleCheck;
@@ -27,6 +29,12 @@ final class ErrorProneTypedChecks {
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
+        entry(
+            "comparison-contract",
+            toml -> new ComparisonContractCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "compute-if-absent-reference",
+            toml -> new ComputeIfAbsentReferenceCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "incomparable-element",
             toml -> new JavaIncomparableCheck(TomlValues.required(toml, MESSAGE))),

@@ -1,0 +1,119 @@
+{
+  "26:1-33:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "31:12-31:15": {
+    "constant": -1
+  },
+  "1:1-7:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:12-5:12": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "5:16-5:18": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "9:1-16:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Comparator"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "18:1-24:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "2:1-9:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "7:12-7:12": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "11:1-15:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "17:1-21:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Comparator"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "29:1-35:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

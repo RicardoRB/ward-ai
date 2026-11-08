@@ -129,4 +129,26 @@ class TypeFactsFixtureTest {
     assertThatThrownBy(() -> TypeFactsFixture.read(folder.resolve("missing.json")))
         .isInstanceOf(java.io.UncheckedIOException.class);
   }
+
+  @Test
+  void readsTheElementValuesOfAnnotations() {
+    final UnitTypeFacts facts =
+        TypeFactsFixture.parse(
+            """
+            {"5:9-5:25": {
+              "call": {"declaring": {"name": "A"}, "name": "m",
+                       "annotationValues": {"X#v": ["a", "b"], "X#w": "c"},
+                       "declaringAnnotationValues": {"Y#z": ["d"]}},
+              "members": {"annotationValues": {"Y#z": ["e"]}}}}
+            """);
+
+    final CallTarget target = facts.callTarget(CALL).orElseThrow();
+
+    assertThat(target.annotationValues())
+        .containsEntry("X#v", List.of("a", "b"))
+        .containsEntry("X#w", List.of("c"));
+    assertThat(target.declaringAnnotationValues()).containsEntry("Y#z", List.of("d"));
+    assertThat(facts.membersOf(CALL).orElseThrow().annotationValues())
+        .containsEntry("Y#z", List.of("e"));
+  }
 }

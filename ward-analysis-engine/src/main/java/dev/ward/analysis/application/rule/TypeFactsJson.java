@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,9 +48,24 @@ final class TypeFactsJson {
         JsonValues.list(members.get("ancestors")).stream().map(TypeFactsJson::typeRef).toList(),
         JsonValues.strings(members.get("annotations")),
         JsonValues.list(members.get("inheritedMethods")).stream().map(TypeFactsJson::call).toList(),
-        JsonValues.list(members.get("inheritedFields")).stream()
-            .map(TypeFactsJson::field)
-            .toList());
+        JsonValues.list(members.get("inheritedFields")).stream().map(TypeFactsJson::field).toList(),
+        values(members.get("annotationValues")));
+  }
+
+  /** Reads {@code {"<annotation>#<element>": [values]}}; a single value may be written bare. */
+  private static Map<String, List<String>> values(final Object value) {
+    final Map<String, List<String>> values = new LinkedHashMap<>();
+    if (value != null) {
+      JsonValues.object(value)
+          .forEach(
+              (key, list) ->
+                  values.put(
+                      JsonValues.string(key),
+                      list instanceof List<?>
+                          ? JsonValues.strings(list)
+                          : List.of(JsonValues.string(list))));
+    }
+    return values;
   }
 
   private static FieldRef field(final Object value) {
@@ -86,6 +102,8 @@ final class TypeFactsJson {
         JsonValues.strings(call.get("typeParameters")),
         JsonValues.strings(call.get("declaringTypeParameters")),
         call.containsKey("final") ? JsonValues.flag(call.get("final")) : null,
+        values(call.get("annotationValues")),
+        values(call.get("declaringAnnotationValues")),
         call.containsKey("abstract") ? JsonValues.flag(call.get("abstract")) : null);
   }
 

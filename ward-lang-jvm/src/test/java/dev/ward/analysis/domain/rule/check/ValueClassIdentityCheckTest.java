@@ -43,6 +43,8 @@ class ValueClassIdentityCheckTest {
             List.of(),
             List.of(),
             null,
+            java.util.Map.of(),
+            java.util.Map.of(),
             null),
         List.of(),
         List.of(),

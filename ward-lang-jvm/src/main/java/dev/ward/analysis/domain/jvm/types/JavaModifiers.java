@@ -50,7 +50,7 @@ final class JavaModifiers {
     return names;
   }
 
-  private static String annotationName(final String written, final TypeScope scope) {
+  static String annotationName(final String written, final TypeScope scope) {
     return scope.resolve(List.of(written.split("\\."))).orElse(written);
   }
 }

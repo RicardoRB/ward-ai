@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm.types;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /** The members a Java type has without writing them: enum constants, record parts, defaults. */
@@ -118,7 +119,8 @@ final class JavaImplicitMembers {
         List.of(),
         List.of(),
         List.of(),
-        List.of());
+        List.of(),
+        Map.of());
   }
 
   private static void addRecordMembers(

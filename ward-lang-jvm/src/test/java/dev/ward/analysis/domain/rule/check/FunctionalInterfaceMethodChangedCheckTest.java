@@ -36,6 +36,8 @@ class FunctionalInterfaceMethodChangedCheckTest {
         List.of(),
         List.of(),
         null,
+        java.util.Map.of(),
+        java.util.Map.of(),
         isAbstract);
   }
 

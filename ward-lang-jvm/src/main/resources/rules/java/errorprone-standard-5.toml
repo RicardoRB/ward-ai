@@ -231,3 +231,39 @@ body = '''
 check = "format-string-annotation"
 message = "a parameter annotated @FormatString needs a compile-time constant, not a computed string"
 '''
+
+[[rules]]
+id = "ward:java/restricted-api"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "restricted-api"
+message = "restricted API: {value}"
+'''
+
+[[rules]]
+id = "ward:java/private-security-contract-proto-access"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "private-security-contract-proto-access"
+message = "forbidden access to a private proto field of a SafeHtml protocol buffer; use its approved library"
+'''
+
+[[rules]]
+id = "ward:java/proto-truth-mixed-descriptors"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "proto-truth-mixed-descriptors"
+message = "the arguments of ignoringFields are inconsistent with the proto that is the subject of the assertion"
+'''

@@ -607,3 +607,20 @@ body = '''
 check = "value-range-condition"
 message = "the condition {value} is already decided by the conditions around it"
 '''
+# Source proxy for SpotBugs' bytecode window: SpotBugs reports this instead of NP_NULL_ON_SOME_PATH when
+# at least 3 null tests (IFNULL/IFNONNULL) sit in the 30 bytes before the place that makes the value
+# null. Here: at least 3 null tests (== null, != null, Objects.isNull/nonNull) of any variable among
+# the 4 statements of the same block just before the statement that holds the null source.
+[[rules]]
+id = "ward:java/np-null-on-some-path-might-be-infeasible"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-on-some-path-might-be-infeasible"
+message = "a value that is null on some path is dereferenced on a branch that might be infeasible, after many null tests"
+'''
+

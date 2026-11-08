@@ -1,38 +1,87 @@
-# Error Prone checks at ERROR severity for Java, the last batch: a default method that changes a
-# functional interface, a wildcard type javac cannot make sense of, and identity of value classes.
+# Error Prone rules for Java: null literals, comparison contracts and constructor references (standard preset).
 
 [[rules]]
-id = "ward:java/functional-interface-method-changed"
+id = "ward:java/dangerous-literal-null"
 language = "java"
 capability = "TYPES"
 severity = "error"
 category = "errorprone"
 presets = ["standard", "strict"]
 body = '''
-check = "functional-interface-method-changed"
-message = "casting a lambda to this @FunctionalInterface changes the behavior of the superinterface method it overrides; prefer a decorator method"
+check = "call-match"
+declaring-types = ["java.util.Optional"]
+names = ["orElseGet", "orElseThrow"]
+text = '\.(?:orElseGet|orElseThrow)\(null\)$'
+message = "this method is null-hostile: passing a null literal to it is always wrong; use orElse(null) or orElseThrow(NullPointerException::new)"
 '''
 
 [[rules]]
-id = "ward:java/unsafe-wildcard"
+id = "ward:java/compute-if-absent-ambiguous-reference"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "compute-if-absent-reference"
+message = "computeIfAbsent passes the map key to the constructor of the class; use a lambda to call the constructor with no arguments"
+'''
+
+[[rules]]
+id = "ward:java/comparison-contract-violated"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-contract"
+message = "this comparison method violates the contract"
+'''
+[[rules]]
+id = "ward:java/always-throws"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "severity-error"
+presets = ["standard", "strict"]
+body = '''
+check = "always-throws"
+message = "{value}"
+'''
+
+[[rules]]
+id = "ward:java/auto-value-constructor-order-checker"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "errorprone"
+category = "severity-error"
 presets = ["standard", "strict"]
 body = '''
-check = "unsafe-wildcard"
-message = "this wildcard type can confuse the compiler: its lower bound is a type variable that need not satisfy the bound of the type parameter"
+check = "auto-value-order"
+message = "Arguments to the AutoValue constructor are in the wrong order"
 '''
 
 [[rules]]
-id = "ward:java/value-class-identity"
+id = "ward:java/bundle-deserialization-cast"
 language = "java"
 capability = "TYPES"
 severity = "error"
-category = "errorprone"
+category = "severity-error"
 presets = ["standard", "strict"]
 body = '''
-check = "value-class-identity"
-message = "value-based classes have no identity; relying on it is unsafe and will fail in a future version of Java"
+check = "bundle-deserialization-cast"
+message = "When serialized in Bundle, {value} may be transformed into an arbitrary subclass of {max}. Please cast to {max}."
+'''
+
+[[rules]]
+id = "ward:java/chaining-constructor-ignores-parameter"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "severity-error"
+presets = ["standard", "strict"]
+body = '''
+check = "chaining-constructor"
+message = "The called constructor accepts a parameter with the same name and type as one of its caller's parameters, but its caller doesn't pass that parameter to it. It's likely that it was intended to."
 '''

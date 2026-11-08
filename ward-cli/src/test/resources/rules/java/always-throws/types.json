@@ -1,0 +1,254 @@
+{
+  "8:5-8:35": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Instant"
+      },
+      "name": "parse",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Instant"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "8:19-8:34": {
+    "constant": "not an instant"
+  },
+  "9:5-9:26": {
+    "call": {
+      "declaring": {
+        "name": "java.util.UUID"
+      },
+      "name": "fromString",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.util.UUID"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "9:21-9:25": {
+    "constant": "zzz"
+  },
+  "10:24-10:41": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Period"
+      },
+      "name": "ofMonths",
+      "params": [
+        {
+          "name": "int"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Period"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "11:5-11:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.collect.ImmutableMap"
+      },
+      "name": "of",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.collect.ImmutableMap"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "11:21-11:23": {
+    "constant": "a"
+  },
+  "11:26-11:26": {
+    "constant": 1
+  },
+  "11:29-11:31": {
+    "constant": "a"
+  },
+  "11:34-11:34": {
+    "constant": 2
+  },
+  "10:5-10:42": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Instant"
+      },
+      "name": "plus",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAmount"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Instant"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "20:5-20:41": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Instant"
+      },
+      "name": "parse",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Instant"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "20:19-20:40": {
+    "constant": "2020-01-01T00:00:00Z"
+  },
+  "21:5-21:59": {
+    "call": {
+      "declaring": {
+        "name": "java.util.UUID"
+      },
+      "name": "fromString",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.util.UUID"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "21:21-21:58": {
+    "constant": "123e4567-e89b-12d3-a456-426614174000"
+  },
+  "22:24-22:41": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Duration"
+      },
+      "name": "ofDays",
+      "params": [
+        {
+          "name": "long"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Duration"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "23:5-23:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.collect.ImmutableMap"
+      },
+      "name": "of",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.collect.ImmutableMap"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "23:21-23:23": {
+    "constant": "a"
+  },
+  "23:26-23:26": {
+    "constant": 1
+  },
+  "23:29-23:31": {
+    "constant": "b"
+  },
+  "23:34-23:34": {
+    "constant": 2
+  },
+  "24:5-24:23": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Instant"
+      },
+      "name": "parse",
+      "params": [
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Instant"
+      },
+      "static": true,
+      "varargs": false
+    }
+  },
+  "22:5-22:42": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Instant"
+      },
+      "name": "plus",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAmount"
+        }
+      ],
+      "returns": {
+        "name": "java.time.Instant"
+      },
+      "static": false,
+      "varargs": false
+    }
+  }
+}

@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** Converts the types of the resolver to the references a rule reads. */
 final class TypeRefs {
@@ -49,6 +50,8 @@ final class TypeRefs {
         List.of(),
         List.of(),
         null,
+        Map.of(),
+        Map.of(),
         null);
   }
 

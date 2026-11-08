@@ -63,6 +63,8 @@ final class MoreTrees {
             List.of(),
             List.of(),
             null,
+            Map.of(),
+            Map.of(),
             null),
         List.of(),
         List.of(),

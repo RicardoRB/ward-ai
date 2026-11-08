@@ -1,0 +1,26 @@
+{
+  "5:12-5:66": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.html.types.SafeHtmlProto"
+      },
+      "name": "getPrivateDoNotAccessOrElseSafeHtmlWrappedValue",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "13:12-13:66": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.html.types.SafeHtmlProto"
+      },
+      "name": "getPrivateDoNotAccessOrElseSafeHtmlWrappedValue",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

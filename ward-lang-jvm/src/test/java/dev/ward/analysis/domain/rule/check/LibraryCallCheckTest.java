@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.SpanFacts;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class LibraryCallCheckTest {
@@ -37,6 +38,8 @@ class LibraryCallCheckTest {
             List.of(),
             List.of(),
             null,
+            Map.of(),
+            Map.of(),
             null),
         List.of(),
         List.of(),

@@ -58,6 +58,8 @@ final class FactMembers {
             method.typeParameters().stream().map(TypeParameter::name).toList(),
             owner.typeParameters().stream().map(TypeParameter::name).toList(),
             (method.access() & Flags.FINAL) != 0,
+            method.annotationValues(),
+            owner.annotationValues(),
             (method.access() & Flags.ABSTRACT) != 0));
   }
 

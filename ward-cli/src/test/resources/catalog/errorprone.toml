@@ -520,8 +520,6 @@ errorprone = ["ComparingThisWithNull"]
 
 [[rule]]
 name = "comparison-contract-violated"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComparisonContractViolated"]
 
 [[rule]]
@@ -544,8 +542,6 @@ errorprone = ["ComplexBooleanConstant"]
 
 [[rule]]
 name = "compute-if-absent-ambiguous-reference"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComputeIfAbsentAmbiguousReference"]
 
 [[rule]]
@@ -574,8 +570,6 @@ errorprone = ["DaggerProvidesNull"]
 
 [[rule]]
 name = "dangerous-literal-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DangerousLiteralNull"]
 
 [[rule]]
@@ -2399,8 +2393,6 @@ errorprone = ["PrivateConstructorForUtilityClass"]
 
 [[rule]]
 name = "private-security-contract-proto-access"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["PrivateSecurityContractProtoAccess"]
 
 [[rule]]
@@ -2431,8 +2423,6 @@ errorprone = ["ProtoTimestampGetSecondsGetNano"]
 
 [[rule]]
 name = "proto-truth-mixed-descriptors"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ProtoTruthMixedDescriptors"]
 
 [[rule]]
@@ -2558,8 +2548,6 @@ errorprone = ["RequiredModifiers"]
 [[rule]]
 name = "restricted-api"
 not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["RestrictedApi"]
 
 [[rule]]

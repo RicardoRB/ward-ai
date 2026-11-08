@@ -30,3 +30,9 @@ rules = [
   "GC_UNCHECKED_TYPE_IN_GENERIC_CALL",
   "IS_INCONSISTENT_SYNC",
 ]
+
+[[group]]
+reason = "SpotBugs defines the pattern but no detector emits it"
+rules = [
+  "NP_METHOD_PARAMETER_RELAXING_ANNOTATION",
+]
