@@ -17,9 +17,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 
-/** Reads source files from the project working tree, skipping build output and hidden folders. */
+/**
+ * Reads source files from the project working tree, skipping build output, hidden folders, and JVM
+ * files under a Maven or Gradle resource folder, which the build never compiles.
+ */
 public final class FileSystemSourceUnits implements AnalysisSourceUnits {
 
   private static final Map<String, AnalysisLanguage> LANGUAGES_BY_EXTENSION =
@@ -36,6 +40,9 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
           Map.entry("swift", AnalysisLanguage.SWIFT));
   private static final Set<String> SKIPPED_DIRECTORIES =
       Set.of("target", "build", "dist", "node_modules", "mutants");
+  private static final Set<AnalysisLanguage> JVM_LANGUAGES =
+      Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN);
+  private static final Pattern RESOURCE_FOLDER = Pattern.compile("(^|/)src/[^/]+/resources/");
 
   /** Creates the stateless reader that Dagger injects. */
   @Inject
@@ -81,9 +88,13 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes)
         throws IOException {
       final AnalysisLanguage language = language(nameOf(file));
-      if (language != null && languages.contains(language) && attributes.isRegularFile()) {
+      final String path = relative(file);
+      if (language != null
+          && languages.contains(language)
+          && attributes.isRegularFile()
+          && !isJvmResource(language, path)) {
         final String text = Files.readString(file, StandardCharsets.UTF_8);
-        units.add(new SourceUnit(relative(file), language, text));
+        units.add(new SourceUnit(path, language, text));
       }
       return FileVisitResult.CONTINUE;
     }
@@ -91,6 +102,11 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     private String relative(final Path file) {
       return root.relativize(file).toString().replace('\\', '/');
     }
+  }
+
+  /** Java or Kotlin under {@code src/<set>/resources} is data for the build, not a source file. */
+  private static boolean isJvmResource(final AnalysisLanguage language, final String path) {
+    return JVM_LANGUAGES.contains(language) && RESOURCE_FOLDER.matcher(path).find();
   }
 
   /** Returns the last name of {@code path}, or an empty string for a root with no name. */

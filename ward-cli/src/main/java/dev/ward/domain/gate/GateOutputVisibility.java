@@ -9,7 +9,8 @@ public enum GateOutputVisibility {
 
   /**
    * Returns what to show for {@code result}: everything at info level, nothing for a passed gate,
-   * findings when some are visible, and otherwise the output tail.
+   * findings when some are visible, and otherwise the output tail. A gate that could not analyze
+   * everything shows its findings and its output, which names what failed.
    */
   public static GateOutputVisibility of(
       final GateResult result, final SeverityThreshold threshold) {
@@ -19,6 +20,9 @@ public enum GateOutputVisibility {
     if (result.passed()) {
       return NONE;
     }
-    return result.findings().visible(threshold).items().isEmpty() ? TAIL : FINDINGS;
+    if (result.findings().visible(threshold).items().isEmpty()) {
+      return TAIL;
+    }
+    return result.status() == GateStatus.EXECUTION_ERROR ? FULL : FINDINGS;
   }
 }
