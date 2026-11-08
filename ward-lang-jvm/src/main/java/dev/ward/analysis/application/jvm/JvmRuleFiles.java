@@ -75,6 +75,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/spotbugs-exposure.toml",
           "rules/java/spotbugs-final-a.toml",
           "rules/java/spotbugs-final-b1.toml",
+          "rules/java/spotbugs-final-f.toml",
           "rules/java/spotbugs-final.toml",
           "rules/java/spotbugs-mt-performance-2.toml",
           "rules/java/spotbugs-mt-performance-3.toml",

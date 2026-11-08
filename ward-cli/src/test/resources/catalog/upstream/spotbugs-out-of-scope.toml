@@ -23,3 +23,10 @@ rules = [
   "US_USELESS_SUPPRESSION_ON_METHOD_PARAMETER",
   "US_USELESS_SUPPRESSION_ON_PACKAGE",
 ]
+
+[[group]]
+reason = "SpotBugs lists the pattern but its detector never reports it: IS_INCONSISTENT_SYNC is deprecated in favour of IS2_INCONSISTENT_SYNC, and FindUnrelatedTypesInGenericContainer ignores unchecked arguments instead of reporting GC_UNCHECKED_TYPE_IN_GENERIC_CALL"
+rules = [
+  "GC_UNCHECKED_TYPE_IN_GENERIC_CALL",
+  "IS_INCONSISTENT_SYNC",
+]

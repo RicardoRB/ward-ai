@@ -710,7 +710,6 @@ spotbugs = ["EQ_SELF_USE_OBJECT"]
 
 [[rule]]
 name = "eq-unusual"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["EQ_UNUSUAL"]
 
@@ -786,12 +785,6 @@ spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 [[rule]]
 name = "fs-bad-date-format-flag-combo"
 spotbugs = ["FS_BAD_DATE_FORMAT_FLAG_COMBO"]
-
-[[rule]]
-name = "gc-unchecked-type-in-generic-call"
-presets = ["standard", "strict"]
-category = "bad-practice"
-spotbugs = ["GC_UNCHECKED_TYPE_IN_GENERIC_CALL"]
 
 [[rule]]
 name = "gc-unrelated-types"
@@ -1032,7 +1025,6 @@ spotbugs = ["IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"]
 
 [[rule]]
 name = "is2-inconsistent-sync"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["IS2_INCONSISTENT_SYNC"]
 
@@ -1045,12 +1037,6 @@ spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
 name = "is-field-not-guarded"
 category = "mt-correctness"
 spotbugs = ["IS_FIELD_NOT_GUARDED"]
-
-[[rule]]
-name = "is-inconsistent-sync"
-presets = ["standard", "strict"]
-category = "mt-correctness"
-spotbugs = ["IS_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "ita-inefficient-to-array"
