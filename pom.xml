@@ -24,6 +24,8 @@
 
     <properties>
         <java.version>25</java.version>
+        <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies elsewhere. -->
+        <compliance.outputDirectory>${maven.multiModuleProjectDirectory}/compliance</compliance.outputDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <picocli.version>4.7.7</picocli.version>
         <tomlj.version>2.2.0</tomlj.version>
@@ -290,6 +292,32 @@
                       <includedLicense>EPL-2.0</includedLicense>
                       <includedLicense>LGPL-2.1-or-later</includedLicense>
                     </includedLicenses>
+                    <!-- Shipped set: compile and runtime scope, the dependencies the shaded JAR contains. -->
+                    <includedScopes>compile,runtime</includedScopes>
+                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
+                    <thirdPartyFilename>THIRD-PARTY-LICENSES</thirdPartyFilename>
+                    <!-- Adds the full text of each license in the shipped set; see licenses/. -->
+                    <fileTemplate>${maven.multiModuleProjectDirectory}/licenses/third-party-licenses.ftl</fileTemplate>
+                    <!-- Keeps the repository root out of the resource directories of the JAR. -->
+                    <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
+                  </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.cyclonedx</groupId>
+                  <artifactId>cyclonedx-maven-plugin</artifactId>
+                  <version>2.9.3</version>
+                  <configuration>
+                    <projectType>application</projectType>
+                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
+                    <outputName>sbom</outputName>
+                    <outputFormat>json</outputFormat>
+                    <schemaVersion>1.6</schemaVersion>
+                    <!-- A random serial number and a build time would change the file on every run. A fixed output timestamp drops the build time from the BOM. -->
+                    <includeBomSerialNumber>false</includeBomSerialNumber>
+                    <outputTimestamp>2026-01-01T00:00:00Z</outputTimestamp>
+                    <includeTestScope>false</includeTestScope>
+                    <includeProvidedScope>false</includeProvidedScope>
+                    <includeSystemScope>false</includeSystemScope>
                   </configuration>
                 </plugin>
             </plugins>

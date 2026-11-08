@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up GraalVM 25
+      - name: Set up GraalVM 25.5
         uses: graalvm/setup-graalvm@v1
         with:
           version: '25.5'
@@ -144,6 +144,7 @@ jobs:
             CHANGELOG.md
             LICENSE
             NOTICE
+            compliance/
           sparse-checkout-cone-mode: false
 
       - name: Download platform assets
@@ -169,6 +170,7 @@ jobs:
         run: |
           set -euo pipefail
           gh release create "$GITHUB_REF_NAME" release-assets/* LICENSE NOTICE \
+            compliance/THIRD-PARTY-LICENSES compliance/sbom.json \
             --repo "$GITHUB_REPOSITORY" \
             --verify-tag \
             --title "$GITHUB_REF_NAME" \

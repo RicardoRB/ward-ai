@@ -3,3 +3,9 @@ xcode,buildtool,preset,fixture
 26.0.1,xcode,standard,basic-app
 26.6,swiftpm,strict,basic-package
 26.6,xcode,strict,basic-app
+27.0,swiftpm,strict,basic-package
+27.0,xcode,strict,basic-app
+27.1,swiftpm,strict,basic-package
+27.1,xcode,strict,basic-app
+27.2,swiftpm,strict,basic-package
+27.2,xcode,strict,basic-app
