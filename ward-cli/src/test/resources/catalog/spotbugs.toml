@@ -861,8 +861,6 @@ spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 
 [[rule]]
 name = "fs-bad-date-format-flag-combo"
-presets = ["strict"]
-category = "bad-practice"
 spotbugs = ["FS_BAD_DATE_FORMAT_FLAG_COMBO"]
 
 [[rule]]
@@ -1200,8 +1198,6 @@ spotbugs = ["JUA_DONT_ASSERT_INSTANCEOF_IN_TESTS"]
 
 [[rule]]
 name = "lg-lost-logger-due-to-weak-reference"
-presets = ["strict"]
-category = "experimental"
 spotbugs = ["LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE"]
 
 [[rule]]
@@ -1332,8 +1328,6 @@ spotbugs = ["MS_SHOULD_BE_REFACTORED_TO_BE_FINAL"]
 
 [[rule]]
 name = "mtia-suspect-servlet-instance-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["MTIA_SUSPECT_SERVLET_INSTANCE_FIELD"]
 
 [[rule]]
