@@ -166,3 +166,120 @@ body = '''
 check = "static-class-instantiation"
 message = "needless instance of a class that only has static members; call them on the class"
 '''
+
+# Part 2: guarded fields, immutable classes, string parameters, initialization order, lazy statics.
+
+[[rules]]
+id = "ward:java/is-field-not-guarded"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "guarded-by"
+skip-private = true
+message = "the field '{value}' is guarded by '{max}', but this method takes no lock"
+'''
+
+[[rules]]
+id = "ward:java/jcip-field-isnt-final-in-immutable-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "errorprone-immutable"
+annotations = ["net.jcip.annotations.Immutable", "javax.annotation.concurrent.Immutable"]
+final-only = true
+message = "the field '{value}' of an @Immutable class is not final"
+'''
+
+[[rules]]
+id = "ward:java/es-comparing-parameter-string-with-eq"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "parameter-string-comparison"
+message = "String parameter compared with == or !=; compare the values with equals"
+'''
+
+[[rules]]
+id = "ward:java/ic-init-circularity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "static-initialization"
+mode = "circular"
+message = "static initializers of this class and another one use each other, so one sees the other half initialized"
+'''
+
+[[rules]]
+id = "ward:java/ic-superclass-uses-subclass-during-initialization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "static-initialization"
+mode = "superclass-uses-subclass"
+message = "static initializer of a class uses its own subclass, which cannot initialize before the superclass"
+'''
+
+[[rules]]
+id = "ward:java/li-lazy-init-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lazy-static-init"
+mode = "store-only"
+message = "unsynchronized lazy initialization of a non-volatile static field; another thread may see a partly built object"
+'''
+
+[[rules]]
+id = "ward:java/li-lazy-init-update-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lazy-static-init"
+mode = "store-then-update"
+message = "static field is set and then updated; other threads see it as soon as it is set"
+'''
+
+[[rules]]
+id = "ward:java/ia-ambiguous-invocation-of-inherited-or-outer-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "ambiguous-invocation"
+message = "an outer class and a superclass both declare this method; qualify the call"
+'''
+
+[[rules]]
+id = "ward:java/eq-check-for-operand-not-compatible-with-this"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-equals-operand"
+message = "equals tests for a class that is neither a supertype nor a subtype of this class"
+'''

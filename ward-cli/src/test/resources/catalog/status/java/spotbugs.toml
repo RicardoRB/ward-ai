@@ -139,7 +139,7 @@ eos-bad-end-of-stream-check = "implemented"
 eq-abstract-self = "implemented"
 eq-always-false = "implemented"
 eq-always-true = "implemented"
-eq-check-for-operand-not-compatible-with-this = { status = "planned", issue = "#316" }
+eq-check-for-operand-not-compatible-with-this = "implemented"
 eq-compareto-use-object-equals = "implemented"
 eq-comparing-class-names = "implemented"
 eq-doesnt-override-equals = "implemented"
@@ -150,7 +150,7 @@ eq-overriding-equals-not-symmetric = "implemented"
 eq-self-no-object = "implemented"
 eq-self-use-object = "implemented"
 eq-unusual = { status = "planned", issue = "#316" }
-es-comparing-parameter-string-with-eq = { status = "planned", issue = "#316" }
+es-comparing-parameter-string-with-eq = "implemented"
 fe-floating-point-equality = "implemented"
 fe-test-if-equal-to-not-a-number = "implemented"
 fi-empty = "implemented"
@@ -176,9 +176,9 @@ hrs-request-parameter-to-cookie = "implemented"
 hrs-request-parameter-to-http-header = "implemented"
 hsc-huge-shared-string-constant = "implemented"
 hsm-hiding-method = "implemented"
-ia-ambiguous-invocation-of-inherited-or-outer-method = { status = "planned", issue = "#316" }
-ic-init-circularity = { status = "planned", issue = "#316" }
-ic-superclass-uses-subclass-during-initialization = { status = "planned", issue = "#316" }
+ia-ambiguous-invocation-of-inherited-or-outer-method = "implemented"
+ic-init-circularity = "implemented"
+ic-superclass-uses-subclass-during-initialization = "implemented"
 icast-bad-shift-amount = "implemented"
 icast-idiv-cast-to-double = "implemented"
 icast-int-2-long-as-instant = "implemented"
@@ -214,21 +214,21 @@ int-vacuous-bit-operation = "implemented"
 int-vacuous-comparison = "implemented"
 io-appending-to-object-output-stream = "implemented"
 ip-parameter-is-dead-but-overwritten = "implemented"
-is-field-not-guarded = { status = "planned", issue = "#316" }
+is-field-not-guarded = "implemented"
 is-inconsistent-sync = { status = "planned", issue = "#316" }
 is2-inconsistent-sync = { status = "planned", issue = "#316" }
 isc-instantiate-static-class = "implemented"
 it-no-such-element = "implemented"
 ita-inefficient-to-array = "implemented"
 j2-ee-store-of-non-serializable-object-into-session = "implemented"
-jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
+jcip-field-isnt-final-in-immutable-class = "implemented"
 jlm-jsr166-lock-monitorenter = "implemented"
 jlm-jsr166-utilconcurrent-monitorenter = "implemented"
 jml-jsr166-calling-wait-rather-than-await = "implemented"
 jua-dont-assert-instanceof-in-tests = "implemented"
 lg-lost-logger-due-to-weak-reference = "implemented"
-li-lazy-init-static = { status = "planned", issue = "#316" }
-li-lazy-init-update-static = { status = "planned", issue = "#316" }
+li-lazy-init-static = "implemented"
+li-lazy-init-update-static = "implemented"
 mc-overridable-method-call-in-clone = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-constructor = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-read-object = { status = "planned", issue = "#316" }
