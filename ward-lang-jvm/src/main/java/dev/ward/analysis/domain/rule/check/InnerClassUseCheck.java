@@ -34,16 +34,21 @@ public final class InnerClassUseCheck implements RuleCheck {
   private static final int BODY_OFFSET = 3;
 
   private final boolean anonymous;
+  private final boolean constructorOnly;
   private final String message;
 
   /**
    * Creates the check.
    *
    * @param anonymous whether to look at anonymous classes instead of member classes
+   * @param constructorOnly whether to report a class that uses the outer instance only in its
+   *     constructors, instead of one that never uses it
    * @param message the message reported at the class
    */
-  public InnerClassUseCheck(final boolean anonymous, final String message) {
+  public InnerClassUseCheck(
+      final boolean anonymous, final boolean constructorOnly, final String message) {
     this.anonymous = anonymous;
+    this.constructorOnly = constructorOnly;
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -54,11 +59,30 @@ public final class InnerClassUseCheck implements RuleCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, kinds)) {
       final SyntaxNode outer = outerOf(visit);
       final SyntaxNode body = bodyOf(visit.node());
-      if (outer != null && body != null && !usesOuter(outer, body)) {
+      if (outer != null && body != null && reported(visit.node(), outer, body)) {
         matches.add(CheckSupport.at(visit.node().span(), message));
       }
     }
     return List.copyOf(matches);
+  }
+
+  private boolean reported(final SyntaxNode inner, final SyntaxNode outer, final SyntaxNode body) {
+    if (!constructorOnly) {
+      return !usesOuter(outer, body);
+    }
+    final List<SyntaxNode> members = ClassMembers.members(inner);
+    final boolean inConstructor =
+        members.stream()
+            .filter(InnerClassUseCheck::isConstructor)
+            .anyMatch(member -> usesOuter(outer, member));
+    return inConstructor
+        && members.stream()
+            .filter(member -> !isConstructor(member))
+            .noneMatch(member -> usesOuter(outer, member));
+  }
+
+  private static boolean isConstructor(final SyntaxNode member) {
+    return MemberDeclarations.CONSTRUCTOR.equals(ClassMembers.declarationOf(member).kind());
   }
 
   /** Returns the top-level class around the node when the node is an instance inner class. */
@@ -104,7 +128,9 @@ public final class InnerClassUseCheck implements RuleCheck {
     for (final SyntaxNode member : ClassMembers.members(outer)) {
       final SyntaxNode declaration = ClassMembers.declarationOf(member);
       if (!MemberDeclarations.modifiers(member).contains(MemberDeclarations.STATIC)) {
-        names.addAll(ClassMembers.fieldNames(declaration));
+        if (MemberDeclarations.FIELD.equals(declaration.kind())) {
+          names.addAll(ClassMembers.fieldNames(declaration));
+        }
         names.add(MemberDeclarations.name(declaration));
       }
     }

@@ -4,27 +4,25 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.rule.check.AssertOnParameterCheck;
-import dev.ward.analysis.domain.rule.check.CastTypesCheck;
-import dev.ward.analysis.domain.rule.check.ConstructorThrowCheck;
-import dev.ward.analysis.domain.rule.check.CovariantCompareToCheck;
-import dev.ward.analysis.domain.rule.check.DeadStoreCheck;
-import dev.ward.analysis.domain.rule.check.EntrySetReuseCheck;
-import dev.ward.analysis.domain.rule.check.FloatingCompareToCheck;
-import dev.ward.analysis.domain.rule.check.NonSerializableWriteCheck;
-import dev.ward.analysis.domain.rule.check.TernaryCoercionCheck;
-import dev.ward.analysis.domain.rule.check.UncheckedEqualsCastCheck;
-import dev.ward.analysis.domain.rule.check.UnconfirmedCastCheck;
-import dev.ward.analysis.domain.rule.check.UnsharedBoxedLockCheck;
+import dev.ward.analysis.domain.rule.check.JavaOverridableSecurityCheck;
+import dev.ward.analysis.domain.rule.check.JavaPutIfAbsentCheck;
+import dev.ward.analysis.domain.rule.check.JavaSealedFieldUseCheck;
+import dev.ward.analysis.domain.rule.check.JavaSerialConstructorCheck;
+import dev.ward.analysis.domain.rule.check.JavaStaticInitOrderCheck;
+import dev.ward.analysis.domain.rule.check.JavaStaticWriteCheck;
+import dev.ward.analysis.domain.rule.check.JavaSyncAccessorCheck;
+import dev.ward.analysis.domain.rule.check.JavaTypeRangeCheck;
+import dev.ward.analysis.domain.rule.check.JavaUninitializedFieldCheck;
+import dev.ward.analysis.domain.rule.check.JavaUselessVoidMethodCheck;
+import dev.ward.analysis.domain.rule.check.JavaWaitContextCheck;
 import java.util.Locale;
 import java.util.Map;
 
-/**
- * The checks of the Java rules ported from SpotBugs that read class shape, casts and dead stores.
- */
+/** The checks of the last SpotBugs ports for Java, which read classes, locks and field use. */
 final class SpotbugsFinalChecks {
 
   private static final String MESSAGE = "message";
+  private static final String MODE = "mode";
 
   private SpotbugsFinalChecks() {}
 
@@ -32,53 +30,51 @@ final class SpotbugsFinalChecks {
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
         entry(
-            "covariant-compare-to",
+            "serial-constructor",
             toml ->
-                new CovariantCompareToCheck(
-                    toml.getBoolean("abstract-class", () -> false),
+                new JavaSerialConstructorCheck(
+                    "externalizable".equals(TomlValues.required(toml, MODE)),
                     TomlValues.required(toml, MESSAGE))),
         entry(
-            "constructor-throw",
-            toml -> new ConstructorThrowCheck(TomlValues.required(toml, MESSAGE))),
+            "static-init-order",
+            toml -> new JavaStaticInitOrderCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "assert-on-parameter",
-            toml -> new AssertOnParameterCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "cast-types",
+            "static-write-from-instance",
             toml ->
-                new CastTypesCheck(
-                    TomlValues.strings(toml, "from"),
-                    TomlValues.strings(toml, "to"),
+                new JavaStaticWriteCheck(
+                    "locked".equals(TomlValues.required(toml, MODE)),
                     TomlValues.required(toml, MESSAGE))),
         entry(
-            "ternary-coercion",
-            toml -> new TernaryCoercionCheck(TomlValues.required(toml, MESSAGE))),
+            "sync-set-unsync-get",
+            toml -> new JavaSyncAccessorCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "floating-compare-to",
-            toml -> new FloatingCompareToCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "unchecked-equals-cast",
-            toml -> new UncheckedEqualsCastCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "unconfirmed-cast",
+            "wait-context",
             toml ->
-                new UnconfirmedCastCheck(
-                    toml.getBoolean("call-result", () -> false),
+                new JavaWaitContextCheck(
+                    JavaWaitContextCheck.Mode.valueOf(
+                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT).replace('-', '_')),
                     TomlValues.required(toml, MESSAGE))),
         entry(
-            "entry-set-reuse", toml -> new EntrySetReuseCheck(TomlValues.required(toml, MESSAGE))),
+            "put-if-absent-ignored",
+            toml -> new JavaPutIfAbsentCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "non-serializable-write",
-            toml -> new NonSerializableWriteCheck(TomlValues.required(toml, MESSAGE))),
+            "useless-void-method",
+            toml -> new JavaUselessVoidMethodCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "unshared-boxed-lock",
-            toml -> new UnsharedBoxedLockCheck(TomlValues.required(toml, MESSAGE))),
+            "type-range-condition",
+            toml -> new JavaTypeRangeCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "dead-store",
+            "overridable-security-check",
+            toml -> new JavaOverridableSecurityCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "sealed-field-use",
             toml ->
-                new DeadStoreCheck(
-                    DeadStoreCheck.Kind.valueOf(
-                        TomlValues.required(toml, "kind").toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))));
+                new JavaSealedFieldUseCheck(
+                    JavaSealedFieldUseCheck.Mode.valueOf(
+                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT)),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "uninitialized-field",
+            toml -> new JavaUninitializedFieldCheck(TomlValues.required(toml, MESSAGE))));
   }
 }
