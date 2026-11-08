@@ -382,7 +382,6 @@ spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-doh"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_DOH"]
 
@@ -461,7 +460,6 @@ spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
 
 [[rule]]
 name = "dmi-vacuous-call-to-easymock-method"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
 
@@ -779,7 +777,6 @@ spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
 
 [[rule]]
 name = "fl-math-using-float-precision"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 
@@ -1320,19 +1317,16 @@ spotbugs = ["NO_NOTIFY_NOT_NOTIFYALL"]
 
 [[rule]]
 name = "np-always-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ALWAYS_NULL"]
 
 [[rule]]
 name = "np-always-null-exception"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ALWAYS_NULL_EXCEPTION"]
 
 [[rule]]
 name = "np-argument-might-be-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ARGUMENT_MIGHT_BE_NULL"]
 
@@ -1348,7 +1342,6 @@ spotbugs = ["NP_CLONE_COULD_RETURN_NULL"]
 
 [[rule]]
 name = "np-closing-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_CLOSING_NULL"]
 
@@ -1362,13 +1355,11 @@ spotbugs = ["NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"]
 
 [[rule]]
 name = "np-guaranteed-deref"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_GUARANTEED_DEREF"]
 
 [[rule]]
 name = "np-guaranteed-deref-on-exception-path"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH"]
 
@@ -1396,19 +1387,16 @@ spotbugs = ["NP_METHOD_RETURN_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-nonnull-field-not-initialized-in-constructor"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "np-nonnull-param-violation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_PARAM_VIOLATION"]
 
 [[rule]]
 name = "np-nonnull-return-violation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_RETURN_VIOLATION"]
 
@@ -1419,13 +1407,11 @@ spotbugs = ["NP_NULL_INSTANCEOF"]
 
 [[rule]]
 name = "np-null-on-some-path"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_ON_SOME_PATH"]
 
 [[rule]]
 name = "np-null-on-some-path-exception"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_ON_SOME_PATH_EXCEPTION"]
 
@@ -1441,19 +1427,16 @@ spotbugs = ["NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE"]
 
 [[rule]]
 name = "np-null-param-deref"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF"]
 
 [[rule]]
 name = "np-null-param-deref-all-targets-dangerous"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"]
 
 [[rule]]
 name = "np-null-param-deref-nonvirtual"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF_NONVIRTUAL"]
 
@@ -1468,7 +1451,6 @@ spotbugs = ["NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"]
 
 [[rule]]
 name = "np-store-into-nonnull-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_STORE_INTO_NONNULL_FIELD"]
 
@@ -1626,7 +1608,6 @@ spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-would-have-been-a-npe"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"]
 
@@ -2215,7 +2196,6 @@ spotbugs = ["UL_UNRELEASED_LOCK_EXCEPTION_PATH"]
 
 [[rule]]
 name = "umac-uncallable-method-of-anonymous-class"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS"]
 

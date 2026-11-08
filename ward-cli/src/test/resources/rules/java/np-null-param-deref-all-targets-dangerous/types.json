@@ -1,0 +1,36 @@
+{
+  "7:5-7:13": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "use",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "8:5-8:13": {
+    "call": {
+      "declaring": {
+        "name": "Open"
+      },
+      "name": "use",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  }
+}

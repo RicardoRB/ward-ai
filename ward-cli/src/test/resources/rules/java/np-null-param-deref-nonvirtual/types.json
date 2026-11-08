@@ -1,0 +1,53 @@
+{
+  "7:5-7:13": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "use",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "10:5-10:13": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "use",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "11:5-11:12": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "use",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  }
+}
