@@ -41,6 +41,15 @@ class GateOutputVisibilityTest {
         .isEqualTo(GateOutputVisibility.FULL);
   }
 
+  @Test
+  void anExecutionErrorWithFindingsAlsoShowsTheOutputThatNamesTheFailure() {
+    final GateResult errored =
+        result(GateStatus.EXECUTION_ERROR, GateFindings.of(List.of(finding())));
+
+    assertThat(GateOutputVisibility.of(errored, SeverityThreshold.WARNING))
+        .isEqualTo(GateOutputVisibility.FULL);
+  }
+
   private static GateResult result(final GateStatus status, final GateFindings findings) {
     return GateResult.builder("g", status)
         .command(List.of("g"))
