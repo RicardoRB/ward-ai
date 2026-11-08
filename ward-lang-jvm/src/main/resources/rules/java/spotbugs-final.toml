@@ -1,0 +1,271 @@
+# SpotBugs patterns for Java (issue 316), the last standard rows. Rules read the compact text of a node (no separators
+# between tokens) or the shape of a class, and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/rv-return-value-of-putifabsent-ignored"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "put-if-absent-ignored"
+message = "the result of putIfAbsent is ignored, but {value} is used afterwards although the map may hold another value"
+'''
+
+[[rules]]
+id = "ward:java/se-no-suitable-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "serial-constructor"
+mode = "super"
+message = "{value} is serializable but its non-serializable superclass has no constructor without parameters, so it cannot be deserialized"
+'''
+
+[[rules]]
+id = "ward:java/se-no-suitable-constructor-for-externalization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "serial-constructor"
+mode = "externalizable"
+message = "{value} is Externalizable but has no public constructor without parameters"
+'''
+
+[[rules]]
+id = "ward:java/si-instance-before-finals-assigned"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "static-init-order"
+message = "an instance of this class is created before the static final field {value} is assigned"
+'''
+
+[[rules]]
+id = "ward:java/sr-not-checked"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.io.InputStream"]
+names = ["skip"]
+ignored = true
+message = "the result of skip is ignored; it may skip fewer bytes than requested"
+'''
+
+[[rules]]
+id = "ward:java/ssd-do-not-use-instance-lock-on-shared-static-data"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "static-write-from-instance"
+mode = "locked"
+message = "static field {value} is written under the lock of the instance, which does not exclude other instances"
+'''
+
+[[rules]]
+id = "ward:java/st-write-to-static-from-instance-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "static-write-from-instance"
+mode = "any"
+message = "an instance method writes the static field {value}"
+'''
+
+[[rules]]
+id = "ward:java/sw-swing-methods-invoked-in-swing-thread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidmain\(.*?\)(?:throws[\w.,]+)?\{(?!.*(?:invokeLater|invokeAndWait|SwingUtilities|EventQueue)).*(\w+)=new(?:javax\.swing\.|java\.awt\.)?(?:JFrame|JDialog|JWindow|Frame|Dialog|Window)\(.*\1\.(?:setVisible\(true\)|show\(\)|pack\(\)|setSize\(|setBounds\(|setLocation\()'
+message = "main shows or resizes a Swing window directly; do it on the event dispatch thread"
+'''
+
+[[rules]]
+id = "ward:java/tlw-two-lock-wait"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "wait-context"
+mode = "two-locks"
+message = "wait is called while two locks are held; only one of them is released"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-condition-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "type-range-condition"
+message = "this comparison always gives the same result because of the range of {value}"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-collection-modified"
+message = "this object is only filled in and never used; remove it or use its contents"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-object-stack"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^new(?:java\.util\.)?(?:ArrayList|LinkedList|HashSet|LinkedHashSet|TreeSet|HashMap|LinkedHashMap|TreeMap|ArrayDeque|StringBuilder|StringBuffer)(?:<[^()]*>)?\([^;]*\)\.(?:add|addAll|put|putAll|push|offer|append|insert|addFirst|addLast)\(.*\);$'
+message = "this object is created only to be modified and is dropped"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-void-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "useless-void-method"
+message = "method {value} only works on its own parameters and locals, so it has no effect"
+'''
+
+[[rules]]
+id = "ward:java/ug-sync-set-unsync-get"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "sync-set-unsync-get"
+message = "the setter of {value} is synchronized but this getter is not"
+'''
+
+[[rules]]
+id = "ward:java/uw-uncond-wait"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "wait-context"
+mode = "unconditional"
+message = "wait is called with no condition tested before it"
+'''
+
+[[rules]]
+id = "ward:java/uwf-field-not-initialized-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "uninitialized-field"
+message = "field {value} is not set by any constructor but is dereferenced without a null check"
+'''
+
+[[rules]]
+id = "ward:java/vsc-vulnerable-security-check-methods"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "overridable-security-check"
+message = "method {value} makes a security check but a subclass can override it; make it final or private"
+'''
+
+[[rules]]
+id = "ward:java/sic-inner-should-be-static-needs-this"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-class-use"
+constructor-only = true
+message = "this inner class uses the instance around it only in its constructor; make it static and pass what it needs"
+'''
+
+[[rules]]
+id = "ward:java/urf-unread-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unread"
+message = "field {value} of a private class is written but never read"
+'''
+
+[[rules]]
+id = "ward:java/uuf-unused-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unused"
+message = "field {value} of a private class is never used"
+'''
+
+[[rules]]
+id = "ward:java/uwf-unwritten-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unwritten"
+message = "field {value} of a private class is read but never written"
+'''
