@@ -1,0 +1,40 @@
+# Error Prone rules for Java: null literals, comparison contracts and constructor references (standard preset).
+
+[[rules]]
+id = "ward:java/dangerous-literal-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.Optional"]
+names = ["orElseGet", "orElseThrow"]
+text = '\.(?:orElseGet|orElseThrow)\(null\)$'
+message = "this method is null-hostile: passing a null literal to it is always wrong; use orElse(null) or orElseThrow(NullPointerException::new)"
+'''
+
+[[rules]]
+id = "ward:java/compute-if-absent-ambiguous-reference"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "compute-if-absent-reference"
+message = "computeIfAbsent passes the map key to the constructor of the class; use a lambda to call the constructor with no arguments"
+'''
+
+[[rules]]
+id = "ward:java/comparison-contract-violated"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-contract"
+message = "this comparison method violates the contract"
+'''
