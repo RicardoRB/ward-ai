@@ -32,7 +32,9 @@ final class ExposureChecks {
             "inner-class-use",
             toml ->
                 new InnerClassUseCheck(
-                    toml.getBoolean("anonymous", () -> false), TomlValues.required(toml, MESSAGE))),
+                    toml.getBoolean("anonymous", () -> false),
+                    toml.getBoolean("constructor-only", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
         entry(
             "inner-serializable",
             toml ->
