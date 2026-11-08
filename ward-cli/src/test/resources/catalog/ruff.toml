@@ -2244,7 +2244,6 @@ pylint = ["modified-iterating-set"]
 [[rule]]
 name = "comparison-with-itself"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0124"]
 pylint = ["comparison-with-itself"]
 
@@ -2451,14 +2450,12 @@ pylint = ["redeclared-assigned-name"]
 [[rule]]
 name = "assert-on-string-literal"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0129"]
 pylint = ["assert-on-string-literal"]
 
 [[rule]]
 name = "named-expr-without-context"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0131"]
 pylint = ["named-expr-without-context"]
 
@@ -2471,14 +2468,12 @@ ruff = ["PLW0133"]
 [[rule]]
 name = "nan-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0177"]
 pylint = ["nan-comparison"]
 
 [[rule]]
 name = "bad-staticmethod-argument"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0211"]
 pylint = ["bad-staticmethod-argument"]
 
@@ -2513,14 +2508,12 @@ pylint = ["global-variable-not-assigned"]
 [[rule]]
 name = "global-statement"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0603"]
 pylint = ["global-statement"]
 
 [[rule]]
 name = "global-at-module-level"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0604"]
 pylint = ["global-at-module-level"]
 
@@ -2533,7 +2526,6 @@ ruff = ["PLW0642"]
 [[rule]]
 name = "binary-op-exception"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0711"]
 pylint = ["binary-op-exception"]
 
@@ -2546,7 +2538,6 @@ ruff = ["PLW0717"]
 [[rule]]
 name = "bad-open-mode"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1501"]
 pylint = ["bad-open-mode"]
 
@@ -2560,7 +2551,6 @@ pylint = ["shallow-copy-environ"]
 [[rule]]
 name = "invalid-envvar-default"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1508"]
 pylint = ["invalid-envvar-default"]
 

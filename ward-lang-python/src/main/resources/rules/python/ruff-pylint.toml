@@ -1,0 +1,140 @@
+# Ruff's pylint-mirrored general rules (PL*, UP004) for Python that a node's text or kind decides.
+
+[[rules]]
+id = "ward:python/assert-on-string-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assert_stmt"]
+text = "^assert\\s+[rRbBuUfF]{0,2}(?:'[^']*'|\"[^\"]*\")\\s*(?:,.*)?$"
+message = "assert on a string literal is always true; assert a condition"
+'''
+
+[[rules]]
+id = "ward:python/bad-open-mode"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^open\\((?:[^,()]|\\([^()]*\\))*,\\s*(?:mode\\s*=\\s*)?['\"](?![rwax](?:[bt]\\+?|\\+[bt]?)?['\"])[^'\"]*['\"]"
+message = "open() is called with a mode that Python does not accept"
+'''
+
+[[rules]]
+id = "ward:python/bad-staticmethod-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["decorated"]
+text = "^@staticmethod\\s*\\n\\s*(?:async\\s+)?def\\s+\\w+\\s*\\(\\s*(?:self|cls)\\b"
+message = "static method takes self or cls as its first argument"
+'''
+
+[[rules]]
+id = "ward:python/binary-op-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = "^except\\s+[^(\\n]*?\\bor\\b"
+message = "except clause joins exception types with 'or'; list them in a tuple"
+'''
+
+[[rules]]
+id = "ward:python/comparison-with-itself"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "^([A-Za-z_][\\w.]*)\\s*(?:==|!=|<=|>=|<|>)\\s*\\1$"
+message = "comparison of a value with itself"
+'''
+
+[[rules]]
+id = "ward:python/global-at-module-level"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["global_stmt"]
+not-inside = ["funcdef", "classdef"]
+message = "global statement at module level has no effect"
+'''
+
+[[rules]]
+id = "ward:python/global-statement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["global_stmt"]
+message = "global statement; pass the value in or return it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-envvar-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:os\\.)?(?:getenv|environ\\.get)\\((?:[^,()]|\\([^()]*\\))*,\\s*(?:-?\\d|True\\b|False\\b|\\[|\\{|\\()"
+message = "environment variable default must be a string or None"
+'''
+
+[[rules]]
+id = "ward:python/named-expr-without-context"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^\\(\\s*[A-Za-z_]\\w*\\s*:="
+message = "assignment expression used as a statement; use it in a condition or comprehension"
+'''
+
+[[rules]]
+id = "ward:python/nan-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "(?:==|!=|<=|>=|<|>)\\s*(?:math\\.nan|np\\.nan|numpy\\.nan|float\\(\\s*['\"][+-]?nan['\"]\\s*\\))|(?:math\\.nan|np\\.nan|numpy\\.nan|float\\(\\s*['\"][+-]?nan['\"]\\s*\\))\\s*(?:==|!=|<=|>=|<|>)"
+message = "comparison with NaN is always false; use math.isnan()"
+'''

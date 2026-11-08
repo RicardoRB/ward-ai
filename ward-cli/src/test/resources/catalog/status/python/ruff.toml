@@ -25,7 +25,7 @@ any-eq-ne-annotation = { status = "planned", issue = "#334" }
 any-type = { status = "planned", issue = "#297" }
 argument-default-in-stub = { status = "planned", issue = "#334" }
 assert = { status = "planned", issue = "#334" }
-assert-on-string-literal = { status = "planned", issue = "#334" }
+assert-on-string-literal = "implemented"
 assert-raises-exception = "implemented"
 assert-tuple = "implemented"
 assert-with-print-message = { status = "planned", issue = "#334" }
@@ -40,8 +40,8 @@ await-outside-async = "implemented"
 bad-dunder-method-name = { status = "planned", issue = "#334" }
 bad-exit-annotation = { status = "planned", issue = "#334" }
 bad-file-permissions = { status = "planned", issue = "#334" }
-bad-open-mode = { status = "planned", issue = "#334" }
-bad-staticmethod-argument = { status = "planned", issue = "#334" }
+bad-open-mode = "implemented"
+bad-staticmethod-argument = "implemented"
 bad-str-strip-call = "implemented"
 bad-string-format-character = "implemented"
 bad-string-format-type = "implemented"
@@ -54,7 +54,7 @@ banned-module-level-imports = { status = "planned", issue = "#297" }
 bare-except = "implemented"
 batched-without-explicit-strict = "implemented"
 bidirectional-unicode = "implemented"
-binary-op-exception = { status = "planned", issue = "#334" }
+binary-op-exception = "implemented"
 bit-count = "implemented"
 blank-line-after-function = { status = "planned", issue = "#297" }
 blank-line-before-class = { status = "planned", issue = "#297" }
@@ -106,7 +106,7 @@ commented-out-code = { status = "planned", issue = "#297" }
 compare-to-empty-string = { status = "planned", issue = "#334" }
 compare-with-tuple = { status = "planned", issue = "#334" }
 comparison-of-constant = { status = "planned", issue = "#334" }
-comparison-with-itself = { status = "planned", issue = "#334" }
+comparison-with-itself = "implemented"
 complex-assignment-in-stub = { status = "planned", issue = "#334" }
 complex-if-statement-in-stub = { status = "planned", issue = "#334" }
 constant-imported-as-non-constant = { status = "planned", issue = "#297" }
@@ -221,8 +221,8 @@ generator-return-from-iter-method = { status = "planned", issue = "#334" }
 generic-not-last-base-class = { status = "planned", issue = "#334" }
 get-attr-with-constant = "implemented"
 glob = { status = "planned", issue = "#334" }
-global-at-module-level = { status = "planned", issue = "#334" }
-global-statement = { status = "planned", issue = "#334" }
+global-at-module-level = "implemented"
+global-statement = "implemented"
 global-variable-not-assigned = { status = "planned", issue = "#334" }
 hardcoded-bind-all-interfaces = "implemented"
 hardcoded-password-default = "implemented"
@@ -276,7 +276,7 @@ invalid-character-esc = "implemented"
 invalid-character-nul = "implemented"
 invalid-character-sub = "implemented"
 invalid-character-zero-width-space = "implemented"
-invalid-envvar-default = { status = "planned", issue = "#334" }
+invalid-envvar-default = "implemented"
 invalid-envvar-value = { status = "planned", issue = "#332" }
 invalid-escape-sequence = "implemented"
 invalid-first-argument-name-for-class-method = { status = "planned", issue = "#297" }
@@ -389,8 +389,8 @@ mutable-class-default = { status = "planned", issue = "#334" }
 mutable-contextvar-default = "implemented"
 mutable-dataclass-default = { status = "planned", issue = "#334" }
 mutable-fromkeys-value = { status = "planned", issue = "#334" }
-named-expr-without-context = { status = "planned", issue = "#334" }
-nan-comparison = { status = "planned", issue = "#334" }
+named-expr-without-context = "implemented"
+nan-comparison = "implemented"
 native-literals = { status = "planned", issue = "#334" }
 needless-else = { status = "planned", issue = "#334" }
 negate-equal-op = { status = "planned", issue = "#334" }
