@@ -88,6 +88,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/spotbugs-style-4.toml",
           "rules/java/spotbugs-style-5.toml",
           "rules/java/spotbugs-style.toml",
+          "rules/java/spotbugs-threads.toml",
           "rules/java/strict-declarations.toml",
           "rules/kotlin/coroutines.toml",
           "rules/kotlin/exceptions.toml",

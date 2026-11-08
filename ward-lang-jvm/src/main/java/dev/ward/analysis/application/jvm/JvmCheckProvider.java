@@ -51,6 +51,7 @@ public final class JvmCheckProvider implements CheckProvider {
             SpotbugsChecks.checks(),
             SpotbugsFinalChecks.checks(),
             SpotbugsCastChecks.checks(),
+            SpotbugsThreadChecks.checks(),
             ModifierChecks.checks(),
             NullnessChecks.checks(),
             ObjectMethodChecks.checks(),

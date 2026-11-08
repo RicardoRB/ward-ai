@@ -5,11 +5,11 @@ am-creates-empty-jar-file-entry = "implemented"
 am-creates-empty-zip-file-entry = "implemented"
 ase-assertion-with-side-effect = "implemented"
 ase-assertion-with-side-effect-method = "implemented"
-at-nonatomic-64-bit-primitive = { status = "planned", issue = "#316" }
-at-nonatomic-operations-on-shared-variable = { status = "planned", issue = "#316" }
-at-operation-sequence-on-concurrent-abstraction = { status = "planned", issue = "#316" }
-at-stale-thread-write-of-primitive = { status = "planned", issue = "#316" }
-at-unsafe-resource-access-in-thread = { status = "planned", issue = "#316" }
+at-nonatomic-64-bit-primitive = "implemented"
+at-nonatomic-operations-on-shared-variable = "implemented"
+at-operation-sequence-on-concurrent-abstraction = "implemented"
+at-stale-thread-write-of-primitive = "implemented"
+at-unsafe-resource-access-in-thread = "implemented"
 bac-bad-applet-constructor = "implemented"
 bc-bad-cast-to-abstract-collection = "implemented"
 bc-bad-cast-to-concrete-collection = "implemented"
