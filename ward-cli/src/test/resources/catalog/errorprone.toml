@@ -614,8 +614,6 @@ errorprone = ["DeadThread"]
 
 [[rule]]
 name = "deduplicate-constants"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DeduplicateConstants"]
 
 [[rule]]
@@ -655,8 +653,6 @@ errorprone = ["DeprecatedVariable"]
 
 [[rule]]
 name = "dereference-with-null-branch"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DereferenceWithNullBranch"]
 
 [[rule]]
@@ -699,8 +695,6 @@ errorprone = ["DoNotClaimAnnotations"]
 
 [[rule]]
 name = "do-not-mock"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DoNotMock"]
 
 [[rule]]
@@ -751,8 +745,6 @@ errorprone = ["DurationTemporalUnit"]
 
 [[rule]]
 name = "duration-to-long-time-unit"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DurationToLongTimeUnit"]
 
 [[rule]]
@@ -841,8 +833,6 @@ errorprone = ["EqualsUsingHashCode"]
 
 [[rule]]
 name = "equals-wrong-thing"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["EqualsWrongThing"]
 
 [[rule]]
@@ -895,8 +885,6 @@ errorprone = ["ExtendingJUnitAssert"]
 
 [[rule]]
 name = "extends-auto-value"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ExtendsAutoValue"]
 
 [[rule]]
@@ -961,20 +949,14 @@ errorprone = ["FloggerArgumentToString"]
 
 [[rule]]
 name = "flogger-format-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FloggerFormatString"]
 
 [[rule]]
 name = "flogger-log-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FloggerLogString"]
 
 [[rule]]
 name = "flogger-log-varargs"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FloggerLogVarargs"]
 
 [[rule]]
@@ -1009,8 +991,6 @@ errorprone = ["FloggerRequiredModifiers"]
 
 [[rule]]
 name = "flogger-split-log-statement"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FloggerSplitLogStatement"]
 
 [[rule]]
@@ -1039,20 +1019,14 @@ errorprone = ["ForEachIterable"]
 
 [[rule]]
 name = "for-override"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ForOverride"]
 
 [[rule]]
 name = "format-string"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FormatString"]
 
 [[rule]]
 name = "format-string-annotation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FormatStringAnnotation"]
 
 [[rule]]
@@ -1075,8 +1049,6 @@ errorprone = ["FragmentNotInstantiable"]
 
 [[rule]]
 name = "from-temporal-accessor"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FromTemporalAccessor"]
 
 [[rule]]
@@ -1256,8 +1228,6 @@ errorprone = ["Incomparable"]
 
 [[rule]]
 name = "incompatible-argument-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["IncompatibleArgumentType"]
 
 [[rule]]
@@ -2129,8 +2099,6 @@ errorprone = ["NonAtomicVolatileUpdate"]
 
 [[rule]]
 name = "non-canonical-static-import"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["NonCanonicalStaticImport"]
 
 [[rule]]
@@ -3314,8 +3282,6 @@ errorprone = ["UnnecessaryTestMethodPrefix"]
 
 [[rule]]
 name = "unnecessary-type-argument"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnnecessaryTypeArgument"]
 
 [[rule]]
@@ -3480,8 +3446,6 @@ pylint = ["wildcard-import"]
 
 [[rule]]
 name = "wrong-oneof"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["WrongOneof"]
 
 [[rule]]
