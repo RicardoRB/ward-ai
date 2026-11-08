@@ -1354,12 +1354,6 @@ name = "np-load-of-known-null-value"
 spotbugs = ["NP_LOAD_OF_KNOWN_NULL_VALUE"]
 
 [[rule]]
-name = "np-method-parameter-relaxing-annotation"
-presets = ["standard", "strict"]
-category = "style"
-spotbugs = ["NP_METHOD_PARAMETER_RELAXING_ANNOTATION"]
-
-[[rule]]
 name = "np-method-parameter-tightens-annotation"
 spotbugs = ["NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"]
 
@@ -1403,8 +1397,6 @@ spotbugs = ["NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"]
 
 [[rule]]
 name = "np-null-on-some-path-might-be-infeasible"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE"]
 
 [[rule]]
