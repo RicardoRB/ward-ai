@@ -111,7 +111,7 @@ dmi-misleading-substring = { status = "planned", issue = "#316" }
 dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
 dmi-random-used-only-once = "implemented"
 dmi-scheduled-thread-pool-executor-with-zero-core-threads = "implemented"
-dmi-thread-passed-where-runnable-expected = { status = "planned", issue = "#316" }
+dmi-thread-passed-where-runnable-expected = "implemented"
 dmi-unsupported-method = { status = "planned", issue = "#316" }
 dmi-useless-substring = "implemented"
 dmi-using-removeall-to-clear-collection = "implemented"
@@ -140,7 +140,7 @@ eq-abstract-self = { status = "planned", issue = "#316" }
 eq-always-false = "implemented"
 eq-always-true = "implemented"
 eq-check-for-operand-not-compatible-with-this = { status = "planned", issue = "#316" }
-eq-compareto-use-object-equals = { status = "planned", issue = "#316" }
+eq-compareto-use-object-equals = "implemented"
 eq-comparing-class-names = "implemented"
 eq-doesnt-override-equals = { status = "planned", issue = "#316" }
 eq-dont-define-equals-for-enum = "implemented"
@@ -211,7 +211,7 @@ int-bad-comparison-with-nonnegative-value = "implemented"
 int-bad-comparison-with-signed-byte = "implemented"
 int-bad-rem-by-1 = "implemented"
 int-vacuous-bit-operation = "implemented"
-int-vacuous-comparison = { status = "planned", issue = "#316" }
+int-vacuous-comparison = "implemented"
 io-appending-to-object-output-stream = "implemented"
 ip-parameter-is-dead-but-overwritten = "implemented"
 is-field-not-guarded = { status = "planned", issue = "#316" }
@@ -259,7 +259,7 @@ nm-bad-equal = "implemented"
 nm-class-naming-convention = "implemented"
 nm-class-not-exception = "implemented"
 nm-confusing = { status = "planned", issue = "#316" }
-nm-field-naming-convention = { status = "planned", issue = "#316" }
+nm-field-naming-convention = "implemented"
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
 nm-method-constructor-confusion = "implemented"
@@ -283,7 +283,7 @@ np-boolean-return-null = "implemented"
 np-clone-could-return-null = "implemented"
 np-closing-null = { status = "planned", issue = "#314" }
 np-dereference-of-readline-value = "implemented"
-np-equals-should-handle-null-argument = { status = "planned", issue = "#316" }
+np-equals-should-handle-null-argument = "implemented"
 np-guaranteed-deref = { status = "planned", issue = "#314" }
 np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
 np-immediate-dereference-of-readline = "implemented"
@@ -323,9 +323,9 @@ pa-public-mutable-object-attribute = { status = "planned", issue = "#316" }
 pa-public-primitive-attribute = "implemented"
 perm-super-not-called-in-getpermissions = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-class-names = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-field-names = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-local-variable-names = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = "#316" }
+pi-do-not-reuse-public-identifiers-field-names = "implemented"
+pi-do-not-reuse-public-identifiers-local-variable-names = "implemented"
+pi-do-not-reuse-public-identifiers-method-names = "implemented"
 ps-public-semaphores = "implemented"
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
 pzla-prefer-zero-length-arrays = "implemented"
@@ -346,7 +346,7 @@ rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#
 re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
-rec-catch-exception = { status = "planned", issue = "#316" }
+rec-catch-exception = "implemented"
 reflc-reflection-may-increase-accessibility-of-class = "implemented"
 reflf-reflection-may-increase-accessibility-of-field = "implemented"
 ri-redundant-interfaces = { status = "planned", issue = "#316" }
@@ -481,7 +481,7 @@ vo-volatile-increment = "implemented"
 vo-volatile-reference-to-array = "implemented"
 vr-unresolvable-reference = { status = "planned", issue = "#314" }
 vsc-vulnerable-security-check-methods = { status = "planned", issue = "#316" }
-wa-await-not-in-loop = { status = "planned", issue = "#316" }
+wa-await-not-in-loop = "implemented"
 wa-not-in-loop = "implemented"
 wl-using-getclass-rather-than-class-literal = "implemented"
 wmi-wrong-map-iterator = "implemented"
