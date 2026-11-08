@@ -1,0 +1,233 @@
+# Error Prone checks at ERROR severity for Java, fifth batch: syntax patterns, Flogger calls, and calls judged by the facts of their target. Each is on by default in Error Prone.
+
+[[rules]]
+id = "ward:java/dereference-with-null-branch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\((?:[^()?:]+\?null:[^()?:]+|[^()?:]+\?[^()?:]+:null)\)\.\w+'
+message = "a conditional with a null branch is dereferenced; the null branch throws a NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/duration-to-long-time-unit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.]+\.)?\w+\((?:[^(),]+,)*?(?:[\w.]|\([^()]*\))*?\.(?:toMillis\(\),(?:[\w.]*\.)?TimeUnit\.(?!MILLISECONDS\b)|(?:toSeconds|getSeconds)\(\),(?:[\w.]*\.)?TimeUnit\.(?!SECONDS\b)|toNanos\(\),(?:[\w.]*\.)?TimeUnit\.(?!NANOSECONDS\b)|toMinutes\(\),(?:[\w.]*\.)?TimeUnit\.(?!MINUTES\b)|toHours\(\),(?:[\w.]*\.)?TimeUnit\.(?!HOURS\b)|toDays\(\),(?:[\w.]*\.)?TimeUnit\.(?!DAYS\b))\w+\)'
+message = "the long comes from a Duration in one unit but the TimeUnit passed with it is another; use matching units or the Duration overload"
+'''
+
+[[rules]]
+id = "ward:java/flogger-log-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+declaring-types = ["com.google.common.flogger.LoggingApi"]
+names = ["log"]
+text = '\.log\((?!")(?![A-Z][A-Z0-9_]*\))[^,>]*\)$'
+message = "log() is given a string that is not a constant; use log(\"%s\", value) so the text is not treated as a format string"
+'''
+
+[[rules]]
+id = "ward:java/flogger-log-varargs"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+declaring-types = ["com.google.common.flogger.LoggingApi"]
+names = ["log"]
+text = '\.log\([^,()]+,new[\w.]*\[\w*\]'
+message = "an array is passed to log(String, Object...); use logVarargs(String, Object[]) to pass it as the arguments"
+'''
+
+[[rules]]
+id = "ward:java/flogger-split-log-statement"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["localVariableDeclaration"]
+text = '=(?:[\w.]+\.)?at(?:Severe|Warning|Info|Config|Fine|Finer|Finest)\(\)(?:\.\w+\([^()]*\))*;?$'
+message = "a Flogger log statement is split across statements; write logger.atInfo().log(...) as one chain"
+'''
+
+[[rules]]
+id = "ward:java/for-override"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "for-override"
+message = "{value} is annotated @ForOverride and may be called only from the class that declares it"
+'''
+
+[[rules]]
+id = "ward:java/from-temporal-accessor"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "from-temporal-accessor"
+message = "this from() factory always throws a DateTimeException for an argument of type {value}"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-type-argument"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "unnecessary-type-argument"
+message = "the explicit type argument {value} is inferred from the arguments; remove it"
+'''
+
+[[rules]]
+id = "ward:java/deduplicate-constants"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "deduplicate-constants"
+message = "this string literal equals the constant {value}; use the constant"
+'''
+
+[[rules]]
+id = "ward:java/do-not-mock"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "do-not-mock"
+message = "this type is annotated @DoNotMock and must not be mocked; use a real instance or a fake"
+'''
+
+[[rules]]
+id = "ward:java/equals-wrong-thing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-wrong-thing"
+message = "equals compares this object's member with the other object's {value}, a different member"
+'''
+
+[[rules]]
+id = "ward:java/extends-auto-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "extends-auto-value"
+message = "{value} is an @AutoValue class and must not be extended; only the generated AutoValue_ subclass may extend it"
+'''
+
+[[rules]]
+id = "ward:java/incompatible-argument-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-argument-type"
+message = "this argument can never be a {value}, the type the parameter is marked @CompatibleWith"
+'''
+
+[[rules]]
+id = "ward:java/non-canonical-static-import"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "non-canonical-static-import"
+message = "this method is declared by {value}; import it from there, not through a subclass"
+'''
+
+[[rules]]
+id = "ward:java/wrong-oneof"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-oneof"
+message = "{value} belongs to another case of the oneof than the case this branch handles, so it is never set here"
+'''
+
+[[rules]]
+id = "ward:java/format-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "format-string"
+declaring-types = ["java.lang.String", "java.io.PrintStream", "java.io.PrintWriter", "java.util.Formatter", "java.io.Console"]
+names = ["format", "formatted", "printf"]
+message = "the format string does not fit its arguments: {value}"
+'''
+
+[[rules]]
+id = "ward:java/flogger-format-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "format-string"
+declaring-types = ["com.google.common.flogger.LoggingApi"]
+names = ["log"]
+message = "the Flogger format string does not fit its arguments: {value}"
+'''
+
+[[rules]]
+id = "ward:java/format-string-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "format-string-annotation"
+message = "a parameter annotated @FormatString needs a compile-time constant, not a computed string"
+'''

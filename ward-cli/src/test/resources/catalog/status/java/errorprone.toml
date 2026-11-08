@@ -110,14 +110,14 @@ date-checker = { status = "planned", issue = "#319" }
 date-format-constant = { status = "planned", issue = "#319" }
 dead-exception = "implemented"
 dead-thread = "implemented"
-deduplicate-constants = { status = "planned", issue = "#319" }
+deduplicate-constants = "implemented"
 deeply-nested = { status = "planned", issue = "#319" }
 default-charset = { status = "planned", issue = "#319" }
 default-locale = { status = "planned", issue = "#319" }
 default-package = { status = "planned", issue = "#319" }
 dep-ann = "implemented"
 deprecated-variable = { status = "planned", issue = "#319" }
-dereference-with-null-branch = { status = "planned", issue = "#319" }
+dereference-with-null-branch = "implemented"
 different-name-but-same = { status = "planned", issue = "#319" }
 direct-invocation-on-mock = { status = "planned", issue = "#319" }
 discarded-postfix-expression = "implemented"
@@ -125,7 +125,7 @@ distinct-varargs-checker = { status = "planned", issue = "#319" }
 do-not-call = "implemented"
 do-not-call-suggester = { status = "planned", issue = "#319" }
 do-not-claim-annotations = { status = "planned", issue = "#319" }
-do-not-mock = { status = "planned", issue = "#319" }
+do-not-mock = "implemented"
 do-not-mock-auto-value = { status = "planned", issue = "#319" }
 double-brace-initialization = "implemented"
 duplicate-assertion = { status = "planned", issue = "#319" }
@@ -135,7 +135,7 @@ duplicate-map-keys = "implemented"
 duration-from = "implemented"
 duration-get-temporal-unit = "implemented"
 duration-temporal-unit = "implemented"
-duration-to-long-time-unit = { status = "planned", issue = "#319" }
+duration-to-long-time-unit = "implemented"
 effectively-private = { status = "planned", issue = "#319" }
 empty-block-tag = { status = "planned", issue = "#319" }
 empty-catch = { status = "planned", issue = "#319" }
@@ -151,7 +151,7 @@ equals-na-n = "implemented"
 equals-reference = "implemented"
 equals-unsafe-cast = { status = "planned", issue = "#319" }
 equals-using-hash-code = { status = "planned", issue = "#319" }
-equals-wrong-thing = { status = "planned", issue = "#319" }
+equals-wrong-thing = "implemented"
 erroneous-bitwise-expression = { status = "planned", issue = "#319" }
 erroneous-thread-pool-constructor-checker = { status = "planned", issue = "#319" }
 escaped-entity = { status = "planned", issue = "#319" }
@@ -160,7 +160,7 @@ expensive-lenient-format-string = { status = "planned", issue = "#319" }
 explicit-array-for-varargs = { status = "planned", issue = "#319" }
 exposed-private-type = { status = "planned", issue = "#319" }
 extending-j-unit-assert = { status = "planned", issue = "#319" }
-extends-auto-value = { status = "planned", issue = "#319" }
+extends-auto-value = "implemented"
 field-can-be-final = { status = "planned", issue = "#319" }
 field-can-be-local = { status = "planned", issue = "#319" }
 field-can-be-static = { status = "planned", issue = "#319" }
@@ -171,26 +171,26 @@ float-cast = { status = "planned", issue = "#319" }
 floating-point-assertion-within-epsilon = { status = "planned", issue = "#319" }
 floating-point-literal-precision = { status = "planned", issue = "#319" }
 flogger-argument-to-string = { status = "planned", issue = "#319" }
-flogger-format-string = { status = "planned", issue = "#319" }
-flogger-log-string = { status = "planned", issue = "#319" }
-flogger-log-varargs = { status = "planned", issue = "#319" }
+flogger-format-string = "implemented"
+flogger-log-string = "implemented"
+flogger-log-varargs = "implemented"
 flogger-log-with-cause = { status = "planned", issue = "#319" }
 flogger-message-format = { status = "planned", issue = "#319" }
 flogger-per-without-rate-limit = { status = "planned", issue = "#319" }
 flogger-redundant-is-enabled = { status = "planned", issue = "#319" }
 flogger-required-modifiers = { status = "planned", issue = "#319" }
-flogger-split-log-statement = { status = "planned", issue = "#319" }
+flogger-split-log-statement = "implemented"
 flogger-string-concatenation = { status = "planned", issue = "#319" }
 flogger-with-cause = { status = "planned", issue = "#319" }
 flogger-without-cause = { status = "planned", issue = "#319" }
 for-each-iterable = { status = "planned", issue = "#319" }
-for-override = { status = "planned", issue = "#319" }
-format-string = { status = "planned", issue = "#319" }
-format-string-annotation = { status = "planned", issue = "#319" }
+for-override = "implemented"
+format-string = "implemented"
+format-string-annotation = "implemented"
 format-string-should-use-placeholders = { status = "planned", issue = "#319" }
 fragment-injection = { status = "planned", issue = "#319" }
 fragment-not-instantiable = { status = "planned", issue = "#319" }
-from-temporal-accessor = { status = "planned", issue = "#319" }
+from-temporal-accessor = "implemented"
 functional-interface-clash = { status = "planned", issue = "#319" }
 functional-interface-method-changed = { status = "planned", issue = "#319" }
 future-return-value-ignored = { status = "planned", issue = "#319" }
@@ -225,7 +225,7 @@ immutable-set-for-contains = { status = "planned", issue = "#319" }
 implement-assertion-with-chaining = { status = "planned", issue = "#319" }
 impossible-null-comparison = "implemented"
 incomparable = "implemented"
-incompatible-argument-type = { status = "planned", issue = "#319" }
+incompatible-argument-type = "implemented"
 incompatible-modifiers = "implemented"
 inconsistent-capitalization = { status = "planned", issue = "#319" }
 inconsistent-hash-code = { status = "planned", issue = "#319" }
@@ -389,7 +389,7 @@ no-allocation = "implemented"
 no-can-ignore-return-value-on-classes = "implemented"
 non-api-type = { status = "planned", issue = "#319" }
 non-atomic-volatile-update = { status = "planned", issue = "#319" }
-non-canonical-static-import = { status = "planned", issue = "#319" }
+non-canonical-static-import = "implemented"
 non-canonical-static-member-import = { status = "planned", issue = "#319" }
 non-canonical-type = { status = "planned", issue = "#319" }
 non-final-compile-time-constant = "implemented"
@@ -605,7 +605,7 @@ unnecessary-set-default = { status = "planned", issue = "#319" }
 unnecessary-static-import = { status = "planned", issue = "#319" }
 unnecessary-string-builder = { status = "planned", issue = "#319" }
 unnecessary-test-method-prefix = { status = "planned", issue = "#319" }
-unnecessary-type-argument = { status = "planned", issue = "#319" }
+unnecessary-type-argument = "implemented"
 unrecognised-javadoc-tag = { status = "planned", issue = "#319" }
 unsafe-finalization = { status = "planned", issue = "#319" }
 unsafe-locale-usage = { status = "planned", issue = "#319" }
@@ -634,7 +634,7 @@ void-missing-nullable = { status = "planned", issue = "#319" }
 void-used = { status = "planned", issue = "#319" }
 wait-not-in-loop = { status = "planned", issue = "#319" }
 wakelock-released-dangerously = { status = "planned", issue = "#319" }
-wrong-oneof = { status = "planned", issue = "#319" }
+wrong-oneof = "implemented"
 xor-power = "implemented"
 yoda-condition = { status = "planned", issue = "#319" }
 zone-id-of-z = "implemented"

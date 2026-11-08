@@ -35,6 +35,7 @@ public final class JvmCheckProvider implements CheckProvider {
             ErrorProneAnnotationChecks.checks(),
             DeclarationChecks.checks(),
             DeclarationContextChecks.checks(),
+            ErrorProneCallChecks.checks(),
             ErrorProneChecks.checks(),
             ErrorProneFactChecks.checks(),
             ExposureChecks.checks(),

@@ -1,0 +1,46 @@
+{
+  "6:12": {
+    "call": {
+      "declaring": {
+        "name": "java.time.LocalDate"
+      },
+      "name": "from",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAccessor"
+        }
+      ],
+      "returns": {
+        "name": "java.time.LocalDate"
+      },
+      "static": true
+    }
+  },
+  "6:27": {
+    "type": {
+      "name": "java.time.Instant"
+    }
+  },
+  "15:12": {
+    "call": {
+      "declaring": {
+        "name": "java.time.LocalDate"
+      },
+      "name": "from",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalAccessor"
+        }
+      ],
+      "returns": {
+        "name": "java.time.LocalDate"
+      },
+      "static": true
+    }
+  },
+  "15:27": {
+    "type": {
+      "name": "java.time.LocalDateTime"
+    }
+  }
+}

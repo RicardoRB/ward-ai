@@ -103,7 +103,7 @@ public final class UnrelatedArgumentCheck implements RuleCheck {
   }
 
   /** Returns whether the argument can never be equal to a value of the element type. */
-  private static boolean excludes(
+  static boolean excludes(
       final TypeRef element, final SyntaxNode argument, final UnitTypeFacts types) {
     final Optional<TypeRef> type = types.typeOf(argument.span());
     if (type.isEmpty() || type.get().arrayDepth() > 0 || !element.name().contains(".")) {

@@ -1,0 +1,117 @@
+{
+  "5:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "fmt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "static": true,
+      "varargs": true,
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.FormatString"
+        ],
+        []
+      ]
+    }
+  },
+  "13:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "fmt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "static": true,
+      "varargs": true,
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.FormatString"
+        ],
+        []
+      ]
+    }
+  },
+  "14:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "fmt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "static": true,
+      "varargs": true,
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.FormatString"
+        ],
+        []
+      ]
+    }
+  },
+  "14:9": {
+    "constant": "ab"
+  },
+  "15:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "fmt",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "static": true,
+      "varargs": true,
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.FormatString"
+        ],
+        []
+      ]
+    }
+  }
+}

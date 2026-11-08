@@ -1,0 +1,48 @@
+{
+  "3:3": {
+    "members": {
+      "annotations": [
+        "com.google.errorprone.annotations.DoNotMock"
+      ]
+    }
+  },
+  "6:25": {
+    "members": {
+      "annotations": [
+        "com.google.errorprone.annotations.DoNotMock"
+      ]
+    }
+  },
+  "6:12": {
+    "call": {
+      "declaring": {
+        "name": "org.mockito.Mockito"
+      },
+      "name": "mock",
+      "params": [
+        {
+          "name": "java.lang.Class"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "17:12": {
+    "call": {
+      "declaring": {
+        "name": "org.mockito.Mockito"
+      },
+      "name": "mock",
+      "params": [
+        {
+          "name": "java.lang.Class"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}
