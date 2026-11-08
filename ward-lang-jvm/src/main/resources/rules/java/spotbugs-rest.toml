@@ -2,54 +2,6 @@
 # text of a node (no separators between tokens) and so approximate SpotBugs' detectors.
 
 [[rules]]
-id = "ward:java/pi-do-not-reuse-public-identifiers-method-names"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "identifier-pattern"
-kinds = ["methodDeclaration"]
-name = "identifier"
-skip = ["annotation", "typeType", "typeTypeOrVoid"]
-pattern = '^(?!(?:Object|String|Integer|Long|Double|Float|Short|Byte|Boolean|Character|Number|Math|System|Class|Thread|Runnable|Exception|Error|Throwable|Iterable|Comparable|Enum|Record|Void|Process|Runtime|StringBuilder|StringBuffer)$).*$'
-message = "the method name {value} reuses the name of a java.lang class"
-'''
-
-[[rules]]
-id = "ward:java/pi-do-not-reuse-public-identifiers-field-names"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "identifier-pattern"
-kinds = ["fieldDeclaration"]
-name = "identifier"
-skip = ["annotation", "typeType", "typeTypeOrVoid"]
-pattern = '^(?!(?:Object|String|Integer|Long|Double|Float|Short|Byte|Boolean|Character|Number|Math|System|Class|Thread|Runnable|Exception|Error|Throwable|Iterable|Comparable|Enum|Record|Void|Process|Runtime|StringBuilder|StringBuffer)$).*$'
-message = "the field name {value} reuses the name of a java.lang class"
-'''
-
-[[rules]]
-id = "ward:java/pi-do-not-reuse-public-identifiers-local-variable-names"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "identifier-pattern"
-kinds = ["localVariableDeclaration"]
-name = "identifier"
-skip = ["annotation", "typeType", "typeTypeOrVoid"]
-pattern = '^(?!(?:Object|String|Integer|Long|Double|Float|Short|Byte|Boolean|Character|Number|Math|System|Class|Thread|Runnable|Exception|Error|Throwable|Iterable|Comparable|Enum|Record|Void|Process|Runtime|StringBuilder|StringBuffer)$).*$'
-message = "the local variable name {value} reuses the name of a java.lang class"
-'''
-
-[[rules]]
 id = "ward:java/nm-field-naming-convention"
 language = "java"
 capability = "SYNTAX"
@@ -81,20 +33,6 @@ message = "catches Exception although the try block throws no checked exception;
 '''
 
 [[rules]]
-id = "ward:java/eq-compareto-use-object-equals"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '^(?!.*booleanequals\()class\w+(?:<[^>{]*>)?(?:implements[\w.<>,]+)?\{.*intcompareTo\('
-message = "class defines compareTo but not equals, so equals compares references"
-'''
-
-[[rules]]
 id = "ward:java/dmi-thread-passed-where-runnable-expected"
 language = "java"
 capability = "SYNTAX"
@@ -121,20 +59,6 @@ kinds = ["expression"]
 with-child = ["'<'", "'>'", "'<='", "'>='"]
 text = '(?:>=Integer\.MIN_VALUE|<Integer\.MIN_VALUE|<=Integer\.MAX_VALUE|>Integer\.MAX_VALUE)$'
 message = "this int comparison with Integer.MIN_VALUE or MAX_VALUE is always true or always false"
-'''
-
-[[rules]]
-id = "ward:java/wa-await-not-in-loop"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "mt-correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "lock-scope-call"
-call = '^(?:[\w.]+\.)?(?:\w*[cC]ondition\w*|notEmpty|notFull)\.await(?:Nanos|Uninterruptibly|Until)?\('
-loop = "no"
-message = "await called outside a loop that re-checks its condition"
 '''
 
 [[rules]]

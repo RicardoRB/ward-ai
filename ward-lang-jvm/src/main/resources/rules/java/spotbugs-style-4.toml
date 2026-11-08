@@ -17,20 +17,6 @@ message = "string is concatenated in a loop; use a StringBuilder"
 '''
 
 [[rules]]
-id = "ward:java/it-no-such-element"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["methodDeclaration"]
-text = '^[\w.<>?]+next\(\)(?:(?!NoSuchElementException).)*$'
-message = "next() does not throw NoSuchElementException"
-'''
-
-[[rules]]
 id = "ward:java/qf-questionable-for-loop"
 language = "java"
 capability = "SYNTAX"
@@ -70,20 +56,6 @@ check = "forbidden-node"
 kinds = ["statement>'synchronized'"]
 text = '^synchronized\([^)]*\)\{(?:\w+\.)?notify(?:All)?\(\);\}$'
 message = "notify without a state change in the synchronized block"
-'''
-
-[[rules]]
-id = "ward:java/sc-start-in-ctor"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["constructorDeclaration"]
-text = '[{;](?:this\.)?start\(\);'
-message = "constructor starts a thread; subclasses see a partly built object"
 '''
 
 [[rules]]
@@ -159,50 +131,6 @@ message = "a boxed value is built only to be unboxed; use the parse method"
 '''
 
 [[rules]]
-id = "ward:java/stcal-invoke-on-static-calendar-instance"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "multithreaded-correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["fieldDeclaration"]
-modifiers = ["static"]
-text = '^(?:java\.util\.)?(?:Gregorian)?Calendar\w+=(?:java\.util\.)?(?:Calendar\.getInstance\(|newGregorianCalendar\()'
-message = "static Calendar is not thread safe"
-'''
-
-[[rules]]
-id = "ward:java/stcal-invoke-on-static-date-format-instance"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "multithreaded-correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["fieldDeclaration"]
-modifiers = ["static"]
-text = '^(?:java\.text\.)?(?:Simple)?DateFormat\w+=(?:java\.text\.)?(?:new(?:java\.text\.)?SimpleDateFormat\(|DateFormat\.get\w+\()'
-message = "static DateFormat is not thread safe"
-'''
-
-[[rules]]
-id = "ward:java/pi-do-not-reuse-public-identifiers-class-names"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '^class(?:Object|String|Integer|Long|Short|Byte|Boolean|Character|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|Class|Enum|Record|Void|Process|Iterable|Comparable)(?:<|extends|implements|\{)'
-message = "class reuses the name of a java.lang class"
-'''
-
-[[rules]]
 id = "ward:java/jua-dont-assert-instanceof-in-tests"
 language = "java"
 capability = "SYNTAX"
@@ -228,20 +156,6 @@ check = "forbidden-node"
 kinds = ["expression"]
 text = '\.toArray\(new[\w.]+\[\w+(?:\.\w+)*\.size\(\)\]\)$'
 message = "toArray with a presized array is slower than a zero-length array"
-'''
-
-[[rules]]
-id = "ward:java/cn-idiom-no-super-call"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["methodDeclaration"]
-text = '^Objectclone\(\)(?:(?!super\.clone\().)*$'
-message = "clone does not call super.clone"
 '''
 
 [[rules]]

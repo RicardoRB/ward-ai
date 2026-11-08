@@ -29,16 +29,3 @@ text = '^new(?:java\.text\.)?SimpleDateFormat\("[^"]*YYYY[^"]*M'
 message = "week-year YYYY is combined with a month; use yyyy"
 '''
 
-[[rules]]
-id = "ward:java/mtia-suspect-servlet-instance-field"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '^class\w+extends(?:\w+\.)*(?:Http|Generic)?Servlet\{(?:.*[;}])?(?:private|protected|public)(?!static|final|abstract|class|interface|enum)[\w<>\[\],.?]+(?:=|;)'
-message = "servlet declares an instance field; servlets are shared between threads"
-'''
