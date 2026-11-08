@@ -105,7 +105,9 @@ languages = ["java"]
 ```
 
 The file starts with an ownership marker, so a `ward-rules.toml` that you wrote is kept and
-reported as user-owned. See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
+reported as user-owned. With the `strict` preset the file also sets `ignore-constructor-parameter` and
+`ignore-setter` to `true` on `ward:java/hidden-field`, as the former Checkstyle configuration did.
+See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
 
 `languages = ["java"]` is written for every project. Kotlin, TypeScript, JavaScript, Python and
 Swift keep their external linters until their own migration lands, so selecting their Ward rules
