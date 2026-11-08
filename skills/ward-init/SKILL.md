@@ -108,7 +108,7 @@ order:
 1. **Existing configuration** (only when `ward.toml` exists). Show its preset and enabled gates.
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
-2. **Preset.** `standard` (fast, offline gates), `strict` (adds deeper analysis such as SpotBugs,
+2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
    coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
@@ -293,7 +293,8 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that `ward.toml` has `paths` tables for Checkstyle, PMD, ward-format, Semgrep, and
+   Mention that Java projects get no Checkstyle, PMD or SpotBugs gate: init writes `ward-rules.toml`, which
+   selects the Ward rules of the preset for Java. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
    Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the

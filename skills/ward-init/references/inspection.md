@@ -116,10 +116,11 @@ Reconfiguring needs `--overwrite`. Without it, a non-interactive `ward init` pri
 Look for rule files that Ward presets write:
 
 ```sh
-head -1 config/checkstyle.xml config/pmd-ruleset.xml config/enforcer-rules.xml config/spotbugs-exclude.xml 2>/dev/null
+head -1 ward-rules.toml config/enforcer-rules.xml 2>/dev/null
 ```
 
-- A first line `<!-- managed-by: ward preset=<id> -->` means the file is Ward-owned. A later
+- A first line `<!-- managed-by: ward preset=<id> -->` (or `# managed-by: ward preset=<id>` in
+  `ward-rules.toml`) means the file is Ward-owned. A later
   `ward init` refreshes it, and the plan shows it as `modify`.
 - No marker means the file is user-owned. Init keeps it, and the plan lists it as `keep`.
 
@@ -133,7 +134,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,checkstyle,pmd,spotbugs,sonar,semgrep,gitleaks,dependency-check,zap,trivy,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,sonar,semgrep,gitleaks,dependency-check,zap,trivy,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
