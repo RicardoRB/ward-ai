@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.FlowEdge;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ final class NullDoomed {
   private final NullSolved body;
   private final Map<Span, Set<NullBackward.Site>> notes = new HashMap<>();
   private final Map<Span, Nullity> atSite = new HashMap<>();
+  private final Map<Span, Span> origin = new HashMap<>();
 
   private NullDoomed(final NullSolved body) {
     this.body = body;
@@ -48,11 +50,11 @@ final class NullDoomed {
       final Map<Span, Nullity> state = copy(body.normal().getOrDefault(id, entry.getValue()));
       final List<NullEvent> events = body.graph().events().get(id);
       for (int index = 0; index < events.size(); index++) {
-        note(state, body.backward().before(id, index));
+        note(state, body.backward().before(id, index), events.get(index).node());
         remember(events.get(index), state);
         NullStates.apply(state, events.get(index));
       }
-      note(state, body.backward().before(id, events.size()));
+      note(state, body.backward().before(id, events.size()), NullTestWindow.last(events));
       edges(body.graph().graph().blocks().get(id), state);
     }
   }
@@ -62,12 +64,19 @@ final class NullDoomed {
     final NullEvents.Test test = body.graph().tests().get(block.id());
     for (final FlowEdge edge : block.successors()) {
       if (edge.kind() != FlowEdgeKind.EXCEPTION) {
-        note(NullStates.refined(state, test, edge.kind()), body.backward().in(edge.target()));
+        note(
+            NullStates.refined(state, test, edge.kind()),
+            body.backward().in(edge.target()),
+            NullTestWindow.last(body.graph().events().get(block.id())));
       }
     }
   }
 
-  private void note(final Map<Span, Nullity> state, final NullBackward.Fact fact) {
+  /**
+   * Notes the null variables that the dereferences after {@code at} need; {@code at} may be null.
+   */
+  private void note(
+      final Map<Span, Nullity> state, final NullBackward.Fact fact, final SyntaxNode at) {
     if (fact.everything()) {
       return;
     }
@@ -77,6 +86,9 @@ final class NullDoomed {
             notes
                 .computeIfAbsent(variable, key -> new HashSet<>())
                 .addAll(fact.sites().get(variable));
+            if (at != null) {
+              origin.merge(variable, at.span(), NullTestWindow::earlier);
+            }
           }
         });
   }
@@ -101,22 +113,26 @@ final class NullDoomed {
 
   private List<NullAnalysis.Finding> report() {
     final List<NullAnalysis.Finding> found = new ArrayList<>();
-    for (final Set<NullBackward.Site> sites : notes.values()) {
+    for (final Map.Entry<Span, Set<NullBackward.Site>> entry : notes.entrySet()) {
+      final Set<NullBackward.Site> sites = entry.getValue();
       final boolean elsewhere =
           sites.stream().anyMatch(site -> atSite.get(site.at()) != Nullity.NULL);
       if (elsewhere) {
-        found.add(finding(sites));
+        found.add(finding(sites, origin.get(entry.getKey())));
       }
     }
     return found;
   }
 
-  private NullAnalysis.Finding finding(final Set<NullBackward.Site> sites) {
+  private NullAnalysis.Finding finding(final Set<NullBackward.Site> sites, final Span source) {
     final NullBackward.Site first =
         sites.stream().min(Comparator.comparingInt(site -> site.at().startOffset())).orElseThrow();
     final boolean exceptional =
         sites.stream().noneMatch(site -> body.normal().containsKey(site.block()));
-    return new NullAnalysis.Finding(pattern(sites, first, exceptional), first.at());
+    return new NullAnalysis.Finding(
+        pattern(sites, first, exceptional),
+        first.at(),
+        source == null ? List.of() : List.of(source));
   }
 
   private static NullAnalysis.Pattern pattern(

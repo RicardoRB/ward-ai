@@ -52,7 +52,9 @@ final class NullAnalysis {
     /** The same, in code that only an exception reaches. */
     GUARANTEED_DEREF_ON_EXCEPTION_PATH,
     /** A value is compared with null after it was dereferenced. */
-    WOULD_HAVE_BEEN_NPE
+    WOULD_HAVE_BEEN_NPE,
+    /** A null on some path is certain to be dereferenced, after many null tests. */
+    NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE
   }
 
   /**
@@ -60,8 +62,20 @@ final class NullAnalysis {
    *
    * @param pattern what was found
    * @param at where
+   * @param sources where the null comes from, when known: the first place that holds it
    */
-  record Finding(Pattern pattern, Span at) {}
+  record Finding(Pattern pattern, Span at, List<Span> sources) {
+
+    /** Copies the sources. */
+    Finding {
+      sources = List.copyOf(sources);
+    }
+
+    /** Creates a finding whose null source is not known. */
+    Finding(final Pattern pattern, final Span at) {
+      this(pattern, at, List.of());
+    }
+  }
 
   private NullAnalysis() {}
 
@@ -80,7 +94,10 @@ final class NullAnalysis {
       found.addAll(NullDoomed.of(body));
     }
     final Set<Span> caught = NullCatches.of(root);
-    return found.stream().filter(finding -> !within(caught, finding.at())).toList();
+    return found.stream()
+        .filter(finding -> !within(caught, finding.at()))
+        .map(finding -> NullTestWindow.refine(root, finding))
+        .toList();
   }
 
   private static boolean within(final Set<Span> caught, final Span at) {

@@ -51,7 +51,12 @@ public final class NullDataflowCheck implements RuleCheck {
     /** The same, in code that only an exception reaches. */
     GUARANTEED_DEREF_ON_EXCEPTION_PATH(NullAnalysis.Pattern.GUARANTEED_DEREF_ON_EXCEPTION_PATH),
     /** A value is compared with null after it was dereferenced. */
-    WOULD_HAVE_BEEN_NPE(NullAnalysis.Pattern.WOULD_HAVE_BEEN_NPE);
+    WOULD_HAVE_BEEN_NPE(NullAnalysis.Pattern.WOULD_HAVE_BEEN_NPE),
+    /**
+     * A null on some path is certain to be dereferenced, after many null tests before its source.
+     */
+    NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE(
+        NullAnalysis.Pattern.NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE);
 
     private final NullAnalysis.Pattern pattern;
 
