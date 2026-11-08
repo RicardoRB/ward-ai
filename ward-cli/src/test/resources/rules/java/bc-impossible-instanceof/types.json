@@ -1,0 +1,56 @@
+{
+  "3:20-3:25": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:29-4:35": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "4:20-4:25": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.Comparable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:29-5:40": {
+    "type": {
+      "name": "java.lang.CharSequence"
+    }
+  }
+}

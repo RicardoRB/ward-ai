@@ -14,11 +14,11 @@ bac-bad-applet-constructor = "implemented"
 bc-bad-cast-to-abstract-collection = { status = "planned", issue = "#316" }
 bc-bad-cast-to-concrete-collection = { status = "planned", issue = "#316" }
 bc-equals-method-should-work-for-all-objects = { status = "planned", issue = "#316" }
-bc-impossible-cast = { status = "planned", issue = "#314" }
-bc-impossible-cast-primitive-array = { status = "planned", issue = "#314" }
-bc-impossible-downcast = { status = "planned", issue = "#314" }
-bc-impossible-downcast-of-toarray = { status = "planned", issue = "#314" }
-bc-impossible-instanceof = { status = "planned", issue = "#314" }
+bc-impossible-cast = "implemented"
+bc-impossible-cast-primitive-array = "implemented"
+bc-impossible-downcast = "implemented"
+bc-impossible-downcast-of-toarray = "implemented"
+bc-impossible-instanceof = "implemented"
 bc-unconfirmed-cast = { status = "planned", issue = "#316" }
 bc-unconfirmed-cast-of-return-value = { status = "planned", issue = "#316" }
 bc-vacuous-instanceof = "implemented"
