@@ -412,7 +412,6 @@ spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-doh"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_DOH"]
 
@@ -498,7 +497,6 @@ spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
 
 [[rule]]
 name = "dmi-vacuous-call-to-easymock-method"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
 
@@ -822,7 +820,6 @@ spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
 
 [[rule]]
 name = "fl-math-using-float-precision"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 

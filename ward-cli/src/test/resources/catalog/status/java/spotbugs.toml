@@ -98,7 +98,7 @@ dmi-calling-next-from-hasnext = "implemented"
 dmi-collection-of-urls = "implemented"
 dmi-collections-should-not-contain-themselves = "implemented"
 dmi-constant-db-password = "implemented"
-dmi-doh = { status = "planned", issue = "#314" }
+dmi-doh = "implemented"
 dmi-empty-db-password = "implemented"
 dmi-entry-sets-may-reuse-entry-objects = { status = "planned", issue = "#316" }
 dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor = "implemented"
@@ -115,7 +115,7 @@ dmi-thread-passed-where-runnable-expected = "implemented"
 dmi-unsupported-method = { status = "planned", issue = "#316" }
 dmi-useless-substring = "implemented"
 dmi-using-removeall-to-clear-collection = "implemented"
-dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
+dmi-vacuous-call-to-easymock-method = "implemented"
 dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = "implemented"
 dp-do-inside-do-privileged = "implemented"
@@ -162,7 +162,7 @@ fi-nullify-super = "implemented"
 fi-public-should-be-protected = "implemented"
 fi-useless = "implemented"
 fl-floats-as-loop-counters = "implemented"
-fl-math-using-float-precision = { status = "planned", issue = "#314" }
+fl-math-using-float-precision = "implemented"
 fs-bad-date-format-flag-combo = "implemented"
 gc-unchecked-type-in-generic-call = { status = "planned", issue = "#316" }
 gc-unrelated-types = "implemented"

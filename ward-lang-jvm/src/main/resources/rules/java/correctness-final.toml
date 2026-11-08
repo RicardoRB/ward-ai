@@ -1,0 +1,40 @@
+# The last SpotBugs CORRECTNESS patterns for Java: library calls that do nothing, arithmetic in
+# single precision, and the null patterns that read a data-flow over the control-flow graph.
+
+[[rules]]
+id = "ward:java/dmi-doh"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "library-call"
+mode = "null-check-of-constant"
+message = "a String constant is passed where the value to check for null belongs"
+'''
+
+[[rules]]
+id = "ward:java/dmi-vacuous-call-to-easymock-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "library-call"
+mode = "empty-mocks"
+message = "this EasyMock call is given no mocks, so it does nothing"
+'''
+
+[[rules]]
+id = "ward:java/fl-math-using-float-precision"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "float-precision"
+message = "this arithmetic is done in float precision: use double unless the precision is intended"
+'''
