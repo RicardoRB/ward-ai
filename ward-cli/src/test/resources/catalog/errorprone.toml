@@ -190,8 +190,6 @@ errorprone = ["AttemptedNegativeZero"]
 
 [[rule]]
 name = "auto-factory-at-inject"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["AutoFactoryAtInject"]
 
 [[rule]]
@@ -202,8 +200,6 @@ errorprone = ["AutoValueBoxedValues"]
 
 [[rule]]
 name = "auto-value-builder-defaults-in-constructor"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["AutoValueBuilderDefaultsInConstructor"]
 
 [[rule]]
@@ -250,8 +246,6 @@ errorprone = ["AvoidValueSetter"]
 
 [[rule]]
 name = "bad-annotation-implementation"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BadAnnotationImplementation"]
 
 [[rule]]
@@ -514,14 +508,10 @@ errorprone = ["ComparableAndComparator"]
 
 [[rule]]
 name = "comparable-type"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComparableType"]
 
 [[rule]]
 name = "compare-to-zero"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CompareToZero"]
 
 [[rule]]
@@ -540,14 +530,10 @@ errorprone = ["ComparisonOutOfRange"]
 
 [[rule]]
 name = "compatible-with-annotation-misuse"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CompatibleWithAnnotationMisuse"]
 
 [[rule]]
 name = "compile-time-constant"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CompileTimeConstant"]
 
 [[rule]]

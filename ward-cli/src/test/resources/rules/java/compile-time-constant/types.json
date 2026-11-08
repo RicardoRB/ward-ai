@@ -1,0 +1,102 @@
+{
+  "3:5-3:21": {
+    "call": {
+      "declaring": {
+        "name": "Sql"
+      },
+      "name": "query",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.CompileTimeConstant"
+        ]
+      ]
+    }
+  },
+  "4:5-4:27": {
+    "call": {
+      "declaring": {
+        "name": "Sql"
+      },
+      "name": "query",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.CompileTimeConstant"
+        ]
+      ]
+    }
+  },
+  "7:5-7:25": {
+    "call": {
+      "declaring": {
+        "name": "Sql"
+      },
+      "name": "query",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.CompileTimeConstant"
+        ]
+      ]
+    }
+  },
+  "8:5-8:16": {
+    "call": {
+      "declaring": {
+        "name": "Sql"
+      },
+      "name": "query",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "paramAnnotations": [
+        [
+          "com.google.errorprone.annotations.CompileTimeConstant"
+        ]
+      ]
+    }
+  },
+  "9:5-9:23": {
+    "call": {
+      "declaring": {
+        "name": "Other"
+      },
+      "name": "query",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  }
+}

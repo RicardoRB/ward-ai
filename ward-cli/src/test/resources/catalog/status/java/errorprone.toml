@@ -34,9 +34,9 @@ ast-helpers-suggestions = { status = "planned", issue = "#319" }
 async-callable-returns-null = "implemented"
 async-function-returns-null = "implemented"
 attempted-negative-zero = { status = "planned", issue = "#319" }
-auto-factory-at-inject = { status = "planned", issue = "#319" }
+auto-factory-at-inject = "implemented"
 auto-value-boxed-values = { status = "planned", issue = "#319" }
-auto-value-builder-defaults-in-constructor = { status = "planned", issue = "#319" }
+auto-value-builder-defaults-in-constructor = "implemented"
 auto-value-constructor-order-checker = { status = "planned", issue = "#319" }
 auto-value-final-methods = { status = "planned", issue = "#319" }
 auto-value-immutable-fields = { status = "planned", issue = "#319" }
@@ -44,7 +44,7 @@ auto-value-subclass-leaked = { status = "planned", issue = "#319" }
 avoid-common-type-names = { status = "planned", issue = "#319" }
 avoid-object-arrays = { status = "planned", issue = "#319" }
 avoid-value-setter = { status = "planned", issue = "#319" }
-bad-annotation-implementation = { status = "planned", issue = "#319" }
+bad-annotation-implementation = "implemented"
 bad-comparable = { status = "planned", issue = "#319" }
 bad-import = { status = "planned", issue = "#319" }
 bad-instanceof = { status = "planned", issue = "#319" }
@@ -91,13 +91,13 @@ collection-incompatible-type = "implemented"
 collection-to-array-safe-parameter = { status = "planned", issue = "#319" }
 collector-should-not-use-state = { status = "planned", issue = "#319" }
 comparable-and-comparator = { status = "planned", issue = "#319" }
-comparable-type = { status = "planned", issue = "#319" }
-compare-to-zero = { status = "planned", issue = "#319" }
+comparable-type = "implemented"
+compare-to-zero = "implemented"
 comparing-this-with-null = "implemented"
 comparison-contract-violated = { status = "planned", issue = "#319" }
 comparison-out-of-range = "implemented"
-compatible-with-annotation-misuse = { status = "planned", issue = "#319" }
-compile-time-constant = { status = "planned", issue = "#319" }
+compatible-with-annotation-misuse = "implemented"
+compile-time-constant = "implemented"
 complex-boolean-constant = { status = "planned", issue = "#319" }
 compute-if-absent-ambiguous-reference = { status = "planned", issue = "#319" }
 conditional-expression-numeric-promotion = "implemented"

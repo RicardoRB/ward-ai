@@ -59,6 +59,20 @@ class NativeJvmTypeFactsMembersTest {
   }
 
   @Test
+  void aMethodDeclarationHasItsOwnCallTargetWithTheTypeParametersInScope() {
+    final Probe probe =
+        Probe.of(body("").replace("  void go() {", "  <Q> void pick(Q value) {}\n  void go() {"));
+    final Span span = probe.span("<Q> void pick(Q value) {}");
+
+    final CallTarget target = probe.at(span).at(span).call();
+
+    assertThat(target).isNotNull();
+    assertThat(target.name()).isEqualTo("pick");
+    assertThat(target.typeParameters()).containsExactly("Q");
+    assertThat(target.declaringTypeParameters()).isEmpty();
+  }
+
+  @Test
   void theMembersOfAJdkTypeIncludeItsMethodsFieldsAndEverySupertype() {
     final Probe probe = Probe.of(body("    var n = name;"));
 
