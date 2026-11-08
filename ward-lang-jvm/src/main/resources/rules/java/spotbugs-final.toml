@@ -210,3 +210,83 @@ mode = "nonnull-comparison"
 message = "{value} is known to be non-null, so comparing it with null is redundant"
 '''
 
+[[rules]]
+id = "ward:java/np-method-parameter-tightens-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "override-nullness"
+mode = "parameter-tightens"
+nullable = ["javax.annotation.Nullable", "javax.annotation.CheckForNull"]
+nonnull = ["javax.annotation.Nonnull"]
+message = "this override makes a parameter @Nonnull that the overridden method accepts as null"
+'''
+
+[[rules]]
+id = "ward:java/np-method-return-relaxing-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "override-nullness"
+mode = "return-relaxes"
+nullable = ["javax.annotation.Nullable", "javax.annotation.CheckForNull"]
+nonnull = ["javax.annotation.Nonnull"]
+message = "this override may return null, but the overridden method is annotated @Nonnull"
+'''
+
+[[rules]]
+id = "ward:java/nm-very-confusing-intentional"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "case-confusion-intentional"
+message = "method name differs only by case from another visible method, and one of the two is deprecated"
+'''
+
+[[rules]]
+id = "ward:java/nm-wrong-package-intentional"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-signature"
+mode = "wrong-package-intentional"
+message = "method takes parameter types of an inherited method's names from other packages, but the class also declares the real override"
+'''
+
+[[rules]]
+id = "ward:java/rv-return-value-ignored-inferred"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "inferred-ignored-result"
+message = "the result of this call is ignored; the method only computes a new value of its own type"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path-from-return-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "null-return-dereference"
+message = "the result of {value} may be null and is dereferenced without a check"
+'''
+

@@ -32,6 +32,8 @@ public final class InheritedSignatureCheck implements RuleCheck {
      * one.
      */
     WRONG_PACKAGE,
+    /** Like {@link #WRONG_PACKAGE}, but the class also declares the real override. */
+    WRONG_PACKAGE_INTENTIONAL,
     /** A singleton whose superclass, not the class itself, implements Cloneable. */
     INDIRECT_CLONEABLE
   }
@@ -63,7 +65,7 @@ public final class InheritedSignatureCheck implements RuleCheck {
 
   @Override
   public FactNeed needs() {
-    return mode == Mode.WRONG_PACKAGE ? WITH_TYPES : MEMBERS;
+    return mode == Mode.INDIRECT_CLONEABLE ? MEMBERS : WITH_TYPES;
   }
 
   @Override
@@ -84,10 +86,10 @@ public final class InheritedSignatureCheck implements RuleCheck {
           .membersOf(visit.node().span())
           .ifPresent(
               members -> {
-                if (mode == Mode.WRONG_PACKAGE) {
-                  wrongPackage(visit.node(), members, types, matches);
-                } else {
+                if (mode == Mode.INDIRECT_CLONEABLE) {
                   indirectCloneable(visit.node(), members, matches);
+                } else {
+                  wrongPackage(visit.node(), members, types, matches);
                 }
               });
     }
@@ -99,6 +101,7 @@ public final class InheritedSignatureCheck implements RuleCheck {
       final TypeMembers members,
       final UnitTypeFacts types,
       final List<RuleMatch> out) {
+    final boolean intentional = mode == Mode.WRONG_PACKAGE_INTENTIONAL;
     for (final DeclaredMethods.Method method : DeclaredMethods.of(type)) {
       final List<CallTarget> candidates =
           members.inheritedMethods().stream()
@@ -112,10 +115,32 @@ public final class InheritedSignatureCheck implements RuleCheck {
       if (!candidates.isEmpty()
           && declared.stream().allMatch(Optional::isPresent)
           && candidates.stream().noneMatch(c -> sameTypes(c, declared))
-          && candidates.stream().anyMatch(c -> sameSimpleNames(c, declared))) {
+          && candidates.stream().anyMatch(c -> sameSimpleNames(c, declared))
+          && intentional == declaresOverride(type, method, candidates, types)) {
         out.add(CheckSupport.at(method.node().span(), message));
       }
     }
+  }
+
+  /** Tells whether the class has a second method of the name that does override a candidate. */
+  private static boolean declaresOverride(
+      final SyntaxNode type,
+      final DeclaredMethods.Method method,
+      final List<CallTarget> candidates,
+      final UnitTypeFacts types) {
+    return DeclaredMethods.of(type).stream()
+        .filter(other -> !other.node().span().equals(method.node().span()))
+        .filter(other -> other.name().equals(method.name()))
+        .filter(other -> other.parameterNodes().size() == method.parameterNodes().size())
+        .map(
+            other ->
+                other.parameterNodes().stream()
+                    .map(node -> types.typeOf(node.span()).map(TypeRef::name))
+                    .toList())
+        .anyMatch(
+            declared ->
+                declared.stream().allMatch(Optional::isPresent)
+                    && candidates.stream().anyMatch(c -> sameTypes(c, declared)));
   }
 
   private static boolean sameTypes(final CallTarget target, final List<Optional<String>> declared) {

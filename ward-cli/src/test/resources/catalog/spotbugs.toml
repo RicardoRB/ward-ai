@@ -1331,8 +1331,6 @@ spotbugs = ["NM_VERY_CONFUSING"]
 
 [[rule]]
 name = "nm-very-confusing-intentional"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_VERY_CONFUSING_INTENTIONAL"]
 
 [[rule]]
@@ -1342,8 +1340,6 @@ spotbugs = ["NM_WRONG_PACKAGE"]
 
 [[rule]]
 name = "nm-wrong-package-intentional"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_WRONG_PACKAGE_INTENTIONAL"]
 
 [[rule]]
@@ -1449,14 +1445,10 @@ spotbugs = ["NP_METHOD_PARAMETER_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-method-parameter-tightens-annotation"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"]
 
 [[rule]]
 name = "np-method-return-relaxing-annotation"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_METHOD_RETURN_RELAXING_ANNOTATION"]
 
 [[rule]]
@@ -1496,8 +1488,6 @@ spotbugs = ["NP_NULL_ON_SOME_PATH_EXCEPTION"]
 
 [[rule]]
 name = "np-null-on-some-path-from-return-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"]
 
 [[rule]]
@@ -1816,8 +1806,6 @@ spotbugs = ["RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"]
 
 [[rule]]
 name = "rv-return-value-ignored-inferred"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_RETURN_VALUE_IGNORED_INFERRED"]
 
 [[rule]]
