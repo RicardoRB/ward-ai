@@ -128,12 +128,12 @@ ec-unrelated-class-and-interface = "implemented"
 ec-unrelated-interfaces = "implemented"
 ec-unrelated-types = "implemented"
 ec-unrelated-types-using-pointer-equality = "implemented"
-ei-expose-buf = { status = "planned", issue = "#316" }
-ei-expose-buf2 = { status = "planned", issue = "#316" }
+ei-expose-buf = "implemented"
+ei-expose-buf2 = "implemented"
 ei-expose-rep = "implemented"
 ei-expose-rep2 = "implemented"
-ei-expose-static-buf2 = { status = "planned", issue = "#316" }
-ei-expose-static-rep2 = { status = "planned", issue = "#316" }
+ei-expose-static-buf2 = "implemented"
+ei-expose-static-rep2 = "implemented"
 env-use-property-instead-of-env = "implemented"
 eos-bad-end-of-stream-check = "implemented"
 eq-abstract-self = { status = "planned", issue = "#316" }
@@ -220,7 +220,7 @@ is2-inconsistent-sync = { status = "planned", issue = "#316" }
 isc-instantiate-static-class = { status = "planned", issue = "#316" }
 it-no-such-element = "implemented"
 ita-inefficient-to-array = "implemented"
-j2-ee-store-of-non-serializable-object-into-session = { status = "planned", issue = "#316" }
+j2-ee-store-of-non-serializable-object-into-session = "implemented"
 jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
 jlm-jsr166-lock-monitorenter = "implemented"
 jlm-jsr166-utilconcurrent-monitorenter = "implemented"
@@ -238,21 +238,21 @@ mf-class-masks-field = "implemented"
 mf-method-masks-field = "implemented"
 ml-sync-on-field-to-guard-changing-that-field = "implemented"
 ml-sync-on-updated-field = "implemented"
-ms-cannot-be-final = { status = "planned", issue = "#316" }
-ms-expose-buf = { status = "planned", issue = "#316" }
-ms-expose-rep = { status = "planned", issue = "#316" }
-ms-final-pkgprotect = { status = "planned", issue = "#316" }
+ms-cannot-be-final = "implemented"
+ms-expose-buf = "implemented"
+ms-expose-rep = "implemented"
+ms-final-pkgprotect = "implemented"
 ms-mutable-array = "implemented"
 ms-mutable-collection = "implemented"
 ms-mutable-collection-pkgprotect = "implemented"
 ms-mutable-hashtable = "implemented"
-ms-ooi-pkgprotect = { status = "planned", issue = "#316" }
+ms-ooi-pkgprotect = "implemented"
 ms-pkgprotect = "implemented"
 ms-should-be-final = "implemented"
-ms-should-be-refactored-to-be-final = { status = "planned", issue = "#316" }
-msf-mutable-servlet-field = { status = "planned", issue = "#316" }
-mtia-suspect-servlet-instance-field = { status = "planned", issue = "#316" }
-mtia-suspect-struts-instance-field = { status = "planned", issue = "#316" }
+ms-should-be-refactored-to-be-final = "implemented"
+msf-mutable-servlet-field = "implemented"
+mtia-suspect-servlet-instance-field = "implemented"
+mtia-suspect-struts-instance-field = "implemented"
 mwn-mismatched-notify = "implemented"
 mwn-mismatched-wait = "implemented"
 nm-bad-equal = "implemented"
@@ -319,13 +319,13 @@ os-open-stream = { status = "planned", issue = "#316" }
 os-open-stream-exception-path = { status = "planned", issue = "#316" }
 overriding-methods-must-invoke-super = "implemented"
 pa-public-array-attribute = "implemented"
-pa-public-mutable-object-attribute = { status = "planned", issue = "#316" }
+pa-public-mutable-object-attribute = "implemented"
 pa-public-primitive-attribute = "implemented"
 perm-super-not-called-in-getpermissions = { status = "planned", issue = "#316" }
 pi-do-not-reuse-public-identifiers-class-names = "implemented"
-pi-do-not-reuse-public-identifiers-field-names = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-local-variable-names = { status = "planned", issue = "#316" }
-pi-do-not-reuse-public-identifiers-method-names = { status = "planned", issue = "#316" }
+pi-do-not-reuse-public-identifiers-field-names = "implemented"
+pi-do-not-reuse-public-identifiers-local-variable-names = "implemented"
+pi-do-not-reuse-public-identifiers-method-names = "implemented"
 ps-public-semaphores = "implemented"
 pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
 pzla-prefer-zero-length-arrays = "implemented"
@@ -380,11 +380,11 @@ sa-local-self-comparison = "implemented"
 sa-local-self-computation = "implemented"
 sbsc-use-stringbuffer-concatenation = "implemented"
 sc-start-in-ctor = "implemented"
-se-bad-field = { status = "planned", issue = "#316" }
-se-bad-field-inner-class = { status = "planned", issue = "#316" }
-se-bad-field-store = { status = "planned", issue = "#316" }
+se-bad-field = "implemented"
+se-bad-field-inner-class = "implemented"
+se-bad-field-store = "implemented"
 se-comparator-should-be-serializable = "implemented"
-se-inner-class = { status = "planned", issue = "#316" }
+se-inner-class = "implemented"
 se-method-must-be-private = "implemented"
 se-no-serialversionid = "implemented"
 se-no-suitable-constructor = { status = "planned", issue = "#316" }
@@ -392,19 +392,19 @@ se-no-suitable-constructor-for-externalization = { status = "planned", issue = "
 se-nonfinal-serialversionid = "implemented"
 se-nonlong-serialversionid = "implemented"
 se-nonstatic-serialversionid = "implemented"
-se-prevent-ext-obj-overwrite = { status = "planned", issue = "#316" }
+se-prevent-ext-obj-overwrite = "implemented"
 se-private-read-resolve-not-inherited = "implemented"
 se-read-resolve-is-static = "implemented"
 se-read-resolve-must-return-object = "implemented"
-se-transient-field-not-restored = { status = "planned", issue = "#316" }
+se-transient-field-not-restored = "implemented"
 se-transient-field-of-nonserializable-class = "implemented"
 sf-dead-store-due-to-switch-fallthrough = "implemented"
 sf-dead-store-due-to-switch-fallthrough-to-throw = "implemented"
 sf-switch-fallthrough = "implemented"
 sf-switch-no-default = "implemented"
 si-instance-before-finals-assigned = { status = "planned", issue = "#316" }
-sic-inner-should-be-static = { status = "planned", issue = "#316" }
-sic-inner-should-be-static-anon = { status = "planned", issue = "#316" }
+sic-inner-should-be-static = "implemented"
+sic-inner-should-be-static-anon = "implemented"
 sic-inner-should-be-static-needs-this = { status = "planned", issue = "#316" }
 sic-threadlocal-deadly-embrace = "implemented"
 sing-singleton-getter-not-synchronized = "implemented"
