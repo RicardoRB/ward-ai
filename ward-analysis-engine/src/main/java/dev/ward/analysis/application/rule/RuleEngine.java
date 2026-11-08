@@ -7,13 +7,13 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -75,6 +75,18 @@ public final class RuleEngine {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
+    return runProject(units, frontends, rules, ProjectFiles.empty());
+  }
+
+  /**
+   * Like {@link #runProject(List, List, List)}, and gives each project check the manifest files of
+   * the project. A match at the path of a manifest file is a finding at that path, line and column.
+   */
+  public List<AnalysisFinding> runProject(
+      final List<SourceUnit> units,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules,
+      final ProjectFiles files) {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final UnitTrees trees = new UnitTrees(support, Map.of());
@@ -84,7 +96,8 @@ public final class RuleEngine {
           .rule()
           .filter(CompiledRule::isProject)
           .ifPresent(
-              rule -> findings.addAll(projectFindings(rule, prepared, units, trees, collector)));
+              rule ->
+                  findings.addAll(projectFindings(rule, prepared, units, trees, collector, files)));
     }
     return List.copyOf(findings);
   }
@@ -94,17 +107,16 @@ public final class RuleEngine {
       final PreparedRule prepared,
       final List<SourceUnit> units,
       final UnitTrees trees,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector,
+      final ProjectFiles files) {
     final SortedMap<String, SyntaxNode> parsed = new TreeMap<>();
-    final Map<String, SourceUnit> byPath = new HashMap<>();
     for (final SourceUnit unit : units) {
       if (prepared.runnable().contains(unit.language())) {
         trees.parse(unit, collector).ifPresent(root -> parsed.put(unit.path(), root));
-        byPath.put(unit.path(), unit);
       }
     }
-    return rule.project(parsed).stream()
-        .map(match -> RuleFindings.of(rule.definition(), byPath.get(match.path()), match.match()))
+    return rule.project(parsed, files).stream()
+        .map(match -> RuleFindings.at(rule.definition(), match.path(), match.match()))
         .toList();
   }
 
