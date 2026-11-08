@@ -17,6 +17,8 @@ class TypeQualifierCheckTest {
           + "@TypeQualifier @interface Strict {}\n"
           + "class C {\n";
 
+  private static final String NEED_X = "need(x)";
+
   private static SpanFacts call(final String name, final int parameters) {
     return new SpanFacts(
         null,
@@ -89,7 +91,7 @@ class TypeQualifierCheckTest {
             run(
                 TypeQualifierCheck.Mode.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED,
                 body,
-                "need(x)",
+                NEED_X,
                 "need(ok)"))
         .containsExactly("6:10");
   }
@@ -101,10 +103,9 @@ class TypeQualifierCheckTest {
             + "  void never(@Tainted(when = When.NEVER) String s) {}\n";
     final String maybe =
         need + "  void t(@Tainted(when = When.MAYBE) String x) {\n    need(x);\n  }\n";
-    assertThat(
-            run(TypeQualifierCheck.Mode.MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK, maybe, "need(x)"))
+    assertThat(run(TypeQualifierCheck.Mode.MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK, maybe, NEED_X))
         .containsExactly("7:10");
-    final String maybeNever = maybe.replace("need(x)", "never(x)");
+    final String maybeNever = maybe.replace(NEED_X, "never(x)");
     assertThat(
             run(
                 TypeQualifierCheck.Mode.MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK,
@@ -117,19 +118,19 @@ class TypeQualifierCheckTest {
             run(
                 TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK,
                 unknown,
-                "need(x)"))
+                NEED_X))
         .containsExactly("7:10");
     assertThat(
             run(
                 TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
-                unknown.replace("need(x)", "never(x)"),
+                unknown.replace(NEED_X, "never(x)"),
                 "never(x)"))
         .containsExactly("7:11");
     assertThat(
             run(
                 TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
                 unknown,
-                "need(x)"))
+                NEED_X))
         .isEmpty();
   }
 
@@ -194,12 +195,12 @@ class TypeQualifierCheckTest {
   void unknownQualifiersAndConsistentFlowsAreNotReported() {
     final String body =
         "  void need(@Other String s) {}\n  void t(@Other(when = When.NEVER) String x) {\n    need(x);\n  }\n";
-    assertThat(run(TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED, body, "need(x)"))
+    assertThat(run(TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED, body, NEED_X))
         .isEmpty();
     final String fine =
         "  void need(@Tainted String s) {}\n  void t(@Tainted String x) {\n    need(x);\n  }\n";
     for (final TypeQualifierCheck.Mode mode : TypeQualifierCheck.Mode.values()) {
-      assertThat(run(mode, fine, "need(x)")).isEmpty();
+      assertThat(run(mode, fine, NEED_X)).isEmpty();
     }
     assertThat(
             new ParsedFacts("class C {}")

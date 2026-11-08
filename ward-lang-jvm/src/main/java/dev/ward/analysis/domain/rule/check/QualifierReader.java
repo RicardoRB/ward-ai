@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,11 +58,11 @@ final class QualifierReader {
         .toList();
   }
 
-  private static String elementName(final SyntaxNode element) {
+  static String elementName(final SyntaxNode element) {
     return NullSyntax.first(element, IDENTIFIER).map(SyntaxWalk::text).orElse("");
   }
 
-  private static SyntaxNode holder(final List<SyntaxNode> ancestors) {
+  static SyntaxNode holder(final List<SyntaxNode> ancestors) {
     for (int index = ancestors.size() - 1; index >= 0; index--) {
       final String kind = ancestors.get(index).kind();
       if ("typeDeclaration".equals(kind) || BODY_ENTRY.equals(kind)) {
@@ -98,50 +97,5 @@ final class QualifierReader {
     }
     return NullSyntax.first(given.get(), "annotationValue")
         .flatMap(value -> QualWhen.parse(SyntaxWalk.text(value)));
-  }
-
-  /** Returns what each method declares, by key. */
-  static Map<String, QualifierScope.Method> methods(
-      final SyntaxNode root, final Map<String, QualifierScope.Qualifier> known) {
-    final Map<String, QualifierScope.Method> out = new HashMap<>();
-    final Set<String> repeated = new HashSet<>();
-    for (final SyntaxWalk.Visit visit :
-        SyntaxWalk.visits(root, Set.of("methodDeclaration", "constructorDeclaration"))) {
-      final String key = NullScope.key(visit);
-      if (out.put(key, method(visit, known)) != null) {
-        repeated.add(key);
-      }
-    }
-    repeated.forEach(out::remove);
-    return out;
-  }
-
-  private static QualifierScope.Method method(
-      final SyntaxWalk.Visit visit, final Map<String, QualifierScope.Qualifier> known) {
-    final SyntaxNode entry = holder(visit.ancestors());
-    final List<Map<String, QualWhen>> parameters =
-        SyntaxWalk.descendants(visit.node()).stream()
-            .filter(node -> "formalParameter".equals(node.kind()))
-            .map(param -> applied(NullSyntax.annotations(param), known))
-            .toList();
-    final Map<String, QualWhen> returns =
-        entry == null ? Map.of() : applied(NullSyntax.annotations(entry), known);
-    return new QualifierScope.Method(returns, parameters);
-  }
-
-  /** Returns what each field declares, by {@code Type#name}. */
-  static Map<String, Map<String, QualWhen>> fields(
-      final SyntaxNode root, final Map<String, QualifierScope.Qualifier> known) {
-    final Map<String, Map<String, QualWhen>> out = new HashMap<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("fieldDeclaration"))) {
-      final SyntaxNode entry = holder(visit.ancestors());
-      final String type = NullScope.typeOf(visit.ancestors());
-      final Map<String, QualWhen> applied =
-          entry == null ? Map.of() : applied(NullSyntax.annotations(entry), known);
-      SyntaxWalk.descendants(visit.node()).stream()
-          .filter(node -> "variableDeclaratorId".equals(node.kind()))
-          .forEach(id -> out.put(type + "#" + SyntaxWalk.text(id), applied));
-    }
-    return out;
   }
 }

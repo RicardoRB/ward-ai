@@ -93,6 +93,11 @@ final class NullOperands {
     return NullSyntax.first(invoked, "identifier").map(SyntaxWalk::text).orElse("");
   }
 
+  /** Tells whether the expression evaluates only its first operand for sure. */
+  static boolean isGuarded(final String operator, final List<SyntaxNode> parts) {
+    return "&&".equals(operator) || "||".equals(operator) || isTernary(parts);
+  }
+
   static boolean isTernary(final List<SyntaxNode> parts) {
     return parts.size() == TERNARY && "?".equals(SyntaxWalk.text(parts.get(1)));
   }

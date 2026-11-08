@@ -24,10 +24,10 @@ final class QualifierAnalysis {
   private QualifierAnalysis() {}
 
   /** Analyses {@code root}, the syntax of {@code unit}. */
-  static List<QualReport.Found> of(
+  static List<QualChecks.Found> of(
       final SyntaxNode root, final SourceUnit unit, final UnitTypeFacts types) {
     final QualifierScope scope = QualifierScope.of(root);
-    final List<QualReport.Found> found = new ArrayList<>();
+    final List<QualChecks.Found> found = new ArrayList<>();
     if (scope.qualifiers().isEmpty()) {
       return found;
     }
@@ -39,7 +39,7 @@ final class QualifierAnalysis {
     return found;
   }
 
-  private static List<QualReport.Found> body(
+  private static List<QualChecks.Found> body(
       final ControlFlowGraph body,
       final QualifierScope scope,
       final QualifierScope.Qualifier qualifier,
@@ -58,8 +58,7 @@ final class QualifierAnalysis {
     final List<VariableAccess> parameters = NullSolved.parameters(body);
     final Map<Span, QualState.Held> initial = initial(parameters, method, qualifier);
     final QualReport report = new QualReport(graph, sites, forward, backward);
-    report.parameters(parameters, initial);
-    return report.run(forward.entries(initial));
+    return report.run(parameters, initial);
   }
 
   private static Map<Span, QualState.Held> initial(

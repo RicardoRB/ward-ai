@@ -33,7 +33,7 @@ final class QualForward {
     final Deque<Integer> pending = new ArrayDeque<>(List.of(graph.graph().entry()));
     while (!pending.isEmpty()) {
       final BasicBlock block = graph.graph().blocks().get(pending.poll());
-      final Map<Span, QualState.Held> out = new HashMap<>(entry.get(block.id()));
+      final Map<Span, QualState.Held> out = copy(entry.get(block.id()));
       graph.events().get(block.id()).forEach(event -> apply(out, event));
       for (final FlowEdge edge : block.successors()) {
         if (edge.kind() != FlowEdgeKind.EXCEPTION && merge(entry, edge.target(), out)) {
@@ -42,6 +42,10 @@ final class QualForward {
       }
     }
     return entry;
+  }
+
+  private static Map<Span, QualState.Held> copy(final Map<Span, QualState.Held> state) {
+    return new HashMap<>(state);
   }
 
   private static boolean merge(

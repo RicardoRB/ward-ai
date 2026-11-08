@@ -127,7 +127,7 @@ final class NullEvents {
     final Optional<Test> compared = operands.nullTest(node);
     if (Assignments.isAssignment(node)) {
       assignment(node);
-    } else if ("&&".equals(operator) || "||".equals(operator) || NullOperands.isTernary(parts)) {
+    } else if (NullOperands.isGuarded(operator, parts)) {
       visit(parts.get(0));
     } else if (compared.isPresent()) {
       out.add(NullEvent.compare(compared.get().variable(), node));

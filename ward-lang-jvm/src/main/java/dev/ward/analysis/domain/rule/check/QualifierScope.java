@@ -54,7 +54,7 @@ record QualifierScope(
     }
     return new QualifierScope(
         qualifiers,
-        QualifierReader.methods(root, qualifiers),
-        QualifierReader.fields(root, qualifiers));
+        QualifierMembers.methods(root, qualifiers),
+        QualifierMembers.fields(root, qualifiers));
   }
 }
