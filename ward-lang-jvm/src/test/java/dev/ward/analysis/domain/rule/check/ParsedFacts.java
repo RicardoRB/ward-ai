@@ -105,6 +105,7 @@ final class ParsedFacts {
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 

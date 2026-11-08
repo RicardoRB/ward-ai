@@ -48,6 +48,7 @@ final class TypedTrees {
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 

@@ -48,6 +48,7 @@ final class TypeRefs {
         List.of(),
         List.of(),
         List.of(),
+        null,
         null);
   }
 

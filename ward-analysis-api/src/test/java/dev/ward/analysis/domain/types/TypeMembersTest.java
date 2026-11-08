@@ -38,6 +38,7 @@ class TypeMembersTest {
             List.of(),
             List.of(),
             List.of(),
+            null,
             null);
     final CallTarget annotated =
         new CallTarget(
@@ -53,6 +54,7 @@ class TypeMembersTest {
             List.of(),
             List.of(),
             List.of(),
+            null,
             null);
 
     assertThat(plain.annotations()).isEmpty();

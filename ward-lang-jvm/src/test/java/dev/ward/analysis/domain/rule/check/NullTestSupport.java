@@ -44,6 +44,7 @@ final class NullTestSupport {
             List.of(),
             List.of(),
             List.of(),
+            null,
             null),
         List.of(),
         List.of(),
