@@ -39,7 +39,7 @@ public final class CallMatchCheck implements RuleCheck {
    * What a call must meet; an empty set or pattern places no limit.
    *
    * @param declaringTypes qualified names of the type that declares the called method
-   * @param names names of the called method
+   * @param names names of the called method, or {@code type#name} for a method of one type
    * @param receiverTypes qualified names of the receiver's type
    * @param receiverArray whether the receiver must be an array
    * @param text a pattern found in the compact text of the call, empty for any text
@@ -137,7 +137,9 @@ public final class CallMatchCheck implements RuleCheck {
   private boolean declares(final CallTarget target) {
     return (criteria.declaringTypes().isEmpty()
             || criteria.declaringTypes().contains(target.declaringType().name()))
-        && (criteria.names().isEmpty() || criteria.names().contains(target.name()));
+        && (criteria.names().isEmpty()
+            || criteria.names().contains(target.name())
+            || criteria.names().contains(target.declaringType().name() + "#" + target.name()));
   }
 
   private boolean receiverMeets(final SyntaxNode call, final UnitTypeFacts types) {

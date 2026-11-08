@@ -1,0 +1,65 @@
+{
+  "4:3-8:3": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "run",
+          "params": [
+            {
+              "name": "int"
+            }
+          ],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        }
+      ]
+    }
+  },
+  "5:3-11:3": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "run",
+          "params": [
+            {
+              "name": "int"
+            }
+          ],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        }
+      ]
+    }
+  },
+  "13:3-18:3": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "run",
+          "params": [
+            {
+              "name": "int"
+            }
+          ],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        }
+      ]
+    }
+  }
+}

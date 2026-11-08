@@ -447,7 +447,6 @@ spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
 
 [[rule]]
 name = "dmi-unsupported-method"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["DMI_UNSUPPORTED_METHOD"]
 
@@ -647,7 +646,6 @@ spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
 
 [[rule]]
 name = "eq-abstract-self"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_ABSTRACT_SELF"]
 
@@ -663,7 +661,6 @@ spotbugs = ["EQ_ALWAYS_TRUE"]
 
 [[rule]]
 name = "eq-check-for-operand-not-compatible-with-this"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
 
@@ -678,7 +675,6 @@ spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
 
 [[rule]]
 name = "eq-doesnt-override-equals"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
 
@@ -689,7 +685,6 @@ spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
 
 [[rule]]
 name = "eq-getclass-and-class-constant"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
 
@@ -705,7 +700,6 @@ spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
 
 [[rule]]
 name = "eq-self-no-object"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_SELF_NO_OBJECT"]
 
@@ -722,7 +716,6 @@ spotbugs = ["EQ_UNUSUAL"]
 
 [[rule]]
 name = "es-comparing-parameter-string-with-eq"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ES_COMPARING_PARAMETER_STRING_WITH_EQ"]
 
@@ -817,13 +810,11 @@ spotbugs = ["HE_HASHCODE_NO_EQUALS"]
 
 [[rule]]
 name = "he-hashcode-use-object-equals"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_HASHCODE_USE_OBJECT_EQUALS"]
 
 [[rule]]
 name = "he-inherits-equals-use-hashcode"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
 
@@ -847,7 +838,6 @@ spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
 
 [[rule]]
 name = "hsc-huge-shared-string-constant"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
 
@@ -858,7 +848,6 @@ spotbugs = ["HSM_HIDING_METHOD"]
 
 [[rule]]
 name = "ia-ambiguous-invocation-of-inherited-or-outer-method"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD"]
 
@@ -869,13 +858,11 @@ spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
 
 [[rule]]
 name = "icast-idiv-cast-to-double"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_IDIV_CAST_TO_DOUBLE"]
 
 [[rule]]
 name = "icast-integer-multiply-cast-to-long"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
 
@@ -900,13 +887,11 @@ spotbugs = ["ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT"]
 
 [[rule]]
 name = "ic-init-circularity"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IC_INIT_CIRCULARITY"]
 
 [[rule]]
 name = "ic-superclass-uses-subclass-during-initialization"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION"]
 
@@ -996,7 +981,6 @@ spotbugs = ["IMSE_DONT_CATCH_IMSE"]
 
 [[rule]]
 name = "im-average-computation-could-overflow"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
 
@@ -1054,13 +1038,11 @@ spotbugs = ["IS2_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "isc-instantiate-static-class"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
 
 [[rule]]
 name = "is-field-not-guarded"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["IS_FIELD_NOT_GUARDED"]
 
@@ -1084,7 +1066,6 @@ spotbugs = ["J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION"]
 
 [[rule]]
 name = "jcip-field-isnt-final-in-immutable-class"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS"]
 
@@ -1113,13 +1094,11 @@ spotbugs = ["LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE"]
 
 [[rule]]
 name = "li-lazy-init-static"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["LI_LAZY_INIT_STATIC"]
 
 [[rule]]
 name = "li-lazy-init-update-static"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["LI_LAZY_INIT_UPDATE_STATIC"]
 

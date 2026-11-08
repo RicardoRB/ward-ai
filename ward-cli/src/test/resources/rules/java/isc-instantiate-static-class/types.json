@@ -1,0 +1,220 @@
+{
+  "3:12-3:21": {
+    "members": {
+      "inheritedMethods": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "helper",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          },
+          "static": true
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "kind": "class",
+      "abstract": false
+    }
+  },
+  "4:16-4:28": {
+    "members": {
+      "inheritedMethods": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "helper",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          },
+          "static": true
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "next",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "kind": "class",
+      "abstract": false
+    }
+  },
+  "5:16-5:25": {
+    "members": {
+      "inheritedMethods": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "helper",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          },
+          "static": true
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "app.Root"
+        }
+      ]
+    },
+    "shape": {
+      "kind": "class",
+      "abstract": false
+    }
+  },
+  "6:16-6:29": {
+    "members": {
+      "inheritedMethods": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "helper",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          },
+          "static": true
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "kind": "class",
+      "abstract": true
+    }
+  },
+  "7:16-7:27": {
+    "members": {
+      "inheritedMethods": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": false
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Util"
+          },
+          "name": "helper",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          },
+          "static": true
+        }
+      ],
+      "fields": [
+        {
+          "name": "count",
+          "type": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "kind": "class",
+      "abstract": false
+    }
+  }
+}

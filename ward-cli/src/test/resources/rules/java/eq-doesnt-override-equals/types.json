@@ -1,0 +1,175 @@
+{
+  "1:1-3:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "2:1-6:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "8:1-14:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "16:1-18:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,285 @@
+# SpotBugs rules for Java: unsupported calls, equals shapes, huge constants and integer arithmetic (standard preset).
+
+[[rules]]
+id = "ward:java/dmi-unsupported-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = [
+  "java.sql.Date#getHours", "java.sql.Date#getMinutes", "java.sql.Date#getSeconds",
+  "java.sql.Date#setHours", "java.sql.Date#setMinutes", "java.sql.Date#setSeconds",
+  "java.sql.Time#getYear", "java.sql.Time#getMonth", "java.sql.Time#getDay", "java.sql.Time#getDate",
+  "java.sql.Time#setYear", "java.sql.Time#setMonth", "java.sql.Time#setDate",
+]
+message = "this method of java.sql.Date or java.sql.Time always throws IllegalArgumentException"
+'''
+
+[[rules]]
+id = "ward:java/eq-abstract-self"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+modifiers = ["abstract"]
+text = '^class(\w+)(?![\s\S]*booleanequals\((?:final)?Object\w+\))[\s\S]*booleanequals\((?:final)?\1\w+\)'
+message = "abstract class defines equals with its own type as the parameter, which does not override equals(Object)"
+'''
+
+[[rules]]
+id = "ward:java/eq-getclass-and-class-constant"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+not-modifiers = ["final"]
+text = '^class(\w+)[\s\S]*booleanequals\((?:final)?Object(\w+)\)[\s\S]*(?:(?:\2\.|this\.)?getClass\(\)[=!]=\1\.class|\1\.class[=!]=(?:\2\.|this\.)?getClass\(\))'
+message = "equals compares getClass() with this class's literal, so it fails for subclasses; compare with getClass() or make the class final"
+'''
+
+[[rules]]
+id = "ward:java/hsc-huge-shared-string-constant"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["static", "final"]
+not-modifiers = ["private"]
+text = '^String\w+="(?:[^"\\]|\\.){200,}"'
+message = "huge String constant is copied into every class that uses it; make it private or load it from a resource"
+'''
+
+[[rules]]
+id = "ward:java/icast-idiv-cast-to-double"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "integer-arithmetic"
+mode = "division-cast-to-floating"
+message = "integer division is cast to a floating-point type after it truncated; cast an operand first"
+'''
+
+[[rules]]
+id = "ward:java/icast-integer-multiply-cast-to-long"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "integer-arithmetic"
+mode = "multiplication-widened"
+message = "int multiplication may overflow before it is widened to long; cast an operand to long first"
+'''
+
+[[rules]]
+id = "ward:java/im-average-computation-could-overflow"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "integer-arithmetic"
+mode = "average"
+message = "(a + b) / 2 can overflow; use a + (b - a) / 2 or >>> 1"
+'''
+
+[[rules]]
+id = "ward:java/eq-self-no-object"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-inheritance"
+mode = "covariant-equals-over-inherited"
+message = "covariant equals(Self) added to a class whose superclass defines equals(Object); it overloads instead of overriding"
+'''
+
+[[rules]]
+id = "ward:java/eq-doesnt-override-equals"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-inheritance"
+mode = "fields-without-equals"
+message = "class adds fields to a superclass that defines equals but does not override it, so the new fields are ignored"
+'''
+
+[[rules]]
+id = "ward:java/he-hashcode-use-object-equals"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-inheritance"
+mode = "hash-code-with-object-equals"
+message = "class defines hashCode but inherits Object.equals, so equal hashes say nothing; override equals too"
+'''
+
+[[rules]]
+id = "ward:java/he-inherits-equals-use-hashcode"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "equals-inheritance"
+mode = "inherited-equals-with-object-hash-code"
+message = "class inherits equals from an abstract superclass and hashCode from Object; override hashCode"
+'''
+
+[[rules]]
+id = "ward:java/isc-instantiate-static-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "static-class-instantiation"
+message = "needless instance of a class that only has static members; call them on the class"
+'''
+
+# Part 2: guarded fields, immutable classes, string parameters, initialization order, lazy statics.
+
+[[rules]]
+id = "ward:java/is-field-not-guarded"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "guarded-by"
+skip-private = true
+message = "the field '{value}' is guarded by '{max}', but this method takes no lock"
+'''
+
+[[rules]]
+id = "ward:java/jcip-field-isnt-final-in-immutable-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "errorprone-immutable"
+annotations = ["net.jcip.annotations.Immutable", "javax.annotation.concurrent.Immutable"]
+final-only = true
+message = "the field '{value}' of an @Immutable class is not final"
+'''
+
+[[rules]]
+id = "ward:java/es-comparing-parameter-string-with-eq"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "parameter-string-comparison"
+message = "String parameter compared with == or !=; compare the values with equals"
+'''
+
+[[rules]]
+id = "ward:java/ic-init-circularity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "static-initialization"
+mode = "circular"
+message = "static initializers of this class and another one use each other, so one sees the other half initialized"
+'''
+
+[[rules]]
+id = "ward:java/ic-superclass-uses-subclass-during-initialization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "static-initialization"
+mode = "superclass-uses-subclass"
+message = "static initializer of a class uses its own subclass, which cannot initialize before the superclass"
+'''
+
+[[rules]]
+id = "ward:java/li-lazy-init-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lazy-static-init"
+mode = "store-only"
+message = "unsynchronized lazy initialization of a non-volatile static field; another thread may see a partly built object"
+'''
+
+[[rules]]
+id = "ward:java/li-lazy-init-update-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "lazy-static-init"
+mode = "store-then-update"
+message = "static field is set and then updated; other threads see it as soon as it is set"
+'''
+
+[[rules]]
+id = "ward:java/ia-ambiguous-invocation-of-inherited-or-outer-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "ambiguous-invocation"
+message = "an outer class and a superclass both declare this method; qualify the call"
+'''
+
+[[rules]]
+id = "ward:java/eq-check-for-operand-not-compatible-with-this"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-equals-operand"
+message = "equals tests for a class that is neither a supertype nor a subtype of this class"
+'''

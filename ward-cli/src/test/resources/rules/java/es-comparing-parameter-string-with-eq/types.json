@@ -1,0 +1,47 @@
+{
+  "3:12-3:12": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "3:17-3:17": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "7:12-7:12": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "7:17-7:17": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "5:17-5:21": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "5:26-5:30": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "6:12-6:12": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "6:25-6:25": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "6:30-6:30": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "3:20-3:20": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "3:24-3:24": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "7:17-7:17": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "7:21-7:21": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "5:22-5:22": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "5:26-5:26": {
+    "type": {
+      "name": "long",
+      "primitive": true
+    }
+  },
+  "6:13-6:13": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "6:17-6:17": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "7:14-7:14": {
+    "type": {
+      "name": "long",
+      "primitive": true
+    }
+  },
+  "7:18-7:18": {
+    "type": {
+      "name": "long",
+      "primitive": true
+    }
+  }
+}
