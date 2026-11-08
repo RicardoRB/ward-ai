@@ -5,11 +5,14 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.FloatPrecisionCheck;
+import dev.ward.analysis.domain.rule.check.FunctionalInterfaceMethodChangedCheck;
 import dev.ward.analysis.domain.rule.check.LibraryCallCheck;
 import dev.ward.analysis.domain.rule.check.NonNullFieldInitCheck;
 import dev.ward.analysis.domain.rule.check.NullDataflowCheck;
 import dev.ward.analysis.domain.rule.check.TypeQualifierCheck;
 import dev.ward.analysis.domain.rule.check.UncallableAnonymousMethodCheck;
+import dev.ward.analysis.domain.rule.check.UnsafeWildcardCheck;
+import dev.ward.analysis.domain.rule.check.ValueClassIdentityCheck;
 import java.util.Locale;
 import java.util.Map;
 
@@ -46,6 +49,14 @@ final class FinalChecks {
                 new TypeQualifierCheck(
                     TypeQualifierCheck.Mode.valueOf(mode(toml)),
                     TomlValues.required(toml, MESSAGE))),
+        entry(
+            "functional-interface-method-changed",
+            toml -> new FunctionalInterfaceMethodChangedCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unsafe-wildcard", toml -> new UnsafeWildcardCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "value-class-identity",
+            toml -> new ValueClassIdentityCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "nonnull-field-init",
             toml -> new NonNullFieldInitCheck(TomlValues.required(toml, MESSAGE))));

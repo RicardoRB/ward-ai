@@ -51,7 +51,8 @@ final class TypeRefs {
         List.of(),
         null,
         Map.of(),
-        Map.of());
+        Map.of(),
+        null);
   }
 
   private static boolean needsParentheses(final TsType element) {

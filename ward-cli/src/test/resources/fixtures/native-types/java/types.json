@@ -20,7 +20,8 @@
       },
       "static": false,
       "varargs": false,
-      "final": false
+      "final": false,
+      "abstract": false
     }
   },
   "16:3": {
@@ -39,7 +40,8 @@
         },
         "static": false,
         "varargs": false,
-        "final": false
+        "final": false,
+        "abstract": false
       }
     ]
   },

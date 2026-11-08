@@ -192,7 +192,7 @@ fragment-injection = { status = "planned", issue = "#319" }
 fragment-not-instantiable = { status = "planned", issue = "#319" }
 from-temporal-accessor = "implemented"
 functional-interface-clash = { status = "planned", issue = "#319" }
-functional-interface-method-changed = { status = "planned", issue = "#319" }
+functional-interface-method-changed = "implemented"
 future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
 futures-get-checked-illegal-exception-type = "implemented"
@@ -610,7 +610,7 @@ unrecognised-javadoc-tag = { status = "planned", issue = "#319" }
 unsafe-finalization = { status = "planned", issue = "#319" }
 unsafe-locale-usage = { status = "planned", issue = "#319" }
 unsafe-reflective-construction-cast = { status = "planned", issue = "#319" }
-unsafe-wildcard = { status = "planned", issue = "#319" }
+unsafe-wildcard = "implemented"
 unsynchronized-overrides-synchronized = { status = "planned", issue = "#319" }
 unused-anonymous-class = "implemented"
 unused-collection-modified-in-place = "implemented"
@@ -624,7 +624,7 @@ use-correct-assert-in-tests = "implemented"
 use-enum-switch = { status = "planned", issue = "#319" }
 using-jsr305-check-return-value = { status = "planned", issue = "#319" }
 value-class-equals = { status = "planned", issue = "#319" }
-value-class-identity = { status = "planned", issue = "#319" }
+value-class-identity = "implemented"
 var = { status = "planned", issue = "#319" }
 var-type-name = "implemented"
 var-with-primitive = { status = "planned", issue = "#319" }

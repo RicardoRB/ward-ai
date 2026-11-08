@@ -103,7 +103,8 @@ final class TypeFactsJson {
         JsonValues.strings(call.get("declaringTypeParameters")),
         call.containsKey("final") ? JsonValues.flag(call.get("final")) : null,
         values(call.get("annotationValues")),
-        values(call.get("declaringAnnotationValues")));
+        values(call.get("declaringAnnotationValues")),
+        call.containsKey("abstract") ? JsonValues.flag(call.get("abstract")) : null);
   }
 
   private static TypeRef typeRef(final Object value) {

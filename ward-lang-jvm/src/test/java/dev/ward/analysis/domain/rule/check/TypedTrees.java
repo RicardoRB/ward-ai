@@ -50,7 +50,8 @@ final class TypedTrees {
         List.of(),
         null,
         Map.of(),
-        Map.of());
+        Map.of(),
+        null);
   }
 
   TypeShape shape(final TypeShape.Kind kind) {

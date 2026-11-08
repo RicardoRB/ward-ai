@@ -1039,8 +1039,6 @@ errorprone = ["FunctionalInterfaceClash"]
 
 [[rule]]
 name = "functional-interface-method-changed"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FunctionalInterfaceMethodChanged"]
 
 [[rule]]
@@ -3284,8 +3282,6 @@ errorprone = ["UnsafeReflectiveConstructionCast"]
 
 [[rule]]
 name = "unsafe-wildcard"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["UnsafeWildcard"]
 
 [[rule]]
@@ -3356,8 +3352,6 @@ errorprone = ["ValueClassEquals"]
 
 [[rule]]
 name = "value-class-identity"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ValueClassIdentity"]
 
 [[rule]]

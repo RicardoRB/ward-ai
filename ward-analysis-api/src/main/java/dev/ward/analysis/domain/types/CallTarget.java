@@ -29,6 +29,7 @@ import java.util.Objects;
  *     as its name, any other constant as its text, an array as its elements; empty when none or
  *     unknown
  * @param declaringAnnotationValues the same for the annotations of the declaring type
+ * @param isAbstract whether the method is declared abstract, or {@code null} when that is not known
  */
 public record CallTarget(
     TypeRef declaringType,
@@ -45,7 +46,8 @@ public record CallTarget(
     List<String> declaringTypeParameters,
     Boolean isFinal,
     Map<String, List<String>> annotationValues,
-    Map<String, List<String>> declaringAnnotationValues) {
+    Map<String, List<String>> declaringAnnotationValues,
+    Boolean isAbstract) {
 
   /**
    * Copies the parameters, annotations and annotation element values.

@@ -107,7 +107,8 @@ final class ParsedFacts {
         List.of(),
         null,
         Map.of(),
-        Map.of());
+        Map.of(),
+        null);
   }
 
   static TypeMembers withMethods(

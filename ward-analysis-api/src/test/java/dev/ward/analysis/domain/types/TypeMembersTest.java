@@ -40,7 +40,8 @@ class TypeMembersTest {
             List.of(),
             null,
             Map.of(),
-            Map.of());
+            Map.of(),
+            null);
     final CallTarget annotated =
         new CallTarget(
             TypeRef.of("a.T"),
@@ -57,7 +58,8 @@ class TypeMembersTest {
             List.of(),
             null,
             Map.of(),
-            Map.of());
+            Map.of(),
+            null);
 
     assertThat(plain.annotations()).isEmpty();
     assertThat(plain.parameterAnnotations()).isEmpty();
