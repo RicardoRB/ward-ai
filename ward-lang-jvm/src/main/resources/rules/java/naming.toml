@@ -284,7 +284,7 @@ presets = ["standard", "strict"]
 options.pattern = { type = "regex" }
 body = '''
 check = "identifier-pattern"
-kinds = ["localVariableDeclaration", "formalParameter"]
+kinds = ["localVariableDeclaration"]
 modifiers = ["final"]
 name = "identifier"
 skip = ["annotation", "typeType", "typeTypeOrVoid"]
