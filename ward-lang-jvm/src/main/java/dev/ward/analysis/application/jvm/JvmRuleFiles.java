@@ -62,6 +62,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/semgrep-crypto.toml",
           "rules/java/semgrep-injection.toml",
           "rules/java/size.toml",
+          "rules/java/spotbugs-mt-performance-4.toml",
           "rules/java/spotbugs-bad-practice-2.toml",
           "rules/java/spotbugs-bad-practice.toml",
           "rules/java/spotbugs-mt-performance-2.toml",

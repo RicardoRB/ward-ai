@@ -41,8 +41,8 @@ caa-covariant-array-local = { status = "planned", issue = "#316" }
 caa-covariant-array-return = { status = "planned", issue = "#316" }
 cd-circular-dependency = { status = "planned", issue = "#316" }
 ci-confused-inheritance = "implemented"
-cn-idiom = { status = "planned", issue = "#316" }
-cn-idiom-no-super-call = { status = "planned", issue = "#316" }
+cn-idiom = "implemented"
+cn-idiom-no-super-call = "implemented"
 cn-implements-clone-but-not-cloneable = "implemented"
 cnt-rough-constant-value = "implemented"
 co-abstract-self = { status = "planned", issue = "#316" }
@@ -56,7 +56,7 @@ db-duplicate-switch-clauses = { status = "planned", issue = "#316" }
 dc-doublecheck = "implemented"
 dc-partially-constructed = { status = "planned", issue = "#316" }
 dcn-nullpointer-exception = "implemented"
-de-might-drop = { status = "planned", issue = "#316" }
+de-might-drop = "implemented"
 de-might-ignore = "implemented"
 dl-synchronization-on-boolean = "implemented"
 dl-synchronization-on-boxed-primitive = "implemented"
@@ -140,7 +140,7 @@ eq-abstract-self = { status = "planned", issue = "#316" }
 eq-always-false = "implemented"
 eq-always-true = "implemented"
 eq-check-for-operand-not-compatible-with-this = { status = "planned", issue = "#316" }
-eq-compareto-use-object-equals = { status = "planned", issue = "#316" }
+eq-compareto-use-object-equals = "implemented"
 eq-comparing-class-names = "implemented"
 eq-doesnt-override-equals = { status = "planned", issue = "#316" }
 eq-dont-define-equals-for-enum = "implemented"
@@ -158,7 +158,7 @@ fi-explicit-invocation = "implemented"
 fi-finalizer-nulls-fields = "implemented"
 fi-finalizer-only-nulls-fields = "implemented"
 fi-missing-super-call = "implemented"
-fi-nullify-super = { status = "planned", issue = "#316" }
+fi-nullify-super = "implemented"
 fi-public-should-be-protected = "implemented"
 fi-useless = "implemented"
 fl-floats-as-loop-counters = "implemented"
@@ -218,7 +218,7 @@ is-field-not-guarded = { status = "planned", issue = "#316" }
 is-inconsistent-sync = { status = "planned", issue = "#316" }
 is2-inconsistent-sync = { status = "planned", issue = "#316" }
 isc-instantiate-static-class = { status = "planned", issue = "#316" }
-it-no-such-element = { status = "planned", issue = "#316" }
+it-no-such-element = "implemented"
 ita-inefficient-to-array = { status = "planned", issue = "#316" }
 j2-ee-store-of-non-serializable-object-into-session = { status = "planned", issue = "#316" }
 jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
@@ -379,7 +379,7 @@ sa-local-self-assignment-instead-of-field = "implemented"
 sa-local-self-comparison = "implemented"
 sa-local-self-computation = "implemented"
 sbsc-use-stringbuffer-concatenation = { status = "planned", issue = "#316" }
-sc-start-in-ctor = { status = "planned", issue = "#316" }
+sc-start-in-ctor = "implemented"
 se-bad-field = { status = "planned", issue = "#316" }
 se-bad-field-inner-class = { status = "planned", issue = "#316" }
 se-bad-field-store = { status = "planned", issue = "#316" }
@@ -422,8 +422,8 @@ sr-not-checked = { status = "planned", issue = "#316" }
 ss-should-be-static = "implemented"
 ssd-do-not-use-instance-lock-on-shared-static-data = { status = "planned", issue = "#316" }
 st-write-to-static-from-instance-method = { status = "planned", issue = "#316" }
-stcal-invoke-on-static-calendar-instance = { status = "planned", issue = "#316" }
-stcal-invoke-on-static-date-format-instance = { status = "planned", issue = "#316" }
+stcal-invoke-on-static-calendar-instance = "implemented"
+stcal-invoke-on-static-date-format-instance = "implemented"
 stcal-static-calendar-instance = "implemented"
 stcal-static-simple-date-format-instance = "implemented"
 sti-interrupted-on-currentthread = "implemented"
@@ -455,8 +455,8 @@ ucf-useless-control-flow = "implemented"
 ucf-useless-control-flow-next-line = "implemented"
 ug-sync-set-unsync-get = { status = "planned", issue = "#316" }
 ui-inheritance-unsafe-getresource = "implemented"
-ul-unreleased-lock = { status = "planned", issue = "#316" }
-ul-unreleased-lock-exception-path = { status = "planned", issue = "#316" }
+ul-unreleased-lock = "implemented"
+ul-unreleased-lock-exception-path = "implemented"
 um-unnecessary-math = "implemented"
 umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314" }
 unknown = { status = "planned", issue = "#316" }
@@ -481,7 +481,7 @@ vo-volatile-increment = "implemented"
 vo-volatile-reference-to-array = "implemented"
 vr-unresolvable-reference = { status = "planned", issue = "#314" }
 vsc-vulnerable-security-check-methods = { status = "planned", issue = "#316" }
-wa-await-not-in-loop = { status = "planned", issue = "#316" }
+wa-await-not-in-loop = "implemented"
 wa-not-in-loop = "implemented"
 wl-using-getclass-rather-than-class-literal = "implemented"
 wmi-wrong-map-iterator = "implemented"

@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.AccessorClassGenerationCheck;
 import dev.ward.analysis.domain.rule.check.AccessorMethodGenerationCheck;
 import dev.ward.analysis.domain.rule.check.ArrayReceiverCallCheck;
 import dev.ward.analysis.domain.rule.check.CallMatchCheck;
+import dev.ward.analysis.domain.rule.check.CallMatchContext;
 import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
 import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
@@ -108,6 +109,10 @@ final class TypeAwareChecks {
             TomlValues.optionalStrings(toml, "argument-types"),
             TomlValues.optionalStrings(toml, "any-argument-types"),
             toml.getBoolean("argument-primitive-array", () -> false));
-    return new CallMatchCheck(criteria, TomlValues.required(toml, MESSAGE));
+    final CallMatchContext context =
+        new CallMatchContext(
+            TomlValues.optionalStrings(toml, "inside"),
+            TomlValues.optionalStrings(toml, "not-inside"));
+    return new CallMatchCheck(criteria, context, TomlValues.required(toml, MESSAGE));
   }
 }
