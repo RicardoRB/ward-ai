@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.FlowEdge;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +17,11 @@ import java.util.Set;
  * in a {@code throw} and the edges that statements take when they throw do not count against it.
  */
 final class NullBackward {
+
+  private final NullGraph graph;
+  private final Needs needs;
+  private final Map<Integer, Fact> in = new HashMap<>();
+  private final Map<Integer, List<Fact>> points = new HashMap<>();
 
   /** Why a place needs a value that is not null. */
   enum Use {
@@ -72,11 +76,6 @@ final class NullBackward {
     }
   }
 
-  private final NullGraph graph;
-  private final Needs needs;
-  private final Map<Integer, Fact> in = new HashMap<>();
-  private final Map<Integer, List<Fact>> points = new HashMap<>();
-
   NullBackward(final NullGraph graph, final Needs needs) {
     this.graph = graph;
     this.needs = needs;
@@ -107,46 +106,17 @@ final class NullBackward {
         }
       }
     }
-    for (final BasicBlock block : blocks) {
-      walk(block, out(block));
-    }
+    blocks.forEach(block -> walk(block, out(block)));
   }
 
   private Fact out(final BasicBlock block) {
     Fact met = null;
     for (final FlowEdge edge : block.successors()) {
       if (edge.kind() != FlowEdgeKind.EXCEPTION) {
-        met = met == null ? in(edge.target()) : meet(met, in(edge.target()));
+        met = met == null ? in(edge.target()) : NullFacts.meet(met, in(edge.target()));
       }
     }
-    return met == null ? ending(block) : met;
-  }
-
-  private static Fact ending(final BasicBlock block) {
-    final boolean throwing =
-        !block.nodes().isEmpty()
-            && SyntaxWalk.text(block.nodes().get(block.nodes().size() - 1)).startsWith("throw");
-    return throwing ? Fact.TOP : Fact.NONE;
-  }
-
-  private static Fact meet(final Fact left, final Fact right) {
-    if (left.everything()) {
-      return right;
-    }
-    if (right.everything()) {
-      return left;
-    }
-    final Map<Span, Set<Site>> met = new HashMap<>();
-    left.sites()
-        .forEach(
-            (variable, sites) -> {
-              if (right.sites().containsKey(variable)) {
-                final Set<Site> union = new HashSet<>(sites);
-                union.addAll(right.sites().get(variable));
-                met.put(variable, union);
-              }
-            });
-    return new Fact(false, met);
+    return met == null ? NullFacts.ending(block) : met;
   }
 
   private Fact walk(final BasicBlock block, final Fact end) {
@@ -166,14 +136,9 @@ final class NullBackward {
     }
     final Map<Span, Set<Site>> sites = new HashMap<>(after.sites());
     switch (event.kind()) {
-      case DEREF ->
-          sites.put(event.variable(), Set.of(new Site(event.node().span(), Use.PLAIN, block)));
+      case DEREF -> sites.put(event.variable(), site(event.node().span(), Use.PLAIN, block));
       case CALL -> arguments(sites, event, block);
-      case RETURN ->
-          required(sites, event.operand(), event, needs.returns() ? Use.RETURN : null, block);
-      case STORE ->
-          required(
-              sites, event.operand(), event, needs.field(event.name()) ? Use.FIELD : null, block);
+      case RETURN, STORE -> required(sites, event, block);
       case WRITE, KILL -> sites.remove(event.variable());
       default -> {
         // A comparison does not dereference.
@@ -193,23 +158,19 @@ final class NullBackward {
     }
   }
 
-  private static void required(
-      final Map<Span, Set<Site>> sites,
-      final NullEvent.Operand operand,
-      final NullEvent event,
-      final Use use,
-      final int block) {
-    if (use != null && operand.variable() != null) {
-      sites.put(operand.variable(), site(event.node().span(), use, block));
+  private void required(final Map<Span, Set<Site>> sites, final NullEvent event, final int block) {
+    final boolean returned = event.kind() == NullEvent.Kind.RETURN;
+    final boolean needed = returned ? needs.returns() : needs.field(event.name());
+    if (needed && event.operand().variable() != null) {
+      sites.put(
+          event.operand().variable(),
+          site(event.node().span(), returned ? Use.RETURN : Use.FIELD, block));
     }
   }
 
   private static Set<Site> site(final Span at, final Use use, final int block) {
-    return Set.of(new Site(at, use, block));
-  }
-
-  /** Returns the block ids in the order the facts were computed. */
-  List<Integer> blocks() {
-    return new ArrayList<>(points.keySet());
+    final Set<Site> one = new HashSet<>();
+    one.add(new Site(at, use, block));
+    return one;
   }
 }

@@ -21,6 +21,8 @@ import java.util.Set;
  */
 final class NullDoomed {
 
+  private static final int SEVERAL = 1;
+
   private final NullSolved body;
   private final Map<Span, Set<NullBackward.Site>> notes = new HashMap<>();
   private final Map<Span, Nullity> atSite = new HashMap<>();
@@ -36,16 +38,19 @@ final class NullDoomed {
     return doomed.report();
   }
 
+  private static Map<Span, Nullity> copy(final Map<Span, Nullity> state) {
+    return new HashMap<>(state);
+  }
+
   private void collect() {
     for (final Map.Entry<Integer, Map<Span, Nullity>> entry : body.thrown().entrySet()) {
       final int id = entry.getKey();
-      final Map<Span, Nullity> state =
-          new HashMap<>(body.normal().getOrDefault(id, entry.getValue()));
+      final Map<Span, Nullity> state = copy(body.normal().getOrDefault(id, entry.getValue()));
       final List<NullEvent> events = body.graph().events().get(id);
       for (int index = 0; index < events.size(); index++) {
         note(state, body.backward().before(id, index));
         remember(events.get(index), state);
-        NullForward.apply(state, events.get(index));
+        NullStates.apply(state, events.get(index));
       }
       note(state, body.backward().before(id, events.size()));
       edges(body.graph().graph().blocks().get(id), state);
@@ -57,7 +62,7 @@ final class NullDoomed {
     final NullEvents.Test test = body.graph().tests().get(block.id());
     for (final FlowEdge edge : block.successors()) {
       if (edge.kind() != FlowEdgeKind.EXCEPTION) {
-        note(NullForward.refined(state, test, edge.kind()), body.backward().in(edge.target()));
+        note(NullStates.refined(state, test, edge.kind()), body.backward().in(edge.target()));
       }
     }
   }
@@ -118,7 +123,7 @@ final class NullDoomed {
       final Set<NullBackward.Site> sites,
       final NullBackward.Site first,
       final boolean exceptional) {
-    if (sites.size() > 1) {
+    if (sites.size() > SEVERAL) {
       return exceptional
           ? NullAnalysis.Pattern.GUARANTEED_DEREF_ON_EXCEPTION_PATH
           : NullAnalysis.Pattern.GUARANTEED_DEREF;

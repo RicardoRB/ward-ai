@@ -105,14 +105,20 @@ public final class LibraryCallCheck implements RuleCheck {
       return false;
     }
     if (GUAVA_PRECONDITIONS.equals(owner) && "checkNotNull".equals(name)) {
-      return literal(args.get(0)) && (args.size() == 1 || args.size() == 2 && literal(args.get(1)));
+      return preconditions(args);
     }
     if (GUAVA_STRING.equals(owner) && GUAVA_STRINGS.contains(name)) {
       return args.size() == 1 && literal(args.get(0));
     }
-    return ASSERTIONS.contains(owner)
-        && "assertNotNull".equals(name)
-        && literal(args.get(args.size() - 1))
+    return ASSERTIONS.contains(owner) && "assertNotNull".equals(name) && assertion(args);
+  }
+
+  private static boolean preconditions(final List<SyntaxNode> args) {
+    return literal(args.get(0)) && (args.size() == 1 || args.size() == 2 && literal(args.get(1)));
+  }
+
+  private static boolean assertion(final List<SyntaxNode> args) {
+    return literal(args.get(args.size() - 1))
         && (args.size() == 1 || args.size() == 2 && literal(args.get(0)));
   }
 

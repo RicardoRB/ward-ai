@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * What the file declares that the null data-flow needs: its methods and constructors with their
@@ -22,6 +23,12 @@ record NullScope(
     Map<String, Method> methods,
     Map<String, Set<String>> nonNullFields,
     Set<Integer> nullableParameters) {
+
+  static final Set<String> NON_NULL = Set.of("Nonnull", "NonNull", "NotNull");
+
+  private static final Set<String> TYPE_KINDS =
+      Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
+  private static final Set<String> CLOSED_KINDS = Set.of("enumDeclaration", "recordDeclaration");
 
   /**
    * A method or constructor.
@@ -40,12 +47,6 @@ record NullScope(
       boolean isFinal,
       boolean constructor,
       boolean closedType) {}
-
-  static final Set<String> NON_NULL = Set.of("Nonnull", "NonNull", "NotNull");
-
-  private static final Set<String> TYPE_KINDS =
-      Set.of("classDeclaration", "enumDeclaration", "recordDeclaration");
-  private static final Set<String> CLOSED_KINDS = Set.of("enumDeclaration", "recordDeclaration");
 
   NullScope {
     methods = Map.copyOf(methods);
@@ -162,16 +163,20 @@ record NullScope(
   }
 
   private static Map<String, Set<String>> fields(final SyntaxNode root) {
-    final Map<String, Set<String>> out = new HashMap<>();
-    for (final NullModel.Type type : NullModel.types(root)) {
-      final Set<String> names =
-          type.fields().stream()
-              .filter(field -> field.notes().nonNull() && !field.primitive())
-              .map(NullModel.Field::name)
-              .collect(Collectors.toSet());
-      out.computeIfAbsent(type.name(), name -> new HashSet<>()).addAll(names);
-    }
-    return out;
+    return NullModel.types(root).stream()
+        .collect(
+            Collectors.toMap(
+                NullModel.Type::name,
+                NullScope::fieldNames,
+                (left, right) ->
+                    Stream.concat(left.stream(), right.stream()).collect(Collectors.toSet())));
+  }
+
+  private static Set<String> fieldNames(final NullModel.Type type) {
+    return type.fields().stream()
+        .filter(field -> field.notes().nonNull() && !field.primitive())
+        .map(NullModel.Field::name)
+        .collect(Collectors.toSet());
   }
 
   private static Set<Integer> nullableParameters(final SyntaxNode root) {

@@ -48,12 +48,13 @@ public final class NonNullFieldInitCheck implements RuleCheck {
     if (unset.isEmpty()) {
       return found;
     }
-    final List<SyntaxNode> constructors = constructors(entries);
+    final List<SyntaxNode> constructors = ConstructorInitialization.constructors(entries);
     if (constructors.isEmpty()) {
       found.add(CheckSupport.at(type.span(), message));
     }
     for (final SyntaxNode constructor : constructors) {
-      if (!delegates(constructor) && !assignsAll(constructor, unset)) {
+      if (!ConstructorInitialization.delegates(constructor)
+          && !ConstructorInitialization.assignsAll(constructor, unset)) {
         found.add(CheckSupport.at(constructor.span(), message));
       }
     }
@@ -130,7 +131,7 @@ public final class NonNullFieldInitCheck implements RuleCheck {
 
   private static List<SyntaxNode> instanceBlocks(final List<SyntaxNode> entries) {
     return entries.stream()
-        .filter(entry -> isInstanceBlock(entry))
+        .filter(NonNullFieldInitCheck::isInstanceBlock)
         .flatMap(entry -> entry.children().stream())
         .filter(child -> BLOCK.equals(child.kind()))
         .toList();
@@ -141,31 +142,5 @@ public final class NonNullFieldInitCheck implements RuleCheck {
         .filter(child -> NullSyntax.HOLDERS.contains(child.kind()))
         .map(SyntaxWalk::text)
         .collect(Collectors.toSet());
-  }
-
-  private static List<SyntaxNode> constructors(final List<SyntaxNode> entries) {
-    return entries.stream()
-        .flatMap(entry -> entry.children().stream())
-        .filter(child -> MEMBER.equals(child.kind()))
-        .flatMap(member -> member.children().stream())
-        .filter(child -> "constructorDeclaration".equals(child.kind()))
-        .toList();
-  }
-
-  private static boolean delegates(final SyntaxNode constructor) {
-    return NullSyntax.first(constructor, BLOCK)
-        .map(block -> SyntaxWalk.text(block).startsWith("{this("))
-        .orElse(false);
-  }
-
-  private static boolean assignsAll(final SyntaxNode constructor, final Set<String> names) {
-    final Set<String> shadowed =
-        SyntaxWalk.descendants(constructor).stream()
-            .filter(node -> "formalParameter".equals(node.kind()))
-            .flatMap(param -> NullSyntax.first(param, "variableDeclaratorId").stream())
-            .map(SyntaxWalk::text)
-            .collect(Collectors.toSet());
-    final SyntaxNode body = NullSyntax.first(constructor, BLOCK).orElse(null);
-    return names.stream().allMatch(name -> NullFlow.assigns(body, name, shadowed));
   }
 }

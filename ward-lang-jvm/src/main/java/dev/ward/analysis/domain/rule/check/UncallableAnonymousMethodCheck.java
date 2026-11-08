@@ -17,8 +17,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Reports a method of an anonymous class that nothing can call: it is not private, abstract or a
@@ -31,11 +29,9 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
   private static final String CREATOR = "creator";
   private static final String CLASS_BODY = "classBody";
   private static final String METHOD = "methodDeclaration";
-  private static final String METHOD_CALL = "methodCall";
   private static final String IDENTIFIER = "identifier";
   private static final String OBJECT = "java.lang.Object";
   private static final int SHORTEST = 2;
-  private static final Pattern REFERENCE = Pattern.compile("::([A-Za-z_$][A-Za-z0-9_$]*)");
   private static final Set<String> SPECIAL = Set.of("readResolve", "writeReplace");
   private static final Set<String> HIDING = Set.of("private", "abstract");
   private static final List<String> OBJECT_METHODS =
@@ -71,7 +67,7 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
       final ScopeView scopes,
       final UnitTypeFacts types,
       final SourceUnit unit) {
-    final Set<String> called = calls(root);
+    final Set<String> called = AnonymousCalls.of(root);
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CREATOR))) {
       final SyntaxNode creator = visit.node();
@@ -171,20 +167,5 @@ public final class UncallableAnonymousMethodCheck implements RuleCheck {
             .flatMap(parts -> SyntaxWalk.descendants(parts).stream())
             .filter(node -> "formalParameter".equals(node.kind()))
             .count();
-  }
-
-  /** Returns {@code name/arity} for each call and {@code name/*} for each method reference. */
-  private static Set<String> calls(final SyntaxNode root) {
-    final Set<String> out = new HashSet<>();
-    for (final SyntaxNode node : SyntaxWalk.descendants(root)) {
-      if (METHOD_CALL.equals(node.kind())) {
-        out.add(nameOf(node) + "/" + NullFlow.arguments(node).size());
-      }
-    }
-    final Matcher references = REFERENCE.matcher(SyntaxWalk.text(root));
-    while (references.find()) {
-      out.add(references.group(1) + "/*");
-    }
-    return out;
   }
 }

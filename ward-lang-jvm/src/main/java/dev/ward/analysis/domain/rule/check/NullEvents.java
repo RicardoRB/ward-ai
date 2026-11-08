@@ -6,14 +6,10 @@ import dev.ward.analysis.domain.ir.FlowEdge;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Reads the nullness events of a basic block from its syntax: the writes, dereferences, calls,
@@ -22,6 +18,21 @@ import java.util.regex.Pattern;
  * whenever the statement runs.
  */
 final class NullEvents {
+
+  private static final String EXPRESSION = "expression";
+  private static final String METHOD_CALL = "methodCall";
+  private static final String NEW = "new";
+  private static final String DOT = ".";
+  private static final int BINARY = 3;
+  private static final int INDEX = 4;
+  private static final int CREATION = 2;
+  private static final Set<String> SKIPPED =
+      Set.of("lambdaExpression", "classBody", "switchExpression");
+  private static final Set<String> NESTED =
+      Set.of("if", "for", "while", "do", "try", "switch", "synchronized", "assert", "yield");
+
+  private final NullOperands operands;
+  private final List<NullEvent> out = new ArrayList<>();
 
   /**
    * What a branch condition tells about a variable on each of its branches.
@@ -32,33 +43,8 @@ final class NullEvents {
    */
   record Test(Span variable, Nullity onTrue, Nullity onFalse) {}
 
-  private static final String EXPRESSION = "expression";
-  private static final String METHOD_CALL = "methodCall";
-  private static final String NEW = "new";
-  private static final String NULL = "null";
-  private static final String EQUALS = "==";
-  private static final int BINARY = 3;
-  private static final int INDEX = 4;
-  private static final int TERNARY = 5;
-  private static final Pattern NAME = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
-  private static final Pattern NULL_LITERAL =
-      Pattern.compile("(?:\\([A-Za-z0-9_.<>\\[\\]]*\\))*\\(*null\\)*");
-  private static final Pattern STRING = Pattern.compile("\"(?:[^\"\\\\]|\\\\.)*\"");
-  private static final Set<String> SKIPPED =
-      Set.of("lambdaExpression", "classBody", "switchExpression");
-  private static final Set<String> NESTED =
-      Set.of("if", "for", "while", "do", "try", "switch", "synchronized", "assert", "yield");
-  private static final Set<String> NON_NULL_WORDS = Set.of("this", "true", "false");
-
-  private final Map<Span, Span> locals = new HashMap<>();
-  private final List<NullEvent> out = new ArrayList<>();
-
   private NullEvents(final BasicBlock block) {
-    for (final VariableAccess access : block.accesses()) {
-      if (access.kind() != AccessKind.CAPTURE) {
-        locals.put(access.span(), access.declaration());
-      }
-    }
+    operands = new NullOperands(block);
     block.accesses().stream()
         .filter(access -> access.kind() == AccessKind.CAPTURE)
         .map(access -> NullEvent.kill(access.declaration()))
@@ -81,9 +67,9 @@ final class NullEvents {
     if (!branches || block.nodes().isEmpty()) {
       return Optional.empty();
     }
-    final NullEvents events = new NullEvents(block);
+    final NullOperands reader = new NullOperands(block);
     final SyntaxNode condition = block.nodes().get(block.nodes().size() - 1);
-    return events.nullTest(condition).or(() -> events.instanceTest(condition));
+    return reader.nullTest(condition).or(() -> reader.instanceTest(condition));
   }
 
   private void visit(final SyntaxNode node) {
@@ -103,7 +89,7 @@ final class NullEvents {
     final String keyword = parts.isEmpty() ? "" : SyntaxWalk.text(parts.get(0));
     if ("return".equals(keyword) && parts.size() > 1 && EXPRESSION.equals(parts.get(1).kind())) {
       visit(parts.get(1));
-      out.add(NullEvent.returned(parts.get(1), operand(parts.get(1))));
+      out.add(NullEvent.returned(parts.get(1), operands.operand(parts.get(1))));
     } else if ("throw".equals(keyword) && parts.size() > 1) {
       visit(parts.get(1));
     } else if (!NESTED.contains(keyword)) {
@@ -112,12 +98,12 @@ final class NullEvents {
   }
 
   private void declarator(final SyntaxNode node) {
-    final SyntaxNode id =
+    final Span variable =
         node.children().stream()
             .filter(part -> "variableDeclaratorId".equals(part.kind()))
             .findFirst()
+            .map(id -> operands.local(id.span()))
             .orElse(null);
-    final Span variable = id == null ? null : locals.get(id.span());
     if (variable == null) {
       return;
     }
@@ -129,7 +115,7 @@ final class NullEvents {
             .findFirst();
     if (init.isPresent()) {
       visit(init.get());
-      out.add(NullEvent.write(variable, init.get(), operand(init.get())));
+      out.add(NullEvent.write(variable, init.get(), operands.operand(init.get())));
     } else {
       out.add(NullEvent.kill(variable));
     }
@@ -138,20 +124,15 @@ final class NullEvents {
   private void expression(final SyntaxNode node) {
     final List<SyntaxNode> parts = node.children();
     final String operator = parts.size() == BINARY ? SyntaxWalk.text(parts.get(1)) : "";
+    final Optional<Test> compared = operands.nullTest(node);
     if (Assignments.isAssignment(node)) {
       assignment(node);
-    } else if ("&&".equals(operator) || "||".equals(operator)) {
+    } else if ("&&".equals(operator) || "||".equals(operator) || NullOperands.isTernary(parts)) {
       visit(parts.get(0));
-    } else if (parts.size() == TERNARY && "?".equals(SyntaxWalk.text(parts.get(1)))) {
-      visit(parts.get(0));
-    } else if (nullTest(node).isPresent()) {
-      out.add(NullEvent.compare(nullTest(node).get().variable(), node));
-    } else if (".".equals(operator)) {
+    } else if (compared.isPresent()) {
+      out.add(NullEvent.compare(compared.get().variable(), node));
+    } else if (DOT.equals(operator)) {
       member(node);
-    } else if (parts.size() == INDEX && "[".equals(SyntaxWalk.text(parts.get(1)))) {
-      visit(parts.get(0));
-      visit(parts.get(2));
-      dereference(parts.get(0), "");
     } else {
       other(node);
     }
@@ -159,12 +140,19 @@ final class NullEvents {
 
   private void other(final SyntaxNode node) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 1 && METHOD_CALL.equals(parts.get(0).kind())) {
-      call(node, parts.get(0));
-    } else if (parts.size() == 2 && NEW.equals(SyntaxWalk.text(parts.get(0)))) {
+    if (parts.size() == INDEX && "[".equals(SyntaxWalk.text(parts.get(1)))) {
+      visit(parts.get(0));
+      visit(parts.get(2));
+      operands.dereference(parts.get(0), "").ifPresent(out::add);
+    } else if (parts.size() == 1 && METHOD_CALL.equals(parts.get(0).kind())) {
+      final List<SyntaxNode> args = NullFlow.arguments(parts.get(0));
+      args.forEach(this::visit);
+      out.add(
+          NullEvent.call(node, operands.arguments(args), NullOperands.methodName(parts.get(0))));
+    } else if (parts.size() == CREATION && NEW.equals(SyntaxWalk.text(parts.get(0)))) {
       final List<SyntaxNode> args = NullFlow.arguments(parts.get(1));
       args.forEach(this::visit);
-      out.add(NullEvent.call(node, arguments(args), "<init>"));
+      out.add(NullEvent.call(node, operands.arguments(args), "<init>"));
     } else {
       parts.forEach(this::visit);
     }
@@ -177,18 +165,14 @@ final class NullEvents {
     if (METHOD_CALL.equals(tail.kind())) {
       final List<SyntaxNode> args = NullFlow.arguments(tail);
       args.forEach(this::visit);
-      final String name = methodName(tail);
-      dereference(parts.get(0), "close".equals(name) && args.isEmpty() ? name : "");
-      out.add(NullEvent.call(node, arguments(args), name));
+      final String name = NullOperands.methodName(tail);
+      operands
+          .dereference(parts.get(0), "close".equals(name) && args.isEmpty() ? name : "")
+          .ifPresent(out::add);
+      out.add(NullEvent.call(node, operands.arguments(args), name));
     } else {
-      dereference(parts.get(0), "");
+      operands.dereference(parts.get(0), "").ifPresent(out::add);
     }
-  }
-
-  private void call(final SyntaxNode node, final SyntaxNode invoked) {
-    final List<SyntaxNode> args = NullFlow.arguments(invoked);
-    args.forEach(this::visit);
-    out.add(NullEvent.call(node, arguments(args), methodName(invoked)));
   }
 
   private void assignment(final SyntaxNode node) {
@@ -197,94 +181,15 @@ final class NullEvents {
     final SyntaxNode value = parts.get(2);
     final boolean plain = "=".equals(SyntaxWalk.text(parts.get(1)));
     visit(value);
-    final Span local = locals.get(target.span());
-    final String field = fieldName(target);
+    final Span local = operands.local(target.span());
+    final String field = NullOperands.fieldName(target);
     if (local != null) {
-      out.add(plain ? NullEvent.write(local, value, operand(value)) : NullEvent.kill(local));
+      out.add(
+          plain ? NullEvent.write(local, value, operands.operand(value)) : NullEvent.kill(local));
     } else if (plain && field != null) {
-      out.add(NullEvent.store(node, operand(value), field));
+      out.add(NullEvent.store(node, operands.operand(value), field));
     } else {
       visit(target);
     }
-  }
-
-  private static String fieldName(final SyntaxNode target) {
-    final String text = SyntaxWalk.text(target);
-    final String bare = text.startsWith("this.") ? text.substring("this.".length()) : text;
-    return NAME.matcher(bare).matches() ? bare : null;
-  }
-
-  private void dereference(final SyntaxNode receiver, final String method) {
-    final Span variable = variableOf(receiver);
-    if (variable != null) {
-      out.add(NullEvent.deref(variable, receiver, method));
-    }
-  }
-
-  private List<NullEvent.Arg> arguments(final List<SyntaxNode> args) {
-    return args.stream().map(arg -> new NullEvent.Arg(operand(arg), arg)).toList();
-  }
-
-  private static String methodName(final SyntaxNode invoked) {
-    return NullSyntax.first(invoked, "identifier").map(SyntaxWalk::text).orElse("");
-  }
-
-  private Span variableOf(final SyntaxNode node) {
-    return EXPRESSION.equals(node.kind()) && NAME.matcher(SyntaxWalk.text(node)).matches()
-        ? locals.get(node.span())
-        : null;
-  }
-
-  private NullEvent.Operand operand(final SyntaxNode node) {
-    final String text = SyntaxWalk.text(node);
-    final NullEvent.Operand operand;
-    if (NULL_LITERAL.matcher(text).matches()) {
-      operand = new NullEvent.Operand(null, true, false);
-    } else if (variableOf(node) != null) {
-      operand = new NullEvent.Operand(variableOf(node), false, false);
-    } else if (neverNull(node, text)) {
-      operand = new NullEvent.Operand(null, false, true);
-    } else {
-      operand = NullEvent.Operand.UNKNOWN;
-    }
-    return operand;
-  }
-
-  private static boolean neverNull(final SyntaxNode node, final String text) {
-    final List<SyntaxNode> parts = node.children();
-    return NON_NULL_WORDS.contains(text)
-        || STRING.matcher(text).matches()
-        || parts.size() == 2 && NEW.equals(SyntaxWalk.text(parts.get(0)));
-  }
-
-  /** Reads {@code variable ==|!= null}: the variable and what each branch holds. */
-  private Optional<Test> nullTest(final SyntaxNode node) {
-    final List<SyntaxNode> parts = node.children();
-    final String operator = NullSyntax.operator(node);
-    if (!EQUALS.equals(operator) && !"!=".equals(operator)) {
-      return Optional.empty();
-    }
-    final boolean nullLeft = NULL.equals(SyntaxWalk.text(parts.get(0)));
-    final Span variable = variableOf(parts.get(nullLeft ? 2 : 0));
-    if (variable == null || !nullLeft && !NULL.equals(SyntaxWalk.text(parts.get(2)))) {
-      return Optional.empty();
-    }
-    final boolean equal = EQUALS.equals(operator);
-    return Optional.of(
-        new Test(
-            variable,
-            equal ? Nullity.NULL : Nullity.NONNULL,
-            equal ? Nullity.NONNULL : Nullity.NULL));
-  }
-
-  private Optional<Test> instanceTest(final SyntaxNode node) {
-    final List<SyntaxNode> parts = node.children();
-    if (!EXPRESSION.equals(node.kind())
-        || parts.size() < BINARY
-        || !"instanceof".equals(SyntaxWalk.text(parts.get(1)))) {
-      return Optional.empty();
-    }
-    return Optional.ofNullable(variableOf(parts.get(0)))
-        .map(variable -> new Test(variable, Nullity.NONNULL, null));
   }
 }
