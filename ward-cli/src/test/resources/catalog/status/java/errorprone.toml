@@ -31,8 +31,8 @@ assignment-expression = { status = "planned", issue = "#319" }
 assisted-inject-and-inject-on-constructors = { status = "planned", issue = "#319" }
 assisted-inject-and-inject-on-same-constructor = { status = "planned", issue = "#319" }
 ast-helpers-suggestions = { status = "planned", issue = "#319" }
-async-callable-returns-null = { status = "planned", issue = "#319" }
-async-function-returns-null = { status = "planned", issue = "#319" }
+async-callable-returns-null = "implemented"
+async-function-returns-null = "implemented"
 attempted-negative-zero = { status = "planned", issue = "#319" }
 auto-factory-at-inject = { status = "planned", issue = "#319" }
 auto-value-boxed-values = { status = "planned", issue = "#319" }
@@ -49,7 +49,7 @@ bad-comparable = { status = "planned", issue = "#319" }
 bad-import = { status = "planned", issue = "#319" }
 bad-instanceof = { status = "planned", issue = "#319" }
 bad-shift-amount = { status = "planned", issue = "#319" }
-ban-class-loader = { status = "planned", issue = "#319" }
+ban-class-loader = "implemented"
 ban-jndi = "implemented"
 ban-serializable-read = "implemented"
 bare-dot-metacharacter = { status = "planned", issue = "#319" }
@@ -78,7 +78,7 @@ chained-assertion-loses-context = { status = "planned", issue = "#319" }
 chaining-constructor-ignores-parameter = { status = "planned", issue = "#319" }
 character-get-numeric-value = { status = "planned", issue = "#319" }
 check-not-null-multiple-times = { status = "planned", issue = "#319" }
-check-return-value = { status = "planned", issue = "#319" }
+check-return-value = "implemented"
 checked-exception-not-thrown = { status = "planned", issue = "#319" }
 class-can-be-static = { status = "planned", issue = "#319" }
 class-initialization-deadlock = { status = "planned", issue = "#319" }
@@ -122,7 +122,7 @@ different-name-but-same = { status = "planned", issue = "#319" }
 direct-invocation-on-mock = { status = "planned", issue = "#319" }
 discarded-postfix-expression = "implemented"
 distinct-varargs-checker = { status = "planned", issue = "#319" }
-do-not-call = { status = "planned", issue = "#319" }
+do-not-call = "implemented"
 do-not-call-suggester = { status = "planned", issue = "#319" }
 do-not-claim-annotations = { status = "planned", issue = "#319" }
 do-not-mock = { status = "planned", issue = "#319" }
@@ -131,7 +131,7 @@ double-brace-initialization = "implemented"
 duplicate-assertion = { status = "planned", issue = "#319" }
 duplicate-branches = { status = "planned", issue = "#319" }
 duplicate-date-format-field = { status = "planned", issue = "#319" }
-duplicate-map-keys = { status = "planned", issue = "#319" }
+duplicate-map-keys = "implemented"
 duration-from = "implemented"
 duration-get-temporal-unit = "implemented"
 duration-temporal-unit = "implemented"
@@ -148,7 +148,7 @@ equals-get-class = { status = "planned", issue = "#319" }
 equals-incompatible-type = { status = "planned", issue = "#319" }
 equals-missing-nullable = { status = "planned", issue = "#319" }
 equals-na-n = "implemented"
-equals-reference = { status = "planned", issue = "#319" }
+equals-reference = "implemented"
 equals-unsafe-cast = { status = "planned", issue = "#319" }
 equals-using-hash-code = { status = "planned", issue = "#319" }
 equals-wrong-thing = { status = "planned", issue = "#319" }
@@ -196,7 +196,7 @@ functional-interface-method-changed = { status = "planned", issue = "#319" }
 future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
 futures-get-checked-illegal-exception-type = "implemented"
-fuzzy-equals-should-not-be-used-in-equals-method = { status = "planned", issue = "#319" }
+fuzzy-equals-should-not-be-used-in-equals-method = "implemented"
 get-class-on-annotation = "implemented"
 get-class-on-class = "implemented"
 get-class-on-enum = { status = "planned", issue = "#319" }

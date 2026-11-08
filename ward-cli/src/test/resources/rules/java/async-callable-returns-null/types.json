@@ -1,0 +1,42 @@
+{
+  "3:12-3:52": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "submitAsync",
+      "params": [
+        {
+          "name": "AsyncCallable"
+        },
+        {
+          "name": "Executor"
+        }
+      ],
+      "returns": {
+        "name": "ListenableFuture"
+      },
+      "static": true
+    }
+  },
+  "3:12-3:77": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "submitAsync",
+      "params": [
+        {
+          "name": "AsyncCallable"
+        },
+        {
+          "name": "Executor"
+        }
+      ],
+      "returns": {
+        "name": "ListenableFuture"
+      },
+      "static": true
+    }
+  }
+}
