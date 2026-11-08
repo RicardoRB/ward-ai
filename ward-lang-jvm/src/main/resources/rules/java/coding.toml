@@ -97,7 +97,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["expression"]
 with-child = ["'=='", "'!='"]
-text = '^"(?:[^"\\]|\\.)*"(?:==|!=)|(?:==|!=)"(?:[^"\\]|\\.)*"$'
+text = '^"[^"\\]*+(?:\\.[^"\\]*+)*+"(?:==|!=)|(?:==|!=)"[^"\\]*+(?:\\.[^"\\]*+)*+"$'
 message = "compares a string literal with == or !=; use equals instead"
 '''
 

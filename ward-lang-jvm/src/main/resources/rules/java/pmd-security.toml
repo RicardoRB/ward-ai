@@ -12,7 +12,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new(?:javax\.crypto\.spec\.)?SecretKeySpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)(?:[^()]|\([^()]*\))*\)$'
+text = '^new(?:javax\.crypto\.spec\.)?SecretKeySpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "the encryption key is hard-coded; load it from configuration or a key store"
 '''
 
@@ -26,6 +26,6 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new(?:javax\.crypto\.spec\.)?IvParameterSpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)(?:[^()]|\([^()]*\))*\)$'
+text = '^new(?:javax\.crypto\.spec\.)?IvParameterSpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "the initialization vector is hard-coded; generate a random one for each encryption"
 '''

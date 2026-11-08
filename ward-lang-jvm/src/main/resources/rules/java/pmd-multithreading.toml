@@ -40,7 +40,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new(?:java\.lang\.)?ThreadGroup\((?:[^()]|\([^()]*\))*\)$|^[\w.()]*\.getThreadGroup\(\)$'
+text = '^new(?:java\.lang\.)?ThreadGroup\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$|^[\w.()]*\.getThreadGroup\(\)$'
 message = "ThreadGroup is not thread-safe; use an ExecutorService instead"
 '''
 

@@ -81,7 +81,7 @@ presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^(?:java\.util\.)?Optional\.of\((?:[^()]|\([^()]*\))*\)\.(?:isPresent|isEmpty|get|orElse|orElseGet|orElseThrow|ifPresent|ifPresentOrElse)\((?:[^()]|\([^()]*\))*\)$'
+text = '^(?:java\.util\.)?Optional\.of\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\.(?:isPresent|isEmpty|get|orElse|orElseGet|orElseThrow|ifPresent|ifPresentOrElse)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "method called on Optional.of(...) always gives the same result; use the value directly"
 '''
 
@@ -151,7 +151,7 @@ presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^(?:Mockito\.)?(?:verify|when)\((?:[^()]|\([^()]*\))*\);$'
+text = '^(?:Mockito\.)?(?:verify|when)\([^()]*+(?:\([^()]*\)[^()]*+)*+\);$'
 message = "verify or when called without the follow-up call that completes it; the statement checks nothing"
 '''
 
@@ -207,7 +207,7 @@ presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^(?:(?:Preconditions|Objects)\.)?(?:checkNotNull|requireNonNull)\((?:"(?:[^"\\]|\\.)*"|new\w+(?:<[^()]*>)?\((?:[^()]|\([^()]*\))*\))(?:,.*)?\)$'
+text = '^(?:(?:Preconditions|Objects)\.)?(?:checkNotNull|requireNonNull)\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|new\w+(?:<[^()]*>)?\([^()]*+(?:\([^()]*\)[^()]*+)*+\))(?:,.*)?\)$'
 message = "a string literal or a new object is never null; remove the null check"
 '''
 
@@ -263,7 +263,7 @@ presets = ["standard"]
 body = '''
 check = "forbidden-node"
 kinds = ["literal"]
-text = '^"""(?:[^\\]|\\.)*?\\s(?![ \t]*(?:\r?\n|"""))'
+text = '^"""(?:[^\\]++|\\[^s]|\\s(?=[ \t]*(?:\r?\n|""")))*+\\s(?![ \t]*(?:\r?\n|"""))'
 message = "\\s inside a text block is easy to miss when it is not at the end of a line; use a space or end the line with it"
 '''
 

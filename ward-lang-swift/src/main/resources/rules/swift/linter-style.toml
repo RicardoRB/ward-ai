@@ -39,7 +39,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["if_statement", "while_statement", "guard_statement", "switch_statement"]
-text = '^(?:(?:if|while|switch)\((?:[^()]|\([^()]*\))*\)\{|guard\((?:[^()]|\([^()]*\))*\)else\{)'
+text = '^(?:(?:if|while|switch)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\{|guard\([^()]*+(?:\([^()]*\)[^()]*+)*+\)else\{)'
 message = "condition should not be wrapped in parentheses"
 '''
 

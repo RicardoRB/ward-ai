@@ -70,7 +70,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new(?:java\.io\.)?(?:File(?:Input|Output)Stream|File(?:Reader|Writer))\((?:[^()]|\([^()]*\))*\)$'
+text = '^new(?:java\.io\.)?(?:File(?:Input|Output)Stream|File(?:Reader|Writer))\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "file streams are finalized by the garbage collector; use java.nio.file.Files instead"
 '''
 
@@ -112,7 +112,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^[\w.]+\.append\((?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)\.append\((?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)$'
+text = '^[\w.]+\.append\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)\.append\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)$'
 message = "consecutive appends of literals; join the literals into one append"
 '''
 
@@ -140,7 +140,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression", "methodCall"]
-text = '^(?:new(?:java\.lang\.)?String(?:Buffer|Builder)|append)\((?=[^()]*?(?:"(?:[^"\\]|\\.)*"\+[A-Za-z_(]|[A-Za-z_)\]]\+))(?:[^()]|\([^()]*\))*\)$'
+text = '^(?:new(?:java\.lang\.)?String(?:Buffer|Builder)|append)\((?=[^()]*?(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"\+[A-Za-z_(]|[A-Za-z_)\]]\+))[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "a non-literal is concatenated inside a StringBuffer or StringBuilder call; append each part instead"
 '''
 
@@ -168,7 +168,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^new(?:java\.lang\.)?String\((?:[^()]|\([^()]*\))*\)$'
+text = '^new(?:java\.lang\.)?String\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "a String created with new is usually unnecessary; use a literal or the existing value"
 '''
 
@@ -253,7 +253,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["statement"]
 inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
-text = '^[\w.]+\+="(?:[^"\\]|\\.)*";$'
+text = '^[\w.]+\+="[^"\\]*+(?:\\.[^"\\]*+)*+";$'
 message = "a String is extended with += inside a loop; append to a StringBuilder instead"
 '''
 
@@ -281,7 +281,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^(?:"(?:[^"\\]|\\.)*"|[\w.]+)\+String\.valueOf\((?:[^()]|\([^()]*\))*\)$'
+text = '^(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|[\w.]+)\+String\.valueOf\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "String.valueOf is not needed when appending to a string; append the value directly"
 '''
 

@@ -46,7 +46,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodCall"]
-text = '^(?:checkNotNull|requireNonNull)\("(?:[^"\\]|\\.)*",[^"]'
+text = '^(?:checkNotNull|requireNonNull)\("[^"\\]*+(?:\\.[^"\\]*+)*+",[^"]'
 message = "the message and the reference are swapped: the reference to check comes first"
 '''
 

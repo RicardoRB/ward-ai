@@ -82,7 +82,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^(?:(?:if|while|for)(\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\))(?!\{)|do(?!\{)|if(\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\))\{(?:[^{}]|\{[^{}]*\})*\}else(?!\{|if))'
+text = '^(?:(?:if|while|for)(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))(?!\{)|do(?!\{)|if(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))\{(?:[^{}]|\{[^{}]*\})*\}else(?!\{|if))'
 message = "this control statement has no braces; put its body in a block"
 '''
 
