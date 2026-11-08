@@ -25,14 +25,27 @@ public final class ConstructorCallsOverridableMethodCheck implements UnitCheck {
   private static final int QUALIFIED_PARTS = 3;
 
   private final String message;
+  private final Set<String> methods;
+
+  /**
+   * Creates the check for constructors.
+   *
+   * @param message the message reported at the call; {@code {value}} is the method name
+   */
+  public ConstructorCallsOverridableMethodCheck(final String message) {
+    this(message, Set.of());
+  }
 
   /**
    * Creates the check.
    *
    * @param message the message reported at the call; {@code {value}} is the method name
+   * @param methods the names of the methods to scan instead of the constructors; empty scans the
+   *     constructors
    */
-  public ConstructorCallsOverridableMethodCheck(final String message) {
+  public ConstructorCallsOverridableMethodCheck(final String message, final Set<String> methods) {
     this.message = Objects.requireNonNull(message, "message");
+    this.methods = Set.copyOf(methods);
   }
 
   @Override
@@ -59,9 +72,16 @@ public final class ConstructorCallsOverridableMethodCheck implements UnitCheck {
     final List<RuleMatch> reports = new ArrayList<>();
     ClassMembers.members(clazz).stream()
         .map(ClassMembers::declarationOf)
-        .filter(declaration -> MemberDeclarations.CONSTRUCTOR.equals(declaration.kind()))
+        .filter(this::scanned)
         .forEach(constructor -> collect(constructor, overridable, reports));
     return reports;
+  }
+
+  private boolean scanned(final SyntaxNode declaration) {
+    return methods.isEmpty()
+        ? MemberDeclarations.CONSTRUCTOR.equals(declaration.kind())
+        : MemberDeclarations.METHOD.equals(declaration.kind())
+            && methods.contains(MemberDeclarations.name(declaration));
   }
 
   private void collect(

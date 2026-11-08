@@ -1161,20 +1161,14 @@ spotbugs = ["LI_LAZY_INIT_UPDATE_STATIC"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-clone"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CLONE"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-constructor"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "mc-overridable-method-call-in-read-object"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_READ_OBJECT"]
 
 [[rule]]
@@ -1294,8 +1288,6 @@ spotbugs = ["NM_CLASS_NOT_EXCEPTION"]
 
 [[rule]]
 name = "nm-confusing"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_CONFUSING"]
 
 [[rule]]
@@ -1607,8 +1599,6 @@ spotbugs = ["ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH"]
 
 [[rule]]
 name = "os-open-stream"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["OS_OPEN_STREAM"]
 
 [[rule]]
@@ -1638,8 +1628,6 @@ spotbugs = ["PA_PUBLIC_PRIMITIVE_ATTRIBUTE"]
 
 [[rule]]
 name = "perm-super-not-called-in-getpermissions"
-presets = ["standard", "strict"]
-category = "malicious-code"
 spotbugs = ["PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS"]
 
 [[rule]]
@@ -1668,8 +1656,6 @@ spotbugs = ["PZLA_PREFER_ZERO_LENGTH_ARRAYS"]
 
 [[rule]]
 name = "pz-dont-reuse-entry-objects-in-iterators"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["PZ_DONT_REUSE_ENTRY_OBJECTS_IN_ITERATORS"]
 
 [[rule]]
@@ -1771,8 +1757,6 @@ spotbugs = ["RE_POSSIBLE_UNINTENDED_PATTERN"]
 
 [[rule]]
 name = "ri-redundant-interfaces"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RI_REDUNDANT_INTERFACES"]
 
 [[rule]]

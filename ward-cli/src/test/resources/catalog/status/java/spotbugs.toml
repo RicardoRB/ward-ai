@@ -229,9 +229,9 @@ jua-dont-assert-instanceof-in-tests = "implemented"
 lg-lost-logger-due-to-weak-reference = "implemented"
 li-lazy-init-static = { status = "planned", issue = "#316" }
 li-lazy-init-update-static = { status = "planned", issue = "#316" }
-mc-overridable-method-call-in-clone = { status = "planned", issue = "#316" }
-mc-overridable-method-call-in-constructor = { status = "planned", issue = "#316" }
-mc-overridable-method-call-in-read-object = { status = "planned", issue = "#316" }
+mc-overridable-method-call-in-clone = "implemented"
+mc-overridable-method-call-in-constructor = "implemented"
+mc-overridable-method-call-in-read-object = "implemented"
 me-enum-field-setter = "implemented"
 me-mutable-enum-field = "implemented"
 mf-class-masks-field = "implemented"
@@ -258,7 +258,7 @@ mwn-mismatched-wait = "implemented"
 nm-bad-equal = "implemented"
 nm-class-naming-convention = "implemented"
 nm-class-not-exception = "implemented"
-nm-confusing = { status = "planned", issue = "#316" }
+nm-confusing = "implemented"
 nm-field-naming-convention = "implemented"
 nm-lcase-hashcode = "implemented"
 nm-lcase-tostring = "implemented"
@@ -315,19 +315,19 @@ obl-unsatisfied-obligation = { status = "planned", issue = "#316" }
 obl-unsatisfied-obligation-exception-edge = { status = "planned", issue = "#316" }
 odr-open-database-resource = { status = "planned", issue = "#316" }
 odr-open-database-resource-exception-path = { status = "planned", issue = "#316" }
-os-open-stream = { status = "planned", issue = "#316" }
+os-open-stream = "implemented"
 os-open-stream-exception-path = { status = "planned", issue = "#316" }
 overriding-methods-must-invoke-super = "implemented"
 pa-public-array-attribute = "implemented"
 pa-public-mutable-object-attribute = "implemented"
 pa-public-primitive-attribute = "implemented"
-perm-super-not-called-in-getpermissions = { status = "planned", issue = "#316" }
+perm-super-not-called-in-getpermissions = "implemented"
 pi-do-not-reuse-public-identifiers-class-names = "implemented"
 pi-do-not-reuse-public-identifiers-field-names = "implemented"
 pi-do-not-reuse-public-identifiers-local-variable-names = "implemented"
 pi-do-not-reuse-public-identifiers-method-names = "implemented"
 ps-public-semaphores = "implemented"
-pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" }
+pz-dont-reuse-entry-objects-in-iterators = "implemented"
 pzla-prefer-zero-length-arrays = "implemented"
 qba-questionable-boolean-assignment = "implemented"
 qf-questionable-for-loop = "implemented"
@@ -349,7 +349,7 @@ re-possible-unintended-pattern = "implemented"
 rec-catch-exception = "implemented"
 reflc-reflection-may-increase-accessibility-of-class = "implemented"
 reflf-reflection-may-increase-accessibility-of-field = "implemented"
-ri-redundant-interfaces = { status = "planned", issue = "#316" }
+ri-redundant-interfaces = "implemented"
 rp-c-repeated-conditional-test = "implemented"
 rr-not-checked = "implemented"
 rs-readobject-sync = "implemented"

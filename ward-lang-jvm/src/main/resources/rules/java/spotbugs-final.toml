@@ -269,3 +269,107 @@ check = "sealed-field-use"
 mode = "unwritten"
 message = "field {value} of a private class is read but never written"
 '''
+[[rules]]
+id = "ward:java/ri-redundant-interfaces"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "redundant-interface"
+message = "the class lists {value}, which its superclass already implements"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+message = "constructor calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-clone"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+methods = ["clone"]
+message = "clone() calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-read-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+methods = ["readObject"]
+message = "readObject() calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/nm-confusing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "case-confusion"
+message = "method name differs from another method of this class only by case"
+'''
+
+[[rules]]
+id = "ward:java/perm-super-not-called-in-getpermissions"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "class-loader-permissions"
+message = "getPermissions() of this class loader never calls the superclass getPermissions()"
+'''
+
+[[rules]]
+id = "ward:java/pz-dont-reuse-entry-objects-in-iterators"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "entry-reuse"
+message = "next() hands out the one entry object the iterator holds; return a new entry each time"
+'''
+
+[[rules]]
+id = "ward:java/os-open-stream"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.io.InputStream", "java.io.OutputStream", "java.io.Reader", "java.io.Writer"]
+ignored = ["java.io.ByteArrayInputStream", "java.io.ByteArrayOutputStream", "java.io.StringReader", "java.io.StringWriter"]
+created-here = true
+message = "the stream {value} is never closed; use try-with-resources or close it in a finally block"
+'''
+
