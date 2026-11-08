@@ -13,6 +13,7 @@ ids = { java = "ward:java/star-import" }
 detekt = ["WildcardImport"]
 pmd = ["OnDemandImport"]
 checkstyle = ["AvoidStarImport"]
+errorprone = ["WildcardImport"]
 ktlint = ["no-wildcard-imports"]
 ruff = ["F403"]
 

@@ -3494,7 +3494,6 @@ errorprone = ["WakelockReleasedDangerously"]
 name = "wildcard-import"
 presets = ["standard", "strict"]
 category = "severity-suggestion"
-errorprone = ["WildcardImport"]
 pylint = ["wildcard-import"]
 
 [[rule]]
