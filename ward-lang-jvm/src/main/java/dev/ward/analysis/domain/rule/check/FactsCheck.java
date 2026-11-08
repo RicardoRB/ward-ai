@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A check that reads the type facts of its file and nothing else. A subclass names the facts it
@@ -20,7 +19,7 @@ abstract class FactsCheck implements RuleCheck {
   private final FactNeed need;
 
   FactsCheck(final FactNeed need) {
-    this.need = Objects.requireNonNull(need, "need");
+    this.need = need;
   }
 
   @Override
