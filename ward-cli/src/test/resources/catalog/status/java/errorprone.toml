@@ -88,7 +88,7 @@ class-new-instance = { status = "planned", issue = "#319" }
 closeable-provides = { status = "planned", issue = "#319" }
 closing-standard-output-streams = { status = "planned", issue = "#319" }
 collection-incompatible-type = "implemented"
-collection-to-array-safe-parameter = { status = "planned", issue = "#319" }
+collection-to-array-safe-parameter = "implemented"
 collector-should-not-use-state = { status = "planned", issue = "#319" }
 comparable-and-comparator = { status = "planned", issue = "#319" }
 comparable-type = "implemented"

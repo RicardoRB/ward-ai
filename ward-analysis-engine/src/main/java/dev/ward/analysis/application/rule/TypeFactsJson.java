@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.ConstantValue;
 import dev.ward.analysis.domain.types.FieldRef;
 import dev.ward.analysis.domain.types.SpanFacts;
+import dev.ward.analysis.domain.types.TypeComponent;
 import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
@@ -49,7 +50,18 @@ final class TypeFactsJson {
         JsonValues.strings(members.get("annotations")),
         JsonValues.list(members.get("inheritedMethods")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(members.get("inheritedFields")).stream().map(TypeFactsJson::field).toList(),
-        values(members.get("annotationValues")));
+        values(members.get("annotationValues")),
+        JsonValues.list(members.get("components")).stream().map(TypeFactsJson::component).toList());
+  }
+
+  private static TypeComponent component(final Object value) {
+    final Map<?, ?> component = JsonValues.object(value);
+    return new TypeComponent(
+        component.containsKey("type") ? typeRef(component.get("type")) : null,
+        component.containsKey("shape") ? shape(JsonValues.object(component.get("shape"))) : null,
+        component.containsKey("members")
+            ? members(JsonValues.object(component.get("members")))
+            : null);
   }
 
   /** Reads {@code {"<annotation>#<element>": [values]}}; a single value may be written bare. */

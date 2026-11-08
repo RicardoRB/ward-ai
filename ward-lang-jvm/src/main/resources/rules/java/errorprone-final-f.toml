@@ -38,6 +38,19 @@ body = '''
 check = "comparison-contract"
 message = "this comparison method violates the contract"
 '''
+
+[[rules]]
+id = "ward:java/collection-to-array-safe-parameter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "array-argument-cast"
+message = "the type of the array parameter of Collection.toArray needs to be compatible with the array type"
+'''
+
 [[rules]]
 id = "ward:java/always-throws"
 language = "java"

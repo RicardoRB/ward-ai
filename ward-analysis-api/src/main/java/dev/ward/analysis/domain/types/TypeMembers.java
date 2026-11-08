@@ -18,6 +18,8 @@ import java.util.Map;
  * @param inheritedFields the fields of the ancestors that a subtype can see
  * @param annotationValues the element values of the annotations of the type, by {@code
  *     <annotation>#<element>}, as for {@link CallTarget#annotationValues()}
+ * @param components the types this one is built from: its type arguments in order, or the element
+ *     type of an array
  */
 public record TypeMembers(
     List<CallTarget> methods,
@@ -26,7 +28,8 @@ public record TypeMembers(
     List<String> annotations,
     List<CallTarget> inheritedMethods,
     List<FieldRef> inheritedFields,
-    Map<String, List<String>> annotationValues) {
+    Map<String, List<String>> annotationValues,
+    List<TypeComponent> components) {
 
   /**
    * Creates the members of a type whose inherited members are not known.
@@ -38,7 +41,7 @@ public record TypeMembers(
       final List<FieldRef> fields,
       final List<TypeRef> ancestors,
       final List<String> annotations) {
-    this(methods, fields, ancestors, annotations, List.of(), List.of(), Map.of());
+    this(methods, fields, ancestors, annotations, List.of(), List.of(), Map.of(), List.of());
   }
 
   /**
@@ -56,5 +59,6 @@ public record TypeMembers(
     final Map<String, List<String>> copy = new LinkedHashMap<>();
     annotationValues.forEach((key, list) -> copy.put(key, List.copyOf(list)));
     annotationValues = Map.copyOf(copy);
+    components = List.copyOf(components);
   }
 }
