@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "aa-assertion-of-arguments"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
 
 [[rule]]
@@ -61,20 +59,14 @@ spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
 
 [[rule]]
 name = "bc-bad-cast-to-abstract-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"]
 
 [[rule]]
 name = "bc-bad-cast-to-concrete-collection"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_BAD_CAST_TO_CONCRETE_COLLECTION"]
 
 [[rule]]
 name = "bc-equals-method-should-work-for-all-objects"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS"]
 
 [[rule]]
@@ -104,14 +96,10 @@ spotbugs = ["BC_IMPOSSIBLE_INSTANCEOF"]
 
 [[rule]]
 name = "bc-unconfirmed-cast"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_UNCONFIRMED_CAST"]
 
 [[rule]]
 name = "bc-unconfirmed-cast-of-return-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"]
 
 [[rule]]
@@ -169,14 +157,10 @@ spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
 
 [[rule]]
 name = "bx-boxing-immediately-unboxed-to-perform-coercion"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION"]
 
 [[rule]]
 name = "bx-unboxed-and-coerced-for-ternary-operator"
-presets = ["standard", "strict"]
-category = "performance"
 spotbugs = ["BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR"]
 
 [[rule]]
@@ -239,14 +223,10 @@ spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
 
 [[rule]]
 name = "co-abstract-self"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_ABSTRACT_SELF"]
 
 [[rule]]
 name = "co-compareto-incorrect-floating"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_COMPARETO_INCORRECT_FLOATING"]
 
 [[rule]]
@@ -256,14 +236,10 @@ spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
 
 [[rule]]
 name = "co-self-no-object"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CO_SELF_NO_OBJECT"]
 
 [[rule]]
 name = "ct-constructor-throw"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["CT_CONSTRUCTOR_THROW"]
 
 [[rule]]
@@ -320,14 +296,10 @@ spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
 
 [[rule]]
 name = "dls-dead-local-store-of-null"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_OF_NULL"]
 
 [[rule]]
 name = "dls-dead-local-store-shadows-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
 
 [[rule]]
@@ -362,8 +334,6 @@ spotbugs = ["DL_SYNCHRONIZATION_ON_SHARED_CONSTANT"]
 
 [[rule]]
 name = "dl-synchronization-on-unshared-boxed-primitive"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE"]
 
 [[rule]]
@@ -412,7 +382,6 @@ spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-doh"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_DOH"]
 
@@ -422,8 +391,6 @@ spotbugs = ["DMI_EMPTY_DB_PASSWORD"]
 
 [[rule]]
 name = "dmi-entry-sets-may-reuse-entry-objects"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS"]
 
 [[rule]]
@@ -457,14 +424,10 @@ spotbugs = ["DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT"]
 
 [[rule]]
 name = "dmi-misleading-substring"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_MISLEADING_SUBSTRING"]
 
 [[rule]]
 name = "dmi-nonserializable-object-written"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["DMI_NONSERIALIZABLE_OBJECT_WRITTEN"]
 
 [[rule]]
@@ -483,7 +446,6 @@ spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
 
 [[rule]]
 name = "dmi-unsupported-method"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["DMI_UNSUPPORTED_METHOD"]
 
@@ -498,7 +460,6 @@ spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
 
 [[rule]]
 name = "dmi-vacuous-call-to-easymock-method"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
 
@@ -683,7 +644,6 @@ spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
 
 [[rule]]
 name = "eq-abstract-self"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_ABSTRACT_SELF"]
 
@@ -699,7 +659,6 @@ spotbugs = ["EQ_ALWAYS_TRUE"]
 
 [[rule]]
 name = "eq-check-for-operand-not-compatible-with-this"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
 
@@ -714,7 +673,6 @@ spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
 
 [[rule]]
 name = "eq-doesnt-override-equals"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
 
@@ -725,7 +683,6 @@ spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
 
 [[rule]]
 name = "eq-getclass-and-class-constant"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
 
@@ -741,7 +698,6 @@ spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
 
 [[rule]]
 name = "eq-self-no-object"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_SELF_NO_OBJECT"]
 
@@ -758,7 +714,6 @@ spotbugs = ["EQ_UNUSUAL"]
 
 [[rule]]
 name = "es-comparing-parameter-string-with-eq"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ES_COMPARING_PARAMETER_STRING_WITH_EQ"]
 
@@ -822,7 +777,6 @@ spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
 
 [[rule]]
 name = "fl-math-using-float-precision"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
 
@@ -853,13 +807,11 @@ spotbugs = ["HE_HASHCODE_NO_EQUALS"]
 
 [[rule]]
 name = "he-hashcode-use-object-equals"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_HASHCODE_USE_OBJECT_EQUALS"]
 
 [[rule]]
 name = "he-inherits-equals-use-hashcode"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
 
@@ -883,7 +835,6 @@ spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
 
 [[rule]]
 name = "hsc-huge-shared-string-constant"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
 
@@ -894,7 +845,6 @@ spotbugs = ["HSM_HIDING_METHOD"]
 
 [[rule]]
 name = "ia-ambiguous-invocation-of-inherited-or-outer-method"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD"]
 
@@ -905,13 +855,11 @@ spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
 
 [[rule]]
 name = "icast-idiv-cast-to-double"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_IDIV_CAST_TO_DOUBLE"]
 
 [[rule]]
 name = "icast-integer-multiply-cast-to-long"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
 
@@ -936,13 +884,11 @@ spotbugs = ["ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT"]
 
 [[rule]]
 name = "ic-init-circularity"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IC_INIT_CIRCULARITY"]
 
 [[rule]]
 name = "ic-superclass-uses-subclass-during-initialization"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION"]
 
@@ -1032,7 +978,6 @@ spotbugs = ["IMSE_DONT_CATCH_IMSE"]
 
 [[rule]]
 name = "im-average-computation-could-overflow"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
 
@@ -1090,13 +1035,11 @@ spotbugs = ["IS2_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "isc-instantiate-static-class"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
 
 [[rule]]
 name = "is-field-not-guarded"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["IS_FIELD_NOT_GUARDED"]
 
@@ -1120,7 +1063,6 @@ spotbugs = ["J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION"]
 
 [[rule]]
 name = "jcip-field-isnt-final-in-immutable-class"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS"]
 
@@ -1149,13 +1091,11 @@ spotbugs = ["LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE"]
 
 [[rule]]
 name = "li-lazy-init-static"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["LI_LAZY_INIT_STATIC"]
 
 [[rule]]
 name = "li-lazy-init-update-static"
-presets = ["standard", "strict"]
 category = "mt-correctness"
 spotbugs = ["LI_LAZY_INIT_UPDATE_STATIC"]
 
@@ -1331,8 +1271,6 @@ spotbugs = ["NM_VERY_CONFUSING"]
 
 [[rule]]
 name = "nm-very-confusing-intentional"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_VERY_CONFUSING_INTENTIONAL"]
 
 [[rule]]
@@ -1342,8 +1280,6 @@ spotbugs = ["NM_WRONG_PACKAGE"]
 
 [[rule]]
 name = "nm-wrong-package-intentional"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["NM_WRONG_PACKAGE_INTENTIONAL"]
 
 [[rule]]
@@ -1381,19 +1317,16 @@ spotbugs = ["NO_NOTIFY_NOT_NOTIFYALL"]
 
 [[rule]]
 name = "np-always-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ALWAYS_NULL"]
 
 [[rule]]
 name = "np-always-null-exception"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ALWAYS_NULL_EXCEPTION"]
 
 [[rule]]
 name = "np-argument-might-be-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_ARGUMENT_MIGHT_BE_NULL"]
 
@@ -1409,7 +1342,6 @@ spotbugs = ["NP_CLONE_COULD_RETURN_NULL"]
 
 [[rule]]
 name = "np-closing-null"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_CLOSING_NULL"]
 
@@ -1423,13 +1355,11 @@ spotbugs = ["NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"]
 
 [[rule]]
 name = "np-guaranteed-deref"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_GUARANTEED_DEREF"]
 
 [[rule]]
 name = "np-guaranteed-deref-on-exception-path"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH"]
 
@@ -1439,8 +1369,6 @@ spotbugs = ["NP_IMMEDIATE_DEREFERENCE_OF_READLINE"]
 
 [[rule]]
 name = "np-load-of-known-null-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_LOAD_OF_KNOWN_NULL_VALUE"]
 
 [[rule]]
@@ -1451,31 +1379,24 @@ spotbugs = ["NP_METHOD_PARAMETER_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-method-parameter-tightens-annotation"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"]
 
 [[rule]]
 name = "np-method-return-relaxing-annotation"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_METHOD_RETURN_RELAXING_ANNOTATION"]
 
 [[rule]]
 name = "np-nonnull-field-not-initialized-in-constructor"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
 
 [[rule]]
 name = "np-nonnull-param-violation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_PARAM_VIOLATION"]
 
 [[rule]]
 name = "np-nonnull-return-violation"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NONNULL_RETURN_VIOLATION"]
 
@@ -1486,20 +1407,16 @@ spotbugs = ["NP_NULL_INSTANCEOF"]
 
 [[rule]]
 name = "np-null-on-some-path"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_ON_SOME_PATH"]
 
 [[rule]]
 name = "np-null-on-some-path-exception"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_ON_SOME_PATH_EXCEPTION"]
 
 [[rule]]
 name = "np-null-on-some-path-from-return-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"]
 
 [[rule]]
@@ -1510,19 +1427,16 @@ spotbugs = ["NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE"]
 
 [[rule]]
 name = "np-null-param-deref"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF"]
 
 [[rule]]
 name = "np-null-param-deref-all-targets-dangerous"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"]
 
 [[rule]]
 name = "np-null-param-deref-nonvirtual"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_NULL_PARAM_DEREF_NONVIRTUAL"]
 
@@ -1533,20 +1447,15 @@ spotbugs = ["NP_OPTIONAL_RETURN_NULL"]
 
 [[rule]]
 name = "np-parameter-must-be-nonnull-but-marked-as-nullable"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"]
 
 [[rule]]
 name = "np-store-into-nonnull-field"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["NP_STORE_INTO_NONNULL_FIELD"]
 
 [[rule]]
 name = "np-sync-and-null-check-field"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["NP_SYNC_AND_NULL_CHECK_FIELD"]
 
 [[rule]]
@@ -1587,14 +1496,10 @@ spotbugs = ["OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"]
 
 [[rule]]
 name = "odr-open-database-resource"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE"]
 
 [[rule]]
 name = "odr-open-database-resource-exception-path"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH"]
 
 [[rule]]
@@ -1603,8 +1508,6 @@ spotbugs = ["OS_OPEN_STREAM"]
 
 [[rule]]
 name = "os-open-stream-exception-path"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["OS_OPEN_STREAM_EXCEPTION_PATH"]
 
 [[rule]]
@@ -1689,8 +1592,6 @@ spotbugs = ["RANGE_STRING_INDEX"]
 
 [[rule]]
 name = "rcn-redundant-comparison-of-null-and-nonnull-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE"]
 
 [[rule]]
@@ -1703,13 +1604,10 @@ spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-of-null-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-would-have-been-a-npe"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"]
 
@@ -1832,8 +1730,6 @@ spotbugs = ["RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"]
 
 [[rule]]
 name = "rv-return-value-ignored-inferred"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RV_RETURN_VALUE_IGNORED_INFERRED"]
 
 [[rule]]
@@ -2300,7 +2196,6 @@ spotbugs = ["UL_UNRELEASED_LOCK_EXCEPTION_PATH"]
 
 [[rule]]
 name = "umac-uncallable-method-of-anonymous-class"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS"]
 

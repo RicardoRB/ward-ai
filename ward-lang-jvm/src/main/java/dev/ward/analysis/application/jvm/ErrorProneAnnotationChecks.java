@@ -29,10 +29,19 @@ final class ErrorProneAnnotationChecks {
         entry(
             "enclosed-runner-tests",
             toml -> new JavaEnclosedRunnerCheck(TomlValues.required(toml, MESSAGE))),
-        entry("guarded-by", toml -> new JavaGuardedByCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "guarded-by",
+            toml ->
+                new JavaGuardedByCheck(
+                    toml.getBoolean("skip-private", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
         entry(
             "errorprone-immutable",
-            toml -> new JavaImmutableCheck(TomlValues.required(toml, MESSAGE))),
+            toml ->
+                new JavaImmutableCheck(
+                    TomlValues.optionalStrings(toml, "annotations"),
+                    toml.getBoolean("final-only", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
         entry(
             "incompatible-modifiers",
             toml -> new JavaIncompatibleModifiersCheck(TomlValues.required(toml, MESSAGE))),

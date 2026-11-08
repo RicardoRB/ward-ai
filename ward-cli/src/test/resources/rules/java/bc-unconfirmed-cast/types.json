@@ -1,0 +1,49 @@
+{
+  "3:21-3:25": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "3:12-3:25": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:23-4:27": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "4:14-4:27": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "10:21-10:25": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "10:12-10:25": {
+    "type": {
+      "name": "java.lang.Object"
+    },
+    "members": {
+      "ancestors": []
+    }
+  }
+}

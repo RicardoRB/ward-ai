@@ -24,6 +24,7 @@ public final class JavaGuardedByCheck implements RuleCheck {
   private static final Set<String> LOCK_CALLS =
       Set.of("lock", "lockInterruptibly", "tryLock", "readLock", "writeLock", "synchronized");
 
+  private final boolean skipPrivate;
   private final String message;
 
   /**
@@ -32,6 +33,18 @@ public final class JavaGuardedByCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the field and {@code {max}} its lock
    */
   public JavaGuardedByCheck(final String message) {
+    this(false, message);
+  }
+
+  /**
+   * Creates the check.
+   *
+   * @param skipPrivate whether private methods are left unread, because their callers may hold the
+   *     lock
+   * @param message the message; {@code {value}} is the field and {@code {max}} its lock
+   */
+  public JavaGuardedByCheck(final boolean skipPrivate, final String message) {
+    this.skipPrivate = skipPrivate;
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -44,6 +57,7 @@ public final class JavaGuardedByCheck implements RuleCheck {
       if (!guarded.isEmpty()) {
         members.stream()
             .filter(member -> "methodDeclaration".equals(member.node().kind()))
+            .filter(member -> !skipPrivate || !member.has("private"))
             .filter(JavaGuardedByCheck::unlocked)
             .forEach(member -> accesses(member.node(), guarded, matches));
       }

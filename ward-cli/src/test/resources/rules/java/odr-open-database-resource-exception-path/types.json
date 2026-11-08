@@ -1,0 +1,17 @@
+{
+  "5:5": {
+    "type": {
+      "name": "java.sql.Connection"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.AutoCloseable"
+        },
+        {
+          "name": "java.sql.Connection"
+        }
+      ]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Status of the spotbugs rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-aa-assertion-of-arguments = { status = "planned", issue = "#316" }
+aa-assertion-of-arguments = "implemented"
 am-creates-empty-jar-file-entry = "implemented"
 am-creates-empty-zip-file-entry = "implemented"
 ase-assertion-with-side-effect = "implemented"
@@ -11,16 +11,16 @@ at-operation-sequence-on-concurrent-abstraction = "implemented"
 at-stale-thread-write-of-primitive = "implemented"
 at-unsafe-resource-access-in-thread = "implemented"
 bac-bad-applet-constructor = "implemented"
-bc-bad-cast-to-abstract-collection = { status = "planned", issue = "#316" }
-bc-bad-cast-to-concrete-collection = { status = "planned", issue = "#316" }
-bc-equals-method-should-work-for-all-objects = { status = "planned", issue = "#316" }
+bc-bad-cast-to-abstract-collection = "implemented"
+bc-bad-cast-to-concrete-collection = "implemented"
+bc-equals-method-should-work-for-all-objects = "implemented"
 bc-impossible-cast = "implemented"
 bc-impossible-cast-primitive-array = "implemented"
 bc-impossible-downcast = "implemented"
 bc-impossible-downcast-of-toarray = "implemented"
 bc-impossible-instanceof = "implemented"
-bc-unconfirmed-cast = { status = "planned", issue = "#316" }
-bc-unconfirmed-cast-of-return-value = { status = "planned", issue = "#316" }
+bc-unconfirmed-cast = "implemented"
+bc-unconfirmed-cast-of-return-value = "implemented"
 bc-vacuous-instanceof = "implemented"
 bit-add-of-signed-byte = "implemented"
 bit-and = "implemented"
@@ -32,8 +32,8 @@ bit-signed-check-high-bit = "implemented"
 boa-badly-overridden-adapter = "implemented"
 bshift-wrong-add-priority = "implemented"
 bx-boxing-immediately-unboxed = "implemented"
-bx-boxing-immediately-unboxed-to-perform-coercion = { status = "planned", issue = "#316" }
-bx-unboxed-and-coerced-for-ternary-operator = { status = "planned", issue = "#316" }
+bx-boxing-immediately-unboxed-to-perform-coercion = "implemented"
+bx-unboxed-and-coerced-for-ternary-operator = "implemented"
 bx-unboxing-immediately-reboxed = "implemented"
 caa-covariant-array-element-store = { status = "planned", issue = "#314" }
 caa-covariant-array-field = { status = "planned", issue = "#316" }
@@ -45,11 +45,11 @@ cn-idiom = "implemented"
 cn-idiom-no-super-call = "implemented"
 cn-implements-clone-but-not-cloneable = "implemented"
 cnt-rough-constant-value = "implemented"
-co-abstract-self = { status = "planned", issue = "#316" }
-co-compareto-incorrect-floating = { status = "planned", issue = "#316" }
+co-abstract-self = "implemented"
+co-compareto-incorrect-floating = "implemented"
 co-compareto-results-min-value = "implemented"
-co-self-no-object = { status = "planned", issue = "#316" }
-ct-constructor-throw = { status = "planned", issue = "#316" }
+co-self-no-object = "implemented"
+ct-constructor-throw = "implemented"
 cwo-closed-without-opened = { status = "planned", issue = "#316" }
 db-duplicate-branches = "implemented"
 db-duplicate-switch-clauses = "implemented"
@@ -62,12 +62,12 @@ dl-synchronization-on-boolean = "implemented"
 dl-synchronization-on-boxed-primitive = "implemented"
 dl-synchronization-on-interned-string = "implemented"
 dl-synchronization-on-shared-constant = "implemented"
-dl-synchronization-on-unshared-boxed-primitive = { status = "planned", issue = "#316" }
+dl-synchronization-on-unshared-boxed-primitive = "implemented"
 dls-dead-local-increment-in-return = "implemented"
 dls-dead-local-store = "implemented"
 dls-dead-local-store-in-return = "implemented"
-dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
-dls-dead-local-store-shadows-field = { status = "planned", issue = "#316" }
+dls-dead-local-store-of-null = "implemented"
+dls-dead-local-store-shadows-field = "implemented"
 dls-dead-store-of-class-literal = "implemented"
 dls-overwritten-increment = "implemented"
 dm-boolean-ctor = "implemented"
@@ -98,24 +98,24 @@ dmi-calling-next-from-hasnext = "implemented"
 dmi-collection-of-urls = "implemented"
 dmi-collections-should-not-contain-themselves = "implemented"
 dmi-constant-db-password = "implemented"
-dmi-doh = { status = "planned", issue = "#314" }
+dmi-doh = "implemented"
 dmi-empty-db-password = "implemented"
-dmi-entry-sets-may-reuse-entry-objects = { status = "planned", issue = "#316" }
+dmi-entry-sets-may-reuse-entry-objects = "implemented"
 dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor = "implemented"
 dmi-hardcoded-absolute-filename = "implemented"
 dmi-invoking-hashcode-on-array = "implemented"
 dmi-invoking-tostring-on-anonymous-array = "implemented"
 dmi-invoking-tostring-on-array = "implemented"
 dmi-long-bits-to-double-invoked-on-int = "implemented"
-dmi-misleading-substring = { status = "planned", issue = "#316" }
-dmi-nonserializable-object-written = { status = "planned", issue = "#316" }
+dmi-misleading-substring = "implemented"
+dmi-nonserializable-object-written = "implemented"
 dmi-random-used-only-once = "implemented"
 dmi-scheduled-thread-pool-executor-with-zero-core-threads = "implemented"
 dmi-thread-passed-where-runnable-expected = "implemented"
-dmi-unsupported-method = { status = "planned", issue = "#316" }
+dmi-unsupported-method = "implemented"
 dmi-useless-substring = "implemented"
 dmi-using-removeall-to-clear-collection = "implemented"
-dmi-vacuous-call-to-easymock-method = { status = "planned", issue = "#314" }
+dmi-vacuous-call-to-easymock-method = "implemented"
 dmi-vacuous-self-collection-call = "implemented"
 dp-create-classloader-inside-do-privileged = "implemented"
 dp-do-inside-do-privileged = "implemented"
@@ -136,21 +136,21 @@ ei-expose-static-buf2 = "implemented"
 ei-expose-static-rep2 = "implemented"
 env-use-property-instead-of-env = "implemented"
 eos-bad-end-of-stream-check = "implemented"
-eq-abstract-self = { status = "planned", issue = "#316" }
+eq-abstract-self = "implemented"
 eq-always-false = "implemented"
 eq-always-true = "implemented"
-eq-check-for-operand-not-compatible-with-this = { status = "planned", issue = "#316" }
+eq-check-for-operand-not-compatible-with-this = "implemented"
 eq-compareto-use-object-equals = "implemented"
 eq-comparing-class-names = "implemented"
-eq-doesnt-override-equals = { status = "planned", issue = "#316" }
+eq-doesnt-override-equals = "implemented"
 eq-dont-define-equals-for-enum = "implemented"
-eq-getclass-and-class-constant = { status = "planned", issue = "#316" }
+eq-getclass-and-class-constant = "implemented"
 eq-other-no-object = "implemented"
 eq-overriding-equals-not-symmetric = "implemented"
-eq-self-no-object = { status = "planned", issue = "#316" }
+eq-self-no-object = "implemented"
 eq-self-use-object = "implemented"
 eq-unusual = { status = "planned", issue = "#316" }
-es-comparing-parameter-string-with-eq = { status = "planned", issue = "#316" }
+es-comparing-parameter-string-with-eq = "implemented"
 fe-floating-point-equality = "implemented"
 fe-test-if-equal-to-not-a-number = "implemented"
 fi-empty = "implemented"
@@ -162,29 +162,29 @@ fi-nullify-super = "implemented"
 fi-public-should-be-protected = "implemented"
 fi-useless = "implemented"
 fl-floats-as-loop-counters = "implemented"
-fl-math-using-float-precision = { status = "planned", issue = "#314" }
+fl-math-using-float-precision = "implemented"
 fs-bad-date-format-flag-combo = "implemented"
 gc-unchecked-type-in-generic-call = { status = "planned", issue = "#316" }
 gc-unrelated-types = "implemented"
 he-equals-use-hashcode = "implemented"
 he-hashcode-no-equals = "implemented"
-he-hashcode-use-object-equals = { status = "planned", issue = "#316" }
-he-inherits-equals-use-hashcode = { status = "planned", issue = "#316" }
+he-hashcode-use-object-equals = "implemented"
+he-inherits-equals-use-hashcode = "implemented"
 he-signature-declares-hashing-of-unhashable-class = "implemented"
 he-use-of-unhashable-class = "implemented"
 hrs-request-parameter-to-cookie = "implemented"
 hrs-request-parameter-to-http-header = "implemented"
-hsc-huge-shared-string-constant = { status = "planned", issue = "#316" }
+hsc-huge-shared-string-constant = "implemented"
 hsm-hiding-method = "implemented"
-ia-ambiguous-invocation-of-inherited-or-outer-method = { status = "planned", issue = "#316" }
-ic-init-circularity = { status = "planned", issue = "#316" }
-ic-superclass-uses-subclass-during-initialization = { status = "planned", issue = "#316" }
+ia-ambiguous-invocation-of-inherited-or-outer-method = "implemented"
+ic-init-circularity = "implemented"
+ic-superclass-uses-subclass-during-initialization = "implemented"
 icast-bad-shift-amount = "implemented"
-icast-idiv-cast-to-double = { status = "planned", issue = "#316" }
+icast-idiv-cast-to-double = "implemented"
 icast-int-2-long-as-instant = "implemented"
 icast-int-cast-to-double-passed-to-ceil = "implemented"
 icast-int-cast-to-float-passed-to-round = "implemented"
-icast-integer-multiply-cast-to-long = { status = "planned", issue = "#316" }
+icast-integer-multiply-cast-to-long = "implemented"
 icast-questionable-unsigned-right-shift = "implemented"
 iil-elements-get-length-in-loop = { status = "planned", issue = "#316" }
 iil-pattern-compile-in-loop = "implemented"
@@ -201,7 +201,7 @@ iju-teardown-no-super = "implemented"
 il-container-added-to-itself = "implemented"
 il-infinite-loop = "implemented"
 il-infinite-recursive-loop = "implemented"
-im-average-computation-could-overflow = { status = "planned", issue = "#316" }
+im-average-computation-could-overflow = "implemented"
 im-bad-check-for-odd = "implemented"
 im-multiplying-result-of-irem = "implemented"
 ima-inefficient-member-access = { status = "planned", issue = "#316" }
@@ -214,21 +214,21 @@ int-vacuous-bit-operation = "implemented"
 int-vacuous-comparison = "implemented"
 io-appending-to-object-output-stream = "implemented"
 ip-parameter-is-dead-but-overwritten = "implemented"
-is-field-not-guarded = { status = "planned", issue = "#316" }
+is-field-not-guarded = "implemented"
 is-inconsistent-sync = { status = "planned", issue = "#316" }
 is2-inconsistent-sync = { status = "planned", issue = "#316" }
-isc-instantiate-static-class = { status = "planned", issue = "#316" }
+isc-instantiate-static-class = "implemented"
 it-no-such-element = "implemented"
 ita-inefficient-to-array = "implemented"
 j2-ee-store-of-non-serializable-object-into-session = "implemented"
-jcip-field-isnt-final-in-immutable-class = { status = "planned", issue = "#316" }
+jcip-field-isnt-final-in-immutable-class = "implemented"
 jlm-jsr166-lock-monitorenter = "implemented"
 jlm-jsr166-utilconcurrent-monitorenter = "implemented"
 jml-jsr166-calling-wait-rather-than-await = "implemented"
 jua-dont-assert-instanceof-in-tests = "implemented"
 lg-lost-logger-due-to-weak-reference = "implemented"
-li-lazy-init-static = { status = "planned", issue = "#316" }
-li-lazy-init-update-static = { status = "planned", issue = "#316" }
+li-lazy-init-static = "implemented"
+li-lazy-init-update-static = "implemented"
 mc-overridable-method-call-in-clone = "implemented"
 mc-overridable-method-call-in-constructor = "implemented"
 mc-overridable-method-call-in-read-object = "implemented"
@@ -267,45 +267,45 @@ nm-method-naming-convention = "implemented"
 nm-same-simple-name-as-interface = "implemented"
 nm-same-simple-name-as-superclass = "implemented"
 nm-very-confusing = "implemented"
-nm-very-confusing-intentional = { status = "planned", issue = "#316" }
+nm-very-confusing-intentional = "implemented"
 nm-wrong-package = "implemented"
-nm-wrong-package-intentional = { status = "planned", issue = "#316" }
+nm-wrong-package-intentional = "implemented"
 nn-naked-notify = "implemented"
 no-notify-not-notifyall = "implemented"
 noise-field-reference = { status = "planned", issue = "#316" }
 noise-method-call = { status = "planned", issue = "#316" }
 noise-null-dereference = { status = "planned", issue = "#316" }
 noise-operation = { status = "planned", issue = "#316" }
-np-always-null = { status = "planned", issue = "#314" }
-np-always-null-exception = { status = "planned", issue = "#314" }
-np-argument-might-be-null = { status = "planned", issue = "#314" }
+np-always-null = "implemented"
+np-always-null-exception = "implemented"
+np-argument-might-be-null = "implemented"
 np-boolean-return-null = "implemented"
 np-clone-could-return-null = "implemented"
-np-closing-null = { status = "planned", issue = "#314" }
+np-closing-null = "implemented"
 np-dereference-of-readline-value = "implemented"
 np-equals-should-handle-null-argument = "implemented"
-np-guaranteed-deref = { status = "planned", issue = "#314" }
-np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
+np-guaranteed-deref = "implemented"
+np-guaranteed-deref-on-exception-path = "implemented"
 np-immediate-dereference-of-readline = "implemented"
-np-load-of-known-null-value = { status = "planned", issue = "#316" }
+np-load-of-known-null-value = "implemented"
 np-method-parameter-relaxing-annotation = { status = "planned", issue = "#316" }
-np-method-parameter-tightens-annotation = { status = "planned", issue = "#316" }
-np-method-return-relaxing-annotation = { status = "planned", issue = "#316" }
-np-nonnull-field-not-initialized-in-constructor = { status = "planned", issue = "#314" }
-np-nonnull-param-violation = { status = "planned", issue = "#314" }
-np-nonnull-return-violation = { status = "planned", issue = "#314" }
+np-method-parameter-tightens-annotation = "implemented"
+np-method-return-relaxing-annotation = "implemented"
+np-nonnull-field-not-initialized-in-constructor = "implemented"
+np-nonnull-param-violation = "implemented"
+np-nonnull-return-violation = "implemented"
 np-null-instanceof = "implemented"
-np-null-on-some-path = { status = "planned", issue = "#314" }
-np-null-on-some-path-exception = { status = "planned", issue = "#314" }
-np-null-on-some-path-from-return-value = { status = "planned", issue = "#316" }
+np-null-on-some-path = "implemented"
+np-null-on-some-path-exception = "implemented"
+np-null-on-some-path-from-return-value = "implemented"
 np-null-on-some-path-might-be-infeasible = { status = "planned", issue = "#316" }
-np-null-param-deref = { status = "planned", issue = "#314" }
-np-null-param-deref-all-targets-dangerous = { status = "planned", issue = "#314" }
-np-null-param-deref-nonvirtual = { status = "planned", issue = "#314" }
+np-null-param-deref = "implemented"
+np-null-param-deref-all-targets-dangerous = "implemented"
+np-null-param-deref-nonvirtual = "implemented"
 np-optional-return-null = "implemented"
-np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
-np-store-into-nonnull-field = { status = "planned", issue = "#314" }
-np-sync-and-null-check-field = { status = "planned", issue = "#316" }
+np-parameter-must-be-nonnull-but-marked-as-nullable = "implemented"
+np-store-into-nonnull-field = "implemented"
+np-sync-and-null-check-field = "implemented"
 np-tostring-could-return-null = "implemented"
 np-unwritten-field = "implemented"
 np-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
@@ -313,10 +313,10 @@ ns-dangerous-non-short-circuit = "implemented"
 ns-non-short-circuit = "implemented"
 obl-unsatisfied-obligation = { status = "planned", issue = "#316" }
 obl-unsatisfied-obligation-exception-edge = { status = "planned", issue = "#316" }
-odr-open-database-resource = { status = "planned", issue = "#316" }
-odr-open-database-resource-exception-path = { status = "planned", issue = "#316" }
+odr-open-database-resource = "implemented"
+odr-open-database-resource-exception-path = "implemented"
 os-open-stream = "implemented"
-os-open-stream-exception-path = { status = "planned", issue = "#316" }
+os-open-stream-exception-path = "implemented"
 overriding-methods-must-invoke-super = "implemented"
 pa-public-array-attribute = "implemented"
 pa-public-mutable-object-attribute = "implemented"
@@ -338,11 +338,11 @@ range-string-index = "implemented"
 rc-ref-comparison = "implemented"
 rc-ref-comparison-bad-practice = "implemented"
 rc-ref-comparison-bad-practice-boolean = "implemented"
-rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
+rcn-redundant-comparison-of-null-and-nonnull-value = "implemented"
 rcn-redundant-comparison-two-null-values = "implemented"
 rcn-redundant-nullcheck-of-nonnull-value = "implemented"
-rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
-rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
+rcn-redundant-nullcheck-of-null-value = "implemented"
+rcn-redundant-nullcheck-would-have-been-a-npe = "implemented"
 re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
@@ -366,7 +366,7 @@ rv-rem-of-hashcode = "implemented"
 rv-rem-of-random-int = "implemented"
 rv-return-value-ignored = "implemented"
 rv-return-value-ignored-bad-practice = "implemented"
-rv-return-value-ignored-inferred = { status = "planned", issue = "#316" }
+rv-return-value-ignored-inferred = "implemented"
 rv-return-value-ignored-no-side-effect = "implemented"
 rv-return-value-of-putifabsent-ignored = "implemented"
 sa-field-double-assignment = "implemented"
@@ -458,7 +458,7 @@ ui-inheritance-unsafe-getresource = "implemented"
 ul-unreleased-lock = "implemented"
 ul-unreleased-lock-exception-path = "implemented"
 um-unnecessary-math = "implemented"
-umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314" }
+umac-uncallable-method-of-anonymous-class = "implemented"
 unknown = { status = "planned", issue = "#316" }
 upm-uncalled-private-method = "implemented"
 ur-uninit-read = "implemented"

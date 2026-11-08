@@ -1,0 +1,259 @@
+# The last SpotBugs CORRECTNESS patterns for Java: library calls that do nothing, arithmetic in
+# single precision, and the null patterns that read a data-flow over the control-flow graph.
+
+[[rules]]
+id = "ward:java/dmi-doh"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "library-call"
+mode = "null-check-of-constant"
+message = "a String constant is passed where the value to check for null belongs"
+'''
+
+[[rules]]
+id = "ward:java/dmi-vacuous-call-to-easymock-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "library-call"
+mode = "empty-mocks"
+message = "this EasyMock call is given no mocks, so it does nothing"
+'''
+
+[[rules]]
+id = "ward:java/fl-math-using-float-precision"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "float-precision"
+message = "this arithmetic is done in float precision: use double unless the precision is intended"
+'''
+
+[[rules]]
+id = "ward:java/umac-uncallable-method-of-anonymous-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "uncallable-anonymous-method"
+message = "this method of an anonymous class overrides nothing and is never called, so it is dead code"
+'''
+
+[[rules]]
+id = "ward:java/np-always-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "always-null"
+message = "this variable is null on every path here, so dereferencing it throws NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-always-null-exception"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "always-null-exception"
+message = "this variable is null on an exception path here, so dereferencing it throws NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/np-closing-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "closing-null"
+message = "close() is called on a variable that is null on every path here"
+'''
+
+[[rules]]
+id = "ward:java/np-argument-might-be-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "argument-might-be-null"
+message = "this parameter is annotated as possibly null and is dereferenced without a null check"
+'''
+
+[[rules]]
+id = "ward:java/np-nonnull-param-violation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "nonnull-param-violation"
+message = "null is passed for a parameter that is annotated never to be null"
+'''
+
+[[rules]]
+id = "ward:java/np-null-param-deref"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-param-deref"
+message = "a null on some path is passed to a parameter that must not be null"
+'''
+
+[[rules]]
+id = "ward:java/np-null-param-deref-nonvirtual"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-param-deref-nonvirtual"
+message = "null is passed to a parameter that the called method always dereferences"
+'''
+
+[[rules]]
+id = "ward:java/np-null-param-deref-all-targets-dangerous"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-param-deref-all-targets-dangerous"
+message = "null is passed to a parameter that every possible target of the call always dereferences"
+'''
+
+[[rules]]
+id = "ward:java/np-store-into-nonnull-field"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "store-into-nonnull-field"
+message = "null is stored into a field that is annotated never to be null"
+'''
+
+[[rules]]
+id = "ward:java/np-nonnull-return-violation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "nonnull-return-violation"
+message = "null can be returned from a method that is annotated never to return null"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-on-some-path"
+message = "a value that is null on some path is certain to be dereferenced here"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path-exception"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-on-some-path-exception"
+message = "a value that is null on some exception path is certain to be dereferenced here"
+'''
+
+[[rules]]
+id = "ward:java/np-guaranteed-deref"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "guaranteed-deref"
+message = "a value that is null on some path is certain to be dereferenced, here or elsewhere"
+'''
+
+[[rules]]
+id = "ward:java/np-guaranteed-deref-on-exception-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "guaranteed-deref-on-exception-path"
+message = "a value that is null on some exception path is certain to be dereferenced, here or elsewhere"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-nullcheck-would-have-been-a-npe"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "would-have-been-npe"
+message = "this value is checked for null after it was dereferenced, so it could not have been null"
+'''
+
+[[rules]]
+id = "ward:java/np-nonnull-field-not-initialized-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "nonnull-field-init"
+message = "this constructor leaves a field that is annotated never to be null unset"
+'''
