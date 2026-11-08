@@ -52,7 +52,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^\(.*&\s*(0x[89a-fA-F][0-9a-fA-F]*|\d{3,})[lL]?\)\s*(<\s*0|>=\s*0)$'
+text = '^\(.*&\s*(0x80000000[lL]?|0x8000000000000000[lL])\)\s*(<\s*0|>=\s*0)$'
 message = "{value} tests the sign of a masked high bit; compare the masked value with 0 instead"
 '''
 

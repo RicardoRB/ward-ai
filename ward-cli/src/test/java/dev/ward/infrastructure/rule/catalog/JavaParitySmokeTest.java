@@ -29,8 +29,7 @@ final class JavaParitySmokeTest {
 
   @Test
   @EnabledIf("toolsConfigured")
-  void theParityReportMatchesTheCommittedOne()
-      throws IOException, InterruptedException {
+  void theParityReportMatchesTheCommittedOne() throws IOException, InterruptedException {
     final ParityEnvironment environment = ParityEnvironment.fromProperties().orElseThrow();
     final List<ParityTool> tools =
         new ArrayList<>(
@@ -50,5 +49,11 @@ final class JavaParitySmokeTest {
     }
     assertThat(JavaParityReport.pinned(report))
         .isEqualTo(JavaParityReport.pinned(JavaParityReport.committed()));
+    assertThat(
+            JavaParityReport.pinned(report).stream()
+                .filter(line -> line.contains("\tposition\t") || line.contains("\ttool-extra\t"))
+                .toList())
+        .as("disagreements with a tool that no approximation explains")
+        .isEmpty();
   }
 }
