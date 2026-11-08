@@ -1,0 +1,16 @@
+{
+  "3:21": {
+    "members": {
+      "annotations": [
+        "com.google.auto.value.AutoValue"
+      ]
+    }
+  },
+  "7:30": {
+    "members": {
+      "annotations": [
+        "com.google.auto.value.AutoValue"
+      ]
+    }
+  }
+}

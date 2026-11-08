@@ -1,0 +1,77 @@
+{
+  "6:5": {
+    "call": {
+      "declaring": {
+        "name": "Base"
+      },
+      "name": "hook",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.ForOverride"
+      ]
+    }
+  },
+  "21:5": {
+    "call": {
+      "declaring": {
+        "name": "Base"
+      },
+      "name": "hook",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.ForOverride"
+      ]
+    }
+  },
+  "22:5": {
+    "call": {
+      "declaring": {
+        "name": "Base"
+      },
+      "name": "hook",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.ForOverride"
+      ]
+    }
+  },
+  "29:5": {
+    "call": {
+      "declaring": {
+        "name": "Base"
+      },
+      "name": "hook",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.ForOverride"
+      ]
+    }
+  },
+  "12:5-12:15": {
+    "call": {
+      "declaring": {
+        "name": "Base"
+      },
+      "name": "hook",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.ForOverride"
+      ]
+    }
+  }
+}

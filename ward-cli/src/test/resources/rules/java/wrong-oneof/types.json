@@ -1,0 +1,38 @@
+{
+  "3:13": {
+    "members": {
+      "fields": [
+        {
+          "name": "FOO",
+          "static": true
+        },
+        {
+          "name": "BAR",
+          "static": true
+        },
+        {
+          "name": "KIND_NOT_SET",
+          "static": true
+        }
+      ]
+    }
+  },
+  "16:13": {
+    "members": {
+      "fields": [
+        {
+          "name": "FOO",
+          "static": true
+        },
+        {
+          "name": "BAR",
+          "static": true
+        },
+        {
+          "name": "KIND_NOT_SET",
+          "static": true
+        }
+      ]
+    }
+  }
+}
