@@ -163,7 +163,7 @@ fi-public-should-be-protected = "implemented"
 fi-useless = "implemented"
 fl-floats-as-loop-counters = "implemented"
 fl-math-using-float-precision = { status = "planned", issue = "#314" }
-fs-bad-date-format-flag-combo = { status = "planned", issue = "#316" }
+fs-bad-date-format-flag-combo = "implemented"
 gc-unchecked-type-in-generic-call = { status = "planned", issue = "#316" }
 gc-unrelated-types = "implemented"
 he-equals-use-hashcode = "implemented"
@@ -226,7 +226,7 @@ jlm-jsr166-lock-monitorenter = "implemented"
 jlm-jsr166-utilconcurrent-monitorenter = "implemented"
 jml-jsr166-calling-wait-rather-than-await = "implemented"
 jua-dont-assert-instanceof-in-tests = "implemented"
-lg-lost-logger-due-to-weak-reference = { status = "planned", issue = "#316" }
+lg-lost-logger-due-to-weak-reference = "implemented"
 li-lazy-init-static = { status = "planned", issue = "#316" }
 li-lazy-init-update-static = { status = "planned", issue = "#316" }
 mc-overridable-method-call-in-clone = { status = "planned", issue = "#316" }
