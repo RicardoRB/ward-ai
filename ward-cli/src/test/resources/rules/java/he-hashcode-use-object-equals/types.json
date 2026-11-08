@@ -1,0 +1,113 @@
+{
+  "1:1-6:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "2:1-10:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "12:1-16:1": {
+    "members": {
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -4,7 +4,10 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.EqualsInheritanceCheck;
+import dev.ward.analysis.domain.rule.check.IntegerArithmeticCheck;
 import dev.ward.analysis.domain.rule.check.LockScopeCallCheck;
+import dev.ward.analysis.domain.rule.check.StaticClassInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.SynchronizedOnUpdatedFieldCheck;
 import dev.ward.analysis.domain.rule.check.UnusedFieldCheck;
 import dev.ward.analysis.domain.rule.check.VolatileIncrementCheck;
@@ -38,6 +41,27 @@ final class SpotbugsChecks {
                 new UnusedFieldCheck(
                     UnusedFieldCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode").toUpperCase(Locale.ROOT)),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "equals-inheritance",
+            toml ->
+                new EqualsInheritanceCheck(
+                    EqualsInheritanceCheck.Mode.valueOf(
+                        TomlValues.required(toml, "mode")
+                            .replace('-', '_')
+                            .toUpperCase(Locale.ROOT)),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "static-class-instantiation",
+            toml -> new StaticClassInstantiationCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "integer-arithmetic",
+            toml ->
+                new IntegerArithmeticCheck(
+                    IntegerArithmeticCheck.Mode.valueOf(
+                        TomlValues.required(toml, "mode")
+                            .replace('-', '_')
+                            .toUpperCase(Locale.ROOT)),
                     TomlValues.required(toml, MESSAGE))),
         entry(
             "volatile-increment",

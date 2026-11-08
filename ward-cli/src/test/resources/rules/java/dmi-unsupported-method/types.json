@@ -1,0 +1,62 @@
+{
+  "6:5-6:16": {
+    "call": {
+      "declaring": {
+        "name": "java.sql.Time"
+      },
+      "name": "setYear",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:12-7:23": {
+    "call": {
+      "declaring": {
+        "name": "java.sql.Date"
+      },
+      "name": "getHours",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:27-7:36": {
+    "call": {
+      "declaring": {
+        "name": "java.sql.Time"
+      },
+      "name": "getDay",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:12-7:22": {
+    "call": {
+      "declaring": {
+        "name": "java.sql.Date"
+      },
+      "name": "getYear",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:26-7:37": {
+    "call": {
+      "declaring": {
+        "name": "java.sql.Time"
+      },
+      "name": "getHours",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

@@ -483,7 +483,6 @@ spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
 
 [[rule]]
 name = "dmi-unsupported-method"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["DMI_UNSUPPORTED_METHOD"]
 
@@ -683,7 +682,6 @@ spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
 
 [[rule]]
 name = "eq-abstract-self"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_ABSTRACT_SELF"]
 
@@ -714,7 +712,6 @@ spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
 
 [[rule]]
 name = "eq-doesnt-override-equals"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
 
@@ -725,7 +722,6 @@ spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
 
 [[rule]]
 name = "eq-getclass-and-class-constant"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
 
@@ -741,7 +737,6 @@ spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
 
 [[rule]]
 name = "eq-self-no-object"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["EQ_SELF_NO_OBJECT"]
 
@@ -853,13 +848,11 @@ spotbugs = ["HE_HASHCODE_NO_EQUALS"]
 
 [[rule]]
 name = "he-hashcode-use-object-equals"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_HASHCODE_USE_OBJECT_EQUALS"]
 
 [[rule]]
 name = "he-inherits-equals-use-hashcode"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
 
@@ -883,7 +876,6 @@ spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
 
 [[rule]]
 name = "hsc-huge-shared-string-constant"
-presets = ["standard", "strict"]
 category = "performance"
 spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
 
@@ -905,13 +897,11 @@ spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
 
 [[rule]]
 name = "icast-idiv-cast-to-double"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_IDIV_CAST_TO_DOUBLE"]
 
 [[rule]]
 name = "icast-integer-multiply-cast-to-long"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
 
@@ -1032,7 +1022,6 @@ spotbugs = ["IMSE_DONT_CATCH_IMSE"]
 
 [[rule]]
 name = "im-average-computation-could-overflow"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
 
@@ -1090,7 +1079,6 @@ spotbugs = ["IS2_INCONSISTENT_SYNC"]
 
 [[rule]]
 name = "isc-instantiate-static-class"
-presets = ["standard", "strict"]
 category = "bad-practice"
 spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
 
