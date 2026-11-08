@@ -1,0 +1,193 @@
+{
+  "6:12-6:70": {
+    "type": {
+      "name": "java.util.LinkedHashMap"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.HashMap"
+        },
+        {
+          "name": "java.util.AbstractMap"
+        },
+        {
+          "name": "java.util.Map"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "6:44-6:70": {
+    "call": {
+      "declaring": {
+        "name": "android.os.Bundle"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "19:12-19:64": {
+    "type": {
+      "name": "java.util.HashMap"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.AbstractMap"
+        },
+        {
+          "name": "java.util.Map"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "19:38-19:64": {
+    "call": {
+      "declaring": {
+        "name": "android.os.Bundle"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "23:12-23:60": {
+    "type": {
+      "name": "java.util.Map"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "23:34-23:60": {
+    "call": {
+      "declaring": {
+        "name": "android.os.Bundle"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "27:12-27:47": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.CharSequence"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "27:21-27:47": {
+    "call": {
+      "declaring": {
+        "name": "android.os.Bundle"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "31:12-31:48": {
+    "type": {
+      "name": "app.Mystery"
+    }
+  },
+  "31:22-31:48": {
+    "call": {
+      "declaring": {
+        "name": "android.os.Bundle"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  },
+  "35:12-35:74": {
+    "type": {
+      "name": "java.util.TreeMap"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Map"
+        }
+      ]
+    }
+  },
+  "35:48-35:74": {
+    "call": {
+      "declaring": {
+        "name": "app.Holder"
+      },
+      "name": "getSerializable",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.io.Serializable"
+      },
+      "static": false,
+      "varargs": false
+    }
+  }
+}
