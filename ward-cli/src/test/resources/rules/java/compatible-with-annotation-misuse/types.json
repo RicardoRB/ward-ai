@@ -1,0 +1,119 @@
+{
+  "2:3": {
+    "call": {
+      "declaring": {
+        "name": "T"
+      },
+      "name": "m",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "compatibleWith": [
+        "K"
+      ],
+      "typeParameters": [],
+      "declaringTypeParameters": [
+        "K"
+      ]
+    }
+  },
+  "3:3": {
+    "call": {
+      "declaring": {
+        "name": "T"
+      },
+      "name": "m",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "compatibleWith": [
+        "Q"
+      ],
+      "typeParameters": [],
+      "declaringTypeParameters": [
+        "K"
+      ]
+    }
+  },
+  "5:3": {
+    "call": {
+      "declaring": {
+        "name": "T"
+      },
+      "name": "m",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "compatibleWith": [
+        "K"
+      ],
+      "typeParameters": [],
+      "declaringTypeParameters": [
+        "K"
+      ]
+    }
+  },
+  "6:7": {
+    "call": {
+      "declaring": {
+        "name": "T"
+      },
+      "name": "m",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "compatibleWith": [
+        "Q"
+      ],
+      "typeParameters": [
+        "Q"
+      ],
+      "declaringTypeParameters": [
+        "K"
+      ]
+    }
+  },
+  "7:3": {
+    "call": {
+      "declaring": {
+        "name": "T"
+      },
+      "name": "m",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      },
+      "compatibleWith": [
+        ""
+      ],
+      "typeParameters": [],
+      "declaringTypeParameters": [
+        "K"
+      ]
+    }
+  }
+}

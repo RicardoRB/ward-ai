@@ -1,0 +1,48 @@
+{
+  "2:10": {
+    "shape": {
+      "kind": "class",
+      "abstract": true,
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": [
+        "com.google.auto.value.AutoValue.Builder"
+      ]
+    }
+  },
+  "5:10": {
+    "shape": {
+      "kind": "class",
+      "abstract": true,
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": [
+        "com.google.auto.value.AutoValue.Builder"
+      ]
+    }
+  },
+  "11:10": {
+    "shape": {
+      "kind": "class",
+      "abstract": true,
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": []
+    }
+  }
+}

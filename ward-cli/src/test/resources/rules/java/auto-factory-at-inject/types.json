@@ -1,0 +1,100 @@
+{
+  "2:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": [
+        "com.google.auto.factory.AutoFactory"
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Widget"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          },
+          "annotations": [
+            "javax.inject.Inject"
+          ]
+        }
+      ]
+    }
+  },
+  "5:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": [
+        "com.google.auto.factory.AutoFactory"
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Plain"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          },
+          "annotations": []
+        }
+      ]
+    }
+  },
+  "9:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "annotations": [],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Injected"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          },
+          "annotations": [
+            "javax.inject.Inject"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -43,7 +43,8 @@ final class FactTable {
     return new SpanFacts(
         ask(kinds, FactKind.TYPE, () -> FactValues.type(typed)).orElse(null),
         ask(kinds, FactKind.SHAPE, () -> typeMembers.shape(typed, declaration)).orElse(null),
-        ask(kinds, FactKind.CALL, () -> FactValues.call(typed)).orElse(null),
+        ask(kinds, FactKind.CALL, () -> FactValues.call(typed).or(() -> declared(declaration)))
+            .orElse(null),
         list(kinds, FactKind.ANNOTATIONS, declaration.map(FactValues::annotations)),
         list(
             kinds,
@@ -63,6 +64,13 @@ final class FactTable {
   private static <T> List<T> list(
       final Set<FactKind> kinds, final FactKind kind, final Optional<List<T>> facts) {
     return kinds.contains(kind) ? facts.orElse(List.of()) : List.of();
+  }
+
+  /** Returns the call target of the method a span declares, with its type parameters. */
+  private static Optional<CallTarget> declared(final Optional<DeclInfo> declaration) {
+    return declaration
+        .filter(found -> found.method().isPresent() && found.owner().isPresent())
+        .flatMap(found -> FactMembers.target(found.owner().get(), found.method().get()));
   }
 
   private List<CallTarget> overrides(final Optional<DeclInfo> declaration) {

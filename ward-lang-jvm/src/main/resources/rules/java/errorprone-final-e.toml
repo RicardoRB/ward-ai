@@ -1,0 +1,92 @@
+# Error Prone checks at ERROR severity for Java, final round, third part: declarations read through their type facts, and calls compared with a constant or needing one.
+
+[[rules]]
+id = "ward:java/compatible-with-annotation-misuse"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "declaration-facts"
+test = "compatible-with-misuse"
+message = "the value of @CompatibleWith must name a type parameter of the method or of its class"
+'''
+
+[[rules]]
+id = "ward:java/comparable-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "declaration-facts"
+test = "comparable-type-mismatch"
+message = "Comparable is implemented for a type the class is not, so compareTo can fail with a ClassCastException"
+'''
+
+[[rules]]
+id = "ward:java/bad-annotation-implementation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "declaration-facts"
+test = "annotation-implementation"
+message = "a class that implements an annotation must override equals and hashCode as the Annotation contract says"
+'''
+
+[[rules]]
+id = "ward:java/compile-time-constant"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "compile-time-constant"
+
+message = "this parameter requires a compile-time constant, and the argument is computed at run time"
+'''
+
+[[rules]]
+id = "ward:java/compare-to-zero"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "compare-to-zero"
+
+message = "the result of compareTo or compare should only be compared with zero, not with a particular value"
+'''
+
+[[rules]]
+id = "ward:java/auto-factory-at-inject"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "declaration-facts"
+test = "auto-factory-injected"
+message = "@AutoFactory and @Inject should not be used in the same type"
+'''
+
+[[rules]]
+id = "ward:java/auto-value-builder-defaults-in-constructor"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "declaration-facts"
+test = "auto-value-builder-constructor"
+message = "set the defaults of an AutoValue builder in the static factory method that creates it, not in a constructor"
+'''
