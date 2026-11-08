@@ -6,7 +6,7 @@ address-selection = { status = "planned", issue = "#319" }
 almost-exhaustive-test-parameter = { status = "planned", issue = "#319" }
 almost-javadoc = { status = "planned", issue = "#319" }
 already-checked = { status = "planned", issue = "#319" }
-always-throws = { status = "planned", issue = "#319" }
+always-throws = "implemented"
 ambiguous-method-reference = { status = "planned", issue = "#319" }
 android-injection-before-super = "implemented"
 annotate-format-method = { status = "planned", issue = "#319" }
@@ -37,7 +37,7 @@ attempted-negative-zero = { status = "planned", issue = "#319" }
 auto-factory-at-inject = "implemented"
 auto-value-boxed-values = { status = "planned", issue = "#319" }
 auto-value-builder-defaults-in-constructor = "implemented"
-auto-value-constructor-order-checker = { status = "planned", issue = "#319" }
+auto-value-constructor-order-checker = "implemented"
 auto-value-final-methods = { status = "planned", issue = "#319" }
 auto-value-immutable-fields = { status = "planned", issue = "#319" }
 auto-value-subclass-leaked = { status = "planned", issue = "#319" }
@@ -64,7 +64,7 @@ boxed-primitive-equality = "implemented"
 boxing-comparator = { status = "planned", issue = "#319" }
 bug-pattern-naming = { status = "planned", issue = "#319" }
 builder-return-this = { status = "planned", issue = "#319" }
-bundle-deserialization-cast = { status = "planned", issue = "#319" }
+bundle-deserialization-cast = "implemented"
 byte-buffer-backing-array = { status = "planned", issue = "#319" }
 cache-loader-null = { status = "planned", issue = "#319" }
 can-ignore-return-value-suggester = { status = "planned", issue = "#319" }
@@ -75,7 +75,7 @@ catch-and-print-stack-trace = { status = "planned", issue = "#319" }
 catch-fail = { status = "planned", issue = "#319" }
 catching-unchecked = { status = "planned", issue = "#319" }
 chained-assertion-loses-context = { status = "planned", issue = "#319" }
-chaining-constructor-ignores-parameter = { status = "planned", issue = "#319" }
+chaining-constructor-ignores-parameter = "implemented"
 character-get-numeric-value = { status = "planned", issue = "#319" }
 check-not-null-multiple-times = "implemented"
 check-return-value = "implemented"
