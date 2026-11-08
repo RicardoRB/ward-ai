@@ -29,8 +29,7 @@ final class JavaParitySmokeTest {
 
   @Test
   @EnabledIf("toolsConfigured")
-  void theParityReportMatchesTheCommittedOne()
-      throws IOException, InterruptedException {
+  void theParityReportMatchesTheCommittedOne() throws IOException, InterruptedException {
     final ParityEnvironment environment = ParityEnvironment.fromProperties().orElseThrow();
     final List<ParityTool> tools =
         new ArrayList<>(
