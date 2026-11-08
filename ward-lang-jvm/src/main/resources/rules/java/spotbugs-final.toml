@@ -596,3 +596,14 @@ check = "unwritten-public-field"
 message = "the public or protected field {value} is dereferenced but no file of the project ever writes a non-null value to it"
 '''
 
+[[rules]]
+id = "ward:java/uc-useless-condition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "value-range-condition"
+message = "the condition {value} is already decided by the conditions around it"
+'''

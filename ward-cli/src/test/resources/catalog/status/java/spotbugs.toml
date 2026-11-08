@@ -444,7 +444,7 @@ tq-maybe-source-value-reaches-always-sink = "implemented"
 tq-maybe-source-value-reaches-never-sink = "implemented"
 tq-never-value-used-where-always-required = "implemented"
 tq-unknown-value-used-where-always-strictly-required = "implemented"
-uc-useless-condition = { status = "planned", issue = "#316" }
+uc-useless-condition = "implemented"
 uc-useless-condition-type = "implemented"
 uc-useless-object = "implemented"
 uc-useless-object-stack = "implemented"
@@ -463,7 +463,7 @@ ur-uninit-read = "implemented"
 ur-uninit-read-called-from-super-constructor = "implemented"
 urf-unread-field = "implemented"
 urf-unread-public-or-protected-field = "implemented"
-usc-potential-security-check-based-on-untrusted-source = { status = "planned", issue = "#316" }
+usc-potential-security-check-based-on-untrusted-source = "implemented"
 usm-useless-abstract-method = { status = "planned", issue = "#316" }
 usm-useless-subclass-method = { status = "planned", issue = "#316" }
 uuf-unused-field = "implemented"

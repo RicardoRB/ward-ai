@@ -21,6 +21,7 @@ import java.util.Objects;
  *     the type variable the argument must be compatible with, or empty text for none
  * @param typeParameters the names of the type parameters of the method
  * @param declaringTypeParameters the names of the type parameters of the declaring type
+ * @param isFinal whether the method is declared final, or {@code null} when that is not known
  */
 public record CallTarget(
     TypeRef declaringType,
@@ -34,7 +35,8 @@ public record CallTarget(
     List<String> declaringAnnotations,
     List<String> compatibleWith,
     List<String> typeParameters,
-    List<String> declaringTypeParameters) {
+    List<String> declaringTypeParameters,
+    Boolean isFinal) {
 
   /**
    * Copies the parameters and annotations.

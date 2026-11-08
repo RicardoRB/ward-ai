@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.JavaConcurrentSequenceCheck;
+import dev.ward.analysis.domain.rule.check.JavaPrivilegedParameterCheck;
 import dev.ward.analysis.domain.rule.check.JavaSharedVariableCheck;
 import dev.ward.analysis.domain.rule.check.JavaThreadResourceCheck;
 import java.util.Locale;
@@ -30,6 +31,9 @@ final class SpotbugsThreadChecks {
         entry(
             "concurrent-sequence",
             toml -> new JavaConcurrentSequenceCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "privileged-parameter-call",
+            toml -> new JavaPrivilegedParameterCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "thread-resource",
             toml -> new JavaThreadResourceCheck(TomlValues.required(toml, MESSAGE))));

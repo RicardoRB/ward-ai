@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.rule.check.JavaSyncAccessorCheck;
 import dev.ward.analysis.domain.rule.check.JavaTypeRangeCheck;
 import dev.ward.analysis.domain.rule.check.JavaUninitializedFieldCheck;
 import dev.ward.analysis.domain.rule.check.JavaUselessVoidMethodCheck;
+import dev.ward.analysis.domain.rule.check.JavaValueRangeCheck;
 import dev.ward.analysis.domain.rule.check.JavaWaitContextCheck;
 import java.util.Locale;
 import java.util.Map;
@@ -60,6 +61,9 @@ final class SpotbugsFinalChecks {
         entry(
             "useless-void-method",
             toml -> new JavaUselessVoidMethodCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "value-range-condition",
+            toml -> new JavaValueRangeCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "type-range-condition",
             toml -> new JavaTypeRangeCheck(TomlValues.required(toml, MESSAGE))),

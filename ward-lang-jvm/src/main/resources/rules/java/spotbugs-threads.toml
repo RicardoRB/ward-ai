@@ -63,3 +63,15 @@ body = '''
 check = "thread-resource"
 message = "{value} is changed and used by thread code without a lock"
 '''
+
+[[rules]]
+id = "ward:java/usc-potential-security-check-based-on-untrusted-source"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "privileged-parameter-call"
+message = "{value} is called on a parameter that the privileged action calls again; a subclass can answer the two calls differently"
+'''

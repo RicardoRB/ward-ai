@@ -19,7 +19,8 @@
         "primitive": true
       },
       "static": false,
-      "varargs": false
+      "varargs": false,
+      "final": false
     }
   },
   "16:3": {
@@ -37,7 +38,8 @@
           "name": "java.lang.String"
         },
         "static": false,
-        "varargs": false
+        "varargs": false,
+        "final": false
       }
     ]
   },
