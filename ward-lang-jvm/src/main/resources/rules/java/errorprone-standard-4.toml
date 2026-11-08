@@ -1,0 +1,115 @@
+# Error Prone checks at ERROR severity for Java, A to F, fourth batch: calls whose target carries an annotation, syntax
+# patterns over the compact text of a node, and calls to the Guava future helpers. Each is on by default in Error Prone.
+
+[[rules]]
+id = "ward:java/do-not-call"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+method-annotations = ["com.google.errorprone.annotations.DoNotCall"]
+message = "this method is annotated @DoNotCall and must not be called"
+'''
+
+[[rules]]
+id = "ward:java/check-return-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+method-annotations = ["com.google.errorprone.annotations.CheckReturnValue", "javax.annotation.CheckReturnValue"]
+ignored = true
+message = "the result of this method is annotated @CheckReturnValue and must be used"
+'''
+
+[[rules]]
+id = "ward:java/ban-class-loader"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.net\.)?URLClassLoader\('
+message = "URLClassLoader loads classes from untrusted locations and can execute arbitrary code"
+'''
+
+[[rules]]
+id = "ward:java/duplicate-map-keys"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:com\.google\.common\.collect\.)?Immutable(?:Sorted|Bi)?Map|(?:java\.util\.)?Map)\.of\((?:[^,()]+,[^,()]+,)*?(?<k>"[^",()]*"|\w+),[^,()]+,(?:[^,()]+,[^,()]+,)*?\k<k>,'
+message = "a key appears twice in this map factory call; the duplicate throws or silently replaces the first"
+'''
+
+[[rules]]
+id = "ward:java/fuzzy-equals-should-not-be-used-in-equals-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^booleanequals\((?:final)?(?:java\.lang\.)?Object\w+\)\{.*fuzzyEquals\('
+message = "fuzzyEquals is not transitive, so it breaks the equals contract; compare the values exactly"
+'''
+
+[[rules]]
+id = "ward:java/equals-reference"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^booleanequals\((?:final)?(?:java\.lang\.)?Object(?<p>\w+)\)\{.*(?:this\.equals|(?<![\w.])equals)\(\k<p>\)'
+message = "equals compares the argument with equals, which calls this method again; use == to compare with this"
+'''
+
+[[rules]]
+id = "ward:java/async-callable-returns-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["com.google.common.util.concurrent.Futures"]
+names = ["submitAsync", "scheduleAsync"]
+text = '[(,](?:\(\))->(?:null|\{returnnull;\})[,)]'
+message = "an AsyncCallable must not return null; return a future whose result is null"
+'''
+
+[[rules]]
+id = "ward:java/async-function-returns-null"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["com.google.common.util.concurrent.Futures", "com.google.common.util.concurrent.FluentFuture"]
+names = ["transformAsync", "catchingAsync"]
+text = '[(,](?:\w+|\(\w*\))->(?:null|\{returnnull;\})[,)]'
+message = "an AsyncFunction must not return null; return a future whose result is null"
+'''

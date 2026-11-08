@@ -180,14 +180,10 @@ errorprone = ["AssistedInjectAndInjectOnSameConstructor"]
 
 [[rule]]
 name = "async-callable-returns-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["AsyncCallableReturnsNull"]
 
 [[rule]]
 name = "async-function-returns-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["AsyncFunctionReturnsNull"]
 
 [[rule]]
@@ -288,8 +284,6 @@ errorprone = ["BadShiftAmount"]
 
 [[rule]]
 name = "ban-class-loader"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["BanClassLoader"]
 
 [[rule]]
@@ -456,8 +450,6 @@ errorprone = ["CheckNotNullMultipleTimes"]
 
 [[rule]]
 name = "check-return-value"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["CheckReturnValue"]
 
 [[rule]]
@@ -709,8 +701,6 @@ errorprone = ["DistinctVarargsChecker"]
 
 [[rule]]
 name = "do-not-call"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DoNotCall"]
 
 [[rule]]
@@ -763,8 +753,6 @@ errorprone = ["DuplicateDateFormatField"]
 
 [[rule]]
 name = "duplicate-map-keys"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DuplicateMapKeys"]
 
 [[rule]]
@@ -855,8 +843,6 @@ errorprone = ["EqualsNaN"]
 
 [[rule]]
 name = "equals-reference"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["EqualsReference"]
 
 [[rule]]
@@ -1141,8 +1127,6 @@ errorprone = ["FuturesGetCheckedIllegalExceptionType"]
 
 [[rule]]
 name = "fuzzy-equals-should-not-be-used-in-equals-method"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["FuzzyEqualsShouldNotBeUsedInEqualsMethod"]
 
 [[rule]]

@@ -1,0 +1,59 @@
+{
+  "3:5-3:17": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "compute",
+      "params": [],
+      "returns": {
+        "name": "Object"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.CheckReturnValue"
+      ]
+    }
+  },
+  "4:19-4:31": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "compute",
+      "params": [],
+      "returns": {
+        "name": "Object"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.CheckReturnValue"
+      ]
+    }
+  },
+  "3:5-3:19": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "ignorable",
+      "params": [],
+      "returns": {
+        "name": "Object"
+      }
+    }
+  },
+  "4:12-4:24": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "compute",
+      "params": [],
+      "returns": {
+        "name": "Object"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.CheckReturnValue"
+      ]
+    }
+  }
+}
