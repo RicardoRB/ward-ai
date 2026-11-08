@@ -9,6 +9,13 @@ import dev.ward.analysis.domain.rule.check.CastTypesCheck;
 import dev.ward.analysis.domain.rule.check.ConstructorThrowCheck;
 import dev.ward.analysis.domain.rule.check.CovariantCompareToCheck;
 import dev.ward.analysis.domain.rule.check.DeadStoreCheck;
+import dev.ward.analysis.domain.rule.check.EntrySetReuseCheck;
+import dev.ward.analysis.domain.rule.check.FloatingCompareToCheck;
+import dev.ward.analysis.domain.rule.check.NonSerializableWriteCheck;
+import dev.ward.analysis.domain.rule.check.TernaryCoercionCheck;
+import dev.ward.analysis.domain.rule.check.UncheckedEqualsCastCheck;
+import dev.ward.analysis.domain.rule.check.UnconfirmedCastCheck;
+import dev.ward.analysis.domain.rule.check.UnsharedBoxedLockCheck;
 import java.util.Locale;
 import java.util.Map;
 
@@ -43,6 +50,29 @@ final class SpotbugsFinalChecks {
                     TomlValues.strings(toml, "from"),
                     TomlValues.strings(toml, "to"),
                     TomlValues.required(toml, MESSAGE))),
+        entry(
+            "ternary-coercion",
+            toml -> new TernaryCoercionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "floating-compare-to",
+            toml -> new FloatingCompareToCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unchecked-equals-cast",
+            toml -> new UncheckedEqualsCastCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unconfirmed-cast",
+            toml ->
+                new UnconfirmedCastCheck(
+                    toml.getBoolean("call-result", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "entry-set-reuse", toml -> new EntrySetReuseCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "non-serializable-write",
+            toml -> new NonSerializableWriteCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unshared-boxed-lock",
+            toml -> new UnsharedBoxedLockCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "dead-store",
             toml ->

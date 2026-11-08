@@ -116,3 +116,115 @@ check = "dead-store"
 kind = "shadows_field"
 message = "the value stored in local '{value}' is never read, and a field has the same name"
 '''
+
+[[rules]]
+id = "ward:java/bx-unboxed-and-coerced-for-ternary-operator"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "ternary-coercion"
+message = "a boxed number is unboxed and converted to the other branch's type in a conditional; cast one branch"
+'''
+
+[[rules]]
+id = "ward:java/co-compareto-incorrect-floating"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "floating-compare-to"
+message = "compareTo orders float or double values with comparison operators; use Double.compare"
+'''
+
+[[rules]]
+id = "ward:java/bc-equals-method-should-work-for-all-objects"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "unchecked-equals-cast"
+message = "equals casts its argument without checking its class first"
+'''
+
+[[rules]]
+id = "ward:java/bc-unconfirmed-cast"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unconfirmed-cast"
+message = "a variable is cast to a subtype without an instanceof check in this method"
+'''
+
+[[rules]]
+id = "ward:java/bc-unconfirmed-cast-of-return-value"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unconfirmed-cast"
+call-result = true
+message = "the result of a call is cast to a subtype without an instanceof check in this method"
+'''
+
+[[rules]]
+id = "ward:java/dmi-entry-sets-may-reuse-entry-objects"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "entry-set-reuse"
+message = "the loop variable of an entrySet() loop is stored; a map may reuse the entry object"
+'''
+
+[[rules]]
+id = "ward:java/dmi-nonserializable-object-written"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "non-serializable-write"
+message = "an object of a final class that is not Serializable is written to an object output"
+'''
+
+[[rules]]
+id = "ward:java/dl-synchronization-on-unshared-boxed-primitive"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unshared-boxed-lock"
+message = "synchronized on a field initialised with a boxed constructor; lock a plain Object"
+'''
+
+[[rules]]
+id = "ward:java/dmi-misleading-substring"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+declaring-types = ["java.lang.String"]
+names = ["substring"]
+text = '\.substring\(0\)$'
+message = "substring(0) returns the same string; remove the call"
+'''
