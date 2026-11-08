@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.domain.config.WardException;
 import java.io.IOException;
@@ -61,6 +62,11 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     }
     units.sort(Comparator.comparing(SourceUnit::path));
     return List.copyOf(units);
+  }
+
+  @Override
+  public ProjectFiles manifests(final Path root, final Set<String> names) {
+    return FileSystemManifests.read(root, names);
   }
 
   /** Adds each source file in a wanted language to the units. */

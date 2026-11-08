@@ -42,7 +42,8 @@ final class RuleEngineProjectFilesTest {
 
     assertThat(findings)
         .containsExactly(
-            new AnalysisFinding(RULE, AnalysisSeverity.WARNING, "manifest", MANIFEST, 3, 4, null, List.of()));
+            new AnalysisFinding(
+                RULE, AnalysisSeverity.WARNING, "manifest", MANIFEST, 3, 4, null, List.of()));
   }
 
   @Test
@@ -67,13 +68,16 @@ final class RuleEngineProjectFilesTest {
 
     assertThat(findings)
         .containsExactly(
-            new AnalysisFinding(RULE, AnalysisSeverity.WARNING, "unit", SOURCE, 3, 4, null, List.of()));
+            new AnalysisFinding(
+                RULE, AnalysisSeverity.WARNING, "unit", SOURCE, 3, 4, null, List.of()));
   }
 
   @Test
   void theTreesOnlyRunPassesNoFiles() {
     final List<AnalysisFinding> findings =
-        new RuleEngine(matcher((trees, files) -> List.of(new ProjectMatch(SOURCE, new RuleMatch(AT, "x")))))
+        new RuleEngine(
+                matcher(
+                    (trees, files) -> List.of(new ProjectMatch(SOURCE, new RuleMatch(AT, "x")))))
             .runProject(List.of(unit()), List.of(frontend()), List.of(definition()));
 
     assertThat(findings).hasSize(1);

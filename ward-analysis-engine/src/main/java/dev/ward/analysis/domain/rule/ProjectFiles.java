@@ -49,7 +49,8 @@ public record ProjectFiles(SortedMap<String, String> texts) {
     Objects.requireNonNull(texts, "texts");
     final SortedMap<String, String> copy = new TreeMap<>();
     texts.forEach(
-        (path, text) -> copy.put(Objects.requireNonNull(path, "path"), Objects.requireNonNull(text, "text")));
+        (path, text) ->
+            copy.put(Objects.requireNonNull(path, "path"), Objects.requireNonNull(text, "text")));
     return Collections.unmodifiableSortedMap(copy);
   }
 }

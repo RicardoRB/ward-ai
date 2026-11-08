@@ -2,6 +2,7 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -15,4 +16,12 @@ public interface AnalysisSourceUnits {
    * by project-relative path. Returns no units when {@code languages} is empty.
    */
   List<SourceUnit> read(Path root, Set<AnalysisLanguage> languages);
+
+  /**
+   * Reads the files named {@code names} under {@code root}, by project-relative path, skipping the
+   * folders that source reads skip, such as {@code node_modules}. Returns no files by default.
+   */
+  default ProjectFiles manifests(final Path root, final Set<String> names) {
+    return ProjectFiles.empty();
+  }
 }

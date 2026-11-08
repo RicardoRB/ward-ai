@@ -92,7 +92,8 @@ public final class CheckedRule implements CompiledRule {
   }
 
   @Override
-  public List<ProjectMatch> project(final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+  public List<ProjectMatch> project(
+      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     return check instanceof ProjectCheck project ? project.project(trees, files) : List.of();
   }
 }

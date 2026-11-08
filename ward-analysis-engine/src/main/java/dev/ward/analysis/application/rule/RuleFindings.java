@@ -17,7 +17,10 @@ final class RuleFindings {
     return at(definition, unit.path(), match);
   }
 
-  /** Returns the finding of {@code match}, which {@code definition} reported in the file at {@code path}. */
+  /**
+   * Returns the finding of {@code match}, which {@code definition} reported in the file at {@code
+   * path}.
+   */
   static AnalysisFinding at(
       final RuleDefinition definition, final String path, final RuleMatch match) {
     final Span span = match.span();

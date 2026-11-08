@@ -2,11 +2,11 @@ package dev.ward.analysis.domain.rule.check;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.analysis.domain.ir.Span;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
