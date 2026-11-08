@@ -10,7 +10,10 @@ import dev.ward.analysis.domain.rule.check.KnownNullCheck;
 import dev.ward.analysis.domain.rule.check.NullReturnDereferenceCheck;
 import dev.ward.analysis.domain.rule.check.NullableParameterCheck;
 import dev.ward.analysis.domain.rule.check.OverrideNullnessCheck;
+import dev.ward.analysis.domain.rule.check.PartialConstructionCheck;
 import dev.ward.analysis.domain.rule.check.SynchronizedNullCheckCheck;
+import dev.ward.analysis.domain.rule.check.UnlockWithoutLockCheck;
+import dev.ward.analysis.domain.rule.check.UnwrittenPublicFieldCheck;
 import java.util.Locale;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
@@ -27,6 +30,17 @@ final class FinalSpotbugsChecks {
     return Map.ofEntries(
         entry("class-shape", FinalSpotbugsChecks::classShape),
         entry("known-null", FinalSpotbugsChecks::knownNull),
+        entry(
+            "unwritten-public-field",
+            toml -> new UnwrittenPublicFieldCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "partial-construction",
+            toml -> new PartialConstructionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unlock-without-lock",
+            toml ->
+                new UnlockWithoutLockCheck(
+                    TomlValues.strings(toml, "types"), TomlValues.required(toml, MESSAGE))),
         entry(
             "null-return-dereference",
             toml -> new NullReturnDereferenceCheck(TomlValues.required(toml, MESSAGE))),

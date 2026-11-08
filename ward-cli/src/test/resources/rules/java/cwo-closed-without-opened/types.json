@@ -1,0 +1,28 @@
+{
+  "11:5": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.locks.Lock"
+      },
+      "name": "unlock",
+      "params": [],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "14:7": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.locks.Lock"
+      },
+      "name": "unlock",
+      "params": [],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  }
+}

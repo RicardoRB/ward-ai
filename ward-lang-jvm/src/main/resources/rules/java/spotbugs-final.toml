@@ -489,9 +489,9 @@ presets = ["standard", "strict"]
 body = '''
 check = "override-nullness"
 mode = "parameter-tightens"
-nullable = ["javax.annotation.Nullable", "javax.annotation.CheckForNull"]
-nonnull = ["javax.annotation.Nonnull"]
-message = "this override makes a parameter @Nonnull that the overridden method accepts as null"
+nullable = ["javax.annotation.CheckForNull"]
+nonnull = ["javax.annotation.Nonnull", "javax.annotation.Nullable"]
+message = "this override makes a parameter @Nonnull or @Nullable where the overridden method has @CheckForNull"
 '''
 
 [[rules]]
@@ -557,5 +557,42 @@ presets = ["standard", "strict"]
 body = '''
 check = "null-return-dereference"
 message = "the result of {value} may be null and is dereferenced without a check"
+'''
+
+[[rules]]
+id = "ward:java/cwo-closed-without-opened"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unlock-without-lock"
+types = ["java.util.concurrent.locks.Lock", "java.util.concurrent.locks.ReentrantLock"]
+message = "{value}.unlock() is called in a method that never acquires the lock"
+'''
+
+[[rules]]
+id = "ward:java/dc-partially-constructed"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "partial-construction"
+message = "the volatile field {value} is published and then still modified inside the lock; build the object fully before assigning it"
+'''
+
+[[rules]]
+id = "ward:java/np-unwritten-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unwritten-public-field"
+message = "the public or protected field {value} is dereferenced but no file of the project ever writes a non-null value to it"
 '''
 

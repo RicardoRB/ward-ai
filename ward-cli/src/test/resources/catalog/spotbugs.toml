@@ -244,8 +244,6 @@ spotbugs = ["CT_CONSTRUCTOR_THROW"]
 
 [[rule]]
 name = "cwo-closed-without-opened"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["CWO_CLOSED_WITHOUT_OPENED"]
 
 [[rule]]
@@ -267,8 +265,6 @@ spotbugs = ["DC_DOUBLECHECK"]
 
 [[rule]]
 name = "dc-partially-constructed"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["DC_PARTIALLY_CONSTRUCTED"]
 
 [[rule]]
@@ -1456,8 +1452,6 @@ spotbugs = ["NP_UNWRITTEN_FIELD"]
 
 [[rule]]
 name = "np-unwritten-public-or-protected-field"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
 
 [[rule]]

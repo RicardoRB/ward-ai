@@ -6,12 +6,14 @@ import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedMap;
 
 /** A rule whose matches come from one {@link RuleCheck}. */
 public final class CheckedRule implements CompiledRule {
@@ -76,5 +78,15 @@ public final class CheckedRule implements CompiledRule {
       final UnitViews views,
       final SourceUnit unit) {
     return check.matches(root, views.flow(), views.scopes(), views.types(), unit);
+  }
+
+  @Override
+  public boolean isProject() {
+    return check instanceof ProjectCheck;
+  }
+
+  @Override
+  public List<ProjectMatch> project(final SortedMap<String, SyntaxNode> trees) {
+    return check instanceof ProjectCheck project ? project.project(trees) : List.of();
   }
 }

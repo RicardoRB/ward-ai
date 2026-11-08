@@ -1,8 +1,8 @@
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.CheckForNull;
 
 class Base {
-  void accept(@Nullable String text) {}
+  void accept(@CheckForNull String text) {}
 }
 
 class Child extends Base {

@@ -106,6 +106,7 @@ final class UnitResultCache {
                 new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     wholeRunFindings.addAll(UnusedDefinitionFindings.findings(rules, snapshot.summaries()));
+    wholeRunFindings.addAll(engine.runProject(units, frontends, rules));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
   }
 

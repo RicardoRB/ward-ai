@@ -136,17 +136,20 @@ class JvmFixturesTest {
     final Map<String, CheckFactory> factories = new JvmCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
     final AnalysisLanguage language = rule.languages().iterator().next();
+    final RuleEngine engine = new RuleEngine(matcher);
+    final List<SourceUnit> units =
+        List.of(
+            new SourceUnit(
+                unitName(file), language, Files.readString(file, StandardCharsets.UTF_8)));
     final RuleRunResult result =
-        new RuleEngine(matcher)
-            .run(
-                List.of(
-                    new SourceUnit(
-                        unitName(file), language, Files.readString(file, StandardCharsets.UTF_8))),
-                JvmFixtureFrontends.forRule(rule, language, directory),
-                List.of(rule));
+        engine.run(units, JvmFixtureFrontends.forRule(rule, language, directory), List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
-    return result.findings().stream()
+    final List<AnalysisFinding> all = new ArrayList<>(result.findings());
+    all.addAll(
+        engine.runProject(
+            units, JvmFixtureFrontends.forRule(rule, language, directory), List.of(rule)));
+    return all.stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .map(JvmFixturesTest::position)
         .toList();

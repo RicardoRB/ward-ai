@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
+import java.util.SortedMap;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
 public interface CompiledRule {
@@ -97,5 +98,18 @@ public interface CompiledRule {
       final UnitViews views,
       final SourceUnit unit) {
     return matches(root, dependencies, views.flow(), views.scopes(), unit);
+  }
+
+  /** Tells whether this rule is a fact about the whole project, run by {@link #project}. */
+  default boolean isProject() {
+    return false;
+  }
+
+  /**
+   * Returns the matches of this rule over every file of its language at once. Only a rule for which
+   * {@link #isProject()} holds returns any.
+   */
+  default List<ProjectMatch> project(final SortedMap<String, SyntaxNode> trees) {
+    return List.of();
   }
 }
