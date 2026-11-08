@@ -22,6 +22,7 @@ import java.util.Objects;
  * @param typeParameters the names of the type parameters of the method
  * @param declaringTypeParameters the names of the type parameters of the declaring type
  * @param isFinal whether the method is declared final, or {@code null} when that is not known
+ * @param isAbstract whether the method is declared abstract, or {@code null} when that is not known
  */
 public record CallTarget(
     TypeRef declaringType,
@@ -36,7 +37,44 @@ public record CallTarget(
     List<String> compatibleWith,
     List<String> typeParameters,
     List<String> declaringTypeParameters,
-    Boolean isFinal) {
+    Boolean isFinal,
+    Boolean isAbstract) {
+
+  /**
+   * Creates a target whose abstractness is not known.
+   *
+   * @throws NullPointerException if the declaring type, name or parameters are missing
+   */
+  public CallTarget(
+      final TypeRef declaringType,
+      final String name,
+      final List<TypeRef> parameters,
+      final TypeRef returnType,
+      final boolean isStatic,
+      final boolean isVarargs,
+      final List<String> annotations,
+      final List<List<String>> parameterAnnotations,
+      final List<String> declaringAnnotations,
+      final List<String> compatibleWith,
+      final List<String> typeParameters,
+      final List<String> declaringTypeParameters,
+      final Boolean isFinal) {
+    this(
+        declaringType,
+        name,
+        parameters,
+        returnType,
+        isStatic,
+        isVarargs,
+        annotations,
+        parameterAnnotations,
+        declaringAnnotations,
+        compatibleWith,
+        typeParameters,
+        declaringTypeParameters,
+        isFinal,
+        null);
+  }
 
   /**
    * Copies the parameters and annotations.

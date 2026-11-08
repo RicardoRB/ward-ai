@@ -1,0 +1,56 @@
+{
+  "3:19-3:23": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "6:16-6:45": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "identityHashCode",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "6:40-6:44": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "4:19-4:22": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "7:16-7:44": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "identityHashCode",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "7:40-7:43": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}
