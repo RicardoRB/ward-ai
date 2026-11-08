@@ -80,7 +80,9 @@ class UnitTypeFactsTest {
             List.of(),
             List.of(),
             List.of(),
-            null);
+            null,
+            Map.of(),
+            Map.of());
 
     assertThat(target.parameters()).containsExactly(TypeRef.of("java.lang.Object"));
     assertThatThrownBy(() -> target.parameters().add(STRING))

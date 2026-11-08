@@ -2,7 +2,9 @@ package dev.ward.analysis.domain.jvm.types;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** The attributes of one class, field or method that type facts need. */
 final class MemberAttributes {
@@ -13,6 +15,7 @@ final class MemberAttributes {
   boolean sealed;
   boolean record;
   final List<String> annotations = new ArrayList<>();
+  final Map<String, List<String>> annotationValues = new LinkedHashMap<>();
   final List<List<String>> parameterAnnotations = new ArrayList<>();
   final List<String> compatibleWith = new ArrayList<>();
   final List<String> thrown = new ArrayList<>();
@@ -38,8 +41,7 @@ final class MemberAttributes {
       case "Signature" -> signature(in, pool);
       case "ConstantValue" -> constant(in, pool);
       case "Exceptions" -> exceptions(in, pool);
-      case "RuntimeVisibleAnnotations", "RuntimeInvisibleAnnotations" ->
-          annotations.addAll(new AnnotationReader(in, pool).list());
+      case "RuntimeVisibleAnnotations", "RuntimeInvisibleAnnotations" -> annotations(in, pool);
       default -> structure(in, pool, owner, attribute);
     }
   }
@@ -55,6 +57,16 @@ final class MemberAttributes {
         // Other attributes are skipped by the caller.
       }
     }
+  }
+
+  private void annotations(final ByteBuffer in, final ConstantPool pool) {
+    final AnnotationReader reader = new AnnotationReader(in, pool);
+    annotations.addAll(reader.list());
+    reader
+        .values()
+        .forEach(
+            (key, list) ->
+                annotationValues.computeIfAbsent(key, k -> new ArrayList<>()).addAll(list));
   }
 
   private void signature(final ByteBuffer in, final ConstantPool pool) {

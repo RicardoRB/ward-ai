@@ -48,7 +48,9 @@ final class TypedTrees {
         List.of(),
         List.of(),
         List.of(),
-        null);
+        null,
+        Map.of(),
+        Map.of());
   }
 
   TypeShape shape(final TypeShape.Kind kind) {

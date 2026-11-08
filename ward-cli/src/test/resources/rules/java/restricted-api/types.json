@@ -1,0 +1,99 @@
+{
+  "3:5-3:19": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "dangerous",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.RestrictedApi"
+      ],
+      "annotationValues": {
+        "com.google.errorprone.annotations.RestrictedApi#explanation": [
+          "internal only"
+        ],
+        "com.google.errorprone.annotations.RestrictedApi#allowlistAnnotations": [
+          "Allowed"
+        ]
+      }
+    }
+  },
+  "8:5-8:19": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "dangerous",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.RestrictedApi"
+      ],
+      "annotationValues": {
+        "com.google.errorprone.annotations.RestrictedApi#explanation": [
+          "internal only"
+        ],
+        "com.google.errorprone.annotations.RestrictedApi#allowlistAnnotations": [
+          "Allowed"
+        ]
+      }
+    }
+  },
+  "7:3": {
+    "annotations": [
+      "Allowed"
+    ]
+  },
+  "18:5-18:19": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "dangerous",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.RestrictedApi"
+      ],
+      "annotationValues": {
+        "com.google.errorprone.annotations.RestrictedApi#explanation": [
+          "internal only"
+        ],
+        "com.google.errorprone.annotations.RestrictedApi#allowedOnPath": [
+          ".*passing\\.java"
+        ]
+      }
+    }
+  },
+  "23:5-23:19": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "dangerous",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.RestrictedApi"
+      ],
+      "annotationValues": {
+        "com.google.errorprone.annotations.RestrictedApi#explanation": [
+          "internal only"
+        ],
+        "com.google.errorprone.annotations.RestrictedApi#allowedOnPath": [
+          ".*passing\\.java"
+        ]
+      }
+    }
+  }
+}

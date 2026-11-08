@@ -1,6 +1,8 @@
 package dev.ward.analysis.domain.types;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,6 +24,11 @@ import java.util.Objects;
  * @param typeParameters the names of the type parameters of the method
  * @param declaringTypeParameters the names of the type parameters of the declaring type
  * @param isFinal whether the method is declared final, or {@code null} when that is not known
+ * @param annotationValues the element values of the annotations of the method, by {@code
+ *     <annotation>#<element>}: a string as written, a class as its qualified name, an enum constant
+ *     as its name, any other constant as its text, an array as its elements; empty when none or
+ *     unknown
+ * @param declaringAnnotationValues the same for the annotations of the declaring type
  */
 public record CallTarget(
     TypeRef declaringType,
@@ -36,10 +43,12 @@ public record CallTarget(
     List<String> compatibleWith,
     List<String> typeParameters,
     List<String> declaringTypeParameters,
-    Boolean isFinal) {
+    Boolean isFinal,
+    Map<String, List<String>> annotationValues,
+    Map<String, List<String>> declaringAnnotationValues) {
 
   /**
-   * Copies the parameters and annotations.
+   * Copies the parameters, annotations and annotation element values.
    *
    * @throws NullPointerException if the declaring type, name or parameters are missing
    */
@@ -53,5 +62,13 @@ public record CallTarget(
     compatibleWith = List.copyOf(compatibleWith);
     typeParameters = List.copyOf(typeParameters);
     declaringTypeParameters = List.copyOf(declaringTypeParameters);
+    annotationValues = Map.copyOf(copy(annotationValues));
+    declaringAnnotationValues = Map.copyOf(copy(declaringAnnotationValues));
+  }
+
+  private static Map<String, List<String>> copy(final Map<String, List<String>> values) {
+    final Map<String, List<String>> copy = new LinkedHashMap<>();
+    values.forEach((key, list) -> copy.put(key, List.copyOf(list)));
+    return copy;
   }
 }

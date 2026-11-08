@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.jvm.types;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
  * @param memberClasses the binary names of the member classes
  * @param sealed whether the class is sealed
  * @param kotlin whether the class was compiled from Kotlin
+ * @param annotationValues the element values of its annotations, by {@code <annotation>#<element>}
  */
 public record JvmClass(
     String name,
@@ -32,7 +34,8 @@ public record JvmClass(
     List<String> annotations,
     List<String> memberClasses,
     boolean sealed,
-    boolean kotlin) {
+    boolean kotlin,
+    Map<String, List<String>> annotationValues) {
 
   /** The kinds of class. */
   public enum Kind {
@@ -63,6 +66,7 @@ public record JvmClass(
     methods = List.copyOf(methods);
     annotations = List.copyOf(annotations);
     memberClasses = List.copyOf(memberClasses);
+    annotationValues = Map.copyOf(annotationValues);
   }
 
   /** Returns whether the class is abstract; an interface is. */

@@ -43,7 +43,9 @@ class InheritedMemberCheckTest {
         List.of(),
         List.of(),
         List.of(),
-        null);
+        null,
+        Map.of(),
+        Map.of());
   }
 
   private static List<String> run(
@@ -65,7 +67,8 @@ class InheritedMemberCheckTest {
             List.of(TypeRef.of(superType)),
             List.of(),
             inherited.inheritedMethods(),
-            inherited.inheritedFields());
+            inherited.inheritedFields(),
+            Map.of());
     final SpanFacts facts =
         new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null, members);
     final List<RuleMatch> found =
@@ -80,7 +83,8 @@ class InheritedMemberCheckTest {
   }
 
   private static TypeMembers methods(final CallTarget... targets) {
-    return new TypeMembers(List.of(), List.of(), List.of(), List.of(), List.of(targets), List.of());
+    return new TypeMembers(
+        List.of(), List.of(), List.of(), List.of(), List.of(targets), List.of(), Map.of());
   }
 
   @Test
@@ -107,7 +111,8 @@ class InheritedMemberCheckTest {
             List.of(),
             List.of(),
             List.of(),
-            List.of(new FieldRef("count", TypeRef.of("int"), false, List.of())));
+            List.of(new FieldRef("count", TypeRef.of("int"), false, List.of())),
+            Map.of());
     final String source = "class A extends Base {\n  int count;\n  int other;\n}\n";
 
     assertThat(run(InheritedMemberCheck.Mode.FIELD_MASKS, source, inherited, BASE_NAME))

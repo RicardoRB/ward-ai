@@ -49,7 +49,9 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
             List.of(),
             List.of(),
             List.of(),
-            null);
+            null,
+            Map.of(),
+            Map.of());
     final Map<String, SpanFacts> facts = new HashMap<>();
     facts.put(
         LINE + ":" + COLUMN,

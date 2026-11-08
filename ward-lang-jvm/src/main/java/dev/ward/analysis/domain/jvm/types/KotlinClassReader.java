@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.jvm.types;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /** Reads one Kotlin class declaration into a {@link JvmClass}. */
@@ -46,7 +47,8 @@ final class KotlinClassReader {
             List.of(),
             List.of(),
             false,
-            true);
+            true,
+            Map.of());
     return new KotlinUnitModel.Declared(jvm, node, inner, members);
   }
 
@@ -84,7 +86,8 @@ final class KotlinClassReader {
               List.of(),
               List.of(),
               List.of(),
-              List.of()));
+              List.of(),
+              Map.of()));
     }
   }
 
@@ -147,7 +150,8 @@ final class KotlinClassReader {
             List.of(),
             List.of(),
             List.of(),
-            List.of()));
+            List.of(),
+            Map.of()));
     if (mutable) {
       methods.add(
           new JvmMethod(
@@ -159,7 +163,8 @@ final class KotlinClassReader {
               List.of(),
               List.of(),
               List.of(),
-              List.of()));
+              List.of(),
+              Map.of()));
     }
   }
 
@@ -214,6 +219,7 @@ final class KotlinClassReader {
                 List.of(),
                 List.of(),
                 List.of(),
-                List.of()));
+                List.of(),
+                Map.of()));
   }
 }

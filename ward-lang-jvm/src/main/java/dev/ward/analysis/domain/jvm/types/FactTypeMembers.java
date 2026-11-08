@@ -68,7 +68,8 @@ final class FactTypeMembers {
         ancestors(type),
         FactRefs.displayAll(type.annotations()),
         inheritedMethods,
-        inheritedFields);
+        inheritedFields,
+        type.annotationValues());
   }
 
   /** Returns the classes of the ancestors of {@code type} that the hierarchy holds. */

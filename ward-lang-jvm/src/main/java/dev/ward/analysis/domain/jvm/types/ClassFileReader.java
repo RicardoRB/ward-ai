@@ -111,7 +111,8 @@ public final class ClassFileReader {
           attributes.annotations,
           attributes.memberClasses,
           attributes.sealed,
-          attributes.annotations.contains(KOTLIN_METADATA));
+          attributes.annotations.contains(KOTLIN_METADATA),
+          attributes.annotationValues);
     }
 
     private static JvmClass.Kind kind(final int access, final boolean record) {
@@ -169,7 +170,8 @@ public final class ClassFileReader {
           thrown,
           attributes.annotations,
           attributes.parameterAnnotations,
-          attributes.compatibleWith);
+          attributes.compatibleWith,
+          attributes.annotationValues);
     }
   }
 }
