@@ -287,7 +287,7 @@ np-equals-should-handle-null-argument = "implemented"
 np-guaranteed-deref = { status = "planned", issue = "#314" }
 np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
 np-immediate-dereference-of-readline = "implemented"
-np-load-of-known-null-value = { status = "planned", issue = "#316" }
+np-load-of-known-null-value = "implemented"
 np-method-parameter-relaxing-annotation = { status = "planned", issue = "#316" }
 np-method-parameter-tightens-annotation = { status = "planned", issue = "#316" }
 np-method-return-relaxing-annotation = { status = "planned", issue = "#316" }
@@ -303,9 +303,9 @@ np-null-param-deref = { status = "planned", issue = "#314" }
 np-null-param-deref-all-targets-dangerous = { status = "planned", issue = "#314" }
 np-null-param-deref-nonvirtual = { status = "planned", issue = "#314" }
 np-optional-return-null = "implemented"
-np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
+np-parameter-must-be-nonnull-but-marked-as-nullable = "implemented"
 np-store-into-nonnull-field = { status = "planned", issue = "#314" }
-np-sync-and-null-check-field = { status = "planned", issue = "#316" }
+np-sync-and-null-check-field = "implemented"
 np-tostring-could-return-null = "implemented"
 np-unwritten-field = "implemented"
 np-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
@@ -313,10 +313,10 @@ ns-dangerous-non-short-circuit = "implemented"
 ns-non-short-circuit = "implemented"
 obl-unsatisfied-obligation = { status = "planned", issue = "#316" }
 obl-unsatisfied-obligation-exception-edge = { status = "planned", issue = "#316" }
-odr-open-database-resource = { status = "planned", issue = "#316" }
-odr-open-database-resource-exception-path = { status = "planned", issue = "#316" }
+odr-open-database-resource = "implemented"
+odr-open-database-resource-exception-path = "implemented"
 os-open-stream = "implemented"
-os-open-stream-exception-path = { status = "planned", issue = "#316" }
+os-open-stream-exception-path = "implemented"
 overriding-methods-must-invoke-super = "implemented"
 pa-public-array-attribute = "implemented"
 pa-public-mutable-object-attribute = "implemented"
@@ -338,10 +338,10 @@ range-string-index = "implemented"
 rc-ref-comparison = "implemented"
 rc-ref-comparison-bad-practice = "implemented"
 rc-ref-comparison-bad-practice-boolean = "implemented"
-rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue = "#316" }
+rcn-redundant-comparison-of-null-and-nonnull-value = "implemented"
 rcn-redundant-comparison-two-null-values = "implemented"
 rcn-redundant-nullcheck-of-nonnull-value = "implemented"
-rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
+rcn-redundant-nullcheck-of-null-value = "implemented"
 rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
 re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"

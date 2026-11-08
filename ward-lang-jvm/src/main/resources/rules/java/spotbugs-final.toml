@@ -104,3 +104,109 @@ created-here = true
 message = "the stream {value} is never closed; use try-with-resources or close it in a finally block"
 '''
 
+[[rules]]
+id = "ward:java/os-open-stream-exception-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.io.InputStream", "java.io.OutputStream", "java.io.Reader", "java.io.Writer"]
+ignored = ["java.io.ByteArrayInputStream", "java.io.ByteArrayOutputStream", "java.io.StringReader", "java.io.StringWriter"]
+created-here = true
+exception-path = true
+message = "the stream {value} is closed only when no exception is thrown; close it in a finally block or use try-with-resources"
+'''
+
+[[rules]]
+id = "ward:java/odr-open-database-resource"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.sql.Connection", "java.sql.Statement", "java.sql.ResultSet"]
+message = "the database resource {value} is never closed; use try-with-resources or close it in a finally block"
+'''
+
+[[rules]]
+id = "ward:java/odr-open-database-resource-exception-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.sql.Connection", "java.sql.Statement", "java.sql.ResultSet"]
+exception-path = true
+message = "the database resource {value} is closed only when no exception is thrown; close it in a finally block or use try-with-resources"
+'''
+
+[[rules]]
+id = "ward:java/np-sync-and-null-check-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-null-check"
+message = "the lock {value} is tested against null inside a block that already synchronizes on it"
+'''
+
+[[rules]]
+id = "ward:java/np-parameter-must-be-nonnull-but-marked-as-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "nullable-parameter-dereferenced"
+message = "the parameter {value} is marked @Nullable but the method always dereferences it"
+'''
+
+[[rules]]
+id = "ward:java/np-load-of-known-null-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "load"
+message = "the value of {value} is known to be null here"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-nullcheck-of-null-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "null-recheck"
+message = "{value} is already known to be null, so this null check is redundant"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-comparison-of-null-and-nonnull-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "nonnull-comparison"
+message = "{value} is known to be non-null, so comparing it with null is redundant"
+'''
+

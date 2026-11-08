@@ -1439,8 +1439,6 @@ spotbugs = ["NP_IMMEDIATE_DEREFERENCE_OF_READLINE"]
 
 [[rule]]
 name = "np-load-of-known-null-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_LOAD_OF_KNOWN_NULL_VALUE"]
 
 [[rule]]
@@ -1533,8 +1531,6 @@ spotbugs = ["NP_OPTIONAL_RETURN_NULL"]
 
 [[rule]]
 name = "np-parameter-must-be-nonnull-but-marked-as-nullable"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"]
 
 [[rule]]
@@ -1545,8 +1541,6 @@ spotbugs = ["NP_STORE_INTO_NONNULL_FIELD"]
 
 [[rule]]
 name = "np-sync-and-null-check-field"
-presets = ["standard", "strict"]
-category = "mt-correctness"
 spotbugs = ["NP_SYNC_AND_NULL_CHECK_FIELD"]
 
 [[rule]]
@@ -1587,14 +1581,10 @@ spotbugs = ["OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"]
 
 [[rule]]
 name = "odr-open-database-resource"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE"]
 
 [[rule]]
 name = "odr-open-database-resource-exception-path"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH"]
 
 [[rule]]
@@ -1603,8 +1593,6 @@ spotbugs = ["OS_OPEN_STREAM"]
 
 [[rule]]
 name = "os-open-stream-exception-path"
-presets = ["standard", "strict"]
-category = "bad-practice"
 spotbugs = ["OS_OPEN_STREAM_EXCEPTION_PATH"]
 
 [[rule]]
@@ -1689,8 +1677,6 @@ spotbugs = ["RANGE_STRING_INDEX"]
 
 [[rule]]
 name = "rcn-redundant-comparison-of-null-and-nonnull-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE"]
 
 [[rule]]
@@ -1703,8 +1689,6 @@ spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"]
 
 [[rule]]
 name = "rcn-redundant-nullcheck-of-null-value"
-presets = ["standard", "strict"]
-category = "style"
 spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"]
 
 [[rule]]
