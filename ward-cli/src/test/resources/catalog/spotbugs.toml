@@ -56,7 +56,6 @@ spotbugs = ["AT_UNSAFE_RESOURCE_ACCESS_IN_THREAD"]
 
 [[rule]]
 name = "bac-bad-applet-constructor"
-presets = ["strict"]
 category = "correctness"
 spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
 
@@ -126,7 +125,6 @@ spotbugs = ["BC_VACUOUS_INSTANCEOF"]
 
 [[rule]]
 name = "bit-add-of-signed-byte"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BIT_ADD_OF_SIGNED_BYTE"]
 
@@ -344,7 +342,6 @@ spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
 
 [[rule]]
 name = "dls-dead-store-of-class-literal"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DLS_DEAD_STORE_OF_CLASS_LITERAL"]
 
@@ -381,13 +378,11 @@ spotbugs = ["DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE"]
 
 [[rule]]
 name = "dmi-annotation-is-not-visible-to-reflection"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_ANNOTATION_IS_NOT_VISIBLE_TO_REFLECTION"]
 
 [[rule]]
 name = "dmi-arguments-wrong-order"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["DMI_ARGUMENTS_WRONG_ORDER"]
 
@@ -947,7 +942,6 @@ spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
 
 [[rule]]
 name = "icast-int-2-long-as-instant"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["ICAST_INT_2_LONG_AS_INSTANT"]
 
@@ -958,7 +952,6 @@ spotbugs = ["ICAST_INT_CAST_TO_DOUBLE_PASSED_TO_CEIL"]
 
 [[rule]]
 name = "icast-int-cast-to-float-passed-to-round"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND"]
 
@@ -1770,25 +1763,21 @@ spotbugs = ["QF_QUESTIONABLE_FOR_LOOP"]
 
 [[rule]]
 name = "range-array-index"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RANGE_ARRAY_INDEX"]
 
 [[rule]]
 name = "range-array-length"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RANGE_ARRAY_LENGTH"]
 
 [[rule]]
 name = "range-array-offset"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RANGE_ARRAY_OFFSET"]
 
 [[rule]]
 name = "range-string-index"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["RANGE_STRING_INDEX"]
 

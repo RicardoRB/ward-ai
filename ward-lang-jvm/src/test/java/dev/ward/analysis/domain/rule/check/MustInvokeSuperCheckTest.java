@@ -18,7 +18,7 @@ class MustInvokeSuperCheckTest {
   }
 
   private static SpanFacts overriding(final String... annotations) {
-    return ParsedFacts.overriding(ParsedFacts.method("app.B", "close", List.of(), annotations));
+    return ExtraFacts.overriding(ParsedFacts.method("app.B", "close", List.of(), annotations));
   }
 
   @Test

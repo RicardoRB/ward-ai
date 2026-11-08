@@ -10,7 +10,7 @@ at-nonatomic-operations-on-shared-variable = { status = "planned", issue = "#316
 at-operation-sequence-on-concurrent-abstraction = { status = "planned", issue = "#316" }
 at-stale-thread-write-of-primitive = { status = "planned", issue = "#316" }
 at-unsafe-resource-access-in-thread = { status = "planned", issue = "#316" }
-bac-bad-applet-constructor = { status = "planned", issue = "#314" }
+bac-bad-applet-constructor = "implemented"
 bc-bad-cast-to-abstract-collection = { status = "planned", issue = "#316" }
 bc-bad-cast-to-concrete-collection = { status = "planned", issue = "#316" }
 bc-equals-method-should-work-for-all-objects = { status = "planned", issue = "#316" }
@@ -22,7 +22,7 @@ bc-impossible-instanceof = { status = "planned", issue = "#314" }
 bc-unconfirmed-cast = { status = "planned", issue = "#316" }
 bc-unconfirmed-cast-of-return-value = { status = "planned", issue = "#316" }
 bc-vacuous-instanceof = "implemented"
-bit-add-of-signed-byte = { status = "planned", issue = "#314" }
+bit-add-of-signed-byte = "implemented"
 bit-and = "implemented"
 bit-and-zz = "implemented"
 bit-ior = "implemented"
@@ -68,7 +68,7 @@ dls-dead-local-store = "implemented"
 dls-dead-local-store-in-return = "implemented"
 dls-dead-local-store-of-null = { status = "planned", issue = "#316" }
 dls-dead-local-store-shadows-field = { status = "planned", issue = "#316" }
-dls-dead-store-of-class-literal = { status = "planned", issue = "#314" }
+dls-dead-store-of-class-literal = "implemented"
 dls-overwritten-increment = "implemented"
 dm-boolean-ctor = "implemented"
 dm-boxed-primitive-for-compare = "implemented"
@@ -89,8 +89,8 @@ dm-string-ctor = "implemented"
 dm-string-tostring = "implemented"
 dm-string-void-ctor = "implemented"
 dm-useless-thread = "implemented"
-dmi-annotation-is-not-visible-to-reflection = { status = "planned", issue = "#314" }
-dmi-arguments-wrong-order = { status = "planned", issue = "#314" }
+dmi-annotation-is-not-visible-to-reflection = "implemented"
+dmi-arguments-wrong-order = "implemented"
 dmi-bad-month = "implemented"
 dmi-bigdecimal-constructed-from-double = "implemented"
 dmi-blocking-methods-on-url = "implemented"
@@ -181,9 +181,9 @@ ic-init-circularity = { status = "planned", issue = "#316" }
 ic-superclass-uses-subclass-during-initialization = { status = "planned", issue = "#316" }
 icast-bad-shift-amount = "implemented"
 icast-idiv-cast-to-double = { status = "planned", issue = "#316" }
-icast-int-2-long-as-instant = { status = "planned", issue = "#314" }
+icast-int-2-long-as-instant = "implemented"
 icast-int-cast-to-double-passed-to-ceil = "implemented"
-icast-int-cast-to-float-passed-to-round = { status = "planned", issue = "#314" }
+icast-int-cast-to-float-passed-to-round = "implemented"
 icast-integer-multiply-cast-to-long = { status = "planned", issue = "#316" }
 icast-questionable-unsigned-right-shift = "implemented"
 iil-elements-get-length-in-loop = { status = "planned", issue = "#316" }
@@ -331,10 +331,10 @@ pz-dont-reuse-entry-objects-in-iterators = { status = "planned", issue = "#316" 
 pzla-prefer-zero-length-arrays = "implemented"
 qba-questionable-boolean-assignment = "implemented"
 qf-questionable-for-loop = { status = "planned", issue = "#316" }
-range-array-index = { status = "planned", issue = "#314" }
-range-array-length = { status = "planned", issue = "#314" }
-range-array-offset = { status = "planned", issue = "#314" }
-range-string-index = { status = "planned", issue = "#314" }
+range-array-index = "implemented"
+range-array-length = "implemented"
+range-array-offset = "implemented"
+range-string-index = "implemented"
 rc-ref-comparison = "implemented"
 rc-ref-comparison-bad-practice = "implemented"
 rc-ref-comparison-bad-practice-boolean = "implemented"
