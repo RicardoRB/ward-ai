@@ -80,31 +80,26 @@ spotbugs = ["BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS"]
 
 [[rule]]
 name = "bc-impossible-cast"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BC_IMPOSSIBLE_CAST"]
 
 [[rule]]
 name = "bc-impossible-cast-primitive-array"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BC_IMPOSSIBLE_CAST_PRIMITIVE_ARRAY"]
 
 [[rule]]
 name = "bc-impossible-downcast"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BC_IMPOSSIBLE_DOWNCAST"]
 
 [[rule]]
 name = "bc-impossible-downcast-of-toarray"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY"]
 
 [[rule]]
 name = "bc-impossible-instanceof"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["BC_IMPOSSIBLE_INSTANCEOF"]
 

@@ -1,0 +1,30 @@
+{
+  "3:20-3:29": {
+    "type": {
+      "name": "int",
+      "array": 1,
+      "primitive": true
+    }
+  },
+  "4:13-4:18": {
+    "type": {
+      "name": "long",
+      "array": 1,
+      "primitive": true
+    }
+  },
+  "4:20-4:29": {
+    "type": {
+      "name": "int",
+      "array": 1,
+      "primitive": true
+    }
+  },
+  "5:13-5:17": {
+    "type": {
+      "name": "int",
+      "array": 1,
+      "primitive": true
+    }
+  }
+}
