@@ -116,7 +116,7 @@ class InitMultiProjectPlanTest {
             "--integration",
             "none",
             "--preset",
-            "standard",
+            "strict",
             "--architecture",
             "layered",
             "--yes");

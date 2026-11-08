@@ -50,23 +50,14 @@ class InitServicePresetSelectionTest {
             dir,
             new InitSelection(
                 List.of("none"),
-                List.of(
-                    "gitleaks", "tests", "compile", "coverage", "spotbugs", "checkstyle", "pmd"),
+                List.of("gitleaks", "tests", "compile", "coverage"),
                 null,
                 QualityPreset.STANDARD));
     assertThat(result.gates())
         .extracting(InitGateOption::id)
-        .containsExactly(
-            "compile",
-            "tests",
-            "checkstyle",
-            "pmd",
-            "spotbugs",
-            "coverage",
-            "gitleaks",
-            "ward-format");
+        .containsExactly("compile", "tests", "coverage", "gitleaks", "ward-format");
     assertThat(Files.readString(dir.resolve(WARD_TOML))).contains("version = 2\n");
-    assertThat(dir.resolve("config/pmd-ruleset.xml")).exists();
+    assertThat(dir.resolve("ward-rules.toml")).content().contains("preset = \"standard\"");
   }
 
   @Test
@@ -93,14 +84,15 @@ class InitServicePresetSelectionTest {
   @Test
   void unselectedPresetGateWritesNoRuleFile(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    final List<String> standardWithoutPmd =
-        JavaPresetGates.STANDARD.stream().filter(gate -> !"pmd".equals(gate)).toList();
+    final List<String> strictWithoutEnforcer =
+        JavaPresetGates.STRICT.stream().filter(gate -> !"enforcer".equals(gate)).toList();
 
     service.initialize(
-        dir, new InitSelection(List.of("none"), standardWithoutPmd, null, QualityPreset.STANDARD));
+        dir,
+        new InitSelection(List.of("none"), strictWithoutEnforcer, "layered", QualityPreset.STRICT));
 
-    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("[checks.pmd]");
-    assertThat(dir.resolve("config/pmd-ruleset.xml")).doesNotExist();
-    assertThat(dir.resolve("config/checkstyle.xml")).exists();
+    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("[checks.enforcer]");
+    assertThat(dir.resolve("config/enforcer-rules.xml")).doesNotExist();
+    assertThat(dir.resolve("config")).doesNotExist();
   }
 }

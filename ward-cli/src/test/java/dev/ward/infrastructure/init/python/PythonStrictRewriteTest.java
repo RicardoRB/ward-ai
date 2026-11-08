@@ -10,6 +10,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +32,8 @@ class PythonStrictRewriteTest {
     writer.apply(project, QualityPreset.STANDARD, gates);
     assertThat(Files.readString(root.resolve("mypy.ini"))).doesNotContain("strict = True");
 
-    final List<PlannedFileChange> plan = writer.plan(project, QualityPreset.STRICT, gates);
+    final List<PlannedFileChange> plan =
+        RuleFilePlans.tools(writer.plan(project, QualityPreset.STRICT, gates));
     assertThat(plan)
         .extracting(PlannedFileChange::action)
         .containsExactly(PlannedFileChange.Action.MODIFY);

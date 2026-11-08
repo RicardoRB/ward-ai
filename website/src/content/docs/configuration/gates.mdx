@@ -73,8 +73,8 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
 | Preset | Gates | Minimums |
 |---|---|---|
-| `standard` | compile, tests, Checkstyle, PMD, SpotBugs, coverage, and `ward-format` | 70% line coverage |
-| `strict` | `standard` plus the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
@@ -96,12 +96,11 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 
 Presets may write these rule files:
 
-- `config/pmd-ruleset.xml`
-- `config/checkstyle.xml`
-- `config/spotbugs-exclude.xml` (standard)
-- `config/enforcer-rules.xml`
+- `config/enforcer-rules.xml` (strict)
+- `ward-rules.toml`, which selects the Ward rules of the preset for Java
 
-The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+Kotlin projects keep `config/pmd-ruleset.xml`, `config/checkstyle.xml` and
+`config/spotbugs-exclude.xml` until their own rules land. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 

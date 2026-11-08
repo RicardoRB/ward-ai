@@ -24,7 +24,8 @@ class PresetRuleFilePlanTest {
   @Test
   void missingFilesAreCreatedWithoutTouchingTheProject(@TempDir final Path root) {
     final List<PlannedFileChange> plan =
-        writer.plan(project(root), QualityPreset.STANDARD, gates("pmd", "checkstyle"));
+        RuleFilePlans.tools(
+            writer.plan(project(root), QualityPreset.STANDARD, gates("pmd", "checkstyle")));
 
     assertThat(plan)
         .containsExactly(
@@ -37,10 +38,11 @@ class PresetRuleFilePlanTest {
   void currentFileIsUnchangedAndOtherPresetIsModified(@TempDir final Path root) {
     writer.apply(project(root), QualityPreset.STANDARD, gates("pmd"));
 
-    assertThat(writer.plan(project(root), QualityPreset.STANDARD, gates("pmd")))
+    assertThat(
+            RuleFilePlans.tools(writer.plan(project(root), QualityPreset.STANDARD, gates("pmd"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.UNCHANGED);
-    assertThat(writer.plan(project(root), QualityPreset.STRICT, gates("pmd")))
+    assertThat(RuleFilePlans.tools(writer.plan(project(root), QualityPreset.STRICT, gates("pmd"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.MODIFY);
   }
@@ -50,14 +52,16 @@ class PresetRuleFilePlanTest {
     Files.createDirectories(root.resolve("config"));
     Files.writeString(root.resolve("config/checkstyle.xml"), "<module name=\"Checker\"/>\n");
 
-    assertThat(writer.plan(project(root), QualityPreset.STANDARD, gates("checkstyle")))
+    assertThat(
+            RuleFilePlans.tools(
+                writer.plan(project(root), QualityPreset.STANDARD, gates("checkstyle"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.PRESERVE_USER_OWNED);
   }
 
   @Test
   void noPresetPlansNothing(@TempDir final Path root) {
-    assertThat(writer.plan(project(root), null, gates("pmd"))).isEmpty();
+    assertThat(RuleFilePlans.tools(writer.plan(project(root), null, gates("pmd")))).isEmpty();
   }
 
   private static Project project(final Path root) {

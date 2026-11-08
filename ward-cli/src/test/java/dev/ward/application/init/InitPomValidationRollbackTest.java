@@ -48,8 +48,10 @@ class InitPomValidationRollbackTest {
                 new OwnedSectionWriter()));
 
     assertThatThrownBy(
-            () -> service.initialize(root, new InitSelection(List.of("opencode"), List.of("pmd"))))
-        .hasMessageContaining("Cannot safely update pom.xml while adding maven-pmd-plugin");
+            () ->
+                service.initialize(
+                    root, new InitSelection(List.of("opencode"), List.of("coverage"))))
+        .hasMessageContaining("Cannot safely update pom.xml while adding jacoco-maven-plugin");
     assertThat(root.resolve("ward.toml")).doesNotExist();
     assertThat(integration.installs).isEqualTo(1);
     assertThat(root.resolve(HOOK)).doesNotExist();

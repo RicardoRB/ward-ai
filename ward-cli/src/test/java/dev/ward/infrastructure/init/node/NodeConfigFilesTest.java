@@ -13,6 +13,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
@@ -72,7 +73,8 @@ class NodeConfigFilesTest {
     Files.writeString(root.resolve(".eslintrc.json"), "{\"root\": true}\n");
 
     final List<PlannedFileChange> plan =
-        writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
+        RuleFilePlans.tools(
+            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint")));
     final RuleFileChange change =
         writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
 

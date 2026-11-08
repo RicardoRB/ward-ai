@@ -12,6 +12,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
+import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
@@ -100,7 +101,8 @@ class NodeTestConfigFilesTest {
     writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("vitest"));
 
     final List<PlannedFileChange> plan =
-        writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest"));
+        RuleFilePlans.tools(
+            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest")));
     writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest"));
 
     assertThat(plan)
@@ -116,7 +118,8 @@ class NodeTestConfigFilesTest {
     Files.writeString(root.resolve("vite.config.ts"), "export default {};\n");
 
     final List<PlannedFileChange> plan =
-        writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest"));
+        RuleFilePlans.tools(
+            writer.plan(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest")));
     final RuleFileChange change =
         writer.apply(project(BuildTool.NPM), QualityPreset.STRICT, gates("vitest"));
 
@@ -132,7 +135,9 @@ class NodeTestConfigFilesTest {
   void jestConfiguredInPackageJsonGetsNoConfigFile() throws IOException {
     Files.writeString(root.resolve("package.json"), "{\"jest\": {\"testEnvironment\": \"node\"}}");
 
-    assertThat(writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates("jest")))
+    assertThat(
+            RuleFilePlans.tools(
+                writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates("jest"))))
         .isEmpty();
     writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("jest"));
     assertThat(root.resolve("jest.config.mjs")).doesNotExist();

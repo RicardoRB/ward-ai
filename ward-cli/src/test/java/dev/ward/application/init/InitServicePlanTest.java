@@ -50,9 +50,9 @@ class InitServicePlanTest {
         .containsEntry(".git/hooks/pre-commit", Action.CREATE)
         .containsEntry(".git/hooks/pre-push", Action.CREATE)
         .containsEntry("pom.xml", Action.MODIFY)
-        .containsEntry("config/pmd-ruleset.xml", Action.CREATE)
-        .containsEntry("config/checkstyle.xml", Action.CREATE)
-        .containsEntry("config/spotbugs-exclude.xml", Action.CREATE);
+        .containsEntry("ward-rules.toml", Action.CREATE)
+        .doesNotContainKeys(
+            "config/pmd-ruleset.xml", "config/checkstyle.xml", "config/spotbugs-exclude.xml");
     assertThat(plan.hasConflict()).isFalse();
     assertThat(plan.installation()).isEmpty();
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);

@@ -30,8 +30,8 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
 class InitWizardLineModeTest {
-  // ward-format, checkstyle, and pmd each add a [checks.<id>.paths] table.
-  private static final int STANDARD_PARTIAL_TABLES = 3;
+  // ward-format adds a [checks.<id>.paths] table.
+  private static final int STANDARD_PARTIAL_TABLES = 1;
 
   /** The ward gate and its layer table, which every configuration writes. */
   private static final int WARD_TABLE_SECTIONS = 3;
@@ -116,15 +116,14 @@ class InitWizardLineModeTest {
   @Test
   void numberOfPresetGateRemovesItFromStandard() throws IOException {
     final int exit =
-        execute(new TerminalLikeInputStream("1\n1\n6\n"), "--directory", root.toString());
+        execute(new TerminalLikeInputStream("1\n1\n3\n"), "--directory", root.toString());
 
     assertThat(exit).as(output.toString()).isZero();
-    assertThat(output.toString()).contains("> [x] 6) pmd", "or press Enter to accept");
+    assertThat(output.toString()).contains("> [x] 3) coverage", "or press Enter to accept");
     final String configuration = Files.readString(root.resolve("ward.toml"));
     assertThat(configuration)
-        .contains("version = 2", "[checks.checkstyle]")
-        .doesNotContain("[checks.pmd]");
-    assertThat(root.resolve("config/pmd-ruleset.xml")).doesNotExist();
+        .contains("version = 2", "[checks.tests]")
+        .doesNotContain("[checks.coverage]");
   }
 
   @Test

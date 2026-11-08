@@ -12,23 +12,22 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Until Ward has Kotlin tools, a Kotlin project gets exactly the Java preset gates. */
+/** Java selects Ward's rules; Kotlin keeps its external analysis tools until its rules land. */
 class InitKotlinPresetTest {
   @TempDir Path java;
   @TempDir Path kotlin;
 
   @Test
-  void kotlinProjectGetsTheJavaStrictGateSet() throws IOException {
+  void kotlinKeepsTheExternalToolsThatJavaDropsForWardRules() throws IOException {
     final String javaToml = wardToml(java, "src/main/java");
+    final String kotlinToml = wardToml(kotlin, "src/main/kotlin");
 
-    assertThat(javaToml).contains("[checks.checkstyle]", "[checks.mutation]");
-    assertThat(withoutFormatSources(wardToml(kotlin, "src/main/kotlin")))
-        .isEqualTo(withoutFormatSources(javaToml));
-  }
-
-  /** Drops the ward-format source globs, which name each language's own extensions. */
-  private static String withoutFormatSources(final String toml) {
-    return toml.replaceAll("(?s)\\n\\[checks\\.ward-format\\.paths\\].*?(?=\\n\\n|\\z)", "");
+    assertThat(javaToml)
+        .contains("[checks.mutation]")
+        .doesNotContain("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]");
+    assertThat(kotlinToml)
+        .contains("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]", "[checks.mutation]");
+    assertThat(java.resolve("ward-rules.toml")).content().contains("languages = [\"java\"]");
   }
 
   private static String wardToml(final Path root, final String sources) throws IOException {

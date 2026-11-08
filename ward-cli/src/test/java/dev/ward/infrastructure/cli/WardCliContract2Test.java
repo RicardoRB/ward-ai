@@ -76,33 +76,28 @@ class WardCliContract2Test extends WardCliIntegrationSupport {
 
   @Test
   void initThenFailingCheckExitsWithOne() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "checkstyle", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     Files.createFile(project.resolve("FAIL"));
     out.getBuffer().setLength(0);
 
-    assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.FAILED);
+    assertThat(run(CHECK, "--profile", "ci", "-C", project.toString())).isEqualTo(ExitCodes.FAILED);
     assertThat(out.toString())
-        .contains(
-            "✗ Checkstyle",
-            "FAILED",
-            "Quality Gate: FAILED",
-            "Command:",
-            "./mvnw checkstyle:check");
+        .contains("✗ tests", "FAILED", "Quality Gate: FAILED", "Command:", "./mvnw test");
   }
 
   @Test
   void jsonOutputIsValidJsonAndNothingElse() throws IOException {
-    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "checkstyle", "-C", project.toString());
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
     Files.createFile(project.resolve("FAIL"));
     out.getBuffer().setLength(0);
 
-    final int exit = run(CHECK, FORMAT_OPTION, JSON, "-C", project.toString());
+    final int exit = run(CHECK, "--profile", "ci", FORMAT_OPTION, JSON, "-C", project.toString());
 
     assertThat(exit).isEqualTo(ExitCodes.FAILED);
     final JsonTree json = JsonTree.parse(out.toString()); // fails on any extra text
     assertThat(json.get(STATUS).asString()).isEqualTo("FAILED");
     assertThat(json.get(CHECKS).get(0).get("exitCode").asInt()).isEqualTo(1);
-    assertThat(json.get(CHECKS).get(0).get("command").asString()).contains("checkstyle:check");
+    assertThat(json.get(CHECKS).get(0).get("command").asString()).contains("test");
     assertThat(json.get(CHECKS).get(0).has("stdout")).isFalse();
     assertThat(json.get(CHECKS).get(0).has("stderr")).isFalse();
   }

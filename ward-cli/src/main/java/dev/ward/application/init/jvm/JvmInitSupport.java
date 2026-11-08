@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 /** Init choices for Maven and Gradle projects. */
 public final class JvmInitSupport implements ToolchainInitSupport {
   private static final JavaGates JAVA = new JavaGates();
+  private static final KotlinGates KOTLIN = new KotlinGates();
   private static final int DEFAULT_CI_JDK = 25;
   private static final String COVERAGE = "coverage";
   private static final String SKIPPED_MODULES =
@@ -37,7 +38,7 @@ public final class JvmInitSupport implements ToolchainInitSupport {
           SupportedQualityGates.ANDROID_COVERAGE);
   // shortcut: Kotlin gets Java's tools until Ward ships ktlint/detekt; give it its own gates then.
   private static final Map<Language, SourceLanguageGates<BuildToolGates>> LANGUAGES =
-      Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
+      Map.of(Language.JAVA, JAVA, Language.KOTLIN, KOTLIN);
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {

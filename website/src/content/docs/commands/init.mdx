@@ -90,9 +90,31 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 `default` is the same fast tier as `pre-commit`, and `ci` contains every selected gate.
 
+## Ward rules for Java
+
+For a Java project, init writes no Checkstyle, PMD or SpotBugs gate, configuration file, build plugin
+or package entry. The `ward` check applies Ward's own Java rules instead, and init writes a
+`ward-rules.toml` that selects the rules of the preset:
+
+```toml
+version = 1
+
+[select]
+preset = "standard"
+languages = ["java"]
+```
+
+The file starts with an ownership marker, so a `ward-rules.toml` that you wrote is kept and
+reported as user-owned. See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
+
+`languages = ["java"]` is written for every project. Kotlin, TypeScript, JavaScript, Python and
+Swift keep their external linters until their own migration lands, so selecting their Ward rules
+would report each finding twice. A Kotlin project still gets the `checkstyle`, `pmd` and `spotbugs`
+gates, and a mixed Java and Kotlin project gets both sets.
+
 ## What init changes in your build
 
-For `enforcer`, `license`, `api-compat`, and `pmd`, init adds missing plugins using
+For `enforcer`, `license`, `api-compat`, and, for Kotlin, `pmd`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -104,8 +126,8 @@ Ward's embedded Java compatibility catalog.
 
 ### Multi-module Java builds
 
-In a multi-module Maven build, init places the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT),
-`checkstyle`, `pmd`, and `enforcer` gates in each module that has Java sources, so
+In a multi-module Maven build, init places the `coverage` (JaCoCo), `mutation` (PIT), and
+`enforcer` gates (and, for Kotlin, `spotbugs`, `checkstyle` and `pmd`) in each module that has Java sources, so
 each module's configuration and report live with its code. Other gates stay in the aggregator. The
 module-placed gates are the same for Gradle and Maven.
 
@@ -306,8 +328,8 @@ commercial Arcmutate history plugin.
 The generated rule files load as they are, so a gate that fails right after init reports a real
 finding. With `strict`, expect these on most existing projects:
 
-- `checkstyle`: findings such as `MagicNumber`, `MissingJavadocMethod`, or `MethodLength` in
-  existing code.
+- `ward`: findings of the strict Java rules, such as `ward:java/magic-number`,
+  `ward:java/missing-javadoc` or `ward:java/method-length`, in existing code.
 - `enforcer`: strict keeps `requirePluginVersions` on purpose, so every plugin needs a pinned
   version.
   - Init pins the plugins Maven adds through its default lifecycle (clean, resources, compiler,
@@ -772,8 +794,8 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: Checkstyle limits, PMD rule sets, SpotBugs effort, coverage and mutation minimums, and
-enforcer rules.
+enforce: the Ward rule preset for Java, coverage and mutation minimums, and enforcer rules (for
+Kotlin, also Checkstyle limits, PMD rule sets and SpotBugs effort).
 
 - For TypeScript it names the `tsc`, Biome (or ESLint), and test commands, the 70% line coverage
   minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under
@@ -879,8 +901,8 @@ as `apps/api/.codex/`).
 | macOS and Linux terminals | Up/Down to move, Space to toggle, Enter to confirm. `q`, `Q`, or Ctrl+C cancels. |
 | Windows, piped input, or no raw terminal mode | Numbered prompts. Pre-selected items show as `[x]`; each number you enter toggles that item, and an empty line accepts the pre-selection. |
 
-For example, after choosing `standard`, entering the number of `pmd` configures every standard gate
-except `pmd`.
+For example, after choosing `standard`, entering the number of `coverage` configures every standard
+gate except `coverage`.
 
 ### Reconfiguring
 
@@ -910,10 +932,10 @@ Ward will make these changes:
 
   create     ward.toml
   modify     pom.xml
-               + maven-pmd-plugin 3.28.0
-               ~ maven-checkstyle-plugin 1.0.0 -> 3.6.0 (requires approval)
-  create     config/pmd-ruleset.xml
-  keep       config/checkstyle.xml  (user-owned, not changed)
+               + jacoco-maven-plugin 0.8.13
+               ~ maven-enforcer-plugin 1.0.0 -> 3.5.0 (requires approval)
+  create     ward-rules.toml
+  keep       config/enforcer-rules.xml  (user-owned, not changed)
   create     .git/hooks/pre-commit
   create     .claude/settings.json
 
