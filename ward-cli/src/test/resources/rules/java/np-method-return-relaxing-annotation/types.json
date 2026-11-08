@@ -1,0 +1,40 @@
+{
+  "10:3": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "name",
+        "params": [],
+        "returns": {
+          "name": "java.lang.String"
+        },
+        "annotations": [
+          "javax.annotation.Nonnull"
+        ]
+      }
+    ],
+    "annotations": [
+      "javax.annotation.CheckForNull"
+    ]
+  },
+  "9:3": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "name",
+        "params": [],
+        "returns": {
+          "name": "java.lang.String"
+        },
+        "annotations": [
+          "javax.annotation.Nonnull"
+        ]
+      }
+    ],
+    "annotations": []
+  }
+}

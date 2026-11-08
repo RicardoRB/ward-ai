@@ -34,6 +34,8 @@ public final class InheritedMemberCheck implements RuleCheck {
     STATIC_HIDING,
     /** A method whose name differs from another visible method only in case. */
     CASE_CONFUSION,
+    /** Like {@link #CASE_CONFUSION}, but one of the two methods is deprecated. */
+    CASE_CONFUSION_INTENTIONAL,
     /** A method of an {@code *Adapter} subclass that overloads an adapter method. */
     ADAPTER_OVERLOAD
   }
@@ -82,7 +84,8 @@ public final class InheritedMemberCheck implements RuleCheck {
       switch (mode) {
         case FIELD_MASKS -> fieldMasks(visit.node(), inherited, matches);
         case STATIC_HIDING -> staticHiding(visit.node(), inherited, matches);
-        case CASE_CONFUSION -> caseConfusion(visit.node(), inherited, matches);
+        case CASE_CONFUSION -> caseConfusion(visit.node(), inherited, false, matches);
+        case CASE_CONFUSION_INTENTIONAL -> caseConfusion(visit.node(), inherited, true, matches);
         default -> adapterOverload(visit.node(), inherited, matches);
       }
     }
@@ -111,16 +114,12 @@ public final class InheritedMemberCheck implements RuleCheck {
   }
 
   private void caseConfusion(
-      final SyntaxNode type, final TypeMembers inherited, final List<RuleMatch> matches) {
-    final List<String> visible = new ArrayList<>();
-    inherited.inheritedMethods().forEach(method -> visible.add(method.name()));
-    for (final DeclaredMethods.Method method : DeclaredMethods.of(type)) {
-      if (visible.stream()
-          .anyMatch(name -> name.equalsIgnoreCase(method.name()) && !name.equals(method.name()))) {
-        matches.add(CheckSupport.at(method.node().span(), message));
-      }
-      visible.add(method.name());
-    }
+      final SyntaxNode type,
+      final TypeMembers inherited,
+      final boolean intentional,
+      final List<RuleMatch> matches) {
+    CaseConfusions.of(type, inherited, intentional)
+        .forEach(method -> matches.add(CheckSupport.at(method.node().span(), message)));
   }
 
   private void adapterOverload(
