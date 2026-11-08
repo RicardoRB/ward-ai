@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -49,6 +50,7 @@ class JavaCompatibilityMatrixTest {
       "src/main/java/demo/controller/DirectController.java";
 
   private static final String MAVEN = "maven";
+  private static final String WARD_GATE = "ward";
   private static final String POM = "pom.xml";
   private static final String PASSED = "PASSED";
   private static final String FAILED = "FAILED";
@@ -76,10 +78,12 @@ class JavaCompatibilityMatrixTest {
     final String buildTool = cell.getString(1);
     final String dsl = Objects.requireNonNullElse(cell.getString(2), "");
     final String preset = cell.getString(3);
+    final String fixture = Objects.requireNonNullElse(cell.getString(4), "");
     Assumptions.assumeTrue(
         String.valueOf(jdk).equals(System.getProperty(JDK_PROPERTY)), "row is for JDK " + jdk);
 
-    copyFixture(project, jdk, MAVEN.equals(buildTool) ? MAVEN : "gradle-" + dsl);
+    final String build = MAVEN.equals(buildTool) ? MAVEN : "gradle-" + dsl;
+    copyFixture(project, jdk, build, fixture);
     JavaMatrixProcesses.git(project, "init", "-q");
     final JavaMatrixProcesses.CommandRun init =
         JavaMatrixProcesses.ward(project, "init", "--preset", preset, "--yes");
@@ -105,16 +109,21 @@ class JavaCompatibilityMatrixTest {
         (gate, status) ->
             assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED));
 
-    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
-        .as("engine layer findings, clean")
-        .isEmpty();
-    seedViolations(project, buildTool);
+    if (fixture.isEmpty()) {
+      assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+          .as("engine layer findings, clean")
+          .isEmpty();
+      seedViolations(project, buildTool);
+    } else {
+      JavaMatrixProcesses.copyTree(VIOLATIONS.resolve(fixture), project);
+    }
     final Map<String, String> seeded = statuses(report(project));
-    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
-        .as("engine layer findings, seeded")
-        .containsExactly(ENGINE_LAYER_VIOLATION);
-    configured.stream()
-        .filter(gate -> !NOT_SEEDED.contains(gate))
+    if (fixture.isEmpty()) {
+      assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+          .as("engine layer findings, seeded")
+          .containsExactly(ENGINE_LAYER_VIOLATION);
+    }
+    seededGates(configured, fixture)
         .forEach(
             gate ->
                 assertThat(seeded.get(gate))
@@ -129,17 +138,41 @@ class JavaCompatibilityMatrixTest {
         .isEqualTo(FAILED);
   }
 
-  /** Copies the Java 8 sources, each newer syntax layer the JDK supports, and the build files. */
-  private static void copyFixture(final Path project, final int jdk, final String build)
-      throws IOException {
-    JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/base"), project);
-    if (jdk >= RECORDS) {
-      JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java17"), project);
+  /**
+   * The gates the seeded violations must fail: every configured gate but the ones they do not
+   * target, or only the {@code ward} gate for a named fixture, whose violations are Kotlin rules.
+   */
+  private static Set<String> seededGates(final Set<String> configured, final String fixture) {
+    if (fixture.isEmpty()) {
+      return configured.stream()
+          .filter(gate -> !NOT_SEEDED.contains(gate))
+          .collect(Collectors.toCollection(LinkedHashSet::new));
     }
-    if (jdk >= PATTERN_SWITCH) {
-      JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java21"), project);
+    return Set.of(WARD_GATE);
+  }
+
+  /**
+   * Copies the Java 8 sources, each newer syntax layer the JDK supports, and the build files. A
+   * named fixture brings its own sources and build files over the shared build tool files.
+   */
+  private static void copyFixture(
+      final Path project, final int jdk, final String build, final String fixture)
+      throws IOException {
+    if (fixture.isEmpty()) {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/base"), project);
+      if (jdk >= RECORDS) {
+        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java17"), project);
+      }
+      if (jdk >= PATTERN_SWITCH) {
+        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java21"), project);
+      }
+    } else {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve("sources"), project);
     }
     JavaMatrixProcesses.copyTree(FIXTURES.resolve(build), project);
+    if (!fixture.isEmpty()) {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve(build), project);
+    }
     try (Stream<Path> files = Files.list(project)) {
       for (final Path file : files.filter(Files::isRegularFile).toList()) {
         final String content = Files.readString(file);
