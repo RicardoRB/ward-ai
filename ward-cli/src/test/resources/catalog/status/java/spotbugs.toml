@@ -276,35 +276,35 @@ noise-field-reference = { status = "planned", issue = "#316" }
 noise-method-call = { status = "planned", issue = "#316" }
 noise-null-dereference = { status = "planned", issue = "#316" }
 noise-operation = { status = "planned", issue = "#316" }
-np-always-null = { status = "planned", issue = "#314" }
-np-always-null-exception = { status = "planned", issue = "#314" }
-np-argument-might-be-null = { status = "planned", issue = "#314" }
+np-always-null = "implemented"
+np-always-null-exception = "implemented"
+np-argument-might-be-null = "implemented"
 np-boolean-return-null = "implemented"
 np-clone-could-return-null = "implemented"
-np-closing-null = { status = "planned", issue = "#314" }
+np-closing-null = "implemented"
 np-dereference-of-readline-value = "implemented"
 np-equals-should-handle-null-argument = "implemented"
-np-guaranteed-deref = { status = "planned", issue = "#314" }
-np-guaranteed-deref-on-exception-path = { status = "planned", issue = "#314" }
+np-guaranteed-deref = "implemented"
+np-guaranteed-deref-on-exception-path = "implemented"
 np-immediate-dereference-of-readline = "implemented"
 np-load-of-known-null-value = { status = "planned", issue = "#316" }
 np-method-parameter-relaxing-annotation = { status = "planned", issue = "#316" }
 np-method-parameter-tightens-annotation = { status = "planned", issue = "#316" }
 np-method-return-relaxing-annotation = { status = "planned", issue = "#316" }
-np-nonnull-field-not-initialized-in-constructor = { status = "planned", issue = "#314" }
-np-nonnull-param-violation = { status = "planned", issue = "#314" }
-np-nonnull-return-violation = { status = "planned", issue = "#314" }
+np-nonnull-field-not-initialized-in-constructor = "implemented"
+np-nonnull-param-violation = "implemented"
+np-nonnull-return-violation = "implemented"
 np-null-instanceof = "implemented"
-np-null-on-some-path = { status = "planned", issue = "#314" }
-np-null-on-some-path-exception = { status = "planned", issue = "#314" }
+np-null-on-some-path = "implemented"
+np-null-on-some-path-exception = "implemented"
 np-null-on-some-path-from-return-value = { status = "planned", issue = "#316" }
 np-null-on-some-path-might-be-infeasible = { status = "planned", issue = "#316" }
-np-null-param-deref = { status = "planned", issue = "#314" }
-np-null-param-deref-all-targets-dangerous = { status = "planned", issue = "#314" }
-np-null-param-deref-nonvirtual = { status = "planned", issue = "#314" }
+np-null-param-deref = "implemented"
+np-null-param-deref-all-targets-dangerous = "implemented"
+np-null-param-deref-nonvirtual = "implemented"
 np-optional-return-null = "implemented"
 np-parameter-must-be-nonnull-but-marked-as-nullable = { status = "planned", issue = "#316" }
-np-store-into-nonnull-field = { status = "planned", issue = "#314" }
+np-store-into-nonnull-field = "implemented"
 np-sync-and-null-check-field = { status = "planned", issue = "#316" }
 np-tostring-could-return-null = "implemented"
 np-unwritten-field = "implemented"
@@ -342,7 +342,7 @@ rcn-redundant-comparison-of-null-and-nonnull-value = { status = "planned", issue
 rcn-redundant-comparison-two-null-values = "implemented"
 rcn-redundant-nullcheck-of-nonnull-value = "implemented"
 rcn-redundant-nullcheck-of-null-value = { status = "planned", issue = "#316" }
-rcn-redundant-nullcheck-would-have-been-a-npe = { status = "planned", issue = "#314" }
+rcn-redundant-nullcheck-would-have-been-a-npe = "implemented"
 re-bad-syntax-for-regular-expression = "implemented"
 re-cant-use-file-separator-as-regular-expression = "implemented"
 re-possible-unintended-pattern = "implemented"
@@ -458,7 +458,7 @@ ui-inheritance-unsafe-getresource = "implemented"
 ul-unreleased-lock = "implemented"
 ul-unreleased-lock-exception-path = "implemented"
 um-unnecessary-math = "implemented"
-umac-uncallable-method-of-anonymous-class = { status = "planned", issue = "#314" }
+umac-uncallable-method-of-anonymous-class = "implemented"
 unknown = { status = "planned", issue = "#316" }
 upm-uncalled-private-method = "implemented"
 ur-uninit-read = "implemented"

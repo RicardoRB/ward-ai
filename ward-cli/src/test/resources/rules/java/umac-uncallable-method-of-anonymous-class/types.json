@@ -1,0 +1,85 @@
+{
+  "3:16-3:23": {
+    "type": {
+      "name": "java.lang.Runnable"
+    },
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "java.lang.Runnable"
+          },
+          "name": "run",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:16-4:23": {
+    "type": {
+      "name": "java.lang.Runnable"
+    },
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "java.lang.Runnable"
+          },
+          "name": "run",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "10:16-10:21": {
+    "type": {
+      "name": "java.lang.Object"
+    },
+    "members": {
+      "ancestors": []
+    }
+  },
+  "15:16-15:23": {
+    "type": {
+      "name": "java.lang.Runnable"
+    },
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "java.lang.Runnable"
+          },
+          "name": "run",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ],
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}
