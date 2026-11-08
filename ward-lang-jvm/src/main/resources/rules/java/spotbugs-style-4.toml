@@ -171,3 +171,17 @@ kinds = ["expression"]
 text = '^\(\w+&\w+\)>0$'
 message = "signed check of a bit mask; compare with != 0"
 '''
+
+[[rules]]
+id = "ward:java/pi-do-not-reuse-public-identifiers-class-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(?:Object|String|Integer|Long|Short|Byte|Boolean|Character|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|Class|Enum|Record|Void|Process|Iterable|Comparable)(?:<|extends|implements|\{)'
+message = "class reuses the name of a java.lang class"
+'''

@@ -291,22 +291,6 @@ message = "this anonymous class never uses the instance around it; turn it into 
 '''
 
 [[rules]]
-id = "ward:java/pi-do-not-reuse-public-identifiers-class-names"
-language = "java"
-capability = "SYNTAX"
-severity = "error"
-category = "bad-practice"
-presets = ["standard", "strict"]
-body = '''
-check = "identifier-pattern"
-kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
-name = "identifier"
-skip = ["annotation", "typeType", "typeTypeOrVoid"]
-pattern = '(?!(?:Object|String|Integer|Long|Short|Byte|Character|Boolean|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|RuntimeException|Class|ClassLoader|Enum|Record|Iterable|Comparable|CharSequence|StringBuilder|StringBuffer|Void|Process|Runtime|Override|Deprecated|List|ArrayList|LinkedList|Map|HashMap|TreeMap|LinkedHashMap|Set|HashSet|TreeSet|LinkedHashSet|Collection|Collections|Arrays|Objects|Optional|Iterator|Date|Calendar|Random|Scanner|Timer|Vector|Stack|Queue|Deque|Properties|UUID|Locale|File|Files|Path|Paths|InputStream|OutputStream|Reader|Writer|IOException|Stream|Collectors|Function|Supplier|Consumer|Predicate|Instant|Duration|LocalDate|LocalTime|LocalDateTime|Period|Currency|BitSet|Formatter|Comparator|Base64|Pattern|Matcher|Logger|Level|Executor|ExecutorService|Future|Callable|Lock|Semaphore|Annotation|Package|Module|Appendable|Cloneable|AutoCloseable|Closeable|Serializable|Readable)$).+'
-message = "class name reuses the name of a public class of the Java library; choose another name"
-'''
-
-[[rules]]
 id = "ward:java/pi-do-not-reuse-public-identifiers-field-names"
 language = "java"
 capability = "SYNTAX"
