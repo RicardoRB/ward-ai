@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,6 +49,11 @@ final class NodeModuleScan {
 
   List<Symbol> exports() {
     return exports.exports();
+  }
+
+  /** The keyword that declares each exported declaration, by name. */
+  Map<String, String> exportKinds() {
+    return exports.kinds();
   }
 
   /** Returns the exported names and the top-level declarations, without repeats. */

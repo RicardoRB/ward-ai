@@ -4,7 +4,9 @@ import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Reads the exported names of one file, and the top-level declarations, from its tokens. */
@@ -26,6 +28,7 @@ final class NodeExportScan {
       Set.of("const", "let", "var", "function", "class", "interface", "type", "enum", "namespace");
 
   private final NodeTokens tokens;
+  private final Map<String, String> kinds = new LinkedHashMap<>();
   private final List<Symbol> exports = new ArrayList<>();
   private final List<Symbol> declared = new ArrayList<>();
 
@@ -106,7 +109,16 @@ final class NodeExportScan {
     }
     if (DECLARATIONS.contains(tokens.text(j)) && IDENTIFIER.equals(tokens.kind(j + 1))) {
       exports.add(new Symbol(tokens.text(j + 1), tokens.leaf(j + 1).span()));
+      kinds.put(tokens.text(j + 1), tokens.text(j));
     }
+  }
+
+  /**
+   * The keyword that declares each exported name written as a declaration, such as {@code type} or
+   * {@code const}. An exported name in an export list has no keyword here.
+   */
+  Map<String, String> kinds() {
+    return Map.copyOf(kinds);
   }
 
   /** Records a top-level declaration, exported or not. */
