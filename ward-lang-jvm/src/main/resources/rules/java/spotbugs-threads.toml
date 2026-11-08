@@ -1,0 +1,65 @@
+# SpotBugs thread-safety patterns for Java (issue 316). The checks read the field accesses of one class with the lock
+# held at each, so they approximate SpotBugs' bytecode detectors; unknown locks never produce findings.
+
+[[rules]]
+id = "ward:java/at-nonatomic-operations-on-shared-variable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "shared-variable"
+mode = "arithmetic"
+message = "{value} is read and written in one operation without a lock; the operation is not atomic"
+'''
+
+[[rules]]
+id = "ward:java/at-nonatomic-64-bit-primitive"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "shared-variable"
+mode = "wide"
+message = "{value} is a 64-bit value written without a lock or volatile; the write is not atomic"
+'''
+
+[[rules]]
+id = "ward:java/at-stale-thread-write-of-primitive"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "shared-variable"
+mode = "stale"
+message = "{value} is written without a lock or volatile; other threads may read a stale value"
+'''
+
+[[rules]]
+id = "ward:java/at-operation-sequence-on-concurrent-abstraction"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "concurrent-sequence"
+message = "put after a containsKey or get on a ConcurrentHashMap is not atomic"
+'''
+
+[[rules]]
+id = "ward:java/at-unsafe-resource-access-in-thread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "thread-resource"
+message = "{value} is changed and used by thread code without a lock"
+'''
