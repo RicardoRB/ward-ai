@@ -47,6 +47,7 @@ final class FactComponents {
         members.annotations(),
         members.inheritedMethods(),
         members.inheritedFields(),
+        members.annotationValues(),
         parts.stream().map(this::component).toList());
   }
 

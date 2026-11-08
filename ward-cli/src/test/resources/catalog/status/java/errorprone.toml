@@ -6,7 +6,7 @@ address-selection = { status = "planned", issue = "#319" }
 almost-exhaustive-test-parameter = { status = "planned", issue = "#319" }
 almost-javadoc = { status = "planned", issue = "#319" }
 already-checked = { status = "planned", issue = "#319" }
-always-throws = { status = "planned", issue = "#319" }
+always-throws = "implemented"
 ambiguous-method-reference = { status = "planned", issue = "#319" }
 android-injection-before-super = "implemented"
 annotate-format-method = { status = "planned", issue = "#319" }
@@ -37,7 +37,7 @@ attempted-negative-zero = { status = "planned", issue = "#319" }
 auto-factory-at-inject = "implemented"
 auto-value-boxed-values = { status = "planned", issue = "#319" }
 auto-value-builder-defaults-in-constructor = "implemented"
-auto-value-constructor-order-checker = { status = "planned", issue = "#319" }
+auto-value-constructor-order-checker = "implemented"
 auto-value-final-methods = { status = "planned", issue = "#319" }
 auto-value-immutable-fields = { status = "planned", issue = "#319" }
 auto-value-subclass-leaked = { status = "planned", issue = "#319" }
@@ -64,7 +64,7 @@ boxed-primitive-equality = "implemented"
 boxing-comparator = { status = "planned", issue = "#319" }
 bug-pattern-naming = { status = "planned", issue = "#319" }
 builder-return-this = { status = "planned", issue = "#319" }
-bundle-deserialization-cast = { status = "planned", issue = "#319" }
+bundle-deserialization-cast = "implemented"
 byte-buffer-backing-array = { status = "planned", issue = "#319" }
 cache-loader-null = { status = "planned", issue = "#319" }
 can-ignore-return-value-suggester = { status = "planned", issue = "#319" }
@@ -75,7 +75,7 @@ catch-and-print-stack-trace = { status = "planned", issue = "#319" }
 catch-fail = { status = "planned", issue = "#319" }
 catching-unchecked = { status = "planned", issue = "#319" }
 chained-assertion-loses-context = { status = "planned", issue = "#319" }
-chaining-constructor-ignores-parameter = { status = "planned", issue = "#319" }
+chaining-constructor-ignores-parameter = "implemented"
 character-get-numeric-value = { status = "planned", issue = "#319" }
 check-not-null-multiple-times = "implemented"
 check-return-value = "implemented"
@@ -192,7 +192,7 @@ fragment-injection = { status = "planned", issue = "#319" }
 fragment-not-instantiable = { status = "planned", issue = "#319" }
 from-temporal-accessor = "implemented"
 functional-interface-clash = { status = "planned", issue = "#319" }
-functional-interface-method-changed = { status = "planned", issue = "#319" }
+functional-interface-method-changed = "implemented"
 future-return-value-ignored = { status = "planned", issue = "#319" }
 future-transform-async = { status = "planned", issue = "#319" }
 futures-get-checked-illegal-exception-type = "implemented"
@@ -448,13 +448,13 @@ primitive-array-passed-to-varargs-method = { status = "planned", issue = "#319" 
 primitive-atomic-reference = { status = "planned", issue = "#319" }
 private-constructor-for-noninstantiable-module = { status = "planned", issue = "#319" }
 private-constructor-for-utility-class = { status = "planned", issue = "#319" }
-private-security-contract-proto-access = { status = "planned", issue = "#319" }
+private-security-contract-proto-access = "implemented"
 protected-members-in-final-class = { status = "planned", issue = "#319" }
 proto-builder-return-value-ignored = "implemented"
 proto-duration-get-seconds-get-nano = { status = "planned", issue = "#319" }
 proto-string-field-reference-equality = "implemented"
 proto-timestamp-get-seconds-get-nano = { status = "planned", issue = "#319" }
-proto-truth-mixed-descriptors = { status = "planned", issue = "#319" }
+proto-truth-mixed-descriptors = "implemented"
 protocol-buffer-ordinal = "implemented"
 provides-method-outside-of-module = "implemented"
 public-api-named-stream-should-return-stream = { status = "planned", issue = "#319" }
@@ -478,7 +478,7 @@ refers-to-dagger-codegen = "implemented"
 remove-unused-imports = { status = "planned", issue = "#319" }
 require-non-null-refactoring = { status = "planned", issue = "#319" }
 required-modifiers = "implemented"
-restricted-api = { status = "planned", issue = "#319" }
+restricted-api = "implemented"
 rethrow-reflective-operation-exception-as-linkage-error = { status = "planned", issue = "#319" }
 return-at-the-end-of-void-function = { status = "planned", issue = "#319" }
 return-from-void = { status = "planned", issue = "#319" }
@@ -610,7 +610,7 @@ unrecognised-javadoc-tag = { status = "planned", issue = "#319" }
 unsafe-finalization = { status = "planned", issue = "#319" }
 unsafe-locale-usage = { status = "planned", issue = "#319" }
 unsafe-reflective-construction-cast = { status = "planned", issue = "#319" }
-unsafe-wildcard = { status = "planned", issue = "#319" }
+unsafe-wildcard = "implemented"
 unsynchronized-overrides-synchronized = { status = "planned", issue = "#319" }
 unused-anonymous-class = "implemented"
 unused-collection-modified-in-place = "implemented"
@@ -624,7 +624,7 @@ use-correct-assert-in-tests = "implemented"
 use-enum-switch = { status = "planned", issue = "#319" }
 using-jsr305-check-return-value = { status = "planned", issue = "#319" }
 value-class-equals = { status = "planned", issue = "#319" }
-value-class-identity = { status = "planned", issue = "#319" }
+value-class-identity = "implemented"
 var = { status = "planned", issue = "#319" }
 var-type-name = "implemented"
 var-with-primitive = { status = "planned", issue = "#319" }

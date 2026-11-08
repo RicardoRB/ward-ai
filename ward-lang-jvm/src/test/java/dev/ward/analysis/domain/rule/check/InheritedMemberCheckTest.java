@@ -43,6 +43,9 @@ class InheritedMemberCheckTest {
         List.of(),
         List.of(),
         List.of(),
+        null,
+        Map.of(),
+        Map.of(),
         null);
   }
 
@@ -66,6 +69,7 @@ class InheritedMemberCheckTest {
             List.of(),
             inherited.inheritedMethods(),
             inherited.inheritedFields(),
+            Map.of(),
             List.of());
     final SpanFacts facts =
         new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null, members);
@@ -82,7 +86,14 @@ class InheritedMemberCheckTest {
 
   private static TypeMembers methods(final CallTarget... targets) {
     return new TypeMembers(
-        List.of(), List.of(), List.of(), List.of(), List.of(targets), List.of(), List.of());
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(targets),
+        List.of(),
+        Map.of(),
+        List.of());
   }
 
   @Test
@@ -110,6 +121,7 @@ class InheritedMemberCheckTest {
             List.of(),
             List.of(),
             List.of(new FieldRef("count", TypeRef.of("int"), false, List.of())),
+            Map.of(),
             List.of());
     final String source = "class A extends Base {\n  int count;\n  int other;\n}\n";
 

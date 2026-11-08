@@ -1,0 +1,93 @@
+{
+  "8:26-8:32": {
+    "type": {
+      "name": "Check.Handler"
+    },
+    "members": {
+      "annotations": [
+        "java.lang.FunctionalInterface"
+      ]
+    }
+  },
+  "12:5-12:43": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Check.Handler"
+        },
+        "name": "handle",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "abstract": true
+      }
+    ]
+  },
+  "9:26-9:32": {
+    "type": {
+      "name": "Check.Handler"
+    },
+    "members": {
+      "annotations": [
+        "java.lang.FunctionalInterface"
+      ]
+    }
+  },
+  "13:5-13:36": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Check.Handler"
+        },
+        "name": "handle",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "abstract": true
+      }
+    ]
+  },
+  "13:29-13:33": {
+    "call": {
+      "declaring": {
+        "name": "Check.Task"
+      },
+      "name": "run",
+      "params": [],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "16:27-16:33": {
+    "type": {
+      "name": "Check.Handler"
+    },
+    "members": {
+      "annotations": [
+        "java.lang.FunctionalInterface"
+      ]
+    }
+  },
+  "20:5-20:43": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Check.Handler"
+        },
+        "name": "handle",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "abstract": true
+      }
+    ]
+  }
+}

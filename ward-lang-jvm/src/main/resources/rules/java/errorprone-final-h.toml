@@ -1,0 +1,38 @@
+# Error Prone checks at ERROR severity for Java, the last batch: a default method that changes a
+# functional interface, a wildcard type javac cannot make sense of, and identity of value classes.
+
+[[rules]]
+id = "ward:java/functional-interface-method-changed"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "functional-interface-method-changed"
+message = "casting a lambda to this @FunctionalInterface changes the behavior of the superinterface method it overrides; prefer a decorator method"
+'''
+
+[[rules]]
+id = "ward:java/unsafe-wildcard"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "unsafe-wildcard"
+message = "this wildcard type can confuse the compiler: its lower bound is a type variable that need not satisfy the bound of the type parameter"
+'''
+
+[[rules]]
+id = "ward:java/value-class-identity"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "value-class-identity"
+message = "value-based classes have no identity; relying on it is unsafe and will fail in a future version of Java"
+'''

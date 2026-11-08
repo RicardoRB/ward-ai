@@ -128,7 +128,8 @@ final class JavaClassReader {
             JavaModifiers.annotations(entry.modifiers(), scope),
             nested.stream().map(inner -> inner.jvm().name()).toList(),
             JavaModifiers.has(entry.modifiers(), "sealed"),
-            false);
+            false,
+            AnnotationSourceValues.of(entry.modifiers(), scope));
     return new SourceModel.ClassDecl(jvm, declaration, entry.outer(), scope, read, nested);
   }
 

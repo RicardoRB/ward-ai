@@ -1,6 +1,8 @@
 package dev.ward.analysis.domain.types;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * What a type declares and inherits: its methods and fields, every supertype above it, and its own
@@ -14,6 +16,8 @@ import java.util.List;
  * @param inheritedMethods the methods of the ancestors that a subtype can see: not private, not
  *     synthetic and not constructors
  * @param inheritedFields the fields of the ancestors that a subtype can see
+ * @param annotationValues the element values of the annotations of the type, by {@code
+ *     <annotation>#<element>}, as for {@link CallTarget#annotationValues()}
  * @param components the types this one is built from: its type arguments in order, or the element
  *     type of an array
  */
@@ -24,6 +28,7 @@ public record TypeMembers(
     List<String> annotations,
     List<CallTarget> inheritedMethods,
     List<FieldRef> inheritedFields,
+    Map<String, List<String>> annotationValues,
     List<TypeComponent> components) {
 
   /**
@@ -36,7 +41,7 @@ public record TypeMembers(
       final List<FieldRef> fields,
       final List<TypeRef> ancestors,
       final List<String> annotations) {
-    this(methods, fields, ancestors, annotations, List.of(), List.of(), List.of());
+    this(methods, fields, ancestors, annotations, List.of(), List.of(), Map.of(), List.of());
   }
 
   /**
@@ -51,6 +56,9 @@ public record TypeMembers(
     annotations = List.copyOf(annotations);
     inheritedMethods = List.copyOf(inheritedMethods);
     inheritedFields = List.copyOf(inheritedFields);
+    final Map<String, List<String>> copy = new LinkedHashMap<>();
+    annotationValues.forEach((key, list) -> copy.put(key, List.copyOf(list)));
+    annotationValues = Map.copyOf(copy);
     components = List.copyOf(components);
   }
 }

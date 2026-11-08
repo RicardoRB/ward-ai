@@ -425,8 +425,12 @@ profiles = ["pre-push", "ci"]
 Each rule has a stable id of the form `ward:<language>/<rule>`. A rule runs only when the language
 frontend provides the capability the rule needs. A rule whose capability is missing is reported as
 not run, and the gate is unavailable rather than passed. A file that cannot be parsed or a rule that
-fails is an execution error, and the gate does not pass. Findings appear in the same check report,
-JSON and SARIF output as the other gates.
+fails is an execution error, and the gate does not pass. The report then names each file or rule
+that failed, after the findings. Findings appear in the same check report, JSON and SARIF output as
+the other gates.
+
+The gate skips hidden folders, build output (`target`, `build`, `dist`, `node_modules`, `mutants`),
+and Java or Kotlin files under a `src/<set>/resources` folder, which Maven and Gradle never compile.
 
 Select rules with `rules`. Unknown rule ids and unknown keys are configuration errors:
 

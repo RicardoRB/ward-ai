@@ -105,12 +105,15 @@ final class ParsedFacts {
         List.of(),
         List.of(),
         List.of(),
+        null,
+        Map.of(),
+        Map.of(),
         null);
   }
 
   static TypeMembers withMethods(
       final List<CallTarget> declared, final List<CallTarget> inherited) {
     return new TypeMembers(
-        declared, List.of(), List.of(OBJECT), List.of(), inherited, List.of(), List.of());
+        declared, List.of(), List.of(OBJECT), List.of(), inherited, List.of(), Map.of(), List.of());
   }
 }

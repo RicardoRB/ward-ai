@@ -2,11 +2,14 @@ package dev.ward.analysis.domain.jvm.types;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Reads the annotations of an annotations attribute; only their type names are kept, besides the
- * value of {@code @CompatibleWith}, which names a type variable.
+ * Reads the annotations of an annotations attribute: their type names, and their element values by
+ * {@code <annotation>#<element>}. A parameter annotation also keeps the value of
+ * {@code @CompatibleWith}, which names a type variable.
  */
 final class AnnotationReader {
   private static final int UNSIGNED_SHORT = 0xFFFF;
@@ -15,10 +18,10 @@ final class AnnotationReader {
   private final ByteBuffer in;
   private static final String COMPATIBLE_WITH =
       "Lcom/google/errorprone/annotations/CompatibleWith;";
-  private static final char STRING = 's';
 
   private final ConstantPool pool;
   private final List<String> compatible = new ArrayList<>();
+  private final Map<String, List<String>> values = new LinkedHashMap<>();
 
   AnnotationReader(final ByteBuffer in, final ConstantPool pool) {
     this.in = in;
@@ -36,31 +39,65 @@ final class AnnotationReader {
 
   private String annotation() {
     final String descriptor = pool.utf8(in.getShort() & UNSIGNED_SHORT);
+    final String name = className(descriptor);
     final boolean marked = COMPATIBLE_WITH.equals(descriptor);
     for (int pairs = in.getShort() & UNSIGNED_SHORT; pairs > 0; pairs--) {
-      in.getShort();
-      if (marked && in.get(in.position()) == STRING) {
-        in.get();
-        compatible.add(pool.utf8(in.getShort() & UNSIGNED_SHORT));
-      } else {
-        skipValue();
+      final String element = pool.utf8(in.getShort() & UNSIGNED_SHORT);
+      final List<String> found = elementValue();
+      if (marked && !found.isEmpty()) {
+        compatible.add(found.get(0));
       }
+      keep(name + "#" + element, found);
     }
-    return descriptor.substring(1, descriptor.length() - 1).replace('/', '.');
+    return name;
   }
 
-  private void skipValue() {
+  private void keep(final String key, final List<String> found) {
+    values.computeIfAbsent(key, ignored -> new ArrayList<>()).addAll(found);
+  }
+
+  private List<String> elementValue() {
+    final List<String> found = new ArrayList<>();
+    value(found);
+    return found;
+  }
+
+  /** Reads an element value, adding its constants, class names and enum names to {@code into}. */
+  private void value(final List<String> into) {
     final char tag = (char) in.get();
     switch (tag) {
-      case 'e' -> in.getInt();
+      case 's' -> into.add(pool.utf8(in.getShort() & UNSIGNED_SHORT));
+      case 'c' -> into.add(className(pool.utf8(in.getShort() & UNSIGNED_SHORT)));
+      case 'e' -> {
+        in.getShort();
+        into.add(pool.utf8(in.getShort() & UNSIGNED_SHORT));
+      }
       case '@' -> annotation();
       case '[' -> {
         for (int count = in.getShort() & UNSIGNED_SHORT; count > 0; count--) {
-          skipValue();
+          value(into);
         }
       }
-      default -> in.getShort();
+      case 'Z' -> into.add(String.valueOf(!"0".equals(String.valueOf(constant()))));
+      default -> into.add(String.valueOf(constant()));
     }
+  }
+
+  private Object constant() {
+    return pool.constant(in.getShort() & UNSIGNED_SHORT);
+  }
+
+  /** The element values of the annotations read so far, by {@code <annotation>#<element>}. */
+  Map<String, List<String>> values() {
+    return values;
+  }
+
+  private static String className(final String descriptor) {
+    final String inner =
+        descriptor.startsWith("L") && descriptor.endsWith(";")
+            ? descriptor.substring(1, descriptor.length() - 1)
+            : descriptor;
+    return inner.replace('/', '.');
   }
 
   /**

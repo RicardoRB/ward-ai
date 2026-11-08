@@ -74,6 +74,7 @@ final class FactTypeMembers {
         FactRefs.displayAll(type.annotations()),
         inheritedMethods,
         inheritedFields,
+        type.annotationValues(),
         List.of());
   }
 
