@@ -33,6 +33,7 @@ message = "annotation should be on a separate line from the declaration"
 [[rules]]
 id = "ward:java/missing-override-on-record-accessor"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "annotation"

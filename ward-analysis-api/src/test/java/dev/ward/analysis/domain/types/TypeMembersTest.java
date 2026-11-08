@@ -26,7 +26,18 @@ class TypeMembersTest {
   void aCallTargetWithEmptyAnnotationsHasNoneAndOneWithThemKeepsThem() {
     final CallTarget plain =
         new CallTarget(
-            TypeRef.of("a.T"), "m", List.of(), null, false, false, List.of(), List.of(), List.of());
+            TypeRef.of("a.T"),
+            "m",
+            List.of(),
+            null,
+            false,
+            false,
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
+            List.of());
     final CallTarget annotated =
         new CallTarget(
             TypeRef.of("a.T"),
@@ -37,7 +48,10 @@ class TypeMembersTest {
             false,
             List.of("a.A"),
             List.of(List.of("a.N")),
-            List.of("a.D"));
+            List.of("a.D"),
+            List.of(),
+            List.of(),
+            List.of());
 
     assertThat(plain.annotations()).isEmpty();
     assertThat(plain.parameterAnnotations()).isEmpty();

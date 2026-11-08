@@ -81,7 +81,10 @@ final class TypeFactsJson {
         JsonValues.flag(call.get("varargs")),
         JsonValues.strings(call.get("annotations")),
         JsonValues.list(call.get("paramAnnotations")).stream().map(JsonValues::strings).toList(),
-        JsonValues.strings(call.get("declaringAnnotations")));
+        JsonValues.strings(call.get("declaringAnnotations")),
+        JsonValues.strings(call.get("compatibleWith")),
+        JsonValues.strings(call.get("typeParameters")),
+        JsonValues.strings(call.get("declaringTypeParameters")));
   }
 
   private static TypeRef typeRef(final Object value) {

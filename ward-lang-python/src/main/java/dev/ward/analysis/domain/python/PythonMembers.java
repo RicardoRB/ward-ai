@@ -64,6 +64,9 @@ final class PythonMembers {
             false,
             List.of(),
             List.of(),
+            List.of(),
+            List.of(),
+            List.of(),
             List.of());
     return PythonSubject.called(returns, call);
   }

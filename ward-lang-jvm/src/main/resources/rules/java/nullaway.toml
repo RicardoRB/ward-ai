@@ -88,6 +88,7 @@ message = "{value} is never null, so castToNonNull is not needed"
 [[rules]]
 id = "ward:java/switch-expression-nullable"
 language = "java"
+min-java-release = 14
 capability = "SYNTAX"
 severity = "error"
 category = "nullness"

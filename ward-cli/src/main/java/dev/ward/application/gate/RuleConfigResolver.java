@@ -48,7 +48,12 @@ final class RuleConfigResolver {
   private RuleSet run() {
     final Map<String, RuleDefinition> selected =
         new RuleSelector(file.select(), catalog, problems).selected();
-    selected.forEach((id, rule) -> configured.put(id, JavaRelease.withDefault(rule, javaRelease)));
+    selected.forEach(
+        (id, rule) -> {
+          if (rule.runsOn(javaRelease)) {
+            configured.put(id, JavaRelease.withDefault(rule, javaRelease));
+          }
+        });
     file.rules().forEach((id, table) -> tune(id, table, selected));
     if (problems.isEmpty()) {
       return new RuleSet(new ArrayList<>(configured.values()), excludes, List.of());
@@ -157,6 +162,9 @@ final class RuleConfigResolver {
       final Map<String, Object> options) {
     try {
       final RuleDefinition tuned = RuleOptions.apply(rule, options);
+      if (!rule.runsOn(javaRelease)) {
+        return;
+      }
       configured.put(
           rule.id(),
           new RuleDefinition(
@@ -167,7 +175,8 @@ final class RuleConfigResolver {
               tuned.body(),
               tuned.category(),
               tuned.presets(),
-              tuned.options()));
+              tuned.options(),
+              tuned.minJavaRelease()));
     } catch (final IllegalArgumentException exception) {
       problems.add(where, "", exception.getMessage());
     }

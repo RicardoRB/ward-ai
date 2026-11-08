@@ -161,6 +161,14 @@ class NativeJvmTypesTest {
           .satisfies(
               method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated"));
       assertThat(members.ancestors()).extracting(TypeRef::name).containsExactly("java.lang.Object");
+      assertThat(members.methods())
+          .filteredOn(method -> "find".equals(method.name()))
+          .singleElement()
+          .satisfies(
+              method -> {
+                assertThat(method.compatibleWith()).containsExactly("T", "");
+                assertThat(method.typeParameters()).containsExactly("T");
+              });
     } finally {
       types.close();
     }
@@ -195,6 +203,13 @@ class NativeJvmTypesTest {
     /** Returns an object. */
     public static Object make() {
       return new Object();
+    }
+
+    /** Looks a key up. */
+    public static <T> Object find(
+        @com.google.errorprone.annotations.CompatibleWith("T") final Object key,
+        final int ignored) {
+      return key;
     }
 
     /** An old way. */

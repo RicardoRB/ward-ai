@@ -43,7 +43,8 @@ public final class RuleOptions {
         body,
         rule.category(),
         rule.presets(),
-        rule.options());
+        rule.options(),
+        rule.minJavaRelease());
   }
 
   private static RuleOption declared(final RuleDefinition rule, final String name) {

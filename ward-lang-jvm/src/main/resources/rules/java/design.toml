@@ -474,6 +474,7 @@ message = "exception field '{value}' must be final"
 [[rules]]
 id = "ward:java/sealed-should-have-permits-list"
 language = "java"
+min-java-release = 17
 capability = "SYNTAX"
 severity = "error"
 category = "design"

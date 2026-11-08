@@ -569,6 +569,7 @@ message = "clone should be implemented with super.clone()"
 [[rules]]
 id = "ward:java/replace-java-util-calendar"
 language = "java"
+min-java-release = 8
 capability = "SYNTAX"
 severity = "error"
 category = "errorprone"
@@ -583,6 +584,7 @@ message = "java.util.Calendar is mutable and error-prone; use java.time"
 [[rules]]
 id = "ward:java/replace-java-util-date"
 language = "java"
+min-java-release = 8
 capability = "SYNTAX"
 severity = "error"
 category = "errorprone"

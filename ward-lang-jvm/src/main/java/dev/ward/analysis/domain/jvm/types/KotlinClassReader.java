@@ -83,6 +83,7 @@ final class KotlinClassReader {
               new JType.Primitive("void"),
               List.of(),
               List.of(),
+              List.of(),
               List.of()));
     }
   }
@@ -145,6 +146,7 @@ final class KotlinClassReader {
             type,
             List.of(),
             List.of(),
+            List.of(),
             List.of()));
     if (mutable) {
       methods.add(
@@ -154,6 +156,7 @@ final class KotlinClassReader {
               List.of(),
               List.of(type),
               new JType.Primitive("void"),
+              List.of(),
               List.of(),
               List.of(),
               List.of()));
@@ -203,6 +206,14 @@ final class KotlinClassReader {
     return returns.map(
         found ->
             new JvmMethod(
-                name, Flags.PUBLIC, List.of(), parameters, found, List.of(), List.of(), List.of()));
+                name,
+                Flags.PUBLIC,
+                List.of(),
+                parameters,
+                found,
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of()));
   }
 }

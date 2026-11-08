@@ -156,6 +156,7 @@ message = "file declares {value} top-level types; the limit is {max}"
 [[rules]]
 id = "ward:java/record-component-number"
 language = "java"
+min-java-release = 16
 capability = "SYNTAX"
 severity = "error"
 category = "sizes"

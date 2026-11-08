@@ -94,7 +94,10 @@ final class ConfiguredRuleSetup implements RuleSetup {
 
   private static List<RuleDefinition> withDefaults(
       final List<RuleDefinition> rules, final int javaRelease) {
-    return rules.stream().map(rule -> JavaRelease.withDefault(rule, javaRelease)).toList();
+    return rules.stream()
+        .filter(rule -> rule.runsOn(javaRelease))
+        .map(rule -> JavaRelease.withDefault(rule, javaRelease))
+        .toList();
   }
 
   private List<RuleDefinition> concat(final List<RuleDefinition> rules) {

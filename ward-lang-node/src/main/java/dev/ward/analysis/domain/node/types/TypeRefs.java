@@ -44,6 +44,9 @@ final class TypeRefs {
         sig.isVarargs(),
         List.of(),
         List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
         List.of());
   }
 

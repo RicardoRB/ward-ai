@@ -258,6 +258,7 @@ message = "size() compared with zero; use isEmpty() or !isEmpty()"
 [[rules]]
 id = "ward:java/use-standard-charsets"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "bestpractices"
@@ -287,6 +288,7 @@ message = "array created for a call argument; pass the elements as varargs"
 [[rules]]
 id = "ward:java/use-try-with-resources"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "bestpractices"

@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
  *     empty for a rule that is in no group, such as one built from {@code ward.toml}
  * @param presets the presets that select the rule; empty when only {@code include} selects it
  * @param options the options {@code ward-rules.toml} may set; see {@link RuleOption}
+ * @param minJavaRelease the lowest Java release whose code the rule suggests; 0 when the rule does
+ *     not depend on the release. A project on a lower, known release does not run the rule
  */
 public record RuleDefinition(
     String id,
@@ -36,7 +38,8 @@ public record RuleDefinition(
     String body,
     String category,
     Set<RulePreset> presets,
-    List<RuleOption> options) {
+    List<RuleOption> options,
+    int minJavaRelease) {
 
   private static final int SINGLE_LANGUAGE = 1;
 
@@ -52,7 +55,7 @@ public record RuleDefinition(
       final RuleCapability capability,
       final AnalysisSeverity severity,
       final String body) {
-    this(id, languages, capability, severity, body, "", Set.of(), List.of());
+    this(id, languages, capability, severity, body, "", Set.of(), List.of(), 0);
   }
 
   /**
@@ -96,6 +99,17 @@ public record RuleDefinition(
     languages = Set.copyOf(languages);
     presets = Set.copyOf(presets);
     options = List.copyOf(options);
+    if (minJavaRelease < 0) {
+      throw new IllegalArgumentException("rule '" + id + "' has a negative min-java-release");
+    }
+  }
+
+  /**
+   * Returns whether a project on {@code javaRelease} runs this rule; 0 means the release is
+   * unknown.
+   */
+  public boolean runsOn(final int javaRelease) {
+    return javaRelease <= 0 || javaRelease >= minJavaRelease;
   }
 
   /** Returns the option called {@code name}, or empty when the rule does not declare it. */

@@ -42,6 +42,7 @@ message = "the method of an abstract class has no behavior; make it abstract"
 [[rules]]
 id = "ward:java/identical-catch-branches"
 language = "java"
+min-java-release = 7
 capability = "SYNTAX"
 severity = "error"
 category = "codestyle"

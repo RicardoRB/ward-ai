@@ -168,7 +168,8 @@ public final class ClassFileReader {
           parsed.returnType(),
           thrown,
           attributes.annotations,
-          attributes.parameterAnnotations);
+          attributes.parameterAnnotations,
+          attributes.compatibleWith);
     }
   }
 }

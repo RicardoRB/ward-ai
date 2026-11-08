@@ -95,7 +95,8 @@ public final class RuleFileReader {
               text(resource, table, BODY),
               RuleRowMetadata.category(table),
               RuleRowMetadata.presets(table),
-              RuleRowMetadata.options(table));
+              RuleRowMetadata.options(table),
+              RuleRowMetadata.minJavaRelease(table));
     } catch (final IllegalArgumentException exception) {
       throw RuleFileProblems.problem(resource, exception.getMessage(), exception);
     }
