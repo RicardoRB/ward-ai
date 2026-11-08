@@ -42,7 +42,8 @@ class InheritedMemberCheckTest {
         List.of(),
         List.of(),
         List.of(),
-        List.of());
+        List.of(),
+        null);
   }
 
   private static List<String> run(

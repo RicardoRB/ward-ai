@@ -84,7 +84,8 @@ final class TypeFactsJson {
         JsonValues.strings(call.get("declaringAnnotations")),
         JsonValues.strings(call.get("compatibleWith")),
         JsonValues.strings(call.get("typeParameters")),
-        JsonValues.strings(call.get("declaringTypeParameters")));
+        JsonValues.strings(call.get("declaringTypeParameters")),
+        call.containsKey("final") ? JsonValues.flag(call.get("final")) : null);
   }
 
   private static TypeRef typeRef(final Object value) {

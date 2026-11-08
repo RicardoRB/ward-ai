@@ -559,3 +559,14 @@ check = "null-return-dereference"
 message = "the result of {value} may be null and is dereferenced without a check"
 '''
 
+[[rules]]
+id = "ward:java/uc-useless-condition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "value-range-condition"
+message = "the condition {value} is already decided by the conditions around it"
+'''
