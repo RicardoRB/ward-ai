@@ -2,42 +2,35 @@
 # Error Prone 2.50.0 with NullAway 0.14.2, and Semgrep p/java.
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
 # - no-counterpart: 16
-# checkstyle agree: 77
+# checkstyle agree: 78
 # checkstyle agree-lines: 43
 # checkstyle anchor-differs: 4
-# checkstyle approximation: 6
-# checkstyle position: 4
-# checkstyle tool-extra: 4
+# checkstyle approximation: 13
 # checkstyle tool-silent: 8
 # errorprone agree: 18
 # errorprone agree-lines: 58
 # errorprone anchor-differs: 1
-# errorprone approximation: 1
+# errorprone approximation: 6
 # errorprone not-comparable: 104
-# errorprone position: 4
-# errorprone tool-extra: 1
 # errorprone tool-silent: 15
 # nullaway agree-lines: 5
 # nullaway anchor-differs: 1
+# nullaway approximation: 2
 # nullaway not-comparable: 18
-# nullaway tool-extra: 2
 # nullaway tool-silent: 3
 # pmd agree: 100
 # pmd agree-lines: 109
 # pmd anchor-differs: 19
-# pmd approximation: 2
-# pmd position: 6
-# pmd tool-extra: 8
+# pmd approximation: 16
 # pmd tool-silent: 39
 # semgrep agree: 7
 # semgrep agree-lines: 9
 # semgrep anchor-differs: 5
 # semgrep tool-silent: 40
-# spotbugs agree-lines: 135
+# spotbugs agree-lines: 136
 # spotbugs anchor-differs: 38
+# spotbugs approximation: 7
 # spotbugs not-comparable: 86
-# spotbugs position: 4
-# spotbugs tool-extra: 4
 # spotbugs tool-silent: 107
 abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	approximation	Ward's default pattern rejects any two consecutive capitals, as Google style does; Checkstyle allows up to four by default
 abstract-class-name	checkstyle	AbstractClassName	agree-lines	
@@ -49,10 +42,10 @@ add-empty-string	pmd	AddEmptyString	agree-lines
 am-creates-empty-jar-file-entry	spotbugs	AM_CREATES_EMPTY_JAR_FILE_ENTRY	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 am-creates-empty-zip-file-entry	spotbugs	AM_CREATES_EMPTY_ZIP_FILE_ENTRY	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 android-injection-before-super	errorprone	AndroidInjectionBeforeSuper	not-comparable	the fixture does not compile
-annotated-declaration-visibility	checkstyle	AnnotatedDeclarationVisibility	position	tool lines [2], on passing [], fixture [2, 3]
+annotated-declaration-visibility	checkstyle	AnnotatedDeclarationVisibility	approximation	Checkstyle reports only the public @VisibleForTesting declaration (line 2); Ward also reports the private one (line 3)
 annotation-location	checkstyle	AnnotationLocation	agree	
 annotation-on-same-line	checkstyle	AnnotationOnSameLine	agree	
-annotation-use-style	checkstyle	AnnotationUseStyle	position	tool lines [3], on passing [], fixture [2, 3]
+annotation-use-style	checkstyle	AnnotationUseStyle	agree	
 annotation-value-invalid	nullaway	ANNOTATION_VALUE_INVALID	not-comparable	the fixture does not compile
 anon-inner-length	checkstyle	AnonInnerLength	agree-lines	
 append-character-with-char	pmd	AppendCharacterWithChar	agree-lines	
@@ -128,7 +121,7 @@ bit-and-zz	spotbugs	BIT_AND_ZZ	agree-lines
 bit-ior	spotbugs	BIT_IOR	agree-lines	
 bit-ior-of-signed-byte	spotbugs	BIT_IOR_OF_SIGNED_BYTE	not-comparable	the fixture does not compile
 bit-signed-check	spotbugs	BIT_SIGNED_CHECK	agree-lines	
-bit-signed-check-high-bit	spotbugs	BIT_SIGNED_CHECK_HIGH_BIT	position	tool lines [7], on passing [], fixture [3, 7]
+bit-signed-check-high-bit	spotbugs	BIT_SIGNED_CHECK_HIGH_BIT	agree-lines	
 blowfish-insufficient-key-size	semgrep	java.lang.security.audit.blowfish-insufficient-key-size.blowfish-insufficient-key-size	anchor-differs	tool lines [3], on passing [], fixture [2]
 boa-badly-overridden-adapter	spotbugs	BOA_BADLY_OVERRIDDEN_ADAPTER	not-comparable	the fixture does not compile
 boolean-expression-complexity	checkstyle	BooleanExpressionComplexity	agree-lines	
@@ -159,7 +152,7 @@ class-type-parameter-name	checkstyle	ClassTypeParameterName	approximation	the pa
 clone-method-must-be-public	pmd	CloneMethodMustBePublic	agree-lines	
 clone-method-must-implement-cloneable	pmd	CloneMethodMustImplementCloneable	anchor-differs	tool lines [2], on passing [], fixture [1]
 clone-method-return-type-must-match-class-name	pmd	CloneMethodReturnTypeMustMatchClassName	agree-lines	
-close-resource	pmd	CloseResource	tool-extra	tool lines [5], on passing [14], fixture [5]
+close-resource	pmd	CloseResource	approximation	PMD wants a finally block or try-with-resources and reports the direct close() of the passing fixture; Ward accepts a direct close()
 cn-idiom	spotbugs	CN_IDIOM	agree-lines	
 cn-idiom-no-super-call	spotbugs	CN_IDIOM_NO_SUPER_CALL	not-comparable	the fixture does not compile
 cn-implements-clone-but-not-cloneable	spotbugs	CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -176,11 +169,11 @@ comparison-out-of-range	errorprone	ComparisonOutOfRange	agree-lines
 comparison-with-na-n	pmd	ComparisonWithNaN	agree-lines	
 conditional-expression-numeric-promotion	errorprone	ConditionalExpressionNumericPromotion	agree-lines	
 confusing-argument-to-varargs-method	pmd	ConfusingArgumentToVarargsMethod	agree-lines	
-confusing-ternary	pmd	ConfusingTernary	position	tool lines [8], on passing [11], fixture [3, 8]
+confusing-ternary	pmd	ConfusingTernary	approximation	PMD exempts a comparison with null (line 3) and reports the negated if with an else-if (passing line 11); Ward does the reverse
 consecutive-appends-should-reuse	pmd	ConsecutiveAppendsShouldReuse	agree	
 consecutive-literal-appends	pmd	ConsecutiveLiteralAppends	agree-lines	
 constant-name	checkstyle	ConstantName	agree	
-constant-overflow	errorprone	ConstantOverflow	position	tool lines [3], on passing [], fixture [3, 4]
+constant-overflow	errorprone	ConstantOverflow	approximation	Error Prone reports the multiplication of literals (line 3) but not Integer.MAX_VALUE + 1 (line 4), which Ward reports
 constants-in-interface	pmd	ConstantsInInterface	agree-lines	
 constructor-calls-overridable-method	pmd	ConstructorCallsOverridableMethod	agree	
 constructors-declaration-grouping	checkstyle	ConstructorsDeclarationGrouping	agree	
@@ -188,9 +181,9 @@ control-statement-braces	pmd	ControlStatementBraces	anchor-differs	tool lines [3
 covariant-equals	checkstyle	CovariantEquals	agree	
 covariant-equals	spotbugs	EQ_OTHER_USE_OBJECT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 crlf-injection-logs	semgrep	java.lang.security.audit.crlf-injection-logs.crlf-injection-logs	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-custom-import-order	checkstyle	CustomImportOrder	position	tool lines [], on passing [3], fixture [2]
+custom-import-order	checkstyle	CustomImportOrder	approximation	Checkstyle's CustomImportOrder reports nothing on the violating fixture without a customImportOrderRules property and reports a line of the passing one; Ward orders static imports last
 cyclomatic-complexity	checkstyle	CyclomaticComplexity	agree	
-cyclomatic-complexity	pmd	CyclomaticComplexity	tool-extra	tool lines [2], on passing [2], fixture [2]
+cyclomatic-complexity	pmd	CyclomaticComplexity	approximation	PMD reports the method of the passing fixture, so its count or default threshold differs from Ward's
 dagger-provides-null	errorprone	DaggerProvidesNull	not-comparable	the fixture does not compile
 data-class	pmd	DataClass	agree-lines	
 db-duplicate-branches	spotbugs	DB_DUPLICATE_BRANCHES	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -293,7 +286,7 @@ duration-to-long-time-unit	errorprone	DurationToLongTimeUnit	agree-lines
 e-sync-empty-sync	spotbugs	ESync_EMPTY_SYNC	anchor-differs	tool lines [4], on passing [], fixture [3]
 ec-array-and-nonarray	spotbugs	EC_ARRAY_AND_NONARRAY	agree-lines	
 ec-bad-array-compare	spotbugs	EC_BAD_ARRAY_COMPARE	not-comparable	the fixture does not compile
-ec-incompatible-array-compare	spotbugs	EC_INCOMPATIBLE_ARRAY_COMPARE	tool-extra	tool lines [3], on passing [3], fixture [3]
+ec-incompatible-array-compare	spotbugs	EC_INCOMPATIBLE_ARRAY_COMPARE	approximation	SpotBugs also reports int[].equals(long[]) in the passing fixture; Ward does not
 ec-null-arg	spotbugs	EC_NULL_ARG	agree-lines	
 ec-unrelated-class-and-interface	spotbugs	EC_UNRELATED_CLASS_AND_INTERFACE	not-comparable	the fixture does not compile
 ec-unrelated-interfaces	spotbugs	EC_UNRELATED_INTERFACES	not-comparable	the fixture does not compile
@@ -308,7 +301,7 @@ ei-expose-static-rep2	spotbugs	EI_EXPOSE_STATIC_REP2	tool-silent	the tool report
 empty-block	checkstyle	EmptyBlock	agree	
 empty-block	pmd	EmptyControlStatement	agree-lines	
 empty-catch-block	checkstyle	EmptyCatchBlock	agree-lines	
-empty-catch-block	pmd	EmptyCatchBlock	position	tool lines [9], on passing [10], fixture [5]
+empty-catch-block	pmd	EmptyCatchBlock	approximation	PMD exempts a catch variable named ignored (line 5) and reports a catch holding only a comment (line 9); Ward does the reverse
 empty-finalizer	pmd	EmptyFinalizer	agree-lines	
 empty-if	errorprone	EmptyIf	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 empty-method-in-abstract-class-should-be-abstract	pmd	EmptyMethodInAbstractClassShouldBeAbstract	agree-lines	
@@ -327,7 +320,7 @@ eq-overriding-equals-not-symmetric	spotbugs	EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC	n
 eq-self-use-object	spotbugs	EQ_SELF_USE_OBJECT	agree-lines	
 equals-avoid-null	checkstyle	EqualsAvoidNull	agree	
 equals-hash-code	checkstyle	EqualsHashCode	agree	
-equals-hash-code	errorprone	EqualsHashCode	position	tool lines [3], on passing [], fixture [2, 9]
+equals-hash-code	errorprone	EqualsHashCode	approximation	Error Prone reports the class that overrides equals without hashCode (line 3); Ward also reports hashCode without equals (line 9)
 equals-hash-code	pmd	OverrideBothEqualsAndHashCodeOnComparable	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 equals-hash-code	spotbugs	HE_EQUALS_NO_HASHCODE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 equals-na-n	errorprone	EqualsNaN	agree-lines	
@@ -377,8 +370,8 @@ file-length	checkstyle	FileLength	tool-silent	the tool reports nothing on the fi
 final-class	checkstyle	FinalClass	agree	
 final-class	pmd	ClassWithOnlyPrivateConstructorsShouldBeFinal	agree-lines	
 final-field-could-be-static	pmd	FinalFieldCouldBeStatic	agree-lines	
-final-local-variable	checkstyle	FinalLocalVariable	tool-extra	tool lines [3], on passing [5], fixture [3]
-final-local-variable	pmd	LocalVariableCouldBeFinal	tool-extra	tool lines [3], on passing [5], fixture [3]
+final-local-variable	checkstyle	FinalLocalVariable	approximation	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
+final-local-variable	pmd	LocalVariableCouldBeFinal	approximation	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
 final-parameter-in-abstract-method	pmd	FinalParameterInAbstractMethod	agree-lines	
 finalize-does-not-call-super-finalize	pmd	FinalizeDoesNotCallSuperFinalize	anchor-differs	tool lines [3], on passing [], fixture [2]
 finalize-only-calls-super-finalize	pmd	FinalizeOnlyCallsSuperFinalize	agree-lines	
@@ -401,7 +394,7 @@ from-temporal-accessor	errorprone	FromTemporalAccessor	agree-lines
 fs-bad-date-format-flag-combo	spotbugs	FS_BAD_DATE_FORMAT_FLAG_COMBO	agree-lines	
 futures-get-checked-illegal-exception-type	errorprone	FuturesGetCheckedIllegalExceptionType	not-comparable	the fixture does not compile
 fuzzy-equals-should-not-be-used-in-equals-method	errorprone	FuzzyEqualsShouldNotBeUsedInEqualsMethod	not-comparable	the fixture does not compile
-gc-unrelated-types	spotbugs	GC_UNRELATED_TYPES	tool-extra	tool lines [3], on passing [4], fixture [3]
+gc-unrelated-types	spotbugs	GC_UNRELATED_TYPES	approximation	SpotBugs also reports List<String>.contains(Integer) in the passing fixture; Ward does not
 gcm-nonce-reuse	semgrep	java.lang.security.audit.crypto.gcm-nonce-reuse.gcm-nonce-reuse	agree-lines	
 generic-inference-failure	nullaway	GENERIC_INFERENCE_FAILURE	not-comparable	the fixture does not compile
 get-class-on-annotation	errorprone	GetClassOnAnnotation	agree-lines	
@@ -410,7 +403,7 @@ get-on-empty-optional	nullaway	GET_ON_EMPTY_OPTIONAL	not-comparable	the fixture 
 god-class	pmd	GodClass	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 google-method-name	checkstyle	GoogleMethodName	agree	
 google-non-constant-field-name	checkstyle	GoogleNonConstantFieldName	agree	
-google-right-curly	checkstyle	GoogleRightCurly	tool-extra	tool lines [10, 4], on passing [15], fixture [10, 4]
+google-right-curly	checkstyle	GoogleRightCurly	approximation	Checkstyle also reports `if (a) {} else {}` on one line (passing line 15); Ward accepts the empty blocks
 guard-log-statement	pmd	GuardLogStatement	agree	
 guarded-by	errorprone	GuardedBy	not-comparable	the fixture does not compile
 guice-assisted-inject-scoping	errorprone	GuiceAssistedInjectScoping	not-comparable	the fixture does not compile
@@ -437,7 +430,7 @@ icast-int-cast-to-double-passed-to-ceil	spotbugs	ICAST_INT_CAST_TO_DOUBLE_PASSED
 icast-int-cast-to-float-passed-to-round	spotbugs	ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND	agree-lines	
 icast-questionable-unsigned-right-shift	spotbugs	ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT	agree-lines	
 idempotent-operations	pmd	IdempotentOperations	agree	
-identical-catch-branches	pmd	IdenticalCatchBranches	tool-extra	tool lines [7], on passing [14], fixture [7]
+identical-catch-branches	pmd	IdenticalCatchBranches	approximation	PMD also reports the FileNotFoundException and IOException branches (passing line 14), which cannot become one multi-catch; Ward does not
 identical-conditional-branches	pmd	IdenticalConditionalBranches	agree	
 identifier-name	errorprone	IdentifierName	agree	
 identity-binary-expression	errorprone	IdentityBinaryExpression	agree-lines	
@@ -566,7 +559,7 @@ law-of-demeter	pmd	LawOfDemeter	tool-silent	the tool reports nothing on the fixt
 left-curly	checkstyle	LeftCurly	agree	
 lenient-format-string-validation	errorprone	LenientFormatStringValidation	not-comparable	the fixture does not compile
 lg-lost-logger-due-to-weak-reference	spotbugs	LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE	agree-lines	
-line-length	checkstyle	LineLength	tool-extra	tool lines [2], on passing [3], fixture [2]
+line-length	checkstyle	LineLength	approximation	Checkstyle's default limit of 80 applies to the long URL comment of the passing fixture; Ward accepts it
 linguistic-naming	pmd	LinguisticNaming	agree-lines	
 lite-byte-string-utf8	errorprone	LiteByteStringUtf8	agree-lines	
 literals-first-in-comparisons	pmd	LiteralsFirstInComparisons	agree	
@@ -581,7 +574,7 @@ lock-on-boxed-primitive	errorprone	LockOnBoxedPrimitive	agree
 logic-inversion	pmd	LogicInversion	agree-lines	
 long-literal-ending-with-lowercase-l	pmd	LongLiteralEndingWithLowercaseL	agree	
 long-literal-lower-case-suffix	errorprone	LongLiteralLowerCaseSuffix	agree	
-loop-condition-checker	errorprone	LoopConditionChecker	position	tool lines [7], on passing [], fixture [4, 7]
+loop-condition-checker	errorprone	LoopConditionChecker	approximation	Error Prone reports the for loop only (line 7); Ward also reports the while loop (line 4)
 loose-coupling	pmd	LooseCoupling	agree	
 loose-package-coupling	pmd	LoosePackageCoupling	agree	
 lossy-primitive-compare	errorprone	LossyPrimitiveCompare	agree-lines	
@@ -618,8 +611,8 @@ missing-javadoc	errorprone	MissingJavadoc	not-comparable	the fixture does not co
 missing-javadoc	pmd	CommentRequired	agree-lines	
 missing-javadoc-type	checkstyle	MissingJavadocType	agree-lines	
 missing-override	checkstyle	MissingOverride	agree	
-missing-override	errorprone	MissingOverride	position	tool lines [7], on passing [], fixture [3, 7]
-missing-override	pmd	MissingOverride	position	tool lines [7], on passing [], fixture [3, 7]
+missing-override	errorprone	MissingOverride	approximation	Error Prone and PMD report only the class method (line 7); Ward also reports the interface method with {@inheritDoc} (line 3)
+missing-override	pmd	MissingOverride	approximation	Error Prone and PMD report only the class method (line 7); Ward also reports the interface method with {@inheritDoc} (line 3)
 missing-override-on-record-accessor	checkstyle	MissingOverrideOnRecordAccessor	agree-lines	
 missing-runtime-retention	errorprone	MissingRuntimeRetention	not-comparable	the fixture does not compile
 missing-serial-version-uid	pmd	MissingSerialVersionUID	agree-lines	
@@ -657,7 +650,7 @@ ms-should-be-refactored-to-be-final	spotbugs	MS_SHOULD_BE_REFACTORED_TO_BE_FINAL
 msf-mutable-servlet-field	spotbugs	MSF_MUTABLE_SERVLET_FIELD	not-comparable	the fixture does not compile
 mtia-suspect-servlet-instance-field	spotbugs	MTIA_SUSPECT_SERVLET_INSTANCE_FIELD	not-comparable	the fixture does not compile
 mtia-suspect-struts-instance-field	spotbugs	MTIA_SUSPECT_STRUTS_INSTANCE_FIELD	not-comparable	the fixture does not compile
-multiline-comment-leading-asterisk-presence	checkstyle	MultilineCommentLeadingAsteriskPresence	position	tool lines [2], on passing [], fixture [3, 4]
+multiline-comment-leading-asterisk-presence	checkstyle	MultilineCommentLeadingAsteriskPresence	approximation	Checkstyle reports the opening line of the comment (line 2); Ward reports its lines that lack the asterisk (lines 3, 4)
 multiple-string-literals	checkstyle	MultipleStringLiterals	anchor-differs	tool lines [2], on passing [], fixture [3]
 multiple-string-literals	pmd	AvoidDuplicateLiterals	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 multiple-variable-declarations	checkstyle	MultipleVariableDeclarations	agree	
@@ -750,11 +743,11 @@ pa-public-mutable-object-attribute	spotbugs	PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE	n
 pa-public-primitive-attribute	spotbugs	PA_PUBLIC_PRIMITIVE_ATTRIBUTE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 package-annotation	checkstyle	PackageAnnotation	anchor-differs	tool lines [2], on passing [], fixture [1]
 package-case	pmd	PackageCase	agree-lines	
-package-declaration	checkstyle	PackageDeclaration	tool-extra	tool lines [1], on passing [1], fixture [1]
+package-declaration	checkstyle	PackageDeclaration	approximation	Checkstyle reports the package line of the passing fixture, which Ward accepts
 package-info	errorprone	PackageInfo	not-comparable	the fixture does not compile
 package-name	checkstyle	PackageName	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 parameter-assignment	checkstyle	ParameterAssignment	agree	
-parameter-assignment	pmd	AvoidReassigningParameters	position	tool lines [3], on passing [], fixture [3, 4]
+parameter-assignment	pmd	AvoidReassigningParameters	approximation	PMD reports the first assignment to a parameter (line 3); Ward reports each (lines 3, 4)
 parameter-count	checkstyle	ParameterNumber	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 parameter-name	checkstyle	ParameterName	agree	
 parameter-name	errorprone	ParameterName	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -802,7 +795,7 @@ range-array-offset	spotbugs	RANGE_ARRAY_OFFSET	not-comparable	the fixture does n
 range-string-index	spotbugs	RANGE_STRING_INDEX	agree-lines	
 rc-ref-comparison	spotbugs	RC_REF_COMPARISON	agree-lines	
 rc-ref-comparison-bad-practice	spotbugs	RC_REF_COMPARISON_BAD_PRACTICE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-rc-ref-comparison-bad-practice-boolean	spotbugs	RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN	tool-extra	tool lines [3], on passing [4], fixture [3]
+rc-ref-comparison-bad-practice-boolean	spotbugs	RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN	approximation	SpotBugs also reports Boolean == Object (passing line 4); Ward does not
 rcn-redundant-comparison-two-null-values	spotbugs	RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 rcn-redundant-nullcheck-of-nonnull-value	spotbugs	RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 re-bad-syntax-for-regular-expression	spotbugs	RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION	not-comparable	the fixture does not compile
@@ -833,15 +826,15 @@ replace-java-util-vector	pmd	ReplaceJavaUtilVector	agree
 require-empty-line-before-block-tag-group	checkstyle	RequireEmptyLineBeforeBlockTagGroup	agree-lines	
 required-modifiers	errorprone	RequiredModifiers	not-comparable	the fixture does not compile
 return-count	checkstyle	ReturnCount	agree	
-return-count	pmd	OnlyOneReturn	position	tool lines [14, 4, 7], on passing [4], fixture [12, 2]
+return-count	pmd	OnlyOneReturn	approximation	PMD reports every return statement, including one of the passing fixture (line 4); Ward reports a method once
 return-empty-collection-rather-than-null	pmd	ReturnEmptyCollectionRatherThanNull	agree	
 return-from-finally-block	pmd	ReturnFromFinallyBlock	agree	
-return-nullable	nullaway	RETURN_NULLABLE	tool-extra	tool lines [10, 16, 20], on passing [31], fixture [10, 16, 20]
+return-nullable	nullaway	RETURN_NULLABLE	approximation	NullAway also reports `return null` in the unmarked class (passing line 31); Ward leaves classes it does not treat as annotated alone
 return-nullable-generic	nullaway	RETURN_NULLABLE_GENERIC	not-comparable	the fixture does not compile
 return-value-ignored	errorprone	ReturnValueIgnored	agree-lines	
 ri-redundant-interfaces	spotbugs	RI_REDUNDANT_INTERFACES	agree-lines	
 right-curly	checkstyle	RightCurly	agree	
-rp-c-repeated-conditional-test	spotbugs	RpC_REPEATED_CONDITIONAL_TEST	position	tool lines [3], on passing [], fixture [3, 7]
+rp-c-repeated-conditional-test	spotbugs	RpC_REPEATED_CONDITIONAL_TEST	approximation	SpotBugs reports the repeated operand of || (line 3) but not the repeated else-if test (line 7), which Ward reports
 rr-not-checked	spotbugs	RR_NOT_CHECKED	agree-lines	
 rs-readobject-sync	spotbugs	RS_READOBJECT_SYNC	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 rsa-no-padding	semgrep	java.lang.security.audit.crypto.rsa-no-padding.rsa-no-padding	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -913,7 +906,7 @@ simple-date-format-needs-locale	pmd	SimpleDateFormatNeedsLocale	agree
 simplifiable-test-assertion	pmd	SimplifiableTestAssertion	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 simplified-ternary	pmd	SimplifiedTernary	agree	
 simplify-boolean-return	checkstyle	SimplifyBooleanReturn	agree	
-simplify-boolean-return	pmd	SimplifyBooleanReturns	tool-extra	tool lines [3], on passing [3], fixture [3]
+simplify-boolean-return	pmd	SimplifyBooleanReturns	approximation	PMD also reports the passing fixture's if with a return in its branch (line 3); Ward does not
 simplify-conditional	pmd	SimplifyConditional	agree	
 sing-singleton-getter-not-synchronized	spotbugs	SING_SINGLETON_GETTER_NOT_SYNCHRONIZED	agree-lines	
 sing-singleton-has-nonprivate-constructor	spotbugs	SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR	anchor-differs	tool lines [2], on passing [], fixture [1]
@@ -925,7 +918,7 @@ single-line-javadoc	checkstyle	SingleLineJavadoc	agree-lines
 single-method-singleton	pmd	SingleMethodSingleton	anchor-differs	tool lines [1], on passing [], fixture [3]
 singleton-class-returning-new-instance	pmd	SingletonClassReturningNewInstance	agree-lines	
 singular-field	pmd	SingularField	agree-lines	
-sio-superfluous-instanceof	spotbugs	SIO_SUPERFLUOUS_INSTANCEOF	tool-extra	tool lines [3], on passing [3], fixture [3]
+sio-superfluous-instanceof	spotbugs	SIO_SUPERFLUOUS_INSTANCEOF	approximation	SpotBugs also reports text instanceof String (passing line 3); Ward does not
 size-greater-than-or-equals-zero	errorprone	SizeGreaterThanOrEqualsZero	agree-lines	
 sp-spin-on-field	spotbugs	SP_SPIN_ON_FIELD	agree-lines	
 spring-sqli	semgrep	java.spring.security.audit.spring-sqli.spring-sqli	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -1024,12 +1017,12 @@ uc-useless-object-stack	spotbugs	UC_USELESS_OBJECT_STACK	agree-lines
 uc-useless-void-method	spotbugs	UC_USELESS_VOID_METHOD	anchor-differs	tool lines [5], on passing [], fixture [2]
 ucf-useless-control-flow	spotbugs	UCF_USELESS_CONTROL_FLOW	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 ucf-useless-control-flow-next-line	spotbugs	UCF_USELESS_CONTROL_FLOW_NEXT_LINE	agree-lines	
-ug-sync-set-unsync-get	spotbugs	UG_SYNC_SET_UNSYNC_GET	position	tool lines [1], on passing [1], fixture [8]
+ug-sync-set-unsync-get	spotbugs	UG_SYNC_SET_UNSYNC_GET	approximation	SpotBugs reports the class (line 1), also of the passing fixture; Ward reports the unsynchronized getter (line 8)
 ui-inheritance-unsafe-getresource	spotbugs	UI_INHERITANCE_UNSAFE_GETRESOURCE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 ul-unreleased-lock	spotbugs	UL_UNRELEASED_LOCK	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 ul-unreleased-lock-exception-path	spotbugs	UL_UNRELEASED_LOCK_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 um-unnecessary-math	spotbugs	UM_UNNECESSARY_MATH	agree-lines	
-unbox-nullable	nullaway	UNBOX_NULLABLE	tool-extra	tool lines [12, 7], on passing [13], fixture [12, 7]
+unbox-nullable	nullaway	UNBOX_NULLABLE	approximation	NullAway also reports the return of an Integer assigned from a @Nullable parameter (passing line 13); Ward does not
 unconditional-if-statement	pmd	UnconditionalIfStatement	agree	
 unencrypted-socket	semgrep	java.lang.security.audit.crypto.unencrypted-socket.unencrypted-socket	agree	
 unicode-directionality-characters	errorprone	UnicodeDirectionalityCharacters	not-comparable	the fixture does not compile
@@ -1043,15 +1036,15 @@ unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	agree-l
 unnecessary-annotation-value-element	pmd	UnnecessaryAnnotationValueElement	agree-lines	
 unnecessary-block	pmd	UnnecessaryBlock	agree	
 unnecessary-boolean-assertion	pmd	UnnecessaryBooleanAssertion	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
-unnecessary-boxing	pmd	UnnecessaryBoxing	tool-extra	tool lines [2, 3, 4], on passing [4], fixture [2, 3, 4]
+unnecessary-boxing	pmd	UnnecessaryBoxing	approximation	PMD also reports Integer.valueOf(b) with an int argument (passing line 4); Ward reports only valueOf of a literal
 unnecessary-case-change	pmd	UnnecessaryCaseChange	agree	
-unnecessary-cast	pmd	UnnecessaryCast	tool-extra	tool lines [2, 3, 4], on passing [2, 4], fixture [2, 3, 4]
+unnecessary-cast	pmd	UnnecessaryCast	approximation	PMD also reports (long) 2 and (Object) "x" (passing lines 2, 4); Ward reports only casts to the expression's own type
 unnecessary-check-not-null	errorprone	UnnecessaryCheckNotNull	not-comparable	the fixture does not compile
 unnecessary-conversion-temporary	pmd	UnnecessaryConversionTemporary	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unnecessary-fully-qualified-name	pmd	UnnecessaryFullyQualifiedName	agree	
 unnecessary-fully-qualified-type	checkstyle	UnnecessaryFullyQualifiedType	agree-lines	
 unnecessary-interface-declaration	pmd	UnnecessaryInterfaceDeclaration	agree	
-unnecessary-lambda	errorprone	UnnecessaryLambda	tool-extra	tool lines [4], on passing [4], fixture [4]
+unnecessary-lambda	errorprone	UnnecessaryLambda	approximation	Error Prone also reports the private lambda field of the passing fixture (line 4); Ward does not
 unnecessary-return	pmd	UnnecessaryReturn	anchor-differs	tool lines [4], on passing [], fixture [2]
 unnecessary-type-argument	errorprone	UnnecessaryTypeArgument	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unnecessary-varargs-array-creation	pmd	UnnecessaryVarargsArrayCreation	agree-lines	
@@ -1073,7 +1066,7 @@ unused-local-variable	pmd	UnusedLocalVariable	tool-silent	the tool reports nothi
 unused-null-check-in-equals	pmd	UnusedNullCheckInEquals	agree-lines	
 unused-private-method	errorprone	UnusedMethod	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unused-private-method	pmd	UnusedPrivateMethod	agree-lines	
-unused-return-value	pmd	UnusedReturnValue	tool-extra	tool lines [3], on passing [10], fixture [3]
+unused-return-value	pmd	UnusedReturnValue	approximation	PMD also reports text.length() (passing line 10); Ward reports only the methods it lists
 unvalidated-redirect	semgrep	java.lang.security.audit.unvalidated-redirect.unvalidated-redirect	anchor-differs	tool lines [5], on passing [], fixture [7]
 upm-uncalled-private-method	spotbugs	UPM_UNCALLED_PRIVATE_METHOD	anchor-differs	tool lines [1], on passing [], fixture [2]
 upper-ell	checkstyle	UpperEll	agree	
@@ -1115,7 +1108,7 @@ useless-overriding-method	pmd	UselessOverridingMethod	agree-lines
 useless-qualified-this	pmd	UselessQualifiedThis	agree	
 useless-string-value-of	pmd	UselessStringValueOf	agree-lines	
 uuf-unused-field	spotbugs	UUF_UNUSED_FIELD	anchor-differs	tool lines [1], on passing [], fixture [2]
-uuf-unused-public-or-protected-field	spotbugs	UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD	position	tool lines [2], on passing [11], fixture [3]
+uuf-unused-public-or-protected-field	spotbugs	UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD	approximation	SpotBugs reports the class of the unused public field (line 2) and a public class of the passing fixture (line 11); Ward reports the field (line 3)
 uw-uncond-wait	spotbugs	UW_UNCOND_WAIT	agree-lines	
 uwf-field-not-initialized-in-constructor	spotbugs	UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 uwf-null-field	spotbugs	UWF_NULL_FIELD	agree-lines	
@@ -1144,7 +1137,7 @@ wrong-override-postcondition	nullaway	WRONG_OVERRIDE_POSTCONDITION	not-comparabl
 wrong-override-precondition	nullaway	WRONG_OVERRIDE_PRECONDITION	not-comparable	the fixture does not compile
 wrong-override-return	nullaway	WRONG_OVERRIDE_RETURN	agree-lines	
 wrong-override-return-generic	nullaway	WRONG_OVERRIDE_RETURN_GENERIC	not-comparable	the fixture does not compile
-wrong-test-annotation	pmd	WrongTestAnnotation	position	tool lines [5], on passing [18], fixture [1]
+wrong-test-annotation	pmd	WrongTestAnnotation	approximation	PMD reports the @Test annotation (line 5) and the fully qualified @org.junit.Test of the passing fixture (line 18); Ward reports the import (line 1)
 ws-writeobject-sync	spotbugs	WS_WRITEOBJECT_SYNC	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 xfb-xml-factory-bypass	spotbugs	XFB_XML_FACTORY_BYPASS	not-comparable	the fixture does not compile
 xmlinputfactory-possible-xxe	semgrep	java.lang.security.xmlinputfactory-possible-xxe.xmlinputfactory-possible-xxe	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape

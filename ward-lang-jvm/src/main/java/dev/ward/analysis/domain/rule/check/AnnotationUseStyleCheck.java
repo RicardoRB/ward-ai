@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -107,8 +108,12 @@ public final class AnnotationUseStyleCheck implements RuleCheck {
   }
 
   private boolean badSingle(final String element) {
-    return NAMED_VALUE.matcher(element).matches()
-        || COMPACT_NO_ARRAY.equals(elementStyle) && isSingleArray(element);
+    final Matcher named = NAMED_VALUE.matcher(element);
+    if (COMPACT.equals(elementStyle)) {
+      return named.matches();
+    }
+    return COMPACT_NO_ARRAY.equals(elementStyle)
+        && isSingleArray(named.matches() ? named.group(1) : element);
   }
 
   private static boolean isSingleArray(final String element) {

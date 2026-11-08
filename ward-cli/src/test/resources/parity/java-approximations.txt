@@ -8,3 +8,38 @@ interface-type-parameter-name	checkstyle	InterfaceTypeParameterName	the passing 
 java8-api-checker	errorprone	Java8ApiChecker	Error Prone reports List.of(1); Ward has no finding there
 method-type-parameter-name	checkstyle	MethodTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 text-block-google-style-formatting	checkstyle	TextBlockGoogleStyleFormatting	Checkstyle also reports the closing delimiter on its own line
+annotated-declaration-visibility	checkstyle	AnnotatedDeclarationVisibility	Checkstyle reports only the public @VisibleForTesting declaration (line 2); Ward also reports the private one (line 3)
+close-resource	pmd	CloseResource	PMD wants a finally block or try-with-resources and reports the direct close() of the passing fixture; Ward accepts a direct close()
+confusing-ternary	pmd	ConfusingTernary	PMD exempts a comparison with null (line 3) and reports the negated if with an else-if (passing line 11); Ward does the reverse
+constant-overflow	errorprone	ConstantOverflow	Error Prone reports the multiplication of literals (line 3) but not Integer.MAX_VALUE + 1 (line 4), which Ward reports
+custom-import-order	checkstyle	CustomImportOrder	Checkstyle's CustomImportOrder reports nothing on the violating fixture without a customImportOrderRules property and reports a line of the passing one; Ward orders static imports last
+cyclomatic-complexity	pmd	CyclomaticComplexity	PMD reports the method of the passing fixture, so its count or default threshold differs from Ward's
+ec-incompatible-array-compare	spotbugs	EC_INCOMPATIBLE_ARRAY_COMPARE	SpotBugs also reports int[].equals(long[]) in the passing fixture; Ward does not
+empty-catch-block	pmd	EmptyCatchBlock	PMD exempts a catch variable named ignored (line 5) and reports a catch holding only a comment (line 9); Ward does the reverse
+equals-hash-code	errorprone	EqualsHashCode	Error Prone reports the class that overrides equals without hashCode (line 3); Ward also reports hashCode without equals (line 9)
+final-local-variable	checkstyle	FinalLocalVariable	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
+final-local-variable	pmd	LocalVariableCouldBeFinal	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
+gc-unrelated-types	spotbugs	GC_UNRELATED_TYPES	SpotBugs also reports List<String>.contains(Integer) in the passing fixture; Ward does not
+google-right-curly	checkstyle	GoogleRightCurly	Checkstyle also reports `if (a) {} else {}` on one line (passing line 15); Ward accepts the empty blocks
+identical-catch-branches	pmd	IdenticalCatchBranches	PMD also reports the FileNotFoundException and IOException branches (passing line 14), which cannot become one multi-catch; Ward does not
+line-length	checkstyle	LineLength	Checkstyle's default limit of 80 applies to the long URL comment of the passing fixture; Ward accepts it
+loop-condition-checker	errorprone	LoopConditionChecker	Error Prone reports the for loop only (line 7); Ward also reports the while loop (line 4)
+missing-override	errorprone	MissingOverride	Error Prone and PMD report only the class method (line 7); Ward also reports the interface method with {@inheritDoc} (line 3)
+missing-override	pmd	MissingOverride	Error Prone and PMD report only the class method (line 7); Ward also reports the interface method with {@inheritDoc} (line 3)
+multiline-comment-leading-asterisk-presence	checkstyle	MultilineCommentLeadingAsteriskPresence	Checkstyle reports the opening line of the comment (line 2); Ward reports its lines that lack the asterisk (lines 3, 4)
+package-declaration	checkstyle	PackageDeclaration	Checkstyle reports the package line of the passing fixture, which Ward accepts
+parameter-assignment	pmd	AvoidReassigningParameters	PMD reports the first assignment to a parameter (line 3); Ward reports each (lines 3, 4)
+rc-ref-comparison-bad-practice-boolean	spotbugs	RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN	SpotBugs also reports Boolean == Object (passing line 4); Ward does not
+return-count	pmd	OnlyOneReturn	PMD reports every return statement, including one of the passing fixture (line 4); Ward reports a method once
+return-nullable	nullaway	RETURN_NULLABLE	NullAway also reports `return null` in the unmarked class (passing line 31); Ward leaves classes it does not treat as annotated alone
+rp-c-repeated-conditional-test	spotbugs	RpC_REPEATED_CONDITIONAL_TEST	SpotBugs reports the repeated operand of || (line 3) but not the repeated else-if test (line 7), which Ward reports
+simplify-boolean-return	pmd	SimplifyBooleanReturns	PMD also reports the passing fixture's if with a return in its branch (line 3); Ward does not
+sio-superfluous-instanceof	spotbugs	SIO_SUPERFLUOUS_INSTANCEOF	SpotBugs also reports text instanceof String (passing line 3); Ward does not
+ug-sync-set-unsync-get	spotbugs	UG_SYNC_SET_UNSYNC_GET	SpotBugs reports the class (line 1), also of the passing fixture; Ward reports the unsynchronized getter (line 8)
+unbox-nullable	nullaway	UNBOX_NULLABLE	NullAway also reports the return of an Integer assigned from a @Nullable parameter (passing line 13); Ward does not
+unnecessary-boxing	pmd	UnnecessaryBoxing	PMD also reports Integer.valueOf(b) with an int argument (passing line 4); Ward reports only valueOf of a literal
+unnecessary-cast	pmd	UnnecessaryCast	PMD also reports (long) 2 and (Object) "x" (passing lines 2, 4); Ward reports only casts to the expression's own type
+unnecessary-lambda	errorprone	UnnecessaryLambda	Error Prone also reports the private lambda field of the passing fixture (line 4); Ward does not
+unused-return-value	pmd	UnusedReturnValue	PMD also reports text.length() (passing line 10); Ward reports only the methods it lists
+uuf-unused-public-or-protected-field	spotbugs	UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD	SpotBugs reports the class of the unused public field (line 2) and a public class of the passing fixture (line 11); Ward reports the field (line 3)
+wrong-test-annotation	pmd	WrongTestAnnotation	PMD reports the @Test annotation (line 5) and the fully qualified @org.junit.Test of the passing fixture (line 18); Ward reports the import (line 1)
