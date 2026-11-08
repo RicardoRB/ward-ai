@@ -2089,49 +2089,41 @@ spotbugs = ["TLW_TWO_LOCK_WAIT"]
 
 [[rule]]
 name = "tq-always-value-used-where-never-required"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED"]
 
 [[rule]]
 name = "tq-comparing-values-with-incompatible-type-qualifiers"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS"]
 
 [[rule]]
 name = "tq-explicit-unknown-source-value-reaches-always-sink"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
 
 [[rule]]
 name = "tq-explicit-unknown-source-value-reaches-never-sink"
-presets = ["standard", "strict"]
 category = "style"
 spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK"]
 
 [[rule]]
 name = "tq-maybe-source-value-reaches-always-sink"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
 
 [[rule]]
 name = "tq-maybe-source-value-reaches-never-sink"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK"]
 
 [[rule]]
 name = "tq-never-value-used-where-always-required"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED"]
 
 [[rule]]
 name = "tq-unknown-value-used-where-always-strictly-required"
-presets = ["standard", "strict"]
 category = "correctness"
 spotbugs = ["TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED"]
 

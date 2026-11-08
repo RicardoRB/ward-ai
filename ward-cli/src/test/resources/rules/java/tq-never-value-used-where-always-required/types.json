@@ -1,0 +1,36 @@
+{
+  "14:5-14:14": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "need",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  },
+  "15:5-15:14": {
+    "call": {
+      "declaring": {
+        "name": "Check"
+      },
+      "name": "need",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
+  }
+}

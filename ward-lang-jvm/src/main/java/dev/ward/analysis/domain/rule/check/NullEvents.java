@@ -133,9 +133,16 @@ final class NullEvents {
       out.add(NullEvent.compare(compared.get().variable(), node));
     } else if (DOT.equals(operator)) {
       member(node);
+    } else if ("==".equals(operator) || "!=".equals(operator)) {
+      parts.forEach(this::visit);
+      out.add(NullEvent.equality(node, argument(parts.get(0)), argument(parts.get(2))));
     } else {
       other(node);
     }
+  }
+
+  private NullEvent.Arg argument(final SyntaxNode node) {
+    return new NullEvent.Arg(operands.operand(node), node);
   }
 
   private void other(final SyntaxNode node) {
@@ -170,6 +177,9 @@ final class NullEvents {
           .dereference(parts.get(0), "close".equals(name) && args.isEmpty() ? name : "")
           .ifPresent(out::add);
       out.add(NullEvent.call(node, operands.arguments(args), name));
+      if ("equals".equals(name) && args.size() == 1) {
+        out.add(NullEvent.equality(node, argument(parts.get(0)), argument(args.get(0))));
+      }
     } else {
       operands.dereference(parts.get(0), "").ifPresent(out::add);
     }
