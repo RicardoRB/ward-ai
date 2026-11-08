@@ -20,6 +20,7 @@ import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -54,17 +55,14 @@ final class RuleFixtureRunner {
     if (UnusedDefinitionFindings.isUnusedDefinitionRule(rule)) {
       return unusedDefinitions(rule, new SourceUnit(path, language, text));
     }
-    final RuleRunResult result =
-        new RuleEngine(BundledRuleMatchers.create())
-            .run(
-                List.of(new SourceUnit(path, language, text)),
-                frontendsFor(rule, typeFacts),
-                List.of(rule));
+    final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
+    final List<SourceUnit> units = List.of(new SourceUnit(path, language, text));
+    final RuleRunResult result = engine.run(units, frontendsFor(rule, typeFacts), List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
-    return result.findings().stream()
-        .filter(finding -> finding.ruleId().equals(rule.id()))
-        .toList();
+    final List<AnalysisFinding> all = new ArrayList<>(result.findings());
+    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule)));
+    return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
   }
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */

@@ -17,7 +17,7 @@
         },
         "paramAnnotations": [
           [
-            "javax.annotation.Nullable"
+            "javax.annotation.CheckForNull"
           ]
         ]
       }

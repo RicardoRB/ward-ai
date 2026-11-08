@@ -50,11 +50,11 @@ co-compareto-incorrect-floating = "implemented"
 co-compareto-results-min-value = "implemented"
 co-self-no-object = "implemented"
 ct-constructor-throw = "implemented"
-cwo-closed-without-opened = { status = "planned", issue = "#316" }
+cwo-closed-without-opened = "implemented"
 db-duplicate-branches = "implemented"
 db-duplicate-switch-clauses = "implemented"
 dc-doublecheck = "implemented"
-dc-partially-constructed = { status = "planned", issue = "#316" }
+dc-partially-constructed = "implemented"
 dcn-nullpointer-exception = "implemented"
 de-might-drop = "implemented"
 de-might-ignore = "implemented"
@@ -308,7 +308,7 @@ np-store-into-nonnull-field = { status = "planned", issue = "#314" }
 np-sync-and-null-check-field = "implemented"
 np-tostring-could-return-null = "implemented"
 np-unwritten-field = "implemented"
-np-unwritten-public-or-protected-field = { status = "planned", issue = "#316" }
+np-unwritten-public-or-protected-field = "implemented"
 ns-dangerous-non-short-circuit = "implemented"
 ns-non-short-circuit = "implemented"
 obl-unsatisfied-obligation = { status = "planned", issue = "#316" }
