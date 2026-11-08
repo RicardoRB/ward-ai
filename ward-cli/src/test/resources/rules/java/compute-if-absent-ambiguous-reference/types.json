@@ -1,0 +1,291 @@
+{
+  "5:5-5:39": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:5-5:5": {
+    "type": {
+      "name": "java.util.Map"
+    }
+  },
+  "6:5-6:45": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "6:5-6:5": {
+    "type": {
+      "name": "java.util.Map"
+    }
+  },
+  "5:28-5:33": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "6:34-6:39": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "6:5-6:38": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "6:27-6:32": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Holder"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "7:5-7:45": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:5-7:5": {
+    "type": {
+      "name": "java.util.Map"
+    }
+  },
+  "8:5-8:38": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "8:5-8:5": {
+    "type": {
+      "name": "java.util.Map"
+    }
+  },
+  "8:28-8:32": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Other"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "9:5-9:38": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "computeIfAbsent",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "9:5-9:5": {
+    "type": {
+      "name": "java.util.Map"
+    }
+  },
+  "9:28-9:32": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Third"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Third"
+          },
+          "name": "<init>",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Third"
+          },
+          "name": "<init>",
+          "params": [
+            {
+              "name": "java.lang.String"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  }
+}

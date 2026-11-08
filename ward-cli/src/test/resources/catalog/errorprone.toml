@@ -520,8 +520,6 @@ errorprone = ["ComparingThisWithNull"]
 
 [[rule]]
 name = "comparison-contract-violated"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComparisonContractViolated"]
 
 [[rule]]
@@ -544,8 +542,6 @@ errorprone = ["ComplexBooleanConstant"]
 
 [[rule]]
 name = "compute-if-absent-ambiguous-reference"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["ComputeIfAbsentAmbiguousReference"]
 
 [[rule]]
@@ -574,8 +570,6 @@ errorprone = ["DaggerProvidesNull"]
 
 [[rule]]
 name = "dangerous-literal-null"
-presets = ["standard", "strict"]
-category = "severity-error"
 errorprone = ["DangerousLiteralNull"]
 
 [[rule]]

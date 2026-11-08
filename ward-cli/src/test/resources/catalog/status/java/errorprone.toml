@@ -94,18 +94,18 @@ comparable-and-comparator = { status = "planned", issue = "#319" }
 comparable-type = "implemented"
 compare-to-zero = "implemented"
 comparing-this-with-null = "implemented"
-comparison-contract-violated = { status = "planned", issue = "#319" }
+comparison-contract-violated = "implemented"
 comparison-out-of-range = "implemented"
 compatible-with-annotation-misuse = "implemented"
 compile-time-constant = "implemented"
 complex-boolean-constant = { status = "planned", issue = "#319" }
-compute-if-absent-ambiguous-reference = { status = "planned", issue = "#319" }
+compute-if-absent-ambiguous-reference = "implemented"
 conditional-expression-numeric-promotion = "implemented"
 constant-field = { status = "planned", issue = "#319" }
 constant-overflow = "implemented"
 constant-pattern-compile = { status = "planned", issue = "#319" }
 dagger-provides-null = "implemented"
-dangerous-literal-null = { status = "planned", issue = "#319" }
+dangerous-literal-null = "implemented"
 date-checker = { status = "planned", issue = "#319" }
 date-format-constant = { status = "planned", issue = "#319" }
 dead-exception = "implemented"
