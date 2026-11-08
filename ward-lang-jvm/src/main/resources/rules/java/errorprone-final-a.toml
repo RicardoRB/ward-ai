@@ -1,0 +1,75 @@
+# Error Prone checks at ERROR severity for Java, A to D, final round, first batch: operand ranges and syntax patterns.
+
+[[rules]]
+id = "ward:java/bad-shift-amount"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["<<", ">>", ">>>"]
+types = ["int", "short", "byte", "char"]
+literal-min = "0"
+literal-max = "31"
+message = "the shift amount is outside 0 to 31, so only its low five bits are used"
+'''
+
+[[rules]]
+id = "ward:java/comparison-out-of-range"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "binary-operand-type"
+operators = ["==", "!=", "<", ">", "<=", ">="]
+type-ranges = ["byte:-128:127", "short:-32768:32767", "char:0:65535"]
+message = "the value is outside the range of the compared type, so the comparison never changes"
+'''
+
+[[rules]]
+id = "ward:java/dagger-provides-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "annotated-member"
+declaration = "methodDeclaration"
+annotations = ["Provides"]
+absent-annotations = ["Nullable", "CheckForNull", "NullableDecl"]
+text = '(?:^|[;{}])returnnull;'
+message = "a @Provides method must not return null unless it is annotated @Nullable"
+'''
+
+[[rules]]
+id = "ward:java/android-injection-before-super"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^void(?<m>onCreate|onAttach|onReceive)\(.*\)\{.*super\.\k<m>\(.*(?:AndroidInjection|AndroidSupportInjection)\.inject\('
+message = "inject the members before calling super; super may use the members that are still unset"
+'''
+
+[[rules]]
+id = "ward:java/check-not-null-multiple-times"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constructorDeclaration", "methodDeclaration"]
+text = 'checkNotNull\((?<v>\w+)[,)].*checkNotNull\(\k<v>[,)]'
+message = "the same variable is checked for null more than once; check the other variable instead"
+'''

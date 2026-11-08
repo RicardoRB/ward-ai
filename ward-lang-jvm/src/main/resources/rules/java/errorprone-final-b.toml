@@ -1,0 +1,29 @@
+# Error Prone checks at ERROR severity for Java, A to D, final round, second batch: arguments that can never have the expected type.
+
+[[rules]]
+id = "ward:java/collection-incompatible-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-argument"
+declaring-types = ["java.util.Collection", "java.util.List", "java.util.Set", "java.util.Map", "java.util.ArrayList", "java.util.LinkedList", "java.util.HashSet", "java.util.TreeSet", "java.util.HashMap", "java.util.TreeMap", "java.util.LinkedHashMap", "java.util.LinkedHashSet", "java.util.Queue", "java.util.Deque", "java.util.ArrayDeque"]
+methods = ["contains/1:r0:0", "indexOf/1:r0:0", "lastIndexOf/1:r0:0", "containsKey/1:r0:0", "get/1:r0:0", "containsValue/1:r1:0", "getOrDefault/2:r0:0"]
+message = "the argument can never equal an element of the collection, so the call is always false or null"
+'''
+
+[[rules]]
+id = "ward:java/array-fill-incompatible-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-argument"
+declaring-types = ["java.util.Arrays"]
+methods = ["fill/2:a0:1", "fill/4:a0:3"]
+message = "the value cannot be stored in the array, whose elements have an unrelated type"
+'''

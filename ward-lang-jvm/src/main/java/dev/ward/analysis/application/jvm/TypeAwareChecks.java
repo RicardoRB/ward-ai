@@ -11,13 +11,17 @@ import dev.ward.analysis.domain.rule.check.ArrayReceiverCallCheck;
 import dev.ward.analysis.domain.rule.check.CallMatchCheck;
 import dev.ward.analysis.domain.rule.check.CallMatchContext;
 import dev.ward.analysis.domain.rule.check.CheckResultSetCheck;
+import dev.ward.analysis.domain.rule.check.ConditionalPromotionCheck;
+import dev.ward.analysis.domain.rule.check.ConstantOverflowCheck;
 import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
 import dev.ward.analysis.domain.rule.check.GuardLogStatementCheck;
+import dev.ward.analysis.domain.rule.check.IncompatibleArgumentCheck;
 import dev.ward.analysis.domain.rule.check.NonExhaustiveSwitchCheck;
 import dev.ward.analysis.domain.rule.check.ReferenceEqualityCheck;
 import dev.ward.analysis.domain.rule.check.SynchronizedOnTypeCheck;
 import dev.ward.analysis.domain.rule.check.UseEnumCollectionsCheck;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -32,6 +36,10 @@ final class TypeAwareChecks {
   private static final String MESSAGE = "message";
   private static final String TYPES = "types";
   private static final String JAVA_RELEASE = "java-release";
+  private static final int NAME = 0;
+  private static final int ARITY = 1;
+  private static final int SOURCE = 2;
+  private static final int VALUE = 3;
 
   private TypeAwareChecks() {}
 
@@ -85,6 +93,13 @@ final class TypeAwareChecks {
   private static Map<String, CheckFactory> calls() {
     return Map.ofEntries(
         entry("call-match", TypeAwareChecks::callMatch),
+        entry("incompatible-argument", TypeAwareChecks::incompatibleArgument),
+        entry(
+            "conditional-promotion",
+            toml -> new ConditionalPromotionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "constant-overflow",
+            toml -> new ConstantOverflowCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "reference-equality",
             toml ->
@@ -95,6 +110,26 @@ final class TypeAwareChecks {
             toml ->
                 new SynchronizedOnTypeCheck(
                     TomlValues.strings(toml, TYPES), TomlValues.required(toml, MESSAGE))));
+  }
+
+  /**
+   * Reads each {@code methods} entry {@code name/arity:source:value}, a source being {@code r0} or
+   * {@code a0}.
+   */
+  private static IncompatibleArgumentCheck incompatibleArgument(final TomlParseResult toml) {
+    final List<IncompatibleArgumentCheck.Entry> entries = new ArrayList<>();
+    for (final String text : TomlValues.strings(toml, "methods")) {
+      final String[] parts = text.split("[/:]");
+      entries.add(
+          new IncompatibleArgumentCheck.Entry(
+              parts[NAME],
+              Integer.parseInt(parts[ARITY]),
+              parts[SOURCE].startsWith("r"),
+              Integer.parseInt(parts[SOURCE].substring(1)),
+              Integer.parseInt(parts[VALUE])));
+    }
+    return new IncompatibleArgumentCheck(
+        TomlValues.strings(toml, "declaring-types"), entries, TomlValues.required(toml, MESSAGE));
   }
 
   private static CallMatchCheck callMatch(final TomlParseResult toml) {

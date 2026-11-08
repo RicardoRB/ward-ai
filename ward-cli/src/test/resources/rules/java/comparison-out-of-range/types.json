@@ -1,0 +1,14 @@
+{
+  "3:12-3:12": {
+    "type": {
+      "name": "byte",
+      "primitive": true
+    }
+  },
+  "3:24-3:24": {
+    "type": {
+      "name": "char",
+      "primitive": true
+    }
+  }
+}

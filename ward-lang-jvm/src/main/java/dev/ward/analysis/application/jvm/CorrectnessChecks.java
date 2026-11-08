@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.InvalidRegexLiteralCheck;
 import dev.ward.analysis.domain.rule.check.SelfRecursiveMethodCheck;
 import dev.ward.analysis.domain.rule.check.TypedCallCheck;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -30,10 +31,8 @@ final class CorrectnessChecks {
             toml ->
                 new BinaryOperandTypeCheck(
                     TomlValues.strings(toml, "operators"),
-                    TomlValues.strings(toml, "types"),
+                    typeRanges(toml),
                     toml.getBoolean("both", () -> false),
-                    new BinaryOperandTypeCheck.Range(
-                        bound(toml, "literal-min"), bound(toml, "literal-max")),
                     TomlValues.required(toml, MESSAGE))),
         entry(
             "typed-call",
@@ -58,6 +57,27 @@ final class CorrectnessChecks {
         entry(
             "self-recursive-method",
             toml -> new SelfRecursiveMethodCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  /**
+   * The left operand types with their allowed right literals: {@code types} share the {@code
+   * literal-min} and {@code literal-max}, and each {@code type-ranges} entry {@code type:min:max}
+   * has its own.
+   */
+  private static Map<String, BinaryOperandTypeCheck.Range> typeRanges(final TomlParseResult toml) {
+    final BinaryOperandTypeCheck.Range shared =
+        new BinaryOperandTypeCheck.Range(bound(toml, "literal-min"), bound(toml, "literal-max"));
+    final Map<String, BinaryOperandTypeCheck.Range> ranges = new HashMap<>();
+    TomlValues.optionalStrings(toml, "types").forEach(type -> ranges.put(type, shared));
+    TomlValues.optionalStrings(toml, "type-ranges")
+        .forEach(entry -> ranges.put(entry.split(":")[0], rangeOf(entry)));
+    return ranges;
+  }
+
+  private static BinaryOperandTypeCheck.Range rangeOf(final String entry) {
+    final String[] parts = entry.split(":");
+    return new BinaryOperandTypeCheck.Range(
+        Optional.of(new BigInteger(parts[1])), Optional.of(new BigInteger(parts[2])));
   }
 
   private static Optional<Pattern> pattern(final TomlParseResult toml, final String key) {

@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 class BinaryOperandTypeCheckTest {
@@ -32,13 +33,14 @@ class BinaryOperandTypeCheckTest {
       final boolean both,
       final String min,
       final String max) {
-    return new BinaryOperandTypeCheck(
-        operators,
-        types,
-        both,
+    final BinaryOperandTypeCheck.Range range =
         new BinaryOperandTypeCheck.Range(
             Optional.ofNullable(min).map(BigInteger::new),
-            Optional.ofNullable(max).map(BigInteger::new)),
+            Optional.ofNullable(max).map(BigInteger::new));
+    return new BinaryOperandTypeCheck(
+        operators,
+        types.stream().collect(Collectors.toMap(type -> type, type -> range)),
+        both,
         "message");
   }
 
