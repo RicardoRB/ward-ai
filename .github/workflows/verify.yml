@@ -588,7 +588,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up GraalVM 25
+      - name: Set up GraalVM 25.5
         uses: graalvm/setup-graalvm@v1
         with:
           version: '25.5'
