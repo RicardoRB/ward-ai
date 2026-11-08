@@ -54,7 +54,10 @@ final class ErrorProneChecks {
             toml -> new AssignmentToNonFinalStaticCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "constructor-calls-overridable-method",
-            toml -> new ConstructorCallsOverridableMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml ->
+                new ConstructorCallsOverridableMethodCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    TomlValues.optionalStrings(toml, "methods"))),
         entry(
             "detached-test-case",
             toml -> new DetachedTestCaseCheck(TomlValues.required(toml, MESSAGE))),

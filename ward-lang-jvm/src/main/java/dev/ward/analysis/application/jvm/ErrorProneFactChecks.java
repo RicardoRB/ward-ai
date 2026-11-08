@@ -15,6 +15,7 @@ import dev.ward.analysis.domain.rule.check.UseCorrectExceptionLoggingCheck;
 import dev.ward.analysis.domain.rule.check.WrongTestAnnotationCheck;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import org.tomlj.TomlParseResult;
 
 /** Builds the PMD error-prone checks that read the type facts or the imports of a file. */
@@ -41,13 +42,23 @@ final class ErrorProneFactChecks {
         entry(
             "invalid-log-message-format",
             toml -> new InvalidLogMessageFormatCheck(TomlValues.required(toml, MESSAGE))),
-        entry("close-resource", toml -> new CloseResourceCheck(TomlValues.required(toml, MESSAGE))),
+        entry("close-resource", ErrorProneFactChecks::closeResource),
         entry(
             "non-serializable-class",
             toml -> new NonSerializableClassCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "collection-type-mismatch",
             toml -> new CollectionTypeMismatchCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static CloseResourceCheck closeResource(final TomlParseResult toml) {
+    final Set<String> types = TomlValues.optionalStrings(toml, "types");
+    return new CloseResourceCheck(
+        TomlValues.required(toml, MESSAGE),
+        types.isEmpty() ? Set.of("java.lang.AutoCloseable") : types,
+        TomlValues.optionalStrings(toml, "ignored"),
+        toml.getBoolean("created-here", () -> false),
+        toml.getBoolean("exception-path", () -> false));
   }
 
   private static CallSuperCheck callSuper(final TomlParseResult toml) {

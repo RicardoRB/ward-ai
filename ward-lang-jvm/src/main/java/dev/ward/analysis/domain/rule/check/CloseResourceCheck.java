@@ -35,15 +35,41 @@ public final class CloseResourceCheck extends FactsCheck {
       new FactNeed(Set.of(TYPE_TYPE), Set.of(FactKind.TYPE, FactKind.MEMBERS));
 
   private final String message;
+  private final Set<String> resourceTypes;
+  private final Set<String> ignored;
+  private final boolean createdHere;
+  private final boolean exceptionPath;
+
+  /**
+   * Creates the check for any {@code AutoCloseable} that is never closed.
+   *
+   * @param message the message reported at the variable; {@code {value}} is its name
+   */
+  public CloseResourceCheck(final String message) {
+    this(message, Set.of(AUTO_CLOSEABLE), Set.of(), false, false);
+  }
 
   /**
    * Creates the check.
    *
    * @param message the message reported at the variable; {@code {value}} is its name
+   * @param types the types, as the type or one of its ancestors, that make a variable a resource
+   * @param ignored the exact types that are never reported
+   * @param createdHere whether only a value made by {@code new} counts
+   * @param exceptionPath whether to report a resource closed only on the normal path
    */
-  public CloseResourceCheck(final String message) {
+  public CloseResourceCheck(
+      final String message,
+      final Set<String> types,
+      final Set<String> ignored,
+      final boolean createdHere,
+      final boolean exceptionPath) {
     super(NEED);
     this.message = Objects.requireNonNull(message, "message");
+    this.resourceTypes = Set.copyOf(types);
+    this.ignored = Set.copyOf(ignored);
+    this.createdHere = createdHere;
+    this.exceptionPath = exceptionPath;
   }
 
   @Override
@@ -54,7 +80,7 @@ public final class CloseResourceCheck extends FactsCheck {
         .toList();
   }
 
-  private static boolean isResource(final SyntaxNode declaration, final UnitTypeFacts types) {
+  private boolean isResource(final SyntaxNode declaration, final UnitTypeFacts types) {
     return declaration.children().stream()
         .filter(child -> TYPE_TYPE.equals(child.kind()))
         .findFirst()
@@ -62,16 +88,22 @@ public final class CloseResourceCheck extends FactsCheck {
         .orElse(false);
   }
 
-  private static boolean closeable(final SyntaxNode type, final UnitTypeFacts types) {
-    final Stream<String> own = types.typeOf(type.span()).map(TypeRef::name).stream();
+  private boolean closeable(final SyntaxNode type, final UnitTypeFacts facts) {
+    final Stream<String> own = facts.typeOf(type.span()).map(TypeRef::name).stream();
     final Stream<String> above =
-        types.membersOf(type.span()).map(TypeMembers::ancestors).stream()
+        facts.membersOf(type.span()).map(TypeMembers::ancestors).stream()
             .flatMap(List::stream)
             .map(TypeRef::name);
-    return Stream.concat(own, above).anyMatch(AUTO_CLOSEABLE::equals);
+    final List<String> names = Stream.concat(own, above).toList();
+    return names.stream().anyMatch(resourceTypes::contains)
+        && facts.typeOf(type.span()).map(TypeRef::name).filter(ignored::contains).isEmpty();
   }
 
   private List<RuleMatch> leaks(final SyntaxWalk.Visit visit) {
+    return exceptionPath ? exceptionLeaks(visit) : neverClosed(visit);
+  }
+
+  private List<RuleMatch> neverClosed(final SyntaxWalk.Visit visit) {
     final List<SyntaxNode> up = visit.ancestors();
     if (up.size() < 2 || !BLOCK_STATEMENT.equals(up.get(up.size() - 1).kind())) {
       return List.of();
@@ -81,10 +113,40 @@ public final class CloseResourceCheck extends FactsCheck {
         .filter(node -> DECLARATOR.equals(node.kind()))
         .filter(declarator -> !SyntaxWalk.text(declarator).endsWith(NULL))
         .filter(declarator -> SyntaxWalk.text(declarator).contains("="))
+        .filter(this::madeHere)
         .flatMap(
             declarator ->
                 ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name)))
         .filter(named -> !closedOrHandedOn(named.name(), rest))
+        .map(
+            named ->
+                CheckSupport.at(
+                    named.declarator().span(), CheckSupport.fill(message, named.name(), "")))
+        .toList();
+  }
+
+  private boolean madeHere(final SyntaxNode declarator) {
+    return !createdHere || SyntaxWalk.text(declarator).contains("=new");
+  }
+
+  /** Reports a resource whose only close is a statement of the same block after other calls. */
+  private List<RuleMatch> exceptionLeaks(final SyntaxWalk.Visit visit) {
+    final List<SyntaxNode> up = visit.ancestors();
+    if (up.size() < 2
+        || !BLOCK_STATEMENT.equals(up.get(up.size() - 1).kind())
+        || !BLOCK.equals(up.get(up.size() - 2).kind())) {
+      return List.of();
+    }
+    final List<SyntaxNode> siblings = up.get(up.size() - 2).children();
+    final List<SyntaxNode> rest =
+        siblings.subList(siblings.indexOf(up.get(up.size() - 1)) + 1, siblings.size());
+    return SyntaxWalk.descendants(visit.node()).stream()
+        .filter(node -> DECLARATOR.equals(node.kind()))
+        .filter(this::madeHere)
+        .flatMap(
+            declarator ->
+                ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name)))
+        .filter(named -> CloseAfterCalls.closedAfterCalls(named.name(), rest))
         .map(
             named ->
                 CheckSupport.at(
@@ -104,7 +166,7 @@ public final class CloseResourceCheck extends FactsCheck {
   }
 
   /** Tells whether the tokens close the variable, or use its name other than as a call receiver. */
-  private static boolean closedOrHandedOn(final String name, final List<String> tokens) {
+  static boolean closedOrHandedOn(final String name, final List<String> tokens) {
     for (int index = 0; index < tokens.size(); index++) {
       if (!name.equals(tokens.get(index)) || index > 0 && DOT.equals(tokens.get(index - 1))) {
         continue;
