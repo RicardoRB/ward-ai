@@ -1,0 +1,68 @@
+{
+  "5:5": {
+    "type": {
+      "name": "java.io.FileInputStream"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.InputStream"
+        },
+        {
+          "name": "java.io.Closeable"
+        },
+        {
+          "name": "java.lang.AutoCloseable"
+        }
+      ]
+    }
+  },
+  "14:5": {
+    "type": {
+      "name": "java.io.FileInputStream"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.InputStream"
+        },
+        {
+          "name": "java.io.Closeable"
+        },
+        {
+          "name": "java.lang.AutoCloseable"
+        }
+      ]
+    }
+  },
+  "20:5": {
+    "type": {
+      "name": "java.io.FileInputStream"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.InputStream"
+        },
+        {
+          "name": "java.io.Closeable"
+        },
+        {
+          "name": "java.lang.AutoCloseable"
+        }
+      ]
+    }
+  },
+  "31:5": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

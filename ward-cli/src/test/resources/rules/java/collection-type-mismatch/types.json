@@ -1,0 +1,113 @@
+{
+  "5:12": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        }
+      ]
+    },
+    "call": {
+      "declaring": {
+        "name": "java.util.Collection"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "5:27": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "13:12": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        }
+      ]
+    },
+    "call": {
+      "declaring": {
+        "name": "java.util.Collection"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "13:27": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "17:12": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.util.Collection"
+        }
+      ]
+    },
+    "call": {
+      "declaring": {
+        "name": "java.util.Collection"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "16:44": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}

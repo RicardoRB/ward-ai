@@ -1,0 +1,57 @@
+{
+  "6:7": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.logging.Log"
+      },
+      "name": "error",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "18:7": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.logging.Log"
+      },
+      "name": "error",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Throwable"
+        }
+      ]
+    }
+  },
+  "19:7": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.logging.Log"
+      },
+      "name": "error",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "21:5": {
+    "call": {
+      "declaring": {
+        "name": "org.apache.commons.logging.Log"
+      },
+      "name": "error",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

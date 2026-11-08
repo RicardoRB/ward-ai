@@ -47,23 +47,23 @@ big-integer-instantiation = "implemented"
 boolean-get-method-name = "implemented"
 broken-null-check = "implemented"
 c-style-array-declaration = "implemented"
-call-super-first = { status = "planned", issue = "#310" }
+call-super-first = "implemented"
 call-super-in-constructor = "implemented"
-call-super-last = { status = "planned", issue = "#310" }
+call-super-last = "implemented"
 check-result-set = "implemented"
 class-cast-exception-with-to-array = "implemented"
 clone-method-must-be-public = "implemented"
 clone-method-must-implement-cloneable = "implemented"
 clone-method-return-type-must-match-class-name = "implemented"
-close-resource = { status = "planned", issue = "#310" }
+close-resource = "implemented"
 collapsible-if-statements = "implemented"
-collection-type-mismatch = { status = "planned", issue = "#310" }
+collection-type-mismatch = "implemented"
 comment-content = { status = "planned", issue = "#313" }
 comment-default-access-modifier = { status = "planned", issue = "#313" }
 comment-size = { status = "planned", issue = "#313" }
 compare-objects-with-equals = "implemented"
 comparison-with-na-n = "implemented"
-confusing-argument-to-varargs-method = { status = "planned", issue = "#310" }
+confusing-argument-to-varargs-method = "implemented"
 confusing-ternary = "implemented"
 consecutive-appends-should-reuse = "implemented"
 consecutive-literal-appends = "implemented"
@@ -119,7 +119,7 @@ instantiation-to-get-class = "implemented"
 insufficient-string-buffer-declaration = "implemented"
 internal-api-usage = "implemented"
 invalid-java-bean = "implemented"
-invalid-log-message-format = { status = "planned", issue = "#310" }
+invalid-log-message-format = "implemented"
 j-unit-jupiter-test-no-private-modifier = "implemented"
 j-unit-jupiter-test-should-be-package-private = "implemented"
 j-unit-spelling = "implemented"
@@ -151,7 +151,7 @@ mutable-static-state = "implemented"
 no-package = "implemented"
 non-case-label-in-switch = "implemented"
 non-exhaustive-switch = "implemented"
-non-serializable-class = { status = "planned", issue = "#310" }
+non-serializable-class = "implemented"
 non-static-initializer = "implemented"
 non-thread-safe-singleton = "implemented"
 null-assignment = "implemented"
@@ -163,7 +163,7 @@ premature-declaration = "implemented"
 preserve-stack-trace = "implemented"
 primitive-wrapper-instantiation = "implemented"
 proper-clone-implementation = "implemented"
-proper-logger = { status = "planned", issue = "#310" }
+proper-logger = "implemented"
 protected-member-in-final-class = "implemented"
 public-member-in-non-public-type = "implemented"
 reliance-on-default-charset = "implemented"
@@ -224,17 +224,17 @@ unnecessary-interface-declaration = "implemented"
 unnecessary-return = "implemented"
 unnecessary-varargs-array-creation = "implemented"
 unnecessary-warning-suppression = "implemented"
-unsupported-jdk-api-usage = { status = "planned", issue = "#310" }
+unsupported-jdk-api-usage = "implemented"
 unsynchronized-static-formatter = "implemented"
 unused-formal-parameter = "implemented"
 unused-label = "implemented"
 unused-null-check-in-equals = "implemented"
 unused-private-method = "implemented"
-unused-return-value = { status = "planned", issue = "#310" }
+unused-return-value = "implemented"
 use-arrays-as-list = "implemented"
 use-collection-is-empty = "implemented"
 use-concurrent-hash-map = { status = "planned", issue = "#312" }
-use-correct-exception-logging = { status = "planned", issue = "#310" }
+use-correct-exception-logging = "implemented"
 use-diamond-operator = "implemented"
 use-enum-collections = "implemented"
 use-equals-to-compare-strings = "implemented"
@@ -256,4 +256,4 @@ useless-qualified-this = "implemented"
 useless-string-value-of = "implemented"
 variable-can-be-inlined = "implemented"
 while-loop-with-literal-boolean = "implemented"
-wrong-test-annotation = { status = "planned", issue = "#310" }
+wrong-test-annotation = "implemented"
