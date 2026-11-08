@@ -143,7 +143,7 @@ check = "forbidden-node"
 kinds = ["fieldDeclaration"]
 modifiers = ["final"]
 not-modifiers = ["static"]
-text = '(?s)=\s*(?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d[\w.]*|true|false)\s*;\s*$'
+text = '(?s)=\s*(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|\x27[^\x27\\]*+(?:\\.[^\x27\\]*+)*+\x27|-?\d[\w.]*|true|false)\s*;\s*$'
 message = "final field initialized with a constant could be static"
 '''
 

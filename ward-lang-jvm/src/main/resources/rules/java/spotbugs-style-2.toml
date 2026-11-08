@@ -51,7 +51,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^[\w.]+(?:<[^>]*>)?(?:\[\])+\w+\((?:[^()]|\([^()]*\))*\)(?:throws[\w.,]+)?\{.*returnnull;'
+text = '^[\w.]+(?:<[^>]*>)?(?:\[\])+\w+\([^()]*+(?:\([^()]*\)[^()]*+)*+\)(?:throws[\w.,]+)?\{.*returnnull;'
 message = "method returns null for an array; return a zero-length array"
 '''
 

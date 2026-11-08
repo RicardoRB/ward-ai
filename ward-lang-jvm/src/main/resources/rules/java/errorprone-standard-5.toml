@@ -24,7 +24,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expression"]
-text = '^(?:[\w.]+\.)?\w+\((?:[^(),]+,)*?(?:[\w.]|\([^()]*\))*?\.(?:toMillis\(\),(?:[\w.]*\.)?TimeUnit\.(?!MILLISECONDS\b)|(?:toSeconds|getSeconds)\(\),(?:[\w.]*\.)?TimeUnit\.(?!SECONDS\b)|toNanos\(\),(?:[\w.]*\.)?TimeUnit\.(?!NANOSECONDS\b)|toMinutes\(\),(?:[\w.]*\.)?TimeUnit\.(?!MINUTES\b)|toHours\(\),(?:[\w.]*\.)?TimeUnit\.(?!HOURS\b)|toDays\(\),(?:[\w.]*\.)?TimeUnit\.(?!DAYS\b))\w+\)'
+text = '^(?:[\w.]+\.)?\w+\((?:[^(),]+,)*?[\w.()]*\.(?:toMillis\(\),(?:[\w.]*\.)?TimeUnit\.(?!MILLISECONDS\b)|(?:toSeconds|getSeconds)\(\),(?:[\w.]*\.)?TimeUnit\.(?!SECONDS\b)|toNanos\(\),(?:[\w.]*\.)?TimeUnit\.(?!NANOSECONDS\b)|toMinutes\(\),(?:[\w.]*\.)?TimeUnit\.(?!MINUTES\b)|toHours\(\),(?:[\w.]*\.)?TimeUnit\.(?!HOURS\b)|toDays\(\),(?:[\w.]*\.)?TimeUnit\.(?!DAYS\b))\w+\)'
 message = "the long comes from a Duration in one unit but the TimeUnit passed with it is another; use matching units or the Duration overload"
 '''
 

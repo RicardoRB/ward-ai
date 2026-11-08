@@ -366,7 +366,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^if\((?:[^()]|\([^()]*\))*\)\{(.*)\}else\{\1\}$'
+text = '^if\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\{(.*)\}else\{\1\}$'
 message = "if and else branches are identical; one of them is wrong or the statement is redundant"
 '''
 

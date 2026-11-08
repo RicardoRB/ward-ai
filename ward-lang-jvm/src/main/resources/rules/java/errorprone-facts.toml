@@ -68,7 +68,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "call-facts"
 receiver-ancestors = ["com.google.protobuf.MessageLite.Builder", "com.google.protobuf.MessageLite$Builder", "com.google.protobuf.Message.Builder", "com.google.protobuf.Message$Builder"]
-text = '\.(?<m>set\w+)\((?:[^()]|\([^()]*\))*\)\.\k<m>\((?:[^()]|\([^()]*\))*\)$'
+text = '\.(?<m>set\w+)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\.\k<m>\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "the same setter is called twice in a row, so the first call has no effect"
 '''
 
