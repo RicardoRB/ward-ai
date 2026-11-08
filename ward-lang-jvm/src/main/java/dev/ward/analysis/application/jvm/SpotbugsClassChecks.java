@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AmbiguousInvocationCheck;
 import dev.ward.analysis.domain.rule.check.EqualsInheritanceCheck;
 import dev.ward.analysis.domain.rule.check.IncompatibleEqualsOperandCheck;
+import dev.ward.analysis.domain.rule.check.InconsistentSyncCheck;
 import dev.ward.analysis.domain.rule.check.IntegerArithmeticCheck;
 import dev.ward.analysis.domain.rule.check.LazyStaticInitCheck;
 import dev.ward.analysis.domain.rule.check.ParameterStringComparisonCheck;
@@ -38,6 +39,9 @@ final class SpotbugsClassChecks {
         entry(
             "ambiguous-invocation",
             toml -> new AmbiguousInvocationCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "inconsistent-sync",
+            toml -> new InconsistentSyncCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "incompatible-equals-operand",
             toml -> new IncompatibleEqualsOperandCheck(TomlValues.required(toml, MESSAGE))),
