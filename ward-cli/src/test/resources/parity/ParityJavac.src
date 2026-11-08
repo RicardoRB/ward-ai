@@ -1,0 +1,83 @@
+// Compiles each fixture of a list with javac in one JVM, so that Error Prone and NullAway run on it
+// or its classes are written for SpotBugs. Run with: java --source 25 [exports] -cp <tool classpath>
+// ParityJavac.src <mode> <list file> <out dir> <checks file>
+//   mode: ep (original source, Error Prone), nullaway (source in package parity.pN, NullAway) or
+//   classes (source in package parity.pN, class files written to <out dir>/<key>).
+// The list holds "key<TAB>path" lines; the checks file holds one Error Prone check name per line.
+// Prints "C<TAB>key<TAB>ok|error" per fixture and "D<TAB>key<TAB>kind<TAB>line<TAB>column<TAB>message"
+// per diagnostic.
+import java.io.*;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.*;
+import java.util.regex.*;
+import javax.tools.*;
+
+public class ParityJavac {
+  static final class Source extends SimpleJavaFileObject {
+    private final String text;
+    Source(String name, String text) {
+      super(URI.create("string:///" + name), Kind.SOURCE);
+      this.text = text;
+    }
+    @Override public CharSequence getCharContent(boolean ignore) { return text; }
+  }
+
+  public static void main(String[] args) throws Exception {
+    String mode = args[0];
+    List<String> lines = Files.readAllLines(Path.of(args[1]));
+    Path out = Path.of(args[2]);
+    List<String> checks = Files.readAllLines(Path.of(args[3]));
+    Map<String, com.google.errorprone.BugCheckerInfo> known = com.google.errorprone.scanner.BuiltInCheckerSuppliers.allChecks().getAllChecks();
+    List<String> usable = new ArrayList<>(checks.stream().filter(c -> known.containsKey(c) && known.get(c).disableable()).toList());
+    Set<String> blocked = new HashSet<>();
+    JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+    String classpath = System.getProperty("java.class.path");
+    int index = 0;
+    for (String entry : lines) {
+      if (entry.isBlank()) continue;
+      String[] parts = entry.split("\t");
+      String key = parts[0];
+      String text = Files.readString(Path.of(parts[1]), StandardCharsets.UTF_8);
+      if (!mode.equals("ep")) text = rewrite(text, "parity.p" + index++);
+      List<String> options = new ArrayList<>(List.of(
+          "-proc:none", "-XDcompilePolicy=simple", "--should-stop=ifError=FLOW",
+          "-classpath", classpath, "-processorpath", classpath, "-g"));
+      Path classes = out.resolve(key);
+      if (mode.equals("classes")) {
+        Files.createDirectories(classes);
+        options.addAll(List.of("-d", classes.toString()));
+      } else {
+        options.addAll(List.of("-d", Files.createTempDirectory("parity").toString()));
+        StringBuilder plugin = new StringBuilder("-Xplugin:ErrorProne -XepDisableAllChecks");
+        for (String check : usable) if (!blocked.contains(check)) plugin.append(" -Xep:").append(check).append(":WARN");
+        if (mode.equals("nullaway")) plugin.append(" -Xep:NullAway:WARN -XepOpt:NullAway:AnnotatedPackages=parity");
+        options.add(plugin.toString());
+      }
+      DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+      boolean ok;
+      try (StandardJavaFileManager files = compiler.getStandardFileManager(diagnostics, null, StandardCharsets.UTF_8)) {
+        JavaCompiler.CompilationTask task = compiler.getTask(null, files, diagnostics, options, null,
+            List.of(new Source("violating.java", text)));
+        ok = Boolean.TRUE.equals(task.call());
+      } catch (RuntimeException e) {
+        ok = false;
+        System.out.println("D\t" + key + "\tCRASH\t0\t0\t" + e);
+        Matcher bad = Pattern.compile("(\\w+) is not disableable").matcher(String.valueOf(e.getMessage()));
+        if (bad.find()) blocked.add(bad.group(1));
+      }
+      System.out.println("C\t" + key + "\t" + (ok ? "ok" : "error"));
+      for (Diagnostic<? extends JavaFileObject> d : diagnostics.getDiagnostics()) {
+        String message = d.getMessage(Locale.ROOT).replace('\n', ' ').replace('\t', ' ');
+        System.out.println("D\t" + key + "\t" + d.getKind() + "\t" + d.getLineNumber() + "\t" + d.getColumnNumber() + "\t" + message);
+      }
+    }
+  }
+
+  static String rewrite(String text, String pkg) {
+    Matcher m = Pattern.compile("(?m)^\\s*package\\s+([\\w.]+)\\s*;").matcher(text);
+    if (m.find()) return text.substring(0, m.start(1)) + pkg + "." + m.group(1) + text.substring(m.end(1));
+    return "package " + pkg + "; " + text;
+  }
+}

@@ -395,6 +395,42 @@ jobs:
           -Dward.python.matrix.jar=target/ward.jar
           test
 
+  # Runs the real Checkstyle, PMD, SpotBugs, Error Prone, NullAway and Semgrep on the fixtures of
+  # every implemented Java rule and compares them with the committed parity report
+  # (ward-cli/src/test/resources/parity/java-report.txt). Versions are pinned in resolve-tools.sh.
+  java-parity:
+    name: Java parity with the real tools
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Install Semgrep
+        run: pipx install semgrep==1.183.0
+
+      - name: Resolve the tools
+        run: ward-cli/src/test/resources/parity/resolve-tools.sh "$RUNNER_TEMP/parity-tools"
+
+      - name: Compare the Java rules with the tools
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=JavaParitySmokeTest
+          -Dward.parity.tools="$RUNNER_TEMP/parity-tools"
+          -Dward.parity.semgrep="$(command -v semgrep)"
+          test
+
   # Reads the Xcode and fixture pairs and their runners from the
   # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
   # files.
