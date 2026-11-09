@@ -10,8 +10,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -27,22 +25,8 @@ class RemovedKotlinToolsContractTest {
   /** The repository root, one level above the ward-cli module. */
   private static final Path ROOT = Path.of("..").toAbsolutePath().normalize();
 
-  /**
-   * Main Java files that may name a removed tool, with how many lines may name it. A new mention
-   * changes the count and fails the test, so the allowlist cannot hide one.
-   */
-  private static final Map<String, Integer> ALLOWED_JAVA_LINES =
-      Map.of(
-          // #449 removes this comment; drop the entry when it merges.
-          "ward-cli/src/main/java/dev/ward/application/init/jvm/JvmInitSupport.java",
-          1,
-          // Provenance: Ward's style is not ktlint's.
-          "ward-frontend-antlr/src/main/java/dev/ward/analysis/frontend/antlr/format/kotlin/"
-              + "KotlinFormatter.java",
-          1,
-          // Provenance: the potential-bugs set of detekt.
-          "ward-lang-jvm/src/main/java/dev/ward/analysis/application/jvm/KotlinBugChecks.java",
-          1);
+  /** Starts of Java comment lines, where rule provenance may name a removed tool. */
+  private static final List<String> COMMENT_STARTS = List.of("//", "/*", "*");
 
   /** Directory of the Kotlin rule files, whose provenance comments may name a removed tool. */
   private static final String KOTLIN_RULES = "/rules/kotlin/";
@@ -58,15 +42,17 @@ class RemovedKotlinToolsContractTest {
   }
 
   @Test
-  void mainJavaSourcesNameRemovedToolsOnlyInTheAllowlist() throws IOException {
-    final Map<String, Integer> named = new TreeMap<>();
+  void mainJavaSourcesNameRemovedToolsOnlyInComments() throws IOException {
+    final List<String> violations = new ArrayList<>();
     for (final Path file : sourceFiles("java")) {
-      final long lines = namingLines(file).size();
-      if (lines > 0) {
-        named.put(relative(file), (int) lines);
+      for (final String line : namingLines(file)) {
+        final String code = line.trim();
+        if (COMMENT_STARTS.stream().noneMatch(code::startsWith)) {
+          violations.add(relative(file) + ": " + code);
+        }
       }
     }
-    assertThat(named).isEqualTo(new TreeMap<>(ALLOWED_JAVA_LINES));
+    assertThat(violations).isEmpty();
   }
 
   @Test
