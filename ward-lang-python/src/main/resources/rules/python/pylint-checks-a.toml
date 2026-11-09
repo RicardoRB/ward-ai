@@ -452,3 +452,15 @@ kinds = ["or_test", "and_test"]
 text = '^(?:(?:True|False|None|\d+)(?:and|or))+(?:True|False|None|\d+)$'
 message = "boolean condition only compares constants and always evaluates to the same value"
 '''
+
+[[rules]]
+id = "ward:python/consider-using-with"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "open-without-with"
+message = "consider using 'with' for resource-allocating operations"
+'''

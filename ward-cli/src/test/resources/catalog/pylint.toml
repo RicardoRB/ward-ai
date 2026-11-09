@@ -302,7 +302,6 @@ pylint = ["consider-using-tuple"]
 [[rule]]
 name = "consider-using-with"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-with"]
 
 [[rule]]

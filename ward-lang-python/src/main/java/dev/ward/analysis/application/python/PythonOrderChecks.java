@@ -26,6 +26,7 @@ import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.MinMaxBuiltinCheck;
 import dev.ward.analysis.domain.rule.check.MixedComparisonChainCheck;
 import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
+import dev.ward.analysis.domain.rule.check.OpenWithoutWithCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
@@ -105,6 +106,9 @@ final class PythonOrderChecks {
         entry(
             "duplicate-format-argument",
             toml -> new DuplicateFormatArgumentCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "open-without-with",
+            toml -> new OpenWithoutWithCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "bare-capture-pattern",
             toml -> new BareCapturePatternCheck(TomlValues.required(toml, MESSAGE))),

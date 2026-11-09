@@ -53,7 +53,7 @@ consider-using-namedtuple-or-dataclass = { status = "planned", issue = "#336" }
 consider-using-sys-exit = "implemented"
 consider-using-ternary = "implemented"
 consider-using-tuple = { status = "planned", issue = "#336" }
-consider-using-with = { status = "planned", issue = "#336" }
+consider-using-with = "implemented"
 contextmanager-generator-missing-cleanup = { status = "planned", issue = "#336" }
 cyclic-import = { status = "planned", issue = "#336" }
 declare-non-slot = "implemented"
