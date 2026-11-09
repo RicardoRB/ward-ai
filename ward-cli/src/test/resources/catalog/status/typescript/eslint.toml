@@ -8,7 +8,7 @@ capitalized-comments = { status = "planned", issue = "#296" }
 class-methods-use-this = { status = "planned", issue = "#326" }
 consistent-return = { status = "planned", issue = "#326" }
 consistent-this = { status = "planned", issue = "#296" }
-constructor-super = { status = "planned", issue = "#326" }
+constructor-super = "implemented"
 default-param-last = { status = "planned", issue = "#296" }
 dot-notation = { status = "planned", issue = "#296" }
 eqeqeq = { status = "planned", issue = "#296" }
@@ -90,11 +90,11 @@ no-new = { status = "planned", issue = "#326" }
 no-new-func = "implemented"
 no-new-native-nonconstructor = "implemented"
 no-new-wrappers = "implemented"
-no-nonoctal-decimal-escape = { status = "planned", issue = "#326" }
+no-nonoctal-decimal-escape = "implemented"
 no-obj-calls = "implemented"
 no-object-constructor = { status = "planned", issue = "#326" }
 no-octal = "not-applicable"
-no-octal-escape = { status = "planned", issue = "#326" }
+no-octal-escape = "implemented"
 no-plusplus = { status = "planned", issue = "#296" }
 no-promise-executor-return = { status = "planned", issue = "#326" }
 no-proto = "implemented"
@@ -110,7 +110,7 @@ no-script-url = "implemented"
 no-self-assign = "implemented"
 no-self-compare = "implemented"
 no-sequences = "implemented"
-no-setter-return = { status = "planned", issue = "#326" }
+no-setter-return = "implemented"
 no-shadow-restricted-names = "implemented"
 no-sparse-arrays = "implemented"
 no-template-curly-in-string = "implemented"
@@ -130,7 +130,7 @@ no-unsafe-finally = "implemented"
 no-unsafe-negation = { status = "planned", issue = "#326" }
 no-unsafe-optional-chaining = { status = "planned", issue = "#326" }
 no-unused-expressions = { status = "planned", issue = "#326" }
-no-unused-labels = { status = "planned", issue = "#326" }
+no-unused-labels = "implemented"
 no-unused-private-class-members = { status = "planned", issue = "#326" }
 no-use-before-define = { status = "planned", issue = "#326" }
 no-useless-backreference = { status = "planned", issue = "#326" }
@@ -157,13 +157,13 @@ prefer-object-has-own = "implemented"
 prefer-object-spread = { status = "planned", issue = "#296" }
 prefer-promise-reject-errors = { status = "planned", issue = "#326" }
 prefer-regex-literals = { status = "planned", issue = "#326" }
-prefer-rest-params = { status = "planned", issue = "#326" }
+prefer-rest-params = "implemented"
 prefer-spread = "implemented"
 prefer-template = { status = "planned", issue = "#296" }
 preserve-caught-error = { status = "planned", issue = "#326" }
 radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }
-require-await = { status = "planned", issue = "#326" }
+require-await = "implemented"
 require-unicode-regexp = { status = "planned", issue = "#296" }
 require-yield = "implemented"
 sort-keys = { status = "planned", issue = "#296" }

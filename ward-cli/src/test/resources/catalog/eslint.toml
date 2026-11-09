@@ -54,8 +54,6 @@ eslint = ["consistent-this"]
 
 [[rule]]
 name = "constructor-super"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["constructor-super"]
 biome = ["noInvalidConstructorSuper"]
 
@@ -548,8 +546,6 @@ eslint = ["no-new-wrappers"]
 
 [[rule]]
 name = "no-nonoctal-decimal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-nonoctal-decimal-escape"]
 biome = ["noNonoctalDecimalEscape"]
 
@@ -571,8 +567,6 @@ eslint = ["no-octal"]
 
 [[rule]]
 name = "no-octal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-octal-escape"]
 biome = ["noOctalEscape"]
 
@@ -665,8 +659,6 @@ biome = ["noCommaOperator"]
 
 [[rule]]
 name = "no-setter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-setter-return"]
 biome = ["noSetterReturn"]
 
@@ -781,8 +773,6 @@ biome = ["noUnusedExpressions"]
 
 [[rule]]
 name = "no-unused-labels"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-unused-labels"]
 biome = ["noUnusedLabels"]
 
@@ -959,8 +949,6 @@ biome = ["useRegexLiterals"]
 
 [[rule]]
 name = "prefer-rest-params"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-rest-params"]
 biome = ["noArguments"]
 
@@ -995,8 +983,6 @@ eslint = ["require-atomic-updates"]
 
 [[rule]]
 name = "require-await"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["require-await"]
 eslint = ["require-await"]
 biome = ["useAwait"]

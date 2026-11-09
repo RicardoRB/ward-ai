@@ -1265,3 +1265,126 @@ kinds = ["StringLiteral"]
 text = '\$\{[^}]+\}'
 message = "template placeholder in a regular string; use a template literal"
 '''
+
+# ESLint core rules of type "problem" (#326). Each rule reports what ESLint reports at its defaults.
+
+[[rules]]
+id = "ward:typescript/constructor-super"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constructorDeclaration"]
+inside = ["classDeclaration>classHeritage>classExtendsClause", "singleExpression>classHeritage>classExtendsClause"]
+text = '^constructor\s*\((?![\s\S]*\bsuper\s*\()'
+message = "expected to call 'super()'"
+'''
+
+[[rules]]
+id = "ward:javascript/constructor-super"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDefinition"]
+inside = ["classDeclaration>classTail>'extends'", "singleExpression>classTail>'extends'"]
+text = '^constructor\s*\((?![\s\S]*\bsuper\s*\()'
+message = "expected to call 'super()'"
+'''
+
+[[rules]]
+id = "ward:typescript/getter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["getAccessor"]
+descendant = ["returnStatement"]
+skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:javascript/getter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["methodDefinition>getter", "propertyAssignment>getter"]
+descendant = ["returnStatement"]
+skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:typescript/no-setter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["returnStatement"]
+inside = ["setAccessor"]
+text = '^return[^;]'
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-setter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["returnStatement"]
+inside = ["setAccessor", "methodDefinition>setter", "propertyAssignment>setter"]
+text = '^return[^;]'
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-negation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+# shortcut: the TypeScript grammar parses `!a in b` as `!(a in b)`, so the `in` keyword sits three
+# expressions below the negation; instanceof and member operands are not matched yet
+kinds = ["singleExpression>singleExpression>singleExpression>identifierName>reservedWord>keyword>'in'"]
+text = '^!(?!\()'
+message = "unexpected negating the left operand of 'in' or 'instanceof'"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-negation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'in'", "'instanceof'"]
+text = '^!(?!\()'
+message = "unexpected negating the left operand of 'in' or 'instanceof'"
+'''
