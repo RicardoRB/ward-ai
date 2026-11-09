@@ -73,6 +73,23 @@ class NodeFixturesTest {
     assertThat(ownedRules()).isNotEmpty();
   }
 
+  /** Every rule whose check the provider has must have a fixture folder: no rule is skipped. */
+  @Test
+  void everyRuleOfTheProviderHasFixtures() {
+    final Map<String, CheckFactory> factories = new NodeCheckProvider().checks();
+    final List<String> missing = new ArrayList<>();
+    for (final String file : new NodeRuleFiles().ruleFiles()) {
+      for (final RuleDefinition rule : RuleFileReader.read(file)) {
+        final String name = Toml.parse(rule.body()).getString(CHECK);
+        final Path directory = FIXTURES.resolve(rule.id().substring("ward:".length()));
+        if (name != null && factories.containsKey(name) && !Files.isDirectory(directory)) {
+          missing.add(rule.id());
+        }
+      }
+    }
+    assertThat(missing).isEmpty();
+  }
+
   @ParameterizedTest(name = "{0}")
   @MethodSource("ownedRules")
   void violatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
@@ -85,12 +102,12 @@ class NodeFixturesTest {
           Files.readAllLines(owned.directory().resolve("expected" + suffix + ".txt")).stream()
               .filter(line -> !line.isBlank())
               .toList();
-      assertThat(run(rule, owned.directory().resolve(VIOLATING + suffix + "." + extension)))
+      assertThat(run(rule, owned.directory().resolve(VIOLATING + suffix + "." + extension), owned))
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
       final Path passing = owned.directory().resolve(PASSING + suffix + "." + extension);
       if (Files.isRegularFile(passing)) {
-        assertThat(run(rule, passing)).as("%s passing%s", owned, suffix).isEmpty();
+        assertThat(run(rule, passing, owned)).as("%s passing%s", owned, suffix).isEmpty();
       }
     }
   }
@@ -129,7 +146,8 @@ class NodeFixturesTest {
     return values;
   }
 
-  private static List<String> run(final RuleDefinition rule, final Path file) throws IOException {
+  private static List<String> run(final RuleDefinition rule, final Path file, final OwnedRule owned)
+      throws IOException {
     final Map<String, CheckFactory> factories = new NodeCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
     final RuleEngine engine = new RuleEngine(matcher);
@@ -140,7 +158,7 @@ class NodeFixturesTest {
                 file.getFileName().toString(),
                 language,
                 Files.readString(file, StandardCharsets.UTF_8)));
-    final List<FrontendSupport> frontends = NodeFixtureFrontends.create();
+    final List<FrontendSupport> frontends = NodeFixtureFrontends.forFolder(owned.directory());
     final RuleRunResult result = engine.run(units, frontends, List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
