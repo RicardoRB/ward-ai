@@ -34,6 +34,23 @@ public final class AriaTableParser {
   private static final int ATTRIBUTE_VALUE_TYPE = 2;
   private static final int ATTRIBUTE_VALUES = 3;
 
+  /**
+   * Parses the event-handler rows into the events of each group; lines starting with {@code #} and
+   * the header are skipped.
+   *
+   * @param lines the lines of {@code aria-event-handlers.tsv}
+   * @throws IllegalArgumentException if a row has the wrong number of columns
+   */
+  public static Map<String, Set<String>> parseHandlers(final List<String> lines) {
+    return data(lines).stream()
+        .map(line -> columns(line, 2))
+        .collect(
+            Collectors.groupingBy(
+                row -> row[0],
+                HashMap::new,
+                Collectors.mapping(row -> row[1], Collectors.toUnmodifiableSet())));
+  }
+
   private AriaTableParser() {}
 
   /**
@@ -114,7 +131,11 @@ public final class AriaTableParser {
   private static List<String> data(final List<String> lines) {
     return lines.stream()
         .filter(line -> !line.isBlank() && !line.startsWith("#") && !line.startsWith("role\t"))
-        .filter(line -> !line.startsWith("element\t") && !line.startsWith("attribute\t"))
+        .filter(
+            line ->
+                !line.startsWith("element\t")
+                    && !line.startsWith("attribute\t")
+                    && !line.startsWith("group\t"))
         .toList();
   }
 

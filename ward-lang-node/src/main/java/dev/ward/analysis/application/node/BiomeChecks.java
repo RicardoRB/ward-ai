@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.BiomeBlankTargetCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
+import dev.ward.analysis.domain.rule.check.BiomeInteractiveToNoninteractiveRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxEmptyElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
@@ -19,8 +20,10 @@ import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
+import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -104,6 +107,21 @@ final class BiomeChecks {
             "node-noninteractive-to-interactive-role",
             toml ->
                 new BiomeNoninteractiveToInteractiveRoleCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-interactive-to-noninteractive-role",
+            toml ->
+                new BiomeInteractiveToNoninteractiveRoleCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-noninteractive-element-interactions",
+            toml ->
+                new BiomeNoninteractiveElementInteractionsCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-static-element-interactions",
+            toml ->
+                new BiomeStaticElementInteractionsCheck(
                     AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-no-redundant-roles",

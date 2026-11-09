@@ -481,3 +481,75 @@ body = '''
 check = "node-noninteractive-to-interactive-role"
 message = "a non-interactive element must not take an interactive role; use an interactive element instead"
 '''
+
+[[rules]]
+id = "ward:javascript/no-interactive-element-to-noninteractive-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-interactive-to-noninteractive-role"
+message = "an interactive element must not take a non-interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-interactive-element-to-noninteractive-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-interactive-to-noninteractive-role"
+message = "an interactive element must not take a non-interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-element-interactions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-element-interactions"
+message = "a non-interactive element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-element-interactions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-element-interactions"
+message = "a non-interactive element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/no-static-element-interactions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-static-element-interactions"
+message = "a static element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-static-element-interactions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-static-element-interactions"
+message = "a static element must not handle user interactions; give it an interactive role"
+'''

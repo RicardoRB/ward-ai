@@ -77,7 +77,13 @@ class BiomeParitySmokeTest {
           Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"),
           Map.entry(
               "no-noninteractive-element-to-interactive-role",
-              "a11y/noNoninteractiveElementToInteractiveRole"));
+              "a11y/noNoninteractiveElementToInteractiveRole"),
+          Map.entry(
+              "no-noninteractive-element-interactions", "a11y/noNoninteractiveElementInteractions"),
+          Map.entry("no-static-element-interactions", "a11y/noStaticElementInteractions"),
+          Map.entry(
+              "no-interactive-element-to-noninteractive-role",
+              "a11y/noInteractiveElementToNoninteractiveRole"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
