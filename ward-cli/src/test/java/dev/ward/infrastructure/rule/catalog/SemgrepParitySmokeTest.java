@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
 /**
- * Runs the real Semgrep (the {@code p/javascript} and {@code p/typescript} packs) on each implemented
- * JavaScript row's fixtures and checks that the upstream rule reports the lines of the fixture's
- * {@code expected.txt}. Skipped unless {@code -Dward.semgrep.binary} names a Semgrep executable; the
- * comparison is by line only, since Semgrep reports the start of each match.
+ * Runs the real Semgrep (the {@code p/javascript} and {@code p/typescript} packs) on each
+ * implemented JavaScript row's fixtures and checks that the upstream rule reports the lines of the
+ * fixture's {@code expected.txt}. Skipped unless {@code -Dward.semgrep.binary} names a Semgrep
+ * executable; the comparison is by line only, since Semgrep reports the start of each match.
  */
 final class SemgrepParitySmokeTest {
 
