@@ -5,6 +5,8 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.NodeArrowCallbackCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
+import dev.ward.analysis.domain.rule.check.NodeIllegalTokenCheck;
+import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
@@ -32,6 +34,15 @@ final class StyleChecks {
         toml ->
             new NodeElseAfterJumpCheck(
                 toml.getBoolean("allow-else-if", () -> true), TomlValues.required(toml, MESSAGE)),
+        "node-illegal-token",
+        toml ->
+            new NodeIllegalTokenCheck(
+                TomlValues.strings(toml, "tokens"),
+                TomlValues.required(toml, "format"),
+                toml.getBoolean("ignore-case", () -> false),
+                TomlValues.required(toml, MESSAGE)),
+        "node-javadoc-align",
+        toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE)),
         "node-arrow-callback",
         toml ->
             new NodeArrowCallbackCheck(

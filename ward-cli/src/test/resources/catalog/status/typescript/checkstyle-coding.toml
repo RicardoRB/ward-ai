@@ -20,7 +20,7 @@ illegal-instantiation = "not-applicable"
 illegal-symbol = { status = "planned", issue = "#296" }
 illegal-throws = { status = "planned", issue = "#296" }
 illegal-token = { status = "planned", issue = "#296" }
-illegal-token-text = { status = "planned", issue = "#296" }
+illegal-token-text = "implemented"
 illegal-type = { status = "planned", issue = "#296" }
 inner-assignment = { status = "planned", issue = "#296" }
 magic-number = "implemented"

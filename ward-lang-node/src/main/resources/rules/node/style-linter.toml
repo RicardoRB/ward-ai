@@ -114,20 +114,6 @@ message = "{value} is a useless rename"
 '''
 
 [[rules]]
-id = "ward:typescript/no-useless-constructor"
-language = "TYPESCRIPT"
-capability = "SYNTAX"
-severity = "ERROR"
-category = "linter"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["constructorDeclaration"]
-text = '^(?:\w+)?constructor\(\)\{\}$|^(?:\w+)?constructor\(\.\.\.(\w+)\)\{super\(\.\.\.\1\);?\}$'
-message = "useless constructor"
-'''
-
-[[rules]]
 id = "ward:typescript/no-else-return"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
@@ -241,4 +227,32 @@ check = "node-arrow-callback"
 allow-named-functions = false
 allow-unbound-this = true
 message = "unexpected function expression; use an arrow function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-constructor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constructorDeclaration"]
+text = '^(?:\w+)?constructor\(\)\{\}$|^(?:\w+)?constructor\(([\w$,]*)\)\{super\(\1\);?\}$|^(?:\w+)?constructor\(\.\.\.([\w$]+)\)\{super\(\.\.\.\2\);?\}$'
+message = "useless constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-constructor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDefinition"]
+text = '^constructor\(\)\{\}$|^constructor\(([\w$,]*)\)\{super\(\1\);?\}$|^constructor\(\.\.\.([\w$]+)\)\{super\(\.\.\.\2\);?\}$'
+message = "useless constructor"
 '''

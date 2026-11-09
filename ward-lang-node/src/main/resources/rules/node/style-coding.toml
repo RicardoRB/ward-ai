@@ -155,3 +155,39 @@ check = "node-variable-distance"
 max = 3
 message = "distance between declaration of {value} and its first usage is more than {max}"
 '''
+
+[[rules]]
+id = "ward:typescript/illegal-token-text"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.tokens = { type = "string-list", parameter = "tokens" }
+options.format = { type = "regex", parameter = "format" }
+options.ignore-case = { type = "boolean", parameter = "ignore-case" }
+body = '''
+check = "node-illegal-token"
+tokens = []
+format = "^$"
+ignore-case = false
+message = "illegal token text '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/illegal-token-text"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.tokens = { type = "string-list", parameter = "tokens" }
+options.format = { type = "regex", parameter = "format" }
+options.ignore-case = { type = "boolean", parameter = "ignore-case" }
+body = '''
+check = "node-illegal-token"
+tokens = []
+format = "^$"
+ignore-case = false
+message = "illegal token text '{value}'"
+'''

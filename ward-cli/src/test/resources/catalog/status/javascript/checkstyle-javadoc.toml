@@ -9,7 +9,7 @@ invalid-javadoc-position = { status = "planned", issue = "#296" }
 javadoc-block-tag-location = { status = "planned", issue = "#296" }
 javadoc-content-location = "implemented"
 javadoc-end-comment-delimiter = { status = "planned", issue = "#296" }
-javadoc-leading-asterisk-align = { status = "planned", issue = "#296" }
+javadoc-leading-asterisk-align = "implemented"
 javadoc-link-first-occurrence = { status = "planned", issue = "#296" }
 javadoc-link-well-known-api = { status = "planned", issue = "#296" }
 javadoc-method = { status = "planned", issue = "#296" }
