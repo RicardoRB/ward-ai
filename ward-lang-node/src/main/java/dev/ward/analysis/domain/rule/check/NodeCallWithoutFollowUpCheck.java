@@ -1,8 +1,8 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
@@ -27,9 +27,6 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
 
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
   private static final Pattern INITIALIZER = Pattern.compile("\\s*[\\w$]+\\s*=\\s*([\\s\\S]+)");
-  private static final char OPEN = '(';
-  private static final char CLOSE = ')';
-  private static final char COMMA = ',';
 
   private final Pattern call;
   private final int argumentIndex;
@@ -38,29 +35,15 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
   private final Pattern then;
   private final String message;
 
-  /**
-   * Creates the check.
-   *
-   * @param callee the called name, matched with any receiver before it
-   * @param argumentIndex the argument of the call that the pattern must match
-   * @param argumentPattern the pattern the argument's text must match
-   * @param first the method whose call marks the binding as in use
-   * @param then the method whose call must follow
-   * @param message the message of each finding
-   */
-  public NodeCallWithoutFollowUpCheck(
-      final String callee,
-      final int argumentIndex,
-      final String argumentPattern,
-      final String first,
-      final String then,
-      final String message) {
-    this.call = Pattern.compile("(?:[\\w$]+\\.)*" + Pattern.quote(callee) + "\\s*\\(");
-    this.argumentIndex = argumentIndex;
-    this.argumentPattern = Pattern.compile(argumentPattern);
-    this.first = memberCall(first);
-    this.then = memberCall(then);
-    this.message = message;
+  private NodeCallWithoutFollowUpCheck(final TomlParseResult toml) {
+    this.call =
+        Pattern.compile(
+            "(?:[\\w$]+\\.)*" + Pattern.quote(TomlValues.required(toml, "callee")) + "\\s*\\(");
+    this.argumentIndex = TomlValues.integer(toml, "argument-index");
+    this.argumentPattern = Pattern.compile(TomlValues.required(toml, "argument-pattern"));
+    this.first = memberCall(TomlValues.required(toml, "first"));
+    this.then = memberCall(TomlValues.required(toml, "then"));
+    this.message = TomlValues.required(toml, "message");
   }
 
   /**
@@ -71,13 +54,7 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
    * @return the check
    */
   public static RuleCheck fromToml(final TomlParseResult toml) {
-    return new NodeCallWithoutFollowUpCheck(
-        TomlValues.required(toml, "callee"),
-        TomlValues.integer(toml, "argument-index"),
-        TomlValues.required(toml, "argument-pattern"),
-        TomlValues.required(toml, "first"),
-        TomlValues.required(toml, "then"),
-        TomlValues.required(toml, "message"));
+    return new NodeCallWithoutFollowUpCheck(toml);
   }
 
   private static Pattern memberCall(final String method) {
@@ -125,7 +102,8 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
     if (!callee.lookingAt()) {
       return false;
     }
-    final Optional<String> argument = argumentAt(initializer, callee.end());
+    final Optional<String> argument =
+        CallArguments.at(initializer.substring(callee.end()), argumentIndex);
     return argument.isPresent() && argumentPattern.matcher(argument.get()).find();
   }
 
@@ -143,8 +121,9 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
     if (node.isEmpty()) {
       return Optional.empty();
     }
-    final String whole = text.substring(node.get().span().startOffset(), node.get().span().endOffset());
-    final Matcher matcher = INITIALIZER.matcher(whole);
+    final Span span = node.get().span();
+    final Matcher matcher =
+        INITIALIZER.matcher(text.substring(span.startOffset(), span.endOffset()));
     return matcher.matches() ? Optional.of(matcher.group(1)) : Optional.empty();
   }
 
@@ -163,40 +142,5 @@ public final class NodeCallWithoutFollowUpCheck implements RuleCheck {
 
   private static boolean contains(final Span outer, final Span inner) {
     return outer.startOffset() <= inner.startOffset() && inner.endOffset() <= outer.endOffset();
-  }
-
-  /** The text of the argument at {@link #argumentIndex}, given the offset just after the opening parenthesis. */
-  private Optional<String> argumentAt(final String initializer, final int open) {
-    final List<String> arguments = new ArrayList<>();
-    final StringBuilder current = new StringBuilder();
-    char quote = 0;
-    int depth = 0;
-    for (int i = open; i < initializer.length(); i++) {
-      final char c = initializer.charAt(i);
-      if (quote != 0) {
-        current.append(c);
-        quote = c == quote ? 0 : quote;
-      } else if (c == '\'' || c == '"' || c == '`') {
-        quote = c;
-        current.append(c);
-      } else if (c == OPEN || c == '[' || c == '{') {
-        depth++;
-        current.append(c);
-      } else if ((c == CLOSE || c == ']' || c == '}') && depth > 0) {
-        depth--;
-        current.append(c);
-      } else if (c == COMMA && depth == 0) {
-        arguments.add(current.toString().trim());
-        current.setLength(0);
-      } else if (c == CLOSE) {
-        arguments.add(current.toString().trim());
-        break;
-      } else {
-        current.append(c);
-      }
-    }
-    return argumentIndex < arguments.size()
-        ? Optional.of(arguments.get(argumentIndex))
-        : Optional.empty();
   }
 }

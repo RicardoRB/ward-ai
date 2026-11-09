@@ -22,6 +22,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/regexp.toml",
           "rules/node/semgrep-angular.toml",
           "rules/node/semgrep-config.toml",
+          "rules/node/semgrep-crypto.toml",
           "rules/node/semgrep-headers.toml",
           "rules/node/semgrep-injection.toml",
           "rules/node/semgrep-react.toml",

@@ -1,6 +1,6 @@
 # Status of the semgrep rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-aead-no-final = { status = "planned", issue = "#446" }
+aead-no-final = "implemented"
 angular-bypasssecuritytrust = "implemented"
 aws-cdk-bucket-enforcessl = "implemented"
 awscdk-bucket-encryption = "implemented"
