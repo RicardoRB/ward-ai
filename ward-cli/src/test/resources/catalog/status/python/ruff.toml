@@ -389,7 +389,7 @@ mutable-class-default = { status = "planned", issue = "#334" }
 mutable-contextvar-default = "implemented"
 mutable-dataclass-default = { status = "planned", issue = "#334" }
 mutable-fromkeys-value = { status = "planned", issue = "#334" }
-named-expr-without-context = { status = "planned", issue = "#334" }
+named-expr-without-context = "implemented"
 nan-comparison = { status = "planned", issue = "#334" }
 native-literals = { status = "planned", issue = "#334" }
 needless-else = { status = "planned", issue = "#334" }
