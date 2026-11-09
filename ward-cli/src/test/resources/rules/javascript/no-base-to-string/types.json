@@ -1,0 +1,10 @@
+{
+  "2:8": {"type": {"name": "{}"}},
+  "4:1": {"type": {"name": "{}", "array": 1}},
+  "7:8": {"type": {"name": "Plain"}, "shape": {"kind": "class"}, "members": {"methods": []}},
+  "9:8": {
+    "type": {"name": "CustomToString"},
+    "shape": {"kind": "class"},
+    "members": {"methods": [{"declaring": {"name": "CustomToString"}, "name": "toString", "params": [], "returns": {"name": "string"}}]}
+  }
+}

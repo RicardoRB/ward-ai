@@ -4,6 +4,7 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.BiomeBaseToStringCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
@@ -34,7 +35,10 @@ final class BiomeChecks {
         entry(
             "node-namespace-access",
             toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
-        entry("node-unused-parameter", BiomeChecks::unusedParameter));
+        entry("node-unused-parameter", BiomeChecks::unusedParameter),
+        entry(
+            "node-base-to-string",
+            toml -> new BiomeBaseToStringCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck unusedParameter(final TomlParseResult toml) {

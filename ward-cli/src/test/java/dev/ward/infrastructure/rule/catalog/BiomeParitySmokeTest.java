@@ -49,7 +49,8 @@ class BiomeParitySmokeTest {
           Map.entry("no-constant-math-min-max-clamp", "correctness/noConstantMathMinMaxClamp"),
           Map.entry(
               "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"),
-          Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"));
+          Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"),
+          Map.entry("no-base-to-string", "nursery/noBaseToString"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
