@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCheck {
 
+  private static final List<String> TYPES = List.of("focus", "image", "keyboard", "mouse");
+
   private final AriaRoleTable table;
   private final String message;
 
@@ -46,8 +48,6 @@ public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCh
         .map(visit -> CheckSupport.at(visit.node().span(), message))
         .toList();
   }
-
-  private static final List<String> TYPES = List.of("focus", "image", "keyboard", "mouse");
 
   private boolean reported(final SyntaxNode element, final String source) {
     if (AriaElements.component(element)

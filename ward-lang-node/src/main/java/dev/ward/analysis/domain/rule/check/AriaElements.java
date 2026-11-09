@@ -168,15 +168,11 @@ final class AriaElements {
   static boolean staticElement(
       final AriaRoleTable table, final SyntaxNode element, final String source) {
     final String name = JsxAttributes.elementName(element);
-    if (STATIC_BY_NAME.contains(name)) {
-      return false;
-    }
-    if (NOT_STATIC_BY_NAME.contains(name)) {
-      return true;
-    }
-    return roleOf(table, element, source)
-        .map(role -> Set.of("presentation", "generic").contains(role))
-        .orElse(true);
+    return !STATIC_BY_NAME.contains(name)
+        && (NOT_STATIC_BY_NAME.contains(name)
+            || roleOf(table, element, source)
+                .map(role -> Set.of("presentation", "generic").contains(role))
+                .orElse(true));
   }
 
   private static Optional<SyntaxNode> attributeNamed(final SyntaxNode element, final String name) {

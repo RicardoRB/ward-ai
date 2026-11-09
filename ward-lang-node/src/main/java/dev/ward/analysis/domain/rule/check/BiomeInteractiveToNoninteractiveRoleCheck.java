@@ -18,6 +18,8 @@ import java.util.Set;
  */
 public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleCheck {
 
+  private static final Set<String> EXEMPT_ELEMENTS = Set.of("div", "span", "source");
+
   private final AriaRoleTable table;
   private final String message;
 
@@ -49,33 +51,28 @@ public final class BiomeInteractiveToNoninteractiveRoleCheck implements RuleChec
         .toList();
   }
 
-  private static final Set<String> EXEMPT_ELEMENTS = Set.of("div", "span", "source");
-
   private boolean reported(final SyntaxNode element, final String source) {
-    final String name = JsxAttributes.elementName(element);
     final Optional<SyntaxNode> role =
         JsxAttributes.of(element).stream()
             .filter(attribute -> "role".equals(JsxAttributes.name(attribute)))
             .findFirst();
-    if (role.isEmpty()
-        || JsxAttributes.rawLiteral(role.get(), source).isEmpty()
-        || AriaElements.customElement(element)) {
-      return false;
-    }
-    final String value = JsxAttributes.rawLiteral(role.get(), source).get();
-    if ("hr".equals(name) && Set.of("presentation", "none").contains(value)) {
-      return false;
-    }
-    if (AriaElements.isNotInteractive(table, name, AriaElements.Attributes.of(element))
-        || !table.nonInteractiveRole(JsxAttributes.tokens(role.get(), source))) {
-      return false;
-    }
-    if (EXEMPT_ELEMENTS.contains(name)
-        || ("svg".equals(name) || "canvas".equals(name)) && "img".equals(value)) {
-      return false;
-    }
-    return !"a".equals(name)
-        || JsxAttributes.of(element).stream()
-            .anyMatch(attribute -> "href".equals(JsxAttributes.name(attribute)));
+    final Optional<String> value =
+        role.flatMap(attribute -> JsxAttributes.rawLiteral(attribute, source));
+    return value.isPresent()
+        && !AriaElements.customElement(element)
+        && !exempt(element, value.get())
+        && table.nonInteractiveRole(JsxAttributes.tokens(role.get(), source));
+  }
+
+  /** The cases Biome leaves alone whatever the role. */
+  private boolean exempt(final SyntaxNode element, final String value) {
+    final String name = JsxAttributes.elementName(element);
+    return "hr".equals(name) && Set.of("presentation", "none").contains(value)
+        || AriaElements.isNotInteractive(table, name, AriaElements.Attributes.of(element))
+        || EXEMPT_ELEMENTS.contains(name)
+        || ("svg".equals(name) || "canvas".equals(name)) && "img".equals(value)
+        || "a".equals(name)
+            && JsxAttributes.of(element).stream()
+                .noneMatch(attribute -> "href".equals(JsxAttributes.name(attribute)));
   }
 }

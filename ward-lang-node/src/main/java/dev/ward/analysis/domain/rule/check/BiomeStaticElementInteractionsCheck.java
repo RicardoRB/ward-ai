@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public final class BiomeStaticElementInteractionsCheck implements RuleCheck {
 
+  private static final List<String> TYPES = List.of("focus", "keyboard", "mouse");
+
   private final AriaRoleTable table;
   private final String message;
 
@@ -45,8 +47,6 @@ public final class BiomeStaticElementInteractionsCheck implements RuleCheck {
         .map(visit -> CheckSupport.at(visit.node().span(), message))
         .toList();
   }
-
-  private static final List<String> TYPES = List.of("focus", "keyboard", "mouse");
 
   private boolean reported(final SyntaxNode element, final String source) {
     return !AriaElements.component(element)

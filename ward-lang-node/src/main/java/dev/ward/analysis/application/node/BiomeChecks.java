@@ -4,26 +4,17 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.rule.check.BiomeAriaPropsCheck;
-import dev.ward.analysis.domain.rule.check.BiomeAriaRoleCheck;
-import dev.ward.analysis.domain.rule.check.BiomeAriaValuesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAutofocusCheck;
 import dev.ward.analysis.domain.rule.check.BiomeBlankTargetCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
-import dev.ward.analysis.domain.rule.check.BiomeInteractiveToNoninteractiveRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxEmptyElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
-import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
-import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveElementInteractionsCheck;
-import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveTabindexCheck;
-import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleCheck;
-import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -42,7 +33,7 @@ final class BiomeChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    final Map<String, CheckFactory> checks = new HashMap<>(ariaChecks());
+    final Map<String, CheckFactory> checks = new HashMap<>(AriaChecks.checks());
     checks.putAll(
         Map.ofEntries(
             entry(
@@ -83,51 +74,6 @@ final class BiomeChecks {
                         Pattern.compile(TomlValues.required(toml, "text")),
                         TomlValues.required(toml, MESSAGE)))));
     return Map.copyOf(checks);
-  }
-
-  /** The checks that read the mirrored ARIA tables of Biome 2.5.15. */
-  private static Map<String, CheckFactory> ariaChecks() {
-    return Map.ofEntries(
-        entry(
-            "node-aria-props",
-            toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-aria-role",
-            toml -> new BiomeAriaRoleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-aria-values",
-            toml ->
-                new BiomeAriaValuesCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-tabindex",
-            toml ->
-                new BiomeNoninteractiveTabindexCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-to-interactive-role",
-            toml ->
-                new BiomeNoninteractiveToInteractiveRoleCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-interactive-to-noninteractive-role",
-            toml ->
-                new BiomeInteractiveToNoninteractiveRoleCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-element-interactions",
-            toml ->
-                new BiomeNoninteractiveElementInteractionsCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-static-element-interactions",
-            toml ->
-                new BiomeStaticElementInteractionsCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-no-redundant-roles",
-            toml ->
-                new BiomeNoRedundantRolesCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck handlerPair(final TomlParseResult toml) {
