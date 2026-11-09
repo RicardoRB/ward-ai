@@ -138,7 +138,7 @@ no-useless-call = "implemented"
 no-useless-catch = "implemented"
 no-useless-computed-key = { status = "planned", issue = "#296" }
 no-useless-concat = { status = "planned", issue = "#296" }
-no-useless-constructor = { status = "planned", issue = "#326" }
+no-useless-constructor = "implemented"
 no-useless-escape = { status = "planned", issue = "#326" }
 no-useless-rename = "implemented"
 no-useless-return = { status = "planned", issue = "#296" }
@@ -147,8 +147,8 @@ no-void = { status = "planned", issue = "#296" }
 no-with = "implemented"
 object-shorthand = { status = "planned", issue = "#296" }
 operator-assignment = { status = "planned", issue = "#296" }
-prefer-arrow-callback = { status = "planned", issue = "#296" }
-prefer-const = { status = "planned", issue = "#296" }
+prefer-arrow-callback = "implemented"
+prefer-const = "implemented"
 prefer-destructuring = { status = "planned", issue = "#296" }
 prefer-exponentiation-operator = "implemented"
 prefer-named-capture-group = { status = "planned", issue = "#326" }
@@ -159,7 +159,7 @@ prefer-promise-reject-errors = { status = "planned", issue = "#326" }
 prefer-regex-literals = "implemented"
 prefer-rest-params = "implemented"
 prefer-spread = "implemented"
-prefer-template = { status = "planned", issue = "#296" }
+prefer-template = "implemented"
 preserve-caught-error = { status = "planned", issue = "#326" }
 radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }

@@ -39,3 +39,15 @@ body = '''
 check = "node-overload-grouping"
 message = "overloaded method must be declared next to its other overloads"
 '''
+
+[[rules]]
+id = "ward:typescript/consistent-type-imports"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-type-only-import"
+message = "all imports in the declaration are only used as types; use 'import type'"
+'''

@@ -209,3 +209,27 @@ target = "comments"
 pattern = '^/\*(?!\*)[^\n]*\n(?:[^\n]*\n)*?[ \t]*[^ \t*\n/]'
 message = "comment line does not start with a leading asterisk"
 '''
+
+[[rules]]
+id = "ward:typescript/javadoc-leading-asterisk-align"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-align"
+message = "javadoc leading asterisk is not aligned with the opening slash"
+'''
+
+[[rules]]
+id = "ward:javascript/javadoc-leading-asterisk-align"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-align"
+message = "javadoc leading asterisk is not aligned with the opening slash"
+'''

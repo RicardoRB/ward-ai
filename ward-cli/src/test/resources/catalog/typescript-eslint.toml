@@ -65,8 +65,6 @@ biome = ["useExportType"]
 
 [[rule]]
 name = "consistent-type-imports"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["consistent-type-imports"]
 biome = ["useImportType"]
 

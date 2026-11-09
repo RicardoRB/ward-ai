@@ -10,7 +10,7 @@ consistent-indexed-object-style = { status = "planned", issue = "#296" }
 consistent-type-assertions = { status = "planned", issue = "#296" }
 consistent-type-definitions = { status = "planned", issue = "#296" }
 consistent-type-exports = { status = "planned", issue = "#296" }
-consistent-type-imports = { status = "planned", issue = "#296" }
+consistent-type-imports = "implemented"
 explicit-function-return-type = { status = "planned", issue = "#296" }
 explicit-member-accessibility = { status = "planned", issue = "#296" }
 explicit-module-boundary-types = { status = "planned", issue = "#296" }
