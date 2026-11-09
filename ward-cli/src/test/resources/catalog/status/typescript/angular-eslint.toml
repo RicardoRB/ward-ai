@@ -6,7 +6,7 @@ component-selector = { status = "planned", issue = "#328" }
 computed-must-return = { status = "planned", issue = "#328" }
 consistent-component-styles = { status = "planned", issue = "#328" }
 contextual-decorator = { status = "planned", issue = "#328" }
-contextual-lifecycle = { status = "planned", issue = "#328" }
+contextual-lifecycle = "implemented"
 directive-class-suffix = { status = "planned", issue = "#328" }
 directive-selector = { status = "planned", issue = "#328" }
 inject-at-top = { status = "planned", issue = "#328" }
@@ -14,31 +14,31 @@ no-async-lifecycle-method = { status = "planned", issue = "#328" }
 no-attribute-decorator = { status = "planned", issue = "#328" }
 no-developer-preview = { status = "planned", issue = "#328" }
 no-duplicates-in-metadata-arrays = { status = "planned", issue = "#328" }
-no-empty-lifecycle-method = { status = "planned", issue = "#328" }
+no-empty-lifecycle-method = "implemented"
 no-experimental = { status = "planned", issue = "#328" }
 no-forward-ref = { status = "planned", issue = "#328" }
 no-implicit-take-until-destroyed = { status = "planned", issue = "#328" }
 no-input-prefix = { status = "planned", issue = "#328" }
-no-input-rename = { status = "planned", issue = "#328" }
-no-inputs-metadata-property = { status = "planned", issue = "#328" }
+no-input-rename = "implemented"
+no-inputs-metadata-property = "implemented"
 no-lifecycle-call = { status = "planned", issue = "#328" }
-no-output-native = { status = "planned", issue = "#328" }
-no-output-on-prefix = { status = "planned", issue = "#328" }
-no-output-rename = { status = "planned", issue = "#328" }
-no-outputs-metadata-property = { status = "planned", issue = "#328" }
+no-output-native = "implemented"
+no-output-on-prefix = "implemented"
+no-output-rename = "implemented"
+no-outputs-metadata-property = "implemented"
 no-pipe-impure = { status = "planned", issue = "#328" }
 no-queries-metadata-property = { status = "planned", issue = "#328" }
 no-uncalled-signals = { status = "planned", issue = "#328" }
 pipe-prefix = { status = "planned", issue = "#328" }
 prefer-host-metadata-property = { status = "planned", issue = "#328" }
-prefer-inject = { status = "planned", issue = "#328" }
-prefer-on-push-component-change-detection = { status = "planned", issue = "#328" }
+prefer-inject = "implemented"
+prefer-on-push-component-change-detection = "implemented"
 prefer-output-emitter-ref = { status = "planned", issue = "#328" }
 prefer-output-readonly = { status = "planned", issue = "#328" }
 prefer-service-decorator = { status = "planned", issue = "#328" }
 prefer-signal-model = { status = "planned", issue = "#328" }
 prefer-signals = { status = "planned", issue = "#328" }
-prefer-standalone = { status = "planned", issue = "#328" }
+prefer-standalone = "implemented"
 reactive-context-must-read-signal = { status = "planned", issue = "#328" }
 relative-url-prefix = { status = "planned", issue = "#328" }
 require-lifecycle-on-prototype = { status = "planned", issue = "#328" }
@@ -49,5 +49,5 @@ sort-lifecycle-methods = { status = "planned", issue = "#328" }
 use-component-selector = { status = "planned", issue = "#328" }
 use-component-view-encapsulation = { status = "planned", issue = "#328" }
 use-injectable-provided-in = { status = "planned", issue = "#328" }
-use-lifecycle-interface = { status = "planned", issue = "#328" }
-use-pipe-transform-interface = { status = "planned", issue = "#328" }
+use-lifecycle-interface = "implemented"
+use-pipe-transform-interface = "implemented"

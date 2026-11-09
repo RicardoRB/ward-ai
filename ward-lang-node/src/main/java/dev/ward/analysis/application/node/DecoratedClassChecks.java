@@ -27,7 +27,7 @@ final class DecoratedClassChecks {
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Map.ofEntries(entry("decorated-class", DecoratedClassChecks::create));
+    return Map.ofEntries(entry("node-decorated-class", DecoratedClassChecks::create));
   }
 
   private static RuleCheck create(final TomlParseResult toml) {

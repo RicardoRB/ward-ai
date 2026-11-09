@@ -54,8 +54,9 @@ class DecoratedClassCheckTest {
             new ScopeCondition(Set.of(), Set.of("propertyMemberDeclaration"), Set.of()),
             NO_NAME);
 
-    assertThat(lines(filters, Set.of("propertyName"), COMPONENT)).containsExactly(3, 4, 5);
-    assertThat(lines(filters, Set.of("propertyName"), "class A { ngOnInit(): void {} }\n"))
+    assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
+        .containsExactly("title", "ngOnInit", "ngDoBootstrap");
+    assertThat(matched(filters, Set.of("propertyName"), "class A { ngOnInit(): void {} }\n"))
         .isEmpty();
   }
 
@@ -70,7 +71,9 @@ class DecoratedClassCheckTest {
             NO_SCOPE,
             NO_NAME);
 
-    assertThat(lines(filters, Set.of("propertyMemberDeclaration"), COMPONENT)).containsExactly(3);
+    assertThat(matched(filters, Set.of("propertyMemberDeclaration"), COMPONENT))
+        .singleElement()
+        .satisfies(text -> assertThat(text).startsWith("title"));
   }
 
   @Test
@@ -86,7 +89,8 @@ class DecoratedClassCheckTest {
             NO_SCOPE,
             NO_NAME);
 
-    assertThat(lines(filters, Set.of("propertyName"), COMPONENT)).containsExactly(5);
+    assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
+        .containsExactly("ngDoBootstrap");
   }
 
   @Test
@@ -108,7 +112,7 @@ class DecoratedClassCheckTest {
         }
         """;
 
-    assertThat(lines(filters, Set.of("decorator"), source)).containsExactly(3);
+    assertThat(matched(filters, Set.of("decorator"), source)).containsExactly("@Input('size')");
   }
 
   @Test
@@ -130,7 +134,7 @@ class DecoratedClassCheckTest {
         }
         """;
 
-    assertThat(lines(filters, Set.of("propertyName"), source)).containsExactly(5);
+    assertThat(matched(filters, Set.of("propertyName"), source)).containsExactly("ngOnInit");
   }
 
   @Test
@@ -158,7 +162,8 @@ class DecoratedClassCheckTest {
         }
         """;
 
-    assertThat(lines(filters, Set.of("propertyAssignment"), source)).containsExactly(3);
+    assertThat(matched(filters, Set.of("propertyAssignment"), source))
+        .containsExactly("inputs: ['x']");
   }
 
   @Test
@@ -171,7 +176,8 @@ class DecoratedClassCheckTest {
             new ScopeCondition(Set.of(), Set.of("propertyMemberDeclaration"), Set.of()),
             NO_NAME);
 
-    assertThat(lines(filters, Set.of("propertyName"), COMPONENT)).containsExactly(3, 4, 5);
+    assertThat(matched(filters, Set.of("propertyName"), COMPONENT))
+        .containsExactly("title", "ngOnInit", "ngDoBootstrap");
   }
 
   @Test
@@ -190,14 +196,17 @@ class DecoratedClassCheckTest {
         export class ShoutPipe {}
         """;
 
-    assertThat(lines(filters, Set.of("identifier"), source)).containsExactly(2);
+    assertThat(matched(filters, Set.of("identifier"), source)).containsExactly("ShoutPipe");
   }
 
-  private static List<Integer> lines(
+  private static List<String> matched(
       final Filters filters, final Set<String> kinds, final String source) {
     final SyntaxNode root = parse(source);
     return new DecoratedClassCheck(kinds, filters, "message")
-        .matches(root).stream().map(RuleMatch::span).map(span -> span.startLine()).toList();
+        .matches(root).stream()
+            .map(RuleMatch::span)
+            .map(span -> source.substring(span.startOffset(), span.endOffset()))
+            .toList();
   }
 
   private static SyntaxNode parse(final String source) {
