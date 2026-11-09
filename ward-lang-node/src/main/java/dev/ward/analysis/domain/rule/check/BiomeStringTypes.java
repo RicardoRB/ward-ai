@@ -44,9 +44,18 @@ final class BiomeStringTypes {
     return isClass && types.membersOf(span).map(BiomeStringTypes::lacksToString).orElse(false);
   }
 
+  /**
+   * The class declares no toString, neither itself nor through an inherited member, and every base
+   * it lists is Object. A base that is not Object may declare toString, so it stays silent.
+   */
   private static boolean lacksToString(final TypeMembers members) {
     return members.methods().stream().noneMatch(BiomeStringTypes::isToString)
-        && members.inheritedMethods().stream().noneMatch(BiomeStringTypes::isToString);
+        && members.inheritedMethods().stream().noneMatch(BiomeStringTypes::isToString)
+        && members.ancestors().stream().allMatch(BiomeStringTypes::isPlainObject);
+  }
+
+  private static boolean isPlainObject(final TypeRef type) {
+    return type.arrayDepth() == 0 && isObjectName(type.name());
   }
 
   private static boolean isToString(final CallTarget method) {

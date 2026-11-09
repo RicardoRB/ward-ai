@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 public final class BiomeBaseToStringCheck implements RuleCheck {
 
   private static final String CALL = "singleExpression";
+  private static final String TEMPLATE_ATOM = "templateStringAtom";
   private static final String STRING_FUNCTION = "String";
   private static final String TO_STRING = "toString";
   private static final String JOIN = ".join";
@@ -59,13 +60,16 @@ public final class BiomeBaseToStringCheck implements RuleCheck {
       final ScopeView scopes,
       final UnitTypeFacts types,
       final SourceUnit unit) {
-    return SyntaxWalk.visits(root, Set.of(CALL)).stream()
+    return SyntaxWalk.visits(root, Set.of(CALL, TEMPLATE_ATOM)).stream()
         .map(visit -> finding(visit.node(), types))
         .flatMap(Optional::stream)
         .toList();
   }
 
   private Optional<RuleMatch> finding(final SyntaxNode call, final UnitTypeFacts types) {
+    if (TEMPLATE_ATOM.equals(call.kind())) {
+      return substitution(call, types);
+    }
     if (!hasArguments(call)) {
       return Optional.empty();
     }
@@ -82,6 +86,15 @@ public final class BiomeBaseToStringCheck implements RuleCheck {
       return Optional.of(match(call));
     }
     return Optional.empty();
+  }
+
+  /** A {@code ${value}} substitution in a template string, whose value is stringified. */
+  private Optional<RuleMatch> substitution(final SyntaxNode atom, final UnitTypeFacts types) {
+    return atom.children().stream()
+        .filter(child -> BiomeTree.isKind(child, CALL))
+        .findFirst()
+        .filter(value -> BiomeStringTypes.defaultObject(value, types))
+        .map(this::match);
   }
 
   private static boolean hasArguments(final SyntaxNode call) {

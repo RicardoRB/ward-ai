@@ -36,6 +36,20 @@ class BiomeBaseToStringCheckTest {
   }
 
   @Test
+  void reportsAPlainObjectInATemplateSubstitution() {
+    final String json = "{\"2:16\": {\"type\": {\"name\": \"{}\"}}}";
+    assertThat(reported("const v = {};\nconst s = `x ${v}`;\n", json)).containsExactly("v");
+  }
+
+  @Test
+  void staysSilentForAClassWhoseBaseIsNotObject() {
+    final String json =
+        "{\"2:8\": {\"type\": {\"name\": \"Derived\"}, \"shape\": {\"kind\": \"class\"},"
+            + " \"members\": {\"methods\": [], \"ancestors\": [{\"name\": \"Base\"}]}}}";
+    assertThat(reported("const d = new Derived();\nString(d);\n", json)).isEmpty();
+  }
+
+  @Test
   void staysSilentWithoutTypeFacts() {
     assertThat(reported("const v = {};\nString(v);\n", "{}")).isEmpty();
   }

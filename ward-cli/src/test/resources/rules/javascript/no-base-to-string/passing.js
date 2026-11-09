@@ -7,3 +7,5 @@ class CustomToString {
 const pad = 0;
 const c = new CustomToString();
 String(c);
+// keep
+`${c}`;
