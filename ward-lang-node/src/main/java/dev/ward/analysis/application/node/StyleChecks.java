@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
+import dev.ward.analysis.domain.rule.check.NodeTypeOnlyImportCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessConstructorCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.Map;
@@ -26,43 +27,57 @@ final class StyleChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Map.of(
-        "node-constructor-group",
-        toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE)),
-        "node-overload-grouping",
-        toml -> new NodeOverloadGroupingCheck(TomlValues.required(toml, MESSAGE)),
-        "node-else-after-jump",
-        toml ->
-            new NodeElseAfterJumpCheck(
-                toml.getBoolean("allow-else-if", () -> true), TomlValues.required(toml, MESSAGE)),
-        "node-illegal-token",
-        toml ->
-            new NodeIllegalTokenCheck(
-                TomlValues.strings(toml, "tokens"),
-                TomlValues.required(toml, "format"),
-                toml.getBoolean("ignore-case", () -> false),
-                TomlValues.required(toml, MESSAGE)),
-        "node-javadoc-align",
-        toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE)),
-        "node-arrow-callback",
-        toml ->
-            new NodeArrowCallbackCheck(
-                toml.getBoolean("allow-named-functions", () -> false),
-                toml.getBoolean("allow-unbound-this", () -> true),
-                TomlValues.required(toml, MESSAGE)),
-        "node-string-concat",
-        toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE)),
-        "node-useless-constructor",
-        toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE)),
-        "node-prefer-const",
-        toml ->
-            new NodePreferConstCheck(
-                "all".equals(toml.getString("destructuring")),
-                toml.getBoolean("ignore-read-before-assign", () -> false),
-                TomlValues.required(toml, MESSAGE)),
-        "node-variable-distance",
-        toml ->
-            new VariableDistanceCheck(
-                TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE)));
+    return Map.ofEntries(
+        Map.entry(
+            "node-constructor-group",
+            toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-overload-grouping",
+            toml -> new NodeOverloadGroupingCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-else-after-jump",
+            toml ->
+                new NodeElseAfterJumpCheck(
+                    toml.getBoolean("allow-else-if", () -> true),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-illegal-token",
+            toml ->
+                new NodeIllegalTokenCheck(
+                    TomlValues.strings(toml, "tokens"),
+                    TomlValues.required(toml, "format"),
+                    toml.getBoolean("ignore-case", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-javadoc-align",
+            toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-arrow-callback",
+            toml ->
+                new NodeArrowCallbackCheck(
+                    toml.getBoolean("allow-named-functions", () -> false),
+                    toml.getBoolean("allow-unbound-this", () -> true),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-string-concat",
+            toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-type-only-import",
+            toml -> new NodeTypeOnlyImportCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-useless-constructor",
+            toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-prefer-const",
+            toml ->
+                new NodePreferConstCheck(
+                    "all".equals(toml.getString("destructuring")),
+                    toml.getBoolean("ignore-read-before-assign", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-variable-distance",
+            toml ->
+                new VariableDistanceCheck(
+                    TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
   }
 }

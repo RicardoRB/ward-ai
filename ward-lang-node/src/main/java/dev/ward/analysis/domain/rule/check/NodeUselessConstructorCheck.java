@@ -16,13 +16,13 @@ import java.util.Set;
 public final class NodeUselessConstructorCheck implements RuleCheck {
 
   private static final String CONSTRUCTOR = "constructorDeclaration";
+  private static final String METHOD = "methodDefinition";
   private static final String PARAMETERS = "formalParameterList";
   private static final String BODY = "functionBody";
   private static final String PARAMETER = "formalParameterArg";
   private static final String REST = "lastFormalParameterArg";
   private static final String ACCESSIBILITY = "accessibilityModifier";
   private static final String OPEN_BRACE = "'{'";
-  private static final String IDENTIFIER = "Identifier";
   private static final Set<String> SHAPE_MODIFIERS =
       Set.of("public", "private", "protected", "readonly");
 
@@ -45,16 +45,24 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
   }
 
   private void collect(final SyntaxNode node, final List<RuleMatch> found) {
-    if (CONSTRUCTOR.equals(node.kind()) && useless(node)) {
+    if (constructor(node) && useless(node)) {
       found.add(new RuleMatch(node.span(), message));
     }
     node.children().forEach(child -> collect(child, found));
   }
 
+  /** A TypeScript constructor declaration, or a JavaScript method named {@code constructor}. */
+  private static boolean constructor(final SyntaxNode node) {
+    return CONSTRUCTOR.equals(node.kind())
+        || METHOD.equals(node.kind())
+            && "constructor".equals(NodeSyntax.leaves(node).stream().findFirst().orElse(""));
+  }
+
   /** Whether the constructor has a body, keeps the default visibility, and only forwards. */
   private static boolean useless(final SyntaxNode constructor) {
     final List<SyntaxNode> parts = NodeSyntax.code(constructor);
-    if (parts.stream().noneMatch(part -> OPEN_BRACE.equals(part.kind()))) {
+    if (parts.stream()
+        .noneMatch(part -> OPEN_BRACE.equals(part.kind()) || BODY.equals(part.kind()))) {
       return false;
     }
     if (parts.stream()
@@ -63,12 +71,7 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
       return false;
     }
     final Optional<List<String>> forwarded = forwardedParameters(parts);
-    final String body =
-        parts.stream()
-            .filter(part -> BODY.equals(part.kind()))
-            .findFirst()
-            .map(NodeSyntax::text)
-            .orElse("");
+    final String body = bodyText(parts);
     if (forwarded.isEmpty()) {
       return false;
     }
@@ -78,6 +81,23 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
     }
     final String call = "super(" + String.join(",", args) + ")";
     return body.equals(call) || body.equals(call + ";");
+  }
+
+  /**
+   * The statements of the body without its braces; JavaScript keeps the braces inside the body
+   * node.
+   */
+  private static String bodyText(final List<SyntaxNode> parts) {
+    final String text =
+        parts.stream()
+            .filter(part -> BODY.equals(part.kind()))
+            .findFirst()
+            .map(NodeSyntax::text)
+            .orElse("");
+    if (!text.startsWith("{")) {
+      return text;
+    }
+    return text.endsWith("}") ? text.substring(1, text.length() - 1) : text.substring(1);
   }
 
   /** The forwarded arguments of each parameter, or empty when a parameter is not plain. */
@@ -105,10 +125,10 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
     if (!PARAMETER.equals(parameter.kind()) && !REST.equals(parameter.kind())) {
       return Optional.empty();
     }
-    if (!plain(leaves(parameter))) {
+    if (!plain(NodeSyntax.leaves(parameter))) {
       return Optional.empty();
     }
-    final Optional<SyntaxNode> name = firstIdentifier(parameter);
+    final Optional<SyntaxNode> name = NodeSyntax.firstIdentifier(parameter);
     if (name.isEmpty()) {
       return Optional.empty();
     }
@@ -123,32 +143,5 @@ public final class NodeUselessConstructorCheck implements RuleCheck {
         && !leaves.get(0).startsWith("@")
         && !leaves.contains("=")
         && !leaves.contains("@");
-  }
-
-  private static Optional<SyntaxNode> firstIdentifier(final SyntaxNode node) {
-    if (IDENTIFIER.equals(node.kind())) {
-      return Optional.of(node);
-    }
-    for (final SyntaxNode child : node.children()) {
-      final Optional<SyntaxNode> found = firstIdentifier(child);
-      if (found.isPresent()) {
-        return found;
-      }
-    }
-    return Optional.empty();
-  }
-
-  private static List<String> leaves(final SyntaxNode node) {
-    final List<String> out = new ArrayList<>();
-    collectLeaves(node, out);
-    return out;
-  }
-
-  private static void collectLeaves(final SyntaxNode node, final List<String> out) {
-    if (node.children().isEmpty()) {
-      out.add(node.fields().getOrDefault("text", ""));
-      return;
-    }
-    node.children().forEach(child -> collectLeaves(child, out));
   }
 }
