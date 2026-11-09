@@ -22,61 +22,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The {@code partial} tables init writes, read back through the real configuration parser. */
 class ConfigurationTemplatePartialTest {
-  private static final List<String> JAVA = List.of("src/**/*.java");
-  private static final List<String> GRADLE_BUILD = List.of("build.gradle*", "settings.gradle*");
-  private static final String CHECKSTYLE = "checkstyle";
-  private static final String PMD = "pmd";
 
   @TempDir Path dir;
-
-  @Test
-  void mavenWithPresetNarrowsCheckstyleAndRunsPmdInFull() throws IOException {
-    final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
-
-    assertThat(gates.get(CHECKSTYLE).partial())
-        .isEqualTo(
-            new PartialGateConfiguration(
-                JAVA,
-                List.of("config/checkstyle.xml", "pom.xml"),
-                List.of("-Dcheckstyle.includes={paths}"),
-                "**/{name}",
-                ","));
-    assertThat(gates.get(PMD).partial())
-        .isEqualTo(
-            new PartialGateConfiguration(
-                JAVA, List.of("config/pmd-ruleset.xml", "pom.xml"), List.of(), null, null));
-  }
-
-  @Test
-  void mavenWithoutPresetListsOnlyTheBuildFileAsConfiguration() throws IOException {
-    final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, null);
-
-    assertThat(gates.get(CHECKSTYLE).partial().full()).containsExactly("pom.xml");
-    assertThat(gates.get(CHECKSTYLE).partial().args())
-        .containsExactly("-Dcheckstyle.includes={paths}");
-    assertThat(gates.get(PMD).partial().full()).containsExactly("pom.xml");
-  }
-
-  @Test
-  void gradleWithPresetNarrowsCheckstyleAndPmdThroughTheBuildFilter() throws IOException {
-    final Map<String, GateConfiguration> gates = parse(BuildTool.GRADLE, QualityPreset.STRICT);
-
-    for (final String gate : List.of(CHECKSTYLE, PMD)) {
-      assertThat(gates.get(gate).partial().args()).containsExactly("-PwardPaths={paths}");
-      assertThat(gates.get(gate).partial().separator()).isEqualTo(",");
-      assertThat(gates.get(gate).partial().item()).isEqualTo("{path}");
-      assertThat(gates.get(gate).partial().full()).containsAll(GRADLE_BUILD);
-    }
-  }
-
-  @Test
-  void gradleWithoutPresetRunsCheckstyleAndPmdInFullBecauseNoFilterIsWritten() throws IOException {
-    final Map<String, GateConfiguration> gates = parse(BuildTool.GRADLE, null);
-
-    assertThat(gates.get(CHECKSTYLE).partial().args()).isEmpty();
-    assertThat(gates.get(PMD).partial().args()).isEmpty();
-    assertThat(gates.get(CHECKSTYLE).partial().full()).isEqualTo(GRADLE_BUILD);
-  }
 
   @Test
   void semgrepPassesEachPathAsItsOwnArgument() throws IOException {
@@ -106,8 +53,7 @@ class ConfigurationTemplatePartialTest {
   void gatesThatDependOnTheWholeProjectHaveNoPartialTable() throws IOException {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
 
-    for (final String gate :
-        List.of("compile", "tests", "coverage", "license", "mutation", "spotbugs")) {
+    for (final String gate : List.of("compile", "tests", "coverage", "license", "mutation")) {
       assertThat(gates.get(gate).partial()).as(gate).isNull();
     }
   }
@@ -115,17 +61,7 @@ class ConfigurationTemplatePartialTest {
   private Map<String, GateConfiguration> parse(
       final BuildTool buildTool, final QualityPreset preset) throws IOException {
     final List<InitGateOption> options =
-        List.of(
-                "compile",
-                "tests",
-                CHECKSTYLE,
-                PMD,
-                "spotbugs",
-                "coverage",
-                "license",
-                "mutation",
-                "gitleaks",
-                "semgrep")
+        List.of("compile", "tests", "coverage", "license", "mutation", "gitleaks", "semgrep")
             .stream()
             .map(id -> new InitGateOption(id, id, List.of("tool", id), true, "available"))
             .toList();

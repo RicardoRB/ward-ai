@@ -8,22 +8,6 @@ public enum QualityPreset {
   STANDARD(
       "standard",
       new PresetRules(
-          List.of("rulesets/java/quickstart.xml"),
-          List.of(
-              "EqualsHashCode",
-              "MissingSwitchDefault",
-              "FallThrough",
-              "EmptyCatchBlock",
-              "IllegalCatch",
-              "AvoidStarImport",
-              "UnusedImports",
-              "StringLiteralEquality",
-              "OneStatementPerLine",
-              "MultipleVariableDeclarations"),
-          Map.of("IllegalCatch.illegalClassNames", "Error, Throwable"),
-          "Default",
-          "Medium",
-          List.of("EI_EXPOSE_REP", "EI_EXPOSE_REP2"),
           Map.of("LINE", 0.70),
           List.of(
               "dependencyConvergence", "banDuplicatePomDependencyVersions", "requireMavenVersion"),
@@ -32,48 +16,6 @@ public enum QualityPreset {
   STRICT(
       "strict",
       new PresetRules(
-          List.of(
-              "rulesets/java/quickstart.xml",
-              "category/java/bestpractices.xml",
-              "category/java/codestyle.xml/MethodArgumentCouldBeFinal",
-              "category/java/codestyle.xml/LocalVariableCouldBeFinal",
-              "category/java/codestyle.xml/UseExplicitTypes"),
-          List.of(
-              "EqualsHashCode",
-              "MissingSwitchDefault",
-              "FallThrough",
-              "EmptyCatchBlock",
-              "IllegalCatch",
-              "AvoidStarImport",
-              "UnusedImports",
-              "StringLiteralEquality",
-              "OneStatementPerLine",
-              "MultipleVariableDeclarations",
-              "CyclomaticComplexity",
-              "MethodLength",
-              "ParameterNumber",
-              "FileLength",
-              "MissingJavadocType",
-              "MissingJavadocMethod",
-              "MagicNumber",
-              "HiddenField",
-              "TypeName",
-              "MethodName",
-              "ParameterName",
-              "LocalVariableName",
-              "MemberName"),
-          Map.of(
-              "CyclomaticComplexity.max", "10",
-              "MethodLength.max", "60",
-              "ParameterNumber.max", "5",
-              "FileLength.max", "500",
-              "MissingJavadocType.scope", "public",
-              "MissingJavadocMethod.scope", "public",
-              "HiddenField.ignoreConstructorParameter", "true",
-              "HiddenField.ignoreSetter", "true"),
-          "Max",
-          "Low",
-          List.of(),
           Map.of("LINE", 0.85, "BRANCH", 0.75),
           List.of(
               "dependencyConvergence",
@@ -107,22 +49,12 @@ public enum QualityPreset {
 
   /** The tool rules a preset writes into rule files and the build. */
   public record PresetRules(
-      List<String> pmdRules,
-      List<String> checkstyleModules,
-      Map<String, String> checkstyleProperties,
-      String spotbugsEffort,
-      String spotbugsThreshold,
-      List<String> spotbugsExcludes,
       Map<String, Double> jacocoMinimums,
       List<String> enforcerRules,
       Integer mutationThreshold,
       boolean architectureCycles) {
     /** Copies the collections. */
     public PresetRules {
-      pmdRules = List.copyOf(pmdRules);
-      checkstyleModules = List.copyOf(checkstyleModules);
-      checkstyleProperties = Map.copyOf(checkstyleProperties);
-      spotbugsExcludes = List.copyOf(spotbugsExcludes);
       jacocoMinimums = Map.copyOf(jacocoMinimums);
       enforcerRules = List.copyOf(enforcerRules);
     }

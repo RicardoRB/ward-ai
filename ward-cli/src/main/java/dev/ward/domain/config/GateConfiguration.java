@@ -10,7 +10,7 @@ import java.util.Set;
  * One check's table in {@code ward.toml}.
  *
  * @param name the check's name, which identifies it in output and selection
- * @param type the built-in tool type that decides its behavior, such as {@code checkstyle}
+ * @param type the built-in tool type that decides its behavior, such as {@code coverage}
  * @param enabled whether the check runs
  * @param command the argument vector it runs
  * @param profiles the profiles it belongs to

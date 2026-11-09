@@ -292,7 +292,7 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that Java and Kotlin projects get no Checkstyle, PMD or SpotBugs gate, and Python projects get no Ruff
+   Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
    gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
    Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
@@ -307,7 +307,7 @@ Tell the user:
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
    the `ward.toml`, so it is trusted. Ask first anyway, because it runs the build.
-4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `eslint`, `biome`, `vitest`, `jest`, or
+4. When `ward`, `coverage`, `mutation`, `eslint`, `biome`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
    When the check fails, offer the `ward-fix` skill to fix the code rule by rule.

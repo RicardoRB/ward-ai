@@ -21,7 +21,7 @@ class CompatibilityResolverJdkTest {
   private static final String ARTIFACT = "demo-plugin";
   private static final String MAVEN = "3.9.9";
   private static final CompatibilityResolver RESOLVER = new CompatibilityResolver();
-  private static final String SPOTBUGS = "spotbugs-maven-plugin";
+  private static final String PITEST = "pitest-maven";
 
   @Test
   void reportsUnknownWhenRuntimeJdkIsUnavailable() {
@@ -62,17 +62,17 @@ class CompatibilityResolverJdkTest {
   }
 
   @Test
-  void java8ProjectOnJdk8GetsTheJdk8SpotBugs() {
+  void java8ProjectOnJdk8GetsTheJdk8Pitest() {
     final CompatibilityPlan plan =
         RESOLVER.resolve(
             snapshot(JAVA_8, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(SPOTBUGS));
+            List.of(PITEST));
 
     assertThat(plan.findings())
         .singleElement()
         .extracting(CompatibilityFinding::selectedVersion)
-        .isEqualTo("4" + ".8.6.6");
+        .isEqualTo("1.17.4");
   }
 
   @Test
@@ -81,11 +81,11 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_21, Optional.of(MAVEN), Optional.of(JAVA_8), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(SPOTBUGS));
+            List.of(PITEST));
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
-        .containsExactly("4" + ".9.7.0");
+        .containsExactly("1.30.1");
   }
 
   @Test
@@ -94,11 +94,11 @@ class CompatibilityResolverJdkTest {
         RESOLVER.resolve(
             snapshot(JAVA_27, Optional.of(MAVEN), Optional.empty(), Map.of()),
             ManagedPluginCatalog.entries(),
-            List.of(SPOTBUGS));
+            List.of(PITEST));
 
     assertThat(plan.findings())
         .extracting(CompatibilityFinding::selectedVersion)
-        .containsExactly("4" + ".9.7.0");
+        .containsExactly("1.30.1");
   }
 
   @Test

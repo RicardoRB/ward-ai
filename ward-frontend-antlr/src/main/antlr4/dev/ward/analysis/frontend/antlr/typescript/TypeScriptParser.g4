@@ -656,8 +656,8 @@ classElement
     ;
 
 propertyMemberDeclaration
-    : propertyMemberBase propertyName '?'? typeAnnotation? initializer? SemiColon        # PropertyDeclarationExpression
-    | propertyMemberBase propertyName callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
+    : propertyMemberBase (propertyName | privateIdentifier) '?'? typeAnnotation? initializer? SemiColon # PropertyDeclarationExpression
+    | propertyMemberBase (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
     | propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
     | abstractDeclaration                                                                # AbstractMemberDeclaration
     ;
@@ -839,6 +839,7 @@ singleExpression
     | generatorFunctionDeclaration                                    # GeneratorsFunctionExpression // ECMAScript 6
     | yieldStatement                                                  # YieldExpression              // ECMAScript 6
     | This                                                            # ThisExpression
+    | privateIdentifier                                               # PrivateNameExpression
     | importMetaExpression                                            # ImportMeta
     | identifierName                                                  # IdentifierExpression
     | Super                                                           # SuperExpression

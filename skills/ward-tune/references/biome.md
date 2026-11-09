@@ -2,7 +2,7 @@
 
 The `biome` gate runs `biome ci --colors=off --reporter=checkstyle .` (with
 `--error-on-warnings` under strict). It checks lint and format together, and Ward reads its
-findings from the checkstyle report. Its rules live in one file:
+findings from the XML report. Its rules live in one file:
 
 - Ward's own `biome.jsonc`, when the project had no Biome config at init. Its first line is
   `// managed-by: ward preset=<id>`.

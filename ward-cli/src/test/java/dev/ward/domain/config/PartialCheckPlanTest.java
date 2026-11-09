@@ -41,7 +41,7 @@ class PartialCheckPlanTest {
                         PartialPlans.INCLUDES,
                         "**/{name}",
                         ",")),
-                "config/checkstyle.xml"))
+                "config/lint.xml"))
         .isEqualTo(PartialPlans.full());
   }
 
@@ -57,7 +57,7 @@ class PartialCheckPlanTest {
                         "**/{name}",
                         ",")),
                 PartialPlans.ORDER,
-                "config/checkstyle.xml"))
+                "config/lint.xml"))
         .isEqualTo(PartialPlans.full());
   }
 
@@ -73,7 +73,7 @@ class PartialCheckPlanTest {
                         "**/{name}",
                         ",")),
                 PartialPlans.ORDER))
-        .isEqualTo(PartialPlans.narrowed("-Dcheckstyle.includes=**/Order.java"));
+        .isEqualTo(PartialPlans.narrowed("-Dlint.includes=**/Order.java"));
   }
 
   @Test

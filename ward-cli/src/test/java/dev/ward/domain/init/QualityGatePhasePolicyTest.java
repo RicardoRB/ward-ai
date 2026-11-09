@@ -11,9 +11,9 @@ class QualityGatePhasePolicyTest {
     assertThat(QualityGatePhasePolicy.profilesFor("ward-format"))
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("compile")).containsExactly("pre-push", "ci");
-    assertThat(QualityGatePhasePolicy.profilesFor("checkstyle"))
+    assertThat(QualityGatePhasePolicy.profilesFor("biome"))
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
-    assertThat(QualityGatePhasePolicy.profilesFor("pmd"))
+    assertThat(QualityGatePhasePolicy.profilesFor("eslint"))
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
     assertThat(QualityGatePhasePolicy.profilesFor("gitleaks"))
         .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
@@ -21,7 +21,7 @@ class QualityGatePhasePolicyTest {
 
   @Test
   void assignsSlowerLocalGatesToPushAndCi() {
-    for (final String gate : List.of("tests", "coverage", "spotbugs", "enforcer", "license")) {
+    for (final String gate : List.of("tests", "coverage", "mypy", "enforcer", "license")) {
       assertThat(QualityGatePhasePolicy.profilesFor(gate)).containsExactly("pre-push", "ci");
     }
   }

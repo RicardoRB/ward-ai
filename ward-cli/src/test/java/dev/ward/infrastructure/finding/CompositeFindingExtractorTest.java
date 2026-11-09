@@ -2,8 +2,7 @@ package dev.ward.infrastructure.finding;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.infrastructure.finding.jvm.CheckstyleXmlFindings;
-import dev.ward.infrastructure.finding.jvm.PmdXmlFindings;
+import dev.ward.infrastructure.finding.jvm.JavacOutputFindings;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -13,31 +12,14 @@ class CompositeFindingExtractorTest {
   @TempDir Path root;
 
   @Test
-  void routesByGateIdAndIgnoresUnsupportedGates() {
-    FindingFixtures.write(
-        root.resolve("target/pmd.xml"),
-        "<pmd><file name=\"A.java\"><violation beginline=\"1\" rule=\"R\" priority=\"1\">m"
-            + "</violation></file></pmd>");
+  void ignoresGatesWithoutASourceThatReadsThem() {
     final CompositeFindingExtractor extractor =
-        new CompositeFindingExtractor(List.of(new CheckstyleXmlFindings(), new PmdXmlFindings()));
+        new CompositeFindingExtractor(List.of(new JavacOutputFindings()));
 
     assertThat(
             extractor.extract(
                 FindingFixtures.maven(root),
-                FindingFixtures.failed("pmd", ""),
-                FindingFixtures.justBefore()))
-        .singleElement()
-        .satisfies(finding -> assertThat(finding.gateId()).isEqualTo("pmd"));
-    assertThat(
-            extractor.extract(
-                FindingFixtures.maven(root),
                 FindingFixtures.failed("tests", ""),
-                FindingFixtures.justBefore()))
-        .isEmpty();
-    assertThat(
-            extractor.extract(
-                FindingFixtures.maven(root),
-                FindingFixtures.failed("checkstyle", ""),
                 FindingFixtures.justBefore()))
         .isEmpty();
   }

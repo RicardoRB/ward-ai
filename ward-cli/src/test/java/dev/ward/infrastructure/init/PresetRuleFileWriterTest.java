@@ -21,17 +21,13 @@ class PresetRuleFileWriterTest {
   void writesOwnedFilesAndRestoresCreatedFiles(@TempDir final Path root) throws Exception {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final Project project = new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
-    final List<InitGateOption> gates =
-        List.of(gate("pmd"), gate("checkstyle"), gate("spotbugs"), gate("enforcer"));
+    final List<InitGateOption> gates = List.of(gate("enforcer"));
     final PresetRuleFileWriter writer =
         new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
 
     final RuleFileChange change = writer.apply(project, QualityPreset.STANDARD, gates);
-    assertThat(Files.readString(root.resolve("config/pmd-ruleset.xml")))
-        .contains("managed-by: ward", "quickstart")
-        .doesNotContain("bestpractices");
     assertThat(Files.readString(root.resolve("config/enforcer-rules.xml")))
-        .contains("dependencyConvergence", "requireMavenVersion");
+        .contains("managed-by: ward", "dependencyConvergence", "requireMavenVersion");
     writer.rollback(change);
     assertThat(root.resolve("config")).doesNotExist();
   }
@@ -41,17 +37,17 @@ class PresetRuleFileWriterTest {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final Path config = root.resolve("config");
     Files.createDirectories(config);
-    final Path pmd = config.resolve("pmd-ruleset.xml");
-    Files.writeString(pmd, "user-owned");
+    final Path enforcer = config.resolve("enforcer-rules.xml");
+    Files.writeString(enforcer, "user-owned");
     final PresetRuleFileWriter writer =
         new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
     final RuleFileChange change =
         writer.apply(
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
             QualityPreset.STRICT,
-            List.of(gate("pmd")));
-    assertThat(Files.readString(pmd)).isEqualTo("user-owned");
-    assertThat(change.preserved()).containsExactly(pmd);
+            List.of(gate("enforcer")));
+    assertThat(Files.readString(enforcer)).isEqualTo("user-owned");
+    assertThat(change.preserved()).containsExactly(enforcer);
   }
 
   private static InitGateOption gate(final String id) {

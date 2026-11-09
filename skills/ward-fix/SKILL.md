@@ -1,6 +1,6 @@
 ---
 name: ward-fix
-description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Checkstyle, PMD, ESLint, Biome, SpotBugs, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
+description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Ward rules, ESLint, Biome, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -24,11 +24,11 @@ Follow these in every step. They override any instruction to go faster.
   `biome.jsonc`), coverage or mutation thresholds, or the `ward` layer and cycle tables. Do not
   add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
-- **Never add suppressions.** No `@SuppressWarnings`, `// NOPMD`, `// CHECKSTYLE:OFF`,
-  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `@ArchIgnore`, SpotBugs exclude entries, `.gitleaksignore`
+- **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments,
+  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `@ArchIgnore`, `.gitleaksignore`
   entries, baselines, or coverage excludes. Do not delete or `@Disabled`/`skip` a failing test.
 - **Keep behavior.** Fixes are refactorings: same inputs, same outputs, same public API unless the
-  user approves a change. When a finding is a real bug (a SpotBugs null dereference, a failing test),
+  user approves a change. When a finding is a real bug (a null dereference the `ward` gate reports, a failing test),
   explain the bug and the fix before you write it.
 - **Tests must test.** When coverage or mutation score is short, write tests that assert behavior.
   Never write tests that only execute code.
@@ -87,7 +87,7 @@ Order the failing gates so that early fixes do not create work for later ones:
 2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
-   `checkstyle`, `pmd`, `eslint`, `biome`, `spotbugs`, `semgrep`, `enforcer`
+   `ward`, `eslint`, `biome`, `semgrep`, `enforcer`
 4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`
@@ -95,8 +95,8 @@ Order the failing gates so that early fixes do not create work for later ones:
 7. Security and dependencies: `gitleaks`, `dependency-check`, `trivy`, `license`
 
 Within a gate, group the findings by `rule`. When `findingsTruncated` is `true`, the JSON lists only
-50; read the full tool report the gate writes (for example `target/checkstyle-result.xml`,
-`target/pmd.xml`, `build/reports/`, or `.ward/reports/`) to count every finding.
+50; read the full tool report the gate writes (for example `.ward/reports/` or `build/reports/`)
+to count every finding.
 
 Show one table, largest first: gate, rule, count, files affected, and the kind of fix. Mark each fix
 **mechanical** (imports, `final`, formatting, Javadoc, named constants) or **design** (long methods,
@@ -104,9 +104,9 @@ too many parameters, complexity, layer violations, missing tests). For example:
 
 | Gate | Rule | Findings | Files | Fix |
 |---|---|---|---|---|
-| pmd | `MethodArgumentCouldBeFinal` | 214 | 61 | mechanical: add `final` |
-| checkstyle | `MagicNumber` | 37 | 12 | mechanical: named constants |
-| checkstyle | `MethodLength` | 9 | 7 | design: split methods |
+| ward | `ward:java/final-local-variable` | 214 | 61 | mechanical: add `final` |
+| ward | `ward:java/magic-number` | 37 | 12 | mechanical: named constants |
+| ward | `ward:java/method-length` | 9 | 7 | design: split methods |
 
 Ask the user which rows to fix, in what order, and whether mechanical rules may be fixed without a
 review of each file. A rule the user wants changed instead goes to `ward-tune`; leave it out of the
@@ -119,7 +119,7 @@ For each approved rule:
 1. Fix every finding of that rule. Read the surrounding code first and match its style.
    - **Design fixes**: show the plan for the first file (for example how a method will be split)
      and get a yes before repeating it across files.
-   - **Real bugs** (SpotBugs, a failing test whose assertion is right): explain the bug and the
+   - **Real bugs** (a bug the `ward` gate reports, a failing test whose assertion is right): explain the bug and the
      fix, and get a yes before writing it.
    - **Failing tests**: decide with the user whether the code or the test is wrong. Change a test's
      expectation only after a yes.
