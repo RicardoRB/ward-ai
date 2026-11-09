@@ -2,11 +2,8 @@ package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.Framework;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.NodeToolConfigs;
-import dev.ward.domain.project.node.PackageManifest;
 import dev.ward.infrastructure.init.ConfigFiles;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.ConfigTarget.Disposition;
@@ -17,15 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The tool configs init writes in a Node project root: the ESLint and Biome configs, the test
- * runner's coverage thresholds and Stryker's config. A project's own config is reused instead, or
- * under strict, layered.
+ * The tool configs init writes in a Node project root: the test runner's coverage thresholds and
+ * Stryker's config. A project's own config is reused instead.
  */
 final class NodeConfigFiles {
   static final String BUNFIG = "bunfig.toml";
   static final String STRYKER = "stryker";
-  static final String ESLINT = "eslint";
-  static final String BIOME = "biome";
   private static final String VITEST = "vitest";
   private static final String JEST = "jest";
   private static final String BUN_TEST = "bun-test";
@@ -36,7 +30,6 @@ final class NodeConfigFiles {
   /** Returns each config file the gates need, in the order init writes them. */
   static List<ConfigTarget> targets(
       final Project project,
-      final PackageManifest manifest,
       final NodeToolConfigs configs,
       final QualityPreset preset,
       final List<InitGateOption> gates)
@@ -44,10 +37,6 @@ final class NodeConfigFiles {
     final Path root = project.root();
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final List<ConfigTarget> targets = new ArrayList<>();
-    if (ids.contains(ESLINT)) {
-      targets.addAll(
-          NodeLintConfigTargets.eslint(project, manifest, configs, preset, ids.contains(JEST)));
-    }
     if (ids.contains(VITEST)) {
       target(
           targets,
@@ -82,9 +71,6 @@ final class NodeConfigFiles {
           ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
               + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()));
     }
-    if (ids.contains(BIOME)) {
-      targets.addAll(NodeLintConfigTargets.biome(project, configs, preset));
-    }
     return targets;
   }
 
@@ -103,25 +89,6 @@ final class NodeConfigFiles {
     } else if (!userConfig.get().equals(root.resolve(PACKAGE_JSON))) {
       targets.add(new ConfigTarget(userConfig.get(), Disposition.KEEP, null, null));
     }
-  }
-
-  /** Returns Ward's flat ESLint config for {@code language}, without its marker. */
-  public static String eslintConfig(
-      final Language language,
-      final PackageManifest manifest,
-      final QualityPreset preset,
-      final boolean jest,
-      final Framework framework) {
-    if (language == Language.JAVASCRIPT) {
-      return NodeConfigTemplates.javascriptEslint(manifest.module(), jest);
-    }
-    final String typescript =
-        preset == QualityPreset.STRICT
-            ? NodeConfigTemplates.STRICT_TYPESCRIPT_ESLINT
-            : NodeConfigTemplates.TYPESCRIPT_ESLINT;
-    return NodeConfigTemplates.withGeneratedIgnores(
-        framework == Framework.ANGULAR ? NodeAngularEslintTemplate.apply(typescript) : typescript,
-        framework);
   }
 
   private static String testGate(final List<String> ids) {

@@ -5,6 +5,7 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -67,44 +68,48 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
         settings);
   }
 
+  /**
+   * The security gates. Semgrep's JavaScript and TypeScript packs are not offered, since Ward's
+   * rules for those languages replace them.
+   */
   private List<InitGateOption> securityGates() {
-    final String ruleset =
-        switch (project.language()) {
-          case TYPESCRIPT -> "p/typescript";
-          case JAVASCRIPT -> "p/javascript";
-          default -> "p/java";
-        };
-    return List.of(
-        option(
-            "semgrep",
-            "Runs SAST and custom security rules with Semgrep.",
-            List.of("semgrep", "scan", "--config", ruleset, "--error"),
-            "Install Semgrep (needs network access to fetch the " + ruleset + " ruleset)."),
-        option(
-            "gitleaks",
-            "Detects committed secrets with Gitleaks.",
-            List.of(
+    final List<InitGateOption> gates = new ArrayList<>();
+    if (project.language() != Language.TYPESCRIPT && project.language() != Language.JAVASCRIPT) {
+      gates.add(
+          option(
+              "semgrep",
+              "Runs SAST and custom security rules with Semgrep.",
+              List.of("semgrep", "scan", "--config", "p/java", "--error"),
+              "Install Semgrep (needs network access to fetch the p/java ruleset)."));
+    }
+    gates.addAll(
+        List.of(
+            option(
                 "gitleaks",
-                "detect",
-                "--no-banner",
-                "--redact",
-                "--report-format",
-                "sarif",
-                "--report-path",
-                ToolReports.gitleaksSarif(project)),
-            "Install Gitleaks."),
-        option(
-            "zap",
-            "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
-            List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
-            "Install ZAP and replace "
-                + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                + " with a target you are authorized to scan before running."),
-        option(
-            "trivy",
-            "Scans dependencies, containers, and IaC with Trivy.",
-            List.of("trivy", "fs", "--exit-code", "1", "."),
-            "Install Trivy."));
+                "Detects committed secrets with Gitleaks.",
+                List.of(
+                    "gitleaks",
+                    "detect",
+                    "--no-banner",
+                    "--redact",
+                    "--report-format",
+                    "sarif",
+                    "--report-path",
+                    ToolReports.gitleaksSarif(project)),
+                "Install Gitleaks."),
+            option(
+                "zap",
+                "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
+                List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
+                "Install ZAP and replace "
+                    + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
+                    + " with a target you are authorized to scan before running."),
+            option(
+                "trivy",
+                "Scans dependencies, containers, and IaC with Trivy.",
+                List.of("trivy", "fs", "--exit-code", "1", "."),
+                "Install Trivy.")));
+    return List.copyOf(gates);
   }
 
   private InitGateOption option(

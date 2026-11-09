@@ -6,6 +6,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
@@ -101,8 +102,26 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
         ConfigTarget.write(
             project.root().resolve(WARD_RULES),
             ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
-                + PresetRuleFileContent.wardRules(preset)));
+                + PresetRuleFileContent.wardRules(preset, wardLanguages(project))));
     return targets;
+  }
+
+  /**
+   * The languages whose Ward rules the {@code ward} gate applies: a Node project's TypeScript and
+   * JavaScript, which replace ESLint and Biome; other projects keep Java's rules.
+   */
+  private static List<String> wardLanguages(final Project project) {
+    if (project.toolchain() != Toolchain.NODE) {
+      return List.of("java");
+    }
+    final List<String> languages = new ArrayList<>();
+    if (project.languages().contains(Language.TYPESCRIPT)) {
+      languages.add("typescript");
+    }
+    if (project.languages().contains(Language.JAVASCRIPT)) {
+      languages.add("javascript");
+    }
+    return List.copyOf(languages);
   }
 
   private static Map<Path, String> jvmTargets(

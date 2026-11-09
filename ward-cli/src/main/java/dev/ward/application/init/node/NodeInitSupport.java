@@ -5,9 +5,7 @@ import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.MemberPlanning;
 import dev.ward.application.init.MemberWriter;
-import dev.ward.application.init.PartialCheckDefaults.Table;
 import dev.ward.application.init.ToolchainInitSupport;
-import dev.ward.application.init.node.turbo.TurboPartialDefaults;
 import dev.ward.application.init.node.turbo.TurborepoMembers;
 import dev.ward.application.init.node.turbo.TurborepoPlan;
 import dev.ward.domain.agent.PlannedFileChange;
@@ -18,7 +16,6 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
@@ -45,47 +42,25 @@ public final class NodeInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public Set<String> partialGates() {
-    return NodePartialTables.GATES;
-  }
-
-  /** A Turborepo root runs its lint gates through turbo; other projects use their own tables. */
-  @Override
-  public Optional<Table> partialTable(
-      final String gate,
-      final Project project,
-      final QualityPreset preset,
-      final List<String> command) {
-    return TurboPartialDefaults.forGate(gate, project)
-        .or(() -> NodePartialTables.forGate(gate, project, preset));
-  }
-
-  @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
     if (project.taskRunner().isRootRunner()) {
       return NodeGates.turborepo(project, preset, inputs);
     }
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, preset);
-    NodeGates.refuseBiomeForAngular(project, tools);
     return new Gates(
-        NodeGates.languages(project, tools.testGate(), tools.linting()).analysisGates(tools),
-        List.of());
+        NodeGates.languages(project, tools.testGate()).analysisGates(tools), List.of());
   }
 
   @Override
   public List<String> presetGates(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
     if (project.taskRunner().isRootRunner()) {
-      final NodeLinting linting =
-          NodeLinting.of(project, inputs.manifests().read(project.root()), inputs.configs());
-      return NodeGates.languages(project, TurborepoPlan.testGate(project, inputs), linting)
+      return NodeGates.languages(project, TurborepoPlan.testGate(project, inputs))
           .presetGates(preset);
     }
     final PackageManifest manifest = inputs.manifests().read(project.root());
-    final String testGate = NodeTools.testGate(project, manifest);
-    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
-    return NodeGates.languages(project, testGate, linting).presetGates(preset);
+    return NodeGates.languages(project, NodeTools.testGate(project, manifest)).presetGates(preset);
   }
 
   /** A JavaScript package without sources of its own, such as a monorepo root, is no project. */

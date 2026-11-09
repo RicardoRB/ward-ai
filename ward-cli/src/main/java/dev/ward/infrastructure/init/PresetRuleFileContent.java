@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /** The body of each preset rule file, in the format its tool loads. */
 final class PresetRuleFileContent {
@@ -24,11 +25,6 @@ final class PresetRuleFileContent {
           "Translation",
           "UniqueProperties");
 
-  /** The options the strict preset has always set on Checkstyle's {@code HiddenField}. */
-  private static final String HIDDEN_FIELD =
-      "\n[rules.\"ward:java/hidden-field\"]\nignore-constructor-parameter = true\n"
-          + "ignore-setter = true\n";
-
   private PresetRuleFileContent() {}
 
   /**
@@ -36,12 +32,17 @@ final class PresetRuleFileContent {
    * whose external linters Ward has replaced. Other languages keep their own tools until their
    * migration lands, so selecting their Ward rules would report each finding twice.
    */
-  static String wardRules(final QualityPreset preset) {
+  static String wardRules(final QualityPreset preset, final List<String> languages) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
+    final String names =
+        languages.stream()
+            .map(language -> "\"" + language + "\"")
+            .collect(Collectors.joining(", "));
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
-        + "\"\nlanguages = [\"java\"]\n"
-        + (chosen == QualityPreset.STRICT ? HIDDEN_FIELD : "");
+        + "\"\nlanguages = ["
+        + names
+        + "]\n";
   }
 
   static String pmd(final QualityPreset preset) {

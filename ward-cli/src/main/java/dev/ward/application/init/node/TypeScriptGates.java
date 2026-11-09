@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TypeScript's gates on a Node package manager.
+ * TypeScript's gates on a Node package manager. Ward's TypeScript rules, selected in {@code
+ * ward-rules.toml}, replace ESLint and Biome's lint.
  *
  * @param framework the project's framework, whose checker replaces {@code tsc} as the type-check
  *     gate
  * @param testGate the project's test runner gate, which both presets enable
- * @param linting the project's lint and format tools
  */
-record TypeScriptGates(Framework framework, String testGate, NodeLinting linting)
+record TypeScriptGates(Framework framework, String testGate)
     implements SourceLanguageGates<NodeTools> {
   private static final String TSC = "tsc";
   private static final String VUE_TSC = "vue-tsc";
@@ -28,13 +28,6 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
     final List<InitGateOption> gates = new ArrayList<>();
     gates.add(typeCheck(node));
     gates.add(node.tests());
-    gates.addAll(
-        linting.gates(
-            node,
-            node.option(
-                "eslint",
-                "Lints sources with ESLint and typescript-eslint's recommended rules.",
-                node.command("eslint", ".", "--format", "json"))));
     if (!mutationUnavailable()) {
       gates.add(node.stryker());
     }
@@ -44,7 +37,6 @@ record TypeScriptGates(Framework framework, String testGate, NodeLinting linting
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     final List<String> gates = new ArrayList<>(List.of(typeCheckId(), testGate));
-    gates.addAll(linting.presetIds());
     if (preset == QualityPreset.STRICT && !mutationUnavailable()) {
       gates.add("stryker");
     }

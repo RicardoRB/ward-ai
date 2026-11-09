@@ -32,8 +32,7 @@ final class NodeManifestFiles {
   /** Returns the packages {@code project} needs for {@code gates}; a Turborepo root adds turbo. */
   static List<NodePackageCatalog.Package> missing(
       final Project project, final List<InitGateOption> gates, final PackageManifest manifest) {
-    return NodePackageCatalog.missing(
-        project.language(), gates, manifest, project.taskRunner().packageName());
+    return NodePackageCatalog.missing(gates, manifest, project.taskRunner().packageName());
   }
 
   static Map<String, String> versions(final List<NodePackageCatalog.Package> packages) {

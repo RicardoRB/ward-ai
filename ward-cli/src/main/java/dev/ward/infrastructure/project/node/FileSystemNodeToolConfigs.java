@@ -31,10 +31,6 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
   private static final List<String> WARD_MARKERS =
       List.of("// managed-by: ward", "# managed-by: ward");
 
-  // The base file a layer renames the project's own config to; Ward's layer imports or extends it.
-  private static final Map<String, String> BASE_GLOBS =
-      Map.of("eslint", "eslint.base.*", "biome", "biome.base.{json,jsonc}");
-
   // Vitest prefers vitest.config over vite.config, so a Ward vitest.config would hide the user's.
   private static final Map<String, String> GLOBS =
       Map.of(
@@ -43,11 +39,7 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
           JEST,
           "jest.config.*",
           "stryker",
-          "{stryker,.stryker}.{conf,config}.*",
-          "eslint",
-          "{eslint.config.*,.eslintrc*}",
-          "biome",
-          "{biome,.biome}.{json,jsonc}");
+          "{stryker,.stryker}.{conf,config}.*");
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -61,7 +53,7 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
     if (glob == null) {
       return Optional.empty();
     }
-    final Optional<Path> file = firstFile(root, glob, false);
+    final Optional<Path> file = firstFile(root, glob);
     if (file.isEmpty() && JEST.equals(gate) && jestInManifest(root)) {
       return Optional.of(root.resolve(PACKAGE_JSON));
     }
@@ -87,23 +79,8 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
     }
   }
 
-  @Override
-  public Optional<Path> wardConfig(final Path root, final String gate) {
-    final String glob = GLOBS.get(gate);
-    return glob == null ? Optional.empty() : firstFile(root, glob, true);
-  }
-
-  @Override
-  public Optional<Path> baseConfig(final Path root, final String gate) {
-    final String glob = BASE_GLOBS.get(gate);
-    return glob == null ? Optional.empty() : firstFile(root, glob, false);
-  }
-
-  /**
-   * Returns the first file in {@code root} matching {@code glob} whose Ward ownership is {@code
-   * owned}.
-   */
-  private static Optional<Path> firstFile(final Path root, final String glob, final boolean owned) {
+  /** Returns the first file in {@code root} matching {@code glob} that Ward did not write. */
+  private static Optional<Path> firstFile(final Path root, final String glob) {
     if (!Files.isDirectory(root)) {
       return Optional.empty();
     }
@@ -112,7 +89,7 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
       files.forEach(matches::add);
       matches.sort(null);
       for (final Path file : matches) {
-        if (Files.isRegularFile(file) && wardOwned(Files.readString(file)) == owned) {
+        if (Files.isRegularFile(file) && !wardOwned(Files.readString(file))) {
           return Optional.of(file);
         }
       }
