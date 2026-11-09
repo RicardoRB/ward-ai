@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +29,10 @@ final class PythonTopLevelDefinitions {
 
   private PythonTopLevelDefinitions() {}
 
-  /** The undecorated top-level functions and classes of the module {@code tree}. */
+  /**
+   * The undecorated top-level functions and classes of the module {@code tree}, then the methods,
+   * properties and attributes of its top-level classes.
+   */
   static List<Symbol> declared(final SyntaxNode tree) {
     final List<Symbol> symbols = new ArrayList<>();
     for (final SyntaxNode statement : PythonExports.topLevelStatements(tree)) {
@@ -41,6 +45,7 @@ final class PythonTopLevelDefinitions {
                     symbols.add(new Symbol(PythonSyntax.dottedName(name), statement.span(), kind)));
       }
     }
+    symbols.addAll(PythonMemberDefinitions.declared(tree));
     return symbols;
   }
 
@@ -71,7 +76,18 @@ final class PythonTopLevelDefinitions {
       final String text = PythonSyntax.text(node);
       if (IDENTIFIER.matcher(text).matches()) {
         names.add(text);
+      } else if (PythonFStrings.isFString(text)) {
+        // Every word counts, attribute names included, so {self.port} uses the attribute port.
+        final Matcher matcher = IDENTIFIER.matcher(text);
+        while (matcher.find()) {
+          names.add(matcher.group());
+        }
       }
+      return;
+    }
+    if (PythonMemberDefinitions.selfStoreName(node).isPresent()) {
+      // The stored attribute is a definition, so only the value and any other target are uses.
+      node.children().subList(1, node.children().size()).forEach(child -> collect(child, names));
       return;
     }
     boolean skipped = !FUNCDEF.equals(node.kind()) && !CLASSDEF.equals(node.kind());
