@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-/** Ward writes Ruff, mypy and coverage configs only where the project has none of its own. */
+/** Ward writes mypy and coverage configs only where the project has none of its own. */
 class PythonConfigFilesTest {
   private static final Path ROOT = Path.of("/shop");
 
@@ -26,13 +26,12 @@ class PythonConfigFilesTest {
             project(),
             (root, tool) -> Optional.empty(),
             QualityPreset.STANDARD,
-            gates("ruff-format", "ruff", "mypy", "coverage"));
+            gates("mypy", "coverage"));
 
     assertThat(targets)
         .extracting(ConfigTarget::file)
-        .containsExactly(
-            ROOT.resolve("ruff.toml"), ROOT.resolve("mypy.ini"), ROOT.resolve(".coveragerc"));
-    assertThat(targets.get(2).content())
+        .containsExactly(ROOT.resolve("mypy.ini"), ROOT.resolve(".coveragerc"));
+    assertThat(targets.get(1).content())
         .startsWith("# managed-by: ward preset=standard\n")
         .contains("fail_under = 80");
   }
@@ -42,18 +41,16 @@ class PythonConfigFilesTest {
     final PythonToolConfigs configs =
         (root, tool) ->
             switch (tool) {
-              case "ruff" -> Optional.of(ROOT.resolve("ruff.toml"));
+              case "mypy" -> Optional.of(ROOT.resolve("mypy.ini"));
               case "coverage" -> Optional.of(ROOT.resolve("pyproject.toml"));
               default -> Optional.empty();
             };
 
     final List<ConfigTarget> targets =
         PythonConfigFiles.targets(
-            project(), configs, QualityPreset.STANDARD, gates("ruff", "mypy", "coverage"));
+            project(), configs, QualityPreset.STANDARD, gates("mypy", "coverage"));
 
-    assertThat(targets)
-        .extracting(ConfigTarget::file)
-        .containsExactly(ROOT.resolve("ruff.toml"), ROOT.resolve("mypy.ini"));
+    assertThat(targets).extracting(ConfigTarget::file).containsExactly(ROOT.resolve("mypy.ini"));
     assertThat(targets.getFirst().disposition()).isEqualTo(ConfigTarget.Disposition.KEEP);
   }
 

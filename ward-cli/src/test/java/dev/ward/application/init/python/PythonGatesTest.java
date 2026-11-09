@@ -21,9 +21,6 @@ class PythonGatesTest {
   void uvRunsEveryToolThroughTheWardGroup() {
     final List<InitGateOption> gates = gates(BuildTool.UV, QualityPreset.STANDARD, false);
 
-    assertThat(command(gates, "ruff"))
-        .containsExactly(
-            "uv", RUN, "--group", "ward", "ruff", "check", ".", "--output-format", "json");
     assertThat(command(gates, MYPY))
         .containsExactly("uv", RUN, "--group", "ward", MYPY, ".", "-O", "json");
     assertThat(command(gates, "pytest"))
@@ -52,11 +49,11 @@ class PythonGatesTest {
   }
 
   @Test
-  void standardPresetSelectsFourGatesAndKeepsAuditAndMutationOptIn() {
+  void standardPresetSelectsThreeGatesAndKeepsAuditAndMutationOptIn() {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STANDARD))
-        .containsExactly("ruff", "mypy", "pytest", "coverage");
+        .containsExactly("mypy", "pytest", "coverage");
     assertThat(gates(BuildTool.UV, QualityPreset.STANDARD, false).stream().map(InitGateOption::id))
         .contains("pip-audit", "mutmut");
   }
@@ -66,7 +63,7 @@ class PythonGatesTest {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STRICT))
-        .containsExactly("ruff", "mypy", "pytest", "coverage", "mutmut");
+        .containsExactly("mypy", "pytest", "coverage", "mutmut");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STRICT, false), "mutmut", "minimum"))
         .isEqualTo("60");
     assertThat(setting(gates(BuildTool.UV, QualityPreset.STANDARD, false), "mutmut", "minimum"))
@@ -78,14 +75,10 @@ class PythonGatesTest {
     final List<InitGateOption> owned = gates(BuildTool.UV, QualityPreset.STRICT, true);
     final List<InitGateOption> ward = gates(BuildTool.UV, QualityPreset.STRICT, false);
 
-    assertThat(command(owned, "ruff"))
-        .containsSequence(
-            "--extend-select", "W,C4,SIM,RUF,PTH,C90", "--config", "lint.mccabe.max-complexity=10");
     assertThat(command(owned, MYPY)).contains("--strict");
     assertThat(command(owned, "pytest"))
         .containsSequence(COVERAGE, "run", "--branch", "-m", "pytest", "--ignore=mutants");
     assertThat(command(owned, COVERAGE)).endsWith("--fail-under=85");
-    assertThat(command(ward, "ruff")).doesNotContain("--extend-select");
     assertThat(command(ward, MYPY)).doesNotContain("--strict");
     assertThat(command(ward, COVERAGE)).doesNotContain("--fail-under=85");
   }
@@ -94,8 +87,7 @@ class PythonGatesTest {
       final BuildTool manager, final QualityPreset preset, final boolean owned) {
     return new PythonGates()
         .analysisGates(
-            new PythonTools(
-                manager, true, preset, Framework.NONE, owned, owned, owned, Optional.empty()));
+            new PythonTools(manager, true, preset, Framework.NONE, owned, owned, Optional.empty()));
   }
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {

@@ -18,24 +18,19 @@ class PythonPackageCatalogTest {
 
   @Test
   void declaredToolsAreNotAddedAgain() {
-    assertThat(PythonPackageCatalog.missing(gates("ruff", "mypy"), Set.of("ruff")))
+    assertThat(PythonPackageCatalog.missing(gates("mypy", "coverage"), Set.of("mypy")))
         .extracting(PythonPackageCatalog.Package::requirement)
-        .containsExactly("mypy==2.4.0");
+        .containsExactly("coverage==7.16.2");
   }
 
   @Test
   void everyStandardGateHasAnExactPin() {
-    final List<InitGateOption> gates =
-        gates("ruff-format", "ruff", "mypy", "pytest", "coverage", "pip-audit");
+    final List<InitGateOption> gates = gates("mypy", "pytest", "coverage", "pip-audit");
 
     assertThat(PythonPackageCatalog.missing(gates, Set.of()))
         .extracting(PythonPackageCatalog.Package::requirement)
         .containsExactlyInAnyOrder(
-            "ruff==0.17.1",
-            "mypy==2.4.0",
-            "pytest==9.1.1",
-            "coverage==7.16.2",
-            "pip-audit==2.10.1");
+            "mypy==2.4.0", "pytest==9.1.1", "coverage==7.16.2", "pip-audit==2.10.1");
   }
 
   private static List<InitGateOption> gates(final String... ids) {

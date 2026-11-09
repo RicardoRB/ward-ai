@@ -19,8 +19,6 @@ import java.util.Optional;
  * @param available whether the manager's executable is on the path
  * @param preset the selected preset, or {@code null} for a custom selection
  * @param framework the project's framework; Django adds its system checks
- * @param ownRuffConfig whether the project keeps its own Ruff config; init then passes the strict
- *     rules on the command instead of writing them
  * @param ownMypyConfig whether the project keeps its own mypy config
  * @param ownCoverageConfig whether the project keeps its own coverage config
  * @param pytestSettings the Django settings module that pytest gets as {@code --ds} when the
@@ -31,7 +29,6 @@ public record PythonTools(
     boolean available,
     QualityPreset preset,
     Framework framework,
-    boolean ownRuffConfig,
     boolean ownMypyConfig,
     boolean ownCoverageConfig,
     Optional<String> pytestSettings) {
@@ -40,8 +37,6 @@ public record PythonTools(
   private static final int STANDARD_COVERAGE = 80;
   private static final int STRICT_COVERAGE = 85;
   private static final int STRICT_MUTATION = 60;
-  private static final String STRICT_RUFF_RULES = "W,C4,SIM,RUF,PTH,C90";
-  private static final String STRICT_COMPLEXITY = "lint.mccabe.max-complexity=10";
 
   /** Resolves the tools of {@code project} from the executables on the path and its configs. */
   static PythonTools of(
@@ -54,7 +49,6 @@ public record PythonTools(
         executableAvailable,
         preset,
         project.framework(),
-        configs.userConfig(project.root(), "ruff").isPresent(),
         configs.userConfig(project.root(), "mypy").isPresent(),
         configs.userConfig(project.root(), "coverage").isPresent(),
         project.framework() == Framework.DJANGO
@@ -125,10 +119,5 @@ public record PythonTools(
   /** Returns the mutation score minimum that strict sets on the mutmut gate. */
   static String mutationMinimum() {
     return String.valueOf(STRICT_MUTATION);
-  }
-
-  /** Returns the Ruff rule sets strict adds on a project's own Ruff config. */
-  static List<String> ruffStrictFlags() {
-    return List.of("--extend-select", STRICT_RUFF_RULES, "--config", STRICT_COMPLEXITY);
   }
 }
