@@ -1,5 +1,6 @@
 package dev.ward.analysis.frontend.antlr.typescript;
 
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -39,6 +40,18 @@ public abstract class TypeScriptParserBase extends Parser {
     return _input.LT(1).getText().equals(str);
   }
 
+  /**
+   * Tells whether the lexer recognizes JSX here, so JSX alternatives may match. The lexer makes the
+   * same decision from the file extension, so the tokens and this predicate agree.
+   *
+   * @return {@code true} for a {@code .tsx} or {@code .jsx} unit
+   */
+  protected boolean isJsx() {
+    return _input instanceof BufferedTokenStream tokens
+        && tokens.getTokenSource() instanceof TypeScriptLexerBase lexer
+        && lexer.isJsx();
+  }
+
   protected boolean notLineTerminator() {
     return !lineTerminatorAhead();
   }
@@ -52,14 +65,16 @@ public abstract class TypeScriptParserBase extends Parser {
 
   /**
    * Whether the tokens after an {@code export} start an export clause, such as {@code { a }} or
-   * {@code type { a }}. Such a clause is an export statement, not an exported block.
+   * {@code type { a }}, or a default export such as {@code default function () {}}. Such a clause
+   * is an export statement, so the {@code export} is not a prefix of the statement that follows.
    */
   protected boolean notExportClauseAhead() {
     int offset = 2;
     if (_input.LT(offset).getType() == TypeScriptParser.TypeAlias) {
       offset++;
     }
-    return _input.LT(offset).getType() != TypeScriptParser.OpenBrace;
+    final int next = _input.LT(offset).getType();
+    return next != TypeScriptParser.OpenBrace && next != TypeScriptParser.Default;
   }
 
   protected boolean closeBrace() {
