@@ -7,10 +7,12 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.TypeFactsRun;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
+import dev.ward.analysis.domain.swift.SwiftFileSummarizer;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
@@ -68,13 +70,16 @@ final class RuleFixtureRunner {
   /** A fixture is one file, so a definition is used when the file itself uses it. */
   private List<AnalysisFinding> unusedDefinitions(
       final RuleDefinition rule, final SourceUnit unit) {
-    final FrontendSupport python =
+    final FrontendSupport support =
         frontends.stream()
-            .filter(support -> support.language() == unit.language())
+            .filter(candidate -> candidate.language() == unit.language())
             .findFirst()
             .orElseThrow();
+    final SyntaxNode tree = support.frontend().parse(unit).tree();
     final FileSummary summary =
-        new PythonFileSummarizer().summarize(unit, python.frontend().parse(unit).tree());
+        unit.language() == AnalysisLanguage.SWIFT
+            ? new SwiftFileSummarizer().summarize(unit, tree)
+            : new PythonFileSummarizer().summarize(unit, tree);
     return UnusedDefinitionFindings.findings(List.of(rule), Map.of(unit.path(), summary));
   }
 

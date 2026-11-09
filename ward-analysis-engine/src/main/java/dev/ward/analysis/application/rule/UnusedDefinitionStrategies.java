@@ -14,6 +14,7 @@ final class UnusedDefinitionStrategies {
   static Optional<UnusedDefinitionStrategy> forLanguage(final AnalysisLanguage language) {
     return switch (language) {
       case PYTHON -> Optional.of(new PythonUnusedDefinitions());
+      case SWIFT -> Optional.of(new SwiftUnusedDefinitions());
       default -> Optional.empty();
     };
   }

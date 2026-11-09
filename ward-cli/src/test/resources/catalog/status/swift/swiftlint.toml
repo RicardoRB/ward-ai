@@ -193,7 +193,7 @@ unowned-variable-capture = { status = "planned", issue = "#338" }
 untyped-error-in-catch = "implemented"
 unused-closure-parameter = "implemented"
 unused-control-flow-label = "implemented"
-unused-declaration = { status = "planned", issue = "#448" }
+unused-declaration = "implemented"
 unused-enumerated = "implemented"
 unused-optional-binding = "implemented"
 unused-setter-value = { status = "planned", issue = "#338" }
