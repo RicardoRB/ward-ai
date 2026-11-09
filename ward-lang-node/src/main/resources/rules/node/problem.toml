@@ -1265,3 +1265,135 @@ kinds = ["StringLiteral"]
 text = '\$\{[^}]+\}'
 message = "template placeholder in a regular string; use a template literal"
 '''
+
+# ESLint core rules of type "problem" (#326). Each rule reports what ESLint reports at its defaults.
+
+[[rules]]
+id = "ward:typescript/constructor-super"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-super"
+message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
+'''
+
+[[rules]]
+id = "ward:javascript/constructor-super"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-super"
+message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
+'''
+
+[[rules]]
+id = "ward:typescript/getter-return"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+body = '''
+check = "node-getter-return"
+allow-implicit = false
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:javascript/getter-return"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+body = '''
+check = "node-getter-return"
+allow-implicit = false
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:typescript/no-setter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-setter-return"
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-setter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-setter-return"
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-negation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-negation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''
+
+[[rules]]
+id = "ward:typescript/no-ex-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''
+
+[[rules]]
+id = "ward:javascript/no-ex-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''
