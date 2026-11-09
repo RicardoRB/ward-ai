@@ -6,30 +6,23 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.RuleFileReader;
-import dev.ward.analysis.application.rule.TypeFactsFixture;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.CompiledRule;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.rule.check.CheckedRule;
-import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -67,7 +60,10 @@ class NodeFixturesTest {
       for (final RuleDefinition rule : RuleFileReader.read(file)) {
         final String name = Toml.parse(rule.body()).getString(CHECK);
         final Path directory = FIXTURES.resolve(rule.id().substring("ward:".length()));
-        if (name != null && factories.containsKey(name) && Files.isDirectory(directory)) {
+        if (name != null
+            && factories.containsKey(name)
+            && Files.isDirectory(directory)
+            && !NodeProjectRules.isProjectRule(rule, factories)) {
           owned.add(new OwnedRule(rule, directory));
         }
       }
@@ -80,12 +76,28 @@ class NodeFixturesTest {
     assertThat(ownedRules()).isNotEmpty();
   }
 
+  /** Every rule whose check the provider has must have a fixture folder: no rule is skipped. */
+  @Test
+  void everyRuleOfTheProviderHasFixtures() {
+    final Map<String, CheckFactory> factories = new NodeCheckProvider().checks();
+    final List<String> missing = new ArrayList<>();
+    for (final String file : new NodeRuleFiles().ruleFiles()) {
+      for (final RuleDefinition rule : RuleFileReader.read(file)) {
+        final String name = Toml.parse(rule.body()).getString(CHECK);
+        final Path directory = FIXTURES.resolve(rule.id().substring("ward:".length()));
+        if (name != null && factories.containsKey(name) && !Files.isDirectory(directory)) {
+          missing.add(rule.id());
+        }
+      }
+    }
+    assertThat(missing).isEmpty();
+  }
+
   @ParameterizedTest(name = "{0}")
   @MethodSource("ownedRules")
   void violatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
       final OwnedRule owned) throws IOException {
     final String extension = extension(owned.rule());
-    final Optional<Path> typesJson = typesJson(owned.directory());
     for (final String caseName : cases(owned.directory())) {
       final String suffix = caseName.isEmpty() ? "" : "-" + caseName;
       final RuleDefinition rule = RuleOptions.apply(owned.rule(), options(owned, suffix));
@@ -93,13 +105,12 @@ class NodeFixturesTest {
           Files.readAllLines(owned.directory().resolve("expected" + suffix + ".txt")).stream()
               .filter(line -> !line.isBlank())
               .toList();
-      assertThat(
-              run(rule, owned.directory().resolve(VIOLATING + suffix + "." + extension), typesJson))
+      assertThat(run(rule, owned.directory().resolve(VIOLATING + suffix + "." + extension), owned))
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
       final Path passing = owned.directory().resolve(PASSING + suffix + "." + extension);
       if (Files.isRegularFile(passing)) {
-        assertThat(run(rule, passing, typesJson)).as("%s passing%s", owned, suffix).isEmpty();
+        assertThat(run(rule, passing, owned)).as("%s passing%s", owned, suffix).isEmpty();
       }
     }
   }
@@ -124,30 +135,6 @@ class NodeFixturesTest {
     return rule.languages().iterator().next() == AnalysisLanguage.TYPESCRIPT ? "ts" : "js";
   }
 
-  /** Gives every frontend the facts of the folder's types.json, when it has one. */
-  private static List<FrontendSupport> withTypes(
-      final List<FrontendSupport> frontends, final Optional<Path> typesJson) {
-    if (typesJson.isEmpty()) {
-      return frontends;
-    }
-    final UnitTypeFacts facts = TypeFactsFixture.read(typesJson.get());
-    final TypeFacts types = (unit, spans, kinds) -> facts;
-    return frontends.stream()
-        .map(
-            frontend -> {
-              final Set<RuleCapability> capabilities = new HashSet<>(frontend.capabilities());
-              capabilities.add(RuleCapability.TYPES);
-              return new FrontendSupport(
-                  frontend.language(),
-                  frontend.frontend(),
-                  capabilities,
-                  frontend.lowering(),
-                  frontend.scopes(),
-                  Optional.of(types));
-            })
-        .toList();
-  }
-
   private static Map<String, Object> options(final OwnedRule owned, final String suffix)
       throws IOException {
     final Path file = owned.directory().resolve("options" + suffix + ".toml");
@@ -162,14 +149,7 @@ class NodeFixturesTest {
     return values;
   }
 
-  /** The type facts a fixture folder gives its type-aware rules, from its types.json. */
-  private static Optional<Path> typesJson(final Path directory) {
-    final Path file = directory.resolve("types.json");
-    return Files.isRegularFile(file) ? Optional.of(file) : Optional.empty();
-  }
-
-  private static List<String> run(
-      final RuleDefinition rule, final Path file, final Optional<Path> typesJson)
+  private static List<String> run(final RuleDefinition rule, final Path file, final OwnedRule owned)
       throws IOException {
     final Map<String, CheckFactory> factories = new NodeCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
@@ -181,7 +161,7 @@ class NodeFixturesTest {
                 file.getFileName().toString(),
                 language,
                 Files.readString(file, StandardCharsets.UTF_8)));
-    final List<FrontendSupport> frontends = withTypes(NodeFixtureFrontends.create(), typesJson);
+    final List<FrontendSupport> frontends = NodeFixtureFrontends.forFolder(owned.directory());
     final RuleRunResult result = engine.run(units, frontends, List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();

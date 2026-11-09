@@ -79,6 +79,11 @@ final class NodeFlowSites implements FlowSites {
     } else if (isMember(parts)) {
       walk(parts.get(0), found);
       found.add(siteOf(FlowSiteKind.MEMBER_READ, node, parts, List.of()));
+    } else if (NodeStringBuilds.templateOf(node).isPresent()) {
+      NodeStringSites.template(
+          node, NodeStringBuilds.templateOf(node).get(), found, this::walk, this::children);
+    } else if (NodeStringBuilds.isChain(parts)) {
+      NodeStringSites.concatenation(node, found, this::walk, this::children);
     } else if (NodeCallShapes.isNew(parts)) {
       children(node, found);
       found.add(constructor(node, parts));
@@ -130,6 +135,13 @@ final class NodeFlowSites implements FlowSites {
   private void call(
       final SyntaxNode callee, final List<SyntaxNode> values, final List<FlowSite> found) {
     final List<SyntaxNode> calleeParts = NodeFlowSyntax.parts(callee);
+    final Optional<SyntaxNode> receiver = NodeStringBuilds.concatReceiver(calleeParts);
+    if (receiver.isPresent()) {
+      final List<SyntaxNode> operands = new ArrayList<>(List.of(receiver.get()));
+      operands.addAll(values);
+      NodeStringSites.stringBuild(callee.span(), operands, found, this::walk);
+      return;
+    }
     if (isMember(calleeParts)) {
       walk(calleeParts.get(0), found);
     }

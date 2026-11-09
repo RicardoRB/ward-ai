@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -88,5 +89,11 @@ public final class CheckedRule implements CompiledRule {
   @Override
   public List<ProjectMatch> project(final SortedMap<String, SyntaxNode> trees) {
     return check instanceof ProjectCheck project ? project.project(trees) : List.of();
+  }
+
+  @Override
+  public List<ProjectMatch> project(
+      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+    return check instanceof ProjectCheck project ? project.project(trees, files) : List.of();
   }
 }

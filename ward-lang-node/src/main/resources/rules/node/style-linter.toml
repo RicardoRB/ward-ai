@@ -114,20 +114,6 @@ message = "{value} is a useless rename"
 '''
 
 [[rules]]
-id = "ward:typescript/no-useless-constructor"
-language = "TYPESCRIPT"
-capability = "SYNTAX"
-severity = "ERROR"
-category = "linter"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["constructorDeclaration"]
-text = '^(?:\w+)?constructor\(\)\{\}$|^(?:\w+)?constructor\(\.\.\.(\w+)\)\{super\(\.\.\.\1\);?\}$'
-message = "useless constructor"
-'''
-
-[[rules]]
 id = "ward:typescript/no-else-return"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
@@ -154,3 +140,130 @@ check = "node-else-after-jump"
 allow-else-if = true
 message = "unnecessary 'else' after 'return'"
 '''
+
+[[rules]]
+id = "ward:typescript/prefer-const"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+options.destructuring = { type = "enum", values = ["any", "all"], parameter = "destructuring" }
+options.ignore-read-before-assign = { type = "boolean", parameter = "ignore-read-before-assign" }
+body = '''
+check = "node-prefer-const"
+destructuring = "any"
+ignore-read-before-assign = false
+message = "'{value}' is never reassigned. Use 'const' instead."
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-const"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+options.destructuring = { type = "enum", values = ["any", "all"], parameter = "destructuring" }
+options.ignore-read-before-assign = { type = "boolean", parameter = "ignore-read-before-assign" }
+body = '''
+check = "node-prefer-const"
+destructuring = "any"
+ignore-read-before-assign = false
+message = "'{value}' is never reassigned. Use 'const' instead."
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-template"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-concat"
+message = "unexpected string concatenation; use a template literal"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-arrow-callback"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+options.allow-named-functions = { type = "boolean" }
+options.allow-unbound-this = { type = "boolean" }
+body = '''
+check = "node-arrow-callback"
+allow-named-functions = false
+allow-unbound-this = true
+message = "unexpected function expression; use an arrow function"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-template"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-concat"
+message = "unexpected string concatenation; use a template literal"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-arrow-callback"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+options.allow-named-functions = { type = "boolean" }
+options.allow-unbound-this = { type = "boolean" }
+body = '''
+check = "node-arrow-callback"
+allow-named-functions = false
+allow-unbound-this = true
+message = "unexpected function expression; use an arrow function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-constructor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-useless-constructor"
+message = "useless constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-constructor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-useless-constructor"
+message = "useless constructor"
+'''
+[[rules]]
+id = "ward:typescript/dot-notation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+parent-path = "literal>singleExpression>expressionSequence>singleExpression"
+text = '^(.)[A-Za-z_$][A-Za-z0-9_$]*\1$'
+message = "[{value}] is better written in dot notation"
+'''
+

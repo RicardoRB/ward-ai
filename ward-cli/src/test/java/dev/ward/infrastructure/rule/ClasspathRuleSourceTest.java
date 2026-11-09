@@ -17,6 +17,8 @@ class ClasspathRuleSourceTest {
       List.of(
           "node-call-without-follow-up",
           "node-namespace-access",
+          "node-prefer-const",
+          "node-type-only-import",
           "node-unused-parameter",
           "node-variable-distance",
           "reassigned-binding",

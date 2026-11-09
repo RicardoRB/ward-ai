@@ -23,6 +23,8 @@ import java.util.Set;
  * @param lowering the control-flow lowering, which yields no graphs for a language without one
  * @param scopes the scope analysis, which gives empty scopes for a language without one
  * @param types the native type-fact source, empty for a language without one
+ * @param manifests the project-relative manifest names, such as {@code package.json}, that the
+ *     language's project checks read; empty when none
  */
 public record FrontendSupport(
     AnalysisLanguage language,
@@ -30,11 +32,22 @@ public record FrontendSupport(
     Set<RuleCapability> capabilities,
     ControlFlowLowering lowering,
     ScopeAnalysis scopes,
-    Optional<TypeFacts> types) {
+    Optional<TypeFacts> types,
+    Set<String> manifests) {
 
   /** A lowering for a language that has no control-flow graphs yet. */
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
+
+  /**
+   * Returns this frontend with the manifest names that its project checks read.
+   *
+   * @param names the project-relative manifest names
+   * @throws NullPointerException if the names are missing
+   */
+  public FrontendSupport withManifests(final Set<String> names) {
+    return new FrontendSupport(language, frontend, capabilities, lowering, scopes, types, names);
+  }
 
   /**
    * Creates a frontend with a scope analysis and no type facts.
@@ -51,7 +64,7 @@ public record FrontendSupport(
       final Set<RuleCapability> capabilities,
       final ControlFlowLowering lowering,
       final ScopeAnalysis scopes) {
-    this(language, frontend, capabilities, lowering, scopes, Optional.empty());
+    this(language, frontend, capabilities, lowering, scopes, Optional.empty(), Set.of());
   }
 
   /**
@@ -95,6 +108,8 @@ public record FrontendSupport(
     Objects.requireNonNull(lowering, "lowering");
     Objects.requireNonNull(scopes, "scopes");
     Objects.requireNonNull(types, "types");
+    Objects.requireNonNull(manifests, "manifests");
     capabilities = Set.copyOf(capabilities);
+    manifests = Set.copyOf(manifests);
   }
 }

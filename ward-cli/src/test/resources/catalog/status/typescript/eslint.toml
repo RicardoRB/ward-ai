@@ -10,7 +10,7 @@ consistent-return = { status = "planned", issue = "#326" }
 consistent-this = { status = "planned", issue = "#296" }
 constructor-super = "implemented"
 default-param-last = { status = "planned", issue = "#296" }
-dot-notation = { status = "planned", issue = "#296" }
+dot-notation = "implemented"
 eqeqeq = "implemented"
 for-direction = "implemented"
 func-name-matching = { status = "planned", issue = "#296" }
@@ -147,8 +147,8 @@ no-void = { status = "planned", issue = "#296" }
 no-with = "implemented"
 object-shorthand = { status = "planned", issue = "#296" }
 operator-assignment = { status = "planned", issue = "#296" }
-prefer-arrow-callback = { status = "planned", issue = "#296" }
-prefer-const = { status = "planned", issue = "#296" }
+prefer-arrow-callback = "implemented"
+prefer-const = "implemented"
 prefer-destructuring = { status = "planned", issue = "#296" }
 prefer-exponentiation-operator = "implemented"
 prefer-named-capture-group = { status = "planned", issue = "#326" }
@@ -159,7 +159,7 @@ prefer-promise-reject-errors = { status = "planned", issue = "#326" }
 prefer-regex-literals = "implemented"
 prefer-rest-params = "implemented"
 prefer-spread = "implemented"
-prefer-template = { status = "planned", issue = "#296" }
+prefer-template = "implemented"
 preserve-caught-error = { status = "planned", issue = "#326" }
 radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }

@@ -114,8 +114,14 @@ public final class AnalysisGate implements QualityGate {
             ports
                 .dependencies()
                 .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
+    final List<FrontendSupport> frontends = types.withTypes(ports.frontends());
+    final Set<String> manifests =
+        frontends.stream()
+            .flatMap(frontend -> frontend.manifests().stream())
+            .collect(Collectors.toUnmodifiableSet());
     final UnitResultCache.CachedRun run =
-        results.analyze(cache, units, types.withTypes(ports.frontends()), rules);
+        results.analyze(
+            cache, units, frontends, rules, ports.sources().manifests(project.root(), manifests));
     return AnalysisGateResults.result(name, focused(ExcludedFindings.drop(run, set), rules), rules);
   }
 

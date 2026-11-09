@@ -1,0 +1,6 @@
+allow-any = false
+allow-boolean = false
+allow-nullish = false
+allow-number = false
+allow-regexp = false
+allow-never = true

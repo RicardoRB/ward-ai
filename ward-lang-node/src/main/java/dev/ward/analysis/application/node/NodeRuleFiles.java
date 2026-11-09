@@ -22,6 +22,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/biome-suspicious.toml",
           "rules/node/blocks.toml",
           "rules/node/coding.toml",
+          "rules/node/dead-code.toml",
           "rules/node/metrics.toml",
           "rules/node/misc.toml",
           "rules/node/naming.toml",
@@ -40,7 +41,9 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/style-javadoc.toml",
           "rules/node/style-linter.toml",
           "rules/node/style-typescript.toml",
-          "rules/node/suggestion.toml");
+          "rules/node/suggestion.toml",
+          "rules/node/typescript-eslint-syntax.toml",
+          "rules/node/typescript-eslint-types.toml");
 
   @Override
   public List<String> ruleFiles() {

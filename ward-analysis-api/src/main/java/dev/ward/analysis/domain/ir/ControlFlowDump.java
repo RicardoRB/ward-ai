@@ -25,7 +25,8 @@ public final class ControlFlowDump {
           FlowSiteKind.CALL, "call",
           FlowSiteKind.MEMBER_READ, "member",
           FlowSiteKind.MEMBER_WRITE, "write",
-          FlowSiteKind.PARAMETER, "param");
+          FlowSiteKind.PARAMETER, "param",
+          FlowSiteKind.STRING_BUILD, "string");
 
   private ControlFlowDump() {}
 

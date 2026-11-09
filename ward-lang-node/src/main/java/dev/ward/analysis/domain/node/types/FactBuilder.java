@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.ConstantValue;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.SpanFacts;
+import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.TypeShape;
 import java.util.List;
@@ -28,10 +29,11 @@ final class FactBuilder {
     final List<SyntaxNode> nodes = model.nodesAt(span);
     final TypeRef type =
         FactPick.asked(kinds, FactKind.TYPE, () -> FactPick.first(nodes, expressions::type));
-    final TypeShape shape =
-        FactPick.asked(kinds, FactKind.SHAPE, () -> FactPick.first(nodes, declarations::shape));
+    final TypeShape shape = FactPick.asked(kinds, FactKind.SHAPE, () -> shapeOf(nodes));
     final CallTarget call =
         FactPick.asked(kinds, FactKind.CALL, () -> FactPick.first(nodes, expressions::call));
+    final TypeMembers members =
+        FactPick.asked(kinds, FactKind.MEMBERS, () -> FactPick.first(nodes, expressions::members));
     final ConstantValue constant =
         FactPick.asked(
             kinds, FactKind.CONSTANT, () -> FactPick.first(nodes, expressions::constant));
@@ -48,6 +50,12 @@ final class FactBuilder {
     return none && annotations.isEmpty()
         ? null
         : new SpanFacts(
-            type, shape, call, annotations, scopes, overrides, List.of(), constant, null);
+            type, shape, call, annotations, scopes, overrides, List.of(), constant, members);
+  }
+
+  /** Returns the shape of the declaration a node declares, or the shape of its expression type. */
+  private TypeShape shapeOf(final List<SyntaxNode> nodes) {
+    final TypeShape declared = FactPick.first(nodes, declarations::shape);
+    return declared != null ? declared : FactPick.first(nodes, expressions::shapeOfType);
   }
 }
