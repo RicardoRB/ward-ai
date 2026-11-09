@@ -313,6 +313,7 @@ ruff = ["B005"]
 [[rule]]
 name = "mutable-argument-default"
 ruff = ["B006"]
+pylint = ["dangerous-default-value"]
 
 [[rule]]
 name = "unused-loop-control-variable"
@@ -405,6 +406,7 @@ ruff = ["B029"]
 [[rule]]
 name = "except-with-non-exception-classes"
 ruff = ["B030"]
+pylint = ["catching-non-exception"]
 
 [[rule]]
 name = "reuse-of-groupby-generator"
@@ -1099,6 +1101,7 @@ ruff = ["F501"]
 [[rule]]
 name = "percent-format-expected-mapping"
 ruff = ["F502"]
+pylint = ["format-needs-mapping"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
@@ -1151,10 +1154,12 @@ ruff = ["F525"]
 [[rule]]
 name = "f-string-missing-placeholders"
 ruff = ["F541"]
+pylint = ["f-string-without-interpolation"]
 
 [[rule]]
 name = "multi-value-repeated-key-literal"
 ruff = ["F601"]
+pylint = ["duplicate-key"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
@@ -1173,6 +1178,7 @@ ruff = ["F622"]
 [[rule]]
 name = "assert-tuple"
 ruff = ["F631"]
+pylint = ["assert-on-tuple"]
 
 [[rule]]
 name = "is-literal"
@@ -1451,6 +1457,7 @@ ruff = ["FURB166"]
 [[rule]]
 name = "regex-flag-alias"
 ruff = ["FURB167"]
+pylint = ["implicit-flag-alias"]
 
 [[rule]]
 name = "isinstance-type-none"
@@ -2168,6 +2175,7 @@ pylint = ["logging-too-few-args"]
 [[rule]]
 name = "bad-string-format-character"
 ruff = ["PLE1300"]
+pylint = ["bad-format-character"]
 
 [[rule]]
 name = "bad-string-format-type"
@@ -3851,6 +3859,7 @@ ruff = ["S101"]
 [[rule]]
 name = "exec-builtin"
 ruff = ["S102"]
+pylint = ["exec-used"]
 
 [[rule]]
 name = "bad-file-permissions"
@@ -3928,6 +3937,7 @@ ruff = ["S306"]
 [[rule]]
 name = "suspicious-eval-usage"
 ruff = ["S307"]
+pylint = ["eval-used"]
 
 [[rule]]
 name = "suspicious-mark-safe-usage"
@@ -4404,6 +4414,7 @@ ruff = ["SLOT002"]
 [[rule]]
 name = "debugger"
 ruff = ["T100"]
+pylint = ["forgotten-debug-statement"]
 
 [[rule]]
 name = "print"
@@ -4889,6 +4900,7 @@ ruff = ["W505"]
 [[rule]]
 name = "invalid-escape-sequence"
 ruff = ["W605"]
+pylint = ["anomalous-backslash-in-string"]
 
 [[rule]]
 name = "sys-version-slice3"

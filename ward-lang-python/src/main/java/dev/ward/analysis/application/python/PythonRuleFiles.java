@@ -29,6 +29,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/pycodestyle.toml",
           "rules/python/pyflakes.toml",
           "rules/python/pygrep-hooks.toml",
+          "rules/python/pylint-checks-a.toml",
           "rules/python/pylint.toml",
           "rules/python/refurb-calls.toml",
           "rules/python/refurb.toml");

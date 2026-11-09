@@ -19,12 +19,6 @@ category = "pylint"
 pylint = ["access-member-before-definition"]
 
 [[rule]]
-name = "anomalous-backslash-in-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["anomalous-backslash-in-string"]
-
-[[rule]]
 name = "anomalous-unicode-escape-in-string"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -47,12 +41,6 @@ name = "arguments-renamed"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["arguments-renamed"]
-
-[[rule]]
-name = "assert-on-tuple"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["assert-on-tuple"]
 
 [[rule]]
 name = "assigning-non-slot"
@@ -139,12 +127,6 @@ category = "linter"
 pylint = ["bad-file-encoding"]
 
 [[rule]]
-name = "bad-format-character"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-format-character"]
-
-[[rule]]
 name = "bad-format-string"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -213,14 +195,7 @@ pylint = ["break-in-finally"]
 [[rule]]
 name = "broad-exception-raised"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["broad-exception-raised"]
-
-[[rule]]
-name = "catching-non-exception"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["catching-non-exception"]
 
 [[rule]]
 name = "cell-var-from-loop"
@@ -249,7 +224,6 @@ pylint = ["class-variable-slots-conflict"]
 [[rule]]
 name = "comparison-of-constants"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["comparison-of-constants"]
 
 [[rule]]
@@ -291,7 +265,6 @@ pylint = ["consider-math-not-float"]
 [[rule]]
 name = "consider-merging-isinstance"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-merging-isinstance"]
 
 [[rule]]
@@ -357,7 +330,6 @@ pylint = ["consider-using-f-string"]
 [[rule]]
 name = "consider-using-from-import"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-from-import"]
 
 [[rule]]
@@ -375,7 +347,6 @@ pylint = ["consider-using-get"]
 [[rule]]
 name = "consider-using-in"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-in"]
 
 [[rule]]
@@ -411,13 +382,11 @@ pylint = ["consider-using-set-comprehension"]
 [[rule]]
 name = "consider-using-sys-exit"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-sys-exit"]
 
 [[rule]]
 name = "consider-using-ternary"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-ternary"]
 
 [[rule]]
@@ -443,12 +412,6 @@ name = "cyclic-import"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["cyclic-import"]
-
-[[rule]]
-name = "dangerous-default-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["dangerous-default-value"]
 
 [[rule]]
 name = "declare-non-slot"
@@ -535,12 +498,6 @@ category = "pylint"
 pylint = ["duplicate-except"]
 
 [[rule]]
-name = "duplicate-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["duplicate-key"]
-
-[[rule]]
 name = "duplicate-string-formatting-argument"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -559,46 +516,16 @@ category = "pylint"
 pylint = ["eq-without-hash"]
 
 [[rule]]
-name = "eval-used"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["eval-used"]
-
-[[rule]]
-name = "exec-used"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["exec-used"]
-
-[[rule]]
 name = "expression-not-assigned"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["expression-not-assigned"]
 
 [[rule]]
-name = "f-string-without-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["f-string-without-interpolation"]
-
-[[rule]]
-name = "forgotten-debug-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["forgotten-debug-statement"]
-
-[[rule]]
 name = "format-combined-specification"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["format-combined-specification"]
-
-[[rule]]
-name = "format-needs-mapping"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["format-needs-mapping"]
 
 [[rule]]
 name = "format-string-without-interpolation"
@@ -617,12 +544,6 @@ name = "global-variable-undefined"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["global-variable-undefined"]
-
-[[rule]]
-name = "implicit-flag-alias"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["implicit-flag-alias"]
 
 [[rule]]
 name = "implicit-str-concat"

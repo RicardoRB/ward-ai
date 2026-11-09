@@ -1,0 +1,101 @@
+# Pylint checks, part A (#336): the standard Pylint rows whose text a single node decides.
+
+
+[[rules]]
+id = "ward:python/consider-using-sys-exit"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(exit|quit)\\("
+message = "use sys.exit() instead of exit() or quit()"
+'''
+
+[[rules]]
+id = "ward:python/comparison-of-constants"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "^(\\d+|'[^']*'|\"[^\"]*\")\\s*(==|!=|<=|>=|<|>)\\s*(\\d+|'[^']*'|\"[^\"]*\")$"
+message = "comparison between two literal constants; the result is known"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-from-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_name"]
+text = "^import[\\w.]*\\.(\\w+)as\\1$"
+message = "import the name with from ... import instead of an aliased module import"
+'''
+
+[[rules]]
+id = "ward:python/broad-exception-raised"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise(Exception|BaseException)(\\(|$)"
+message = "raise a specific exception instead of Exception or BaseException"
+'''
+
+[[rules]]
+id = "ward:python/consider-merging-isinstance"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test"]
+text = "isinstance\\((\\w+),[^)]*\\)orisinstance\\(\\1,"
+message = "merge isinstance checks on the same value into one call with a tuple of types"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-in"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test"]
+text = "(\\w+)==[\\w.'\"]+or\\1=="
+message = "use 'in' with a tuple instead of repeated equality checks on the same value"
+'''
+
+# shortcut: node text has no spaces, so operands are matched as word runs; an operand containing "and"/"or" inside a name can match, upgrade when the parser exposes boolean operator tokens
+[[rules]]
+id = "ward:python/consider-using-ternary"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test"]
+text = "^[\\w.]+and[\\w.]+or[\\w.]+$"
+message = "use a conditional expression instead of 'and'/'or'"
+'''
