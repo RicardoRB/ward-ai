@@ -38,7 +38,7 @@ class InitKotlinPresetTest {
     assertThat(kotlin.resolve("ward-rules.toml"))
         .content()
         .contains("languages = [\"kotlin\"]")
-        .doesNotContain("\"java\"");
+        .doesNotContain("\"java\"", "ward:java/hidden-field");
     assertNoExternalToolFiles(kotlin);
     assertThat(Files.readString(kotlin.resolve("build.gradle.kts")))
         .doesNotContain("checkstyle", "pmd", "spotbugs");

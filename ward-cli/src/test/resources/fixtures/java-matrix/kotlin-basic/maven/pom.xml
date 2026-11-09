@@ -5,7 +5,7 @@
   <artifactId>demo</artifactId>
   <version>1.0.0</version>
   <properties>
-    <kotlin.version>2.1.0</kotlin.version>
+    <kotlin.version>2.2.21</kotlin.version>
     <kotlin.compiler.jvmTarget>@RELEASE@</kotlin.compiler.jvmTarget>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -23,6 +23,8 @@
     </dependency>
   </dependencies>
   <build>
+    <sourceDirectory>src/main/kotlin</sourceDirectory>
+    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>

@@ -41,15 +41,16 @@ final class PresetRuleFileContent {
    */
   static String wardRules(final QualityPreset preset, final Set<Language> languages) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
+    final List<String> ids = jvmLanguageIds(languages);
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
         + "\"\nlanguages = "
-        + jvmLanguages(languages)
+        + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"))
         + "\n"
-        + (chosen == QualityPreset.STRICT ? HIDDEN_FIELD : "");
+        + (chosen == QualityPreset.STRICT && ids.contains("java") ? HIDDEN_FIELD : "");
   }
 
-  private static String jvmLanguages(final Set<Language> languages) {
+  private static List<String> jvmLanguageIds(final Set<Language> languages) {
     final List<String> ids = new ArrayList<>();
     if (languages.contains(Language.JAVA)) {
       ids.add("java");
@@ -60,7 +61,7 @@ final class PresetRuleFileContent {
     if (ids.isEmpty()) {
       ids.add("java");
     }
-    return ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"));
+    return ids;
   }
 
   static String pmd(final QualityPreset preset) {
