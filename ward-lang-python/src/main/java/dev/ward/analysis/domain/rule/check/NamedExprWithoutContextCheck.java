@@ -37,7 +37,8 @@ public final class NamedExprWithoutContextCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, STATEMENTS)) {
       final SyntaxNode statement = visit.node();
-      if (statement.children().size() == SINGLE && bareAssignmentExpression(statement).isPresent()) {
+      if (statement.children().size() == SINGLE
+          && bareAssignmentExpression(statement).isPresent()) {
         found.add(new RuleMatch(statement.span(), message));
       }
     }
