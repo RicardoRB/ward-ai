@@ -46,7 +46,7 @@ consider-using-f-string = "implemented"
 consider-using-from-import = "implemented"
 consider-using-get = "implemented"
 consider-using-in = "implemented"
-consider-using-join = { status = "planned", issue = "#336" }
+consider-using-join = "implemented"
 consider-using-max-builtin = "implemented"
 consider-using-min-builtin = "implemented"
 consider-using-namedtuple-or-dataclass = { status = "planned", issue = "#336" }

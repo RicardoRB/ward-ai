@@ -267,7 +267,6 @@ pylint = ["consider-using-in"]
 [[rule]]
 name = "consider-using-join"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-join"]
 
 [[rule]]

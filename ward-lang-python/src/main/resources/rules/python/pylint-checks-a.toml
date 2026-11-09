@@ -402,3 +402,15 @@ kinds = ["if_stmt"]
 text = '^if(\w+)in([\w.]+):\s*([\w.]+)=\2\[\1\]\s*(else:\s*\3=\S+)?\s*$'
 message = "use dict.get() instead of an if that reads a key from a dictionary"
 '''
+
+[[rules]]
+id = "ward:python/consider-using-join"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "concat-join"
+message = "consider str.join(sequence) instead of concatenating strings in a loop"
+'''
