@@ -33,14 +33,17 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
       Set.of("type_", "typeAnnotation", "typeArguments", "typeParameters", "implementsClause");
 
   private final String message;
+  private final String partialMessage;
 
   /**
    * Creates the check.
    *
-   * @param message the message of each finding
+   * @param message the message of a declaration whose bindings are all type-only
+   * @param partialMessage the message of a mixed declaration; {@code {names}} lists the type-only names
    */
-  public NodeTypeOnlyImportCheck(final String message) {
+  public NodeTypeOnlyImportCheck(final String message, final String partialMessage) {
     this.message = message;
+    this.partialMessage = partialMessage;
   }
 
   /**
@@ -57,28 +60,46 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
   public List<RuleMatch> matches(
       final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
     final UnitScopes scopes = view.scopes();
-    final Map<Span, Boolean> onlyTypes = new LinkedHashMap<>();
+    final Map<Span, List<Use>> statements = new LinkedHashMap<>();
     for (final Scope scope : scopes.scopes()) {
       for (final Binding binding : scope.bindings()) {
-        if (binding.kind() == BindingKind.IMPORT
-            && !binding.flags().contains(BindingFlag.TYPE_ONLY)) {
-          importStatement(root, binding.declaration().startOffset())
-              .ifPresent(
-                  statement ->
-                      onlyTypes.merge(
-                          statement, typeOnly(root, binding, scopes), Boolean::logicalAnd));
+        if (binding.kind() == BindingKind.IMPORT && !binding.flags().contains(BindingFlag.TYPE_ONLY)) {
+          importStatement(root, binding.declaration().startOffset()).ifPresent(
+              statement -> statements.computeIfAbsent(statement, key -> new ArrayList<>())
+                  .add(new Use(binding.name(), typeOnly(root, binding, scopes))));
         }
       }
     }
     final List<RuleMatch> found = new ArrayList<>();
-    onlyTypes.forEach(
-        (statement, only) -> {
-          if (only) {
-            found.add(new RuleMatch(statement, message));
-          }
-        });
+    statements.forEach((statement, uses) -> report(statement, uses, found));
     return List.copyOf(found);
   }
+
+  /** One finding per declaration: the whole-declaration message, or the mixed one with its names. */
+  private void report(final Span statement, final List<Use> uses, final List<RuleMatch> found) {
+    final List<String> typeNames = uses.stream().filter(Use::typeOnly).map(Use::name).toList();
+    if (typeNames.isEmpty()) {
+      return;
+    }
+    if (typeNames.size() == uses.size()) {
+      found.add(new RuleMatch(statement, message));
+    } else {
+      found.add(new RuleMatch(statement, partialMessage.replace("{names}", quoted(typeNames))));
+    }
+  }
+
+  /** Quotes the names and joins them the way typescript-eslint does: "A", "B" and "C". */
+  private static String quoted(final List<String> names) {
+    final List<String> quoted = names.stream().map(name -> "\"" + name + "\"").toList();
+    if (quoted.size() == 1) {
+      return quoted.get(0);
+    }
+    final String head = String.join(", ", quoted.subList(0, quoted.size() - 1));
+    return head + " and " + quoted.get(quoted.size() - 1);
+  }
+
+  /** A binding of an import declaration and whether all its uses are in type positions. */
+  private record Use(String name, boolean typeOnly) {}
 
   /** Whether the binding has uses and each of them is in a type position. */
   private static boolean typeOnly(
