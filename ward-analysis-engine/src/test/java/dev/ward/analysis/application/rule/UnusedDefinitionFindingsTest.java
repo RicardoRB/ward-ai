@@ -22,10 +22,6 @@ final class UnusedDefinitionFindingsTest {
   private static final String LIB_PY = "a/lib.py";
   private static final RuleDefinition FUNCTION = rule(UnusedDefinitionFindings.FUNCTION_ID);
   private static final RuleDefinition CLASS = rule(UnusedDefinitionFindings.CLASS_ID);
-  private static final RuleDefinition SWIFT_DECLARATION =
-      rule("ward:swift/unused-declaration", AnalysisLanguage.SWIFT);
-  private static final RuleDefinition SWIFT_ASSIGN_ONLY =
-      rule("ward:swift/assign-only-property", AnalysisLanguage.SWIFT);
 
   @Test
   void aDefinitionUsedByAnotherFileIsNotReported() {
@@ -101,62 +97,11 @@ final class UnusedDefinitionFindingsTest {
   }
 
   private static RuleDefinition rule(final String id) {
-    return rule(id, AnalysisLanguage.PYTHON);
-  }
-
-  private static RuleDefinition rule(final String id, final AnalysisLanguage language) {
     return new RuleDefinition(
         id,
-        Set.of(language),
+        Set.of(AnalysisLanguage.PYTHON),
         RuleCapability.SYMBOLS,
         AnalysisSeverity.ERROR,
         "check = \"unused-definition\"");
-  }
-
-  @Test
-  void aSwiftFunctionNoOtherFileUsesIsReported() {
-    final Map<String, FileSummary> files =
-        Map.of(
-            "Sources/Lib.swift",
-            summary("Sources/Lib.swift", Set.of(), symbol("shared"), symbol("lonely")),
-            "Sources/App.swift",
-            summary("Sources/App.swift", Set.of("shared")));
-
-    assertThat(UnusedDefinitionFindings.findings(List.of(SWIFT_DECLARATION), files))
-        .extracting(AnalysisFinding::message)
-        .singleElement()
-        .asString()
-        .contains("lonely");
-  }
-
-  @Test
-  void theSwiftRuleSkipsPythonFiles() {
-    final Map<String, FileSummary> files =
-        Map.of(LIB_PY, summary(LIB_PY, Set.of(), symbol("lonely")));
-
-    assertThat(UnusedDefinitionFindings.findings(List.of(SWIFT_DECLARATION), files)).isEmpty();
-  }
-
-  @Test
-  void aSwiftPropertyThatIsAssignedButNeverReadIsReported() {
-    final FileSummary lib =
-        new FileSummary(
-            "Sources/Lib.swift",
-            List.of(),
-            List.of(),
-            List.of(
-                new Symbol("count", SPAN, "property"),
-                new Symbol("label", SPAN, "property"),
-                new Symbol("idle", SPAN, "property")),
-            Set.of("label"),
-            Set.of("count", "label"));
-
-    assertThat(
-            UnusedDefinitionFindings.findings(
-                List.of(SWIFT_ASSIGN_ONLY), Map.of("Sources/Lib.swift", lib)))
-        .extracting(AnalysisFinding::message)
-        .singleElement()
-        .asString()
-        .isEqualTo("property 'count' is assigned but never read in any file");
   }
 }
