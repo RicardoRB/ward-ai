@@ -15,8 +15,10 @@ import dev.ward.analysis.domain.rule.check.FormatIndexCheck;
 import dev.ward.analysis.domain.rule.check.KeywordArgBeforeVarargCheck;
 import dev.ward.analysis.domain.rule.check.LoggingFormatCheck;
 import dev.ward.analysis.domain.rule.check.MatchPositionalCheck;
+import dev.ward.analysis.domain.rule.check.MissingParenthesesCheck;
 import dev.ward.analysis.domain.rule.check.ModifiedIterationCheck;
 import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
+import dev.ward.analysis.domain.rule.check.NoMethodArgumentCheck;
 import dev.ward.analysis.domain.rule.check.NonlocalCheck;
 import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -34,6 +36,12 @@ final class PylintCheckFactories {
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
         entry("dunder-return", PylintCheckFactories::dunderReturn),
+        entry(
+            "missing-parentheses",
+            toml -> new MissingParenthesesCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "no-method-argument",
+            toml -> new NoMethodArgumentCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "else-after-jump",
             toml ->

@@ -879,3 +879,27 @@ check = "same-module-call"
 problem = "positional-only"
 message = "positional-only parameter passed as a keyword argument"
 '''
+
+[[rules]]
+id = "ward:python/missing-parentheses-for-call-in-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-parentheses"
+message = "function used as a condition without calling it"
+'''
+
+[[rules]]
+id = "ward:python/no-method-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "no-method-argument"
+message = "method declares no parameter; it needs the instance as its first parameter"
+'''

@@ -153,7 +153,7 @@ missing-function-docstring = "implemented"
 missing-kwoa = "implemented"
 missing-module-docstring = "implemented"
 missing-param-doc = { status = "planned", issue = "#336" }
-missing-parentheses-for-call-in-test = { status = "planned", issue = "#336" }
+missing-parentheses-for-call-in-test = "implemented"
 missing-raises-doc = { status = "planned", issue = "#336" }
 missing-return-doc = { status = "planned", issue = "#336" }
 missing-return-type-doc = { status = "planned", issue = "#336" }
@@ -167,7 +167,7 @@ multiple-constructor-doc = { status = "planned", issue = "#336" }
 no-else-break = "implemented"
 no-else-continue = "implemented"
 no-else-raise = "implemented"
-no-method-argument = { status = "planned", issue = "#336" }
+no-method-argument = "implemented"
 no-value-for-parameter = "implemented"
 non-ascii-module-import = "implemented"
 non-iterator-returned = "implemented"
