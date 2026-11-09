@@ -13,6 +13,9 @@ import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.ModuleOrderCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
 import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
+import dev.ward.analysis.domain.rule.check.PositionalParameterCountCheck;
+import dev.ward.analysis.domain.rule.check.PythonConstantNameCheck;
+import dev.ward.analysis.domain.rule.check.PythonRedefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
@@ -57,7 +60,19 @@ final class PythonScopeChecks {
         entry("handler-body", PythonScopeChecks::handlerBody),
         entry(
             "unused-import-binding",
-            toml -> new UnusedImportBindingCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new UnusedImportBindingCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "positional-parameter-count",
+            toml ->
+                new PositionalParameterCountCheck(
+                    TomlValues.integer(toml, "max-positional-arguments"),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "module-constant-name",
+            toml -> new PythonConstantNameCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "redefined-outer-name",
+            toml -> new PythonRedefinedNameCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {

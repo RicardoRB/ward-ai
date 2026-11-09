@@ -971,10 +971,12 @@ ruff = ["DTZ901"]
 
 [[rule]]
 name = "multiple-imports-on-one-line"
+pylint = ["multiple-imports"]
 ruff = ["E401"]
 
 [[rule]]
 name = "module-import-not-at-top-of-file"
+pylint = ["wrong-import-position"]
 ruff = ["E402"]
 
 [[rule]]
@@ -985,6 +987,7 @@ ruff = ["E502"]
 
 [[rule]]
 name = "none-comparison"
+pylint = ["singleton-comparison"]
 ruff = ["E711"]
 
 [[rule]]
@@ -1001,6 +1004,7 @@ ruff = ["E714"]
 
 [[rule]]
 name = "type-comparison"
+pylint = ["unidiomatic-typecheck"]
 ruff = ["E721"]
 
 [[rule]]
@@ -1010,6 +1014,7 @@ pylint = ["bare-except"]
 
 [[rule]]
 name = "lambda-assignment"
+pylint = ["unnecessary-lambda-assignment"]
 ruff = ["E731"]
 
 [[rule]]
@@ -1963,7 +1968,6 @@ ruff = ["PLC0208"]
 [[rule]]
 name = "useless-import-alias"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLC0414"]
 pylint = ["useless-import-alias"]
 
@@ -1988,7 +1992,6 @@ ruff = ["PLC1901"]
 [[rule]]
 name = "non-ascii-name"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLC2401"]
 pylint = ["non-ascii-name"]
 
@@ -2008,14 +2011,12 @@ pylint = ["import-private-name"]
 [[rule]]
 name = "unnecessary-dunder-call"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLC2801"]
 pylint = ["unnecessary-dunder-call"]
 
 [[rule]]
 name = "unnecessary-direct-lambda-call"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLC3002"]
 pylint = ["unnecessary-direct-lambda-call"]
 
@@ -2244,7 +2245,6 @@ pylint = ["modified-iterating-set"]
 [[rule]]
 name = "comparison-with-itself"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0124"]
 pylint = ["comparison-with-itself"]
 
@@ -2257,21 +2257,18 @@ ruff = ["PLR0133"]
 [[rule]]
 name = "no-classmethod-decorator"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0202"]
 pylint = ["no-classmethod-decorator"]
 
 [[rule]]
 name = "no-staticmethod-decorator"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0203"]
 pylint = ["no-staticmethod-decorator"]
 
 [[rule]]
 name = "property-with-parameters"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0206"]
 pylint = ["property-with-parameters"]
 
@@ -2284,70 +2281,60 @@ ruff = ["PLR0402"]
 [[rule]]
 name = "too-many-public-methods"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0904"]
 pylint = ["too-many-public-methods"]
 
 [[rule]]
 name = "too-many-branches"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0912"]
 pylint = ["too-many-branches"]
 
 [[rule]]
 name = "too-many-locals"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0914"]
 pylint = ["too-many-locals"]
 
 [[rule]]
+name = "too-many-positional-arguments"
+presets = ["standard", "strict"]
+ruff = ["PLR0917"]
+pylint = ["too-many-positional-arguments"]
+
+[[rule]]
 name = "too-many-statements"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0915"]
 pylint = ["too-many-statements"]
 
 [[rule]]
 name = "too-many-boolean-expressions"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0916"]
 pylint = ["too-many-boolean-expressions"]
 
 [[rule]]
-name = "too-many-positional-arguments"
-presets = ["standard", "strict"]
-category = "pylint"
-ruff = ["PLR0917"]
-pylint = ["too-many-positional-arguments"]
-
-[[rule]]
 name = "too-many-nested-blocks"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1702"]
 pylint = ["too-many-nested-blocks"]
 
 [[rule]]
 name = "redefined-argument-from-local"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1704"]
 pylint = ["redefined-argument-from-local"]
 
 [[rule]]
 name = "stop-iteration-return"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1708"]
 pylint = ["stop-iteration-return"]
 
 [[rule]]
 name = "useless-return"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1711"]
 pylint = ["useless-return"]
 
@@ -2384,14 +2371,12 @@ ruff = ["PLR1730"]
 [[rule]]
 name = "unnecessary-dict-index-lookup"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1733"]
 pylint = ["unnecessary-dict-index-lookup"]
 
 [[rule]]
 name = "unnecessary-list-index-lookup"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1736"]
 pylint = ["unnecessary-list-index-lookup"]
 
@@ -2430,28 +2415,24 @@ pylint = ["no-self-use"]
 [[rule]]
 name = "useless-else-on-loop"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0120"]
 pylint = ["useless-else-on-loop"]
 
 [[rule]]
 name = "self-assigning-variable"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0127"]
 pylint = ["self-assigning-variable"]
 
 [[rule]]
 name = "redeclared-assigned-name"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0128"]
 pylint = ["redeclared-assigned-name"]
 
 [[rule]]
 name = "assert-on-string-literal"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0129"]
 pylint = ["assert-on-string-literal"]
 
@@ -2471,56 +2452,48 @@ ruff = ["PLW0133"]
 [[rule]]
 name = "nan-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0177"]
 pylint = ["nan-comparison"]
 
 [[rule]]
 name = "bad-staticmethod-argument"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0211"]
 pylint = ["bad-staticmethod-argument"]
 
 [[rule]]
 name = "redefined-slots-in-subclass"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0244"]
 pylint = ["redefined-slots-in-subclass"]
 
 [[rule]]
 name = "super-without-brackets"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0245"]
 pylint = ["super-without-brackets"]
 
 [[rule]]
 name = "import-self"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0406"]
 pylint = ["import-self"]
 
 [[rule]]
 name = "global-variable-not-assigned"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0602"]
 pylint = ["global-variable-not-assigned"]
 
 [[rule]]
 name = "global-statement"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0603"]
 pylint = ["global-statement"]
 
 [[rule]]
 name = "global-at-module-level"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0604"]
 pylint = ["global-at-module-level"]
 
@@ -2533,7 +2506,6 @@ ruff = ["PLW0642"]
 [[rule]]
 name = "binary-op-exception"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0711"]
 pylint = ["binary-op-exception"]
 
@@ -2546,28 +2518,24 @@ ruff = ["PLW0717"]
 [[rule]]
 name = "bad-open-mode"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1501"]
 pylint = ["bad-open-mode"]
 
 [[rule]]
 name = "shallow-copy-environ"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1507"]
 pylint = ["shallow-copy-environ"]
 
 [[rule]]
 name = "invalid-envvar-default"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1508"]
 pylint = ["invalid-envvar-default"]
 
 [[rule]]
 name = "subprocess-popen-preexec-fn"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1509"]
 pylint = ["subprocess-popen-preexec-fn"]
 
@@ -2580,14 +2548,12 @@ ruff = ["PLW1510"]
 [[rule]]
 name = "unspecified-encoding"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW1514"]
 pylint = ["unspecified-encoding"]
 
 [[rule]]
 name = "useless-with-lock"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW2101"]
 pylint = ["useless-with-lock"]
 
@@ -2607,7 +2573,6 @@ ruff = ["PLW3201"]
 [[rule]]
 name = "nested-min-max"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW3301"]
 pylint = ["nested-min-max"]
 
@@ -4301,6 +4266,7 @@ ruff = ["SIM117"]
 
 [[rule]]
 name = "in-dict-keys"
+pylint = ["consider-iterating-dictionary"]
 ruff = ["SIM118"]
 
 [[rule]]
@@ -4606,7 +4572,6 @@ ruff = ["UP003"]
 [[rule]]
 name = "useless-object-inheritance"
 presets = ["standard", "strict"]
-category = "pyupgrade"
 ruff = ["UP004"]
 pylint = ["useless-object-inheritance"]
 

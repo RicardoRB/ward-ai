@@ -31,8 +31,10 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/pyflakes.toml",
           "rules/python/pygrep-hooks.toml",
           "rules/python/pylint.toml",
+          "rules/python/python-style.toml",
           "rules/python/refurb-calls.toml",
-          "rules/python/refurb.toml");
+          "rules/python/refurb.toml",
+          "rules/python/ruff-pylint.toml");
 
   @Override
   public List<String> ruleFiles() {

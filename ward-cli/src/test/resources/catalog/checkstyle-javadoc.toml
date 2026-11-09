@@ -78,6 +78,7 @@ checkstyle = ["JavadocLinkWellKnownApi"]
 
 [[rule]]
 name = "javadoc-method"
+not-applicable = { python = "Javadoc; Python docstrings are covered by missing-trailing-period and undocumented-param" }
 checkstyle = ["JavadocMethod"]
 
 [[rule]]
@@ -209,6 +210,7 @@ checkstyle = ["SingleLineJavadoc"]
 
 [[rule]]
 name = "summary-javadoc"
+not-applicable = { python = "Javadoc; Python docstrings are covered by missing-trailing-period and undocumented-param" }
 checkstyle = ["SummaryJavadoc"]
 
 [[rule]]
