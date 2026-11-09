@@ -438,3 +438,17 @@ body = '''
 check = "bare-capture-pattern"
 message = "bare name capture pattern matches everything and makes the following cases unreachable"
 '''
+
+[[rules]]
+id = "ward:python/condition-evals-to-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test", "and_test"]
+text = '^(?:(?:True|False|None|\d+)(?:and|or))+(?:True|False|None|\d+)$'
+message = "boolean condition only compares constants and always evaluates to the same value"
+'''

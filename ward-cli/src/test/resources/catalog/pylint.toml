@@ -170,7 +170,6 @@ pylint = ["comparison-with-callable"]
 [[rule]]
 name = "condition-evals-to-constant"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["condition-evals-to-constant"]
 
 [[rule]]

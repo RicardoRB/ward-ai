@@ -29,7 +29,7 @@ chained-comparison-all-equal = "implemented"
 class-variable-slots-conflict = "implemented"
 comparison-of-constants = "implemented"
 comparison-with-callable = { status = "planned", issue = "#336" }
-condition-evals-to-constant = { status = "planned", issue = "#336" }
+condition-evals-to-constant = "implemented"
 confusing-consecutive-elif = { status = "planned", issue = "#336" }
 confusing-with-statement = "implemented"
 consider-math-not-float = { status = "planned", issue = "#336" }
