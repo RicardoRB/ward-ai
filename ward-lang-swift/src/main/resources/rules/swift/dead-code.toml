@@ -1,0 +1,63 @@
+# Dead-code rules for Swift, replacing Periphery, SwiftLint's unused rules and detekt's
+# UnusedParameter. Scope rules read the lexical scopes of one file; a declaration that another file
+# may use is not reported by them.
+
+[[rules]]
+id = "ward:swift/unused-local-variable"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:swift/unused-parameter"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-parameter"
+message = "parameter '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:swift/unused-declaration"
+language = "swift"
+capability = "SYMBOLS"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-definition"
+message = "unused declaration"
+'''
+
+[[rules]]
+id = "ward:swift/assign-only-property"
+language = "swift"
+capability = "SYMBOLS"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-definition"
+message = "property is assigned but never read"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-protocol"
+language = "swift"
+capability = "SYMBOLS"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-definition"
+message = "protocol is only used to conform to"
+'''

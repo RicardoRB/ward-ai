@@ -10,10 +10,16 @@ import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
+import dev.ward.analysis.domain.swift.SwiftUnusedParameterCheck;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-/** The declarative style checks that only Swift rules use: declarations, parameters and imports. */
+/**
+ * The declarative checks that only Swift rules use: the style checks of declarations, parameters
+ * and imports, and the whole-run unused-definition check, which the engine reports after every
+ * file is summarized.
+ */
 public final class SwiftCheckProvider implements CheckProvider {
 
   private static final String MESSAGE = "message";
@@ -41,6 +47,10 @@ public final class SwiftCheckProvider implements CheckProvider {
         toml -> new SwiftParameterAlignmentCheck(TomlValues.required(toml, MESSAGE)));
     checks.put(
         "swift-unused-import", toml -> new UnusedImportCheck(TomlValues.required(toml, MESSAGE)));
+    checks.put("swift-unused-definition", toml -> root -> List.of());
+    checks.put(
+        "swift-unused-parameter",
+        toml -> new SwiftUnusedParameterCheck(TomlValues.required(toml, MESSAGE)));
     checks.put(
         "swift-variable-distance",
         toml ->

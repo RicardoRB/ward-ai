@@ -60,7 +60,7 @@ unnecessary-semicolon-in-try-with-resources = "not-applicable"
 unnecessary-type-arguments-with-record-pattern = "not-applicable"
 unused-catch-parameter-should-be-unnamed = "not-applicable"
 unused-lambda-parameter-should-be-unnamed = "not-applicable"
-unused-local-variable = { status = "planned", issue = "#298" }
+unused-local-variable = "implemented"
 unused-private-field = { status = "planned", issue = "#298" }
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
