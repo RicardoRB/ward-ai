@@ -14,3 +14,8 @@ var bValue: String {
         Persister.shared.aValue = value
     }
 }
+var cached: Int {
+    get { 1 }
+    set(v) { _ = v }
+}
+cache.set { }

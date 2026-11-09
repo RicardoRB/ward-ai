@@ -4,9 +4,12 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** Runs the lint checks over real Swift source, so every position is the parser's own. */
 final class LintRuns {
@@ -26,6 +29,16 @@ final class LintRuns {
             .parse(new SourceUnit("x.swift", AnalysisLanguage.SWIFT, source))
             .tree();
     return check.matches(tree);
+  }
+
+  /** Runs a check that reads the scopes of the source, with the Swift scope analysis. */
+  static List<RuleMatch> runScoped(final RuleCheck check, final String source) {
+    final SourceUnit unit = new SourceUnit("x.swift", AnalysisLanguage.SWIFT, source);
+    final SyntaxNode tree = new AntlrLanguageFrontend().parse(unit).tree();
+    final SwiftScopeAnalysis analysis = new SwiftScopeAnalysis(environments -> Set.of());
+    final ScopeView view =
+        new ScopeView(analysis.analyze(unit, tree), Map.of(), Set.of(), analysis);
+    return check.matches(tree, null, view, unit);
   }
 
   static List<Integer> lines(final List<RuleMatch> found) {

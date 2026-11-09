@@ -4,7 +4,9 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Reports a {@code set} accessor whose new value ({@code newValue}, or the name in {@code
@@ -16,6 +18,7 @@ import java.util.List;
 public final class SwiftUnusedSetterValueCheck implements RuleCheck {
 
   private static final String SET = "set";
+  private static final String VARIABLE = "variable_declaration";
   private static final String NEW_VALUE = "newValue";
   private static final String OPEN = "{";
   private static final String CLOSE = "}";
@@ -39,16 +42,26 @@ public final class SwiftUnusedSetterValueCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final List<SyntaxNode> tokens = SwiftTrees.leaves(root);
+    final Set<Integer> reported = new HashSet<>();
     final List<RuleMatch> matches = new ArrayList<>();
-    for (int i = 1; i < tokens.size() - 1; i++) {
-      if (isSetAccessor(tokens, i) && isUnused(tokens, i)) {
-        matches.add(SwiftTrees.at(tokens.get(i), message));
+    for (final SyntaxNode declaration : SwiftTrees.descendants(root, VARIABLE)) {
+      final List<SyntaxNode> tokens = SwiftTrees.leaves(declaration);
+      for (int i = 1; i < tokens.size() - 1; i++) {
+        final SyntaxNode set = tokens.get(i);
+        if (isSetAccessor(tokens, i)
+            && isUnused(tokens, i)
+            && reported.add(set.span().startOffset())) {
+          matches.add(SwiftTrees.at(set, message));
+        }
       }
     }
     return List.copyOf(matches);
   }
 
+  /*
+   * shortcut: the accessor is found from tokens, because the grammar keeps get and set inside the
+   * variable's code block; upgrade when the grammar models getter_setter_block for class members.
+   */
   private static boolean isSetAccessor(final List<SyntaxNode> tokens, final int i) {
     final String before = text(tokens, i - 1);
     final String current = text(tokens, i);

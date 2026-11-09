@@ -108,12 +108,12 @@ class SwiftStatementLintChecksTest {
 
     assertThat(
             LintRuns.lines(
-                LintRuns.run(check, "var j = 0\nlet c: () -> Void = { [j] in print(j) }\n")))
+                LintRuns.runScoped(check, "var j = 0\nlet c: () -> Void = { [j] in print(j) }\n")))
         .containsExactly(2);
-    assertThat(LintRuns.run(check, "let k = 0\nlet c: () -> Void = { [k] in print(k) }\n"))
+    assertThat(LintRuns.runScoped(check, "let k = 0\nlet c: () -> Void = { [k] in print(k) }\n"))
         .isEmpty();
     assertThat(
-            LintRuns.run(
+            LintRuns.runScoped(
                 check,
                 "func f() {\n var local = 0\n let c: () -> Void = { [local] in print(local) }\n}\n"))
         .isEmpty();

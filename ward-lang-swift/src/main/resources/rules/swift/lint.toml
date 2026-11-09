@@ -499,7 +499,7 @@ message = "availability check uses a version that the deployment target always s
 [[rules]]
 id = "ward:swift/capture-variable"
 language = "swift"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "warning"
 category = "lint"
 presets = ["standard", "strict"]
@@ -511,7 +511,7 @@ message = "non-constant variables should not be listed in a closure's capture li
 [[rules]]
 id = "ward:swift/typesafe-array-init"
 language = "swift"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "warning"
 category = "lint"
 presets = ["standard", "strict"]
