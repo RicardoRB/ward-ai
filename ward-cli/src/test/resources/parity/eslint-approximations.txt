@@ -1,11 +1,8 @@
 # Known differences between the native #326 rules and ESLint 9.39.5 at its defaults. One per line:
 # <rule id> | <language> | <reason>. Only real behaviour differences are listed; missing options are
-# not (they are implemented or the row stays planned). Entries marked "until #462" go once #462 lands.
 
-ward:typescript/require-await | typescript | until #462: the TypeScript grammar parses an async function declaration as a variable named async, so only async arrows and methods are checked; add async-declaration fixtures after #462
 ward:javascript/no-unused-labels | javascript | a label is treated as used when any break or continue with the same name appears in its text, including in a nested scope that shadows it
 ward:typescript/no-unused-labels | typescript | same as the JavaScript rule
-ward:typescript/no-unsafe-negation | typescript | until #462: the TypeScript grammar nests in and instanceof under the negation, so only identifier operands are matched; add a member-operand fixture (!a.b in c) after #462
 ward:javascript/no-octal-escape | javascript | ESLint parses octal escapes only in script mode; the fixtures are checked that way
 ward:typescript/no-octal-escape | typescript | the TypeScript parser rejects octal escapes, so ESLint cannot run this fixture; Ward is the only reference
 ward:javascript/no-nonoctal-decimal-escape | javascript | ESLint parses this escape only in script mode; the fixtures are checked that way

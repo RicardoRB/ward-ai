@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
@@ -38,16 +40,25 @@ final class TaintSpecFiles {
   private static final String QUALIFIER = "qualifier";
   private static final String ARGUMENTS = "arguments";
   private static final String FROM = "from";
+  private static final String PATTERN = "pattern";
+  private static final String STRING = "string";
   private static final Set<String> TABLES = Set.of(SOURCES, SINKS, SANITIZERS, PROPAGATORS);
-  private static final Set<String> KEYS = Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM);
+  private static final Set<String> KEYS =
+      Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN);
   private static final Map<String, FlowSiteKind> KINDS =
       Map.of(
-          "call", FlowSiteKind.CALL,
-          "member", FlowSiteKind.MEMBER_READ,
-          "member-write", FlowSiteKind.MEMBER_WRITE,
-          "parameter", FlowSiteKind.PARAMETER);
+          "call",
+          FlowSiteKind.CALL,
+          "member",
+          FlowSiteKind.MEMBER_READ,
+          "member-write",
+          FlowSiteKind.MEMBER_WRITE,
+          "parameter",
+          FlowSiteKind.PARAMETER,
+          STRING,
+          FlowSiteKind.STRING_BUILD);
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter");
-  private static final Set<String> SINK_KINDS = Set.of("call", "member-write");
+  private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
 
   private TaintSpecFiles() {}
@@ -133,6 +144,19 @@ final class TaintSpecFiles {
       throw new RuleConfigurationException(
           where + " has kind '" + kind + "', which " + table + " do not accept");
     }
+    if (STRING.equals(kind)) {
+      return stringEntry(where, entry);
+    }
+    return siteEntry(where, table, kind, entry);
+  }
+
+  /** A call, member or parameter entry, which takes a pattern in no table. */
+  private static TaintEntry siteEntry(
+      final String where, final String table, final String kind, final TomlTable entry) {
+    if (entry.contains(PATTERN)) {
+      throw new RuleConfigurationException(
+          where + " names a pattern, which only string sinks take");
+    }
     final List<Integer> arguments = TaintSpecOptions.arguments(where, table, entry);
     if (PROPAGATORS.equals(table)) {
       TaintSpecOptions.from(where, entry);
@@ -143,6 +167,22 @@ final class TaintSpecFiles {
         optional(where, entry, RECEIVER),
         optional(where, entry, QUALIFIER),
         arguments);
+  }
+
+  /** A string sink matches the literal text of a string-building site against its pattern. */
+  private static TaintEntry stringEntry(final String where, final TomlTable entry) {
+    final String pattern = text(where, entry, PATTERN);
+    try {
+      return new TaintEntry(
+          FlowSiteKind.STRING_BUILD,
+          "",
+          Optional.empty(),
+          Optional.empty(),
+          List.of(),
+          Optional.of(Pattern.compile(pattern)));
+    } catch (final PatternSyntaxException exception) {
+      throw new RuleConfigurationException(where + " has an invalid pattern", exception);
+    }
   }
 
   private static String text(final String where, final TomlTable entry, final String key) {
