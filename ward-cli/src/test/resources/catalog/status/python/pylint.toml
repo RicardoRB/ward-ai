@@ -263,7 +263,7 @@ undefined-all-variable = { status = "planned", issue = "#336" }
 undefined-loop-variable = { status = "planned", issue = "#336" }
 undefined-variable = { status = "planned", issue = "#336" }
 unexpected-keyword-arg = { status = "planned", issue = "#336" }
-ungrouped-imports = { status = "planned", issue = "#297" }
+ungrouped-imports = "implemented"
 unhashable-member = { status = "planned", issue = "#336" }
 unknown-option-value = { status = "planned", issue = "#336" }
 unnecessary-ellipsis = { status = "planned", issue = "#336" }
@@ -290,7 +290,7 @@ use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "
 use-implicit-booleaness-not-len = "implemented"
 use-list-literal = { status = "planned", issue = "#336" }
 use-maxsplit-arg = "implemented"
-use-sequence-for-iteration = { status = "planned", issue = "#297" }
+use-sequence-for-iteration = "implemented"
 use-set-for-membership = { status = "planned", issue = "#336" }
 use-yield-from = { status = "planned", issue = "#336" }
 used-before-assignment = { status = "planned", issue = "#336" }

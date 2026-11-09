@@ -336,3 +336,29 @@ check = "metaclass-argument"
 problem = "method"
 message = "first argument of a metaclass method should be named cls"
 '''
+
+[[rules]]
+id = "ward:python/ungrouped-imports"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "ungrouped-imports"
+message = "import from a package that is imported elsewhere; group the imports of a package together"
+'''
+
+[[rules]]
+id = "ward:python/use-sequence-for-iteration"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt", "comp_for"]
+text = "^for[^:]*?in\\{[^:{}]+\\}"
+message = "iterating a set literal; use a tuple or list"
+'''

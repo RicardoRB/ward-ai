@@ -17,6 +17,7 @@ import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.PythonDocstringCheck;
 import dev.ward.analysis.domain.rule.check.PythonMetaclassArgumentCheck;
 import dev.ward.analysis.domain.rule.check.PythonOverloadOrderCheck;
+import dev.ward.analysis.domain.rule.check.PythonUngroupedImportCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
@@ -82,7 +83,10 @@ final class PythonOrderChecks {
         entry(
             "overload-order",
             toml -> new PythonOverloadOrderCheck(TomlValues.required(toml, MESSAGE))),
-        entry("metaclass-argument", PythonOrderChecks::metaclassArgument));
+        entry("metaclass-argument", PythonOrderChecks::metaclassArgument),
+        entry(
+            "ungrouped-imports",
+            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {
