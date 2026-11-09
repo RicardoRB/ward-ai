@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Ruff and mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Python Ward rules in `ward-rules.toml`, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -57,10 +57,10 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
 | `biome` | Biome rules in `biome.jsonc` or the project's own Biome config | [references/biome.md](references/biome.md) |
-| `ruff` | Ruff rule sets and complexity in `ruff.toml` or the project's own Ruff config | [references/ruff.md](references/ruff.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
-| `ward` | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
+| `ward` | The Python rules that `ward-rules.toml` selects for `"python"`, their severities and options | [references/ward-rules-python.md](references/ward-rules-python.md) |
+| `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 

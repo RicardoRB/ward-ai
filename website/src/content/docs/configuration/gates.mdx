@@ -96,7 +96,7 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 Presets may write these rule files:
 
 - `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project
+- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project and for Python
 
 Java and Kotlin projects get no `config/pmd-ruleset.xml`, `config/checkstyle.xml` or `config/spotbugs-exclude.xml`; the Ward rules replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
@@ -183,7 +183,7 @@ command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-o
 
 ## Python gates
 
-`ruff`, `mypy`, `pytest`, `coverage`, `pip-audit`, and `mutmut` run
+`mypy`, `pytest`, `coverage`, `pip-audit`, and `mutmut` run
 their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
@@ -628,7 +628,8 @@ Differences from the Java rules, by construction:
 ## Python structural rules
 
 The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
-the ANTLR Python frontend and use fixed limits. Ruff stays the external gate for style and lint.
+the ANTLR Python frontend and use fixed limits. Init selects the Python rules of the preset in
+`ward-rules.toml`, so lint no longer needs Ruff.
 
 | Rule | Limit | Severity | Ruff counterpart |
 |---|---|---|---|
