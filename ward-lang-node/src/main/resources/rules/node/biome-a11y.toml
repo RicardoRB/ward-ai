@@ -481,3 +481,223 @@ body = '''
 check = "node-noninteractive-to-interactive-role"
 message = "a non-interactive element must not take an interactive role; use an interactive element instead"
 '''
+
+[[rules]]
+id = "ward:javascript/no-interactive-element-to-noninteractive-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-interactive-to-noninteractive-role"
+message = "an interactive element must not take a non-interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-interactive-element-to-noninteractive-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-interactive-to-noninteractive-role"
+message = "an interactive element must not take a non-interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-element-interactions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-element-interactions"
+message = "a non-interactive element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-element-interactions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-element-interactions"
+message = "a non-interactive element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/no-static-element-interactions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-static-element-interactions"
+message = "a static element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-static-element-interactions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-static-element-interactions"
+message = "a static element must not handle user interactions; give it an interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/use-aria-props-for-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-for-role"
+message = "the element with this role lacks a required ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-aria-props-for-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-for-role"
+message = "the element with this role lacks a required ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-aria-props-supported-by-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-supported-by-role"
+message = "this ARIA attribute is not supported by the element"
+'''
+
+[[rules]]
+id = "ward:typescript/use-aria-props-supported-by-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-supported-by-role"
+message = "this ARIA attribute is not supported by the element"
+'''
+
+[[rules]]
+id = "ward:javascript/use-heading-content"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["h1", "h2", "h3", "h4", "h5", "h6"]
+exempt = ["aria-label"]
+message = "a heading needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:typescript/use-heading-content"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["h1", "h2", "h3", "h4", "h5", "h6"]
+exempt = ["aria-label"]
+message = "a heading needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:javascript/use-media-caption"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-media-caption"
+message = "a video or audio element needs a captions track"
+'''
+
+[[rules]]
+id = "ward:typescript/use-media-caption"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-media-caption"
+message = "a video or audio element needs a captions track"
+'''
+
+[[rules]]
+id = "ward:javascript/use-semantic-elements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-semantic-element"
+message = "this role can be expressed by an HTML element; use that element instead"
+'''
+
+[[rules]]
+id = "ward:typescript/use-semantic-elements"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-semantic-element"
+message = "this role can be expressed by an HTML element; use that element instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-svg-without-title"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-svg-title"
+message = "an svg with a role that needs a name needs a title or an accessible name"
+'''
+
+[[rules]]
+id = "ward:typescript/no-svg-without-title"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-svg-title"
+message = "an svg with a role that needs a name needs a title or an accessible name"
+'''

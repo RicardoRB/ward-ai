@@ -69,7 +69,7 @@ no-implicit-any-let = "not-applicable"
 no-implicit-boolean = { status = "planned", issue = "#296" }
 no-import-cycles = { status = "planned", issue = "#329" }
 no-inline-styles = { status = "planned", issue = "#329" }
-no-interactive-element-to-noninteractive-role = { status = "planned", issue = "#329" }
+no-interactive-element-to-noninteractive-role = "implemented"
 no-invalid-builtin-instantiation = "implemented"
 no-invalid-file-input-accept = { status = "planned", issue = "#329" }
 no-js-restricted-properties = { status = "planned", issue = "#329" }
@@ -92,7 +92,7 @@ no-nested-promises = { status = "planned", issue = "#329" }
 no-next-async-client-component = { status = "planned", issue = "#329" }
 no-nodejs-modules = { status = "planned", issue = "#329" }
 no-non-scalable-viewport = { status = "planned", issue = "#329" }
-no-noninteractive-element-interactions = { status = "planned", issue = "#329" }
+no-noninteractive-element-interactions = "implemented"
 no-noninteractive-element-to-interactive-role = "implemented"
 no-noninteractive-tabindex = "implemented"
 no-obsolete-tags = "implemented"
@@ -135,14 +135,14 @@ no-shadow = { status = "planned", issue = "#329" }
 no-shouty-constants = { status = "planned", issue = "#296" }
 no-skipped-tests = "implemented"
 no-solid-destructured-props = { status = "planned", issue = "#329" }
-no-static-element-interactions = { status = "planned", issue = "#329" }
+no-static-element-interactions = "implemented"
 no-static-only-class = "implemented"
 no-string-case-mismatch = "implemented"
 no-substr = "implemented"
 no-suspicious-semicolon-in-jsx = { status = "planned", issue = "#329" }
 no-svelte-export-let = { status = "planned", issue = "#329" }
 no-svelte-unnecessary-state-wrap = { status = "planned", issue = "#329" }
-no-svg-without-title = { status = "planned", issue = "#329" }
+no-svg-without-title = "implemented"
 no-sync-scripts = { status = "planned", issue = "#329" }
 no-tailwind-arbitrary-value = { status = "planned", issue = "#329" }
 no-tailwind-raw-colors = { status = "planned", issue = "#329" }
@@ -171,7 +171,7 @@ no-useless-lone-block-statements = "implemented"
 no-useless-string-raw = "implemented"
 no-useless-switch-case = "implemented"
 no-useless-undefined = { status = "planned", issue = "#329" }
-no-void-elements-with-children = { status = "planned", issue = "#329" }
+no-void-elements-with-children = "implemented"
 no-void-type-return = "not-applicable"
 no-vue-arrow-func-in-watch = { status = "planned", issue = "#329" }
 no-vue-data-object-declaration = { status = "planned", issue = "#329" }
@@ -187,8 +187,8 @@ no-xor-as-exponentiation = "implemented"
 use-alt-text = "implemented"
 use-anchor-content = "implemented"
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
-use-aria-props-for-role = { status = "planned", issue = "#329" }
-use-aria-props-supported-by-role = { status = "planned", issue = "#329" }
+use-aria-props-for-role = "implemented"
+use-aria-props-supported-by-role = "implemented"
 use-array-find = "implemented"
 use-array-some = { status = "planned", issue = "#329" }
 use-at-index = { status = "planned", issue = "#296" }
@@ -227,7 +227,7 @@ use-fragment-syntax = { status = "planned", issue = "#296" }
 use-global-this = "implemented"
 use-google-font-display = { status = "planned", issue = "#329" }
 use-google-font-preconnect = { status = "planned", issue = "#329" }
-use-heading-content = { status = "planned", issue = "#329" }
+use-heading-content = "implemented"
 use-hook-at-top-level = { status = "planned", issue = "#329" }
 use-html-lang = "implemented"
 use-iframe-sandbox = { status = "planned", issue = "#329" }
@@ -243,7 +243,7 @@ use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
 use-key-with-click-events = "implemented"
 use-key-with-mouse-events = "implemented"
 use-math-min-max = "implemented"
-use-media-caption = { status = "planned", issue = "#329" }
+use-media-caption = "implemented"
 use-modern-math-apis = "implemented"
 use-node-assert-strict = { status = "planned", issue = "#296" }
 use-nodejs-import-protocol = "implemented"
@@ -264,7 +264,7 @@ use-react-native-platform-components = { status = "planned", issue = "#329" }
 use-reduce-type-parameter = { status = "planned", issue = "#329" }
 use-regexp-test = { status = "planned", issue = "#329" }
 use-self-closing-elements = { status = "planned", issue = "#296" }
-use-semantic-elements = { status = "planned", issue = "#329" }
+use-semantic-elements = "implemented"
 use-shorthand-function-type = "not-applicable"
 use-simple-number-keys = "implemented"
 use-simplified-logic-expression = { status = "planned", issue = "#329" }

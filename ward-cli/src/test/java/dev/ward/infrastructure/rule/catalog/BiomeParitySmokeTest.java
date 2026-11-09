@@ -77,7 +77,20 @@ class BiomeParitySmokeTest {
           Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"),
           Map.entry(
               "no-noninteractive-element-to-interactive-role",
-              "a11y/noNoninteractiveElementToInteractiveRole"));
+              "a11y/noNoninteractiveElementToInteractiveRole"),
+          Map.entry(
+              "no-noninteractive-element-interactions", "a11y/noNoninteractiveElementInteractions"),
+          Map.entry("no-static-element-interactions", "a11y/noStaticElementInteractions"),
+          Map.entry("use-aria-props-for-role", "a11y/useAriaPropsForRole"),
+          Map.entry("use-aria-props-supported-by-role", "a11y/useAriaPropsSupportedByRole"),
+          Map.entry("use-heading-content", "a11y/useHeadingContent"),
+          Map.entry("no-void-elements-with-children", "correctness/noVoidElementsWithChildren"),
+          Map.entry("use-media-caption", "a11y/useMediaCaption"),
+          Map.entry("use-semantic-elements", "a11y/useSemanticElements"),
+          Map.entry("no-svg-without-title", "a11y/noSvgWithoutTitle"),
+          Map.entry(
+              "no-interactive-element-to-noninteractive-role",
+              "a11y/noInteractiveElementToNoninteractiveRole"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

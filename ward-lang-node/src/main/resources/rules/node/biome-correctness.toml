@@ -76,3 +76,29 @@ check = "node-unreachable-super"
 message = "this constructor must call super() exactly once, before this is read, on every code path"
 '''
 
+
+[[rules]]
+id = "ward:javascript/no-void-elements-with-children"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-void-element-children"
+elements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr", "keygen", "menuitem"]
+message = "a void element cannot have children; remove them"
+'''
+
+[[rules]]
+id = "ward:typescript/no-void-elements-with-children"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-void-element-children"
+elements = ["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr", "keygen", "menuitem"]
+message = "a void element cannot have children; remove them"
+'''

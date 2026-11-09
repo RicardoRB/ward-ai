@@ -33,6 +33,49 @@ public final class AriaTableParser {
   private static final int ATTRIBUTE_NAME = 0;
   private static final int ATTRIBUTE_VALUE_TYPE = 2;
   private static final int ATTRIBUTE_VALUES = 3;
+  private static final int SEMANTIC_COLUMNS = 4;
+  private static final int SEMANTIC_ROLE = 0;
+  private static final int SEMANTIC_ELEMENT = 2;
+  private static final int SEMANTIC_ATTRIBUTES = 3;
+
+  /**
+   * Parses the event-handler rows into the events of each group; lines starting with {@code #} and
+   * the header are skipped.
+   *
+   * @param lines the lines of {@code aria-event-handlers.tsv}
+   * @throws IllegalArgumentException if a row has the wrong number of columns
+   */
+  public static Map<String, Set<String>> parseHandlers(final List<String> lines) {
+    return data(lines).stream()
+        .map(line -> columns(line, 2))
+        .collect(
+            Collectors.groupingBy(
+                row -> row[0],
+                HashMap::new,
+                Collectors.mapping(row -> row[1], Collectors.toUnmodifiableSet())));
+  }
+
+  /**
+   * Parses the element concepts of each role; lines starting with {@code #} and the header are
+   * skipped.
+   *
+   * @param lines the lines of {@code aria-role-elements.tsv}
+   * @throws IllegalArgumentException if a row has the wrong number of columns
+   */
+  public static Map<String, List<AriaRoleTable.ElementConcept>> parseSemantic(
+      final List<String> lines) {
+    return data(lines).stream()
+        .map(line -> columns(line, SEMANTIC_COLUMNS))
+        .collect(
+            Collectors.groupingBy(
+                row -> row[SEMANTIC_ROLE],
+                HashMap::new,
+                Collectors.mapping(
+                    row ->
+                        AriaRoleTable.ElementConcept.of(
+                            row[SEMANTIC_ELEMENT], row[SEMANTIC_ATTRIBUTES]),
+                    Collectors.toList())));
+  }
 
   private AriaTableParser() {}
 
@@ -45,7 +88,11 @@ public final class AriaTableParser {
   public static Map<String, AriaRoleTable.AriaAttributeRow> parseAttributes(
       final List<String> lines) {
     return data(lines).stream()
-        .map(AriaTableParser::attributeRow)
+        .map(line -> columns(line, ATTRIBUTE_COLUMNS))
+        .map(
+            c ->
+                new AriaRoleTable.AriaAttributeRow(
+                    c[ATTRIBUTE_NAME], c[ATTRIBUTE_VALUE_TYPE], words(c[ATTRIBUTE_VALUES])))
         .collect(
             Collectors.toMap(
                 AriaRoleTable.AriaAttributeRow::name, row -> row, (a, b) -> a, HashMap::new));
@@ -72,7 +119,13 @@ public final class AriaTableParser {
    * @throws IllegalArgumentException if a row has the wrong number of columns
    */
   public static List<AriaRoleTable.ImplicitRow> parseImplicit(final List<String> lines) {
-    return data(lines).stream().map(AriaTableParser::implicitRow).toList();
+    return data(lines).stream()
+        .map(line -> columns(line, IMPLICIT_COLUMNS))
+        .map(
+            c ->
+                new AriaRoleTable.ImplicitRow(
+                    c[ELEMENT], c[CONDITION], "-".equals(c[ROLE]) ? "" : c[ROLE]))
+        .toList();
   }
 
   private static AriaRoleTable.AriaRoleRow roleRow(final String line) {
@@ -91,18 +144,6 @@ public final class AriaTableParser {
         words(c[DEPRECATED]));
   }
 
-  private static AriaRoleTable.AriaAttributeRow attributeRow(final String line) {
-    final String[] c = columns(line, ATTRIBUTE_COLUMNS);
-    return new AriaRoleTable.AriaAttributeRow(
-        c[ATTRIBUTE_NAME], c[ATTRIBUTE_VALUE_TYPE], words(c[ATTRIBUTE_VALUES]));
-  }
-
-  private static AriaRoleTable.ImplicitRow implicitRow(final String line) {
-    final String[] c = columns(line, IMPLICIT_COLUMNS);
-    return new AriaRoleTable.ImplicitRow(
-        c[ELEMENT], c[CONDITION], "-".equals(c[ROLE]) ? "" : c[ROLE]);
-  }
-
   private static String[] columns(final String line, final int expected) {
     final String[] c = line.split("\t", -1);
     if (c.length != expected) {
@@ -114,7 +155,11 @@ public final class AriaTableParser {
   private static List<String> data(final List<String> lines) {
     return lines.stream()
         .filter(line -> !line.isBlank() && !line.startsWith("#") && !line.startsWith("role\t"))
-        .filter(line -> !line.startsWith("element\t") && !line.startsWith("attribute\t"))
+        .filter(
+            line ->
+                !line.startsWith("element\t")
+                    && !line.startsWith("attribute\t")
+                    && !line.startsWith("group\t"))
         .toList();
   }
 
