@@ -47,6 +47,13 @@ public final class AriaRoleTable {
         .anyMatch(group -> handlers.getOrDefault(group, Set.of()).contains(event));
   }
 
+  /**
+   * The global attributes: the supported attributes of the abstract roletype, as Biome reads them.
+   */
+  public Set<String> globalAttributes() {
+    return role("roletype").map(AriaRoleRow::supported).orElse(Set.of());
+  }
+
   /** Whether the first concrete token names a non-interactive role. */
   public boolean nonInteractiveRole(final List<String> tokens) {
     return tokens.stream()

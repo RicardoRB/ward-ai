@@ -5,6 +5,8 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaPropsForRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaPropsSupportedByRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaValuesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeInteractiveToNoninteractiveRoleCheck;
@@ -25,6 +27,16 @@ final class AriaChecks {
   /** The checks that read the mirrored ARIA tables of Biome 2.5.15. */
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
+        entry(
+            "node-aria-props-for-role",
+            toml ->
+                new BiomeAriaPropsForRoleCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-aria-props-supported-by-role",
+            toml ->
+                new BiomeAriaPropsSupportedByRoleCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-aria-props",
             toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
