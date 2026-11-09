@@ -4,16 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckProvider;
-import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.RuleFileReader;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOptions;
-import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.rule.check.CheckedRule;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -129,25 +125,11 @@ class PythonFixturesTest {
       throws IOException {
     final Map<String, CheckFactory> factories = new PythonCheckProvider().checks();
     final RuleMatcher matcher = definition -> compile(definition, factories);
-    final AnalysisLanguage language = rule.languages().iterator().next();
     if (PythonFixtureFrontends.isDeadCode(rule)) {
       return PythonFixtureFrontends.unusedPositions(
           rule, file.getFileName().toString(), Files.readString(file, StandardCharsets.UTF_8));
     }
-    final RuleRunResult result =
-        new RuleEngine(matcher)
-            .run(
-                List.of(
-                    new SourceUnit(
-                        file.getFileName().toString(),
-                        language,
-                        Files.readString(file, StandardCharsets.UTF_8))),
-                PythonFixtureFrontends.forRule(rule, language, directory),
-                List.of(rule));
-    assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
-    assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
-    return result.findings().stream()
-        .filter(finding -> finding.ruleId().equals(rule.id()))
+    return PythonRuleRun.findings(matcher, rule, file, directory).stream()
         .map(PythonFixturesTest::position)
         .toList();
   }

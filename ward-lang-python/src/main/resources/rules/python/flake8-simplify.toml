@@ -9,9 +9,9 @@ category = "coding"
 presets = ["strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["comparison"]
-text = "in[\\w.]+\\.keys\\(\\)"
-message = "membership test on dict.keys(); test the dict itself"
+kinds = ["comparison", "for_stmt"]
+text = "^for\\w+in[\\w.]+\\.keys\\(\\):|^(?!for\\w+in[\\w.]+\\.keys\\(\\):)[^:]*in[\\w.]+\\.keys\\(\\)"
+message = "dict.keys() used for membership or iteration; use the dict itself"
 '''
 
 [[rules]]
