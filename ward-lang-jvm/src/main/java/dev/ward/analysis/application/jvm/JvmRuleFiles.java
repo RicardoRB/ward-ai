@@ -96,6 +96,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/strict-declarations.toml",
           "rules/kotlin/coroutines.toml",
           "rules/kotlin/exceptions.toml",
+          "rules/kotlin/ktlint.toml",
           "rules/kotlin/naming.toml",
           "rules/kotlin/performance.toml",
           "rules/kotlin/potential-bugs.toml",
