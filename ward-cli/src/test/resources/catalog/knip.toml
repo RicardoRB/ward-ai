@@ -20,7 +20,7 @@ knip = ["catalogReferences"]
 
 [[rule]]
 name = "knip-cycles"
-presets = ["standard", "strict"]
+presets = ["strict"]
 category = "dead-code"
 knip = ["cycles"]
 
@@ -68,13 +68,13 @@ knip = ["namespaceMembers"]
 
 [[rule]]
 name = "knip-ns-exports"
-presets = ["standard", "strict"]
+presets = ["strict"]
 category = "dead-code"
 knip = ["nsExports"]
 
 [[rule]]
 name = "knip-ns-types"
-presets = ["standard", "strict"]
+presets = ["strict"]
 category = "dead-code"
 knip = ["nsTypes"]
 
@@ -92,12 +92,8 @@ knip = ["types"]
 
 [[rule]]
 name = "knip-unlisted"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["unlisted"]
 
 [[rule]]
 name = "knip-unresolved"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["unresolved"]
