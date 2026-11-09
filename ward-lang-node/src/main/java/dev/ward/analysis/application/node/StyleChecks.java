@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
 import dev.ward.analysis.domain.rule.check.NodeIllegalTokenCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocPositionCheck;
-import dev.ward.analysis.domain.rule.check.NodeJavadocPositionCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
@@ -68,8 +67,10 @@ final class StyleChecks {
             toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "node-type-only-import",
-            toml -> new NodeTypeOnlyImportCheck(
-                TomlValues.required(toml, MESSAGE), TomlValues.required(toml, "partial-message"))),
+            toml ->
+                new NodeTypeOnlyImportCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    TomlValues.required(toml, "partial-message"))),
         Map.entry(
             "node-useless-constructor",
             toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE))),

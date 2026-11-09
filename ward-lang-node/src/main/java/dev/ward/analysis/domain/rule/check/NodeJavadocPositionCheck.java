@@ -19,8 +19,17 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
   private static final String COMMENT = "comment";
   private static final String JAVADOC = "/**";
   private static final Set<String> MODIFIERS =
-      Set.of("export", "default", "declare", "abstract", "async", "static", "public", "private",
-          "protected", "readonly");
+      Set.of(
+          "export",
+          "default",
+          "declare",
+          "abstract",
+          "async",
+          "static",
+          "public",
+          "private",
+          "protected",
+          "readonly");
   private static final Set<String> BODIES = Set.of("functionBody", "block", "statementList");
   private static final Set<String> DECLARATIONS =
       Set.of(
@@ -62,7 +71,9 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  /** Gathers the javadoc comments, the tokens in source order, and the start of each declaration. */
+  /**
+   * Gathers the javadoc comments, the tokens in source order, and the start of each declaration.
+   */
   private static void collect(
       final SyntaxNode node,
       final boolean inBody,
@@ -102,10 +113,13 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
   }
 
   private static boolean isJavadoc(final SyntaxNode node) {
-    return COMMENT.equals(node.kind()) && node.fields().getOrDefault("text", "").startsWith(JAVADOC);
+    return COMMENT.equals(node.kind())
+        && node.fields().getOrDefault("text", "").startsWith(JAVADOC);
   }
 
-  /** The javadoc of a body: a marker that records it sits inside the body, so it is always invalid. */
+  /**
+   * The javadoc of a body: a marker that records it sits inside the body, so it is always invalid.
+   */
   private static SyntaxNode bodyMarker(final SyntaxNode javadoc) {
     return new SyntaxNode(COMMENT, javadoc.span(), java.util.Map.of("body", "true"), List.of());
   }

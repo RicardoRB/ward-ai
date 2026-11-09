@@ -42,7 +42,8 @@ class NodeTypeOnlyImportCheckTest {
   @Test
   void mixedDeclarationIsReportedOnceNamingItsTypeOnlyBindings() {
     final List<RuleMatch> found =
-        run("import { A, C, b } from './m';\nexport function f(x: A, y: C): number { return b(x, y); }\n");
+        run(
+            "import { A, C, b } from './m';\nexport function f(x: A, y: C): number { return b(x, y); }\n");
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).message()).isEqualTo("partial \"A\" and \"C\"");
