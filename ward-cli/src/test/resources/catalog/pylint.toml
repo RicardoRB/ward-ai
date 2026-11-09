@@ -134,13 +134,11 @@ pylint = ["bad-reversed-sequence"]
 [[rule]]
 name = "bad-super-call"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-super-call"]
 
 [[rule]]
 name = "bad-thread-instantiation"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-thread-instantiation"]
 
 [[rule]]
@@ -204,7 +202,6 @@ pylint = ["confusing-consecutive-elif"]
 [[rule]]
 name = "confusing-with-statement"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["confusing-with-statement"]
 
 [[rule]]

@@ -22,8 +22,8 @@ bad-format-string-key = { status = "planned", issue = "#336" }
 bad-mcs-classmethod-argument = { status = "planned", issue = "#297" }
 bad-mcs-method-argument = { status = "planned", issue = "#297" }
 bad-reversed-sequence = { status = "planned", issue = "#336" }
-bad-super-call = { status = "planned", issue = "#336" }
-bad-thread-instantiation = { status = "planned", issue = "#336" }
+bad-super-call = "implemented"
+bad-thread-instantiation = "implemented"
 bare-name-capture-pattern = { status = "planned", issue = "#336" }
 boolean-datetime = { status = "planned", issue = "#336" }
 broad-exception-raised = "implemented"
@@ -34,7 +34,7 @@ comparison-of-constants = "implemented"
 comparison-with-callable = { status = "planned", issue = "#336" }
 condition-evals-to-constant = { status = "planned", issue = "#336" }
 confusing-consecutive-elif = { status = "planned", issue = "#336" }
-confusing-with-statement = { status = "planned", issue = "#336" }
+confusing-with-statement = "implemented"
 consider-iterating-dictionary = { status = "planned", issue = "#297" }
 consider-math-not-float = { status = "planned", issue = "#336" }
 consider-merging-isinstance = "implemented"

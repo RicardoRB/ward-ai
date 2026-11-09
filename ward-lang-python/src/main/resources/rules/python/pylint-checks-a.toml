@@ -134,3 +134,39 @@ body = '''
 check = "unassigned-call-expression"
 message = "expression contains a call but its value is assigned to nothing"
 '''
+
+[[rules]]
+id = "ward:python/bad-thread-instantiation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "thread-instantiation"
+message = "threading.Thread needs the target function"
+'''
+
+[[rules]]
+id = "ward:python/bad-super-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "bad-super-call"
+message = "Bad first argument '{value}' given to super()"
+'''
+
+[[rules]]
+id = "ward:python/confusing-with-statement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "confusing-with"
+message = "with statement binds a name and then a second item, which reads as a tuple; separate them"
+'''

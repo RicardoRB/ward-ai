@@ -6,7 +6,9 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AndOrTernaryCheck;
+import dev.ward.analysis.domain.rule.check.BadSuperCallCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
+import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
@@ -21,6 +23,7 @@ import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
+import dev.ward.analysis.domain.rule.check.ThreadInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.UnassignedCallExpressionCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedExportCheck;
@@ -74,6 +77,11 @@ final class PythonOrderChecks {
             "unassigned-call-expression",
             toml -> new UnassignedCallExpressionCheck(TomlValues.required(toml, MESSAGE))),
         entry("and-or-ternary", toml -> new AndOrTernaryCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "thread-instantiation",
+            toml -> new ThreadInstantiationCheck(TomlValues.required(toml, MESSAGE))),
+        entry("bad-super-call", toml -> new BadSuperCallCheck(TomlValues.required(toml, MESSAGE))),
+        entry("confusing-with", toml -> new ConfusingWithCheck(TomlValues.required(toml, MESSAGE))),
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",
