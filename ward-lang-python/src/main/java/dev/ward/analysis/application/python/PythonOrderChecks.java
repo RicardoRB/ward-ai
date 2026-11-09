@@ -60,6 +60,10 @@ final class PythonOrderChecks {
   }
 
   private static Map<String, CheckFactory> build() {
+    return CheckRegistry.union(List.of(buildFirst(), buildSecond()));
+  }
+
+  private static Map<String, CheckFactory> buildFirst() {
     return Map.ofEntries(
         entry("comparison-operator", PythonOrderChecks::comparisonOperator),
         entry("loop-variable", PythonOrderChecks::loopVariable),
@@ -90,7 +94,11 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry("dunder-return", PythonOrderChecks::dunderReturn),
+        entry("dunder-return", PythonOrderChecks::dunderReturn));
+  }
+
+  private static Map<String, CheckFactory> buildSecond() {
+    return Map.ofEntries(
         entry(
             "else-after-jump",
             toml ->

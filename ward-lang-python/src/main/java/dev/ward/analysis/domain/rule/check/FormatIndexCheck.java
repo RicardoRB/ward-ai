@@ -64,24 +64,17 @@ public final class FormatIndexCheck implements RuleCheck {
   }
 
   private static boolean fieldsFail(final String body, final Arguments args) {
-    int next = 0;
+    final int[] next = {0};
     int index = 0;
     while (index < body.length()) {
-      final char c = body.charAt(index);
-      if (c == '{' && index + 1 < body.length() && body.charAt(index + 1) == '{') {
+      if (escapedBrace(body, index)) {
         index += 2;
-      } else if (c == '{') {
+      } else if (body.charAt(index) == '{') {
         final int end = body.indexOf('}', index);
         if (end < 0) {
           return false;
         }
-        final String name = body.substring(index + 1, end).replaceAll("[:!].*$", "");
-        final int open = name.indexOf('[');
-        final String base = open < 0 ? name : name.substring(0, open);
-        final String resolved = base.isEmpty() ? String.valueOf(next++) : base;
-        if (open >= 0
-            && name.indexOf(']', open) >= 0
-            && lookupFails(resolved, name.substring(open + 1, name.indexOf(']', open)), args)) {
+        if (fieldFails(body.substring(index + 1, end), next, args)) {
           return true;
         }
         index = end + 1;
@@ -90,6 +83,19 @@ public final class FormatIndexCheck implements RuleCheck {
       }
     }
     return false;
+  }
+
+  private static boolean escapedBrace(final String body, final int index) {
+    return body.charAt(index) == '{' && index + 1 < body.length() && body.charAt(index + 1) == '{';
+  }
+
+  private static boolean fieldFails(final String field, final int[] next, final Arguments args) {
+    final String name = field.replaceAll("[:!].*$", "");
+    final int open = name.indexOf('[');
+    final String base = open < 0 ? name : name.substring(0, open);
+    final String resolved = base.isEmpty() ? String.valueOf(next[0]++) : base;
+    final int close = open < 0 ? -1 : name.indexOf(']', open);
+    return close >= 0 && lookupFails(resolved, name.substring(open + 1, close), args);
   }
 
   private static boolean lookupFails(

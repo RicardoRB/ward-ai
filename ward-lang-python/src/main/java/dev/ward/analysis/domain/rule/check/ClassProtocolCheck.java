@@ -67,17 +67,13 @@ public final class ClassProtocolCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final Map<String, Info> classes = classes(root);
-    final List<RuleMatch> found = new ArrayList<>();
-    switch (problem) {
-      case NOT_CONTEXT_MANAGER ->
-          withCalls(root, WITH_CALL, "__enter__", "__exit__", classes, found);
-      case NOT_ASYNC_CONTEXT_MANAGER ->
-          withCalls(root, ASYNC_WITH_CALL, "__aenter__", "__aexit__", classes, found);
-      case NON_ITERATOR_RETURNED -> nonIterators(root, classes, found);
-      case INVALID_ENUM_EXTENSION -> enumExtensions(root, classes, found);
-      case INVALID_METACLASS -> invalidMetaclasses(root, classes, found);
-    }
-    return List.copyOf(found);
+    return switch (problem) {
+      case NOT_CONTEXT_MANAGER -> withCalls(root, WITH, classes);
+      case NOT_ASYNC_CONTEXT_MANAGER -> withCalls(root, ASYNC, classes);
+      case NON_ITERATOR_RETURNED -> nonIterators(root, classes);
+      case INVALID_ENUM_EXTENSION -> enumExtensions(root, classes);
+      case INVALID_METACLASS -> invalidMetaclasses(root, classes);
+    };
   }
 
   private static Map<String, Info> classes(final SyntaxNode root) {
@@ -116,26 +112,30 @@ public final class ClassProtocolCheck implements RuleCheck {
     return Set.copyOf(members);
   }
 
-  private void withCalls(
-      final SyntaxNode root,
-      final Pattern call,
-      final String enter,
-      final String exit,
-      final Map<String, Info> classes,
-      final List<RuleMatch> found) {
+  /** The with statement to look for and the two methods a context manager needs. */
+  private record Protocol(Pattern call, String enter, String exit) {}
+
+  private static final Protocol WITH = new Protocol(WITH_CALL, "__enter__", "__exit__");
+  private static final Protocol ASYNC = new Protocol(ASYNC_WITH_CALL, "__aenter__", "__aexit__");
+
+  private List<RuleMatch> withCalls(
+      final SyntaxNode root, final Protocol protocol, final Map<String, Info> classes) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, WITHS)) {
-      final Matcher named = call.matcher(SyntaxWalk.text(visit.node()));
+      final Matcher named = protocol.call().matcher(SyntaxWalk.text(visit.node()));
       final Info info = named.find() ? classes.get(named.group(1)) : null;
       if (info != null
           && info.bases().isEmpty()
-          && !(info.members().contains(enter) && info.members().contains(exit))) {
+          && !(info.members().contains(protocol.enter())
+              && info.members().contains(protocol.exit()))) {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
-  private void nonIterators(
-      final SyntaxNode root, final Map<String, Info> classes, final List<RuleMatch> found) {
+  private List<RuleMatch> nonIterators(final SyntaxNode root, final Map<String, Info> classes) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String text = SyntaxWalk.text(visit.node());
       final Info info = classes.get(enclosingClass(visit.ancestors()));
@@ -146,6 +146,7 @@ public final class ClassProtocolCheck implements RuleCheck {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
   private static String enclosingClass(final List<SyntaxNode> ancestors) {
@@ -161,8 +162,8 @@ public final class ClassProtocolCheck implements RuleCheck {
     return functionText.contains("returnself") && !functionText.contains("returnself.");
   }
 
-  private void enumExtensions(
-      final SyntaxNode root, final Map<String, Info> classes, final List<RuleMatch> found) {
+  private List<RuleMatch> enumExtensions(final SyntaxNode root, final Map<String, Info> classes) {
+    final List<RuleMatch> found = new ArrayList<>();
     final Set<String> assigners = classesWithAssignments(root, classes.keySet());
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
       final Info info = classes.get(classNameOf(SyntaxWalk.text(visit.node())));
@@ -171,6 +172,7 @@ public final class ClassProtocolCheck implements RuleCheck {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
   private static boolean enumWithMembers(
@@ -220,14 +222,16 @@ public final class ClassProtocolCheck implements RuleCheck {
     return "";
   }
 
-  private void invalidMetaclasses(
-      final SyntaxNode root, final Map<String, Info> classes, final List<RuleMatch> found) {
+  private List<RuleMatch> invalidMetaclasses(
+      final SyntaxNode root, final Map<String, Info> classes) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
       final Matcher meta = METACLASS.matcher(SyntaxWalk.text(visit.node()));
       if (meta.find() && invalidMetaclass(meta.group(1), classes)) {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
   private static boolean invalidMetaclass(final String name, final Map<String, Info> classes) {

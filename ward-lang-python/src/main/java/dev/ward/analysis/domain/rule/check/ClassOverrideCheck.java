@@ -71,21 +71,19 @@ public final class ClassOverrideCheck implements RuleCheck {
       members.put(name, members(root, name));
       nodes.put(name, visit.node());
     }
-    final List<RuleMatch> found = new ArrayList<>();
-    switch (problem) {
-      case INVALID_OVERRIDDEN_METHOD -> overrides(root, bases, members, found);
-      case METHOD_HIDDEN -> hidden(root, members, found);
-      case NON_PARENT_INIT_CALLED -> parentInit(root, bases, found);
-      case OVERRIDDEN_FINAL_METHOD -> finals(root, bases, members, found);
-    }
-    return List.copyOf(found);
+    return switch (problem) {
+      case INVALID_OVERRIDDEN_METHOD -> overrides(root, bases, members);
+      case METHOD_HIDDEN -> hidden(root, members);
+      case NON_PARENT_INIT_CALLED -> parentInit(root, bases);
+      case OVERRIDDEN_FINAL_METHOD -> finals(root, bases, members);
+    };
   }
 
-  private void overrides(
+  private List<RuleMatch> overrides(
       final SyntaxNode root,
       final Map<String, List<String>> bases,
-      final Map<String, Members> members,
-      final List<RuleMatch> found) {
+      final Map<String, Members> members) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = owner(visit.ancestors());
       final String name = first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
@@ -102,10 +100,11 @@ public final class ClassOverrideCheck implements RuleCheck {
         }
       }
     }
+    return List.copyOf(found);
   }
 
-  private void hidden(
-      final SyntaxNode root, final Map<String, Members> members, final List<RuleMatch> found) {
+  private List<RuleMatch> hidden(final SyntaxNode root, final Map<String, Members> members) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = owner(visit.ancestors());
       final String name = first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
@@ -114,10 +113,11 @@ public final class ClassOverrideCheck implements RuleCheck {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
-  private void parentInit(
-      final SyntaxNode root, final Map<String, List<String>> bases, final List<RuleMatch> found) {
+  private List<RuleMatch> parentInit(final SyntaxNode root, final Map<String, List<String>> bases) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CALLS)) {
       final String text = SyntaxWalk.text(visit.node());
       final Matcher call = INIT_CALL.matcher(text);
@@ -129,13 +129,14 @@ public final class ClassOverrideCheck implements RuleCheck {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
+    return List.copyOf(found);
   }
 
-  private void finals(
+  private List<RuleMatch> finals(
       final SyntaxNode root,
       final Map<String, List<String>> bases,
-      final Map<String, Members> members,
-      final List<RuleMatch> found) {
+      final Map<String, Members> members) {
+    final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String owner = owner(visit.ancestors());
       final String name = first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
@@ -146,6 +147,7 @@ public final class ClassOverrideCheck implements RuleCheck {
         }
       }
     }
+    return List.copyOf(found);
   }
 
   /** The name of the class a method is a direct member of, or "" when it is not a method. */

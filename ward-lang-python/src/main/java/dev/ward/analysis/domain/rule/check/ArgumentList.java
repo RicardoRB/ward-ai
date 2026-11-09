@@ -15,22 +15,30 @@ final class ArgumentList {
     int depth = 0;
     char quote = 0;
     for (final char c : text.toCharArray()) {
-      if (quote != 0) {
-        quote = c == quote ? 0 : quote;
-      } else if (c == '\'' || c == '"') {
-        quote = c;
-      } else if (c == '[' || c == '(' || c == '{') {
-        depth++;
-      } else if (c == ']' || c == ')' || c == '}') {
-        depth--;
-      } else if (c == ',' && depth == 0) {
+      if (quote == 0 && c == ',' && depth == 0) {
         add(items, current);
-        continue;
+      } else {
+        current.append(c);
+        quote = quoteAfter(quote, c);
+        depth = quote == 0 ? depthAfter(depth, c) : depth;
       }
-      current.append(c);
     }
     add(items, current);
     return items;
+  }
+
+  private static char quoteAfter(final char quote, final char c) {
+    if (quote != 0) {
+      return c == quote ? 0 : quote;
+    }
+    return c == '\'' || c == '"' ? c : 0;
+  }
+
+  private static int depthAfter(final int depth, final char c) {
+    if (c == '[' || c == '(' || c == '{') {
+      return depth + 1;
+    }
+    return c == ']' || c == ')' || c == '}' ? depth - 1 : depth;
   }
 
   /** Returns the text without its quotes when it is a quoted string, else the text itself. */
