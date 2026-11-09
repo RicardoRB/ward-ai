@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
+import dev.ward.analysis.domain.rule.check.DunderReturnCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
@@ -74,7 +75,16 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+        entry("dunder-return", PythonOrderChecks::dunderReturn),
         entry("strict-call", PythonOrderChecks::strictCall));
+  }
+
+  private static RuleCheck dunderReturn(final TomlParseResult toml) {
+    return new DunderReturnCheck(
+        TomlValues.required(toml, "method"),
+        DunderReturnCheck.parseExpected(TomlValues.required(toml, "returns")),
+        Boolean.TRUE.equals(toml.getBoolean("non-negative")),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {

@@ -871,12 +871,6 @@ category = "pylint"
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
-name = "literal-comparison"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["literal-comparison"]
-
-[[rule]]
 name = "logging-format-interpolation"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -913,12 +907,6 @@ category = "pylint"
 pylint = ["looping-through-iterator"]
 
 [[rule]]
-name = "lost-exception"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["lost-exception"]
-
-[[rule]]
 name = "match-class-bind-self"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -953,12 +941,6 @@ name = "misplaced-format-function"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["misplaced-format-function"]
-
-[[rule]]
-name = "misplaced-future"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["misplaced-future"]
 
 [[rule]]
 name = "missing-any-param-doc"
@@ -1061,12 +1043,6 @@ name = "missing-yield-type-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["missing-yield-type-doc"]
-
-[[rule]]
-name = "mixed-format-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "modified-iterating-dict"
@@ -1177,12 +1153,6 @@ category = "pylint"
 pylint = ["non-str-assignment-to-dunder-name"]
 
 [[rule]]
-name = "nonexistent-operator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["nonexistent-operator"]
-
-[[rule]]
 name = "not-a-mapping"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1211,18 +1181,6 @@ name = "not-context-manager"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["not-context-manager"]
-
-[[rule]]
-name = "not-in-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["not-in-loop"]
-
-[[rule]]
-name = "notimplemented-raised"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["notimplemented-raised"]
 
 [[rule]]
 name = "overlapping-except"
@@ -1919,3 +1877,9 @@ name = "yield-inside-async-function"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["yield-inside-async-function"]
+
+[[rule]]
+name = "not-in-loop"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-in-loop"]

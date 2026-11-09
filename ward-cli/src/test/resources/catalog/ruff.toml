@@ -297,6 +297,7 @@ ruff = ["ASYNC251"]
 [[rule]]
 name = "unary-prefix-increment-decrement"
 ruff = ["B002"]
+pylint = ["nonexistent-operator"]
 
 [[rule]]
 name = "assignment-to-os-environ"
@@ -333,6 +334,7 @@ ruff = ["B010"]
 [[rule]]
 name = "jump-statement-in-finally"
 ruff = ["B012"]
+pylint = ["lost-exception"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
@@ -1079,6 +1081,7 @@ ruff = ["F402"]
 [[rule]]
 name = "late-future-import"
 ruff = ["F404"]
+pylint = ["misplaced-future"]
 
 [[rule]]
 name = "undefined-local-with-import-star-usage"
@@ -1115,6 +1118,7 @@ ruff = ["F505"]
 [[rule]]
 name = "percent-format-mixed-positional-and-named"
 ruff = ["F506"]
+pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "percent-format-positional-count-mismatch"
@@ -1177,6 +1181,7 @@ ruff = ["F631"]
 [[rule]]
 name = "is-literal"
 ruff = ["F632"]
+pylint = ["literal-comparison"]
 
 [[rule]]
 name = "invalid-print-syntax"
@@ -1235,6 +1240,7 @@ ruff = ["F842"]
 [[rule]]
 name = "raise-not-implemented"
 ruff = ["F901"]
+pylint = ["notimplemented-raised"]
 
 [[rule]]
 name = "future-rewritable-type-annotation"

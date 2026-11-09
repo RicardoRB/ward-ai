@@ -1,0 +1,172 @@
+# Pylint checks, part B: special methods that return a literal of the wrong type.
+
+[[rules]]
+id = "ward:python/invalid-bool-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__bool__"
+returns = "bool"
+message = "__bool__ does not return bool"
+'''
+
+[[rules]]
+id = "ward:python/invalid-bytes-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__bytes__"
+returns = "bytes"
+message = "__bytes__ does not return bytes"
+'''
+
+[[rules]]
+id = "ward:python/invalid-format-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__format__"
+returns = "str"
+message = "__format__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/invalid-getnewargs-ex-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__getnewargs_ex__"
+returns = "tuple"
+message = "__getnewargs_ex__ does not return a tuple containing (tuple, dict)"
+'''
+
+[[rules]]
+id = "ward:python/invalid-getnewargs-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__getnewargs__"
+returns = "tuple"
+message = "__getnewargs__ does not return a tuple"
+'''
+
+[[rules]]
+id = "ward:python/invalid-hash-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__hash__"
+returns = "int"
+message = "__hash__ does not return int"
+'''
+
+[[rules]]
+id = "ward:python/invalid-index-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__index__"
+returns = "int"
+message = "__index__ does not return int"
+'''
+
+[[rules]]
+id = "ward:python/invalid-length-hint-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__length_hint__"
+returns = "int"
+non-negative = true
+message = "__length_hint__ does not return non-negative integer"
+'''
+
+[[rules]]
+id = "ward:python/invalid-length-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__len__"
+returns = "int"
+non-negative = true
+message = "__len__ does not return non-negative integer"
+'''
+
+[[rules]]
+id = "ward:python/invalid-repr-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__repr__"
+returns = "str"
+message = "__repr__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/invalid-str-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__str__"
+returns = "str"
+message = "__str__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-carriage-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\r"
+message = "raw carriage return in a string literal; use the \\r escape instead"
+'''
