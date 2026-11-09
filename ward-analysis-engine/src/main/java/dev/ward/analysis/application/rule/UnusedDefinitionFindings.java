@@ -1,7 +1,6 @@
 package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -69,16 +68,16 @@ public final class UnusedDefinitionFindings {
 
   /** The strategy and kind of the rule, if it is an unused-definition rule of its language. */
   private static Optional<Binding> binding(final RuleDefinition rule) {
-    for (final AnalysisLanguage language : rule.languages()) {
-      final Optional<UnusedDefinitionStrategy> strategy =
-          UnusedDefinitionStrategies.forLanguage(language);
-      final Optional<UnusedDefinitionKind> kind =
-          strategy.flatMap(found -> found.kindOf(rule.id()));
-      if (strategy.isPresent() && kind.isPresent()) {
-        return Optional.of(new Binding(strategy.get(), kind.get()));
-      }
-    }
-    return Optional.empty();
+    return rule.languages().stream()
+        .map(UnusedDefinitionStrategies::forLanguage)
+        .flatMap(Optional::stream)
+        .flatMap(strategy -> bind(strategy, rule.id()).stream())
+        .findFirst();
+  }
+
+  private static Optional<Binding> bind(
+      final UnusedDefinitionStrategy strategy, final String ruleId) {
+    return strategy.kindOf(ruleId).map(kind -> new Binding(strategy, kind));
   }
 
   private static List<AnalysisFinding> ruleFindings(

@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 final class UnusedDefinitionFindingsTest {
 
   private static final Span SPAN = new Span(3, 1, 4, 1, 10, 20);
+  private static final String LIB_PY = "a/lib.py";
   private static final RuleDefinition FUNCTION = rule(UnusedDefinitionFindings.FUNCTION_ID);
   private static final RuleDefinition CLASS = rule(UnusedDefinitionFindings.CLASS_ID);
   private static final RuleDefinition SWIFT_DECLARATION =
@@ -30,8 +31,10 @@ final class UnusedDefinitionFindingsTest {
   void aDefinitionUsedByAnotherFileIsNotReported() {
     final Map<String, FileSummary> files =
         Map.of(
-            "a/lib.py", summary("a/lib.py", Set.of(), symbol("shared"), symbol("lonely")),
-            "a/app.py", summary("a/app.py", Set.of("shared")));
+            LIB_PY,
+            summary(LIB_PY, Set.of(), symbol("shared"), symbol("lonely")),
+            "a/app.py",
+            summary("a/app.py", Set.of("shared")));
 
     final List<AnalysisFinding> findings =
         UnusedDefinitionFindings.findings(List.of(FUNCTION), files);
@@ -41,18 +44,19 @@ final class UnusedDefinitionFindingsTest {
         .singleElement()
         .asString()
         .contains("lonely");
-    assertThat(findings.get(0).file()).isEqualTo("a/lib.py");
+    assertThat(findings.get(0).file()).isEqualTo(LIB_PY);
   }
 
   @Test
   void exemptsDunderMainTestAndDiscoveredFiles() {
     final Map<String, FileSummary> files =
         Map.of(
-            "a/lib.py",
-                summary(
-                    "a/lib.py", Set.of(), symbol("__enter__"), symbol("main"), symbol("test_x")),
-            "a/conftest.py", summary("a/conftest.py", Set.of(), symbol("fixture")),
-            "a/test_lib.py", summary("a/test_lib.py", Set.of(), symbol("helper")));
+            LIB_PY,
+            summary(LIB_PY, Set.of(), symbol("__enter__"), symbol("main"), symbol("test_x")),
+            "a/conftest.py",
+            summary("a/conftest.py", Set.of(), symbol("fixture")),
+            "a/test_lib.py",
+            summary("a/test_lib.py", Set.of(), symbol("helper")));
 
     assertThat(UnusedDefinitionFindings.findings(List.of(FUNCTION), files)).isEmpty();
   }
@@ -60,8 +64,7 @@ final class UnusedDefinitionFindingsTest {
   @Test
   void eachRuleReportsOnlyItsKind() {
     final Map<String, FileSummary> files =
-        Map.of(
-            "a/lib.py", summary("a/lib.py", Set.of(), symbol("f"), new Symbol("K", SPAN, "class")));
+        Map.of(LIB_PY, summary(LIB_PY, Set.of(), symbol("f"), new Symbol("K", SPAN, "class")));
 
     assertThat(UnusedDefinitionFindings.findings(List.of(CLASS), files))
         .extracting(AnalysisFinding::ruleId)
@@ -109,7 +112,7 @@ final class UnusedDefinitionFindingsTest {
   @Test
   void theSwiftRuleSkipsPythonFiles() {
     final Map<String, FileSummary> files =
-        Map.of("a/lib.py", summary("a/lib.py", Set.of(), symbol("lonely")));
+        Map.of(LIB_PY, summary(LIB_PY, Set.of(), symbol("lonely")));
 
     assertThat(UnusedDefinitionFindings.findings(List.of(SWIFT_DECLARATION), files)).isEmpty();
   }

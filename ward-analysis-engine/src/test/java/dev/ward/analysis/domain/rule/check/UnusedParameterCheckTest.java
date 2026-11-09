@@ -106,12 +106,8 @@ class UnusedParameterCheckTest {
   }
 
   @Test
-  void leavesParametersOfMethodsOfOpenTypesAlone() {
+  void leavesParametersOfMethodsOfOpenTypesAloneAndReportsThoseOfClosedTypes() {
     assertThat(run(new UnusedParameterCheck(MESSAGE), method(true))).isEmpty();
-  }
-
-  @Test
-  void reportsParametersOfMethodsOfClosedTypes() {
     assertThat(run(new UnusedParameterCheck(MESSAGE), method(false))).hasSize(1);
   }
 
