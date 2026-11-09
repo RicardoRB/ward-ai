@@ -1373,3 +1373,27 @@ check = "node-unsafe-negation"
 enforce-for-ordering-relations = false
 message = "unexpected negating the left operand of '{value}' operator"
 '''
+
+[[rules]]
+id = "ward:typescript/no-ex-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''
+
+[[rules]]
+id = "ward:javascript/no-ex-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''

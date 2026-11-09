@@ -362,8 +362,6 @@ eslint = ["no-eval"]
 
 [[rule]]
 name = "no-ex-assign"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-ex-assign"]
 biome = ["noCatchAssign"]
 

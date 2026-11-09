@@ -60,7 +60,7 @@ no-empty-pattern = "implemented"
 no-empty-static-block = "implemented"
 no-eq-null = { status = "planned", issue = "#296" }
 no-eval = "implemented"
-no-ex-assign = { status = "planned", issue = "#326" }
+no-ex-assign = "implemented"
 no-extend-native = "implemented"
 no-extra-bind = { status = "planned", issue = "#326" }
 no-extra-boolean-cast = { status = "planned", issue = "#296" }

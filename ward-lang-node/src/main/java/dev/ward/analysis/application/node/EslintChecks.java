@@ -3,6 +3,7 @@ package dev.ward.analysis.application.node;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.GetterReturnCheck;
+import dev.ward.analysis.domain.rule.check.NodeCatchParameterAssignCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorSuperCheck;
 import dev.ward.analysis.domain.rule.check.PreferRegexLiteralsCheck;
 import dev.ward.analysis.domain.rule.check.PreferRestParamsCheck;
@@ -29,7 +30,8 @@ final class EslintChecks {
         "node-constructor-super", EslintChecks::constructorSuper,
         "node-prefer-rest-params", EslintChecks::preferRestParams,
         "node-no-setter-return", EslintChecks::setterReturn,
-        "node-string-escape", EslintChecks::stringEscape);
+        "node-string-escape", EslintChecks::stringEscape,
+        "node-catch-parameter-assign", EslintChecks::catchParameterAssign);
   }
 
   private static GetterReturnCheck getterReturn(final TomlParseResult toml) {
@@ -65,5 +67,9 @@ final class EslintChecks {
   private static StringEscapeCheck stringEscape(final TomlParseResult toml) {
     return new StringEscapeCheck(
         Boolean.TRUE.equals(toml.getBoolean("decimal")), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static NodeCatchParameterAssignCheck catchParameterAssign(final TomlParseResult toml) {
+    return new NodeCatchParameterAssignCheck(TomlValues.required(toml, MESSAGE));
   }
 }
