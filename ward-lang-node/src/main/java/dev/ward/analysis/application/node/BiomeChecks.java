@@ -37,6 +37,7 @@ final class BiomeChecks {
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
     final Map<String, CheckFactory> checks = new HashMap<>(AriaChecks.checks());
+    checks.putAll(BiomeJsxChecks.checks());
     checks.putAll(
         Map.ofEntries(
             entry(

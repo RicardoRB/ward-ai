@@ -4,10 +4,12 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.BiomeActivedescendantTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsForRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsSupportedByRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaUnsupportedElementsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaValuesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeInteractiveToNoninteractiveRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
@@ -41,6 +43,16 @@ final class AriaChecks {
                 "node-aria-props-supported-by-role",
                 toml ->
                     new BiomeAriaPropsSupportedByRoleCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-aria-unsupported-elements",
+                toml ->
+                    new BiomeAriaUnsupportedElementsCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-activedescendant-tabindex",
+                toml ->
+                    new BiomeActivedescendantTabindexCheck(
                         AriaTables.load(), TomlValues.required(toml, MESSAGE))),
             entry(
                 "node-aria-props",
