@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.AndOrTernaryCheck;
 import dev.ward.analysis.domain.rule.check.BadSuperCallCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
+import dev.ward.analysis.domain.rule.check.DuplicateArgumentNameCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
@@ -89,6 +90,9 @@ final class PythonOrderChecks {
             toml ->
                 new MinMaxBuiltinCheck(
                     TomlValues.required(toml, "builtin"), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "duplicate-argument-name",
+            toml -> new DuplicateArgumentNameCheck(TomlValues.required(toml, MESSAGE))),
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",

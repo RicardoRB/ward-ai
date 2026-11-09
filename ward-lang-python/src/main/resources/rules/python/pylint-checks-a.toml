@@ -210,3 +210,71 @@ kinds = ["raise_stmt"]
 text = "from(\\d+|'[^']*'|\"[^\"]*\"|True|False)$"
 message = "exception cause is set to something that is not an exception, nor None"
 '''
+
+[[rules]]
+id = "ward:python/format-string-without-interpolation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^("[^"%{]*"|[\x27][^\x27%{]*[\x27])(%|\.format\()'
+message = "formatting a string that has no interpolated variables"
+'''
+
+[[rules]]
+id = "ward:python/bad-format-string-key"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^("[^"]*%\([^"]*"|[\x27][^\x27]*%\([^\x27]*[\x27])%\{[\d(]'
+message = "format string dictionary key should be a string"
+'''
+
+[[rules]]
+id = "ward:python/chained-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["and_test"]
+text = '^(\w+)(<=?)(\w+)and\3(<=?)(\w+)$|^(\w+)(>=?)(\w+)and\8(>=?)(\w+)$'
+message = "simplify the chained comparison of two operands"
+'''
+
+[[rules]]
+id = "ward:python/chained-comparison-all-equal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["and_test"]
+text = '^(\w+)<=(\w+)and\2<=\1$|^(\w+)>=(\w+)and\4>=\3$'
+message = "simplify the cycle of weak inequalities to an equality"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-argument-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-argument-name"
+message = "duplicate argument name in the function definition"
+'''

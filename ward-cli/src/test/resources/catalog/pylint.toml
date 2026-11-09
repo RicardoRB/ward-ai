@@ -103,7 +103,6 @@ pylint = ["bad-exception-cause"]
 [[rule]]
 name = "bad-format-string-key"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-format-string-key"]
 
 [[rule]]
@@ -402,7 +401,6 @@ pylint = ["expression-not-assigned"]
 [[rule]]
 name = "format-string-without-interpolation"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["format-string-without-interpolation"]
 
 [[rule]]
