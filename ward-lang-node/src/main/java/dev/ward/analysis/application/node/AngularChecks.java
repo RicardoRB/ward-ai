@@ -10,6 +10,6 @@ final class AngularChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Map.of();
+    return DecoratedClassChecks.checks();
   }
 }

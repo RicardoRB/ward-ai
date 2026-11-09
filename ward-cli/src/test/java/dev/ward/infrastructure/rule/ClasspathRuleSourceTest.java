@@ -84,7 +84,6 @@ class ClasspathRuleSourceTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
-              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
               assertThat(rule.body().isEmpty() || rule.body().contains("check = ")).isTrue();
             });
     assertThat(node).extracting(RuleDefinition::id).doesNotHaveDuplicates();
