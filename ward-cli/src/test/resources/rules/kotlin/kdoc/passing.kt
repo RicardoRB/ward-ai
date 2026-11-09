@@ -1,5 +1,7 @@
 package fixture
 
+import java.util.ArrayList
+
 /** Documents the class. */
 class Store {
     /** Documents the field. */
