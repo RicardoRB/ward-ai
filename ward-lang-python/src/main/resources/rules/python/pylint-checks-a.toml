@@ -340,3 +340,39 @@ body = '''
 check = "attribute-outside-init"
 message = "attribute {value} defined outside __init__"
 '''
+
+[[rules]]
+id = "ward:python/class-variable-slots-conflict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-conflict"
+message = "class variable {value} conflicts with __slots__"
+'''
+
+[[rules]]
+id = "ward:python/declare-non-slot"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-declare"
+message = "no such name {value} in __slots__"
+'''
+
+[[rules]]
+id = "ward:python/assigning-non-slot"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-assign"
+message = "assigning to attribute {value} not defined in class slots"
+'''

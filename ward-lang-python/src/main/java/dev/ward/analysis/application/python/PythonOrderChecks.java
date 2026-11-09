@@ -26,6 +26,7 @@ import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
+import dev.ward.analysis.domain.rule.check.SlotsCheck;
 import dev.ward.analysis.domain.rule.check.StarUnpackLimitCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
@@ -96,6 +97,22 @@ final class PythonOrderChecks {
         entry(
             "mixed-comparison-chain",
             toml -> new MixedComparisonChainCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "slots-conflict",
+            toml ->
+                new SlotsCheck(
+                    SlotsCheck.Problem.CLASS_VARIABLE_CONFLICT,
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "slots-declare",
+            toml ->
+                new SlotsCheck(
+                    SlotsCheck.Problem.DECLARE_NON_SLOT, TomlValues.required(toml, MESSAGE))),
+        entry(
+            "slots-assign",
+            toml ->
+                new SlotsCheck(
+                    SlotsCheck.Problem.ASSIGNING_NON_SLOT, TomlValues.required(toml, MESSAGE))),
         entry(
             "attribute-outside-init",
             toml -> new AttributeOutsideInitCheck(TomlValues.required(toml, MESSAGE))),

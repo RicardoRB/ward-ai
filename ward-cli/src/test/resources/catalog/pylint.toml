@@ -38,7 +38,6 @@ pylint = ["arguments-renamed"]
 [[rule]]
 name = "assigning-non-slot"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["assigning-non-slot"]
 
 [[rule]]
@@ -156,7 +155,6 @@ pylint = ["chained-comparison-all-equal"]
 [[rule]]
 name = "class-variable-slots-conflict"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["class-variable-slots-conflict"]
 
 [[rule]]
@@ -327,7 +325,6 @@ pylint = ["cyclic-import"]
 [[rule]]
 name = "declare-non-slot"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["declare-non-slot"]
 
 [[rule]]
