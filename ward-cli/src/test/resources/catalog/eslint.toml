@@ -322,8 +322,6 @@ eslint = ["no-duplicate-imports"]
 
 [[rule]]
 name = "no-else-return"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-else-return"]
 pylint = ["no-else-return"]
 biome = ["noUselessElse"]

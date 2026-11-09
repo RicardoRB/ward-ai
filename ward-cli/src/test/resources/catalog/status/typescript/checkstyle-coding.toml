@@ -3,7 +3,7 @@
 array-trailing-comma = { status = "planned", issue = "#296" }
 avoid-inline-conditionals = { status = "planned", issue = "#296" }
 avoid-no-argument-super-constructor-call = "not-applicable"
-constructors-declaration-grouping = { status = "planned", issue = "#296" }
+constructors-declaration-grouping = "implemented"
 covariant-equals = "not-applicable"
 declaration-order = { status = "planned", issue = "#296" }
 default-comes-last = { status = "planned", issue = "#296" }
@@ -38,7 +38,7 @@ no-clone = "not-applicable"
 no-enum-trailing-comma = { status = "planned", issue = "#296" }
 no-finalizer = "not-applicable"
 one-statement-per-line = "implemented"
-overload-methods-declaration-order = { status = "planned", issue = "#296" }
+overload-methods-declaration-order = "implemented"
 package-declaration = "not-applicable"
 parameter-assignment = { status = "planned", issue = "#296" }
 pattern-variable-assignment = "not-applicable"
@@ -64,5 +64,5 @@ unused-local-variable = "implemented"
 unused-private-field = { status = "planned", issue = "#296" }
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
-variable-declaration-usage-distance = { status = "planned", issue = "#296" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = "not-applicable"

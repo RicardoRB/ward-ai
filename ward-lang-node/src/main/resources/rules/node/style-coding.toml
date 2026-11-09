@@ -79,3 +79,79 @@ target = "lines"
 pattern = '^(?!\s*for\s*\().*;\s*[A-Za-z_$]'
 message = "only one statement per line is allowed"
 '''
+
+[[rules]]
+id = "ward:typescript/constructors-declaration-grouping"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-group"
+message = "constructors must be grouped together"
+'''
+
+[[rules]]
+id = "ward:javascript/constructors-declaration-grouping"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-group"
+message = "constructors must be grouped together"
+'''
+
+[[rules]]
+id = "ward:typescript/overload-methods-declaration-order"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "node-overload-grouping"
+message = "overloaded method must be declared next to its other overloads"
+'''
+
+[[rules]]
+id = "ward:javascript/overload-methods-declaration-order"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "node-overload-grouping"
+message = "overloaded method must be declared next to its other overloads"
+'''
+
+[[rules]]
+id = "ward:typescript/variable-declaration-usage-distance"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.allowed-distance = { type = "integer", min = 1, parameter = "max" }
+body = '''
+check = "node-variable-distance"
+max = 3
+message = "distance between declaration of {value} and its first usage is more than {max}"
+'''
+
+[[rules]]
+id = "ward:javascript/variable-declaration-usage-distance"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+options.allowed-distance = { type = "integer", min = 1, parameter = "max" }
+body = '''
+check = "node-variable-distance"
+max = 3
+message = "distance between declaration of {value} and its first usage is more than {max}"
+'''

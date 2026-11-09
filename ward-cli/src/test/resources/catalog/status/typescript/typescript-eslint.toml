@@ -1,6 +1,6 @@
 # Status of the typescript-eslint rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-adjacent-overload-signatures = { status = "planned", issue = "#296" }
+adjacent-overload-signatures = "implemented"
 await-thenable = { status = "planned", issue = "#327" }
 ban-ts-comment = { status = "planned", issue = "#327" }
 ban-tslint-comment = { status = "planned", issue = "#296" }

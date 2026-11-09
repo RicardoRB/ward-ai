@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "adjacent-overload-signatures"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["adjacent-overload-signatures"]
 biome = ["useAdjacentOverloadSignatures"]
 

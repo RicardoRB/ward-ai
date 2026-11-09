@@ -27,3 +27,15 @@ kinds = ["singleExpression"]
 text = '^([\w$]+)&&\1\.[\w$.()]+$'
 message = "prefer an optional chain over this logical expression"
 '''
+
+[[rules]]
+id = "ward:typescript/adjacent-overload-signatures"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-overload-grouping"
+message = "overloaded method must be declared next to its other overloads"
+'''

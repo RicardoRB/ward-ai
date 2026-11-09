@@ -31,7 +31,8 @@ public final class VariableDistanceCheck implements RuleCheck {
   private static final String NAME = "{value}";
   private static final String COUNT = "{max}";
   private static final Set<ScopeKind> LOCAL_SCOPES = Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK);
-  private static final Set<String> WRAPPERS = Set.of("statements", "statements_impl", "stmt");
+  private static final Set<String> WRAPPERS =
+      Set.of("statements", "statements_impl", "stmt", "statementList");
 
   private final int max;
   private final String message;
