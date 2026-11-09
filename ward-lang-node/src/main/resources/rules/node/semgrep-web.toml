@@ -143,16 +143,3 @@ check = "taint"
 specs = ["taint/node/sources.toml", "taint/node/semgrep-path-join.toml"]
 message = "untrusted data from {source} reaches the path built by {sink}"
 '''
-
-[[rules]]
-id = "ward:javascript/tainted-html-string"
-language = "JAVASCRIPT"
-capability = "DATAFLOW"
-severity = "WARNING"
-category = "security"
-presets = ["standard", "strict"]
-body = '''
-check = "taint"
-specs = ["taint/node/semgrep-lambda.toml", "taint/node/semgrep-html-string.toml"]
-message = "untrusted event data from {source} is built into an HTML string by {sink}"
-'''
