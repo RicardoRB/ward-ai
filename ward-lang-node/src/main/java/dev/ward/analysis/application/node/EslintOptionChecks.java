@@ -5,9 +5,11 @@ import dev.ward.analysis.domain.rule.check.NodeArrayCallbackReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeInnerDeclarationsCheck;
 import dev.ward.analysis.domain.rule.check.NodeInvalidRegexpCheck;
 import dev.ward.analysis.domain.rule.check.NodeIrregularWhitespaceCheck;
+import dev.ward.analysis.domain.rule.check.NodePreserveCaughtErrorCheck;
 import dev.ward.analysis.domain.rule.check.NodePromiseRejectCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnsafeOptionalChainingCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedExpressionsCheck;
+import dev.ward.analysis.domain.rule.check.NodeUseBeforeDefineCheck;
 import org.tomlj.TomlParseResult;
 
 /** The factories of the ESLint core checks that read options from the rule's table (issue #326). */
@@ -71,5 +73,21 @@ final class EslintOptionChecks {
         new NodeArrayCallbackReturnCheck.Options(
             flag(toml, "allow-implicit"), flag(toml, "check-for-each"), flag(toml, "allow-void")),
         TomlValues.required(toml, MESSAGE));
+  }
+
+  static NodeUseBeforeDefineCheck useBeforeDefine(final TomlParseResult toml) {
+    return new NodeUseBeforeDefineCheck(
+        new NodeUseBeforeDefineCheck.Options(
+            flag(toml, "functions"), flag(toml, "classes"), flag(toml, "variables")),
+        TomlValues.required(toml, MESSAGE));
+  }
+
+  static NodePreserveCaughtErrorCheck preserveCaughtError(final TomlParseResult toml) {
+    return new NodePreserveCaughtErrorCheck(
+        new NodePreserveCaughtErrorCheck.Options(flag(toml, "require-catch-parameter")),
+        TomlValues.required(toml, "missing-cause-message"),
+        TomlValues.required(toml, "partial-message"),
+        TomlValues.required(toml, "missing-parameter-message"),
+        TomlValues.required(toml, "incorrect-cause-message"));
   }
 }
