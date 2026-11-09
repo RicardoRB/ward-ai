@@ -255,7 +255,7 @@ language = "TYPESCRIPT"
 capability = "CFG"
 severity = "ERROR"
 category = "problem"
-presets = ["strict"]
+presets = ["standard", "strict"]
 options.allow-implicit = { type = "boolean" }
 options.check-for-each = { type = "boolean" }
 options.allow-void = { type = "boolean" }
@@ -273,7 +273,7 @@ language = "JAVASCRIPT"
 capability = "CFG"
 severity = "ERROR"
 category = "problem"
-presets = ["strict"]
+presets = ["standard", "strict"]
 options.allow-implicit = { type = "boolean" }
 options.check-for-each = { type = "boolean" }
 options.allow-void = { type = "boolean" }
@@ -283,4 +283,172 @@ allow-implicit = false
 check-for-each = false
 allow-void = false
 message = "Array callback must return a value."
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-binary-expression"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constant-binary-expression"
+operand-message = "Unexpected constant binary expression. Compares constantly with the other side of the operator."
+short-circuit-message = "Unexpected constant truthiness or nullishness on the left-hand side of a short-circuit expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-binary-expression"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constant-binary-expression"
+operand-message = "Unexpected constant binary expression. Compares constantly with the other side of the operator."
+short-circuit-message = "Unexpected constant truthiness or nullishness on the left-hand side of a short-circuit expression."
+'''
+
+[[rules]]
+id = "ward:typescript/no-redeclare"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redeclare"
+message = "'{value}' is already defined."
+'''
+
+[[rules]]
+id = "ward:javascript/no-redeclare"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redeclare"
+message = "'{value}' is already defined."
+'''
+
+[[rules]]
+id = "ward:typescript/no-use-before-define"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.functions = { type = "boolean" }
+options.classes = { type = "boolean" }
+options.variables = { type = "boolean" }
+body = '''
+check = "node-no-use-before-define"
+functions = true
+classes = true
+variables = true
+message = "'{value}' was used before it was defined."
+'''
+
+[[rules]]
+id = "ward:javascript/no-use-before-define"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.functions = { type = "boolean" }
+options.classes = { type = "boolean" }
+options.variables = { type = "boolean" }
+body = '''
+check = "node-no-use-before-define"
+functions = true
+classes = true
+variables = true
+message = "'{value}' was used before it was defined."
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-backreference"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-useless-backreference"
+message = "Backreference '{value}' will be ignored."
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-backreference"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-useless-backreference"
+message = "Backreference '{value}' will be ignored."
+'''
+
+[[rules]]
+id = "ward:typescript/preserve-caught-error"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.require-catch-parameter = { type = "boolean" }
+body = '''
+check = "node-preserve-caught-error"
+require-catch-parameter = false
+missing-cause-message = "There is no `cause` attached to the symptom error being thrown."
+partial-message = "The caught error is destructured, so the error it holds is lost."
+missing-parameter-message = "The caught error is not named, so no cause can be attached to the error being thrown."
+incorrect-cause-message = "The symptom error is being thrown with an incorrect `cause`."
+'''
+
+[[rules]]
+id = "ward:javascript/preserve-caught-error"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.require-catch-parameter = { type = "boolean" }
+body = '''
+check = "node-preserve-caught-error"
+require-catch-parameter = false
+missing-cause-message = "There is no `cause` attached to the symptom error being thrown."
+partial-message = "The caught error is destructured, so the error it holds is lost."
+missing-parameter-message = "The caught error is not named, so no cause can be attached to the error being thrown."
+incorrect-cause-message = "The symptom error is being thrown with an incorrect `cause`."
+'''
+
+[[rules]]
+id = "ward:typescript/no-unassigned-vars"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unassigned-vars"
+message = "'{value}' is always 'undefined' because it's never assigned."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unassigned-vars"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unassigned-vars"
+message = "'{value}' is always 'undefined' because it's never assigned."
 '''

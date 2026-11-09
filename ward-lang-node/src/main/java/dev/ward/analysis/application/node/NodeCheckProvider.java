@@ -20,6 +20,8 @@ public final class NodeCheckProvider implements CheckProvider {
             BiomeChecks.checks(),
             DeadCodeChecks.checks(),
             EslintChecks.checks(),
+            EslintScopeChecks.checks(),
+            EslintSyntaxChecks.checks(),
             SemgrepChecks.checks(),
             StyleChecks.checks(),
             TypeScriptEslintChecks.checks()));

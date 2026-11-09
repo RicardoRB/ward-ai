@@ -125,3 +125,51 @@ body = '''
 check = "node-no-invalid-regexp"
 allow-constructor-flags = []
 '''
+
+[[rules]]
+id = "ward:typescript/strict"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-strict-directive"
+message = "'use strict' is unnecessary inside of modules."
+'''
+
+[[rules]]
+id = "ward:javascript/strict"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-strict-directive"
+message = "'use strict' is unnecessary inside of modules."
+'''
+
+[[rules]]
+id = "ward:typescript/no-misleading-character-class"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-misleading-character-class"
+message = "Unexpected misleading character class in a regular expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-misleading-character-class"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-misleading-character-class"
+message = "Unexpected misleading character class in a regular expression."
+'''
