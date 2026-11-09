@@ -1225,6 +1225,7 @@ pylint = ["return-outside-function"]
 [[rule]]
 name = "default-except-not-last"
 ruff = ["F707"]
+pylint = ["bad-except-order"]
 
 [[rule]]
 name = "forward-annotation-syntax-error"

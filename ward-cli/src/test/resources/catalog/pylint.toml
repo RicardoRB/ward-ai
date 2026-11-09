@@ -68,7 +68,6 @@ pylint = ["bad-builtin"]
 [[rule]]
 name = "bad-chained-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-chained-comparison"]
 
 [[rule]]
@@ -89,11 +88,6 @@ presets = ["strict"]
 category = "pylint"
 pylint = ["bad-dunder-name"]
 
-[[rule]]
-name = "bad-except-order"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-except-order"]
 
 [[rule]]
 name = "bad-exception-cause"

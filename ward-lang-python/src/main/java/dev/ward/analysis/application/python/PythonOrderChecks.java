@@ -20,6 +20,7 @@ import dev.ward.analysis.domain.rule.check.InitGeneratorCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.MinMaxBuiltinCheck;
+import dev.ward.analysis.domain.rule.check.MixedComparisonChainCheck;
 import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -91,6 +92,9 @@ final class PythonOrderChecks {
             toml ->
                 new MinMaxBuiltinCheck(
                     TomlValues.required(toml, "builtin"), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "mixed-comparison-chain",
+            toml -> new MixedComparisonChainCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "star-unpack-limit",
             toml -> new StarUnpackLimitCheck(TomlValues.required(toml, MESSAGE))),

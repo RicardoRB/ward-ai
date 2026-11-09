@@ -304,3 +304,15 @@ kinds = ["for_stmt"]
 text = '^for(\w+),(\w+)in\{[^}]*\}(?!\.items\()'
 message = "dictionary unpacked in a for loop without calling .items()"
 '''
+
+[[rules]]
+id = "ward:python/bad-chained-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "mixed-comparison-chain"
+message = "suspicious chained comparison that mixes comparison, identity and membership operators"
+'''

@@ -10,11 +10,10 @@ assignment-from-no-return = { status = "planned", issue = "#336" }
 assignment-from-none = { status = "planned", issue = "#336" }
 attribute-defined-outside-init = { status = "planned", issue = "#336" }
 bad-builtin = { status = "planned", issue = "#336" }
-bad-chained-comparison = { status = "planned", issue = "#336" }
+bad-chained-comparison = "implemented"
 bad-classmethod-argument = "implemented"
 bad-docstring-quotes = { status = "planned", issue = "#297" }
 bad-dunder-name = { status = "planned", issue = "#336" }
-bad-except-order = { status = "planned", issue = "#336" }
 bad-exception-cause = "implemented"
 bad-format-string-key = "implemented"
 bad-mcs-classmethod-argument = "implemented"
