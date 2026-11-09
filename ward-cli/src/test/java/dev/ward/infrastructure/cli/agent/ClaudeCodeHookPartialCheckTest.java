@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 /** A partial check after each edit, and the full check when the turn ends. */
 class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
   private static final List<String> TESTS = List.of("mvn", "test");
-  private static final List<String> CHECKSTYLE = List.of("mvn", "checkstyle:check");
+  private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
 
   @BeforeEach
   void partialConfiguration() throws IOException {
@@ -21,13 +21,13 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
         root.resolve("ward.toml"),
         CONFIG
             + """
-            [checks.checkstyle]
-            uses = "checkstyle"
+            [checks.lint]
+            uses = "eslint"
             profiles = ["default", "edit"]
-            command = "mvn checkstyle:check"
-            [checks.checkstyle.paths]
+            command = "mvn lint:check"
+            [checks.lint.paths]
             match = ["src/**/*.java"]
-            args = ["-Dcheckstyle.includes={paths}"]
+            args = ["-Dlint.includes={paths}"]
             item = "**/{name}"
             separator = ","
             """);
@@ -48,15 +48,14 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
         .isEqualTo(ExitCodes.OK);
 
     assertThat(commands)
-        .containsExactly(
-            TESTS, List.of("mvn", "checkstyle:check", "-Dcheckstyle.includes=**/App.java"));
+        .containsExactly(TESTS, List.of("mvn", "lint:check", "-Dlint.includes=**/App.java"));
   }
 
   @Test
   void relativeEditedPathIsResolvedAgainstTheProject() {
     hook(postToolUse("src/main/java/App.java"));
 
-    assertThat(commands.get(1)).contains("-Dcheckstyle.includes=**/App.java");
+    assertThat(commands.get(1)).contains("-Dlint.includes=**/App.java");
   }
 
   @Test

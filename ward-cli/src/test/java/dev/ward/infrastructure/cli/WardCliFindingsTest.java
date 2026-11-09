@@ -10,7 +10,7 @@ import java.nio.file.attribute.PosixFilePermissions;
 import org.junit.jupiter.api.Test;
 
 class WardCliFindingsTest extends WardCliIntegrationSupport {
-  // configureFailingGates() configures checkstyle, gitleaks, and tests; SARIF has a run per gate.
+  // configureFailingGates() configures biome, gitleaks, and tests; SARIF has a run per gate.
   private static final int CONFIGURED_GATES = 3;
   private static final int JAVADOC_LINE = 42;
   private static final String SARIF = "sarif";
@@ -25,16 +25,15 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
 
   private void configureFailingGates() throws IOException {
     script(
-        "fake-checkstyle",
+        "fake-biome",
         """
-        mkdir -p target
-        cat > target/checkstyle-result.xml <<'XML'
+        cat <<'XML'
+        <?xml version="1.0" encoding="UTF-8"?>
         <checkstyle><file name="src/main/java/Foo.java">
         <error line="42" column="5" severity="error" message="Missing a Javadoc comment."
-          source="com.puppycrawl.tools.checkstyle.checks.javadoc.MissingJavadocMethodCheck"/>
+          source="lint/suspicious/missingJavadoc"/>
         </file></checkstyle>
         XML
-        echo "[ERROR] You have 1 Checkstyle violation."
         exit 1
         """);
     script(
@@ -53,9 +52,9 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
         project.resolve(WARD_TOML),
         """
         version = 2
-        [checks.checkstyle]
-        uses = "checkstyle"
-        command = ["./fake-checkstyle"]
+        [checks.biome]
+        uses = "biome"
+        command = ["./fake-biome", "--reporter=checkstyle"]
         [checks.gitleaks]
         uses = "gitleaks"
         command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
@@ -73,10 +72,10 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
 
     assertThat(exit).isEqualTo(ExitCodes.FAILED);
     final JsonTree checks = JsonTree.parse(out.toString()).get(CHECKS);
-    final JsonTree checkstyle = checks.get(0);
-    assertThat(checkstyle.get("findingsTotal").asInt()).isEqualTo(1);
-    final JsonTree finding = checkstyle.get("findings").get(0);
-    assertThat(finding.get("rule").asString()).isEqualTo("MissingJavadocMethod");
+    final JsonTree biome = checks.get(0);
+    assertThat(biome.get("findingsTotal").asInt()).isEqualTo(1);
+    final JsonTree finding = biome.get("findings").get(0);
+    assertThat(finding.get("rule").asString()).isEqualTo("lint/suspicious/missingJavadoc");
     assertThat(finding.get("file").asString()).isEqualTo("src/main/java/Foo.java");
     assertThat(finding.get("line").asInt()).isEqualTo(JAVADOC_LINE);
     final JsonTree gitleaks = checks.get(1);
@@ -116,7 +115,7 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     assertThat(log.get("version").asString()).isEqualTo("2.1.0");
     assertThat(log.get("runs").size()).isEqualTo(CONFIGURED_GATES);
     assertThat(log.get("runs").get(0).get("results").get(0).get("ruleId").asString())
-        .isEqualTo("MissingJavadocMethod");
+        .isEqualTo("lint/suspicious/missingJavadoc");
     assertThat(log.get("runs").get(2).get("results").size()).isZero();
   }
 

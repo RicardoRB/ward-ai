@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Python Ward rules in `ward-rules.toml`, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Ward rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Python Ward rules in `ward-rules.toml`, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -23,8 +23,8 @@ Follow these in every step. They override any instruction to go faster.
 - **Never weaken a gate to make something pass.** Lowering a threshold, disabling or removing a rule,
   relaxing a severity, or widening an exclusion is a *weakening*. Each one needs its own explicit
   approval and a stated reason (see Step 5).
-- **Never add suppressions.** No `@SuppressWarnings`, `// NOPMD`, `// CHECKSTYLE:OFF`, suppression
-  files, `@ArchIgnore`, SpotBugs exclude entries, or coverage `<excludes>` added only to clear
+- **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments, suppression
+  files, `@ArchIgnore`, or coverage `<excludes>` added only to clear
   findings. Fix the code, or propose a reviewed rule change instead.
 - **Nothing is installed without a specific yes.**
 - **Tests must test.** When coverage is short, write tests that assert behavior. Never write tests
@@ -51,8 +51,6 @@ List the gates with `enabled = true`. This skill tunes these:
 
 | Gate id | What you tune | Reference |
 |---|---|---|
-| `checkstyle` | Checkstyle modules and their properties | [references/checkstyle.md](references/checkstyle.md) |
-| `pmd` | PMD rules and categories | [references/pmd.md](references/pmd.md) |
 | `coverage`, `swift-coverage`, `android-coverage` | JaCoCo minimum ratios, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |

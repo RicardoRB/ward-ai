@@ -67,27 +67,11 @@ class AgentRulesTemplateTest {
   }
 
   @Test
-  void userOwnedRuleFileIsReferencedInsteadOfQuoted() {
-    final String body =
-        AgentRulesTemplate.render(
-                PROJECT,
-                gates(List.of("checkstyle", "pmd")),
-                QualityPreset.STRICT,
-                List.of(Path.of("/p/config/checkstyle.xml")))
-            .body();
-
-    assertThat(body)
-        .contains("Checkstyle: follow the rules in `config/checkstyle.xml`", "PMD (`")
-        .doesNotContain("500 lines", "SpotBugs");
-  }
-
-  @Test
   void customSelectionListsGatesWithoutPresetLimits() {
     final String body =
-        AgentRulesTemplate.render(PROJECT, gates(List.of("tests", "checkstyle")), null, List.of())
-            .body();
+        AgentRulesTemplate.render(PROJECT, gates(List.of("tests", "ward")), null, List.of()).body();
 
-    assertThat(body).contains("`tests`, `checkstyle`").doesNotContain("Checkstyle (");
+    assertThat(body).contains("`tests`, `ward`").doesNotContain("at least");
   }
 
   @Test

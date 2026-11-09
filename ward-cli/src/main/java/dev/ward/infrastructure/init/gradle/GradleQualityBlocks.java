@@ -10,8 +10,6 @@ import java.util.TreeMap;
  * rendered for the Groovy or the Kotlin DSL.
  */
 final class GradleQualityBlocks {
-  static final String CHECKSTYLE_CONFIG = "config/checkstyle.xml";
-  static final String PMD_RULESET = "config/pmd-ruleset.xml";
   static final String COVERAGE_TASK = "jacocoTestCoverageVerification";
   static final String PITEST_JUNIT5 = "junit5PluginVersion";
   private static final String PITEST_JUNIT5_VERSION = "1.2.3";
@@ -19,12 +17,6 @@ final class GradleQualityBlocks {
   private static final int LIMIT_LENGTH = 128;
 
   private GradleQualityBlocks() {}
-
-  static String enforcement(final boolean kotlin) {
-    return kotlin
-        ? "tasks.named(\"check\") { dependsOn(\"checkstyleMain\") }"
-        : "tasks.named('check') { dependsOn 'checkstyleMain' }";
-  }
 
   /**
    * OSS Index needs credentials, so it stays off until the user opts in through the environment.
@@ -38,45 +30,6 @@ final class GradleQualityBlocks {
         + ")\n            password = System.getenv("
         + quote(kotlin, "OSS_INDEX_PASSWORD")
         + ")\n        }\n    }\n}";
-  }
-
-  /**
-   * Like the Maven plugins init configures, Checkstyle and PMD analyze main sources only, so the
-   * {@code check} task does not apply production rules to tests.
-   */
-  static String checkstyle(final boolean kotlin, final String version, final boolean module) {
-    return "checkstyle {\n"
-        + GradleEngineBlocks.toolVersion(kotlin, version)
-        + "    configFile = "
-        + (module ? "rootProject.file" : "file")
-        + "("
-        + quote(kotlin, CHECKSTYLE_CONFIG)
-        + ")\n"
-        + mainSourceSetOnly(kotlin)
-        + "}\n"
-        + GradlePathFilterBlock.render(kotlin, "checkstyleMain", "Checkstyle", module);
-  }
-
-  /** {@code ruleSets} is cleared so Gradle's default rule set does not run beside the preset's. */
-  static String pmd(final boolean kotlin, final String version, final boolean module) {
-    return "pmd {\n"
-        + GradleEngineBlocks.toolVersion(kotlin, version)
-        + "    ruleSetFiles = "
-        + (module ? "rootProject.files" : "files")
-        + "("
-        + quote(kotlin, PMD_RULESET)
-        + ")\n    ruleSets = "
-        + (kotlin ? "listOf()" : "[]")
-        + "\n"
-        + mainSourceSetOnly(kotlin)
-        + "}\n"
-        + GradlePathFilterBlock.render(kotlin, "pmdMain", "Pmd", module);
-  }
-
-  private static String mainSourceSetOnly(final boolean kotlin) {
-    return kotlin
-        ? "    sourceSets = listOf(project.sourceSets.main.get())\n"
-        : "    sourceSets = [project.sourceSets.main]\n";
   }
 
   /** One limit per counter, the preset's minimums or a line ratio of 0.80 without a preset. */

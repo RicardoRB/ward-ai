@@ -32,7 +32,7 @@ class DoctorJvmTest {
   private static final int JAVA_17 = 17;
   private static final int JAVA_27 = 27;
   private static final String JDK = "jdk";
-  private static final String SPOTBUGS = "spotbugs";
+  private static final String MUTATION = "mutation";
 
   @TempDir Path root;
 
@@ -41,12 +41,12 @@ class DoctorJvmTest {
     Files.writeString(
         root.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><build><plugins><plugin>"
-            + "<artifactId>spotbugs-maven-plugin</artifactId><version>4.9.7.0</version>"
+            + "<artifactId>pitest-maven</artifactId><version>1.30.1</version>"
             + "</plugin></plugins></build></project>");
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 2\n\n[checks.spotbugs]\nenabled = true\nprofiles = [\"ci\"]\n"
-            + "command = \"mvn spotbugs:check\"\n");
+        "version = 2\n\n[checks.mutation]\nenabled = true\nprofiles = [\"ci\"]\n"
+            + "command = \"mvn pitest:mutationCoverage\"\n");
   }
 
   @Test
@@ -56,7 +56,7 @@ class DoctorJvmTest {
     assertThat(findings)
         .filteredOn(finding -> JDK.equals(finding.name()))
         .containsExactly(new Finding(JDK, Status.OK, "JDK 17 runs the build."));
-    assertThat(names(findings)).doesNotContain(SPOTBUGS);
+    assertThat(names(findings)).doesNotContain(MUTATION);
   }
 
   @Test
@@ -74,7 +74,7 @@ class DoctorJvmTest {
     assertThat(findings)
         .filteredOn(finding -> finding.status() == Status.ERROR)
         .extracting(Finding::name)
-        .doesNotContain(JDK, SPOTBUGS);
+        .doesNotContain(JDK, MUTATION);
   }
 
   @Test
@@ -89,7 +89,7 @@ class DoctorJvmTest {
                 Status.WARNING,
                 "Ward has not been tested on JDK 27 and does not support it; it is configured as"
                     + " JDK 25."));
-    assertThat(names(findings)).doesNotContain(SPOTBUGS);
+    assertThat(names(findings)).doesNotContain(MUTATION);
   }
 
   @Test
@@ -97,13 +97,12 @@ class DoctorJvmTest {
     final List<Finding> findings = diagnose(Optional.of(JAVA_8));
 
     assertThat(findings)
-        .filteredOn(finding -> SPOTBUGS.equals(finding.name()))
+        .filteredOn(finding -> MUTATION.equals(finding.name()))
         .containsExactly(
             new Finding(
-                SPOTBUGS,
+                MUTATION,
                 Status.WARNING,
-                "spotbugs-maven-plugin 4.9.7.0 runs on JDK 11 to 25; this project builds on"
-                    + " JDK 8."));
+                "pitest-maven 1.30.1 runs on JDK 11 to 25; this project builds on" + " JDK 8."));
   }
 
   @Test
@@ -118,7 +117,7 @@ class DoctorJvmTest {
               assertThat(finding.status()).isEqualTo(Status.WARNING);
               assertThat(finding.message()).contains("could not be determined");
             });
-    assertThat(names(findings)).doesNotContain(SPOTBUGS);
+    assertThat(names(findings)).doesNotContain(MUTATION);
   }
 
   private List<Finding> diagnose(final Optional<Integer> jdk) {
@@ -129,7 +128,7 @@ class DoctorJvmTest {
                     project,
                     new ToolchainSnapshot(
                         jdk, Optional.empty(), Optional.of("3.9.11"), Framework.NONE),
-                    Map.of("spotbugs-maven-plugin", "4" + ".9.7.0")));
+                    Map.of("pitest-maven", "1.30.1")));
     return new DoctorService(
             new ProjectDetector(new FileSystemProjectInspection()),
             directory ->

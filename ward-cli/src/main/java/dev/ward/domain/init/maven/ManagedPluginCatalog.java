@@ -15,17 +15,10 @@ public final class ManagedPluginCatalog {
   private static final int JDK_11 = 11;
   private static final int JDK_25 = 25;
   private static final String MAVEN = "3.6";
-  private static final String SPOTBUGS = "spotbugs-maven-plugin";
   private static final String PIT = "pitest-maven";
 
   private static final List<ManagedPluginCandidate> ROWS =
       List.of(
-          row("maven-checkstyle-plugin", "3.6.0", JDK_8, JDK_25),
-          row("checkstyle", "9.3", JDK_8, JDK_10),
-          row("checkstyle", "10.20.2", JDK_11, JDK_25),
-          row("maven-pmd-plugin", "3.28.0", JDK_8, JDK_25),
-          row(SPOTBUGS, "4" + ".8.6.6", JDK_8, JDK_10),
-          row(SPOTBUGS, "4" + ".9.7.0", JDK_11, JDK_25),
           row("jacoco-maven-plugin", "0.8.13", JDK_8, JDK_25),
           row(PIT, "1.17.4", JDK_8, JDK_10),
           row(PIT, "1.30.1", JDK_11, JDK_25),

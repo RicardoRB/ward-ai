@@ -16,11 +16,11 @@ import java.util.List;
 
 /** Builds check reports with rule findings for the learning policy tests. */
 class LearningPolicyTestSupport {
-  static final String PMD = "pmd";
+  static final String ESLINT = "eslint";
   static final String UNUSED = "UnusedLocalVariable";
-  static final String UNUSED_KEY = "pmd:UnusedLocalVariable";
+  static final String UNUSED_KEY = "eslint:UnusedLocalVariable";
   static final String PRIVATE = "UnusedPrivateMethod";
-  static final String PRIVATE_KEY = "pmd:UnusedPrivateMethod";
+  static final String PRIVATE_KEY = "eslint:UnusedPrivateMethod";
   static final String UNUSED_MESSAGE = "Avoid unused local variables such as 'x'.";
   static final Instant NOW = Instant.parse("2026-01-01T00:00:00Z");
   static final Project PROJECT =
@@ -60,7 +60,7 @@ class LearningPolicyTestSupport {
   }
 
   CheckReport unusedVariable() {
-    return failed(PMD, finding(PMD, UNUSED, UNUSED_MESSAGE));
+    return failed(ESLINT, finding(ESLINT, UNUSED, UNUSED_MESSAGE));
   }
 
   CheckReport passed(final String gate) {

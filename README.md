@@ -36,7 +36,7 @@ team, and Ward checks every change against them, from the first edit to producti
 
 | Language | Build tools | Frameworks | Quality tools |
 |---|---|---|---|
-| Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, Checkstyle, PMD, SpotBugs, PIT, and Ward's own layer, cycle and independence rules |
+| Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, PIT, Ward's own style and bug rules, and Ward's layer, cycle and independence rules |
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Stryker |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
@@ -61,7 +61,7 @@ forgets.
 Ward moves those rules out of your prompts and into your project:
 
 - **The rules live in the repository.** `ward.toml` lists the checks (tests, coverage,
-  linters such as ESLint, Ruff, or Checkstyle, architecture rules, security scanners, or any
+  linters such as ESLint or Ruff, architecture rules, security scanners, or any
   command).
 - **Every agent gets the same feedback.** After each edit, Ward runs the fast checks and hands the
   exact failure back to the agent, which fixes it on its own.
@@ -153,7 +153,7 @@ You don't need to learn every tool's configuration. Ward ships three
 | Skill | What it does | Try asking |
 |---|---|---|
 | `ward-init` | Chooses the preset, checks, architecture style, agent integration, and Git hooks for this project, then previews the changes with `ward init --dry-run` | *"Set up Ward quality gates in this project"* |
-| `ward-tune` | Fits Checkstyle, PMD, coverage, and mutation testing rules to your real code. It never weakens a rule without your approval and never adds suppressions | *"Tune the Ward rules to this codebase"* |
+| `ward-tune` | Fits Ward rules, coverage, and mutation testing rules to your real code. It never weakens a rule without your approval and never adds suppressions | *"Tune the Ward rules to this codebase"* |
 | `ward-fix` | Fixes the code so failing gates pass, rule by rule, re-running each gate to prove the fix. It never changes rules or adds suppressions | *"Fix the Ward findings"* |
 
 ```text
@@ -170,7 +170,7 @@ npx skills add RicardoRB/ward-ai --skill ward-init ward-tune ward-fix   # other 
 Commit the setup and everyone works with the same rules, whatever agent they use:
 
 - `ward.toml`: the checks and which layer runs each one.
-- `config/`: the rule files for Checkstyle, PMD, SpotBugs, and the other tools.
+- `config/`: the rule files for the tools that remain.
 - The agent hooks that `ward init` or `ward integrate` generated, such as `.claude/` or
   `.opencode/`.
 - `AGENTS.md` (optional, `ward init --agent-rules`): the rules written for agents to read.
@@ -190,7 +190,7 @@ ward check --profile ci --format json > ward-report.json
 | Category | Tools |
 |---|---|
 | Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
-| Code quality | Checkstyle, PMD, SpotBugs, SonarQube |
+| Code quality | Ward rules, SonarQube |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), Maven Enforcer / Gradle checks |
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |

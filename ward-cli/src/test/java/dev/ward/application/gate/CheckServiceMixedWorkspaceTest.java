@@ -36,10 +36,10 @@ class CheckServiceMixedWorkspaceTest {
   private static final String API_CONFIGURATION =
       """
       version = 2
-      [checks.checkstyle]
-      uses = "checkstyle"
+      [checks.lint]
+      uses = "eslint"
       profiles = ["default", "edit"]
-      command = "mvn checkstyle:check"
+      command = "mvn lint:check"
       """;
   private static final String INGEST_CONFIGURATION =
       """
@@ -50,7 +50,7 @@ class CheckServiceMixedWorkspaceTest {
       command = "uv run ruff check ."
       """;
   private static final List<String> TURBO_LINT = List.of("turbo", "run", "lint");
-  private static final List<String> CHECKSTYLE = List.of("mvn", "checkstyle:check");
+  private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
   private static final List<String> RUFF = List.of("uv", "run", "ruff", "check", ".");
   private static final String API_FILE = "apps/api/src/main/java/dev/codeja/Api.java";
   private static final String WEB_FILE = "apps/web/app/page.ts";
@@ -90,7 +90,7 @@ class CheckServiceMixedWorkspaceTest {
         .extracting(GateResult::name, GateResult::status)
         .containsExactly(
             tuple("lint", GateStatus.PASSED),
-            tuple("apps/api: checkstyle", GateStatus.PASSED),
+            tuple("apps/api: lint", GateStatus.PASSED),
             tuple("services/ingest: ruff", GateStatus.PASSED));
   }
 

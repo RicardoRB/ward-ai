@@ -1,0 +1,6 @@
+{
+  "name": "app",
+  "dependencies": {
+    "react": "catalog:"
+  }
+}

@@ -14,6 +14,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
@@ -39,7 +40,7 @@ class NodeDependencyGateTest {
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
             new NodeRuleMatcher(),
-            new FileSystemSourceUnits(),
+            new FileSystemSourceUnits(new ProcessCommandExecutor()),
             List.of(
                 new FrontendSupport(
                     AnalysisLanguage.TYPESCRIPT,

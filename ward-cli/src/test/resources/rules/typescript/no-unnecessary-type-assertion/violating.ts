@@ -1,0 +1,2 @@
+declare const n: number;
+const m = (n) as number;

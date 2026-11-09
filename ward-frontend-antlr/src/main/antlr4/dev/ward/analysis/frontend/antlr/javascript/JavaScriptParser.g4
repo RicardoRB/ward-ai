@@ -429,6 +429,7 @@ singleExpression
     | singleExpression templateStringLiteral                               # TemplateStringExpression // ECMAScript 6
     | yieldStatement                                                       # YieldExpression          // ECMAScript 6
     | This                                                                 # ThisExpression
+    | privateIdentifier                                                    # PrivateNameExpression
     | identifier                                                           # IdentifierExpression
     | Super                                                                # SuperExpression
     | literal                                                              # LiteralExpression

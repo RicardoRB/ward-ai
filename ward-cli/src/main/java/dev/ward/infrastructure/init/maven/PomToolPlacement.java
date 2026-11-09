@@ -17,7 +17,7 @@ final class PomToolPlacement {
       final PomEdit edit) {
     final CompatibilityFinding finding = versions.plugin(tool);
     if (finding != null && !PomTools.declares(edit.content, tool.artifact())) {
-      edit.add(tool, preset, finding.selectedVersion(), versions.engine(tool));
+      edit.add(tool, preset, finding.selectedVersion());
     } else if (finding != null && finding.changesVersion()) {
       final boolean accepted = approval.test(finding);
       if (accepted) {
@@ -34,7 +34,7 @@ final class PomToolPlacement {
             tool.artifact() + " already declared; " + preset.id() + " settings not applied");
       }
     } else {
-      edit.add(tool, preset, null, null);
+      edit.add(tool, preset, null);
     }
   }
 }

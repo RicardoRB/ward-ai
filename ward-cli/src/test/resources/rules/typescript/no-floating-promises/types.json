@@ -1,0 +1,42 @@
+{
+  "271:1-271:18": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<void>",
+      "primitive": false
+    }
+  },
+  "2:1-2:5": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<void>",
+      "primitive": false
+    }
+  },
+  "2:6-2:10": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<void>",
+      "primitive": false
+    }
+  },
+  "32:7-32:11": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<void>",
+      "primitive": false
+    }
+  },
+  "33:1-33:21": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<void>",
+      "primitive": false
+    }
+  }
+}

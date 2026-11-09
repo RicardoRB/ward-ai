@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Reads the exported names of one file, and the top-level declarations, from its tokens. */
@@ -26,12 +27,14 @@ final class NodeExportScan {
       Set.of("const", "let", "var", "function", "class", "interface", "type", "enum", "namespace");
 
   private final NodeTokens tokens;
+  private final Map<String, String> kinds;
   private final List<Symbol> exports = new ArrayList<>();
   private final List<Symbol> declared = new ArrayList<>();
 
   /** Creates the scan over {@code tokens}. */
-  NodeExportScan(final NodeTokens tokens) {
+  NodeExportScan(final NodeTokens tokens, final Map<String, String> kinds) {
     this.tokens = tokens;
+    this.kinds = kinds;
   }
 
   /** The exported names, in source order. */
@@ -106,6 +109,7 @@ final class NodeExportScan {
     }
     if (DECLARATIONS.contains(tokens.text(j)) && IDENTIFIER.equals(tokens.kind(j + 1))) {
       exports.add(new Symbol(tokens.text(j + 1), tokens.leaf(j + 1).span()));
+      kinds.put(tokens.text(j + 1), tokens.text(j));
     }
   }
 

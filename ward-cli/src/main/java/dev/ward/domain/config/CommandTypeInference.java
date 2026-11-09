@@ -45,9 +45,6 @@ public final class CommandTypeInference {
 
   private static final List<Rule> RULES =
       List.of(
-          new Rule("checkstyle", anyOf(sequence("checkstyle:check"), sequence("checkstyle*"))),
-          new Rule("pmd", anyOf(sequence("pmd:check"), sequence("pmd*"))),
-          new Rule("spotbugs", anyOf(sequence("spotbugs:check"), sequence("spotbugs*"))),
           new Rule(
               "coverage",
               anyOf(

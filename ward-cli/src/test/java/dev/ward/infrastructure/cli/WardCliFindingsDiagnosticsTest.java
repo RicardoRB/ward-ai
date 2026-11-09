@@ -31,7 +31,6 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
         exit 1
         """
             .formatted(SECRET));
-    script("fake-pmd", "echo 'PMD Failure: secret-rule'\nexit 1\n");
     Files.writeString(
         project.resolve(WARD_TOML),
 """
@@ -39,9 +38,6 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
         [checks.gitleaks]
 uses = "gitleaks"
         command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
-        [checks.pmd]
-uses = "pmd"
-        command = ["./fake-pmd"]
         """);
     final Path report = project.resolve("out/ward.sarif");
 
@@ -62,8 +58,6 @@ uses = "pmd"
         .anyMatch(
             message ->
                 message.endsWith("event=findings-attached gate=gitleaks total=1 truncated=false"))
-        .anyMatch(
-            message -> message.endsWith("event=finding-report-missing gate=pmd report=pmd.xml"))
         .anyMatch(message -> message.contains("event=report-written file=ward.sarif"))
         .allSatisfy(
             message ->

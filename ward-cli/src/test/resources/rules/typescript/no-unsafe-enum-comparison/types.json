@@ -1,0 +1,35 @@
+{
+  "34:15-34:19": {
+    "shape": {
+      "kind": "enum"
+    },
+    "type": {
+      "name": "Color",
+      "primitive": false
+    }
+  },
+  "34:5-34:9": {
+    "shape": {
+      "kind": "enum"
+    },
+    "type": {
+      "name": "Color",
+      "primitive": false
+    }
+  },
+  "3:15-3:15": {
+    "type": {
+      "name": "1",
+      "primitive": true
+    }
+  },
+  "3:5-3:9": {
+    "shape": {
+      "kind": "enum"
+    },
+    "type": {
+      "name": "Color",
+      "primitive": false
+    }
+  }
+}

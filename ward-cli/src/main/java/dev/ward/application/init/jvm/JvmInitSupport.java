@@ -2,7 +2,6 @@ package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
 import dev.ward.application.init.InitInputs;
-import dev.ward.application.init.PartialCheckDefaults;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
 import dev.ward.application.init.ToolchainInitSupport;
@@ -18,8 +17,6 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
@@ -115,19 +112,5 @@ public final class JvmInitSupport implements ToolchainInitSupport {
           .presetOmissions(project, preset).stream().map(GateOmission::note).forEach(notes::add);
     }
     return notes;
-  }
-
-  @Override
-  public Set<String> partialGates() {
-    return JvmPartialTables.GATES;
-  }
-
-  @Override
-  public Optional<PartialCheckDefaults.Table> partialTable(
-      final String gate,
-      final Project project,
-      final QualityPreset preset,
-      final List<String> command) {
-    return JvmPartialTables.forGate(gate, project, preset);
   }
 }

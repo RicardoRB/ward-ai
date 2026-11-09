@@ -60,18 +60,18 @@ class InitToolLifecycleTest {
             root,
             new InitSelection(
                 List.of("none"),
-                List.of("tests", "semgrep"),
+                List.of("tests", "gitleaks"),
                 null,
                 null,
                 List.of(),
                 List.of(),
-                List.of("semgrep"),
+                List.of("gitleaks"),
                 false,
                 null,
                 false,
                 null));
 
-    assertThat(installer.installed).containsExactly("semgrep");
+    assertThat(installer.installed).containsExactly("gitleaks");
     assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 

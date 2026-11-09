@@ -23,6 +23,9 @@ import java.util.Set;
  */
 public final class GateFrontends {
 
+  /** The manifests that the TypeScript and JavaScript project checks read. */
+  private static final Set<String> NODE_MANIFESTS = Set.of("package.json", "pnpm-workspace.yaml");
+
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
 
@@ -55,17 +58,19 @@ public final class GateFrontends {
             NO_GRAPHS,
             new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))),
         new FrontendSupport(
-            AnalysisLanguage.TYPESCRIPT,
-            frontend,
-            flow,
-            new NodeControlFlow(),
-            new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript()))),
+                AnalysisLanguage.TYPESCRIPT,
+                frontend,
+                flow,
+                new NodeControlFlow(),
+                new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript())))
+            .withManifests(NODE_MANIFESTS),
         new FrontendSupport(
-            AnalysisLanguage.JAVASCRIPT,
-            frontend,
-            flow,
-            new NodeControlFlow(),
-            new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript()))),
+                AnalysisLanguage.JAVASCRIPT,
+                frontend,
+                flow,
+                new NodeControlFlow(),
+                new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript())))
+            .withManifests(NODE_MANIFESTS),
         new FrontendSupport(
             AnalysisLanguage.SWIFT,
             frontend,

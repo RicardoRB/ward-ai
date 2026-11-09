@@ -34,7 +34,7 @@ import picocli.CommandLine;
 /** Native harnesses check the edited files after an edit and the whole project at turn end. */
 class NativeHookPartialCheckTest {
   private static final List<String> TESTS = List.of("mvn", "test");
-  private static final List<String> CHECKSTYLE = List.of("mvn", "checkstyle:check");
+  private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
   private static final String PATCH =
       "*** Begin Patch\\n"
           + "*** Update File: src/A.java\\n@@\\n-a\\n+b\\n"
@@ -58,13 +58,13 @@ class NativeHookPartialCheckTest {
         uses = "tests"
         profiles = ["default", "edit"]
         command = "mvn test"
-        [checks.checkstyle]
-        uses = "checkstyle"
+        [checks.lint]
+        uses = "eslint"
         profiles = ["default", "edit"]
-        command = "mvn checkstyle:check"
-        [checks.checkstyle.paths]
+        command = "mvn lint:check"
+        [checks.lint.paths]
         match = ["src/**/*.java"]
-        args = ["-Dcheckstyle.includes={paths}"]
+        args = ["-Dlint.includes={paths}"]
         item = "**/{name}"
         separator = ","
         """);
@@ -79,7 +79,7 @@ class NativeHookPartialCheckTest {
 
     assertThat(commands)
         .containsExactly(
-            TESTS, List.of("mvn", "checkstyle:check", "-Dcheckstyle.includes=**/A.java,**/N.java"));
+            TESTS, List.of("mvn", "lint:check", "-Dlint.includes=**/A.java,**/N.java"));
   }
 
   @Test
