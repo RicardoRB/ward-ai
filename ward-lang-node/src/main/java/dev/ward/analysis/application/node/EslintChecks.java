@@ -8,6 +8,9 @@ import dev.ward.analysis.domain.rule.check.NodeConstructorReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorSuperCheck;
 import dev.ward.analysis.domain.rule.check.NodeDupeClassMembersCheck;
 import dev.ward.analysis.domain.rule.check.NodeDupeElseIfCheck;
+import dev.ward.analysis.domain.rule.check.NodeExtraLabelCheck;
+import dev.ward.analysis.domain.rule.check.NodeLabelVarCheck;
+import dev.ward.analysis.domain.rule.check.NodeLossOfPrecisionCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnexpectedMultilineCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedPrivateMembersCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessEscapeCheck;
@@ -45,6 +48,20 @@ final class EslintChecks {
         Map.entry(
             "node-no-dupe-else-if",
             (CheckFactory) toml -> new NodeDupeElseIfCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry("node-no-irregular-whitespace", EslintOptionChecks::irregularWhitespace),
+        Map.entry("node-no-inner-declarations", EslintOptionChecks::innerDeclarations),
+        Map.entry(
+            "node-no-label-var",
+            (CheckFactory) toml -> new NodeLabelVarCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-no-extra-label",
+            (CheckFactory) toml -> new NodeExtraLabelCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry("node-prefer-promise-reject-errors", EslintOptionChecks::promiseReject),
+        Map.entry("node-no-unused-expressions", EslintOptionChecks::unusedExpressions),
+        Map.entry(
+            "node-no-loss-of-precision",
+            (CheckFactory)
+                toml -> new NodeLossOfPrecisionCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "node-no-unused-private-class-members",
             (CheckFactory) toml -> new NodeUnusedPrivateMembersCheck()),

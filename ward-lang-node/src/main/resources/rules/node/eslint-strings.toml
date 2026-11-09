@@ -27,3 +27,75 @@ check = "node-no-useless-escape"
 allow-regex-characters = []
 message = 'unnecessary escape character: \{value}'
 '''
+
+[[rules]]
+id = "ward:typescript/no-irregular-whitespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''
+
+[[rules]]
+id = "ward:javascript/no-irregular-whitespace"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-promise-reject-errors"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-empty-reject = { type = "boolean" }
+body = '''
+check = "node-prefer-promise-reject-errors"
+allow-empty-reject = false
+message = "Expected the Promise rejection reason to be an Error."
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-promise-reject-errors"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-empty-reject = { type = "boolean" }
+body = '''
+check = "node-prefer-promise-reject-errors"
+allow-empty-reject = false
+message = "Expected the Promise rejection reason to be an Error."
+'''

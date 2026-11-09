@@ -70,3 +70,127 @@ presets = ["standard", "strict"]
 body = '''
 check = "node-no-unexpected-multiline"
 '''
+
+[[rules]]
+id = "ward:typescript/no-unused-expressions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+options.allow-short-circuit = { type = "boolean" }
+options.allow-ternary = { type = "boolean" }
+options.allow-tagged-templates = { type = "boolean" }
+options.enforce-for-jsx = { type = "boolean" }
+options.ignore-directives = { type = "boolean" }
+body = '''
+check = "node-no-unused-expressions"
+allow-short-circuit = false
+allow-ternary = false
+allow-tagged-templates = false
+enforce-for-jsx = false
+ignore-directives = false
+message = "Expected an assignment or function call and instead saw an expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-expressions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+options.allow-short-circuit = { type = "boolean" }
+options.allow-ternary = { type = "boolean" }
+options.allow-tagged-templates = { type = "boolean" }
+options.enforce-for-jsx = { type = "boolean" }
+options.ignore-directives = { type = "boolean" }
+body = '''
+check = "node-no-unused-expressions"
+allow-short-circuit = false
+allow-ternary = false
+allow-tagged-templates = false
+enforce-for-jsx = false
+ignore-directives = false
+message = "Expected an assignment or function call and instead saw an expression."
+'''
+
+[[rules]]
+id = "ward:typescript/no-inner-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.declarations = { type = "enum", values = ["functions", "both"], parameter = "declarations" }
+options.block-scoped-functions = { type = "enum", values = ["allow", "disallow"], parameter = "block-scoped-functions" }
+body = '''
+check = "node-no-inner-declarations"
+declarations = "functions"
+block-scoped-functions = "allow"
+message = "Move declaration to the root of its program or function body."
+'''
+
+[[rules]]
+id = "ward:javascript/no-inner-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.declarations = { type = "enum", values = ["functions", "both"], parameter = "declarations" }
+options.block-scoped-functions = { type = "enum", values = ["allow", "disallow"], parameter = "block-scoped-functions" }
+body = '''
+check = "node-no-inner-declarations"
+declarations = "functions"
+block-scoped-functions = "allow"
+message = "Move declaration to the root of its program or function body."
+'''
+
+[[rules]]
+id = "ward:typescript/no-extra-label"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-extra-label"
+message = "This label '{value}' is unnecessary."
+'''
+
+[[rules]]
+id = "ward:javascript/no-extra-label"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-extra-label"
+message = "This label '{value}' is unnecessary."
+'''
+
+[[rules]]
+id = "ward:typescript/no-label-var"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-label-var"
+message = "Found identifier with same name as label."
+'''
+
+[[rules]]
+id = "ward:javascript/no-label-var"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-label-var"
+message = "Found identifier with same name as label."
+'''

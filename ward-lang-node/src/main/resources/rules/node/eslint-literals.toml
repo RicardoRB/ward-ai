@@ -1,0 +1,25 @@
+# Literal rules of the ESLint core rules (issue #326), for TypeScript and JavaScript.
+
+[[rules]]
+id = "ward:typescript/no-loss-of-precision"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-loss-of-precision"
+message = "This number literal will lose precision at runtime."
+'''
+
+[[rules]]
+id = "ward:javascript/no-loss-of-precision"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-loss-of-precision"
+message = "This number literal will lose precision at runtime."
+'''
