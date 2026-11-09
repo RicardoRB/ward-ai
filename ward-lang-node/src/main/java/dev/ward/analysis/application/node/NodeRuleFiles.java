@@ -13,6 +13,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
       List.of(
           "rules/duplication-node.toml",
           "rules/node/angular.toml",
+          "rules/node/biome-a11y.toml",
           "rules/node/biome-complexity.toml",
           "rules/node/biome-correctness.toml",
           "rules/node/biome-nursery.toml",

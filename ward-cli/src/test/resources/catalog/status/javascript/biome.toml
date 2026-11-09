@@ -1,6 +1,6 @@
 # Status of the biome rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-no-access-key = { status = "planned", issue = "#329" }
+no-access-key = "implemented"
 no-accumulating-spread = "implemented"
 no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
@@ -11,7 +11,7 @@ no-array-index-key = { status = "planned", issue = "#329" }
 no-assign-in-expressions = "implemented"
 no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
 no-astro-set-html-directive = { status = "planned", issue = "#329" }
-no-autofocus = { status = "planned", issue = "#329" }
+no-autofocus = "implemented"
 no-banned-types = "not-applicable"
 no-barrel-file = { status = "planned", issue = "#329" }
 no-before-interactive-script-outside-document = { status = "planned", issue = "#329" }
@@ -108,7 +108,7 @@ no-playwright-useless-await = { status = "planned", issue = "#329" }
 no-playwright-wait-for-navigation = { status = "planned", issue = "#329" }
 no-playwright-wait-for-selector = { status = "planned", issue = "#329" }
 no-playwright-wait-for-timeout = { status = "planned", issue = "#329" }
-no-positive-tabindex = { status = "planned", issue = "#329" }
+no-positive-tabindex = "implemented"
 no-private-imports = { status = "planned", issue = "#329" }
 no-process-env = "implemented"
 no-process-global = { status = "planned", issue = "#329" }

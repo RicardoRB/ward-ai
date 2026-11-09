@@ -51,7 +51,10 @@ class BiomeParitySmokeTest {
               "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"),
           Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"),
           Map.entry("no-base-to-string", "nursery/noBaseToString"),
-          Map.entry("no-unreachable-super", "correctness/noUnreachableSuper"));
+          Map.entry("no-unreachable-super", "correctness/noUnreachableSuper"),
+          Map.entry("no-access-key", "a11y/noAccessKey"),
+          Map.entry("no-autofocus", "a11y/noAutofocus"),
+          Map.entry("no-positive-tabindex", "a11y/noPositiveTabindex"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

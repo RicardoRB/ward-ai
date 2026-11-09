@@ -1,0 +1,45 @@
+# Biome rules of the a11y group for JavaScript JSX (catalog rows of #329). The TypeScript side waits for .tsx fixtures.
+
+[[rules]]
+id = "ward:javascript/no-access-key"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxAttribute"]
+text = '^accessKey(?:=|$)'
+message = "avoid the accessKey attribute; it conflicts with screen reader shortcuts"
+'''
+
+[[rules]]
+id = "ward:javascript/no-autofocus"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: components and dialog or popover ancestors are not exempted yet
+check = "forbidden-node"
+kinds = ["jsxAttribute"]
+text = '^autoFocus(?:=|$)'
+message = "avoid the autoFocus prop; it moves focus without the user asking"
+'''
+
+[[rules]]
+id = "ward:javascript/no-positive-tabindex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-attribute-value"
+attribute = "tabIndex"
+text = '^(?:\{[1-9][0-9]*\}|"[1-9][0-9]*"|\{"[1-9][0-9]*"\})$'
+message = "avoid positive tabIndex values; they change the keyboard focus order"
+'''
+

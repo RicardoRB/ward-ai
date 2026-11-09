@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeBaseToStringCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
+import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
@@ -42,7 +43,14 @@ final class BiomeChecks {
             toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-base-to-string",
-            toml -> new BiomeBaseToStringCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeBaseToStringCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-jsx-attribute-value",
+            toml ->
+                new BiomeJsxAttributeValueCheck(
+                    TomlValues.required(toml, "attribute"),
+                    Pattern.compile(TomlValues.required(toml, "text")),
+                    TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck unusedParameter(final TomlParseResult toml) {
