@@ -415,3 +415,39 @@ body = '''
 check = "swift-redundant-sendable"
 message = "Sendable conformance is redundant on an actor-isolated type"
 '''
+
+[[rules]]
+id = "ward:swift/orphaned-doc-comment"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-orphaned-doc-comment"
+message = "a doc comment should be attached to a declaration"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-override"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unneeded-override"
+message = "remove overridden functions that don't do anything except call their super"
+'''
+
+[[rules]]
+id = "ward:swift/valid-ibinspectable"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-valid-ibinspectable"
+message = "@IBInspectable should be applied to variables only, have its type explicit and be of a supported type"
+'''

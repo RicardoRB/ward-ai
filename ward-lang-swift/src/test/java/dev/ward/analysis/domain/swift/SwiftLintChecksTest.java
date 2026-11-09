@@ -93,4 +93,35 @@ class SwiftLintChecksTest {
     assertThat(lines(run(check, "func foo<type>() {}\n"))).containsExactly(1);
     assertThat(run(check, "func foo<Element>() {}\n")).isEmpty();
   }
+
+  @Test
+  void orphanedDocCommentReportsADocCommentFollowedByAPlainComment() {
+    final RuleCheck check = new SwiftOrphanedDocCommentCheck(MESSAGE);
+
+    assertThat(lines(run(check, "/// doc\n// plain\nvar x = 1\n"))).containsExactly(1);
+    assertThat(run(check, "/// doc\nvar x = 1\n")).isEmpty();
+    assertThat(run(check, "//// header\n/// doc\nvar x = 1\n")).isEmpty();
+  }
+
+  @Test
+  void validIbinspectableReportsLetBindingsAndUnsupportedOrMissingTypes() {
+    final RuleCheck check = new SwiftValidIbinspectableCheck(MESSAGE);
+
+    assertThat(lines(run(check, "class F {\n @IBInspectable var x = 0\n}\n"))).containsExactly(2);
+    assertThat(lines(run(check, "class F {\n @IBInspectable var x: UIEdgeInsets\n}\n"))).containsExactly(2);
+    assertThat(run(check, "class F {\n @IBInspectable var x: String?\n}\n")).isEmpty();
+    assertThat(run(check, "class F {\n var x = 0\n}\n")).isEmpty();
+  }
+
+  @Test
+  void unneededOverrideReportsAFunctionThatOnlyForwardsToSuper() {
+    final RuleCheck check = new SwiftUnneededOverrideCheck(MESSAGE);
+
+    assertThat(lines(run(check, "class A: B {\n override func foo(a: Int) {\n super.foo(a: a)\n }\n}\n")))
+        .containsExactly(2);
+    assertThat(run(check, "class A: B {\n override func foo(a: Int) {\n super.foo(a: a + 1)\n }\n}\n"))
+        .isEmpty();
+    assertThat(run(check, "class A: B {\n override func foo(a: Int = 1) {\n super.foo(a: a)\n }\n}\n"))
+        .isEmpty();
+  }
 }

@@ -14,10 +14,13 @@ import dev.ward.analysis.domain.swift.SwiftForWhereCheck;
 import dev.ward.analysis.domain.swift.SwiftGenericTypeNameCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
 import dev.ward.analysis.domain.swift.SwiftNsobjectPreferIsEqualCheck;
+import dev.ward.analysis.domain.swift.SwiftOrphanedDocCommentCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantSendableCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantVoidReturnCheck;
 import dev.ward.analysis.domain.swift.SwiftStaticOverFinalClassCheck;
+import dev.ward.analysis.domain.swift.SwiftUnneededOverrideCheck;
+import dev.ward.analysis.domain.swift.SwiftValidIbinspectableCheck;
 import java.util.Map;
 
 /**
@@ -71,6 +74,15 @@ public final class SwiftCheckProvider implements CheckProvider {
         Map.entry(
             "swift-redundant-sendable",
             toml -> new SwiftRedundantSendableCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-orphaned-doc-comment",
+            toml -> new SwiftOrphanedDocCommentCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-unneeded-override",
+            toml -> new SwiftUnneededOverrideCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-valid-ibinspectable",
+            toml -> new SwiftValidIbinspectableCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "swift-variable-distance",
             toml ->

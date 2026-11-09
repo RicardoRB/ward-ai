@@ -118,7 +118,7 @@ one-declaration-per-file = { status = "planned", issue = "#338" }
 operator-usage-whitespace = { status = "planned", issue = "#298" }
 optional-data-string-conversion = "implemented"
 optional-enum-case-matching = { status = "planned", issue = "#298" }
-orphaned-doc-comment = { status = "planned", issue = "#338" }
+orphaned-doc-comment = "implemented"
 overridden-super-call = { status = "planned", issue = "#338" }
 override-in-extension = "implemented"
 pattern-matching-keywords = "implemented"
@@ -186,7 +186,7 @@ unavailable-function = "implemented"
 unhandled-throwing-task = { status = "planned", issue = "#338" }
 unneeded-break-in-switch = "implemented"
 unneeded-escaping = { status = "planned", issue = "#338" }
-unneeded-override = { status = "planned", issue = "#338" }
+unneeded-override = "implemented"
 unneeded-synthesized-initializer = { status = "planned", issue = "#338" }
 unneeded-throws-rethrows = "implemented"
 unowned-variable-capture = { status = "planned", issue = "#338" }
@@ -197,7 +197,7 @@ unused-declaration = { status = "planned", issue = "#448" }
 unused-enumerated = "implemented"
 unused-optional-binding = "implemented"
 unused-setter-value = { status = "planned", issue = "#338" }
-valid-ibinspectable = { status = "planned", issue = "#338" }
+valid-ibinspectable = "implemented"
 variable-shadowing = { status = "planned", issue = "#338" }
 vertical-parameter-alignment = "implemented"
 vertical-parameter-alignment-on-call = { status = "planned", issue = "#298" }
