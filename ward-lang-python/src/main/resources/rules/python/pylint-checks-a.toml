@@ -464,3 +464,15 @@ body = '''
 check = "open-without-with"
 message = "consider using 'with' for resource-allocating operations"
 '''
+
+[[rules]]
+id = "ward:python/contextmanager-generator-missing-cleanup"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "contextmanager-cleanup"
+message = "generator uses a context manager that does not clean up when the generator is closed"
+'''

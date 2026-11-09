@@ -307,7 +307,6 @@ pylint = ["consider-using-with"]
 [[rule]]
 name = "contextmanager-generator-missing-cleanup"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["contextmanager-generator-missing-cleanup"]
 
 [[rule]]

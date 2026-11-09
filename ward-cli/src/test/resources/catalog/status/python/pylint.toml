@@ -54,7 +54,7 @@ consider-using-sys-exit = "implemented"
 consider-using-ternary = "implemented"
 consider-using-tuple = { status = "planned", issue = "#336" }
 consider-using-with = "implemented"
-contextmanager-generator-missing-cleanup = { status = "planned", issue = "#336" }
+contextmanager-generator-missing-cleanup = "implemented"
 cyclic-import = { status = "planned", issue = "#336" }
 declare-non-slot = "implemented"
 dict-init-mutate = { status = "planned", issue = "#297" }

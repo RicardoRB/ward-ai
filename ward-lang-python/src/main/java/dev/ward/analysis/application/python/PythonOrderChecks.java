@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.BareCapturePatternCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.ConcatJoinCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
+import dev.ward.analysis.domain.rule.check.ContextManagerCleanupCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateArgumentNameCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateFormatArgumentCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
@@ -109,6 +110,9 @@ final class PythonOrderChecks {
         entry(
             "open-without-with",
             toml -> new OpenWithoutWithCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "contextmanager-cleanup",
+            toml -> new ContextManagerCleanupCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "bare-capture-pattern",
             toml -> new BareCapturePatternCheck(TomlValues.required(toml, MESSAGE))),
