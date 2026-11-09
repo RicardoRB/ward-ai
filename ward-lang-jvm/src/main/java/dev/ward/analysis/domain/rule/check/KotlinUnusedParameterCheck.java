@@ -20,9 +20,10 @@ import java.util.regex.Pattern;
 
 /**
  * Reports each parameter of a Kotlin function that the body never reads, as detekt's {@code
- * UnusedParameter} does. Names matching {@code ignored|expected} are allowed. A function that is an
- * override, open, abstract, operator, actual or expect declaration is left alone, since its
- * parameters are fixed by a signature.
+ * UnusedParameter} does. Names matching {@code ignored|expected} are allowed. A name the file
+ * mentions anywhere else, such as in a string template the scopes do not read, counts as used. A
+ * function that is an override, open, abstract, operator, actual or expect declaration is left
+ * alone, since its parameters are fixed by a signature.
  */
 public final class KotlinUnusedParameterCheck implements RuleCheck {
 
@@ -56,7 +57,7 @@ public final class KotlinUnusedParameterCheck implements RuleCheck {
     for (final Scope scope : scopes.scopes()) {
       if (scope.kind() == ScopeKind.FUNCTION && !scope.open() && !signature(scope, unit.text())) {
         scope.bindings().stream()
-            .filter(binding -> unused(binding, scopes))
+            .filter(binding -> unused(binding, scopes, unit.text()))
             .forEach(binding -> found.add(match(binding)));
       }
     }
@@ -68,10 +69,11 @@ public final class KotlinUnusedParameterCheck implements RuleCheck {
     return new RuleMatch(binding.declaration(), message.replace(NAME, binding.name()));
   }
 
-  private static boolean unused(final Binding binding, final UnitScopes scopes) {
+  private static boolean unused(final Binding binding, final UnitScopes scopes, final String text) {
     return binding.kind() == BindingKind.PARAMETER
         && !ALLOWED_NAMES.matcher(binding.name()).matches()
-        && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE);
+        && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE)
+        && !KotlinDeclarations.usedElsewhere(text, binding.name(), binding.declaration());
   }
 
   private static boolean signature(final Scope scope, final String text) {

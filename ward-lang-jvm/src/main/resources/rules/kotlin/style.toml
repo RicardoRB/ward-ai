@@ -15,6 +15,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["functionDeclaration"]
+not-inside = ["classBody"]
 text = '^(?:@\w+)*(?:(?:private|internal|public|protected|final|inline|external|suspend)\s*)*fun\s*(?:<[^>]*>\s*)?(?:[\w.<>?]+\.)?\w+\s*\([^)]*\)\s*(?::\s*[^={]+?)?\s*(?:=\s*(?:"[^"$\\]*"|-?\d[\w.]*|true|false|null)|\{\s*return\s*(?:"[^"$\\]*"|-?\d[\w.]*|true|false|null)\s*\})\s*$'
 message = "function returns a constant; declare a constant instead"
 '''
@@ -44,7 +45,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["functionLiteral"]
-text = '^\{\s*it\s*(?::[^->]*)?(?:->|,)'
+text = '^\{\s*it\s*(?::[^->,]*)?->'
 message = "lambda declares 'it' as its parameter name; omit the parameter declaration"
 '''
 
@@ -71,9 +72,7 @@ category = "style"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 0 }
 body = '''
-check = "descendant-count"
-kinds = ["forExpression", "whileExpression", "doWhileExpression"]
-counted = ["'break'", "'continue'"]
+check = "kotlin-loop-jumps"
 max = 1
 message = "loop has {value} break or continue statements; the limit is {max}"
 '''
@@ -87,11 +86,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["propertyDeclaration"]
-parent = ["topLevelObject", "classMemberDeclaration"]
-not-inside = ["functionBody", "classDeclaration"]
-text = '^(?:(?:public|internal|protected|private)\s*)?val\s*\w+\s*(?::\s*(?:String|Int|Long|Short|Byte|Double|Float|Boolean)\s*)?=\s*(?:"[^"$\n]*"|-?\d[\w.]*|true|false)\s*$'
+check = "kotlin-may-be-const"
 message = "property with a constant value can be a const val"
 '''
 
@@ -118,7 +113,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["objectLiteral"]
-text = '^object\s*:\s*(?:Runnable|Callable|Comparator|ThreadFactory|Supplier|Consumer|Predicate|Function)\b[^{]*\{\s*override\s*fun\s*\w+\s*\([^)]*\)[^{]*\{[^{}]*\}\s*\}$'
+text = '^object\s*:\s*(?:Runnable|Callable|Comparator|ThreadFactory|Supplier|Consumer|Predicate|Function)\b[^{]*\{\s*override\s*fun\s*\w+\s*\([^)]*\)[^{]*\{(?![^{}]*this)[^{}]*\}\s*\}$'
 message = "object literal implements a single abstract method and can be a lambda"
 '''
 
@@ -148,7 +143,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["postfixUnaryExpression"]
-text = '\.map\s*\{\s*(?:it|(\w+)\s*->\s*\1)\s*\}$'
+text = '^(?!\w*(?:[Mm]ap|entries))\w+\.map\{\s*(?:it|(\w+)\s*->\s*\1)\s*\}$'
 message = "this 'map' call returns its elements unchanged and can be removed"
 '''
 
@@ -178,7 +173,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration", "objectDeclaration"]
-text = '^(?![\s\S]*serialVersionUID)[^{]*?(?:class|object)[^{]*:[^{]*Serializable'
+text = '^(?![\s\S]*serialVersionUID)[^{]*?(?<![A-Za-z0-9_])(?:class|object)[^{]*:[^{]*Serializable'
 message = "class implements Serializable and should define a private constant serialVersionUID"
 '''
 
@@ -207,9 +202,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["postfixUnaryExpression"]
-text = '\.apply\s*\{\s*(?:this\.)?\w+\s*(?:=[^={}]+)?\s*\}$'
+check = "kotlin-unnecessary-apply"
 message = "apply block only accesses members of its receiver; the apply call is unnecessary"
 '''
 
@@ -367,9 +360,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '^(?:@\w+)*(?:(?:public|internal|private|final)\s*)?class\s*\w+\s*\{\s*companion\s*object\b[\s\S]*\}\s*\}$'
+check = "kotlin-utility-class"
 message = "class only contains a companion object; declare an object instead"
 '''
 

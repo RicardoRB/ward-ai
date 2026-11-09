@@ -4,4 +4,6 @@ class Box {
     var size = 0
 }
 
-fun reset(box: Box) = box.apply { size }
+fun reset(box: Box) {
+    box.apply { size }
+}

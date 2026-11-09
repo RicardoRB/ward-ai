@@ -7,3 +7,5 @@ class Payload(val id: Int) : Serializable {
         private const val serialVersionUID: Long = 1L
     }
 }
+
+interface Subclassable : Serializable

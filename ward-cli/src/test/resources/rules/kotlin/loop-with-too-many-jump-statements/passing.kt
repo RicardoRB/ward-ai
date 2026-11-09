@@ -7,3 +7,12 @@ fun first(values: List<Int>): Int? {
     }
     return null
 }
+
+fun nested(values: List<Int>, others: List<Int>) {
+    for (value in values) {
+        for (other in others) {
+            if (other < 0) break
+        }
+        if (value < 0) continue
+    }
+}

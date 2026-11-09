@@ -7,3 +7,7 @@ fun suffix(): String {
 }
 
 fun compute() = "x" + "y"
+
+class Cfg {
+    fun version() = "1"
+}
