@@ -9,8 +9,8 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
+import java.util.Optional;
 
 /** Gate choices that run a standalone executable, available only when it is on the path. */
 record BinaryToolGates(EnvironmentInspection environment, Project project) {
@@ -84,31 +84,31 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                             + " ruleset).")));
     gates.addAll(
         List.of(
-        option(
-            "gitleaks",
-            "Detects committed secrets with Gitleaks.",
-            List.of(
+            option(
                 "gitleaks",
-                "detect",
-                "--no-banner",
-                "--redact",
-                "--report-format",
-                "sarif",
-                "--report-path",
-                ToolReports.gitleaksSarif(project)),
-            "Install Gitleaks."),
-        option(
-            "zap",
-            "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
-            List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
-            "Install ZAP and replace "
-                + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                + " with a target you are authorized to scan before running."),
-        option(
-            "trivy",
-            "Scans dependencies, containers, and IaC with Trivy.",
-            List.of("trivy", "fs", "--exit-code", "1", "."),
-            "Install Trivy.")));
+                "Detects committed secrets with Gitleaks.",
+                List.of(
+                    "gitleaks",
+                    "detect",
+                    "--no-banner",
+                    "--redact",
+                    "--report-format",
+                    "sarif",
+                    "--report-path",
+                    ToolReports.gitleaksSarif(project)),
+                "Install Gitleaks."),
+            option(
+                "zap",
+                "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
+                List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
+                "Install ZAP and replace "
+                    + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
+                    + " with a target you are authorized to scan before running."),
+            option(
+                "trivy",
+                "Scans dependencies, containers, and IaC with Trivy.",
+                List.of("trivy", "fs", "--exit-code", "1", "."),
+                "Install Trivy.")));
     return gates;
   }
 
@@ -121,7 +121,6 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
       default -> Optional.empty();
     };
   }
-
 
   private InitGateOption option(
       final String id, final String description, final List<String> command, final String hint) {

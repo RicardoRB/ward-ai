@@ -11,9 +11,7 @@ public final class NodeFindingSources {
   /** Groups the Node finding sources that Dagger injects. */
   @Inject
   public NodeFindingSources(
-      final EslintJsonFindings eslint,
-      final TscOutputFindings tsc,
-      final BiomeXmlFindings biome) {
+      final EslintJsonFindings eslint, final TscOutputFindings tsc, final BiomeXmlFindings biome) {
     this.sources = List.of(eslint, tsc, biome);
   }
 

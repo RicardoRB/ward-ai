@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-class BiomeCheckstyleFindingsTest {
+class BiomeXmlFindingsTest {
   private static final String GATE = "biome";
   private static final int ANY_COLUMN = 10;
   // Captured from `biome ci --colors=off --reporter=checkstyle --error-on-warnings .` in Biome
@@ -31,7 +31,7 @@ class BiomeCheckstyleFindingsTest {
 
   @TempDir Path root;
 
-  private final BiomeCheckstyleFindings source = new BiomeCheckstyleFindings();
+  private final BiomeXmlFindings source = new BiomeXmlFindings();
 
   private List<Finding> extract(final String stdout) {
     return source.extract(

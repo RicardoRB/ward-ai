@@ -45,6 +45,6 @@ class PartialCheckPlanLinkTest {
             path -> Optional.empty());
 
     assertThat(plan.gates().get(PartialPlans.GATE))
-        .isEqualTo(PartialPlans.narrowed("-Dcheckstyle.includes=" + PartialPlans.ORDER));
+        .isEqualTo(PartialPlans.narrowed("-Dlint.includes=" + PartialPlans.ORDER));
   }
 }

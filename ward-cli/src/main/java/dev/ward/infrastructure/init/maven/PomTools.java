@@ -189,13 +189,11 @@ final class PomTools {
     /** The plugin or dependency declaration, with the chosen versions filled in. */
     String declaration(final QualityPreset preset, final String selectedVersion) {
       final String chosen = chosen(preset);
-      final String pinned =
-          selectedVersion == null
-              ? chosen
-              : chosen.replaceFirst(
-                  "<version>[^<]+</version>",
-                  Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
-      return pinned;
+      return selectedVersion == null
+          ? chosen
+          : chosen.replaceFirst(
+              "<version>[^<]+</version>",
+              Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
     }
 
     String addTo(final String pom, final QualityPreset preset, final String selectedVersion) {

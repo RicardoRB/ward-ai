@@ -24,25 +24,26 @@ class PresetRuleFilePlanTest {
   @Test
   void missingFilesAreCreatedWithoutTouchingTheProject(@TempDir final Path root) {
     final List<PlannedFileChange> plan =
-        RuleFilePlans.tools(
-            writer.plan(project(root), QualityPreset.STANDARD, gates("pmd", "checkstyle")));
+        RuleFilePlans.tools(writer.plan(project(root), QualityPreset.STANDARD, gates("enforcer")));
 
     assertThat(plan)
         .containsExactly(
-            new PlannedFileChange(root.resolve("config/pmd-ruleset.xml"), Action.CREATE),
-            new PlannedFileChange(root.resolve("config/checkstyle.xml"), Action.CREATE));
+            new PlannedFileChange(root.resolve("config/enforcer-rules.xml"), Action.CREATE));
     assertThat(root.resolve("config")).doesNotExist();
   }
 
   @Test
   void currentFileIsUnchangedAndOtherPresetIsModified(@TempDir final Path root) {
-    writer.apply(project(root), QualityPreset.STANDARD, gates("pmd"));
+    writer.apply(project(root), QualityPreset.STANDARD, gates("enforcer"));
 
     assertThat(
-            RuleFilePlans.tools(writer.plan(project(root), QualityPreset.STANDARD, gates("pmd"))))
+            RuleFilePlans.tools(
+                writer.plan(project(root), QualityPreset.STANDARD, gates("enforcer"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.UNCHANGED);
-    assertThat(RuleFilePlans.tools(writer.plan(project(root), QualityPreset.STRICT, gates("pmd"))))
+    assertThat(
+            RuleFilePlans.tools(
+                writer.plan(project(root), QualityPreset.STRICT, gates("enforcer"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.MODIFY);
   }
@@ -50,18 +51,18 @@ class PresetRuleFilePlanTest {
   @Test
   void unmarkedFileIsPreserved(@TempDir final Path root) throws IOException {
     Files.createDirectories(root.resolve("config"));
-    Files.writeString(root.resolve("config/checkstyle.xml"), "<module name=\"Checker\"/>\n");
+    Files.writeString(root.resolve("config/enforcer-rules.xml"), "<module name=\"Checker\"/>\n");
 
     assertThat(
             RuleFilePlans.tools(
-                writer.plan(project(root), QualityPreset.STANDARD, gates("checkstyle"))))
+                writer.plan(project(root), QualityPreset.STANDARD, gates("enforcer"))))
         .extracting(PlannedFileChange::action)
         .containsExactly(Action.PRESERVE_USER_OWNED);
   }
 
   @Test
   void noPresetPlansNothing(@TempDir final Path root) {
-    assertThat(RuleFilePlans.tools(writer.plan(project(root), null, gates("pmd")))).isEmpty();
+    assertThat(RuleFilePlans.tools(writer.plan(project(root), null, gates("enforcer")))).isEmpty();
   }
 
   private static Project project(final Path root) {

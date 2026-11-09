@@ -31,7 +31,7 @@ class PartialCheckPlanRenderingTest {
                         ",")),
                 "src/main/java/a/A.java",
                 "src/main/java/b/B.java"))
-        .isEqualTo(PartialPlans.narrowed("-Dcheckstyle.includes=**/A.java,**/B.java"));
+        .isEqualTo(PartialPlans.narrowed("-Dlint.includes=**/A.java,**/B.java"));
   }
 
   @Test
