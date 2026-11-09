@@ -1,0 +1,72 @@
+# Control-flow rules of the ESLint core rules (issue #326), for TypeScript and JavaScript.
+
+[[rules]]
+id = "ward:typescript/no-constructor-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constructor-return"
+message = "unexpected return value from constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constructor-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constructor-return"
+message = "unexpected return value from constructor"
+'''
+
+[[rules]]
+id = "ward:typescript/no-dupe-else-if"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-else-if"
+message = "this branch can never execute; its condition duplicates or is covered by an earlier condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dupe-else-if"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-else-if"
+message = "this branch can never execute; its condition duplicates or is covered by an earlier condition"
+'''
+
+
+[[rules]]
+id = "ward:typescript/no-unexpected-multiline"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unexpected-multiline"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unexpected-multiline"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unexpected-multiline"
+'''
