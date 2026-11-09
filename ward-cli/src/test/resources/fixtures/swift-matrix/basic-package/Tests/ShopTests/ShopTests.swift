@@ -1,5 +1,5 @@
-import XCTest
 @testable import Shop
+import XCTest
 
 class ShopTests: XCTestCase {
     func testAddsAnItem() {
@@ -10,7 +10,7 @@ class ShopTests: XCTestCase {
 
     func testServiceSavesTheAddedItem() {
         let repository = InMemoryCartRepository()
-        CartService(repository: repository).addItem("Book")
+        CartService(cartRepository: repository).addItem("Book")
         XCTAssertEqual(repository.load().items, ["Book"])
     }
 }

@@ -17,8 +17,6 @@ import java.util.Optional;
  * @param workspace the {@code .xcworkspace} the Xcode test command uses, when there is one
  * @param scheme the Xcode scheme the test command runs, or {@code null} for SwiftPM
  * @param platform the {@code xcodebuild} platform, or {@code null} for SwiftPM
- * @param ownSwiftLintConfig whether the project keeps its own {@code .swiftlint.yml}, which strict
- *     layers over with {@link #STRICT_CONFIG} instead of replacing
  */
 record SwiftTools(
     BuildTool buildTool,
@@ -27,24 +25,10 @@ record SwiftTools(
     List<String> sourceDirectories,
     Optional<String> workspace,
     String scheme,
-    String platform,
-    boolean ownSwiftLintConfig) {
-  /**
-   * The SwiftLint executable that {@code swift package resolve} downloads for the Ward tools
-   * package. SwiftPM cannot run a dependency's executable product with {@code swift run}, so the
-   * gate runs the artifact directly. The path is SwiftPM's artifact layout for the pinned
-   * SwiftLintPlugins.
-   */
-  static final String SWIFTLINT_BINARY =
-      ".ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/"
-          + "SwiftLintBinary.artifactbundle/macos/swiftlint";
-
-  static final String SWIFTLINT_CONFIG = ".swiftlint.yml";
-  static final String STRICT_CONFIG = ".ward/swiftlint-strict.yml";
+    String platform) {
   static final String STANDARD_COVERAGE = "80";
   static final String STRICT_COVERAGE = "85";
   static final String XCRESULT = ".ward/reports/xcode/tests.xcresult";
-  static final String SWIFTLINT = "swiftlint";
   static final String SWIFT_BUILD = "swift-build";
   static final String SWIFT_TEST = "swift-test";
   static final String XCODEBUILD_TEST = "xcodebuild-test";
@@ -76,26 +60,6 @@ record SwiftTools(
   /** Returns the line coverage minimum of the preset, in percent. */
   String coverageMinimum() {
     return strict() ? STRICT_COVERAGE : STANDARD_COVERAGE;
-  }
-
-  /** Returns the standard SwiftLint command, which runs the binary the tools package resolved. */
-  static List<String> swiftLintCommand() {
-    return List.of(SWIFTLINT_BINARY, "lint", "--reporter", "json", "--quiet");
-  }
-
-  /**
-   * Returns the SwiftLint gate command. Strict adds {@code --strict}, which fails on warnings, and
-   * over a user config also the strict file, after the user's, so the strict rules layer on top.
-   */
-  List<String> swiftLintGateCommand() {
-    final List<String> command = new ArrayList<>(swiftLintCommand());
-    if (strict()) {
-      command.add("--strict");
-      if (ownSwiftLintConfig) {
-        command.addAll(List.of("--config", SWIFTLINT_CONFIG, "--config", STRICT_CONFIG));
-      }
-    }
-    return List.copyOf(command);
   }
 
   /** Returns the SwiftPM build of the package and its tests, warnings as errors when strict. */
