@@ -1,0 +1,40 @@
+# AngularJS element sinks of the Semgrep p/javascript rules: untrusted text inserted into an angular.element.
+# shortcut: matches the jQuery-style method by name on any receiver.
+
+[[sinks]]
+kind = "call"
+name = "html"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "append"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepend"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "after"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "before"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceWith"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "getTrustedHtml"
+
+[[sanitizers]]
+kind = "call"
+name = "sanitize"

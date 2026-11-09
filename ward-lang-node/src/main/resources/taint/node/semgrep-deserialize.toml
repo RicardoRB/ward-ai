@@ -1,0 +1,12 @@
+# Deserialization sinks of the Semgrep p/javascript rules: untrusted text handed to an object decoder.
+# shortcut: matches the decoder by name on any module, not only the modules the rule imports.
+
+[[sinks]]
+kind = "call"
+name = "unserialize"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deserialize"
+arguments = [0]

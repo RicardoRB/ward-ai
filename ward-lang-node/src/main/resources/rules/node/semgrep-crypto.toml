@@ -1,0 +1,18 @@
+# Authenticated-encryption rules of the Semgrep p/javascript pack.
+
+[[rules]]
+id = "ward:javascript/aead-no-final"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "node-call-without-follow-up"
+callee = "createDecipheriv"
+argument-index = 0
+argument-pattern = '^[\x27"].*(-gcm|-ccm|-ocb|chacha20-poly1305)[\x27"]$'
+first = "update"
+then = "final"
+message = "decipher update without a final call; the authentication tag is never checked"
+'''

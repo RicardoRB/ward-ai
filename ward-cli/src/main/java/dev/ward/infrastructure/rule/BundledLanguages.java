@@ -10,6 +10,7 @@ import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
+import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public final class BundledLanguages {
         new JvmCheckProvider(),
         new NodeCheckProvider(),
         new PythonCheckProvider(),
-        new SwiftCheckProvider());
+        new SwiftCheckProvider(),
+        new SwiftLintCheckProvider());
   }
 
   /** Returns the registry of every bundled check. */

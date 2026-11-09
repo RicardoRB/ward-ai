@@ -13,6 +13,7 @@ public final class SwiftRuleFiles implements RuleFileProvider {
       List.of(
           "rules/duplication-swift.toml",
           "rules/swift-structural.toml",
+          "rules/swift/dead-code.toml",
           "rules/swift/declaration-order.toml",
           "rules/swift/doc-style.toml",
           "rules/swift/idiomatic-2.toml",
