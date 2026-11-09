@@ -19,6 +19,7 @@ import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
+import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -66,6 +67,11 @@ final class BiomeChecks {
             "node-aria-values",
             toml ->
                 new BiomeAriaValuesCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-noninteractive-tabindex",
+            toml ->
+                new BiomeNoninteractiveTabindexCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-no-redundant-roles",
             toml ->
