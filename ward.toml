@@ -5,43 +5,21 @@ enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw test"
 
-[checks.format]
+# Ward's own format and analysis rules replace the former format, Checkstyle, PMD and SpotBugs gates (#347 part B).
+[checks.ward-format]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw spotless:check"
+uses = "ward-format"
 
-[checks.format.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
-args = ["-DspotlessFiles={paths}"]
-item = ".*/{path}"
-separator = ","
-
-[checks.checkstyle]
+[checks.ward]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw checkstyle:check"
+uses = "ward"
+rules-file = "ward-rules.toml"
 
-[checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
-args = ["-Dcheckstyle.includes={paths}"]
-item = "**/{name}"
-separator = ","
-
-[checks.pmd]
-enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "./mvnw -DskipTests package pmd:check"
-
-[checks.pmd.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
-
-[checks.spotbugs]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package spotbugs:check"
+[checks.ward.paths]
+match = ["**/*.java"]
+full = ["ward-rules.toml", "ward.toml"]
 
 [checks.coverage]
 enabled = true
