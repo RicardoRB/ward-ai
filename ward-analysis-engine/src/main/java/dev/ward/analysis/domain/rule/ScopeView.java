@@ -38,6 +38,9 @@ public record ScopeView(
   public static final ScopeView NONE =
       new ScopeView(UnitScopes.EMPTY, Map.of(), Set.of(), NoScopes.INSTANCE);
 
+  // Members are reached through attribute access, not by a bare name in another file.
+  private static final Set<String> MEMBER_KINDS = Set.of("method", "property", "attribute");
+
   /**
    * Copies the imports.
    *
@@ -77,7 +80,11 @@ public record ScopeView(
     final Set<String> names = new HashSet<>();
     dependencies
         .dependencies()
-        .forEach(summary -> summary.declared().forEach(symbol -> names.add(simple(symbol))));
+        .forEach(
+            summary ->
+                summary.declared().stream()
+                    .filter(symbol -> !MEMBER_KINDS.contains(symbol.kind()))
+                    .forEach(symbol -> names.add(simple(symbol))));
     return new ScopeView(scopes, resolved, names, analysis);
   }
 

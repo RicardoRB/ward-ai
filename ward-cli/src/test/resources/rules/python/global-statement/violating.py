@@ -1,0 +1,2 @@
+def bump():
+    global counter

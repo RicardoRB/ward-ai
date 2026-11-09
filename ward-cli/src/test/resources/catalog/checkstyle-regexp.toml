@@ -20,8 +20,6 @@ checkstyle = ["RegexpOnFilename"]
 
 [[rule]]
 name = "regexp-singleline"
-category = "regexp"
-presets = ["standard", "strict"]
 checkstyle = ["RegexpSingleline"]
 
 [[rule]]

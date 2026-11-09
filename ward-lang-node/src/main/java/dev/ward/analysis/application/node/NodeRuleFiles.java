@@ -12,6 +12,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
   private static final List<String> FILES =
       List.of(
           "rules/duplication-node.toml",
+          "rules/node/angular.toml",
           "rules/node/blocks.toml",
           "rules/node/coding.toml",
           "rules/node/metrics.toml",
@@ -19,7 +20,19 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/naming.toml",
           "rules/node/problem.toml",
           "rules/node/regexp.toml",
+          "rules/node/semgrep-angular.toml",
+          "rules/node/semgrep-config.toml",
+          "rules/node/semgrep-crypto.toml",
+          "rules/node/semgrep-headers.toml",
+          "rules/node/semgrep-injection.toml",
+          "rules/node/semgrep-react.toml",
+          "rules/node/semgrep-secrets.toml",
+          "rules/node/semgrep-web.toml",
           "rules/node/sizes.toml",
+          "rules/node/style-coding.toml",
+          "rules/node/style-javadoc.toml",
+          "rules/node/style-linter.toml",
+          "rules/node/style-typescript.toml",
           "rules/node/suggestion.toml");
 
   @Override

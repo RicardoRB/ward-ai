@@ -55,13 +55,17 @@ class SwiftConfigFilesTest {
   }
 
   @Test
-  void removesTheWardOwnedToolsPackageAndItsLockFile() throws IOException {
+  void removesTheWardOwnedToolsDirectoryWithItsLockFileAndCache() throws IOException {
     write(".ward/swift-tools/Package.swift", "// managed-by: ward\n");
     write(".ward/swift-tools/Package.resolved", "{}\n");
 
     assertThat(SwiftConfigFiles.targets(swift()))
-        .extracting(ConfigTarget::disposition)
-        .containsExactly(ConfigTarget.Disposition.REMOVE, ConfigTarget.Disposition.REMOVE);
+        .singleElement()
+        .satisfies(
+            target -> {
+              assertThat(target.file()).isEqualTo(root.resolve(".ward/swift-tools"));
+              assertThat(target.disposition()).isEqualTo(ConfigTarget.Disposition.REMOVE);
+            });
   }
 
   @Test

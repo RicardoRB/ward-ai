@@ -1,0 +1,42 @@
+# Script-evaluation sinks of the Semgrep p/javascript rules: the vm module, vm2 and sandbox runners.
+# shortcut: vm2 and sandbox runners match by method name (run), so any object's run method is matched too.
+
+[[sinks]]
+kind = "call"
+name = "runInContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "runInNewContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "runInThisContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compileFunction"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Script"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "SourceTextModule"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "VMScript"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+arguments = [0]

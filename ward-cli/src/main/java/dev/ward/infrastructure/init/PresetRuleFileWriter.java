@@ -12,9 +12,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /**
@@ -101,7 +103,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
         ConfigTarget.write(
             project.root().resolve(WARD_RULES),
             ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
-                + PresetRuleFileContent.wardRules(preset)));
+                + PresetRuleFileContent.wardRules(preset, project.languages())));
     return targets;
   }
 
@@ -158,14 +160,29 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
           preserved.add(file);
         }
       }
-      case REMOVE -> {
-        originals.put(file, Files.readString(file));
-        Files.delete(file);
-      }
+      case REMOVE -> remove(file, originals);
       default -> {
         // Already current.
       }
     }
+  }
+
+  /**
+   * Removes a file, recording its content for rollback, or a directory tree that Ward owns. A tree
+   * is not restored on rollback: it is a regenerable build cache.
+   */
+  private static void remove(final Path file, final Map<Path, String> originals)
+      throws IOException {
+    if (Files.isDirectory(file)) {
+      try (Stream<Path> paths = Files.walk(file)) {
+        for (final Path path : paths.sorted(Comparator.reverseOrder()).toList()) {
+          Files.delete(path);
+        }
+      }
+      return;
+    }
+    originals.put(file, Files.readString(file));
+    Files.delete(file);
   }
 
   private static String marked(final QualityPreset preset, final String body) {

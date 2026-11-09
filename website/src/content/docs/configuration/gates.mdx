@@ -97,10 +97,9 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 Presets may write these rule files:
 
 - `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for Java
+- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project
 
-Kotlin projects keep `config/pmd-ruleset.xml`, `config/checkstyle.xml` and
-`config/spotbugs-exclude.xml` until their own rules land. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+Java and Kotlin projects get no `config/pmd-ruleset.xml`, `config/checkstyle.xml` or `config/spotbugs-exclude.xml`; the Ward rules replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 
@@ -607,7 +606,8 @@ variables, redefinitions and shadowing build on it.
 
 The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
 modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
-Java size and naming rules. They are not measured against Detekt or ktlint in this release.
+Java size and naming rules. Ward's Kotlin rules replace Detekt and ktlint. Ward never ran either
+tool: it has no gate, parser or init step for them.
 
 | Rule | Limit or pattern |
 |---|---|

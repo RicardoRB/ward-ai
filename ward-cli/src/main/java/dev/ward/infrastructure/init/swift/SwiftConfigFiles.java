@@ -18,8 +18,8 @@ import java.util.Optional;
 public final class SwiftConfigFiles {
   static final String SWIFTLINT = ".swiftlint.yml";
   static final String STRICT_SWIFTLINT = ".ward/swiftlint-strict.yml";
-  static final String TOOLS_MANIFEST = ".ward/swift-tools/Package.swift";
-  static final String TOOLS_RESOLVED = ".ward/swift-tools/Package.resolved";
+  static final String TOOLS_DIRECTORY = ".ward/swift-tools";
+  static final String TOOLS_MANIFEST = TOOLS_DIRECTORY + "/Package.swift";
 
   private SwiftConfigFiles() {}
 
@@ -29,19 +29,17 @@ public final class SwiftConfigFiles {
     final List<ConfigTarget> targets = new ArrayList<>();
     retired(root.resolve(SWIFTLINT)).ifPresent(targets::add);
     retired(root.resolve(STRICT_SWIFTLINT)).ifPresent(targets::add);
-    final Optional<ConfigTarget> manifest = retired(root.resolve(TOOLS_MANIFEST));
-    manifest.ifPresent(targets::add);
-    // The lock file is only Ward's while the manifest that pins it is Ward's too.
-    if (manifest
-            .map(target -> target.disposition() == ConfigTarget.Disposition.REMOVE)
-            .orElse(false)
-        && Files.isRegularFile(root.resolve(TOOLS_RESOLVED))) {
+    final Path manifest = root.resolve(TOOLS_MANIFEST);
+    if (Files.isRegularFile(manifest) && ConfigFiles.owned(Files.readString(manifest))) {
+      // The lock file and build cache belong to that manifest, so they go with it.
       targets.add(
           new ConfigTarget(
-              root.resolve(TOOLS_RESOLVED),
+              root.resolve(TOOLS_DIRECTORY),
               ConfigTarget.Disposition.REMOVE,
               null,
-              "removed: Ward's earlier Package.resolved for the SwiftLint tools package"));
+              "removed: Ward's earlier SwiftLint tools package and its build cache"));
+    } else {
+      retired(manifest).ifPresent(targets::add);
     }
     return List.copyOf(targets);
   }

@@ -1,0 +1,490 @@
+# Pylint checks, part A (#336): the standard Pylint rows whose text a single node decides.
+
+
+[[rules]]
+id = "ward:python/consider-using-sys-exit"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "sys-exit-call"
+message = "use sys.exit() instead of exit() or quit()"
+'''
+
+[[rules]]
+id = "ward:python/comparison-of-constants"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "^(\\d+(\\.\\d+)?|'[^']*'|\"[^\"]*\"|True|False|None)(==|!=|<=|>=|<|>)(\\d+(\\.\\d+)?|'[^']*'|\"[^\"]*\"|True|False|None)$"
+message = "comparison between two literal constants; the result is known"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-from-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_name"]
+text = "^import[\\w.]*\\.(\\w+)as\\1$"
+message = "import the name with from ... import instead of an aliased module import"
+'''
+
+[[rules]]
+id = "ward:python/broad-exception-raised"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise(Exception|BaseException)(\\(|$)"
+message = "raise a specific exception instead of Exception or BaseException"
+'''
+
+[[rules]]
+id = "ward:python/consider-merging-isinstance"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test"]
+text = "isinstance\\((\\w+),[^)]*\\)orisinstance\\(\\1,"
+message = "merge isinstance checks on the same value into one call with a tuple of types"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-in"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test"]
+text = "(\\w+)==[\\w.'\"]+or\\1==|(\\w+)!=[\\w.'\"]+and\\2!="
+message = "use 'in' with a tuple instead of repeated equality checks on the same value"
+'''
+
+# shortcut: the check matches the structure of the and/or expression in an assignment or return, and recognises only literal truthy middle operands; Pylint infers them.
+[[rules]]
+id = "ward:python/consider-using-ternary"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "and-or-ternary"
+message = "use a conditional expression instead of 'and'/'or'"
+'''
+
+[[rules]]
+id = "ward:python/anomalous-unicode-escape-in-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "^[bB]['\"](?:[^\\\\]|\\\\.)*?\\\\[uU]"
+message = "anomalous unicode escape in a byte string; use a raw or text string instead"
+'''
+
+[[rules]]
+id = "ward:python/init-is-generator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "init-generator"
+message = "__init__ method is a generator"
+'''
+
+[[rules]]
+id = "ward:python/expression-not-assigned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unassigned-call-expression"
+message = "expression contains a call but its value is assigned to nothing"
+'''
+
+[[rules]]
+id = "ward:python/bad-thread-instantiation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "thread-instantiation"
+message = "threading.Thread needs the target function"
+'''
+
+[[rules]]
+id = "ward:python/bad-super-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "bad-super-call"
+message = "Bad first argument '{value}' given to super()"
+'''
+
+[[rules]]
+id = "ward:python/confusing-with-statement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "confusing-with"
+message = "with statement binds a name and then a second item, which reads as a tuple; separate them"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-max-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "min-max-builtin"
+builtin = "max"
+message = "consider using max() instead of an if that assigns the larger value"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-min-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "min-max-builtin"
+builtin = "min"
+message = "consider using min() instead of an if that assigns the smaller value"
+'''
+
+[[rules]]
+id = "ward:python/bad-exception-cause"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "from(\\d+|'[^']*'|\"[^\"]*\"|True|False)$"
+message = "exception cause is set to something that is not an exception, nor None"
+'''
+
+[[rules]]
+id = "ward:python/format-string-without-interpolation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^("[^"%{]*"|[\x27][^\x27%{]*[\x27])(%|\.format\()'
+message = "formatting a string that has no interpolated variables"
+'''
+
+[[rules]]
+id = "ward:python/bad-format-string-key"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^("[^"]*%\([^"]*"|[\x27][^\x27]*%\([^\x27]*[\x27])%\{[\d(]'
+message = "format string dictionary key should be a string"
+'''
+
+[[rules]]
+id = "ward:python/chained-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["and_test"]
+text = '^(\w+)(<=?)(\w+)and\3(<=?)(\w+)$|^(\w+)(>=?)(\w+)and\8(>=?)(\w+)$'
+message = "simplify the chained comparison of two operands"
+'''
+
+[[rules]]
+id = "ward:python/chained-comparison-all-equal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["and_test"]
+text = '^(\w+)<=(\w+)and\2<=\1$|^(\w+)>=(\w+)and\4>=\3$'
+message = "simplify the cycle of weak inequalities to an equality"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-argument-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-argument-name"
+message = "duplicate argument name in the function definition"
+'''
+
+[[rules]]
+id = "ward:python/expressions-in-star-assignment"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "star-unpack-limit"
+message = "too many expressions before a starred assignment target"
+'''
+
+[[rules]]
+id = "ward:python/dict-iter-missing-items"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = '^for(\w+),(\w+)in\{[^}]*\}(?!\.items\()'
+message = "dictionary unpacked in a for loop without calling .items()"
+'''
+
+[[rules]]
+id = "ward:python/bad-chained-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "mixed-comparison-chain"
+message = "suspicious chained comparison that mixes comparison, identity and membership operators"
+'''
+
+[[rules]]
+id = "ward:python/function-redefined"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "function-redefined"
+message = "function or class {value} is already defined in this scope"
+'''
+
+[[rules]]
+id = "ward:python/attribute-defined-outside-init"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "attribute-outside-init"
+message = "attribute {value} defined outside __init__"
+'''
+
+[[rules]]
+id = "ward:python/class-variable-slots-conflict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-conflict"
+message = "class variable {value} conflicts with __slots__"
+'''
+
+[[rules]]
+id = "ward:python/declare-non-slot"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-declare"
+message = "no such name {value} in __slots__"
+'''
+
+[[rules]]
+id = "ward:python/assigning-non-slot"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "slots-assign"
+message = "assigning to attribute {value} not defined in class slots"
+'''
+
+[[rules]]
+id = "ward:python/consider-swap-variables"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "swap-variables"
+message = "consider tuple unpacking to swap these variables"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-get"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = '^if(\w+)in([\w.]+):\s*([\w.]+)=\2\[\1\]\s*(else:\s*\3=\S+)?\s*$'
+message = "use dict.get() instead of an if that reads a key from a dictionary"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-join"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "concat-join"
+message = "consider str.join(sequence) instead of concatenating strings in a loop"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-string-formatting-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-format-argument"
+message = "duplicate string formatting argument, consider passing it as a named argument"
+'''
+
+[[rules]]
+id = "ward:python/bare-name-capture-pattern"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "bare-capture-pattern"
+message = "bare name capture pattern matches everything and makes the following cases unreachable"
+'''
+
+[[rules]]
+id = "ward:python/condition-evals-to-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["or_test", "and_test"]
+text = '^(?:(?:True|False|None|\d+)(?:and|or))+(?:True|False|None|\d+)$'
+message = "boolean condition only compares constants and always evaluates to the same value"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-with"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "open-without-with"
+message = "consider using 'with' for resource-allocating operations"
+'''
+
+[[rules]]
+id = "ward:python/contextmanager-generator-missing-cleanup"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "contextmanager-cleanup"
+message = "generator uses a context manager that does not clean up when the generator is closed"
+'''
+
+[[rules]]
+id = "ward:python/bad-except-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "except-subclass-order"
+message = "except clause catches a subclass of a class caught above it, so it can never run"
+'''

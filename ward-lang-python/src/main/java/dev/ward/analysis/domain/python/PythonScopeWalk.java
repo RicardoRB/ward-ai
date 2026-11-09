@@ -27,7 +27,6 @@ final class PythonScopeWalk {
   private static final String GLOBALS = "globals";
   private static final String DOT = ".";
   private static final String EQUALS = "=";
-  private static final String DOTTED_NAME = "dotted_name";
   private static final String STRING = "STRING";
   private static final int KEYWORD_ARGUMENT = 3;
 
@@ -46,6 +45,7 @@ final class PythonScopeWalk {
     handlers.put("classdef", definitions::classDefinition);
     handlers.put("lambdef", definitions::lambda);
     handlers.put("expr_stmt", statements::assignment);
+    handlers.put("namedexpr_test", statements::namedExpression);
     handlers.put("for_stmt", statements::forLoop);
     handlers.put("with_item", statements::withItem);
     handlers.put("except_clause", statements::exceptClause);
@@ -56,7 +56,6 @@ final class PythonScopeWalk {
     handlers.put("nonlocal_stmt", statement -> bindings.alias(statement, BindingFlag.NONLOCAL));
     handlers.put("trailer", this::trailer);
     handlers.put("argument", this::argument);
-    handlers.put("decorator", this::decorator);
     handlers.put("atom", this::atom);
     this.comprehensions = definitions;
   }
@@ -96,16 +95,6 @@ final class PythonScopeWalk {
       visit(parts.get(2));
     } else {
       generic(node);
-    }
-  }
-
-  private void decorator(final SyntaxNode node) {
-    for (final SyntaxNode child : node.children()) {
-      if (DOTTED_NAME.equals(child.kind())) {
-        read(PythonSyntax.children(child, PythonNames.NAME).get(0));
-      } else {
-        visit(child);
-      }
     }
   }
 
