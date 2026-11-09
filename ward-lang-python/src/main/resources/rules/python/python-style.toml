@@ -121,7 +121,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["not_test"]
-text = '^not[\w.()\[\]]+(?:==|!=|<=|>=|<|>)'
+text = '^notnot|^not[\w.()\[\]]+(?:==|!=|<=|>=|<|>)'
 message = "negated comparison; write it with the inverse operator"
 '''
 
@@ -282,9 +282,9 @@ category = "linter"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["atom_expr"]
-text = "^(?:'[^']*'|\"[^\"]*\")\\.format\\("
-message = "str.format on a literal; use an f-string"
+kinds = ["atom_expr", "expr>'%'"]
+text = "^(?:'[^']*'|\"[^\"]*\")(?:\\.format\\(|%(?!\\{))"
+message = "string literal formatted with format() or %; use an f-string"
 '''
 
 [[rules]]

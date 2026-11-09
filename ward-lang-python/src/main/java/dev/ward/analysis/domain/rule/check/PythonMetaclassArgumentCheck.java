@@ -89,10 +89,10 @@ public final class PythonMetaclassArgumentCheck implements RuleCheck {
       return;
     }
     final String decorators = decoratorText(compound);
-    final boolean classMethod = decorators.contains(CLASSMETHOD);
     if (decorators.contains(STATICMETHOD)) {
       return;
     }
+    final boolean classMethod = decorators.contains(CLASSMETHOD);
     final String first = firstParameter(function.get());
     if (first.isEmpty() || wanted(classMethod).equals(first)) {
       return;

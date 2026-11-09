@@ -14,11 +14,6 @@ import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
-import dev.ward.analysis.domain.rule.check.PythonDocstringCheck;
-import dev.ward.analysis.domain.rule.check.PythonImportOrderCheck;
-import dev.ward.analysis.domain.rule.check.PythonMetaclassArgumentCheck;
-import dev.ward.analysis.domain.rule.check.PythonOverloadOrderCheck;
-import dev.ward.analysis.domain.rule.check.PythonUngroupedImportCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
@@ -27,7 +22,6 @@ import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedExportCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAnnotationCheck;
-import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -80,39 +74,12 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry("strict-call", PythonOrderChecks::strictCall),
-        entry("docstring", PythonOrderChecks::docstring),
-        entry(
-            "overload-order",
-            toml -> new PythonOverloadOrderCheck(TomlValues.required(toml, MESSAGE))),
-        entry("metaclass-argument", PythonOrderChecks::metaclassArgument),
-        entry(
-            "ungrouped-imports",
-            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "python-import-order",
-            toml -> new PythonImportOrderCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "python-variable-distance",
-            toml ->
-                new VariableDistanceCheck(
-                    TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
+        entry("strict-call", PythonOrderChecks::strictCall));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {
     return new ComparisonOperatorCheck(
         ComparisonOperatorCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck metaclassArgument(final TomlParseResult toml) {
-    return new PythonMetaclassArgumentCheck(
-        PythonMetaclassArgumentCheck.Problem.valueOf(problem(toml)),
-        TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck docstring(final TomlParseResult toml) {
-    return new PythonDocstringCheck(
-        PythonDocstringCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck strictCall(final TomlParseResult toml) {

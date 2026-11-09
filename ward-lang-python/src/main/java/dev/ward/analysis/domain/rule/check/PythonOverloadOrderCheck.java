@@ -23,6 +23,8 @@ public final class PythonOverloadOrderCheck implements RuleCheck {
   private static final String DECORATED = "decorated";
   private static final String FUNCDEF = "funcdef";
   private static final int NAME_INDEX = 1;
+  private static final int MIN_STATEMENTS = 2;
+  private static final String NO_NAME = "";
   private static final Set<String> OVERLOAD_DECORATORS = Set.of("@overload", "@typing.overload");
 
   private final String message;
@@ -46,7 +48,7 @@ public final class PythonOverloadOrderCheck implements RuleCheck {
   /** Checks every statement sequence below {@code node}: a class body or the module. */
   private void collect(final SyntaxNode node, final List<RuleMatch> found) {
     final List<SyntaxNode> statements = children(node, STMT);
-    if (statements.size() >= 2) {
+    if (statements.size() >= MIN_STATEMENTS) {
       sequence(statements, found);
     }
     for (final SyntaxNode child : node.children()) {
@@ -57,7 +59,7 @@ public final class PythonOverloadOrderCheck implements RuleCheck {
   /** Reports each overload whose predecessor is not an overload of the same name. */
   private void sequence(final List<SyntaxNode> statements, final List<RuleMatch> found) {
     final Set<String> seen = new HashSet<>();
-    String previous = null;
+    String previous = NO_NAME;
     for (final SyntaxNode statement : statements) {
       final Optional<Overload> overload = overload(statement);
       if (overload.isPresent()) {
@@ -68,7 +70,7 @@ public final class PythonOverloadOrderCheck implements RuleCheck {
         seen.add(name);
         previous = name;
       } else {
-        previous = null;
+        previous = NO_NAME;
       }
     }
   }

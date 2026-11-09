@@ -352,15 +352,12 @@ message = "try statements are nested {value} levels deep; the limit is {max}"
 [[rules]]
 id = "ward:python/constant-name"
 language = "python"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "error"
 category = "naming"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expr_stmt"]
-not-inside = ["funcdef", "classdef"]
-text = '^(?![A-Z_][A-Z0-9_]*=|__\w*__=)[A-Za-z_]\w*=(?!.*TypeVar\()'
+check = "module-constant-name"
 message = "module-level name '{value}' should be UPPER_CASE"
 '''
 

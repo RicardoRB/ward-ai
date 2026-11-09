@@ -3,14 +3,11 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Reports a docstring problem of a Python module, class or function: pylint's {@code
@@ -36,20 +33,12 @@ public final class PythonDocstringCheck implements RuleCheck {
     UNDOCUMENTED_PARAM
   }
 
-  private static final String STRING = "STRING";
   private static final String BLOCK = "block";
   private static final String TYPED_PARAMETER = "tfpdef";
   private static final Set<String> IMPLICIT_PARAMETERS = Set.of("self", "cls");
-  private static final String ARGS_HEADER = "Args:";
   private static final String PRIVATE_PREFIX = "_";
-  private static final String PERIOD = ".";
-  private static final Pattern STRING_PREFIX = Pattern.compile("^[rRuUbB]*");
-  private static final Pattern IDENTIFIER = Pattern.compile("\\w+");
-  private static final Pattern ENTRY_NAME = Pattern.compile("^\\*{0,2}(\\w+)");
-  private static final String TRIPLE_QUOTE = "\"\"\"";
-  private static final String TRIPLE_APOSTROPHE = "'''";
-  private static final int TRIPLE_LENGTH = 3;
-  private static final int QUOTE_LENGTH = 1;
+  private static final String ARGS_SECTION = "Args:";
+  private static final String IDENTIFIER = "\\w+";
   private static final int NAME_INDEX = 1;
 
   private final Problem problem;
@@ -72,16 +61,15 @@ public final class PythonDocstringCheck implements RuleCheck {
       case MISSING_MODULE -> missingModule(root);
       case MISSING_CLASS -> missingIn(root, "classdef");
       case MISSING_FUNCTION -> missingIn(root, "funcdef");
-      case EMPTY -> atEach(docstrings(root), leaf -> body(leaf).isBlank());
-      case TRAILING_PERIOD ->
-          atEach(docstrings(root), leaf -> !body(leaf).isBlank() && !periodEnds(body(leaf)));
+      case EMPTY -> atEach(DocstringText.docstrings(root), DocstringText::isBlankBody);
+      case TRAILING_PERIOD -> atEach(DocstringText.docstrings(root), DocstringText::missingPeriod);
       case UNDOCUMENTED_PARAM -> undocumentedParams(root);
     };
   }
 
   private List<RuleMatch> missingModule(final SyntaxNode root) {
-    final Optional<SyntaxNode> first = firstLeaf(root);
-    if (first.isEmpty() || isDocstring(first.get())) {
+    final Optional<SyntaxNode> first = DocstringText.firstLeaf(root);
+    if (first.isEmpty() || DocstringText.isDocstring(first.get())) {
       return List.of();
     }
     return List.of(new RuleMatch(first.get().span(), message));
@@ -91,7 +79,7 @@ public final class PythonDocstringCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(kind))) {
       final SyntaxNode node = visit.node();
-      if (!isPrivate(node) && docstring(node).isEmpty()) {
+      if (!isPrivate(node) && DocstringText.docstring(node).isEmpty()) {
         found.add(new RuleMatch(node.span(), message));
       }
     }
@@ -102,7 +90,7 @@ public final class PythonDocstringCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("funcdef"))) {
       final SyntaxNode node = visit.node();
-      final Optional<SyntaxNode> doc = docstring(node);
+      final Optional<SyntaxNode> doc = DocstringText.docstring(node);
       if (doc.isPresent()) {
         found.addAll(undocumented(node, doc.get()));
       }
@@ -112,11 +100,11 @@ public final class PythonDocstringCheck implements RuleCheck {
 
   /** One finding per parameter of {@code function} that the Args section of its docstring lacks. */
   private List<RuleMatch> undocumented(final SyntaxNode function, final SyntaxNode doc) {
-    final String text = body(doc);
-    if (!text.contains(ARGS_HEADER)) {
+    final String text = DocstringText.body(doc);
+    if (!text.contains(ARGS_SECTION)) {
       return List.of();
     }
-    final Set<String> documented = documentedArguments(text);
+    final Set<String> documented = DocstringText.documented(text);
     final List<RuleMatch> found = new ArrayList<>();
     for (final String parameter : parameters(function)) {
       if (!documented.contains(parameter) && !IMPLICIT_PARAMETERS.contains(parameter)) {
@@ -150,55 +138,8 @@ public final class PythonDocstringCheck implements RuleCheck {
   private static Optional<String> firstIdentifier(final SyntaxNode parameter) {
     return SyntaxWalk.leaves(parameter).stream()
         .map(SyntaxWalk::text)
-        .filter(text -> IDENTIFIER.matcher(text).matches())
+        .filter(text -> text.matches(IDENTIFIER))
         .findFirst();
-  }
-
-  /** The names an Args section documents: the entries at the first entry's indentation. */
-  private static Set<String> documentedArguments(final String text) {
-    final Set<String> names = new HashSet<>();
-    final String[] lines = text.split("\n");
-    for (int header = 0; header < lines.length; header++) {
-      if (lines[header].strip().equals(ARGS_HEADER)) {
-        addEntries(lines, header, names);
-        break;
-      }
-    }
-    return names;
-  }
-
-  private static void addEntries(final String[] lines, final int header, final Set<String> names) {
-    final int headerIndent = indent(lines[header]);
-    int entryIndent = -1;
-    for (int line = header + 1; line < lines.length; line++) {
-      if (lines[line].isBlank()) {
-        continue;
-      }
-      final int indent = indent(lines[line]);
-      if (indent <= headerIndent) {
-        return;
-      }
-      entryIndent = entryIndent < 0 ? indent : entryIndent;
-      if (indent == entryIndent) {
-        final Matcher entry = ENTRY_NAME.matcher(lines[line].strip());
-        if (entry.find()) {
-          names.add(entry.group(1));
-        }
-      }
-    }
-  }
-
-  private static int indent(final String line) {
-    int count = 0;
-    while (count < line.length() && line.charAt(count) == ' ') {
-      count++;
-    }
-    return count;
-  }
-
-  private static boolean periodEnds(final String text) {
-    final String summary = text.strip().split("\n", 2)[0].strip();
-    return summary.endsWith(PERIOD);
   }
 
   private static boolean isPrivate(final SyntaxNode scope) {
@@ -207,52 +148,11 @@ public final class PythonDocstringCheck implements RuleCheck {
         && SyntaxWalk.text(leaves.get(NAME_INDEX)).startsWith(PRIVATE_PREFIX);
   }
 
-  /** The docstring leaf of a module, class or function: its first leaf when that is a string. */
-  private static Optional<SyntaxNode> docstring(final SyntaxNode scope) {
-    return scope.children().stream()
-        .filter(child -> BLOCK.equals(child.kind()))
-        .findFirst()
-        .flatMap(PythonDocstringCheck::firstLeaf)
-        .filter(PythonDocstringCheck::isDocstring);
-  }
-
-  private static Optional<SyntaxNode> firstLeaf(final SyntaxNode block) {
-    return SyntaxWalk.leaves(block).stream()
-        .filter(leaf -> !SyntaxWalk.text(leaf).isBlank())
-        .findFirst();
-  }
-
-  /** Every docstring of the unit: the module's and those of its classes and functions. */
-  private static List<SyntaxNode> docstrings(final SyntaxNode root) {
-    final List<SyntaxNode> found = new ArrayList<>();
-    firstLeaf(root).filter(PythonDocstringCheck::isDocstring).ifPresent(found::add);
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("classdef", "funcdef"))) {
-      docstring(visit.node()).ifPresent(found::add);
-    }
-    return found;
-  }
-
-  private static boolean isDocstring(final SyntaxNode leaf) {
-    return STRING.equals(leaf.kind());
-  }
-
   private List<RuleMatch> atEach(
       final List<SyntaxNode> leaves, final Predicate<SyntaxNode> reported) {
     return leaves.stream()
         .filter(reported)
         .map(leaf -> new RuleMatch(leaf.span(), message))
         .toList();
-  }
-
-  /** The text inside the quotes of a string token, without its prefix. */
-  private static String body(final SyntaxNode leaf) {
-    final String token = SyntaxWalk.text(leaf);
-    final String text = STRING_PREFIX.matcher(token).replaceFirst("");
-    final boolean triple = text.startsWith(TRIPLE_QUOTE) || text.startsWith(TRIPLE_APOSTROPHE);
-    final int quote = triple ? TRIPLE_LENGTH : QUOTE_LENGTH;
-    if (text.length() < 2 * quote) {
-      return "";
-    }
-    return text.substring(quote, text.length() - quote);
   }
 }

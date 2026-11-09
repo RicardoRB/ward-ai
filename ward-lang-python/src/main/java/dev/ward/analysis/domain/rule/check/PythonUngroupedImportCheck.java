@@ -41,11 +41,11 @@ public final class PythonUngroupedImportCheck implements RuleCheck {
     final Set<String> seen = new HashSet<>();
     String previous = null;
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, IMPORTS)) {
-      final Optional<String> package_ = packageOf(visit);
-      if (package_.isEmpty()) {
+      final Optional<String> packageName = packageOf(visit);
+      if (packageName.isEmpty()) {
         continue;
       }
-      final String name = package_.get();
+      final String name = packageName.get();
       if (seen.contains(name) && !name.equals(previous)) {
         found.add(new RuleMatch(visit.node().span(), message));
       }

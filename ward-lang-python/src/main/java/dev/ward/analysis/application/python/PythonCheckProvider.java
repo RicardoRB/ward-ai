@@ -17,7 +17,11 @@ public final class PythonCheckProvider implements CheckProvider {
   public Map<String, CheckFactory> checks() {
     final Map<String, CheckFactory> checks =
         new HashMap<>(
-            CheckRegistry.union(List.of(PythonScopeChecks.checks(), PythonOrderChecks.checks())));
+            CheckRegistry.union(
+                List.of(
+                    PythonScopeChecks.checks(),
+                    PythonOrderChecks.checks(),
+                    PythonStyleChecks.checks())));
     // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
     checks.put("unused-definition", toml -> root -> List.of());
     return Map.copyOf(checks);
