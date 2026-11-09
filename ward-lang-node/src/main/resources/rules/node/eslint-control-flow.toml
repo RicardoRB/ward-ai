@@ -194,3 +194,93 @@ body = '''
 check = "node-no-label-var"
 message = "Found identifier with same name as label."
 '''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-optional-chaining"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.disallow-arithmetic-operators = { type = "boolean" }
+body = '''
+check = "node-no-unsafe-optional-chaining"
+disallow-arithmetic-operators = false
+message = "Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError."
+arithmetic-message = "Unsafe arithmetic operation on optional chaining. It can result in NaN."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-optional-chaining"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.disallow-arithmetic-operators = { type = "boolean" }
+body = '''
+check = "node-no-unsafe-optional-chaining"
+disallow-arithmetic-operators = false
+message = "Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError."
+arithmetic-message = "Unsafe arithmetic operation on optional chaining. It can result in NaN."
+'''
+
+[[rules]]
+id = "ward:typescript/no-this-before-super"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-this-before-super"
+message = "'this' is not allowed before 'super()'."
+'''
+
+[[rules]]
+id = "ward:javascript/no-this-before-super"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-this-before-super"
+message = "'this' is not allowed before 'super()'."
+'''
+
+[[rules]]
+id = "ward:typescript/array-callback-return"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.allow-implicit = { type = "boolean" }
+options.check-for-each = { type = "boolean" }
+options.allow-void = { type = "boolean" }
+body = '''
+check = "node-array-callback-return"
+allow-implicit = false
+check-for-each = false
+allow-void = false
+message = "Array callback must return a value."
+'''
+
+[[rules]]
+id = "ward:javascript/array-callback-return"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.allow-implicit = { type = "boolean" }
+options.check-for-each = { type = "boolean" }
+options.allow-void = { type = "boolean" }
+body = '''
+check = "node-array-callback-return"
+allow-implicit = false
+check-for-each = false
+allow-void = false
+message = "Array callback must return a value."
+'''

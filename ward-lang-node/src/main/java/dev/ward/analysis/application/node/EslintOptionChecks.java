@@ -1,9 +1,12 @@
 package dev.ward.analysis.application.node;
 
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.NodeArrayCallbackReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeInnerDeclarationsCheck;
+import dev.ward.analysis.domain.rule.check.NodeInvalidRegexpCheck;
 import dev.ward.analysis.domain.rule.check.NodeIrregularWhitespaceCheck;
 import dev.ward.analysis.domain.rule.check.NodePromiseRejectCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnsafeOptionalChainingCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedExpressionsCheck;
 import org.tomlj.TomlParseResult;
 
@@ -50,5 +53,23 @@ final class EslintOptionChecks {
 
   static boolean flag(final TomlParseResult toml, final String key) {
     return Boolean.TRUE.equals(toml.getBoolean(key));
+  }
+
+  static NodeUnsafeOptionalChainingCheck unsafeOptionalChaining(final TomlParseResult toml) {
+    return new NodeUnsafeOptionalChainingCheck(
+        flag(toml, "disallow-arithmetic-operators"),
+        TomlValues.required(toml, MESSAGE),
+        TomlValues.required(toml, "arithmetic-message"));
+  }
+
+  static NodeInvalidRegexpCheck invalidRegexp(final TomlParseResult toml) {
+    return new NodeInvalidRegexpCheck(TomlValues.optionalStrings(toml, "allow-constructor-flags"));
+  }
+
+  static NodeArrayCallbackReturnCheck arrayCallbackReturn(final TomlParseResult toml) {
+    return new NodeArrayCallbackReturnCheck(
+        new NodeArrayCallbackReturnCheck.Options(
+            flag(toml, "allow-implicit"), flag(toml, "check-for-each"), flag(toml, "allow-void")),
+        TomlValues.required(toml, MESSAGE));
   }
 }
