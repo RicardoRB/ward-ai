@@ -166,7 +166,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\.format\\("
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\.format\\("
 message = "logging call formats its message with str.format(); pass the arguments to the logger instead"
 '''
 
@@ -180,7 +180,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\s*%(?!=)"
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\s*%(?!=)"
 message = "logging call formats its message with %; pass the arguments to the logger instead"
 '''
 
@@ -194,7 +194,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*[fF][rRbB]?[\"']"
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*[fF][rRbB]?[\"']"
 message = "logging call uses an f-string; pass the arguments to the logger instead"
 '''
 
@@ -208,4 +208,158 @@ presets = ["standard", "strict"]
 body = '''
 check = "first-argument"
 message = "method should have \"self\" as its first argument"
+'''
+
+[[rules]]
+id = "ward:python/invalid-star-assignment-target"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^\\*[\\w.\\[\\]]+=(?!=)"
+message = "starred expression cannot be the only assignment target; put it in a list or tuple"
+'''
+
+[[rules]]
+id = "ward:python/invalid-match-args-definition"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__match_args__=(?!(?:\\(\\s*\\)|\\((?:\\s*(?:\"[^\"\\\\]*\"|\\'[^\\'\\\\]*\\')\\s*,)+(?:\\s*(?:\"[^\"\\\\]*\"|\\'[^\\'\\\\]*\\')\\s*)?\\))$)"
+message = "__match_args__ must be a tuple of strings"
+'''
+
+[[rules]]
+id = "ward:python/isinstance-second-argument-not-valid-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^isinstance\\(\\s*[\\w.\\[\\]]+\\s*,\\s*(?:\\d|\\\"|'|None\\b|\\[|\\{)"
+message = "second argument of isinstance must be a class or a tuple of classes"
+'''
+
+[[rules]]
+id = "ward:python/non-str-assignment-to-dunder-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^[\\w.\\[\\]()]*\\.__name__=(?:\\d|None\\b|True\\b|False\\b|\\[|\\{)"
+message = "__name__ must be assigned a string"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slots"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__slots__=(?:-?\\d|None\\b|True\\b|False\\b)"
+message = "__slots__ must be a string, an iterable or a sequence of names"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slots-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__slots__=[\\[(](?!(?:\\s*(?:\"[^\"\\\\]+\"|\\'[^\\'\\\\]+\\')\\s*,)*\\s*(?:(?:\"[^\"\\\\]+\"|\\'[^\\'\\\\]+\\')\\s*)?[\\])]$)"
+message = "__slots__ must contain only non-empty strings"
+'''
+
+[[rules]]
+id = "ward:python/invalid-unicode-codec"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+header-lines = 2
+pattern = "coding[:=]\\s*[\\\"']?utf[ _-]?(16|32)"
+message = "UTF-16 and UTF-32 are not backward compatible; use UTF-8"
+'''
+
+[[rules]]
+id = "ward:python/invalid-format-index"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "format-index"
+message = "format field looks up an index or key that the literal argument does not have"
+'''
+
+[[rules]]
+id = "ward:python/keyword-arg-before-vararg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "keyword-arg-before-vararg"
+message = "a parameter with a default is declared before *args"
+'''
+
+[[rules]]
+id = "ward:python/invalid-class-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^[\\w.\\[\\]()]*\\.__class__=(?:\\d|None\\b|True\\b|False\\b|\\[|\\{|['\\\"])"
+message = "__class__ must be assigned a class"
+'''
+
+[[rules]]
+id = "ward:python/invalid-all-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^__all__\\+?=[\\[(].*?[\\[(,](?:\\d|None\\b|True\\b|False\\b)"
+message = "__all__ must contain only strings"
 '''

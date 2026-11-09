@@ -267,7 +267,7 @@ incorrectly-parenthesized-tuple-in-subscript = { status = "planned", issue = "#3
 indented-form-feed = { status = "planned", issue = "#334" }
 int-on-sliced-str = { status = "planned", issue = "#334" }
 invalid-all-format = "implemented"
-invalid-all-object = { status = "planned", issue = "#332" }
+invalid-all-object = "implemented"
 invalid-assert-message-literal-argument = { status = "planned", issue = "#334" }
 invalid-bool-return-type = { status = "planned", issue = "#332" }
 invalid-bytes-return-type = { status = "planned", issue = "#332" }

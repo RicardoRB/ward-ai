@@ -52,3 +52,53 @@ reason = "a raw carriage return cannot reach a string literal of a parsed Python
 rules = [
   "invalid-character-carriage-return",
 ]
+
+[[group]]
+reason = "needs the type of the callee, operand, iterable, mapping or subscripted object, which Ward does not infer"
+rules = [
+  "invalid-sequence-index",
+  "invalid-slice-index",
+  "invalid-slice-step",
+  "invalid-unary-operand-type",
+  "kwarg-superseded-by-positional-arg",
+  "looping-through-iterator",
+  "missing-kwoa",
+  "modified-iterating-dict",
+  "modified-iterating-list",
+  "no-member",
+  "no-name-in-module",
+  "no-value-for-parameter",
+  "non-iterator-returned",
+  "not-a-mapping",
+  "not-an-iterable",
+  "not-async-context-manager",
+  "not-callable",
+  "not-context-manager",
+  "positional-only-arguments-expected",
+]
+
+
+[[group]]
+reason = "needs class hierarchy inference (base classes, metaclasses, inherited or hidden attributes), which Ward does not infer"
+rules = [
+  "invalid-enum-extension",
+  "invalid-metaclass",
+  "invalid-overridden-method",
+  "method-hidden",
+  "non-parent-init-called",
+  "overridden-final-method",
+]
+
+
+[[group]]
+reason = "the rule input is a parsed unit without its file name, so the file name cannot be checked"
+rules = [
+  "non-ascii-file-name",
+]
+
+
+[[group]]
+reason = "needs inference of the statement's value as an exception instance"
+rules = [
+  "pointless-exception-statement",
+]
