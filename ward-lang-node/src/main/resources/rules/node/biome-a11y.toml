@@ -457,3 +457,27 @@ body = '''
 check = "node-noninteractive-tabindex"
 message = "a non-interactive element must not take a tabIndex; remove it or give the element an interactive role"
 '''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-element-to-interactive-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-to-interactive-role"
+message = "a non-interactive element must not take an interactive role; use an interactive element instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-element-to-interactive-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-to-interactive-role"
+message = "a non-interactive element must not take an interactive role; use an interactive element instead"
+'''

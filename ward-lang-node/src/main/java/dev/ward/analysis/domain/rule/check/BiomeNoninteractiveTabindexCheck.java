@@ -98,13 +98,7 @@ public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
         .findFirst();
   }
 
-  /** Whether the first concrete token of a static role names an interactive role. */
   private boolean interactiveStaticRole(final SyntaxNode role, final String source) {
-    return JsxAttributes.tokens(role, source).stream()
-        .filter(table::isConcrete)
-        .findFirst()
-        .flatMap(table::role)
-        .map(AriaRoleTable.AriaRoleRow::interactive)
-        .orElse(false);
+    return table.interactiveRole(JsxAttributes.tokens(role, source));
   }
 }

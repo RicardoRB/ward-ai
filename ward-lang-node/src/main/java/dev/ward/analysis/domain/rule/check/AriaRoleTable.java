@@ -39,6 +39,16 @@ public final class AriaRoleTable {
     return Optional.ofNullable(attributes.get(name));
   }
 
+  /** Whether the first concrete token names an interactive role, as Biome's from_roles reads it. */
+  public boolean interactiveRole(final List<String> tokens) {
+    return tokens.stream()
+        .filter(this::isConcrete)
+        .findFirst()
+        .flatMap(this::role)
+        .map(AriaRoleRow::interactive)
+        .orElse(false);
+  }
+
   /** Whether the name is a concrete (non-abstract) role of Biome's table. */
   public boolean isConcrete(final String name) {
     final AriaRoleRow row = roles.get(name);

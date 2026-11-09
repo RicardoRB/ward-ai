@@ -74,7 +74,10 @@ class BiomeParitySmokeTest {
           Map.entry("use-valid-aria-props", "a11y/useValidAriaProps"),
           Map.entry("use-valid-aria-role", "a11y/useValidAriaRole"),
           Map.entry("use-valid-aria-values", "a11y/useValidAriaValues"),
-          Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"));
+          Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"),
+          Map.entry(
+              "no-noninteractive-element-to-interactive-role",
+              "a11y/noNoninteractiveElementToInteractiveRole"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
