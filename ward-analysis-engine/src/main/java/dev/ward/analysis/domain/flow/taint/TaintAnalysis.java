@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 /**
  * Finds, within one function's control-flow graph, the values from a source that reach an argument
@@ -60,7 +61,7 @@ public final class TaintAnalysis {
     if (sink.isEmpty()) {
       return found;
     }
-    for (final int index : sink.get().arguments()) {
+    for (final int index : guardedArguments(site, sink.get())) {
       if (index < site.arguments().size()) {
         final Span argument = site.arguments().get(index);
         taintOf(block, argument, reaching, origins, spec)
@@ -82,9 +83,19 @@ public final class TaintAnalysis {
         .or(() -> fromReads(block, argument, reaching, origins, spec));
   }
 
-  /** A call, or a property write whose argument 0 is the assigned value, can be a sink. */
+  /** A call, a property write whose argument 0 is the assigned value, or a string build can be a sink. */
   private static boolean isSinkKind(final FlowSiteKind kind) {
-    return kind == FlowSiteKind.CALL || kind == FlowSiteKind.MEMBER_WRITE;
+    return kind == FlowSiteKind.CALL
+        || kind == FlowSiteKind.MEMBER_WRITE
+        || kind == FlowSiteKind.STRING_BUILD;
+  }
+
+  /** A string entry guards every value part of the string; other sinks guard their listed positions. */
+  private static List<Integer> guardedArguments(final FlowSite site, final TaintEntry sink) {
+    if (site.kind() != FlowSiteKind.STRING_BUILD) {
+      return sink.arguments();
+    }
+    return IntStream.range(0, site.arguments().size()).boxed().toList();
   }
 
   private static TaintFinding finding(final FlowSite site, final int index, final Taint taint) {
