@@ -280,11 +280,11 @@ language = "python"
 capability = "SYNTAX"
 severity = "error"
 category = "coding"
-presets = ["strict"]
+presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["if_stmt"]
-text = "^if[^:]*:\\s*return(?:True|False)\\s*else:\\s*return(?:True|False)"
+text = "^if[^:]*:(?:\\s*return(?:True|False)\\s*else:\\s*return(?:True|False)|\\s*(\\w[\\w.]*)\\s*=\\s*(?:True|False)\\s*else\\s*:\\s*\\1\\s*=\\s*(?:True|False))"
 message = "if statement returns boolean literals; return the condition instead"
 '''
 
@@ -348,3 +348,45 @@ max = 1
 message = "try statements are nested {value} levels deep; the limit is {max}"
 '''
 
+
+[[rules]]
+id = "ward:python/constant-name"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "module-constant-name"
+message = "module-level name '{value}' should be UPPER_CASE"
+'''
+
+[[rules]]
+id = "ward:python/member-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^self\.(?!_*[a-z][a-z0-9_]*=)\w+='
+message = "attribute name '{value}' should be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/static-variable-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+not-inside = ["funcdef"]
+text = '^(?![a-z_][a-z0-9_]*=|[A-Z_][A-Z0-9_]*=|__\w*__=)[A-Za-z_]\w*='
+message = "class attribute name '{value}' should be snake_case or UPPER_CASE"
+'''

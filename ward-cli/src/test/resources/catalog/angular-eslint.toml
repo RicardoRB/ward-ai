@@ -38,8 +38,6 @@ angular-eslint = ["contextual-decorator"]
 
 [[rule]]
 name = "contextual-lifecycle"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["contextual-lifecycle"]
 
 [[rule]]
@@ -86,8 +84,6 @@ angular-eslint = ["no-duplicates-in-metadata-arrays"]
 
 [[rule]]
 name = "no-empty-lifecycle-method"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-empty-lifecycle-method"]
 
 [[rule]]
@@ -116,14 +112,10 @@ angular-eslint = ["no-input-prefix"]
 
 [[rule]]
 name = "no-input-rename"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-input-rename"]
 
 [[rule]]
 name = "no-inputs-metadata-property"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-inputs-metadata-property"]
 
 [[rule]]
@@ -134,26 +126,18 @@ angular-eslint = ["no-lifecycle-call"]
 
 [[rule]]
 name = "no-output-native"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-output-native"]
 
 [[rule]]
 name = "no-output-on-prefix"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-output-on-prefix"]
 
 [[rule]]
 name = "no-output-rename"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-output-rename"]
 
 [[rule]]
 name = "no-outputs-metadata-property"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["no-outputs-metadata-property"]
 
 [[rule]]
@@ -188,14 +172,10 @@ angular-eslint = ["prefer-host-metadata-property"]
 
 [[rule]]
 name = "prefer-inject"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["prefer-inject"]
 
 [[rule]]
 name = "prefer-on-push-component-change-detection"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["prefer-on-push-component-change-detection"]
 
 [[rule]]
@@ -230,8 +210,6 @@ angular-eslint = ["prefer-signals"]
 
 [[rule]]
 name = "prefer-standalone"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["prefer-standalone"]
 
 [[rule]]
@@ -296,12 +274,8 @@ angular-eslint = ["use-injectable-provided-in"]
 
 [[rule]]
 name = "use-lifecycle-interface"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["use-lifecycle-interface"]
 
 [[rule]]
 name = "use-pipe-transform-interface"
-presets = ["standard", "strict"]
-category = "angular"
 angular-eslint = ["use-pipe-transform-interface"]

@@ -35,8 +35,6 @@ checkstyle = ["InappropriateJavadocBlockTagsOnType"]
 
 [[rule]]
 name = "invalid-javadoc-position"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InvalidJavadocPosition"]
 
@@ -61,8 +59,6 @@ checkstyle = ["JavadocEndCommentDelimiter"]
 
 [[rule]]
 name = "javadoc-leading-asterisk-align"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLeadingAsteriskAlign"]
 
@@ -82,8 +78,7 @@ checkstyle = ["JavadocLinkWellKnownApi"]
 
 [[rule]]
 name = "javadoc-method"
-category = "javadoc"
-presets = ["standard", "strict"]
+not-applicable = { python = "Javadoc; Python docstrings are covered by missing-trailing-period and undocumented-param" }
 checkstyle = ["JavadocMethod"]
 
 [[rule]]
@@ -181,8 +176,6 @@ checkstyle = ["MissingJavadocPackage"]
 
 [[rule]]
 name = "missing-javadoc-type"
-category = "javadoc"
-presets = ["standard", "strict"]
 detekt = ["UndocumentedPublicClass"]
 checkstyle = ["MissingJavadocType"]
 ruff = ["D101"]
@@ -217,6 +210,7 @@ checkstyle = ["SingleLineJavadoc"]
 
 [[rule]]
 name = "summary-javadoc"
+not-applicable = { python = "Javadoc; Python docstrings are covered by missing-trailing-period and undocumented-param" }
 checkstyle = ["SummaryJavadoc"]
 
 [[rule]]

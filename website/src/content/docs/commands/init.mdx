@@ -90,10 +90,10 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 `default` is the same fast tier as `pre-commit`, and `ci` contains every selected gate.
 
-## Ward rules for Java
+## Ward rules for Java and Kotlin
 
-For a Java project, init writes no Checkstyle, PMD or SpotBugs gate, configuration file, build plugin
-or package entry. The `ward` check applies Ward's own Java rules instead, and init writes a
+For a Java or Kotlin project, init writes no Checkstyle, PMD or SpotBugs gate, configuration file, build plugin
+or package entry. The `ward` check applies Ward's own rules instead, and init writes a
 `ward-rules.toml` that selects the rules of the preset:
 
 ```toml
@@ -109,14 +109,15 @@ reported as user-owned. With the `strict` preset the file also sets `ignore-cons
 `ignore-setter` to `true` on `ward:java/hidden-field`, as the former Checkstyle configuration did.
 See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
 
-`languages = ["java"]` is written for every project. Kotlin, TypeScript, JavaScript, Python and
-Swift keep their external linters until their own migration lands, so selecting their Ward rules
-would report each finding twice. A Kotlin project still gets the `checkstyle`, `pmd` and `spotbugs`
-gates, and a mixed Java and Kotlin project gets both sets.
+`languages` lists the JVM source languages the project has, Java before Kotlin: `["kotlin"]` for a
+Kotlin-only project, and `["java", "kotlin"]` for a mixed one. Kotlin gets the same gates as Java.
+TypeScript, JavaScript, Python and Swift keep their external linters until their own migration
+lands, so selecting their Ward rules would report each finding twice; their `ward-rules.toml`
+keeps `languages = ["java"]`.
 
 ## What init changes in your build
 
-For `enforcer`, `license`, `api-compat`, and, for Kotlin, `pmd`, init adds missing plugins using
+For `enforcer`, `license` and `api-compat`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -129,7 +130,7 @@ Ward's embedded Java compatibility catalog.
 ### Multi-module Java builds
 
 In a multi-module Maven build, init places the `coverage` (JaCoCo), `mutation` (PIT), and
-`enforcer` gates (and, for Kotlin, `spotbugs`, `checkstyle` and `pmd`) in each module that has Java sources, so
+`enforcer` gates in each module that has Java or Kotlin sources, so
 each module's configuration and report live with its code. Other gates stay in the aggregator. The
 module-placed gates are the same for Gradle and Maven.
 
@@ -152,8 +153,7 @@ multi-module directory.
 
 When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
 example `kotlin("jvm")`, `org.jetbrains.kotlin.jvm`, or a catalog `alias` for `kotlin.jvm`), init
-writes the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT), `checkstyle`, `pmd`,
-and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
+writes the `coverage` (JaCoCo), `mutation` (PIT), and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
 stay in the root script.
 
 - The root script declares a versioned module plugin once, with its version and `apply false`.
@@ -796,8 +796,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: the Ward rule preset for Java, coverage and mutation minimums, and enforcer rules (for
-Kotlin, also Checkstyle limits, PMD rule sets and SpotBugs effort).
+enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and enforcer rules.
 
 - For TypeScript it names the `tsc`, Biome (or ESLint), and test commands, the 70% line coverage
   minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under

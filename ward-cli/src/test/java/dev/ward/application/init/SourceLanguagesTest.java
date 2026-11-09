@@ -24,15 +24,15 @@ class SourceLanguagesTest {
   private static final Path ROOT = Path.of("app");
 
   @Test
-  void javaUsesWardRulesWhileKotlinAndMixedProjectsKeepTheExternalTools() {
+  void javaKotlinAndMixedProjectsShareTheJvmGatesWithoutExternalTools() {
     final List<String> java = gateIds(project(Language.JAVA, Set.of()));
     final List<String> kotlin = gateIds(project(Language.KOTLIN, Set.of()));
     final List<String> mixed = gateIds(project(Language.JAVA, Set.of(Language.KOTLIN)));
 
     assertThat(java).startsWith("tests", "compile", "coverage").doesNotHaveDuplicates();
     assertThat(java).doesNotContain("checkstyle", "pmd", "spotbugs");
-    assertThat(kotlin).containsAll(java).contains("checkstyle", "pmd", "spotbugs");
-    assertThat(mixed).containsExactlyInAnyOrderElementsOf(kotlin).doesNotHaveDuplicates();
+    assertThat(kotlin).containsExactlyElementsOf(java);
+    assertThat(mixed).containsExactlyElementsOf(java);
   }
 
   @Test

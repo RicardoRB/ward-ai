@@ -70,8 +70,6 @@ checkstyle = ["OuterTypeFilename"]
 
 [[rule]]
 name = "todo-comment"
-category = "misc"
-presets = ["standard", "strict"]
 detekt = ["ForbiddenComment"]
 checkstyle = ["TodoComment"]
 eslint = ["no-warning-comments"]
