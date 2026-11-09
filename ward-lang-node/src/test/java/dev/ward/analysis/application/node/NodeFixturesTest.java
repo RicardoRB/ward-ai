@@ -3,7 +3,6 @@ package dev.ward.analysis.application.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.application.rule.CheckFactory;
-import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.RuleFileReader;
@@ -33,8 +32,8 @@ import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 
 /**
- * Runs the fixtures of every rule whose check this module provides through the real rule engine,
- * so that this module's own coverage counts the checks it owns. The fixtures stay in ward-cli: the
+ * Runs the fixtures of every rule whose check this module provides through the real rule engine, so
+ * that this module's own coverage counts the checks it owns. The fixtures stay in ward-cli: the
  * violating fixture must report exactly the expected {@code line:column} positions and the passing
  * one nothing, with the rule's default options or those of the case.
  */

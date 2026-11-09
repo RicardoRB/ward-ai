@@ -60,7 +60,8 @@ public final class NodeCatchParameterAssignCheck implements RuleCheck {
         .map(NodeCatchParameterAssignCheck::text);
   }
 
-  private void writes(final SyntaxNode catchClause, final String name, final List<RuleMatch> matches) {
+  private void writes(
+      final SyntaxNode catchClause, final String name, final List<RuleMatch> matches) {
     for (final SyntaxNode child : catchClause.children()) {
       if (BLOCK.equals(child.kind())) {
         writesIn(child, name, matches);
