@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftBlanketDisableCommandCheck;
+import dev.ward.analysis.domain.swift.SwiftCaptureVariableCheck;
 import dev.ward.analysis.domain.swift.SwiftDeploymentTargetCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateConditionsCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateEnumCasesCheck;
@@ -23,7 +24,9 @@ import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantSendableCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantVoidReturnCheck;
 import dev.ward.analysis.domain.swift.SwiftStaticOverFinalClassCheck;
+import dev.ward.analysis.domain.swift.SwiftTypesafeArrayInitCheck;
 import dev.ward.analysis.domain.swift.SwiftUnneededSynthesizedInitializerCheck;
+import dev.ward.analysis.domain.swift.SwiftUnusedSetterValueCheck;
 import dev.ward.analysis.domain.swift.SwiftUnneededOverrideCheck;
 import dev.ward.analysis.domain.swift.SwiftValidIbinspectableCheck;
 import dev.ward.analysis.domain.swift.SwiftVoidFunctionInTernaryCheck;
@@ -113,6 +116,15 @@ public final class SwiftCheckProvider implements CheckProvider {
         Map.entry(
             "swift-unneeded-synthesized-initializer",
             toml -> new SwiftUnneededSynthesizedInitializerCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-capture-variable",
+            toml -> new SwiftCaptureVariableCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-typesafe-array-init",
+            toml -> new SwiftTypesafeArrayInitCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-unused-setter-value",
+            toml -> new SwiftUnusedSetterValueCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "swift-variable-distance",
             toml ->

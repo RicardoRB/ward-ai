@@ -183,4 +183,30 @@ class SwiftLintChecksTest {
         .containsExactly(3);
     assertThat(run(check, "struct S {\n let a: Int\n init(b: Int) {\n self.a = b\n }\n}\n")).isEmpty();
   }
+
+  @Test
+  void unusedSetterValueReportsASetterThatNeverReadsItsValue() {
+    final RuleCheck check = new SwiftUnusedSetterValueCheck(MESSAGE);
+
+    assertThat(lines(run(check, "var v: Int {\n get {\n return 1\n }\n set {\n x = 2\n }\n}\n"))).containsExactly(5);
+    assertThat(run(check, "var v: Int {\n get {\n return 1\n }\n set {\n x = newValue\n }\n}\n")).isEmpty();
+  }
+
+  @Test
+  void captureVariableReportsAGlobalVarInACaptureList() {
+    final RuleCheck check = new SwiftCaptureVariableCheck(MESSAGE);
+
+    assertThat(lines(run(check, "var j = 0\nlet c: () -> Void = { [j] in print(j) }\n"))).containsExactly(2);
+    assertThat(run(check, "let k = 0\nlet c: () -> Void = { [k] in print(k) }\n")).isEmpty();
+    assertThat(run(check, "func f() {\n var local = 0\n let c: () -> Void = { [local] in print(local) }\n}\n")).isEmpty();
+  }
+
+  @Test
+  void typesafeArrayInitReportsAnIdentityMapOfASequence() {
+    final RuleCheck check = new SwiftTypesafeArrayInitCheck(MESSAGE);
+
+    assertThat(lines(run(check, "let a = [1, 2].map { $0 }\n"))).containsExactly(1);
+    assertThat(run(check, "let a = [1, 2].map { $0 + 1 }\n")).isEmpty();
+    assertThat(run(check, "struct S {}\nlet b = S().map { $0 }\n")).isEmpty();
+  }
 }

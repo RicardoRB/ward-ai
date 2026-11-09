@@ -9,7 +9,7 @@ attributes = { status = "planned", issue = "#298" }
 balanced-xctest-lifecycle = { status = "planned", issue = "#338" }
 blanket-disable-command = "implemented"
 block-based-kvo = "implemented"
-capture-variable = { status = "planned", issue = "#338" }
+capture-variable = "implemented"
 class-delegate-protocol = "implemented"
 closure-body-length = { status = "planned", issue = "#298" }
 closure-parameter-position = "implemented"
@@ -180,7 +180,7 @@ toggle-bool = "implemented"
 trailing-closure = { status = "planned", issue = "#298" }
 trailing-semicolon = "implemented"
 type-contents-order = { status = "planned", issue = "#298" }
-typesafe-array-init = { status = "planned", issue = "#338" }
+typesafe-array-init = "implemented"
 unavailable-condition = "implemented"
 unavailable-function = "implemented"
 unhandled-throwing-task = { status = "planned", issue = "#338" }
@@ -196,7 +196,7 @@ unused-control-flow-label = "implemented"
 unused-declaration = { status = "planned", issue = "#448" }
 unused-enumerated = "implemented"
 unused-optional-binding = "implemented"
-unused-setter-value = { status = "planned", issue = "#338" }
+unused-setter-value = "implemented"
 valid-ibinspectable = "implemented"
 variable-shadowing = { status = "planned", issue = "#338" }
 vertical-parameter-alignment = "implemented"
