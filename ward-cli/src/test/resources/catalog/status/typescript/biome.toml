@@ -4,7 +4,7 @@ no-access-key = { status = "planned", issue = "#329" }
 no-accumulating-spread = "implemented"
 no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
-no-approximative-numeric-constant = { status = "planned", issue = "#329" }
+no-approximative-numeric-constant = "implemented"
 no-aria-hidden-on-focusable = { status = "planned", issue = "#329" }
 no-aria-unsupported-elements = { status = "planned", issue = "#329" }
 no-array-index-key = { status = "planned", issue = "#329" }
@@ -43,7 +43,7 @@ no-duplicated-spread-props = { status = "planned", issue = "#329" }
 no-dynamic-namespace-import-access = { status = "planned", issue = "#329" }
 no-empty-interface = "implemented"
 no-empty-source = { status = "planned", issue = "#329" }
-no-empty-type-parameters = { status = "planned", issue = "#329" }
+no-empty-type-parameters = "implemented"
 no-enum = { status = "planned", issue = "#296" }
 no-evolving-types = { status = "planned", issue = "#329" }
 no-excessive-cognitive-complexity = { status = "planned", issue = "#329" }
@@ -136,7 +136,7 @@ no-shouty-constants = { status = "planned", issue = "#296" }
 no-skipped-tests = "implemented"
 no-solid-destructured-props = { status = "planned", issue = "#329" }
 no-static-element-interactions = { status = "planned", issue = "#329" }
-no-static-only-class = { status = "planned", issue = "#329" }
+no-static-only-class = "implemented"
 no-string-case-mismatch = "implemented"
 no-substr = "implemented"
 no-suspicious-semicolon-in-jsx = { status = "planned", issue = "#329" }
@@ -167,7 +167,7 @@ no-unwanted-polyfillio = { status = "planned", issue = "#329" }
 no-useless-catch-binding = "implemented"
 no-useless-continue = "implemented"
 no-useless-fragments = { status = "planned", issue = "#329" }
-no-useless-lone-block-statements = { status = "planned", issue = "#329" }
+no-useless-lone-block-statements = "implemented"
 no-useless-string-raw = "implemented"
 no-useless-switch-case = "implemented"
 no-useless-undefined = { status = "planned", issue = "#329" }
@@ -206,9 +206,9 @@ use-consistent-test-it = { status = "planned", issue = "#329" }
 use-control-label = { status = "planned", issue = "#329" }
 use-date-now = "implemented"
 use-default-switch-clause = { status = "planned", issue = "#296" }
-use-default-switch-clause-last = { status = "planned", issue = "#329" }
+use-default-switch-clause-last = "implemented"
 use-disposables = { status = "planned", issue = "#329" }
-use-dom-node-text-content = { status = "planned", issue = "#329" }
+use-dom-node-text-content = "implemented"
 use-dom-query-selector = { status = "planned", issue = "#329" }
 use-error-cause = { status = "planned", issue = "#296" }
 use-error-message = { status = "planned", issue = "#329" }
@@ -221,7 +221,7 @@ use-explicit-type = { status = "planned", issue = "#329" }
 use-exports-last = { status = "planned", issue = "#296" }
 use-filenaming-convention = { status = "planned", issue = "#296" }
 use-flat-map = "implemented"
-use-flat-math-min-max = { status = "planned", issue = "#329" }
+use-flat-math-min-max = "implemented"
 use-focusable-interactive = { status = "planned", issue = "#329" }
 use-fragment-syntax = { status = "planned", issue = "#296" }
 use-global-this = "implemented"
@@ -242,9 +242,9 @@ use-json-import-attributes = "implemented"
 use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
 use-key-with-click-events = { status = "planned", issue = "#329" }
 use-key-with-mouse-events = { status = "planned", issue = "#329" }
-use-math-min-max = { status = "planned", issue = "#329" }
+use-math-min-max = "implemented"
 use-media-caption = { status = "planned", issue = "#329" }
-use-modern-math-apis = { status = "planned", issue = "#329" }
+use-modern-math-apis = "implemented"
 use-node-assert-strict = { status = "planned", issue = "#296" }
 use-nodejs-import-protocol = "implemented"
 use-number-namespace = { status = "planned", issue = "#296" }
@@ -266,7 +266,7 @@ use-regexp-test = { status = "planned", issue = "#329" }
 use-self-closing-elements = { status = "planned", issue = "#296" }
 use-semantic-elements = { status = "planned", issue = "#329" }
 use-shorthand-function-type = "implemented"
-use-simple-number-keys = { status = "planned", issue = "#329" }
+use-simple-number-keys = "implemented"
 use-simplified-logic-expression = { status = "planned", issue = "#329" }
 use-single-js-doc-asterisk = { status = "planned", issue = "#329" }
 use-single-var-declarator = { status = "planned", issue = "#296" }
