@@ -21,6 +21,7 @@ import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.NoMethodArgumentCheck;
 import dev.ward.analysis.domain.rule.check.NonlocalCheck;
 import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
+import dev.ward.analysis.domain.rule.check.PossiblyUnusedVariableCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SameModuleCallCheck;
 import java.util.Map;
@@ -48,6 +49,9 @@ final class PylintCheckFactories {
                 new ElseAfterJumpCheck(
                     TomlValues.required(toml, "jump"), TomlValues.required(toml, MESSAGE))),
         entry("pointless-string", toml -> new PointlessStringCheck()),
+        entry(
+            "possibly-unused-variable",
+            toml -> new PossiblyUnusedVariableCheck(TomlValues.required(toml, MESSAGE))),
         entry("logging-format", PylintCheckFactories::loggingFormat),
         entry(
             "exception-statement",

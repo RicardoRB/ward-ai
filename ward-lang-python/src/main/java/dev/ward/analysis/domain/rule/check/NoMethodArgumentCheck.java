@@ -9,15 +9,14 @@ import java.util.Set;
 
 /**
  * Reports a method of a class of this module that declares no parameter, like pylint {@code
- * no-method-argument}. A static method, a class method and the constructor hooks are not regular
- * methods and are not reported.
+ * no-method-argument}. Only a static method is exempt: a class method or a constructor hook such as
+ * {@code __new__} without parameters is reported too.
  */
 public final class NoMethodArgumentCheck implements RuleCheck {
 
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef", "lambdef");
-  private static final Set<String> EXEMPT_NAMES =
-      Set.of("__class_getitem__", "__new__", "__init_subclass__");
-  private static final String DEF = "def";
+  private static final Set<String> STATIC_DECORATORS =
+      Set.of("staticmethod", "builtins.staticmethod");
   private static final String EMPTY_PARAMETERS = "()";
 
   private final String message;
@@ -37,12 +36,23 @@ public final class NoMethodArgumentCheck implements RuleCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("funcdef"))) {
       if (directMethod(visit.ancestors())
           && noParameters(visit.node())
-          && !EXEMPT_NAMES.contains(functionName(visit.node()))
-          && !FunctionDecorators.exemptDecorator(visit.ancestors())) {
+          && !staticMethod(visit.ancestors())) {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
     return List.copyOf(found);
+  }
+
+  /** True when the function is decorated as a static method; astroid types nothing else as one. */
+  private static boolean staticMethod(final List<SyntaxNode> ancestors) {
+    for (int index = Math.max(0, ancestors.size() - 2); index < ancestors.size(); index++) {
+      final SyntaxNode node = ancestors.get(index);
+      if (SyntaxKinds.DECORATED.equals(node.kind())) {
+        return FunctionDecorators.decoratorLines(SyntaxWalk.text(node)).stream()
+            .anyMatch(STATIC_DECORATORS::contains);
+      }
+    }
+    return false;
   }
 
   /** True when the nearest scope above the function is a class. */
@@ -63,15 +73,5 @@ public final class NoMethodArgumentCheck implements RuleCheck {
       }
     }
     return false;
-  }
-
-  private static String functionName(final SyntaxNode function) {
-    final List<SyntaxNode> children = function.children();
-    for (int index = 0; index + 1 < children.size(); index++) {
-      if (DEF.equals(SyntaxWalk.text(children.get(index)))) {
-        return SyntaxWalk.text(children.get(index + 1));
-      }
-    }
-    return "";
   }
 }

@@ -183,7 +183,7 @@ overridden-final-method = "implemented"
 pointless-exception-statement = "implemented"
 pointless-string-statement = "implemented"
 positional-only-arguments-expected = "implemented"
-possibly-unused-variable = { status = "planned", issue = "#336" }
+possibly-unused-variable = "implemented"
 possibly-used-before-assignment = { status = "planned", issue = "#336" }
 prefer-typing-namedtuple = { status = "planned", issue = "#336" }
 raising-format-tuple = "implemented"
