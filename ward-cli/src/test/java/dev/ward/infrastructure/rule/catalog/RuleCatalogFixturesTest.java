@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import java.io.IOException;
@@ -100,13 +102,43 @@ class RuleCatalogFixturesTest {
       final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, unitName(file), Files.readString(file), typeFacts);
+        GraphRules.isGraphRule(rule)
+            ? projectFindings(runner, rule, file)
+            : runner.run(rule, unitName(file), Files.readString(file), typeFacts);
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
         findings);
+  }
+
+  /**
+   * The findings of a graph rule on {@code file}, in a project of the file and the companion
+   * modules named {@code violating_*.py} beside it. Only the findings in {@code file} are compared.
+   */
+  private static List<AnalysisFinding> projectFindings(
+      final RuleFixtureRunner runner, final RuleDefinition rule, final Path file)
+      throws IOException {
+    final List<SourceUnit> units = new ArrayList<>();
+    units.add(
+        new SourceUnit(
+            file.getFileName().toString(), AnalysisLanguage.PYTHON, Files.readString(file)));
+    try (Stream<Path> siblings = Files.list(file.getParent())) {
+      for (final Path companion :
+          siblings
+              .filter(path -> path.getFileName().toString().startsWith("violating_"))
+              .toList()) {
+        units.add(
+            new SourceUnit(
+                companion.getFileName().toString(),
+                AnalysisLanguage.PYTHON,
+                Files.readString(companion)));
+      }
+    }
+    return runner.runProject(rule, units).stream()
+        .filter(finding -> finding.file().equals(file.getFileName().toString()))
+        .toList();
   }
 
   /** The path the rule sees: the first line of {@code filename.txt} beside the fixture, if any. */

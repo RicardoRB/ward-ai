@@ -56,7 +56,7 @@ consider-using-ternary = "implemented"
 consider-using-tuple = { status = "planned", issue = "#336" }
 consider-using-with = "implemented"
 contextmanager-generator-missing-cleanup = "implemented"
-cyclic-import = { status = "planned", issue = "#336" }
+cyclic-import = "implemented"
 declare-non-slot = "implemented"
 dict-init-mutate = { status = "planned", issue = "#297" }
 differing-param-doc = { status = "planned", issue = "#336" }
