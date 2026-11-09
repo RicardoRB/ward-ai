@@ -397,7 +397,6 @@ pylint = ["format-string-without-interpolation"]
 [[rule]]
 name = "function-redefined"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["function-redefined"]
 
 [[rule]]

@@ -316,3 +316,15 @@ body = '''
 check = "mixed-comparison-chain"
 message = "suspicious chained comparison that mixes comparison, identity and membership operators"
 '''
+
+[[rules]]
+id = "ward:python/function-redefined"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "function-redefined"
+message = "function or class {value} is already defined in this scope"
+'''

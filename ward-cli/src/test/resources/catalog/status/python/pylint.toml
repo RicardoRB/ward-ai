@@ -68,7 +68,7 @@ else-if-used = { status = "planned", issue = "#336" }
 eq-without-hash = { status = "planned", issue = "#336" }
 expression-not-assigned = "implemented"
 format-string-without-interpolation = "implemented"
-function-redefined = { status = "planned", issue = "#336" }
+function-redefined = "implemented"
 global-variable-undefined = { status = "planned", issue = "#336" }
 import-outside-toplevel = "implemented"
 inconsistent-mro = { status = "planned", issue = "#336" }
