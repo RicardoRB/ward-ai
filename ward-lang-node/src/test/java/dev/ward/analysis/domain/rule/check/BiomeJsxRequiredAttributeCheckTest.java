@@ -33,6 +33,17 @@ class BiomeJsxRequiredAttributeCheckTest {
     assertThat(reported(BUTTON, "const a = <Button />;\n")).isEmpty();
   }
 
+  @Test
+  void checksAnElementOnlyWhenItsStaticAttributeMatches() {
+    final BiomeJsxRequiredAttributeCheck image =
+        new BiomeJsxRequiredAttributeCheck(
+            Set.of("input[type=image]"), "alt", Set.of(), false, "message");
+    assertThat(reported(image, "const a = <input type=\"image\" src=\"x\" />;\n"))
+        .containsExactly("<input type=\"image\" src=\"x\" />");
+    assertThat(reported(image, "const a = <input type=\"text\" />;\n")).isEmpty();
+    assertThat(reported(image, "const a = <input type={t} />;\n")).isEmpty();
+  }
+
   private static List<String> reported(
       final BiomeJsxRequiredAttributeCheck check, final String source) {
     final SyntaxNode root = parse(source);

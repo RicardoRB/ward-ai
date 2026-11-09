@@ -1,4 +1,6 @@
-const c = <img src="a.png" alt="" />;
-const d = <img src="a.png" alt={t} />;
-const e = <Img src="x" />;
-const f = <img src="x" alt="y" {...p} />;
+const d = <img src="a.png" alt="" />;
+const e = <img src="a.png" alt={t} />;
+const f = <Img src="x" />;
+const g = <img src="x" alt="y" {...p} />;
+const h = <input type="text" />;
+const i = <input type={t} />;

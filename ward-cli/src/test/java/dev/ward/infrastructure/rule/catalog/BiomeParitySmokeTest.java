@@ -65,7 +65,9 @@ class BiomeParitySmokeTest {
           Map.entry("use-button-type", "a11y/useButtonType"),
           Map.entry("use-alt-text", "a11y/useAltText"),
           Map.entry("use-iframe-title", "a11y/useIframeTitle"),
-          Map.entry("use-html-lang", "a11y/useHtmlLang"));
+          Map.entry("use-html-lang", "a11y/useHtmlLang"),
+          Map.entry("use-key-with-click-events", "a11y/useKeyWithClickEvents"),
+          Map.entry("use-key-with-mouse-events", "a11y/useKeyWithMouseEvents"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
