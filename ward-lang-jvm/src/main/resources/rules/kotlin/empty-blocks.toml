@@ -22,9 +22,7 @@ severity = "error"
 category = "empty-blocks"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["primaryConstructor"]
-text = '^(constructor\s*)?\(\s*\)$'
+check = "kotlin-empty-constructor"
 message = "an empty default constructor can be removed"
 '''
 
@@ -159,9 +157,7 @@ severity = "error"
 category = "empty-blocks"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["whenExpression"]
-text = '^when\s*(\(.*\))?\s*\{\s*\}$'
+check = "kotlin-empty-when"
 message = "this when block has no entries and can be removed"
 '''
 

@@ -5,3 +5,9 @@ fun loop(flag: Boolean) {
         println(flag)
     } while (flag)
 }
+
+fun commentedLoop(flag: Boolean) {
+    do {
+        // nothing yet
+    } while (flag)
+}

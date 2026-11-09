@@ -7,3 +7,12 @@ fun pick(flag: Boolean): Int {
         return 2
     }
 }
+
+fun commentedElse(flag: Boolean): Int {
+    if (flag) {
+        return 1
+    } else {
+        // nothing yet
+    }
+    return 0
+}

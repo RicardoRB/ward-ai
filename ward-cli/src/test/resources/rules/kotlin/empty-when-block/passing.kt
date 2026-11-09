@@ -6,3 +6,9 @@ fun label(flag: Int): String {
         else -> "other"
     }
 }
+
+fun commentedWhen(flag: Int) {
+    when (flag) {
+        // nothing yet
+    }
+}

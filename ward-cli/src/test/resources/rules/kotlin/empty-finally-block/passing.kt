@@ -7,3 +7,11 @@ fun close() {
         println(2)
     }
 }
+
+fun commentedFinally() {
+    try {
+        println(1)
+    } finally {
+        // nothing yet
+    }
+}

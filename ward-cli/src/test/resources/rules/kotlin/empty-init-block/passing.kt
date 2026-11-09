@@ -5,3 +5,9 @@ class Holder {
         println(1)
     }
 }
+
+class CommentedHolder {
+    init {
+        // nothing yet
+    }
+}

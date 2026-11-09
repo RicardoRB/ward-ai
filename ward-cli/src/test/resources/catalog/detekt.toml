@@ -486,8 +486,6 @@ detekt = ["NewLineAtEndOfFile"]
 
 [[rule]]
 name = "no-name-shadowing"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["NoNameShadowing"]
 
 [[rule]]

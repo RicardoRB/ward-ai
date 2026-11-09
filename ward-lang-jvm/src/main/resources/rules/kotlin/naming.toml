@@ -154,3 +154,15 @@ property-pattern = "[A-Za-z][_A-Za-z0-9]*"
 private-property-pattern = "(_)?[A-Za-z][_A-Za-z0-9]*"
 message = "object property name '{value}' does not match the name pattern of this rule"
 '''
+
+[[rules]]
+id = "ward:kotlin/no-name-shadowing"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-name-shadowing"
+message = "name shadowed: {value}"
+'''

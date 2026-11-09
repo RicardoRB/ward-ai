@@ -17,6 +17,7 @@ public final class KotlinComplexConditionCheck implements RuleCheck {
 
   private static final String CONDITION = "expression";
   private static final Set<String> OPERATORS = Set.of("'&&'", "'||'");
+  private static final Set<String> LAMBDA = Set.of("functionLiteral", "objectLiteral");
 
   private final Set<String> kinds;
   private final int threshold;
@@ -49,11 +50,21 @@ public final class KotlinComplexConditionCheck implements RuleCheck {
     return statement.children().stream().filter(c -> CONDITION.equals(c.kind())).findFirst();
   }
 
+  /**
+   * Counts the operators of the condition, leaving out the bodies of lambdas and anonymous
+   * functions.
+   */
+  private static long countOperators(final SyntaxNode node) {
+    if (LAMBDA.contains(node.kind())) {
+      return 0;
+    }
+    final long own = OPERATORS.contains(node.kind()) ? 1 : 0;
+    return own
+        + node.children().stream().mapToLong(KotlinComplexConditionCheck::countOperators).sum();
+  }
+
   private void report(final SyntaxNode condition, final List<RuleMatch> matches) {
-    final long operators =
-        SyntaxWalk.descendants(condition).stream()
-            .filter(node -> OPERATORS.contains(node.kind()))
-            .count();
+    final long operators = countOperators(condition);
     final long count = operators + 1;
     if (operators > 0 && count >= threshold) {
       matches.add(

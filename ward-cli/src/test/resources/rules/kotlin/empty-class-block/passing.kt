@@ -5,3 +5,7 @@ class Filled {
 }
 
 class Bare
+
+class Commented {
+    // nothing declared yet
+}

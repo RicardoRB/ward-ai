@@ -8,3 +8,9 @@ fun check(flag: Boolean) {
         // intentionally empty
     }
 }
+
+fun commentedIf(flag: Boolean) {
+    if (flag) {
+        // nothing yet
+    }
+}

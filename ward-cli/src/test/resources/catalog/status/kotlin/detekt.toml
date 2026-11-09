@@ -92,7 +92,7 @@ named-arguments = { status = "planned", issue = "#294" }
 nested-classes-visibility = { status = "planned", issue = "#294" }
 nested-scope-functions = { status = "planned", issue = "#294" }
 new-line-at-end-of-file = { status = "planned", issue = "#294" }
-no-name-shadowing = { status = "planned", issue = "#294" }
+no-name-shadowing = "implemented"
 no-tabs = { status = "planned", issue = "#294" }
 non-boolean-property-prefixed-with-is = { status = "planned", issue = "#294" }
 not-implemented-declaration = "implemented"

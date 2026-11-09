@@ -7,3 +7,11 @@ fun risky() {
         println(e)
     }
 }
+
+fun commentedTry() {
+    try {
+        // nothing yet
+    } catch (e: Exception) {
+        println(e)
+    }
+}

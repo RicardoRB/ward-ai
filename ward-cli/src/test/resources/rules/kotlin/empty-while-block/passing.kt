@@ -5,3 +5,9 @@ fun spin(flag: Boolean) {
         println(1)
     }
 }
+
+fun commentedWhile(flag: Boolean) {
+    while (flag) {
+        // nothing yet
+    }
+}

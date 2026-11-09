@@ -5,3 +5,9 @@ class Box(val size: Int) {
         println(other)
     }
 }
+
+class CommentedBox(val size: Int) {
+    constructor(other: CommentedBox) {
+        // nothing yet
+    }
+}
