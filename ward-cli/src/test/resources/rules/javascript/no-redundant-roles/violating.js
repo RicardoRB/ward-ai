@@ -9,3 +9,6 @@ const h = <div role="generic" />;
 const i = <ul role="list" />;
 const j = <input type="text" role="textbox" />;
 const k = <section aria-label="x" role="region" />;
+const p = <nav role="navigation banner" />;
+const q = <nav role="xyz navigation" />;
+const r = <nav role="  navigation  " />;
