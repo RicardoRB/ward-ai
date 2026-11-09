@@ -76,14 +76,16 @@ final class NodeFixtureFrontends {
             new NodeControlFlow(),
             new CachedScopes(
                 new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE))),
-            types),
+            types,
+            Set.of()),
         new FrontendSupport(
             AnalysisLanguage.JAVASCRIPT,
             frontend,
             flow,
             new NodeControlFlow(),
             new CachedScopes(new NodeScopeAnalysis(names(ES, BROWSER, NODE))),
-            types));
+            types,
+            Set.of()));
   }
 
   /** The facts of a fixture folder's types.json, which answer for every unit as in ward-cli. */
