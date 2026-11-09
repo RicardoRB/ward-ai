@@ -1,0 +1,107 @@
+# Biome rules of the complexity group for TypeScript and JavaScript (catalog rows of #329). Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/use-simple-number-keys"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyName"]
+text = '^(0[xXoObB]\w*|\d*_[\d_.]*|\d+n)$'
+message = "object key must be a base-10 number without underscores"
+'''
+
+[[rules]]
+id = "ward:javascript/use-simple-number-keys"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyName"]
+text = '^(0[xXoObB]\w*|\d*_[\d_.]*|\d+n)$'
+message = "object key must be a base-10 number without underscores"
+'''
+
+[[rules]]
+id = "ward:typescript/no-static-only-class"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: node text has no whitespace, so members are matched as static<name>...; or static<name>{...}
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class[\w$]+(extends[\w.$]+)?\{(static[^{};]*(\{[^{}]*\}|;))+\}$'
+message = "class has only static members; use a module with functions instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-static-only-class"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: node text has no whitespace, so members are matched as static<name>...; or static<name>{...}
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class[\w$]+(extends[\w.$]+)?\{(static[^{};]*(\{[^{}]*\}|;))+\}$'
+message = "class has only static members; use a module with functions instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-lone-block-statements"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: node text has no whitespace; a block is kept when a let, const, class or function keyword prefixes any name in it
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["statementList", "sourceElement"]
+text = '^\{(?![\s\S]*(?<![\w$])(let|const|class|function)[\w$])[\s\S]*\}$'
+message = "unnecessary nested block; remove the braces"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-lone-block-statements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: node text has no whitespace; a block is kept when a let, const, class or function keyword prefixes any name in it
+check = "forbidden-node"
+kinds = ["statement"]
+parent = ["statementList", "sourceElement"]
+text = '^\{(?![\s\S]*(?<![\w$])(let|const|class|function)[\w$])[\s\S]*\}$'
+message = "unnecessary nested block; remove the braces"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-type-parameters"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "complexity"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeParameters"]
+parent = ["interfaceDeclaration", "typeAliasDeclaration"]
+text = '^<\s*>$'
+message = "type parameter list must not be empty"
+'''
+
