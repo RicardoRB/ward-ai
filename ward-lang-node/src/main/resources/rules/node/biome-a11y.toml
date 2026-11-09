@@ -337,3 +337,27 @@ attribute = "href"
 invalid = '^(?:|#|javascript:.*)$'
 message = "an anchor needs a real href: not empty, not #, and not javascript:"
 '''
+
+[[rules]]
+id = "ward:javascript/no-redundant-roles"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redundant-roles"
+message = "this role repeats the implicit role of the element; remove it"
+'''
+
+[[rules]]
+id = "ward:typescript/no-redundant-roles"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redundant-roles"
+message = "this role repeats the implicit role of the element; remove it"
+'''
