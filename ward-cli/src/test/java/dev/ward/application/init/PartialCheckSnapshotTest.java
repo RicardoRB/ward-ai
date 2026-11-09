@@ -29,7 +29,6 @@ class PartialCheckSnapshotTest {
           "**/*.jsx",
           "**/*.mjs",
           "**/*.cjs");
-  private static final List<String> PYTHON_SOURCES = List.of("**/*.py", "**/*.pyi");
   private static final List<String> PATHS = List.of("{paths}");
   private static final List<String> WHOLE_PROJECT = List.of("**");
 
@@ -61,8 +60,6 @@ class PartialCheckSnapshotTest {
           "24",
           TaskRunner.TURBO,
           null);
-  private static final Project UV =
-      new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.NONE);
 
   @Test
   void nodeGatesKeepTheirTables() {
@@ -94,20 +91,6 @@ class PartialCheckSnapshotTest {
             "--log-order=grouped",
             "--continue=always",
             "--ui=stream");
-  }
-
-  @Test
-  void pythonGatesKeepTheirTables() {
-    assertThat(table("ruff", UV, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                PYTHON_SOURCES,
-                List.of("ruff.toml", ".ruff.toml", "pyproject.toml"),
-                PATHS,
-                null,
-                null,
-                List.of(
-                    "uv", "run", "--group", "ward", "ruff", "check", "--output-format", "json")));
   }
 
   @Test

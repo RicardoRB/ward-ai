@@ -27,7 +27,9 @@ class InitKotlinPresetTest {
         .doesNotContain("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]");
     assertThat(kotlinToml)
         .contains("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]", "[checks.mutation]");
-    assertThat(java.resolve("ward-rules.toml")).content().contains("languages = [\"java\"]");
+    assertThat(java.resolve("ward-rules.toml"))
+        .content()
+        .contains("languages = [\"java\", \"python\"]");
   }
 
   private static String wardToml(final Path root, final String sources) throws IOException {

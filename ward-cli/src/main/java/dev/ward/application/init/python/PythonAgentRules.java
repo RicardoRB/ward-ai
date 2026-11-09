@@ -30,9 +30,6 @@ final class PythonAgentRules {
         Map.of(
             "django-check",
             "- Django: `{command}` must report no issues; fix the settings or model that fails.",
-            "ruff",
-            "- Ruff: `{command}` must report no findings. Fix the code; do not add `# noqa`"
-                + " comments or `per-file-ignores`.",
             "mypy",
             "- mypy: `{command}` must report no errors. Fix the types; do not add `# type: ignore`"
                 + " comments.",
