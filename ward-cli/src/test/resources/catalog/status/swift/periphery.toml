@@ -3,4 +3,3 @@
 assign-only-property = "implemented"
 redundant-protocol = { status = "planned", issue = "#448" }
 redundant-public-accessibility = { status = "planned", issue = "#448" }
-superfluous-ignore-command = { status = "planned", issue = "#448" }
