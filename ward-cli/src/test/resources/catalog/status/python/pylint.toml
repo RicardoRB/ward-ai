@@ -8,7 +8,7 @@ arguments-renamed = { status = "planned", issue = "#336" }
 assigning-non-slot = { status = "planned", issue = "#336" }
 assignment-from-no-return = { status = "planned", issue = "#336" }
 assignment-from-none = { status = "planned", issue = "#336" }
-attribute-defined-outside-init = { status = "planned", issue = "#336" }
+attribute-defined-outside-init = "implemented"
 bad-builtin = { status = "planned", issue = "#336" }
 bad-chained-comparison = "implemented"
 bad-classmethod-argument = "implemented"

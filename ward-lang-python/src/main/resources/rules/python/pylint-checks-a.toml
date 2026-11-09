@@ -328,3 +328,15 @@ body = '''
 check = "function-redefined"
 message = "function or class {value} is already defined in this scope"
 '''
+
+[[rules]]
+id = "ward:python/attribute-defined-outside-init"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "attribute-outside-init"
+message = "attribute {value} defined outside __init__"
+'''

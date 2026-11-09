@@ -56,7 +56,6 @@ pylint = ["assignment-from-none"]
 [[rule]]
 name = "attribute-defined-outside-init"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["attribute-defined-outside-init"]
 
 [[rule]]

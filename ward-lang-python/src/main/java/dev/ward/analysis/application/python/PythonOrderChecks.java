@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AndOrTernaryCheck;
+import dev.ward.analysis.domain.rule.check.AttributeOutsideInitCheck;
 import dev.ward.analysis.domain.rule.check.BadSuperCallCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
@@ -95,6 +96,9 @@ final class PythonOrderChecks {
         entry(
             "mixed-comparison-chain",
             toml -> new MixedComparisonChainCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "attribute-outside-init",
+            toml -> new AttributeOutsideInitCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "star-unpack-limit",
             toml -> new StarUnpackLimitCheck(TomlValues.required(toml, MESSAGE))),
