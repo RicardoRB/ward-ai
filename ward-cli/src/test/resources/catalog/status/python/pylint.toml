@@ -214,9 +214,6 @@ possibly-unused-variable = { status = "planned", issue = "#336" }
 possibly-used-before-assignment = { status = "planned", issue = "#336" }
 prefer-typing-namedtuple = { status = "planned", issue = "#336" }
 preferred-module = { status = "planned", issue = "#336" }
-protected-access = { status = "planned", issue = "#336" }
-raise-missing-from = { status = "planned", issue = "#336" }
-raising-bad-type = { status = "planned", issue = "#336" }
 raising-format-tuple = "implemented"
 raising-non-exception = { status = "planned", issue = "#336" }
 redefined-builtin = "implemented"
@@ -230,13 +227,11 @@ reimported = { status = "planned", issue = "#336" }
 relative-beyond-top-level = { status = "planned", issue = "#336" }
 repeated-keyword = { status = "planned", issue = "#336" }
 return-arg-in-generator = { status = "planned", issue = "#336" }
-return-in-finally = { status = "planned", issue = "#336" }
 self-cls-assignment = "implemented"
 shadowed-import = { status = "planned", issue = "#336" }
 signature-differs = { status = "planned", issue = "#336" }
 simplifiable-condition = { status = "planned", issue = "#336" }
 simplifiable-if-expression = "implemented"
-simplifiable-if-statement = { status = "planned", issue = "#336" }
 single-string-used-for-slots = { status = "planned", issue = "#297" }
 singleton-comparison = { status = "planned", issue = "#297" }
 star-needs-assignment-target = { status = "planned", issue = "#336" }
@@ -246,10 +241,8 @@ super-init-not-called = { status = "planned", issue = "#336" }
 super-with-arguments = "implemented"
 syntax-error = { status = "planned", issue = "#336" }
 too-complex = { status = "planned", issue = "#336" }
-too-few-format-args = { status = "planned", issue = "#336" }
 too-few-public-methods = { status = "planned", issue = "#336" }
 too-many-ancestors = { status = "planned", issue = "#336" }
-too-many-format-args = { status = "planned", issue = "#336" }
 too-many-function-args = { status = "planned", issue = "#336" }
 too-many-instance-attributes = { status = "planned", issue = "#336" }
 too-many-positional-sub-patterns = { status = "planned", issue = "#336" }
@@ -263,9 +256,7 @@ typevar-name-incorrect-variance = { status = "planned", issue = "#297" }
 typevar-name-mismatch = { status = "planned", issue = "#297" }
 unbalanced-dict-unpacking = { status = "planned", issue = "#336" }
 unbalanced-tuple-unpacking = { status = "planned", issue = "#336" }
-undefined-all-variable = { status = "planned", issue = "#336" }
 undefined-loop-variable = { status = "planned", issue = "#336" }
-undefined-variable = { status = "planned", issue = "#336" }
 unexpected-keyword-arg = { status = "planned", issue = "#336" }
 ungrouped-imports = { status = "planned", issue = "#297" }
 unhashable-member = "implemented"
@@ -285,16 +276,11 @@ unsupported-binary-operation = { status = "planned", issue = "#336" }
 unsupported-delete-operation = "implemented"
 unsupported-membership-test = "implemented"
 unused-argument = { status = "planned", issue = "#336" }
-unused-format-string-argument = { status = "planned", issue = "#336" }
-unused-format-string-key = { status = "planned", issue = "#336" }
 unused-wildcard-import = { status = "planned", issue = "#336" }
-use-a-generator = { status = "planned", issue = "#336" }
-use-dict-literal = { status = "planned", issue = "#336" }
 use-implicit-booleaness-not-comparison = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-string = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-len = { status = "planned", issue = "#297" }
-use-list-literal = { status = "planned", issue = "#336" }
 use-maxsplit-arg = { status = "planned", issue = "#297" }
 use-sequence-for-iteration = { status = "planned", issue = "#297" }
 use-set-for-membership = { status = "planned", issue = "#336" }
@@ -319,4 +305,3 @@ wrong-import-order = { status = "planned", issue = "#297" }
 wrong-import-position = { status = "planned", issue = "#297" }
 wrong-spelling-in-comment = { status = "planned", issue = "#297" }
 wrong-spelling-in-docstring = { status = "planned", issue = "#297" }
-yield-inside-async-function = { status = "planned", issue = "#336" }

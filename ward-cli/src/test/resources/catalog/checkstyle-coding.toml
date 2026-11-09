@@ -335,6 +335,7 @@ ids = { java = "ward:java/simplify-boolean-return" }
 pmd = ["SimplifyBooleanReturns"]
 checkstyle = ["SimplifyBooleanReturn"]
 ruff = ["SIM103"]
+pylint = ["simplifiable-if-statement"]
 
 [[rule]]
 name = "string-literal-equality"
