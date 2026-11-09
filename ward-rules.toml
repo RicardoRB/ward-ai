@@ -1,0 +1,1271 @@
+# Ward rules of this repository's own `ward` gate, replacing the Checkstyle, PMD and SpotBugs gates (#347 part B).
+# Each include is a Ward rule that mirrors a check of config/checkstyle.xml, config/pmd-ruleset.xml or a
+# standard SpotBugs row; RepositoryWardRulesTest derives the list from the rule catalog and fails when one is missing.
+# Thresholds match config/checkstyle.xml and config/pmd-ruleset.xml. PMD AvoidDuplicateLiterals flags a literal
+# repeated 8 times or more, which is max-repeats = 7 here (flagged above the maximum).
+version = 1
+
+[select]
+preset = "none"
+languages = ["java"]
+include = [
+  "ward:java/abstract-class-without-abstract-method",
+  "ward:java/abstract-class-without-any-method",
+  "ward:java/accessor-class-generation",
+  "ward:java/accessor-method-generation",
+  "ward:java/add-empty-string",
+  "ward:java/append-character-with-char",
+  "ward:java/array-is-stored-directly",
+  "ward:java/assert-equals-argument-order",
+  "ward:java/assert-statement-in-test",
+  "ward:java/assignment-in-operand",
+  "ward:java/assignment-to-non-final-static",
+  "ward:java/at-nonatomic-64-bit-primitive",
+  "ward:java/at-nonatomic-operations-on-shared-variable",
+  "ward:java/at-operation-sequence-on-concurrent-abstraction",
+  "ward:java/at-stale-thread-write-of-primitive",
+  "ward:java/at-unsafe-resource-access-in-thread",
+  "ward:java/avoid-accessibility-alteration",
+  "ward:java/avoid-array-loops",
+  "ward:java/avoid-branching-statement-as-last-in-loop",
+  "ward:java/avoid-calendar-date-creation",
+  "ward:java/avoid-calling-finalize",
+  "ward:java/avoid-decimal-literals-in-big-decimal-constructor",
+  "ward:java/avoid-deeply-nested-if-stmts",
+  "ward:java/avoid-dollar-signs",
+  "ward:java/avoid-field-name-matching-type-name",
+  "ward:java/avoid-file-stream",
+  "ward:java/avoid-instanceof-checks-in-catch-clause",
+  "ward:java/avoid-instantiating-objects-in-loops",
+  "ward:java/avoid-literals-in-if-condition",
+  "ward:java/avoid-message-digest-field",
+  "ward:java/avoid-multiple-unary-operators",
+  "ward:java/avoid-print-stack-trace",
+  "ward:java/avoid-reassigning-catch-variables",
+  "ward:java/avoid-reassigning-loop-variables",
+  "ward:java/avoid-rethrowing-exception",
+  "ward:java/avoid-string-buffer-field",
+  "ward:java/avoid-synchronized-at-method-level",
+  "ward:java/avoid-synchronized-statement",
+  "ward:java/avoid-thread-group",
+  "ward:java/avoid-throwing-new-instance-of-same-exception",
+  "ward:java/avoid-throwing-null-pointer-exception",
+  "ward:java/avoid-unchecked-exceptions-in-signatures",
+  "ward:java/avoid-using-hard-coded-ip",
+  "ward:java/avoid-using-native-code",
+  "ward:java/avoid-using-octal-values",
+  "ward:java/avoid-using-volatile",
+  "ward:java/big-integer-instantiation",
+  "ward:java/boolean-get-method-name",
+  "ward:java/broken-null-check",
+  "ward:java/c-style-array-declaration",
+  "ward:java/call-super-first",
+  "ward:java/call-super-in-constructor",
+  "ward:java/call-super-last",
+  "ward:java/check-result-set",
+  "ward:java/class-cast-exception-with-to-array",
+  "ward:java/class-fan-out-complexity",
+  "ward:java/clone-method-must-be-public",
+  "ward:java/clone-method-must-implement-cloneable",
+  "ward:java/clone-method-return-type-must-match-class-name",
+  "ward:java/close-resource",
+  "ward:java/collapsible-if-statements",
+  "ward:java/collection-type-mismatch",
+  "ward:java/compare-objects-with-equals",
+  "ward:java/comparison-with-na-n",
+  "ward:java/confusing-argument-to-varargs-method",
+  "ward:java/confusing-ternary",
+  "ward:java/consecutive-appends-should-reuse",
+  "ward:java/consecutive-literal-appends",
+  "ward:java/constants-in-interface",
+  "ward:java/constructor-calls-overridable-method",
+  "ward:java/control-statement-braces",
+  "ward:java/cyclomatic-complexity",
+  "ward:java/data-class",
+  "ward:java/declaration-order",
+  "ward:java/default-label-not-last-in-switch",
+  "ward:java/detached-test-case",
+  "ward:java/do-not-call-garbage-collection-explicitly",
+  "ward:java/do-not-extend-java-lang-error",
+  "ward:java/do-not-extend-java-lang-throwable",
+  "ward:java/do-not-hard-code-sd-card",
+  "ward:java/do-not-terminate-vm",
+  "ward:java/do-not-throw-exception-in-finally",
+  "ward:java/dont-call-thread-run",
+  "ward:java/dont-use-float-type-for-loop-indices",
+  "ward:java/double-brace-initialization",
+  "ward:java/double-checked-locking",
+  "ward:java/empty-block",
+  "ward:java/empty-catch-block",
+  "ward:java/empty-finalizer",
+  "ward:java/empty-method-in-abstract-class-should-be-abstract",
+  "ward:java/empty-statement",
+  "ward:java/enum-comparison",
+  "ward:java/equals-hash-code",
+  "ward:java/equals-null",
+  "ward:java/exception-as-flow-control",
+  "ward:java/excessive-imports",
+  "ward:java/excessive-parameter-list",
+  "ward:java/excessive-public-count",
+  "ward:java/exhaustive-switch-has-default",
+  "ward:java/explicit-initialization",
+  "ward:java/extends-object",
+  "ward:java/fall-through",
+  "ward:java/file-length",
+  "ward:java/final-class",
+  "ward:java/final-field-could-be-static",
+  "ward:java/final-local-variable",
+  "ward:java/final-parameter-in-abstract-method",
+  "ward:java/finalize-does-not-call-super-finalize",
+  "ward:java/finalize-only-calls-super-finalize",
+  "ward:java/finalize-overloaded",
+  "ward:java/finalize-should-be-protected",
+  "ward:java/for-loop-can-be-foreach",
+  "ward:java/for-loop-should-be-while-loop",
+  "ward:java/for-loop-variable-count",
+  "ward:java/god-class",
+  "ward:java/guard-log-statement",
+  "ward:java/hard-coded-crypto-key",
+  "ward:java/hidden-field",
+  "ward:java/hide-utility-class-constructor",
+  "ward:java/idempotent-operations",
+  "ward:java/identical-catch-branches",
+  "ward:java/identical-conditional-branches",
+  "ward:java/illegal-catch",
+  "ward:java/illegal-import",
+  "ward:java/illegal-throws",
+  "ward:java/immutable-field",
+  "ward:java/implicit-functional-interface",
+  "ward:java/inefficient-empty-string-check",
+  "ward:java/inefficient-string-buffering",
+  "ward:java/insecure-crypto-iv",
+  "ward:java/instantiable-utility-class",
+  "ward:java/instantiation-to-get-class",
+  "ward:java/insufficient-string-buffer-declaration",
+  "ward:java/internal-api-usage",
+  "ward:java/invalid-java-bean",
+  "ward:java/invalid-log-message-format",
+  "ward:java/j-unit-jupiter-test-no-private-modifier",
+  "ward:java/j-unit-jupiter-test-should-be-package-private",
+  "ward:java/j-unit-spelling",
+  "ward:java/j-unit-static-suite",
+  "ward:java/j-unit-use-expected",
+  "ward:java/j-unit4-suites-should-use-suite-annotation",
+  "ward:java/java-ncss",
+  "ward:java/jumbled-incrementer",
+  "ward:java/labeled-statement",
+  "ward:java/lambda-can-be-method-reference",
+  "ward:java/linguistic-naming",
+  "ward:java/literals-first-in-comparisons",
+  "ward:java/local-home-naming-convention",
+  "ward:java/local-interface-session-naming-convention",
+  "ward:java/local-variable-declaration-should-be-at-start-of-block",
+  "ward:java/local-variable-name",
+  "ward:java/logic-inversion",
+  "ward:java/long-literal-ending-with-lowercase-l",
+  "ward:java/loose-coupling",
+  "ward:java/magic-number",
+  "ward:java/mdb-and-session-bean-naming-convention",
+  "ward:java/member-name",
+  "ward:java/method-length",
+  "ward:java/method-name",
+  "ward:java/method-returns-internal-array",
+  "ward:java/method-with-same-name-as-enclosing-class",
+  "ward:java/misplaced-null-check",
+  "ward:java/missing-javadoc",
+  "ward:java/missing-javadoc-type",
+  "ward:java/missing-override",
+  "ward:java/missing-serial-version-uid",
+  "ward:java/missing-static-method-in-non-instantiatable-class",
+  "ward:java/missing-switch-default",
+  "ward:java/modifier-order",
+  "ward:java/more-than-one-logger",
+  "ward:java/multiple-string-literals",
+  "ward:java/multiple-variable-declarations",
+  "ward:java/mutable-static-state",
+  "ward:java/n-path-complexity",
+  "ward:java/no-package",
+  "ward:java/non-case-label-in-switch",
+  "ward:java/non-exhaustive-switch",
+  "ward:java/non-serializable-class",
+  "ward:java/non-static-initializer",
+  "ward:java/non-thread-safe-singleton",
+  "ward:java/null-assignment",
+  "ward:java/one-statement-per-line",
+  "ward:java/optimizable-to-array-call",
+  "ward:java/override-both-equals-and-hashcode",
+  "ward:java/overriding-thread-run",
+  "ward:java/package-case",
+  "ward:java/parameter-assignment",
+  "ward:java/parameter-count",
+  "ward:java/parameter-name",
+  "ward:java/premature-declaration",
+  "ward:java/preserve-stack-trace",
+  "ward:java/primitive-wrapper-instantiation",
+  "ward:java/proper-clone-implementation",
+  "ward:java/proper-logger",
+  "ward:java/protected-member-in-final-class",
+  "ward:java/public-member-in-non-public-type",
+  "ward:java/redundant-modifier",
+  "ward:java/reliance-on-default-charset",
+  "ward:java/remote-interface-naming-convention",
+  "ward:java/remote-session-interface-naming-convention",
+  "ward:java/replace-enumeration-with-iterator",
+  "ward:java/replace-hashtable-with-map",
+  "ward:java/replace-java-util-calendar",
+  "ward:java/replace-java-util-date",
+  "ward:java/replace-java-util-vector",
+  "ward:java/return-empty-collection-rather-than-null",
+  "ward:java/return-from-finally-block",
+  "ward:java/rv-return-value-of-putifabsent-ignored",
+  "ward:java/se-no-suitable-constructor",
+  "ward:java/se-no-suitable-constructor-for-externalization",
+  "ward:java/short-class-name",
+  "ward:java/si-instance-before-finals-assigned",
+  "ward:java/sic-inner-should-be-static-needs-this",
+  "ward:java/signature-declare-throws-exception",
+  "ward:java/simple-date-format-needs-locale",
+  "ward:java/simplifiable-test-assertion",
+  "ward:java/simplified-ternary",
+  "ward:java/simplify-boolean-return",
+  "ward:java/simplify-conditional",
+  "ward:java/single-method-singleton",
+  "ward:java/singleton-class-returning-new-instance",
+  "ward:java/singular-field",
+  "ward:java/sr-not-checked",
+  "ward:java/ssd-do-not-use-instance-lock-on-shared-static-data",
+  "ward:java/st-write-to-static-from-instance-method",
+  "ward:java/star-import",
+  "ward:java/static-ejb-field-should-be-final",
+  "ward:java/string-buffer-instantiation-with-char",
+  "ward:java/string-instantiation",
+  "ward:java/string-literal-equality",
+  "ward:java/string-to-string",
+  "ward:java/suspicious-equals-method-name",
+  "ward:java/suspicious-hashcode-method-name",
+  "ward:java/suspicious-octal-escape",
+  "ward:java/sw-swing-methods-invoked-in-swing-thread",
+  "ward:java/switch-density",
+  "ward:java/system-println",
+  "ward:java/test-class-without-test-cases",
+  "ward:java/tlw-two-lock-wait",
+  "ward:java/too-few-branches-for-switch",
+  "ward:java/too-many-fields",
+  "ward:java/too-many-methods",
+  "ward:java/too-many-static-imports",
+  "ward:java/type-name",
+  "ward:java/type-name-mismatch",
+  "ward:java/type-parameter-naming-conventions",
+  "ward:java/uc-useless-condition",
+  "ward:java/uc-useless-condition-type",
+  "ward:java/uc-useless-object",
+  "ward:java/uc-useless-object-stack",
+  "ward:java/uc-useless-void-method",
+  "ward:java/ug-sync-set-unsync-get",
+  "ward:java/unconditional-if-statement",
+  "ward:java/unit-test-assertions-should-include-message",
+  "ward:java/unit-test-should-include-assert",
+  "ward:java/unit-test-should-use-after-annotation",
+  "ward:java/unit-test-should-use-before-annotation",
+  "ward:java/unit-test-should-use-test-annotation",
+  "ward:java/unnecessary-annotation-value-element",
+  "ward:java/unnecessary-block",
+  "ward:java/unnecessary-boolean-assertion",
+  "ward:java/unnecessary-boxing",
+  "ward:java/unnecessary-case-change",
+  "ward:java/unnecessary-cast",
+  "ward:java/unnecessary-conversion-temporary",
+  "ward:java/unnecessary-fully-qualified-name",
+  "ward:java/unnecessary-interface-declaration",
+  "ward:java/unnecessary-return",
+  "ward:java/unnecessary-varargs-array-creation",
+  "ward:java/unnecessary-warning-suppression",
+  "ward:java/unsupported-jdk-api-usage",
+  "ward:java/unsynchronized-static-formatter",
+  "ward:java/unused-formal-parameter",
+  "ward:java/unused-import",
+  "ward:java/unused-label",
+  "ward:java/unused-local-variable",
+  "ward:java/unused-null-check-in-equals",
+  "ward:java/unused-private-method",
+  "ward:java/unused-return-value",
+  "ward:java/urf-unread-public-or-protected-field",
+  "ward:java/usc-potential-security-check-based-on-untrusted-source",
+  "ward:java/use-arrays-as-list",
+  "ward:java/use-collection-is-empty",
+  "ward:java/use-correct-exception-logging",
+  "ward:java/use-diamond-operator",
+  "ward:java/use-enum-collections",
+  "ward:java/use-equals-to-compare-strings",
+  "ward:java/use-explicit-types",
+  "ward:java/use-index-of-char",
+  "ward:java/use-io-streams-with-apache-commons-file-item",
+  "ward:java/use-locale-with-case-conversions",
+  "ward:java/use-notify-all-instead-of-notify",
+  "ward:java/use-proper-class-loader",
+  "ward:java/use-short-array-initializer",
+  "ward:java/use-standard-charsets",
+  "ward:java/use-string-buffer-for-string-appends",
+  "ward:java/use-string-buffer-length",
+  "ward:java/use-try-with-resources",
+  "ward:java/use-underscores-in-numeric-literals",
+  "ward:java/use-varargs",
+  "ward:java/useless-overriding-method",
+  "ward:java/useless-qualified-this",
+  "ward:java/useless-string-value-of",
+  "ward:java/uuf-unused-public-or-protected-field",
+  "ward:java/uw-uncond-wait",
+  "ward:java/uwf-field-not-initialized-in-constructor",
+  "ward:java/uwf-unwritten-public-or-protected-field",
+  "ward:java/variable-can-be-inlined",
+  "ward:java/variable-declaration-usage-distance",
+  "ward:java/vsc-vulnerable-security-check-methods",
+  "ward:java/while-loop-with-literal-boolean",
+  "ward:java/wrong-test-annotation",
+]
+
+[rules."ward:java/abstract-class-without-abstract-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/abstract-class-without-any-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/accessor-class-generation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/accessor-method-generation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/add-empty-string"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/append-character-with-char"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/array-is-stored-directly"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/assert-equals-argument-order"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/assert-statement-in-test"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/assignment-in-operand"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/assignment-to-non-final-static"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/at-nonatomic-64-bit-primitive"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/at-nonatomic-operations-on-shared-variable"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/at-operation-sequence-on-concurrent-abstraction"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/at-stale-thread-write-of-primitive"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/at-unsafe-resource-access-in-thread"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-accessibility-alteration"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-array-loops"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-branching-statement-as-last-in-loop"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-calendar-date-creation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-calling-finalize"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-decimal-literals-in-big-decimal-constructor"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-deeply-nested-if-stmts"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-dollar-signs"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-field-name-matching-type-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-file-stream"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-instanceof-checks-in-catch-clause"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-instantiating-objects-in-loops"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-literals-in-if-condition"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-message-digest-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-multiple-unary-operators"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-print-stack-trace"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-reassigning-catch-variables"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-reassigning-loop-variables"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-rethrowing-exception"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-string-buffer-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-synchronized-at-method-level"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-synchronized-statement"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-thread-group"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-throwing-new-instance-of-same-exception"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-throwing-null-pointer-exception"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-unchecked-exceptions-in-signatures"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-using-hard-coded-ip"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-using-native-code"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-using-octal-values"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/avoid-using-volatile"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/big-integer-instantiation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/boolean-get-method-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/broken-null-check"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/c-style-array-declaration"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/call-super-first"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/call-super-in-constructor"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/call-super-last"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/check-result-set"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/class-cast-exception-with-to-array"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/class-fan-out-complexity"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/clone-method-must-be-public"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/clone-method-must-implement-cloneable"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/clone-method-return-type-must-match-class-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/close-resource"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/collapsible-if-statements"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/collection-type-mismatch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/compare-objects-with-equals"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/comparison-with-na-n"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/confusing-argument-to-varargs-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/confusing-ternary"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/consecutive-appends-should-reuse"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/consecutive-literal-appends"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/constants-in-interface"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/constructor-calls-overridable-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/control-statement-braces"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/cyclomatic-complexity"]
+max = 10
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/data-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/declaration-order"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/default-label-not-last-in-switch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/detached-test-case"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-call-garbage-collection-explicitly"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-extend-java-lang-error"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-extend-java-lang-throwable"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-hard-code-sd-card"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-terminate-vm"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/do-not-throw-exception-in-finally"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/dont-call-thread-run"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/dont-use-float-type-for-loop-indices"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/double-brace-initialization"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/double-checked-locking"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/empty-block"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/empty-catch-block"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/empty-finalizer"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/empty-method-in-abstract-class-should-be-abstract"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/empty-statement"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/enum-comparison"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/equals-hash-code"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/equals-null"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/exception-as-flow-control"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/excessive-imports"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/excessive-parameter-list"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/excessive-public-count"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/exhaustive-switch-has-default"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/explicit-initialization"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/extends-object"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/fall-through"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/file-length"]
+max = 500
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/final-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/final-field-could-be-static"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/final-local-variable"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/final-parameter-in-abstract-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/finalize-does-not-call-super-finalize"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/finalize-only-calls-super-finalize"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/finalize-overloaded"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/finalize-should-be-protected"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/for-loop-can-be-foreach"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/for-loop-should-be-while-loop"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/for-loop-variable-count"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/god-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/guard-log-statement"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/hard-coded-crypto-key"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/hidden-field"]
+ignore-constructor-parameter = true
+ignore-setter = true
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/hide-utility-class-constructor"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/idempotent-operations"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/identical-catch-branches"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/identical-conditional-branches"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/illegal-catch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/illegal-import"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/illegal-throws"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/immutable-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/implicit-functional-interface"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/inefficient-empty-string-check"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/inefficient-string-buffering"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/insecure-crypto-iv"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/instantiable-utility-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/instantiation-to-get-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/insufficient-string-buffer-declaration"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/internal-api-usage"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/invalid-java-bean"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/invalid-log-message-format"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit-jupiter-test-no-private-modifier"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit-jupiter-test-should-be-package-private"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit-spelling"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit-static-suite"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit-use-expected"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/j-unit4-suites-should-use-suite-annotation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/java-ncss"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/jumbled-incrementer"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/labeled-statement"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/lambda-can-be-method-reference"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/linguistic-naming"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/literals-first-in-comparisons"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/local-home-naming-convention"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/local-interface-session-naming-convention"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/local-variable-declaration-should-be-at-start-of-block"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/local-variable-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/logic-inversion"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/long-literal-ending-with-lowercase-l"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/loose-coupling"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/magic-number"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/mdb-and-session-bean-naming-convention"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/member-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/method-length"]
+max = 60
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/method-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/method-returns-internal-array"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/method-with-same-name-as-enclosing-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/misplaced-null-check"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-javadoc"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-javadoc-type"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-override"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-serial-version-uid"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-static-method-in-non-instantiatable-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/missing-switch-default"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/modifier-order"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/more-than-one-logger"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/multiple-string-literals"]
+max-repeats = 7
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/multiple-variable-declarations"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/mutable-static-state"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/n-path-complexity"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/no-package"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/non-case-label-in-switch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/non-exhaustive-switch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/non-serializable-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/non-static-initializer"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/non-thread-safe-singleton"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/null-assignment"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/one-statement-per-line"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/optimizable-to-array-call"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/override-both-equals-and-hashcode"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/overriding-thread-run"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/package-case"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/parameter-assignment"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/parameter-count"]
+max = 5
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/parameter-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/premature-declaration"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/preserve-stack-trace"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/primitive-wrapper-instantiation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/proper-clone-implementation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/proper-logger"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/protected-member-in-final-class"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/public-member-in-non-public-type"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/redundant-modifier"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/reliance-on-default-charset"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/remote-interface-naming-convention"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/remote-session-interface-naming-convention"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/replace-enumeration-with-iterator"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/replace-hashtable-with-map"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/replace-java-util-calendar"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/replace-java-util-date"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/replace-java-util-vector"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/return-empty-collection-rather-than-null"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/return-from-finally-block"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/rv-return-value-of-putifabsent-ignored"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/se-no-suitable-constructor"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/se-no-suitable-constructor-for-externalization"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/short-class-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/si-instance-before-finals-assigned"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/sic-inner-should-be-static-needs-this"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/signature-declare-throws-exception"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/simple-date-format-needs-locale"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/simplifiable-test-assertion"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/simplified-ternary"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/simplify-boolean-return"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/simplify-conditional"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/single-method-singleton"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/singleton-class-returning-new-instance"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/singular-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/sr-not-checked"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/ssd-do-not-use-instance-lock-on-shared-static-data"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/st-write-to-static-from-instance-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/star-import"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/static-ejb-field-should-be-final"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/string-buffer-instantiation-with-char"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/string-instantiation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/string-literal-equality"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/string-to-string"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/suspicious-equals-method-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/suspicious-hashcode-method-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/suspicious-octal-escape"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/sw-swing-methods-invoked-in-swing-thread"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/switch-density"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/system-println"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/test-class-without-test-cases"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/tlw-two-lock-wait"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/too-few-branches-for-switch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/too-many-fields"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/too-many-methods"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/too-many-static-imports"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/type-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/type-name-mismatch"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/type-parameter-naming-conventions"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uc-useless-condition"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uc-useless-condition-type"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uc-useless-object"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uc-useless-object-stack"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uc-useless-void-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/ug-sync-set-unsync-get"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unconditional-if-statement"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unit-test-assertions-should-include-message"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unit-test-should-include-assert"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unit-test-should-use-after-annotation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unit-test-should-use-before-annotation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unit-test-should-use-test-annotation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-annotation-value-element"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-block"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-boolean-assertion"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-boxing"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-case-change"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-cast"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-conversion-temporary"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-fully-qualified-name"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-interface-declaration"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-return"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-varargs-array-creation"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unnecessary-warning-suppression"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unsupported-jdk-api-usage"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unsynchronized-static-formatter"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-formal-parameter"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-import"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-label"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-local-variable"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-null-check-in-equals"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-private-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/unused-return-value"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/urf-unread-public-or-protected-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/usc-potential-security-check-based-on-untrusted-source"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-arrays-as-list"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-collection-is-empty"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-correct-exception-logging"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-diamond-operator"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-enum-collections"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-equals-to-compare-strings"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-explicit-types"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-index-of-char"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-io-streams-with-apache-commons-file-item"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-locale-with-case-conversions"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-notify-all-instead-of-notify"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-proper-class-loader"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-short-array-initializer"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-standard-charsets"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-string-buffer-for-string-appends"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-string-buffer-length"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-try-with-resources"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-underscores-in-numeric-literals"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/use-varargs"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/useless-overriding-method"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/useless-qualified-this"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/useless-string-value-of"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uuf-unused-public-or-protected-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uw-uncond-wait"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uwf-field-not-initialized-in-constructor"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/uwf-unwritten-public-or-protected-field"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/variable-can-be-inlined"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/variable-declaration-usage-distance"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/vsc-vulnerable-security-check-methods"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/while-loop-with-literal-boolean"]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules."ward:java/wrong-test-annotation"]
+exclude-paths = ["**/src/test/resources/**"]
