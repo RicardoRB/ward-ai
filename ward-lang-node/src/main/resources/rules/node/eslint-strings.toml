@@ -27,3 +27,47 @@ check = "node-no-useless-escape"
 allow-regex-characters = []
 message = 'unnecessary escape character: \{value}'
 '''
+
+[[rules]]
+id = "ward:typescript/no-irregular-whitespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''
+
+[[rules]]
+id = "ward:javascript/no-irregular-whitespace"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''

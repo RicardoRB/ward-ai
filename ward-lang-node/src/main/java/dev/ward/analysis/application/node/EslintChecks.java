@@ -8,7 +8,10 @@ import dev.ward.analysis.domain.rule.check.NodeConstructorReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorSuperCheck;
 import dev.ward.analysis.domain.rule.check.NodeDupeClassMembersCheck;
 import dev.ward.analysis.domain.rule.check.NodeDupeElseIfCheck;
+import dev.ward.analysis.domain.rule.check.NodeIrregularWhitespaceCheck;
+import dev.ward.analysis.domain.rule.check.NodeLossOfPrecisionCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnexpectedMultilineCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnusedExpressionsCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedPrivateMembersCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessEscapeCheck;
 import dev.ward.analysis.domain.rule.check.PreferRegexLiteralsCheck;
@@ -45,6 +48,12 @@ final class EslintChecks {
         Map.entry(
             "node-no-dupe-else-if",
             (CheckFactory) toml -> new NodeDupeElseIfCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry("node-no-irregular-whitespace", EslintChecks::irregularWhitespace),
+        Map.entry("node-no-unused-expressions", EslintChecks::unusedExpressions),
+        Map.entry(
+            "node-no-loss-of-precision",
+            (CheckFactory)
+                toml -> new NodeLossOfPrecisionCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "node-no-unused-private-class-members",
             (CheckFactory) toml -> new NodeUnusedPrivateMembersCheck()),
@@ -97,6 +106,32 @@ final class EslintChecks {
   private static StringEscapeCheck stringEscape(final TomlParseResult toml) {
     return new StringEscapeCheck(
         Boolean.TRUE.equals(toml.getBoolean("decimal")), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static NodeIrregularWhitespaceCheck irregularWhitespace(final TomlParseResult toml) {
+    final NodeIrregularWhitespaceCheck.Skips skips =
+        new NodeIrregularWhitespaceCheck.Skips(
+            flag(toml, "skip-comments"),
+            flag(toml, "skip-jsx-text"),
+            flag(toml, "skip-reg-exps"),
+            flag(toml, "skip-strings"),
+            flag(toml, "skip-templates"));
+    return new NodeIrregularWhitespaceCheck(skips, TomlValues.required(toml, MESSAGE));
+  }
+
+  private static NodeUnusedExpressionsCheck unusedExpressions(final TomlParseResult toml) {
+    return new NodeUnusedExpressionsCheck(
+        new NodeUnusedExpressionsCheck.Options(
+            flag(toml, "allow-short-circuit"),
+            flag(toml, "allow-ternary"),
+            flag(toml, "allow-tagged-templates"),
+            flag(toml, "enforce-for-jsx"),
+            flag(toml, "ignore-directives")),
+        TomlValues.required(toml, MESSAGE));
+  }
+
+  private static boolean flag(final TomlParseResult toml, final String key) {
+    return Boolean.TRUE.equals(toml.getBoolean(key));
   }
 
   private static NodeCatchParameterAssignCheck catchParameterAssign(final TomlParseResult toml) {

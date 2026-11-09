@@ -179,7 +179,7 @@ class EslintParitySmokeTest {
         "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"module\", globals: %s }, rules: %s },"
             .formatted(GLOBALS, rules));
     lines.add(
-        "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", globals: %s }, rules: %s },"
+        "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", parserOptions: { ecmaFeatures: { jsx: true } }, globals: %s }, rules: %s },"
             .formatted(GLOBALS, rules));
     for (final Pair pair : pairs) {
       if (SCRIPT_RULES.contains(pair.rule())) {

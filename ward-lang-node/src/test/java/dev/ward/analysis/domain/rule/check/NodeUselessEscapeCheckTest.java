@@ -43,7 +43,9 @@ class NodeUselessEscapeCheckTest {
   @Test
   void validEscapesAreNotReported() {
     assertThat(
-            run("const a = \"\\n\\\\\\\"\";\nconst b = `\\${x}`;\nconst c = /[\\]\\-]/;\n", Set.of()))
+            run(
+                "const a = \"\\n\\\\\\\"\";\nconst b = `\\${x}`;\nconst c = /[\\]\\-]/;\n",
+                Set.of()))
         .isEmpty();
   }
 

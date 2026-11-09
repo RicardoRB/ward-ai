@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Writes a rule's option table from a fixture case as an ESLint option literal. */
 final class EslintParityOptions {
+  private static final Set<String> ACRONYMS = Set.of("jsx");
 
   private EslintParityOptions() {}
 
@@ -23,12 +25,16 @@ final class EslintParityOptions {
   private static String camel(final String kebab) {
     final StringBuilder camel = new StringBuilder();
     for (final String part : kebab.split("-")) {
-      camel.append(
-          camel.isEmpty()
-              ? part
-              : part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1));
+      camel.append(camel.isEmpty() ? part : capitalized(part));
     }
     return camel.toString();
+  }
+
+  /** A word after the first, as ESLint writes it: an acronym such as JSX stays upper case. */
+  private static String capitalized(final String part) {
+    return ACRONYMS.contains(part)
+        ? part.toUpperCase(Locale.ROOT)
+        : part.substring(0, 1).toUpperCase(Locale.ROOT) + part.substring(1);
   }
 
   private static String jsValue(final Object value) {
