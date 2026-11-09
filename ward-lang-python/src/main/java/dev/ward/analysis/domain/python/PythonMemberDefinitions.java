@@ -3,21 +3,18 @@ package dev.ward.analysis.domain.python;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
- * Reads the methods, properties and instance attributes of the top-level classes of a module, for
- * the unused-member rules.
+ * Reads the methods, properties and attributes of a module, for the unused-member rules. Like
+ * vulture, an attribute is any assigned {@code target.name}, in any scope, and every such store is
+ * a definition.
  *
  * <p>shortcut: a method with any decorator except {@code staticmethod} or {@code classmethod} is
- * left out, since a decorator may register it, and only a plain {@code self.name = value} store
- * declares an attribute, so tuple targets are not read. Upgrade by reading each decorator's target.
+ * left out, since a decorator may register it; tuple targets such as {@code a.x, b.y = ...} define
+ * no attribute. Upgrade by reading each decorator's target and every target element.
  */
 final class PythonMemberDefinitions {
 
@@ -29,10 +26,6 @@ final class PythonMemberDefinitions {
    */
   static final String PROPERTY = "property";
 
-  /** The kind of an instance attribute assigned through {@code self}. */
-  static final String ATTRIBUTE = "attribute";
-
-  private static final Pattern SELF_STORE = Pattern.compile("self\\.([A-Za-z_]\\w*)");
   private static final Set<String> PLAIN_DECORATORS = Set.of("staticmethod", "classmethod");
   private static final Set<String> PROPERTY_DECORATORS =
       Set.of("property", "cached_property", "functools.cached_property");
@@ -43,15 +36,16 @@ final class PythonMemberDefinitions {
   private static final String DECORATOR = "decorator";
   private static final String BLOCK = "block";
   private static final String NAME = "name";
-  private static final String EXPR_STMT = "expr_stmt";
-  private static final String ANNASSIGN = "annassign";
-  private static final String ASSIGN = "=";
   private static final String AT = "@";
+  private static final int SINGLE_DECORATOR = 1;
   private static final String OPEN_CALL = "(";
 
   private PythonMemberDefinitions() {}
 
-  /** The methods, properties and attributes of the top-level classes of the module {@code tree}. */
+  /**
+   * The methods and properties of the top-level classes of the module {@code tree}, then every
+   * attribute that any assignment in the module stores.
+   */
   static List<Symbol> declared(final SyntaxNode tree) {
     final List<Symbol> symbols = new ArrayList<>();
     for (final SyntaxNode statement : PythonExports.topLevelStatements(tree)) {
@@ -59,40 +53,21 @@ final class PythonMemberDefinitions {
         symbols.addAll(classMembers(statement));
       }
     }
+    symbols.addAll(PythonAttributeStores.declared(tree));
     return symbols;
-  }
-
-  /**
-   * The attribute name when {@code node} is {@code self.name = value} or {@code self.name: type =
-   * value}, empty otherwise.
-   */
-  static Optional<String> selfStoreName(final SyntaxNode node) {
-    if (!EXPR_STMT.equals(node.kind()) || node.children().size() < 2) {
-      return Optional.empty();
-    }
-    final SyntaxNode operator = node.children().get(1);
-    final boolean assigns =
-        ASSIGN.equals(PythonSyntax.text(operator)) || ANNASSIGN.equals(operator.kind());
-    final Matcher matcher = SELF_STORE.matcher(PythonSyntax.dottedName(node.children().get(0)));
-    return assigns && matcher.matches() ? Optional.of(matcher.group(1)) : Optional.empty();
   }
 
   private static List<Symbol> classMembers(final SyntaxNode classDef) {
     final List<Symbol> members = new ArrayList<>();
-    final Map<String, Symbol> attributes = new LinkedHashMap<>();
     for (final SyntaxNode block : PythonSyntax.children(classDef, BLOCK)) {
       for (final SyntaxNode statement : PythonExports.topLevelStatements(block)) {
-        addMembers(statement, members, attributes);
+        addMember(statement, members);
       }
     }
-    members.addAll(attributes.values());
     return members;
   }
 
-  private static void addMembers(
-      final SyntaxNode statement,
-      final List<Symbol> members,
-      final Map<String, Symbol> attributes) {
+  private static void addMember(final SyntaxNode statement, final List<Symbol> members) {
     final Optional<SyntaxNode> def = function(statement);
     if (def.isEmpty()) {
       return;
@@ -101,9 +76,6 @@ final class PythonMemberDefinitions {
     final Optional<String> name = name(def.get());
     if (kind.isPresent() && name.isPresent()) {
       members.add(new Symbol(name.get(), def.get().span(), kind.get()));
-    }
-    for (final Symbol attribute : attributesOf(def.get())) {
-      attributes.putIfAbsent(attribute.name(), attribute);
     }
   }
 
@@ -124,7 +96,7 @@ final class PythonMemberDefinitions {
     if (decorators.isEmpty()) {
       return Optional.of(METHOD);
     }
-    if (decorators.size() != 1) {
+    if (decorators.size() != SINGLE_DECORATOR) {
       return Optional.empty();
     }
     if (PLAIN_DECORATORS.contains(decorators.get(0))) {
@@ -167,18 +139,5 @@ final class PythonMemberDefinitions {
         .limit(1)
         .map(PythonSyntax::dottedName)
         .findFirst();
-  }
-
-  /** Every {@code self.name} store under {@code node}, each at the target that stores it. */
-  private static List<Symbol> attributesOf(final SyntaxNode node) {
-    final List<Symbol> found = new ArrayList<>();
-    collectStores(node, found);
-    return found;
-  }
-
-  private static void collectStores(final SyntaxNode node, final List<Symbol> found) {
-    selfStoreName(node)
-        .ifPresent(name -> found.add(new Symbol(name, node.children().get(0).span(), ATTRIBUTE)));
-    node.children().forEach(child -> collectStores(child, found));
   }
 }

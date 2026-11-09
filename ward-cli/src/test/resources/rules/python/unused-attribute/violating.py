@@ -6,3 +6,6 @@ class Config:
 
     def address(self):
         return self.host
+
+
+Config().verbose = True

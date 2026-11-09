@@ -36,24 +36,52 @@ final class PythonMemberDefinitionsTest {
   }
 
   @Test
-  void declaresEachSelfAttributeOnceAtItsFirstStore() {
+  void declaresEveryStoredAttributeInAnyScopeAndNotAReadOfIt() {
     final FileSummary summary =
         summarize(
             "class C:\n    def __init__(self):\n        self.a = 1\n        self.a = 2\n"
-                + "        self.b: int = 3\n\n    def run(self):\n        self.c += 1\n");
+                + "        self.b: int = 3\n\n    def run(self):\n        self.c += 1\n"
+                + "        return self.a\n\nconfig.verbose = True\n");
 
     assertThat(summary.declared())
         .extracting(Symbol::kind)
-        .containsExactly("class", "method", "method", "attribute", "attribute");
-    assertThat(names(summary.declared())).containsExactly("C", "__init__", "run", "a", "b");
+        .containsExactly(
+            "class",
+            "method",
+            "method",
+            "attribute",
+            "attribute",
+            "attribute",
+            "attribute",
+            "attribute");
+    assertThat(names(summary.declared()))
+        .containsExactly("C", "__init__", "run", "a", "a", "b", "c", "verbose");
   }
 
   @Test
-  void aSelfStoreIsNotAUseOfTheAttributeButAnAugmentedUpdateIs() {
+  void anAugmentedOrAssignedAttributeIsNotAUseOfTheAttributeName() {
     final FileSummary summary =
         summarize("class C:\n    def __init__(self):\n        self.a = 1\n        self.b += 1\n");
 
-    assertThat(summary.usedNames()).doesNotContain("a").contains("b");
+    assertThat(summary.usedNames()).doesNotContain("a", "b");
+  }
+
+  @Test
+  void aGetattrOrHasattrStringNamesAnAttributeAsUsed() {
+    final FileSummary summary =
+        summarize(
+            "def f(obj):\n    return getattr(obj, 'port') if hasattr(obj, \"debug\") else 0\n");
+
+    assertThat(summary.usedNames()).contains("port", "debug");
+  }
+
+  @Test
+  void importingUnittestUsesItsWhitelistedNames() {
+    final FileSummary summary =
+        summarize(
+            "import unittest\n\nclass T(unittest.TestCase):\n    def setUp(self):\n        pass\n");
+
+    assertThat(summary.usedNames()).contains("setUp", "tearDown", "setUpClass");
   }
 
   @Test
