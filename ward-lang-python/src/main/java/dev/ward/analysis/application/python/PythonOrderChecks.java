@@ -24,6 +24,7 @@ import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
+import dev.ward.analysis.domain.rule.check.StarUnpackLimitCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.ThreadInstantiationCheck;
@@ -90,6 +91,9 @@ final class PythonOrderChecks {
             toml ->
                 new MinMaxBuiltinCheck(
                     TomlValues.required(toml, "builtin"), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "star-unpack-limit",
+            toml -> new StarUnpackLimitCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "duplicate-argument-name",
             toml -> new DuplicateArgumentNameCheck(TomlValues.required(toml, MESSAGE))),

@@ -278,3 +278,29 @@ body = '''
 check = "duplicate-argument-name"
 message = "duplicate argument name in the function definition"
 '''
+
+[[rules]]
+id = "ward:python/expressions-in-star-assignment"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "star-unpack-limit"
+message = "too many expressions before a starred assignment target"
+'''
+
+[[rules]]
+id = "ward:python/dict-iter-missing-items"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = '^for(\w+),(\w+)in\{[^}]*\}(?!\.items\()'
+message = "dictionary unpacked in a for loop without calling .items()"
+'''

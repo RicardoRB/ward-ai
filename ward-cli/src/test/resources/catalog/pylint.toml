@@ -153,13 +153,11 @@ pylint = ["broad-exception-raised"]
 [[rule]]
 name = "chained-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["chained-comparison"]
 
 [[rule]]
 name = "chained-comparison-all-equal"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["chained-comparison-all-equal"]
 
 [[rule]]
@@ -372,7 +370,6 @@ pylint = ["docstring-first-line-empty"]
 [[rule]]
 name = "duplicate-argument-name"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["duplicate-argument-name"]
 
 [[rule]]

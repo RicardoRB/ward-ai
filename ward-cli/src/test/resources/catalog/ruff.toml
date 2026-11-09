@@ -1181,7 +1181,6 @@ ruff = ["F602"]
 [[rule]]
 name = "expressions-in-star-assignment"
 presets = ["standard", "strict"]
-category = "pyflakes"
 ruff = ["F621"]
 
 [[rule]]
@@ -2156,7 +2155,6 @@ ruff = ["PLE1132"]
 [[rule]]
 name = "dict-iter-missing-items"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLE1141"]
 pylint = ["dict-iter-missing-items"]
 

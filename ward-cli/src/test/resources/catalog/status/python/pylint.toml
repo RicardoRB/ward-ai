@@ -25,8 +25,8 @@ bad-thread-instantiation = "implemented"
 bare-name-capture-pattern = { status = "planned", issue = "#336" }
 boolean-datetime = { status = "planned", issue = "#336" }
 broad-exception-raised = "implemented"
-chained-comparison = { status = "planned", issue = "#336" }
-chained-comparison-all-equal = { status = "planned", issue = "#336" }
+chained-comparison = "implemented"
+chained-comparison-all-equal = "implemented"
 class-variable-slots-conflict = { status = "planned", issue = "#336" }
 comparison-of-constants = "implemented"
 comparison-with-callable = { status = "planned", issue = "#336" }
@@ -63,7 +63,7 @@ differing-param-doc = { status = "planned", issue = "#336" }
 differing-type-doc = { status = "planned", issue = "#336" }
 disallowed-name = "implemented"
 docstring-first-line-empty = { status = "planned", issue = "#297" }
-duplicate-argument-name = { status = "planned", issue = "#336" }
+duplicate-argument-name = "implemented"
 duplicate-string-formatting-argument = { status = "planned", issue = "#336" }
 else-if-used = { status = "planned", issue = "#336" }
 eq-without-hash = { status = "planned", issue = "#336" }
