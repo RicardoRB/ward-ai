@@ -41,7 +41,7 @@ no-console = { status = "planned", issue = "#326" }
 no-const-assign = "implemented"
 no-constant-binary-expression = { status = "planned", issue = "#326" }
 no-constant-condition = "implemented"
-no-constructor-return = { status = "planned", issue = "#326" }
+no-constructor-return = "implemented"
 no-continue = { status = "planned", issue = "#296" }
 no-control-regex = "implemented"
 no-debugger = "implemented"
@@ -49,7 +49,7 @@ no-delete-var = "implemented"
 no-div-regex = "implemented"
 no-dupe-args = "implemented"
 no-dupe-class-members = { status = "planned", issue = "#326" }
-no-dupe-else-if = { status = "planned", issue = "#326" }
+no-dupe-else-if = "implemented"
 no-dupe-keys = "implemented"
 no-duplicate-case = "implemented"
 no-duplicate-imports = { status = "planned", issue = "#326" }
@@ -121,7 +121,7 @@ no-undef = "implemented"
 no-undef-init = "implemented"
 no-undefined = { status = "planned", issue = "#296" }
 no-underscore-dangle = { status = "planned", issue = "#296" }
-no-unexpected-multiline = { status = "planned", issue = "#326" }
+no-unexpected-multiline = "implemented"
 no-unmodified-loop-condition = { status = "planned", issue = "#326" }
 no-unneeded-ternary = "implemented"
 no-unreachable = "implemented"
