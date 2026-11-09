@@ -1,0 +1,6 @@
+# Module sinks of the Semgrep p/javascript rules: a request-controlled module name handed to require.
+
+[[sinks]]
+kind = "call"
+name = "require"
+arguments = [0]
