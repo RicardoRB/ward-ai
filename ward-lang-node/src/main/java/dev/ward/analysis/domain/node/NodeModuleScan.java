@@ -13,7 +13,7 @@ import java.util.Set;
  * is used rather than the tree shape, because the grammar's import and export rules do not cover
  * every form (type-only imports, export lists) and the tokens are exact for every form.
  */
-public final class NodeModuleScan {
+final class NodeModuleScan {
   private static final String OPEN_BRACE = "{";
   private static final String CLOSE_BRACE = "}";
 
@@ -22,7 +22,7 @@ public final class NodeModuleScan {
   private final NodeReferenceScan references;
 
   /** Creates the scan of the tokens under {@code tree}. */
-  public NodeModuleScan(final SyntaxNode tree) {
+  NodeModuleScan(final SyntaxNode tree) {
     this.tokens = new NodeTokens(NodeLeaves.of(tree));
     this.exports = new NodeExportScan(tokens);
     this.exports.exportLists(tree);
@@ -30,7 +30,7 @@ public final class NodeModuleScan {
   }
 
   /** Scans every token once, in source order, tracking brace depth for top-level declarations. */
-  public void run() {
+  void run() {
     int depth = 0;
     for (int i = 0; i < tokens.size(); i++) {
       if (tokens.isPunctuation(i, OPEN_BRACE)) {
@@ -43,7 +43,7 @@ public final class NodeModuleScan {
     }
   }
 
-  public List<Reference> references() {
+  List<Reference> references() {
     return references.references();
   }
 

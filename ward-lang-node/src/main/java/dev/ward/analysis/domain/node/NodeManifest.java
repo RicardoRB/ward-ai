@@ -34,7 +34,10 @@ public final class NodeManifest {
     /** An object value. */
     record Obj(List<Member> members) implements Json {}
 
-    /** A number, boolean or null, which no dead-code rule reads. */
+    /** A boolean value. */
+    record Bool(boolean value) implements Json {}
+
+    /** A number or null, which no dead-code rule reads. */
     record Other() implements Json {}
   }
 
@@ -218,7 +221,7 @@ public final class NodeManifest {
       for (final String literal : List.of("true", "false", "null")) {
         if (text.startsWith(literal, at[0])) {
           at[0] += literal.length();
-          return new Json.Other();
+          return "null".equals(literal) ? new Json.Other() : new Json.Bool("true".equals(literal));
         }
       }
       final int start = at[0];

@@ -48,3 +48,127 @@ body = '''
 check = "node-unlisted-import"
 message = "unlisted dependency '{value}': not in the package.json of this package"
 '''
+
+[[rules]]
+id = "ward:typescript/knip-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "dependencies"
+message = "unused dependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-dev-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "devDependencies"
+message = "unused devDependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-optional-peer-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-optional-peer"
+message = "referenced optional peer dependency '{value}': it is imported, so it is not optional"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-catalog"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog"
+message = "unused catalog entry '{value}': no package.json references it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-catalog-references"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog-reference"
+message = "catalog reference '{value}' names an entry that pnpm-workspace.yaml does not define"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "dependencies"
+message = "unused dependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-dev-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "devDependencies"
+message = "unused devDependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-optional-peer-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-optional-peer"
+message = "referenced optional peer dependency '{value}': it is imported, so it is not optional"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-catalog"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog"
+message = "unused catalog entry '{value}': no package.json references it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-catalog-references"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog-reference"
+message = "catalog reference '{value}' names an entry that pnpm-workspace.yaml does not define"
+'''

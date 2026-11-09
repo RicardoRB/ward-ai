@@ -10,7 +10,7 @@ import java.util.Set;
  * @param kind the kind prefix without its colon
  * @param specifier the module specifier as written
  */
-public record NodeReference(String kind, String specifier) {
+record NodeReference(String kind, String specifier) {
   private static final String STATIC = "static";
   private static final String TYPE = "type";
   private static final String REQUIRE = "require";
@@ -18,7 +18,7 @@ public record NodeReference(String kind, String specifier) {
   private static final Set<String> KINDS = Set.of(STATIC, TYPE, REQUIRE, DYNAMIC);
 
   /** Splits a summary's reference into its kind and specifier. */
-  public static Optional<NodeReference> parse(final String recorded) {
+  static Optional<NodeReference> parse(final String recorded) {
     final int colon = recorded.indexOf(':');
     if (colon < 0 || !KINDS.contains(recorded.substring(0, colon))) {
       return Optional.empty();

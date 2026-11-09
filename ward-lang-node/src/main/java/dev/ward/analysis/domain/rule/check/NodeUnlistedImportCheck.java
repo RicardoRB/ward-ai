@@ -1,10 +1,9 @@
 package dev.ward.analysis.domain.rule.check;
 
-import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.node.NodeFileFacts;
+import dev.ward.analysis.domain.node.NodeFileFacts.ModuleSpecifier;
 import dev.ward.analysis.domain.node.NodeManifest;
-import dev.ward.analysis.domain.node.NodeModuleScan;
-import dev.ward.analysis.domain.node.NodeReference;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -29,60 +28,9 @@ import java.util.SortedMap;
 public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
 
   private static final String MANIFEST = "package.json";
-  private static final String RELATIVE = ".";
-  private static final String ABSOLUTE = "/";
-  private static final String SUBPATH = "#";
-  private static final String NODE_PREFIX = "node:";
-  private static final String SCOPE = "@";
-  private static final String SEPARATOR = "/";
   private static final String VALUE = "{value}";
   private static final List<String> SECTIONS =
       List.of("dependencies", "devDependencies", "peerDependencies", "optionalDependencies");
-  private static final Set<String> BUILTINS =
-      Set.of(
-          "assert",
-          "async_hooks",
-          "buffer",
-          "child_process",
-          "cluster",
-          "console",
-          "constants",
-          "crypto",
-          "dgram",
-          "diagnostics_channel",
-          "dns",
-          "domain",
-          "events",
-          "fs",
-          "http",
-          "http2",
-          "https",
-          "inspector",
-          "module",
-          "net",
-          "os",
-          "path",
-          "perf_hooks",
-          "process",
-          "punycode",
-          "querystring",
-          "readline",
-          "repl",
-          "stream",
-          "string_decoder",
-          "sys",
-          "timers",
-          "tls",
-          "trace_events",
-          "tty",
-          "url",
-          "util",
-          "v8",
-          "vm",
-          "wasi",
-          "worker_threads",
-          "zlib",
-          "test");
 
   private final String message;
 
@@ -116,12 +64,13 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
           if (declared.isEmpty()) {
             return;
           }
-          for (final Reference reference : references(tree)) {
-            final Optional<String> specifier = specifier(reference);
-            specifier
-                .map(NodeUnlistedImportCheck::packageName)
-                .filter(name -> !name.isEmpty() && !declared.get().contains(name))
-                .ifPresent(name -> found.add(new ProjectMatch(path, match(reference, name))));
+          for (final ModuleSpecifier module : NodeFileFacts.specifiers(tree)) {
+            final String name = NodeFileFacts.packageName(module.specifier());
+            if (!name.isEmpty() && !declared.get().contains(name)) {
+              found.add(
+                  new ProjectMatch(
+                      path, new RuleMatch(module.span(), message.replace(VALUE, name))));
+            }
           }
         });
     return List.copyOf(found);
@@ -131,7 +80,7 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
   private static Map<String, Set<String>> listedByDirectory(final ProjectFiles files) {
     final Map<String, Set<String>> listed = new HashMap<>();
     for (final String path : files.paths()) {
-      if (path.equals(MANIFEST) || path.endsWith(SEPARATOR + MANIFEST)) {
+      if (path.equals(MANIFEST) || path.endsWith("/" + MANIFEST)) {
         files
             .text(path)
             .flatMap(NodeManifest::parse)
@@ -166,35 +115,5 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
   private static String directoryOf(final String path) {
     final int slash = path.lastIndexOf('/');
     return slash < 0 ? "" : path.substring(0, slash);
-  }
-
-  private static List<Reference> references(final SyntaxNode tree) {
-    final NodeModuleScan scan = new NodeModuleScan(tree);
-    scan.run();
-    return scan.references();
-  }
-
-  private static Optional<String> specifier(final Reference reference) {
-    return NodeReference.parse(reference.specifier()).map(NodeReference::specifier);
-  }
-
-  /** The package an import names, or empty for a relative, absolute, subpath or built-in import. */
-  static String packageName(final String specifier) {
-    if (specifier.startsWith(RELATIVE)
-        || specifier.startsWith(ABSOLUTE)
-        || specifier.startsWith(SUBPATH)
-        || specifier.startsWith(NODE_PREFIX)
-        || BUILTINS.contains(specifier.split(SEPARATOR, 2)[0])) {
-      return "";
-    }
-    final String[] parts = specifier.split(SEPARATOR);
-    if (specifier.startsWith(SCOPE)) {
-      return parts.length >= 2 ? parts[0] + SEPARATOR + parts[1] : "";
-    }
-    return parts[0];
-  }
-
-  private RuleMatch match(final Reference reference, final String name) {
-    return new RuleMatch(reference.span(), message.replace(VALUE, name));
   }
 }

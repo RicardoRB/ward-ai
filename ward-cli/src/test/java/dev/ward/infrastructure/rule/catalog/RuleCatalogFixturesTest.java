@@ -117,7 +117,10 @@ class RuleCatalogFixturesTest {
    * folder has none.
    */
   private static ProjectFiles manifests(final Path file) throws IOException {
-    final Path project = file.resolveSibling("project");
+    final Path own = file.resolveSibling("passing-project");
+    final boolean passing =
+        file.getFileName().toString().startsWith("passing") && Files.isDirectory(own);
+    final Path project = passing ? own : file.resolveSibling("project");
     if (!Files.isDirectory(project)) {
       return ProjectFiles.empty();
     }

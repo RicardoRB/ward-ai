@@ -1,17 +1,15 @@
 package dev.ward.analysis.domain.rule.check;
 
-import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.node.NodeFileFacts;
+import dev.ward.analysis.domain.node.NodeFileFacts.ModuleSpecifier;
 import dev.ward.analysis.domain.node.NodeModuleResolver;
-import dev.ward.analysis.domain.node.NodeModuleScan;
 import dev.ward.analysis.domain.node.NodeProjectLayout;
-import dev.ward.analysis.domain.node.NodeReference;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.SortedMap;
 
 /**
@@ -51,29 +49,17 @@ public final class NodeUnresolvedImportCheck implements RuleCheck, ProjectCheck 
     final List<ProjectMatch> found = new ArrayList<>();
     trees.forEach(
         (path, tree) -> {
-          for (final Reference reference : references(tree)) {
-            final Optional<String> specifier = specifier(reference);
-            if (specifier.isPresent()
-                && specifier.get().startsWith(RELATIVE)
-                && resolver.resolve(path, specifier.get()).isEmpty()) {
-              found.add(new ProjectMatch(path, match(reference, specifier.get())));
+          for (final ModuleSpecifier module : NodeFileFacts.specifiers(tree)) {
+            if (module.specifier().startsWith(RELATIVE)
+                && resolver.resolve(path, module.specifier()).isEmpty()) {
+              found.add(new ProjectMatch(path, match(module)));
             }
           }
         });
     return List.copyOf(found);
   }
 
-  private static List<Reference> references(final SyntaxNode tree) {
-    final NodeModuleScan scan = new NodeModuleScan(tree);
-    scan.run();
-    return scan.references();
-  }
-
-  private static Optional<String> specifier(final Reference reference) {
-    return NodeReference.parse(reference.specifier()).map(NodeReference::specifier);
-  }
-
-  private RuleMatch match(final Reference reference, final String specifier) {
-    return new RuleMatch(reference.span(), message.replace(VALUE, specifier));
+  private RuleMatch match(final ModuleSpecifier module) {
+    return new RuleMatch(module.span(), message.replace(VALUE, module.specifier()));
   }
 }

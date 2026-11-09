@@ -8,14 +8,10 @@ knip = ["binaries"]
 
 [[rule]]
 name = "knip-catalog"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["catalog"]
 
 [[rule]]
 name = "knip-catalog-references"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["catalogReferences"]
 
 [[rule]]
@@ -26,14 +22,10 @@ knip = ["cycles"]
 
 [[rule]]
 name = "knip-dependencies"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["dependencies"]
 
 [[rule]]
 name = "knip-dev-dependencies"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["devDependencies"]
 
 [[rule]]
@@ -80,8 +72,6 @@ knip = ["nsTypes"]
 
 [[rule]]
 name = "knip-optional-peer-dependencies"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["optionalPeerDependencies"]
 
 [[rule]]
