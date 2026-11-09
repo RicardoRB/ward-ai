@@ -19,6 +19,7 @@ public final class NamedExprWithoutContextCheck implements RuleCheck {
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
   private static final String NAMED_EXPRESSION = "namedexpr_test";
   private static final int ASSIGNMENT_EXPRESSION_PARTS = 3;
+  private static final int SINGLE = 1;
 
   private final String message;
 
@@ -36,7 +37,7 @@ public final class NamedExprWithoutContextCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, STATEMENTS)) {
       final SyntaxNode statement = visit.node();
-      if (statement.children().size() == 1 && bareAssignmentExpression(statement).isPresent()) {
+      if (statement.children().size() == SINGLE && bareAssignmentExpression(statement).isPresent()) {
         found.add(new RuleMatch(statement.span(), message));
       }
     }
@@ -50,7 +51,7 @@ public final class NamedExprWithoutContextCheck implements RuleCheck {
     SyntaxNode current = node;
     while (!NAMED_EXPRESSION.equals(current.kind())) {
       final List<SyntaxNode> operands = operands(current);
-      if (operands.size() != 1) {
+      if (operands.size() != SINGLE) {
         return Optional.empty();
       }
       current = operands.get(0);
