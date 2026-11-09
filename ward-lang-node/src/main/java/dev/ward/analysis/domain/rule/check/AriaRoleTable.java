@@ -34,18 +34,46 @@ public final class AriaRoleTable {
   private static final int CONDITION = 1;
   private static final int ROLE = 2;
 
+  private static final int ATTRIBUTE_COLUMNS = 5;
+  private static final int ATTRIBUTE_NAME = 0;
+  private static final int ATTRIBUTE_VALUE_TYPE = 2;
+  private static final int ATTRIBUTE_VALUES = 3;
+
   private final Map<String, AriaRoleRow> roles;
   private final List<ImplicitRow> implicit;
+  private final Map<String, AriaAttributeRow> attributes;
 
   /**
    * Creates the table from its parsed rows.
    *
    * @param roles the roles by name
    * @param implicit the implicit element-role rows, in order
+   * @param attributes the attributes by name
    */
-  public AriaRoleTable(final Map<String, AriaRoleRow> roles, final List<ImplicitRow> implicit) {
+  public AriaRoleTable(
+      final Map<String, AriaRoleRow> roles,
+      final List<ImplicitRow> implicit,
+      final Map<String, AriaAttributeRow> attributes) {
     this.roles = Map.copyOf(roles);
     this.implicit = List.copyOf(implicit);
+    this.attributes = Map.copyOf(attributes);
+  }
+
+  /**
+   * Parses the attribute table; lines starting with {@code #} and the header are skipped.
+   *
+   * @param lines the lines of {@code aria-attributes.tsv}
+   * @throws IllegalArgumentException if a row has the wrong number of columns
+   */
+  public static Map<String, AriaAttributeRow> parseAttributes(final List<String> lines) {
+    return data(lines).stream()
+        .map(AriaRoleTable::attributeRow)
+        .collect(Collectors.toMap(AriaAttributeRow::name, row -> row, (a, b) -> a, HashMap::new));
+  }
+
+  /** The attribute row by name, if the table has the attribute. */
+  public Optional<AriaAttributeRow> attribute(final String name) {
+    return Optional.ofNullable(attributes.get(name));
   }
 
   /**
@@ -111,6 +139,12 @@ public final class AriaRoleTable {
         words(c[DEPRECATED]));
   }
 
+  private static AriaAttributeRow attributeRow(final String line) {
+    final String[] c = columns(line, ATTRIBUTE_COLUMNS);
+    return new AriaAttributeRow(
+        c[ATTRIBUTE_NAME], c[ATTRIBUTE_VALUE_TYPE], words(c[ATTRIBUTE_VALUES]));
+  }
+
   private static ImplicitRow implicitRow(final String line) {
     final String[] c = columns(line, IMPLICIT_COLUMNS);
     return new ImplicitRow(c[ELEMENT], c[CONDITION], "-".equals(c[ROLE]) ? "" : c[ROLE]);
@@ -159,6 +193,16 @@ public final class AriaRoleTable {
       required = Set.copyOf(required);
       prohibited = Set.copyOf(prohibited);
       deprecated = Set.copyOf(deprecated);
+    }
+  }
+
+  /** One attribute: its value type, and the token values a token attribute accepts. */
+  public record AriaAttributeRow(String name, String valueType, Set<String> values) {
+
+    /** Copies the values. */
+    public AriaAttributeRow {
+      Objects.requireNonNull(name, "name");
+      values = Set.copyOf(values);
     }
   }
 

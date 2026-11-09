@@ -361,3 +361,75 @@ body = '''
 check = "node-no-redundant-roles"
 message = "this role repeats the implicit role of the element; remove it"
 '''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-props"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props"
+message = "an aria-* attribute must be a known ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-role"
+message = "a role must name a concrete ARIA role"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-values"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-values"
+message = "an ARIA attribute must have a value its type allows"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-props"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props"
+message = "an aria-* attribute must be a known ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-role"
+message = "a role must name a concrete ARIA role"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-values"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-values"
+message = "an ARIA attribute must have a value its type allows"
+'''

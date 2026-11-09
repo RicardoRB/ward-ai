@@ -4,54 +4,54 @@
 # Generated from those files by a one-off mirror script (not checked in); do not edit by hand.
 attribute	type	valueType	values	deprecated
 aria-activedescendant	property	ID reference		
-aria-atomic	property	true/false	{'false': {'description': 'Assistive technologies will present only the changed node or nodes.', 'isDefault': False}, 'true': {'description': 'Assistive technologies will present the entire changed region as a whole, including the author-defined label if one exists.', 'isDefault': False}}	
-aria-autocomplete	property	token	{'inline': {'description': 'When a user is providing input, text suggesting one way to complete the provided input might be dynamically inserted after the caret.', 'isDefault': False}, 'list': {'description': 'When a user is providing input, an element containing a collection of values that could complete the provided input might be displayed.', 'isDefault': False}, 'both': {'description': 'When a user is providing input, an element containing a collection of values that could complete the provided input might be displayed. If displayed, one value in the collection is automatically selected, and the text needed to complete the automatically selected value appears after the caret in the input.', 'isDefault': False}, 'none': {'description': 'When a user is providing input, an automatic suggestion that attempts to predict how the user intends to complete the input is not displayed.', 'isDefault': True}}	
+aria-atomic	property	true/false	false true	
+aria-autocomplete	property	token	inline list both none	
 aria-braillelabel	property	string		
 aria-brailleroledescription	property	string		
-aria-busy	state	true/false	{'false': {'description': 'There are no expected updates for the element.', 'isDefault': True}, 'true': {'description': 'The element is being updated.', 'isDefault': False}}	
-aria-checked	state	tristate	{'false': {'description': 'The element supports being checked but is not currently checked.', 'isDefault': False}, 'mixed': {'description': 'Indicates a mixed mode value for a tri-state checkbox or menuitemcheckbox.', 'isDefault': False}, 'true': {'description': 'The element is checked.', 'isDefault': False}, 'undefined': {'description': 'The element does not support being checked.', 'isDefault': True}}	
+aria-busy	state	true/false	false true	
+aria-checked	state	tristate	false mixed true undefined	
 aria-colcount	property	integer		
 aria-colindex	property	integer		
 aria-colindextext	property	string		
 aria-colspan	property	integer		
 aria-controls	property	ID reference list		
-aria-current	state	token	{'page': {'description': 'Represents the current page within a set of pages.', 'isDefault': False}, 'step': {'description': 'Represents the current step within a process.', 'isDefault': False}, 'location': {'description': 'Represents the current location within an environment or context.', 'isDefault': False}, 'date': {'description': 'Represents the current date within a collection of dates.', 'isDefault': False}, 'time': {'description': 'Represents the current time within a set of times.', 'isDefault': False}, 'true': {'description': 'Represents the current item within a set.', 'isDefault': False}, 'false': {'description': 'Does not represent the current item within a set.', 'isDefault': True}}	
+aria-current	state	token	page step location date time true false	
 aria-describedby	property	ID reference list		
 aria-description	property	string		
 aria-details	property	ID reference list		
-aria-disabled	state	true/false	{'false': {'description': 'The element is enabled.', 'isDefault': True}, 'true': {'description': 'The element and all focusable descendants are disabled and its value cannot be changed by the user.', 'isDefault': False}}	
-aria-dropeffect	property	token list	{'copy': {'description': 'A duplicate of the source object will be dropped into the target.', 'isDefault': False}, 'execute': {'description': 'A function supported by the drop target is executed, using the drag source as an input.', 'isDefault': False}, 'link': {'description': 'A reference or shortcut to the dragged object will be created in the target object.', 'isDefault': False}, 'move': {'description': 'The source object will be removed from its current location and dropped into the target.', 'isDefault': False}, 'none': {'description': "No operation can be performed; effectively cancels the drag operation if an attempt is made to drop on this object. Ignored if combined with any other token value. e.g., 'none copy' is equivalent to a 'copy' value.", 'isDefault': True}, 'popup': {'description': 'There is a popup menu or dialog that allows the user to choose one of the drag operations (copy, move, link, execute) and any other drag functionality, such as cancel.', 'isDefault': False}}	1.1
+aria-disabled	state	true/false	false true	
+aria-dropeffect	property	token list	copy execute link move none popup	1.1
 aria-errormessage	property	ID reference list		
-aria-expanded	state	true/false/undefined	{'false': {'description': 'The grouping element this element controls or is the accessibility parent of is collapsed.', 'isDefault': False}, 'true': {'description': 'The grouping element this element controls or is the accessibility parent of is expanded.', 'isDefault': False}, 'undefined': {'description': 'The element does not own or control a grouping element that is expandable.', 'isDefault': True}}	
+aria-expanded	state	true/false/undefined	false true undefined	
 aria-flowto	property	ID reference list		
-aria-grabbed	state	true/false/undefined	{'false': {'description': 'Indicates that the element supports being dragged.', 'isDefault': False}, 'true': {'description': 'Indicates that the element has been "grabbed" for dragging.', 'isDefault': False}, 'undefined': {'description': 'Indicates that the element does not support being dragged.', 'isDefault': True}}	1.1
-aria-haspopup	property	token	{'false': {'description': 'Indicates the element does not have a popup.', 'isDefault': True}, 'true': {'description': 'Indicates the popup is a menu.', 'isDefault': False}, 'menu': {'description': 'Indicates the popup is a menu.', 'isDefault': False}, 'listbox': {'description': 'Indicates the popup is a listbox.', 'isDefault': False}, 'tree': {'description': 'Indicates the popup is a tree.', 'isDefault': False}, 'grid': {'description': 'Indicates the popup is a grid.', 'isDefault': False}, 'dialog': {'description': 'Indicates the popup is a dialog.', 'isDefault': False}}	
-aria-hidden	state	true/false/undefined	{'false': {'description': 'The element is exposed to the accessibility API as if it was rendered.', 'isDefault': False}, 'true': {'description': 'The element is hidden from the accessibility API.', 'isDefault': False}, 'undefined': {'description': "The element's hidden state is determined by the user agent based on whether it is rendered.", 'isDefault': True}}	
-aria-invalid	state	token	{'grammar': {'description': 'A grammatical error was detected.', 'isDefault': False}, 'false': {'description': 'There are no detected errors in the value.', 'isDefault': True}, 'spelling': {'description': 'A spelling error was detected.', 'isDefault': False}, 'true': {'description': 'The value entered by the user has failed validation.', 'isDefault': False}}	
+aria-grabbed	state	true/false/undefined	false true undefined	1.1
+aria-haspopup	property	token	false true menu listbox tree grid dialog	
+aria-hidden	state	true/false/undefined	false true undefined	
+aria-invalid	state	token	grammar false spelling true	
 aria-keyshortcuts	property	string		
 aria-label	property	string		
 aria-labelledby	property	ID reference list		
 aria-level	property	integer		
-aria-live	property	token	{'assertive': {'description': 'Indicates that updates to the region have the highest priority and should be presented the user immediately.', 'isDefault': False}, 'off': {'description': 'Indicates that updates to the region should not be presented to the user unless the user is currently focused on that region.', 'isDefault': True}, 'polite': {'description': 'Indicates that updates to the region should be presented at the next graceful opportunity, such as at the end of speaking the current sentence or when the user pauses typing.', 'isDefault': False}}	
-aria-modal	property	true/false	{'false': {'description': 'Element is not modal.', 'isDefault': True}, 'true': {'description': 'Element is modal.', 'isDefault': False}}	
-aria-multiline	property	true/false	{'false': {'description': 'This is a single-line text box.', 'isDefault': True}, 'true': {'description': 'This is a multi-line text box.', 'isDefault': False}}	
-aria-multiselectable	property	true/false	{'false': {'description': 'Only one item can be selected.', 'isDefault': True}, 'true': {'description': 'More than one item in the widget can be selected at a time.', 'isDefault': False}}	
-aria-orientation	property	token	{'horizontal': {'description': 'The element is oriented horizontally.', 'isDefault': False}, 'undefined': {'description': "The element's orientation is unknown/ambiguous.", 'isDefault': True}, 'vertical': {'description': 'The element is oriented vertically.', 'isDefault': False}}	
+aria-live	property	token	assertive off polite	
+aria-modal	property	true/false	false true	
+aria-multiline	property	true/false	false true	
+aria-multiselectable	property	true/false	false true	
+aria-orientation	property	token	horizontal undefined vertical	
 aria-owns	property	ID reference list		
 aria-placeholder	property	string		
 aria-posinset	property	integer		
-aria-pressed	state	tristate	{'false': {'description': 'The element supports being pressed but is not currently pressed.', 'isDefault': False}, 'mixed': {'description': 'Indicates a mixed mode value for a tri-state toggle button.', 'isDefault': False}, 'true': {'description': 'The element is pressed.', 'isDefault': False}, 'undefined': {'description': 'The element does not support being pressed.', 'isDefault': True}}	
-aria-readonly	property	true/false	{'false': {'description': 'The user can set the value of the element.', 'isDefault': True}, 'true': {'description': 'The user cannot change the value of the element.', 'isDefault': False}}	
-aria-relevant	property	token list	{'additions': {'description': 'Element nodes are added to the accessibility tree within the live region.', 'isDefault': False}, 'additions text': {'description': 'Equivalent to the combination of values, "additions text".', 'isDefault': True}, 'all': {'description': 'Equivalent to the combination of all values, "additions removals text".', 'isDefault': False}, 'removals': {'description': 'Text content, a text alternative, or an element node within the live region is removed from the accessibility tree.', 'isDefault': False}, 'text': {'description': 'Text content or a text alternative is added to any descendant in the accessibility tree of the live region.', 'isDefault': False}}	
-aria-required	property	true/false	{'false': {'description': 'User input is not necessary to submit the form.', 'isDefault': True}, 'true': {'description': 'Users need to provide input on an element before a form is submitted.', 'isDefault': False}}	
+aria-pressed	state	tristate	false mixed true undefined	
+aria-readonly	property	true/false	false true	
+aria-relevant	property	token list	additions additions text all removals text	
+aria-required	property	true/false	false true	
 aria-roledescription	property	string		
 aria-rowcount	property	integer		
 aria-rowindex	property	integer		
 aria-rowindextext	property	string		
 aria-rowspan	property	integer		
-aria-selected	state	true/false/undefined	{'false': {'description': 'The selectable element is not selected.', 'isDefault': False}, 'true': {'description': 'The selectable element is selected.', 'isDefault': False}, 'undefined': {'description': 'The element is not selectable.', 'isDefault': True}}	
+aria-selected	state	true/false/undefined	false true undefined	
 aria-setsize	property	integer		
-aria-sort	property	token	{'ascending': {'description': 'Items are sorted in ascending order.', 'isDefault': False}, 'descending': {'description': 'Items are sorted in descending order.', 'isDefault': False}, 'none': {'description': 'There is no defined sort applied.', 'isDefault': True}, 'other': {'description': 'A sort algorithm other than ascending or descending has been applied.', 'isDefault': False}}	
+aria-sort	property	token	ascending descending none other	
 aria-valuemax	property	number		
 aria-valuemin	property	number		
 aria-valuenow	property	number		

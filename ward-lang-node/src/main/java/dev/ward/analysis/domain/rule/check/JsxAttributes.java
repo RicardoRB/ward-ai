@@ -61,18 +61,31 @@ final class JsxAttributes {
   }
 
   /**
-   * The whitespace-separated tokens of a static attribute value, read from the source text so that
-   * the spaces survive; empty for a dynamic value. Biome's {@code from_roles} reads a role this
-   * way.
+   * The text between the quotes of a static attribute value, read from the source so that its
+   * spaces survive; empty for a dynamic value. Biome reads a JSX string value this way.
    */
-  static List<String> tokens(final SyntaxNode attribute, final String source) {
+  static Optional<String> rawLiteral(final SyntaxNode attribute, final String source) {
     return value(attribute)
         .filter(node -> literal(attribute).isPresent())
         .map(node -> source.substring(node.span().startOffset(), node.span().endOffset()))
-        .map(raw -> raw.substring(1, raw.length() - 1).trim())
+        .map(raw -> raw.substring(1, raw.length() - 1));
+  }
+
+  /**
+   * The whitespace-separated tokens of a static attribute value, as {@link #rawLiteral} reads it.
+   */
+  static List<String> tokens(final SyntaxNode attribute, final String source) {
+    return rawLiteral(attribute, source)
+        .map(String::trim)
         .filter(inner -> !inner.isEmpty())
         .map(inner -> List.of(inner.split("\\s+")))
         .orElse(List.of());
+  }
+
+  /** Whether the element is a DOM element: a lower-case name, not a component or a member. */
+  static boolean isDomElement(final SyntaxNode element) {
+    final String name = elementName(element);
+    return !name.isEmpty() && Character.isLowerCase(name.charAt(0)) && !name.contains(".");
   }
 
   private static boolean isQuote(final char character) {

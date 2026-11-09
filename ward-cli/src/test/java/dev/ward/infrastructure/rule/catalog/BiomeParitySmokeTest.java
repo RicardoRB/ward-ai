@@ -70,7 +70,10 @@ class BiomeParitySmokeTest {
           Map.entry("use-key-with-mouse-events", "a11y/useKeyWithMouseEvents"),
           Map.entry("use-anchor-content", "a11y/useAnchorContent"),
           Map.entry("use-valid-anchor", "a11y/useValidAnchor"),
-          Map.entry("no-redundant-roles", "a11y/noRedundantRoles"));
+          Map.entry("no-redundant-roles", "a11y/noRedundantRoles"),
+          Map.entry("use-valid-aria-props", "a11y/useValidAriaProps"),
+          Map.entry("use-valid-aria-role", "a11y/useValidAriaRole"),
+          Map.entry("use-valid-aria-values", "a11y/useValidAriaValues"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

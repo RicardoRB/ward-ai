@@ -12,13 +12,16 @@ final class AriaTables {
 
   private static final String ROLES = "/aria/aria-roles.tsv";
   private static final String IMPLICIT = "/aria/aria-implicit-roles.tsv";
+  private static final String ATTRIBUTES = "/aria/aria-attributes.tsv";
 
   private AriaTables() {}
 
   /** The ARIA role table: the role rows and the implicit element-role rows. */
   static AriaRoleTable load() {
     return new AriaRoleTable(
-        AriaRoleTable.parseRoles(read(ROLES)), AriaRoleTable.parseImplicit(read(IMPLICIT)));
+        AriaRoleTable.parseRoles(read(ROLES)),
+        AriaRoleTable.parseImplicit(read(IMPLICIT)),
+        AriaRoleTable.parseAttributes(read(ATTRIBUTES)));
   }
 
   private static List<String> read(final String path) {

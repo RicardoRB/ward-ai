@@ -4,6 +4,9 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.BiomeAriaPropsCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaValuesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAutofocusCheck;
 import dev.ward.analysis.domain.rule.check.BiomeBlankTargetCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
@@ -53,6 +56,16 @@ final class BiomeChecks {
         entry("node-jsx-blank-target", BiomeChecks::blankTarget),
         entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
         entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
+        entry(
+            "node-aria-props",
+            toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-aria-role",
+            toml -> new BiomeAriaRoleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-aria-values",
+            toml ->
+                new BiomeAriaValuesCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-no-redundant-roles",
             toml ->
