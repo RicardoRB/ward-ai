@@ -507,7 +507,7 @@ percent-format-positional-count-mismatch = "implemented"
 percent-format-star-requires-sequence = "implemented"
 percent-format-unsupported-format-character = "implemented"
 post-init-default = { status = "planned", issue = "#334" }
-potential-index-error = { status = "planned", issue = "#332" }
+potential-index-error = "implemented"
 print = { status = "planned", issue = "#334" }
 print-empty-string = "implemented"
 printf-in-get-text-func-call = { status = "planned", issue = "#334" }
@@ -594,7 +594,7 @@ replace-universal-newlines = { status = "planned", issue = "#334" }
 request-with-no-cert-validation = { status = "planned", issue = "#334" }
 request-without-timeout = "implemented"
 return-in-generator = { status = "planned", issue = "#332" }
-return-in-init = { status = "planned", issue = "#332" }
+return-in-init = "implemented"
 return-in-try-except-finally = { status = "planned", issue = "#334" }
 return-outside-function = "implemented"
 reuse-of-groupby-generator = "implemented"
@@ -619,8 +619,8 @@ signature-in-docstring = { status = "planned", issue = "#297" }
 single-item-membership-test = { status = "planned", issue = "#334" }
 single-line-implicit-string-concatenation = "implemented"
 single-string-slots = { status = "planned", issue = "#334" }
-singledispatch-method = { status = "planned", issue = "#332" }
-singledispatchmethod-function = { status = "planned", issue = "#332" }
+singledispatch-method = "implemented"
+singledispatchmethod-function = "implemented"
 six-py3 = "implemented"
 slice-copy = { status = "planned", issue = "#334" }
 slice-to-remove-prefix-or-suffix = { status = "planned", issue = "#334" }
@@ -758,7 +758,7 @@ undocumented-public-module = { status = "planned", issue = "#297" }
 undocumented-public-nested-class = { status = "planned", issue = "#297" }
 undocumented-public-package = { status = "planned", issue = "#297" }
 undocumented-warn = { status = "planned", issue = "#334" }
-unexpected-special-method-signature = { status = "planned", issue = "#332" }
+unexpected-special-method-signature = "implemented"
 unicode-kind-prefix = { status = "planned", issue = "#334" }
 unintentional-type-annotation = "implemented"
 unix-command-wildcard-injection = { status = "planned", issue = "#334" }
