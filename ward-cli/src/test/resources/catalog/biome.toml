@@ -899,8 +899,6 @@ biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
 name = "no-unused-function-parameters"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnusedFunctionParameters"]
 
 [[rule]]

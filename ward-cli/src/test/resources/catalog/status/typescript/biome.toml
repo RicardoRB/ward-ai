@@ -160,7 +160,7 @@ no-unnecessary-conditions = { status = "planned", issue = "#329" }
 no-unreachable-super = { status = "planned", issue = "#329" }
 no-unresolved-imports = { status = "planned", issue = "#329" }
 no-unsafe-iframe-sandbox = { status = "planned", issue = "#329" }
-no-unused-function-parameters = { status = "planned", issue = "#329" }
+no-unused-function-parameters = "implemented"
 no-unused-instantiation = "implemented"
 no-unused-template-literal = "implemented"
 no-unwanted-polyfillio = { status = "planned", issue = "#329" }

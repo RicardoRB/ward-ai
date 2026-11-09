@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
+import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -32,7 +33,13 @@ final class BiomeChecks {
         entry("node-member-property", BiomeChecks::memberProperty),
         entry(
             "node-namespace-access",
-            toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
+        entry("node-unused-parameter", BiomeChecks::unusedParameter));
+  }
+
+  private static RuleCheck unusedParameter(final TomlParseResult toml) {
+    return new BiomeUnusedParameterCheck(
+        toml.getBoolean("ignore-rest-siblings", () -> true), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck memberProperty(final TomlParseResult toml) {

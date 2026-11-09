@@ -24,3 +24,31 @@ check = "node-constant-clamp"
 message = "this Math.min and Math.max combination always returns the same value"
 '''
 
+[[rules]]
+id = "ward:typescript/no-unused-function-parameters"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "WARNING"
+category = "correctness"
+presets = ["standard", "strict"]
+options.ignore-rest-siblings = { type = "boolean" }
+body = '''
+check = "node-unused-parameter"
+ignore-rest-siblings = true
+message = "parameter '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-function-parameters"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "WARNING"
+category = "correctness"
+presets = ["standard", "strict"]
+options.ignore-rest-siblings = { type = "boolean" }
+body = '''
+check = "node-unused-parameter"
+ignore-rest-siblings = true
+message = "parameter '{value}' is never used"
+'''
+

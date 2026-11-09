@@ -48,7 +48,8 @@ class BiomeParitySmokeTest {
           Map.entry("no-return-in-finally", "nursery/noReturnInFinally"),
           Map.entry("no-constant-math-min-max-clamp", "correctness/noConstantMathMinMaxClamp"),
           Map.entry(
-              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"));
+              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"),
+          Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
