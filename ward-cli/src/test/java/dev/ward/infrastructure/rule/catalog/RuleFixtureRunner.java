@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -49,6 +51,19 @@ final class RuleFixtureRunner {
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
+    return run(rule, path, text, typeFacts, FixtureProject.alone());
+  }
+
+  /**
+   * Like {@link #run(RuleDefinition, String, String, TypeFacts)}, with the project's manifests and
+   * the other source files of the project, which give cross-file facts but report nothing.
+   */
+  List<AnalysisFinding> run(
+      final RuleDefinition rule,
+      final String path,
+      final String text,
+      final TypeFacts typeFacts,
+      final FixtureProject project) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
@@ -63,8 +78,17 @@ final class RuleFixtureRunner {
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
-    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule)));
-    return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
+    final List<SourceUnit> projectUnits = new ArrayList<>(units);
+    projectUnits.addAll(project.sources());
+    all.addAll(
+        engine.runProject(
+            projectUnits, frontendsFor(rule, typeFacts), List.of(rule), project.manifests()));
+    final Set<String> otherPaths =
+        project.sources().stream().map(SourceUnit::path).collect(Collectors.toSet());
+    return all.stream()
+        .filter(finding -> finding.ruleId().equals(rule.id()))
+        .filter(finding -> !otherPaths.contains(finding.file()))
+        .toList();
   }
 
   /** The frontends of the {@code ward} gate, for a graph rule over a project fixture. */

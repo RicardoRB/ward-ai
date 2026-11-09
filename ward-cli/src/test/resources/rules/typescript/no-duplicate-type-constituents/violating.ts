@@ -1,0 +1,2 @@
+type A = 'a' | 'b' | 'a';
+type B = string & number & string;

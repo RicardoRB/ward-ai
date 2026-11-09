@@ -1,19 +1,19 @@
 # Status of the knip rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-knip-binaries = { status = "planned", issue = "#331" }
-knip-catalog = { status = "planned", issue = "#331" }
-knip-catalog-references = { status = "planned", issue = "#331" }
+knip-binaries = "implemented"
+knip-catalog = "implemented"
+knip-catalog-references = "implemented"
 knip-cycles = { status = "planned", issue = "#331" }
-knip-dependencies = { status = "planned", issue = "#331" }
-knip-dev-dependencies = { status = "planned", issue = "#331" }
-knip-duplicates = { status = "planned", issue = "#331" }
-knip-enum-members = { status = "planned", issue = "#331" }
-knip-exports = { status = "planned", issue = "#331" }
-knip-files = { status = "planned", issue = "#331" }
-knip-namespace-members = { status = "planned", issue = "#331" }
+knip-dependencies = "implemented"
+knip-dev-dependencies = "implemented"
+knip-duplicates = "implemented"
+knip-enum-members = "implemented"
+knip-exports = "implemented"
+knip-files = "implemented"
+knip-namespace-members = "implemented"
 knip-ns-exports = { status = "planned", issue = "#331" }
 knip-ns-types = { status = "planned", issue = "#331" }
-knip-optional-peer-dependencies = { status = "planned", issue = "#331" }
-knip-types = { status = "planned", issue = "#331" }
-knip-unlisted = { status = "planned", issue = "#331" }
-knip-unresolved = { status = "planned", issue = "#331" }
+knip-optional-peer-dependencies = "implemented"
+knip-types = "implemented"
+knip-unlisted = "implemented"
+knip-unresolved = "implemented"

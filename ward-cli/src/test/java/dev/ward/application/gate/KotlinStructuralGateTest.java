@@ -17,6 +17,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.DeclarativeRuleMatcher;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
@@ -111,7 +112,7 @@ class KotlinStructuralGateTest {
     return new AnalysisPorts(
         new ClasspathRuleSource(),
         new DeclarativeRuleMatcher(),
-        new FileSystemSourceUnits(),
+        new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(
                 AnalysisLanguage.KOTLIN,
