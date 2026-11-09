@@ -4,3 +4,4 @@ express-jwt-hardcoded-secret	semgrep	javascript.express.security.express-jwt-har
 hardcoded-jwt-secret	semgrep	javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret	Ward reports a literal second argument only; a variable bound to a literal is not reported
 react-dangerouslysetinnerhtml	semgrep	typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml	Ward flags a non-literal __html value without tracing where it comes from
 awscdk-bucket-encryption	semgrep	typescript.aws-cdk.security.audit.awscdk-bucket-encryption.awscdk-bucket-encryption	Ward matches the Bucket constructor by name and does not require a const declaration
+tainted-html-string	semgrep	javascript.aws-lambda.security.tainted-html-string.tainted-html-string	Semgrep matches the HTML-tag concatenation and its template forms; Ward matches util.format and concat calls on a Lambda event value and does not check that the string starts with a tag
