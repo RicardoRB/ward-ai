@@ -90,7 +90,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
         .doesNotContain("preset", "[checks.pmd]");
     assertThat(project.resolve("ward-rules.toml"))
         .content()
-        .contains("version = 1", "preset = \"standard\"", "languages = [\"java\"]");
+        .contains("version = 1", "preset = \"standard\"", "languages = [\"java\", \"swift\"]");
   }
 
   @Test

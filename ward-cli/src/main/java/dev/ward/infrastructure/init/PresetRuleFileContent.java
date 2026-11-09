@@ -40,7 +40,7 @@ final class PresetRuleFileContent {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
-        + "\"\nlanguages = [\"java\"]\n"
+        + "\"\nlanguages = [\"java\", \"swift\"]\n"
         + (chosen == QualityPreset.STRICT ? HIDDEN_FIELD : "");
   }
 
