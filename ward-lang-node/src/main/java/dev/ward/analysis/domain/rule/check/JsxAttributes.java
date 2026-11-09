@@ -27,7 +27,7 @@ final class JsxAttributes {
 
   /** A spread is a jsxSpreadAttribute inside an attribute node of the element. */
   static boolean hasSpread(final SyntaxNode element) {
-    return JsxAttributes.of(element).stream()
+    return of(element).stream()
         .anyMatch(
             attribute ->
                 attribute.children().stream().anyMatch(child -> SPREAD.equals(child.kind())));

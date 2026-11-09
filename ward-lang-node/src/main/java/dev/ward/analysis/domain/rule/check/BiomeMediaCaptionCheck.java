@@ -36,7 +36,7 @@ public final class BiomeMediaCaptionCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     return SyntaxWalk.visits(root, Set.of(ELEMENT, JsxAttributes.SELF_CLOSING)).stream()
-        .map(visit -> visit.node())
+        .map(SyntaxWalk.Visit::node)
         .filter(BiomeMediaCaptionCheck::reported)
         .map(node -> CheckSupport.at(node.span(), message))
         .toList();

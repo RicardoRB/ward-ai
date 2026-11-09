@@ -17,8 +17,6 @@ import java.util.regex.Pattern;
  */
 public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
 
-  private static final String SPREAD = "jsxSpreadAttribute";
-
   private final List<JsxElementSpec> elements;
   private final String attribute;
   private final ValueRule rule;

@@ -49,7 +49,7 @@ public final class BiomeSvgTitleCheck implements RuleCheck {
   public List<RuleMatch> matches(
       final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
     return SyntaxWalk.visits(root, Set.of(ELEMENT)).stream()
-        .map(visit -> visit.node())
+        .map(SyntaxWalk.Visit::node)
         .filter(node -> reported(node, unit.text()))
         .map(node -> CheckSupport.at(opening(node).span(), message))
         .toList();

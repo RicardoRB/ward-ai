@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Biome 2.5.15's ARIA role data, read from the mirrored tables under {@code resources/aria}: each
@@ -168,6 +170,17 @@ public final class AriaRoleTable {
     /** Copies the attributes. */
     public ElementConcept {
       attributes = Map.copyOf(attributes);
+    }
+
+    /** Reads a concept from its element name and its space-separated name=value attributes. */
+    static ElementConcept of(final String element, final String attributes) {
+      final Map<String, String> pairs =
+          attributes.isBlank()
+              ? Map.of()
+              : Arrays.stream(attributes.split(" "))
+                  .map(pair -> pair.split("=", 2))
+                  .collect(Collectors.toMap(pair -> pair[0], pair -> pair[1]));
+      return new ElementConcept(element, pairs);
     }
   }
 }
