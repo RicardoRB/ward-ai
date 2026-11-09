@@ -52,6 +52,18 @@ message = "magic number {value}; name it with a constant"
 '''
 
 [[rules]]
+id = "ward:kotlin/multiple-variable-declarations"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-multiple-declarations"
+message = "only one variable may be declared on a line"
+'''
+
+[[rules]]
 id = "ward:kotlin/no-finalizer"
 language = "kotlin"
 capability = "SYNTAX"

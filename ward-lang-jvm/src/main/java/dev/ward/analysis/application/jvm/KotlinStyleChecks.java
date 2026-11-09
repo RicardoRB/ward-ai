@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.KotlinKdocMethodCheck;
 import dev.ward.analysis.domain.rule.check.KotlinKdocPositionCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMagicNumberCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMissingKdocTypeCheck;
+import dev.ward.analysis.domain.rule.check.KotlinMultipleDeclarationsCheck;
 import dev.ward.analysis.domain.rule.check.KotlinOneStatementPerLineCheck;
 import dev.ward.analysis.domain.rule.check.KotlinOverloadOrderCheck;
 import dev.ward.analysis.domain.rule.check.KotlinUsageDistanceCheck;
@@ -43,6 +44,9 @@ final class KotlinStyleChecks {
         entry(
             "kotlin-missing-kdoc-type",
             toml -> new KotlinMissingKdocTypeCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-multiple-declarations",
+            toml -> new KotlinMultipleDeclarationsCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "kotlin-one-statement-per-line",
             toml -> new KotlinOneStatementPerLineCheck(TomlValues.required(toml, MESSAGE))),

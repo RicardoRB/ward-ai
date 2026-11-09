@@ -29,7 +29,7 @@ missing-null-case-in-switch = "not-applicable"
 missing-switch-default = { status = "planned", issue = "#294" }
 modified-control-variable = { status = "planned", issue = "#294" }
 multiple-string-literals = { status = "planned", issue = "#294" }
-multiple-variable-declarations = "not-applicable"
+multiple-variable-declarations = "implemented"
 nested-for-depth = { status = "planned", issue = "#294" }
 nested-if-depth = { status = "planned", issue = "#294" }
 nested-try-depth = { status = "planned", issue = "#294" }

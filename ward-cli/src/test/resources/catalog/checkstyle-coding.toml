@@ -213,9 +213,7 @@ checkstyle = ["MultipleStringLiterals"]
 
 [[rule]]
 name = "multiple-variable-declarations"
-category = "coding"
-presets = ["standard", "strict"]
-not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration", kotlin = "Kotlin declares one variable per val or var; a destructuring declaration is a single statement" }
+not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration" }
 pmd = ["OneDeclarationPerLine"]
 checkstyle = ["MultipleVariableDeclarations"]
 eslint = ["one-var"]
