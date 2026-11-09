@@ -40,8 +40,6 @@ checkstyle = ["LineEnding"]
 
 [[rule]]
 name = "multiline-comment-leading-asterisk-presence"
-category = "misc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc block-comment layout; Python docstrings have no leading asterisks" }
 checkstyle = ["MultilineCommentLeadingAsteriskPresence"]
 

@@ -1,0 +1,81 @@
+# Style rules of the "coding" category for TypeScript and JavaScript, from Checkstyle concepts at their default options. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/magic-number"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["DecimalLiteral", "HexIntegerLiteral", "OctalIntegerLiteral", "OctalIntegerLiteral2", "BinaryIntegerLiteral"]
+text = '^(?!(?:0|1|2)(?:\.0*)?$).+$'
+message = "'{value}' is a magic number"
+'''
+
+[[rules]]
+id = "ward:javascript/magic-number"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["DecimalLiteral", "HexIntegerLiteral", "OctalIntegerLiteral", "OctalIntegerLiteral2", "BinaryIntegerLiteral"]
+text = '^(?!(?:0|1|2)(?:\.0*)?$).+$'
+message = "'{value}' is a magic number"
+'''
+
+[[rules]]
+id = "ward:typescript/unused-local-variable"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:javascript/unused-local-variable"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:typescript/one-statement-per-line"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^(?!\s*for\s*\().*;\s*[A-Za-z_$]'
+message = "only one statement per line is allowed"
+'''
+
+[[rules]]
+id = "ward:javascript/one-statement-per-line"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '^(?!\s*for\s*\().*;\s*[A-Za-z_$]'
+message = "only one statement per line is allowed"
+'''

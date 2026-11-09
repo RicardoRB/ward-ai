@@ -20,6 +20,10 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/problem.toml",
           "rules/node/regexp.toml",
           "rules/node/sizes.toml",
+          "rules/node/style-coding.toml",
+          "rules/node/style-javadoc.toml",
+          "rules/node/style-linter.toml",
+          "rules/node/style-typescript.toml",
           "rules/node/suggestion.toml");
 
   @Override

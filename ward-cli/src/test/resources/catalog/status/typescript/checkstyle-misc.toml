@@ -6,7 +6,7 @@ descendant-token = { status = "planned", issue = "#296" }
 final-parameters = { status = "planned", issue = "#296" }
 hex-literal-case = { status = "planned", issue = "#296" }
 line-ending = { status = "planned", issue = "#296" }
-multiline-comment-leading-asterisk-presence = { status = "planned", issue = "#296" }
+multiline-comment-leading-asterisk-presence = "implemented"
 newline-at-end-of-file = { status = "planned", issue = "#296" }
 no-code-in-file = { status = "planned", issue = "#296" }
 numerical-prefixes-infixes-suffixes-character-case = { status = "planned", issue = "#296" }

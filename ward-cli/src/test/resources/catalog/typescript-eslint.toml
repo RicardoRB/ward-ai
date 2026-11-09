@@ -284,10 +284,9 @@ biome = ["noNonNullAssertedOptionalChain"]
 
 [[rule]]
 name = "no-non-null-assertion"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-non-null-assertion"]
 biome = ["noNonNullAssertion"]
+not-applicable = { javascript = "JavaScript has no non-null assertion syntax; the postfix ! is a TypeScript-only construct" }
 
 [[rule]]
 name = "no-redundant-type-constituents"
@@ -525,8 +524,6 @@ biome = ["useIncludes"]
 
 [[rule]]
 name = "prefer-literal-enum-member"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-literal-enum-member"]
 biome = ["useLiteralEnumMembers"]
 
@@ -544,8 +541,6 @@ biome = ["useNullishCoalescing"]
 
 [[rule]]
 name = "prefer-optional-chain"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-optional-chain"]
 biome = ["useOptionalChain"]
 

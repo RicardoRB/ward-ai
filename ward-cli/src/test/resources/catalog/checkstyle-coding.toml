@@ -179,8 +179,6 @@ eslint = ["no-cond-assign"]
 
 [[rule]]
 name = "magic-number"
-category = "coding"
-presets = ["standard", "strict"]
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
@@ -273,8 +271,6 @@ checkstyle = ["NoFinalizer"]
 
 [[rule]]
 name = "one-statement-per-line"
-category = "coding"
-presets = ["standard", "strict"]
 checkstyle = ["OneStatementPerLine"]
 
 [[rule]]
@@ -438,8 +434,6 @@ checkstyle = ["UnusedLambdaParameterShouldBeUnnamed"]
 
 [[rule]]
 name = "unused-local-variable"
-category = "coding"
-presets = ["standard", "strict"]
 pmd = ["UnusedLocalVariable"]
 errorprone = ["UnusedVariable"]
 typescript-eslint = ["no-unused-vars"]

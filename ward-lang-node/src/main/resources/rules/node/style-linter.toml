@@ -1,0 +1,128 @@
+# Style rules of the "linter" and "problem" categories for TypeScript and JavaScript, from ESLint core and typescript-eslint at their pinned versions. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:javascript/dot-notation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+parent-path = "literal>singleExpression>expressionSequence>singleExpression"
+text = '^(.)[A-Za-z_$][A-Za-z0-9_$]*\1$'
+message = "[{value}] is better written in dot notation"
+'''
+
+[[rules]]
+id = "ward:typescript/eqeqeq"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["'=='", "'!='"]
+message = "expected '===' or '!==' instead of '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/eqeqeq"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["'=='", "'!='"]
+message = "expected '===' or '!==' instead of '{value}'"
+'''
+
+[[rules]]
+id = "ward:typescript/no-non-null-assertion"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.()\[\]]+!$'
+message = "forbidden non-null assertion"
+'''
+
+[[rules]]
+id = "ward:typescript/no-extra-boolean-cast"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+parent-path = "expressionSequence>ifStatement|iterationStatement"
+text = '^!!'
+message = "redundant double negation in a boolean context"
+'''
+
+[[rules]]
+id = "ward:javascript/no-extra-boolean-cast"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+parent-path = "expressionSequence>ifStatement|iterationStatement"
+text = '^!!'
+message = "redundant double negation in a boolean context"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-rename"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importAliasName", "exportAliasName"]
+text = '^([\w$]+)as\1$'
+message = "{value} is a useless rename"
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-rename"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["importAliasName", "exportAliasName"]
+text = '^([\w$]+)as\1$'
+message = "{value} is a useless rename"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-constructor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constructorDeclaration"]
+text = '^(?:\w+)?constructor\(\)\{\}$|^(?:\w+)?constructor\(\.\.\.(\w+)\)\{super\(\.\.\.\1\);?\}$'
+message = "useless constructor"
+'''
