@@ -6,9 +6,11 @@ import dev.ward.analysis.domain.rule.check.GetterReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeCatchParameterAssignCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorSuperCheck;
+import dev.ward.analysis.domain.rule.check.NodeDupeClassMembersCheck;
 import dev.ward.analysis.domain.rule.check.NodeDupeElseIfCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnexpectedMultilineCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedPrivateMembersCheck;
+import dev.ward.analysis.domain.rule.check.NodeUselessEscapeCheck;
 import dev.ward.analysis.domain.rule.check.PreferRegexLiteralsCheck;
 import dev.ward.analysis.domain.rule.check.PreferRestParamsCheck;
 import dev.ward.analysis.domain.rule.check.SetterReturnCheck;
@@ -48,7 +50,18 @@ final class EslintChecks {
             (CheckFactory) toml -> new NodeUnusedPrivateMembersCheck()),
         Map.entry(
             "node-no-unexpected-multiline",
-            (CheckFactory) toml -> new NodeUnexpectedMultilineCheck()));
+            (CheckFactory) toml -> new NodeUnexpectedMultilineCheck()),
+        Map.entry(
+            "node-no-dupe-class-members",
+            (CheckFactory)
+                toml -> new NodeDupeClassMembersCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-no-useless-escape",
+            (CheckFactory)
+                toml ->
+                    new NodeUselessEscapeCheck(
+                        TomlValues.optionalStrings(toml, "allow-regex-characters"),
+                        TomlValues.required(toml, MESSAGE))));
   }
 
   private static GetterReturnCheck getterReturn(final TomlParseResult toml) {

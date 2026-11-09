@@ -23,6 +23,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/dead-code.toml",
           "rules/node/eslint-classes.toml",
           "rules/node/eslint-control-flow.toml",
+          "rules/node/eslint-strings.toml",
           "rules/node/metrics.toml",
           "rules/node/misc.toml",
           "rules/node/naming.toml",

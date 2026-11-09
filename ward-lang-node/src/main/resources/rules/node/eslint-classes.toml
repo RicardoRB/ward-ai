@@ -10,3 +10,38 @@ presets = ["standard", "strict"]
 body = '''
 check = "node-no-unused-private-class-members"
 '''
+
+[[rules]]
+id = "ward:typescript/no-dupe-class-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-class-members"
+message = "duplicate name '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dupe-class-members"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-class-members"
+message = "duplicate name '{value}'"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-private-class-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unused-private-class-members"
+'''
