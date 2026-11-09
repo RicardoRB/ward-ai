@@ -65,7 +65,19 @@ class BiomeParitySmokeTest {
           Map.entry("use-button-type", "a11y/useButtonType"),
           Map.entry("use-alt-text", "a11y/useAltText"),
           Map.entry("use-iframe-title", "a11y/useIframeTitle"),
-          Map.entry("use-html-lang", "a11y/useHtmlLang"));
+          Map.entry("use-html-lang", "a11y/useHtmlLang"),
+          Map.entry("use-key-with-click-events", "a11y/useKeyWithClickEvents"),
+          Map.entry("use-key-with-mouse-events", "a11y/useKeyWithMouseEvents"),
+          Map.entry("use-anchor-content", "a11y/useAnchorContent"),
+          Map.entry("use-valid-anchor", "a11y/useValidAnchor"),
+          Map.entry("no-redundant-roles", "a11y/noRedundantRoles"),
+          Map.entry("use-valid-aria-props", "a11y/useValidAriaProps"),
+          Map.entry("use-valid-aria-role", "a11y/useValidAriaRole"),
+          Map.entry("use-valid-aria-values", "a11y/useValidAriaValues"),
+          Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"),
+          Map.entry(
+              "no-noninteractive-element-to-interactive-role",
+              "a11y/noNoninteractiveElementToInteractiveRole"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

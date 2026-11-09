@@ -16,7 +16,11 @@ class BiomeJsxRequiredAttributeCheckTest {
 
   private static final BiomeJsxRequiredAttributeCheck BUTTON =
       new BiomeJsxRequiredAttributeCheck(
-          Set.of("button"), "type", Set.of("button", "submit", "reset"), true, "message");
+          Set.of("button"),
+          "type",
+          new BiomeJsxRequiredAttributeCheck.ValueRule(
+              Set.of("button", "submit", "reset"), null, true),
+          "message");
 
   @Test
   void reportsAMissingAttributeAtTheElementAndAnUnknownValueAtTheValue() {
@@ -31,6 +35,20 @@ class BiomeJsxRequiredAttributeCheckTest {
     assertThat(reported(BUTTON, "const a = <button type={t} />;\n")).isEmpty();
     assertThat(reported(BUTTON, "const a = <button {...p} />;\n")).isEmpty();
     assertThat(reported(BUTTON, "const a = <Button />;\n")).isEmpty();
+  }
+
+  @Test
+  void checksAnElementOnlyWhenItsStaticAttributeMatches() {
+    final BiomeJsxRequiredAttributeCheck image =
+        new BiomeJsxRequiredAttributeCheck(
+            Set.of("input[type=image]"),
+            "alt",
+            BiomeJsxRequiredAttributeCheck.ValueRule.any(),
+            "message");
+    assertThat(reported(image, "const a = <input type=\"image\" src=\"x\" />;\n"))
+        .containsExactly("<input type=\"image\" src=\"x\" />");
+    assertThat(reported(image, "const a = <input type=\"text\" />;\n")).isEmpty();
+    assertThat(reported(image, "const a = <input type={t} />;\n")).isEmpty();
   }
 
   private static List<String> reported(

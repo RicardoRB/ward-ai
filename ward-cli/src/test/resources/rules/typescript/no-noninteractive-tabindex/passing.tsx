@@ -1,0 +1,13 @@
+const b = <div tabIndex="-1" />;
+const d = <div tabIndex={-1} />;
+const e = <div tabIndex={x} />;
+const f = <div tabIndex="abc" />;
+const g = <div role="button" tabIndex="0" />;
+const i = <div role={r} tabIndex="0" />;
+const j = <button tabIndex="0" />;
+const n = <input tabIndex="0" />;
+const o = <a tabIndex="0" />;
+const p = <Foo tabIndex="0" />;
+const v = <header tabIndex="0" />;
+const w = <div tabIndex />;
+const y = <div tabIndex="2147483648" />;

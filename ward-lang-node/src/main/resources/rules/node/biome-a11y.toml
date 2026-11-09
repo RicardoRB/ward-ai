@@ -151,7 +151,7 @@ category = "a11y"
 presets = ["standard", "strict"]
 body = '''
 check = "node-jsx-required-attribute"
-elements = ["img", "area"]
+elements = ["img", "area", "input[type=image]"]
 attribute = "alt"
 message = "an image needs an alt text; an empty alt text marks a decorative image"
 '''
@@ -165,7 +165,7 @@ category = "a11y"
 presets = ["standard", "strict"]
 body = '''
 check = "node-jsx-required-attribute"
-elements = ["img", "area"]
+elements = ["img", "area", "input[type=image]"]
 attribute = "alt"
 message = "an image needs an alt text; an empty alt text marks a decorative image"
 '''
@@ -224,4 +224,260 @@ check = "node-jsx-required-attribute"
 elements = ["html"]
 attribute = "lang"
 message = "the html element needs a lang attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-key-with-click-events"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onClick:onKeyDown|onKeyUp|onKeyPress"]
+exempt = ["button", "input", "select", "textarea", "a[href]"]
+message = "an element with a click handler needs a keyboard handler too"
+'''
+
+[[rules]]
+id = "ward:javascript/use-key-with-mouse-events"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onMouseOver:onFocus", "onMouseOut:onBlur"]
+exempt = []
+message = "a mouse handler needs the matching focus or blur handler too"
+'''
+
+[[rules]]
+id = "ward:typescript/use-key-with-click-events"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onClick:onKeyDown|onKeyUp|onKeyPress"]
+exempt = ["button", "input", "select", "textarea", "a[href]"]
+message = "an element with a click handler needs a keyboard handler too"
+'''
+
+[[rules]]
+id = "ward:typescript/use-key-with-mouse-events"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onMouseOver:onFocus", "onMouseOut:onBlur"]
+exempt = []
+message = "a mouse handler needs the matching focus or blur handler too"
+'''
+
+[[rules]]
+id = "ward:javascript/use-anchor-content"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["a"]
+message = "an anchor needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-anchor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["a"]
+attribute = "href"
+invalid = '^(?:|#|javascript:.*)$'
+message = "an anchor needs a real href: not empty, not #, and not javascript:"
+'''
+
+[[rules]]
+id = "ward:typescript/use-anchor-content"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["a"]
+message = "an anchor needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-anchor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["a"]
+attribute = "href"
+invalid = '^(?:|#|javascript:.*)$'
+message = "an anchor needs a real href: not empty, not #, and not javascript:"
+'''
+
+[[rules]]
+id = "ward:javascript/no-redundant-roles"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redundant-roles"
+message = "this role repeats the implicit role of the element; remove it"
+'''
+
+[[rules]]
+id = "ward:typescript/no-redundant-roles"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redundant-roles"
+message = "this role repeats the implicit role of the element; remove it"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-props"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props"
+message = "an aria-* attribute must be a known ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-role"
+message = "a role must name a concrete ARIA role"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-aria-values"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-values"
+message = "an ARIA attribute must have a value its type allows"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-props"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props"
+message = "an aria-* attribute must be a known ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-role"
+message = "a role must name a concrete ARIA role"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-aria-values"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-values"
+message = "an ARIA attribute must have a value its type allows"
+'''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-tabindex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-tabindex"
+message = "a non-interactive element must not take a tabIndex; remove it or give the element an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-tabindex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-tabindex"
+message = "a non-interactive element must not take a tabIndex; remove it or give the element an interactive role"
+'''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-element-to-interactive-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-to-interactive-role"
+message = "a non-interactive element must not take an interactive role; use an interactive element instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-element-to-interactive-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-to-interactive-role"
+message = "a non-interactive element must not take an interactive role; use an interactive element instead"
 '''
