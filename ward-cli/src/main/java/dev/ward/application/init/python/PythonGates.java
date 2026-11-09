@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Python's gates on uv, Poetry or pip: formatting, lint, types, tests, coverage, mutation testing
- * and audit. Strict adds mutation testing and the stricter rules on top of the standard gates.
+ * Python's gates on uv, Poetry or pip: types, tests, coverage, mutation testing and audit. Lint
+ * comes from the Ward rules selected in {@code ward-rules.toml}. Strict adds mutation testing on
+ * top of the standard gates.
  */
 final class PythonGates implements SourceLanguageGates<PythonTools> {
-  private static final List<String> STANDARD = List.of("ruff", "mypy", "pytest", "coverage");
-  private static final List<String> STRICT =
-      List.of("ruff", "mypy", "pytest", "coverage", "mutmut");
+  private static final List<String> STANDARD = List.of("mypy", "pytest", "coverage");
+  private static final List<String> STRICT = List.of("mypy", "pytest", "coverage", "mutmut");
 
   @Override
   public List<InitGateOption> analysisGates(final PythonTools python) {
@@ -27,11 +27,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
               "Runs Django's system checks, failing on warnings.",
               python.command("python", "manage.py", "check", "--fail-level", "WARNING")));
     }
-    gates.add(
-        python.option(
-            "ruff",
-            "Lints sources with Ruff's rules: E, F, I, B and UP, plus W, C4, SIM, RUF, PTH and C90 when strict.",
-            ruff(python)));
     gates.add(
         python.option(
             "mypy",
@@ -64,18 +59,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     return preset == QualityPreset.STRICT ? STRICT : STANDARD;
-  }
-
-  /**
-   * Ward's Ruff config carries the strict rules, so the command adds them only for a user config.
-   */
-  private static List<String> ruff(final PythonTools python) {
-    final List<String> command = new ArrayList<>(python.command("ruff", "check", "."));
-    if (python.strict() && python.ownRuffConfig()) {
-      command.addAll(PythonTools.ruffStrictFlags());
-    }
-    command.addAll(List.of("--output-format", "json"));
-    return List.copyOf(command);
   }
 
   private static List<String> mypy(final PythonTools python) {

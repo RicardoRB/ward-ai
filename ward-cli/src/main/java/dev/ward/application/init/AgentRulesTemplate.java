@@ -78,11 +78,15 @@ public final class AgentRulesTemplate {
         && project.toolchain() != Toolchain.SWIFT) {
       lines.addAll(limits(ids, preset.rules(), owned));
     }
-    if (project.languages().contains(Language.JAVA)) {
-      lines.add(
-          "- Java: the `ward` check applies the Ward "
-              + (preset == null ? QualityPreset.STANDARD : preset).id()
-              + " rules selected in `ward-rules.toml`; fix each finding at its cause.");
+    for (final Language language : List.of(Language.JAVA, Language.PYTHON)) {
+      if (project.languages().contains(language)) {
+        lines.add(
+            "- "
+                + language.displayName()
+                + ": the `ward` check applies the Ward "
+                + (preset == null ? QualityPreset.STANDARD : preset).id()
+                + " rules selected in `ward-rules.toml`; fix each finding at its cause.");
+      }
     }
     lines.add(
         "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"

@@ -12,23 +12,10 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/**
- * The edit hooks narrow ruff and ruff-format to the edited Python files, and skip mypy and tests.
- */
+/** The edit hooks skip mypy and the tests, which are never narrowed to the edited files. */
 class PythonPartialChecksTest {
   private static final Project UV =
       new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.NONE);
-
-  @Test
-  void ruffNarrowsToEditedPythonFiles() {
-    final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("ruff", UV, QualityPreset.STANDARD, List.of()).orElseThrow();
-
-    assertThat(table.command())
-        .containsExactly(
-            "uv", "run", "--group", "ward", "ruff", "check", "--output-format", "json");
-    assertThat(table.full()).contains("ruff.toml", ".ruff.toml", "pyproject.toml");
-  }
 
   @Test
   void mypyAndTestsAreNotPartialChecks() {

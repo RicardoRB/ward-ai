@@ -11,13 +11,13 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Python init: {@code ward-format} checks formatting and ruff keeps linting. */
+/** Python init: {@code ward-format} checks formatting; lint comes from the Ward rules. */
 @DisabledOnOs(OS.WINDOWS)
 class InitWardFormatPythonTest {
   @TempDir Path project;
 
   @Test
-  void pythonInitWritesWardFormatAndNoRuffFormatGate() throws IOException, InterruptedException {
+  void pythonInitWritesWardFormatAndNoRuffGate() throws IOException, InterruptedException {
     copyFixture("python-uv", project);
 
     final PythonStubbedRun.Result init =
@@ -27,8 +27,8 @@ class InitWardFormatPythonTest {
     assertThat(init.exit()).as(init.stdout() + init.stderr()).isZero();
     final String toml = Files.readString(project.resolve("ward.toml"));
     assertThat(toml)
-        .contains("[checks.ward-format]", "[checks.ruff]")
-        .doesNotContain("[checks.ruff-format]");
+        .contains("[checks.ward-format]")
+        .doesNotContain("[checks.ruff]", "[checks.ruff-format]");
     assertThat(Files.readString(project.resolve(".editorconfig")))
         .contains("[*.py]\nindent_size = 4\n");
   }

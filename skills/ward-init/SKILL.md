@@ -292,8 +292,8 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that Java and Kotlin projects get no Checkstyle, PMD or SpotBugs gate: init writes `ward-rules.toml`, which
-   selects the Ward rules of the preset for the project's JVM languages. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
+   Mention that Java and Kotlin projects get no Checkstyle, PMD or SpotBugs gate, and Python projects get no Ruff
+   gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
    Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
