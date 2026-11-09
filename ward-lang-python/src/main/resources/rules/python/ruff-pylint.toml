@@ -459,3 +459,115 @@ check = "positional-parameter-count"
 max-positional-arguments = 5
 message = "function has {value} positional parameters; the limit is {max}"
 '''
+
+[[rules]]
+id = "ward:python/useless-else-on-loop"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "useless-else-on-loop"
+message = "else clause of a loop runs even without a break; remove the else"
+'''
+
+[[rules]]
+id = "ward:python/useless-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "useless-return"
+message = "return None at the end of a function is redundant; remove it"
+'''
+
+[[rules]]
+id = "ward:python/import-self"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "import-self"
+message = "module imports itself"
+'''
+
+[[rules]]
+id = "ward:python/global-variable-not-assigned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "global-variable-not-assigned"
+message = "global name is never assigned in this function; drop the global statement or assign it"
+'''
+
+[[rules]]
+id = "ward:python/stop-iteration-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "stop-iteration-return"
+message = "raising StopIteration inside a generator becomes a RuntimeError; return instead"
+'''
+
+[[rules]]
+id = "ward:python/redefined-argument-from-local"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefined-argument-from-local"
+message = "loop or except target redefines an argument of the function"
+'''
+
+[[rules]]
+id = "ward:python/redefined-slots-in-subclass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefined-slots-in-subclass"
+message = "subclass redefines a slot of its base class"
+'''
+
+[[rules]]
+id = "ward:python/too-many-locals"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max-locals = { type = "integer", min = 1 }
+body = '''
+check = "too-many-locals"
+max-locals = 15
+message = "function has {value} local variables; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/too-many-public-methods"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max-public-methods = { type = "integer", min = 1 }
+body = '''
+check = "too-many-public-methods"
+max-public-methods = 20
+message = "class has {value} public methods; the limit is {max}"
+'''

@@ -223,7 +223,7 @@ get-attr-with-constant = "implemented"
 glob = { status = "planned", issue = "#334" }
 global-at-module-level = "implemented"
 global-statement = "implemented"
-global-variable-not-assigned = { status = "planned", issue = "#334" }
+global-variable-not-assigned = "implemented"
 hardcoded-bind-all-interfaces = "implemented"
 hardcoded-password-default = "implemented"
 hardcoded-password-func-arg = "implemented"
@@ -254,7 +254,7 @@ implicit-return-value = { status = "planned", issue = "#334" }
 implicit-string-concatenation-in-collection-literal = { status = "planned", issue = "#334" }
 import-outside-top-level = { status = "planned", issue = "#334" }
 import-private-name = { status = "planned", issue = "#334" }
-import-self = { status = "planned", issue = "#334" }
+import-self = "implemented"
 import-shadowed-by-loop-var = "implemented"
 in-dict-keys = "implemented"
 in-empty-collection = { status = "planned", issue = "#334" }
@@ -564,9 +564,9 @@ re-sub-positional-args = "implemented"
 read-whole-file = { status = "planned", issue = "#334" }
 readlines-in-for = { status = "planned", issue = "#334" }
 redeclared-assigned-name = "implemented"
-redefined-argument-from-local = { status = "planned", issue = "#334" }
+redefined-argument-from-local = "implemented"
 redefined-loop-name = { status = "planned", issue = "#334" }
-redefined-slots-in-subclass = { status = "planned", issue = "#334" }
+redefined-slots-in-subclass = "implemented"
 redefined-while-unused = "implemented"
 redirected-noqa = { status = "planned", issue = "#334" }
 redundant-backslash = { status = "planned", issue = "#332" }
@@ -641,7 +641,7 @@ start-process-with-partial-path = { status = "planned", issue = "#334" }
 static-join-to-f-string = { status = "planned", issue = "#334" }
 static-key-dict-comprehension = "implemented"
 stdlib-module-shadowing = { status = "planned", issue = "#334" }
-stop-iteration-return = { status = "planned", issue = "#334" }
+stop-iteration-return = "implemented"
 str-or-repr-defined-in-stub = { status = "planned", issue = "#334" }
 string-dot-format-extra-named-arguments = "implemented"
 string-dot-format-extra-positional-arguments = "implemented"
@@ -714,10 +714,10 @@ tarfile-unsafe-members = { status = "planned", issue = "#334" }
 timeout-error-alias = { status = "planned", issue = "#334" }
 too-many-boolean-expressions = "implemented"
 too-many-branches = "implemented"
-too-many-locals = { status = "planned", issue = "#334" }
+too-many-locals = "implemented"
 too-many-nested-blocks = "implemented"
 too-many-positional-arguments = "implemented"
-too-many-public-methods = { status = "planned", issue = "#334" }
+too-many-public-methods = "implemented"
 too-many-statements = "implemented"
 too-many-statements-in-try-clause = { status = "planned", issue = "#334" }
 trio-sync-call = { status = "planned", issue = "#334" }
@@ -845,7 +845,7 @@ used-dummy-variable = { status = "planned", issue = "#334" }
 useless-class-metaclass-type = { status = "planned", issue = "#334" }
 useless-comparison = "implemented"
 useless-contextlib-suppress = "implemented"
-useless-else-on-loop = { status = "planned", issue = "#334" }
+useless-else-on-loop = "implemented"
 useless-exception-statement = { status = "planned", issue = "#334" }
 useless-expression = "implemented"
 useless-finally = { status = "planned", issue = "#334" }
@@ -853,7 +853,7 @@ useless-if-else = { status = "planned", issue = "#334" }
 useless-import-alias = "implemented"
 useless-metaclass-type = { status = "planned", issue = "#334" }
 useless-object-inheritance = "implemented"
-useless-return = { status = "planned", issue = "#334" }
+useless-return = "implemented"
 useless-try-except = { status = "planned", issue = "#334" }
 useless-with-lock = "implemented"
 utf8-encoding-declaration = { status = "planned", issue = "#334" }

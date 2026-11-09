@@ -2276,7 +2276,6 @@ ruff = ["PLR0402"]
 [[rule]]
 name = "too-many-public-methods"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0904"]
 pylint = ["too-many-public-methods"]
 
@@ -2289,7 +2288,6 @@ pylint = ["too-many-branches"]
 [[rule]]
 name = "too-many-locals"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR0914"]
 pylint = ["too-many-locals"]
 
@@ -2320,21 +2318,18 @@ pylint = ["too-many-nested-blocks"]
 [[rule]]
 name = "redefined-argument-from-local"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1704"]
 pylint = ["redefined-argument-from-local"]
 
 [[rule]]
 name = "stop-iteration-return"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1708"]
 pylint = ["stop-iteration-return"]
 
 [[rule]]
 name = "useless-return"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLR1711"]
 pylint = ["useless-return"]
 
@@ -2415,7 +2410,6 @@ pylint = ["no-self-use"]
 [[rule]]
 name = "useless-else-on-loop"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0120"]
 pylint = ["useless-else-on-loop"]
 
@@ -2465,7 +2459,6 @@ pylint = ["bad-staticmethod-argument"]
 [[rule]]
 name = "redefined-slots-in-subclass"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0244"]
 pylint = ["redefined-slots-in-subclass"]
 
@@ -2478,14 +2471,12 @@ pylint = ["super-without-brackets"]
 [[rule]]
 name = "import-self"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0406"]
 pylint = ["import-self"]
 
 [[rule]]
 name = "global-variable-not-assigned"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLW0602"]
 pylint = ["global-variable-not-assigned"]
 
