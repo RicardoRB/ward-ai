@@ -17,3 +17,5 @@ ward:typescript/no-octal-escape | typescript | the TypeScript parser rejects oct
 ward:javascript/no-nonoctal-decimal-escape | javascript | reports the line; ESLint reports the column of the escape and parses only in script mode
 ward:typescript/no-nonoctal-decimal-escape | typescript | the TypeScript parser rejects the escape, so ESLint cannot run this fixture; Ward is the only reference
 ward:typescript/no-unsafe-negation | typescript | the TypeScript grammar parses `!a in b` as `!(a in b)`; only identifier left operands are matched, and instanceof is not matched yet
+ward:javascript/getter-return | javascript | reachability is not analysed: a getter that returns on only some paths is not reported (ESLint reports at the getter head when the end is reachable)
+ward:typescript/getter-return | typescript | same as the JavaScript rule

@@ -105,8 +105,6 @@ biome = ["useConsistentFunctionStyle"]
 
 [[rule]]
 name = "getter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["getter-return"]
 biome = ["useGetterReturn"]
 

@@ -16,7 +16,7 @@ for-direction = "implemented"
 func-name-matching = { status = "planned", issue = "#296" }
 func-names = { status = "planned", issue = "#296" }
 func-style = { status = "planned", issue = "#296" }
-getter-return = { status = "planned", issue = "#326" }
+getter-return = "implemented"
 grouped-accessor-pairs = { status = "planned", issue = "#296" }
 guard-for-in = { status = "planned", issue = "#326" }
 id-denylist = { status = "planned", issue = "#296" }
