@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -43,15 +44,15 @@ public final class ElseAfterJumpCheck implements RuleCheck {
   }
 
   private void branches(final SyntaxNode ifNode, final List<RuleMatch> found) {
-    SyntaxNode lastBlock = null;
+    Optional<SyntaxNode> lastBlock = Optional.empty();
     for (final SyntaxNode child : ifNode.children()) {
       if (BLOCK.equals(child.kind())) {
-        lastBlock = child;
-      } else if (lastBlock != null && isBranchKeyword(child)) {
-        if (endsWithJump(lastBlock)) {
+        lastBlock = Optional.of(child);
+      } else if (lastBlock.isPresent() && isBranchKeyword(child)) {
+        if (endsWithJump(lastBlock.get())) {
           found.add(new RuleMatch(child.span(), message));
         }
-        lastBlock = null;
+        lastBlock = Optional.empty();
       }
     }
   }

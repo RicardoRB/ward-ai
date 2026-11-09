@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -16,6 +15,8 @@ import java.util.regex.Pattern;
  */
 public final class PointlessStringCheck implements RuleCheck {
 
+  private static final String MESSAGE =
+      "string statement has no effect; remove it or make it a docstring";
   private static final Set<String> BLOCKS = Set.of("block");
   private static final Pattern STRING =
       Pattern.compile(
@@ -24,17 +25,6 @@ public final class PointlessStringCheck implements RuleCheck {
       Pattern.compile("(?s)^[\\w.\\[\\]]+(?::[^=]*)?=(?!=)[\\s\\S]*$");
   private static final String DEF = "def";
   private static final String INIT = "__init__";
-
-  private final String message;
-
-  /**
-   * Creates the check.
-   *
-   * @param message the message of each finding
-   */
-  public PointlessStringCheck(final String message) {
-    this.message = Objects.requireNonNull(message, "message");
-  }
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
@@ -51,7 +41,7 @@ public final class PointlessStringCheck implements RuleCheck {
     for (int index = 1; index < statements.size(); index++) {
       final SyntaxNode statement = statements.get(index);
       if (isString(SyntaxWalk.text(statement)) && !afterAssignmentIn(statements, index, owner)) {
-        found.add(new RuleMatch(statement.span(), "pointless string statement"));
+        found.add(new RuleMatch(statement.span(), MESSAGE));
       }
     }
   }
@@ -68,10 +58,10 @@ public final class PointlessStringCheck implements RuleCheck {
   private static String owner(final List<SyntaxNode> ancestors) {
     for (int index = ancestors.size() - 1; index >= 0; index--) {
       final SyntaxNode node = ancestors.get(index);
-      if ("classdef".equals(node.kind())) {
+      if (SyntaxKinds.CLASSDEF.equals(node.kind())) {
         return "classdef";
       }
-      if ("funcdef".equals(node.kind())) {
+      if (SyntaxKinds.FUNCDEF.equals(node.kind())) {
         return functionName(node);
       }
     }

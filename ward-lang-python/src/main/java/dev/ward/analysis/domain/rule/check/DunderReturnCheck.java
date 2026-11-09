@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * Reports a {@code return} of a literal whose type a special method must not return, like pylint
@@ -40,11 +39,6 @@ public final class DunderReturnCheck implements RuleCheck {
   private static final Set<String> RETURNS = Set.of("return_stmt");
   private static final String DEF = "def";
   private static final String RETURN = "return";
-  private static final Pattern INT_LITERAL =
-      Pattern.compile("[+-]?(0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|0[bB][01_]+|\\d[\\d_]*)");
-  private static final Pattern FLOAT_LITERAL =
-      Pattern.compile(
-          "[+-]?(\\d[\\d_]*\\.[\\d_]*|\\.\\d[\\d_]*)([eE][+-]?\\d+)?|[+-]?\\d[\\d_]*[eE][+-]?\\d+");
 
   private final String method;
   private final Literal expected;
@@ -72,7 +66,7 @@ public final class DunderReturnCheck implements RuleCheck {
 
   /** Parses the {@code returns} option of a rule into the literal type it names. */
   public static Literal parseExpected(final String name) {
-    return Literal.valueOf(name.toUpperCase(java.util.Locale.ROOT));
+    return Literal.valueOf(name.toUpperCase(Locale.ROOT));
   }
 
   @Override
@@ -100,14 +94,13 @@ public final class DunderReturnCheck implements RuleCheck {
   }
 
   private boolean violates(final String value) {
-    final Literal actual = classify(value);
+    final Literal actual = ReturnLiteral.classify(value);
     if (actual == Literal.UNKNOWN) {
       return false;
     }
-    if (nonNegative && expected == Literal.INT && actual == Literal.INT && value.startsWith("-")) {
-      return true;
-    }
-    return actual != expected && !(expected == Literal.INT && actual == Literal.BOOL);
+    final boolean negative =
+        nonNegative && expected == Literal.INT && actual == Literal.INT && value.startsWith("-");
+    return negative || (actual != expected && !(expected == Literal.INT && actual == Literal.BOOL));
   }
 
   private static String methodName(final SyntaxNode function) {
@@ -124,48 +117,5 @@ public final class DunderReturnCheck implements RuleCheck {
   private static String returnedText(final SyntaxNode ret) {
     final String text = SyntaxWalk.text(ret).strip();
     return text.startsWith(RETURN) ? text.substring(RETURN.length()).strip() : text;
-  }
-
-  static Literal classify(final String value) {
-    if (value.isEmpty() || "None".equals(value)) {
-      return Literal.NONE;
-    }
-    if ("True".equals(value) || "False".equals(value)) {
-      return Literal.BOOL;
-    }
-    if (INT_LITERAL.matcher(value).matches()) {
-      return Literal.INT;
-    }
-    if (FLOAT_LITERAL.matcher(value).matches()) {
-      return Literal.FLOAT;
-    }
-    return classifyQuoted(value);
-  }
-
-  private static Literal classifyQuoted(final String value) {
-    final int quote = firstQuote(value);
-    if (quote < 0) {
-      return classifyBracketed(value);
-    }
-    final String prefix = value.substring(0, quote).toLowerCase(Locale.ROOT);
-    if (!prefix.matches("[rbuf]*")) {
-      return Literal.UNKNOWN;
-    }
-    return prefix.contains("b") ? Literal.BYTES : Literal.STR;
-  }
-
-  private static int firstQuote(final String value) {
-    final int single = value.indexOf('\'');
-    final int doubleQuote = value.indexOf('"');
-    return single < 0 ? doubleQuote : doubleQuote < 0 ? single : Math.min(single, doubleQuote);
-  }
-
-  private static Literal classifyBracketed(final String value) {
-    return switch (value.charAt(0)) {
-      case '[' -> Literal.LIST;
-      case '{' -> value.contains(":") || "{}".equals(value) ? Literal.DICT : Literal.SET;
-      case '(' -> Literal.TUPLE;
-      default -> Literal.UNKNOWN;
-    };
   }
 }

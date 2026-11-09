@@ -866,3 +866,16 @@ body = '''
 check = "match-positional"
 message = "class pattern uses positional attributes; use keyword attributes"
 '''
+
+[[rules]]
+id = "ward:python/positional-only-arguments-expected"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "same-module-call"
+problem = "positional-only"
+message = "positional-only parameter passed as a keyword argument"
+'''

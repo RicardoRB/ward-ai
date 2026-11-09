@@ -16,6 +16,7 @@ checkstyle = ["AvoidStarImport"]
 errorprone = ["WildcardImport"]
 ktlint = ["no-wildcard-imports"]
 ruff = ["F403"]
+pylint = ["wildcard-import"]
 
 [[rule]]
 name = "avoid-static-import"

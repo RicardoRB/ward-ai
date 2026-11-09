@@ -67,3 +67,15 @@ reason = "not a code rule: reports a file that Ruff could not read, which Ward r
 rules = [
   "E902",
 ]
+
+[[group]]
+reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
+rules = [
+  "nonlocal-and-global",
+]
+
+[[group]]
+reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
+rules = [
+  "nonlocal-and-global",
+]

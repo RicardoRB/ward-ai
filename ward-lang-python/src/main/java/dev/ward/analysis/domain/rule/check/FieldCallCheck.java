@@ -21,7 +21,6 @@ public final class FieldCallCheck implements RuleCheck {
   private static final Pattern DATACLASS = Pattern.compile("@(?:dataclasses\\.)?dataclass");
   private static final Pattern FIELD_VALUE =
       Pattern.compile("^[A-Za-z_]\\w*:[^=]*=(?:dataclasses\\.)?field\\(");
-  private static final Set<String> STATEMENTS = Set.of("annassign", "expr_stmt", "simple_stmt");
 
   private final String message;
 
@@ -53,7 +52,7 @@ public final class FieldCallCheck implements RuleCheck {
       }
     }
     for (int index = ancestors.size() - 1; index >= 0; index--) {
-      if ("classdef".equals(ancestors.get(index).kind())) {
+      if (SyntaxKinds.CLASSDEF.equals(ancestors.get(index).kind())) {
         return dataclassBody(ancestors, index);
       }
     }

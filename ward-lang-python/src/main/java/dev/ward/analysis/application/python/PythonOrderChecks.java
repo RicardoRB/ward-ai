@@ -5,34 +5,17 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
-import dev.ward.analysis.domain.rule.check.ClassOverrideCheck;
-import dev.ward.analysis.domain.rule.check.ClassProtocolCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
-import dev.ward.analysis.domain.rule.check.DunderReturnCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
-import dev.ward.analysis.domain.rule.check.ElseAfterJumpCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
-import dev.ward.analysis.domain.rule.check.ExceptionStatementCheck;
 import dev.ward.analysis.domain.rule.check.FStringDocstringCheck;
-import dev.ward.analysis.domain.rule.check.FieldCallCheck;
-import dev.ward.analysis.domain.rule.check.FileNameCheck;
 import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
-import dev.ward.analysis.domain.rule.check.FirstArgumentCheck;
-import dev.ward.analysis.domain.rule.check.FormatIndexCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
-import dev.ward.analysis.domain.rule.check.KeywordArgBeforeVarargCheck;
-import dev.ward.analysis.domain.rule.check.LoggingFormatCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
-import dev.ward.analysis.domain.rule.check.MatchPositionalCheck;
-import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
-import dev.ward.analysis.domain.rule.check.ModifiedIterationCheck;
-import dev.ward.analysis.domain.rule.check.NonlocalCheck;
-import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
-import dev.ward.analysis.domain.rule.check.SameModuleCallCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
@@ -61,7 +44,7 @@ final class PythonOrderChecks {
   }
 
   private static Map<String, CheckFactory> build() {
-    return CheckRegistry.union(List.of(buildFirst(), buildSecond()));
+    return CheckRegistry.union(List.of(buildFirst(), PylintCheckFactories.checks()));
   }
 
   private static Map<String, CheckFactory> buildFirst() {
@@ -95,93 +78,7 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry("dunder-return", PythonOrderChecks::dunderReturn));
-  }
-
-  private static Map<String, CheckFactory> buildSecond() {
-    return Map.ofEntries(
-        entry(
-            "else-after-jump",
-            toml ->
-                new ElseAfterJumpCheck(
-                    TomlValues.required(toml, "jump"), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "pointless-string",
-            toml -> new PointlessStringCheck(TomlValues.required(toml, MESSAGE))),
-        entry("logging-format", PythonOrderChecks::loggingFormat),
-        entry("file-name", toml -> new FileNameCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "exception-statement",
-            toml -> new ExceptionStatementCheck(TomlValues.required(toml, MESSAGE))),
-        entry("field-call", toml -> new FieldCallCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "match-positional",
-            toml -> new MatchPositionalCheck(TomlValues.required(toml, MESSAGE))),
-        entry("same-module-call", PythonOrderChecks::sameModuleCall),
-        entry("class-protocol", PythonOrderChecks::classProtocol),
-        entry("class-override", PythonOrderChecks::classOverride),
-        entry("modified-iteration", PythonOrderChecks::modifiedIteration),
-        entry("nonlocal", PythonOrderChecks::nonlocal),
-        entry("format-index", toml -> new FormatIndexCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "keyword-arg-before-vararg",
-            toml -> new KeywordArgBeforeVarargCheck(TomlValues.required(toml, MESSAGE))),
-        entry("first-argument", toml -> new FirstArgumentCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "named-expr-without-context",
-            toml -> new NamedExprWithoutContextCheck(TomlValues.required(toml, MESSAGE))),
         entry("strict-call", PythonOrderChecks::strictCall));
-  }
-
-  private static RuleCheck loggingFormat(final TomlParseResult toml) {
-    return new LoggingFormatCheck(
-        LoggingFormatCheck.Problem.valueOf(
-            TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT)),
-        TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck sameModuleCall(final TomlParseResult toml) {
-    return new SameModuleCallCheck(
-        problemOf(toml, SameModuleCallCheck.Problem.class), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck classProtocol(final TomlParseResult toml) {
-    return new ClassProtocolCheck(
-        problemOf(toml, ClassProtocolCheck.Problem.class), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck classOverride(final TomlParseResult toml) {
-    return new ClassOverrideCheck(
-        problemOf(toml, ClassOverrideCheck.Problem.class), TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck modifiedIteration(final TomlParseResult toml) {
-    return new ModifiedIterationCheck(
-        ModifiedIterationCheck.Kind.valueOf(
-            TomlValues.required(toml, "kind").toUpperCase(java.util.Locale.ROOT)),
-        TomlValues.required(toml, MESSAGE));
-  }
-
-  private static RuleCheck nonlocal(final TomlParseResult toml) {
-    return new NonlocalCheck(
-        problemOf(toml, NonlocalCheck.Problem.class), TomlValues.required(toml, MESSAGE));
-  }
-
-  /**
-   * The enum constant named by the rule's {@code problem} option, such as no-value-for-parameter.
-   */
-  private static <E extends Enum<E>> E problemOf(final TomlParseResult toml, final Class<E> type) {
-    return Enum.valueOf(
-        type,
-        TomlValues.required(toml, "problem").toUpperCase(java.util.Locale.ROOT).replace('-', '_'));
-  }
-
-  private static RuleCheck dunderReturn(final TomlParseResult toml) {
-    return new DunderReturnCheck(
-        TomlValues.required(toml, "method"),
-        DunderReturnCheck.parseExpected(TomlValues.required(toml, "returns")),
-        Boolean.TRUE.equals(toml.getBoolean("non-negative")),
-        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {

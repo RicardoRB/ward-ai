@@ -4,11 +4,12 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,10 @@ public final class FormatIndexCheck implements RuleCheck {
   private static final Pattern KEYWORD =
       Pattern.compile("^([A-Za-z_]\\w*)=(?!=)(.*)$", Pattern.DOTALL);
   private static final Set<String> CALLS = Set.of("atom_expr");
+  private static final char OPEN_BRACE = '{';
+  private static final char CLOSE_BRACE = '}';
+  private static final char OPEN_BRACKET = '[';
+  private static final char CLOSE_BRACKET = ']';
 
   private final String message;
 
@@ -56,21 +61,19 @@ public final class FormatIndexCheck implements RuleCheck {
       return false;
     }
     final String body = ArgumentList.unquote(call.group(1));
-    final Arguments args = Arguments.of(ArgumentList.split(call.group(2)));
-    if (args == null) {
-      return false;
-    }
-    return fieldsFail(body, args);
+    return Arguments.of(ArgumentList.split(call.group(2)))
+        .map(args -> fieldsFail(body, args))
+        .orElse(false);
   }
 
   private static boolean fieldsFail(final String body, final Arguments args) {
-    final int[] next = {0};
+    final AtomicInteger next = new AtomicInteger();
     int index = 0;
     while (index < body.length()) {
       if (escapedBrace(body, index)) {
         index += 2;
-      } else if (body.charAt(index) == '{') {
-        final int end = body.indexOf('}', index);
+      } else if (body.charAt(index) == OPEN_BRACE) {
+        final int end = body.indexOf(CLOSE_BRACE, index);
         if (end < 0) {
           return false;
         }
@@ -86,78 +89,56 @@ public final class FormatIndexCheck implements RuleCheck {
   }
 
   private static boolean escapedBrace(final String body, final int index) {
-    return body.charAt(index) == '{' && index + 1 < body.length() && body.charAt(index + 1) == '{';
+    return body.charAt(index) == OPEN_BRACE
+        && index + 1 < body.length()
+        && body.charAt(index + 1) == OPEN_BRACE;
   }
 
-  private static boolean fieldFails(final String field, final int[] next, final Arguments args) {
+  private static boolean fieldFails(
+      final String field, final AtomicInteger next, final Arguments args) {
     final String name = field.replaceAll("[:!].*$", "");
-    final int open = name.indexOf('[');
+    final int open = name.indexOf(OPEN_BRACKET);
     final String base = open < 0 ? name : name.substring(0, open);
-    final String resolved = base.isEmpty() ? String.valueOf(next[0]++) : base;
-    final int close = open < 0 ? -1 : name.indexOf(']', open);
+    final String resolved = base.isEmpty() ? nextIndex(next) : base;
+    final int close = open < 0 ? -1 : name.indexOf(CLOSE_BRACKET, open);
     return close >= 0 && lookupFails(resolved, name.substring(open + 1, close), args);
+  }
+
+  /** The automatic index of an empty replacement field; the counter advances once per field. */
+  private static String nextIndex(final AtomicInteger next) {
+    return String.valueOf(next.getAndIncrement());
   }
 
   private static boolean lookupFails(
       final String base, final String accessor, final Arguments args) {
-    final String value =
+    final Optional<String> value =
         base.chars().allMatch(Character::isDigit)
             ? args.positional(Integer.parseInt(base))
             : args.keyword(base);
-    return value != null && accessorFails(value, accessor);
+    return value.map(literal -> accessorFails(literal, accessor)).orElse(false);
   }
 
   private static boolean accessorFails(final String value, final String accessor) {
     if (accessor.chars().allMatch(Character::isDigit) && !accessor.isEmpty()) {
-      final List<String> items = sequence(value);
-      return items != null && Integer.parseInt(accessor) >= items.size();
+      return LiteralSequences.sequence(value)
+          .map(items -> Integer.parseInt(accessor) >= items.size())
+          .orElse(false);
     }
-    final Set<String> keys = dictKeys(value);
-    return keys != null && !keys.contains(ArgumentList.unquote(accessor));
-  }
-
-  private static List<String> sequence(final String value) {
-    if (!bracketed(value, '[', ']') && !(bracketed(value, '(', ')') && value.contains(","))) {
-      return null;
-    }
-    return ArgumentList.split(value.substring(1, value.length() - 1));
-  }
-
-  private static Set<String> dictKeys(final String value) {
-    if (!bracketed(value, '{', '}')) {
-      return null;
-    }
-    final Set<String> keys = new HashSet<>();
-    for (final String entry : ArgumentList.split(value.substring(1, value.length() - 1))) {
-      final int colon = entry.indexOf(':');
-      final String key = colon < 0 ? "" : entry.substring(0, colon).strip();
-      if (!isQuoted(key)) {
-        return null;
-      }
-      keys.add(ArgumentList.unquote(key));
-    }
-    return keys;
-  }
-
-  private static boolean isQuoted(final String text) {
-    return text.length() >= 2 && (text.charAt(0) == '"' || text.charAt(0) == '\'');
-  }
-
-  private static boolean bracketed(final String value, final char open, final char close) {
-    return value.length() >= 2
-        && value.charAt(0) == open
-        && value.charAt(value.length() - 1) == close;
+    return LiteralSequences.dictKeys(value)
+        .map(keys -> !keys.contains(ArgumentList.unquote(accessor)))
+        .orElse(false);
   }
 
   /** The positional and keyword arguments of a call whose argument list is all literal-ish. */
   private record Arguments(List<String> positional, Map<String, String> keyword) {
 
-    static Arguments of(final List<String> items) {
+    /** The arguments, or empty when a star argument makes the positions unknown. */
+    static Optional<Arguments> of(final List<String> items) {
       final List<String> positional = new ArrayList<>();
       final Map<String, String> keyword = new HashMap<>();
       for (final String item : items) {
         if (item.startsWith("*")) {
-          return null;
+          return Optional.empty();
         }
         final Matcher named = KEYWORD.matcher(item);
         if (named.matches()) {
@@ -166,15 +147,17 @@ public final class FormatIndexCheck implements RuleCheck {
           positional.add(item);
         }
       }
-      return new Arguments(List.copyOf(positional), Map.copyOf(keyword));
+      return Optional.of(new Arguments(List.copyOf(positional), Map.copyOf(keyword)));
     }
 
-    String positional(final int index) {
-      return index >= 0 && index < positional.size() ? positional.get(index) : null;
+    Optional<String> positional(final int index) {
+      return index >= 0 && index < positional.size()
+          ? Optional.of(positional.get(index))
+          : Optional.empty();
     }
 
-    String keyword(final String name) {
-      return keyword.get(name);
+    Optional<String> keyword(final String name) {
+      return Optional.ofNullable(keyword.get(name));
     }
   }
 }

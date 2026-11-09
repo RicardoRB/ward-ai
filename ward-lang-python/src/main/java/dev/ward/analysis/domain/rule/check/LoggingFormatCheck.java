@@ -30,10 +30,9 @@ public final class LoggingFormatCheck implements RuleCheck {
       Pattern.compile(
           "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG|getLogger\\([^()]*\\))"
               + "\\.(?:critical|debug|error|exception|fatal|info|warn|warning)\\(");
-  private static final String SUPPORTED = "diouxXeEfFgGcrs%a";
-  private static final String FLAGS = "#0- +";
-  private static final String LENGTH = "hlL";
-  private static final String DIGITS = "0123456789";
+  private static final char BACKSLASH = '\\';
+  private static final char DOUBLE_QUOTE = '"';
+  private static final char SINGLE_QUOTE = '\'';
 
   private final Problem problem;
   private final String message;
@@ -84,15 +83,18 @@ public final class LoggingFormatCheck implements RuleCheck {
       return -1;
     }
     final char quote = rest.charAt(0);
-    if (quote != '"' && quote != '\'') {
+    if (quote != DOUBLE_QUOTE && quote != SINGLE_QUOTE) {
       return -1;
     }
-    for (int index = 1; index < rest.length(); index++) {
+    int index = 1;
+    while (index < rest.length()) {
       final char c = rest.charAt(index);
-      if (c == '\\') {
-        index++;
+      if (c == BACKSLASH) {
+        index += 2;
       } else if (c == quote) {
         return index;
+      } else {
+        index++;
       }
     }
     return -1;
@@ -120,83 +122,12 @@ public final class LoggingFormatCheck implements RuleCheck {
 
   private static Outcome outcome(final String format) {
     try {
-      scan(format);
+      PercentFormatScanner.scan(format);
       return Outcome.OK;
-    } catch (IncompleteFormat ignored) {
+    } catch (PercentFormatScanner.IncompleteFormat ignored) {
       return Outcome.TRUNCATED;
-    } catch (UnsupportedFormat ignored) {
+    } catch (PercentFormatScanner.UnsupportedFormat ignored) {
       return Outcome.UNSUPPORTED;
     }
-  }
-
-  private static void scan(final String format) {
-    int index = 0;
-    while (index < format.length()) {
-      if (format.charAt(index) != '%') {
-        index++;
-        continue;
-      }
-      index = specifier(format, index + 1);
-    }
-  }
-
-  private static int specifier(final String format, final int start) {
-    int index = start;
-    if (index >= format.length()) {
-      throw new IncompleteFormat();
-    }
-    if (at(format, index) == '(') {
-      int depth = 1;
-      index++;
-      while (depth != 0) {
-        index = next(format, index);
-        depth += at(format, index) == '(' ? 1 : at(format, index) == ')' ? -1 : 0;
-      }
-      index = next(format, index);
-    }
-    index = skip(format, index, FLAGS);
-    index = skip(format, index, DIGITS);
-    if (at(format, index) == '.') {
-      index = skip(format, next(format, index), DIGITS);
-    }
-    if (LENGTH.indexOf(at(format, index)) >= 0) {
-      index = next(format, index);
-    }
-    if (SUPPORTED.indexOf(at(format, index)) < 0) {
-      throw new UnsupportedFormat();
-    }
-    return index + 1;
-  }
-
-  private static int skip(final String format, final int start, final String chars) {
-    int index = start;
-    while (index < format.length() && chars.indexOf(format.charAt(index)) >= 0) {
-      index++;
-    }
-    return index;
-  }
-
-  private static char at(final String format, final int index) {
-    if (index >= format.length()) {
-      throw new IncompleteFormat();
-    }
-    return format.charAt(index);
-  }
-
-  private static int next(final String format, final int index) {
-    if (index + 1 >= format.length()) {
-      throw new IncompleteFormat();
-    }
-    return index + 1;
-  }
-
-  /** The format ends inside a specifier. */
-  private static final class IncompleteFormat extends RuntimeException {
-    private static final long serialVersionUID = 1L;
-  }
-
-  /** A conversion character outside the supported set. */
-  private static final class UnsupportedFormat extends RuntimeException {
-    private static final long serialVersionUID = 1L;
   }
 }

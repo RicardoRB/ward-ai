@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -34,17 +33,14 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private static final Set<String> CLASSES = Set.of("classdef");
-  private static final Set<String> ASSIGNMENT_KINDS = Set.of("expr_stmt", "annassign");
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> WITHS = Set.of("with_stmt", "async_stmt");
-  private static final Pattern CLASS_NAME = Pattern.compile("^(?:async\\s*)?class\\s*(\\w+)");
-  private static final Pattern BASES =
-      Pattern.compile("^(?:async\\s*)?class\\s*\\w+\\s*\\(([^)]*)\\)");
   private static final Pattern WITH_CALL = Pattern.compile("^with\\s*(\\w+)\\(");
   private static final Pattern ASYNC_WITH_CALL = Pattern.compile("^async\\s*with\\s*(\\w+)\\(");
   private static final Pattern METACLASS = Pattern.compile("metaclass=(\\w+)");
-  private static final Pattern ASSIGNMENT = Pattern.compile("^([A-Za-z_]\\w*)(?::[^=]*)?=(?!=)");
-  private static final Pattern DEF_NAME = Pattern.compile("def\\s*(\\w+)\\s*\\(");
+
+  private static final Protocol WITH = new Protocol(WITH_CALL, "__enter__", "__exit__");
+  private static final Protocol ASYNC = new Protocol(ASYNC_WITH_CALL, "__aenter__", "__aexit__");
 
   private final Problem problem;
   private final String message;
@@ -60,13 +56,9 @@ public final class ClassProtocolCheck implements RuleCheck {
     this.message = Objects.requireNonNull(message, "message");
   }
 
-  /** What the check needs to know about one class of the module. */
-  private record Info(
-      String name, String text, List<String> bases, Set<String> members, SyntaxNode node) {}
-
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final Map<String, Info> classes = classes(root);
+    final Map<String, ClassIndex.Info> classes = ClassIndex.classes(root);
     return switch (problem) {
       case NOT_CONTEXT_MANAGER -> withCalls(root, WITH, classes);
       case NOT_ASYNC_CONTEXT_MANAGER -> withCalls(root, ASYNC, classes);
@@ -76,54 +68,15 @@ public final class ClassProtocolCheck implements RuleCheck {
     };
   }
 
-  private static Map<String, Info> classes(final SyntaxNode root) {
-    final Map<String, Info> classes = new HashMap<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
-      final String text = SyntaxWalk.text(visit.node());
-      final Matcher name = CLASS_NAME.matcher(text);
-      if (name.find()) {
-        classes.put(
-            name.group(1), new Info(name.group(1), text, bases(text), members(text), visit.node()));
-      }
-    }
-    return classes;
-  }
-
-  private static List<String> bases(final String classText) {
-    final Matcher header = BASES.matcher(classText);
-    if (!header.find()) {
-      return List.of();
-    }
-    final List<String> bases = new ArrayList<>();
-    for (final String base : header.group(1).split(",")) {
-      if (!base.contains("=") && !base.isBlank()) {
-        bases.add(base.strip());
-      }
-    }
-    return List.copyOf(bases);
-  }
-
-  private static Set<String> members(final String classText) {
-    final Set<String> members = new java.util.HashSet<>();
-    final Matcher def = DEF_NAME.matcher(classText);
-    while (def.find()) {
-      members.add(def.group(1));
-    }
-    return Set.copyOf(members);
-  }
-
   /** The with statement to look for and the two methods a context manager needs. */
   private record Protocol(Pattern call, String enter, String exit) {}
 
-  private static final Protocol WITH = new Protocol(WITH_CALL, "__enter__", "__exit__");
-  private static final Protocol ASYNC = new Protocol(ASYNC_WITH_CALL, "__aenter__", "__aexit__");
-
   private List<RuleMatch> withCalls(
-      final SyntaxNode root, final Protocol protocol, final Map<String, Info> classes) {
+      final SyntaxNode root, final Protocol protocol, final Map<String, ClassIndex.Info> classes) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, WITHS)) {
       final Matcher named = protocol.call().matcher(SyntaxWalk.text(visit.node()));
-      final Info info = named.find() ? classes.get(named.group(1)) : null;
+      final ClassIndex.Info info = named.find() ? classes.get(named.group(1)) : null;
       if (info != null
           && info.bases().isEmpty()
           && !(info.members().contains(protocol.enter())
@@ -134,11 +87,12 @@ public final class ClassProtocolCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  private List<RuleMatch> nonIterators(final SyntaxNode root, final Map<String, Info> classes) {
+  private List<RuleMatch> nonIterators(
+      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String text = SyntaxWalk.text(visit.node());
-      final Info info = classes.get(enclosingClass(visit.ancestors()));
+      final ClassIndex.Info info = classes.get(ClassIndex.enclosingClass(visit.ancestors()));
       if (text.startsWith("def__iter__")
           && info != null
           && !info.members().contains("__next__")
@@ -149,24 +103,17 @@ public final class ClassProtocolCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  private static String enclosingClass(final List<SyntaxNode> ancestors) {
-    for (int index = ancestors.size() - 1; index >= 0; index--) {
-      if (CLASSES.contains(ancestors.get(index).kind())) {
-        return classNameOf(SyntaxWalk.text(ancestors.get(index)));
-      }
-    }
-    return "";
-  }
-
   private static boolean returnsSelf(final String functionText) {
     return functionText.contains("returnself") && !functionText.contains("returnself.");
   }
 
-  private List<RuleMatch> enumExtensions(final SyntaxNode root, final Map<String, Info> classes) {
+  private List<RuleMatch> enumExtensions(
+      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
     final List<RuleMatch> found = new ArrayList<>();
-    final Set<String> assigners = classesWithAssignments(root, classes.keySet());
+    final Set<String> assigners = ClassIndex.classesWithAssignments(root, classes.keySet());
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
-      final Info info = classes.get(classNameOf(SyntaxWalk.text(visit.node())));
+      final ClassIndex.Info info =
+          classes.get(ClassIndex.classNameOf(SyntaxWalk.text(visit.node())));
       if (info != null
           && info.bases().stream().anyMatch(base -> enumWithMembers(base, classes, assigners))) {
         found.add(new RuleMatch(visit.node().span(), message));
@@ -176,54 +123,15 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private static boolean enumWithMembers(
-      final String base, final Map<String, Info> classes, final Set<String> assigners) {
-    final Info parent = classes.get(base);
+      final String base, final Map<String, ClassIndex.Info> classes, final Set<String> assigners) {
+    final ClassIndex.Info parent = classes.get(base);
     return parent != null
         && parent.bases().stream().anyMatch(name -> name.endsWith("Enum"))
         && assigners.contains(base);
   }
 
-  private static Set<String> classesWithAssignments(
-      final SyntaxNode root, final Set<String> names) {
-    final Set<String> with = new java.util.HashSet<>();
-    for (final String name : names) {
-      if (!classAssignments(root, name).isEmpty()) {
-        with.add(name);
-      }
-    }
-    return Set.copyOf(with);
-  }
-
-  /** The names assigned in the class body of {@code className}, found by their statement scope. */
-  static Set<String> classAssignments(final SyntaxNode root, final String className) {
-    final Set<String> names = new java.util.HashSet<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, ASSIGNMENT_KINDS)) {
-      if (className.equals(nearestScopeClass(visit.ancestors()))) {
-        final Matcher assigned = ASSIGNMENT.matcher(SyntaxWalk.text(visit.node()));
-        if (assigned.find()) {
-          names.add(assigned.group(1));
-        }
-      }
-    }
-    return Set.copyOf(names);
-  }
-
-  /** The class that directly contains a statement, or "" when a function does. */
-  static String nearestScopeClass(final List<SyntaxNode> ancestors) {
-    for (int index = ancestors.size() - 1; index >= 0; index--) {
-      final String kind = ancestors.get(index).kind();
-      if ("classdef".equals(kind)) {
-        return classNameOf(SyntaxWalk.text(ancestors.get(index)));
-      }
-      if ("funcdef".equals(kind) || "lambdef".equals(kind)) {
-        return "";
-      }
-    }
-    return "";
-  }
-
   private List<RuleMatch> invalidMetaclasses(
-      final SyntaxNode root, final Map<String, Info> classes) {
+      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
       final Matcher meta = METACLASS.matcher(SyntaxWalk.text(visit.node()));
@@ -234,16 +142,12 @@ public final class ClassProtocolCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  private static boolean invalidMetaclass(final String name, final Map<String, Info> classes) {
+  private static boolean invalidMetaclass(
+      final String name, final Map<String, ClassIndex.Info> classes) {
     if (name.matches("\\d.*|None|True|False")) {
       return true;
     }
-    final Info info = classes.get(name);
+    final ClassIndex.Info info = classes.get(name);
     return info != null && info.bases().isEmpty();
-  }
-
-  private static String classNameOf(final String classText) {
-    final Matcher name = CLASS_NAME.matcher(classText);
-    return name.find() ? name.group(1) : "";
   }
 }

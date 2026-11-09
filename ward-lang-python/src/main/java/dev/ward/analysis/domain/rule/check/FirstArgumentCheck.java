@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -25,7 +24,6 @@ public final class FirstArgumentCheck implements RuleCheck {
       Set.of("funcdef", "classdef", "async_funcdef", "lambdef");
   private static final Set<String> EXEMPT_NAMES =
       Set.of("__class_getitem__", "__new__", "__init_subclass__");
-  private static final Set<String> EXEMPT_DECORATORS = Set.of("staticmethod", "classmethod");
   private static final Pattern BASES =
       Pattern.compile("^(?:async\\s*)?class\\s*\\w+\\s*\\(([^)]*)\\)\\s*:", Pattern.DOTALL);
   private static final Pattern METACLASS_BASE = Pattern.compile("^(type|\\w*Meta|\\w*Type)$");
@@ -62,7 +60,7 @@ public final class FirstArgumentCheck implements RuleCheck {
       return false;
     }
     final String header = SyntaxWalk.text(owner);
-    return !metaclass(header) && !exemptDecorator(ancestors);
+    return !metaclass(header) && !FunctionDecorators.exemptDecorator(ancestors);
   }
 
   private static SyntaxNode nearestScope(final List<SyntaxNode> ancestors) {
@@ -88,35 +86,6 @@ public final class FirstArgumentCheck implements RuleCheck {
     return false;
   }
 
-  private static boolean exemptDecorator(final List<SyntaxNode> ancestors) {
-    final int from = Math.max(0, ancestors.size() - 2);
-    for (final SyntaxNode node : ancestors.subList(from, ancestors.size())) {
-      if ("decorated".equals(node.kind())) {
-        return decoratorLines(SyntaxWalk.text(node)).stream().anyMatch(FirstArgumentCheck::exempt);
-      }
-    }
-    return false;
-  }
-
-  private static List<String> decoratorLines(final String decorated) {
-    final List<String> names = new ArrayList<>();
-    for (final String line : decorated.split("\n")) {
-      final String trimmed = line.strip();
-      if (trimmed.startsWith("def") || trimmed.startsWith("async") || trimmed.startsWith("class")) {
-        break;
-      }
-      if (trimmed.startsWith("@")) {
-        names.add(trimmed.substring(1).replaceAll("[\\s(].*", ""));
-      }
-    }
-    return names;
-  }
-
-  private static boolean exempt(final String decorator) {
-    return EXEMPT_DECORATORS.contains(decorator.toLowerCase(Locale.ROOT))
-        || EXEMPT_DECORATORS.contains(decorator.replaceAll("^.*\\.", ""));
-  }
-
   private static boolean wrongFirst(final SyntaxNode function) {
     final String name = functionName(function);
     if (name.isEmpty() || EXEMPT_NAMES.contains(name)) {
@@ -139,7 +108,7 @@ public final class FirstArgumentCheck implements RuleCheck {
   /** The name of the first parameter, or null when the function declares none. */
   private static String firstParameter(final SyntaxNode function) {
     for (final SyntaxNode child : function.children()) {
-      if ("parameters".equals(child.kind())) {
+      if (SyntaxKinds.PARAMETERS.equals(child.kind())) {
         return firstName(SyntaxWalk.text(child));
       }
     }

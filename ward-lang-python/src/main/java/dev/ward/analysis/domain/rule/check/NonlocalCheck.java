@@ -18,27 +18,18 @@ import java.util.regex.Pattern;
  */
 public final class NonlocalCheck implements RuleCheck {
 
-  /** The mistake the check reports: a nonlocal name no enclosing function binds. */
-  public enum Problem {
-    /** A nonlocal name no enclosing function binds, or a nonlocal at module level. */
-    NONLOCAL_WITHOUT_BINDING
-  }
-
   private static final Set<String> NONLOCAL = Set.of("nonlocal_stmt");
   private static final Set<String> FUNCTIONS = Set.of("funcdef", "async_funcdef");
   private static final Pattern NAMES = Pattern.compile("^(?:nonlocal|global)(.*)$", Pattern.DOTALL);
 
-  private final Problem problem;
   private final String message;
 
   /**
    * Creates the check.
    *
-   * @param problem the mistake to report
    * @param message the message of each finding
    */
-  public NonlocalCheck(final Problem problem, final String message) {
-    this.problem = Objects.requireNonNull(problem, "problem");
+  public NonlocalCheck(final String message) {
     this.message = Objects.requireNonNull(message, "message");
   }
 
