@@ -15,6 +15,7 @@ final class AriaTables {
   private static final String IMPLICIT = "/aria/aria-implicit-roles.tsv";
   private static final String ATTRIBUTES = "/aria/aria-attributes.tsv";
   private static final String HANDLERS = "/aria/aria-event-handlers.tsv";
+  private static final String SEMANTIC = "/aria/aria-role-elements.tsv";
 
   private AriaTables() {}
 
@@ -24,7 +25,8 @@ final class AriaTables {
         AriaTableParser.parseRoles(read(ROLES)),
         AriaTableParser.parseImplicit(read(IMPLICIT)),
         AriaTableParser.parseAttributes(read(ATTRIBUTES)),
-        AriaTableParser.parseHandlers(read(HANDLERS)));
+        AriaTableParser.parseHandlers(read(HANDLERS)),
+        AriaTableParser.parseSemantic(read(SEMANTIC)));
   }
 
   private static List<String> read(final String path) {

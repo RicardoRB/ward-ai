@@ -14,7 +14,10 @@ import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeSemanticElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
+import dev.ward.analysis.domain.rule.check.BiomeSvgTitleCheck;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The checks that read Biome 2.5.15's mirrored ARIA tables, kept apart from the JSX checks. */
@@ -26,56 +29,75 @@ final class AriaChecks {
 
   /** The checks that read the mirrored ARIA tables of Biome 2.5.15. */
   static Map<String, CheckFactory> checks() {
+    final Map<String, CheckFactory> checks = new HashMap<>(elementChecks());
+    checks.putAll(
+        Map.ofEntries(
+            entry(
+                "node-aria-props-for-role",
+                toml ->
+                    new BiomeAriaPropsForRoleCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-aria-props-supported-by-role",
+                toml ->
+                    new BiomeAriaPropsSupportedByRoleCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-aria-props",
+                toml ->
+                    new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-aria-role",
+                toml ->
+                    new BiomeAriaRoleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-aria-values",
+                toml ->
+                    new BiomeAriaValuesCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-noninteractive-tabindex",
+                toml ->
+                    new BiomeNoninteractiveTabindexCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-noninteractive-to-interactive-role",
+                toml ->
+                    new BiomeNoninteractiveToInteractiveRoleCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-interactive-to-noninteractive-role",
+                toml ->
+                    new BiomeInteractiveToNoninteractiveRoleCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-noninteractive-element-interactions",
+                toml ->
+                    new BiomeNoninteractiveElementInteractionsCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-static-element-interactions",
+                toml ->
+                    new BiomeStaticElementInteractionsCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-no-redundant-roles",
+                toml ->
+                    new BiomeNoRedundantRolesCheck(
+                        AriaTables.load(), TomlValues.required(toml, MESSAGE)))));
+    return Map.copyOf(checks);
+  }
+
+  /** The semantic-element and svg-title checks, which read the element concepts. */
+  private static Map<String, CheckFactory> elementChecks() {
     return Map.ofEntries(
         entry(
-            "node-aria-props-for-role",
+            "node-semantic-element",
             toml ->
-                new BiomeAriaPropsForRoleCheck(
+                new BiomeSemanticElementCheck(
                     AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
-            "node-aria-props-supported-by-role",
-            toml ->
-                new BiomeAriaPropsSupportedByRoleCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-aria-props",
-            toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-aria-role",
-            toml -> new BiomeAriaRoleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-aria-values",
-            toml ->
-                new BiomeAriaValuesCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-tabindex",
-            toml ->
-                new BiomeNoninteractiveTabindexCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-to-interactive-role",
-            toml ->
-                new BiomeNoninteractiveToInteractiveRoleCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-interactive-to-noninteractive-role",
-            toml ->
-                new BiomeInteractiveToNoninteractiveRoleCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-noninteractive-element-interactions",
-            toml ->
-                new BiomeNoninteractiveElementInteractionsCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-static-element-interactions",
-            toml ->
-                new BiomeStaticElementInteractionsCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-no-redundant-roles",
-            toml ->
-                new BiomeNoRedundantRolesCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))));
+            "node-svg-title",
+            toml -> new BiomeSvgTitleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))));
   }
 }

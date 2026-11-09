@@ -629,3 +629,75 @@ elements = ["h1", "h2", "h3", "h4", "h5", "h6"]
 exempt = ["aria-label"]
 message = "a heading needs content that a screen reader can announce"
 '''
+
+[[rules]]
+id = "ward:javascript/use-media-caption"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-media-caption"
+message = "a video or audio element needs a captions track"
+'''
+
+[[rules]]
+id = "ward:typescript/use-media-caption"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-media-caption"
+message = "a video or audio element needs a captions track"
+'''
+
+[[rules]]
+id = "ward:javascript/use-semantic-elements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-semantic-element"
+message = "this role can be expressed by an HTML element; use that element instead"
+'''
+
+[[rules]]
+id = "ward:typescript/use-semantic-elements"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-semantic-element"
+message = "this role can be expressed by an HTML element; use that element instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-svg-without-title"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-svg-title"
+message = "an svg with a role that needs a name needs a title or an accessible name"
+'''
+
+[[rules]]
+id = "ward:typescript/no-svg-without-title"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-svg-title"
+message = "an svg with a role that needs a name needs a title or an accessible name"
+'''

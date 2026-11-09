@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxEmptyElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
+import dev.ward.analysis.domain.rule.check.BiomeMediaCaptionCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
@@ -64,6 +65,9 @@ final class BiomeChecks {
                         TomlValues.optionalStrings(toml, "elements"),
                         TomlValues.optionalStrings(toml, "exempt"),
                         TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-media-caption",
+                toml -> new BiomeMediaCaptionCheck(TomlValues.required(toml, MESSAGE))),
             entry(
                 "node-void-element-children",
                 toml ->
