@@ -18,8 +18,6 @@ detekt = ["ArrayPrimitive"]
 
 [[rule]]
 name = "avoid-referential-equality"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["AvoidReferentialEquality"]
 
 [[rule]]
@@ -366,8 +364,6 @@ detekt = ["HasPlatformType"]
 
 [[rule]]
 name = "ignored-return-value"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["IgnoredReturnValue"]
 
 [[rule]]
@@ -448,8 +444,6 @@ detekt = ["MandatoryBracesLoops"]
 
 [[rule]]
 name = "map-get-with-not-null-assertion-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["MapGetWithNotNullAssertionOperator"]
 
 [[rule]]
@@ -628,8 +622,6 @@ detekt = ["RedundantHigherOrderMapUsage"]
 
 [[rule]]
 name = "redundant-suspend-modifier"
-presets = ["standard", "strict"]
-category = "coroutines"
 detekt = ["RedundantSuspendModifier"]
 
 [[rule]]
@@ -819,8 +811,6 @@ detekt = ["UnnecessaryNotNullCheck"]
 
 [[rule]]
 name = "unnecessary-not-null-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnnecessaryNotNullOperator"]
 
 [[rule]]
@@ -831,8 +821,6 @@ detekt = ["UnnecessaryPartOfBinaryExpression"]
 
 [[rule]]
 name = "unnecessary-safe-call"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnnecessarySafeCall"]
 
 [[rule]]
@@ -852,8 +840,6 @@ vulture = ["V201"]
 
 [[rule]]
 name = "unsafe-call-on-nullable-type"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnsafeCallOnNullableType"]
 
 [[rule]]

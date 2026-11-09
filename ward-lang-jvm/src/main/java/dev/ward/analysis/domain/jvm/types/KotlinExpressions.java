@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.scope.Binding;
+import dev.ward.analysis.domain.types.Nullness;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +86,7 @@ final class KotlinExpressions {
   private Typed atomic(final SyntaxNode node, final Ctx ctx) {
     final SyntaxNode head = node.children().get(0);
     return switch (head.kind()) {
-      case "literalConstant" -> KotlinLiterals.literal(head);
+      case "literalConstant" -> nonNullLiteral(head);
       case SIMPLE_IDENTIFIER -> name(head, ctx);
       case "parenthesizedExpression" ->
           Syntax.child(head, EXPRESSION).map(inner -> expr(inner, ctx)).orElse(Typed.UNKNOWN);
@@ -96,11 +97,21 @@ final class KotlinExpressions {
     };
   }
 
+  /** A literal is non-null, except the literal {@code null} itself. */
+  private static Typed nonNullLiteral(final SyntaxNode literal) {
+    final Typed typed = KotlinLiterals.literal(literal);
+    return "null".equals(Syntax.text(literal)) ? typed : typed.withNullness(Nullness.NON_NULL);
+  }
+
   private Typed name(final SyntaxNode identifier, final Ctx ctx) {
     final String name = Syntax.text(identifier);
     final Optional<Binding> binding = session.binding(identifier);
     if (binding.isPresent() && ScopeIndex.isValue(binding.get())) {
-      return session.variableAt(binding.get()).map(Typed::of).orElse(Typed.UNKNOWN);
+      return session
+          .variableAt(binding.get())
+          .map(Typed::of)
+          .orElse(Typed.UNKNOWN)
+          .withNullness(typer.nullness().use(binding.get(), identifier));
     }
     final Optional<Typed> inherited =
         ctx.scope().enclosing().stream()

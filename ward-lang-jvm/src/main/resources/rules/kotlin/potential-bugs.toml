@@ -164,3 +164,78 @@ body = '''
 check = "kotlin-unused-unary-operator"
 message = "unary operator on its own line; its value is unused"
 '''
+
+[[rules]]
+id = "ward:kotlin/avoid-referential-equality"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-referential-equality"
+forbidden-types = ["kotlin.String"]
+message = "referential equality on a String; compare the values with == instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/map-get-with-not-null-assertion-operator"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-map-get-not-null"
+message = "the map lookup can return null; use getValue, getOrElse or a null check instead of !!"
+'''
+
+[[rules]]
+id = "ward:kotlin/ignored-return-value"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-ignored-return-value"
+return-value-annotations = ["*.CheckResult", "*.CheckReturnValue"]
+ignore-return-value-annotations = ["*.CanIgnoreReturnValue"]
+message = "the return value of this call must be used"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-not-null-operator"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unnecessary-not-null"
+message = "the !! operator is unnecessary; the value is not null"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-safe-call"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unnecessary-safe-call"
+message = "the safe call ?. is unnecessary; the receiver is not null"
+'''
+
+[[rules]]
+id = "ward:kotlin/unsafe-call-on-nullable-type"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unsafe-call-nullable"
+message = "the !! operator on a nullable value can throw; check for null instead"
+'''

@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.jvm.types;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.types.Nullness;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +39,10 @@ final class KotlinCalls {
         current = postfix(access.get(), Optional.of(current), ctx);
       }
     }
-    session.record(node, current);
-    return current;
+    // An operation such as !! or a call changes nullness, so only a bare name keeps its own.
+    final Typed result = parts.size() > 1 ? current.withNullness(Nullness.UNKNOWN) : current;
+    session.record(node, result);
+    return result;
   }
 
   private Typed head(
