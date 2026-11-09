@@ -196,3 +196,27 @@ text = ':'
 parent = ["jsxOpeningElement", "jsxSelfClosingElement"]
 message = "avoid a namespaced JSX element name; it is not a component or a standard element"
 '''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-iframe-sandbox"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unsafe-iframe-sandbox"
+message = "an iframe sandbox that allows scripts and same-origin access lets the frame remove its sandbox"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-iframe-sandbox"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unsafe-iframe-sandbox"
+message = "an iframe sandbox that allows scripts and same-origin access lets the frame remove its sandbox"
+'''

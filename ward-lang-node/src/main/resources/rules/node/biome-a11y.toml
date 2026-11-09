@@ -701,3 +701,51 @@ body = '''
 check = "node-svg-title"
 message = "an svg with a role that needs a name needs a title or an accessible name"
 '''
+
+[[rules]]
+id = "ward:javascript/no-aria-unsupported-elements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-unsupported-elements"
+message = "avoid a role and an aria-* attribute on meta, html, script and style elements"
+'''
+
+[[rules]]
+id = "ward:typescript/no-aria-unsupported-elements"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-unsupported-elements"
+message = "avoid a role and an aria-* attribute on meta, html, script and style elements"
+'''
+
+[[rules]]
+id = "ward:javascript/use-aria-activedescendant-with-tabindex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-activedescendant-tabindex"
+message = "an element with aria-activedescendant needs a tabIndex to keep focus"
+'''
+
+[[rules]]
+id = "ward:typescript/use-aria-activedescendant-with-tabindex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-activedescendant-tabindex"
+message = "an element with aria-activedescendant needs a tabIndex to keep focus"
+'''

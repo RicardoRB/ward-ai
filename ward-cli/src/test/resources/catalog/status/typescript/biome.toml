@@ -6,7 +6,7 @@ no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
 no-approximative-numeric-constant = "implemented"
 no-aria-hidden-on-focusable = { status = "planned", issue = "#329" }
-no-aria-unsupported-elements = { status = "planned", issue = "#329" }
+no-aria-unsupported-elements = "implemented"
 no-array-index-key = { status = "planned", issue = "#329" }
 no-assign-in-expressions = "implemented"
 no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
@@ -18,7 +18,7 @@ no-before-interactive-script-outside-document = { status = "planned", issue = "#
 no-blank-target = "implemented"
 no-bun-modules = { status = "planned", issue = "#329" }
 no-children-prop = { status = "planned", issue = "#329" }
-no-comment-text = { status = "planned", issue = "#329" }
+no-comment-text = "implemented"
 no-common-js = { status = "planned", issue = "#296" }
 no-component-hook-factories = { status = "planned", issue = "#329" }
 no-conditional-expect = { status = "planned", issue = "#329" }
@@ -159,7 +159,7 @@ no-unknown-attribute = { status = "planned", issue = "#329" }
 no-unnecessary-conditions = { status = "planned", issue = "#329" }
 no-unreachable-super = "implemented"
 no-unresolved-imports = { status = "planned", issue = "#329" }
-no-unsafe-iframe-sandbox = { status = "planned", issue = "#329" }
+no-unsafe-iframe-sandbox = "implemented"
 no-unused-function-parameters = "implemented"
 no-unused-instantiation = "implemented"
 no-unused-template-literal = "implemented"
@@ -186,7 +186,7 @@ no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
 no-xor-as-exponentiation = "implemented"
 use-alt-text = "implemented"
 use-anchor-content = "implemented"
-use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
+use-aria-activedescendant-with-tabindex = "implemented"
 use-aria-props-for-role = "implemented"
 use-aria-props-supported-by-role = "implemented"
 use-array-find = "implemented"
