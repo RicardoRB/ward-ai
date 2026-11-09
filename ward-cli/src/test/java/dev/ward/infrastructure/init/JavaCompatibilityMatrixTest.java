@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
@@ -42,8 +41,6 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 @EnabledIfSystemProperty(named = JavaCompatibilityMatrixTest.JDK_PROPERTY, matches = "\\d+")
 class JavaCompatibilityMatrixTest {
   static final String JDK_PROPERTY = "ward.java.matrix";
-  private static final Path FIXTURES = Path.of("src/test/resources/fixtures/java-matrix");
-  private static final Path VIOLATIONS = Path.of("src/test/resources/java-matrix/violations");
 
   /** The controller that imports a repository directly, which the layered style forbids. */
   private static final String ENGINE_LAYER_VIOLATION =
@@ -51,12 +48,9 @@ class JavaCompatibilityMatrixTest {
 
   private static final String MAVEN = "maven";
   private static final String WARD_GATE = "ward";
-  private static final String POM = "pom.xml";
   private static final String PASSED = "PASSED";
   private static final String FAILED = "FAILED";
   private static final String STRICT = "strict";
-  private static final int RECORDS = 17;
-  private static final int PATTERN_SWITCH = 21;
   private static final List<String> STANDARD =
       List.of("compile", "tests", "coverage", "ward-format");
   private static final List<String> STRICT_EXTRAS = List.of("enforcer", "mutation");
@@ -83,7 +77,7 @@ class JavaCompatibilityMatrixTest {
         String.valueOf(jdk).equals(System.getProperty(JDK_PROPERTY)), "row is for JDK " + jdk);
 
     final String build = MAVEN.equals(buildTool) ? MAVEN : "gradle-" + dsl;
-    copyFixture(project, jdk, build, fixture);
+    JavaMatrixFixtures.copyFixture(project, jdk, build, fixture);
     JavaMatrixProcesses.git(project, "init", "-q");
     final JavaMatrixProcesses.CommandRun init =
         JavaMatrixProcesses.ward(project, "init", "--preset", preset, "--yes");
@@ -109,20 +103,8 @@ class JavaCompatibilityMatrixTest {
         (gate, status) ->
             assertThat(status).as("clean gate %s\n%s", gate, cleanReport).isEqualTo(PASSED));
 
-    if (fixture.isEmpty()) {
-      assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
-          .as("engine layer findings, clean")
-          .isEmpty();
-      seedViolations(project, buildTool);
-    } else {
-      JavaMatrixProcesses.copyTree(VIOLATIONS.resolve(fixture), project);
-    }
+    seed(project, buildTool, fixture);
     final Map<String, String> seeded = statuses(report(project));
-    if (fixture.isEmpty()) {
-      assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
-          .as("engine layer findings, seeded")
-          .containsExactly(ENGINE_LAYER_VIOLATION);
-    }
     seededGates(configured, fixture)
         .forEach(
             gate ->
@@ -132,10 +114,26 @@ class JavaCompatibilityMatrixTest {
 
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
-    JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("compile-error"), project);
+    JavaMatrixProcesses.copyTree(JavaMatrixFixtures.VIOLATIONS.resolve("compile-error"), project);
     assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);
+  }
+
+  /** Seeds the Java violations, with their layer check, or a named fixture's own violations. */
+  private static void seed(final Path project, final String buildTool, final String fixture)
+      throws IOException {
+    if (!fixture.isEmpty()) {
+      JavaMatrixProcesses.copyTree(JavaMatrixFixtures.VIOLATIONS.resolve(fixture), project);
+      return;
+    }
+    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+        .as("engine layer findings, clean")
+        .isEmpty();
+    JavaMatrixFixtures.seedCommon(project, buildTool);
+    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+        .as("engine layer findings, seeded")
+        .containsExactly(ENGINE_LAYER_VIOLATION);
   }
 
   /**
@@ -149,38 +147,6 @@ class JavaCompatibilityMatrixTest {
           .collect(Collectors.toCollection(LinkedHashSet::new));
     }
     return Set.of(WARD_GATE);
-  }
-
-  /**
-   * Copies the Java 8 sources, each newer syntax layer the JDK supports, and the build files. A
-   * named fixture brings its own sources and build files over the shared build tool files.
-   */
-  private static void copyFixture(
-      final Path project, final int jdk, final String build, final String fixture)
-      throws IOException {
-    if (fixture.isEmpty()) {
-      JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/base"), project);
-      if (jdk >= RECORDS) {
-        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java17"), project);
-      }
-      if (jdk >= PATTERN_SWITCH) {
-        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java21"), project);
-      }
-    } else {
-      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve("sources"), project);
-    }
-    JavaMatrixProcesses.copyTree(FIXTURES.resolve(build), project);
-    if (!fixture.isEmpty()) {
-      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve(build), project);
-    }
-    try (Stream<Path> files = Files.list(project)) {
-      for (final Path file : files.filter(Files::isRegularFile).toList()) {
-        final String content = Files.readString(file);
-        if (content.contains("@RELEASE@")) {
-          Files.writeString(file, content.replace("@RELEASE@", String.valueOf(jdk)));
-        }
-      }
-    }
   }
 
   private static void assertDetectedJdk(final Path project, final int jdk)
@@ -223,18 +189,6 @@ class JavaCompatibilityMatrixTest {
 
   private static ProjectDependencyAdapters javaDependencies() {
     return new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters()));
-  }
-
-  /** Adds the common violations, and for Maven a dynamic dependency version for Enforcer. */
-  private static void seedViolations(final Path project, final String buildTool)
-      throws IOException {
-    JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("common"), project);
-    if (MAVEN.equals(buildTool)) {
-      final Path pom = project.resolve(POM);
-      final String dependency = Files.readString(VIOLATIONS.resolve("maven/dependency.xml"));
-      Files.writeString(
-          pom, Files.readString(pom).replaceFirst("(?s)(\\s*</dependencies>)", dependency + "$1"));
-    }
   }
 
   private static String report(final Path project) throws IOException, InterruptedException {

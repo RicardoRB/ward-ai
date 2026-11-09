@@ -1,0 +1,61 @@
+package dev.ward.infrastructure.init;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
+/** Copies the fixtures of the Java compatibility matrix and seeds their violations. */
+final class JavaMatrixFixtures {
+  static final Path VIOLATIONS = Path.of("src/test/resources/java-matrix/violations");
+  private static final Path FIXTURES = Path.of("src/test/resources/fixtures/java-matrix");
+  private static final String POM = "pom.xml";
+  private static final String MAVEN = "maven";
+  private static final int RECORDS = 17;
+  private static final int PATTERN_SWITCH = 21;
+
+  private JavaMatrixFixtures() {}
+
+  /**
+   * Copies the Java 8 sources, each newer syntax layer the JDK supports, and the build files. A
+   * named fixture brings its own sources and build files over the shared build tool files.
+   */
+  static void copyFixture(
+      final Path project, final int jdk, final String build, final String fixture)
+      throws IOException {
+    if (fixture.isEmpty()) {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/base"), project);
+      if (jdk >= RECORDS) {
+        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java17"), project);
+      }
+      if (jdk >= PATTERN_SWITCH) {
+        JavaMatrixProcesses.copyTree(FIXTURES.resolve("sources/java21"), project);
+      }
+    } else {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve("sources"), project);
+    }
+    JavaMatrixProcesses.copyTree(FIXTURES.resolve(build), project);
+    if (!fixture.isEmpty()) {
+      JavaMatrixProcesses.copyTree(FIXTURES.resolve(fixture).resolve(build), project);
+    }
+    try (Stream<Path> files = Files.list(project)) {
+      for (final Path file : files.filter(Files::isRegularFile).toList()) {
+        final String content = Files.readString(file);
+        if (content.contains("@RELEASE@")) {
+          Files.writeString(file, content.replace("@RELEASE@", String.valueOf(jdk)));
+        }
+      }
+    }
+  }
+
+  /** Adds the common violations, and for Maven a dynamic dependency version for Enforcer. */
+  static void seedCommon(final Path project, final String buildTool) throws IOException {
+    JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("common"), project);
+    if (MAVEN.equals(buildTool)) {
+      final Path pom = project.resolve(POM);
+      final String dependency = Files.readString(VIOLATIONS.resolve("maven/dependency.xml"));
+      Files.writeString(
+          pom, Files.readString(pom).replaceFirst("(?s)(\\s*</dependencies>)", dependency + "$1"));
+    }
+  }
+}
