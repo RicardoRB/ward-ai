@@ -53,7 +53,8 @@ class SwiftDeclarationSummaryTest {
             }
             """);
 
-    assertThat(summary.usedNames()).contains("helper", "Drawable", "draw");
+    assertThat(summary.usedNames())
+        .contains("helper", SwiftFileSummarizer.CONFORMANCE_PREFIX + "Drawable", "draw");
     assertThat(summary.usedNames()).doesNotContain("caller");
   }
 
@@ -112,5 +113,46 @@ class SwiftDeclarationSummaryTest {
     final ParseResult parsed = new AntlrLanguageFrontend().parse(unit);
     assertThat(parsed.diagnostics()).isEmpty();
     return new SwiftFileSummarizer().summarize(unit, parsed.tree());
+  }
+
+  @Test
+  void aProtocolUsedOnlyToConformIsRecordedAsConformanceNotAsUse() {
+    final FileSummary summary =
+        summarize(
+            """
+            protocol Drawable {
+                func draw()
+            }
+            struct Canvas: Drawable {
+                func draw() {}
+            }
+            """);
+
+    assertThat(summary.usedNames())
+        .contains(SwiftFileSummarizer.CONFORMANCE_PREFIX + "Drawable")
+        .doesNotContain("Drawable");
+    assertThat(
+            summary.declared().stream().filter(s -> "protocol".equals(s.kind())).map(Symbol::name))
+        .containsExactly("Drawable");
+  }
+
+  @Test
+  void aProtocolUsedAsATypeKeepsAPlainUse() {
+    final FileSummary summary =
+        summarize(
+            """
+            protocol Drawable {}
+            struct Canvas: Drawable {}
+            let shape: Drawable = Canvas()
+            """);
+
+    assertThat(summary.usedNames()).contains("Drawable");
+  }
+
+  @Test
+  void aPublicProtocolIsNotDeclaredAsAProtocolCandidate() {
+    final FileSummary summary = summarize("public protocol Shown {}\n");
+
+    assertThat(summary.declared().stream().filter(s -> "protocol".equals(s.kind()))).isEmpty();
   }
 }

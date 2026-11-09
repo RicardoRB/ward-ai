@@ -1,23 +1,37 @@
 package dev.ward.analysis.application.rule;
 
+import java.util.Set;
+
 /**
  * The declaration kinds the unused-definition rules report. A kind names the symbol kind it reads
- * from a summary, and whether the rule reports only names some file assigns.
+ * from a summary, and the mode decides which names of the project it reports.
  */
 enum UnusedDefinitionKind {
   /** A function or method that no file uses. */
-  FUNCTION("function", false),
+  FUNCTION("function", Mode.UNUSED),
   /** A class that no file uses. */
-  CLASS("class", false),
+  CLASS("class", Mode.UNUSED),
   /** A stored property that some file assigns but no file reads. */
-  PROPERTY("property", true);
+  PROPERTY("property", Mode.ASSIGNED_ONLY),
+  /** A protocol that some file conforms to but no file uses as a type. */
+  PROTOCOL("protocol", Mode.CONFORMANCE_ONLY);
+
+  /** Which names of the project a kind reports. */
+  enum Mode {
+    /** Names no file uses. */
+    UNUSED,
+    /** Names some file assigns and no file reads. */
+    ASSIGNED_ONLY,
+    /** Names some file uses only to conform to, and no file uses otherwise. */
+    CONFORMANCE_ONLY
+  }
 
   private final String symbolKind;
-  private final boolean assignedOnly;
+  private final Mode mode;
 
-  UnusedDefinitionKind(final String symbolKind, final boolean assignedOnly) {
+  UnusedDefinitionKind(final String symbolKind, final Mode mode) {
     this.symbolKind = symbolKind;
-    this.assignedOnly = assignedOnly;
+    this.mode = mode;
   }
 
   /** The symbol kind a summary gives a declaration of this kind. */
@@ -25,16 +39,32 @@ enum UnusedDefinitionKind {
     return symbolKind;
   }
 
-  /** Whether the rule reports only names that some file assigns. */
-  boolean assignedOnly() {
-    return assignedOnly;
+  /**
+   * Whether the rule reports {@code name}, given the names the project uses plainly, assigns, and
+   * uses only to conform to.
+   */
+  boolean reports(
+      final String name,
+      final Set<String> used,
+      final Set<String> assigned,
+      final Set<String> conformance) {
+    if (used.contains(name)) {
+      return false;
+    }
+    return switch (mode) {
+      case UNUSED -> true;
+      case ASSIGNED_ONLY -> assigned.contains(name);
+      case CONFORMANCE_ONLY -> conformance.contains(name);
+    };
   }
 
   /** The message of a finding about {@code name}. */
   String message(final String name) {
-    if (assignedOnly) {
-      return "property '" + name + "' is assigned but never read in any file";
-    }
-    return "unused " + symbolKind + " '" + name + "' is not used in any file";
+    return switch (mode) {
+      case UNUSED -> "unused " + symbolKind + " '" + name + "' is not used in any file";
+      case ASSIGNED_ONLY -> "property '" + name + "' is assigned but never read in any file";
+      case CONFORMANCE_ONLY ->
+          "protocol '" + name + "' is only used to conform to, never as a type";
+    };
   }
 }

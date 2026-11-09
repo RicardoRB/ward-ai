@@ -55,15 +55,25 @@ public final class UnusedDefinitionFindings {
               used.addAll(summary.usedNames());
               assigned.addAll(summary.assignedNames());
             });
-    final Names names = new Names(used, assigned);
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final RuleDefinition rule : rules) {
-      final Optional<Binding> binding = binding(rule);
-      if (binding.isPresent()) {
-        findings.addAll(ruleFindings(rule, binding.get(), new TreeMap<>(summaries), names));
-      }
+      findings.addAll(findingsOf(rule, new TreeMap<>(summaries), used, assigned));
     }
     return List.copyOf(findings);
+  }
+
+  /** The findings of one rule, or none when the rule is not an unused-definition rule. */
+  private static List<AnalysisFinding> findingsOf(
+      final RuleDefinition rule,
+      final Map<String, FileSummary> summaries,
+      final Set<String> used,
+      final Set<String> assigned) {
+    final Optional<Binding> binding = binding(rule);
+    if (binding.isEmpty()) {
+      return List.of();
+    }
+    final Set<String> conformance = binding.get().strategy().conformanceNames(used);
+    return ruleFindings(rule, binding.get(), summaries, new Names(used, assigned, conformance));
   }
 
   /** The strategy and kind of the rule, if it is an unused-definition rule of its language. */
@@ -99,8 +109,7 @@ public final class UnusedDefinitionFindings {
   private static boolean reportable(final Symbol symbol, final Binding binding, final Names names) {
     final UnusedDefinitionKind kind = binding.kind();
     return kind.symbolKind().equals(symbol.kind())
-        && !names.used().contains(symbol.name())
-        && (!kind.assignedOnly() || names.assigned().contains(symbol.name()))
+        && kind.reports(symbol.name(), names.used(), names.assigned(), names.conformance())
         && !binding.strategy().exempt(symbol);
   }
 
@@ -123,6 +132,6 @@ public final class UnusedDefinitionFindings {
   /** A rule's strategy and the kind it reports. */
   private record Binding(UnusedDefinitionStrategy strategy, UnusedDefinitionKind kind) {}
 
-  /** The names the whole project uses and the names it assigns. */
-  private record Names(Set<String> used, Set<String> assigned) {}
+  /** The names the whole project uses, assigns, and uses only to conform to. */
+  private record Names(Set<String> used, Set<String> assigned, Set<String> conformance) {}
 }

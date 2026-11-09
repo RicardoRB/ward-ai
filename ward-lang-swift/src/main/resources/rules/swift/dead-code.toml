@@ -49,3 +49,15 @@ body = '''
 check = "swift-unused-definition"
 message = "property is assigned but never read"
 '''
+
+[[rules]]
+id = "ward:swift/redundant-protocol"
+language = "swift"
+capability = "SYMBOLS"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-definition"
+message = "protocol is only used to conform to"
+'''

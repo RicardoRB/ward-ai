@@ -19,6 +19,7 @@ final class SwiftUseScan {
   private static final String PREFIX = "prefix_expression";
   private static final String OPERATORS = "binary_expressions";
   private static final String ASSIGN = "=";
+  private static final String INHERITANCE = "type_inheritance_clause";
 
   private SwiftUseScan() {}
 
@@ -58,15 +59,25 @@ final class SwiftUseScan {
 
   /** Records every identifier outside imports and outside the excluded spans. */
   static void collectUsed(final SyntaxNode node, final Set<Span> excluded, final Set<String> used) {
+    collectUses(node, excluded, used, false);
+  }
+
+  /** Records the identifiers; one inside a conformance or inheritance clause is marked as such. */
+  private static void collectUses(
+      final SyntaxNode node,
+      final Set<Span> excluded,
+      final Set<String> used,
+      final boolean conformance) {
     if (IMPORT.equals(node.kind())) {
       return;
     }
     final String name = node.fields().get(TEXT);
     if (IDENTIFIER.equals(node.kind()) && name != null && !excluded.contains(node.span())) {
-      used.add(name);
+      used.add(conformance ? SwiftFileSummarizer.CONFORMANCE_PREFIX + name : name);
     }
+    final boolean inClause = conformance || INHERITANCE.equals(node.kind());
     for (final SyntaxNode child : node.children()) {
-      collectUsed(child, excluded, used);
+      collectUses(child, excluded, used, inClause);
     }
   }
 }

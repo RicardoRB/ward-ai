@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +31,16 @@ public final class SwiftFileSummarizer implements FileSummarizer {
   /** The specifier prefix of a name use, which the resolver matches against declared types. */
   public static final String NAME_PREFIX = "name:";
 
+  /**
+   * The prefix of a used name that appears only inside a conformance or inheritance clause, so a
+   * protocol used only to conform to is told apart from one used as a type. The prefix stays in the
+   * used names, so no field of the shared summary changes.
+   */
+  public static final String CONFORMANCE_PREFIX = "conformance:";
+
+  /** The kind of a protocol symbol in {@link FileSummary#declared()}. */
+  public static final String PROTOCOL_KIND = "protocol";
+
   /** The kind of a function symbol in {@link FileSummary#declared()}. */
   public static final String FUNCTION_KIND = "function";
 
@@ -45,6 +56,11 @@ public final class SwiftFileSummarizer implements FileSummarizer {
   private static final String BODY_SUFFIX = "_body";
   private static final String QUALIFIER = ".";
   private static final String VARIABLE = "variable_declaration";
+  private static final String PROTOCOL = "protocol_declaration";
+
+  /** A protocol header with no attribute and no modifier beyond access below public. */
+  private static final Pattern PLAIN_PROTOCOL_HEADER =
+      Pattern.compile("\\s*((private|fileprivate|internal)\\s+)?protocol\\s*");
 
   /**
    * A header that only plain modifiers precede, so no protocol, superclass or attribute fixes it.
@@ -81,7 +97,7 @@ public final class SwiftFileSummarizer implements FileSummarizer {
     final Map<String, Span> names = new LinkedHashMap<>();
     collectNames(tree, own, names);
     names.forEach((name, span) -> imports.add(new Reference(NAME_PREFIX + name, span)));
-    final List<Symbol> declared = new ArrayList<>(found.types);
+    final List<Symbol> declared = new ArrayList<>(declaredTypes(found));
     declared.addAll(found.functions);
     declared.addAll(found.properties);
     final Set<Span> excluded = new HashSet<>(found.declaredNames);
@@ -107,6 +123,39 @@ public final class SwiftFileSummarizer implements FileSummarizer {
     }
   }
 
+  /**
+   * The declared types, with each plain protocol given the protocol kind; exports keep the kind.
+   */
+  private static List<Symbol> declaredTypes(final SwiftMemberDeclarations.Collected found) {
+    return found.types.stream()
+        .map(
+            type ->
+                found.protocolNames.contains(type.span())
+                    ? new Symbol(type.name(), type.span(), PROTOCOL_KIND)
+                    : type)
+        .toList();
+  }
+
+  /**
+   * Declares a protocol that no attribute or public access exposes, so only this module can use it.
+   * Its name is a declaration, not a use.
+   */
+  private static void declareProtocol(
+      final SyntaxNode node, final SourceUnit unit, final SwiftMemberDeclarations.Collected found) {
+    final Optional<SyntaxNode> name = nameOf(node);
+    if (name.isEmpty()) {
+      return;
+    }
+    found.declaredNames.add(name.get().span());
+    final int start = node.span().startOffset();
+    final int end = name.get().span().startOffset();
+    final String header =
+        start <= end && end <= unit.text().length() ? unit.text().substring(start, end) : "";
+    if (PLAIN_PROTOCOL_HEADER.matcher(header).matches()) {
+      found.protocolNames.add(name.get().span());
+    }
+  }
+
   /** The last dot-separated part of a qualified name: the name a use of the type writes. */
   static String lastComponent(final String qualified) {
     return qualified.substring(qualified.lastIndexOf(QUALIFIER) + 1);
@@ -128,6 +177,9 @@ public final class SwiftFileSummarizer implements FileSummarizer {
       return;
     }
     final String inner = declare(node, scope, found.types);
+    if (PROTOCOL.equals(node.kind())) {
+      declareProtocol(node, unit, found);
+    }
     if (FUNCTION.equals(node.kind())) {
       SwiftMemberDeclarations.declareFunction(node, context, unit, found);
     }

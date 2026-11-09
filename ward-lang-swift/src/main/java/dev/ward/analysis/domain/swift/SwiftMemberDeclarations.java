@@ -94,6 +94,9 @@ final class SwiftMemberDeclarations {
     final List<Symbol> functions = new ArrayList<>();
     final List<Symbol> properties = new ArrayList<>();
 
+    /** The name spans of the protocols that no attribute or public access exposes. */
+    final Set<Span> protocolNames = new HashSet<>();
+
     /** The spans of declared function and variable names: a declaration is not a use. */
     final Set<Span> declaredNames = new HashSet<>();
 
