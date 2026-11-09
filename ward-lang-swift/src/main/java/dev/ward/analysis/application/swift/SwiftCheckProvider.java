@@ -17,8 +17,8 @@ import java.util.Map;
 
 /**
  * The declarative checks that only Swift rules use: the style checks of declarations, parameters
- * and imports, and the whole-run unused-definition check, which the engine reports after every
- * file is summarized.
+ * and imports, and the whole-run unused-definition check, which the engine reports after every file
+ * is summarized.
  */
 public final class SwiftCheckProvider implements CheckProvider {
 
