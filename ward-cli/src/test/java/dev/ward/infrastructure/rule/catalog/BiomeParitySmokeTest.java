@@ -54,7 +54,8 @@ class BiomeParitySmokeTest {
           Map.entry("no-unreachable-super", "correctness/noUnreachableSuper"),
           Map.entry("no-access-key", "a11y/noAccessKey"),
           Map.entry("no-autofocus", "a11y/noAutofocus"),
-          Map.entry("no-positive-tabindex", "a11y/noPositiveTabindex"));
+          Map.entry("no-positive-tabindex", "a11y/noPositiveTabindex"),
+          Map.entry("no-distracting-elements", "a11y/noDistractingElements"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

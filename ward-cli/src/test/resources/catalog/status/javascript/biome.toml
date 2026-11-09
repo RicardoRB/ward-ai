@@ -31,7 +31,7 @@ no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#32
 no-default-export = "implemented"
 no-delete = "implemented"
 no-deprecated-imports = { status = "planned", issue = "#329" }
-no-distracting-elements = { status = "planned", issue = "#329" }
+no-distracting-elements = "implemented"
 no-document-cookie = "implemented"
 no-document-import-in-page = { status = "planned", issue = "#329" }
 no-done-callback = { status = "planned", issue = "#296" }

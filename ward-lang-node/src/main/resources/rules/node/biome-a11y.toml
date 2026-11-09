@@ -43,3 +43,18 @@ text = '^(?:\{[1-9][0-9]*\}|"[1-9][0-9]*"|\{"[1-9][0-9]*"\})$'
 message = "avoid positive tabIndex values; they change the keyboard focus order"
 '''
 
+[[rules]]
+id = "ward:javascript/no-distracting-elements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+# shortcut: an element whose name starts with blink or marquee and has attributes also matches, upgrade when the check can read the element name
+check = "forbidden-node"
+kinds = ["jsxOpeningElement", "jsxSelfClosingElement"]
+text = '^<(?:blink|marquee)(?:[>/]|[\w-]+=)'
+message = "avoid the blink and marquee elements; they distract the user"
+'''
+
