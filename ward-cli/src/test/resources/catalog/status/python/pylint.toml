@@ -70,7 +70,7 @@ duplicate-argument-name = { status = "planned", issue = "#336" }
 duplicate-string-formatting-argument = { status = "planned", issue = "#336" }
 else-if-used = { status = "planned", issue = "#336" }
 eq-without-hash = { status = "planned", issue = "#336" }
-expression-not-assigned = { status = "planned", issue = "#336" }
+expression-not-assigned = "implemented"
 format-string-without-interpolation = { status = "planned", issue = "#336" }
 function-redefined = { status = "planned", issue = "#336" }
 global-variable-undefined = { status = "planned", issue = "#336" }
@@ -79,7 +79,7 @@ inconsistent-mro = { status = "planned", issue = "#336" }
 inconsistent-quotes = { status = "planned", issue = "#336" }
 inconsistent-return-statements = { status = "planned", issue = "#336" }
 inherit-non-class = { status = "planned", issue = "#336" }
-init-is-generator = { status = "planned", issue = "#336" }
+init-is-generator = "implemented"
 invalid-bool-returned = { status = "planned", issue = "#336" }
 invalid-bytes-returned = { status = "planned", issue = "#336" }
 invalid-character-carriage-return = { status = "planned", issue = "#336" }

@@ -415,7 +415,6 @@ pylint = ["eq-without-hash"]
 [[rule]]
 name = "expression-not-assigned"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["expression-not-assigned"]
 
 [[rule]]
@@ -469,7 +468,6 @@ pylint = ["inherit-non-class"]
 [[rule]]
 name = "init-is-generator"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["init-is-generator"]
 
 [[rule]]

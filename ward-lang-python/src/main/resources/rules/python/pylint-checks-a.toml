@@ -4,14 +4,12 @@
 [[rules]]
 id = "ward:python/consider-using-sys-exit"
 language = "python"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "error"
 category = "coding"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["atom_expr"]
-text = "^(exit|quit)\\("
+check = "sys-exit-call"
 message = "use sys.exit() instead of exit() or quit()"
 '''
 
@@ -85,7 +83,7 @@ text = "(\\w+)==[\\w.'\"]+or\\1==|(\\w+)!=[\\w.'\"]+and\\2!="
 message = "use 'in' with a tuple instead of repeated equality checks on the same value"
 '''
 
-# shortcut: pylint only reports assignments and returns and infers the middle operand; this matches any or-expression whose middle operand is a truthy literal, and node text has no spaces so names containing "and"/"or" can match
+# shortcut: the check matches the structure of the and/or expression in an assignment or return, and recognises only literal truthy middle operands; Pylint infers them.
 [[rules]]
 id = "ward:python/consider-using-ternary"
 language = "python"
@@ -94,9 +92,7 @@ severity = "error"
 category = "coding"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["or_test"]
-text = "^[\\w.]+and([1-9]\\d*|'[^']+'|\"[^\"]+\"|True)or[\\w.]+$"
+check = "and-or-ternary"
 message = "use a conditional expression instead of 'and'/'or'"
 '''
 
@@ -113,4 +109,28 @@ target = "strings"
 kinds = ["STRING"]
 pattern = "^[bB]['\"](?:[^\\\\]|\\\\.)*?\\\\[uU]"
 message = "anomalous unicode escape in a byte string; use a raw or text string instead"
+'''
+
+[[rules]]
+id = "ward:python/init-is-generator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "init-generator"
+message = "__init__ method is a generator"
+'''
+
+[[rules]]
+id = "ward:python/expression-not-assigned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unassigned-call-expression"
+message = "expression contains a call but its value is assigned to nothing"
 '''

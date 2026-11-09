@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.AndOrTernaryCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
@@ -12,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
 import dev.ward.analysis.domain.rule.check.FStringDocstringCheck;
 import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
+import dev.ward.analysis.domain.rule.check.InitGeneratorCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
@@ -19,6 +21,7 @@ import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
+import dev.ward.analysis.domain.rule.check.UnassignedCallExpressionCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedExportCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAnnotationCheck;
@@ -66,6 +69,11 @@ final class PythonOrderChecks {
             "empty-abstract-method",
             toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
         entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE))),
+        entry("init-generator", toml -> new InitGeneratorCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "unassigned-call-expression",
+            toml -> new UnassignedCallExpressionCheck(TomlValues.required(toml, MESSAGE))),
+        entry("and-or-ternary", toml -> new AndOrTernaryCheck(TomlValues.required(toml, MESSAGE))),
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",
