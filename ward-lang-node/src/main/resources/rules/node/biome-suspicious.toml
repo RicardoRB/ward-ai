@@ -56,3 +56,28 @@ kinds = ["caseBlock"]
 order = ["caseClauses", "defaultClause"]
 message = "default clause should be the last clause of the switch"
 '''
+
+[[rules]]
+id = "ward:javascript/no-duplicate-jsx-props"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-duplicate-props"
+message = "this JSX property is assigned more than once; keep one of them"
+'''
+
+[[rules]]
+id = "ward:typescript/no-duplicate-jsx-props"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-duplicate-props"
+message = "this JSX property is assigned more than once; keep one of them"
+'''
+

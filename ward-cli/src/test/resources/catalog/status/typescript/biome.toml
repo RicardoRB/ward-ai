@@ -1,6 +1,6 @@
 # Status of the biome rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-no-access-key = { status = "planned", issue = "#329" }
+no-access-key = "implemented"
 no-accumulating-spread = "implemented"
 no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = { status = "planned", issue = "#329" }
@@ -11,11 +11,11 @@ no-array-index-key = { status = "planned", issue = "#329" }
 no-assign-in-expressions = "implemented"
 no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
 no-astro-set-html-directive = { status = "planned", issue = "#329" }
-no-autofocus = { status = "planned", issue = "#329" }
+no-autofocus = "implemented"
 no-banned-types = "implemented"
 no-barrel-file = { status = "planned", issue = "#329" }
 no-before-interactive-script-outside-document = { status = "planned", issue = "#329" }
-no-blank-target = { status = "planned", issue = "#329" }
+no-blank-target = "implemented"
 no-bun-modules = { status = "planned", issue = "#329" }
 no-children-prop = { status = "planned", issue = "#329" }
 no-comment-text = { status = "planned", issue = "#329" }
@@ -26,18 +26,18 @@ no-confusing-labels = { status = "planned", issue = "#329" }
 no-confusing-void-type = { status = "planned", issue = "#329" }
 no-const-enum = "implemented"
 no-constant-math-min-max-clamp = "implemented"
-no-dangerously-set-inner-html = { status = "planned", issue = "#329" }
+no-dangerously-set-inner-html = "implemented"
 no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#329" }
 no-default-export = "implemented"
 no-delete = "implemented"
 no-deprecated-imports = { status = "planned", issue = "#329" }
-no-distracting-elements = { status = "planned", issue = "#329" }
+no-distracting-elements = "implemented"
 no-document-cookie = "implemented"
 no-document-import-in-page = { status = "planned", issue = "#329" }
 no-done-callback = { status = "planned", issue = "#296" }
 no-drizzle-delete-without-where = { status = "planned", issue = "#329" }
 no-drizzle-update-without-where = { status = "planned", issue = "#329" }
-no-duplicate-jsx-props = { status = "planned", issue = "#329" }
+no-duplicate-jsx-props = "implemented"
 no-duplicate-test-hooks = { status = "planned", issue = "#329" }
 no-duplicated-spread-props = { status = "planned", issue = "#329" }
 no-dynamic-namespace-import-access = "implemented"
@@ -75,8 +75,8 @@ no-invalid-file-input-accept = { status = "planned", issue = "#329" }
 no-js-restricted-properties = { status = "planned", issue = "#329" }
 no-jsx-leaked-dollar = { status = "planned", issue = "#329" }
 no-jsx-literals = { status = "planned", issue = "#296" }
-no-jsx-namespace = { status = "planned", issue = "#329" }
-no-jsx-props-bind = { status = "planned", issue = "#329" }
+no-jsx-namespace = "implemented"
+no-jsx-props-bind = "implemented"
 no-label-without-control = { status = "planned", issue = "#329" }
 no-leaked-render = { status = "planned", issue = "#329" }
 no-misleading-instantiator = { status = "planned", issue = "#329" }
@@ -95,7 +95,7 @@ no-non-scalable-viewport = { status = "planned", issue = "#329" }
 no-noninteractive-element-interactions = { status = "planned", issue = "#329" }
 no-noninteractive-element-to-interactive-role = { status = "planned", issue = "#329" }
 no-noninteractive-tabindex = { status = "planned", issue = "#329" }
-no-obsolete-tags = { status = "planned", issue = "#329" }
+no-obsolete-tags = "implemented"
 no-parameter-assign = { status = "planned", issue = "#296" }
 no-parameters-only-used-in-recursion = { status = "planned", issue = "#329" }
 no-playwright-element-handle = { status = "planned", issue = "#329" }
@@ -108,7 +108,7 @@ no-playwright-useless-await = { status = "planned", issue = "#329" }
 no-playwright-wait-for-navigation = { status = "planned", issue = "#329" }
 no-playwright-wait-for-selector = { status = "planned", issue = "#329" }
 no-playwright-wait-for-timeout = { status = "planned", issue = "#329" }
-no-positive-tabindex = { status = "planned", issue = "#329" }
+no-positive-tabindex = "implemented"
 no-private-imports = { status = "planned", issue = "#329" }
 no-process-env = "implemented"
 no-process-global = { status = "planned", issue = "#329" }
@@ -157,10 +157,10 @@ no-undeclared-dependencies = { status = "planned", issue = "#329" }
 no-undeclared-env-vars = { status = "planned", issue = "#329" }
 no-unknown-attribute = { status = "planned", issue = "#329" }
 no-unnecessary-conditions = { status = "planned", issue = "#329" }
-no-unreachable-super = { status = "planned", issue = "#329" }
+no-unreachable-super = "implemented"
 no-unresolved-imports = { status = "planned", issue = "#329" }
 no-unsafe-iframe-sandbox = { status = "planned", issue = "#329" }
-no-unused-function-parameters = { status = "planned", issue = "#329" }
+no-unused-function-parameters = "implemented"
 no-unused-instantiation = "implemented"
 no-unused-template-literal = "implemented"
 no-unwanted-polyfillio = { status = "planned", issue = "#329" }
@@ -184,7 +184,7 @@ no-vue-reserved-keys = { status = "planned", issue = "#329" }
 no-vue-reserved-props = { status = "planned", issue = "#329" }
 no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
 no-xor-as-exponentiation = "implemented"
-use-alt-text = { status = "planned", issue = "#329" }
+use-alt-text = "implemented"
 use-anchor-content = { status = "planned", issue = "#329" }
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
 use-aria-props-for-role = { status = "planned", issue = "#329" }
@@ -193,7 +193,7 @@ use-array-find = "implemented"
 use-array-some = { status = "planned", issue = "#329" }
 use-at-index = { status = "planned", issue = "#296" }
 use-better-dom-traversing = { status = "planned", issue = "#329" }
-use-button-type = { status = "planned", issue = "#329" }
+use-button-type = "implemented"
 use-component-export-only-modules = { status = "planned", issue = "#296" }
 use-consistent-array-type = { status = "planned", issue = "#296" }
 use-consistent-arrow-return = { status = "planned", issue = "#296" }
@@ -229,9 +229,9 @@ use-google-font-display = { status = "planned", issue = "#329" }
 use-google-font-preconnect = { status = "planned", issue = "#329" }
 use-heading-content = { status = "planned", issue = "#329" }
 use-hook-at-top-level = { status = "planned", issue = "#329" }
-use-html-lang = { status = "planned", issue = "#329" }
+use-html-lang = "implemented"
 use-iframe-sandbox = { status = "planned", issue = "#329" }
-use-iframe-title = { status = "planned", issue = "#329" }
+use-iframe-title = "implemented"
 use-image-size = { status = "planned", issue = "#329" }
 use-import-extensions = { status = "planned", issue = "#329" }
 use-imports-first = { status = "planned", issue = "#329" }

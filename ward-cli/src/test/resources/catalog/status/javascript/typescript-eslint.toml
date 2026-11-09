@@ -1,6 +1,6 @@
 # Status of the typescript-eslint rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-no-base-to-string = { status = "planned", issue = "#329" }
+no-base-to-string = "implemented"
 no-duplicate-enum-values = "not-applicable"
 no-explicit-any = "not-applicable"
 no-extra-non-null-assertion = "not-applicable"

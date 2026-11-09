@@ -105,10 +105,11 @@ class NodeFixturesTest {
           Files.readAllLines(owned.directory().resolve("expected" + suffix + ".txt")).stream()
               .filter(line -> !line.isBlank())
               .toList();
-      assertThat(run(rule, owned.directory().resolve(VIOLATING + suffix + "." + extension), owned))
+      final Path violating = source(owned, VIOLATING + suffix, extension);
+      assertThat(run(rule, violating, owned))
           .as("%s %s", owned, VIOLATING + suffix)
           .isEqualTo(expected);
-      final Path passing = owned.directory().resolve(PASSING + suffix + "." + extension);
+      final Path passing = source(owned, PASSING + suffix, extension);
       if (Files.isRegularFile(passing)) {
         assertThat(run(rule, passing, owned)).as("%s passing%s", owned, suffix).isEmpty();
       }
@@ -128,6 +129,15 @@ class NodeFixturesTest {
           .forEach(cases::add);
     }
     return cases;
+  }
+
+  /** The file of a case: a TypeScript case with a {@code .tsx} file uses it, so that JSX is on. */
+  private static Path source(final OwnedRule owned, final String base, final String extension) {
+    final Path tsx = owned.directory().resolve(base + ".tsx");
+    if ("ts".equals(extension) && Files.isRegularFile(tsx)) {
+      return tsx;
+    }
+    return owned.directory().resolve(base + "." + extension);
   }
 
   /** The extension of the rule's language: TypeScript fixtures are {@code .ts}. */
