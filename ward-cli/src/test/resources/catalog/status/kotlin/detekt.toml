@@ -22,7 +22,7 @@ data-class-contains-functions = { status = "planned", issue = "#294" }
 data-class-should-be-immutable = { status = "planned", issue = "#294" }
 deprecated-block-tag = { status = "planned", issue = "#294" }
 deprecation = { status = "planned", issue = "#324" }
-destructuring-declaration-with-too-many-entries = { status = "planned", issue = "#294" }
+destructuring-declaration-with-too-many-entries = "implemented"
 dont-downcast-collection-types = { status = "planned", issue = "#324" }
 double-mutability-for-collection = "implemented"
 double-negative-lambda = { status = "planned", issue = "#294" }
@@ -43,13 +43,13 @@ empty-while-block = { status = "planned", issue = "#294" }
 end-of-sentence-format = { status = "planned", issue = "#294" }
 enum-naming = { status = "planned", issue = "#294" }
 equals-always-returns-true-or-false = "implemented"
-equals-null-call = { status = "planned", issue = "#294" }
+equals-null-call = "implemented"
 equals-on-signature-line = { status = "planned", issue = "#294" }
 exception-raised-in-unexpected-location = "implemented"
 exit-outside-main = { status = "planned", issue = "#324" }
 explicit-collection-element-access-method = { status = "planned", issue = "#294" }
 explicit-garbage-collection-call = "implemented"
-explicit-it-lambda-parameter = { status = "planned", issue = "#294" }
+explicit-it-lambda-parameter = "implemented"
 expression-body-syntax = { status = "planned", issue = "#294" }
 for-each-on-range = "implemented"
 forbidden-annotation = { status = "planned", issue = "#294" }
@@ -57,10 +57,10 @@ forbidden-class-name = { status = "planned", issue = "#294" }
 forbidden-import = { status = "planned", issue = "#294" }
 forbidden-method-call = { status = "planned", issue = "#294" }
 forbidden-suppress = { status = "planned", issue = "#294" }
-forbidden-void = { status = "planned", issue = "#294" }
+forbidden-void = "implemented"
 function-max-length = { status = "planned", issue = "#294" }
 function-min-length = { status = "planned", issue = "#294" }
-function-only-returning-constant = { status = "planned", issue = "#294" }
+function-only-returning-constant = "implemented"
 global-coroutine-usage = "implemented"
 has-platform-type = { status = "planned", issue = "#324" }
 ignored-return-value = { status = "planned", issue = "#324" }
@@ -77,12 +77,12 @@ labeled-expression = { status = "planned", issue = "#294" }
 lambda-parameter-naming = { status = "planned", issue = "#294" }
 large-class = { status = "planned", issue = "#294" }
 lateinit-usage = "implemented"
-loop-with-too-many-jump-statements = { status = "planned", issue = "#294" }
+loop-with-too-many-jump-statements = "implemented"
 mandatory-braces-loops = { status = "planned", issue = "#294" }
 map-get-with-not-null-assertion-operator = { status = "planned", issue = "#324" }
 matching-declaration-name = { status = "planned", issue = "#294" }
 max-chained-calls-on-same-line = { status = "planned", issue = "#294" }
-may-be-const = { status = "planned", issue = "#294" }
+may-be-const = "implemented"
 member-name-equals-class-name = { status = "planned", issue = "#294" }
 method-overloading = { status = "planned", issue = "#294" }
 missing-package-declaration = { status = "planned", issue = "#324" }
@@ -91,7 +91,7 @@ multiline-raw-string-indentation = { status = "planned", issue = "#294" }
 named-arguments = { status = "planned", issue = "#294" }
 nested-classes-visibility = { status = "planned", issue = "#294" }
 nested-scope-functions = { status = "planned", issue = "#294" }
-new-line-at-end-of-file = { status = "planned", issue = "#294" }
+new-line-at-end-of-file = "implemented"
 no-name-shadowing = { status = "planned", issue = "#294" }
 no-tabs = { status = "planned", issue = "#294" }
 non-boolean-property-prefixed-with-is = { status = "planned", issue = "#294" }
@@ -100,22 +100,22 @@ null-check-on-mutable-property = { status = "planned", issue = "#324" }
 nullable-boolean-check = { status = "planned", issue = "#294" }
 nullable-to-string-call = { status = "planned", issue = "#324" }
 object-extends-throwable = "implemented"
-object-literal-to-lambda = { status = "planned", issue = "#294" }
+object-literal-to-lambda = "implemented"
 object-property-naming = { status = "planned", issue = "#294" }
-optional-abstract-keyword = { status = "planned", issue = "#294" }
+optional-abstract-keyword = "implemented"
 optional-unit = { status = "planned", issue = "#294" }
 outdated-documentation = { status = "planned", issue = "#294" }
 prefer-to-over-pair-syntax = { status = "planned", issue = "#294" }
 print-stack-trace = "implemented"
 property-used-before-declaration = { status = "planned", issue = "#324" }
 redundant-explicit-type = { status = "planned", issue = "#294" }
-redundant-higher-order-map-usage = { status = "planned", issue = "#294" }
+redundant-higher-order-map-usage = "implemented"
 redundant-suspend-modifier = { status = "planned", issue = "#324" }
 replace-safe-call-chain-with-run = { status = "planned", issue = "#294" }
 rethrow-caught-exception = "implemented"
 return-from-finally = "implemented"
-safe-cast = { status = "planned", issue = "#294" }
-serial-version-uid-in-serializable-class = { status = "planned", issue = "#294" }
+safe-cast = "implemented"
+serial-version-uid-in-serializable-class = "implemented"
 sleep-instead-of-delay = "implemented"
 spacing-between-package-and-imports = { status = "planned", issue = "#294" }
 spread-operator = "implemented"
@@ -130,18 +130,18 @@ throwing-exception-in-main = { status = "planned", issue = "#324" }
 throwing-exceptions-without-message-or-cause = "implemented"
 throwing-new-instance-of-same-exception = "implemented"
 too-many-functions = { status = "planned", issue = "#294" }
-trailing-whitespace = { status = "planned", issue = "#294" }
+trailing-whitespace = "implemented"
 trim-multiline-raw-string = { status = "planned", issue = "#294" }
 unconditional-jump-statement-in-loop = { status = "planned", issue = "#324" }
 underscores-in-numeric-literals = { status = "planned", issue = "#294" }
 undocumented-public-property = { status = "planned", issue = "#294" }
-unnecessary-abstract-class = { status = "planned", issue = "#294" }
+unnecessary-abstract-class = "implemented"
 unnecessary-annotation-use-site-target = { status = "planned", issue = "#294" }
-unnecessary-apply = { status = "planned", issue = "#294" }
+unnecessary-apply = "implemented"
 unnecessary-backticks = { status = "planned", issue = "#294" }
 unnecessary-braces-around-trailing-lambda = { status = "planned", issue = "#294" }
-unnecessary-filter = { status = "planned", issue = "#294" }
-unnecessary-inheritance = { status = "planned", issue = "#294" }
+unnecessary-filter = "implemented"
+unnecessary-inheritance = "implemented"
 unnecessary-inner-class = { status = "planned", issue = "#294" }
 unnecessary-let = { status = "planned", issue = "#294" }
 unnecessary-not-null-check = { status = "planned", issue = "#324" }
@@ -158,23 +158,23 @@ unused-parameter = { status = "planned", issue = "#294" }
 unused-private-class = { status = "planned", issue = "#294" }
 unused-private-member = { status = "planned", issue = "#294" }
 unused-unary-operator = "implemented"
-use-any-or-none-instead-of-find = { status = "planned", issue = "#294" }
-use-array-literals-in-annotations = { status = "planned", issue = "#294" }
-use-check-not-null = { status = "planned", issue = "#294" }
-use-check-or-error = { status = "planned", issue = "#294" }
+use-any-or-none-instead-of-find = "implemented"
+use-array-literals-in-annotations = "implemented"
+use-check-not-null = "implemented"
+use-check-or-error = "implemented"
 use-data-class = { status = "planned", issue = "#294" }
 use-empty-counterpart = { status = "planned", issue = "#294" }
 use-if-empty-or-if-blank = { status = "planned", issue = "#294" }
 use-if-instead-of-when = { status = "planned", issue = "#294" }
-use-is-null-or-empty = { status = "planned", issue = "#294" }
+use-is-null-or-empty = "implemented"
 use-let = { status = "planned", issue = "#294" }
-use-or-empty = { status = "planned", issue = "#294" }
-use-require = { status = "planned", issue = "#294" }
-use-require-not-null = { status = "planned", issue = "#294" }
+use-or-empty = "implemented"
+use-require = "implemented"
+use-require-not-null = "implemented"
 use-sum-of-instead-of-flat-map-size = { status = "planned", issue = "#294" }
 useless-call-on-not-null = { status = "planned", issue = "#294" }
 useless-postfix-expression = "implemented"
-utility-class-with-public-constructor = { status = "planned", issue = "#294" }
+utility-class-with-public-constructor = "implemented"
 var-could-be-val = { status = "planned", issue = "#294" }
 variable-max-length = { status = "planned", issue = "#294" }
 variable-min-length = { status = "planned", issue = "#294" }
