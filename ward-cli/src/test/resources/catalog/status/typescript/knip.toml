@@ -15,5 +15,5 @@ knip-ns-exports = { status = "planned", issue = "#331" }
 knip-ns-types = { status = "planned", issue = "#331" }
 knip-optional-peer-dependencies = { status = "planned", issue = "#331" }
 knip-types = { status = "planned", issue = "#331" }
-knip-unlisted = { status = "planned", issue = "#331" }
-knip-unresolved = { status = "planned", issue = "#331" }
+knip-unlisted = "implemented"
+knip-unresolved = "implemented"

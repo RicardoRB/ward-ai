@@ -1,0 +1,50 @@
+# Dead-code rules for TypeScript and JavaScript, replacing knip. Each body names a check; the
+# project-wide checks read every file of the language at once.
+
+[[rules]]
+id = "ward:typescript/knip-unresolved"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unresolved-import"
+message = "unresolved import '{value}': no file of the project matches it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-unresolved"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unresolved-import"
+message = "unresolved import '{value}': no file of the project matches it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-unlisted"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unlisted-import"
+message = "unlisted dependency '{value}': not in the package.json of this package"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-unlisted"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unlisted-import"
+message = "unlisted dependency '{value}': not in the package.json of this package"
+'''

@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -47,6 +48,16 @@ final class RuleFixtureRunner {
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
+    return run(rule, path, text, typeFacts, ProjectFiles.empty());
+  }
+
+  /** Like {@link #run(RuleDefinition, String, String, TypeFacts)}, with the project's manifests. */
+  List<AnalysisFinding> run(
+      final RuleDefinition rule,
+      final String path,
+      final String text,
+      final TypeFacts typeFacts,
+      final ProjectFiles files) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
@@ -61,7 +72,7 @@ final class RuleFixtureRunner {
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
-    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule)));
+    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule), files));
     return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
   }
 

@@ -13,6 +13,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
       List.of(
           "rules/duplication-node.toml",
           "rules/node/blocks.toml",
+          "rules/node/dead-code.toml",
           "rules/node/coding.toml",
           "rules/node/metrics.toml",
           "rules/node/misc.toml",

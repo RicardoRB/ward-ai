@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -100,13 +102,37 @@ class RuleCatalogFixturesTest {
       final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, unitName(file), Files.readString(file), typeFacts);
+        runner.run(rule, unitName(file), Files.readString(file), typeFacts, manifests(file));
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
         findings);
+  }
+
+  /**
+   * The manifests of a fixture's project: the package.json and pnpm-workspace.yaml files under the
+   * {@code project} folder beside the fixture, by their path in that folder. A fixture without the
+   * folder has none.
+   */
+  private static ProjectFiles manifests(final Path file) throws IOException {
+    final Path project = file.resolveSibling("project");
+    if (!Files.isDirectory(project)) {
+      return ProjectFiles.empty();
+    }
+    final Map<String, String> texts = new TreeMap<>();
+    try (Stream<Path> files = Files.walk(project)) {
+      for (final Path manifest : files.filter(Files::isRegularFile).toList()) {
+        final String name = manifest.getFileName().toString();
+        if (name.equals("package.json") || name.equals("pnpm-workspace.yaml")) {
+          texts.put(
+              project.relativize(manifest).toString().replace('\\', '/'),
+              Files.readString(manifest));
+        }
+      }
+    }
+    return new ProjectFiles(texts);
   }
 
   /** The path the rule sees: the first line of {@code filename.txt} beside the fixture, if any. */
