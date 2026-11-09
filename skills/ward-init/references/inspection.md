@@ -43,7 +43,7 @@ Read one line per check:
   below 8, above 25 (untested and unsupported; init configures it as JDK 25), or could not be read;
   in the last case init cannot check versions and will stop until the build tool reports a Java
   version.
-- a gate id, such as `spotbugs`, with `WARNING`: a configured gate pins a version that does not run
+- a gate id, such as `mutation`, with `WARNING`: a configured gate pins a version that does not run
   on that JDK. Reconfiguring with init chooses a compatible version.
 - `configuration`: `ERROR` with `Run 'ward init'` means there is no `ward.toml` yet. `OK`
   means one exists (see step 5).

@@ -17,9 +17,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `tests` | JUnit 5 | Run the project's automated tests. |
 | | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
-| Code Quality | `checkstyle` | Checkstyle | Check Java style rules. |
-| | `pmd` | PMD | Find common Java design and implementation problems. |
-| | `spotbugs` | SpotBugs | Run static analysis for potential bugs. |
+| Code Quality | `ward` | Ward rules | Check Java and Kotlin style and bug rules selected in `ward-rules.toml`. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
@@ -99,7 +97,7 @@ Presets may write these rule files:
 - `config/enforcer-rules.xml` (strict)
 - `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project
 
-Java and Kotlin projects get no `config/pmd-ruleset.xml`, `config/checkstyle.xml` or `config/spotbugs-exclude.xml`; the Ward rules replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+Java and Kotlin projects get no tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 
@@ -508,7 +506,7 @@ analyzes again only the files around the change. Deleting `.ward/cache/` still f
 
 ### Java rules
 
-Ward ships thirteen Java rules. They mirror the structural Checkstyle and PMD checks of the strict
+Ward ships thirteen Java rules. They mirror the structural checks of the strict
 preset, so a Java project can run them in the same pass as the rest of its gates:
 
 | Rule | Mirrors | Limit or pattern |
@@ -527,13 +525,13 @@ preset, so a Java project can run them in the same pass as the rest of its gates
 | `ward:java/parameter-name` | Checkstyle `ParameterName` | `^[a-z][a-zA-Z0-9]*$` |
 | `ward:java/local-variable-name` | Checkstyle `LocalVariableName` | `^[a-z][a-zA-Z0-9]*$` |
 
-Differences from Checkstyle and PMD, by construction:
+Differences from the upstream checks, by construction:
 
 - `unused-import` is textual. It does not resolve names, so a fully qualified use still counts as
   unused and a same-named identifier from another package counts as a use.
 - `missing-javadoc` checks only the comment immediately before a declaration. It skips `@Override`
   methods, does not check interface members, and skips public types nested in a non-public type, as
-  Checkstyle's scope does.
+  the upstream scope does.
 - `method-length` and the complexity rules measure methods only. Constructor bodies are not
   measured by `method-length`, and nested classes and lambdas count toward their enclosing method.
 - `cognitive-complexity` follows the published definition in a simplified form: each `&&` and `||`
@@ -555,12 +553,12 @@ parameters. They run in the `ward` gate with the other rules:
 | `ward:typescript/unused-assignment` | none | the same check, for TypeScript |
 | `ward:javascript/unused-assignment` | none | the same check, for JavaScript |
 
-Differences from PMD and by construction:
+Differences from the upstream check, by construction:
 
 - A write is reported when a later write can replace it on some path, or when it is an assignment to
   a name that is not exempt. The names `_`, and names that start with `ignored` or `unused`, are
   exempt for the last assignment only. An initializer or an incoming parameter value that nothing
-  replaces is not reported, as in PMD.
+  replaces is not reported, as upstream does.
 - A variable that a nested function, lambda or arrow function reads or writes is never reported.
 - Fields, object properties and array elements are not tracked, and neither are variables of another
   function.
@@ -909,14 +907,12 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 | Gate | Source | Maven | Gradle | TypeScript & JavaScript |
 |---|---|---|---|---|
-| `checkstyle` | XML report | `target/checkstyle-result.xml` | `build/reports/checkstyle/*.xml` | |
-| `pmd` | XML report | `target/pmd.xml` | `build/reports/pmd/*.xml` | |
 | `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
@@ -947,7 +943,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `checkstyle`, `pmd`, `semgrep`, `gitleaks`, `eslint`, `biome`,
+for `semgrep`, `gitleaks`, `eslint`, `biome`,
 `openapi-lint`, and `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
@@ -957,8 +953,6 @@ edit, and for the files a commit stages, a gate:
 
 | Gate | Maven | Gradle |
 |---|---|---|
-| `checkstyle` | `-Dcheckstyle.includes=**/<file name>` | `-PwardPaths=<paths>`, with a preset |
-| `pmd` | full, with PMD's analysis cache | `-PwardPaths=<paths>`, with a preset |
 | `semgrep` | each path as its own argument | each path as its own argument |
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
@@ -976,12 +970,6 @@ that contain the edited files and their dependents. Its `full` files are `turbo.
 `package.json`, and the root lint configs; an edit that no member contains runs it in full. The
 type-check and test gates have no table and always run in full.
 
-Gradle notes:
-
-- With a preset, the Checkstyle and PMD blocks init writes filter their sources to `wardPaths` only
-  when the property is set, so `checkstyleMain` and `pmdMain` still check the whole `main` source set
-  otherwise.
-- Without a preset there is no filter, and those gates run in full.
 
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always

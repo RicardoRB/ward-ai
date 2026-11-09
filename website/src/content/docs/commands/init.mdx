@@ -84,7 +84,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `checkstyle`, `pmd`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `ward`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -92,7 +92,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 ## Ward rules for Java and Kotlin
 
-For a Java or Kotlin project, init writes no Checkstyle, PMD or SpotBugs gate, configuration file, build plugin
+For a Java or Kotlin project, init writes no separate style or bug gate, configuration file, build plugin
 or package entry. The `ward` check applies Ward's own rules instead, and init writes a
 `ward-rules.toml` that selects the rules of the preset:
 
@@ -106,7 +106,7 @@ languages = ["java"]
 
 The file starts with an ownership marker, so a `ward-rules.toml` that you wrote is kept and
 reported as user-owned. With the `strict` preset the file also sets `ignore-constructor-parameter` and
-`ignore-setter` to `true` on `ward:java/hidden-field`, as the former Checkstyle configuration did.
+`ignore-setter` to `true` on `ward:java/hidden-field`, as the former style configuration did.
 See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
 
 `languages` lists the JVM source languages the project has, Java before Kotlin: `["kotlin"]` for a
@@ -190,11 +190,9 @@ Each version was run on a real JDK in Ward's compatibility matrix:
 
 | Tool | JDK 8 | JDK 11 | JDK 17 | JDK 21 | JDK 25 |
 |---|---|---|---|---|---|
-| Checkstyle engine | 9.3 | 10.20.2 | 10.20.2 | 10.20.2 | 10.20.2 |
-| SpotBugs (Maven plugin / Gradle engine) | 4.8.6.6 / 4.8.6 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 |
 | PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
 
-PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, and Enforcer 3.5.0 use the same
+JaCoCo 0.8.13 and Enforcer 3.5.0 use the same
 version on every JDK.
 
 Every strict gate runs on each LTS JDK from 8 to 25. When no version of a gate's tool runs on your
@@ -202,7 +200,7 @@ JDK, init leaves that gate out and configures the others. The plan, `--dry-run`,
 output name it:
 
 ```text
-checkstyle omitted: maven-checkstyle-plugin needs JDK 8+; this project builds on JDK 7
+mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK 7
 ```
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
@@ -229,8 +227,6 @@ checkstyle omitted: maven-checkstyle-plugin needs JDK 8+; this project builds on
   was.
 - `mutation` adds `pitest-maven` 1.30.1 with `pitest-junit5-plugin` 1.2.3, which read Java 25
   class files.
-- The `maven-pmd-plugin` declaration enables `<analysisCache>true</analysisCache>`. On Ward's own
-  sources this cut a warm PMD run from about 8 s to 2 s.
 
 Before writing, Ward checks the edited `pom.xml` in-process, without running Maven or fetching
 anything. The file must be well-formed XML, and each added declaration may contain only elements
@@ -255,10 +251,6 @@ and prefers the Gradle Wrapper when one exists.
 
 Init then appends blocks that make the plugins use what it generated:
 
-- With a preset, `checkstyle { configFile = file('config/checkstyle.xml') }` and
-  `pmd { ruleSetFiles = files('config/pmd-ruleset.xml'); ruleSets = [] }`, both limited to the
-  `main` source set, as the Maven plugins are. Each is followed by a `tasks.named` block that limits
-  the task to the files in the `wardPaths` property when a partial check sets it.
 - `jacocoTestCoverageVerification` with the preset's minimums, or `LINE` `0.80` without a preset.
   The `coverage` gate runs this task, which fails below a minimum.
 - `pitest { pitestVersion = '1.30.1'; junit5PluginVersion = '1.2.3' }` for `mutation`, plus the
@@ -275,7 +267,7 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `checkstyle`, `pmd`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
+  `ward`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
   the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
@@ -466,7 +458,7 @@ Init detects Biome when `package.json` declares `@biomejs/biome` or the project 
   `noExcessiveCognitiveComplexity`, `noFloatingPromises`, and `noMisusedPromises`.
 - If the project does not declare `@biomejs/biome`, init adds it at 2.5.15. A declared version
   outside `>=2.3.0 <3.0.0` is an `INCOMPATIBLE` finding, and applying changes nothing. Biome 2.3.0 is
-  the first release with the checkstyle reporter that Ward reads, and 3.x may change the config
+  the first release with the XML reporter that Ward reads, and 3.x may change the config
   schema.
 - Edit hooks run Biome on the edited files only. An edited file that Biome ignores passes.
 
@@ -675,7 +667,7 @@ It keeps the Gradle setup and adds the Android gates.
   `android-coverage` runs `createDebugUnitTestCoverageReport` at an 80% minimum. The JVM `coverage`
   gate is left out, since an Android root has no JaCoCo verification task.
 - **Modules.** Each Android module script gets the debug unit-test coverage block. An Android module
-  applies no JVM plugin, so init writes no Checkstyle, PMD or SpotBugs block into it.
+  applies no JVM plugin, so init writes no JVM quality block into it.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
   directory, and when the Android Gradle Plugin needs a newer JDK or Gradle than the build runs on.
 

@@ -10,7 +10,7 @@ explains each choice for this codebase, and changes files only after you approve
 | Skill | What it does |
 |---|---|
 | `ward-init` | Inspects the project, asks about the preset, gates, architecture style, tools, agent integration, and Git hooks one question at a time, with a recommendation based on what it found. It then previews the exact changes with `ward init --dry-run` and applies the same options after you approve the plan. |
-| `ward-tune` | Fits the rules of the gates you already run to the code: Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing rules. For a large backlog of findings it plans the fixes rule by rule instead of hiding them. Every edit is grounded in findings from `ward check`, shown as a diff, and written only after you approve it. |
+| `ward-tune` | Fits the rules of the gates you already run to the code: Ward rule selection, the JaCoCo coverage threshold, PIT mutation testing rules. For a large backlog of findings it plans the fixes rule by rule instead of hiding them. Every edit is grounded in findings from `ward check`, shown as a diff, and written only after you approve it. |
 | `ward-fix` | Fixes the code so the failing gates pass. It reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule with you, and re-runs the gate after each rule. It never edits `ward.toml` or rule files and never adds suppressions; a rule you want changed goes to `ward-tune`. |
 
 The skills follow the open [Agent Skills](https://agentskills.io) format, so the same files work in
@@ -79,7 +79,7 @@ All skills follow the same rules, whatever the agent is asked:
   `ward check` on a `ward.toml` that existed before the session, the agent asks you to
   confirm the repository is trusted. See [Security](/security/).
 - **Gates are never weakened to make a check pass.** The agent does not drop gates, lower
-  thresholds, or add suppressions (`@SuppressWarnings`, `// NOPMD`, suppression files, `@ArchIgnore`).
+  thresholds, or add suppressions (`@SuppressWarnings`, inline ignore comments, suppression files, `@ArchIgnore`).
 - **Nothing is installed without a specific yes.** That covers the Ward installer and each gate
   tool, such as `brew install semgrep`. Approving a plan is not consent to install.
 - **Every answer comes from you.** `ward-init` passes each answer as an explicit

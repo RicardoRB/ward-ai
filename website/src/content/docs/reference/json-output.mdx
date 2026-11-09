@@ -49,7 +49,7 @@ diagnostics go to stderr.
 | `severity` | The `--severity` threshold; see the table below. Defaults to `warning`. |
 | `project` | Enum names such as `JAVA`, `MAVEN`, and `SPRING_BOOT`. |
 | `languageVersion` | The target Node major version, such as `"22"`, for TypeScript and JavaScript projects; see [detect](/commands/detect/#node-version). For Python projects, the target `major.minor` version, such as `"3.12"`; see [detect](/commands/detect/#python-version). For Swift projects, the target Swift `major.minor` version, such as `"6.1"`; see [detect](/commands/detect/#swift-version). Omitted for other projects. |
-| `checks[].type` | The built-in tool type that decides the check's behavior, such as `checkstyle`. `command` means Ward does not recognize the command. Added in the version 2 configuration. |
+| `checks[].type` | The built-in tool type that decides the check's behavior, such as `coverage`. `command` means Ward does not recognize the command. Added in the version 2 configuration. |
 | `partial`, `scope` | Present only when `--path` is used. See [Partial checks](#partial-checks). |
 
 Omitted fields are intentional in schema v2.
@@ -75,7 +75,7 @@ Omitted fields are intentional in schema v2.
 
 ## Findings
 
-A failed `checkstyle`, `pmd`, `gitleaks`, `compile`, `ward-format`, `eslint`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
+A failed `ward`, `gitleaks`, `compile`, `ward-format`, `eslint`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
 violation in `findings`, in the tool's report order, so an agent can go straight to the file and
 line.
 
@@ -85,10 +85,9 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
 
 ```json
 {
-  "tool": "checkstyle", "rule": "MissingJavadocMethod", "severity": "error",
+  "tool": "ward", "rule": "ward:java/missing-javadoc", "severity": "error",
   "message": "Missing a Javadoc comment.", "file": "src/main/java/com/acme/Foo.java",
-  "line": 42, "column": 5,
-  "helpUri": "https://checkstyle.org/checks/javadoc/missingjavadocmethod.html"
+  "line": 42, "column": 5
 }
 ```
 
@@ -116,9 +115,9 @@ When learning is enabled with `--learn-after <n>`, the additive `learning` objec
 
 ```json
 { "learning": { "threshold": 3, "prompts": [{
-  "key": "checkstyle:LineLength", "gate": "checkstyle", "occurrences": 3,
-  "summary": "Line is longer than 100 characters (found 120).",
-  "instruction": "Ward: the `checkstyle` rule `LineLength` was violated in 3 separate occurrences..."
+  "key": "eslint:no-unused-vars", "gate": "eslint", "occurrences": 3,
+  "summary": "'x' is defined but never used.",
+  "instruction": "Ward: the `eslint` rule `no-unused-vars` was violated in 3 separate occurrences..."
 }] } }
 ```
 
