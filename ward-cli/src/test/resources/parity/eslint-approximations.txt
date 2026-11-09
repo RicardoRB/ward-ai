@@ -7,7 +7,5 @@ ward:javascript/no-octal-escape | javascript | ESLint parses octal escapes only 
 ward:typescript/no-octal-escape | typescript | the TypeScript parser rejects octal escapes, so ESLint cannot run this fixture; Ward is the only reference
 ward:javascript/no-nonoctal-decimal-escape | javascript | ESLint parses this escape only in script mode; the fixtures are checked that way
 ward:typescript/no-nonoctal-decimal-escape | typescript | the TypeScript parser rejects the escape, so ESLint cannot run this fixture; Ward is the only reference
-ward:javascript/no-useless-escape | javascript | a backslash before a dollar sign that precedes a brace in a template literal (the escape that ESLint accepts) cannot be written in the frontend fixtures: the frontend rejects the template, so that escape is not validated
-ward:typescript/no-useless-escape | typescript | same as the JavaScript rule
 ward:typescript/no-octal-escape | typescript | ESLint parse error: the TypeScript parser rejects octal escapes in both modes, so ESLint reports no finding on the fixture; the rule reports the escape
 ward:typescript/no-nonoctal-decimal-escape | typescript | ESLint parse error: the TypeScript parser rejects octal escapes in both modes, so ESLint reports no finding on the fixture; the rule reports the escape
