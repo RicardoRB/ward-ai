@@ -74,22 +74,16 @@ public final class BadSuperCallCheck implements RuleCheck {
   /** The arguments of the first call of {@code text}, from the parentheses after {@code super}. */
   static List<String> superArguments(final String text) {
     final int open = text.indexOf('(');
-    int depth = 0;
-    for (int index = open; index < text.length(); index++) {
-      final char c = text.charAt(index);
-      if (c == '(') {
-        depth++;
-      } else if (c == ')') {
-        depth--;
-        if (depth == 0) {
-          return ThreadInstantiationCheck.topLevelArguments(text.substring(open + 1, index))
-              .stream()
-              .filter(argument -> !argument.isEmpty())
-              .toList();
-        }
-      }
+    if (open < 0) {
+      return List.of();
     }
-    return List.of();
+    final int close = ThreadInstantiationCheck.matchingClose(text, open);
+    if (close < 0) {
+      return List.of();
+    }
+    return ThreadInstantiationCheck.topLevelArguments(text.substring(open + 1, close)).stream()
+        .filter(argument -> !argument.isEmpty())
+        .toList();
   }
 
   /** The name of the nearest enclosing class, or {@code null} outside a class. */

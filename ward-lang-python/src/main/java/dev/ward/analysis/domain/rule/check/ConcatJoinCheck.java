@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
  * initial value must be an empty string literal, and the loop must be a plain name loop.
  */
 public final class ConcatJoinCheck implements RuleCheck {
+  /** The parts of a plain assignment: target, operator and value. */
+  private static final int ASSIGNMENT_PARTS = 3;
 
   private static final Set<String> BLOCKS = Set.of("block", "file_input");
   private static final Pattern NAME = Pattern.compile("\\w+");
@@ -53,7 +55,7 @@ public final class ConcatJoinCheck implements RuleCheck {
   private static String emptyStringAssignment(final SyntaxNode statement) {
     final SyntaxNode assignment = firstExpression(statement);
     if (assignment == null
-        || assignment.children().size() != 3
+        || assignment.children().size() != ASSIGNMENT_PARTS
         || !ASSIGN.equals(SyntaxWalk.text(assignment.children().get(1)))
         || !EMPTY_STRING.matcher(SyntaxWalk.text(assignment.children().get(2))).matches()
         || !NAME.matcher(SyntaxWalk.text(assignment.children().get(0))).matches()) {
@@ -78,7 +80,7 @@ public final class ConcatJoinCheck implements RuleCheck {
     }
     final SyntaxNode augmented = firstExpression(body);
     if (augmented == null
-        || augmented.children().size() != 3
+        || augmented.children().size() != ASSIGNMENT_PARTS
         || !AUGMENTED.equals(SyntaxWalk.text(augmented.children().get(1)))
         || !result.equals(SyntaxWalk.text(augmented.children().get(0)))
         || !target.equals(SyntaxWalk.text(augmented.children().get(2)))) {
@@ -89,17 +91,17 @@ public final class ConcatJoinCheck implements RuleCheck {
 
   /** The first expression statement under a statement node. */
   private static SyntaxNode firstExpression(final SyntaxNode statement) {
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(statement, Set.of("expr_stmt"))) {
-      return visit.node();
-    }
-    return null;
+    return SyntaxWalk.visits(statement, Set.of("expr_stmt")).stream()
+        .findFirst()
+        .map(SyntaxWalk.Visit::node)
+        .orElse(null);
   }
 
   /** The first direct-or-wrapped child of the given kind under a statement node. */
   private static SyntaxNode firstChild(final SyntaxNode statement, final String kind) {
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(statement, Set.of(kind))) {
-      return visit.node();
-    }
-    return null;
+    return SyntaxWalk.visits(statement, Set.of(kind)).stream()
+        .findFirst()
+        .map(SyntaxWalk.Visit::node)
+        .orElse(null);
   }
 }

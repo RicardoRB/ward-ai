@@ -123,7 +123,7 @@ public final class RedefinedFunctionCheck implements RuleCheck {
       if (CONDITIONAL.contains(ancestor.kind())) {
         return true;
       }
-      if (ancestor.kind().equals("decorated") && decoratedExempt(ancestor, name)) {
+      if ("decorated".equals(ancestor.kind()) && decoratedExempt(ancestor, name)) {
         return true;
       }
     }
@@ -132,7 +132,7 @@ public final class RedefinedFunctionCheck implements RuleCheck {
 
   private static boolean decoratedExempt(final SyntaxNode decorated, final String name) {
     for (final SyntaxNode child : decorated.children()) {
-      if (child.kind().equals("funcdef") || child.kind().equals("classdef")) {
+      if ("funcdef".equals(child.kind()) || "classdef".equals(child.kind())) {
         continue;
       }
       final String text = SyntaxWalk.text(child);

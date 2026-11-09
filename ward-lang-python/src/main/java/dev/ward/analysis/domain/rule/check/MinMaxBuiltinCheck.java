@@ -59,7 +59,7 @@ public final class MinMaxBuiltinCheck implements RuleCheck {
     if (!matcher.matches()) {
       return null;
     }
-    String left = matcher.group(1);
+    final String left = matcher.group(1);
     String operator = matcher.group(2);
     final String right = matcher.group(3);
     final String target = matcher.group(4);

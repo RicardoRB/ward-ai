@@ -63,22 +63,12 @@ public final class DuplicateArgumentNameCheck implements RuleCheck {
     final String text = SyntaxWalk.text(function);
     final int open = "lambdef".equals(function.kind()) ? LAMBDA_OPEN : text.indexOf('(');
     final int close =
-        "lambdef".equals(function.kind()) ? text.indexOf(':') : matchingClose(text, open);
+        "lambdef".equals(function.kind())
+            ? text.indexOf(':')
+            : ThreadInstantiationCheck.matchingClose(text, open);
     if (open < 0 || close <= open) {
       return List.of();
     }
     return ThreadInstantiationCheck.topLevelArguments(text.substring(open + 1, close));
-  }
-
-  private static int matchingClose(final String text, final int open) {
-    int depth = 0;
-    for (int index = open; index >= 0 && index < text.length(); index++) {
-      if (text.charAt(index) == '(') {
-        depth++;
-      } else if (text.charAt(index) == ')' && --depth == 0) {
-        return index;
-      }
-    }
-    return -1;
   }
 }

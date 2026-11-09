@@ -18,6 +18,12 @@ import java.util.regex.Pattern;
  * base classes are not read, so an attribute a base defines is reported here.
  */
 public final class AttributeOutsideInitCheck implements RuleCheck {
+  private static final String BLOCK = "block";
+  private static final String FUNCDEF = "funcdef";
+  private static final String CLASSDEF = "classdef";
+
+  /** The parts of a plain assignment: target, operator and value. */
+  private static final int ASSIGNMENT_PARTS = 3;
 
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final Set<String> SCOPES =
@@ -50,49 +56,63 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
 
   /** The findings of one class: its methods' assignments that no defining method accounts for. */
   private List<RuleMatch> classFindings(final SyntaxNode classNode) {
-    final List<RuleMatch> found = new ArrayList<>();
     final List<SyntaxNode> methods = new ArrayList<>();
     final List<SyntaxNode> accessors = new ArrayList<>();
     final Set<String> classLevel = new HashSet<>();
     for (final SyntaxNode child : classNode.children()) {
-      if ("block".equals(child.kind())) {
+      if (BLOCK.equals(child.kind())) {
         collectMethodsAndNames(child, methods, accessors, classLevel);
       }
     }
-    final Set<String> defined = new HashSet<>(classLevel);
-    final StringBuilder definingText = new StringBuilder();
+    final Defined defined = new Defined(new HashSet<>(classLevel), new StringBuilder());
     final List<Assignment> assignments = new ArrayList<>();
     for (final SyntaxNode method : methods) {
-      final String name = methodName(method);
-      final boolean defining = DEFINING.contains(name) || accessors.contains(method);
-      if (defining) {
-        definingText.append(SyntaxWalk.text(method));
-      }
-      for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(method, Set.of("expr_stmt"))) {
-        if (visit.ancestors().stream().skip(1).anyMatch(a -> SCOPES.contains(a.kind()))) {
-          continue;
-        }
-        final Assignment assignment = assignmentOf(visit.node(), name, defining);
-        if (assignment != null) {
-          assignments.add(assignment);
-          if (defining) {
-            defined.add(assignment.attribute());
-          }
-        }
-      }
+      collectAssignments(method, accessors.contains(method), defined, assignments);
     }
+    final List<RuleMatch> found = new ArrayList<>();
     for (final Assignment assignment : assignments) {
-      if (assignment.defining() || defined.contains(assignment.attribute())) {
-        continue;
+      if (!accountedFor(assignment, defined)) {
+        found.add(
+            new RuleMatch(
+                assignment.node().span(), message.replace(MESSAGE_NAME, assignment.attribute())));
       }
-      if (definingText.toString().contains("self." + assignment.method() + "(")) {
-        continue;
-      }
-      found.add(
-          new RuleMatch(
-              assignment.node().span(), message.replace(MESSAGE_NAME, assignment.attribute())));
     }
     return found;
+  }
+
+  /** The names a class defines and the text of its defining methods. */
+  private record Defined(Set<String> names, StringBuilder definingText) {}
+
+  /** Adds the self-attribute assignments of one method, and records a defining method's text. */
+  private static void collectAssignments(
+      final SyntaxNode method,
+      final boolean accessor,
+      final Defined defined,
+      final List<Assignment> assignments) {
+    final String name = methodName(method);
+    final boolean defining = DEFINING.contains(name) || accessor;
+    if (defining) {
+      defined.definingText().append(SyntaxWalk.text(method));
+    }
+    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(method, Set.of("expr_stmt"))) {
+      if (visit.ancestors().stream().skip(1).anyMatch(a -> SCOPES.contains(a.kind()))) {
+        continue;
+      }
+      final Assignment assignment = assignmentOf(visit.node(), name, defining);
+      if (assignment != null) {
+        assignments.add(assignment);
+        if (defining) {
+          defined.names().add(assignment.attribute());
+        }
+      }
+    }
+  }
+
+  /** Whether a defining method, a class-level name or a defining method's call accounts for it. */
+  private static boolean accountedFor(final Assignment assignment, final Defined defined) {
+    return assignment.defining()
+        || defined.names().contains(assignment.attribute())
+        || defined.definingText().toString().contains("self." + assignment.method() + "(");
   }
 
   private static void collectMethodsAndNames(
@@ -107,15 +127,15 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
         continue;
       }
       final SyntaxNode node = visit.node();
-      if ("funcdef".equals(node.kind())) {
+      if (FUNCDEF.equals(node.kind())) {
         methods.add(node);
         if (decoratedAsAccessor(visit.ancestors())) {
           accessors.add(node);
         }
         classLevel.add(methodName(node));
-      } else if ("classdef".equals(node.kind())) {
+      } else if (CLASSDEF.equals(node.kind())) {
         classLevel.add(methodName(node));
-      } else if (node.children().size() >= 3
+      } else if (node.children().size() >= ASSIGNMENT_PARTS
           && "=".equals(SyntaxWalk.text(node.children().get(1)))) {
         classLevel.add(SyntaxWalk.text(node.children().get(0)));
       }
@@ -146,7 +166,7 @@ public final class AttributeOutsideInitCheck implements RuleCheck {
   private static Assignment assignmentOf(
       final SyntaxNode statement, final String method, final boolean defining) {
     final List<SyntaxNode> children = statement.children();
-    if (children.size() < 3 || !"=".equals(SyntaxWalk.text(children.get(1)))) {
+    if (children.size() < ASSIGNMENT_PARTS || !"=".equals(SyntaxWalk.text(children.get(1)))) {
       return null;
     }
     final Matcher matcher = SELF_TARGET.matcher(SyntaxWalk.text(children.get(0)));

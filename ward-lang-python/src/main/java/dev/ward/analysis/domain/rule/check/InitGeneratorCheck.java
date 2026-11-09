@@ -13,6 +13,7 @@ import java.util.Set;
  * scope and is not reported.
  */
 public final class InitGeneratorCheck implements RuleCheck {
+  private static final String CLASSDEF = "classdef";
 
   private static final String FUNCTION = "funcdef";
   private static final String INIT = "__init__";
@@ -58,7 +59,7 @@ public final class InitGeneratorCheck implements RuleCheck {
     }
     for (int index = ancestors.size() - 1; index >= 0; index--) {
       final String kind = ancestors.get(index).kind();
-      if ("classdef".equals(kind)) {
+      if (CLASSDEF.equals(kind)) {
         return true;
       }
       if (SCOPES.contains(kind)) {

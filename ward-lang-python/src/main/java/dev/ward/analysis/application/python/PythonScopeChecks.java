@@ -16,11 +16,9 @@ import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
 import dev.ward.analysis.domain.rule.check.PositionalParameterCountCheck;
 import dev.ward.analysis.domain.rule.check.PythonConstantNameCheck;
 import dev.ward.analysis.domain.rule.check.PythonRedefinedNameCheck;
-import dev.ward.analysis.domain.rule.check.RedefinedFunctionCheck;
 import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
-import dev.ward.analysis.domain.rule.check.SysExitCallCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportBindingCheck;
 import dev.ward.analysis.domain.scope.ScopeKind;
 import java.util.List;
@@ -59,10 +57,6 @@ final class PythonScopeChecks {
         entry("module-order", PythonScopeChecks::moduleOrder),
         entry("logging-args", PythonScopeChecks::loggingArgs),
         entry("collapsible-if", toml -> new CollapsibleIfCheck(TomlValues.required(toml, MESSAGE))),
-        entry("sys-exit-call", toml -> new SysExitCallCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "function-redefined",
-            toml -> new RedefinedFunctionCheck(TomlValues.required(toml, MESSAGE))),
         entry("handler-body", PythonScopeChecks::handlerBody),
         entry(
             "unused-import-binding",

@@ -38,8 +38,7 @@ public final class OpenWithoutWithCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CALLS)) {
-      if (OPEN.matcher(SyntaxWalk.text(visit.node())).matches()
-          && !managed(visit.ancestors(), visit.node())) {
+      if (OPEN.matcher(SyntaxWalk.text(visit.node())).matches() && !managed(visit.ancestors())) {
         found.add(new RuleMatch(visit.node().span(), message));
       }
     }
@@ -49,21 +48,23 @@ public final class OpenWithoutWithCheck implements RuleCheck {
   /**
    * Whether the call is in a with item, returned, handed to enter_context, or a context manager.
    */
-  private static boolean managed(final List<SyntaxNode> ancestors, final SyntaxNode call) {
+  private static boolean managed(final List<SyntaxNode> ancestors) {
     for (final SyntaxNode ancestor : ancestors) {
       if (WITH_ITEMS.contains(ancestor.kind()) || RETURN.equals(ancestor.kind())) {
         return true;
       }
-      if (FUNCTION.equals(ancestor.kind()) && contextFunction(ancestor)) {
-        return true;
-      }
-      if (DECORATED.equals(ancestor.kind()) && SyntaxWalk.text(ancestor).contains("@contextmanager")
-          || DECORATED.equals(ancestor.kind())
-              && SyntaxWalk.text(ancestor).contains("@contextlib.contextmanager")) {
+      if ((FUNCTION.equals(ancestor.kind()) && contextFunction(ancestor))
+          || (DECORATED.equals(ancestor.kind()) && contextDecorated(ancestor))) {
         return true;
       }
     }
     return false;
+  }
+
+  /** A decorated definition that is a context manager. */
+  private static boolean contextDecorated(final SyntaxNode decorated) {
+    final String text = SyntaxWalk.text(decorated);
+    return text.contains("@contextmanager") || text.contains("@contextlib.contextmanager");
   }
 
   /** A function named __enter__ or decorated as a context manager. */

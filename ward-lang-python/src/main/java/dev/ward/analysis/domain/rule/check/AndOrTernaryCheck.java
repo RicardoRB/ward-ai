@@ -14,6 +14,10 @@ import java.util.regex.Pattern;
  * the same thing. Other operands, and a pair of comparisons, are not reported.
  */
 public final class AndOrTernaryCheck implements RuleCheck {
+  private static final String RETURN_STMT = "return_stmt";
+
+  /** The operands and the operator of a boolean operation. */
+  private static final int OPERANDS = 3;
 
   private static final Set<String> STATEMENTS = Set.of("expr_stmt", "return_stmt");
   private static final Set<String> BOOLEAN = Set.of("and_test", "or_test");
@@ -47,7 +51,7 @@ public final class AndOrTernaryCheck implements RuleCheck {
   }
 
   private static boolean isAssignmentOrReturn(final SyntaxNode statement) {
-    if ("return_stmt".equals(statement.kind())) {
+    if (RETURN_STMT.equals(statement.kind())) {
       return statement.children().size() >= 2;
     }
     return statement.children().stream().anyMatch(child -> ASSIGN.equals(SyntaxWalk.text(child)));
@@ -79,7 +83,7 @@ public final class AndOrTernaryCheck implements RuleCheck {
 
   /** A real boolean operation: its kind and three children, operand, operator and operand. */
   private static boolean isBoolean(final SyntaxNode node, final String kind) {
-    return kind.equals(node.kind()) && node.children().size() == 3;
+    return kind.equals(node.kind()) && node.children().size() == OPERANDS;
   }
 
   private static boolean isOperator(final SyntaxNode node, final String operator) {

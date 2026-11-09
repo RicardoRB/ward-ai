@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Reports three consecutive assignments that swap two names through a temporary, like Pylint's
@@ -14,6 +15,10 @@ import java.util.regex.Pattern;
  * assignment. Shortcut: each assignment must be a plain name on both sides.
  */
 public final class SwapVariablesCheck implements RuleCheck {
+  private static final String STATEMENT = "stmt";
+
+  /** The parts of a plain assignment: target, operator and value. */
+  private static final int ASSIGNMENT_PARTS = 3;
 
   private static final Set<String> BLOCKS = Set.of("block", "file_input");
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
@@ -34,17 +39,13 @@ public final class SwapVariablesCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, BLOCKS)) {
-      final List<SyntaxNode> assignments = new ArrayList<>();
-      for (final SyntaxNode statement : visit.node().children()) {
-        if ("stmt".equals(statement.kind())) {
-          assignments.add(simpleAssignment(statement));
-        } else {
-          assignments.add(null);
-        }
-      }
+      final List<SyntaxNode> assignments =
+          visit.node().children().stream()
+              .map(child -> STATEMENT.equals(child.kind()) ? simpleAssignment(child) : null)
+              .collect(Collectors.toList());
       for (int index = 0; index + 2 < assignments.size(); index++) {
-        final List<SyntaxNode> triple = assignments.subList(index, index + 3);
-        if (triple.stream().allMatch(node -> node != null) && swaps(triple)) {
+        final List<SyntaxNode> triple = assignments.subList(index, index + ASSIGNMENT_PARTS);
+        if (triple.stream().allMatch(Objects::nonNull) && swaps(triple)) {
           found.add(new RuleMatch(triple.get(0).span(), message));
         }
       }
@@ -54,17 +55,20 @@ public final class SwapVariablesCheck implements RuleCheck {
 
   /** The assignment of a plain name to a plain name in a statement, or null. */
   private static SyntaxNode simpleAssignment(final SyntaxNode statement) {
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(statement, STATEMENTS)) {
-      final List<SyntaxNode> children = visit.node().children();
-      if (children.size() == 3
-          && "=".equals(SyntaxWalk.text(children.get(1)))
-          && NAME.matcher(SyntaxWalk.text(children.get(0))).matches()
-          && NAME.matcher(SyntaxWalk.text(children.get(2))).matches()) {
-        return visit.node();
-      }
-      return null;
-    }
-    return null;
+    return SyntaxWalk.visits(statement, STATEMENTS).stream()
+        .findFirst()
+        .map(SyntaxWalk.Visit::node)
+        .filter(SwapVariablesCheck::isPlainAssignment)
+        .orElse(null);
+  }
+
+  /** Whether an expression statement assigns a plain name to a plain name. */
+  private static boolean isPlainAssignment(final SyntaxNode node) {
+    final List<SyntaxNode> children = node.children();
+    return children.size() == ASSIGNMENT_PARTS
+        && "=".equals(SyntaxWalk.text(children.get(1)))
+        && NAME.matcher(SyntaxWalk.text(children.get(0))).matches()
+        && NAME.matcher(SyntaxWalk.text(children.get(2))).matches();
   }
 
   /** Whether the target of each assignment is the value of the previous one, in a rotation. */

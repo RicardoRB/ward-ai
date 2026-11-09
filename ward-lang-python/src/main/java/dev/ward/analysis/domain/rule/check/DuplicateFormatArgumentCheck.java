@@ -48,17 +48,7 @@ public final class DuplicateFormatArgumentCheck implements RuleCheck {
   /** Whether a positional plain name is passed more than once to the first call of the text. */
   static boolean repeatsName(final String text) {
     final int open = text.indexOf(".format(") + ".format".length();
-    int depth = 0;
-    int close = -1;
-    for (int index = open; index < text.length(); index++) {
-      final char c = text.charAt(index);
-      if (c == '(') {
-        depth++;
-      } else if (c == ')' && --depth == 0) {
-        close = index;
-        break;
-      }
-    }
+    final int close = ThreadInstantiationCheck.matchingClose(text, open);
     if (close < 0) {
       return false;
     }

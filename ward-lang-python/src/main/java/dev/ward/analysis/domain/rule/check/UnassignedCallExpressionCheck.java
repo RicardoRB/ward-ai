@@ -88,22 +88,23 @@ public final class UnassignedCallExpressionCheck implements RuleCheck {
 
   /** A bare call: an atom whose last trailer is an argument list. */
   private static boolean isBareCall(final SyntaxNode node) {
-    if (!ATOM.equals(node.kind()) || node.children().isEmpty()) {
-      return false;
+    if (ATOM.equals(node.kind()) && !node.children().isEmpty()) {
+      final SyntaxNode last = node.children().get(node.children().size() - 1);
+      return TRAILER.equals(last.kind()) && SyntaxWalk.text(last).startsWith("(");
     }
-    final SyntaxNode last = node.children().get(node.children().size() - 1);
-    return TRAILER.equals(last.kind()) && SyntaxWalk.text(last).startsWith("(");
+    return false;
   }
 
   /** A call anywhere in the expression: an atom with an argument list among its trailers. */
   private static boolean containsCall(final SyntaxNode node) {
-    if (ATOM.equals(node.kind())
-        && node.children().stream()
-            .anyMatch(
-                child -> TRAILER.equals(child.kind()) && SyntaxWalk.text(child).startsWith("("))) {
-      return true;
-    }
-    return node.children().stream().anyMatch(UnassignedCallExpressionCheck::containsCall);
+    final boolean atomCall =
+        ATOM.equals(node.kind())
+            && node.children().stream()
+                .anyMatch(
+                    child ->
+                        TRAILER.equals(child.kind()) && SyntaxWalk.text(child).startsWith("("));
+    return atomCall
+        || node.children().stream().anyMatch(UnassignedCallExpressionCheck::containsCall);
   }
 
   /** The statement is the only statement of the body of a {@code try}. */

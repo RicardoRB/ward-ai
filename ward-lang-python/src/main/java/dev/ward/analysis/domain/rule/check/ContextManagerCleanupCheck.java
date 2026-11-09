@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
  * everything, is not reported. Shortcut: only the functions of the same file are read.
  */
 public final class ContextManagerCleanupCheck implements RuleCheck {
+  private static final String WITH_ITEM = "with_item";
 
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> SCOPES =
@@ -137,8 +139,8 @@ public final class ContextManagerCleanupCheck implements RuleCheck {
         continue;
       }
       final String text = SyntaxWalk.text(clause);
-      if (text.equals("except:")
-          || text.equals("except")
+      if ("except:".equals(text)
+          || "except".equals(text)
           || HANDLED.stream().anyMatch(name -> text.startsWith("except" + name))) {
         return true;
       }
@@ -149,8 +151,8 @@ public final class ContextManagerCleanupCheck implements RuleCheck {
   /** Whether a with statement enters one of the failing context managers. */
   private static boolean usesFailing(final SyntaxNode with, final Set<String> failing) {
     for (final SyntaxNode item : with.children()) {
-      if ("with_item".equals(item.kind())) {
-        final var matcher = CALL_OF.matcher(SyntaxWalk.text(item));
+      if (WITH_ITEM.equals(item.kind())) {
+        final Matcher matcher = CALL_OF.matcher(SyntaxWalk.text(item));
         if (matcher.matches() && failing.contains(matcher.group(1))) {
           return true;
         }

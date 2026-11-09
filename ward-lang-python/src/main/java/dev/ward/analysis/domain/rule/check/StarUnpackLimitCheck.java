@@ -15,7 +15,8 @@ import java.util.Set;
 public final class StarUnpackLimitCheck implements RuleCheck {
 
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
-  private static final int MAX_BEFORE_STAR = 1 << 8;
+  private static final int BEFORE_STAR_BITS = 8;
+  private static final int MAX_BEFORE_STAR = 1 << BEFORE_STAR_BITS;
   private static final String ASSIGN = "=";
 
   private final String message;

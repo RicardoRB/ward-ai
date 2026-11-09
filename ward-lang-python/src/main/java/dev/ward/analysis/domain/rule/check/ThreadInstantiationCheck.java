@@ -19,6 +19,8 @@ public final class ThreadInstantiationCheck implements RuleCheck {
   private static final Set<String> NAMES = Set.of("Thread", "threading.Thread");
   private static final String TARGET = "target=";
   private static final int MIN_POSITIONAL = 2;
+  private static final String OPENERS = "([{";
+  private static final String CLOSERS = ")]}";
 
   private final String message;
 
@@ -78,16 +80,33 @@ public final class ThreadInstantiationCheck implements RuleCheck {
     int start = 0;
     for (int index = 0; index < arguments.length(); index++) {
       final char c = arguments.charAt(index);
-      if (c == '(' || c == '[' || c == '{') {
-        depth++;
-      } else if (c == ')' || c == ']' || c == '}') {
-        depth--;
-      } else if (c == ',' && depth == 0) {
+      depth += depthChange(c);
+      if (c == ',' && depth == 0) {
         parts.add(arguments.substring(start, index));
         start = index + 1;
       }
     }
     parts.add(arguments.substring(start));
     return parts;
+  }
+
+  /** The index of the bracket that closes the one at {@code open}, or -1. */
+  static int matchingClose(final String text, final int open) {
+    int depth = 0;
+    for (int index = open; index < text.length(); index++) {
+      depth += depthChange(text.charAt(index));
+      if (depth == 0) {
+        return index;
+      }
+    }
+    return -1;
+  }
+
+  /** How much a character changes the bracket depth. */
+  private static int depthChange(final char c) {
+    if (OPENERS.indexOf(c) >= 0) {
+      return 1;
+    }
+    return CLOSERS.indexOf(c) >= 0 ? -1 : 0;
   }
 }
