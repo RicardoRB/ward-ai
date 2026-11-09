@@ -55,41 +55,12 @@ final class NodeFlowSites implements FlowSites {
     }
     if (SINGLE.equals(node.kind())) {
       expression(node, found);
-    } else if (NodeStatementCalls.isExpressionStatement(node)) {
-      statement(node, found);
     } else {
       children(node, found);
       if (VARIABLE_DECLARATION.equals(node.kind())) {
         types.declareVariable(node);
       }
     }
-  }
-
-  /**
-   * A statement the grammar parses as a declaration may be a call, or a bracket write such as
-   * {@code a['b'] = v}, which is recorded as a member write after the sites in its value.
-   */
-  private void statement(final SyntaxNode node, final List<FlowSite> found) {
-    final Optional<NodeStatementCalls.Call> call = NodeStatementCalls.callOf(node);
-    if (call.isPresent()) {
-      call(call.get().callee(), call.get().arguments(), found);
-      return;
-    }
-    children(node, found);
-    NodeStatementCalls.bracketWriteOf(node)
-        .ifPresent(
-            write -> {
-              final String qualifier = write.qualifier();
-              found.add(
-                  new FlowSite(
-                      FlowSiteKind.MEMBER_WRITE,
-                      write.key(),
-                      qualifier,
-                      types.receiverType(qualifier),
-                      List.of(),
-                      NodeCallShapes.spans(List.of(write.value())),
-                      node.span()));
-            });
   }
 
   private void children(final SyntaxNode node, final List<FlowSite> found) {

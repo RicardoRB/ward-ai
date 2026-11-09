@@ -75,15 +75,22 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
     return new GrammarSession<>(lexer, parser, KotlinParser::kotlinFile);
   }
 
+  /** TypeScript allows {@code <T>value} casts, so JSX is recognized in {@code .tsx} units only. */
   private static LanguageFrontend typeScriptSession() {
     final TypeScriptLexer lexer = new TypeScriptLexer(empty());
     final TypeScriptParser parser = new TypeScriptParser(new CommonTokenStream(lexer));
-    return new GrammarSession<>(lexer, parser, TypeScriptParser::program);
+    final LanguageFrontend session = new GrammarSession<>(lexer, parser, TypeScriptParser::program);
+    return unit -> {
+      lexer.setJsx(unit.path().endsWith(".tsx"));
+      return session.parse(unit);
+    };
   }
 
+  /** JavaScript has no type assertion that JSX could clash with, so JSX is always recognized. */
   private static LanguageFrontend javaScriptSession() {
     final JavaScriptLexer lexer = new JavaScriptLexer(empty());
     final JavaScriptParser parser = new JavaScriptParser(new CommonTokenStream(lexer));
+    lexer.setJsx(true);
     return new GrammarSession<>(lexer, parser, JavaScriptParser::program);
   }
 
