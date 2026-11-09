@@ -55,10 +55,8 @@ public final class PythonLoops {
 
   /** A display has an element when it holds more than its brackets, and a tuple needs a comma. */
   private static boolean hasDisplayElement(final List<SyntaxNode> tokens, final String open) {
-    if (OPEN_TUPLE.equals(open)) {
-      return tokens.stream().anyMatch(token -> COMMA.equals(PythonSyntax.text(token)));
-    }
-    return true;
+    return !OPEN_TUPLE.equals(open)
+        || tokens.stream().anyMatch(token -> COMMA.equals(PythonSyntax.text(token)));
   }
 
   /**

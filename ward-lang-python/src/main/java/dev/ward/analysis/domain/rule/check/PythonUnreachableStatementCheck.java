@@ -16,7 +16,7 @@ import java.util.Set;
  * reported. A {@code yield} that ends a generator's body is not reported, and the statement after
  * it is reported instead.
  */
-public final class UnreachableStatementCheck implements RuleCheck {
+public final class PythonUnreachableStatementCheck implements RuleCheck {
 
   private static final Set<String> JUMPS =
       Set.of("return_stmt", "raise_stmt", "break_stmt", "continue_stmt");
@@ -30,7 +30,7 @@ public final class UnreachableStatementCheck implements RuleCheck {
    *
    * @param message the message of each finding
    */
-  public UnreachableStatementCheck(final String message) {
+  public PythonUnreachableStatementCheck(final String message) {
     this.message = Objects.requireNonNull(message, "message");
   }
 

@@ -29,6 +29,8 @@ final class PythonBodyLowering {
   private static final String CALL = "(";
   private static final String AWAIT = "await";
   private static final String ALWAYS_TRUE_ONE = "1";
+  private static final int SINGLE_BLOCK = 1;
+  private static final int SINGLE_TOKEN = 1;
   private static final String ALWAYS_TRUE = "True";
   private static final Set<String> DEFINITIONS = Set.of("funcdef", "classdef", "decorated");
   private static final Set<String> NON_IDENTIFIERS = Set.of("None", ALWAYS_TRUE, "False");
@@ -75,12 +77,27 @@ final class PythonBodyLowering {
 
   private void statement(final SyntaxNode node) {
     switch (node.kind()) {
+      case "break_stmt", "continue_stmt", "return_stmt", "raise_stmt" -> jump(node);
+      default -> compound(node);
+    }
+  }
+
+  /** Lowers a statement that splits the graph, or adds any other statement as one step. */
+  private void compound(final SyntaxNode node) {
+    switch (node.kind()) {
       case "if_stmt" -> ifStatement(node);
       case "while_stmt" -> whileStatement(node);
       case "for_stmt" -> forStatement(node);
       case "try_stmt" -> tryStatement(node);
       case "with_stmt" -> withStatement(node);
       case "match_stmt" -> matchStatement(node);
+      default -> simple(node, !DEFINITIONS.contains(node.kind()) && mayThrow(node));
+    }
+  }
+
+  /** A statement that leaves the block: a loop jump, a return, or a raise. */
+  private void jump(final SyntaxNode node) {
+    switch (node.kind()) {
       case "break_stmt" -> {
         simple(node, false);
         flow.jumps().breakTo(null);
@@ -93,11 +110,10 @@ final class PythonBodyLowering {
         simple(node, mayThrow(node));
         flow.tries().returnFrom();
       }
-      case "raise_stmt" -> {
+      default -> {
         simple(node, true);
         flow.tries().throwOut();
       }
-      default -> simple(node, !DEFINITIONS.contains(node.kind()) && mayThrow(node));
     }
   }
 
@@ -188,7 +204,7 @@ final class PythonBodyLowering {
    * Lowers the {@code else} block of a loop, which runs only when the loop ends without a break.
    */
   private void elseClause(final List<SyntaxNode> blocks, final int otherwise, final int after) {
-    if (blocks.size() > 1) {
+    if (blocks.size() > SINGLE_BLOCK) {
       flow.moveTo(otherwise);
       statements(blocks.get(1));
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
@@ -277,7 +293,7 @@ final class PythonBodyLowering {
       return false;
     }
     final List<SyntaxNode> tokens = PythonSyntax.tokens(children(caseBlock, PATTERNS).get(0));
-    if (tokens.size() != 1) {
+    if (tokens.size() != SINGLE_TOKEN) {
       return false;
     }
     final String text = PythonSyntax.text(tokens.get(0));
