@@ -3,6 +3,7 @@ package dev.ward.infrastructure.rule;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.application.gate.AnalysisRuleLoad;
@@ -13,7 +14,12 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final List<String> SCOPE_CHECKS =
-      List.of("reassigned-binding", "undefined-name", "unused-binding");
+      List.of(
+          "node-call-without-follow-up",
+          "node-variable-distance",
+          "reassigned-binding",
+          "undefined-name",
+          "unused-binding");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -62,6 +68,7 @@ class ClasspathRuleSourceTest {
             rule -> {
               assertThat(rule.languages()).containsExactly(AnalysisLanguage.JAVA);
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
+              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
             });
   }
 
