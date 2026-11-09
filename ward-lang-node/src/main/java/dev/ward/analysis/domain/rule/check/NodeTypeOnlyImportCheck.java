@@ -32,8 +32,6 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
   private static final Set<String> TYPE_KINDS =
       Set.of("type_", "typeAnnotation", "typeArguments", "typeParameters", "implementsClause");
 
-  private static final int SINGLE = 1;
-
   private final String message;
   private final String partialMessage;
 
@@ -102,18 +100,10 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
     if (typeNames.size() == uses.size()) {
       found.add(new RuleMatch(statement, message));
     } else {
-      found.add(new RuleMatch(statement, partialMessage.replace("{names}", quoted(typeNames))));
+      found.add(
+          new RuleMatch(
+              statement, partialMessage.replace("{names}", TypeOnlyNames.quoted(typeNames))));
     }
-  }
-
-  /** Quotes the names and joins them the way typescript-eslint does: "A", "B" and "C". */
-  private static String quoted(final List<String> names) {
-    final List<String> quoted = names.stream().map(name -> "\"" + name + "\"").toList();
-    if (quoted.size() == SINGLE) {
-      return quoted.get(0);
-    }
-    final String head = String.join(", ", quoted.subList(0, quoted.size() - 1));
-    return head + " and " + quoted.get(quoted.size() - 1);
   }
 
   /** A binding of an import declaration and whether all its uses are in type positions. */

@@ -18,6 +18,7 @@ class ClasspathRuleSourceTest {
           "node-call-without-follow-up",
           "node-hidden-field",
           "node-prefer-const",
+          "node-type-only-export",
           "node-type-only-import",
           "node-variable-distance",
           "reassigned-binding",

@@ -289,3 +289,29 @@ allow-missing-param-tags = false
 allow-missing-return-tag = false
 message = "javadoc tags do not match the method: {value}"
 '''
+
+[[rules]]
+id = "ward:typescript/missing-javadoc-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-missing-javadoc-type"
+required = "public"
+message = "public type has no Javadoc comment"
+'''
+
+[[rules]]
+id = "ward:javascript/missing-javadoc-type"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-missing-javadoc-type"
+required = "public"
+message = "public type has no Javadoc comment"
+'''

@@ -27,7 +27,7 @@ javadoc-type = { status = "planned", issue = "#296" }
 javadoc-variable = { status = "planned", issue = "#296" }
 missing-javadoc-method = { status = "planned", issue = "#296" }
 missing-javadoc-package = "not-applicable"
-missing-javadoc-type = { status = "planned", issue = "#296" }
+missing-javadoc-type = "implemented"
 non-empty-atclause-description = { status = "planned", issue = "#296" }
 prefer-code-or-snippet-javadoc-inline-tag = { status = "planned", issue = "#296" }
 prefer-literal-javadoc-inline-tag = { status = "planned", issue = "#296" }
