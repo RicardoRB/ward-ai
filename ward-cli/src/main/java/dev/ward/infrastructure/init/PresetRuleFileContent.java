@@ -25,6 +25,11 @@ final class PresetRuleFileContent {
           "Translation",
           "UniqueProperties");
 
+  /** The options the strict preset has always set on Checkstyle's {@code HiddenField}. */
+  private static final String HIDDEN_FIELD =
+      "\n[rules.\"ward:java/hidden-field\"]\nignore-constructor-parameter = true\n"
+          + "ignore-setter = true\n";
+
   private PresetRuleFileContent() {}
 
   /**
@@ -38,11 +43,13 @@ final class PresetRuleFileContent {
         languages.stream()
             .map(language -> "\"" + language + "\"")
             .collect(Collectors.joining(", "));
+    final boolean java = languages.contains("java");
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
         + "\"\nlanguages = ["
         + names
-        + "]\n";
+        + "]\n"
+        + (chosen == QualityPreset.STRICT && java ? HIDDEN_FIELD : "");
   }
 
   static String pmd(final QualityPreset preset) {
