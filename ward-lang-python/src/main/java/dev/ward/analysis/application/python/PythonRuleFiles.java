@@ -12,6 +12,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
   private static final List<String> FILES =
       List.of(
           "rules/duplication-python.toml",
+          "rules/python-cycles.toml",
           "rules/python-structural.toml",
           "rules/python-unused.toml",
           "rules/python/bugbear.toml",
