@@ -35,8 +35,6 @@ checkstyle = ["InappropriateJavadocBlockTagsOnType"]
 
 [[rule]]
 name = "invalid-javadoc-position"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InvalidJavadocPosition"]
 
@@ -49,8 +47,6 @@ checkstyle = ["JavadocBlockTagLocation"]
 
 [[rule]]
 name = "javadoc-content-location"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocContentLocation"]
 
@@ -63,8 +59,6 @@ checkstyle = ["JavadocEndCommentDelimiter"]
 
 [[rule]]
 name = "javadoc-leading-asterisk-align"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLeadingAsteriskAlign"]
 
@@ -84,14 +78,10 @@ checkstyle = ["JavadocLinkWellKnownApi"]
 
 [[rule]]
 name = "javadoc-method"
-category = "javadoc"
-presets = ["standard", "strict"]
 checkstyle = ["JavadocMethod"]
 
 [[rule]]
 name = "javadoc-missing-leading-asterisk"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocMissingLeadingAsterisk"]
 
@@ -118,8 +108,6 @@ checkstyle = ["JavadocPackage"]
 
 [[rule]]
 name = "javadoc-paragraph"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocParagraph"]
 
@@ -187,8 +175,6 @@ checkstyle = ["MissingJavadocPackage"]
 
 [[rule]]
 name = "missing-javadoc-type"
-category = "javadoc"
-presets = ["standard", "strict"]
 detekt = ["UndocumentedPublicClass"]
 checkstyle = ["MissingJavadocType"]
 ruff = ["D101"]
@@ -213,22 +199,16 @@ checkstyle = ["PreferLiteralJavadocInlineTag"]
 
 [[rule]]
 name = "require-empty-line-before-block-tag-group"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["RequireEmptyLineBeforeBlockTagGroup"]
 
 [[rule]]
 name = "single-line-javadoc"
-category = "javadoc"
-presets = ["standard", "strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["SingleLineJavadoc"]
 
 [[rule]]
 name = "summary-javadoc"
-category = "javadoc"
-presets = ["standard", "strict"]
 checkstyle = ["SummaryJavadoc"]
 
 [[rule]]
