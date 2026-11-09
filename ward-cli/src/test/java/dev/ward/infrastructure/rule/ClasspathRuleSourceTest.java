@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final List<String> SCOPE_CHECKS =
-      List.of("reassigned-binding", "undefined-name", "unused-binding");
+      List.of(
+          "reassigned-binding", "undefined-name", "unused-binding", "node-call-without-follow-up");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
