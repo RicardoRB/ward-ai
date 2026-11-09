@@ -800,6 +800,7 @@ singleExpression
     | singleExpression '!'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
     | singleExpression '?'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
     // Split to try `new Date()` first, then `new Date`.
+    | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression
     | New singleExpression typeArguments?                             # NewExpression
     | singleExpression arguments                                      # ArgumentsExpression
