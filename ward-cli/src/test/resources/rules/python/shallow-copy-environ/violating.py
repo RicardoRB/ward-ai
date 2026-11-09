@@ -1,0 +1,1 @@
+copy.copy(os.environ)
