@@ -93,6 +93,11 @@ presets = ["standard", "strict"]
 pylint = ["bad-exception-cause"]
 
 [[rule]]
+name = "bad-except-order"
+presets = ["standard", "strict"]
+pylint = ["bad-except-order"]
+
+[[rule]]
 name = "bad-format-string-key"
 presets = ["standard", "strict"]
 pylint = ["bad-format-string-key"]

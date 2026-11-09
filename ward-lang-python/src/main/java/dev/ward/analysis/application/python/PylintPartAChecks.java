@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
 import dev.ward.analysis.domain.rule.check.ContextManagerCleanupCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateArgumentNameCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateFormatArgumentCheck;
+import dev.ward.analysis.domain.rule.check.ExceptSubclassOrderCheck;
 import dev.ward.analysis.domain.rule.check.InitGeneratorCheck;
 import dev.ward.analysis.domain.rule.check.MinMaxBuiltinCheck;
 import dev.ward.analysis.domain.rule.check.MixedComparisonChainCheck;
@@ -42,6 +43,9 @@ final class PylintPartAChecks {
 
   private static Map<String, CheckFactory> checksFirst() {
     return Map.ofEntries(
+        entry(
+            "except-subclass-order",
+            toml -> new ExceptSubclassOrderCheck(TomlValues.required(toml, MESSAGE))),
         entry("init-generator", toml -> new InitGeneratorCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unassigned-call-expression",

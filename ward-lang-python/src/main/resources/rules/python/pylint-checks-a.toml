@@ -476,3 +476,15 @@ body = '''
 check = "contextmanager-cleanup"
 message = "generator uses a context manager that does not clean up when the generator is closed"
 '''
+
+[[rules]]
+id = "ward:python/bad-except-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "except-subclass-order"
+message = "except clause catches a subclass of a class caught above it, so it can never run"
+'''
