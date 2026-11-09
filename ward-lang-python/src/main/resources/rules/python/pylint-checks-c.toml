@@ -347,3 +347,341 @@ check = "handler-body"
 body = "(?s)raise\\b.*"
 message = "the except handler raises immediately"
 '''
+
+[[rules]]
+id = "ward:python/too-many-function-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "call-signature"
+problem = "too-many-positional"
+message = "call passes more positional arguments than the function takes"
+'''
+
+[[rules]]
+id = "ward:python/unexpected-keyword-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "call-signature"
+problem = "unexpected-keyword"
+message = "call passes a keyword argument the function does not accept"
+'''
+
+[[rules]]
+id = "ward:python/redundant-keyword-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "call-signature"
+problem = "redundant-keyword"
+message = "argument is passed by position and by keyword"
+'''
+
+[[rules]]
+id = "ward:python/repeated-keyword"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "repeated-keyword"
+message = "argument is passed more than once in the call"
+'''
+
+[[rules]]
+id = "ward:python/star-needs-assignment-target"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[^=]*=\*[\w.]+$'
+message = "starred expression used as the whole value of an assignment"
+'''
+
+[[rules]]
+id = "ward:python/super-init-not-called"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-hierarchy"
+problem = "super-init-not-called"
+message = "__init__ does not call the __init__ of its base class"
+'''
+
+[[rules]]
+id = "ward:python/signature-differs"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-hierarchy"
+problem = "signature-differs"
+message = "method signature differs from the overridden method: fewer default values"
+'''
+
+[[rules]]
+id = "ward:python/subclassed-final-class"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-hierarchy"
+problem = "subclassed-final"
+message = "class subclasses a class decorated with typing.final"
+'''
+
+[[rules]]
+id = "ward:python/raising-non-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "raise-non-exception"
+message = "raising a class that does not inherit from BaseException"
+'''
+
+[[rules]]
+id = "ward:python/return-in-init"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "method-body"
+problem = "return-in-init"
+message = "return from __init__ with a value; __init__ must return None"
+'''
+
+[[rules]]
+id = "ward:python/useless-parent-delegation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "method-body"
+problem = "useless-parent-delegation"
+message = "method only delegates to the same method of super() with its own arguments"
+'''
+
+[[rules]]
+id = "ward:python/used-prior-global-declaration"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "method-body"
+problem = "used-prior-global"
+message = "name is used before its global declaration"
+'''
+
+[[rules]]
+id = "ward:python/unused-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-name"
+problem = "unused-argument"
+message = "function argument is never used"
+'''
+
+[[rules]]
+id = "ward:python/unused-private-member"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-name"
+problem = "unused-private-member"
+message = "private method is never used in its class"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-pass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "statement-list"
+problem = "unnecessary-pass"
+message = "pass statement is unnecessary next to other statements"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-ellipsis"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "statement-list"
+problem = "unnecessary-ellipsis"
+message = "ellipsis is unnecessary next to other statements"
+'''
+
+[[rules]]
+id = "ward:python/simplifiable-condition"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "simplifiable-condition"
+message = "boolean condition with a literal operand may be simplified"
+'''
+
+[[rules]]
+id = "ward:python/reimported"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "reimported"
+message = "module is imported more than once"
+'''
+
+[[rules]]
+id = "ward:python/too-many-instance-attributes"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "class-limit"
+problem = "instance-attributes"
+max = 7
+message = "class has {value} instance attributes; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/too-many-ancestors"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "class-limit"
+problem = "ancestors"
+max = 7
+message = "class has {value} ancestors; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/too-few-public-methods"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+options.min = { type = "integer", min = 0 }
+body = '''
+check = "class-limit"
+problem = "public-methods"
+min = 2
+message = "class has {value} public methods; the minimum is {min}"
+'''
+
+[[rules]]
+id = "ward:python/potential-index-error"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "index-range"
+message = "subscript is past the end of the list or tuple display"
+'''
+
+[[rules]]
+id = "ward:python/too-many-positional-sub-patterns"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "pattern-count"
+message = "class pattern has more positional sub-patterns than the class takes"
+'''
+
+[[rules]]
+id = "ward:python/unbalanced-tuple-unpacking"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "unpacking-count"
+problem = "tuple"
+message = "unpacking a tuple of a different length than the targets"
+'''
+
+[[rules]]
+id = "ward:python/unbalanced-dict-unpacking"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "unpacking-count"
+problem = "dict"
+message = "unpacking a dictionary with a different number of keys than the targets"
+'''
+
+[[rules]]
+id = "ward:python/shadowed-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "shadowed-import"
+message = "import alias shadows a name that an earlier import binds"
+'''

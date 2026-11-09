@@ -2,4 +2,4 @@
 
 trailing-whitespace = "implemented"
 unreachable-code = { status = "planned", issue = "#447" }
-unused-private-member = { status = "planned", issue = "#336" }
+unused-private-member = "implemented"

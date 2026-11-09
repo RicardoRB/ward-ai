@@ -507,7 +507,7 @@ percent-format-positional-count-mismatch = "implemented"
 percent-format-star-requires-sequence = "implemented"
 percent-format-unsupported-format-character = "implemented"
 post-init-default = { status = "planned", issue = "#334" }
-potential-index-error = { status = "planned", issue = "#332" }
+potential-index-error = "implemented"
 print = { status = "planned", issue = "#334" }
 print-empty-string = "implemented"
 printf-in-get-text-func-call = { status = "planned", issue = "#334" }
@@ -594,7 +594,7 @@ replace-universal-newlines = { status = "planned", issue = "#334" }
 request-with-no-cert-validation = { status = "planned", issue = "#334" }
 request-without-timeout = "implemented"
 return-in-generator = { status = "planned", issue = "#332" }
-return-in-init = { status = "planned", issue = "#332" }
+return-in-init = "implemented"
 return-in-try-except-finally = { status = "planned", issue = "#334" }
 return-outside-function = "implemented"
 reuse-of-groupby-generator = "implemented"
