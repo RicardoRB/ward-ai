@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from billing.models import Invoice
 
 INVOICE_TOTAL = 5

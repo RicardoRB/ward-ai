@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 import pytest
 from flask import Flask
 

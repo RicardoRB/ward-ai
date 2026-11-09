@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 import pytest
 
 from orders.models import Order

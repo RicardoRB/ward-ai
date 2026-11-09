@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from orders.pricing import order_total
 
 BULK_QUANTITY = 11

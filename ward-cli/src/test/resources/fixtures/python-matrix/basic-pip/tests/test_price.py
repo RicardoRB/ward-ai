@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from shop import price
 
 EXPECTED_PRICE = 4

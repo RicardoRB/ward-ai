@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from flask import Flask
 
 from shop.auth import bp as auth_bp

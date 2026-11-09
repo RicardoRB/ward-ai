@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from app.counting import order_count
 
 

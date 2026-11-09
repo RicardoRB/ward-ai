@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 BULK_THRESHOLD = 10
 
 

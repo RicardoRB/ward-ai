@@ -1,6 +1,9 @@
+"""Fixture code for the Python matrix."""
+
 from app.counting import order_count
+from app.repositories.orders import list_orders
 
 
-def count_orders(orders: list[int]) -> int:
-    """Counts the orders through the counting module."""
-    return order_count(orders)
+def count_orders() -> int:
+    """Counts the stored orders."""
+    return order_count(list_orders())

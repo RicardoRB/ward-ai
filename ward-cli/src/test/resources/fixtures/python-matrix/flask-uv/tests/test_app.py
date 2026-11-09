@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from flask.testing import FlaskClient
 
 from shop.pricing import total

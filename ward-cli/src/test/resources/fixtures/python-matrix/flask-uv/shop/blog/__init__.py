@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from flask import Blueprint
 
 bp = Blueprint("blog", __name__)
