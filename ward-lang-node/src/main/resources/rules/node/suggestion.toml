@@ -1906,3 +1906,32 @@ target = "lines"
 pattern = '(?:^|[^\\])(?:\\\\)*\\[89]'
 message = "don't use the non-octal decimal escape sequence"
 '''
+
+[[rules]]
+id = "ward:typescript/prefer-regex-literals"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.disallow-redundant-wrapping = { type = "boolean" }
+body = '''
+check = "node-prefer-regex-literals"
+disallow-redundant-wrapping = false
+message = "use a regular expression literal instead of the 'RegExp' constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-regex-literals"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.disallow-redundant-wrapping = { type = "boolean" }
+body = '''
+check = "node-prefer-regex-literals"
+disallow-redundant-wrapping = false
+message = "use a regular expression literal instead of the 'RegExp' constructor"
+'''
+

@@ -749,8 +749,6 @@ biome = ["noUnsafeFinally"]
 
 [[rule]]
 name = "no-unsafe-negation"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-unsafe-negation"]
 biome = ["noUnsafeNegation"]
 
@@ -940,8 +938,6 @@ biome = ["usePromiseRejectErrors"]
 
 [[rule]]
 name = "prefer-regex-literals"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-regex-literals"]
 biome = ["useRegexLiterals"]
 

@@ -1356,3 +1356,30 @@ text = '^return[^;]'
 message = "setter cannot return a value"
 '''
 
+[[rules]]
+id = "ward:typescript/no-unsafe-negation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-negation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''

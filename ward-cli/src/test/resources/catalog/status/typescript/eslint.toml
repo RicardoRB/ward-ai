@@ -127,7 +127,7 @@ no-unneeded-ternary = "implemented"
 no-unreachable = "implemented"
 no-unreachable-loop = { status = "planned", issue = "#326" }
 no-unsafe-finally = "implemented"
-no-unsafe-negation = { status = "planned", issue = "#326" }
+no-unsafe-negation = "implemented"
 no-unsafe-optional-chaining = { status = "planned", issue = "#326" }
 no-unused-expressions = { status = "planned", issue = "#326" }
 no-unused-labels = "implemented"
@@ -156,7 +156,7 @@ prefer-numeric-literals = "implemented"
 prefer-object-has-own = "implemented"
 prefer-object-spread = { status = "planned", issue = "#296" }
 prefer-promise-reject-errors = { status = "planned", issue = "#326" }
-prefer-regex-literals = { status = "planned", issue = "#326" }
+prefer-regex-literals = "implemented"
 prefer-rest-params = "implemented"
 prefer-spread = "implemented"
 prefer-template = { status = "planned", issue = "#296" }
