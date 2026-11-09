@@ -81,6 +81,8 @@ class BiomeParitySmokeTest {
           Map.entry(
               "no-noninteractive-element-interactions", "a11y/noNoninteractiveElementInteractions"),
           Map.entry("no-static-element-interactions", "a11y/noStaticElementInteractions"),
+          Map.entry("use-aria-props-for-role", "a11y/useAriaPropsForRole"),
+          Map.entry("use-aria-props-supported-by-role", "a11y/useAriaPropsSupportedByRole"),
           Map.entry(
               "no-interactive-element-to-noninteractive-role",
               "a11y/noInteractiveElementToNoninteractiveRole"));

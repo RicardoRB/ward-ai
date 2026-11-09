@@ -553,3 +553,51 @@ body = '''
 check = "node-static-element-interactions"
 message = "a static element must not handle user interactions; give it an interactive role"
 '''
+
+[[rules]]
+id = "ward:javascript/use-aria-props-for-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-for-role"
+message = "the element with this role lacks a required ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-aria-props-for-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-for-role"
+message = "the element with this role lacks a required ARIA attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-aria-props-supported-by-role"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-supported-by-role"
+message = "this ARIA attribute is not supported by the element"
+'''
+
+[[rules]]
+id = "ward:typescript/use-aria-props-supported-by-role"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-props-supported-by-role"
+message = "this ARIA attribute is not supported by the element"
+'''

@@ -187,8 +187,8 @@ no-xor-as-exponentiation = "implemented"
 use-alt-text = "implemented"
 use-anchor-content = "implemented"
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
-use-aria-props-for-role = { status = "planned", issue = "#329" }
-use-aria-props-supported-by-role = { status = "planned", issue = "#329" }
+use-aria-props-for-role = "implemented"
+use-aria-props-supported-by-role = "implemented"
 use-array-find = "implemented"
 use-array-some = { status = "planned", issue = "#329" }
 use-at-index = { status = "planned", issue = "#296" }
