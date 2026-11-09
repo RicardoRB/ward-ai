@@ -1,18 +1,26 @@
 {
   "2:11-2:13": {
     "type": {
-      "name": "number",
-      "primitive": true,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "322:11-322:11": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
     }
   },
   "32:11-32:13": {
     "type": {
-      "name": "number",
-      "primitive": true,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "number",
+      "primitive": true
     }
   }
 }

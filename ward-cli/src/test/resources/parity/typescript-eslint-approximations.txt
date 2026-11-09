@@ -8,7 +8,6 @@ only-throw-error	typescript-eslint	only-throw-error	a rethrow is recognised by t
 restrict-plus-operands	typescript-eslint	restrict-plus-operands	an object or array operand is always reported, as the tool does; an operand of a type that is not resolved is not reported
 restrict-template-expressions	typescript-eslint	restrict-template-expressions	allow lists type names only, without the from: lib and package specifiers
 unbound-method	typescript-eslint	unbound-method	a method is found through the members of the object type; a method of an unresolved or library type is not reported
-no-base-to-string	typescript-eslint	no-base-to-string	only template placeholders are checked; String(value) and value.toString() are not, because the grammar does not parse a bare identifier call as a call (#462)
 no-redundant-type-constituents	typescript-eslint	no-redundant-type-constituents	aliases are not resolved, so only written constituents count; never in a return type is reported where the tool allows it
 no-unsafe-enum-comparison	typescript-eslint	no-unsafe-enum-comparison	only equality operators with a primitive operand are checked; a comparison of two different enums and of enum members is not
 no-duplicate-type-constituents	typescript-eslint	no-duplicate-type-constituents	written constituents are compared as text, so two spellings of one type are not reported

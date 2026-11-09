@@ -114,4 +114,27 @@ class TypedMemberChecksTest {
 
     assertThat(positions(new EnumComparisonCheck(MESSAGE), text, facts)).containsExactly("3:5");
   }
+
+  @Test
+  void stringConversionsOfAnObjectWithoutAToStringAreReported() {
+    final String text =
+        "declare const point: { x: number };\nconst label = String(point);\n"
+            + "const same = point.toString();\n";
+    final TypeMembers bare =
+        new TypeMembers(
+            List.of(),
+            List.of(new FieldRef("x", LintFixtures.named("number"), false, List.of())),
+            List.of(),
+            List.of());
+    final UnitTypeFacts facts =
+        new LintFixtures.Facts()
+            .typed("2:22", LintFixtures.named("{ x: number; }"))
+            .membered("2:22", bare)
+            .typed("3:14", LintFixtures.named("{ x: number; }"))
+            .membered("3:14", bare)
+            .build();
+
+    assertThat(positions(new BaseToStringCheck(MESSAGE), text, facts))
+        .containsExactly("2:22", "3:14");
+  }
 }

@@ -13,14 +13,19 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports an object converted to a string in a template placeholder when its type neither declares
- * nor inherits its own {@code toString}, so it prints as {@code [object Object]}. A {@code
- * String(...)} call is not read yet: the grammar does not parse a bare identifier call as a call.
+ * Reports an object converted to a string, in a template placeholder, by {@code String(value)} or
+ * by {@code value.toString()}, when its type neither declares nor inherits its own {@code
+ * toString}, so it prints as {@code [object Object]}.
  */
 public final class BaseToStringCheck extends TypedCheck {
 
   private static final String TEMPLATE_OPEN = "${";
   private static final String TO_STRING = "toString";
+  private static final String STRING_CALL = "String";
+  private static final String ARGUMENTS = "arguments";
+  private static final String ARGUMENT_LIST = "argumentList";
+  private static final String ARGUMENT = "argument";
+  private static final String DOT = ".";
 
   private final String message;
 
@@ -45,7 +50,47 @@ public final class BaseToStringCheck extends TypedCheck {
         reportIfBase(types, parts.get(1), out);
       }
     }
+    for (final SyntaxNode call : SyntaxText.nodesOf(root, EXPRESSION)) {
+      stringConversion(call, types, out);
+    }
     return out;
+  }
+
+  /** Reports {@code String(value)} and {@code value.toString()} of a value without a toString. */
+  private void stringConversion(
+      final SyntaxNode call, final UnitTypeFacts types, final List<RuleMatch> out) {
+    final List<SyntaxNode> parts = call.children();
+    if (parts.size() != 2 || !ARGUMENTS.equals(parts.get(1).kind())) {
+      return;
+    }
+    final SyntaxNode callee = parts.get(0);
+    if (STRING_CALL.equals(SyntaxText.of(callee))) {
+      firstArgument(parts.get(1)).ifPresent(value -> reportIfBase(types, value, out));
+    } else if (isToStringMember(callee)) {
+      reportIfBase(types, callee.children().get(0), out);
+    }
+  }
+
+  /** Reports whether a callee is {@code <object>.toString}. */
+  private static boolean isToStringMember(final SyntaxNode callee) {
+    final List<SyntaxNode> parts = callee.children();
+    return parts.size() == SyntaxText.INFIX_PARTS
+        && EXPRESSION.equals(parts.get(0).kind())
+        && SyntaxText.isToken(parts.get(1), DOT)
+        && TO_STRING.equals(SyntaxText.of(parts.get(2)));
+  }
+
+  /** Returns the first argument expression of an argument list, if any. */
+  private static Optional<SyntaxNode> firstArgument(final SyntaxNode arguments) {
+    for (final SyntaxNode list : SyntaxText.childrenOf(arguments, ARGUMENT_LIST)) {
+      for (final SyntaxNode argument : SyntaxText.childrenOf(list, ARGUMENT)) {
+        final List<SyntaxNode> values = SyntaxText.childrenOf(argument, EXPRESSION);
+        if (!values.isEmpty()) {
+          return Optional.of(values.get(0));
+        }
+      }
+    }
+    return Optional.empty();
   }
 
   private void reportIfBase(

@@ -79,6 +79,14 @@
       "primitive": true
     }
   },
+  "302:15-302:18": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "boolean",
+      "primitive": true
+    }
+  },
   "32:11-32:13": {
     "type": {
       "args": [],
