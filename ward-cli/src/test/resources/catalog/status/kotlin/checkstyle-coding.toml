@@ -3,7 +3,7 @@
 array-trailing-comma = { status = "planned", issue = "#294" }
 avoid-inline-conditionals = { status = "planned", issue = "#294" }
 avoid-no-argument-super-constructor-call = { status = "planned", issue = "#294" }
-constructors-declaration-grouping = { status = "planned", issue = "#294" }
+constructors-declaration-grouping = "implemented"
 covariant-equals = { status = "planned", issue = "#294" }
 declaration-order = { status = "planned", issue = "#294" }
 default-comes-last = { status = "planned", issue = "#294" }
@@ -14,31 +14,31 @@ explicit-initialization = { status = "planned", issue = "#294" }
 expression-over-block-lambda = { status = "planned", issue = "#294" }
 fall-through = { status = "planned", issue = "#294" }
 final-local-variable = { status = "planned", issue = "#294" }
-hidden-field = { status = "planned", issue = "#294" }
+hidden-field = "implemented"
 illegal-catch = { status = "planned", issue = "#294" }
 illegal-instantiation = "not-applicable"
 illegal-symbol = { status = "planned", issue = "#294" }
 illegal-throws = { status = "planned", issue = "#294" }
 illegal-token = { status = "planned", issue = "#294" }
-illegal-token-text = { status = "planned", issue = "#294" }
+illegal-token-text = "implemented"
 illegal-type = { status = "planned", issue = "#294" }
 inner-assignment = { status = "planned", issue = "#294" }
-magic-number = { status = "planned", issue = "#294" }
+magic-number = "implemented"
 missing-ctor = { status = "planned", issue = "#294" }
 missing-null-case-in-switch = "not-applicable"
 missing-switch-default = { status = "planned", issue = "#294" }
 modified-control-variable = { status = "planned", issue = "#294" }
 multiple-string-literals = { status = "planned", issue = "#294" }
-multiple-variable-declarations = { status = "planned", issue = "#294" }
+multiple-variable-declarations = "not-applicable"
 nested-for-depth = { status = "planned", issue = "#294" }
 nested-if-depth = { status = "planned", issue = "#294" }
 nested-try-depth = { status = "planned", issue = "#294" }
 no-array-trailing-comma = { status = "planned", issue = "#294" }
 no-clone = { status = "planned", issue = "#294" }
 no-enum-trailing-comma = { status = "planned", issue = "#294" }
-no-finalizer = { status = "planned", issue = "#294" }
-one-statement-per-line = { status = "planned", issue = "#294" }
-overload-methods-declaration-order = { status = "planned", issue = "#294" }
+no-finalizer = "implemented"
+one-statement-per-line = "implemented"
+overload-methods-declaration-order = "implemented"
 package-declaration = "not-applicable"
 parameter-assignment = { status = "planned", issue = "#294" }
 pattern-variable-assignment = "not-applicable"
@@ -60,9 +60,9 @@ unnecessary-semicolon-in-try-with-resources = "not-applicable"
 unnecessary-type-arguments-with-record-pattern = "not-applicable"
 unused-catch-parameter-should-be-unnamed = "not-applicable"
 unused-lambda-parameter-should-be-unnamed = "not-applicable"
-unused-local-variable = { status = "planned", issue = "#294" }
+unused-local-variable = "implemented"
 unused-private-field = { status = "planned", issue = "#294" }
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
-variable-declaration-usage-distance = { status = "planned", issue = "#294" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = "not-applicable"

@@ -3,5 +3,5 @@
 regexp = { status = "planned", issue = "#294" }
 regexp-multiline = { status = "planned", issue = "#294" }
 regexp-on-filename = { status = "planned", issue = "#294" }
-regexp-singleline = { status = "planned", issue = "#294" }
+regexp-singleline = "implemented"
 regexp-singleline-java = { status = "planned", issue = "#294" }
