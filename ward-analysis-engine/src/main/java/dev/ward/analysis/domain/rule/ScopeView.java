@@ -42,6 +42,13 @@ public record ScopeView(
   private static final Set<String> MEMBER_KINDS = Set.of("method", "property", "attribute");
 
   /**
+   * The kind prefix of the public exports a Swift summary records for the accessibility rule. They
+   * are not declarations, so an import member never resolves to one; the Swift summarizer keeps the
+   * same literal.
+   */
+  private static final String PUBLIC_EXPORT_PREFIX = "public:";
+
+  /**
    * Copies the imports.
    *
    * @throws NullPointerException if a field is missing
@@ -126,7 +133,10 @@ public record ScopeView(
   private static Optional<Symbol> declared(final FileSummary summary, final String member) {
     return member.isEmpty()
         ? Optional.empty()
-        : Stream.concat(summary.declared().stream(), summary.exports().stream())
+        : Stream.concat(
+                summary.declared().stream(),
+                summary.exports().stream()
+                    .filter(symbol -> !symbol.kind().startsWith(PUBLIC_EXPORT_PREFIX)))
             .filter(symbol -> symbol.name().equals(member))
             .findFirst();
   }

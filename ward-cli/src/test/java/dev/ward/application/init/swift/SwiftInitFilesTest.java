@@ -9,6 +9,7 @@ import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.OwnedSection;
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -20,14 +21,14 @@ import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-/** Swift projects get the ignore lines for Ward's reports and tools build, and the agent rules. */
+/** Swift projects get the ignore line for Ward's reports, and the agent rules. */
 class SwiftInitFilesTest {
   private static final Path ROOT = Path.of("/shop");
   private static final Project SWIFT_PM =
       new Project(ROOT, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
 
   @Test
-  void swiftProjectIgnoresReportsAndTheToolsBuild() {
+  void swiftProjectIgnoresReportsOnly() {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new FakeEnvironmentInspection(),
@@ -56,19 +57,22 @@ class SwiftInitFilesTest {
             OwnedSections.of(catalog, SWIFT_PM, selection, swiftGates(), List.of()).stream()
                 .map(OwnedSection::body)
                 .toList())
-        .anyMatch(content -> content.contains(".ward/swift-tools/.build/"));
+        .allMatch(content -> !content.contains(".ward/swift-tools"));
   }
 
   @Test
-  void agentRulesNameTheSuppressionsAndTheEightyPercentMinimum() {
-    final List<String> lines = SwiftAgentRules.lines(swiftGates());
+  void agentRulesNameTheWardRulesAndTheEightyPercentMinimum() {
+    final List<String> lines = SwiftAgentRules.lines(swiftGates(), QualityPreset.STANDARD);
 
-    assertThat(String.join("\n", lines)).contains("// swiftlint:disable").contains("80% minimum");
+    assertThat(String.join("\n", lines))
+        .contains("`ward-rules.toml`")
+        .contains("80% minimum")
+        .doesNotContain("SwiftLint", "swiftlint");
   }
 
   private static List<InitGateOption> swiftGates() {
     return List.of(
-        new InitGateOption("swiftlint", List.of("swiftlint", "lint"), true, "ok"),
+        new InitGateOption("swift-build", List.of("swift", "build", "--build-tests"), true, "ok"),
         new InitGateOption(
             "swift-coverage",
             "Fails below the line coverage minimum.",

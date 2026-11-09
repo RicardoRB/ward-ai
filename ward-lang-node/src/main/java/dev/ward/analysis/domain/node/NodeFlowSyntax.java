@@ -25,7 +25,11 @@ final class NodeFlowSyntax {
           "anonymousFunction",
           "arrowFunctionDeclaration",
           "methodDefinition",
-          "propertyMemberDeclaration");
+          "propertyMemberDeclaration",
+          "constructorDeclaration",
+          "getAccessor",
+          "setAccessor",
+          "propertyAssignment");
 
   private NodeFlowSyntax() {}
 

@@ -2,7 +2,6 @@ package dev.ward.application.init.swift;
 
 import dev.ward.application.init.CiWorkflowTemplate;
 import dev.ward.application.init.InitInputs;
-import dev.ward.application.init.PartialCheckDefaults.Table;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
 import dev.ward.application.init.ToolchainInitSupport;
@@ -21,27 +20,16 @@ import java.util.Set;
  * projects are not handled.
  */
 public final class SwiftInitSupport implements ToolchainInitSupport {
+  /** The macOS image that ships Xcode 26 or newer, which Swift projects need. */
+  private static final String RUNNER = "macos-26";
+
   private static final Map<Language, SourceLanguageGates<SwiftTools>> LANGUAGES =
       Map.of(Language.SWIFT, new SwiftGates());
 
   @Override
   public Optional<String> gitignoreEntries(
       final Project project, final List<InitGateOption> gates) {
-    return Optional.of(".ward/reports/\n.ward/swift-tools/.build/\n");
-  }
-
-  @Override
-  public Set<String> partialGates() {
-    return SwiftPartialTables.GATES;
-  }
-
-  @Override
-  public Optional<Table> partialTable(
-      final String gate,
-      final Project project,
-      final QualityPreset preset,
-      final List<String> command) {
-    return SwiftPartialTables.forGate(gate, project, command);
+    return Optional.of(".ward/reports/\n");
   }
 
   @Override
@@ -74,17 +62,17 @@ public final class SwiftInitSupport implements ToolchainInitSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    return SwiftAgentRules.lines(gates);
+    return SwiftAgentRules.lines(gates, preset);
   }
 
   @Override
   public String ciSetup(final Project project, final CiWorkflowTemplate.ProjectFacts facts) {
-    return SwiftCiSetup.steps(project);
+    return "";
   }
 
   /** Swift builds need macOS, and Xcode 26 is the default on the macos-26 image. */
   @Override
   public String runner() {
-    return SwiftCiSetup.RUNNER;
+    return RUNNER;
   }
 }

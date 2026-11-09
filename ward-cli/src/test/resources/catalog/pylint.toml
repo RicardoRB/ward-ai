@@ -3,13 +3,11 @@
 [[rule]]
 name = "abstract-class-instantiated"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["abstract-class-instantiated"]
 
 [[rule]]
 name = "abstract-method"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["abstract-method"]
 
 [[rule]]
@@ -20,19 +18,16 @@ pylint = ["anomalous-unicode-escape-in-string"]
 [[rule]]
 name = "arguments-differ"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["arguments-differ"]
 
 [[rule]]
 name = "arguments-out-of-order"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["arguments-out-of-order"]
 
 [[rule]]
 name = "arguments-renamed"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["arguments-renamed"]
 
 [[rule]]
@@ -43,13 +38,11 @@ pylint = ["assigning-non-slot"]
 [[rule]]
 name = "assignment-from-no-return"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["assignment-from-no-return"]
 
 [[rule]]
 name = "assignment-from-none"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["assignment-from-none"]
 
 [[rule]]
@@ -117,7 +110,6 @@ pylint = ["bad-mcs-method-argument"]
 [[rule]]
 name = "bad-reversed-sequence"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-reversed-sequence"]
 
 [[rule]]
@@ -169,7 +161,6 @@ pylint = ["comparison-of-constants"]
 [[rule]]
 name = "comparison-with-callable"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["comparison-with-callable"]
 
 [[rule]]
@@ -395,7 +386,6 @@ pylint = ["function-redefined"]
 [[rule]]
 name = "global-variable-undefined"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["global-variable-undefined"]
 
 [[rule]]
@@ -407,7 +397,6 @@ pylint = ["import-outside-toplevel"]
 [[rule]]
 name = "inconsistent-mro"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["inconsistent-mro"]
 
 [[rule]]
@@ -425,7 +414,6 @@ pylint = ["inconsistent-return-statements"]
 [[rule]]
 name = "inherit-non-class"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["inherit-non-class"]
 
 [[rule]]

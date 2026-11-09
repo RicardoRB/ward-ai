@@ -142,11 +142,13 @@ final class JsonDependencyCodec {
   public static final class ReferenceDto {
     public String specifier;
     public SpanDto span;
+    public boolean typeChecking;
 
     static ReferenceDto from(final Reference reference) {
       final ReferenceDto dto = new ReferenceDto();
       dto.specifier = reference.specifier();
       dto.span = SpanDto.from(reference.span());
+      dto.typeChecking = reference.typeChecking();
       return dto;
     }
 
@@ -154,7 +156,7 @@ final class JsonDependencyCodec {
       if (specifier == null) {
         throw new IllegalArgumentException("Cached reference is incomplete");
       }
-      return new Reference(specifier, span(span));
+      return new Reference(specifier, span(span), typeChecking);
     }
   }
 

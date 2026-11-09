@@ -55,41 +55,12 @@ final class NodeFlowSites implements FlowSites {
     }
     if (SINGLE.equals(node.kind())) {
       expression(node, found);
-    } else if (NodeStatementCalls.isExpressionStatement(node)) {
-      statement(node, found);
     } else {
       children(node, found);
       if (VARIABLE_DECLARATION.equals(node.kind())) {
         types.declareVariable(node);
       }
     }
-  }
-
-  /**
-   * A statement the grammar parses as a declaration may be a call, or a bracket write such as
-   * {@code a['b'] = v}, which is recorded as a member write after the sites in its value.
-   */
-  private void statement(final SyntaxNode node, final List<FlowSite> found) {
-    final Optional<NodeStatementCalls.Call> call = NodeStatementCalls.callOf(node);
-    if (call.isPresent()) {
-      call(call.get().callee(), call.get().arguments(), found);
-      return;
-    }
-    children(node, found);
-    NodeStatementCalls.bracketWriteOf(node)
-        .ifPresent(
-            write -> {
-              final String qualifier = write.qualifier();
-              found.add(
-                  new FlowSite(
-                      FlowSiteKind.MEMBER_WRITE,
-                      write.key(),
-                      qualifier,
-                      types.receiverType(qualifier),
-                      List.of(),
-                      NodeCallShapes.spans(List.of(write.value())),
-                      node.span()));
-            });
   }
 
   private void children(final SyntaxNode node, final List<FlowSite> found) {
@@ -108,6 +79,11 @@ final class NodeFlowSites implements FlowSites {
     } else if (isMember(parts)) {
       walk(parts.get(0), found);
       found.add(siteOf(FlowSiteKind.MEMBER_READ, node, parts, List.of()));
+    } else if (NodeStringBuilds.templateOf(node).isPresent()) {
+      NodeStringSites.template(
+          node, NodeStringBuilds.templateOf(node).get(), found, this::walk, this::children);
+    } else if (NodeStringBuilds.isChain(parts)) {
+      NodeStringSites.concatenation(node, found, this::walk, this::children);
     } else if (NodeCallShapes.isNew(parts)) {
       children(node, found);
       found.add(constructor(node, parts));
@@ -159,6 +135,13 @@ final class NodeFlowSites implements FlowSites {
   private void call(
       final SyntaxNode callee, final List<SyntaxNode> values, final List<FlowSite> found) {
     final List<SyntaxNode> calleeParts = NodeFlowSyntax.parts(callee);
+    final Optional<SyntaxNode> receiver = NodeStringBuilds.concatReceiver(calleeParts);
+    if (receiver.isPresent()) {
+      final List<SyntaxNode> operands = new ArrayList<>(List.of(receiver.get()));
+      operands.addAll(values);
+      NodeStringSites.stringBuild(callee.span(), operands, found, this::walk);
+      return;
+    }
     if (isMember(calleeParts)) {
       walk(calleeParts.get(0), found);
     }

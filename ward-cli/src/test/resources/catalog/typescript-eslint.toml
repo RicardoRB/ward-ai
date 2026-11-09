@@ -142,6 +142,7 @@ typescript-eslint = ["no-deprecated"]
 
 [[rule]]
 name = "no-duplicate-enum-values"
+not-applicable = { javascript = "TypeScript enums have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-duplicate-enum-values"]
@@ -165,6 +166,7 @@ typescript-eslint = ["no-empty-object-type"]
 
 [[rule]]
 name = "no-explicit-any"
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "suggestion"
 typescript-eslint = ["no-explicit-any"]
@@ -172,6 +174,7 @@ biome = ["noExplicitAny"]
 
 [[rule]]
 name = "no-extra-non-null-assertion"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-extra-non-null-assertion"]
@@ -185,6 +188,7 @@ typescript-eslint = ["no-extraneous-class"]
 
 [[rule]]
 name = "no-floating-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-floating-promises"]
@@ -244,6 +248,7 @@ typescript-eslint = ["no-misused-new"]
 
 [[rule]]
 name = "no-misused-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-misused-promises"]
@@ -275,6 +280,7 @@ typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
 name = "no-non-null-asserted-optional-chain"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-non-null-asserted-optional-chain"]
@@ -393,6 +399,7 @@ typescript-eslint = ["no-unsafe-call"]
 
 [[rule]]
 name = "no-unsafe-declaration-merging"
+not-applicable = { javascript = "TypeScript declaration merging has no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-unsafe-declaration-merging"]
@@ -449,6 +456,7 @@ typescript-eslint = ["no-useless-default-assignment"]
 
 [[rule]]
 name = "no-useless-empty-export"
+not-applicable = { javascript = "TypeScript export declarations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "suggestion"
 typescript-eslint = ["no-useless-empty-export"]

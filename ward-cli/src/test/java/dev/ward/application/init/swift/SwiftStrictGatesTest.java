@@ -10,19 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-/**
- * Checks the strict Swift gate commands: warnings as errors, SwiftLint's strict layer, coverage.
- */
+/** Checks the strict Swift gate commands: warnings as errors and the coverage minimum. */
 class SwiftStrictGatesTest {
   @Test
   void strictSwiftPmGatesAddWarningsAsErrorsAndTheStricterMinimum() {
-    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STRICT, false));
+    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STRICT));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swiftlint", "swift-build", "swift-test", "swift-coverage");
-    assertThat(command(gates, "swiftlint"))
-        .endsWith("lint", "--reporter", "json", "--quiet", "--strict")
-        .doesNotContain("--config");
+        .containsExactly("swift-build", "swift-test", "swift-coverage");
     assertThat(command(gates, "swift-build"))
         .containsExactly(
             "swift",
@@ -51,23 +46,6 @@ class SwiftStrictGatesTest {
             "-Xswiftc",
             "-strict-concurrency=complete");
     assertThat(setting(gates, "swift-coverage", "minimum")).isEqualTo("85");
-  }
-
-  @Test
-  void strictOverAUserSwiftLintConfigPassesTheStrictLayerAfterTheUsersOwn() {
-    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STRICT, true));
-
-    assertThat(command(gates, "swiftlint"))
-        .endsWith(
-            "lint",
-            "--reporter",
-            "json",
-            "--quiet",
-            "--strict",
-            "--config",
-            ".swiftlint.yml",
-            "--config",
-            ".ward/swiftlint-strict.yml");
   }
 
   @Test

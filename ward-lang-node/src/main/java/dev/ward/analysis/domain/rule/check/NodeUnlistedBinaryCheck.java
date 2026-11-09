@@ -93,8 +93,7 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
             ? NodeManifests.names(manifests.get("").manifest(), SECTIONS)
             : Set.of();
     for (final NodeManifests.Manifest owner : manifests.values()) {
-      final Set<String> listed = new HashSet<>(rootListed);
-      listed.addAll(NodeManifests.names(owner.manifest(), SECTIONS));
+      final Set<String> listed = listedFor(owner, rootListed);
       for (final Member script : owner.manifest().entries("scripts")) {
         if (script.value() instanceof Value.Text text) {
           found.addAll(unlisted(owner.path(), script, text.value(), providers, listed));
@@ -115,6 +114,17 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
                 NodeInstalledPackages.binaryNames(name, manifest.manifest())
                     .forEach(command -> providers.put(command, name)));
     return providers;
+  }
+
+  /**
+   * The names a workspace lists, with the root manifest's names, since monorepos install shared
+   * tools there.
+   */
+  private static Set<String> listedFor(
+      final NodeManifests.Manifest owner, final Set<String> rootListed) {
+    final Set<String> listed = new HashSet<>(rootListed);
+    listed.addAll(NodeManifests.names(owner.manifest(), SECTIONS));
+    return listed;
   }
 
   /** The commands of one script whose provider the manifest does not list. */

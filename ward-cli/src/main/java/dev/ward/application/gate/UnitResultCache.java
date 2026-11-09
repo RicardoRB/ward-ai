@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -118,9 +119,21 @@ final class UnitResultCache {
                 snapshot.graph(),
                 new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
-    wholeRunFindings.addAll(UnusedDefinitionFindings.findings(rules, snapshot.summaries()));
+    wholeRunFindings.addAll(
+        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf()));
     wholeRunFindings.addAll(engine.runProject(units, frontends, rules, files));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
+  }
+
+  /**
+   * The module of a file, as the first dependency adapter that knows the file's module names it.
+   */
+  private Function<String, Optional<String>> moduleOf() {
+    return path ->
+        dependencies.stream()
+            .map(support -> support.resolver().moduleOf(path))
+            .flatMap(Optional::stream)
+            .findFirst();
   }
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {

@@ -6,7 +6,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-/** The inside filter of the forbidden-node check, with plain kinds and parent>child selectors. */
+/** The inside filter of the forbidden-node check, with plain kinds and parent>child chains. */
 class ForbiddenNodeInsideTest {
 
   private final TreeLayout gen = new TreeLayout();
@@ -47,6 +47,15 @@ class ForbiddenNodeInsideTest {
 
     assertThat(check(Set.of(), Set.of("loop>'while'")).matches(root)).hasSize(2);
     assertThat(check(Set.of(), Set.of("loop>'for'")).matches(root)).hasSize(1);
+  }
+
+  @Test
+  void aChainSelectorInsideNeedsEveryLinkAsADirectChild() {
+    final SyntaxNode root = gen.node("unit", loop(), gen.node("block", decl()));
+
+    assertThat(check(Set.of("loop>body>decl"), Set.of()).matches(root)).hasSize(1);
+    assertThat(check(Set.of("loop>body>'for'"), Set.of()).matches(root)).isEmpty();
+    assertThat(check(Set.of("loop>decl"), Set.of()).matches(root)).isEmpty();
   }
 
   @Test

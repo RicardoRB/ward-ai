@@ -1760,3 +1760,168 @@ target = "comments"
 pattern = '^///\s*<reference\s+(path|types|lib)='
 message = "do not use a triple-slash reference; use an import"
 '''
+
+# ESLint core rules of type "suggestion" (#326). Node text has no whitespace: match tokens, not spaces.
+
+[[rules]]
+id = "ward:typescript/require-await"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["arrowFunctionDeclaration>'async'", "propertyMemberDeclaration>propertyMemberBase>'async'"]
+descendant = ["'await'"]
+skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
+message = "async function has no 'await' expression"
+'''
+
+[[rules]]
+id = "ward:javascript/require-await"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["functionDeclaration>'async'", "anonymousFunction>'async'", "arrowFunctionDeclaration>'async'", "methodDefinition>'async'"]
+descendant = ["'await'"]
+skip = ["functionDeclaration", "anonymousFunction", "arrowFunctionDeclaration"]
+message = "async function has no 'await' expression"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-labels"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["labelledStatement"]
+text = '^(\w+):(?![\s\S]*(?:break|continue)\1(?![\w$]))'
+message = "label is defined but never used"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-labels"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["labelledStatement"]
+text = '^(\w+):(?![\s\S]*(?:break|continue)\1(?![\w$]))'
+message = "label is defined but never used"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-rest-params"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-prefer-rest-params"
+message = "use the rest parameters instead of 'arguments'"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-rest-params"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-prefer-rest-params"
+message = "use the rest parameters instead of 'arguments'"
+'''
+
+[[rules]]
+id = "ward:typescript/no-octal-escape"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-escape"
+decimal = false
+message = "don't use octal escape sequences"
+'''
+
+[[rules]]
+id = "ward:javascript/no-octal-escape"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-escape"
+decimal = false
+message = "don't use octal escape sequences"
+'''
+
+[[rules]]
+id = "ward:typescript/no-nonoctal-decimal-escape"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-escape"
+decimal = true
+message = "don't use the non-octal decimal escape sequence"
+'''
+
+[[rules]]
+id = "ward:javascript/no-nonoctal-decimal-escape"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-string-escape"
+decimal = true
+message = "don't use the non-octal decimal escape sequence"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-regex-literals"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.disallow-redundant-wrapping = { type = "boolean" }
+body = '''
+check = "node-prefer-regex-literals"
+disallow-redundant-wrapping = false
+message = "use a regular expression literal instead of the 'RegExp' constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-regex-literals"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.disallow-redundant-wrapping = { type = "boolean" }
+body = '''
+check = "node-prefer-regex-literals"
+disallow-redundant-wrapping = false
+message = "use a regular expression literal instead of the 'RegExp' constructor"
+'''
+

@@ -14,7 +14,6 @@ import dev.ward.infrastructure.finding.node.turbo.TurborepoFindings;
 import dev.ward.infrastructure.finding.python.MypyJsonFindings;
 import dev.ward.infrastructure.finding.python.RuffJsonFindings;
 import dev.ward.infrastructure.finding.swift.SwiftFindingSources;
-import dev.ward.infrastructure.finding.swift.SwiftLintJsonFindings;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -36,12 +35,11 @@ class FindingSourceContractTest {
                         new BiomeCheckstyleFindings(),
                         new RuffJsonFindings(new ForyJsonCodec()),
                         new MypyJsonFindings(new ForyJsonCodec())),
-                    new SwiftFindingSources(new SwiftLintJsonFindings(new ForyJsonCodec()))
-                        .sources().stream())
+                    new SwiftFindingSources().sources().stream())
                 .toList());
 
     assertThat(extractor.gates())
-        .contains("swiftlint", "swift-build", "xcodebuild-test")
+        .contains("swift-build", "xcodebuild-test")
         .allSatisfy(
             gate ->
                 assertThat(QualityGateDefinitions.find(gate))

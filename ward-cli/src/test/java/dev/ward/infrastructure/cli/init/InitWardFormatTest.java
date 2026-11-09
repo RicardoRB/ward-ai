@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.init.SwiftPorts;
 import dev.ward.domain.FakeCommandExecutor;
-import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.JvmBuildToolConfigurator;
@@ -13,12 +12,10 @@ import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
-import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -89,14 +86,11 @@ class InitWardFormatTest {
   @Test
   void swiftInitWritesNoSwiftFormatConfig() throws IOException {
     copyFixture("swift-package", root);
-    final FakeCommandExecutor resolve =
-        new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
     final InitCommandFixture init =
-        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(resolve, mac()), "swift")
+        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(mac()), "swift")
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                    new FileSystemSwiftToolConfigs(),
                     new FileSystemSwiftSourceDirectories()));
 
     final int exit = init.run("", "--preset", "standard", "--yes");

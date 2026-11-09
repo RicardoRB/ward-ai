@@ -101,7 +101,7 @@ version = 1
 
 [select]
 preset = "standard"
-languages = ["java"]
+languages = ["java", "swift"]
 ```
 
 The file starts with an ownership marker, so a `ward-rules.toml` that you wrote is kept and
@@ -109,11 +109,12 @@ reported as user-owned. With the `strict` preset the file also sets `ignore-cons
 `ignore-setter` to `true` on `ward:java/hidden-field`, as the former Checkstyle configuration did.
 See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
 
-`languages` lists the JVM source languages the project has, Java before Kotlin: `["kotlin"]` for a
-Kotlin-only project, and `["java", "kotlin"]` for a mixed one. Kotlin gets the same gates as Java.
-TypeScript, JavaScript, Python and Swift keep their external linters until their own migration
-lands, so selecting their Ward rules would report each finding twice; their `ward-rules.toml`
-keeps `languages = ["java"]`.
+`languages` lists the JVM source languages the project has, Java before Kotlin, then Swift: `["java", "swift"]`
+for a Java project, `["kotlin", "swift"]` for a Kotlin-only one, and `["java", "kotlin", "swift"]` for a
+mixed one. Kotlin gets the same gates as Java. Swift's rules apply to `.swift` files only, so the Swift
+entry is harmless in a project without Swift sources. TypeScript, JavaScript and Python keep their
+external linters until their own migration lands, so selecting their Ward rules would report each
+finding twice.
 
 ## What init changes in your build
 
@@ -637,10 +638,13 @@ projects are not supported yet, and init stops with an error that names the mana
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
   `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
-  `standard` selects `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
+  `standard` selects `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
   checks formatting.
   `pip-audit` is opt-in.
-- Ward writes `ruff.toml`, `mypy.ini`, and `.coveragerc` only where the project has none. A config the
+- Lint comes from Ward's Python rules: `ward-rules.toml` selects them for `"python"` with the
+  preset. Init does not offer, pin or configure Ruff, Pylint or vulture. A project's own `ruff.toml`
+  is left unchanged.
+- Ward writes `mypy.ini` and `.coveragerc` only where the project has none. A config the
   project keeps is never changed; its coverage threshold goes on the command instead.
 - Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
   file, and `requirements-ward.txt`.
@@ -650,8 +654,8 @@ projects are not supported yet, and init stops with an error that names the mana
   the package, so tests cannot import it until one is added.
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
-- `strict` adds `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
-  and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
+- `strict` adds `mutmut` and selects the strict Ward rules. Strict mypy and branch coverage
+  with an 85% total apply to Ward's own configs, or go on the commands for a
   project's own. `mutmut` runs in `ci` with a 60% minimum.
 - A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
   plugin, `pytest-django` with a Ward `pytest.ini` that names the settings module, and a `django-check`
@@ -688,19 +692,18 @@ error that names the generator.
 - **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
   older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
   Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
-- **Gates.** `ward-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
-  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
+- **Lint rules.** The `ward` check applies Ward's Swift rules that the preset selects in
+  `ward-rules.toml`, as for Java. Init writes no SwiftLint gate.
+- **Gates.** `ward-format` runs in every profile. A SwiftPM package adds `swift-build` and
+  `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
   `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
-- **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
-  Swift mutation tool is mature enough yet, so Swift strict stops at the checks below.
-- **Proven versions.** CI proves the Swift setup on Xcode 26.0.1, Xcode 26.6, and Xcode 27.0 through 27.2, with SwiftLintPlugins
-  0.65.1. Init pins those tools for the selected Xcode, within the range Ward's
-  tools cover (Xcode 26.0 up to 28.0). When no pinned version covers the selected Xcode, init leaves out
-  the `swiftlint` gate and the plan names the Xcode versions Ward supports for it.
+- **Strict.** `strict` selects the same gates with stricter commands, and the strict Ward rules in
+  `ward-rules.toml`. It has no mutation gate: no Swift mutation tool is mature enough yet.
+- **Proven versions.** CI proves the Swift setup on Xcode 26.0.1, Xcode 26.6, and Xcode 27.0 through
+  27.2.
 
   | Gate | `standard` | `strict` |
   |---|---|---|
-  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), without `trailing_comma` (Ward's formatter keeps trailing commas), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
   | `swift-build` (SwiftPM) | `swift build --build-tests` | adds `-Xswiftc -warnings-as-errors -Xswiftc -strict-concurrency=complete` |
   | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
   | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
@@ -714,23 +717,20 @@ error that names the generator.
   several, the wizard asks, or `--scheme <name>` chooses one; `--yes` without `--scheme` fails and
   names the schemes. The test platform is `iOS Simulator`, or `macOS` when every target builds only
   for macOS.
-- **Ward's SwiftLint.** SwiftLint is pinned in an ownership-marked `.ward/swift-tools/Package.swift`
-  and resolved with `swift package resolve`. A failed resolve removes `.ward/swift-tools/` and changes
-  nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
-- **Configs.** Init writes `.swiftlint.yml` only when the project has none, and `.editorconfig` when
-  the project has none. The `.editorconfig` indentation follows the project's sources, so Xcode's
-  4-space templates pass.
-  Files the project keeps are never changed. Under `strict`, Ward's `.swiftlint.yml` carries the
-  strict rules itself.
-- **Strict over your own `.swiftlint.yml`.** Strict leaves your file byte-for-byte unchanged and
-  writes an ownership-marked `.ward/swiftlint-strict.yml` with the strict rules. The `swiftlint` gate
-  then passes both files, yours first, so your `disabled_rules` and other keys still apply. Running
-  init with `standard` again removes that file.
+- **No SwiftLint files.** Init writes no SwiftLint config, tools package (`.ward/swift-tools/`), resolve
+  step or CI cache. Re-running init removes the Ward-owned SwiftLint files that an earlier init wrote:
+  `.swiftlint.yml`, `.ward/swiftlint-strict.yml` and `.ward/swift-tools/Package.swift` with its
+  `Package.resolved`. A `.swiftlint.yml` you wrote is kept as it is. A `.ward/swift-tools/.build`
+  cache from an earlier run is not removed; delete it by hand. Ward never edits the project's
+  `Package.swift` or `project.pbxproj`.
+- **Configs.** Init writes `.editorconfig` when the project has none. The `.editorconfig` indentation
+  follows the project's sources, so Xcode's 4-space templates pass. Files the project keeps are never
+  changed.
 - **Architecture rules.** Under `strict`, the wizard asks for the style, as `--architecture` answers it.
   Ward writes the layer boundaries to `ward.toml`, checked by `ward:architecture/layers`. It writes no
   Swift package or rules file for them.
-- **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
-  JDK, Node, or Python for the Swift job.
+- **CI.** The generated workflow runs on `macos-26` and sets up no JDK, Node, or Python for the Swift
+  job.
 
 ## Tools init can install
 

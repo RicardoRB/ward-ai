@@ -434,6 +434,7 @@ singleExpression
     | literal                                                              # LiteralExpression
     | arrayLiteral                                                         # ArrayLiteralExpression
     | objectLiteral                                                        # ObjectLiteralExpression
+    | {this.isJsx()}? jsxElement                                     # JsxExpression
     | '(' expressionSequence ')'                                           # ParenthesizedExpression
     ;
 
@@ -603,6 +604,56 @@ keyword
 let_
     : NonStrictLet
     | StrictLet
+    ;
+
+// JSX (.tsx and .jsx files only, see the JSX lexer modes)
+jsxElement
+    : jsxSelfClosingElement
+    | jsxOpeningElement (jsxText | jsxElement | jsxExpressionContainer)* jsxClosingElement
+    | jsxFragment
+    ;
+
+jsxFragment
+    : JsxOpenLt JsxTagEnd (jsxText | jsxElement | jsxExpressionContainer)* JsxClosingTagStart JsxClosingTagEnd
+    ;
+
+jsxSelfClosingElement
+    : JsxOpenLt jsxElementName jsxAttribute* JsxSelfCloseEnd
+    ;
+
+jsxOpeningElement
+    : JsxOpenLt jsxElementName jsxAttribute* JsxTagEnd
+    ;
+
+jsxClosingElement
+    : JsxClosingTagStart jsxElementName? JsxClosingTagEnd
+    ;
+
+jsxElementName
+    : JsxIdentifier ((Dot | Colon) JsxIdentifier)*
+    ;
+
+jsxAttribute
+    : JsxIdentifier (Colon JsxIdentifier)? (Assign jsxAttributeValue)?
+    | jsxSpreadAttribute
+    ;
+
+jsxSpreadAttribute
+    : OpenBrace Ellipsis singleExpression CloseBrace
+    ;
+
+jsxAttributeValue
+    : JsxStringLiteral
+    | jsxExpressionContainer
+    | jsxElement
+    ;
+
+jsxExpressionContainer
+    : OpenBrace singleExpression? CloseBrace
+    ;
+
+jsxText
+    : JsxText
     ;
 
 eos

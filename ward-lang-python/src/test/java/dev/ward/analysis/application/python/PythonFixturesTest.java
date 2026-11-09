@@ -7,6 +7,7 @@ import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.RuleFileReader;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.rule.CompiledRule;
+import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOptions;
@@ -57,7 +58,11 @@ class PythonFixturesTest {
       for (final RuleDefinition rule : RuleFileReader.read(file)) {
         final String name = Toml.parse(rule.body()).getString(CHECK);
         final Path directory = FIXTURES.resolve(rule.id().substring("ward:".length()));
-        if (name != null && factories.containsKey(name) && Files.isDirectory(directory)) {
+        // A graph rule runs over the whole project, so its fixtures are checked in ward-cli.
+        if (name != null
+            && factories.containsKey(name)
+            && Files.isDirectory(directory)
+            && !GraphRules.isGraphRule(rule)) {
           owned.add(new OwnedRule(rule, directory));
         }
       }

@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
@@ -29,6 +30,29 @@ class SwiftFileSummarizerTest {
   }
 
   @Test
+  void recordsPublicAndOpenDeclarationsAsExportsOfTheirKind() {
+    final FileSummary summary =
+        summarize(
+            """
+            public struct Cart {
+                public func total() -> Int { 0 }
+                public var count: Int = 0
+                func hidden() {}
+            }
+            open class Base {}
+            struct Private {}
+            """);
+
+    assertThat(summary.exports().stream().filter(symbol -> symbol.kind().startsWith("public:")))
+        .extracting(Symbol::name, Symbol::kind)
+        .containsExactlyInAnyOrder(
+            tuple("Cart", SwiftFileSummarizer.PUBLIC_TYPE_KIND),
+            tuple("total", SwiftFileSummarizer.PUBLIC_FUNCTION_KIND),
+            tuple("count", SwiftFileSummarizer.PUBLIC_PROPERTY_KIND),
+            tuple("Base", SwiftFileSummarizer.PUBLIC_TYPE_KIND));
+  }
+
+  @Test
   void recordsDeclaredTypesQualifiedByTheirEnclosingType() {
     final FileSummary summary =
         summarize(
@@ -42,7 +66,8 @@ class SwiftFileSummarizerTest {
 
     assertThat(summary.declared().stream().map(Symbol::name))
         .containsExactly("Cart", "Cart.Kind", "Cart.Priced", "Items");
-    assertThat(summary.exports().stream().map(Symbol::name))
+    assertThat(
+            summary.exports().stream().filter(symbol -> symbol.kind().isEmpty()).map(Symbol::name))
         .containsExactlyElementsOf(summary.declared().stream().map(Symbol::name).toList());
   }
 

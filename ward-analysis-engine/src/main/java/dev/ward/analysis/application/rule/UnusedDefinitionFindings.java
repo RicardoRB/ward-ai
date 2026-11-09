@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 /**
  * Runs the unused-definition rules over the whole project. A definition is unused only if no file
@@ -42,19 +43,37 @@ public final class UnusedDefinitionFindings {
 
   private UnusedDefinitionFindings() {}
 
-  /** Whether {@code definition} is one of the unused-definition rules. */
+  /**
+   * Whether {@code definition} is one of the whole-run rules: the unused-definition rules and the
+   * module-scoped accessibility rule.
+   */
   public static boolean isUnusedDefinitionRule(final RuleDefinition definition) {
-    return binding(definition).isPresent();
+    return binding(definition).isPresent() || SwiftModuleAccessibility.isRule(definition);
   }
 
   /**
-   * The findings of every unused-definition rule among {@code rules}, over {@code summaries}.
+   * The findings of every unused-definition rule among {@code rules}, over {@code summaries}, when
+   * no file has a known module. Module-scoped rules report nothing without a module.
    *
    * @throws NullPointerException if an argument is missing
    */
   public static List<AnalysisFinding> findings(
       final List<RuleDefinition> rules, final Map<String, FileSummary> summaries) {
+    return findings(rules, summaries, path -> Optional.empty());
+  }
+
+  /**
+   * The findings of every unused-definition rule among {@code rules}, over {@code summaries}, with
+   * {@code moduleOf} giving the module of each file, empty when it is unknown.
+   *
+   * @throws NullPointerException if an argument is missing
+   */
+  public static List<AnalysisFinding> findings(
+      final List<RuleDefinition> rules,
+      final Map<String, FileSummary> summaries,
+      final Function<String, Optional<String>> moduleOf) {
     Objects.requireNonNull(summaries, "summaries");
+    Objects.requireNonNull(moduleOf, "moduleOf");
     final Set<String> used = new HashSet<>();
     final Set<String> assigned = new HashSet<>();
     summaries
@@ -66,7 +85,11 @@ public final class UnusedDefinitionFindings {
             });
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final RuleDefinition rule : rules) {
-      findings.addAll(findingsOf(rule, new TreeMap<>(summaries), used, assigned));
+      if (SwiftModuleAccessibility.isRule(rule)) {
+        findings.addAll(SwiftModuleAccessibility.findings(rule, summaries, moduleOf));
+      } else {
+        findings.addAll(findingsOf(rule, new TreeMap<>(summaries), used, assigned));
+      }
     }
     return List.copyOf(findings);
   }

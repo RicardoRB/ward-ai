@@ -25,7 +25,9 @@ class InitKotlinPresetTest {
     assertThat(toml)
         .contains("[checks.mutation]")
         .doesNotContain("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]");
-    assertThat(java.resolve("ward-rules.toml")).content().contains("languages = [\"java\"]");
+    assertThat(java.resolve("ward-rules.toml"))
+        .content()
+        .contains("languages = [\"java\", \"swift\"]");
   }
 
   @Test
@@ -37,7 +39,7 @@ class InitKotlinPresetTest {
         .doesNotContain("[checks.checkstyle]", "[checks.pmd]", "[checks.spotbugs]");
     assertThat(kotlin.resolve("ward-rules.toml"))
         .content()
-        .contains("languages = [\"kotlin\"]")
+        .contains("languages = [\"kotlin\", \"swift\"]")
         .doesNotContain("\"java\"", "ward:java/hidden-field");
     assertNoExternalToolFiles(kotlin);
     assertThat(Files.readString(kotlin.resolve("build.gradle.kts")))
@@ -50,7 +52,7 @@ class InitKotlinPresetTest {
 
     assertThat(mixed.resolve("ward-rules.toml"))
         .content()
-        .contains("languages = [\"java\", \"kotlin\"]");
+        .contains("languages = [\"java\", \"kotlin\", \"swift\"]");
     assertNoExternalToolFiles(mixed);
   }
 
