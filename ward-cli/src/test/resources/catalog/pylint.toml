@@ -13,12 +13,6 @@ category = "pylint"
 pylint = ["abstract-method"]
 
 [[rule]]
-name = "access-member-before-definition"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["access-member-before-definition"]
-
-[[rule]]
 name = "anomalous-unicode-escape-in-string"
 presets = ["standard", "strict"]
 pylint = ["anomalous-unicode-escape-in-string"]
@@ -60,12 +54,6 @@ category = "pylint"
 pylint = ["assignment-from-none"]
 
 [[rule]]
-name = "async-context-manager-with-regular-with"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["async-context-manager-with-regular-with"]
-
-[[rule]]
 name = "attribute-defined-outside-init"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -88,12 +76,6 @@ name = "bad-classmethod-argument"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["bad-classmethod-argument"]
-
-[[rule]]
-name = "bad-configuration-section"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-configuration-section"]
 
 [[rule]]
 name = "bad-docstring-quotes"
@@ -126,12 +108,6 @@ category = "linter"
 pylint = ["bad-file-encoding"]
 
 [[rule]]
-name = "bad-format-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-format-string"]
-
-[[rule]]
 name = "bad-format-string-key"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -148,12 +124,6 @@ name = "bad-mcs-method-argument"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["bad-mcs-method-argument"]
-
-[[rule]]
-name = "bad-plugin-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-plugin-value"]
 
 [[rule]]
 name = "bad-reversed-sequence"
@@ -186,21 +156,9 @@ category = "pylint"
 pylint = ["boolean-datetime"]
 
 [[rule]]
-name = "break-in-finally"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["break-in-finally"]
-
-[[rule]]
 name = "broad-exception-raised"
 presets = ["standard", "strict"]
 pylint = ["broad-exception-raised"]
-
-[[rule]]
-name = "cell-var-from-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["cell-var-from-loop"]
 
 [[rule]]
 name = "chained-comparison"
@@ -303,12 +261,6 @@ category = "pylint"
 pylint = ["consider-using-augmented-assign"]
 
 [[rule]]
-name = "consider-using-dict-comprehension"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-dict-comprehension"]
-
-[[rule]]
 name = "consider-using-dict-items"
 presets = ["standard", "strict"]
 category = "linter"
@@ -330,12 +282,6 @@ pylint = ["consider-using-f-string"]
 name = "consider-using-from-import"
 presets = ["standard", "strict"]
 pylint = ["consider-using-from-import"]
-
-[[rule]]
-name = "consider-using-generator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-generator"]
 
 [[rule]]
 name = "consider-using-get"
@@ -371,12 +317,6 @@ name = "consider-using-namedtuple-or-dataclass"
 presets = ["strict"]
 category = "pylint"
 pylint = ["consider-using-namedtuple-or-dataclass"]
-
-[[rule]]
-name = "consider-using-set-comprehension"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-set-comprehension"]
 
 [[rule]]
 name = "consider-using-sys-exit"
@@ -419,42 +359,6 @@ category = "pylint"
 pylint = ["declare-non-slot"]
 
 [[rule]]
-name = "deprecated-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-argument"]
-
-[[rule]]
-name = "deprecated-attribute"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-attribute"]
-
-[[rule]]
-name = "deprecated-class"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-class"]
-
-[[rule]]
-name = "deprecated-decorator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-decorator"]
-
-[[rule]]
-name = "deprecated-method"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-method"]
-
-[[rule]]
-name = "deprecated-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-module"]
-
-[[rule]]
 name = "dict-init-mutate"
 presets = ["strict"]
 category = "linter"
@@ -491,12 +395,6 @@ category = "pylint"
 pylint = ["duplicate-argument-name"]
 
 [[rule]]
-name = "duplicate-except"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["duplicate-except"]
-
-[[rule]]
 name = "duplicate-string-formatting-argument"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -521,12 +419,6 @@ category = "pylint"
 pylint = ["expression-not-assigned"]
 
 [[rule]]
-name = "format-combined-specification"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["format-combined-specification"]
-
-[[rule]]
 name = "format-string-without-interpolation"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -545,28 +437,10 @@ category = "pylint"
 pylint = ["global-variable-undefined"]
 
 [[rule]]
-name = "implicit-str-concat"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["implicit-str-concat"]
-
-[[rule]]
-name = "import-error"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["import-error"]
-
-[[rule]]
 name = "import-outside-toplevel"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["import-outside-toplevel"]
-
-[[rule]]
-name = "impossible-comparison"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["impossible-comparison"]
 
 [[rule]]
 name = "inconsistent-mro"

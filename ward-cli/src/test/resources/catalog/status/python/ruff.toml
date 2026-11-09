@@ -111,7 +111,6 @@ complex-assignment-in-stub = { status = "planned", issue = "#334" }
 complex-if-statement-in-stub = { status = "planned", issue = "#334" }
 constant-imported-as-non-constant = { status = "planned", issue = "#297" }
 context-manager-iterator = { status = "planned", issue = "#334" }
-continue-in-finally = { status = "planned", issue = "#332" }
 continue-outside-loop = "implemented"
 convert-named-tuple-functional-to-class = { status = "planned", issue = "#334" }
 convert-typed-dict-functional-to-class = { status = "planned", issue = "#334" }

@@ -333,7 +333,8 @@ ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-ruff = ["B012"]
+ruff = ["B012", "PLE0116"]
+pylint = ["break-in-finally", "continue-in-finally"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
@@ -378,6 +379,7 @@ ruff = ["B022"]
 [[rule]]
 name = "function-uses-loop-variable"
 ruff = ["B023"]
+pylint = ["cell-var-from-loop"]
 
 [[rule]]
 name = "abstract-base-class-without-abstract-method"
@@ -386,6 +388,7 @@ ruff = ["B024"]
 [[rule]]
 name = "duplicate-try-block-exception"
 ruff = ["B025"]
+pylint = ["duplicate-except"]
 
 [[rule]]
 name = "star-arg-unpacking-after-keyword-arg"
@@ -488,10 +491,12 @@ ruff = ["C402"]
 [[rule]]
 name = "unnecessary-list-comprehension-set"
 ruff = ["C403"]
+pylint = ["consider-using-set-comprehension"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-dict"
 ruff = ["C404"]
+pylint = ["consider-using-dict-comprehension"]
 
 [[rule]]
 name = "unnecessary-literal-set"
@@ -545,6 +550,7 @@ ruff = ["C418"]
 [[rule]]
 name = "unnecessary-comprehension-in-call"
 ruff = ["C419"]
+pylint = ["consider-using-generator"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
@@ -1134,6 +1140,7 @@ ruff = ["F509"]
 [[rule]]
 name = "string-dot-format-invalid-format"
 ruff = ["F521"]
+pylint = ["bad-format-string"]
 
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
@@ -1150,6 +1157,7 @@ ruff = ["F524"]
 [[rule]]
 name = "string-dot-format-mixing-automatic"
 ruff = ["F525"]
+pylint = ["format-combined-specification"]
 
 [[rule]]
 name = "f-string-missing-placeholders"
@@ -1606,6 +1614,7 @@ ruff = ["INT003"]
 [[rule]]
 name = "single-line-implicit-string-concatenation"
 ruff = ["ISC001"]
+pylint = ["implicit-str-concat"]
 
 [[rule]]
 name = "multi-line-implicit-string-concatenation"
@@ -2045,13 +2054,6 @@ presets = ["standard", "strict"]
 category = "pylint"
 ruff = ["PLE0115"]
 pylint = ["nonlocal-and-global"]
-
-[[rule]]
-name = "continue-in-finally"
-presets = ["standard", "strict"]
-category = "pylint"
-ruff = ["PLE0116"]
-pylint = ["continue-in-finally"]
 
 [[rule]]
 name = "nonlocal-without-binding"

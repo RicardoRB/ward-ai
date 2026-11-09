@@ -40,3 +40,35 @@ rules = [
   "c-extension-no-member",
   "raw-checker-failed",
 ]
+
+[[group]]
+reason = "needs type inference Ward does not compute for Python (or mypy/configuration), not a source check"
+rules = [
+  "async-context-manager-with-regular-with",
+  "access-member-before-definition",
+  "impossible-comparison",
+]
+
+[[group]]
+reason = "Pylint import resolution is mypy (reports unresolved imports) in Ward"
+rules = [
+  "import-error",
+]
+
+[[group]]
+reason = "per-version deprecation tables, not a source check of the project"
+rules = [
+  "deprecated-argument",
+  "deprecated-attribute",
+  "deprecated-class",
+  "deprecated-decorator",
+  "deprecated-method",
+  "deprecated-module",
+]
+
+[[group]]
+reason = "Pylint configuration errors, not source code"
+rules = [
+  "bad-configuration-section",
+  "bad-plugin-value",
+]
