@@ -277,7 +277,7 @@ invalid-character-nul = "implemented"
 invalid-character-sub = "implemented"
 invalid-character-zero-width-space = "implemented"
 invalid-envvar-default = { status = "planned", issue = "#334" }
-invalid-envvar-value = { status = "planned", issue = "#332" }
+invalid-envvar-value = "implemented"
 invalid-escape-sequence = "implemented"
 invalid-first-argument-name-for-class-method = { status = "planned", issue = "#297" }
 invalid-first-argument-name-for-method = "implemented"
@@ -373,7 +373,7 @@ missing-type-function-argument = { status = "planned", issue = "#297" }
 missing-type-kwargs = { status = "planned", issue = "#297" }
 mixed-case-variable-in-class-scope = { status = "planned", issue = "#297" }
 mixed-case-variable-in-global-scope = { status = "planned", issue = "#297" }
-modified-iterating-set = { status = "planned", issue = "#332" }
+modified-iterating-set = "implemented"
 module-import-not-at-top-of-file = "implemented"
 multi-line-implicit-string-concatenation = { status = "planned", issue = "#334" }
 multi-line-summary-first-line = { status = "planned", issue = "#297" }
@@ -428,8 +428,8 @@ non-slot-assignment = { status = "planned", issue = "#332" }
 non-unique-enums = { status = "planned", issue = "#334" }
 none-comparison = "implemented"
 none-not-at-end-of-union = { status = "planned", issue = "#334" }
-nonlocal-and-global = { status = "planned", issue = "#332" }
-nonlocal-without-binding = { status = "planned", issue = "#332" }
+nonlocal-and-global = { status = "planned", issue = "#336" }
+nonlocal-without-binding = "implemented"
 noqa-comments = { status = "planned", issue = "#334" }
 not-in-test = "implemented"
 not-is-test = "implemented"

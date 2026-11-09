@@ -1644,3 +1644,158 @@ presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["yield-inside-async-function"]
 
+[[rule]]
+name = "invalid-sequence-index"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-sequence-index"]
+
+[[rule]]
+name = "invalid-slice-index"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-slice-index"]
+
+[[rule]]
+name = "invalid-slice-step"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-slice-step"]
+
+[[rule]]
+name = "invalid-unary-operand-type"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-unary-operand-type"]
+
+[[rule]]
+name = "missing-kwoa"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["missing-kwoa"]
+
+[[rule]]
+name = "modified-iterating-dict"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["modified-iterating-dict"]
+
+[[rule]]
+name = "modified-iterating-list"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["modified-iterating-list"]
+
+[[rule]]
+name = "no-value-for-parameter"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["no-value-for-parameter"]
+
+[[rule]]
+name = "non-iterator-returned"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["non-iterator-returned"]
+
+[[rule]]
+name = "not-an-iterable"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-an-iterable"]
+
+[[rule]]
+name = "not-a-mapping"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-a-mapping"]
+
+[[rule]]
+name = "not-async-context-manager"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-async-context-manager"]
+
+[[rule]]
+name = "not-callable"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-callable"]
+
+[[rule]]
+name = "not-context-manager"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["not-context-manager"]
+
+[[rule]]
+name = "positional-only-arguments-expected"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["positional-only-arguments-expected"]
+
+[[rule]]
+name = "kwarg-superseded-by-positional-arg"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["kwarg-superseded-by-positional-arg"]
+
+[[rule]]
+name = "invalid-enum-extension"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-enum-extension"]
+
+[[rule]]
+name = "invalid-metaclass"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-metaclass"]
+
+[[rule]]
+name = "invalid-overridden-method"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["invalid-overridden-method"]
+
+[[rule]]
+name = "method-hidden"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["method-hidden"]
+
+[[rule]]
+name = "non-parent-init-called"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["non-parent-init-called"]
+
+[[rule]]
+name = "overridden-final-method"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["overridden-final-method"]
+
+[[rule]]
+name = "non-ascii-file-name"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["non-ascii-file-name"]
+
+[[rule]]
+name = "pointless-exception-statement"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["pointless-exception-statement"]
+
+[[rule]]
+name = "misplaced-format-function"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["misplaced-format-function"]
+
+[[rule]]
+name = "missing-parentheses-for-call-in-test"
+presets = ["standard", "strict"]
+category = "pylint"
+pylint = ["missing-parentheses-for-call-in-test"]
