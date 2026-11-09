@@ -280,6 +280,7 @@ typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
 name = "no-non-null-asserted-optional-chain"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "problem"
 typescript-eslint = ["no-non-null-asserted-optional-chain"]
