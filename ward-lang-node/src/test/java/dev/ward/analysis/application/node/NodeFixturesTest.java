@@ -15,7 +15,6 @@ import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.rule.check.CheckedRule;
-import dev.ward.analysis.domain.rule.check.ProjectCheck;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -64,22 +63,12 @@ class NodeFixturesTest {
         if (name != null
             && factories.containsKey(name)
             && Files.isDirectory(directory)
-            && !projectCheck(rule, factories)) {
+            && !NodeProjectRules.isProjectRule(rule, factories)) {
           owned.add(new OwnedRule(rule, directory));
         }
       }
     }
     return owned.stream();
-  }
-
-  /**
-   * Whether the rule's check reads the whole project (manifests, other files). Those run in
-   * ward-cli's RuleCatalogFixturesTest with a fixture project and have direct unit tests here.
-   */
-  private static boolean projectCheck(
-      final RuleDefinition rule, final Map<String, CheckFactory> factories) {
-    final TomlParseResult toml = Toml.parse(rule.body());
-    return factories.get(toml.getString(CHECK)).create(toml) instanceof ProjectCheck;
   }
 
   @Test
