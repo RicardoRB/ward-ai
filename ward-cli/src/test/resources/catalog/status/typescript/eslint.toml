@@ -64,19 +64,19 @@ no-ex-assign = "implemented"
 no-extend-native = "implemented"
 no-extra-bind = { status = "planned", issue = "#326" }
 no-extra-boolean-cast = "implemented"
-no-extra-label = { status = "planned", issue = "#326" }
+no-extra-label = "implemented"
 no-func-assign = "implemented"
 no-global-assign = "implemented"
 no-implicit-coercion = { status = "planned", issue = "#296" }
 no-implicit-globals = { status = "planned", issue = "#326" }
 no-implied-eval = "implemented"
 no-import-assign = "implemented"
-no-inner-declarations = { status = "planned", issue = "#326" }
+no-inner-declarations = "implemented"
 no-invalid-regexp = { status = "planned", issue = "#326" }
 no-invalid-this = { status = "planned", issue = "#326" }
 no-irregular-whitespace = "implemented"
 no-iterator = "implemented"
-no-label-var = { status = "planned", issue = "#326" }
+no-label-var = "implemented"
 no-labels = { status = "planned", issue = "#326" }
 no-lonely-if = { status = "planned", issue = "#296" }
 no-loop-func = { status = "planned", issue = "#326" }
@@ -155,7 +155,7 @@ prefer-named-capture-group = { status = "planned", issue = "#326" }
 prefer-numeric-literals = "implemented"
 prefer-object-has-own = "implemented"
 prefer-object-spread = { status = "planned", issue = "#296" }
-prefer-promise-reject-errors = { status = "planned", issue = "#326" }
+prefer-promise-reject-errors = "implemented"
 prefer-regex-literals = "implemented"
 prefer-rest-params = "implemented"
 prefer-spread = "implemented"

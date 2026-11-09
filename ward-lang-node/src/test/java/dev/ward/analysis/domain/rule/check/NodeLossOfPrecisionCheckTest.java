@@ -15,6 +15,8 @@ class NodeLossOfPrecisionCheckTest {
 
   private static final String MESSAGE = "This number literal will lose precision at runtime.";
   private static final int COLUMN = 11;
+  private static final int BINARY_DIGITS = 65;
+  private static final int OVERLONG_DIGITS = 101;
 
   /** Scenario: an integer beyond the exact range is reported at its first digit. */
   @Test
@@ -47,7 +49,7 @@ class NodeLossOfPrecisionCheckTest {
   @Test
   void lossyHexAndBinaryLiteralsAreReported() {
     assertThat(run("const a = 0x1ffffffffffffffffff;\n")).hasSize(1);
-    assertThat(run("const a = 0b" + "1".repeat(65) + ";\n")).hasSize(1);
+    assertThat(run("const a = 0b" + "1".repeat(BINARY_DIGITS) + ";\n")).hasSize(1);
   }
 
   /** Scenario: an octal literal whose value keeps every digit written is not reported. */
@@ -59,7 +61,7 @@ class NodeLossOfPrecisionCheckTest {
   /** Scenario: a literal needing more than 100 significant digits is reported. */
   @Test
   void moreThan100SignificantDigitsAreReported() {
-    assertThat(run("const a = " + "1".repeat(101) + ";\n")).hasSize(1);
+    assertThat(run("const a = " + "1".repeat(OVERLONG_DIGITS) + ";\n")).hasSize(1);
   }
 
   /**

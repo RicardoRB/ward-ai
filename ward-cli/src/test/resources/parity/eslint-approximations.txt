@@ -9,3 +9,7 @@ ward:javascript/no-nonoctal-decimal-escape | javascript | ESLint parses this esc
 ward:typescript/no-nonoctal-decimal-escape | typescript | the TypeScript parser rejects the escape, so ESLint cannot run this fixture; Ward is the only reference
 ward:typescript/no-octal-escape | typescript | ESLint parse error: the TypeScript parser rejects octal escapes in both modes, so ESLint reports no finding on the fixture; the rule reports the escape
 ward:typescript/no-nonoctal-decimal-escape | typescript | ESLint parse error: the TypeScript parser rejects octal escapes in both modes, so ESLint reports no finding on the fixture; the rule reports the escape
+ward:typescript/no-global-assign | typescript | an assignment is matched against a fixed list of built-in global names, not every read-only global that the ESLint environment defines; the same list serves the JavaScript rule
+ward:javascript/no-global-assign | javascript | an assignment is matched against a fixed list of built-in global names, not every read-only global that the ESLint environment defines
+ward:typescript/no-inner-declarations | typescript | the positions match; the message names one body for every case, where ESLint names the program or the function body of each declaration
+ward:javascript/no-inner-declarations | javascript | the positions match; the message names one body for every case, where ESLint names the program or the function body of each declaration

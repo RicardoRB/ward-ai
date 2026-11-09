@@ -1,6 +1,7 @@
 package dev.ward.infrastructure.rule.catalog;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -11,7 +12,24 @@ import java.util.stream.Collectors;
 final class EslintParityOptions {
   private static final Set<String> ACRONYMS = Set.of("jsx");
 
+  /** The options that ESLint takes as positional arguments, before its option object. */
+  private static final Set<String> POSITIONAL = Set.of("declarations");
+
   private EslintParityOptions() {}
+
+  /** The option arguments after the severity: positional values first, then the option object. */
+  static String arguments(final Map<String, Object> values) {
+    final StringBuilder out = new StringBuilder();
+    final Map<String, Object> object = new LinkedHashMap<>();
+    for (final Map.Entry<String, Object> entry : values.entrySet()) {
+      if (POSITIONAL.contains(entry.getKey())) {
+        out.append(", ").append(scalar(entry.getValue()));
+      } else {
+        object.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return object.isEmpty() ? out.toString() : out + ", " + jsObject(object);
+  }
 
   /** A JavaScript object literal of an option table, with its keys in camel case. */
   static String jsObject(final Map<String, Object> values) {

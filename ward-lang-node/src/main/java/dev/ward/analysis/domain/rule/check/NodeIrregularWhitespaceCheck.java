@@ -38,6 +38,9 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
   private static final int ONE = 1;
   private static final int TWO = 2;
 
+  private final Skips skips;
+  private final String message;
+
   /** Which kinds of text a finding may be dropped in. */
   public record Skips(
       boolean comments, boolean jsxText, boolean regexps, boolean strings, boolean templates) {}
@@ -48,6 +51,12 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
   /** A range in ESLint's coordinates: lines from one, columns from zero, end exclusive. */
   private record Range(int startLine, int startColumn, int endLine, int endColumn) {
 
+    /** The range from the start of the first span to the end of the last one. */
+    static Range of(final Span first, final Span last) {
+      return new Range(
+          first.startLine(), first.startColumn() - ONE, last.endLine(), last.endColumn() - ONE);
+    }
+
     boolean keeps(final Finding finding) {
       return finding.line() < startLine
           || finding.line() == startLine && finding.column() < startColumn
@@ -57,10 +66,26 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
   }
 
   /** The lines of a source text and the offset where each starts. */
-  private record Lines(List<String> text, List<Integer> starts, List<String> breaks) {}
+  private record Lines(List<String> text, List<Integer> starts, List<String> breaks) {
 
-  private final Skips skips;
-  private final String message;
+    /** Splits the source at its line breaks, keeping each break and the offset of each line. */
+    static Lines of(final String source) {
+      final List<String> text = new ArrayList<>();
+      final List<Integer> starts = new ArrayList<>();
+      final List<String> breaks = new ArrayList<>();
+      final Matcher matcher = LINE_BREAK.matcher(source);
+      int start = 0;
+      while (matcher.find()) {
+        text.add(source.substring(start, matcher.start()));
+        starts.add(start);
+        breaks.add(matcher.group());
+        start = matcher.end();
+      }
+      text.add(source.substring(start));
+      starts.add(start);
+      return new Lines(text, starts, breaks);
+    }
+  }
 
   /**
    * Creates the check.
@@ -85,29 +110,12 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
     if (!IRREGULAR.matcher(source).find()) {
       return List.of();
     }
-    final Lines lines = split(source);
+    final Lines lines = Lines.of(source);
     final List<Finding> findings = new ArrayList<>();
     addRuns(lines, findings);
     addTerminators(lines, findings);
     final List<Range> ignored = ignoredRanges(root);
     return toMatches(findings, ignored, lines);
-  }
-
-  private static Lines split(final String source) {
-    final List<String> text = new ArrayList<>();
-    final List<Integer> starts = new ArrayList<>();
-    final List<String> breaks = new ArrayList<>();
-    final Matcher matcher = LINE_BREAK.matcher(source);
-    int start = 0;
-    while (matcher.find()) {
-      text.add(source.substring(start, matcher.start()));
-      starts.add(start);
-      breaks.add(matcher.group());
-      start = matcher.end();
-    }
-    text.add(source.substring(start));
-    starts.add(start);
-    return new Lines(text, starts, breaks);
   }
 
   private void addRuns(final Lines lines, final List<Finding> findings) {
@@ -133,7 +141,7 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
     final List<Range> ranges = new ArrayList<>();
     final List<SyntaxNode> run = new ArrayList<>();
     for (final SyntaxNode leaf : LeafText.leaves(root)) {
-      if (isAtom(leaf)) {
+      if (ATOM.equals(leaf.kind()) || ESCAPE_ATOM.equals(leaf.kind())) {
         run.add(leaf);
         continue;
       }
@@ -145,10 +153,6 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
     return ranges;
   }
 
-  private static boolean isAtom(final SyntaxNode leaf) {
-    return ATOM.equals(leaf.kind()) || ESCAPE_ATOM.equals(leaf.kind());
-  }
-
   /** A run of template atoms is one template element, which is skipped when it is irregular. */
   private void addTemplateRange(final List<SyntaxNode> atoms, final List<Range> ranges) {
     if (atoms.isEmpty() || !skips.templates()) {
@@ -157,16 +161,17 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
     final StringBuilder text = new StringBuilder();
     atoms.forEach(atom -> text.append(LeafText.of(atom)));
     if (IRREGULAR.matcher(text).find()) {
-      ranges.add(range(atoms.get(0).span(), atoms.get(atoms.size() - ONE).span()));
+      ranges.add(Range.of(atoms.get(0).span(), atoms.get(atoms.size() - ONE).span()));
     }
   }
 
   private void addSingleRange(final SyntaxNode leaf, final List<Range> ranges) {
     if (skippedKind(leaf.kind()) && IRREGULAR.matcher(LeafText.of(leaf)).find()) {
-      ranges.add(range(leaf.span(), leaf.span()));
+      ranges.add(Range.of(leaf.span(), leaf.span()));
     }
   }
 
+  /** The kinds of leaf whose text a skip option may drop a finding in. */
   private boolean skippedKind(final String kind) {
     return switch (kind) {
       case STRING -> skips.strings();
@@ -175,11 +180,6 @@ public final class NodeIrregularWhitespaceCheck implements RuleCheck {
       case JSX_TEXT -> skips.jsxText();
       default -> false;
     };
-  }
-
-  private static Range range(final Span first, final Span last) {
-    return new Range(
-        first.startLine(), first.startColumn() - ONE, last.endLine(), last.endColumn() - ONE);
   }
 
   private List<RuleMatch> toMatches(

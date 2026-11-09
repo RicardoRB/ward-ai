@@ -190,11 +190,11 @@ class EslintParitySmokeTest {
     }
     for (final Map.Entry<String, CaseOptions> entry : caseOptions.entrySet()) {
       lines.add(
-          "  { files: [\"%s\"], rules: { \"%s\": [\"error\", %s] } },"
+          "  { files: [\"%s\"], rules: { \"%s\": [\"error\"%s] } },"
               .formatted(
                   entry.getKey(),
                   entry.getValue().rule(),
-                  EslintParityOptions.jsObject(entry.getValue().values())));
+                  EslintParityOptions.arguments(entry.getValue().values())));
     }
     lines.add("];");
     Files.writeString(workspace.resolve(CONFIG), String.join("\n", lines) + "\n");
