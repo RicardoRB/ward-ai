@@ -25,7 +25,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["comparison"]
-text = "^(\\d+|'[^']*'|\"[^\"]*\")\\s*(==|!=|<=|>=|<|>)\\s*(\\d+|'[^']*'|\"[^\"]*\")$"
+text = "^(\\d+(\\.\\d+)?|'[^']*'|\"[^\"]*\"|True|False|None)(==|!=|<=|>=|<|>)(\\d+(\\.\\d+)?|'[^']*'|\"[^\"]*\"|True|False|None)$"
 message = "comparison between two literal constants; the result is known"
 '''
 
@@ -81,11 +81,11 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["or_test"]
-text = "(\\w+)==[\\w.'\"]+or\\1=="
+text = "(\\w+)==[\\w.'\"]+or\\1==|(\\w+)!=[\\w.'\"]+and\\2!="
 message = "use 'in' with a tuple instead of repeated equality checks on the same value"
 '''
 
-# shortcut: node text has no spaces, so operands are matched as word runs; an operand containing "and"/"or" inside a name can match, upgrade when the parser exposes boolean operator tokens
+# shortcut: pylint only reports assignments and returns and infers the middle operand; this matches any or-expression whose middle operand is a truthy literal, and node text has no spaces so names containing "and"/"or" can match
 [[rules]]
 id = "ward:python/consider-using-ternary"
 language = "python"
@@ -96,6 +96,21 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["or_test"]
-text = "^[\\w.]+and[\\w.]+or[\\w.]+$"
+text = "^[\\w.]+and([1-9]\\d*|'[^']+'|\"[^\"]+\"|True)or[\\w.]+$"
 message = "use a conditional expression instead of 'and'/'or'"
+'''
+
+[[rules]]
+id = "ward:python/anomalous-unicode-escape-in-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "^[bB]['\"](?:[^\\\\]|\\\\.)*?\\\\[uU]"
+message = "anomalous unicode escape in a byte string; use a raw or text string instead"
 '''

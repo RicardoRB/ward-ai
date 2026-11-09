@@ -3,7 +3,7 @@
 abstract-class-instantiated = { status = "planned", issue = "#336" }
 abstract-method = { status = "planned", issue = "#336" }
 access-member-before-definition = { status = "planned", issue = "#336" }
-anomalous-unicode-escape-in-string = { status = "planned", issue = "#336" }
+anomalous-unicode-escape-in-string = "implemented"
 arguments-differ = { status = "planned", issue = "#336" }
 arguments-out-of-order = { status = "planned", issue = "#336" }
 arguments-renamed = { status = "planned", issue = "#336" }

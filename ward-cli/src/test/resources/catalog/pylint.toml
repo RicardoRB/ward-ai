@@ -21,7 +21,6 @@ pylint = ["access-member-before-definition"]
 [[rule]]
 name = "anomalous-unicode-escape-in-string"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["anomalous-unicode-escape-in-string"]
 
 [[rule]]
