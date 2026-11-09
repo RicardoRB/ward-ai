@@ -42,14 +42,10 @@ knip = ["enumMembers"]
 
 [[rule]]
 name = "knip-exports"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["exports"]
 
 [[rule]]
 name = "knip-files"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["files"]
 
 [[rule]]
@@ -76,8 +72,7 @@ knip = ["optionalPeerDependencies"]
 
 [[rule]]
 name = "knip-types"
-presets = ["standard", "strict"]
-category = "dead-code"
+not-applicable = { javascript = "JavaScript has no type exports; the type-only export form is a TypeScript construct" }
 knip = ["types"]
 
 [[rule]]

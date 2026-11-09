@@ -7,6 +7,8 @@ import dev.ward.analysis.domain.rule.check.NodeOptionalPeerCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnlistedImportCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnresolvedImportCheck;
 import dev.ward.analysis.domain.rule.check.NodeUnusedDependencyCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnusedExportCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnusedFileCheck;
 import java.util.Map;
 
 /** The TypeScript and JavaScript checks that only the dead-code (knip) rules use (issue #331). */
@@ -30,6 +32,12 @@ final class DeadCodeChecks {
         "node-catalog",
         toml -> new NodeCatalogCheck(TomlValues.required(toml, "message"), false),
         "node-catalog-reference",
-        toml -> new NodeCatalogCheck(TomlValues.required(toml, "message"), true));
+        toml -> new NodeCatalogCheck(TomlValues.required(toml, "message"), true),
+        "node-unused-file",
+        toml -> new NodeUnusedFileCheck(TomlValues.required(toml, "message")),
+        "node-unused-export",
+        toml -> new NodeUnusedExportCheck(TomlValues.required(toml, "message"), false),
+        "node-unused-type",
+        toml -> new NodeUnusedExportCheck(TomlValues.required(toml, "message"), true));
   }
 }

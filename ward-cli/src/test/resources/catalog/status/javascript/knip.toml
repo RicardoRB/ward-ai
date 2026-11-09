@@ -8,12 +8,12 @@ knip-dependencies = "implemented"
 knip-dev-dependencies = "implemented"
 knip-duplicates = { status = "planned", issue = "#331" }
 knip-enum-members = { status = "planned", issue = "#331" }
-knip-exports = { status = "planned", issue = "#331" }
-knip-files = { status = "planned", issue = "#331" }
+knip-exports = "implemented"
+knip-files = "implemented"
 knip-namespace-members = { status = "planned", issue = "#331" }
 knip-ns-exports = { status = "planned", issue = "#331" }
 knip-ns-types = { status = "planned", issue = "#331" }
 knip-optional-peer-dependencies = "implemented"
-knip-types = { status = "planned", issue = "#331" }
+knip-types = "not-applicable"
 knip-unlisted = "implemented"
 knip-unresolved = "implemented"

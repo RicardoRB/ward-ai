@@ -172,3 +172,63 @@ body = '''
 check = "node-catalog-reference"
 message = "catalog reference '{value}' names an entry that pnpm-workspace.yaml does not define"
 '''
+
+[[rules]]
+id = "ward:typescript/knip-files"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-file"
+message = "unused file: no entry point imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-exports"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-export"
+message = "unused export '{value}': no file imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-files"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-file"
+message = "unused file: no entry point imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-exports"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-export"
+message = "unused export '{value}': no file imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-type"
+message = "unused exported type '{value}': no file imports it"
+'''

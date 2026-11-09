@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOptions;
+import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -102,13 +104,42 @@ class RuleCatalogFixturesTest {
       final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, unitName(file), Files.readString(file), typeFacts, manifests(file));
+        runner.run(
+            rule,
+            unitName(file),
+            Files.readString(file),
+            typeFacts,
+            manifests(file),
+            otherSources(file, rule.languages().iterator().next()));
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
         file.getFileName().toString(),
         expected,
         findings);
+  }
+
+  /**
+   * The other source files of a fixture's project, in the language of the rule, by their path in
+   * the project folder. They are read for cross-file facts only.
+   */
+  private static List<SourceUnit> otherSources(final Path file, final AnalysisLanguage language)
+      throws IOException {
+    final Path project = file.resolveSibling("project");
+    if (!Files.isDirectory(project)) {
+      return List.of();
+    }
+    final List<SourceUnit> units = new ArrayList<>();
+    try (Stream<Path> files = Files.walk(project)) {
+      for (final Path source : files.filter(Files::isRegularFile).toList()) {
+        final String name = source.getFileName().toString();
+        if (FileSystemSourceUnits.language(name) == language) {
+          final String path = project.relativize(source).toString().replace('\\', '/');
+          units.add(new SourceUnit(path, language, Files.readString(source)));
+        }
+      }
+    }
+    return units;
   }
 
   /**

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -48,16 +50,20 @@ final class RuleFixtureRunner {
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
-    return run(rule, path, text, typeFacts, ProjectFiles.empty());
+    return run(rule, path, text, typeFacts, ProjectFiles.empty(), List.of());
   }
 
-  /** Like {@link #run(RuleDefinition, String, String, TypeFacts)}, with the project's manifests. */
+  /**
+   * Like {@link #run(RuleDefinition, String, String, TypeFacts)}, with the project's manifests and
+   * the other source files of the project, which give cross-file facts but report nothing.
+   */
   List<AnalysisFinding> run(
       final RuleDefinition rule,
       final String path,
       final String text,
       final TypeFacts typeFacts,
-      final ProjectFiles files) {
+      final ProjectFiles files,
+      final List<SourceUnit> others) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
@@ -72,8 +78,15 @@ final class RuleFixtureRunner {
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
-    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule), files));
-    return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
+    final List<SourceUnit> project = new ArrayList<>(units);
+    project.addAll(others);
+    all.addAll(engine.runProject(project, frontendsFor(rule, typeFacts), List.of(rule), files));
+    final Set<String> otherPaths =
+        others.stream().map(SourceUnit::path).collect(Collectors.toSet());
+    return all.stream()
+        .filter(finding -> finding.ruleId().equals(rule.id()))
+        .filter(finding -> !otherPaths.contains(finding.file()))
+        .toList();
   }
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */
