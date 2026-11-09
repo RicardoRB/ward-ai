@@ -1,6 +1,6 @@
 # ktlint rules for Kotlin, from the standard rule set of ktlint 1.8.0 (the rules that do not
 # format code, which Ward's formatter covers). The checks read the syntax tree, the file name or
-# the comments; see KotlinKtlintChecks. Each rule keeps ktlint's default behaviour.
+# the comments; see KotlinLinterChecks. Each rule keeps ktlint's default behaviour.
 
 [[rules]]
 id = "ward:kotlin/backing-property-naming"

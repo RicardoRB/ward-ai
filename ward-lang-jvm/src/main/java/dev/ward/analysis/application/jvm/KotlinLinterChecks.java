@@ -19,11 +19,11 @@ import java.util.Map;
 /**
  * Builds the Kotlin checks of ktlint's standard set that read the tree, the file name or comments.
  */
-final class KotlinKtlintChecks {
+final class KotlinLinterChecks {
 
   private static final String MESSAGE = "message";
 
-  private KotlinKtlintChecks() {}
+  private KotlinLinterChecks() {}
 
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
