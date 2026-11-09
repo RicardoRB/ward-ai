@@ -1,0 +1,42 @@
+# React rules of the Semgrep p/javascript pack: markup set from a non-constant value.
+# react-dangerouslysetinnerhtml is a shortcut: it flags any __html value that is not a literal, without tracing its source.
+
+[[rules]]
+id = "ward:javascript/react-unsanitized-method"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml", "taint/node/semgrep-sanitize.toml"]
+message = "untrusted data from {source} reaches the markup written by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/react-unsanitized-property"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml", "taint/node/semgrep-sanitize.toml"]
+message = "untrusted data from {source} reaches the markup assigned by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/react-dangerouslysetinnerhtml"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^__html\s*:\s*(?![\x27"`])'
+message = "dangerouslySetInnerHTML is set from a non-constant value"
+'''

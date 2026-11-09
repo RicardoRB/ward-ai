@@ -24,6 +24,11 @@ public final class ModuleOrderCheck implements RuleCheck {
   }
 
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
+
+  /** Definitions are code even when their body imports, so their subtrees are not searched. */
+  private static final Set<String> DEFINITIONS =
+      Set.of("funcdef", "async_funcdef", "classdef", "decorated");
+
   private static final Pattern FUTURE = Pattern.compile("^from__future__import");
   private static final Pattern DOCSTRING = Pattern.compile("^[rRbBuU]?[\"']");
 
@@ -48,7 +53,7 @@ public final class ModuleOrderCheck implements RuleCheck {
     boolean code = false;
     for (final SyntaxNode child : root.children()) {
       final String text = SyntaxWalk.text(child);
-      if (text.isEmpty() || (!statement && DOCSTRING.matcher(text).find())) {
+      if (text.isBlank() || (!statement && DOCSTRING.matcher(text).find())) {
         continue;
       }
       final boolean future = isFuture(child);
@@ -72,8 +77,9 @@ public final class ModuleOrderCheck implements RuleCheck {
   }
 
   private static boolean isImport(final SyntaxNode node) {
-    return SyntaxWalk.descendants(node).stream().anyMatch(child -> IMPORTS.contains(child.kind()))
-        || IMPORTS.contains(node.kind());
+    return IMPORTS.contains(node.kind())
+        || IMPORTS.stream()
+            .anyMatch(kind -> SyntaxWalk.firstDescendant(node, kind, DEFINITIONS).isPresent());
   }
 
   private static boolean isFuture(final SyntaxNode node) {

@@ -1,0 +1,41 @@
+# Style rules of the "problem" and "linter" categories for TypeScript only, from typescript-eslint at its pinned version. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/prefer-literal-enum-member"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enumMember"]
+text = '=(?!-?[0-9]+(?:\.[0-9]+)?$)(?![\x27"].*[\x27"]$)'
+message = "enum member initializer is not a literal"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-optional-chain"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$]+)&&\1\.[\w$.()]+$'
+message = "prefer an optional chain over this logical expression"
+'''
+
+[[rules]]
+id = "ward:typescript/adjacent-overload-signatures"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-overload-grouping"
+message = "overloaded method must be declared next to its other overloads"
+'''

@@ -1,0 +1,31 @@
+# Template sinks of the Semgrep p/javascript rules: template source text compiled or rendered from untrusted data.
+
+[[sinks]]
+kind = "call"
+name = "compile"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compileClient"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compileClientWithDependenciesTracked"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "renderString"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "template"
+arguments = [0]

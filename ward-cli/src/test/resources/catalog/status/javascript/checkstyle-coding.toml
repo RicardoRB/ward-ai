@@ -3,7 +3,7 @@
 array-trailing-comma = { status = "planned", issue = "#296" }
 avoid-inline-conditionals = { status = "planned", issue = "#296" }
 avoid-no-argument-super-constructor-call = "not-applicable"
-constructors-declaration-grouping = { status = "planned", issue = "#296" }
+constructors-declaration-grouping = "implemented"
 covariant-equals = "not-applicable"
 declaration-order = { status = "planned", issue = "#296" }
 default-comes-last = { status = "planned", issue = "#296" }
@@ -23,7 +23,7 @@ illegal-token = { status = "planned", issue = "#296" }
 illegal-token-text = { status = "planned", issue = "#296" }
 illegal-type = { status = "planned", issue = "#296" }
 inner-assignment = { status = "planned", issue = "#296" }
-magic-number = { status = "planned", issue = "#296" }
+magic-number = "implemented"
 missing-ctor = "not-applicable"
 missing-null-case-in-switch = "not-applicable"
 missing-switch-default = "implemented"
@@ -37,8 +37,8 @@ no-array-trailing-comma = { status = "planned", issue = "#296" }
 no-clone = "not-applicable"
 no-enum-trailing-comma = { status = "planned", issue = "#296" }
 no-finalizer = "not-applicable"
-one-statement-per-line = { status = "planned", issue = "#296" }
-overload-methods-declaration-order = { status = "planned", issue = "#296" }
+one-statement-per-line = "implemented"
+overload-methods-declaration-order = "implemented"
 package-declaration = "not-applicable"
 parameter-assignment = { status = "planned", issue = "#296" }
 pattern-variable-assignment = "not-applicable"
@@ -60,9 +60,9 @@ unnecessary-semicolon-in-try-with-resources = "not-applicable"
 unnecessary-type-arguments-with-record-pattern = "not-applicable"
 unused-catch-parameter-should-be-unnamed = "not-applicable"
 unused-lambda-parameter-should-be-unnamed = "not-applicable"
-unused-local-variable = { status = "planned", issue = "#296" }
+unused-local-variable = "implemented"
 unused-private-field = { status = "planned", issue = "#296" }
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
-variable-declaration-usage-distance = { status = "planned", issue = "#296" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = "not-applicable"

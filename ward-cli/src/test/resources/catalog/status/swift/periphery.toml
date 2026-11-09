@@ -1,6 +1,5 @@
 # Status of the periphery rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-assign-only-property = { status = "planned", issue = "#448" }
-redundant-protocol = { status = "planned", issue = "#448" }
-redundant-public-accessibility = { status = "planned", issue = "#448" }
-superfluous-ignore-command = { status = "planned", issue = "#448" }
+assign-only-property = "implemented"
+redundant-protocol = "implemented"
+redundant-public-accessibility = { status = "planned", issue = "#467" }
