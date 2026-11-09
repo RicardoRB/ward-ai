@@ -83,14 +83,19 @@ public final class TaintAnalysis {
         .or(() -> fromReads(block, argument, reaching, origins, spec));
   }
 
-  /** A call, a property write whose argument 0 is the assigned value, or a string build can be a sink. */
+  /**
+   * A call, a property write whose argument 0 is the assigned value, or a string build can be a
+   * sink.
+   */
   private static boolean isSinkKind(final FlowSiteKind kind) {
     return kind == FlowSiteKind.CALL
         || kind == FlowSiteKind.MEMBER_WRITE
         || kind == FlowSiteKind.STRING_BUILD;
   }
 
-  /** A string entry guards every value part of the string; other sinks guard their listed positions. */
+  /**
+   * A string entry guards every value part of the string; other sinks guard their listed positions.
+   */
   private static List<Integer> guardedArguments(final FlowSite site, final TaintEntry sink) {
     if (site.kind() != FlowSiteKind.STRING_BUILD) {
       return sink.arguments();

@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.util.logging.Logger;
 import org.tomlj.Toml;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
@@ -47,11 +47,16 @@ final class TaintSpecFiles {
       Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN);
   private static final Map<String, FlowSiteKind> KINDS =
       Map.of(
-          "call", FlowSiteKind.CALL,
-          "member", FlowSiteKind.MEMBER_READ,
-          "member-write", FlowSiteKind.MEMBER_WRITE,
-          "parameter", FlowSiteKind.PARAMETER,
-          STRING, FlowSiteKind.STRING_BUILD);
+          "call",
+          FlowSiteKind.CALL,
+          "member",
+          FlowSiteKind.MEMBER_READ,
+          "member-write",
+          FlowSiteKind.MEMBER_WRITE,
+          "parameter",
+          FlowSiteKind.PARAMETER,
+          STRING,
+          FlowSiteKind.STRING_BUILD);
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter");
   private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
@@ -142,8 +147,15 @@ final class TaintSpecFiles {
     if (STRING.equals(kind)) {
       return stringEntry(where, entry);
     }
+    return siteEntry(where, table, kind, entry);
+  }
+
+  /** A call, member or parameter entry, which takes a pattern in no table. */
+  private static TaintEntry siteEntry(
+      final String where, final String table, final String kind, final TomlTable entry) {
     if (entry.contains(PATTERN)) {
-      throw new RuleConfigurationException(where + " names a pattern, which only string sinks take");
+      throw new RuleConfigurationException(
+          where + " names a pattern, which only string sinks take");
     }
     final List<Integer> arguments = TaintSpecOptions.arguments(where, table, entry);
     if (PROPAGATORS.equals(table)) {
