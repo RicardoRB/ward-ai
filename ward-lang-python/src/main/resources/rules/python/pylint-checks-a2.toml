@@ -1,0 +1,148 @@
+# Pylint checks, part A2 (#336): the standard Pylint rows that a single module decides, with Pylint's
+# own semantics restricted to what the module shows. Unknown inference reports nothing.
+
+[[rules]]
+id = "ward:python/abstract-class-instantiated"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "abstract-class-instantiated"
+message = "abstract class with an unimplemented abstract method is instantiated"
+'''
+
+[[rules]]
+id = "ward:python/abstract-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "abstract-method-not-overridden"
+message = "abstract method is not overridden in the concrete class that inherits it"
+'''
+
+[[rules]]
+id = "ward:python/arguments-differ"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "override-signature-differs"
+message = "overriding method has a different signature from the method it overrides"
+'''
+
+[[rules]]
+id = "ward:python/arguments-renamed"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "override-parameter-renamed"
+message = "overriding method renames a parameter of the method it overrides"
+'''
+
+[[rules]]
+id = "ward:python/arguments-out-of-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments-out-of-order"
+message = "arguments are passed in a different order from the parameters of the function"
+'''
+
+[[rules]]
+id = "ward:python/assignment-from-no-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "assigned-call-no-return"
+message = "assigned result of a function that never returns a value"
+'''
+
+[[rules]]
+id = "ward:python/assignment-from-none"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "assigned-call-none"
+message = "assigned result of a function that only returns None"
+'''
+
+[[rules]]
+id = "ward:python/comparison-with-callable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "callable-comparison"
+message = "function compared without calling it; did you omit the parentheses?"
+'''
+
+[[rules]]
+id = "ward:python/inconsistent-mro"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "inconsistent-mro"
+message = "class has an inconsistent method resolution order"
+'''
+
+[[rules]]
+id = "ward:python/inherit-non-class"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "inherit-non-class"
+message = "class inherits from a value that is not a class"
+'''
+
+[[rules]]
+id = "ward:python/global-variable-undefined"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "global-undefined"
+message = "global name is assigned in a function but never defined at module level"
+'''
+
+[[rules]]
+id = "ward:python/bad-reversed-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^reversed\\(\\{.*\\}\\)$"
+message = "reversed() of a set or dict literal, which is not a sequence"
+'''

@@ -1,13 +1,13 @@
 # Status of the pylint rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
-abstract-class-instantiated = { status = "planned", issue = "#336" }
-abstract-method = { status = "planned", issue = "#336" }
+abstract-class-instantiated = "implemented"
+abstract-method = "implemented"
 anomalous-unicode-escape-in-string = "implemented"
-arguments-differ = { status = "planned", issue = "#336" }
-arguments-out-of-order = { status = "planned", issue = "#336" }
-arguments-renamed = { status = "planned", issue = "#336" }
+arguments-differ = "implemented"
+arguments-out-of-order = "implemented"
+arguments-renamed = "implemented"
 assigning-non-slot = "implemented"
-assignment-from-no-return = { status = "planned", issue = "#336" }
-assignment-from-none = { status = "planned", issue = "#336" }
+assignment-from-no-return = "implemented"
+assignment-from-none = "implemented"
 attribute-defined-outside-init = "implemented"
 bad-builtin = { status = "planned", issue = "#336" }
 bad-chained-comparison = "implemented"
@@ -19,7 +19,7 @@ bad-except-order = "implemented"
 bad-format-string-key = "implemented"
 bad-mcs-classmethod-argument = "implemented"
 bad-mcs-method-argument = "implemented"
-bad-reversed-sequence = { status = "planned", issue = "#336" }
+bad-reversed-sequence = "implemented"
 bad-super-call = "implemented"
 bad-thread-instantiation = "implemented"
 bare-name-capture-pattern = "implemented"
@@ -29,7 +29,7 @@ chained-comparison = "implemented"
 chained-comparison-all-equal = "implemented"
 class-variable-slots-conflict = "implemented"
 comparison-of-constants = "implemented"
-comparison-with-callable = { status = "planned", issue = "#336" }
+comparison-with-callable = "implemented"
 condition-evals-to-constant = "implemented"
 confusing-consecutive-elif = { status = "planned", issue = "#336" }
 confusing-with-statement = "implemented"
@@ -70,12 +70,12 @@ eq-without-hash = { status = "planned", issue = "#336" }
 expression-not-assigned = "implemented"
 format-string-without-interpolation = "implemented"
 function-redefined = "implemented"
-global-variable-undefined = { status = "planned", issue = "#336" }
+global-variable-undefined = "implemented"
 import-outside-toplevel = "implemented"
-inconsistent-mro = { status = "planned", issue = "#336" }
+inconsistent-mro = "implemented"
 inconsistent-quotes = { status = "planned", issue = "#336" }
 inconsistent-return-statements = { status = "planned", issue = "#336" }
-inherit-non-class = { status = "planned", issue = "#336" }
+inherit-non-class = "implemented"
 init-is-generator = "implemented"
 invalid-bool-returned = "implemented"
 invalid-bytes-returned = "implemented"
