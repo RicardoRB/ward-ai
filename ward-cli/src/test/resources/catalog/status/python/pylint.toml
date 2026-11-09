@@ -15,6 +15,7 @@ bad-classmethod-argument = "implemented"
 bad-docstring-quotes = { status = "planned", issue = "#297" }
 bad-dunder-name = { status = "planned", issue = "#336" }
 bad-exception-cause = "implemented"
+bad-except-order = "implemented"
 bad-format-string-key = "implemented"
 bad-mcs-classmethod-argument = "implemented"
 bad-mcs-method-argument = "implemented"
