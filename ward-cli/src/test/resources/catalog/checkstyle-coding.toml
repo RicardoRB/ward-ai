@@ -23,8 +23,6 @@ checkstyle = ["AvoidNoArgumentSuperConstructorCall"]
 
 [[rule]]
 name = "constructors-declaration-grouping"
-category = "coding"
-presets = ["standard", "strict"]
 not-applicable = { python = "Java constructors; Python has a single __init__ per class" }
 checkstyle = ["ConstructorsDeclarationGrouping"]
 
@@ -110,8 +108,6 @@ checkstyle = ["FinalLocalVariable"]
 
 [[rule]]
 name = "hidden-field"
-category = "coding"
-presets = ["standard", "strict"]
 typescript-eslint = ["no-shadow"]
 checkstyle = ["HiddenField"]
 eslint = ["no-shadow"]
@@ -158,8 +154,6 @@ checkstyle = ["IllegalToken"]
 
 [[rule]]
 name = "illegal-token-text"
-category = "coding"
-presets = ["standard", "strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language", swift = "Checkstyle defines no default tokens for IllegalTokenText, so the standard preset checks nothing" }
 checkstyle = ["IllegalTokenText"]
 
@@ -179,8 +173,6 @@ eslint = ["no-cond-assign"]
 
 [[rule]]
 name = "magic-number"
-category = "coding"
-presets = ["standard", "strict"]
 detekt = ["MagicNumber"]
 checkstyle = ["MagicNumber"]
 eslint = ["no-magic-numbers"]
@@ -221,8 +213,6 @@ checkstyle = ["MultipleStringLiterals"]
 
 [[rule]]
 name = "multiple-variable-declarations"
-category = "coding"
-presets = ["standard", "strict"]
 not-applicable = { python = "Java multi-declarator statement; Python tuple assignment is not a declaration" }
 pmd = ["OneDeclarationPerLine"]
 checkstyle = ["MultipleVariableDeclarations"]
@@ -266,21 +256,15 @@ checkstyle = ["NoEnumTrailingComma"]
 
 [[rule]]
 name = "no-finalizer"
-category = "coding"
-presets = ["standard", "strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["NoFinalizer"]
 
 [[rule]]
 name = "one-statement-per-line"
-category = "coding"
-presets = ["standard", "strict"]
 checkstyle = ["OneStatementPerLine"]
 
 [[rule]]
 name = "overload-methods-declaration-order"
-category = "coding"
-presets = ["standard", "strict"]
 checkstyle = ["OverloadMethodsDeclarationOrder"]
 
 [[rule]]
@@ -438,8 +422,6 @@ checkstyle = ["UnusedLambdaParameterShouldBeUnnamed"]
 
 [[rule]]
 name = "unused-local-variable"
-category = "coding"
-presets = ["standard", "strict"]
 pmd = ["UnusedLocalVariable"]
 errorprone = ["UnusedVariable"]
 typescript-eslint = ["no-unused-vars"]
@@ -475,8 +457,6 @@ checkstyle = ["UseEnhancedSwitch"]
 
 [[rule]]
 name = "variable-declaration-usage-distance"
-category = "coding"
-presets = ["standard", "strict"]
 pmd = ["VariableDeclarationUsageDistance"]
 checkstyle = ["VariableDeclarationUsageDistance"]
 
