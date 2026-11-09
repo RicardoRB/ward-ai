@@ -91,4 +91,19 @@ class MisusedPromiseCheckTest {
     assertThat(positions(new MisusedPromiseCheck(false, false, true, MESSAGE), text, facts))
         .containsExactly("1:26");
   }
+
+  @Test
+  void aPromiseReturnedFromAFunctionDeclaredAsReturningVoidIsReported() {
+    final String text =
+        "function run(): void {\n  return later();\n}\n"
+            + "function wait(): Promise<void> {\n  return later();\n}\n";
+    final UnitTypeFacts facts =
+        new LintFixtures.Facts()
+            .typed("2:10", named("Promise<void>"))
+            .typed("5:10", named("Promise<void>"))
+            .build();
+
+    assertThat(positions(new MisusedPromiseCheck(false, false, true, MESSAGE), text, facts))
+        .containsExactly("2:10");
+  }
 }

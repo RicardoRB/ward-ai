@@ -1,6 +1,6 @@
 # rule	tool	tool id	reason. Reviewed differences between Ward and typescript-eslint 8.72.1 that the fixtures do not cover; the opt-in parity test compares the lines the fixtures expect and passes with the pinned tool.
 no-explicit-any	typescript-eslint	no-explicit-any	the fixToUnknown option only changes the autofix, which Ward does not apply to a finding; it is not declared
-no-misused-promises	typescript-eslint	no-misused-promises	checks-void-return reads only the arguments of a call whose callee has a known signature; variables, returns, properties and attributes are not checked
+no-misused-promises	typescript-eslint	no-misused-promises	checks-void-return covers call arguments, variable declarations and the returns of a function declared void; object properties need the contextual type of the object, which the facts do not give, and JSX attributes wait for the JSX work (#329)
 no-misused-promises	typescript-eslint	no-misused-promises	checks-conditionals reads only if statements; while, for, ternary and logical operands are not checked, and the object form with flagUnions is not declared
 no-misused-promises	typescript-eslint	no-misused-promises	checks-spreads reads only the spread of an object literal, not array spreads
 await-thenable	typescript-eslint	await-thenable	the promise aggregator input is checked only when the argument is an array literal; a variable or call argument is not checked
