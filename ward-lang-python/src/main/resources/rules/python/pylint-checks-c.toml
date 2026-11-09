@@ -1,0 +1,349 @@
+# Pylint 4.1.3 checks for Python, part C (#336): the rows that a syntax-tree shape or a line pattern
+# decides. Rows that need inference or cross-statement facts are not here; see the change's tasks.
+
+[[rules]]
+id = "ward:python/raising-format-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+# The leaf text has no whitespace between tokens (SyntaxWalk.text).
+text = '^raise[\w.]+\((?:\x27[^\x27]*[%{][^\x27]*\x27|\x22[^\x22]*[%{][^\x22]*\x22),'
+message = "exception arguments suggest string formatting was intended; format the message instead"
+'''
+
+[[rules]]
+id = "ward:python/redefined-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt", "tfpdef"]
+text = '^(?:abs|aiter|all|anext|any|ascii|bin|bool|breakpoint|bytearray|bytes|callable|chr|classmethod|compile|complex|delattr|dict|dir|divmod|enumerate|eval|exec|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|locals|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|vars|zip)(?:\s*=(?!=)|\s*:|\s*$)'
+message = "{value} redefines a built-in name"
+'''
+
+[[rules]]
+id = "ward:python/redundant-u-string-prefix"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = '^[uU][\x27\x22]'
+message = "the u prefix is redundant in Python 3; remove it"
+'''
+
+[[rules]]
+id = "ward:python/redundant-unittest-assert"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^self\.assert(?:True|False)\(\s*(?:True|False|None|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22)\s*[,)]'
+message = "assertion on a constant value always has the same result"
+'''
+
+[[rules]]
+id = "ward:python/self-cls-assignment"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["funcdef"]
+text = '^(?:self|cls)\s*=(?!=)'
+message = "assignment to self or cls in a method"
+'''
+
+[[rules]]
+id = "ward:python/simplifiable-if-expression"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["test"]
+text = '^(?:Trueif.+elseFalse|Falseif.+elseTrue)$'
+message = "the if expression can be replaced with the boolean test"
+'''
+
+[[rules]]
+id = "ward:python/singledispatch-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["decorated"]
+allowed = ["classdef"]
+stop = ["funcdef", "async_funcdef", "lambdef"]
+mode = "inside"
+text = '^@(?:functools\.)?singledispatch(?!\w)'
+message = "singledispatch decorates a method; use singledispatchmethod"
+'''
+
+[[rules]]
+id = "ward:python/singledispatchmethod-function"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["decorated"]
+allowed = ["classdef"]
+stop = ["funcdef", "async_funcdef", "lambdef"]
+mode = "outside"
+text = '^@(?:functools\.)?singledispatchmethod(?!\w)'
+message = "singledispatchmethod decorates a function; use singledispatch"
+'''
+
+[[rules]]
+id = "ward:python/subprocess-run-check"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^subprocess\.run\((?![^)]*\bcheck\s*=)'
+message = "subprocess.run without an explicit check argument"
+'''
+
+[[rules]]
+id = "ward:python/super-with-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^super\(\s*\w+\s*,\s*(?:self|cls)\s*\)'
+message = "super() takes no arguments on Python 3"
+'''
+
+[[rules]]
+id = "ward:python/too-many-star-expressions"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[^=]*\*[\w.]+[^=]*,[^=]*\*[\w.]+[^=]*=(?!=)'
+message = "more than one starred expression in an assignment target"
+'''
+
+[[rules]]
+id = "ward:python/trailing-comma-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[^=]*=\s*[^=,()\[\]{}]+,\s*$'
+message = "trailing comma makes a tuple; add parentheses to show it"
+'''
+
+[[rules]]
+id = "ward:python/trailing-whitespace"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '[ \t]+$'
+message = "trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:python/truncated-format-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^(?:\x27|\x22)[^\x27\x22]*(?<!%)(?:%%)*%(?:\x27|\x22)\s*%'
+message = "format string ends in the middle of a conversion specifier"
+'''
+
+[[rules]]
+id = "ward:python/unexpected-special-method-signature"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["funcdef"]
+# shortcut: plain parameter lists only; defaults and annotations are not read
+text = '^def(?:(?:__(?:len|bool|hash|str|repr|iter|next|index|bytes|enter|aiter|anext|await|reversed|length_hint|fspath)__)\((?!self\):)|(?:__(?:getitem|delitem|contains|eq|ne|lt|le|gt|ge|getattr|getattribute|delattr|format|delete|instancecheck|subclasscheck|class_getitem)__)\((?!\w+,\w+\):)|(?:__(?:setitem|setattr|set|get|set_name)__)\((?!\w+,\w+,\w+\):)|(?:__(?:exit|aexit)__)\((?!\w+,\w+,\w+,\w+\):))'
+message = "special method {value} has the wrong number of parameters"
+'''
+
+[[rules]]
+id = "ward:python/unhashable-member"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["dictorsetmaker"]
+text = '^(?:\[|\{)'
+message = "an unhashable list or dict is used as a dict key or set member"
+'''
+
+[[rules]]
+id = "ward:python/unpacking-non-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[^=]*,[^=]*=\s*(?:-?\d[\d_.]*|None|True|False)\s*$'
+message = "unpacking a value that is not a sequence"
+'''
+
+[[rules]]
+id = "ward:python/unsubscriptable-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:None|True|False|-?\d[\d_.]*)\s*\['
+message = "a literal value is subscripted and cannot be subscripted"
+'''
+
+[[rules]]
+id = "ward:python/unsupported-assignment-operation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^(?:None|True|False|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22)\s*\[[^\]]*\]\s*=(?!=)'
+message = "a literal value does not support item assignment"
+'''
+
+[[rules]]
+id = "ward:python/unsupported-delete-operation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["del_stmt"]
+text = '^del(?:None|True|False|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22)\['
+message = "a literal value does not support item deletion"
+'''
+
+[[rules]]
+id = "ward:python/unsupported-membership-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+# shortcut: leaf text has no spaces, so an identifier ending in 'in' before a literal also matches; upgrade with token kinds
+text = 'in(?:None|True|False|-?\d[\d_.]*)$'
+message = "a literal number or None does not support the membership test"
+'''
+
+[[rules]]
+id = "ward:python/use-yield-from"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = '^for\s*(\w+)\s*in\s*[^:]+:\s*yield\s*\1\s*$'
+message = "yield each element of the loop with yield from"
+'''
+
+[[rules]]
+id = "ward:python/using-constant-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt", "test"]
+# shortcut: only a leading constant is seen; a constant tested in the middle of a ternary is not
+text = '^(?:if(?:None|True|False|-?\d[\d_.]*|\x27[^\x27]*\x27|\x22[^\x22]*\x22):|(?:True|False|-?\d[\d_.]*)if)'
+message = "conditional statement with a constant test"
+'''
+
+[[rules]]
+id = "ward:python/try-except-raise"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "handler-body"
+body = "(?s)raise\\b.*"
+message = "the except handler raises immediately"
+'''
