@@ -70,3 +70,15 @@ kinds = ["functionDeclaration"]
 text = 'suspendfun[\s\S]*Thread\.sleep\('
 message = "Thread.sleep blocks the thread of a suspend function; use delay"
 '''
+
+[[rules]]
+id = "ward:kotlin/redundant-suspend-modifier"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "coroutines"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-redundant-suspend"
+message = "suspend modifier is redundant; the function has no suspension point"
+'''

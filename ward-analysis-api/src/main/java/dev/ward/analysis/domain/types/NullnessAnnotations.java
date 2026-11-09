@@ -11,10 +11,18 @@ import java.util.logging.Logger;
  * ({@code @NullMarked}, {@code @ParametersAreNonnullByDefault} and the like).
  */
 public final class NullnessAnnotations {
+  /** Marks an expression whose Kotlin type is non-null, as the native Kotlin typer writes it. */
+  public static final String KOTLIN_NON_NULL = "dev.ward.kotlin.NonNull";
+
+  /** Marks an expression whose Kotlin type is nullable, as the native Kotlin typer writes it. */
+  public static final String KOTLIN_NULLABLE = "dev.ward.kotlin.Nullable";
+
   private static final Logger LOGGER = Logger.getLogger(NullnessAnnotations.class.getName());
 
   private static final Map<String, Nullness> DECLARATIONS =
       Map.ofEntries(
+          Map.entry(KOTLIN_NON_NULL, Nullness.NON_NULL),
+          Map.entry(KOTLIN_NULLABLE, Nullness.NULLABLE),
           Map.entry("org.jspecify.annotations.Nullable", Nullness.NULLABLE),
           Map.entry("org.jspecify.annotations.NonNull", Nullness.NON_NULL),
           Map.entry("javax.annotation.Nullable", Nullness.NULLABLE),

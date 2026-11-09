@@ -1,0 +1,9 @@
+# rule	tool	tool id	reason. A reviewed disagreement between Ward and angular-eslint 22.6.0 on the fixtures; the parity report lists it as an approximation.
+no-input-rename	angular-eslint	no-input-rename	Ward accepts every aria-* alias whose name matches the member in camel case; angular-eslint allows only the ARIA attribute names from its list
+no-input-rename	angular-eslint	no-input-rename	the signal form input(..., { alias }) is not checked; Ward reads the @Input decorator only
+no-output-rename	angular-eslint	no-output-rename	Ward reports every output alias; angular-eslint allows an alias equal to a selector attribute of the directive
+no-output-rename	angular-eslint	no-output-rename	the signal form output(..., { alias }) is not checked; Ward reads the @Output decorator only
+no-output-native	angular-eslint	no-output-native	the outputs metadata array of a component (outputs: ['click: x']) is not checked; Ward reads the @Output decorator only
+no-output-on-prefix	angular-eslint	no-output-on-prefix	the outputs metadata array is not checked, as for no-output-native
+no-empty-lifecycle-method	angular-eslint	no-empty-lifecycle-method	a method body that holds only a comment is empty for angular-eslint; Ward reads the body text and reports it only when it is exactly braces
+prefer-inject	angular-eslint	prefer-inject	a constructor parameter with a destructuring pattern is not checked; Ward matches a plain identifier before the type

@@ -1,0 +1,5 @@
+/**
+ * Aligned.
+ */
+fun run() {
+}

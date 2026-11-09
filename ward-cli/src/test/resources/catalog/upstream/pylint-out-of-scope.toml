@@ -44,8 +44,8 @@ rules = [
 [[group]]
 reason = "needs type inference Ward does not compute for Python (or mypy/configuration), not a source check"
 rules = [
-  "async-context-manager-with-regular-with",
   "access-member-before-definition",
+  "async-context-manager-with-regular-with",
   "impossible-comparison",
 ]
 
@@ -71,4 +71,18 @@ reason = "Pylint configuration errors, not source code"
 rules = [
   "bad-configuration-section",
   "bad-plugin-value",
+]
+
+[[group]]
+reason = "Ward reads sources as UTF-8; a non-UTF-8 source encoding is not analyzed"
+rules = [
+  "bad-file-encoding",
+]
+
+[[group]]
+reason = "needs a spelling dictionary (pyenchant); Pylint disables it unless one is configured"
+rules = [
+  "invalid-characters-in-docstring",
+  "wrong-spelling-in-comment",
+  "wrong-spelling-in-docstring",
 ]

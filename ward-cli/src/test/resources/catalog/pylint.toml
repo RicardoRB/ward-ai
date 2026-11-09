@@ -102,12 +102,6 @@ category = "pylint"
 pylint = ["bad-exception-cause"]
 
 [[rule]]
-name = "bad-file-encoding"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["bad-file-encoding"]
-
-[[rule]]
 name = "bad-format-string-key"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -203,12 +197,6 @@ pylint = ["confusing-consecutive-elif"]
 name = "confusing-with-statement"
 presets = ["standard", "strict"]
 pylint = ["confusing-with-statement"]
-
-[[rule]]
-name = "consider-iterating-dictionary"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["consider-iterating-dictionary"]
 
 [[rule]]
 name = "consider-math-not-float"
@@ -486,12 +474,6 @@ category = "pylint"
 pylint = ["invalid-character-carriage-return"]
 
 [[rule]]
-name = "invalid-characters-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["invalid-characters-in-docstring"]
-
-[[rule]]
 name = "invalid-class-object"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -568,12 +550,6 @@ name = "invalid-metaclass"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["invalid-metaclass"]
-
-[[rule]]
-name = "invalid-name"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["invalid-name"]
 
 [[rule]]
 name = "invalid-overridden-method"
@@ -880,12 +856,6 @@ name = "multiple-constructor-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["multiple-constructor-doc"]
-
-[[rule]]
-name = "multiple-imports"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["multiple-imports"]
 
 [[rule]]
 name = "no-else-break"
@@ -1218,12 +1188,6 @@ category = "linter"
 pylint = ["single-string-used-for-slots"]
 
 [[rule]]
-name = "singleton-comparison"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["singleton-comparison"]
-
-[[rule]]
 name = "star-needs-assignment-target"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1404,12 +1368,6 @@ category = "pylint"
 pylint = ["unhashable-member"]
 
 [[rule]]
-name = "unidiomatic-typecheck"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["unidiomatic-typecheck"]
-
-[[rule]]
 name = "unknown-option-value"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1420,12 +1378,6 @@ name = "unnecessary-ellipsis"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["unnecessary-ellipsis"]
-
-[[rule]]
-name = "unnecessary-lambda-assignment"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["unnecessary-lambda-assignment"]
 
 [[rule]]
 name = "unnecessary-negation"
@@ -1684,24 +1636,6 @@ name = "wrong-import-order"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["wrong-import-order"]
-
-[[rule]]
-name = "wrong-import-position"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-import-position"]
-
-[[rule]]
-name = "wrong-spelling-in-comment"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-comment"]
-
-[[rule]]
-name = "wrong-spelling-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-docstring"]
 
 [[rule]]
 name = "yield-inside-async-function"

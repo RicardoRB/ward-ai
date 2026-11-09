@@ -234,3 +234,15 @@ mode = "inside"
 text = "^yieldfrom"
 message = "yield from statement in async function; use async for instead"
 '''
+
+[[rules]]
+id = "ward:python/named-expr-without-context"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "named-expr-without-context"
+message = "assignment expression used as a statement; bind the value with a plain assignment"
+'''

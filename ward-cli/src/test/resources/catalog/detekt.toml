@@ -18,8 +18,6 @@ detekt = ["ArrayPrimitive"]
 
 [[rule]]
 name = "avoid-referential-equality"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["AvoidReferentialEquality"]
 
 [[rule]]
@@ -132,8 +130,6 @@ detekt = ["Deprecation"]
 
 [[rule]]
 name = "destructuring-declaration-with-too-many-entries"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["DestructuringDeclarationWithTooManyEntries"]
 
 [[rule]]
@@ -254,8 +250,6 @@ detekt = ["EqualsAlwaysReturnsTrueOrFalse"]
 
 [[rule]]
 name = "equals-null-call"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["EqualsNullCall"]
 
 [[rule]]
@@ -286,8 +280,6 @@ detekt = ["ExplicitGarbageCollectionCall"]
 
 [[rule]]
 name = "explicit-it-lambda-parameter"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["ExplicitItLambdaParameter"]
 
 [[rule]]
@@ -332,8 +324,6 @@ detekt = ["ForbiddenSuppress"]
 
 [[rule]]
 name = "forbidden-void"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["ForbiddenVoid"]
 
 [[rule]]
@@ -350,8 +340,6 @@ detekt = ["FunctionMinLength"]
 
 [[rule]]
 name = "function-only-returning-constant"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["FunctionOnlyReturningConstant"]
 
 [[rule]]
@@ -360,14 +348,10 @@ detekt = ["GlobalCoroutineUsage"]
 
 [[rule]]
 name = "has-platform-type"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["HasPlatformType"]
 
 [[rule]]
 name = "ignored-return-value"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["IgnoredReturnValue"]
 
 [[rule]]
@@ -436,8 +420,6 @@ detekt = ["LateinitUsage"]
 
 [[rule]]
 name = "loop-with-too-many-jump-statements"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["LoopWithTooManyJumpStatements"]
 
 [[rule]]
@@ -448,8 +430,6 @@ detekt = ["MandatoryBracesLoops"]
 
 [[rule]]
 name = "map-get-with-not-null-assertion-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["MapGetWithNotNullAssertionOperator"]
 
 [[rule]]
@@ -466,8 +446,6 @@ detekt = ["MaxChainedCallsOnSameLine"]
 
 [[rule]]
 name = "may-be-const"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["MayBeConst"]
 
 [[rule]]
@@ -508,8 +486,6 @@ detekt = ["NamedArguments"]
 
 [[rule]]
 name = "nested-classes-visibility"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["NestedClassesVisibility"]
 
 [[rule]]
@@ -520,8 +496,6 @@ detekt = ["NestedScopeFunctions"]
 
 [[rule]]
 name = "new-line-at-end-of-file"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["NewLineAtEndOfFile"]
 
 [[rule]]
@@ -570,8 +544,6 @@ detekt = ["ObjectExtendsThrowable"]
 
 [[rule]]
 name = "object-literal-to-lambda"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["ObjectLiteralToLambda"]
 
 [[rule]]
@@ -582,8 +554,6 @@ detekt = ["ObjectPropertyNaming"]
 
 [[rule]]
 name = "optional-abstract-keyword"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["OptionalAbstractKeyword"]
 
 [[rule]]
@@ -622,14 +592,10 @@ detekt = ["RedundantExplicitType"]
 
 [[rule]]
 name = "redundant-higher-order-map-usage"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["RedundantHigherOrderMapUsage"]
 
 [[rule]]
 name = "redundant-suspend-modifier"
-presets = ["standard", "strict"]
-category = "coroutines"
 detekt = ["RedundantSuspendModifier"]
 
 [[rule]]
@@ -648,14 +614,10 @@ detekt = ["ReturnFromFinally"]
 
 [[rule]]
 name = "safe-cast"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["SafeCast"]
 
 [[rule]]
 name = "serial-version-uid-in-serializable-class"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["SerialVersionUIDInSerializableClass"]
 
 [[rule]]
@@ -728,8 +690,6 @@ detekt = ["TooManyFunctions"]
 
 [[rule]]
 name = "trailing-whitespace"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["TrailingWhitespace"]
 pylint = ["trailing-whitespace"]
 
@@ -759,8 +719,6 @@ detekt = ["UndocumentedPublicProperty"]
 
 [[rule]]
 name = "unnecessary-abstract-class"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnnecessaryAbstractClass"]
 
 [[rule]]
@@ -771,8 +729,6 @@ detekt = ["UnnecessaryAnnotationUseSiteTarget"]
 
 [[rule]]
 name = "unnecessary-apply"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnnecessaryApply"]
 
 [[rule]]
@@ -789,14 +745,10 @@ detekt = ["UnnecessaryBracesAroundTrailingLambda"]
 
 [[rule]]
 name = "unnecessary-filter"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnnecessaryFilter"]
 
 [[rule]]
 name = "unnecessary-inheritance"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnnecessaryInheritance"]
 
 [[rule]]
@@ -819,8 +771,6 @@ detekt = ["UnnecessaryNotNullCheck"]
 
 [[rule]]
 name = "unnecessary-not-null-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnnecessaryNotNullOperator"]
 
 [[rule]]
@@ -831,8 +781,6 @@ detekt = ["UnnecessaryPartOfBinaryExpression"]
 
 [[rule]]
 name = "unnecessary-safe-call"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnnecessarySafeCall"]
 
 [[rule]]
@@ -841,8 +789,6 @@ detekt = ["UnnecessaryTemporaryInstantiation"]
 
 [[rule]]
 name = "unreachable-catch-block"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnreachableCatchBlock"]
 
 [[rule]]
@@ -852,14 +798,10 @@ vulture = ["V201"]
 
 [[rule]]
 name = "unsafe-call-on-nullable-type"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnsafeCallOnNullableType"]
 
 [[rule]]
 name = "unsafe-cast"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnsafeCast"]
 
 [[rule]]
@@ -870,21 +812,15 @@ detekt = ["UntilInsteadOfRangeTo"]
 
 [[rule]]
 name = "unused-parameter"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedParameter"]
 swiftlint = ["unused_parameter"]
 
 [[rule]]
 name = "unused-private-class"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedPrivateClass"]
 
 [[rule]]
 name = "unused-private-member"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedPrivateMember"]
 pylint = ["unused-private-member"]
 
@@ -894,26 +830,18 @@ detekt = ["UnusedUnaryOperator"]
 
 [[rule]]
 name = "use-any-or-none-instead-of-find"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseAnyOrNoneInsteadOfFind"]
 
 [[rule]]
 name = "use-array-literals-in-annotations"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseArrayLiteralsInAnnotations"]
 
 [[rule]]
 name = "use-check-not-null"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseCheckNotNull"]
 
 [[rule]]
 name = "use-check-or-error"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseCheckOrError"]
 
 [[rule]]
@@ -942,8 +870,6 @@ detekt = ["UseIfInsteadOfWhen"]
 
 [[rule]]
 name = "use-is-null-or-empty"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseIsNullOrEmpty"]
 
 [[rule]]
@@ -954,20 +880,14 @@ detekt = ["UseLet"]
 
 [[rule]]
 name = "use-or-empty"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseOrEmpty"]
 
 [[rule]]
 name = "use-require"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseRequire"]
 
 [[rule]]
 name = "use-require-not-null"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UseRequireNotNull"]
 
 [[rule]]
@@ -978,8 +898,6 @@ detekt = ["UseSumOfInsteadOfFlatMapSize"]
 
 [[rule]]
 name = "useless-call-on-not-null"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UselessCallOnNotNull"]
 
 [[rule]]
@@ -988,14 +906,10 @@ detekt = ["UselessPostfixExpression"]
 
 [[rule]]
 name = "utility-class-with-public-constructor"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UtilityClassWithPublicConstructor"]
 
 [[rule]]
 name = "var-could-be-val"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["VarCouldBeVal"]
 
 [[rule]]
