@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -43,7 +44,11 @@ class BiomeParitySmokeTest {
           Map.entry("no-static-only-class", "complexity/noStaticOnlyClass"),
           Map.entry("no-useless-lone-block-statements", "complexity/noUselessLoneBlockStatements"),
           Map.entry("use-simple-number-keys", "complexity/useSimpleNumberKeys"),
-          Map.entry("no-empty-type-parameters", "complexity/noEmptyTypeParameters"));
+          Map.entry("no-empty-type-parameters", "complexity/noEmptyTypeParameters"),
+          Map.entry("no-return-in-finally", "nursery/noReturnInFinally"),
+          Map.entry("no-constant-math-min-max-clamp", "correctness/noConstantMathMinMaxClamp"),
+          Map.entry(
+              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
@@ -96,7 +101,8 @@ class BiomeParitySmokeTest {
                 BINARY, "lint", "--only=" + group, "--max-diagnostics=200", file.toString())
             .redirectErrorStream(true)
             .start();
-    final String output = new String(process.getInputStream().readAllBytes());
+    final String output =
+        new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     process.waitFor();
     final Set<String> positions = new TreeSet<>();
     final Matcher matcher = DIAGNOSTIC.matcher(output);

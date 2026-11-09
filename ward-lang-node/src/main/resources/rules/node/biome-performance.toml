@@ -1,0 +1,26 @@
+# Biome rules of the performance group for TypeScript and JavaScript (catalog rows of #329).
+
+[[rules]]
+id = "ward:typescript/no-dynamic-namespace-import-access"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "node-namespace-access"
+message = "avoid accessing a namespace import dynamically; use named imports or static access"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dynamic-namespace-import-access"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "node-namespace-access"
+message = "avoid accessing a namespace import dynamically; use named imports or static access"
+'''
+

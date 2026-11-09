@@ -141,8 +141,6 @@ biome = ["noConstEnum"]
 
 [[rule]]
 name = "no-constant-math-min-max-clamp"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noConstantMathMinMaxClamp"]
 
 [[rule]]
@@ -225,8 +223,6 @@ biome = ["noDuplicatedSpreadProps"]
 
 [[rule]]
 name = "no-dynamic-namespace-import-access"
-presets = ["standard", "strict"]
-category = "performance"
 biome = ["noDynamicNamespaceImportAccess"]
 
 [[rule]]
@@ -725,8 +721,6 @@ biome = ["noRestrictedImports"]
 
 [[rule]]
 name = "no-return-in-finally"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["noReturnInFinally"]
 
 [[rule]]

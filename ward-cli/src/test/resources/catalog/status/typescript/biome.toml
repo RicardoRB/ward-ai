@@ -25,7 +25,7 @@ no-conditional-expect = { status = "planned", issue = "#329" }
 no-confusing-labels = { status = "planned", issue = "#329" }
 no-confusing-void-type = { status = "planned", issue = "#329" }
 no-const-enum = "implemented"
-no-constant-math-min-max-clamp = { status = "planned", issue = "#329" }
+no-constant-math-min-max-clamp = "implemented"
 no-dangerously-set-inner-html = { status = "planned", issue = "#329" }
 no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#329" }
 no-default-export = "implemented"
@@ -40,7 +40,7 @@ no-drizzle-update-without-where = { status = "planned", issue = "#329" }
 no-duplicate-jsx-props = { status = "planned", issue = "#329" }
 no-duplicate-test-hooks = { status = "planned", issue = "#329" }
 no-duplicated-spread-props = { status = "planned", issue = "#329" }
-no-dynamic-namespace-import-access = { status = "planned", issue = "#329" }
+no-dynamic-namespace-import-access = "implemented"
 no-empty-interface = "implemented"
 no-empty-source = { status = "planned", issue = "#329" }
 no-empty-type-parameters = "implemented"
@@ -128,7 +128,7 @@ no-redundant-roles = { status = "planned", issue = "#329" }
 no-render-return-value = "implemented"
 no-restricted-elements = { status = "planned", issue = "#329" }
 no-restricted-imports = { status = "planned", issue = "#296" }
-no-return-in-finally = { status = "planned", issue = "#329" }
+no-return-in-finally = "implemented"
 no-secrets = { status = "planned", issue = "#329" }
 no-self-import = { status = "planned", issue = "#329" }
 no-shadow = { status = "planned", issue = "#329" }
