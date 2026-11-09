@@ -1,9 +1,11 @@
 package dev.ward.analysis.domain.rule.check;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,6 +16,23 @@ import java.util.stream.Collectors;
  * text is parsed here without I/O; the application layer reads the resource files.
  */
 public final class AriaRoleTable {
+
+  private static final int ROLE_COLUMNS = 11;
+  private static final int NAME = 0;
+  private static final int ABSTRACT = 1;
+  private static final int SUPERCLASSES = 2;
+  private static final int INTERACTIVE = 3;
+  private static final int NON_INTERACTIVE = 4;
+  private static final int PRESENTATIONAL = 5;
+  private static final int COMPOSITE = 6;
+  private static final int SUPPORTED = 7;
+  private static final int REQUIRED = 8;
+  private static final int PROHIBITED = 9;
+  private static final int DEPRECATED = 10;
+  private static final int IMPLICIT_COLUMNS = 3;
+  private static final int ELEMENT = 0;
+  private static final int CONDITION = 1;
+  private static final int ROLE = 2;
 
   private final Map<String, AriaRoleRow> roles;
   private final List<ImplicitRow> implicit;
@@ -36,28 +55,9 @@ public final class AriaRoleTable {
    * @throws IllegalArgumentException if a row has the wrong number of columns
    */
   public static Map<String, AriaRoleRow> parseRoles(final List<String> lines) {
-    final Map<String, AriaRoleRow> roles = new java.util.HashMap<>();
-    for (final String line : data(lines)) {
-      final String[] c = line.split("\t", -1);
-      if (c.length != 11) {
-        throw new IllegalArgumentException("role row needs 11 columns: " + line);
-      }
-      roles.put(
-          c[0],
-          new AriaRoleRow(
-              c[0],
-              Boolean.parseBoolean(c[1]),
-              words(c[2]),
-              Boolean.parseBoolean(c[3]),
-              Boolean.parseBoolean(c[4]),
-              Boolean.parseBoolean(c[5]),
-              Boolean.parseBoolean(c[6]),
-              words(c[7]),
-              words(c[8]),
-              words(c[9]),
-              words(c[10])));
-    }
-    return roles;
+    return data(lines).stream()
+        .map(AriaRoleTable::roleRow)
+        .collect(Collectors.toMap(AriaRoleRow::name, row -> row, (a, b) -> a, HashMap::new));
   }
 
   /**
@@ -67,15 +67,7 @@ public final class AriaRoleTable {
    * @throws IllegalArgumentException if a row has the wrong number of columns
    */
   public static List<ImplicitRow> parseImplicit(final List<String> lines) {
-    final List<ImplicitRow> rows = new ArrayList<>();
-    for (final String line : data(lines)) {
-      final String[] c = line.split("\t", -1);
-      if (c.length != 3) {
-        throw new IllegalArgumentException("implicit row needs 3 columns: " + line);
-      }
-      rows.add(new ImplicitRow(c[0], c[1], "-".equals(c[2]) ? "" : c[2]));
-    }
-    return rows;
+    return data(lines).stream().map(AriaRoleTable::implicitRow).toList();
   }
 
   /** Whether the name is a concrete (non-abstract) role of Biome's table. */
@@ -85,15 +77,15 @@ public final class AriaRoleTable {
   }
 
   /** The role row by name, if the table has it. */
-  public java.util.Optional<AriaRoleRow> role(final String name) {
-    return java.util.Optional.ofNullable(roles.get(name));
+  public Optional<AriaRoleRow> role(final String name) {
+    return Optional.ofNullable(roles.get(name));
   }
 
   /**
    * The implicit role of an element, as Biome's {@code get_implicit_role}: the first row for the
    * element whose condition holds. Empty when the element has no implicit role.
    */
-  public java.util.Optional<String> implicitRole(
+  public Optional<String> implicitRole(
       final String element, final Predicate<String> has, final Map<String, String> literals) {
     return implicit.stream()
         .filter(row -> row.element().equals(element))
@@ -101,6 +93,35 @@ public final class AriaRoleTable {
         .findFirst()
         .map(ImplicitRow::role)
         .filter(role -> !role.isEmpty());
+  }
+
+  private static AriaRoleRow roleRow(final String line) {
+    final String[] c = columns(line, ROLE_COLUMNS);
+    return new AriaRoleRow(
+        c[NAME],
+        Boolean.parseBoolean(c[ABSTRACT]),
+        words(c[SUPERCLASSES]),
+        Boolean.parseBoolean(c[INTERACTIVE]),
+        Boolean.parseBoolean(c[NON_INTERACTIVE]),
+        Boolean.parseBoolean(c[PRESENTATIONAL]),
+        Boolean.parseBoolean(c[COMPOSITE]),
+        words(c[SUPPORTED]),
+        words(c[REQUIRED]),
+        words(c[PROHIBITED]),
+        words(c[DEPRECATED]));
+  }
+
+  private static ImplicitRow implicitRow(final String line) {
+    final String[] c = columns(line, IMPLICIT_COLUMNS);
+    return new ImplicitRow(c[ELEMENT], c[CONDITION], "-".equals(c[ROLE]) ? "" : c[ROLE]);
+  }
+
+  private static String[] columns(final String line, final int expected) {
+    final String[] c = line.split("\t", -1);
+    if (c.length != expected) {
+      throw new IllegalArgumentException(expected + " columns expected: " + line);
+    }
+    return c;
   }
 
   private static List<String> data(final List<String> lines) {
@@ -113,7 +134,7 @@ public final class AriaRoleTable {
   private static Set<String> words(final String text) {
     return text.isBlank()
         ? Set.of()
-        : java.util.Arrays.stream(text.split(" ")).collect(Collectors.toUnmodifiableSet());
+        : Arrays.stream(text.split(" ")).collect(Collectors.toUnmodifiableSet());
   }
 
   /** One role's classes and attributes, as Biome's generated data has them. */
