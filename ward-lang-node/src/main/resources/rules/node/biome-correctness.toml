@@ -52,3 +52,27 @@ ignore-rest-siblings = true
 message = "parameter '{value}' is never used"
 '''
 
+[[rules]]
+id = "ward:typescript/no-unreachable-super"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unreachable-super"
+message = "this constructor has a code path that reads this or returns without calling super()"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unreachable-super"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unreachable-super"
+message = "this constructor has a code path that reads this or returns without calling super()"
+'''
+

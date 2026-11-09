@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
+import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.Map;
@@ -36,6 +37,9 @@ final class BiomeChecks {
             "node-namespace-access",
             toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
         entry("node-unused-parameter", BiomeChecks::unusedParameter),
+        entry(
+            "node-unreachable-super",
+            toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-base-to-string",
             toml -> new BiomeBaseToStringCheck(TomlValues.required(toml, MESSAGE))));

@@ -157,7 +157,7 @@ no-undeclared-dependencies = { status = "planned", issue = "#329" }
 no-undeclared-env-vars = { status = "planned", issue = "#329" }
 no-unknown-attribute = { status = "planned", issue = "#329" }
 no-unnecessary-conditions = { status = "planned", issue = "#329" }
-no-unreachable-super = { status = "planned", issue = "#329" }
+no-unreachable-super = "implemented"
 no-unresolved-imports = { status = "planned", issue = "#329" }
 no-unsafe-iframe-sandbox = { status = "planned", issue = "#329" }
 no-unused-function-parameters = "implemented"

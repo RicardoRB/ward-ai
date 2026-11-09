@@ -881,8 +881,6 @@ biome = ["noUnnecessaryConditions"]
 
 [[rule]]
 name = "no-unreachable-super"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnreachableSuper"]
 
 [[rule]]
