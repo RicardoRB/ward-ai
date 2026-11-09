@@ -1,0 +1,21 @@
+# Path sinks of the Semgrep p/javascript rules: a path built by joining or resolving request-controlled segments.
+
+[[sinks]]
+kind = "call"
+name = "join"
+qualifier = "path"
+arguments = [0, 1, 2, 3]
+
+[[sinks]]
+kind = "call"
+name = "resolve"
+qualifier = "path"
+arguments = [0, 1, 2, 3]
+
+[[sanitizers]]
+kind = "call"
+name = "replace"
+
+[[sanitizers]]
+kind = "call"
+name = "indexOf"
