@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
  * the {@code bin} field of the installed packages; with no installed package, or one that is not
  * installed, nothing is reported. System and package-manager commands are never reported.
  *
- * <p>shortcut: reads the installed packages at the root only, and checks each workspace against its
- * own dependencies; a command provided by a root-listed package is reported in a workspace that
- * does not list it. Upgrade by reading each workspace's installed packages.
+ * <p>shortcut: reads the installed packages at the root only, and counts the root manifest's
+ * dependencies as listed for every workspace, so a shared root tool is never reported. Upgrade by
+ * reading each workspace's installed packages.
  */
 public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
 
@@ -87,8 +87,14 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     final Map<String, String> providers = providers(files);
     final List<ProjectMatch> found = new ArrayList<>();
-    for (final NodeManifests.Manifest owner : NodeManifests.byDirectory(files).values()) {
-      final Set<String> listed = NodeManifests.names(owner.manifest(), SECTIONS);
+    final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
+    final Set<String> rootListed =
+        manifests.containsKey("")
+            ? NodeManifests.names(manifests.get("").manifest(), SECTIONS)
+            : Set.of();
+    for (final NodeManifests.Manifest owner : manifests.values()) {
+      final Set<String> listed = new HashSet<>(rootListed);
+      listed.addAll(NodeManifests.names(owner.manifest(), SECTIONS));
       for (final Member script : owner.manifest().entries("scripts")) {
         if (script.value() instanceof Value.Text text) {
           found.addAll(unlisted(owner.path(), script, text.value(), providers, listed));

@@ -78,6 +78,24 @@ final class NodeUnlistedBinaryCheckTest {
     assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:13");
   }
 
+  @Test
+  void countsTheRootManifestAsListedForAWorkspace() {
+    final List<ProjectMatch> found =
+        new NodeUnlistedBinaryCheck(MESSAGE)
+            .project(
+                ProjectFixtures.trees(Map.of("index.ts", "export const a = 1;")),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "package.json",
+                        "{\"devDependencies\":{\"eslint\":\"^9\"}}",
+                        "packages/app/package.json",
+                        "{\"scripts\":{\"lint\":\"eslint .\"}}",
+                        ESLINT_BIN,
+                        ESLINT_PACKAGE)));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
   private static ProjectFiles project(final String manifest) {
     return ProjectFixtures.manifests(Map.of("package.json", manifest, ESLINT_BIN, ESLINT_PACKAGE));
   }
