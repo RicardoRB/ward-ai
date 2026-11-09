@@ -81,3 +81,27 @@ check = "node-jsx-duplicate-props"
 message = "this JSX property is assigned more than once; keep one of them"
 '''
 
+
+[[rules]]
+id = "ward:javascript/no-comment-text"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-comment-text"
+message = "a comment written as JSX text is shown on the page; use a JSX comment"
+'''
+
+[[rules]]
+id = "ward:typescript/no-comment-text"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-comment-text"
+message = "a comment written as JSX text is shown on the page; use a JSX comment"
+'''
