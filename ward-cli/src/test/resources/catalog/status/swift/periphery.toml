@@ -2,4 +2,4 @@
 
 assign-only-property = "implemented"
 redundant-protocol = "implemented"
-redundant-public-accessibility = { status = "planned", issue = "#448" }
+redundant-public-accessibility = { status = "planned", issue = "#467" }
