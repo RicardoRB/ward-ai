@@ -39,7 +39,9 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/style-javadoc.toml",
           "rules/node/style-linter.toml",
           "rules/node/style-typescript.toml",
-          "rules/node/suggestion.toml");
+          "rules/node/suggestion.toml",
+          "rules/node/typescript-eslint-syntax.toml",
+          "rules/node/typescript-eslint-types.toml");
 
   @Override
   public List<String> ruleFiles() {

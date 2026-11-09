@@ -1,0 +1,98 @@
+{
+  "203:17-203:21": {
+    "type": {
+      "args": [],
+      "array": 1,
+      "name": "string",
+      "primitive": true
+    }
+  },
+  "203:25-203:29": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "{ a: number; }",
+      "primitive": false
+    }
+  },
+  "217:17-217:17": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "any",
+      "primitive": false
+    }
+  },
+  "217:21-217:21": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "boolean",
+      "primitive": true
+    }
+  },
+  "217:25-217:25": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "null",
+      "primitive": true
+    }
+  },
+  "217:29-217:29": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "217:33-217:33": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "RegExp",
+      "primitive": false
+    }
+  },
+  "217:37-217:37": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "never",
+      "primitive": true
+    }
+  },
+  "223:17-223:22": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Ticket",
+      "primitive": false
+    }
+  },
+  "223:26-223:30": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "{ a: number; }",
+      "primitive": false
+    }
+  },
+  "2:14-2:14": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "{ a: number; }",
+      "primitive": false
+    }
+  },
+  "32:14-32:14": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  }
+}

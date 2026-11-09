@@ -1,0 +1,26 @@
+{
+  "2:12-2:12": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "string",
+      "primitive": true
+    }
+  },
+  "33:12-33:12": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "34:12-34:12": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "any",
+      "primitive": false
+    }
+  }
+}
