@@ -24,6 +24,7 @@ import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleC
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -38,26 +39,52 @@ final class BiomeChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
+    final Map<String, CheckFactory> checks = new HashMap<>(ariaChecks());
+    checks.putAll(
+        Map.ofEntries(
+            entry(
+                "node-constant-clamp",
+                toml -> new BiomeConstantClampCheck(TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-finally-return",
+                toml -> new BiomeFinallyReturnCheck(TomlValues.required(toml, MESSAGE))),
+            entry("node-member-property", BiomeChecks::memberProperty),
+            entry(
+                "node-namespace-access",
+                toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
+            entry("node-unused-parameter", BiomeChecks::unusedParameter),
+            entry(
+                "node-unreachable-super",
+                toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-autofocus",
+                toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
+            entry("node-jsx-blank-target", BiomeChecks::blankTarget),
+            entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
+            entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
+            entry(
+                "node-jsx-empty-element",
+                toml ->
+                    new BiomeJsxEmptyElementCheck(
+                        TomlValues.optionalStrings(toml, "elements"),
+                        TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-jsx-duplicate-props",
+                toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-jsx-attribute-value",
+                toml ->
+                    new BiomeJsxAttributeValueCheck(
+                        toml.getString("attribute"),
+                        "expression".equals(toml.getString("at")),
+                        Pattern.compile(TomlValues.required(toml, "text")),
+                        TomlValues.required(toml, MESSAGE)))));
+    return Map.copyOf(checks);
+  }
+
+  /** The checks that read the mirrored ARIA tables of Biome 2.5.15. */
+  private static Map<String, CheckFactory> ariaChecks() {
     return Map.ofEntries(
-        entry(
-            "node-constant-clamp",
-            toml -> new BiomeConstantClampCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-finally-return",
-            toml -> new BiomeFinallyReturnCheck(TomlValues.required(toml, MESSAGE))),
-        entry("node-member-property", BiomeChecks::memberProperty),
-        entry(
-            "node-namespace-access",
-            toml -> new BiomeNamespaceAccessCheck(TomlValues.required(toml, MESSAGE))),
-        entry("node-unused-parameter", BiomeChecks::unusedParameter),
-        entry(
-            "node-unreachable-super",
-            toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
-        entry("node-jsx-blank-target", BiomeChecks::blankTarget),
-        entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
-        entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
         entry(
             "node-aria-props",
             toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
@@ -82,24 +109,7 @@ final class BiomeChecks {
             "node-no-redundant-roles",
             toml ->
                 new BiomeNoRedundantRolesCheck(
-                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-jsx-empty-element",
-            toml ->
-                new BiomeJsxEmptyElementCheck(
-                    TomlValues.optionalStrings(toml, "elements"),
-                    TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-jsx-duplicate-props",
-            toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "node-jsx-attribute-value",
-            toml ->
-                new BiomeJsxAttributeValueCheck(
-                    toml.getString("attribute"),
-                    "expression".equals(toml.getString("at")),
-                    Pattern.compile(TomlValues.required(toml, "text")),
-                    TomlValues.required(toml, MESSAGE))));
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck handlerPair(final TomlParseResult toml) {
