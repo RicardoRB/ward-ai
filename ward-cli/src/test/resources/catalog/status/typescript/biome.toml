@@ -166,7 +166,7 @@ no-unused-template-literal = "implemented"
 no-unwanted-polyfillio = { status = "planned", issue = "#329" }
 no-useless-catch-binding = "implemented"
 no-useless-continue = "implemented"
-no-useless-fragments = { status = "planned", issue = "#329" }
+no-useless-fragments = "implemented"
 no-useless-lone-block-statements = "implemented"
 no-useless-string-raw = "implemented"
 no-useless-switch-case = "implemented"
