@@ -195,9 +195,7 @@ severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^(?:[\w$.()]+\+[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]|[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]\+[\w$.()]+)$'
+check = "node-string-concat"
 message = "unexpected string concatenation; use a template literal"
 '''
 
@@ -208,11 +206,12 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
+options.allow-named-functions = { type = "boolean" }
+options.allow-unbound-this = { type = "boolean" }
 body = '''
-check = "forbidden-node"
-kinds = ["anonymousFunction"]
-parent-path = "singleExpression>argument"
-text = '^function\((?![\s\S]*(this|arguments|super|new\.target))'
+check = "node-arrow-callback"
+allow-named-functions = false
+allow-unbound-this = true
 message = "unexpected function expression; use an arrow function"
 '''
 
@@ -224,9 +223,7 @@ severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^(?:[\w$.()]+\+[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]|[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]\+[\w$.()]+)$'
+check = "node-string-concat"
 message = "unexpected string concatenation; use a template literal"
 '''
 
@@ -237,10 +234,11 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
+options.allow-named-functions = { type = "boolean" }
+options.allow-unbound-this = { type = "boolean" }
 body = '''
-check = "forbidden-node"
-kinds = ["anonymousFunction"]
-parent-path = "singleExpression>argument"
-text = '^function\((?![\s\S]*(this|arguments|super|new\.target))'
+check = "node-arrow-callback"
+allow-named-functions = false
+allow-unbound-this = true
 message = "unexpected function expression; use an arrow function"
 '''

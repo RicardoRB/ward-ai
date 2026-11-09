@@ -1,5 +1,8 @@
 export function run(values) {
-  return values.map(function (value) {
+  const doubled = values.map(function (value) {
+    return value * 2;
+  });
+  return doubled.map(function twice(value) {
     return value * 2;
   });
 }

@@ -2,10 +2,12 @@ package dev.ward.analysis.application.node;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.NodeArrowCallbackCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
+import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.Map;
 
@@ -30,6 +32,14 @@ final class StyleChecks {
         toml ->
             new NodeElseAfterJumpCheck(
                 toml.getBoolean("allow-else-if", () -> true), TomlValues.required(toml, MESSAGE)),
+        "node-arrow-callback",
+        toml ->
+            new NodeArrowCallbackCheck(
+                toml.getBoolean("allow-named-functions", () -> false),
+                toml.getBoolean("allow-unbound-this", () -> true),
+                TomlValues.required(toml, MESSAGE)),
+        "node-string-concat",
+        toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE)),
         "node-prefer-const",
         toml ->
             new NodePreferConstCheck(
