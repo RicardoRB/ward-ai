@@ -363,3 +363,18 @@ kinds = ["expr_stmt"]
 text = "^__all__\\+?=[\\[(].*?[\\[(,](?:\\d|None\\b|True\\b|False\\b)"
 message = "__all__ must contain only strings"
 '''
+
+[[rules]]
+id = "ward:python/method-cache-max-size-none"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["decorated"]
+inside = ["classdef"]
+text = "(?s)^(?:(?!def\\b|async\\b)[\\s\\S])*?@(?:functools\\.)?(?:lru_cache\\((?:maxsize\\s*=\\s*)?None\\)|cache(?![\\w.]))"
+message = "lru_cache(maxsize=None) or cache on a method keeps self alive; give the cache a maxsize"
+'''

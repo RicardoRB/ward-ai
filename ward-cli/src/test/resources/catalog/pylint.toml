@@ -853,12 +853,6 @@ category = "linter"
 pylint = ["misplaced-comparison-constant"]
 
 [[rule]]
-name = "misplaced-format-function"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["misplaced-format-function"]
-
-[[rule]]
 name = "missing-any-param-doc"
 presets = ["strict"]
 category = "pylint"
@@ -887,12 +881,6 @@ name = "missing-param-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["missing-param-doc"]
-
-[[rule]]
-name = "missing-parentheses-for-call-in-test"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-parentheses-for-call-in-test"]
 
 [[rule]]
 name = "missing-raises-doc"

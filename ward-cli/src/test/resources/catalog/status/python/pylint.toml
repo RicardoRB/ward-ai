@@ -140,15 +140,13 @@ logging-format-truncated = { status = "planned", issue = "#336" }
 logging-unsupported-format = { status = "planned", issue = "#336" }
 match-class-bind-self = { status = "planned", issue = "#336" }
 match-class-positional-attributes = { status = "planned", issue = "#336" }
-method-cache-max-size-none = { status = "planned", issue = "#336" }
+method-cache-max-size-none = "implemented"
 misplaced-comparison-constant = { status = "planned", issue = "#297" }
-misplaced-format-function = { status = "planned", issue = "#336" }
 missing-any-param-doc = { status = "planned", issue = "#336" }
 missing-class-docstring = { status = "planned", issue = "#297" }
 missing-function-docstring = { status = "planned", issue = "#297" }
 missing-module-docstring = { status = "planned", issue = "#297" }
 missing-param-doc = { status = "planned", issue = "#336" }
-missing-parentheses-for-call-in-test = { status = "planned", issue = "#336" }
 missing-raises-doc = { status = "planned", issue = "#336" }
 missing-return-doc = { status = "planned", issue = "#336" }
 missing-return-type-doc = { status = "planned", issue = "#336" }

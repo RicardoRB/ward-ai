@@ -102,3 +102,10 @@ reason = "needs inference of the statement's value as an exception instance"
 rules = [
   "pointless-exception-statement",
 ]
+
+[[group]]
+reason = "needs Pylint's inference of the receiver or of the called function's result; Ward does not infer expression types"
+rules = [
+  "misplaced-format-function",
+  "missing-parentheses-for-call-in-test",
+]
