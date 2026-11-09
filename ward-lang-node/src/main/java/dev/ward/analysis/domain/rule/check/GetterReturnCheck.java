@@ -1,35 +1,29 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports getters that never return a value, like ESLint {@code getter-return}: a getter with no
- * {@code return} at all, and, unless {@code allowImplicit} is set, a bare {@code return;}. A getter
- * is a node with a direct {@code getter} child: a class, object literal or TypeScript accessor.
- * Nested functions are not searched.
+ * Reports getters that can finish without returning a value, like ESLint {@code getter-return}: a
+ * getter whose body end is reachable is reported at its head, and, unless {@code allowImplicit} is
+ * set, a bare {@code return;} is reported. A getter is a node with a direct {@code getter} child: a
+ * class, object literal or TypeScript accessor. Nested functions are not searched.
  *
- * <p>shortcut: reachability is not analysed, so a getter that returns on only some paths is not
- * reported, upgrade with the control-flow graphs when a fixture needs it.
+ * <p>Without a control-flow graph (a body that could not be lowered), a getter with no return at
+ * all is reported instead.
  */
 public final class GetterReturnCheck implements RuleCheck {
 
   private static final String GETTER = "getter";
   private static final String RETURN = "returnStatement";
   private static final String ARGUMENT = "expressionSequence";
-  private static final Set<String> NESTED =
-      Set.of(
-          "functionDeclaration",
-          "anonymousFunction",
-          "arrowFunctionDeclaration",
-          "methodDefinition",
-          "propertyAssignment",
-          "getAccessor",
-          "setAccessor");
+  private static final Set<String> NESTED = NodeKinds.NESTED_BODIES;
 
   private final boolean allowImplicit;
   private final String message;
@@ -47,17 +41,22 @@ public final class GetterReturnCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
+    return matches(root, FlowView.NONE);
+  }
+
+  @Override
+  public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> matches = new ArrayList<>();
-    collect(root, matches);
+    collect(root, flow, matches);
     return List.copyOf(matches);
   }
 
-  private void collect(final SyntaxNode node, final List<RuleMatch> matches) {
+  private void collect(final SyntaxNode node, final FlowView flow, final List<RuleMatch> matches) {
     if (isGetter(node)) {
-      checkGetter(node, matches);
+      checkGetter(node, flow, matches);
     }
     for (final SyntaxNode child : node.children()) {
-      collect(child, matches);
+      collect(child, flow, matches);
     }
   }
 
@@ -65,10 +64,11 @@ public final class GetterReturnCheck implements RuleCheck {
     return node.children().stream().anyMatch(child -> GETTER.equals(child.kind()));
   }
 
-  private void checkGetter(final SyntaxNode getter, final List<RuleMatch> matches) {
+  private void checkGetter(
+      final SyntaxNode getter, final FlowView flow, final List<RuleMatch> matches) {
     final List<SyntaxNode> returns = new ArrayList<>();
     returnsIn(getter.children(), returns);
-    if (returns.isEmpty()) {
+    if (endReachable(getter, flow, returns)) {
       matches.add(new RuleMatch(getter.span(), message));
     }
     if (!allowImplicit) {
@@ -77,6 +77,14 @@ public final class GetterReturnCheck implements RuleCheck {
               statement -> statement.children().stream().noneMatch(c -> ARGUMENT.equals(c.kind())))
           .forEach(statement -> matches.add(new RuleMatch(statement.span(), message)));
     }
+  }
+
+  /** Reachability decides when the body has a graph; a getter with no return is the fallback. */
+  private static boolean endReachable(
+      final SyntaxNode getter, final FlowView flow, final List<SyntaxNode> returns) {
+    final Optional<dev.ward.analysis.domain.ir.ControlFlowGraph> graph =
+        NodeFlow.graphOf(flow, getter);
+    return graph.map(NodeFlow::fallsOffEnd).orElseGet(returns::isEmpty);
   }
 
   private static void returnsIn(final List<SyntaxNode> nodes, final List<SyntaxNode> returns) {

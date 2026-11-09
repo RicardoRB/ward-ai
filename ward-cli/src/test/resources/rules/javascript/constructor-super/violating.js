@@ -8,3 +8,16 @@ class C extends D {
     super();
   }
 }
+class E extends F {
+  constructor(c) {
+    if (c) {
+      super();
+    }
+  }
+}
+class G extends H {
+  constructor() {
+    super();
+    super();
+  }
+}

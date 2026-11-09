@@ -1829,10 +1829,7 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["identifier"]
-text = '^arguments$'
-inside = ["functionDeclaration", "anonymousFunction", "methodDefinition", "constructorDeclaration"]
+check = "node-prefer-rest-params"
 message = "use the rest parameters instead of 'arguments'"
 '''
 
@@ -1844,10 +1841,7 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["identifier"]
-text = '^arguments$'
-inside = ["functionDeclaration", "anonymousFunction", "methodDefinition", "constructorDeclaration"]
+check = "node-prefer-rest-params"
 message = "use the rest parameters instead of 'arguments'"
 '''
 
@@ -1859,9 +1853,8 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '(?:^|[^\\])(?:\\\\)*\\(?:[1-7]|0[0-7])'
+check = "node-string-escape"
+decimal = false
 message = "don't use octal escape sequences"
 '''
 
@@ -1873,9 +1866,8 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '(?:^|[^\\])(?:\\\\)*\\(?:[1-7]|0[0-7])'
+check = "node-string-escape"
+decimal = false
 message = "don't use octal escape sequences"
 '''
 
@@ -1887,9 +1879,8 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '(?:^|[^\\])(?:\\\\)*\\[89]'
+check = "node-string-escape"
+decimal = true
 message = "don't use the non-octal decimal escape sequence"
 '''
 
@@ -1901,9 +1892,8 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "lines"
-pattern = '(?:^|[^\\])(?:\\\\)*\\[89]'
+check = "node-string-escape"
+decimal = true
 message = "don't use the non-octal decimal escape sequence"
 '''
 

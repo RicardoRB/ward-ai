@@ -4,7 +4,20 @@ class A extends B {
   }
 }
 class C extends D {
-  constructor(n: number) {
+  constructor() {
+    super();
+  }
+}
+class E extends F {
+  constructor(c: boolean) {
+    if (c) {
+      super();
+    }
+  }
+}
+class G extends H {
+  constructor() {
+    super();
     super();
   }
 }

@@ -9,4 +9,10 @@ class C {
   get e(): number {
     return;
   }
+  get f(): number {
+    if (c) {
+      return 1;
+    }
+    return 2;
+  }
 }

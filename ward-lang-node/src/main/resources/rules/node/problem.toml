@@ -1271,37 +1271,33 @@ message = "template placeholder in a regular string; use a template literal"
 [[rules]]
 id = "ward:typescript/constructor-super"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "CFG"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["constructorDeclaration"]
-inside = ["classDeclaration>classHeritage>classExtendsClause", "singleExpression>classHeritage>classExtendsClause"]
-text = '^constructor\s*\((?![\s\S]*\bsuper\s*\()'
+check = "node-constructor-super"
 message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
 '''
 
 [[rules]]
 id = "ward:javascript/constructor-super"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "CFG"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["methodDefinition"]
-inside = ["classDeclaration>classTail>'extends'", "singleExpression>classTail>'extends'"]
-text = '^constructor\s*\((?![\s\S]*\bsuper\s*\()'
+check = "node-constructor-super"
 message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
 '''
 
 [[rules]]
 id = "ward:typescript/getter-return"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "CFG"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
@@ -1315,7 +1311,7 @@ message = "expected to return a value in getter"
 [[rules]]
 id = "ward:javascript/getter-return"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "CFG"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
@@ -1334,10 +1330,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["returnStatement"]
-inside = ["setAccessor"]
-text = '^return[^;]'
+check = "node-no-setter-return"
 message = "setter cannot return a value"
 '''
 
@@ -1349,10 +1342,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["returnStatement"]
-inside = ["setAccessor", "methodDefinition>setter", "propertyAssignment>setter"]
-text = '^return[^;]'
+check = "node-no-setter-return"
 message = "setter cannot return a value"
 '''
 

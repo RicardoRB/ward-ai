@@ -5,6 +5,11 @@ const o = {
   get b() {
     return;
   },
+  get d() {
+    if (c) {
+      return 1;
+    }
+  },
 };
 class C {
   get c() {}

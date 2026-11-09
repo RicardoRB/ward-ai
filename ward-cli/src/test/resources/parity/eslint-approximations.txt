@@ -1,21 +1,12 @@
 # Known differences between the native #326 rules and ESLint 9.39.5 at its defaults. One per line:
 # <rule id> | <language> | <reason>. Only real behaviour differences are listed; missing options are
-# not (they are implemented or the row stays planned).
+# not (they are implemented or the row stays planned). Entries marked "until #462" go once #462 lands.
 
-ward:javascript/constructor-super | javascript | reports a missing super() only; ESLint also reports a super() on some code paths only (missingSome) and duplicate super() calls
-ward:typescript/constructor-super | typescript | same as the JavaScript rule
-ward:javascript/no-setter-return | javascript | returns inside nested functions of a setter are also reported
-ward:typescript/no-setter-return | typescript | same as the JavaScript rule
-ward:javascript/require-await | javascript | the TypeScript grammar parses an async function declaration as a variable named async, so only the JavaScript rule sees async declarations
-ward:typescript/require-await | typescript | async function declarations are not seen (grammar parses them as variables); async arrows and methods are checked
+ward:typescript/require-await | typescript | until #462: the TypeScript grammar parses an async function declaration as a variable named async, so only async arrows and methods are checked; add async-declaration fixtures after #462
 ward:javascript/no-unused-labels | javascript | a label is treated as used when any break or continue with the same name appears in its text, including in a nested scope that shadows it
 ward:typescript/no-unused-labels | typescript | same as the JavaScript rule
-ward:javascript/prefer-rest-params | javascript | every arguments identifier is reported, including arguments.length, which ESLint allows
-ward:typescript/prefer-rest-params | typescript | same as the JavaScript rule
-ward:javascript/no-octal-escape | javascript | reports the line; ESLint reports the column of the escape and parses only in script mode (module mode is a parse error)
+ward:typescript/no-unsafe-negation | typescript | until #462: the TypeScript grammar nests in and instanceof under the negation, so only identifier operands are matched; add a member-operand fixture (!a.b in c) after #462
+ward:javascript/no-octal-escape | javascript | ESLint parses octal escapes only in script mode; the fixtures are checked that way
 ward:typescript/no-octal-escape | typescript | the TypeScript parser rejects octal escapes, so ESLint cannot run this fixture; Ward is the only reference
-ward:javascript/no-nonoctal-decimal-escape | javascript | reports the line; ESLint reports the column of the escape and parses only in script mode
+ward:javascript/no-nonoctal-decimal-escape | javascript | ESLint parses this escape only in script mode; the fixtures are checked that way
 ward:typescript/no-nonoctal-decimal-escape | typescript | the TypeScript parser rejects the escape, so ESLint cannot run this fixture; Ward is the only reference
-ward:javascript/getter-return | javascript | reachability is not analysed: a getter that returns on only some paths is not reported (ESLint reports at the getter head when the end is reachable)
-ward:typescript/getter-return | typescript | same as the JavaScript rule
-ward:typescript/no-unsafe-negation | typescript | the TypeScript grammar nests `in` and `instanceof` under the negation; only identifier operands and the first grammar shape are matched, a member operand such as !a.b in c is not
