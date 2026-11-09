@@ -1,3 +1,4 @@
+/// The items the shopper has added to the cart.
 public struct Cart {
     public private(set) var items: [String] = []
 
