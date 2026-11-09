@@ -607,7 +607,8 @@ variables, redefinitions and shadowing build on it.
 
 The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
 modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
-Java size and naming rules. They are not measured against Detekt or ktlint in this release.
+Java size and naming rules. Ward's Kotlin rules replace Detekt and ktlint. Ward never ran either
+tool: it has no gate, parser or init step for them.
 
 | Rule | Limit or pattern |
 |---|---|
