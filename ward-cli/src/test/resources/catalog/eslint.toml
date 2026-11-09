@@ -69,16 +69,12 @@ biome = ["useDefaultParameterLast"]
 
 [[rule]]
 name = "dot-notation"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["dot-notation"]
 eslint = ["dot-notation"]
 biome = ["useLiteralKeys"]
 
 [[rule]]
 name = "eqeqeq"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["eqeqeq"]
 biome = ["noDoubleEquals"]
 
@@ -326,8 +322,6 @@ eslint = ["no-duplicate-imports"]
 
 [[rule]]
 name = "no-else-return"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-else-return"]
 pylint = ["no-else-return"]
 biome = ["noUselessElse"]
@@ -384,8 +378,6 @@ eslint = ["no-extra-bind"]
 
 [[rule]]
 name = "no-extra-boolean-cast"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-extra-boolean-cast"]
 
 [[rule]]
@@ -833,8 +825,6 @@ biome = ["noUselessStringConcat"]
 
 [[rule]]
 name = "no-useless-constructor"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-useless-constructor"]
 eslint = ["no-useless-constructor"]
 biome = ["noUselessConstructor"]
@@ -848,8 +838,6 @@ biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
 
 [[rule]]
 name = "no-useless-rename"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-useless-rename"]
 biome = ["noUselessRename"]
 

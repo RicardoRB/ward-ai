@@ -11,7 +11,7 @@ consistent-this = { status = "planned", issue = "#296" }
 constructor-super = { status = "planned", issue = "#326" }
 default-param-last = { status = "planned", issue = "#296" }
 dot-notation = { status = "planned", issue = "#296" }
-eqeqeq = { status = "planned", issue = "#296" }
+eqeqeq = "implemented"
 for-direction = "implemented"
 func-name-matching = { status = "planned", issue = "#296" }
 func-names = { status = "planned", issue = "#296" }
@@ -53,7 +53,7 @@ no-dupe-else-if = { status = "planned", issue = "#326" }
 no-dupe-keys = "implemented"
 no-duplicate-case = "implemented"
 no-duplicate-imports = { status = "planned", issue = "#326" }
-no-else-return = { status = "planned", issue = "#296" }
+no-else-return = "implemented"
 no-empty-character-class = "implemented"
 no-empty-function = { status = "planned", issue = "#296" }
 no-empty-pattern = "implemented"
@@ -63,7 +63,7 @@ no-eval = "implemented"
 no-ex-assign = { status = "planned", issue = "#326" }
 no-extend-native = "implemented"
 no-extra-bind = { status = "planned", issue = "#326" }
-no-extra-boolean-cast = { status = "planned", issue = "#296" }
+no-extra-boolean-cast = "implemented"
 no-extra-label = { status = "planned", issue = "#326" }
 no-func-assign = "implemented"
 no-global-assign = { status = "planned", issue = "#326" }
@@ -138,9 +138,9 @@ no-useless-call = "implemented"
 no-useless-catch = "implemented"
 no-useless-computed-key = { status = "planned", issue = "#296" }
 no-useless-concat = { status = "planned", issue = "#296" }
-no-useless-constructor = { status = "planned", issue = "#296" }
+no-useless-constructor = "implemented"
 no-useless-escape = { status = "planned", issue = "#326" }
-no-useless-rename = { status = "planned", issue = "#296" }
+no-useless-rename = "implemented"
 no-useless-return = { status = "planned", issue = "#296" }
 no-var = { status = "planned", issue = "#296" }
 no-void = { status = "planned", issue = "#296" }
