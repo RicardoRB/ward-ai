@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Checks the cross-module pairs of the graph against the target dependencies the fixtures declare.
@@ -70,6 +71,29 @@ class SwiftResolutionReferenceTest {
   @Test
   void classicXcodeProjectEdgesCollapseToItsProjectTargetDependencies() throws IOException {
     assertModulePairsMatchDeclared("swift-xcode-classic");
+  }
+
+  @Test
+  void aSeededFileInAClassicTargetFolderResolvesToItsTargetsTypes(@TempDir final Path root)
+      throws IOException {
+    copyTree(FIXTURES.resolve("swift-matrix/basic-app"), root);
+    copyTree(Path.of("src/test/resources/swift-matrix/violations/basic-app"), root);
+    final SwiftProjectLayout layout = SwiftLayouts.read(root);
+    final DependencySnapshot snapshot = analyze(root, layout);
+
+    assertThat(layout.moduleOf("ShopKit/Domain/UsesRecord.swift")).isEqualTo("ShopKit");
+    assertThat(snapshot.graph().dependenciesOf("ShopKit/Domain/UsesRecord.swift"))
+        .contains("ShopKit/Infrastructure/InMemoryCartRepository.swift");
+  }
+
+  private static void copyTree(final Path source, final Path target) throws IOException {
+    try (Stream<Path> files = Files.walk(source)) {
+      for (final Path file : files.filter(Files::isRegularFile).toList()) {
+        final Path destination = target.resolve(source.relativize(file).toString());
+        Files.createDirectories(destination.getParent());
+        Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      }
+    }
   }
 
   private static void assertModulePairsMatchDeclared(final String fixture) throws IOException {

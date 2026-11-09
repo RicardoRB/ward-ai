@@ -59,6 +59,7 @@ class SwiftLayoutsTest {
     final SwiftProjectLayout layout = SwiftLayouts.read(FIXTURES.resolve("swift-xcode-classic"));
 
     assertThat(layout.moduleOf("Core/Cart.swift")).isEqualTo("ShopKit");
+    assertThat(layout.moduleOf("Core/Unlisted.swift")).isEqualTo("ShopKit");
     assertThat(layout.moduleOf("ShopTests/ShopTests.swift")).isEqualTo("ShopTests");
     assertThat(layout.targets().get(2).dependencies()).containsExactly("ShopKit");
   }
