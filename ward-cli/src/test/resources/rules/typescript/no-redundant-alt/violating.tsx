@@ -1,0 +1,14 @@
+const a1 = <img alt="image of cat" />;
+const a2 = <img alt={"photo"} />;
+const a3 = <img alt={`picture`} />;
+const a4 = <img alt="PHOTO" />;
+const a5 = <img alt="imagery" />;
+const a6 = <img aria-hidden="true" alt="image" />;
+const a7 = <img aria-hidden={false} alt="image" />;
+const a8 = <img aria-hidden="false" alt="image" />;
+const a9 = <img alt={x} />;
+const a10 = <img alt=".image." />;
+const a11 = <img alt="a image" />;
+const a12 = <div alt="image" />;
+const a13 = <img aria-hidden={true} alt="image" />;
+const a14 = <img aria-hidden={x} alt="image" />;
