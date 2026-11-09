@@ -86,3 +86,9 @@ reason = "parse failures are reported by Ward's analysis itself"
 rules = [
   "syntax-error",
 ]
+
+[[group]]
+reason = "needs the names exported by the imported module; avoid-star-import (F403) already reports every wildcard import"
+rules = [
+  "unused-wildcard-import",
+]

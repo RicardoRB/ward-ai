@@ -269,7 +269,6 @@ unsupported-assignment-operation = "implemented"
 unsupported-delete-operation = "implemented"
 unsupported-membership-test = "implemented"
 unused-argument = "implemented"
-unused-wildcard-import = { status = "planned", issue = "#336" }
 use-implicit-booleaness-not-comparison = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-string = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "#297" }

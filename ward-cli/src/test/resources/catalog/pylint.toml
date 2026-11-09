@@ -1615,12 +1615,6 @@ category = "pylint"
 pylint = ["unused-argument"]
 
 [[rule]]
-name = "unused-wildcard-import"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unused-wildcard-import"]
-
-[[rule]]
 name = "use-implicit-booleaness-not-comparison"
 presets = ["standard", "strict"]
 category = "linter"
