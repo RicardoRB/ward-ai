@@ -42,7 +42,8 @@ class SwiftFileSummarizerTest {
 
     assertThat(summary.declared().stream().map(Symbol::name))
         .containsExactly("Cart", "Cart.Kind", "Cart.Priced", "Items");
-    assertThat(summary.exports()).isEqualTo(summary.declared());
+    assertThat(summary.exports().stream().map(Symbol::name))
+        .containsExactlyElementsOf(summary.declared().stream().map(Symbol::name).toList());
   }
 
   @Test

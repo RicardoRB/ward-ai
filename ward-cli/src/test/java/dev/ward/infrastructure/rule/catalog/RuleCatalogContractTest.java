@@ -28,8 +28,9 @@ class RuleCatalogContractTest {
   // (2026-11-07).
   private static final int FIRST_SPLIT_ISSUE = 446;
   private static final int LAST_SPLIT_ISSUE = 453;
-  // Engine and grammar issues split out of roadmap #455 (TypeScript and JavaScript rules).
-  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466);
+  // Issues split out of roadmaps #455 (TypeScript and JavaScript engine and grammar) and #457
+  // (Swift module-aware dead code).
+  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 467);
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
