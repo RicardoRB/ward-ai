@@ -24,10 +24,9 @@ import java.util.regex.Pattern;
 /**
  * Reports each Python import whose bound name the file never uses, like pyflakes {@code F401}. The
  * check is file-local. A name listed in {@code __all__} and a redundant alias such as {@code import
- * x as x} are re-exports, so they are not reported; {@code __future__} imports are left alone.
- *
- * <p>shortcut: only the names of a literal {@code __all__} statement are read, so a name used by a
- * string annotation is reported; upgrade by reading string annotations as uses.
+ * x as x} are re-exports, so they are not reported; a name that a quoted annotation spells, as in
+ * {@code def f(a: "Y")} or {@code x: Optional["Y"]}, is a use, and {@code __future__} imports are
+ * left alone.
  */
 public final class UnusedImportBindingCheck implements RuleCheck {
 
@@ -37,6 +36,12 @@ public final class UnusedImportBindingCheck implements RuleCheck {
   private static final String IMPORT_AS_NAME = "import_as_name";
   private static final String DOTTED_AS_NAME = "dotted_as_name";
   private static final String AS = "as";
+  private static final int ALIAS_PARTS = 3;
+  private static final String ASSIGN = "=";
+  private static final String ARROW = "->";
+  private static final String TFPDEF = "tfpdef";
+  private static final String ANNASSIGN = "annassign";
+  private static final String FUNCDEF = "funcdef";
   private static final Pattern WORD = Pattern.compile("[A-Za-z_]\\w*");
   private static final String NAME = "{value}";
 
@@ -91,7 +96,10 @@ public final class UnusedImportBindingCheck implements RuleCheck {
     return binding.origin().map(ImportOrigin::specifier).filter(FUTURE::equals).isPresent();
   }
 
-  /** The names that the file re-exports: those of {@code __all__} and the redundant aliases. */
+  /**
+   * The names that the file spells outside the code's own uses: those of {@code __all__}, the
+   * redundant aliases, and the words of quoted annotations.
+   */
   private static Set<String> reexported(final SyntaxNode root) {
     final Set<String> names = new HashSet<>();
     for (final SyntaxNode node : SyntaxWalk.descendants(root)) {
@@ -101,8 +109,43 @@ public final class UnusedImportBindingCheck implements RuleCheck {
       if (isRedundantAlias(node)) {
         names.add(SyntaxWalk.text(node.children().get(2)));
       }
+      addAnnotationWords(node, names);
     }
     return names;
+  }
+
+  /**
+   * Adds the words of the quoted parts of an annotation: a parameter's or a variable's annotation
+   * up to its value, and a function's return annotation after {@code ->}.
+   */
+  private static void addAnnotationWords(final SyntaxNode node, final Set<String> words) {
+    if (TFPDEF.equals(node.kind())) {
+      addWordsInStrings(node, words);
+    } else if (ANNASSIGN.equals(node.kind())) {
+      addVariableWords(node, words);
+    } else if (FUNCDEF.equals(node.kind())) {
+      addReturnWords(node, words);
+    }
+  }
+
+  /** The words of a variable annotation: its parts before the value. */
+  private static void addVariableWords(final SyntaxNode annotation, final Set<String> words) {
+    for (final SyntaxNode part : annotation.children()) {
+      if (ASSIGN.equals(SyntaxWalk.text(part))) {
+        return;
+      }
+      addWordsInStrings(part, words);
+    }
+  }
+
+  /** The words of a function's return annotation, the part after {@code ->}. */
+  private static void addReturnWords(final SyntaxNode function, final Set<String> words) {
+    final List<SyntaxNode> parts = function.children();
+    for (int index = 0; index < parts.size() - 1; index++) {
+      if (ARROW.equals(SyntaxWalk.text(parts.get(index)))) {
+        addWordsInStrings(parts.get(index + 1), words);
+      }
+    }
   }
 
   /** Whether {@code node} is {@code x as x}, a module or member imported under its own name. */
@@ -111,7 +154,7 @@ public final class UnusedImportBindingCheck implements RuleCheck {
       return false;
     }
     final List<SyntaxNode> parts = node.children();
-    return parts.size() == 3
+    return parts.size() == ALIAS_PARTS
         && AS.equals(SyntaxWalk.text(parts.get(1)))
         && SyntaxWalk.text(parts.get(0)).equals(SyntaxWalk.text(parts.get(2)));
   }
