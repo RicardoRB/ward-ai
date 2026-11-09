@@ -433,3 +433,27 @@ body = '''
 check = "node-aria-values"
 message = "an ARIA attribute must have a value its type allows"
 '''
+
+[[rules]]
+id = "ward:javascript/no-noninteractive-tabindex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-tabindex"
+message = "a non-interactive element must not take a tabIndex; remove it or give the element an interactive role"
+'''
+
+[[rules]]
+id = "ward:typescript/no-noninteractive-tabindex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-noninteractive-tabindex"
+message = "a non-interactive element must not take a tabIndex; remove it or give the element an interactive role"
+'''

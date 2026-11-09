@@ -94,7 +94,7 @@ no-nodejs-modules = { status = "planned", issue = "#329" }
 no-non-scalable-viewport = { status = "planned", issue = "#329" }
 no-noninteractive-element-interactions = { status = "planned", issue = "#329" }
 no-noninteractive-element-to-interactive-role = { status = "planned", issue = "#329" }
-no-noninteractive-tabindex = { status = "planned", issue = "#329" }
+no-noninteractive-tabindex = "implemented"
 no-obsolete-tags = "implemented"
 no-parameter-assign = { status = "planned", issue = "#296" }
 no-parameters-only-used-in-recursion = { status = "planned", issue = "#329" }
