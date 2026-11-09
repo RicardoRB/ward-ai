@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.process.CommandExecutor;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -45,9 +46,17 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
       Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN);
   private static final Pattern RESOURCE_FOLDER = Pattern.compile("(^|/)src/[^/]+/resources/");
 
-  /** Creates the stateless reader that Dagger injects. */
+  private final CommandExecutor executor;
+
+  /**
+   * Creates the reader that Dagger injects. The executor asks Git which manifests are ignored.
+   *
+   * @param executor the command executor
+   */
   @Inject
-  public FileSystemSourceUnits() {}
+  public FileSystemSourceUnits(final CommandExecutor executor) {
+    this.executor = executor;
+  }
 
   @Override
   public List<SourceUnit> read(final Path root, final Set<AnalysisLanguage> languages) {
@@ -66,7 +75,7 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
 
   @Override
   public ProjectFiles manifests(final Path root, final Set<String> names) {
-    return FileSystemManifests.read(root, names);
+    return FileSystemManifests.read(root, names, executor);
   }
 
   /** Adds each source file in a wanted language to the units. */

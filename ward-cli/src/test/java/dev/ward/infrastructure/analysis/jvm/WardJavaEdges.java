@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.nio.file.Path;
 import java.util.List;
@@ -34,7 +35,8 @@ final class WardJavaEdges {
   static Set<String> of(
       final Path project, final Set<AnalysisLanguage> languages, final Optional<String> classpath) {
     final List<SourceUnit> units =
-        new FileSystemSourceUnits().read(project, languages).stream().toList();
+        new FileSystemSourceUnits(new ProcessCommandExecutor())
+            .read(project, languages).stream().toList();
     final List<FrontendSupport> frontends =
         languages.stream()
             .map(

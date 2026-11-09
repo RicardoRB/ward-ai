@@ -1,12 +1,11 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.Reference;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeModuleResolver;
 import dev.ward.analysis.domain.node.NodeModuleScan;
 import dev.ward.analysis.domain.node.NodeProjectLayout;
-import dev.ward.analysis.domain.node.NodeManifest;
 import dev.ward.analysis.domain.node.NodeReference;
-import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
