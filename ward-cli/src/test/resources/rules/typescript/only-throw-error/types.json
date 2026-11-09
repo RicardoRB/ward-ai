@@ -1,0 +1,18 @@
+{
+  "1:7-1:12": {
+    "type": {
+      "name": "\"oops\"",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  },
+  "31:7-31:20": {
+    "type": {
+      "name": "Error",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  }
+}

@@ -1,0 +1,196 @@
+# typescript-eslint rules of the syntax-only kind for TypeScript: each runs on the shared syntax tree and needs no type facts.
+
+[[rules]]
+id = "ward:typescript/no-explicit-any"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["predefinedType"]
+text = '^any$'
+message = "unexpected any; specify a more precise type"
+'''
+
+[[rules]]
+id = "ward:typescript/no-wrapper-object-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeReference"]
+text = '^(Boolean|Number|String|Symbol|BigInt|Object)(<.*)?$'
+message = "do not use a wrapper object type; use the primitive type instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-function-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeReference"]
+text = '^Function(<.*)?$'
+message = "do not use the Function type; declare the signature of the function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unnecessary-type-constraint"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeParameter"]
+text = '^[A-Za-z_$][A-Za-z0-9_$]*extends(any|unknown)$'
+message = "constraining a type parameter to any or unknown is unnecessary"
+'''
+
+[[rules]]
+id = "ward:typescript/no-extra-non-null-assertion"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-extra-non-null-assertion"
+message = "do not use a non-null assertion on an expression that is already asserted"
+'''
+
+[[rules]]
+id = "ward:typescript/no-non-null-asserted-optional-chain"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-non-null-asserted-optional-chain"
+message = "an optional chain is already nullable; remove the non-null assertion"
+'''
+
+[[rules]]
+id = "ward:typescript/no-this-alias"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-destructuring = { type = "boolean" }
+options.allowed-names = { type = "string-list" }
+body = '''
+check = "ts-no-this-alias"
+allow-destructuring = true
+allowed-names = []
+message = "do not alias this; use an arrow function or a bound method instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-empty-export"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-useless-empty-export"
+message = "empty export does nothing in a module that has other exports or imports; remove it"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-as-const"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-prefer-as-const"
+message = "expected a const assertion instead of a literal type"
+'''
+
+[[rules]]
+id = "ward:typescript/no-duplicate-enum-values"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-duplicate-enum-values"
+message = "duplicate enum member value {value}"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-declaration-merging"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-declaration-merging"
+message = "unsafe declaration merging between a class and an interface"
+'''
+
+[[rules]]
+id = "ward:typescript/no-duplicate-type-constituents"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.ignore-unions = { type = "boolean" }
+options.ignore-intersections = { type = "boolean" }
+body = '''
+check = "ts-no-duplicate-type-constituents"
+ignore-unions = false
+ignore-intersections = false
+message = "{type} type constituent is duplicated with {previous}"
+'''
+
+[[rules]]
+id = "ward:typescript/no-misused-new"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-misused-new"
+class-message = "class cannot have a method named new that returns the class"
+interface-message = "interfaces cannot be constructed, only classes"
+'''
+
+[[rules]]
+id = "ward:typescript/ban-ts-comment"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.minimum-description-length = { type = "integer", min = 0 }
+options.ts-check = { type = "string" }
+options.ts-expect-error = { type = "string" }
+options.ts-ignore = { type = "string" }
+options.ts-nocheck = { type = "string" }
+body = '''
+check = "ts-ban-ts-comment"
+minimum-description-length = 3
+ts-check = "false"
+ts-expect-error = "allow-with-description"
+ts-ignore = "true"
+ts-nocheck = "true"
+message = "do not use @ts-{directive}, or add a description of at least {minimum} characters"
+'''

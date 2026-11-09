@@ -1,0 +1,18 @@
+{
+  "3:9-3:9": {
+    "type": {
+      "name": "number",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:9-32:9": {
+    "type": {
+      "name": "Promise<number>",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  }
+}

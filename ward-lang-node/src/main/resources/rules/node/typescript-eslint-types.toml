@@ -1,0 +1,185 @@
+# typescript-eslint rules that read the native type facts of TypeScript: the rule runs only when the resolver answers, and reports nothing for an unknown type.
+
+[[rules]]
+id = "ward:typescript/await-thenable"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-await-thenable"
+message = "await has no effect on a value that is not a promise"
+'''
+
+[[rules]]
+id = "ward:typescript/no-for-in-array"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-for-in-array"
+message = "for-in loop over an array visits index strings; use for-of or an index loop"
+'''
+
+[[rules]]
+id = "ward:typescript/no-array-delete"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-array-delete"
+message = "delete leaves a hole in the array; use splice to remove the element"
+'''
+
+[[rules]]
+id = "ward:typescript/no-floating-promises"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.ignore-void = { type = "boolean" }
+options.ignore-iife = { type = "boolean" }
+body = '''
+check = "ts-no-floating-promises"
+ignore-void = true
+ignore-iife = false
+message = "promise is neither awaited, returned, nor handled with catch"
+'''
+
+[[rules]]
+id = "ward:typescript/no-misused-promises"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-misused-promises"
+message = "promise used as a condition is always truthy; await it or compare its result"
+'''
+
+[[rules]]
+id = "ward:typescript/only-throw-error"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-only-throw-error"
+message = "throw an Error object, not a value of this type"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-assignment"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-assignment"
+message = "unsafe assignment of an any value to a typed variable"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-call"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-call"
+message = "unsafe call of an any value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-member-access"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-member-access"
+message = "unsafe member access on an any value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-return"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-return"
+message = "unsafe return of an any value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-argument"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-argument"
+message = "unsafe argument of type any"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-unary-minus"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unsafe-unary-minus"
+message = "unsafe unary minus on an any value"
+'''
+
+[[rules]]
+id = "ward:typescript/restrict-plus-operands"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-restrict-plus-operands"
+message = "operands of + must be primitive values of compatible types"
+'''
+
+[[rules]]
+id = "ward:typescript/restrict-template-expressions"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-restrict-template-expressions"
+message = "template placeholder must not be an object or an array"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unnecessary-type-assertion"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "ts-no-unnecessary-type-assertion"
+message = "this assertion does not change the type of the expression"
+'''

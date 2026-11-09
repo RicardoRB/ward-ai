@@ -1,8 +1,8 @@
 # Status of the typescript-eslint rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 adjacent-overload-signatures = { status = "planned", issue = "#296" }
-await-thenable = { status = "planned", issue = "#327" }
-ban-ts-comment = { status = "planned", issue = "#327" }
+await-thenable = "implemented"
+ban-ts-comment = "implemented"
 ban-tslint-comment = { status = "planned", issue = "#296" }
 class-literal-property-style = { status = "planned", issue = "#296" }
 consistent-generic-constructors = { status = "planned", issue = "#296" }
@@ -17,66 +17,66 @@ explicit-module-boundary-types = { status = "planned", issue = "#296" }
 max-params = { status = "planned", issue = "#296" }
 method-signature-style = { status = "planned", issue = "#296" }
 naming-convention = { status = "planned", issue = "#296" }
-no-array-delete = { status = "planned", issue = "#327" }
+no-array-delete = "implemented"
 no-base-to-string = { status = "planned", issue = "#327" }
 no-confusing-non-null-assertion = { status = "planned", issue = "#296" }
 no-confusing-void-expression = { status = "planned", issue = "#327" }
 no-deprecated = { status = "planned", issue = "#327" }
-no-duplicate-enum-values = { status = "planned", issue = "#327" }
-no-duplicate-type-constituents = { status = "planned", issue = "#327" }
+no-duplicate-enum-values = "implemented"
+no-duplicate-type-constituents = "implemented"
 no-dynamic-delete = { status = "planned", issue = "#327" }
 no-empty-object-type = "implemented"
-no-explicit-any = { status = "planned", issue = "#327" }
-no-extra-non-null-assertion = { status = "planned", issue = "#327" }
+no-explicit-any = "implemented"
+no-extra-non-null-assertion = "implemented"
 no-extraneous-class = { status = "planned", issue = "#296" }
-no-floating-promises = { status = "planned", issue = "#327" }
-no-for-in-array = { status = "planned", issue = "#327" }
+no-floating-promises = "implemented"
+no-for-in-array = "implemented"
 no-generated-empty-object-type = { status = "planned", issue = "#327" }
 no-import-type-side-effects = { status = "planned", issue = "#327" }
 no-inferrable-types = { status = "planned", issue = "#296" }
 no-invalid-void-type = { status = "planned", issue = "#327" }
 no-magic-numbers = { status = "planned", issue = "#296" }
 no-meaningless-void-operator = { status = "planned", issue = "#327" }
-no-misused-new = { status = "planned", issue = "#327" }
-no-misused-promises = { status = "planned", issue = "#327" }
+no-misused-new = "implemented"
+no-misused-promises = "implemented"
 no-misused-spread = { status = "planned", issue = "#327" }
 no-mixed-enums = { status = "planned", issue = "#327" }
 no-namespace = "implemented"
 no-non-null-asserted-nullish-coalescing = { status = "planned", issue = "#327" }
-no-non-null-asserted-optional-chain = { status = "planned", issue = "#327" }
+no-non-null-asserted-optional-chain = "implemented"
 no-non-null-assertion = { status = "planned", issue = "#296" }
 no-redundant-type-constituents = { status = "planned", issue = "#327" }
 no-require-imports = "implemented"
 no-restricted-types = { status = "planned", issue = "#296" }
-no-this-alias = { status = "planned", issue = "#327" }
+no-this-alias = "implemented"
 no-unnecessary-boolean-literal-compare = { status = "planned", issue = "#327" }
 no-unnecessary-condition = { status = "planned", issue = "#327" }
 no-unnecessary-parameter-property-assignment = { status = "planned", issue = "#327" }
 no-unnecessary-qualifier = { status = "planned", issue = "#327" }
 no-unnecessary-template-expression = { status = "planned", issue = "#327" }
 no-unnecessary-type-arguments = { status = "planned", issue = "#327" }
-no-unnecessary-type-assertion = { status = "planned", issue = "#327" }
-no-unnecessary-type-constraint = { status = "planned", issue = "#327" }
+no-unnecessary-type-assertion = "implemented"
+no-unnecessary-type-constraint = "implemented"
 no-unnecessary-type-conversion = { status = "planned", issue = "#327" }
 no-unnecessary-type-parameters = { status = "planned", issue = "#327" }
-no-unsafe-argument = { status = "planned", issue = "#327" }
-no-unsafe-assignment = { status = "planned", issue = "#327" }
-no-unsafe-call = { status = "planned", issue = "#327" }
-no-unsafe-declaration-merging = { status = "planned", issue = "#327" }
+no-unsafe-argument = "implemented"
+no-unsafe-assignment = "implemented"
+no-unsafe-call = "implemented"
+no-unsafe-declaration-merging = "implemented"
 no-unsafe-enum-assignment = { status = "planned", issue = "#327" }
 no-unsafe-enum-comparison = { status = "planned", issue = "#327" }
-no-unsafe-function-type = { status = "planned", issue = "#327" }
-no-unsafe-member-access = { status = "planned", issue = "#327" }
-no-unsafe-return = { status = "planned", issue = "#327" }
+no-unsafe-function-type = "implemented"
+no-unsafe-member-access = "implemented"
+no-unsafe-return = "implemented"
 no-unsafe-type-assertion = { status = "planned", issue = "#327" }
-no-unsafe-unary-minus = { status = "planned", issue = "#327" }
+no-unsafe-unary-minus = "implemented"
 no-useless-default-assignment = { status = "planned", issue = "#327" }
-no-useless-empty-export = { status = "planned", issue = "#327" }
-no-wrapper-object-types = { status = "planned", issue = "#327" }
+no-useless-empty-export = "implemented"
+no-wrapper-object-types = "implemented"
 non-nullable-type-assertion-style = { status = "planned", issue = "#327" }
-only-throw-error = { status = "planned", issue = "#327" }
+only-throw-error = "implemented"
 parameter-properties = { status = "planned", issue = "#296" }
-prefer-as-const = { status = "planned", issue = "#327" }
+prefer-as-const = "implemented"
 prefer-enum-initializers = { status = "planned", issue = "#327" }
 prefer-find = { status = "planned", issue = "#327" }
 prefer-for-of = { status = "planned", issue = "#296" }
@@ -95,8 +95,8 @@ prefer-string-starts-ends-with = { status = "planned", issue = "#327" }
 promise-function-async = { status = "planned", issue = "#327" }
 related-getter-setter-pairs = { status = "planned", issue = "#327" }
 require-array-sort-compare = { status = "planned", issue = "#327" }
-restrict-plus-operands = { status = "planned", issue = "#327" }
-restrict-template-expressions = { status = "planned", issue = "#327" }
+restrict-plus-operands = "implemented"
+restrict-template-expressions = "implemented"
 return-await = { status = "planned", issue = "#327" }
 strict-boolean-expressions = { status = "planned", issue = "#327" }
 strict-void-return = { status = "planned", issue = "#327" }

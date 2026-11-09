@@ -1,0 +1,2 @@
+interface Bar {}
+class Baz {}

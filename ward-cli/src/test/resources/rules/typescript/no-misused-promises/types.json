@@ -1,0 +1,18 @@
+{
+  "4:5-4:8": {
+    "type": {
+      "name": "Promise<boolean>",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:5-32:8": {
+    "type": {
+      "name": "boolean",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  }
+}

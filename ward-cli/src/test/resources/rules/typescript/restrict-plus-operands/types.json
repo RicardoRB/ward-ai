@@ -1,0 +1,34 @@
+{
+  "2:11-2:13": {
+    "type": {
+      "name": "{ a: number; }",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  },
+  "2:17-2:17": {
+    "type": {
+      "name": "1",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:11-32:13": {
+    "type": {
+      "name": "number",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:17-32:17": {
+    "type": {
+      "name": "1",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  }
+}

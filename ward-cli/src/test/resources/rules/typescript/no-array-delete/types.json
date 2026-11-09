@@ -1,0 +1,18 @@
+{
+  "2:8-2:11": {
+    "type": {
+      "name": "number",
+      "primitive": true,
+      "array": 1,
+      "args": []
+    }
+  },
+  "32:8-32:8": {
+    "type": {
+      "name": "{ a: number; }",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  }
+}

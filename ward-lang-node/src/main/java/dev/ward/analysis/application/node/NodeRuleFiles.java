@@ -20,7 +20,9 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/problem.toml",
           "rules/node/regexp.toml",
           "rules/node/sizes.toml",
-          "rules/node/suggestion.toml");
+          "rules/node/suggestion.toml",
+          "rules/node/typescript-eslint-syntax.toml",
+          "rules/node/typescript-eslint-types.toml");
 
   @Override
   public List<String> ruleFiles() {
