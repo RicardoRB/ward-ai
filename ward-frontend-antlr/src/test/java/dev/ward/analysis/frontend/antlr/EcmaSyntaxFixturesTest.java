@@ -54,6 +54,9 @@ class EcmaSyntaxFixturesTest {
           Map.entry("optional-chain-non-null.ts", List.of("'?.'", "'!'")),
           Map.entry("optional-call.ts", List.of("arguments")),
           Map.entry("private-names.ts", List.of("privateIdentifier")),
+          Map.entry(
+              "static-accessors.ts", List.of("getAccessor", "setAccessor", "propertyMemberBase")),
+          Map.entry("template-escapes.ts", List.of("TemplateStringEscapeAtom")),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),
@@ -73,6 +76,8 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-meta.js", List.of("importMetaExpression")),
           Map.entry("regex-v.js", List.of("RegularExpressionLiteral")),
           Map.entry("private-names.js", List.of("privateIdentifier")),
+          Map.entry("static-accessors.js", List.of("getter", "setter")),
+          Map.entry("template-escapes.js", List.of("TemplateStringEscapeAtom")),
           Map.entry("using.js", List.of("usingDeclaration")));
 
   static List<Path> typeScriptFixtures() throws IOException {
