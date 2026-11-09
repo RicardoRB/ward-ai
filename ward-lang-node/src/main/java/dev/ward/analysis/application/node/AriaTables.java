@@ -14,6 +14,7 @@ final class AriaTables {
   private static final String ROLES = "/aria/aria-roles.tsv";
   private static final String IMPLICIT = "/aria/aria-implicit-roles.tsv";
   private static final String ATTRIBUTES = "/aria/aria-attributes.tsv";
+  private static final String HANDLERS = "/aria/aria-event-handlers.tsv";
 
   private AriaTables() {}
 
@@ -22,7 +23,8 @@ final class AriaTables {
     return new AriaRoleTable(
         AriaTableParser.parseRoles(read(ROLES)),
         AriaTableParser.parseImplicit(read(IMPLICIT)),
-        AriaTableParser.parseAttributes(read(ATTRIBUTES)));
+        AriaTableParser.parseAttributes(read(ATTRIBUTES)),
+        AriaTableParser.parseHandlers(read(HANDLERS)));
   }
 
   private static List<String> read(final String path) {

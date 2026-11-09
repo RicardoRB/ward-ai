@@ -1,0 +1,14 @@
+const c = <p onKeyDown={go} />;
+const d = <h1 onFocus={go} />;
+const e = <img onClick={go} />;
+const f = <img alt="x" onLoad={go} />;
+const g = <li onClick={go} />;
+const h = <div role="button" onClick={go} />;
+const j = <div aria-hidden="true" onClick={go} />;
+const m = <div onClick={undefined} />;
+const n = <Foo onClick={go} />;
+const p = <ul onClick={go} />;
+const q = <nav onClick={go} />;
+const s = <button onClick={go} />;
+const t = <input onClick={go} />;
+const v = <div onScroll={go} />;

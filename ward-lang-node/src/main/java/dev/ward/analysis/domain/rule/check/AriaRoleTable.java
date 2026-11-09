@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public final class AriaRoleTable {
   private final Map<String, AriaRoleRow> roles;
   private final List<ImplicitRow> implicit;
   private final Map<String, AriaAttributeRow> attributes;
+  private final Map<String, Set<String>> handlers;
 
   /**
    * Creates the table from its parsed rows.
@@ -24,14 +26,40 @@ public final class AriaRoleTable {
    * @param roles the roles by name
    * @param implicit the implicit element-role rows, in order
    * @param attributes the attributes by name
+   * @param handlers the event handlers of each group
    */
   public AriaRoleTable(
       final Map<String, AriaRoleRow> roles,
       final List<ImplicitRow> implicit,
-      final Map<String, AriaAttributeRow> attributes) {
+      final Map<String, AriaAttributeRow> attributes,
+      final Map<String, Set<String>> handlers) {
     this.roles = Map.copyOf(roles);
     this.implicit = List.copyOf(implicit);
     this.attributes = Map.copyOf(attributes);
+    this.handlers = Map.copyOf(handlers);
+  }
+
+  /** Whether the attribute is an event handler of one of the groups, as Biome's matches does. */
+  public boolean isHandler(final List<String> groups, final String attribute) {
+    final String lower = attribute.toLowerCase(Locale.ROOT);
+    final String event = lower.startsWith("on") ? lower.substring(2) : lower;
+    return groups.stream()
+        .anyMatch(group -> handlers.getOrDefault(group, Set.of()).contains(event));
+  }
+
+  /** Whether the first concrete token names a non-interactive role. */
+  public boolean nonInteractiveRole(final List<String> tokens) {
+    return tokens.stream()
+        .filter(this::isConcrete)
+        .findFirst()
+        .flatMap(this::role)
+        .map(AriaRoleRow::nonInteractive)
+        .orElse(false);
+  }
+
+  /** The first token that names a concrete role, as Biome's from_roles reads it. */
+  public Optional<String> firstConcrete(final List<String> tokens) {
+    return tokens.stream().filter(this::isConcrete).findFirst();
   }
 
   /** The attribute row by name, if the table has the attribute. */

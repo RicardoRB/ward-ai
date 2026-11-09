@@ -69,7 +69,7 @@ no-implicit-any-let = "not-applicable"
 no-implicit-boolean = { status = "planned", issue = "#296" }
 no-import-cycles = { status = "planned", issue = "#329" }
 no-inline-styles = { status = "planned", issue = "#329" }
-no-interactive-element-to-noninteractive-role = { status = "planned", issue = "#329" }
+no-interactive-element-to-noninteractive-role = "implemented"
 no-invalid-builtin-instantiation = "implemented"
 no-invalid-file-input-accept = { status = "planned", issue = "#329" }
 no-js-restricted-properties = { status = "planned", issue = "#329" }
@@ -92,7 +92,7 @@ no-nested-promises = { status = "planned", issue = "#329" }
 no-next-async-client-component = { status = "planned", issue = "#329" }
 no-nodejs-modules = { status = "planned", issue = "#329" }
 no-non-scalable-viewport = { status = "planned", issue = "#329" }
-no-noninteractive-element-interactions = { status = "planned", issue = "#329" }
+no-noninteractive-element-interactions = "implemented"
 no-noninteractive-element-to-interactive-role = "implemented"
 no-noninteractive-tabindex = "implemented"
 no-obsolete-tags = "implemented"
@@ -135,7 +135,7 @@ no-shadow = { status = "planned", issue = "#329" }
 no-shouty-constants = { status = "planned", issue = "#296" }
 no-skipped-tests = "implemented"
 no-solid-destructured-props = { status = "planned", issue = "#329" }
-no-static-element-interactions = { status = "planned", issue = "#329" }
+no-static-element-interactions = "implemented"
 no-static-only-class = "implemented"
 no-string-case-mismatch = "implemented"
 no-substr = "implemented"

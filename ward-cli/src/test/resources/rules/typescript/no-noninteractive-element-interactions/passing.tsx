@@ -1,0 +1,10 @@
+const h = <div role="button" onClick={go} />;
+const i = <div role="presentation" onClick={go} />;
+const j = <div aria-hidden="true" onClick={go} />;
+const l = <div contentEditable="true" onClick={go} />;
+const m = <div onClick={undefined} />;
+const n = <Foo onClick={go} />;
+const r = <a onClick={go} />;
+const s = <button onClick={go} />;
+const t = <input onClick={go} />;
+const v = <div onScroll={go} />;
