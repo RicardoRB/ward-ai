@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Reports an object converted to a string, in a template placeholder, by {@code String(value)} or
@@ -80,17 +81,21 @@ public final class BaseToStringCheck extends TypedCheck {
         && TO_STRING.equals(SyntaxText.of(parts.get(2)));
   }
 
-  /** Returns the first argument expression of an argument list, if any. */
+  /**
+   * Returns the first argument expression of an argument list, if any. TypeScript wraps the
+   * arguments in an {@code argumentList}; JavaScript lists each {@code argument} directly.
+   */
   private static Optional<SyntaxNode> firstArgument(final SyntaxNode arguments) {
-    for (final SyntaxNode list : SyntaxText.childrenOf(arguments, ARGUMENT_LIST)) {
-      for (final SyntaxNode argument : SyntaxText.childrenOf(list, ARGUMENT)) {
-        final List<SyntaxNode> values = SyntaxText.childrenOf(argument, EXPRESSION);
-        if (!values.isEmpty()) {
-          return Optional.of(values.get(0));
-        }
-      }
-    }
-    return Optional.empty();
+    final List<SyntaxNode> direct = SyntaxText.childrenOf(arguments, ARGUMENT);
+    final List<SyntaxNode> wrapped =
+        SyntaxText.childrenOf(arguments, ARGUMENT_LIST).stream()
+            .flatMap(list -> SyntaxText.childrenOf(list, ARGUMENT).stream())
+            .toList();
+    return Stream.concat(direct.stream(), wrapped.stream())
+        .map(argument -> SyntaxText.childrenOf(argument, EXPRESSION))
+        .filter(values -> !values.isEmpty())
+        .map(values -> values.get(0))
+        .findFirst();
   }
 
   private void reportIfBase(

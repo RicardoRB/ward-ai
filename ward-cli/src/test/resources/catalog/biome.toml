@@ -881,8 +881,6 @@ biome = ["noUnnecessaryConditions"]
 
 [[rule]]
 name = "no-unreachable-super"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnreachableSuper"]
 
 [[rule]]
@@ -899,8 +897,6 @@ biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
 name = "no-unused-function-parameters"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnusedFunctionParameters"]
 
 [[rule]]

@@ -23,8 +23,9 @@ import org.tomlj.TomlParseResult;
  * rules/<language>/<name>/} holds {@code violating.<ext>}, {@code expected.txt} (one {@code
  * line:column} per expected finding, in order) and {@code passing.<ext>}. A rule may add cases as
  * {@code violating-<case>.<ext>} with {@code expected-<case>.txt}, and {@code
- * passing-<case>.<ext>}. A {@code types.json} next to them holds type facts for a rule that needs
- * types; see {@link FixtureTypeFacts}.
+ * passing-<case>.<ext>}; a TypeScript case may use {@code .tsx} instead of {@code .ts}, which turns
+ * JSX on. A {@code types.json} next to them holds type facts for a rule that needs types; see
+ * {@link FixtureTypeFacts}.
  *
  * @param language the language of the rule
  * @param name the rule name, the last part of its id
@@ -143,8 +144,17 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
         && Files.isRegularFile(directory.resolve("expected.txt"));
   }
 
+  /**
+   * A TypeScript case with a {@code .tsx} file uses it, so that JSX is recognized; else {@code
+   * .ts}.
+   */
   private Path source(final String kind, final String caseName) {
-    return directory.resolve(kind + suffix(caseName) + "." + extension(language));
+    final String base = kind + suffix(caseName);
+    final Path tsx = directory.resolve(base + ".tsx");
+    if (language == AnalysisLanguage.TYPESCRIPT && Files.isRegularFile(tsx)) {
+      return tsx;
+    }
+    return directory.resolve(base + "." + extension(language));
   }
 
   private static String suffix(final String caseName) {
