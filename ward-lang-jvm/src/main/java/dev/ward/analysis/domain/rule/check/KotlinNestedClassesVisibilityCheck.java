@@ -56,7 +56,7 @@ public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
       for (final Binding binding : scope.bindings()) {
         if (binding.kind() == BindingKind.CLASS
             && explicitlyPublic(binding, unit.text())
-            && innerOfInternalTopLevel(binding, scope, scopes, unit.text())) {
+            && innerOfInternalTopLevel(scope, scopes, unit.text())) {
           found.add(new RuleMatch(binding.declaration(), message.replace(NAME, binding.name())));
         }
       }
@@ -73,7 +73,7 @@ public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
   }
 
   private static boolean innerOfInternalTopLevel(
-      final Binding binding, final Scope declaring, final UnitScopes scopes, final String text) {
+      final Scope declaring, final UnitScopes scopes, final String text) {
     if (declaring.kind() != ScopeKind.CLASS) {
       return false;
     }
