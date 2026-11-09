@@ -29,6 +29,10 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/semgrep-secrets.toml",
           "rules/node/semgrep-web.toml",
           "rules/node/sizes.toml",
+          "rules/node/style-coding.toml",
+          "rules/node/style-javadoc.toml",
+          "rules/node/style-linter.toml",
+          "rules/node/style-typescript.toml",
           "rules/node/suggestion.toml");
 
   @Override

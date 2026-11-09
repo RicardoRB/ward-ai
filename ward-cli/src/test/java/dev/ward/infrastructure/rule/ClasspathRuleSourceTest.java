@@ -15,7 +15,11 @@ class ClasspathRuleSourceTest {
 
   private static final List<String> SCOPE_CHECKS =
       List.of(
-          "reassigned-binding", "undefined-name", "unused-binding", "node-call-without-follow-up");
+          "node-call-without-follow-up",
+          "node-variable-distance",
+          "reassigned-binding",
+          "undefined-name",
+          "unused-binding");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {

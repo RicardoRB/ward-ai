@@ -11,7 +11,7 @@ no-meaningless-void-operator = { status = "planned", issue = "#329" }
 no-misused-promises = { status = "planned", issue = "#329" }
 no-namespace = "not-applicable"
 no-non-null-asserted-optional-chain = { status = "planned", issue = "#329" }
-no-non-null-assertion = { status = "planned", issue = "#296" }
+no-non-null-assertion = "not-applicable"
 no-restricted-types = { status = "planned", issue = "#296" }
 no-unnecessary-template-expression = { status = "planned", issue = "#329" }
 no-unsafe-declaration-merging = { status = "planned", issue = "#329" }
