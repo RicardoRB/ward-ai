@@ -70,7 +70,7 @@ class RepositoryWardRulesTest {
 
   private static final String SEEDED_CHECKSTYLE = "ward:java/magic-number";
   private static final String SEEDED_PMD = "ward:java/unnecessary-return";
-  private static final String SEEDED_SPOTBUGS = "ward:java/sr-not-checked";
+  private static final String SEEDED_SPOTBUGS = "ward:java/st-write-to-static-from-instance-method";
 
   @TempDir Path dir;
 

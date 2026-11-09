@@ -3,6 +3,8 @@ package seeded;
 /** One violation per upstream tool that the repository's gates used to report. */
 class Seeded {
 
+  private static int count;
+
   /** Checkstyle MagicNumber: a literal that is neither a constant nor an ignored number. */
   int magic() {
     return 42;
@@ -13,8 +15,8 @@ class Seeded {
     return;
   }
 
-  /** SpotBugs SR_NOT_CHECKED: the byte count that skip returns is ignored. */
-  void notChecked(java.io.InputStream in) throws java.io.IOException {
-    in.skip(5);
+  /** SpotBugs ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD: an instance method writes a static field. */
+  void store() {
+    count = 1;
   }
 }
