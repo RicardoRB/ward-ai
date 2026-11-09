@@ -334,7 +334,7 @@ ruff = ["B010"]
 [[rule]]
 name = "jump-statement-in-finally"
 ruff = ["B012"]
-pylint = ["lost-exception"]
+pylint = ["lost-exception", "return-in-finally"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"

@@ -71,11 +71,11 @@ rules = [
 [[group]]
 reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
 rules = [
-  "nonlocal-and-global",
+  "PLE0115",
 ]
 
 [[group]]
 reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
 rules = [
-  "nonlocal-and-global",
+  "PLE0115",
 ]

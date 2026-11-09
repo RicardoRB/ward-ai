@@ -22,7 +22,8 @@ public final class PythonCheckProvider implements CheckProvider {
                     PythonScopeChecks.checks(),
                     PythonOrderChecks.checks(),
                     PythonGeneralChecks.checks(),
-                    PythonStyleChecks.checks())));
+                    PythonStyleChecks.checks(),
+                    PythonShapeChecks.checks())));
     // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
     checks.put("unused-definition", toml -> root -> List.of());
     return Map.copyOf(checks);
