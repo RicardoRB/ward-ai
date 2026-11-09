@@ -1,0 +1,168 @@
+# Checkstyle concepts for Kotlin: coding, misc and regexp rows of the standard preset. The
+# Java-only parts of each concept have no Kotlin counterpart and are not listed here.
+
+[[rules]]
+id = "ward:kotlin/constructors-declaration-grouping"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-constructor-grouping"
+message = "secondary constructor is declared after other members; group the constructors together"
+'''
+
+[[rules]]
+id = "ward:kotlin/hidden-field"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-hidden-field"
+message = "'{value}' hides a property of the class"
+'''
+
+[[rules]]
+id = "ward:kotlin/illegal-token-text"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["LineStrText", "CharacterLiteral"]
+text = '[\t\x0B\f\x85\xA0  -     　]'
+message = "string or character literal holds a whitespace character that must be written as an escape"
+'''
+
+[[rules]]
+id = "ward:kotlin/magic-number"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-magic-number"
+message = "magic number {value}; name it with a constant"
+'''
+
+[[rules]]
+id = "ward:kotlin/multiple-variable-declarations"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-multiple-declarations"
+message = "only one variable may be declared on a line"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-finalizer"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = '^[^{=]*?fun\s*finalize\s*\(\s*\)'
+message = "finalize is not called reliably; release the resource with use or close"
+'''
+
+[[rules]]
+id = "ward:kotlin/one-statement-per-line"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-one-statement-per-line"
+message = "only one statement may start on a line"
+'''
+
+[[rules]]
+id = "ward:kotlin/overload-methods-declaration-order"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-overload-order"
+message = "overloaded function is not declared next to the other overloads of its name"
+'''
+
+[[rules]]
+id = "ward:kotlin/unused-local-variable"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:kotlin/variable-declaration-usage-distance"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-usage-distance"
+message = "variable '{value}' is declared too far from its first use"
+'''
+
+[[rules]]
+id = "ward:kotlin/multiline-comment-leading-asterisk-presence"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "multiline-comment-leading-asterisk-presence"
+message = "every row of a multi-line comment starts with an asterisk"
+'''
+
+[[rules]]
+id = "ward:kotlin/todo-comment"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "misc"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = "TODO:"
+message = "resolve the TODO: comment before merging"
+'''
+
+[[rules]]
+id = "ward:kotlin/regexp-singleline"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "regexp"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''

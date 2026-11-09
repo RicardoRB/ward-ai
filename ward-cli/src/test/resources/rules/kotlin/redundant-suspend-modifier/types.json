@@ -1,0 +1,4 @@
+{
+  "4:5": {"call": {"declaring": {"name": "kotlinx.coroutines.DelayKt"}, "name": "delay", "params": [{"name": "long", "primitive": true}, {"name": "kotlin.coroutines.Continuation"}], "static": true}},
+  "6:5": {"call": {"declaring": {"name": "kotlin.io.ConsoleKt"}, "name": "println", "params": [{"name": "java.lang.Object"}], "static": true}}
+}

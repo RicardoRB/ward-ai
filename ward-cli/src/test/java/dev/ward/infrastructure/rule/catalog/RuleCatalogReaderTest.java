@@ -5,14 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RulePreset;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** The catalog format: what a row may say, and what makes a catalog unusable. */
 class RuleCatalogReaderTest {
 
-  private static final int MINIMUM_ROWS = 4000;
+  private static final String CATALOG = "/catalog/";
+  private static final String ROW_HEADER = "[[rule]]";
 
   private static final String VALID =
       """
@@ -53,12 +56,33 @@ class RuleCatalogReaderTest {
   }
 
   @Test
-  void theShippedCatalogLoadsAndFindsRowsByName() {
+  void theShippedCatalogLoadsEveryRowAndFindsRowsByName() throws IOException {
     final RuleCatalog catalog = new RuleCatalogReader().load();
 
-    assertThat(catalog.rows()).hasSizeGreaterThan(MINIMUM_ROWS);
+    assertThat(catalog.rows()).hasSize(rowHeaders());
     assertThat(catalog.row("method-length")).isPresent();
     assertThat(catalog.row("no-such-rule")).isEmpty();
+  }
+
+  /** Counts the row headers in every file the index lists, so a row the reader drops fails. */
+  private static int rowHeaders() throws IOException {
+    int rows = 0;
+    for (final String file : resourceLines(CATALOG + "files.txt")) {
+      rows +=
+          (int) resourceLines(CATALOG + file + ".toml").stream().filter(ROW_HEADER::equals).count();
+    }
+    return rows;
+  }
+
+  private static List<String> resourceLines(final String resource) throws IOException {
+    try (InputStream stream = RuleCatalogReaderTest.class.getResourceAsStream(resource)) {
+      assertThat(stream).as(resource).isNotNull();
+      return new String(stream.readAllBytes(), StandardCharsets.UTF_8)
+          .lines()
+          .map(String::strip)
+          .filter(line -> !line.isEmpty())
+          .toList();
+    }
   }
 
   private static List<CatalogRow> parse(final String text) throws IOException {
