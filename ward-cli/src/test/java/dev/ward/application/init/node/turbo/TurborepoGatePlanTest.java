@@ -39,8 +39,7 @@ class TurborepoGatePlanTest {
             "--log-order=grouped",
             "--continue=always",
             "--ui=stream");
-    assertThat(gates.get("eslint").command())
-        .containsSubsequence("pnpm", "exec", "turbo", "run", "lint");
+    assertThat(gates).doesNotContainKey("eslint");
   }
 
   @Test

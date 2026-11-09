@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -39,26 +38,20 @@ class NodeCompatibilityMatrixTest {
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/node-matrix/violations");
   private static final String STRYKER = "stryker";
-  private static final String BIOME = "biome";
-  private static final String ESLINT_JS = "@eslint/js";
-  private static final String PACKAGE_JSON = "package.json";
-  private static final String ASTRO = "astro";
-  private static final int PACKAGES_ARGUMENT = 5;
+  private static final int PACKAGES_ARGUMENT = 3;
   // Test sources skip annotation processing, so the matrix reads each check's name and status pair
   // from the compact JSON report instead of decoding it into a DTO.
   private static final Pattern CHECK =
       Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
 
-  @ParameterizedTest(name = "node {0} {1} {2} {3}")
+  @ParameterizedTest(name = "node {0} {1} {2}")
   @CsvFileSource(resources = "/node-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
       final ArgumentsAccessor cell, @TempDir final Path project)
       throws IOException, InterruptedException {
     final String node = cell.getString(0);
     final String fixture = cell.getString(1);
-    final String linting = cell.getString(2);
-    final String preset = cell.getString(3);
-    final String version = Objects.requireNonNullElse(cell.getString(4), "");
+    final String preset = cell.getString(2);
     // The packages column is optional: rows without it have only the first five arguments.
     final String packageSpec =
         cell.size() > PACKAGES_ARGUMENT ? cell.getString(PACKAGES_ARGUMENT) : "";
@@ -74,11 +67,7 @@ class NodeCompatibilityMatrixTest {
         .isTrue();
 
     copyTree(FIXTURES.resolve(fixture), project);
-    declareLinter(project, linting, version);
     NodeMatrixFixtureEdits.declarePackages(project, packages);
-    if (ASTRO.equals(fixture)) {
-      NodeMatrixFixtureEdits.writeLintViolationInAstroFolder(project);
-    }
     Files.writeString(project.resolve(".nvmrc"), node + "\n");
     run(project, "git", "init", "-q");
     final CommandRun init = ward(project, "init", "--preset", preset, "--yes");
@@ -142,35 +131,6 @@ class NodeCompatibilityMatrixTest {
   /** The runtime's full version without the leading {@code v}, such as {@code 22.12.0}. */
   private static String runtimeVersion() throws IOException, InterruptedException {
     return run(Path.of("."), "node", "--version").stdout().trim().replaceFirst("^v", "");
-  }
-
-  /**
-   * Declares the linter at the row's version, or at the pinned version when the row has none, so
-   * init keeps the declared version. ESLint 9 needs {@code @eslint/js} at its own version; ESLint
-   * 10 declares no {@code @eslint/js} dependency, so it gets the pinned one.
-   */
-  private static void declareLinter(final Path project, final String linting, final String version)
-      throws IOException {
-    final boolean biome = BIOME.equals(linting);
-    final String declared =
-        version.isEmpty()
-            ? (biome ? NodePackageCatalog.BIOME_VERSION : NodePackageCatalog.ESLINT_VERSION)
-            : version;
-    final Map<String, String> dependencies = new LinkedHashMap<>();
-    if (biome) {
-      dependencies.put(NodePackageCatalog.BIOME_PACKAGE, declared);
-    } else {
-      dependencies.put("eslint", declared);
-      dependencies.put(ESLINT_JS, declared.startsWith("9.") ? declared : eslintJsPin());
-    }
-    // A framework fixture may already declare dependencies, so the linter merges into them.
-    final Path file = project.resolve(PACKAGE_JSON);
-    Files.writeString(
-        file, PackageJsonEdit.addDevDependencies(Files.readString(file), dependencies));
-  }
-
-  private static String eslintJsPin() {
-    return NodePackageCatalog.find(ESLINT_JS).orElseThrow().version();
   }
 
   private static void copyTree(final Path from, final Path to) throws IOException {

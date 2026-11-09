@@ -17,8 +17,7 @@ import org.junit.jupiter.api.Test;
 class NodeVueMatrixCellsTest {
   private static final int NODE_COLUMN = 0;
   private static final int FIXTURE_COLUMN = 1;
-  private static final int LINTING_COLUMN = 2;
-  private static final int PACKAGES_COLUMN = 5;
+  private static final int PACKAGES_COLUMN = 3;
 
   @Test
   void vueCellsCoverEveryRequiredVersion() throws IOException {
@@ -39,8 +38,6 @@ class NodeVueMatrixCellsTest {
             "vitest@4.0.18",
             "vite@7.3.7");
     assertThat(vueRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.12", "24");
-    assertThat(vueRows)
-        .allSatisfy(row -> assertThat(column(row, LINTING_COLUMN)).isEqualTo("eslint"));
     assertThat(vueRows)
         .filteredOn(row -> column(row, PACKAGES_COLUMN).contains("vitest@4.0.18"))
         .allSatisfy(row -> assertThat(column(row, PACKAGES_COLUMN)).contains("vite@7."));

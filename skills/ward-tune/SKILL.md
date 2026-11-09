@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Ruff and mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Checkstyle and PMD rule selection, the JaCoCo coverage threshold, PIT mutation testing, ESLint rules, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Ruff and mypy rules, mutmut, and the rule selection of Ward's TypeScript and JavaScript rules in `ward-rules.toml`) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -55,8 +55,6 @@ List the gates with `enabled = true`. This skill tunes these:
 | `pmd` | PMD rules and categories | [references/pmd.md](references/pmd.md) |
 | `coverage`, `swift-coverage`, `android-coverage` | JaCoCo minimum ratios, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
-| `eslint` | ESLint rules in the flat config | [references/eslint.md](references/eslint.md) |
-| `biome` | Biome rules in `biome.jsonc` or the project's own Biome config | [references/biome.md](references/biome.md) |
 | `ruff` | Ruff rule sets and complexity in `ruff.toml` or the project's own Ruff config | [references/ruff.md](references/ruff.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
@@ -105,8 +103,8 @@ with the user before tuning anything else.
 
 For each rule file you might edit, read its first line:
 
-- `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `eslint.config.*` and
-  `biome.jsonc`, `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
+- `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `vitest.config.mjs`, `jest.config.mjs`
+  and `stryker.config.mjs`, `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
   run refreshes it to the preset's content and **silently undoes any tuning**.
 - No marker means the user owns it. Init keeps it as it is and lists it as `keep`.
 

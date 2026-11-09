@@ -156,14 +156,12 @@ class NodeBuildToolConfiguratorTest {
   @Test
   void planListsThePackagesAndTheInstall() {
     final PlannedFileChange plan =
-        configurator.plan(project(BuildTool.PNPM, "24"), gates("eslint"), null, false);
+        configurator.plan(project(BuildTool.PNPM, "24"), gates("stryker"), null, false);
 
     assertThat(plan.action()).isEqualTo(PlannedFileChange.Action.MODIFY);
     assertThat(plan.details())
         .containsExactly(
-            "add devDependency eslint 10.12.0",
-            "add devDependency @eslint/js 10.0.1",
-            "add devDependency typescript-eslint 8.71.1",
+            "add devDependency @stryker-mutator/core 10.1.1",
             "run pnpm install, which updates pnpm-lock.yaml");
     assertThat(executor.commands).isEmpty();
   }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
- * Node init: Biome keeps linting with its formatter off, and {@code ward-format} checks formatting.
+ * Node init: {@code ward-format} checks formatting, and Biome's lint is replaced by Ward's rules.
  */
 @DisabledOnOs(OS.WINDOWS)
 class InitWardFormatNodeTest {
@@ -35,8 +35,7 @@ class InitWardFormatNodeTest {
   }
 
   @Test
-  void biomeKeepsLintingWithItsFormatterOffAndWardFormatChecksFormatting()
-      throws IOException, InterruptedException {
+  void biomeProjectGetsWardRulesAndNoBiomeGateOrConfig() throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("typescript-project", project);
     final String manifest = fixture.read("package.json");
     Files.writeString(
@@ -51,13 +50,11 @@ class InitWardFormatNodeTest {
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("AGENTS.md"))
-        .contains("fix edited lint findings with `biome check --write`")
-        .contains("Formatting runs through `ward format`, not Biome.")
-        .doesNotContain("format and fix edited files with `biome check --write`");
+        .contains("ward-rules.toml")
+        .doesNotContain("biome check --write");
     assertThat(fixture.read("ward.toml"))
-        .contains("[checks.biome]", "[checks.ward-format]")
-        .doesNotContain("[checks.prettier]");
-    assertThat(fixture.read("biome.jsonc")).contains("\"formatter\": { \"enabled\": false }");
-    assertThat(fixture.read("ward.toml")).doesNotContain("prettier");
+        .contains("[checks.ward-format]", "[checks.ward]")
+        .doesNotContain("[checks.biome]", "[checks.prettier]");
+    assertThat(project.resolve("biome.jsonc")).doesNotExist();
   }
 }

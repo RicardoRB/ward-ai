@@ -20,16 +20,14 @@ import org.junit.jupiter.api.Test;
 class NodeStrictAgentRulesTest {
   private static final Path ROOT = Path.of("/repo");
   private static final String STRYKER_MINIMUM = "mutation score of at least 60%";
-  private static final String TYPESCRIPT_ESLINT = "typescript-eslint";
 
   @Test
   void strictTypeScriptRulesNameTheStrictRulesAndMinimums() {
-    final String body =
-        rules(Language.TYPESCRIPT, BuildTool.NPM, QualityPreset.STRICT, "eslint", "vitest");
+    final String body = rules(Language.TYPESCRIPT, BuildTool.NPM, QualityPreset.STRICT, "vitest");
 
     assertThat(body)
         .contains(
-            "typescript-eslint's `strict-type-checked` rules",
+            "the Ward strict rules selected in `ward-rules.toml`",
             "Tests (Vitest)",
             "at least 85% line and 75% branch coverage",
             "Mutation testing (Stryker): `npx stryker` in `ci`",
@@ -39,16 +37,15 @@ class NodeStrictAgentRulesTest {
 
   @Test
   void strictJavaScriptRulesNameNoTypeScriptTool() {
-    final String body =
-        rules(Language.JAVASCRIPT, BuildTool.NPM, QualityPreset.STRICT, "eslint", "jest");
+    final String body = rules(Language.JAVASCRIPT, BuildTool.NPM, QualityPreset.STRICT, "jest");
 
     assertThat(body)
         .contains(
-            "ESLint's recommended JavaScript rules",
+            "the Ward strict rules selected in `ward-rules.toml`",
             "Tests (Jest)",
             "at least 85% line and 75% branch coverage",
             STRYKER_MINIMUM)
-        .doesNotContain("tsc", TYPESCRIPT_ESLINT);
+        .doesNotContain("tsc", "ESLint");
   }
 
   @Test

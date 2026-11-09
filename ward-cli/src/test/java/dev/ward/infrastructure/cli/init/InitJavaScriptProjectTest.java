@@ -16,12 +16,8 @@ class InitJavaScriptProjectTest {
   @TempDir Path project;
 
   @ParameterizedTest
-  @CsvSource({
-    "javascript-commonjs-project, eslint.config.mjs, true",
-    "javascript-esm-project, eslint.config.js, false"
-  })
-  void standardPresetConfiguresTheProjectAndItsPrePushProfilePasses(
-      final String name, final String eslintConfig, final boolean commonJs)
+  @CsvSource({"javascript-commonjs-project", "javascript-esm-project"})
+  void standardPresetConfiguresTheProjectAndItsPrePushProfilePasses(final String name)
       throws IOException, InterruptedException {
     final NodeFixtureRun fixture = NodeFixtureRun.copy(name, project);
 
@@ -41,21 +37,17 @@ class InitJavaScriptProjectTest {
     assertThat(fixture.read("ward.toml"))
         .contains(
             "[checks.vitest]",
+            "[checks.ward]",
             "[checks.ward-format]",
-            "[checks.eslint]",
             "command = \"npx vitest run --coverage\"")
-        .doesNotContain("[checks.tsc]", "checkstyle", "mvnw");
+        .doesNotContain("[checks.eslint]", "[checks.tsc]", "checkstyle", "mvnw");
+    assertThat(fixture.read("ward-rules.toml"))
+        .contains("preset = \"standard\"", "languages = [\"javascript\"]");
     assertThat(fixture.read("package.json"))
-        .contains(
-            "\"eslint\": \"10.12.0\"",
-            "\"@eslint/js\": \"10.0.1\"",
-            "\"globals\": \"17.13.0\"",
-            "\"vitest\": \"4.0.18\"")
-        .doesNotContain("typescript");
-    assertThat(fixture.read(eslintConfig))
-        .startsWith("// managed-by: ward preset=standard\n")
-        .contains("globals.node");
-    assertThat(fixture.read(eslintConfig).contains("sourceType: \"commonjs\"")).isEqualTo(commonJs);
+        .contains("\"vitest\": \"4.0.18\"")
+        .doesNotContain("eslint", "globals", "typescript");
+    assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
+    assertThat(project.resolve("eslint.config.js")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs"))
         .startsWith("// managed-by: ward preset=standard\n")
         .contains("lines: 70,")
@@ -65,8 +57,8 @@ class InitJavaScriptProjectTest {
         .doesNotContain("setup-java");
     assertThat(fixture.read(".gitignore")).startsWith("node_modules/\n").contains(".ward/reports/");
     assertThat(fixture.read("AGENTS.md"))
-        .contains("ESLint's recommended JavaScript rules", "Tests (Vitest)")
-        .doesNotContain("tsc", "typescript-eslint", "JaCoCo");
+        .contains("ward-rules.toml", "Tests (Vitest)")
+        .doesNotContain("tsc", "ESLint", "JaCoCo");
     assertThat(project.resolve("config")).doesNotExist();
 
     final NodeFixtureRun.Result check = fixture.ward("check", "--profile", "pre-push");

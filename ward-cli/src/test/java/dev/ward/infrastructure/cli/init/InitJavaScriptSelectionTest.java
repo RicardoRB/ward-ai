@@ -50,7 +50,7 @@ class InitJavaScriptSelectionTest {
         "--yes");
 
     assertThat(init.output())
-        .contains("Selected quality gate 'eslint'", "Selected quality gate 'vitest'")
+        .contains("Selected quality gate 'vitest'")
         .doesNotContain("tsc", "not inside");
   }
 

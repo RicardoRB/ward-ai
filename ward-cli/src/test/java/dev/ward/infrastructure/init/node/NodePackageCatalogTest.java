@@ -24,7 +24,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Every Node gate init offers has its pinned packages, and packages that must match do. */
 class NodePackageCatalogTest {
-  private static final String ESLINT = "eslint";
   @TempDir Path root;
 
   @Test
@@ -45,7 +44,7 @@ class NodePackageCatalogTest {
       assertThat(NodePackageCatalog.gates()).containsAll(node);
       node.forEach(
           gate ->
-              assertThat(NodePackageCatalog.packages(language, gate))
+              assertThat(NodePackageCatalog.packages(gate))
                   .allSatisfy(
                       name ->
                           assertThat(NodePackageCatalog.find(name))
@@ -61,24 +60,6 @@ class NodePackageCatalogTest {
   }
 
   @Test
-  void typescriptIsInsideTypescriptEslintsRange() {
-    assertThat(
-            NodeVersionRange.matches(
-                NodePackageCatalog.find("typescript-eslint").orElseThrow().typescript(),
-                NodePackageCatalog.find("typescript").orElseThrow().version()))
-        .isTrue();
-  }
-
-  @Test
-  void pinnedEslintIsInsideTheSupportedEslintRange() {
-    assertThat(
-            NodeVersionRange.matches(
-                NodePackageCatalog.ESLINT_SUPPORTED,
-                NodePackageCatalog.find(ESLINT).orElseThrow().version()))
-        .isTrue();
-  }
-
-  @Test
   void declaredPackagesAreNotAddedAgain() {
     final PackageManifest manifest =
         new PackageManifest(
@@ -86,22 +67,11 @@ class NodePackageCatalogTest {
             null,
             null);
 
-    assertThat(
-            NodePackageCatalog.missing(
-                Language.TYPESCRIPT, List.of(gate("vitest"), gate("tsc")), manifest))
+    assertThat(NodePackageCatalog.missing(List.of(gate("vitest"), gate("tsc")), manifest))
         .isEmpty();
-    assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate(ESLINT)), manifest))
+    assertThat(NodePackageCatalog.missing(List.of(gate("stryker")), manifest))
         .extracting(NodePackageCatalog.Package::name)
-        .containsExactly(ESLINT, "@eslint/js", "typescript-eslint");
-  }
-
-  @Test
-  void javaScriptEslintAddsGlobalsAndNoTypeScriptPackages() {
-    assertThat(
-            NodePackageCatalog.missing(
-                Language.JAVASCRIPT, List.of(gate(ESLINT)), PackageManifest.EMPTY))
-        .extracting(NodePackageCatalog.Package::name)
-        .containsExactly(ESLINT, "@eslint/js", "globals");
+        .containsExactly("@stryker-mutator/core");
   }
 
   private Set<String> gateIds(
@@ -136,37 +106,5 @@ class NodePackageCatalogTest {
 
   private static InitGateOption gate(final String id) {
     return new InitGateOption(id, id, List.of(id), true, "available");
-  }
-
-  @Test
-  void eslintJsFollowsADeclaredEslintRange() {
-    final PackageManifest nextStyle = new PackageManifest(Map.of(ESLINT, "^9"), null, null);
-    final InitGateOption eslint =
-        new InitGateOption(ESLINT, "ESLint", List.of("npx", ESLINT), true, "ok");
-
-    final List<NodePackageCatalog.Package> missing =
-        NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(eslint), nextStyle);
-
-    assertThat(missing)
-        .filteredOn(tool -> "@eslint/js".equals(tool.name()))
-        .singleElement()
-        .satisfies(tool -> assertThat(tool.version()).isEqualTo("^9"));
-  }
-
-  @Test
-  void eslintJsKeepsItsPinWhenESLintIsNotDeclared() {
-    final InitGateOption eslint =
-        new InitGateOption(ESLINT, "ESLint", List.of("npx", ESLINT), true, "ok");
-
-    final List<NodePackageCatalog.Package> missing =
-        NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(eslint), PackageManifest.EMPTY);
-
-    assertThat(missing)
-        .filteredOn(tool -> "@eslint/js".equals(tool.name()))
-        .singleElement()
-        .satisfies(
-            tool ->
-                assertThat(tool.version())
-                    .isEqualTo(NodePackageCatalog.find("@eslint/js").orElseThrow().version()));
   }
 }

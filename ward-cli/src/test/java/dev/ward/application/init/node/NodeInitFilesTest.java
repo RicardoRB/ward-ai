@@ -67,12 +67,12 @@ class NodeInitFilesTest {
   }
 
   @Test
-  void typeScriptAgentRulesNameTheNodeToolsAndNoJavaTool() {
+  void typeScriptAgentRulesNameWardRulesTheNodeToolsAndNoJavaTool() {
     final List<InitGateOption> gates =
         new InitGeneralCatalog(
                 InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm")))
             .gates(project(BuildTool.NPM, "24"), null).stream()
-                .filter(gate -> Set.of("tsc", "vitest", "eslint").contains(gate.id()))
+                .filter(gate -> Set.of("tsc", "vitest").contains(gate.id()))
                 .toList();
 
     final String body =
@@ -82,27 +82,11 @@ class NodeInitFilesTest {
 
     assertThat(body)
         .contains(
-            "ESLint",
+            "ward-rules.toml",
             "`npx tsc --noEmit --pretty false`",
             "Tests (Vitest)",
-            "at least 70% line coverage",
-            "with typescript-eslint's recommended rules")
-        .doesNotContain("Checkstyle", "PMD", "JaCoCo", "SpotBugs");
-  }
-
-  @Test
-  void userEslintConfigIsNamedInTheAgentRules() {
-    final InitGateOption eslint =
-        new InitGateOption("eslint", "ESLint", List.of("npx", "eslint", "."), true, "ok");
-
-    assertThat(
-            AgentRulesTemplate.render(
-                    project(BuildTool.NPM, "24"),
-                    List.of(eslint),
-                    QualityPreset.STANDARD,
-                    List.of(ROOT.resolve(".eslintrc.json")))
-                .body())
-        .contains("follow the rules in `.eslintrc.json`");
+            "at least 70% line coverage")
+        .doesNotContain("ESLint", "Biome", "Checkstyle", "PMD", "JaCoCo", "SpotBugs");
   }
 
   @Test

@@ -3,7 +3,6 @@ package dev.ward.infrastructure.init.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ class NodeVitestPinTest {
     final PackageManifest manifest =
         new PackageManifest(Map.of(VITEST, "4.0.18", "vite", "7.3.7"), null, null);
 
-    assertThat(NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate()), manifest))
+    assertThat(NodePackageCatalog.missing(List.of(gate()), manifest))
         .singleElement()
         .satisfies(
             tool -> {
@@ -41,7 +40,7 @@ class NodeVitestPinTest {
   }
 
   private static List<String> pins(final PackageManifest manifest) {
-    return NodePackageCatalog.missing(Language.TYPESCRIPT, List.of(gate()), manifest).stream()
+    return NodePackageCatalog.missing(List.of(gate()), manifest).stream()
         .map(NodePackageCatalog.Package::version)
         .toList();
   }

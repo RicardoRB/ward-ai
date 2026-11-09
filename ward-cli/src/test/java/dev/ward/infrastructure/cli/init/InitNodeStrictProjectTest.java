@@ -35,14 +35,14 @@ class InitNodeStrictProjectTest {
         .doesNotContain("minimum");
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/core\": \"10.1.1\"", "\"@stryker-mutator/vitest-runner\"");
-    assertThat(fixture.read("eslint.config.mjs"))
-        .startsWith("// managed-by: ward preset=strict\n")
-        .contains("tseslint.configs.strictTypeChecked", "projectService: true");
+    assertThat(fixture.read("ward-rules.toml"))
+        .contains("preset = \"strict\"", "languages = [\"typescript\"]");
+    assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs")).contains("lines: 85,", "branches: 75,");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"vitest\"", "break: 60,");
     assertThat(fixture.read(GITIGNORE)).contains(".stryker-tmp/", "reports/mutation/");
     assertThat(fixture.read(AGENTS))
-        .contains("strict-type-checked", "85% line and 75% branch", "Stryker")
+        .contains("ward-rules.toml", "85% line and 75% branch", "Stryker")
         .doesNotContain("JaCoCo", "PIT");
 
     final NodeFixtureRun.Result check = fixture.ward("check", "--profile", "ci");
@@ -69,9 +69,8 @@ class InitNodeStrictProjectTest {
         .doesNotContain("typescript", "vitest");
     assertThat(fixture.read("jest.config.mjs")).contains("lines: 85,", "branches: 75,");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"jest\"", "break: 60,");
-    assertThat(fixture.read("eslint.config.mjs"))
-        .contains("js.configs.recommended", "globals.jest")
-        .doesNotContain("typescript-eslint");
+    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"javascript\"]");
+    assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read(AGENTS)).contains("Tests (Jest)", "85% line").doesNotContain("tsc");
 
     final NodeFixtureRun.Result check = fixture.ward("check", "--profile", "pre-push");

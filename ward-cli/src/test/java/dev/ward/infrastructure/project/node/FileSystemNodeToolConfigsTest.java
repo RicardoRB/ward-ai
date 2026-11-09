@@ -23,10 +23,7 @@ class FileSystemNodeToolConfigsTest {
     "stryker, stryker.conf.json",
     "stryker, .stryker.config.mjs",
     "stryker, stryker.config.mjs",
-    "eslint, eslint.config.js",
-    "eslint, .eslintrc.json",
-    "biome, biome.json",
-    "biome, .biome.jsonc"
+    "vitest, vitest.config.mjs"
   })
   void userConfigOfTheGatesToolIsFound(final String gate, final String file) throws IOException {
     Files.writeString(root.resolve(file), "export default {};\n");
@@ -40,13 +37,6 @@ class FileSystemNodeToolConfigsTest {
     Files.writeString(root.resolve("bunfig.toml"), "# managed-by: ward\n");
 
     assertThat(configs.userConfig(root, "vitest")).isEmpty();
-  }
-
-  @Test
-  void wardOwnedBiomeConfigDoesNotCount() throws IOException {
-    Files.writeString(root.resolve("biome.jsonc"), "// managed-by: ward preset=standard\n{}\n");
-
-    assertThat(configs.userConfig(root, "biome")).isEmpty();
   }
 
   @Test
@@ -74,6 +64,6 @@ class FileSystemNodeToolConfigsTest {
 
   @Test
   void missingRootHasNoConfig() {
-    assertThat(configs.userConfig(root.resolve("absent"), "eslint")).isEmpty();
+    assertThat(configs.userConfig(root.resolve("absent"), "vitest")).isEmpty();
   }
 }

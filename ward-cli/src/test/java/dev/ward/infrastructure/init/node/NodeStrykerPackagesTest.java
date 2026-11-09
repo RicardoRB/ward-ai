@@ -36,8 +36,7 @@ class NodeStrykerPackagesTest {
   @Test
   void vitestProjectGetsTheCoreAndTheVitestRunnerAtOneVersion() {
     final List<NodePackageCatalog.Package> missing =
-        NodePackageCatalog.missing(
-            Language.TYPESCRIPT, gates("vitest", "stryker"), PackageManifest.EMPTY);
+        NodePackageCatalog.missing(gates("vitest", "stryker"), PackageManifest.EMPTY);
 
     assertThat(missing)
         .extracting(NodePackageCatalog.Package::name)
@@ -50,27 +49,21 @@ class NodeStrykerPackagesTest {
 
   @Test
   void jestProjectGetsTheJestRunner() {
-    assertThat(
-            NodePackageCatalog.missing(
-                Language.JAVASCRIPT, gates("jest", "stryker"), PackageManifest.EMPTY))
+    assertThat(NodePackageCatalog.missing(gates("jest", "stryker"), PackageManifest.EMPTY))
         .extracting(NodePackageCatalog.Package::name)
         .containsExactly(CORE, "@stryker-mutator/jest-runner");
   }
 
   @Test
   void bunProjectGetsOnlyTheCore() {
-    assertThat(
-            NodePackageCatalog.missing(
-                Language.TYPESCRIPT, gates("bun-test", "stryker"), PackageManifest.EMPTY))
+    assertThat(NodePackageCatalog.missing(gates("bun-test", "stryker"), PackageManifest.EMPTY))
         .extracting(NodePackageCatalog.Package::name)
         .containsExactly(CORE);
   }
 
   @Test
   void runnerPluginIsNotAddedWithoutStryker() {
-    assertThat(
-            NodePackageCatalog.missing(Language.TYPESCRIPT, gates("jest"), PackageManifest.EMPTY))
-        .isEmpty();
+    assertThat(NodePackageCatalog.missing(gates("jest"), PackageManifest.EMPTY)).isEmpty();
   }
 
   @Test

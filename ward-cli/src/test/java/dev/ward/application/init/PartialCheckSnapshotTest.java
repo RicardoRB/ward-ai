@@ -8,10 +8,8 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.TaskRunner;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,82 +17,8 @@ import org.junit.jupiter.api.Test;
  * their toolchain support. A change to any of these tables is a change to what init writes.
  */
 class PartialCheckSnapshotTest {
-  private static final List<String> NODE_SOURCES =
-      List.of(
-          "**/*.ts",
-          "**/*.tsx",
-          "**/*.mts",
-          "**/*.cts",
-          "**/*.js",
-          "**/*.jsx",
-          "**/*.mjs",
-          "**/*.cjs");
-  private static final List<String> PYTHON_SOURCES = List.of("**/*.py", "**/*.pyi");
-  private static final List<String> PATHS = List.of("{paths}");
-  private static final List<String> WHOLE_PROJECT = List.of("**");
-
-  private static final Project MAVEN =
-      new Project(Path.of("/shop"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
-  private static final Project PNPM =
-      new Project(
-          Path.of("/shop"),
-          Language.TYPESCRIPT,
-          BuildTool.PNPM,
-          Framework.NONE,
-          false,
-          false,
-          Path.of("/shop"),
-          Set.of(),
-          "24",
-          TaskRunner.NONE,
-          null);
-  private static final Project TURBO =
-      new Project(
-          Path.of("/shop"),
-          Language.TYPESCRIPT,
-          BuildTool.PNPM,
-          Framework.NONE,
-          false,
-          false,
-          Path.of("/shop"),
-          Set.of(),
-          "24",
-          TaskRunner.TURBO,
-          null);
   private static final Project UV =
       new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.NONE);
-
-  @Test
-  void nodeGatesKeepTheirTables() {
-    assertThat(table("eslint", PNPM, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(
-                NODE_SOURCES,
-                List.of("eslint.config.*", ".eslintrc*", "package.json"),
-                PATHS,
-                null,
-                null,
-                List.of("pnpm", "exec", "eslint", "--format", "json")));
-  }
-
-  @Test
-  void turborepoLintKeepsItsTable() {
-    final PartialCheckDefaults.Table turbo = table("eslint", TURBO, QualityPreset.STANDARD);
-
-    assertThat(turbo.args()).containsExactly("{paths}");
-    assertThat(turbo.item()).isEqualTo("--filter=...{package}");
-    assertThat(turbo.command())
-        .containsExactly(
-            "pnpm",
-            "exec",
-            "turbo",
-            "run",
-            "lint",
-            "--log-prefix=task",
-            "--log-order=grouped",
-            "--continue=always",
-            "--ui=stream");
-  }
 
   @Test
   void pythonGatesKeepTheirTables() {

@@ -26,55 +26,17 @@ import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 /** The gates init offers a JavaScript project, and the standard preset's selection. */
 class JavaScriptGatesTest {
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
-  private static final String ESLINT = "eslint";
 
   @TempDir Path root;
 
   @Test
-  void npmAndBunCommandsRunThroughThePackageManager() {
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, ESLINT).command())
-        .containsExactly("npx", ESLINT, ".", "--format", "json");
-    assertThat(gate(BuildTool.BUN, NO_RUNNER, ESLINT).command())
-        .containsExactly("bunx", ESLINT, ".", "--format", "json");
-  }
-
-  @Test
-  void noTypeCheckIsOfferedAndSemgrepUsesTheJavaScriptRuleset() {
-    assertThat(catalog(NO_RUNNER).gates(project(BuildTool.NPM), null))
-        .extracting(InitGateOption::id)
-        .doesNotContain("tsc");
-    assertThat(gate(BuildTool.NPM, NO_RUNNER, "semgrep").command()).contains("p/javascript");
-  }
-
-  @ParameterizedTest
-  @CsvSource({
-    "NPM, vitest, vitest",
-    "NPM, jest, jest",
-    "BUN, jest, jest",
-    "BUN, '', bun-test",
-    "PNPM, '', vitest"
-  })
-  void declaredRunnerIsReusedAndVitestIsTheDefault(
-      final BuildTool manager, final String declared, final String gate) {
-    final PackageManifest manifest =
-        declared.isEmpty()
-            ? NO_RUNNER
-            : new PackageManifest(Map.of(declared, "^1.0.0"), null, null);
-
-    assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
-        .containsExactly(gate, ESLINT);
-  }
-
-  @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("vitest", ESLINT, "stryker");
+        .containsExactly("vitest", "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
@@ -91,9 +53,7 @@ class JavaScriptGatesTest {
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
-    assertThat(gates).containsOnlyKeys("vitest", ESLINT);
-    final Set<String> fast = Set.of("default", "pre-commit", "pre-push", "ci", "edit");
-    assertThat(gates.get(ESLINT).profiles()).isEqualTo(fast);
+    assertThat(gates).containsOnlyKeys("vitest");
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }
 
@@ -109,7 +69,14 @@ class JavaScriptGatesTest {
   }
 
   @Test
-  void javaScriptAgentRulesNameEslintAndTheRunnerOnly() {
+  void noTypeCheckOrLintToolIsOfferedForJavaScript() {
+    assertThat(catalog(NO_RUNNER).gates(project(BuildTool.NPM), null))
+        .extracting(InitGateOption::id)
+        .doesNotContain("tsc", "eslint", "biome", "semgrep");
+  }
+
+  @Test
+  void javaScriptAgentRulesNameWardRulesAndTheRunnerOnly() {
     final Project project =
         new Project(
             root,
@@ -135,18 +102,8 @@ class JavaScriptGatesTest {
         AgentRulesTemplate.render(project, gates, QualityPreset.STANDARD, List.of()).body();
 
     assertThat(body)
-        .contains(
-            "ESLint's recommended JavaScript rules", "Tests (Vitest)", "at least 70% line coverage")
-        .doesNotContain(
-            "tsc", "TypeScript", "typescript-eslint", "Checkstyle", "PMD", "JaCoCo", "SpotBugs");
-  }
-
-  private InitGateOption gate(
-      final BuildTool manager, final PackageManifest manifest, final String id) {
-    return catalog(manifest).gates(project(manager), null).stream()
-        .filter(gate -> gate.id().equals(id))
-        .findFirst()
-        .orElseThrow();
+        .contains("ward-rules.toml", "Tests (Vitest)", "at least 70% line coverage")
+        .doesNotContain("tsc", "ESLint", "Biome", "Checkstyle", "PMD", "JaCoCo", "SpotBugs");
   }
 
   private static InitGeneralCatalog catalog(final PackageManifest manifest) {

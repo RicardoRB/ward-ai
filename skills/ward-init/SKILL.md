@@ -119,7 +119,7 @@ order:
 
    Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
-   that uses Biome gets one `biome` gate in place of ESLint, as described there. Recommend `standard` for a first setup or a large
+   gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no ESLint or Biome lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
    script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd` and `enforcer` are
@@ -294,8 +294,8 @@ Tell the user:
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that Java projects get no Checkstyle, PMD or SpotBugs gate: init writes `ward-rules.toml`, which
-   selects the Ward rules of the preset for Java. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
-   Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
+   selects the Ward rules of the preset for Java, TypeScript and JavaScript. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
+   Gitleaks, and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
    native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the
@@ -308,7 +308,7 @@ Tell the user:
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
    the `ward.toml`, so it is trusted. Ask first anyway, because it runs the build.
-4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `eslint`, `biome`, `vitest`, `jest`, or
+4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
    When the check fails, offer the `ward-fix` skill to fix the code rule by rule.

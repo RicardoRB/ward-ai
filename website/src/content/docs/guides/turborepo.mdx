@@ -13,11 +13,12 @@ Ward plans every member that has sources as if it were a standalone project, and
 into the member:
 
 - `apps/web/package.json` gets the member's scripts, such as `"check-types": "tsc --noEmit --pretty
-  false"` and `"lint": "eslint . --format json"`.
-- The member's tool configs and pinned dev dependencies are written into the member, not the root.
-  A member's own config, such as an `eslint.config.mjs` that imports a shared `@repo/eslint-config`,
-  is kept.
-- A member without sources, such as a shared ESLint config package, gets no script, config, or dev
+  false"`.
+- The member's test and mutation configs and pinned dev dependencies are written into the member, not
+  the root. A member's own config is kept.
+- `ward-rules.toml` at the root selects Ward's TypeScript and JavaScript rules, which the root `ward`
+  check applies to every member. No member gets a lint script or lint config.
+- A member without sources, such as a shared package of configs, gets no script, config, or dev
   dependency.
 
 At the root, the per-source gates run through turbo with one fixed command shape, and the
@@ -27,21 +28,18 @@ repository-wide gates run once from the root:
 [checks.tsc]
 command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 
-[checks.eslint]
-command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
-
 [checks.gitleaks]
 command = ["gitleaks", "git", "--redact", "--report-format", "sarif", "--report-path", ".ward/reports/gitleaks.sarif"]
 ```
 
-`tsc`, lint, test, and `stryker` are the turbo gates, with the tasks `check-types`, `lint`, `test`,
-and `mutation`. `gitleaks`, and the OpenAPI gates are unchanged and run once from the root. The lint tool is chosen once from the root and every member gets its script.
-The test gate is named after the members' majority runner.
+`tsc`, test, and `stryker` are the turbo gates, with the tasks `check-types`, `test`, and `mutation`.
+`gitleaks`, the `ward` check, and the OpenAPI gates are unchanged and run once from the root. The
+test gate is named after the members' majority runner.
 
 Init adds the tasks the gates need to `turbo.json` when they are missing, without changing an
 existing task or any byte outside the inserted entries:
 
-- `check-types` and `lint` depend on the same task of their dependencies;
+- `check-types` and `test` depend on the same task of their dependencies;
 - `test` writes `coverage/**` and depends on `^build` only when the workspace has a `build` task;
 - `mutation` writes `reports/mutation/**`.
 
@@ -69,7 +67,7 @@ A member's script is the whole standalone command without the package-manager ru
 is what makes Ward's findings reliable, and it means a script run by hand also prints JSON:
 
 ```sh
-pnpm lint      # runs eslint . --format json, not ESLint's stylish output
+pnpm check-types   # runs tsc --noEmit --pretty false, the standalone command
 ```
 
 Coverage minimums live in the configs Ward writes, so only a member that keeps its own config carries
@@ -81,7 +79,7 @@ When a member already defines a script for a gate's task with a different comman
 marks it `(requires approval)` and init lists every replacement once:
 
 ```
-web lint: next lint -> eslint . --format json
+web check-types: tsc -p tsconfig.json -> tsc --noEmit --pretty false
 Replace them? [y/n]:
 ```
 
@@ -94,7 +92,7 @@ and changes no file.
 
 Ward splits the output of a turbo gate into blocks by the `<package>:<task>: ` prefix, parses each
 block with the gate's existing parser, and resolves the file against the member directory. A type
-error in `apps/web` is reported as `apps/web/src/page.tsx`, and ESLint JSON from two members yields
+error in `apps/web` is reported as `apps/web/src/page.tsx`, and the type errors of two members yield
 the findings of both. Repository-wide gates carry no prefix and are read as before.
 
 The Stryker gate reads the report of every planned member that has one and combines the mutant
@@ -103,19 +101,9 @@ error.
 
 ## Partial checks
 
-Init writes a `paths` table for the lint gate that matches member sources and runs the whole gate
-when `turbo.json`, the root `package.json`, or a root lint config changes. A narrowed lint run uses
-turbo's filter for the packages that contain the edited files and their dependents:
+The `ward` check narrows to the edited files like any other analysis gate. The type-check and test
+gates get no `paths` table and always run in full, and a turbo gate narrows through turbo's filter
+for the packages that contain the edited files and their dependents when it has one. See
+[partial checks](/configuration/gates/#partial-checks).
 
-```toml
-[checks.eslint.paths]
-match = ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs"]
-full = ["turbo.json", "package.json", "eslint.config.*", ".eslintrc*"]
-args = ["{paths}"]
-item = "--filter=...{package}"
-command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
-```
 
-An edit that no member contains, such as a root `scripts/release.ts`, runs the lint gate in full.
-The type-check and test gates get no `paths` table and always run in full. See
-[Partial checks](/configuration/ward-toml/#partial-checks).

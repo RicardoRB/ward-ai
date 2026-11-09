@@ -25,7 +25,7 @@ import org.junit.jupiter.api.io.TempDir;
  * Each member of a mixed root gets its own {@code [checks.*.paths]} tables, as init writes them.
  */
 class MixedMultiProjectPartialTest {
-  private static final String ESLINT = "eslint";
+  private static final String ANALYSIS = "ward";
   private static final String CHECKSTYLE = "checkstyle";
 
   @TempDir Path root;
@@ -50,18 +50,16 @@ class MixedMultiProjectPartialTest {
     final Project jvmMember = new Project(api, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
     final Map<String, GateConfiguration> node =
-        write(nodeMember, List.of(ESLINT), QualityPreset.STANDARD);
+        write(nodeMember, List.of(ANALYSIS), QualityPreset.STANDARD);
     final Map<String, GateConfiguration> jvm =
         write(jvmMember, List.of(CHECKSTYLE), QualityPreset.STANDARD);
 
-    assertThat(node.get(ESLINT).partial().match())
-        .contains("**/*.ts", "**/*.tsx", "**/*.js")
-        .doesNotContain("src/**/*.java");
+    assertThat(node.get(ANALYSIS).partial().match()).doesNotContain("src/**/*.java");
     assertThat(jvm.get(CHECKSTYLE).partial().match()).containsExactly("src/**/*.java");
     assertThat(jvm.get(CHECKSTYLE).partial().args())
         .containsExactly("-Dcheckstyle.includes={paths}");
     assertThat(node.get(CHECKSTYLE)).isNull();
-    assertThat(jvm.get(ESLINT)).isNull();
+    assertThat(jvm.get(ANALYSIS)).isNull();
   }
 
   private Map<String, GateConfiguration> write(
