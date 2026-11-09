@@ -76,201 +76,148 @@ inconsistent-quotes = { status = "planned", issue = "#336" }
 inconsistent-return-statements = { status = "planned", issue = "#336" }
 inherit-non-class = { status = "planned", issue = "#336" }
 init-is-generator = "implemented"
-invalid-bool-returned = { status = "planned", issue = "#336" }
-invalid-bytes-returned = { status = "planned", issue = "#336" }
-invalid-character-carriage-return = { status = "planned", issue = "#336" }
-invalid-class-object = { status = "planned", issue = "#336" }
-invalid-enum-extension = { status = "planned", issue = "#336" }
-invalid-field-call = { status = "planned", issue = "#336" }
-invalid-format-index = { status = "planned", issue = "#336" }
-invalid-format-returned = { status = "planned", issue = "#336" }
-invalid-getnewargs-ex-returned = { status = "planned", issue = "#336" }
-invalid-getnewargs-returned = { status = "planned", issue = "#336" }
-invalid-hash-returned = { status = "planned", issue = "#336" }
-invalid-index-returned = { status = "planned", issue = "#336" }
-invalid-length-hint-returned = { status = "planned", issue = "#336" }
-invalid-length-returned = { status = "planned", issue = "#336" }
-invalid-match-args-definition = { status = "planned", issue = "#336" }
-invalid-metaclass = { status = "planned", issue = "#336" }
-invalid-overridden-method = { status = "planned", issue = "#336" }
-invalid-repr-returned = { status = "planned", issue = "#336" }
-invalid-sequence-index = { status = "planned", issue = "#336" }
-invalid-slice-index = { status = "planned", issue = "#336" }
-invalid-slice-step = { status = "planned", issue = "#336" }
-invalid-slots = { status = "planned", issue = "#336" }
-invalid-slots-object = { status = "planned", issue = "#336" }
-invalid-star-assignment-target = { status = "planned", issue = "#336" }
-invalid-str-returned = { status = "planned", issue = "#336" }
-invalid-unary-operand-type = { status = "planned", issue = "#336" }
-invalid-unicode-codec = { status = "planned", issue = "#336" }
-isinstance-second-argument-not-valid-type = { status = "planned", issue = "#336" }
-keyword-arg-before-vararg = { status = "planned", issue = "#336" }
-kwarg-superseded-by-positional-arg = { status = "planned", issue = "#336" }
-literal-comparison = { status = "planned", issue = "#336" }
-logging-format-interpolation = { status = "planned", issue = "#336" }
-logging-format-truncated = { status = "planned", issue = "#336" }
-logging-fstring-interpolation = { status = "planned", issue = "#336" }
-logging-not-lazy = { status = "planned", issue = "#336" }
-logging-unsupported-format = { status = "planned", issue = "#336" }
-looping-through-iterator = { status = "planned", issue = "#336" }
-lost-exception = { status = "planned", issue = "#336" }
-match-class-bind-self = { status = "planned", issue = "#336" }
-match-class-positional-attributes = { status = "planned", issue = "#336" }
-method-cache-max-size-none = { status = "planned", issue = "#336" }
-method-hidden = { status = "planned", issue = "#336" }
+invalid-bool-returned = "implemented"
+invalid-bytes-returned = "implemented"
+invalid-class-object = "implemented"
+invalid-enum-extension = "implemented"
+invalid-field-call = "implemented"
+invalid-format-index = "implemented"
+invalid-format-returned = "implemented"
+invalid-getnewargs-ex-returned = "implemented"
+invalid-getnewargs-returned = "implemented"
+invalid-hash-returned = "implemented"
+invalid-index-returned = "implemented"
+invalid-length-hint-returned = "implemented"
+invalid-length-returned = "implemented"
+invalid-match-args-definition = "implemented"
+invalid-metaclass = "implemented"
+invalid-overridden-method = "implemented"
+invalid-repr-returned = "implemented"
+invalid-sequence-index = "implemented"
+invalid-slice-index = "implemented"
+invalid-slice-step = "implemented"
+invalid-slots = "implemented"
+invalid-slots-object = "implemented"
+invalid-star-assignment-target = "implemented"
+invalid-str-returned = "implemented"
+invalid-unary-operand-type = "implemented"
+invalid-unicode-codec = "implemented"
+isinstance-second-argument-not-valid-type = "implemented"
+keyword-arg-before-vararg = "implemented"
+kwarg-superseded-by-positional-arg = "implemented"
+logging-format-truncated = "implemented"
+logging-unsupported-format = "implemented"
+match-class-bind-self = "implemented"
+match-class-positional-attributes = "implemented"
+method-cache-max-size-none = "implemented"
+method-hidden = "implemented"
 misplaced-comparison-constant = { status = "planned", issue = "#297" }
-misplaced-format-function = { status = "planned", issue = "#336" }
-misplaced-future = { status = "planned", issue = "#336" }
+misplaced-format-function = "implemented"
 missing-any-param-doc = { status = "planned", issue = "#336" }
 missing-class-docstring = "implemented"
-missing-format-argument-key = { status = "planned", issue = "#336" }
-missing-format-attribute = { status = "planned", issue = "#336" }
-missing-format-string-key = { status = "planned", issue = "#336" }
 missing-function-docstring = "implemented"
-missing-kwoa = { status = "planned", issue = "#336" }
+missing-kwoa = "implemented"
 missing-module-docstring = "implemented"
 missing-param-doc = { status = "planned", issue = "#336" }
-missing-parentheses-for-call-in-test = { status = "planned", issue = "#336" }
+missing-parentheses-for-call-in-test = "implemented"
 missing-raises-doc = { status = "planned", issue = "#336" }
 missing-return-doc = { status = "planned", issue = "#336" }
 missing-return-type-doc = { status = "planned", issue = "#336" }
-missing-timeout = { status = "planned", issue = "#336" }
 missing-type-doc = { status = "planned", issue = "#336" }
 missing-yield-doc = { status = "planned", issue = "#336" }
 missing-yield-type-doc = { status = "planned", issue = "#336" }
-mixed-format-string = { status = "planned", issue = "#336" }
-modified-iterating-dict = { status = "planned", issue = "#336" }
-modified-iterating-list = { status = "planned", issue = "#336" }
-multiple-class-sub-patterns = { status = "planned", issue = "#336" }
+modified-iterating-dict = "implemented"
+modified-iterating-list = "implemented"
+multiple-class-sub-patterns = "implemented"
 multiple-constructor-doc = { status = "planned", issue = "#336" }
-no-else-break = { status = "planned", issue = "#336" }
-no-else-continue = { status = "planned", issue = "#336" }
-no-else-raise = { status = "planned", issue = "#336" }
-no-member = { status = "planned", issue = "#336" }
-no-method-argument = { status = "planned", issue = "#336" }
-no-name-in-module = { status = "planned", issue = "#336" }
-no-self-argument = { status = "planned", issue = "#336" }
-no-value-for-parameter = { status = "planned", issue = "#336" }
-non-ascii-file-name = { status = "planned", issue = "#336" }
+no-else-break = "implemented"
+no-else-continue = "implemented"
+no-else-raise = "implemented"
+no-method-argument = "implemented"
+no-value-for-parameter = "implemented"
 non-ascii-module-import = "implemented"
-non-iterator-returned = { status = "planned", issue = "#336" }
-non-parent-init-called = { status = "planned", issue = "#336" }
-non-str-assignment-to-dunder-name = { status = "planned", issue = "#336" }
-nonexistent-operator = { status = "planned", issue = "#336" }
-not-a-mapping = { status = "planned", issue = "#336" }
-not-an-iterable = { status = "planned", issue = "#336" }
-not-async-context-manager = { status = "planned", issue = "#336" }
-not-callable = { status = "planned", issue = "#336" }
-not-context-manager = { status = "planned", issue = "#336" }
-not-in-loop = { status = "planned", issue = "#336" }
-notimplemented-raised = { status = "planned", issue = "#336" }
+non-iterator-returned = "implemented"
+non-parent-init-called = "implemented"
+non-str-assignment-to-dunder-name = "implemented"
+not-a-mapping = "implemented"
+not-an-iterable = "implemented"
+not-async-context-manager = "implemented"
+not-callable = "implemented"
+not-context-manager = "implemented"
 overlapping-except = { status = "planned", issue = "#336" }
-overridden-final-method = { status = "planned", issue = "#336" }
-pointless-exception-statement = { status = "planned", issue = "#336" }
-pointless-statement = { status = "planned", issue = "#336" }
-pointless-string-statement = { status = "planned", issue = "#336" }
-positional-only-arguments-expected = { status = "planned", issue = "#336" }
-possibly-unused-variable = { status = "planned", issue = "#336" }
+overridden-final-method = "implemented"
+pointless-exception-statement = "implemented"
+pointless-string-statement = "implemented"
+positional-only-arguments-expected = "implemented"
+possibly-unused-variable = "implemented"
 possibly-used-before-assignment = { status = "planned", issue = "#336" }
 prefer-typing-namedtuple = { status = "planned", issue = "#336" }
-preferred-module = { status = "planned", issue = "#336" }
-protected-access = { status = "planned", issue = "#336" }
-raise-missing-from = { status = "planned", issue = "#336" }
-raising-bad-type = { status = "planned", issue = "#336" }
-raising-format-tuple = { status = "planned", issue = "#336" }
-raising-non-exception = { status = "planned", issue = "#336" }
-redefined-builtin = { status = "planned", issue = "#336" }
+raising-format-tuple = "implemented"
+raising-non-exception = "implemented"
+redefined-builtin = "implemented"
 redefined-variable-type = { status = "planned", issue = "#336" }
-redundant-keyword-arg = { status = "planned", issue = "#336" }
+redundant-keyword-arg = "implemented"
 redundant-returns-doc = { status = "planned", issue = "#336" }
-redundant-u-string-prefix = { status = "planned", issue = "#336" }
-redundant-unittest-assert = { status = "planned", issue = "#336" }
+redundant-u-string-prefix = "implemented"
+redundant-unittest-assert = "implemented"
 redundant-yields-doc = { status = "planned", issue = "#336" }
-reimported = { status = "planned", issue = "#336" }
-relative-beyond-top-level = { status = "planned", issue = "#336" }
-repeated-keyword = { status = "planned", issue = "#336" }
+reimported = "implemented"
+repeated-keyword = "implemented"
 return-arg-in-generator = { status = "planned", issue = "#336" }
-return-in-finally = { status = "planned", issue = "#336" }
-self-cls-assignment = { status = "planned", issue = "#336" }
-shadowed-import = { status = "planned", issue = "#336" }
-signature-differs = { status = "planned", issue = "#336" }
-simplifiable-condition = { status = "planned", issue = "#336" }
-simplifiable-if-expression = { status = "planned", issue = "#336" }
-simplifiable-if-statement = { status = "planned", issue = "#336" }
+self-cls-assignment = "implemented"
+shadowed-import = "implemented"
+signature-differs = "implemented"
+simplifiable-condition = "implemented"
+simplifiable-if-expression = "implemented"
 single-string-used-for-slots = "implemented"
-star-needs-assignment-target = { status = "planned", issue = "#336" }
-subclassed-final-class = { status = "planned", issue = "#336" }
-subprocess-run-check = { status = "planned", issue = "#336" }
-super-init-not-called = { status = "planned", issue = "#336" }
-super-with-arguments = { status = "planned", issue = "#336" }
-syntax-error = { status = "planned", issue = "#336" }
+star-needs-assignment-target = "implemented"
+subclassed-final-class = "implemented"
+subprocess-run-check = "implemented"
+super-init-not-called = "implemented"
+super-with-arguments = "implemented"
 too-complex = { status = "planned", issue = "#336" }
-too-few-format-args = { status = "planned", issue = "#336" }
-too-few-public-methods = { status = "planned", issue = "#336" }
-too-many-ancestors = { status = "planned", issue = "#336" }
-too-many-format-args = { status = "planned", issue = "#336" }
-too-many-function-args = { status = "planned", issue = "#336" }
-too-many-instance-attributes = { status = "planned", issue = "#336" }
-too-many-positional-sub-patterns = { status = "planned", issue = "#336" }
-too-many-star-expressions = { status = "planned", issue = "#336" }
+too-few-public-methods = "implemented"
+too-many-ancestors = "implemented"
+too-many-function-args = "implemented"
+too-many-instance-attributes = "implemented"
+too-many-positional-sub-patterns = "implemented"
+too-many-star-expressions = "implemented"
 too-many-try-statements = { status = "planned", issue = "#336" }
-trailing-comma-tuple = { status = "planned", issue = "#336" }
-truncated-format-string = { status = "planned", issue = "#336" }
-try-except-raise = { status = "planned", issue = "#336" }
+trailing-comma-tuple = "implemented"
+truncated-format-string = "implemented"
+try-except-raise = "implemented"
 typevar-double-variance = "implemented"
 typevar-name-incorrect-variance = "implemented"
 typevar-name-mismatch = "implemented"
-unbalanced-dict-unpacking = { status = "planned", issue = "#336" }
-unbalanced-tuple-unpacking = { status = "planned", issue = "#336" }
-undefined-all-variable = { status = "planned", issue = "#336" }
+unbalanced-dict-unpacking = "implemented"
+unbalanced-tuple-unpacking = "implemented"
 undefined-loop-variable = { status = "planned", issue = "#336" }
-undefined-variable = { status = "planned", issue = "#336" }
-unexpected-keyword-arg = { status = "planned", issue = "#336" }
+unexpected-keyword-arg = "implemented"
 ungrouped-imports = "implemented"
-unhashable-member = { status = "planned", issue = "#336" }
-unknown-option-value = { status = "planned", issue = "#336" }
-unnecessary-ellipsis = { status = "planned", issue = "#336" }
+unhashable-member = "implemented"
+unnecessary-ellipsis = "implemented"
 unnecessary-negation = "implemented"
-unnecessary-pass = { status = "planned", issue = "#336" }
-unpacking-non-sequence = { status = "planned", issue = "#336" }
+unnecessary-pass = "implemented"
+unpacking-non-sequence = "implemented"
 unreachable = { status = "planned", issue = "#336" }
-unrecognized-inline-option = { status = "planned", issue = "#336" }
-unrecognized-option = { status = "planned", issue = "#336" }
-unsubscriptable-object = { status = "planned", issue = "#336" }
-unsupported-assignment-operation = { status = "planned", issue = "#336" }
-unsupported-binary-operation = { status = "planned", issue = "#336" }
-unsupported-delete-operation = { status = "planned", issue = "#336" }
-unsupported-membership-test = { status = "planned", issue = "#336" }
-unused-argument = { status = "planned", issue = "#336" }
-unused-format-string-argument = { status = "planned", issue = "#336" }
-unused-format-string-key = { status = "planned", issue = "#336" }
-unused-wildcard-import = { status = "planned", issue = "#336" }
-use-a-generator = { status = "planned", issue = "#336" }
-use-dict-literal = { status = "planned", issue = "#336" }
+unsubscriptable-object = "implemented"
+unsupported-assignment-operation = "implemented"
+unsupported-delete-operation = "implemented"
+unsupported-membership-test = "implemented"
+unused-argument = "implemented"
 use-implicit-booleaness-not-comparison = "implemented"
 use-implicit-booleaness-not-comparison-to-string = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-len = "implemented"
-use-list-literal = { status = "planned", issue = "#336" }
 use-maxsplit-arg = "implemented"
 use-sequence-for-iteration = "implemented"
 use-set-for-membership = { status = "planned", issue = "#336" }
-use-yield-from = { status = "planned", issue = "#336" }
+use-yield-from = "implemented"
 used-before-assignment = { status = "planned", issue = "#336" }
-used-prior-global-declaration = { status = "planned", issue = "#336" }
-useless-option-value = { status = "planned", issue = "#336" }
+used-prior-global-declaration = "implemented"
 useless-param-doc = { status = "planned", issue = "#336" }
-useless-parent-delegation = { status = "planned", issue = "#336" }
+useless-parent-delegation = "implemented"
 useless-type-doc = { status = "planned", issue = "#336" }
-using-assignment-expression-in-unsupported-version = { status = "planned", issue = "#336" }
-using-comprehension-unpacking-in-unsupported-version = { status = "planned", issue = "#336" }
-using-constant-test = { status = "planned", issue = "#336" }
-using-exception-groups-in-unsupported-version = { status = "planned", issue = "#336" }
-using-f-string-in-unsupported-version = { status = "planned", issue = "#336" }
-using-final-decorator-in-unsupported-version = { status = "planned", issue = "#336" }
-using-generic-type-syntax-in-unsupported-version = { status = "planned", issue = "#336" }
-using-positional-only-args-in-unsupported-version = { status = "planned", issue = "#336" }
+using-constant-test = "implemented"
 while-used = { status = "planned", issue = "#336" }
-wrong-exception-operation = { status = "planned", issue = "#336" }
 wrong-import-order = "implemented"
-yield-inside-async-function = { status = "planned", issue = "#336" }

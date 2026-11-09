@@ -97,10 +97,9 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 Presets may write these rule files:
 
 - `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for Java
+- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project
 
-Kotlin projects keep `config/pmd-ruleset.xml`, `config/checkstyle.xml` and
-`config/spotbugs-exclude.xml` until their own rules land. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+Java and Kotlin projects get no `config/pmd-ruleset.xml`, `config/checkstyle.xml` or `config/spotbugs-exclude.xml`; the Ward rules replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 

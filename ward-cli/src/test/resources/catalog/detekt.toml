@@ -82,8 +82,6 @@ detekt = ["CommentOverPrivateProperty"]
 
 [[rule]]
 name = "complex-condition"
-presets = ["standard", "strict"]
-category = "complexity"
 detekt = ["ComplexCondition"]
 
 [[rule]]
@@ -94,8 +92,6 @@ detekt = ["ComplexInterface"]
 
 [[rule]]
 name = "constructor-parameter-naming"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["ConstructorParameterNaming"]
 
 [[rule]]
@@ -156,80 +152,54 @@ detekt = ["ElseCaseInsteadOfExhaustiveWhen"]
 
 [[rule]]
 name = "empty-class-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyClassBlock"]
 
 [[rule]]
 name = "empty-default-constructor"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyDefaultConstructor"]
 
 [[rule]]
 name = "empty-do-while-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyDoWhileBlock"]
 
 [[rule]]
 name = "empty-else-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyElseBlock"]
 
 [[rule]]
 name = "empty-finally-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyFinallyBlock"]
 
 [[rule]]
 name = "empty-for-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyForBlock"]
 
 [[rule]]
 name = "empty-if-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyIfBlock"]
 
 [[rule]]
 name = "empty-init-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyInitBlock"]
 
 [[rule]]
 name = "empty-kt-file"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyKtFile"]
 
 [[rule]]
 name = "empty-secondary-constructor"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptySecondaryConstructor"]
 
 [[rule]]
 name = "empty-try-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyTryBlock"]
 
 [[rule]]
 name = "empty-when-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyWhenBlock"]
 
 [[rule]]
 name = "empty-while-block"
-presets = ["standard", "strict"]
-category = "empty-blocks"
 detekt = ["EmptyWhileBlock"]
 
 [[rule]]
@@ -240,8 +210,6 @@ detekt = ["EndOfSentenceFormat"]
 
 [[rule]]
 name = "enum-naming"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["EnumNaming"]
 
 [[rule]]
@@ -374,8 +342,6 @@ detekt = ["InstanceOfCheckForException"]
 
 [[rule]]
 name = "invalid-package-declaration"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["InvalidPackageDeclaration"]
 
 [[rule]]
@@ -410,8 +376,6 @@ detekt = ["LambdaParameterNaming"]
 
 [[rule]]
 name = "large-class"
-presets = ["standard", "strict"]
-category = "complexity"
 detekt = ["LargeClass"]
 
 [[rule]]
@@ -434,8 +398,6 @@ detekt = ["MapGetWithNotNullAssertionOperator"]
 
 [[rule]]
 name = "matching-declaration-name"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["MatchingDeclarationName"]
 
 [[rule]]
@@ -450,8 +412,6 @@ detekt = ["MayBeConst"]
 
 [[rule]]
 name = "member-name-equals-class-name"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["MemberNameEqualsClassName"]
 
 [[rule]]
@@ -500,8 +460,6 @@ detekt = ["NewLineAtEndOfFile"]
 
 [[rule]]
 name = "no-name-shadowing"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["NoNameShadowing"]
 
 [[rule]]
@@ -548,8 +506,6 @@ detekt = ["ObjectLiteralToLambda"]
 
 [[rule]]
 name = "object-property-naming"
-presets = ["standard", "strict"]
-category = "naming"
 detekt = ["ObjectPropertyNaming"]
 
 [[rule]]
@@ -684,8 +640,6 @@ detekt = ["ThrowingNewInstanceOfSameException"]
 
 [[rule]]
 name = "too-many-functions"
-presets = ["standard", "strict"]
-category = "complexity"
 detekt = ["TooManyFunctions"]
 
 [[rule]]

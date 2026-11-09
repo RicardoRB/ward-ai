@@ -1,0 +1,61 @@
+# Complexity rules for Kotlin, the detekt complexity set. Thresholds are the detekt defaults; each
+# rule reports above its limit, so a detekt threshold of N is the limit N - 1 here, except complex-
+# condition, which reports at its threshold as detekt does.
+
+[[rules]]
+id = "ward:kotlin/complex-condition"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.threshold = { type = "integer", min = 1 }
+body = '''
+check = "kotlin-complex-condition"
+kinds = ["ifExpression", "whileExpression", "doWhileExpression"]
+threshold = 4
+message = "condition has complexity {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/large-class"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "kotlin-class-lines"
+kinds = ["classDeclaration", "objectDeclaration"]
+max = 599
+message = "class has {value} lines of code; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/too-many-functions"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.threshold-in-files = { type = "integer", min = 1 }
+options.threshold-in-classes = { type = "integer", min = 1 }
+options.threshold-in-interfaces = { type = "integer", min = 1 }
+options.threshold-in-objects = { type = "integer", min = 1 }
+options.threshold-in-enums = { type = "integer", min = 1 }
+options.ignore-private = { type = "boolean" }
+options.ignore-overridden = { type = "boolean" }
+options.ignore-deprecated = { type = "boolean" }
+body = '''
+check = "kotlin-function-count"
+threshold-in-files = 11
+threshold-in-classes = 11
+threshold-in-interfaces = 11
+threshold-in-objects = 11
+threshold-in-enums = 11
+ignore-private = false
+ignore-overridden = false
+ignore-deprecated = false
+message = "file or class declares {value} functions; the limit is {max}"
+'''

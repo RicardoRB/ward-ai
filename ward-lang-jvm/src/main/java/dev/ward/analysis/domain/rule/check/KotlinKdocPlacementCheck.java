@@ -37,7 +37,13 @@ public final class KotlinKdocPlacementCheck implements RuleCheck {
   /** Containers whose trailing comments belong to the declaration that follows the container. */
   private static final Set<String> CLIMBABLE =
       Set.of(
-          "classMemberDeclaration", "semi", "anysemi", "packageHeader", "importList", "preamble");
+          "classMemberDeclaration",
+          "semi",
+          "anysemi",
+          "packageHeader",
+          "importList",
+          "importHeader",
+          "preamble");
 
   private final String message;
 

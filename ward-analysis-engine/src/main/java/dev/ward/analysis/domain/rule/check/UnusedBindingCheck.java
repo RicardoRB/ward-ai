@@ -7,16 +7,11 @@ import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.scope.Binding;
-import dev.ward.analysis.domain.scope.BindingFlag;
-import dev.ward.analysis.domain.scope.BindingKind;
-import dev.ward.analysis.domain.scope.ReferenceAccess;
 import dev.ward.analysis.domain.scope.Scope;
-import dev.ward.analysis.domain.scope.ScopeKind;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Reports each local variable that is declared or assigned and never read, like pyflakes {@code
@@ -28,14 +23,6 @@ import java.util.Set;
 public final class UnusedBindingCheck implements RuleCheck {
 
   private static final String NAME = "{value}";
-  private static final String IGNORED_PREFIX = "_";
-  private static final Set<ScopeKind> LOCAL_SCOPES =
-      Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK, ScopeKind.LAMBDA, ScopeKind.COMPREHENSION);
-  private static final Set<BindingKind> LOCAL_KINDS =
-      Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT);
-  private static final Set<BindingFlag> EXEMPT_FLAGS =
-      Set.of(
-          BindingFlag.GLOBAL, BindingFlag.NONLOCAL, BindingFlag.DESTRUCTURED, BindingFlag.EXPORTED);
 
   private final String message;
 
@@ -65,9 +52,9 @@ public final class UnusedBindingCheck implements RuleCheck {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
-      if (LOCAL_SCOPES.contains(scope.kind()) && !scope.open()) {
+      if (UnusedBindings.isLocalScope(scope) && !scope.open()) {
         scope.bindings().stream()
-            .filter(binding -> unused(binding, scopes))
+            .filter(binding -> UnusedBindings.isUnused(binding, scopes))
             .forEach(binding -> found.add(match(binding)));
       }
     }
@@ -77,12 +64,5 @@ public final class UnusedBindingCheck implements RuleCheck {
 
   private RuleMatch match(final Binding binding) {
     return new RuleMatch(binding.declaration(), message.replace(NAME, binding.name()));
-  }
-
-  private static boolean unused(final Binding binding, final UnitScopes scopes) {
-    return LOCAL_KINDS.contains(binding.kind())
-        && !binding.name().startsWith(IGNORED_PREFIX)
-        && EXEMPT_FLAGS.stream().noneMatch(binding::has)
-        && scopes.usesOf(binding).stream().noneMatch(use -> use.access() != ReferenceAccess.WRITE);
   }
 }
