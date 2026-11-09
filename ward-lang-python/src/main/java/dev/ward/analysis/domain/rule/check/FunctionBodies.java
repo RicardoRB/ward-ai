@@ -58,8 +58,8 @@ final class FunctionBodies {
   static List<String> names(final String targets) {
     final List<String> names = new ArrayList<>();
     for (final String piece : targets.split(",")) {
-      final String bare = piece.replaceAll("[()\\[\\]*]", "");
-      if (bare.matches("\\w+")) {
+      final String bare = piece.replaceAll("^[*(\\[]+|[)\\]]+$", "");
+      if (bare.matches("[A-Za-z_]\\w*")) {
         names.add(bare);
       }
     }

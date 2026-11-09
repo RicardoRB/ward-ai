@@ -19,10 +19,12 @@ def route(value):
         return 8
     if value == 9:
         return 9
-    if value == 10:
-        return 10
-    if value == 11:
-        return 11
-    if value == 12:
-        return 12
+    try:
+        value = int(value)
+    except ValueError:
+        value = 0
+    else:
+        value = value + 1
+    finally:
+        value = value
     return 0

@@ -295,7 +295,7 @@ options.max = { type = "integer", min = 1 }
 body = '''
 check = "count"
 kinds = ["funcdef"]
-counted = ["if_stmt", "'elif'", "'else'", "for_stmt", "while_stmt", "except_clause", "case_block"]
+counted = ["if_stmt", "'elif'", "'else'", "'finally'", "for_stmt", "while_stmt", "except_clause", "case_block"]
 skip = ["funcdef", "classdef", "test"]
 max = 12
 message = "function has {value} branches; the limit is {max}"
@@ -414,7 +414,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^(?:io\\.)?open\\((?![^)]*encoding\\s*=)(?![^)]*['\"][rwax]?\\+?b)(?![^)]*,\\s*(?!mode\\s*=)[A-Za-z_])"
+text = "^(?:(?:io\\.)?open\\(|(?:pathlib\\.)?Path\\((?:[^()]|\\([^()]*\\))*\\)\\.(?:read_text|write_text|open)\\()(?![^)]*encoding\\s*=)(?![^)]*['\"][rwax]?\\+?b)(?![^)]*,\\s*(?!mode\\s*=)[A-Za-z_])"
 message = "text file is opened without an explicit encoding"
 '''
 
