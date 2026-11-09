@@ -67,7 +67,7 @@ require-request = "implemented"
 res-render-injection = "implemented"
 sequelize-sqli = "implemented"
 tainted-html-response = "implemented"
-tainted-html-string = { status = "planned", issue = "#446" }
+tainted-html-string = { status = "planned", issue = "#466" }
 unsafe-argon2-config = "implemented"
 vm-runincontext-injection = "implemented"
 wildcard-postmessage-configuration = "implemented"

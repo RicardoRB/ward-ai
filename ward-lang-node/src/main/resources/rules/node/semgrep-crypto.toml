@@ -1,4 +1,4 @@
-# Authenticated-encryption rules of the Semgrep p/javascript pack. Registered only once the Node check provider lists the check.
+# Authenticated-encryption rules of the Semgrep p/javascript pack.
 
 [[rules]]
 id = "ward:javascript/aead-no-final"
