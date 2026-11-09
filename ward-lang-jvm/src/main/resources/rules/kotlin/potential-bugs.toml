@@ -239,3 +239,39 @@ body = '''
 check = "kotlin-unsafe-call-nullable"
 message = "the !! operator on a nullable value can throw; check for null instead"
 '''
+
+[[rules]]
+id = "ward:kotlin/unsafe-cast"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unsafe-cast"
+message = "this cast can never succeed; the two types are unrelated"
+'''
+
+[[rules]]
+id = "ward:kotlin/unreachable-catch-block"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unreachable-catch"
+message = "this catch block is unreachable; an earlier catch already handles its exception type"
+'''
+
+[[rules]]
+id = "ward:kotlin/has-platform-type"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-platform-type"
+message = "the type of this public declaration is a platform type inferred from Java; declare it explicitly"
+'''

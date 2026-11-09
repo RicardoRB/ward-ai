@@ -9,8 +9,11 @@ import dev.ward.analysis.domain.rule.check.KotlinIgnoredReturnValueCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMapGetNotNullCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNullableOperationCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNullableOperationCheck.Operation;
+import dev.ward.analysis.domain.rule.check.KotlinPlatformTypeCheck;
 import dev.ward.analysis.domain.rule.check.KotlinRedundantSuspendCheck;
 import dev.ward.analysis.domain.rule.check.KotlinReferentialEqualityCheck;
+import dev.ward.analysis.domain.rule.check.KotlinUnreachableCatchCheck;
+import dev.ward.analysis.domain.rule.check.KotlinUnsafeCastCheck;
 import dev.ward.analysis.domain.rule.check.UnreachableStatementCheck;
 import dev.ward.analysis.domain.rule.check.UnusedUnaryOperatorCheck;
 import dev.ward.analysis.domain.types.Nullness;
@@ -71,6 +74,15 @@ final class KotlinBugChecks {
             "kotlin-unnecessary-safe-call",
             toml ->
                 new KotlinNullableOperationCheck(
-                    Operation.SAFE_CALL, Nullness.NON_NULL, TomlValues.required(toml, MESSAGE))));
+                    Operation.SAFE_CALL, Nullness.NON_NULL, TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-unsafe-cast",
+            toml -> new KotlinUnsafeCastCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-unreachable-catch",
+            toml -> new KotlinUnreachableCatchCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-platform-type",
+            toml -> new KotlinPlatformTypeCheck(TomlValues.required(toml, MESSAGE))));
   }
 }

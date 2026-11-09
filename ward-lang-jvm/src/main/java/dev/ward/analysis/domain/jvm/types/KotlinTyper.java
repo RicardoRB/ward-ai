@@ -88,6 +88,10 @@ final class KotlinTyper {
       case "propertyDeclaration" -> property(node, ctx);
       case "functionDeclaration" -> function(node, ctx);
       case "forExpression" -> forLoop(node, ctx);
+      case "catchBlock" -> {
+        KotlinNamedTypes.recordCatchType(session, node, ctx.scope());
+        node.children().forEach(child -> walk(child, ctx));
+      }
       default -> node.children().forEach(child -> walk(child, ctx));
     }
   }
