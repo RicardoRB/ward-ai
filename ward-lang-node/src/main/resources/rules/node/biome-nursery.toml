@@ -136,3 +136,63 @@ check = "node-finally-return"
 message = "return from a finally callback is ignored; remove the return"
 '''
 
+
+[[rules]]
+id = "ward:javascript/no-obsolete-tags"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxElementName"]
+text = '^(?:acronym|applet|basefont|bgsound|big|blink|center|dir|font|frame|frameset|isindex|keygen|listing|marquee|menuitem|multicol|nextid|nobr|noembed|noframes|plaintext|rb|rtc|spacer|strike|tt|xmp)$'
+parent = ["jsxOpeningElement", "jsxSelfClosingElement"]
+message = "avoid the obsolete element; use a current element instead"
+'''
+
+[[rules]]
+id = "ward:typescript/no-obsolete-tags"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxElementName"]
+text = '^(?:acronym|applet|basefont|bgsound|big|blink|center|dir|font|frame|frameset|isindex|keygen|listing|marquee|menuitem|multicol|nextid|nobr|noembed|noframes|plaintext|rb|rtc|spacer|strike|tt|xmp)$'
+parent = ["jsxOpeningElement", "jsxSelfClosingElement"]
+message = "avoid the obsolete element; use a current element instead"
+'''
+
+[[rules]]
+id = "ward:javascript/no-jsx-namespace"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxElementName"]
+text = ':'
+parent = ["jsxOpeningElement", "jsxSelfClosingElement"]
+message = "avoid a namespaced JSX element name; it is not a component or a standard element"
+'''
+
+[[rules]]
+id = "ward:typescript/no-jsx-namespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxElementName"]
+text = ':'
+parent = ["jsxOpeningElement", "jsxSelfClosingElement"]
+message = "avoid a namespaced JSX element name; it is not a component or a standard element"
+'''

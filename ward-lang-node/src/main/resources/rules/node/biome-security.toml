@@ -29,3 +29,34 @@ kinds = ["jsxAttribute"]
 text = '^dangerouslySetInnerHTML(?:=|$)'
 message = "avoid the dangerouslySetInnerHTML prop; it injects unescaped HTML"
 '''
+
+[[rules]]
+id = "ward:typescript/no-blank-target"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+options.allow-domains = { type = "string-list" }
+options.allow-no-referrer = { type = "boolean" }
+body = '''
+allow-domains = []
+allow-no-referrer = true
+check = "node-jsx-blank-target"
+message = "avoid target=\"_blank\" without rel=\"noopener\"; the opened page could reach window.opener"
+'''
+
+[[rules]]
+id = "ward:typescript/no-dangerously-set-inner-html"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jsxAttribute"]
+text = '^dangerouslySetInnerHTML(?:=|$)'
+message = "avoid the dangerouslySetInnerHTML prop; it injects unescaped HTML"
+'''
+

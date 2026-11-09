@@ -52,7 +52,8 @@ final class BiomeChecks {
             "node-jsx-attribute-value",
             toml ->
                 new BiomeJsxAttributeValueCheck(
-                    TomlValues.required(toml, "attribute"),
+                    toml.getString("attribute"),
+                    "expression".equals(toml.getString("at")),
                     Pattern.compile(TomlValues.required(toml, "text")),
                     TomlValues.required(toml, MESSAGE))));
   }

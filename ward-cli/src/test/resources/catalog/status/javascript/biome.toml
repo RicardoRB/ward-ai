@@ -75,8 +75,8 @@ no-invalid-file-input-accept = { status = "planned", issue = "#329" }
 no-js-restricted-properties = { status = "planned", issue = "#329" }
 no-jsx-leaked-dollar = { status = "planned", issue = "#329" }
 no-jsx-literals = { status = "planned", issue = "#296" }
-no-jsx-namespace = { status = "planned", issue = "#329" }
-no-jsx-props-bind = { status = "planned", issue = "#329" }
+no-jsx-namespace = "implemented"
+no-jsx-props-bind = "implemented"
 no-label-without-control = { status = "planned", issue = "#329" }
 no-leaked-render = { status = "planned", issue = "#329" }
 no-misleading-instantiator = "not-applicable"
@@ -95,7 +95,7 @@ no-non-scalable-viewport = { status = "planned", issue = "#329" }
 no-noninteractive-element-interactions = { status = "planned", issue = "#329" }
 no-noninteractive-element-to-interactive-role = { status = "planned", issue = "#329" }
 no-noninteractive-tabindex = { status = "planned", issue = "#329" }
-no-obsolete-tags = { status = "planned", issue = "#329" }
+no-obsolete-tags = "implemented"
 no-parameter-assign = { status = "planned", issue = "#296" }
 no-parameters-only-used-in-recursion = { status = "planned", issue = "#329" }
 no-playwright-element-handle = { status = "planned", issue = "#329" }
