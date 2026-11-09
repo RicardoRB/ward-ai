@@ -5,29 +5,27 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import java.util.ArrayList;
+import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.scope.NameReference;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports a short-syntax fragment that holds one element or no child, or that sits in a JSX child
- * list, at the fragment, as Biome 2.5.15's {@code noUselessFragments} decides it (its run function
- * in crates/biome_js_analyze/src/lint/complexity/no_useless_fragments.rs). A fragment that is the
- * value of a declaration, an arrow body or a property is kept.
- *
- * <p>shortcut: only the short {@code <>} fragment is checked; {@code React.Fragment} and an
- * imported {@code Fragment} need import resolution that this check does not have. Upgrade when the
- * scope analysis exposes the import binding to the check.
+ * Reports a fragment that holds one element or no child, or that sits in a JSX child list, at the
+ * fragment, as Biome 2.5.15's {@code noUselessFragments} decides it (its run function in
+ * crates/biome_js_analyze/src/lint/complexity/no_useless_fragments.rs). A fragment that is the
+ * value of a declaration, an arrow body or a property is kept. A {@code <Fragment>} element counts
+ * when its name resolves to React, through {@link ReactFragmentNames}.
  */
 public final class BiomeUselessFragmentsCheck implements RuleCheck {
 
   private static final String FRAGMENT = "jsxFragment";
-  private static final int CONTAINER = 2;
   private static final String ELEMENT = "jsxElement";
   private static final String TEXT = "jsxText";
   private static final String EXPRESSION_CHILD = "jsxExpressionContainer";
+  private static final int CONTAINER = 2;
 
   private final String message;
 
@@ -40,55 +38,45 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
     this.message = Objects.requireNonNull(message, "message");
   }
 
-  /** Always fails: blank text is judged from the source, which only the unit gives. */
+  /** Always fails: names resolve through the scopes and blank text through the source. */
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    throw new AnalysisFailedException("the useless-fragments check needs the source text");
+    throw new AnalysisFailedException("the useless-fragments check needs the scopes and source");
   }
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
-    return SyntaxWalk.visits(root, Set.of(FRAGMENT)).stream()
-        .filter(visit -> reported(visit.node(), visit.ancestors(), unit.text()))
+      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+    final Map<Integer, NameReference> byStart = ReactFragmentNames.referencesByStart(view.scopes());
+    return SyntaxWalk.visits(root, Set.of(FRAGMENT, ELEMENT)).stream()
+        .filter(visit -> isFragment(visit.node(), byStart))
+        .filter(visit -> reported(visit.node(), FragmentContext.chainOf(visit), unit.text()))
         .map(visit -> CheckSupport.at(visit.node().span(), message))
         .toList();
   }
 
-  private boolean reported(
+  /** A short fragment is always one; an element is one when it names React's Fragment. */
+  private static boolean isFragment(
+      final SyntaxNode node, final Map<Integer, NameReference> byStart) {
+    return FRAGMENT.equals(node.kind()) || ReactFragmentNames.isFragmentElement(node, byStart);
+  }
+
+  private static boolean reported(
       final SyntaxNode fragment, final List<SyntaxNode> ancestors, final String source) {
     final FragmentContext.Context context = FragmentContext.of(ancestors);
     if (context == FragmentContext.Context.PRESERVED) {
       return false;
     }
-    final Optional<List<SyntaxNode>> children = significantChildren(fragment, context, source);
-    if (children.isEmpty()) {
+    if (fragment.children().stream().anyMatch(child -> keepsFragment(child, context))) {
       return false;
     }
-    final List<SyntaxNode> significant = children.get();
+    final List<SyntaxNode> significant =
+        fragment.children().stream().filter(child -> counts(child, source)).toList();
     return switch (significant.size()) {
       case 0 -> true;
       case 1 -> singleChildReported(significant.get(0), context, ancestors);
       default -> context == FragmentContext.Context.LIST;
     };
-  }
-
-  /**
-   * The children that count, or empty when the text or an expression inside the fragment must keep
-   * it, as Biome's loop over the children decides.
-   */
-  private static Optional<List<SyntaxNode>> significantChildren(
-      final SyntaxNode fragment, final FragmentContext.Context context, final String source) {
-    final List<SyntaxNode> significant = new ArrayList<>();
-    for (final SyntaxNode child : fragment.children()) {
-      if (keepsFragment(child, context)) {
-        return Optional.empty();
-      }
-      if (counts(child, source)) {
-        significant.add(child);
-      }
-    }
-    return Optional.of(significant);
   }
 
   /** Text inside an expression or a logical operand, or an expression inside a logical operand. */

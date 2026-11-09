@@ -109,7 +109,7 @@ message = "type parameter list must not be empty"
 [[rules]]
 id = "ward:javascript/no-useless-fragments"
 language = "JAVASCRIPT"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "NOTE"
 category = "complexity"
 presets = ["standard", "strict"]
@@ -121,7 +121,7 @@ message = "this fragment is unnecessary"
 [[rules]]
 id = "ward:typescript/no-useless-fragments"
 language = "TYPESCRIPT"
-capability = "SYNTAX"
+capability = "SCOPES"
 severity = "NOTE"
 category = "complexity"
 presets = ["standard", "strict"]
