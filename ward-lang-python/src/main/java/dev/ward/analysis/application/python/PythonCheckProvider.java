@@ -25,7 +25,8 @@ public final class PythonCheckProvider implements CheckProvider {
                     PythonStyleChecks.checks(),
                     PythonShapeChecks.checks(),
                     PylintPartAChecks.checks(),
-                    PylintPartA2Checks.checks())));
+                    PylintPartA2Checks.checks(),
+                    PythonFlowChecks.checks())));
     // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
     checks.put("unused-definition", toml -> root -> List.of());
     // A whole-run graph check: CyclicImportRule reports it, so no unit has a match here.
