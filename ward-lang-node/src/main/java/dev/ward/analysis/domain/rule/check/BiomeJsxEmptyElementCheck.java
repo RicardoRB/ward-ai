@@ -20,16 +20,20 @@ public final class BiomeJsxEmptyElementCheck implements RuleCheck {
   private static final String CLOSING = "jsxClosingElement";
 
   private final List<JsxElementSpec> elements;
+  private final Set<String> exempt;
   private final String message;
 
   /**
    * Creates the check.
    *
    * @param elements the elements to check
+   * @param exempt the attributes that make an element exempt, such as {@code aria-label}
    * @param message the message of each finding
    */
-  public BiomeJsxEmptyElementCheck(final Set<String> elements, final String message) {
+  public BiomeJsxEmptyElementCheck(
+      final Set<String> elements, final Set<String> exempt, final String message) {
     this.elements = elements.stream().map(JsxElementSpec::parse).toList();
+    this.exempt = Set.copyOf(exempt);
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -54,11 +58,13 @@ public final class BiomeJsxEmptyElementCheck implements RuleCheck {
   }
 
   private boolean selected(final SyntaxNode element) {
-    return elements.stream().anyMatch(spec -> spec.selects(element));
+    return elements.stream().anyMatch(spec -> spec.selects(element))
+        && JsxAttributes.of(element).stream()
+            .noneMatch(attribute -> exempt.contains(JsxAttributes.name(attribute)));
   }
 
   /** A child that is neither the opening nor the closing tag, and is not blank text. */
-  private static boolean hasContent(final SyntaxNode child) {
+  static boolean hasContent(final SyntaxNode child) {
     return !OPENING.equals(child.kind())
         && !CLOSING.equals(child.kind())
         && !SyntaxWalk.text(child).isBlank();
