@@ -62,7 +62,7 @@ function-max-length = { status = "planned", issue = "#294" }
 function-min-length = { status = "planned", issue = "#294" }
 function-only-returning-constant = "implemented"
 global-coroutine-usage = "implemented"
-has-platform-type = { status = "planned", issue = "#324" }
+has-platform-type = "implemented"
 ignored-return-value = "implemented"
 implicit-default-locale = "implemented"
 implicit-unit-return-type = { status = "planned", issue = "#324" }
@@ -149,10 +149,10 @@ unnecessary-not-null-operator = "implemented"
 unnecessary-part-of-binary-expression = { status = "planned", issue = "#324" }
 unnecessary-safe-call = "implemented"
 unnecessary-temporary-instantiation = "implemented"
-unreachable-catch-block = { status = "planned", issue = "#324" }
+unreachable-catch-block = "implemented"
 unreachable-code = "implemented"
 unsafe-call-on-nullable-type = "implemented"
-unsafe-cast = { status = "planned", issue = "#324" }
+unsafe-cast = "implemented"
 until-instead-of-range-to = { status = "planned", issue = "#294" }
 unused-parameter = "implemented"
 unused-private-class = "implemented"

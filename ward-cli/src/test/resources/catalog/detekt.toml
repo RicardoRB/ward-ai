@@ -348,8 +348,6 @@ detekt = ["GlobalCoroutineUsage"]
 
 [[rule]]
 name = "has-platform-type"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["HasPlatformType"]
 
 [[rule]]
@@ -791,8 +789,6 @@ detekt = ["UnnecessaryTemporaryInstantiation"]
 
 [[rule]]
 name = "unreachable-catch-block"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnreachableCatchBlock"]
 
 [[rule]]
@@ -806,8 +802,6 @@ detekt = ["UnsafeCallOnNullableType"]
 
 [[rule]]
 name = "unsafe-cast"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["UnsafeCast"]
 
 [[rule]]

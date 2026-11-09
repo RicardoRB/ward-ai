@@ -16,6 +16,13 @@ final class KotlinExpressions {
   private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
   private static final String EXPRESSION = "expression";
   private static final String ADDITIVE = "additiveExpression";
+  private static final String TYPE_RHS = "typeRHS";
+  private static final String TYPE_OPERATION = "typeOperation";
+  private static final String AS = "as";
+  private static final int CAST_PARTS = 3;
+  private static final int CAST_OPERAND = 0;
+  private static final int CAST_OPERATOR = 1;
+  private static final int CAST_TARGET = 2;
   private static final Set<String> BOOLEAN_OPERATIONS =
       Set.of("comparison", "equalityComparison", "conjunction", "disjunction");
   private static final Set<String> ARITHMETIC = Set.of(ADDITIVE, "multiplicativeExpression");
@@ -31,7 +38,7 @@ final class KotlinExpressions {
   }
 
   Typed expr(final SyntaxNode node, final Ctx ctx) {
-    final Typed typed = dispatch(node, ctx);
+    final Typed typed = isAsCast(node) ? cast(node, ctx) : dispatch(node, ctx);
     session.record(node, typed);
     return typed;
   }
@@ -95,6 +102,21 @@ final class KotlinExpressions {
         yield Typed.UNKNOWN;
       }
     };
+  }
+
+  /** Types the operand of an {@code as} cast and records the class its target names. */
+  private Typed cast(final SyntaxNode node, final Ctx ctx) {
+    expr(node.children().get(CAST_OPERAND), ctx);
+    KotlinNamedTypes.recordCastTarget(session, node.children().get(CAST_TARGET), ctx.scope());
+    return Typed.UNKNOWN;
+  }
+
+  /** Returns whether a node is {@code operand as Target}, a cast that is not {@code as?}. */
+  private static boolean isAsCast(final SyntaxNode node) {
+    return TYPE_RHS.equals(node.kind())
+        && node.children().size() == CAST_PARTS
+        && TYPE_OPERATION.equals(node.children().get(CAST_OPERATOR).kind())
+        && AS.equals(Syntax.text(node.children().get(CAST_OPERATOR)));
   }
 
   /** A literal is non-null, except the literal {@code null} itself. */
