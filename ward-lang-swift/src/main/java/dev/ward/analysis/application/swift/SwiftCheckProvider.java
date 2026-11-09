@@ -9,9 +9,13 @@ import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateEnumCasesCheck;
+import dev.ward.analysis.domain.swift.SwiftDuplicatedDictionaryKeyCheck;
 import dev.ward.analysis.domain.swift.SwiftForWhereCheck;
+import dev.ward.analysis.domain.swift.SwiftGenericTypeNameCheck;
 import dev.ward.analysis.domain.swift.SwiftHiddenFieldCheck;
+import dev.ward.analysis.domain.swift.SwiftNsobjectPreferIsEqualCheck;
 import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
+import dev.ward.analysis.domain.swift.SwiftRedundantSendableCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantVoidReturnCheck;
 import dev.ward.analysis.domain.swift.SwiftStaticOverFinalClassCheck;
 import java.util.Map;
@@ -55,6 +59,18 @@ public final class SwiftCheckProvider implements CheckProvider {
         Map.entry(
             "swift-static-over-final-class",
             toml -> new SwiftStaticOverFinalClassCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-duplicated-dictionary-key",
+            toml -> new SwiftDuplicatedDictionaryKeyCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-generic-type-name",
+            toml -> new SwiftGenericTypeNameCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-nsobject-prefer-isequal",
+            toml -> new SwiftNsobjectPreferIsEqualCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-redundant-sendable",
+            toml -> new SwiftRedundantSendableCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "swift-variable-distance",
             toml ->

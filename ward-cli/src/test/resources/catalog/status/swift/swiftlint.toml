@@ -38,7 +38,7 @@ discouraged-optional-collection = "implemented"
 duplicate-conditions = { status = "planned", issue = "#338" }
 duplicate-enum-cases = "implemented"
 duplicate-imports = { status = "planned", issue = "#338" }
-duplicated-key-in-dictionary-literal = { status = "planned", issue = "#338" }
+duplicated-key-in-dictionary-literal = "implemented"
 dynamic-inline = "implemented"
 empty-collection-literal = "implemented"
 empty-count = { status = "planned", issue = "#338" }
@@ -69,7 +69,7 @@ force-try = "implemented"
 force-unwrapping = { status = "planned", issue = "#338" }
 function-default-parameter-at-end = { status = "planned", issue = "#338" }
 function-name-whitespace = "implemented"
-generic-type-name = { status = "planned", issue = "#338" }
+generic-type-name = "implemented"
 ibinspectable-in-extension = "implemented"
 identical-operands = "implemented"
 implicit-getter = "implemented"
@@ -111,7 +111,7 @@ notification-center-detachment = "implemented"
 ns-number-init-as-function-reference = "implemented"
 nslocalizedstring-key = "implemented"
 nslocalizedstring-require-bundle = "implemented"
-nsobject-prefer-isequal = { status = "planned", issue = "#338" }
+nsobject-prefer-isequal = "implemented"
 number-separator = { status = "planned", issue = "#298" }
 object-literal = { status = "planned", issue = "#338" }
 one-declaration-per-file = { status = "planned", issue = "#338" }
@@ -152,7 +152,7 @@ redundant-final = { status = "planned", issue = "#338" }
 redundant-nil-coalescing = "implemented"
 redundant-objc-attribute = "implemented"
 redundant-self = { status = "planned", issue = "#298" }
-redundant-sendable = { status = "planned", issue = "#338" }
+redundant-sendable = "implemented"
 redundant-set-access-control = "implemented"
 redundant-string-enum-value = "implemented"
 redundant-type-annotation = { status = "planned", issue = "#338" }

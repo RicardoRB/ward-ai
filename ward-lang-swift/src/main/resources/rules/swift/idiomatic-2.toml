@@ -78,3 +78,15 @@ body = '''
 check = "swift-static-over-final-class"
 message = "prefer static over class in a final class"
 '''
+
+[[rules]]
+id = "ward:swift/generic-type-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-generic-type-name"
+message = "generic type name should be alphanumeric, start with an uppercase letter and have at most 20 characters"
+'''

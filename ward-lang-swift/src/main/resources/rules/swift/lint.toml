@@ -379,3 +379,39 @@ body = '''
 check = "swift-duplicate-enum-cases"
 message = "enum should not contain multiple cases with the same name"
 '''
+
+[[rules]]
+id = "ward:swift/duplicated-key-in-dictionary-literal"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicated-dictionary-key"
+message = "dictionary literal has a duplicated key that crashes at runtime"
+'''
+
+[[rules]]
+id = "ward:swift/nsobject-prefer-isequal"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-nsobject-prefer-isequal"
+message = "NSObject subclasses should implement isEqual instead of =="
+'''
+
+[[rules]]
+id = "ward:swift/redundant-sendable"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-redundant-sendable"
+message = "Sendable conformance is redundant on an actor-isolated type"
+'''

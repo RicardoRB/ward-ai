@@ -58,4 +58,39 @@ class SwiftLintChecksTest {
     assertThat(run(check, "class C {\n class func f() {}\n static func g() {}\n}\n")).isEmpty();
     assertThat(run(check, "final class C {\n static func f() {}\n}\n")).isEmpty();
   }
+
+  @Test
+  void duplicatedDictionaryKeyReportsEveryLaterRepeatOfASimpleKey() {
+    final RuleCheck check = new SwiftDuplicatedDictionaryKeyCheck(MESSAGE);
+
+    assertThat(lines(run(check, "let a = [1: \"1\", 2: \"2\", 1: \"one\"]\n"))).containsExactly(1);
+    assertThat(run(check, "let a = [UUID(): \"1\", UUID(): \"2\"]\n")).isEmpty();
+  }
+
+  @Test
+  void nsobjectPreferIsEqualReportsSelfEqualityOfObjectiveCClasses() {
+    final RuleCheck check = new SwiftNsobjectPreferIsEqualCheck(MESSAGE);
+
+    assertThat(lines(run(check, "class C: NSObject {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n")))
+        .containsExactly(2);
+    assertThat(run(check, "class C {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n")).isEmpty();
+  }
+
+  @Test
+  void redundantSendableReportsActorsAndMainActorTypes() {
+    final RuleCheck check = new SwiftRedundantSendableCheck(MESSAGE);
+
+    assertThat(lines(run(check, "actor A: Sendable {}\n"))).containsExactly(1);
+    assertThat(lines(run(check, "@MainActor class C: Sendable {}\n"))).containsExactly(1);
+    assertThat(run(check, "class C: Sendable {}\n")).isEmpty();
+  }
+
+  @Test
+  void genericTypeNameAcceptsUppercaseAlphanumericNamesOfAtMostTwentyCharacters() {
+    final RuleCheck check = new SwiftGenericTypeNameCheck(MESSAGE);
+
+    assertThat(lines(run(check, "func foo<T_Foo>() {}\n"))).containsExactly(1);
+    assertThat(lines(run(check, "func foo<type>() {}\n"))).containsExactly(1);
+    assertThat(run(check, "func foo<Element>() {}\n")).isEmpty();
+  }
 }
