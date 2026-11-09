@@ -149,20 +149,19 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   }
 
   @Test
-  void swiftLintRulesAreLearnedButSwiftFormatAndCompilerErrorsAreNot() {
+  void lintRulesAreLearnedButSwiftFormatAndCompilerErrorsAreNot() {
     final CheckReport report =
         new CheckReport(
             PROJECT,
             List.of(
                 failedResult(
-                    "swiftlint",
-                    finding("swiftlint", "force_cast", "Force casts should be avoided")),
+                    "checkstyle", finding("checkstyle", "AvoidStarImport", "Avoid star import")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("swiftlint:force_cast");
+    assertThat(outcome.ledger().records()).containsOnlyKeys("checkstyle:AvoidStarImport");
   }
 }

@@ -10,7 +10,7 @@ import Testing
 
     @Test func serviceSavesTheAddedItem() {
         let repository = InMemoryCartRepository()
-        CartService(repository: repository).addItem("Book")
+        CartService(cartRepository: repository).addItem("Book")
         #expect(repository.load().items == ["Book"])
     }
 }

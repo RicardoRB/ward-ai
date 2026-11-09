@@ -49,13 +49,7 @@ class InitSetupCatalogTest {
           SupportedQualityGates.ANDROID_UNIT_TEST,
           SupportedQualityGates.ANDROID_COVERAGE);
   private static final Set<String> SWIFT_GATES =
-      Set.of(
-          "swiftlint",
-          "harmonize",
-          "swift-build",
-          "swift-test",
-          "xcodebuild-test",
-          "swift-coverage");
+      Set.of("harmonize", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;

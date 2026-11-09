@@ -45,7 +45,8 @@ final class JsonDependencyCodec {
               all(dto.exports, SymbolDto::toSymbol),
               all(dto.imports, ReferenceDto::toReference),
               all(dto.declared, SymbolDto::toSymbol),
-              Set.copyOf(names(dto.usedNames))));
+              Set.copyOf(names(dto.usedNames)),
+              Set.copyOf(names(dto.assignedNames))));
     } catch (final JsonCodecException | IllegalArgumentException exception) {
       return Optional.empty();
     }
@@ -97,6 +98,7 @@ final class JsonDependencyCodec {
     public List<ReferenceDto> imports;
     public List<SymbolDto> declared;
     public List<String> usedNames;
+    public List<String> assignedNames;
 
     static SummaryDto from(final String key, final FileSummary summary) {
       final SummaryDto dto = new SummaryDto();
@@ -107,6 +109,7 @@ final class JsonDependencyCodec {
       dto.imports = summary.imports().stream().map(ReferenceDto::from).toList();
       dto.declared = summary.declared().stream().map(SymbolDto::from).toList();
       dto.usedNames = summary.usedNames().stream().sorted().toList();
+      dto.assignedNames = summary.assignedNames().stream().sorted().toList();
       return dto;
     }
   }
@@ -139,11 +142,13 @@ final class JsonDependencyCodec {
   public static final class ReferenceDto {
     public String specifier;
     public SpanDto span;
+    public boolean typeChecking;
 
     static ReferenceDto from(final Reference reference) {
       final ReferenceDto dto = new ReferenceDto();
       dto.specifier = reference.specifier();
       dto.span = SpanDto.from(reference.span());
+      dto.typeChecking = reference.typeChecking();
       return dto;
     }
 
@@ -151,7 +156,7 @@ final class JsonDependencyCodec {
       if (specifier == null) {
         throw new IllegalArgumentException("Cached reference is incomplete");
       }
-      return new Reference(specifier, span(span));
+      return new Reference(specifier, span(span), typeChecking);
     }
   }
 

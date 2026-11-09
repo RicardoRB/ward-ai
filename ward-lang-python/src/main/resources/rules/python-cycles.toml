@@ -1,0 +1,15 @@
+# Import-cycle rule for Python, replacing Pylint's cyclic-import. The whole-run graph rule in
+# ward-analysis-engine (CyclicImportRule) reports each cycle among the project's modules; the body
+# only names the check that the per-unit engine never runs.
+
+[[rules]]
+id = "ward:python/cyclic-import"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "cyclic-import"
+message = "cyclic import"
+'''

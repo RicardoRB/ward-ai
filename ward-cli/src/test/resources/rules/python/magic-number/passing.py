@@ -1,2 +1,9 @@
+LIMIT = 10
+
+
 def area(radius):
-    return 2 * radius * radius
+    return 3.14 * radius * radius
+
+
+def big(size):
+    return size > LIMIT or size == 2

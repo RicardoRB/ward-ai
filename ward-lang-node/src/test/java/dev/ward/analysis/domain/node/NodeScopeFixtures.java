@@ -23,6 +23,13 @@ final class NodeScopeFixtures {
     return scopes(AnalysisLanguage.TYPESCRIPT, source);
   }
 
+  /** Builds the scopes of TSX source, which recognizes JSX. */
+  static UnitScopes tsx(final String source) {
+    final SourceUnit unit = new SourceUnit("m.tsx", AnalysisLanguage.TYPESCRIPT, source);
+    return new NodeScopeAnalysis(environments -> Set.of())
+        .analyze(unit, new AntlrLanguageFrontend().parse(unit).tree());
+  }
+
   /** Builds the scopes of JavaScript source. */
   static UnitScopes javascript(final String source) {
     return scopes(AnalysisLanguage.JAVASCRIPT, source);

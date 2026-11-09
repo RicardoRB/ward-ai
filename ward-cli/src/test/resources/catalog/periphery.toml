@@ -17,9 +17,3 @@ name = "redundant-public-accessibility"
 presets = ["standard", "strict"]
 category = "dead-code"
 periphery = ["redundant-public-accessibility"]
-
-[[rule]]
-name = "superfluous-ignore-command"
-presets = ["standard", "strict"]
-category = "dead-code"
-periphery = ["superfluous-ignore-command"]

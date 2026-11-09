@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
 
-/** The rule files of a Swift project: its SwiftLint config. */
+/** The rule files of a Swift project: the SwiftLint files earlier inits wrote, if any. */
 public final class SwiftRuleFileTargets implements RuleFileTargets {
   /** Creates the targets; Swift needs no input beyond the project itself. */
   @Inject
@@ -19,6 +19,6 @@ public final class SwiftRuleFileTargets implements RuleFileTargets {
   public List<ConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
-    return SwiftConfigFiles.targets(project, preset);
+    return SwiftConfigFiles.targets(project);
   }
 }

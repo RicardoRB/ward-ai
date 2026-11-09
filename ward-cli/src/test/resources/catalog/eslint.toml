@@ -54,8 +54,6 @@ eslint = ["consistent-this"]
 
 [[rule]]
 name = "constructor-super"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["constructor-super"]
 biome = ["noInvalidConstructorSuper"]
 
@@ -103,8 +101,6 @@ biome = ["useConsistentFunctionStyle"]
 
 [[rule]]
 name = "getter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["getter-return"]
 biome = ["useGetterReturn"]
 
@@ -360,8 +356,6 @@ eslint = ["no-eval"]
 
 [[rule]]
 name = "no-ex-assign"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-ex-assign"]
 biome = ["noCatchAssign"]
 
@@ -540,8 +534,6 @@ eslint = ["no-new-wrappers"]
 
 [[rule]]
 name = "no-nonoctal-decimal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-nonoctal-decimal-escape"]
 biome = ["noNonoctalDecimalEscape"]
 
@@ -563,8 +555,6 @@ eslint = ["no-octal"]
 
 [[rule]]
 name = "no-octal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-octal-escape"]
 biome = ["noOctalEscape"]
 
@@ -657,8 +647,6 @@ biome = ["noCommaOperator"]
 
 [[rule]]
 name = "no-setter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-setter-return"]
 biome = ["noSetterReturn"]
 
@@ -751,8 +739,6 @@ biome = ["noUnsafeFinally"]
 
 [[rule]]
 name = "no-unsafe-negation"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-unsafe-negation"]
 biome = ["noUnsafeNegation"]
 
@@ -773,8 +759,6 @@ biome = ["noUnusedExpressions"]
 
 [[rule]]
 name = "no-unused-labels"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-unused-labels"]
 biome = ["noUnusedLabels"]
 
@@ -936,15 +920,11 @@ biome = ["usePromiseRejectErrors"]
 
 [[rule]]
 name = "prefer-regex-literals"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-regex-literals"]
 biome = ["useRegexLiterals"]
 
 [[rule]]
 name = "prefer-rest-params"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-rest-params"]
 biome = ["noArguments"]
 
@@ -977,8 +957,6 @@ eslint = ["require-atomic-updates"]
 
 [[rule]]
 name = "require-await"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["require-await"]
 eslint = ["require-await"]
 biome = ["useAwait"]

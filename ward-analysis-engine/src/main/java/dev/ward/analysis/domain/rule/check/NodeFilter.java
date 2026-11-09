@@ -95,9 +95,20 @@ public record NodeFilter(
     if (split < 0) {
       return selector.equals(node.kind());
     }
-    final String child = selector.substring(split + 1);
+    final String rest = selector.substring(split + 1);
     return parentOf(selector).equals(node.kind())
-        && node.children().stream().anyMatch(c -> child.equals(c.kind()));
+        && node.children().stream().anyMatch(child -> chainSelects(rest, child));
+  }
+
+  /** Tells whether {@code node} is the end of the chain {@code a>b>...}, each a direct child. */
+  private static boolean chainSelects(final String chain, final SyntaxNode node) {
+    final int split = separator(chain);
+    if (split < 0) {
+      return chain.equals(node.kind());
+    }
+    final String rest = chain.substring(split + 1);
+    return parentOf(chain).equals(node.kind())
+        && node.children().stream().anyMatch(child -> chainSelects(rest, child));
   }
 
   private static String parentOf(final String selector) {

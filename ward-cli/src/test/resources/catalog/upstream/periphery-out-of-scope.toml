@@ -1,0 +1,7 @@
+# Rules of periphery-3.8.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "suppression: Ward has no ignore comments (no suppressions), so a Periphery ignore command has no meaning once Periphery is gone"
+rules = [
+  "superfluous-ignore-command",
+]

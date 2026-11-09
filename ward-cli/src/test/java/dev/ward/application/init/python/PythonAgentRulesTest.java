@@ -40,10 +40,9 @@ class PythonAgentRulesTest {
   @Test
   void rulesForbidSuppressions() {
     final List<String> lines =
-        PythonAgentRules.lines(PROJECT, gates("ruff", "mypy"), QualityPreset.STANDARD, Set.of());
+        PythonAgentRules.lines(PROJECT, gates("mypy"), QualityPreset.STANDARD, Set.of());
 
-    assertThat(String.join("\n", lines))
-        .contains("`# noqa`", "`# type: ignore`", "per-file-ignores");
+    assertThat(String.join("\n", lines)).contains("`# type: ignore`");
   }
 
   @Test
@@ -72,7 +71,7 @@ class PythonAgentRulesTest {
         .contains("re-export openapi.json");
     assertThat(
             String.join(
-                "\n", PythonAgentRules.lines(api, gates("ruff"), QualityPreset.STANDARD, Set.of())))
+                "\n", PythonAgentRules.lines(api, gates("mypy"), QualityPreset.STANDARD, Set.of())))
         .doesNotContain("openapi.json");
   }
 
@@ -84,7 +83,7 @@ class PythonAgentRulesTest {
     assertThat(
             String.join(
                 "\n",
-                PythonAgentRules.lines(flask, gates("ruff"), QualityPreset.STANDARD, Set.of())))
+                PythonAgentRules.lines(flask, gates("mypy"), QualityPreset.STANDARD, Set.of())))
         .contains("`create_app`");
   }
 

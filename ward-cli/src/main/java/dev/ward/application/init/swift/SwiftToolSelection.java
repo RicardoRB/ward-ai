@@ -30,8 +30,7 @@ final class SwiftToolSelection {
         xcode
             ? scheme(ports.xcode().schemes(root), Optional.ofNullable(project.xcodeScheme()))
             : null,
-        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null,
-        ports.configs().userConfig(root, SwiftTools.SWIFTLINT_CONFIG).isPresent());
+        xcode ? (ports.xcode().macOsOnly(root) ? "macOS" : "iOS Simulator") : null);
   }
 
   /**

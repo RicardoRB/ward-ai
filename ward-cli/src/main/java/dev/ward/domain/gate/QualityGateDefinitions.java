@@ -47,7 +47,6 @@ public final class QualityGateDefinitions {
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),
           new Definition("django-check", "Django system checks", Phase.LOCAL, false),
           new Definition("pip-audit", "pip-audit", Phase.CI, false),
-          new Definition("swiftlint", "SwiftLint", Phase.FAST, true),
           new Definition("swift-build", "Swift build", Phase.LOCAL, false),
           new Definition("swift-test", "Swift tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),

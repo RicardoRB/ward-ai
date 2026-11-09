@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from fastapi import FastAPI
 
 from app.routers.orders import router

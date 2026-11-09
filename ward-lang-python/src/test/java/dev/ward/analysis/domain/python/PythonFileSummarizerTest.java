@@ -106,4 +106,11 @@ final class PythonFileSummarizerTest {
     assertThat(summary.imports()).isEmpty();
     assertThat(summary.path()).isEqualTo(SummaryFixtures.PATH);
   }
+
+  @Test
+  void aPythonSummaryNeverCarriesTheSwiftConformancePrefix() {
+    final FileSummary summary = summarize("class Canvas(Drawable):\n    pass\n");
+
+    assertThat(summary.usedNames()).noneMatch(name -> name.startsWith("conformance:"));
+  }
 }

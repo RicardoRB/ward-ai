@@ -1,8 +1,9 @@
+/// Adds items to the shopper's cart through a repository.
 public struct CartService {
     private let repository: CartRepository
 
-    public init(repository: CartRepository) {
-        self.repository = repository
+    public init(cartRepository: CartRepository) {
+        self.repository = cartRepository
     }
 
     public func addItem(_ item: String) {

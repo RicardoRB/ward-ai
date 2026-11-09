@@ -155,7 +155,7 @@ category = "naming"
 presets = ["standard", "strict"]
 body = '''
 check = "identifier-pattern"
-kinds = ["expr_stmt"]
+kinds = ["expr_stmt>'='", "expr_stmt>annassign"]
 inside = ["funcdef"]
 name = "NAME"
 pattern = "^_*[a-z][a-z0-9_]*$"
@@ -168,12 +168,13 @@ language = "python"
 capability = "SYNTAX"
 severity = "error"
 category = "coding"
-presets = ["standard", "strict"]
+presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["NUMBER"]
+inside = ["comparison>comp_op"]
 text = "^(?!(?:0|1|2)$)"
-message = "magic number; name it as a constant"
+message = "magic number in a comparison; name it as a constant"
 '''
 
 [[rules]]

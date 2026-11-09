@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class JsonAnalysisResultCodecTest {
+  private static final int OTHER_VERSION = 99;
   private static final String KEY = "key-1";
   private static final AnalysisFinding FINDING =
       new AnalysisFinding(
@@ -70,7 +71,11 @@ class JsonAnalysisResultCodecTest {
   @Test
   void previousFormatVersionIsAMiss() {
     final String value =
-        codec.encode(KEY, List.of(FINDING)).replace("\"formatVersion\":3", "\"formatVersion\":2");
+        codec
+            .encode(KEY, List.of(FINDING))
+            .replace(
+                version(JsonAnalysisResultCodec.FORMAT_VERSION),
+                version(JsonAnalysisResultCodec.FORMAT_VERSION - 1));
 
     assertThat(codec.decode(KEY, value)).isEmpty();
   }
@@ -78,7 +83,9 @@ class JsonAnalysisResultCodecTest {
   @Test
   void otherFormatVersionIsAMiss() {
     final String value =
-        codec.encode(KEY, List.of()).replace("\"formatVersion\":3", "\"formatVersion\":99");
+        codec
+            .encode(KEY, List.of())
+            .replace(version(JsonAnalysisResultCodec.FORMAT_VERSION), version(OTHER_VERSION));
 
     assertThat(codec.decode(KEY, value)).isEmpty();
   }
@@ -95,5 +102,9 @@ class JsonAnalysisResultCodecTest {
     final String value = codec.encode(KEY, List.of(FINDING)).replace("\"ERROR\"", "\"FATAL\"");
 
     assertThat(codec.decode(KEY, value)).isEmpty();
+  }
+
+  private static String version(final int version) {
+    return "\"formatVersion\":" + version;
   }
 }
