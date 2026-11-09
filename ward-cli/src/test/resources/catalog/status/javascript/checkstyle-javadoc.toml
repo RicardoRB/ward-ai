@@ -5,7 +5,7 @@ illegal-block-tag = { status = "planned", issue = "#296" }
 inappropriate-javadoc-block-tags-on-field = { status = "planned", issue = "#296" }
 inappropriate-javadoc-block-tags-on-package = "not-applicable"
 inappropriate-javadoc-block-tags-on-type = { status = "planned", issue = "#296" }
-invalid-javadoc-position = { status = "planned", issue = "#296" }
+invalid-javadoc-position = "implemented"
 javadoc-block-tag-location = { status = "planned", issue = "#296" }
 javadoc-content-location = "implemented"
 javadoc-end-comment-delimiter = { status = "planned", issue = "#296" }

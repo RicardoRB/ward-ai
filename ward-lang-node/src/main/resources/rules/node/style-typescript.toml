@@ -50,4 +50,5 @@ presets = ["standard", "strict"]
 body = '''
 check = "node-type-only-import"
 message = "all imports in the declaration are only used as types; use 'import type'"
+partial-message = "imports {names} are only used as type"
 '''
