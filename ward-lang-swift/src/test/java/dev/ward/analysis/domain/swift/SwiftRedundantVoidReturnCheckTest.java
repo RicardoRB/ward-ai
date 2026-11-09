@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 class SwiftRedundantVoidReturnCheckTest {
 
+  private static final int EXPECTED_COLUMN = 11;
+
   private static List<RuleMatch> run(final String source) {
     final SourceUnit unit = new SourceUnit("x.swift", AnalysisLanguage.SWIFT, source);
     return new SwiftRedundantVoidReturnCheck("redundant")
@@ -23,7 +25,7 @@ class SwiftRedundantVoidReturnCheckTest {
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).span().startLine()).isEqualTo(1);
-    assertThat(found.get(0).span().startColumn()).isEqualTo(11);
+    assertThat(found.get(0).span().startColumn()).isEqualTo(EXPECTED_COLUMN);
   }
 
   @Test

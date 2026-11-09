@@ -59,7 +59,8 @@ final class SwiftTrees {
     return out;
   }
 
-  private static void collectKind(final SyntaxNode node, final String kind, final List<SyntaxNode> out) {
+  private static void collectKind(
+      final SyntaxNode node, final String kind, final List<SyntaxNode> out) {
     if (kind.equals(node.kind())) {
       out.add(node);
     }

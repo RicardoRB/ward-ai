@@ -42,9 +42,8 @@ public final class SwiftDuplicateImportsCheck implements RuleCheck {
     for (int i = 0; i < imports.size(); i++) {
       final SyntaxNode node = imports.get(i);
       final String path = pathOf(node);
-      if (!conditional.get(i) && !seen.add(path)) {
-        matches.add(SwiftTrees.at(node, message));
-      } else if (!hasAttributes(node) && isSubmoduleOfOther(node, path, imports)) {
+      final boolean repeated = !conditional.get(i) && !seen.add(path);
+      if (repeated || !hasAttributes(node) && isSubmoduleOfOther(node, path, imports)) {
         matches.add(SwiftTrees.at(node, message));
       }
     }
@@ -75,7 +74,7 @@ public final class SwiftDuplicateImportsCheck implements RuleCheck {
   private static boolean isSubmoduleOfOther(
       final SyntaxNode node, final String path, final List<SyntaxNode> imports) {
     return imports.stream()
-        .filter(other -> other != node)
+        .filter(other -> !other.equals(node))
         .map(SwiftDuplicateImportsCheck::pathOf)
         .anyMatch(other -> !other.equals(path) && path.startsWith(other + DOT));
   }

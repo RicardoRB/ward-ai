@@ -16,6 +16,7 @@ import java.util.Set;
 public final class SwiftForWhereCheck implements RuleCheck {
 
   private static final String FOR_IN = "for_in_statement";
+  private static final int SINGLE = 1;
   private static final String IF = "if_statement";
   private static final String BODY = "code_block";
   private static final String WHERE = "where_clause";
@@ -24,7 +25,8 @@ public final class SwiftForWhereCheck implements RuleCheck {
   private static final String CONDITION = "condition";
   private static final String STATEMENT = "statement";
   private static final Set<String> STATEMENT_LISTS = Set.of("statements", "statements_impl");
-  private static final Set<String> PATTERNS = Set.of("optional_binding_condition", "case_condition");
+  private static final Set<String> PATTERNS =
+      Set.of("optional_binding_condition", "case_condition");
   private static final Set<String> COMBINATORS = Set.of("&&", "||");
 
   private final String message;
@@ -81,7 +83,7 @@ public final class SwiftForWhereCheck implements RuleCheck {
         SwiftTrees.child(branch, CONDITION_LIST)
             .map(list -> list.children().stream().filter(c -> CONDITION.equals(c.kind())).toList())
             .orElse(List.of());
-    if (conditions.size() != 1) {
+    if (conditions.size() != SINGLE) {
       return false;
     }
     final SyntaxNode condition = conditions.get(0);

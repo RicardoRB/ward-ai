@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Reports a {@code set} accessor whose new value ({@code newValue}, or the name in {@code set(name)})
- * is never used in its body, like SwiftLint's {@code unused_setter_value}. An empty setter of an
- * {@code override} is not reported. The grammar keeps accessors in the variable's code block, so the
- * accessor is found from its tokens: a {@code set} that follows {@code {} or {@code }} and opens a
- * brace block, optionally after a parenthesised name.
+ * Reports a {@code set} accessor whose new value ({@code newValue}, or the name in {@code
+ * set(name)}) is never used in its body, like SwiftLint's {@code unused_setter_value}. An empty
+ * setter of an {@code override} is not reported. The grammar keeps accessors in the variable's code
+ * block, so the accessor is found from its tokens: a {@code set} that follows {@code {} or {@code
+ * }} and opens a brace block, optionally after a parenthesised name.
  */
 public final class SwiftUnusedSetterValueCheck implements RuleCheck {
 
@@ -23,6 +23,8 @@ public final class SwiftUnusedSetterValueCheck implements RuleCheck {
   private static final String CLOSE_PARENTHESIS = ")";
   private static final String OVERRIDE = "override";
   private static final int OVERRIDE_LOOKBACK = 40;
+  private static final int CLOSE_AFTER_NAME = 3;
+  private static final int BODY_AFTER_NAME = 4;
 
   private final String message;
 
@@ -84,8 +86,9 @@ public final class SwiftUnusedSetterValueCheck implements RuleCheck {
       return set + 1;
     }
     final boolean named =
-        CLOSE_PARENTHESIS.equals(text(tokens, set + 3)) && OPEN.equals(text(tokens, set + 4));
-    return named ? set + 4 : -1;
+        CLOSE_PARENTHESIS.equals(text(tokens, set + CLOSE_AFTER_NAME))
+            && OPEN.equals(text(tokens, set + BODY_AFTER_NAME));
+    return named ? set + BODY_AFTER_NAME : -1;
   }
 
   private static String parameterName(final List<SyntaxNode> tokens, final int set) {

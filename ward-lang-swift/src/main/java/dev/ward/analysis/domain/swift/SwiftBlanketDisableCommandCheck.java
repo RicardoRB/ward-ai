@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
  * {@code disable} that is never re-enabled, a blanket {@code disable} of a rule already disabled,
  * and an {@code enable} of a rule that is not disabled, like SwiftLint's {@code
  * blanket_disable_command}. Only the rule identifiers are reported, at their own columns.
- * Simplification: the {@code allowed_rules} and {@code always_blanket_disable} options are not read.
+ * Simplification: the {@code allowed_rules} and {@code always_blanket_disable} options are not
+ * read.
  */
 public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
 
@@ -26,6 +27,9 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
       Pattern.compile("^//\\s*swiftlint:(disable|enable)(:(this|next|previous))?\\s+(.*)$");
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z0-9_]+");
   private static final String DISABLE = "disable";
+  private static final int ACTION_GROUP = 1;
+  private static final int MODIFIER_GROUP = 3;
+  private static final int RULES_GROUP = 4;
   private static final String ENABLE = "enable";
 
   private final String message;
@@ -56,14 +60,16 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
   }
 
   private void apply(
-      final SyntaxNode comment, final Map<String, Written> disabled, final List<RuleMatch> matches) {
+      final SyntaxNode comment,
+      final Map<String, Written> disabled,
+      final List<RuleMatch> matches) {
     final String text = comment.fields().get("text");
     final Matcher command = COMMAND.matcher(text);
-    if (!command.matches() || command.group(3) != null) {
+    if (!command.matches() || command.group(MODIFIER_GROUP) != null) {
       return;
     }
-    final String action = command.group(1);
-    for (final Written written : identifiers(comment, text, command.group(4))) {
+    final String action = command.group(ACTION_GROUP);
+    for (final Written written : identifiers(comment, text, command.group(RULES_GROUP))) {
       if (DISABLE.equals(action)) {
         disable(written, disabled, matches);
       } else if (ENABLE.equals(action)) {
@@ -95,17 +101,21 @@ public final class SwiftBlanketDisableCommandCheck implements RuleCheck {
     final int rulesStart = text.length() - rules.length();
     final Span start = comment.span();
     while (identifier.find()) {
-      final int index = rulesStart + identifier.start();
-      final Span span =
-          new Span(
-              start.startLine(),
-              start.startColumn() + index,
-              start.startLine(),
-              start.startColumn() + index,
-              start.startOffset() + index,
-              start.startOffset() + index);
-      out.add(new Written(identifier.group(), span));
+      out.add(written(start, rulesStart + identifier.start(), identifier.group()));
     }
     return out;
+  }
+
+  /** The identifier at {@code index} characters into the comment, with its position. */
+  private static Written written(final Span start, final int index, final String rule) {
+    final Span span =
+        new Span(
+            start.startLine(),
+            start.startColumn() + index,
+            start.startLine(),
+            start.startColumn() + index,
+            start.startOffset() + index,
+            start.startOffset() + index);
+    return new Written(rule, span);
   }
 }

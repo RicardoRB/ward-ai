@@ -37,21 +37,28 @@ public final class SwiftOrphanedDocCommentCheck implements RuleCheck {
     items.addAll(SwiftTrees.descendants(root, COMMENT));
     items.sort(Comparator.comparingInt(item -> item.span().startOffset()));
     final List<RuleMatch> matches = new ArrayList<>();
-    for (int i = 0; i < items.size(); i++) {
-      if (isDoc(items.get(i))) {
-        int next = i + 1;
-        while (next < items.size() && isDoc(items.get(next))) {
-          next++;
-        }
-        if (next < items.size() && isPlainComment(items.get(next))) {
-          matches.add(SwiftTrees.at(items.get(i), message));
-          i = next;
-        } else {
-          i = next - 1;
-        }
+    int index = 0;
+    while (index < items.size()) {
+      final int next = endOfDocRun(items, index);
+      if (next == index) {
+        index++;
+      } else if (next < items.size() && isPlainComment(items.get(next))) {
+        matches.add(SwiftTrees.at(items.get(index), message));
+        index = next + 1;
+      } else {
+        index = next;
       }
     }
     return List.copyOf(matches);
+  }
+
+  /** The index after the run of doc comments that starts at {@code index}, or {@code index}. */
+  private static int endOfDocRun(final List<SyntaxNode> items, final int index) {
+    int next = index;
+    while (next < items.size() && isDoc(items.get(next))) {
+      next++;
+    }
+    return next;
   }
 
   private static boolean isDoc(final SyntaxNode item) {

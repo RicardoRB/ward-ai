@@ -22,7 +22,8 @@ public final class SwiftCaptureVariableCheck implements RuleCheck {
   private static final String IDENTIFIER = "declaration_identifier";
   private static final String LAZY = "lazy";
   private static final Set<String> LOCAL_SCOPES =
-      Set.of("function_body", "initializer_body", "closure_expression", "code_block", "getter_clause");
+      Set.of(
+          "function_body", "initializer_body", "closure_expression", "code_block", "getter_clause");
 
   private final String message;
 
@@ -55,7 +56,8 @@ public final class SwiftCaptureVariableCheck implements RuleCheck {
     return names;
   }
 
-  private static void collectGlobals(final SyntaxNode node, final boolean local, final Set<String> names) {
+  private static void collectGlobals(
+      final SyntaxNode node, final boolean local, final Set<String> names) {
     if (VARIABLE.equals(node.kind()) && !local && !isLazy(node)) {
       SwiftTrees.descendants(node, IDENTIFIER).stream()
           .findFirst()

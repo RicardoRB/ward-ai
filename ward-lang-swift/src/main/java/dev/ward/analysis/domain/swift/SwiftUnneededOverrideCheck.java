@@ -25,6 +25,7 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
   private static final String CODE_BLOCK = "code_block";
   private static final String ATTRIBUTES = "attributes";
   private static final String OVERRIDE = "override";
+  private static final int SINGLE = 1;
   private static final String DEFAULT = "=";
   private static final String UNDERSCORE = "_";
   private static final String COLON = ":";
@@ -56,7 +57,9 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
 
   private static boolean isUnneeded(final SyntaxNode function) {
     final boolean overriding =
-        SwiftTrees.child(function, HEAD).map(head -> SwiftTrees.hasToken(head, OVERRIDE)).orElse(false);
+        SwiftTrees.child(function, HEAD)
+            .map(head -> SwiftTrees.hasToken(head, OVERRIDE))
+            .orElse(false);
     if (!overriding || hasAttributes(function)) {
       return false;
     }
@@ -65,7 +68,9 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
     return expected.isPresent() && onlyCallsSuper(function, expected.get());
   }
 
-  /** The call that forwards every parameter to {@code super}, or empty when a default is present. */
+  /**
+   * The call that forwards every parameter to {@code super}, or empty when a default is present.
+   */
   private static Optional<String> superCall(final SyntaxNode function, final String name) {
     final List<String> arguments = new ArrayList<>();
     for (final SyntaxNode parameter : parameters(function)) {
@@ -80,7 +85,9 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
   /** Attributes are children of the function head in the grammar, so both places are checked. */
   private static boolean hasAttributes(final SyntaxNode function) {
     return SwiftTrees.child(function, ATTRIBUTES).isPresent()
-        || SwiftTrees.child(function, HEAD).flatMap(head -> SwiftTrees.child(head, ATTRIBUTES)).isPresent();
+        || SwiftTrees.child(function, HEAD)
+            .flatMap(head -> SwiftTrees.child(head, ATTRIBUTES))
+            .isPresent();
   }
 
   private static List<SyntaxNode> parameters(final SyntaxNode function) {
@@ -100,7 +107,7 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
       }
       tokens.add(text);
     }
-    if (tokens.size() == 1) {
+    if (tokens.size() == SINGLE) {
       return tokens.get(0) + COLON + tokens.get(0);
     }
     final String label = UNDERSCORE.equals(tokens.get(0)) ? "" : tokens.get(0) + COLON;
@@ -109,7 +116,7 @@ public final class SwiftUnneededOverrideCheck implements RuleCheck {
 
   private static boolean onlyCallsSuper(final SyntaxNode function, final String expected) {
     final List<SyntaxNode> statements = bodyStatements(function);
-    if (statements.size() != 1) {
+    if (statements.size() != SINGLE) {
       return false;
     }
     final String call = SwiftTrees.compact(statements.get(0));

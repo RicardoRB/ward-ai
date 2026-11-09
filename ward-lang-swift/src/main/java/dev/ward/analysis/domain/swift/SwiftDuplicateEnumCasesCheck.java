@@ -48,12 +48,14 @@ public final class SwiftDuplicateEnumCasesCheck implements RuleCheck {
   /** Returns the case name nodes of {@code enumeration} whose name is declared more than once. */
   private static List<SyntaxNode> duplicates(final SyntaxNode enumeration) {
     final Map<String, List<SyntaxNode>> byName = new LinkedHashMap<>();
-    for (final SyntaxNode name : caseNames(enumeration)) {
-      byName.computeIfAbsent(SwiftTrees.compact(name), key -> new ArrayList<>()).add(name);
-    }
+    caseNames(enumeration).forEach(name -> addName(byName, name));
     final List<SyntaxNode> out = new ArrayList<>();
     byName.values().stream().filter(names -> names.size() > 1).forEach(out::addAll);
     return out;
+  }
+
+  private static void addName(final Map<String, List<SyntaxNode>> byName, final SyntaxNode name) {
+    byName.computeIfAbsent(SwiftTrees.compact(name), key -> new ArrayList<>()).add(name);
   }
 
   private static List<SyntaxNode> caseNames(final SyntaxNode enumeration) {

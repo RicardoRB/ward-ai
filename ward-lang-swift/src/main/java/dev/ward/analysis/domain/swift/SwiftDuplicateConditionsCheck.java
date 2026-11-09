@@ -64,13 +64,19 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
     final Map<Set<String>, List<SyntaxNode>> byConditions = new LinkedHashMap<>();
     SyntaxNode link = first;
     while (link != null) {
-      SwiftTrees.child(link, CONDITION_LIST).ifPresent(list ->
-          byConditions
-              .computeIfAbsent(conditionsOf(list), key -> new ArrayList<>())
-              .add(list));
-      link = SwiftTrees.child(link, ELSE).flatMap(clause -> SwiftTrees.child(clause, IF)).orElse(null);
+      final SyntaxNode current = link;
+      SwiftTrees.child(current, CONDITION_LIST).ifPresent(list -> addLink(byConditions, list));
+      link =
+          SwiftTrees.child(current, ELSE)
+              .flatMap(clause -> SwiftTrees.child(clause, IF))
+              .orElse(null);
     }
     report(byConditions, matches);
+  }
+
+  private static void addLink(
+      final Map<Set<String>, List<SyntaxNode>> groups, final SyntaxNode list) {
+    groups.computeIfAbsent(conditionsOf(list), key -> new ArrayList<>()).add(list);
   }
 
   private static Set<String> conditionsOf(final SyntaxNode list) {
@@ -91,24 +97,28 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
     report(asSets, matches);
   }
 
-  private static void collectCaseItems(final SyntaxNode node, final Map<String, List<SyntaxNode>> out) {
+  private static void collectCaseItems(
+      final SyntaxNode node, final Map<String, List<SyntaxNode>> out) {
     if (!CASE_CONTAINERS.contains(node.kind()) && !"switch_statement".equals(node.kind())) {
       return;
     }
     if (CASE_ITEM_LIST.equals(node.kind())) {
-      SwiftTrees.child(node, PATTERN).ifPresent(pattern -> {
-        final String key =
-            SwiftTrees.compact(pattern)
-                + SwiftTrees.child(node, WHERE).map(SwiftTrees::compact).orElse("");
-        out.computeIfAbsent(key, k -> new ArrayList<>()).add(node);
-      });
+      SwiftTrees.child(node, PATTERN)
+          .ifPresent(
+              pattern -> {
+                final String key =
+                    SwiftTrees.compact(pattern)
+                        + SwiftTrees.child(node, WHERE).map(SwiftTrees::compact).orElse("");
+                out.computeIfAbsent(key, k -> new ArrayList<>()).add(node);
+              });
     }
     for (final SyntaxNode child : node.children()) {
       collectCaseItems(child, out);
     }
   }
 
-  private void report(final Map<Set<String>, List<SyntaxNode>> groups, final List<RuleMatch> matches) {
+  private void report(
+      final Map<Set<String>, List<SyntaxNode>> groups, final List<RuleMatch> matches) {
     groups.values().stream()
         .filter(positions -> positions.size() > 1)
         .flatMap(List::stream)

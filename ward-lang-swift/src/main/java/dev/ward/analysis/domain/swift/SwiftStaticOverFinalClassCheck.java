@@ -41,7 +41,9 @@ public final class SwiftStaticOverFinalClassCheck implements RuleCheck {
 
   private void collect(
       final SyntaxNode node, final SyntaxNode enclosingClass, final List<RuleMatch> matches) {
-    if (MEMBERS.contains(node.kind()) && isClassMember(node) && isInFinalClass(node, enclosingClass)) {
+    if (MEMBERS.contains(node.kind())
+        && isClassMember(node)
+        && isInFinalClass(node, enclosingClass)) {
       matches.add(SwiftTrees.at(node, message));
     }
     final SyntaxNode scope = CLASS.equals(node.kind()) ? node : enclosingClass;
@@ -54,7 +56,8 @@ public final class SwiftStaticOverFinalClassCheck implements RuleCheck {
 
   /** A class member is reported when it is itself final or the class around it is final. */
   private static boolean isInFinalClass(final SyntaxNode member, final SyntaxNode enclosingClass) {
-    final boolean ownFinal = heads(member).stream().anyMatch(head -> SwiftTrees.hasToken(head, FINAL));
+    final boolean ownFinal =
+        heads(member).stream().anyMatch(head -> SwiftTrees.hasToken(head, FINAL));
     return ownFinal || enclosingClass != null && isFinal(enclosingClass);
   }
 

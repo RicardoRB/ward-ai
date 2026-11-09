@@ -10,16 +10,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Reports an identity {@code map} ({@code map { $0 }}, {@code map { x in x }}) on a value that is
- * a sequence, where {@code Array(sequence)} is the type-safe spelling, like SwiftLint's {@code
- * typesafe_array_init}. The {@code map} is reported. Simplification: SwiftLint asks the compiler for
- * the resolved {@code map}; here a receiver is a sequence when it is an array literal, a constructor
- * of a sequence type declared in the file, or a name whose declared type in the file is an array,
- * set, or generic parameter constrained to a sequence or collection.
+ * Reports an identity {@code map} ({@code map { $0 }}, {@code map { x in x }}) on a value that is a
+ * sequence, where {@code Array(sequence)} is the type-safe spelling, like SwiftLint's {@code
+ * typesafe_array_init}. The {@code map} is reported. Simplification: SwiftLint asks the compiler
+ * for the resolved {@code map}; here a receiver is a sequence when it is an array literal, a
+ * constructor of a sequence type declared in the file, or a name whose declared type in the file is
+ * an array, set, or generic parameter constrained to a sequence or collection.
  */
 public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
 
   private static final String CALL = "postfix_expression";
+  private static final int PARAMETER_GROUP = 2;
+  private static final int BODY_GROUP = 3;
   private static final String MAP = "map";
   private static final String DOT = ".";
   private static final Pattern IDENTITY_MAP =
@@ -55,8 +57,9 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
 
   /** The closure returns its own parameter: {@code $0}, {@code x in x}, or {@code return $0}. */
   private static boolean isIdentity(final Matcher identity) {
-    final String parameter = identity.group(2) != null ? identity.group(2) : "$0";
-    return parameter.equals(identity.group(3));
+    final String parameter =
+        identity.group(PARAMETER_GROUP) != null ? identity.group(PARAMETER_GROUP) : "$0";
+    return parameter.equals(identity.group(BODY_GROUP));
   }
 
   private static boolean isSequence(final String receiver, final String file) {
@@ -65,12 +68,15 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
     }
     final Matcher constructor = CONSTRUCTOR.matcher(receiver);
     if (constructor.matches()) {
-      return file.matches(".*(?:struct|class|enum)" + constructor.group(1) + ":[^{]*(?:" + SEQUENCE_TYPES + ").*");
+      return file.matches(
+          ".*(?:struct|class|enum)" + constructor.group(1) + ":[^{]*(?:" + SEQUENCE_TYPES + ").*");
     }
     return NAME.matcher(receiver).matches() && hasSequenceType(receiver, file);
   }
 
-  /** A name declared with an array or set type, or with a generic type constrained to a sequence. */
+  /**
+   * A name declared with an array or set type, or with a generic type constrained to a sequence.
+   */
   private static boolean hasSequenceType(final String name, final String file) {
     if (file.matches(".*\\b" + name + ":(?:\\[|Array<|Set<).*")) {
       return true;
@@ -89,7 +95,8 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
   private static Optional<SyntaxNode> mapOf(final SyntaxNode call) {
     final List<SyntaxNode> leaves = SwiftTrees.leaves(call);
     for (int i = 1; i < leaves.size(); i++) {
-      if (MAP.equals(leaves.get(i).fields().get("text")) && DOT.equals(leaves.get(i - 1).fields().get("text"))) {
+      if (MAP.equals(leaves.get(i).fields().get("text"))
+          && DOT.equals(leaves.get(i - 1).fields().get("text"))) {
         return Optional.of(leaves.get(i));
       }
     }

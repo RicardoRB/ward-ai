@@ -63,12 +63,18 @@ public final class SwiftNsobjectPreferIsEqualCheck implements RuleCheck {
 
   private static boolean isSelfEqual(final SyntaxNode function) {
     final boolean isStatic =
-        SwiftTrees.child(function, HEAD).map(head -> SwiftTrees.hasToken(head, "static")).orElse(false);
+        SwiftTrees.child(function, HEAD)
+            .map(head -> SwiftTrees.hasToken(head, "static"))
+            .orElse(false);
     final boolean named =
-        SwiftTrees.child(function, NAME).map(name -> "==".equals(SwiftTrees.compact(name))).orElse(false);
-    return isStatic && named && SwiftTrees.child(function, SIGNATURE)
-        .map(SwiftNsobjectPreferIsEqualCheck::hasSelfEqualSignature)
-        .orElse(false);
+        SwiftTrees.child(function, NAME)
+            .map(name -> "==".equals(SwiftTrees.compact(name)))
+            .orElse(false);
+    return isStatic
+        && named
+        && SwiftTrees.child(function, SIGNATURE)
+            .map(SwiftNsobjectPreferIsEqualCheck::hasSelfEqualSignature)
+            .orElse(false);
   }
 
   private static boolean hasSelfEqualSignature(final SyntaxNode signature) {
@@ -76,8 +82,8 @@ public final class SwiftNsobjectPreferIsEqualCheck implements RuleCheck {
   }
 
   /**
-   * The nearest enclosing declaration decides: a class is Objective-C when it is marked {@code @objc}
-   * or inherits {@code NSObject}; any other type declaration is not.
+   * The nearest enclosing declaration decides: a class is Objective-C when it is marked
+   * {@code @objc} or inherits {@code NSObject}; any other type declaration is not.
    */
   private static boolean isInObjcClass(final List<SyntaxNode> ancestors) {
     for (int i = ancestors.size() - 1; i >= 0; i--) {

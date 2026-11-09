@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports a {@code -> Void} or {@code -> ()} return clause of a function or closure signature, placed
- * just after the parameters, like SwiftLint's {@code redundant_void_return} with closures included.
- * Function types are not signatures and are never reported.
+ * Reports a {@code -> Void} or {@code -> ()} return clause of a function or closure signature,
+ * placed just after the parameters, like SwiftLint's {@code redundant_void_return} with closures
+ * included. Function types are not signatures and are never reported.
  */
 public final class SwiftRedundantVoidReturnCheck implements RuleCheck {
 

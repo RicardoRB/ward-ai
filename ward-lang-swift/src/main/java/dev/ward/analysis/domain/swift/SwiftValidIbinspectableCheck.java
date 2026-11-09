@@ -67,21 +67,25 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
 
   /** The children before the bindings: attributes, modifiers and the binding keyword. */
   private static List<SyntaxNode> header(final SyntaxNode declaration) {
-    return declaration.children().stream().filter(child -> !BINDINGS.contains(child.kind())).toList();
+    return declaration.children().stream()
+        .filter(child -> !BINDINGS.contains(child.kind()))
+        .toList();
   }
 
   private static boolean isInspectableInstanceVariable(final List<SyntaxNode> header) {
-    final boolean inspectable = header.stream().anyMatch(node -> SwiftTrees.compact(node).contains(IB_INSPECTABLE));
+    final boolean inspectable =
+        header.stream().anyMatch(node -> SwiftTrees.compact(node).contains(IB_INSPECTABLE));
     final boolean instance =
-        header.stream().noneMatch(node -> SwiftTrees.hasToken(node, STATIC) || SwiftTrees.hasToken(node, CLASS));
+        header.stream()
+            .noneMatch(
+                node -> SwiftTrees.hasToken(node, STATIC) || SwiftTrees.hasToken(node, CLASS));
     return inspectable && instance;
   }
 
   private static boolean hasViolation(final SyntaxNode declaration, final List<SyntaxNode> header) {
-    if (keyword(header).map(leaf -> LET.equals(leaf.fields().get("text"))).orElse(false)) {
-      return true;
-    }
-    return declaredType(declaration).map(type -> !isSupported(type)).orElse(true);
+    final boolean let =
+        keyword(header).map(leaf -> LET.equals(leaf.fields().get("text"))).orElse(false);
+    return let || declaredType(declaration).map(type -> !isSupported(type)).orElse(true);
   }
 
   /** The declared type text, without the optional markers, when there is an explicit type. */
@@ -104,7 +108,8 @@ public final class SwiftValidIbinspectableCheck implements RuleCheck {
   private static Optional<SyntaxNode> keyword(final List<SyntaxNode> header) {
     return header.stream()
         .flatMap(node -> SwiftTrees.leaves(node).stream())
-        .filter(leaf -> LET.equals(leaf.fields().get("text")) || VAR.equals(leaf.fields().get("text")))
+        .filter(
+            leaf -> LET.equals(leaf.fields().get("text")) || VAR.equals(leaf.fields().get("text")))
         .findFirst();
   }
 }
