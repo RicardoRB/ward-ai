@@ -58,7 +58,7 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   public List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
-    final Map<String, Set<String>> imports = NodeManifests.importsByDirectory(trees, manifests);
+    final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
     final Set<String> everywhere = new HashSet<>();
     imports.values().forEach(everywhere::addAll);
     final List<ProjectMatch> found = new ArrayList<>();

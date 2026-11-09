@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "knip-binaries"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["binaries"]
 
 [[rule]]
@@ -30,14 +28,11 @@ knip = ["devDependencies"]
 
 [[rule]]
 name = "knip-duplicates"
-presets = ["standard", "strict"]
-category = "dead-code"
 knip = ["duplicates"]
 
 [[rule]]
 name = "knip-enum-members"
-presets = ["standard", "strict"]
-category = "dead-code"
+not-applicable = { javascript = "JavaScript has no enum or namespace declarations, so there are no members to report" }
 knip = ["enumMembers"]
 
 [[rule]]
@@ -50,8 +45,7 @@ knip = ["files"]
 
 [[rule]]
 name = "knip-namespace-members"
-presets = ["standard", "strict"]
-category = "dead-code"
+not-applicable = { javascript = "JavaScript has no enum or namespace declarations, so there are no members to report" }
 knip = ["namespaceMembers"]
 
 [[rule]]

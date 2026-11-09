@@ -57,7 +57,7 @@ public final class NodeUnusedFileCheck implements RuleCheck, ProjectCheck {
     final NodeModuleResolver resolver =
         new NodeModuleResolver(new NodeProjectLayout(trees.keySet(), List.of(), List.of()));
     final Set<String> reached = new HashSet<>();
-    final Deque<String> queue = new ArrayDeque<>(NodeManifests.entryPaths(files, trees.keySet()));
+    final Deque<String> queue = new ArrayDeque<>(NodeEntryPoints.entryPaths(files, trees.keySet()));
     while (!queue.isEmpty()) {
       final String path = queue.poll();
       if (reached.add(path)) {

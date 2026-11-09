@@ -50,7 +50,7 @@ public final class NodeOptionalPeerCheck implements RuleCheck, ProjectCheck {
   public List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
-    final Map<String, Set<String>> imports = NodeManifests.importsByDirectory(trees, manifests);
+    final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
     final List<ProjectMatch> found = new ArrayList<>();
     for (final NodeManifests.Manifest owner : manifests.values()) {
       final Set<String> used = imports.getOrDefault(owner.directory(), Set.of());

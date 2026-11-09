@@ -232,3 +232,77 @@ body = '''
 check = "node-unused-type"
 message = "unused exported type '{value}': no file imports it"
 '''
+
+[[rules]]
+id = "ward:typescript/knip-binaries"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-binary"
+message = "unlisted binary '{value}': the package that provides it is not in this package.json"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-duplicates"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-duplicate-export"
+message = "'{value}' is exported under more than one name"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-enum-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-enum-member"
+message = "unused enum member '{value}'"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-namespace-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-namespace-member"
+message = "unused namespace member '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-binaries"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-binary"
+message = "unlisted binary '{value}': the package that provides it is not in this package.json"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-duplicates"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-duplicate-export"
+message = "'{value}' is exported under more than one name"
+'''
+
+

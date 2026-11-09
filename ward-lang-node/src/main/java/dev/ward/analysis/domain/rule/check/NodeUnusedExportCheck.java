@@ -58,7 +58,7 @@ public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
     final Set<String> imported = new HashSet<>();
     trees.values().forEach(tree -> imported.addAll(NodeFileFacts.importedMembers(tree)));
     final boolean everything = imported.contains(NAMESPACE);
-    final Set<String> entries = NodeManifests.entryPaths(files, trees.keySet());
+    final Set<String> entries = NodeEntryPoints.entryPaths(files, trees.keySet());
     final List<ProjectMatch> found = new ArrayList<>();
     trees.forEach(
         (path, tree) -> {

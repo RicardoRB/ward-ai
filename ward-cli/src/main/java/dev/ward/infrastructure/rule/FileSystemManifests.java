@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 /**
  * Reads the manifest files of a project, such as {@code package.json}, from the working tree. It
@@ -22,6 +23,9 @@ import java.util.TreeMap;
  * never read.
  */
 final class FileSystemManifests {
+
+  private static final String NODE_MODULES = "node_modules";
+  private static final String MANIFEST = "package.json";
 
   private FileSystemManifests() {}
 
@@ -44,7 +48,59 @@ final class FileSystemManifests {
     }
     final Set<String> ignored = ignored(root, executor);
     texts.keySet().removeIf(ignored::contains);
+    addInstalled(root, texts);
     return new ProjectFiles(texts);
+  }
+
+  /**
+   * Adds the {@code package.json} of each installed package directly under {@code node_modules},
+   * and of each scoped package, and nothing else under it. Git ignores {@code node_modules}, so
+   * these are not filtered.
+   */
+  private static void addInstalled(final Path root, final Map<String, String> texts) {
+    final Path modules = root.resolve(NODE_MODULES);
+    if (!Files.isDirectory(modules)) {
+      return;
+    }
+    try (Stream<Path> entries = Files.list(modules)) {
+      for (final Path entry : entries.toList()) {
+        if (nameOf(entry).startsWith("@")) {
+          addScoped(root, entry, texts);
+        } else {
+          addManifest(root, entry, texts);
+        }
+      }
+    } catch (final IOException exception) {
+      throw new WardException(
+          "Could not list the installed packages under " + modules + ".", exception);
+    }
+  }
+
+  private static void addScoped(final Path root, final Path scope, final Map<String, String> texts)
+      throws IOException {
+    if (!Files.isDirectory(scope)) {
+      return;
+    }
+    try (Stream<Path> packages = Files.list(scope)) {
+      for (final Path entry : packages.toList()) {
+        addManifest(root, entry, texts);
+      }
+    }
+  }
+
+  private static void addManifest(
+      final Path root, final Path directory, final Map<String, String> texts) throws IOException {
+    final Path manifest = directory.resolve(MANIFEST);
+    if (Files.isRegularFile(manifest)) {
+      texts.put(
+          root.relativize(manifest).toString().replace('\\', '/'),
+          Files.readString(manifest, StandardCharsets.UTF_8));
+    }
+  }
+
+  private static String nameOf(final Path path) {
+    final Path name = path.getFileName();
+    return name == null ? "" : name.toString();
   }
 
   /** The untracked files that Git ignores, relative to {@code root}; empty when Git cannot say. */

@@ -120,13 +120,21 @@ class RuleCatalogFixturesTest {
         findings);
   }
 
+  /** The project folder of a case: {@code passing-project} for a passing case that has one. */
+  private static Path projectFolder(final Path file) {
+    final Path own = file.resolveSibling("passing-project");
+    final boolean passing =
+        file.getFileName().toString().startsWith(PASSING) && Files.isDirectory(own);
+    return passing ? own : file.resolveSibling("project");
+  }
+
   /**
    * The other source files of a fixture's project, in the language of the rule, by their path in
    * the project folder. They are read for cross-file facts only.
    */
   private static List<SourceUnit> otherSources(final Path file, final AnalysisLanguage language)
       throws IOException {
-    final Path project = file.resolveSibling("project");
+    final Path project = projectFolder(file);
     if (!Files.isDirectory(project)) {
       return List.of();
     }
