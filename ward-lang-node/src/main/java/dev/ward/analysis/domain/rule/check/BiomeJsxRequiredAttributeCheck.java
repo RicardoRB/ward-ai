@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Reports a JSX element that lacks the attribute, at the element, as Biome does. An element is
- * named as written, or as {@code name[attribute=value]} for an element that only counts with that
- * static attribute value. With allowed values, a static value outside them is reported at the
- * value. A spread attribute can supply the attribute when {@code silentOnSpread} is set, and then
- * the element stays silent.
+ * named by a {@link JsxElementSpec}. A static value outside the allowed values is reported at the
+ * value, and a static value that matches the invalid pattern at the attribute name. A spread
+ * attribute can supply the attribute when {@code silentOnSpread} is set, and then the element stays
+ * silent.
  */
 public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
 
@@ -20,29 +21,46 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
 
   private final List<JsxElementSpec> elements;
   private final String attribute;
-  private final Set<String> values;
-  private final boolean silentOnSpread;
+  private final ValueRule rule;
   private final String message;
+
+  /**
+   * What a present attribute may hold: the allowed static values, a pattern for invalid static
+   * values, and whether a spread silences the check.
+   *
+   * @param values the allowed static values; empty to allow any value
+   * @param invalid the pattern a static value must not match, or {@code null} for none
+   * @param silentOnSpread whether a spread attribute on the element silences the check
+   */
+  public record ValueRule(Set<String> values, Pattern invalid, boolean silentOnSpread) {
+
+    /** Copies the allowed values. */
+    public ValueRule {
+      values = Set.copyOf(values);
+    }
+
+    /** A rule that allows any value and never silences on a spread. */
+    public static ValueRule any() {
+      return new ValueRule(Set.of(), null, false);
+    }
+  }
 
   /**
    * Creates the check.
    *
-   * @param elements the element names to check, compared as written
+   * @param elements the elements to check
    * @param attribute the attribute the element must have
-   * @param values the allowed static values; empty to allow any value
-   * @param silentOnSpread whether a spread attribute on the element silences the check
+   * @param rule the rule for the attribute's value and spreads
    * @param message the message of each finding
    */
   public BiomeJsxRequiredAttributeCheck(
       final Set<String> elements,
       final String attribute,
-      final Set<String> values,
-      final boolean silentOnSpread,
+      final ValueRule rule,
       final String message) {
     this.elements = elements.stream().map(JsxElementSpec::parse).toList();
     this.attribute = Objects.requireNonNull(attribute, "attribute");
-    this.values = Set.copyOf(values);
-    this.silentOnSpread = silentOnSpread;
+    this.rule = Objects.requireNonNull(rule, "rule");
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -51,13 +69,13 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> elements.stream().anyMatch(spec -> spec.selects(visit.node())))
-        .filter(visit -> !(silentOnSpread && hasSpread(visit.node())))
+        .filter(visit -> !(rule.silentOnSpread() && hasSpread(visit.node())))
         .flatMap(visit -> violation(visit.node()).stream())
         .map(node -> CheckSupport.at(node.span(), message))
         .toList();
   }
 
-  /** The node the finding sits on: the element when the attribute is missing, else the value. */
+  /** The node the finding sits on: the element, the attribute name, or the value. */
   private Optional<SyntaxNode> violation(final SyntaxNode element) {
     final Optional<SyntaxNode> present =
         JsxAttributes.of(element).stream()
@@ -66,42 +84,20 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
     if (present.isEmpty()) {
       return Optional.of(element);
     }
-    if (values.isEmpty()) {
+    final Optional<String> literal = JsxAttributes.literal(present.get());
+    if (literal.isEmpty()) {
       return Optional.empty();
     }
-    return JsxAttributes.literal(present.get())
-        .filter(value -> !values.contains(value))
-        .flatMap(value -> JsxAttributes.value(present.get()));
+    if (rule.invalid() != null && rule.invalid().matcher(literal.get()).find()) {
+      return present;
+    }
+    if (rule.values().isEmpty() || rule.values().contains(literal.get())) {
+      return Optional.empty();
+    }
+    return JsxAttributes.value(present.get());
   }
 
   /** A spread is a jsxSpreadAttribute inside an attribute node of the element. */
-  /** A spread is a jsxSpreadAttribute inside an attribute node of the element. */
-  /** An element name, with an optional static attribute value that it must have. */
-  private record Spec(String name, String attribute, String value) {
-
-    static Spec parse(final String text) {
-      final int open = text.indexOf('[');
-      if (open < 0) {
-        return new Spec(text, "", "");
-      }
-      final String condition = text.substring(open + 1, text.length() - 1);
-      final int equals = condition.indexOf('=');
-      return new Spec(
-          text.substring(0, open), condition.substring(0, equals), condition.substring(equals + 1));
-    }
-
-    boolean selects(final SyntaxNode element) {
-      if (!name.equals(JsxAttributes.elementName(element))) {
-        return false;
-      }
-      return attribute.isEmpty()
-          || JsxAttributes.of(element).stream()
-              .filter(candidate -> attribute.equals(JsxAttributes.name(candidate)))
-              .anyMatch(
-                  candidate -> JsxAttributes.literal(candidate).filter(value::equals).isPresent());
-    }
-  }
-
   private static boolean hasSpread(final SyntaxNode element) {
     return JsxAttributes.of(element).stream()
         .anyMatch(

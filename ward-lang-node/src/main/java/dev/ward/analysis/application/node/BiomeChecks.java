@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
+import dev.ward.analysis.domain.rule.check.BiomeJsxEmptyElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
@@ -52,6 +53,12 @@ final class BiomeChecks {
         entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
         entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
         entry(
+            "node-jsx-empty-element",
+            toml ->
+                new BiomeJsxEmptyElementCheck(
+                    TomlValues.optionalStrings(toml, "elements"),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
             "node-jsx-duplicate-props",
             toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
         entry(
@@ -72,11 +79,14 @@ final class BiomeChecks {
   }
 
   private static RuleCheck requiredAttribute(final TomlParseResult toml) {
+    final String invalid = toml.getString("invalid");
     return new BiomeJsxRequiredAttributeCheck(
         TomlValues.optionalStrings(toml, "elements"),
         TomlValues.required(toml, "attribute"),
-        TomlValues.optionalStrings(toml, "values"),
-        toml.getBoolean("silent-on-spread", () -> false),
+        new BiomeJsxRequiredAttributeCheck.ValueRule(
+            TomlValues.optionalStrings(toml, "values"),
+            invalid == null ? null : Pattern.compile(invalid),
+            toml.getBoolean("silent-on-spread", () -> false)),
         TomlValues.required(toml, MESSAGE));
   }
 

@@ -281,3 +281,59 @@ pairs = ["onMouseOver:onFocus", "onMouseOut:onBlur"]
 exempt = []
 message = "a mouse handler needs the matching focus or blur handler too"
 '''
+
+[[rules]]
+id = "ward:javascript/use-anchor-content"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["a"]
+message = "an anchor needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-anchor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["a"]
+attribute = "href"
+invalid = '^(?:|#|javascript:.*)$'
+message = "an anchor needs a real href: not empty, not #, and not javascript:"
+'''
+
+[[rules]]
+id = "ward:typescript/use-anchor-content"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["a"]
+message = "an anchor needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-anchor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["a"]
+attribute = "href"
+invalid = '^(?:|#|javascript:.*)$'
+message = "an anchor needs a real href: not empty, not #, and not javascript:"
+'''
