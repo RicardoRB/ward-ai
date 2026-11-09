@@ -14,6 +14,7 @@ final class PythonStatements {
   private static final String ANNASSIGN = "annassign";
   private static final String AUGASSIGN = "augassign";
   private static final int TARGET_AFTER_AS = 2;
+  private static final int NAMED_EXPRESSION_PARTS = 3;
   private static final int SINGLE = 1;
 
   private final ScopeBuilder builder;
@@ -41,6 +42,18 @@ final class PythonStatements {
         bindings.target(parts.get(index), false);
       }
     }
+  }
+
+  /** An assignment expression {@code name := value}; a plain expression has one part. */
+  void namedExpression(final SyntaxNode node) {
+    final List<SyntaxNode> parts = node.children();
+    if (parts.size() != NAMED_EXPRESSION_PARTS) {
+      parts.forEach(visit);
+      return;
+    }
+    visit.accept(parts.get(NAMED_EXPRESSION_PARTS - 1));
+    PythonNames.plainName(parts.get(0))
+        .ifPresentOrElse(bindings::walrus, () -> visit.accept(parts.get(0)));
   }
 
   private void annotated(final SyntaxNode target, final SyntaxNode annotation) {

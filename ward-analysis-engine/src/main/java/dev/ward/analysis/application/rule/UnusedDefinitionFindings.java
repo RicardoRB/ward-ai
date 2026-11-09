@@ -29,8 +29,22 @@ public final class UnusedDefinitionFindings {
   /** The rule id for unused classes. */
   public static final String CLASS_ID = "ward:python/unused-class";
 
+  /** The rule id for unused methods. */
+  public static final String METHOD_ID = "ward:python/unused-method";
+
+  /** The rule id for unused properties. */
+  public static final String PROPERTY_ID = "ward:python/unused-property";
+
+  /** The rule id for unused instance attributes. */
+  public static final String ATTRIBUTE_ID = "ward:python/unused-attribute";
+
   private static final Map<String, String> KINDS =
-      Map.of(FUNCTION_ID, "function", CLASS_ID, "class");
+      Map.of(
+          FUNCTION_ID, "function",
+          CLASS_ID, "class",
+          METHOD_ID, "method",
+          PROPERTY_ID, "property",
+          ATTRIBUTE_ID, "attribute");
   private static final String PYTHON_SUFFIX = ".py";
   private static final String DUNDER = "__";
   private static final String TEST_PREFIX = "test";

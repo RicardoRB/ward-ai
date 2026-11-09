@@ -101,6 +101,11 @@ final class Probe {
             .replace(']', '>');
   }
 
+  /** The nullness of the last occurrence of {@code token}. */
+  dev.ward.analysis.domain.types.Nullness nullness(final String token) {
+    return at(span(token)).nullness(span(token));
+  }
+
   Optional<CallTarget> call(final String token) {
     return at(span(token)).callTarget(span(token));
   }

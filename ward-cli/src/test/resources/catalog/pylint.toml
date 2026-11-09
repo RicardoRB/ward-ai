@@ -13,21 +13,8 @@ category = "pylint"
 pylint = ["abstract-method"]
 
 [[rule]]
-name = "access-member-before-definition"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["access-member-before-definition"]
-
-[[rule]]
-name = "anomalous-backslash-in-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["anomalous-backslash-in-string"]
-
-[[rule]]
 name = "anomalous-unicode-escape-in-string"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["anomalous-unicode-escape-in-string"]
 
 [[rule]]
@@ -49,15 +36,8 @@ category = "pylint"
 pylint = ["arguments-renamed"]
 
 [[rule]]
-name = "assert-on-tuple"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["assert-on-tuple"]
-
-[[rule]]
 name = "assigning-non-slot"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["assigning-non-slot"]
 
 [[rule]]
@@ -73,15 +53,8 @@ category = "pylint"
 pylint = ["assignment-from-none"]
 
 [[rule]]
-name = "async-context-manager-with-regular-with"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["async-context-manager-with-regular-with"]
-
-[[rule]]
 name = "attribute-defined-outside-init"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["attribute-defined-outside-init"]
 
 [[rule]]
@@ -93,7 +66,6 @@ pylint = ["bad-builtin"]
 [[rule]]
 name = "bad-chained-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-chained-comparison"]
 
 [[rule]]
@@ -101,12 +73,6 @@ name = "bad-classmethod-argument"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["bad-classmethod-argument"]
-
-[[rule]]
-name = "bad-configuration-section"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-configuration-section"]
 
 [[rule]]
 name = "bad-docstring-quotes"
@@ -120,40 +86,20 @@ presets = ["strict"]
 category = "pylint"
 pylint = ["bad-dunder-name"]
 
-[[rule]]
-name = "bad-except-order"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-except-order"]
 
 [[rule]]
 name = "bad-exception-cause"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-exception-cause"]
 
 [[rule]]
-name = "bad-file-encoding"
+name = "bad-except-order"
 presets = ["standard", "strict"]
-category = "linter"
-pylint = ["bad-file-encoding"]
-
-[[rule]]
-name = "bad-format-character"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-format-character"]
-
-[[rule]]
-name = "bad-format-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-format-string"]
+pylint = ["bad-except-order"]
 
 [[rule]]
 name = "bad-format-string-key"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-format-string-key"]
 
 [[rule]]
@@ -169,12 +115,6 @@ category = "linter"
 pylint = ["bad-mcs-method-argument"]
 
 [[rule]]
-name = "bad-plugin-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["bad-plugin-value"]
-
-[[rule]]
 name = "bad-reversed-sequence"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -183,19 +123,16 @@ pylint = ["bad-reversed-sequence"]
 [[rule]]
 name = "bad-super-call"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-super-call"]
 
 [[rule]]
 name = "bad-thread-instantiation"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-thread-instantiation"]
 
 [[rule]]
 name = "bare-name-capture-pattern"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bare-name-capture-pattern"]
 
 [[rule]]
@@ -205,51 +142,28 @@ category = "pylint"
 pylint = ["boolean-datetime"]
 
 [[rule]]
-name = "break-in-finally"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["break-in-finally"]
-
-[[rule]]
 name = "broad-exception-raised"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["broad-exception-raised"]
-
-[[rule]]
-name = "catching-non-exception"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["catching-non-exception"]
-
-[[rule]]
-name = "cell-var-from-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["cell-var-from-loop"]
 
 [[rule]]
 name = "chained-comparison"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["chained-comparison"]
 
 [[rule]]
 name = "chained-comparison-all-equal"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["chained-comparison-all-equal"]
 
 [[rule]]
 name = "class-variable-slots-conflict"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["class-variable-slots-conflict"]
 
 [[rule]]
 name = "comparison-of-constants"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["comparison-of-constants"]
 
 [[rule]]
@@ -261,7 +175,6 @@ pylint = ["comparison-with-callable"]
 [[rule]]
 name = "condition-evals-to-constant"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["condition-evals-to-constant"]
 
 [[rule]]
@@ -273,14 +186,7 @@ pylint = ["confusing-consecutive-elif"]
 [[rule]]
 name = "confusing-with-statement"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["confusing-with-statement"]
-
-[[rule]]
-name = "consider-iterating-dictionary"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["consider-iterating-dictionary"]
 
 [[rule]]
 name = "consider-math-not-float"
@@ -291,7 +197,6 @@ pylint = ["consider-math-not-float"]
 [[rule]]
 name = "consider-merging-isinstance"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-merging-isinstance"]
 
 [[rule]]
@@ -303,7 +208,6 @@ pylint = ["consider-refactoring-into-while-condition"]
 [[rule]]
 name = "consider-swap-variables"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-swap-variables"]
 
 [[rule]]
@@ -331,12 +235,6 @@ category = "pylint"
 pylint = ["consider-using-augmented-assign"]
 
 [[rule]]
-name = "consider-using-dict-comprehension"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-dict-comprehension"]
-
-[[rule]]
 name = "consider-using-dict-items"
 presets = ["standard", "strict"]
 category = "linter"
@@ -357,43 +255,31 @@ pylint = ["consider-using-f-string"]
 [[rule]]
 name = "consider-using-from-import"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-from-import"]
-
-[[rule]]
-name = "consider-using-generator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-generator"]
 
 [[rule]]
 name = "consider-using-get"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-get"]
 
 [[rule]]
 name = "consider-using-in"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-in"]
 
 [[rule]]
 name = "consider-using-join"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-join"]
 
 [[rule]]
 name = "consider-using-max-builtin"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-max-builtin"]
 
 [[rule]]
 name = "consider-using-min-builtin"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-min-builtin"]
 
 [[rule]]
@@ -403,21 +289,13 @@ category = "pylint"
 pylint = ["consider-using-namedtuple-or-dataclass"]
 
 [[rule]]
-name = "consider-using-set-comprehension"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["consider-using-set-comprehension"]
-
-[[rule]]
 name = "consider-using-sys-exit"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-sys-exit"]
 
 [[rule]]
 name = "consider-using-ternary"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-ternary"]
 
 [[rule]]
@@ -429,13 +307,11 @@ pylint = ["consider-using-tuple"]
 [[rule]]
 name = "consider-using-with"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-with"]
 
 [[rule]]
 name = "contextmanager-generator-missing-cleanup"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["contextmanager-generator-missing-cleanup"]
 
 [[rule]]
@@ -445,52 +321,9 @@ category = "pylint"
 pylint = ["cyclic-import"]
 
 [[rule]]
-name = "dangerous-default-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["dangerous-default-value"]
-
-[[rule]]
 name = "declare-non-slot"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["declare-non-slot"]
-
-[[rule]]
-name = "deprecated-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-argument"]
-
-[[rule]]
-name = "deprecated-attribute"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-attribute"]
-
-[[rule]]
-name = "deprecated-class"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-class"]
-
-[[rule]]
-name = "deprecated-decorator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-decorator"]
-
-[[rule]]
-name = "deprecated-method"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-method"]
-
-[[rule]]
-name = "deprecated-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["deprecated-module"]
 
 [[rule]]
 name = "dict-init-mutate"
@@ -525,25 +358,11 @@ pylint = ["docstring-first-line-empty"]
 [[rule]]
 name = "duplicate-argument-name"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["duplicate-argument-name"]
-
-[[rule]]
-name = "duplicate-except"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["duplicate-except"]
-
-[[rule]]
-name = "duplicate-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["duplicate-key"]
 
 [[rule]]
 name = "duplicate-string-formatting-argument"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["duplicate-string-formatting-argument"]
 
 [[rule]]
@@ -559,57 +378,18 @@ category = "pylint"
 pylint = ["eq-without-hash"]
 
 [[rule]]
-name = "eval-used"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["eval-used"]
-
-[[rule]]
-name = "exec-used"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["exec-used"]
-
-[[rule]]
 name = "expression-not-assigned"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["expression-not-assigned"]
-
-[[rule]]
-name = "f-string-without-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["f-string-without-interpolation"]
-
-[[rule]]
-name = "forgotten-debug-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["forgotten-debug-statement"]
-
-[[rule]]
-name = "format-combined-specification"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["format-combined-specification"]
-
-[[rule]]
-name = "format-needs-mapping"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["format-needs-mapping"]
 
 [[rule]]
 name = "format-string-without-interpolation"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["format-string-without-interpolation"]
 
 [[rule]]
 name = "function-redefined"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["function-redefined"]
 
 [[rule]]
@@ -619,34 +399,10 @@ category = "pylint"
 pylint = ["global-variable-undefined"]
 
 [[rule]]
-name = "implicit-flag-alias"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["implicit-flag-alias"]
-
-[[rule]]
-name = "implicit-str-concat"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["implicit-str-concat"]
-
-[[rule]]
-name = "import-error"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["import-error"]
-
-[[rule]]
 name = "import-outside-toplevel"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["import-outside-toplevel"]
-
-[[rule]]
-name = "impossible-comparison"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["impossible-comparison"]
 
 [[rule]]
 name = "inconsistent-mro"
@@ -656,7 +412,7 @@ pylint = ["inconsistent-mro"]
 
 [[rule]]
 name = "inconsistent-quotes"
-presets = ["standard", "strict"]
+presets = ["strict"]
 category = "pylint"
 pylint = ["inconsistent-quotes"]
 
@@ -675,7 +431,6 @@ pylint = ["inherit-non-class"]
 [[rule]]
 name = "init-is-generator"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["init-is-generator"]
 
 [[rule]]
@@ -689,18 +444,6 @@ name = "invalid-bytes-returned"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["invalid-bytes-returned"]
-
-[[rule]]
-name = "invalid-character-carriage-return"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["invalid-character-carriage-return"]
-
-[[rule]]
-name = "invalid-characters-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["invalid-characters-in-docstring"]
 
 [[rule]]
 name = "invalid-class-object"
@@ -779,12 +522,6 @@ name = "invalid-metaclass"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["invalid-metaclass"]
-
-[[rule]]
-name = "invalid-name"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["invalid-name"]
 
 [[rule]]
 name = "invalid-overridden-method"
@@ -871,52 +608,16 @@ category = "pylint"
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
-name = "literal-comparison"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["literal-comparison"]
-
-[[rule]]
-name = "logging-format-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-format-interpolation"]
-
-[[rule]]
 name = "logging-format-truncated"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["logging-format-truncated"]
 
 [[rule]]
-name = "logging-fstring-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-fstring-interpolation"]
-
-[[rule]]
-name = "logging-not-lazy"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-not-lazy"]
-
-[[rule]]
 name = "logging-unsupported-format"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["logging-unsupported-format"]
-
-[[rule]]
-name = "looping-through-iterator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["looping-through-iterator"]
-
-[[rule]]
-name = "lost-exception"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["lost-exception"]
 
 [[rule]]
 name = "match-class-bind-self"
@@ -955,12 +656,6 @@ category = "pylint"
 pylint = ["misplaced-format-function"]
 
 [[rule]]
-name = "misplaced-future"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["misplaced-future"]
-
-[[rule]]
 name = "missing-any-param-doc"
 presets = ["strict"]
 category = "pylint"
@@ -971,24 +666,6 @@ name = "missing-class-docstring"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["missing-class-docstring"]
-
-[[rule]]
-name = "missing-format-argument-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-argument-key"]
-
-[[rule]]
-name = "missing-format-attribute"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-attribute"]
-
-[[rule]]
-name = "missing-format-string-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-string-key"]
 
 [[rule]]
 name = "missing-function-docstring"
@@ -1039,12 +716,6 @@ category = "pylint"
 pylint = ["missing-return-type-doc"]
 
 [[rule]]
-name = "missing-timeout"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-timeout"]
-
-[[rule]]
 name = "missing-type-doc"
 presets = ["strict"]
 category = "pylint"
@@ -1061,12 +732,6 @@ name = "missing-yield-type-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["missing-yield-type-doc"]
-
-[[rule]]
-name = "mixed-format-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "modified-iterating-dict"
@@ -1093,12 +758,6 @@ category = "pylint"
 pylint = ["multiple-constructor-doc"]
 
 [[rule]]
-name = "multiple-imports"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["multiple-imports"]
-
-[[rule]]
 name = "no-else-break"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1117,40 +776,16 @@ category = "pylint"
 pylint = ["no-else-raise"]
 
 [[rule]]
-name = "no-member"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-member"]
-
-[[rule]]
 name = "no-method-argument"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["no-method-argument"]
 
 [[rule]]
-name = "no-name-in-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-name-in-module"]
-
-[[rule]]
-name = "no-self-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-self-argument"]
-
-[[rule]]
 name = "no-value-for-parameter"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["no-value-for-parameter"]
-
-[[rule]]
-name = "non-ascii-file-name"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["non-ascii-file-name"]
 
 [[rule]]
 name = "non-ascii-module-import"
@@ -1175,12 +810,6 @@ name = "non-str-assignment-to-dunder-name"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["non-str-assignment-to-dunder-name"]
-
-[[rule]]
-name = "nonexistent-operator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["nonexistent-operator"]
 
 [[rule]]
 name = "not-a-mapping"
@@ -1213,18 +842,6 @@ category = "pylint"
 pylint = ["not-context-manager"]
 
 [[rule]]
-name = "not-in-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["not-in-loop"]
-
-[[rule]]
-name = "notimplemented-raised"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["notimplemented-raised"]
-
-[[rule]]
 name = "overlapping-except"
 presets = ["strict"]
 category = "pylint"
@@ -1241,12 +858,6 @@ name = "pointless-exception-statement"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["pointless-exception-statement"]
-
-[[rule]]
-name = "pointless-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["pointless-statement"]
 
 [[rule]]
 name = "pointless-string-statement"
@@ -1277,30 +888,6 @@ name = "prefer-typing-namedtuple"
 presets = ["strict"]
 category = "pylint"
 pylint = ["prefer-typing-namedtuple"]
-
-[[rule]]
-name = "preferred-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["preferred-module"]
-
-[[rule]]
-name = "protected-access"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["protected-access"]
-
-[[rule]]
-name = "raise-missing-from"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["raise-missing-from"]
-
-[[rule]]
-name = "raising-bad-type"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["raising-bad-type"]
 
 [[rule]]
 name = "raising-format-tuple"
@@ -1363,12 +950,6 @@ category = "pylint"
 pylint = ["reimported"]
 
 [[rule]]
-name = "relative-beyond-top-level"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["relative-beyond-top-level"]
-
-[[rule]]
 name = "repeated-keyword"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1379,12 +960,6 @@ name = "return-arg-in-generator"
 presets = ["strict"]
 category = "pylint"
 pylint = ["return-arg-in-generator"]
-
-[[rule]]
-name = "return-in-finally"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["return-in-finally"]
 
 [[rule]]
 name = "self-cls-assignment"
@@ -1417,22 +992,10 @@ category = "pylint"
 pylint = ["simplifiable-if-expression"]
 
 [[rule]]
-name = "simplifiable-if-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["simplifiable-if-statement"]
-
-[[rule]]
 name = "single-string-used-for-slots"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["single-string-used-for-slots"]
-
-[[rule]]
-name = "singleton-comparison"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["singleton-comparison"]
 
 [[rule]]
 name = "star-needs-assignment-target"
@@ -1465,22 +1028,10 @@ category = "pylint"
 pylint = ["super-with-arguments"]
 
 [[rule]]
-name = "syntax-error"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["syntax-error"]
-
-[[rule]]
 name = "too-complex"
 presets = ["strict"]
 category = "pylint"
 pylint = ["too-complex"]
-
-[[rule]]
-name = "too-few-format-args"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["too-few-format-args"]
 
 [[rule]]
 name = "too-few-public-methods"
@@ -1493,12 +1044,6 @@ name = "too-many-ancestors"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["too-many-ancestors"]
-
-[[rule]]
-name = "too-many-format-args"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["too-many-format-args"]
 
 [[rule]]
 name = "too-many-function-args"
@@ -1579,22 +1124,10 @@ category = "pylint"
 pylint = ["unbalanced-tuple-unpacking"]
 
 [[rule]]
-name = "undefined-all-variable"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["undefined-all-variable"]
-
-[[rule]]
 name = "undefined-loop-variable"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["undefined-loop-variable"]
-
-[[rule]]
-name = "undefined-variable"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["undefined-variable"]
 
 [[rule]]
 name = "unexpected-keyword-arg"
@@ -1615,28 +1148,10 @@ category = "pylint"
 pylint = ["unhashable-member"]
 
 [[rule]]
-name = "unidiomatic-typecheck"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["unidiomatic-typecheck"]
-
-[[rule]]
-name = "unknown-option-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unknown-option-value"]
-
-[[rule]]
 name = "unnecessary-ellipsis"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["unnecessary-ellipsis"]
-
-[[rule]]
-name = "unnecessary-lambda-assignment"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["unnecessary-lambda-assignment"]
 
 [[rule]]
 name = "unnecessary-negation"
@@ -1663,18 +1178,6 @@ category = "pylint"
 pylint = ["unreachable"]
 
 [[rule]]
-name = "unrecognized-inline-option"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unrecognized-inline-option"]
-
-[[rule]]
-name = "unrecognized-option"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unrecognized-option"]
-
-[[rule]]
 name = "unsubscriptable-object"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1685,12 +1188,6 @@ name = "unsupported-assignment-operation"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["unsupported-assignment-operation"]
-
-[[rule]]
-name = "unsupported-binary-operation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unsupported-binary-operation"]
 
 [[rule]]
 name = "unsupported-delete-operation"
@@ -1709,36 +1206,6 @@ name = "unused-argument"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["unused-argument"]
-
-[[rule]]
-name = "unused-format-string-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unused-format-string-argument"]
-
-[[rule]]
-name = "unused-format-string-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unused-format-string-key"]
-
-[[rule]]
-name = "unused-wildcard-import"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unused-wildcard-import"]
-
-[[rule]]
-name = "use-a-generator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["use-a-generator"]
-
-[[rule]]
-name = "use-dict-literal"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["use-dict-literal"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison"
@@ -1763,12 +1230,6 @@ name = "use-implicit-booleaness-not-len"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["use-implicit-booleaness-not-len"]
-
-[[rule]]
-name = "use-list-literal"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["use-list-literal"]
 
 [[rule]]
 name = "use-maxsplit-arg"
@@ -1807,12 +1268,6 @@ category = "pylint"
 pylint = ["used-prior-global-declaration"]
 
 [[rule]]
-name = "useless-option-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["useless-option-value"]
-
-[[rule]]
 name = "useless-param-doc"
 presets = ["strict"]
 category = "pylint"
@@ -1831,52 +1286,10 @@ category = "pylint"
 pylint = ["useless-type-doc"]
 
 [[rule]]
-name = "using-assignment-expression-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-assignment-expression-in-unsupported-version"]
-
-[[rule]]
-name = "using-comprehension-unpacking-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-comprehension-unpacking-in-unsupported-version"]
-
-[[rule]]
 name = "using-constant-test"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["using-constant-test"]
-
-[[rule]]
-name = "using-exception-groups-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-exception-groups-in-unsupported-version"]
-
-[[rule]]
-name = "using-f-string-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-f-string-in-unsupported-version"]
-
-[[rule]]
-name = "using-final-decorator-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-final-decorator-in-unsupported-version"]
-
-[[rule]]
-name = "using-generic-type-syntax-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-generic-type-syntax-in-unsupported-version"]
-
-[[rule]]
-name = "using-positional-only-args-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-positional-only-args-in-unsupported-version"]
 
 [[rule]]
 name = "while-used"
@@ -1885,37 +1298,7 @@ category = "pylint"
 pylint = ["while-used"]
 
 [[rule]]
-name = "wrong-exception-operation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["wrong-exception-operation"]
-
-[[rule]]
 name = "wrong-import-order"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["wrong-import-order"]
-
-[[rule]]
-name = "wrong-import-position"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-import-position"]
-
-[[rule]]
-name = "wrong-spelling-in-comment"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-comment"]
-
-[[rule]]
-name = "wrong-spelling-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-docstring"]
-
-[[rule]]
-name = "yield-inside-async-function"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["yield-inside-async-function"]

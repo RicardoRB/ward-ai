@@ -1,0 +1,191 @@
+{
+  "10:17": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": true,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "10:22": {
+    "members": {
+      "ancestors": []
+    },
+    "shape": {
+      "final": false,
+      "kind": "interface",
+      "supertypes": []
+    },
+    "type": {
+      "name": "java.lang.CharSequence"
+    }
+  },
+  "11:18": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": true,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "11:23": {
+    "members": {
+      "ancestors": []
+    },
+    "shape": {
+      "final": false,
+      "kind": "class",
+      "supertypes": []
+    },
+    "type": {
+      "name": "java.lang.Object"
+    }
+  },
+  "12:17": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": false,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "app.Base"
+    }
+  },
+  "12:22": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": false,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "app.Other"
+    }
+  },
+  "14:18": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": false,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "app.Other"
+    }
+  },
+  "14:23": {
+    "members": {
+      "ancestors": []
+    },
+    "shape": {
+      "final": false,
+      "kind": "interface",
+      "supertypes": []
+    },
+    "type": {
+      "name": "java.lang.Runnable"
+    }
+  },
+  "3:17": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": true,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "3:22": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Number"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "shape": {
+      "final": true,
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Number"
+        }
+      ]
+    },
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  }
+}
