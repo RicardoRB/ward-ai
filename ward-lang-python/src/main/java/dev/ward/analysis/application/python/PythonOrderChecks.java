@@ -15,6 +15,7 @@ import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.PythonDocstringCheck;
+import dev.ward.analysis.domain.rule.check.PythonImportOrderCheck;
 import dev.ward.analysis.domain.rule.check.PythonMetaclassArgumentCheck;
 import dev.ward.analysis.domain.rule.check.PythonOverloadOrderCheck;
 import dev.ward.analysis.domain.rule.check.PythonUngroupedImportCheck;
@@ -26,6 +27,7 @@ import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
 import dev.ward.analysis.domain.rule.check.UndefinedExportCheck;
 import dev.ward.analysis.domain.rule.check.UnusedAnnotationCheck;
+import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -86,7 +88,15 @@ final class PythonOrderChecks {
         entry("metaclass-argument", PythonOrderChecks::metaclassArgument),
         entry(
             "ungrouped-imports",
-            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new PythonUngroupedImportCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "python-import-order",
+            toml -> new PythonImportOrderCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "python-variable-distance",
+            toml ->
+                new VariableDistanceCheck(
+                    TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {

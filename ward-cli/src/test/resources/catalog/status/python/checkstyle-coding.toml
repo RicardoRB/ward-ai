@@ -64,5 +64,5 @@ unused-local-variable = "implemented"
 unused-private-field = "not-applicable"
 unused-try-resource-should-be-unnamed = "not-applicable"
 use-enhanced-switch = "not-applicable"
-variable-declaration-usage-distance = { status = "planned", issue = "#297" }
+variable-declaration-usage-distance = "implemented"
 when-should-be-used = "not-applicable"

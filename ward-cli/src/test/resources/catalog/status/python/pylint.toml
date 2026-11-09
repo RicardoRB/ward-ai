@@ -22,7 +22,6 @@ bad-docstring-quotes = { status = "planned", issue = "#297" }
 bad-dunder-name = { status = "planned", issue = "#336" }
 bad-except-order = { status = "planned", issue = "#336" }
 bad-exception-cause = { status = "planned", issue = "#336" }
-bad-file-encoding = { status = "planned", issue = "#297" }
 bad-format-character = { status = "planned", issue = "#336" }
 bad-format-string = { status = "planned", issue = "#336" }
 bad-format-string-key = { status = "planned", issue = "#336" }
@@ -55,7 +54,7 @@ consider-using-any-or-all = { status = "planned", issue = "#297" }
 consider-using-assignment-expr = { status = "planned", issue = "#336" }
 consider-using-augmented-assign = { status = "planned", issue = "#336" }
 consider-using-dict-comprehension = { status = "planned", issue = "#336" }
-consider-using-dict-items = { status = "planned", issue = "#297" }
+consider-using-dict-items = "implemented"
 consider-using-enumerate = "implemented"
 consider-using-f-string = "implemented"
 consider-using-from-import = { status = "planned", issue = "#336" }
@@ -115,7 +114,6 @@ init-is-generator = { status = "planned", issue = "#336" }
 invalid-bool-returned = { status = "planned", issue = "#336" }
 invalid-bytes-returned = { status = "planned", issue = "#336" }
 invalid-character-carriage-return = { status = "planned", issue = "#336" }
-invalid-characters-in-docstring = { status = "planned", issue = "#297" }
 invalid-class-object = { status = "planned", issue = "#336" }
 invalid-enum-extension = { status = "planned", issue = "#336" }
 invalid-field-call = { status = "planned", issue = "#336" }
@@ -309,7 +307,5 @@ using-generic-type-syntax-in-unsupported-version = { status = "planned", issue =
 using-positional-only-args-in-unsupported-version = { status = "planned", issue = "#336" }
 while-used = { status = "planned", issue = "#336" }
 wrong-exception-operation = { status = "planned", issue = "#336" }
-wrong-import-order = { status = "planned", issue = "#297" }
-wrong-spelling-in-comment = { status = "planned", issue = "#297" }
-wrong-spelling-in-docstring = { status = "planned", issue = "#297" }
+wrong-import-order = "implemented"
 yield-inside-async-function = { status = "planned", issue = "#336" }

@@ -40,3 +40,17 @@ rules = [
   "c-extension-no-member",
   "raw-checker-failed",
 ]
+
+[[group]]
+reason = "Ward reads sources as UTF-8; a non-UTF-8 source encoding is not analyzed"
+rules = [
+  "bad-file-encoding",
+]
+
+[[group]]
+reason = "needs a spelling dictionary (pyenchant); Pylint disables it unless one is configured"
+rules = [
+  "invalid-characters-in-docstring",
+  "wrong-spelling-in-comment",
+  "wrong-spelling-in-docstring",
+]

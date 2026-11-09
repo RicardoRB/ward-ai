@@ -362,3 +362,42 @@ kinds = ["for_stmt", "comp_for"]
 text = "^for[^:]*?in\\{[^:{}]+\\}"
 message = "iterating a set literal; use a tuple or list"
 '''
+
+[[rules]]
+id = "ward:python/variable-declaration-usage-distance"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "python-variable-distance"
+max = 3
+message = "variable '{value}' is first used more than {max} statements after its declaration"
+'''
+
+[[rules]]
+id = "ward:python/wrong-import-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "python-import-order"
+message = "import comes after an import of a later group; order them __future__, standard, third party, first party, relative"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-dict-items"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = "^for(\\w+)in([\\w.]+?)(?:\\.keys\\(\\))?:.*\\2\\[\\1\\]"
+message = "loop reads the dict by key; iterate over items() instead"
+'''

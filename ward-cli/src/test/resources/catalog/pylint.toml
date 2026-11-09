@@ -133,12 +133,6 @@ category = "pylint"
 pylint = ["bad-exception-cause"]
 
 [[rule]]
-name = "bad-file-encoding"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["bad-file-encoding"]
-
-[[rule]]
 name = "bad-format-character"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -689,12 +683,6 @@ name = "invalid-character-carriage-return"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["invalid-character-carriage-return"]
-
-[[rule]]
-name = "invalid-characters-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["invalid-characters-in-docstring"]
 
 [[rule]]
 name = "invalid-class-object"
@@ -1859,18 +1847,6 @@ name = "wrong-import-order"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["wrong-import-order"]
-
-[[rule]]
-name = "wrong-spelling-in-comment"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-comment"]
-
-[[rule]]
-name = "wrong-spelling-in-docstring"
-presets = ["standard", "strict"]
-category = "linter"
-pylint = ["wrong-spelling-in-docstring"]
 
 [[rule]]
 name = "yield-inside-async-function"
