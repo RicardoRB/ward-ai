@@ -46,7 +46,7 @@ public final class CyclicImportRule implements GraphRule {
   public List<GraphMatch> matches(final DependencyGraph graph) {
     final List<DependencyEdge> edges = new ArrayList<>();
     for (final DependencyEdge edge : graph.edges()) {
-      if (!edge.reference().typeChecking()) {
+      if (isRuntimePythonEdge(edge)) {
         edges.add(edge);
       }
     }
@@ -55,6 +55,20 @@ public final class CyclicImportRule implements GraphRule {
       matches.add(cycleMatch(cycle));
     }
     return List.copyOf(matches);
+  }
+
+  /**
+   * Whether {@code edge} joins two Python modules at run time. The graph holds every language's
+   * edges, so a Java or TypeScript cycle must not reach this rule.
+   */
+  private static boolean isRuntimePythonEdge(final DependencyEdge edge) {
+    return !edge.reference().typeChecking()
+        && isPythonModule(edge.from())
+        && isPythonModule(edge.to());
+  }
+
+  private static boolean isPythonModule(final String path) {
+    return path.endsWith(PYTHON_SUFFIX);
   }
 
   private static GraphMatch cycleMatch(final CycleSearch.Cycle cycle) {
