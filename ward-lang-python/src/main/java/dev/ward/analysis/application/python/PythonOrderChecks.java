@@ -25,6 +25,7 @@ import dev.ward.analysis.domain.rule.check.KeywordArgBeforeVarargCheck;
 import dev.ward.analysis.domain.rule.check.LoggingFormatCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
+import dev.ward.analysis.domain.rule.check.MatchPositionalCheck;
 import dev.ward.analysis.domain.rule.check.ModifiedIterationCheck;
 import dev.ward.analysis.domain.rule.check.NonlocalCheck;
 import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
@@ -104,6 +105,9 @@ final class PythonOrderChecks {
             "exception-statement",
             toml -> new ExceptionStatementCheck(TomlValues.required(toml, MESSAGE))),
         entry("field-call", toml -> new FieldCallCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "match-positional",
+            toml -> new MatchPositionalCheck(TomlValues.required(toml, MESSAGE))),
         entry("same-module-call", PythonOrderChecks::sameModuleCall),
         entry("class-protocol", PythonOrderChecks::classProtocol),
         entry("class-override", PythonOrderChecks::classOverride),

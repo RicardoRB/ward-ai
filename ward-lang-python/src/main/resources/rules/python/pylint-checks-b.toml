@@ -826,3 +826,43 @@ check = "nonlocal"
 problem = "nonlocal-without-binding"
 message = "nonlocal name is not bound by an enclosing function"
 '''
+
+[[rules]]
+id = "ward:python/match-class-bind-self"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_pattern"]
+text = "^(?:bool|bytearray|bytes|dict|float|frozenset|int|list|set|str|tuple)\\(\\w+\\)$"
+message = "builtin class pattern binds its subject to a name; use the name as a capture instead"
+'''
+
+[[rules]]
+id = "ward:python/multiple-class-sub-patterns"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_pattern"]
+text = "^\\w+\\((?:[^()]*,)?(\\w+)=[^()]*,(?:[^()]*,)?\\1="
+message = "class pattern names the same attribute more than once"
+'''
+
+[[rules]]
+id = "ward:python/match-class-positional-attributes"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "match-positional"
+message = "class pattern uses positional attributes; use keyword attributes"
+'''

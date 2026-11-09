@@ -145,8 +145,8 @@ keyword-arg-before-vararg = "implemented"
 kwarg-superseded-by-positional-arg = "implemented"
 logging-format-truncated = "implemented"
 logging-unsupported-format = "implemented"
-match-class-bind-self = { status = "planned", issue = "#336" }
-match-class-positional-attributes = { status = "planned", issue = "#336" }
+match-class-bind-self = "implemented"
+match-class-positional-attributes = "implemented"
 method-cache-max-size-none = "implemented"
 method-hidden = "implemented"
 misplaced-comparison-constant = { status = "planned", issue = "#297" }
@@ -166,7 +166,7 @@ missing-yield-doc = { status = "planned", issue = "#336" }
 missing-yield-type-doc = { status = "planned", issue = "#336" }
 modified-iterating-dict = "implemented"
 modified-iterating-list = "implemented"
-multiple-class-sub-patterns = { status = "planned", issue = "#336" }
+multiple-class-sub-patterns = "implemented"
 multiple-constructor-doc = { status = "planned", issue = "#336" }
 multiple-imports = { status = "planned", issue = "#297" }
 no-else-break = "implemented"
