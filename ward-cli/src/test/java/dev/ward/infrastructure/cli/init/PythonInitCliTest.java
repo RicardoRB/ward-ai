@@ -54,7 +54,7 @@ class PythonInitCliTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(root.resolve("ward-rules.toml")))
-        .contains("preset = \"strict\"", "languages = [\"java\", \"python\"]");
+        .contains("preset = \"strict\"", "languages = [\"java\", \"python\", \"swift\"]");
     assertThat(Files.readString(root.resolve("mypy.ini"))).contains("strict = True");
     assertThat(Files.readString(root.resolve(".coveragerc")))
         .contains("branch = True", "fail_under = 85");

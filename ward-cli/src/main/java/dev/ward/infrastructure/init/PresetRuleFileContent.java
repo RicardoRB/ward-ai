@@ -36,8 +36,8 @@ final class PresetRuleFileContent {
 
   /**
    * The rule selection of the {@code ward} gate: the Ward rules of the preset, for the JVM source
-   * languages the project has, Java before Kotlin, and Python when the project has it. A project
-   * without a JVM language selects Java, as it always has.
+   * languages the project has, Java before Kotlin, then Python when the project has it, then
+   * Swift. A project without a JVM language selects Java, as it always has.
    */
   static String wardRules(final QualityPreset preset, final Set<Language> languages) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
@@ -45,6 +45,7 @@ final class PresetRuleFileContent {
     if (languages.contains(Language.PYTHON)) {
       ids.add("python");
     }
+    ids.add("swift");
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
         + "\"\nlanguages = "

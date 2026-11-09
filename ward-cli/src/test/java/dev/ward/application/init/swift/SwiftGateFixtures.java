@@ -11,10 +11,9 @@ final class SwiftGateFixtures {
 
   private SwiftGateFixtures() {}
 
-  /** Returns SwiftPM tools for {@code preset}, with the user's own SwiftLint config or none. */
-  static SwiftTools swiftPm(final QualityPreset preset, final boolean ownSwiftLintConfig) {
-    return new SwiftTools(
-        BuildTool.SWIFTPM, true, preset, SOURCES, Optional.empty(), null, null, ownSwiftLintConfig);
+  /** Returns SwiftPM tools for {@code preset}. */
+  static SwiftTools swiftPm(final QualityPreset preset) {
+    return new SwiftTools(BuildTool.SWIFTPM, true, preset, SOURCES, Optional.empty(), null, null);
   }
 
   /** Returns Xcode tools for the standard preset on {@code platform}. */
@@ -25,7 +24,6 @@ final class SwiftGateFixtures {
   /** Returns Xcode tools for {@code preset} on {@code platform}, in {@code workspace} if any. */
   static SwiftTools xcode(
       final QualityPreset preset, final String platform, final Optional<String> workspace) {
-    return new SwiftTools(
-        BuildTool.XCODE, true, preset, SOURCES, workspace, "Shop", platform, false);
+    return new SwiftTools(BuildTool.XCODE, true, preset, SOURCES, workspace, "Shop", platform);
   }
 }

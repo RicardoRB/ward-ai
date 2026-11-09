@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** The Swift CI job runs on macOS 26, caches the tools package and sets up no other toolchain. */
+/** The Swift CI job runs on macOS 26 and sets up no other toolchain or tools package. */
 class SwiftCiSetupTest {
   private static final Project SWIFT_PM =
       new Project(Path.of("/shop"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
@@ -20,15 +20,13 @@ class SwiftCiSetupTest {
       new Project(Path.of("/api"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
   @Test
-  void swiftJobRunsOnMacOsWithCachedToolsAndNoOtherToolchain() {
+  void swiftJobRunsOnMacOsWithNoOtherToolchainOrToolsPackage() {
     final String body = CiWorkflowTemplate.render("github", SWIFT_PM, gates(), "0.0.12").body();
 
     assertThat(body)
         .contains("runs-on: macos-26")
-        .contains("path: .ward/swift-tools/.build")
-        .contains("hashFiles('.ward/swift-tools/Package.resolved')")
-        .contains("swift package --package-path .ward/swift-tools resolve")
-        .doesNotContain("setup-java", "setup-node", "setup-python");
+        .doesNotContain(
+            "setup-java", "setup-node", "setup-python", ".ward/swift-tools", "swiftlint");
   }
 
   @Test
@@ -39,6 +37,6 @@ class SwiftCiSetupTest {
   }
 
   private static List<InitGateOption> gates() {
-    return List.of(new InitGateOption("swiftlint", List.of("swift"), true, "ok"));
+    return List.of(new InitGateOption("swift-build", List.of("swift"), true, "ok"));
   }
 }
