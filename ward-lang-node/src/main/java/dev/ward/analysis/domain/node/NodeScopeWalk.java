@@ -73,6 +73,8 @@ final class NodeScopeWalk {
     handlers.put("exportAliasName", expressions::exportedName);
     handlers.put("typeName", expressions.typeRefs::typeName);
     handlers.put("typeQuery", expressions.typeRefs::typeQuery);
+    handlers.put("predefinedType", expressions.typeRefs::predefinedType);
+    handlers.put("jsxElementName", new NodeScopeJsx(expressions)::jsxElementName);
     handlers.put("block", node -> scoped(node, ScopeKind.BLOCK));
     handlers.put("caseBlock", node -> scoped(node, ScopeKind.BLOCK));
     handlers.put("iterationStatement", statements::loop);
@@ -80,6 +82,7 @@ final class NodeScopeWalk {
     handlers.put("catchProduction", statements::catchClause);
     handlers.put("variableStatement", statements::variableStatement);
     handlers.put("singleVariableDeclaration", statements::loopDeclaration);
+    handlers.put("forVariableDeclarationList", statements::loopDeclaration);
     handlers.put("classDeclaration", types::classDeclaration);
     handlers.put("classExpression", types::classDeclaration);
     handlers.put("interfaceDeclaration", types::typeDeclaration);

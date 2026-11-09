@@ -14,6 +14,7 @@ final class NodeScopeTypeRefs {
   private static final String TYPE_QUERY = "typeQuery";
 
   private static final String TYPE_NAME = "typeName";
+  private static final String PREDEFINED = "predefinedType";
 
   private final NodeScopeExpressions walk;
 
@@ -38,12 +39,21 @@ final class NodeScopeTypeRefs {
         .ifPresent(walk::read);
   }
 
+  /**
+   * Handles a built-in type such as {@code any}, read wherever a type can appear, including a cast.
+   */
+  void predefinedType(final SyntaxNode node) {
+    NodeLeaves.of(node).stream().findFirst().ifPresent(walk::read);
+  }
+
   /** Reads the type references under a type position, declaring and visiting nothing else. */
   void types(final SyntaxNode node) {
     if (TYPE_NAME.equals(node.kind())) {
       typeName(node);
     } else if (TYPE_QUERY.equals(node.kind())) {
       typeQuery(node);
+    } else if (PREDEFINED.equals(node.kind())) {
+      predefinedType(node);
     } else if (!"typeParameters".equals(node.kind())) {
       node.children().forEach(this::types);
     }

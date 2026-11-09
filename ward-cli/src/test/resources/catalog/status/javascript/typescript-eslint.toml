@@ -10,7 +10,7 @@ no-magic-numbers = { status = "planned", issue = "#296" }
 no-meaningless-void-operator = { status = "planned", issue = "#329" }
 no-misused-promises = "not-applicable"
 no-namespace = "not-applicable"
-no-non-null-asserted-optional-chain = { status = "planned", issue = "#329" }
+no-non-null-asserted-optional-chain = "not-applicable"
 no-non-null-assertion = "not-applicable"
 no-restricted-types = { status = "planned", issue = "#296" }
 no-unnecessary-template-expression = { status = "planned", issue = "#329" }

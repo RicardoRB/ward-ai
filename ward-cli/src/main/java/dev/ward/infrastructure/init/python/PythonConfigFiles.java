@@ -18,12 +18,11 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * The tool configs init writes in a Python project root: Ruff, mypy and coverage. A config the
- * project keeps itself is reused instead, and a config inside {@code pyproject.toml}, {@code
- * setup.cfg} or {@code tox.ini} is never edited, because Ward does not own those files.
+ * The tool configs init writes in a Python project root: mypy and coverage. A config the project
+ * keeps itself is reused instead, and a config inside {@code pyproject.toml}, {@code setup.cfg} or
+ * {@code tox.ini} is never edited, because Ward does not own those files.
  */
 public final class PythonConfigFiles {
-  static final String RUFF = "ruff";
   static final String MYPY = "mypy";
   static final String COVERAGE = "coverage";
   static final String PYTEST = "pytest";
@@ -33,25 +32,6 @@ public final class PythonConfigFiles {
   // The pydantic plugin checks models and their fields, which plain mypy checks only in part.
   private static final String PYDANTIC_MYPY =
       "plugins = pydantic.mypy\n\n[pydantic-mypy]\ninit_typed = True\nwarn_required_dynamic_aliases = True\n";
-
-  private static final String RUFF_STANDARD =
-      """
-      extend-exclude = [".venv", ".ward", "mutants"]
-
-      [lint]
-      select = ["E", "F", "I", "B", "UP"]
-      """;
-
-  private static final String RUFF_STRICT =
-      """
-      extend-exclude = [".venv", ".ward", "mutants"]
-
-      [lint]
-      select = ["E", "F", "I", "B", "UP", "W", "C4", "SIM", "RUF", "PTH", "C90"]
-
-      [lint.mccabe]
-      max-complexity = 10
-      """;
 
   private static final String MYPY_STANDARD =
       """
@@ -107,13 +87,6 @@ public final class PythonConfigFiles {
     final Path root = project.root();
     final String marker = ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset);
     final boolean strict = preset == QualityPreset.STRICT;
-    if (ids.contains("ruff")) {
-      target(
-          targets,
-          root,
-          configs,
-          new Own(RUFF, "ruff.toml", marker + (strict ? RUFF_STRICT : RUFF_STANDARD)));
-    }
     if (ids.contains("mypy")) {
       mypyTarget(targets, project, configs, marker, strict);
     }

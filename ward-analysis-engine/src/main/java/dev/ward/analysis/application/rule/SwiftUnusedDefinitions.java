@@ -29,6 +29,15 @@ final class SwiftUnusedDefinitions implements UnusedDefinitionStrategy {
    */
   static final String CONFORMANCE_PREFIX = "conformance:";
 
+  /** The rule id for Swift public or open declarations that only their own module uses. */
+  static final String REDUNDANT_ACCESSIBILITY_ID = "ward:swift/redundant-public-accessibility";
+
+  /**
+   * The kind prefix the Swift summarizer gives a public or open symbol in the exports. The
+   * summarizer keeps the same literal; a fixture of the rule fails if the two drift apart.
+   */
+  static final String PUBLIC_KIND_PREFIX = "public:";
+
   private static final Map<String, UnusedDefinitionKind> KINDS =
       Map.of(
           DECLARATION_ID, UnusedDefinitionKind.FUNCTION,

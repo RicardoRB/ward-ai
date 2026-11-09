@@ -83,12 +83,6 @@ public final class CommandTypeInference {
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("django-check", sequence("manage.py", "check")),
           new Rule("pip-audit", sequence("pip-audit")),
-          new Rule(
-              "swiftlint",
-              anyOf(
-                  sequence("swiftlint", "lint"),
-                  sequence("*/swiftlint", "lint"),
-                  sequence("SwiftLintBinary", "lint"))),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),

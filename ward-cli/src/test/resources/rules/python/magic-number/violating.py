@@ -1,2 +1,2 @@
-def area(radius):
-    return 3.14 * radius * radius
+def big(size):
+    return size > 10

@@ -67,6 +67,11 @@ final class RuleFixtureRunner {
     return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
   }
 
+  /** The frontends of the {@code ward} gate, for a graph rule over a project fixture. */
+  List<FrontendSupport> frontends() {
+    return frontends;
+  }
+
   /** A fixture is one file, so a definition is used when the file itself uses it. */
   private List<AnalysisFinding> unusedDefinitions(
       final RuleDefinition rule, final SourceUnit unit) {

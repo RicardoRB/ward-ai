@@ -26,6 +26,22 @@ class SwiftProjectLayoutTest {
   }
 
   @Test
+  void aListedFileStaysWithItsTargetWhenAnotherTargetOwnsItsDirectory() {
+    final SwiftProjectLayout layout =
+        new SwiftProjectLayout(
+            List.of(
+                new SwiftTarget("Inner", List.of("Modules/Shop/Inner"), List.of(), List.of()),
+                new SwiftTarget(
+                    "Shop",
+                    List.of("Modules"),
+                    List.of("Modules/Shop/Inner/Listed.swift"),
+                    List.of())));
+
+    assertThat(layout.moduleOf("Modules/Shop/Inner/Listed.swift")).isEqualTo("Shop");
+    assertThat(layout.moduleOf("Modules/Shop/Inner/Other.swift")).isEqualTo("Inner");
+  }
+
+  @Test
   void aFileInNoTargetBelongsToTheImplicitModule() {
     assertThat(LAYOUT.moduleOf("Other/Main.swift")).isEqualTo(SwiftProjectLayout.IMPLICIT_MODULE);
   }

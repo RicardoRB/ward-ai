@@ -61,3 +61,15 @@ body = '''
 check = "swift-unused-definition"
 message = "protocol is only used to conform to"
 '''
+
+[[rules]]
+id = "ward:swift/redundant-public-accessibility"
+language = "swift"
+capability = "SYMBOLS"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-definition"
+message = "public declaration is used only within its module"
+'''

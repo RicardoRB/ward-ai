@@ -1,3 +1,5 @@
+"""Tests for shop pricing."""
+
 from shop import price
 
 

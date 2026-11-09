@@ -10,7 +10,6 @@ import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
-import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,10 +19,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/**
- * Runs {@code ward init} on the offline SwiftPM fixture. The resolve is stubbed, so the test proves
- * what init writes, not that SwiftPM can fetch SwiftLint.
- */
+/** Runs {@code ward init} on the offline Swift fixtures, and checks what init writes. */
 class SwiftInitCliTest {
   @TempDir Path root;
 
@@ -31,14 +27,11 @@ class SwiftInitCliTest {
   void swiftPackageGetsTheStandardGatesAndWardOwnedFilesAndKeepsItsOwnPackage() throws IOException {
     copyFixture("swift-package", root);
     final String packageBefore = Files.readString(root.resolve("Package.swift"));
-    final FakeCommandExecutor resolve =
-        new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
     final InitCommandFixture init =
-        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(resolve, mac()), "swift")
+        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(mac()), "swift")
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                    new FileSystemSwiftToolConfigs(),
                     new FileSystemSwiftSourceDirectories()));
 
     final int exit = init.run("", "--preset", "standard", "--yes");
@@ -46,13 +39,15 @@ class SwiftInitCliTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     final String toml = Files.readString(root.resolve("ward.toml"));
     assertThat(toml)
-        .contains("ward-format", "swiftlint", "swift-build", "swift-test", "swift-coverage")
-        .doesNotContain("xcodebuild-test");
-    assertThat(root.resolve(".ward/swift-tools/Package.swift")).exists();
-    assertThat(root.resolve(".swiftlint.yml")).exists();
+        .contains("ward-format", "swift-build", "swift-test", "swift-coverage")
+        .doesNotContain("swiftlint", "xcodebuild-test");
+    assertThat(Files.readString(root.resolve("ward-rules.toml")))
+        .contains("languages = [\"java\", \"swift\"]");
+    assertThat(root.resolve(".ward/swift-tools")).doesNotExist();
+    assertThat(root.resolve(".swiftlint.yml")).doesNotExist();
     assertThat(root.resolve(".swift-format")).doesNotExist();
     assertThat(Files.readString(root.resolve("Package.swift"))).isEqualTo(packageBefore);
-    assertThat(init.output()).contains(".ward/swift-tools/Package.swift").doesNotContain("pom.xml");
+    assertThat(init.output()).doesNotContain("SwiftLint", "pom.xml");
   }
 
   @Test
@@ -83,31 +78,24 @@ class SwiftInitCliTest {
   }
 
   private InitCommandFixture swiftInit() throws IOException {
-    final FakeCommandExecutor resolve =
-        new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
-    return InitCommandFixture.repository(
-            root, new SwiftBuildToolConfigurator(resolve, mac()), "swift")
+    return InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(mac()), "swift")
         .withSwiftPorts(
             new SwiftPorts(
                 new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                new FileSystemSwiftToolConfigs(),
                 new FileSystemSwiftSourceDirectories()));
   }
 
   @Test
   void xcodeAppGetsItsSchemeTestGateAndTheSchemeOptionForSeveralSchemes() throws IOException {
     copyFixture("swift-xcode-two-schemes", root);
-    final FakeCommandExecutor resolve =
-        new FakeCommandExecutor(new CommandResult(0, "", "", Duration.ZERO));
     final String listing = "{\"project\": {\"schemes\": [\"Shop\", \"ShopWidgets\"]}}";
     final InitCommandFixture init =
-        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(resolve, mac()), "swift")
+        InitCommandFixture.repository(root, new SwiftBuildToolConfigurator(mac()), "swift")
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(
                         new FakeCommandExecutor(new CommandResult(0, listing, "", Duration.ZERO)),
                         new ForyJsonCodec()),
-                    new FileSystemSwiftToolConfigs(),
                     new FileSystemSwiftSourceDirectories()));
 
     final int refused = init.run("", "--preset", "standard", "--yes");
@@ -122,7 +110,7 @@ class SwiftInitCliTest {
         .contains("xcodebuild-test")
         .contains("ShopWidgets")
         .contains("iOS Simulator")
-        .doesNotContain("swift-build");
+        .doesNotContain("swift-build", "swiftlint");
   }
 
   private static SwiftToolchainInspection mac() {

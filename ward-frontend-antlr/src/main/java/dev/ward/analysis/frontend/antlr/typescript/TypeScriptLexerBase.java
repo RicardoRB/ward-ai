@@ -1,10 +1,13 @@
 package dev.ward.analysis.frontend.antlr.typescript;
 
+import dev.ward.analysis.frontend.antlr.JsxLookahead;
 import dev.ward.analysis.frontend.antlr.WardLexerBase;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
 
@@ -28,6 +31,13 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
           TypeScriptLexer.StringLiteral,
           TypeScriptLexer.PlusPlus,
           TypeScriptLexer.MinusMinus);
+
+  /** Token types after which a less-than sign is an operator, so no JSX element can start. */
+  private static final Set<Integer> NO_JSX_AFTER =
+      Stream.concat(
+              NO_REGEX_AFTER.stream(),
+              Stream.of(TypeScriptLexer.JsxSelfCloseEnd, TypeScriptLexer.JsxClosingTagEnd))
+          .collect(Collectors.toUnmodifiableSet());
 
   /**
    * Stores values of nested modes. By default mode is strict or defined externally
@@ -67,12 +77,66 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
   private int bracesDepth;
 
   /**
+   * Counts every open brace of the default mode, so a JSX container knows its own closing brace.
+   */
+  private int braceNesting;
+
+  /** The brace nesting of each open JSX expression container, innermost on top. */
+  private final Deque<Integer> jsxContainers = new ArrayDeque<>();
+
+  /** Whether JSX syntax is recognized; set per unit from the file extension. */
+  private boolean jsxEnabled;
+
+  /**
    * Creates the lexer over the given input.
    *
    * @param input the character stream to lex
    */
   public TypeScriptLexerBase(final CharStream input) {
     super(input);
+  }
+
+  /**
+   * Tells whether JSX syntax is recognized, which is the case for {@code .tsx} files only.
+   *
+   * @return {@code true} if a {@code <} can start a JSX element
+   */
+  public boolean isJsx() {
+    return jsxEnabled;
+  }
+
+  /**
+   * Turns JSX syntax on or off for the next unit. Set it before parsing; the lexer keeps it across
+   * resets.
+   *
+   * @param value {@code true} for {@code .tsx} units
+   */
+  public void setJsx(final boolean value) {
+    jsxEnabled = value;
+  }
+
+  /**
+   * Tells whether a {@code <} directly before the input starts a JSX element here. Only a name or a
+   * fragment closer can follow, and a generic arrow function's type parameters like {@code <T,>} or
+   * {@code <T extends U>} are not JSX.
+   *
+   * @return {@code true} if a JSX element starts at the {@code <} just read
+   */
+  protected boolean isJsxStart() {
+    return jsxEnabled && isJsxExpressionPosition() && JsxLookahead.startsElement(_input);
+  }
+
+  private boolean isJsxExpressionPosition() {
+    return lastToken.isEmpty() || !NO_JSX_AFTER.contains(lastToken.get().getType());
+  }
+
+  /**
+   * Starts a JSX expression container: the brace counts like any other, and its closing brace
+   * returns the lexer to the JSX mode that opened it.
+   */
+  protected void processJsxOpenBrace() {
+    processOpenBrace();
+    jsxContainers.push(braceNesting);
   }
 
   /**
@@ -139,6 +203,7 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
 
   protected void processOpenBrace() {
     bracesDepth++;
+    braceNesting++;
     useStrictCurrent = !scopeStrictModes.isEmpty() && scopeStrictModes.peek() || useStrictDefault;
     scopeStrictModes.push(useStrictCurrent);
   }
@@ -146,6 +211,25 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
   protected void processCloseBrace() {
     bracesDepth--;
     useStrictCurrent = scopeStrictModes.isEmpty() ? useStrictDefault : scopeStrictModes.pop();
+    if (!jsxContainers.isEmpty() && jsxContainers.peek() == braceNesting) {
+      jsxContainers.pop();
+      popMode();
+    }
+    braceNesting--;
+  }
+
+  /** Clears the state of the previous unit; the JSX setting is kept, as the caller sets it. */
+  @Override
+  public void reset() {
+    scopeStrictModes.clear();
+    lastToken = Optional.empty();
+    useStrictDefault = false;
+    useStrictCurrent = false;
+    templateDepth = 0;
+    bracesDepth = 0;
+    braceNesting = 0;
+    jsxContainers.clear();
+    super.reset();
   }
 
   protected void processStringLiteral() {
