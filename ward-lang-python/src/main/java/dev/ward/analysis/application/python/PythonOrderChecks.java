@@ -8,6 +8,7 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.AndOrTernaryCheck;
 import dev.ward.analysis.domain.rule.check.AttributeOutsideInitCheck;
 import dev.ward.analysis.domain.rule.check.BadSuperCallCheck;
+import dev.ward.analysis.domain.rule.check.BareCapturePatternCheck;
 import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.ConcatJoinCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
@@ -104,6 +105,9 @@ final class PythonOrderChecks {
         entry(
             "duplicate-format-argument",
             toml -> new DuplicateFormatArgumentCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "bare-capture-pattern",
+            toml -> new BareCapturePatternCheck(TomlValues.required(toml, MESSAGE))),
         entry("concat-join", toml -> new ConcatJoinCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "slots-conflict",

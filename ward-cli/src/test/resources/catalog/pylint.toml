@@ -128,7 +128,6 @@ pylint = ["bad-thread-instantiation"]
 [[rule]]
 name = "bare-name-capture-pattern"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bare-name-capture-pattern"]
 
 [[rule]]

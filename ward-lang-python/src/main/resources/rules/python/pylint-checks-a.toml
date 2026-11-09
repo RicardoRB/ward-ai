@@ -426,3 +426,15 @@ body = '''
 check = "duplicate-format-argument"
 message = "duplicate string formatting argument, consider passing it as a named argument"
 '''
+
+[[rules]]
+id = "ward:python/bare-name-capture-pattern"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "bare-capture-pattern"
+message = "bare name capture pattern matches everything and makes the following cases unreachable"
+'''

@@ -21,7 +21,7 @@ bad-mcs-method-argument = "implemented"
 bad-reversed-sequence = { status = "planned", issue = "#336" }
 bad-super-call = "implemented"
 bad-thread-instantiation = "implemented"
-bare-name-capture-pattern = { status = "planned", issue = "#336" }
+bare-name-capture-pattern = "implemented"
 boolean-datetime = { status = "planned", issue = "#336" }
 broad-exception-raised = "implemented"
 chained-comparison = "implemented"
