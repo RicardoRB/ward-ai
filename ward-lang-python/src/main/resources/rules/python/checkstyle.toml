@@ -348,3 +348,48 @@ max = 1
 message = "try statements are nested {value} levels deep; the limit is {max}"
 '''
 
+
+[[rules]]
+id = "ward:python/constant-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+not-inside = ["funcdef", "classdef"]
+text = '^(?![A-Z_][A-Z0-9_]*=|__\w*__=)[A-Za-z_]\w*=(?!.*TypeVar\()'
+message = "module-level name '{value}' should be UPPER_CASE"
+'''
+
+[[rules]]
+id = "ward:python/member-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^self\.(?!_*[a-z][a-z0-9_]*=)\w+='
+message = "attribute name '{value}' should be snake_case"
+'''
+
+[[rules]]
+id = "ward:python/static-variable-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+not-inside = ["funcdef"]
+text = '^(?![a-z_][a-z0-9_]*=|[A-Z_][A-Z0-9_]*=|__\w*__=)[A-Za-z_]\w*='
+message = "class attribute name '{value}' should be snake_case or UPPER_CASE"
+'''

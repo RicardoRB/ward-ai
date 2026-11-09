@@ -169,7 +169,7 @@ duplicate-union-member = { status = "planned", issue = "#334" }
 duplicate-value = "implemented"
 ellipsis-in-non-empty-class-body = { status = "planned", issue = "#334" }
 empty-comment = { status = "planned", issue = "#334" }
-empty-docstring = { status = "planned", issue = "#297" }
+empty-docstring = "implemented"
 empty-docstring-section = { status = "planned", issue = "#297" }
 empty-method-without-abstract-decorator = "implemented"
 empty-type-checking-block = { status = "planned", issue = "#334" }
@@ -367,7 +367,7 @@ missing-terminal-punctuation = { status = "planned", issue = "#297" }
 missing-todo-author = { status = "planned", issue = "#297" }
 missing-todo-colon = { status = "planned", issue = "#297" }
 missing-todo-description = { status = "planned", issue = "#297" }
-missing-trailing-period = { status = "planned", issue = "#297" }
+missing-trailing-period = "implemented"
 missing-type-args = { status = "planned", issue = "#297" }
 missing-type-function-argument = { status = "planned", issue = "#297" }
 missing-type-kwargs = { status = "planned", issue = "#297" }
@@ -752,7 +752,7 @@ undefined-local-with-nested-import-star-usage = "implemented"
 undefined-name = "implemented"
 under-indentation = { status = "planned", issue = "#297" }
 undocumented-magic-method = { status = "planned", issue = "#297" }
-undocumented-param = { status = "planned", issue = "#297" }
+undocumented-param = "implemented"
 undocumented-public-init = { status = "planned", issue = "#297" }
 undocumented-public-module = { status = "planned", issue = "#297" }
 undocumented-public-nested-class = { status = "planned", issue = "#297" }

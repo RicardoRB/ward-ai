@@ -971,10 +971,12 @@ ruff = ["DTZ901"]
 
 [[rule]]
 name = "multiple-imports-on-one-line"
+pylint = ["multiple-imports"]
 ruff = ["E401"]
 
 [[rule]]
 name = "module-import-not-at-top-of-file"
+pylint = ["wrong-import-position"]
 ruff = ["E402"]
 
 [[rule]]
@@ -985,6 +987,7 @@ ruff = ["E502"]
 
 [[rule]]
 name = "none-comparison"
+pylint = ["singleton-comparison"]
 ruff = ["E711"]
 
 [[rule]]
@@ -1001,6 +1004,7 @@ ruff = ["E714"]
 
 [[rule]]
 name = "type-comparison"
+pylint = ["unidiomatic-typecheck"]
 ruff = ["E721"]
 
 [[rule]]
@@ -1010,6 +1014,7 @@ pylint = ["bare-except"]
 
 [[rule]]
 name = "lambda-assignment"
+pylint = ["unnecessary-lambda-assignment"]
 ruff = ["E731"]
 
 [[rule]]
@@ -4301,6 +4306,7 @@ ruff = ["SIM117"]
 
 [[rule]]
 name = "in-dict-keys"
+pylint = ["consider-iterating-dictionary"]
 ruff = ["SIM118"]
 
 [[rule]]

@@ -16,7 +16,7 @@ async-context-manager-with-regular-with = { status = "planned", issue = "#336" }
 attribute-defined-outside-init = { status = "planned", issue = "#336" }
 bad-builtin = { status = "planned", issue = "#336" }
 bad-chained-comparison = { status = "planned", issue = "#336" }
-bad-classmethod-argument = { status = "planned", issue = "#297" }
+bad-classmethod-argument = "implemented"
 bad-configuration-section = { status = "planned", issue = "#336" }
 bad-docstring-quotes = { status = "planned", issue = "#297" }
 bad-dunder-name = { status = "planned", issue = "#336" }
@@ -26,8 +26,8 @@ bad-file-encoding = { status = "planned", issue = "#297" }
 bad-format-character = { status = "planned", issue = "#336" }
 bad-format-string = { status = "planned", issue = "#336" }
 bad-format-string-key = { status = "planned", issue = "#336" }
-bad-mcs-classmethod-argument = { status = "planned", issue = "#297" }
-bad-mcs-method-argument = { status = "planned", issue = "#297" }
+bad-mcs-classmethod-argument = "implemented"
+bad-mcs-method-argument = "implemented"
 bad-plugin-value = { status = "planned", issue = "#336" }
 bad-reversed-sequence = { status = "planned", issue = "#336" }
 bad-super-call = { status = "planned", issue = "#336" }
@@ -46,7 +46,6 @@ comparison-with-callable = { status = "planned", issue = "#336" }
 condition-evals-to-constant = { status = "planned", issue = "#336" }
 confusing-consecutive-elif = { status = "planned", issue = "#336" }
 confusing-with-statement = { status = "planned", issue = "#336" }
-consider-iterating-dictionary = { status = "planned", issue = "#297" }
 consider-math-not-float = { status = "planned", issue = "#336" }
 consider-merging-isinstance = { status = "planned", issue = "#336" }
 consider-refactoring-into-while-condition = { status = "planned", issue = "#336" }
@@ -57,8 +56,8 @@ consider-using-assignment-expr = { status = "planned", issue = "#336" }
 consider-using-augmented-assign = { status = "planned", issue = "#336" }
 consider-using-dict-comprehension = { status = "planned", issue = "#336" }
 consider-using-dict-items = { status = "planned", issue = "#297" }
-consider-using-enumerate = { status = "planned", issue = "#297" }
-consider-using-f-string = { status = "planned", issue = "#297" }
+consider-using-enumerate = "implemented"
+consider-using-f-string = "implemented"
 consider-using-from-import = { status = "planned", issue = "#336" }
 consider-using-generator = { status = "planned", issue = "#336" }
 consider-using-get = { status = "planned", issue = "#336" }
@@ -85,7 +84,7 @@ deprecated-module = { status = "planned", issue = "#336" }
 dict-init-mutate = { status = "planned", issue = "#297" }
 differing-param-doc = { status = "planned", issue = "#336" }
 differing-type-doc = { status = "planned", issue = "#336" }
-disallowed-name = { status = "planned", issue = "#297" }
+disallowed-name = "implemented"
 docstring-first-line-empty = { status = "planned", issue = "#297" }
 duplicate-argument-name = { status = "planned", issue = "#336" }
 duplicate-except = { status = "planned", issue = "#336" }
@@ -106,7 +105,7 @@ global-variable-undefined = { status = "planned", issue = "#336" }
 implicit-flag-alias = { status = "planned", issue = "#336" }
 implicit-str-concat = { status = "planned", issue = "#336" }
 import-error = { status = "planned", issue = "#336" }
-import-outside-toplevel = { status = "planned", issue = "#297" }
+import-outside-toplevel = "implemented"
 impossible-comparison = { status = "planned", issue = "#336" }
 inconsistent-mro = { status = "planned", issue = "#336" }
 inconsistent-quotes = { status = "planned", issue = "#336" }
@@ -130,7 +129,6 @@ invalid-length-hint-returned = { status = "planned", issue = "#336" }
 invalid-length-returned = { status = "planned", issue = "#336" }
 invalid-match-args-definition = { status = "planned", issue = "#336" }
 invalid-metaclass = { status = "planned", issue = "#336" }
-invalid-name = { status = "planned", issue = "#297" }
 invalid-overridden-method = { status = "planned", issue = "#336" }
 invalid-repr-returned = { status = "planned", issue = "#336" }
 invalid-sequence-index = { status = "planned", issue = "#336" }
@@ -161,13 +159,13 @@ misplaced-comparison-constant = { status = "planned", issue = "#297" }
 misplaced-format-function = { status = "planned", issue = "#336" }
 misplaced-future = { status = "planned", issue = "#336" }
 missing-any-param-doc = { status = "planned", issue = "#336" }
-missing-class-docstring = { status = "planned", issue = "#297" }
+missing-class-docstring = "implemented"
 missing-format-argument-key = { status = "planned", issue = "#336" }
 missing-format-attribute = { status = "planned", issue = "#336" }
 missing-format-string-key = { status = "planned", issue = "#336" }
-missing-function-docstring = { status = "planned", issue = "#297" }
+missing-function-docstring = "implemented"
 missing-kwoa = { status = "planned", issue = "#336" }
-missing-module-docstring = { status = "planned", issue = "#297" }
+missing-module-docstring = "implemented"
 missing-param-doc = { status = "planned", issue = "#336" }
 missing-parentheses-for-call-in-test = { status = "planned", issue = "#336" }
 missing-raises-doc = { status = "planned", issue = "#336" }
@@ -182,7 +180,6 @@ modified-iterating-dict = { status = "planned", issue = "#336" }
 modified-iterating-list = { status = "planned", issue = "#336" }
 multiple-class-sub-patterns = { status = "planned", issue = "#336" }
 multiple-constructor-doc = { status = "planned", issue = "#336" }
-multiple-imports = { status = "planned", issue = "#297" }
 no-else-break = { status = "planned", issue = "#336" }
 no-else-continue = { status = "planned", issue = "#336" }
 no-else-raise = { status = "planned", issue = "#336" }
@@ -192,7 +189,7 @@ no-name-in-module = { status = "planned", issue = "#336" }
 no-self-argument = { status = "planned", issue = "#336" }
 no-value-for-parameter = { status = "planned", issue = "#336" }
 non-ascii-file-name = { status = "planned", issue = "#336" }
-non-ascii-module-import = { status = "planned", issue = "#297" }
+non-ascii-module-import = "implemented"
 non-iterator-returned = { status = "planned", issue = "#336" }
 non-parent-init-called = { status = "planned", issue = "#336" }
 non-str-assignment-to-dunder-name = { status = "planned", issue = "#336" }
@@ -237,8 +234,7 @@ signature-differs = { status = "planned", issue = "#336" }
 simplifiable-condition = { status = "planned", issue = "#336" }
 simplifiable-if-expression = { status = "planned", issue = "#336" }
 simplifiable-if-statement = { status = "planned", issue = "#336" }
-single-string-used-for-slots = { status = "planned", issue = "#297" }
-singleton-comparison = { status = "planned", issue = "#297" }
+single-string-used-for-slots = "implemented"
 star-needs-assignment-target = { status = "planned", issue = "#336" }
 subclassed-final-class = { status = "planned", issue = "#336" }
 subprocess-run-check = { status = "planned", issue = "#336" }
@@ -258,9 +254,9 @@ too-many-try-statements = { status = "planned", issue = "#336" }
 trailing-comma-tuple = { status = "planned", issue = "#336" }
 truncated-format-string = { status = "planned", issue = "#336" }
 try-except-raise = { status = "planned", issue = "#336" }
-typevar-double-variance = { status = "planned", issue = "#297" }
-typevar-name-incorrect-variance = { status = "planned", issue = "#297" }
-typevar-name-mismatch = { status = "planned", issue = "#297" }
+typevar-double-variance = "implemented"
+typevar-name-incorrect-variance = "implemented"
+typevar-name-mismatch = "implemented"
 unbalanced-dict-unpacking = { status = "planned", issue = "#336" }
 unbalanced-tuple-unpacking = { status = "planned", issue = "#336" }
 undefined-all-variable = { status = "planned", issue = "#336" }
@@ -269,11 +265,9 @@ undefined-variable = { status = "planned", issue = "#336" }
 unexpected-keyword-arg = { status = "planned", issue = "#336" }
 ungrouped-imports = { status = "planned", issue = "#297" }
 unhashable-member = { status = "planned", issue = "#336" }
-unidiomatic-typecheck = { status = "planned", issue = "#297" }
 unknown-option-value = { status = "planned", issue = "#336" }
 unnecessary-ellipsis = { status = "planned", issue = "#336" }
-unnecessary-lambda-assignment = { status = "planned", issue = "#297" }
-unnecessary-negation = { status = "planned", issue = "#297" }
+unnecessary-negation = "implemented"
 unnecessary-pass = { status = "planned", issue = "#336" }
 unpacking-non-sequence = { status = "planned", issue = "#336" }
 unreachable = { status = "planned", issue = "#336" }
@@ -290,12 +284,12 @@ unused-format-string-key = { status = "planned", issue = "#336" }
 unused-wildcard-import = { status = "planned", issue = "#336" }
 use-a-generator = { status = "planned", issue = "#336" }
 use-dict-literal = { status = "planned", issue = "#336" }
-use-implicit-booleaness-not-comparison = { status = "planned", issue = "#297" }
+use-implicit-booleaness-not-comparison = "implemented"
 use-implicit-booleaness-not-comparison-to-string = { status = "planned", issue = "#297" }
 use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "#297" }
-use-implicit-booleaness-not-len = { status = "planned", issue = "#297" }
+use-implicit-booleaness-not-len = "implemented"
 use-list-literal = { status = "planned", issue = "#336" }
-use-maxsplit-arg = { status = "planned", issue = "#297" }
+use-maxsplit-arg = "implemented"
 use-sequence-for-iteration = { status = "planned", issue = "#297" }
 use-set-for-membership = { status = "planned", issue = "#336" }
 use-yield-from = { status = "planned", issue = "#336" }
@@ -316,7 +310,6 @@ using-positional-only-args-in-unsupported-version = { status = "planned", issue 
 while-used = { status = "planned", issue = "#336" }
 wrong-exception-operation = { status = "planned", issue = "#336" }
 wrong-import-order = { status = "planned", issue = "#297" }
-wrong-import-position = { status = "planned", issue = "#297" }
 wrong-spelling-in-comment = { status = "planned", issue = "#297" }
 wrong-spelling-in-docstring = { status = "planned", issue = "#297" }
 yield-inside-async-function = { status = "planned", issue = "#336" }

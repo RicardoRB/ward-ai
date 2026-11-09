@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.LoggingArgsCheck;
 import dev.ward.analysis.domain.rule.check.ModuleOrderCheck;
 import dev.ward.analysis.domain.rule.check.OutsideScopeCheck;
 import dev.ward.analysis.domain.rule.check.PercentFormatCheck;
+import dev.ward.analysis.domain.rule.check.PythonRedefinedNameCheck;
 import dev.ward.analysis.domain.rule.check.RedefinitionCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.StarImportUsageCheck;
@@ -53,7 +54,10 @@ final class PythonScopeChecks {
         entry("module-order", PythonScopeChecks::moduleOrder),
         entry("logging-args", PythonScopeChecks::loggingArgs),
         entry("collapsible-if", toml -> new CollapsibleIfCheck(TomlValues.required(toml, MESSAGE))),
-        entry("handler-body", PythonScopeChecks::handlerBody));
+        entry("handler-body", PythonScopeChecks::handlerBody),
+        entry(
+            "redefined-outer-name",
+            toml -> new PythonRedefinedNameCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {

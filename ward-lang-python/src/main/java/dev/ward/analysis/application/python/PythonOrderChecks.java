@@ -14,6 +14,9 @@ import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
+import dev.ward.analysis.domain.rule.check.PythonDocstringCheck;
+import dev.ward.analysis.domain.rule.check.PythonMetaclassArgumentCheck;
+import dev.ward.analysis.domain.rule.check.PythonOverloadOrderCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
@@ -74,12 +77,28 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry("strict-call", PythonOrderChecks::strictCall));
+        entry("strict-call", PythonOrderChecks::strictCall),
+        entry("docstring", PythonOrderChecks::docstring),
+        entry(
+            "overload-order",
+            toml -> new PythonOverloadOrderCheck(TomlValues.required(toml, MESSAGE))),
+        entry("metaclass-argument", PythonOrderChecks::metaclassArgument));
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {
     return new ComparisonOperatorCheck(
         ComparisonOperatorCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck metaclassArgument(final TomlParseResult toml) {
+    return new PythonMetaclassArgumentCheck(
+        PythonMetaclassArgumentCheck.Problem.valueOf(problem(toml)),
+        TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck docstring(final TomlParseResult toml) {
+    return new PythonDocstringCheck(
+        PythonDocstringCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck strictCall(final TomlParseResult toml) {

@@ -4,7 +4,7 @@ abbreviation-as-word-in-name = "implemented"
 abstract-class-name = { status = "planned", issue = "#297" }
 catch-parameter-name = { status = "planned", issue = "#297" }
 class-type-parameter-name = "not-applicable"
-constant-name = { status = "planned", issue = "#297" }
+constant-name = "implemented"
 google-method-name = "not-applicable"
 google-non-constant-field-name = "not-applicable"
 illegal-identifier-name = { status = "planned", issue = "#297" }
@@ -12,7 +12,7 @@ interface-type-parameter-name = "not-applicable"
 lambda-parameter-name = "implemented"
 local-final-variable-name = "not-applicable"
 local-variable-name = "implemented"
-member-name = { status = "planned", issue = "#297" }
+member-name = "implemented"
 method-name = "implemented"
 method-type-parameter-name = "not-applicable"
 package-name = "not-applicable"
@@ -20,5 +20,5 @@ parameter-name = "implemented"
 pattern-variable-name = "not-applicable"
 record-component-name = "not-applicable"
 record-type-parameter-name = "not-applicable"
-static-variable-name = { status = "planned", issue = "#297" }
+static-variable-name = "implemented"
 type-name = "implemented"
