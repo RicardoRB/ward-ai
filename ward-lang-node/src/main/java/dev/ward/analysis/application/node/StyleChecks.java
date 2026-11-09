@@ -31,7 +31,11 @@ final class StyleChecks {
             new NodeElseAfterJumpCheck(
                 toml.getBoolean("allow-else-if", () -> true), TomlValues.required(toml, MESSAGE)),
         "node-prefer-const",
-        toml -> new NodePreferConstCheck(TomlValues.required(toml, MESSAGE)),
+        toml ->
+            new NodePreferConstCheck(
+                "all".equals(toml.getString("destructuring")),
+                toml.getBoolean("ignore-read-before-assign", () -> false),
+                TomlValues.required(toml, MESSAGE)),
         "node-variable-distance",
         toml ->
             new VariableDistanceCheck(

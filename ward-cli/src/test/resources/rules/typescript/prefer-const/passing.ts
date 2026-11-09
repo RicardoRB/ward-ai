@@ -1,5 +1,9 @@
 export function total(values: number[]): number {
   let count = values.length;
-  count = count + 1;
-  return count;
+  count += 1;
+  let late;
+  if (values.length) {
+    late = 1;
+  }
+  return count + (late ?? 0);
 }

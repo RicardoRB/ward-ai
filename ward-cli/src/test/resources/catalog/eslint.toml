@@ -882,8 +882,6 @@ biome = ["useShorthandAssign"]
 
 [[rule]]
 name = "prefer-arrow-callback"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-arrow-callback"]
 biome = ["useArrowFunction"]
 
@@ -957,8 +955,6 @@ biome = ["useSpreadOverApply"]
 
 [[rule]]
 name = "prefer-template"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-template"]
 biome = ["useTemplate"]
 

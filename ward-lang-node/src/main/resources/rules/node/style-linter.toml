@@ -162,9 +162,13 @@ capability = "SCOPES"
 severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
+options.destructuring = { type = "enum", values = ["any", "all"], parameter = "destructuring" }
+options.ignore-read-before-assign = { type = "boolean", parameter = "ignore-read-before-assign" }
 body = '''
 check = "node-prefer-const"
-message = "'{value}' is never reassigned; use 'const' instead"
+destructuring = "any"
+ignore-read-before-assign = false
+message = "'{value}' is never reassigned. Use 'const' instead."
 '''
 
 [[rules]]
@@ -174,7 +178,69 @@ capability = "SCOPES"
 severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
+options.destructuring = { type = "enum", values = ["any", "all"], parameter = "destructuring" }
+options.ignore-read-before-assign = { type = "boolean", parameter = "ignore-read-before-assign" }
 body = '''
 check = "node-prefer-const"
-message = "'{value}' is never reassigned; use 'const' instead"
+destructuring = "any"
+ignore-read-before-assign = false
+message = "'{value}' is never reassigned. Use 'const' instead."
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-template"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:[\w$.()]+\+[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]|[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]\+[\w$.()]+)$'
+message = "unexpected string concatenation; use a template literal"
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-arrow-callback"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["anonymousFunction"]
+parent-path = "singleExpression>argument"
+text = '^function\((?![\s\S]*(this|arguments|super|new\.target))'
+message = "unexpected function expression; use an arrow function"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-template"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:[\w$.()]+\+[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]|[\x27\x22\x60][^\x27\x22\x60]*[\x27\x22\x60]\+[\w$.()]+)$'
+message = "unexpected string concatenation; use a template literal"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-arrow-callback"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["anonymousFunction"]
+parent-path = "singleExpression>argument"
+text = '^function\((?![\s\S]*(this|arguments|super|new\.target))'
+message = "unexpected function expression; use an arrow function"
 '''
