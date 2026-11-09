@@ -18,8 +18,6 @@ detekt = ["ArrayPrimitive"]
 
 [[rule]]
 name = "avoid-referential-equality"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["AvoidReferentialEquality"]
 
 [[rule]]
@@ -366,8 +364,6 @@ detekt = ["HasPlatformType"]
 
 [[rule]]
 name = "ignored-return-value"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["IgnoredReturnValue"]
 
 [[rule]]
@@ -448,8 +444,6 @@ detekt = ["MandatoryBracesLoops"]
 
 [[rule]]
 name = "map-get-with-not-null-assertion-operator"
-presets = ["standard", "strict"]
-category = "potential-bugs"
 detekt = ["MapGetWithNotNullAssertionOperator"]
 
 [[rule]]
@@ -628,8 +622,6 @@ detekt = ["RedundantHigherOrderMapUsage"]
 
 [[rule]]
 name = "redundant-suspend-modifier"
-presets = ["standard", "strict"]
-category = "coroutines"
 detekt = ["RedundantSuspendModifier"]
 
 [[rule]]
