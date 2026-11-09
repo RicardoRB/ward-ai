@@ -114,10 +114,13 @@ public final class BiomeUnreachableSuperCheck implements RuleCheck {
         || CLASS_TAIL.equals(part.kind()) && BiomeTree.hasChild(part, EXTENDS_TOKEN);
   }
 
-  /** The result of one block: whether it reads this before super, and the state it leaves. */
-  private record Pass(boolean thisBeforeSuper, int state) {}
+  /** The result of one block: whether a path breaks the rule there, and the state it leaves. */
+  private record Pass(boolean violation, int state) {}
 
-  /** A path reads {@code this} before {@code super()}, or reaches the end without calling it. */
+  /**
+   * A path reads {@code this} before {@code super()}, calls {@code super()} again, or reaches the
+   * end without calling it.
+   */
   private static boolean missesSuper(final ControlFlowGraph graph) {
     final Map<Integer, Integer> entering = new HashMap<>();
     final Map<Integer, BasicBlock> blocks = new HashMap<>();
@@ -125,30 +128,35 @@ public final class BiomeUnreachableSuperCheck implements RuleCheck {
     final Deque<Integer> pending = new ArrayDeque<>();
     entering.put(graph.entry(), NOT_CALLED);
     pending.add(graph.entry());
-    boolean thisFirst = false;
+    boolean violation = false;
     while (!pending.isEmpty()) {
       final int id = pending.poll();
       final Pass pass = run(blocks.get(id), entering.get(id));
-      thisFirst |= pass.thisBeforeSuper();
+      violation |= pass.violation();
       propagate(blocks.get(id), pass.state(), entering, pending);
     }
     final boolean endsUncalled = (entering.getOrDefault(graph.exit(), 0) & NOT_CALLED) != 0;
-    return thisFirst || endsUncalled;
+    return violation || endsUncalled;
   }
 
+  /** Runs the events of a block: this before super, and super after super, break the rule. */
   private static Pass run(final BasicBlock block, final int entry) {
-    boolean thisFirst = false;
+    boolean violation = false;
     int state = entry;
     for (final SyntaxNode node : block.nodes()) {
       for (final String event : eventsOf(node)) {
-        if (THIS.equals(event) && (state & NOT_CALLED) != 0) {
-          thisFirst = true;
-        } else if (SUPER.equals(event)) {
+        violation |= breaks(event, state);
+        if (SUPER.equals(event)) {
           state = CALLED;
         }
       }
     }
-    return new Pass(thisFirst, state);
+    return new Pass(violation, state);
+  }
+
+  private static boolean breaks(final String event, final int state) {
+    return THIS.equals(event) && (state & NOT_CALLED) != 0
+        || SUPER.equals(event) && (state & CALLED) != 0;
   }
 
   /** Merges the state into each block the block returns to, and queues the ones that change. */

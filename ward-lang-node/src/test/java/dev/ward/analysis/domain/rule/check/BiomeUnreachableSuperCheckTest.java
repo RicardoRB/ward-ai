@@ -38,6 +38,14 @@ class BiomeUnreachableSuperCheckTest {
   }
 
   @Test
+  void reportsAConstructorThatCallsSuperTwiceOnAPath() {
+    assertThat(
+            reported(
+                "class A extends B {\n  constructor() {\n    super();\n    super();\n  }\n}\n"))
+        .hasSize(1);
+  }
+
+  @Test
   void ignoresAClassWithoutExtends() {
     assertThat(reported("class A {\n  constructor() {}\n}\n")).isEmpty();
   }

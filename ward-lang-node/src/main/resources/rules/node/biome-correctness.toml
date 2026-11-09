@@ -61,7 +61,7 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "node-unreachable-super"
-message = "this constructor has a code path that reads this or returns without calling super()"
+message = "this constructor must call super() exactly once, before this is read, on every code path"
 '''
 
 [[rules]]
@@ -73,6 +73,6 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "node-unreachable-super"
-message = "this constructor has a code path that reads this or returns without calling super()"
+message = "this constructor must call super() exactly once, before this is read, on every code path"
 '''
 
