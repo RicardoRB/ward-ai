@@ -10,6 +10,7 @@ import dev.ward.domain.gate.Finding;
 import dev.ward.domain.init.ArchitectureLayers;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
@@ -48,7 +49,7 @@ public final class LayerPorts {
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
             BundledRuleMatchers.create(),
-            new FileSystemSourceUnits(),
+            new FileSystemSourceUnits(new ProcessCommandExecutor()),
             frontends(),
             projectRoot -> new FileAnalysisCache(projectRoot.resolve(".ward/cache/analysis")),
             AnalysisCacheFixtures.codec(),

@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.swift.SwiftTypeFacts;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -54,7 +55,8 @@ public final class NativeSwiftTypes implements TypeFacts {
     final Map<String, SyntaxNode> trees = new HashMap<>();
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     for (final SourceUnit unit :
-        new FileSystemSourceUnits().read(projectRoot, Set.of(AnalysisLanguage.SWIFT))) {
+        new FileSystemSourceUnits(new ProcessCommandExecutor())
+            .read(projectRoot, Set.of(AnalysisLanguage.SWIFT))) {
       trees.put(unit.path(), frontend.parse(unit).tree());
     }
     return new SwiftTypeFacts(SwiftLayouts.read(projectRoot), trees);
