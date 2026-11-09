@@ -33,14 +33,12 @@ record JsxElementSpec(String name, String attribute, String value) {
     if (!name.equals(JsxAttributes.elementName(element))) {
       return false;
     }
-    if (attribute.isEmpty()) {
-      return true;
-    }
-    return JsxAttributes.of(element).stream()
-        .filter(candidate -> attribute.equals(JsxAttributes.name(candidate)))
-        .anyMatch(
-            candidate ->
-                value.isEmpty()
-                    || JsxAttributes.literal(candidate).filter(value::equals).isPresent());
+    return attribute.isEmpty()
+        || JsxAttributes.of(element).stream()
+            .filter(candidate -> attribute.equals(JsxAttributes.name(candidate)))
+            .anyMatch(
+                candidate ->
+                    value.isEmpty()
+                        || JsxAttributes.literal(candidate).filter(value::equals).isPresent());
   }
 }
