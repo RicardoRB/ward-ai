@@ -65,6 +65,25 @@ class SwiftLayoutsTest {
   }
 
   @Test
+  void buildOutputAndVendoredFoldersAreNeverOwned() throws IOException {
+    Files.writeString(
+        root.resolve("Package.swift"),
+        "let package = Package(name: \"X\", targets: [\n"
+            + "  .target(name: \"Gen\", path: \".build/gen\"),\n"
+            + "  .target(name: \"Lib\", path: \"Vendor/Pods/Lib\"),\n"
+            + "  .target(name: \"Shop\", path: \"Sources/Shop\")\n"
+            + "])");
+
+    final SwiftProjectLayout layout = SwiftLayouts.read(root);
+
+    assertThat(layout.moduleOf(".build/gen/Gen.swift"))
+        .isEqualTo(SwiftProjectLayout.IMPLICIT_MODULE);
+    assertThat(layout.moduleOf("Vendor/Pods/Lib/Lib.swift"))
+        .isEqualTo(SwiftProjectLayout.IMPLICIT_MODULE);
+    assertThat(layout.moduleOf("Sources/Shop/Shop.swift")).isEqualTo("Shop");
+  }
+
+  @Test
   void aComputedManifestFallsBackToTheImplicitModule() throws IOException {
     Files.writeString(
         root.resolve("Package.swift"),
