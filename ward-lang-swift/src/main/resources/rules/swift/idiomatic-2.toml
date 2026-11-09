@@ -102,3 +102,27 @@ body = '''
 check = "swift-duplicate-imports"
 message = "imports should be unique"
 '''
+
+[[rules]]
+id = "ward:swift/void-function-in-ternary"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-void-function-in-ternary"
+message = "avoid a ternary to call void functions; use an if statement"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-synthesized-initializer"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unneeded-synthesized-initializer"
+message = "explicit initializer is the same as the synthesized memberwise initializer; remove it"
+'''

@@ -475,3 +475,23 @@ body = '''
 check = "swift-blanket-disable-command"
 message = "swiftlint command disables a rule for the rest of the file; use next, this or previous, or re-enable it"
 '''
+
+[[rules]]
+id = "ward:swift/deployment-target"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+options.ios-deployment-target = { type = "string" }
+options.macos-deployment-target = { type = "string" }
+options.tvos-deployment-target = { type = "string" }
+options.watchos-deployment-target = { type = "string" }
+body = '''
+check = "swift-deployment-target"
+ios-deployment-target = ""
+macos-deployment-target = ""
+tvos-deployment-target = ""
+watchos-deployment-target = ""
+message = "availability check uses a version that the deployment target always satisfies"
+'''

@@ -153,4 +153,34 @@ class SwiftLintChecksTest {
     assertThat(lines(run(check, "// swiftlint:enable unused_import\n"))).containsExactly(1);
     assertThat(run(check, "// swiftlint:disable:next unused_import\n")).isEmpty();
   }
+
+  @Test
+  void deploymentTargetReportsAvailabilityAtOrBelowTheTargetOnly() {
+    final RuleCheck check =
+        new SwiftDeploymentTargetCheck(MESSAGE, java.util.Map.of("iOS", "13.0"));
+
+    assertThat(lines(run(check, "if #available(iOS 12, *) {\n}\n"))).containsExactly(1);
+    assertThat(lines(run(check, "@available(iOS 13.0, *)\nfunc f() {}\n"))).containsExactly(1);
+    assertThat(run(check, "if #available(iOS 14, *) {\n}\n")).isEmpty();
+    assertThat(run(check, "if #available(macOS 10, *) {\n}\n")).isEmpty();
+    assertThat(SwiftDeploymentTargetCheck.compare("13", "13.0")).isZero();
+  }
+
+  @Test
+  void voidFunctionInTernaryReportsDiscardedCallsButNotValues() {
+    final RuleCheck check = new SwiftVoidFunctionInTernaryCheck(MESSAGE);
+
+    assertThat(lines(run(check, "func run() {\n flag ? doA() : doB()\n done()\n}\n"))).containsExactly(2);
+    assertThat(run(check, "func run() -> Int {\n return flag ? doA() : doB()\n}\n")).isEmpty();
+    assertThat(run(check, "var a = b ? c() : d()\n")).isEmpty();
+  }
+
+  @Test
+  void unneededSynthesizedInitializerReportsAnInitializerThatAssignsEveryProperty() {
+    final RuleCheck check = new SwiftUnneededSynthesizedInitializerCheck(MESSAGE);
+
+    assertThat(lines(run(check, "struct S {\n let a: Int\n init(a: Int) {\n self.a = a\n }\n}\n")))
+        .containsExactly(3);
+    assertThat(run(check, "struct S {\n let a: Int\n init(b: Int) {\n self.a = b\n }\n}\n")).isEmpty();
+  }
 }

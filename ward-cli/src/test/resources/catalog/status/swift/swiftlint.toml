@@ -25,7 +25,7 @@ contains-over-range-nil-comparison = "implemented"
 contrasted-opening-brace = { status = "planned", issue = "#298" }
 control-statement = "implemented"
 convenience-type = { status = "planned", issue = "#338" }
-deployment-target = { status = "planned", issue = "#338" }
+deployment-target = "implemented"
 direct-return = { status = "planned", issue = "#298" }
 discarded-notification-center-observer = { status = "planned", issue = "#338" }
 discouraged-assert = "implemented"
@@ -187,7 +187,7 @@ unhandled-throwing-task = { status = "planned", issue = "#338" }
 unneeded-break-in-switch = "implemented"
 unneeded-escaping = { status = "planned", issue = "#338" }
 unneeded-override = "implemented"
-unneeded-synthesized-initializer = { status = "planned", issue = "#338" }
+unneeded-synthesized-initializer = "implemented"
 unneeded-throws-rethrows = "implemented"
 unowned-variable-capture = { status = "planned", issue = "#338" }
 untyped-error-in-catch = "implemented"
@@ -201,7 +201,7 @@ valid-ibinspectable = "implemented"
 variable-shadowing = { status = "planned", issue = "#338" }
 vertical-parameter-alignment = "implemented"
 vertical-parameter-alignment-on-call = { status = "planned", issue = "#298" }
-void-function-in-ternary = { status = "planned", issue = "#338" }
+void-function-in-ternary = "implemented"
 void-return = "implemented"
 weak-delegate = "implemented"
 xct-specific-matcher = { status = "planned", issue = "#338" }

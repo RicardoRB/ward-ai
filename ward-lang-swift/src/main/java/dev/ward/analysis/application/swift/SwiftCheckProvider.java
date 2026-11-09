@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import dev.ward.analysis.domain.swift.SwiftBlanketDisableCommandCheck;
+import dev.ward.analysis.domain.swift.SwiftDeploymentTargetCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateConditionsCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateEnumCasesCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateImportsCheck;
@@ -22,9 +23,15 @@ import dev.ward.analysis.domain.swift.SwiftParameterAlignmentCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantSendableCheck;
 import dev.ward.analysis.domain.swift.SwiftRedundantVoidReturnCheck;
 import dev.ward.analysis.domain.swift.SwiftStaticOverFinalClassCheck;
+import dev.ward.analysis.domain.swift.SwiftUnneededSynthesizedInitializerCheck;
 import dev.ward.analysis.domain.swift.SwiftUnneededOverrideCheck;
 import dev.ward.analysis.domain.swift.SwiftValidIbinspectableCheck;
+import dev.ward.analysis.domain.swift.SwiftVoidFunctionInTernaryCheck;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import org.tomlj.TomlParseResult;
 
 /**
  * The declarative checks that only Swift rules use: the style checks of declarations and imports,
@@ -96,9 +103,32 @@ public final class SwiftCheckProvider implements CheckProvider {
             "swift-blanket-disable-command",
             toml -> new SwiftBlanketDisableCommandCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
+            "swift-deployment-target",
+            toml ->
+                new SwiftDeploymentTargetCheck(
+                    TomlValues.required(toml, MESSAGE), deploymentTargets(toml))),
+        Map.entry(
+            "swift-void-function-in-ternary",
+            toml -> new SwiftVoidFunctionInTernaryCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-unneeded-synthesized-initializer",
+            toml -> new SwiftUnneededSynthesizedInitializerCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
             "swift-variable-distance",
             toml ->
                 new VariableDistanceCheck(
                     TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
+  }
+
+  /** The configured deployment target of each platform, keyed by the platform's name. */
+  private static Map<String, String> deploymentTargets(final TomlParseResult toml) {
+    final Map<String, String> targets = new LinkedHashMap<>();
+    for (final String platform : List.of("iOS", "macOS", "tvOS", "watchOS")) {
+      final String value = toml.getString(platform.toLowerCase(Locale.ROOT) + "-deployment-target");
+      if (value != null) {
+        targets.put(platform, value);
+      }
+    }
+    return targets;
   }
 }
