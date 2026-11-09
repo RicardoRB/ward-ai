@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The files an earlier init wrote for SwiftLint: its config, its strict layer and the Ward-owned
@@ -27,8 +26,8 @@ public final class SwiftConfigFiles {
   public static List<ConfigTarget> targets(final Project project) throws IOException {
     final Path root = project.root();
     final List<ConfigTarget> targets = new ArrayList<>();
-    retired(root.resolve(SWIFTLINT)).ifPresent(targets::add);
-    retired(root.resolve(STRICT_SWIFTLINT)).ifPresent(targets::add);
+    retired(targets, root.resolve(SWIFTLINT), SWIFTLINT);
+    retired(targets, root.resolve(STRICT_SWIFTLINT), STRICT_SWIFTLINT);
     final Path manifest = root.resolve(TOOLS_MANIFEST);
     if (Files.isRegularFile(manifest) && ConfigFiles.owned(Files.readString(manifest))) {
       // The lock file and build cache belong to that manifest, so they go with it.
@@ -39,28 +38,32 @@ public final class SwiftConfigFiles {
               null,
               "removed: Ward's earlier SwiftLint tools package and its build cache"));
     } else {
-      retired(manifest).ifPresent(targets::add);
+      retired(targets, manifest, "Package.swift");
     }
     return List.copyOf(targets);
   }
 
   /**
-   * Returns a target that removes {@code file} when Ward wrote it, or keeps it as the user wrote
-   * it. Empty when the file does not exist, so init has nothing to report for it.
+   * Adds a target that removes {@code file} when Ward wrote it, or keeps it as the user wrote it.
+   * Adds nothing when the file does not exist, so init has nothing to report for it.
    */
-  private static Optional<ConfigTarget> retired(final Path file) throws IOException {
+  private static void retired(final List<ConfigTarget> targets, final Path file, final String name)
+      throws IOException {
     if (!Files.isRegularFile(file)) {
-      return Optional.empty();
+      return;
     }
-    final String name = file.getFileName().toString();
-    return Optional.of(
-        ConfigFiles.owned(Files.readString(file))
-            ? new ConfigTarget(
-                file,
-                ConfigTarget.Disposition.REMOVE,
-                null,
-                "removed: Ward's earlier " + name + "; the Ward rules replace SwiftLint")
-            : ConfigTarget.keep(
-                file, "kept: your " + name + " is no longer used; Ward runs its Swift rules"));
+    final String content = Files.readString(file);
+    if (ConfigFiles.owned(content)) {
+      targets.add(
+          new ConfigTarget(
+              file,
+              ConfigTarget.Disposition.REMOVE,
+              null,
+              "removed: Ward's earlier " + name + "; the Ward rules replace SwiftLint"));
+    } else {
+      targets.add(
+          ConfigTarget.keep(
+              file, "kept: your " + name + " is no longer used; Ward runs its Swift rules"));
+    }
   }
 }
