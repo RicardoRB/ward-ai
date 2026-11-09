@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.node.lint;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -26,8 +27,14 @@ public final class NonNullOptionalChainCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     return SyntaxText.nodesOf(root, EXPRESSION).stream()
         .filter(this::isAssertedChain)
-        .map(node -> new RuleMatch(node.children().get(0).children().get(1).span(), message))
+        .map(node -> new RuleMatch(reportedSpan(node), message))
         .toList();
+  }
+
+  /** The chain inside its parentheses, or the chain itself when it has no parentheses. */
+  private static Span reportedSpan(final SyntaxNode node) {
+    final SyntaxNode operand = node.children().get(0);
+    return isParenthesizedChain(operand) ? operand.children().get(1).span() : operand.span();
   }
 
   private boolean isAssertedChain(final SyntaxNode node) {
@@ -36,7 +43,11 @@ public final class NonNullOptionalChainCheck implements RuleCheck {
     }
     final SyntaxNode operand = node.children().get(0);
     return EXPRESSION.equals(operand.kind())
-        && !operand.children().isEmpty()
+        && (isParenthesizedChain(operand) || hasOptionalTokens(operand));
+  }
+
+  private static boolean isParenthesizedChain(final SyntaxNode operand) {
+    return !operand.children().isEmpty()
         && SyntaxText.isToken(operand.children().get(0), OPEN)
         && operand.children().size() > 2
         && isOptionalChain(operand.children().get(1));

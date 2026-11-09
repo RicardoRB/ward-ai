@@ -7,8 +7,10 @@ capability = "TYPES"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
+options.allow-mixed-promise-arrays = { type = "boolean" }
 body = '''
-check = "ts-await-thenable"
+check = "node-await-thenable"
+allow-mixed-promise-arrays = false
 message = "await has no effect on a value that is not a promise"
 '''
 
@@ -20,7 +22,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-for-in-array"
+check = "node-no-for-in-array"
 message = "for-in loop over an array visits index strings; use for-of or an index loop"
 '''
 
@@ -32,7 +34,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-array-delete"
+check = "node-no-array-delete"
 message = "delete leaves a hole in the array; use splice to remove the element"
 '''
 
@@ -46,7 +48,7 @@ presets = ["standard", "strict"]
 options.ignore-void = { type = "boolean" }
 options.ignore-iife = { type = "boolean" }
 body = '''
-check = "ts-no-floating-promises"
+check = "node-no-floating-promises"
 ignore-void = true
 ignore-iife = false
 message = "promise is neither awaited, returned, nor handled with catch"
@@ -59,9 +61,15 @@ capability = "TYPES"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
+options.checks-conditionals = { type = "boolean" }
+options.checks-spreads = { type = "boolean" }
+options.checks-void-return = { type = "boolean" }
 body = '''
-check = "ts-no-misused-promises"
-message = "promise used as a condition is always truthy; await it or compare its result"
+check = "node-no-misused-promises"
+checks-conditionals = true
+checks-spreads = true
+checks-void-return = true
+message = "promise where a value is expected; await it or handle its result"
 '''
 
 [[rules]]
@@ -71,8 +79,16 @@ capability = "TYPES"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
+options.allow = { type = "string-list" }
+options.allow-rethrowing = { type = "boolean" }
+options.allow-throwing-any = { type = "boolean" }
+options.allow-throwing-unknown = { type = "boolean" }
 body = '''
-check = "ts-only-throw-error"
+check = "node-only-throw-error"
+allow = []
+allow-rethrowing = true
+allow-throwing-any = true
+allow-throwing-unknown = true
 message = "throw an Error object, not a value of this type"
 '''
 
@@ -84,7 +100,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-assignment"
+check = "node-no-unsafe-assignment"
 message = "unsafe assignment of an any value to a typed variable"
 '''
 
@@ -96,7 +112,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-call"
+check = "node-no-unsafe-call"
 message = "unsafe call of an any value"
 '''
 
@@ -108,7 +124,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-member-access"
+check = "node-no-unsafe-member-access"
 message = "unsafe member access on an any value"
 '''
 
@@ -120,7 +136,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-return"
+check = "node-no-unsafe-return"
 message = "unsafe return of an any value"
 '''
 
@@ -132,7 +148,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-argument"
+check = "node-no-unsafe-argument"
 message = "unsafe argument of type any"
 '''
 
@@ -144,7 +160,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-unary-minus"
+check = "node-no-unsafe-unary-minus"
 message = "unsafe unary minus on an any value"
 '''
 
@@ -155,8 +171,20 @@ capability = "TYPES"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
+options.allow-any = { type = "boolean" }
+options.allow-boolean = { type = "boolean" }
+options.allow-nullish = { type = "boolean" }
+options.allow-number-and-string = { type = "boolean" }
+options.allow-regexp = { type = "boolean" }
+options.skip-compound-assignments = { type = "boolean" }
 body = '''
-check = "ts-restrict-plus-operands"
+check = "node-restrict-plus-operands"
+allow-any = true
+allow-boolean = true
+allow-nullish = true
+allow-number-and-string = true
+allow-regexp = true
+skip-compound-assignments = false
 message = "operands of + must be primitive values of compatible types"
 '''
 
@@ -167,9 +195,25 @@ capability = "TYPES"
 severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
+options.allow = { type = "string-list" }
+options.allow-any = { type = "boolean" }
+options.allow-array = { type = "boolean" }
+options.allow-boolean = { type = "boolean" }
+options.allow-nullish = { type = "boolean" }
+options.allow-number = { type = "boolean" }
+options.allow-regexp = { type = "boolean" }
+options.allow-never = { type = "boolean" }
 body = '''
-check = "ts-restrict-template-expressions"
-message = "template placeholder must not be an object or an array"
+check = "node-restrict-template-expressions"
+allow = ["Error", "URL", "URLSearchParams"]
+allow-any = true
+allow-array = false
+allow-boolean = true
+allow-nullish = true
+allow-number = true
+allow-regexp = true
+allow-never = false
+message = "template placeholder must be a string, a number or another allowed value"
 '''
 
 [[rules]]
@@ -180,6 +224,42 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unnecessary-type-assertion"
+check = "node-no-unnecessary-type-assertion"
 message = "this assertion does not change the type of the expression"
+'''
+
+[[rules]]
+id = "ward:typescript/unbound-method"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unbound-method"
+message = "method is read without being called, so it loses its object as this; call it or bind it"
+'''
+
+[[rules]]
+id = "ward:typescript/no-base-to-string"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-base-to-string"
+message = "object does not declare its own toString and prints as [object Object]"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-enum-comparison"
+language = "TYPESCRIPT"
+capability = "TYPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unsafe-enum-comparison"
+message = "comparison of an enum value with a value of another type"
 '''

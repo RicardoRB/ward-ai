@@ -1,18 +1,64 @@
 {
-  "4:5-4:8": {
+  "244:5-244:8": {
     "type": {
-      "name": "Promise<boolean>",
-      "primitive": false,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "Promise<boolean>",
+      "primitive": false
+    }
+  },
+  "246:21-246:24": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<boolean>",
+      "primitive": false
+    }
+  },
+  "253:19-253:21": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "() => Promise<void>",
+      "primitive": false
+    }
+  },
+  "253:6-253:22": {
+    "call": {
+      "declaring": {
+        "name": "api"
+      },
+      "name": "schedule",
+      "params": [
+        {
+          "args": [],
+          "array": 0,
+          "name": "() => void",
+          "primitive": false
+        }
+      ],
+      "returns": {
+        "args": [],
+        "array": 0,
+        "name": "void",
+        "primitive": true
+      }
     }
   },
   "32:5-32:8": {
     "type": {
-      "name": "boolean",
-      "primitive": true,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "boolean",
+      "primitive": true
+    }
+  },
+  "4:5-4:8": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<boolean>",
+      "primitive": false
     }
   }
 }

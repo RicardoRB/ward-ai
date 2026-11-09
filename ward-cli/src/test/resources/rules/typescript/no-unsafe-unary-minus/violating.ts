@@ -1,2 +1,2 @@
-declare const a: any;
-const b = -a;
+declare const s: string;
+const m = -s;

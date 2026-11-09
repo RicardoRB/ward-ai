@@ -26,15 +26,19 @@ public abstract class TypedCheck implements RuleCheck {
   static final String SEQUENCE = "expressionSequence";
   static final String TEMPLATE = "templateStringAtom";
 
-  private static final FactNeed NEED =
-      new FactNeed(Set.of(EXPRESSION, SEQUENCE, TEMPLATE), Set.of(FactKind.TYPE));
+  private static final Set<FactKind> TYPE_ONLY = Set.of(FactKind.TYPE);
   private static final Set<String> UNTYPED = Set.of("any", "unknown");
   private static final Set<String> VALUE_PRIMITIVES =
       Set.of("string", "number", "boolean", "bigint", "null", "undefined", "void", "never");
 
   @Override
   public final FactNeed needs() {
-    return NEED;
+    return new FactNeed(Set.of(EXPRESSION, SEQUENCE, TEMPLATE), kinds());
+  }
+
+  /** The fact kinds the check reads; a check that reads call targets adds {@link FactKind#CALL}. */
+  protected Set<FactKind> kinds() {
+    return TYPE_ONLY;
   }
 
   @Override
@@ -79,6 +83,11 @@ public abstract class TypedCheck implements RuleCheck {
   static boolean isPrimitive(final TypeRef type) {
     return type.arrayDepth() == 0
         && (type.primitive() || VALUE_PRIMITIVES.contains(type.name()) || isLiteral(type.name()));
+  }
+
+  /** Reports whether a value of this type may be a promise: an unknown value or a non-primitive. */
+  static boolean isMaybeAwaitable(final TypeRef type) {
+    return isUntyped(type) || !isPrimitive(type);
   }
 
   /** Reports whether a type is an object, array or function type, which a template cannot print. */

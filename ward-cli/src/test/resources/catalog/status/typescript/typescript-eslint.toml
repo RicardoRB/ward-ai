@@ -18,7 +18,7 @@ max-params = { status = "planned", issue = "#296" }
 method-signature-style = { status = "planned", issue = "#296" }
 naming-convention = { status = "planned", issue = "#296" }
 no-array-delete = "implemented"
-no-base-to-string = { status = "planned", issue = "#327" }
+no-base-to-string = "implemented"
 no-confusing-non-null-assertion = { status = "planned", issue = "#296" }
 no-confusing-void-expression = { status = "planned", issue = "#327" }
 no-deprecated = { status = "planned", issue = "#327" }
@@ -45,7 +45,7 @@ no-namespace = "implemented"
 no-non-null-asserted-nullish-coalescing = { status = "planned", issue = "#327" }
 no-non-null-asserted-optional-chain = "implemented"
 no-non-null-assertion = { status = "planned", issue = "#296" }
-no-redundant-type-constituents = { status = "planned", issue = "#327" }
+no-redundant-type-constituents = "implemented"
 no-require-imports = "implemented"
 no-restricted-types = { status = "planned", issue = "#296" }
 no-this-alias = "implemented"
@@ -64,7 +64,7 @@ no-unsafe-assignment = "implemented"
 no-unsafe-call = "implemented"
 no-unsafe-declaration-merging = "implemented"
 no-unsafe-enum-assignment = { status = "planned", issue = "#327" }
-no-unsafe-enum-comparison = { status = "planned", issue = "#327" }
+no-unsafe-enum-comparison = "implemented"
 no-unsafe-function-type = "implemented"
 no-unsafe-member-access = "implemented"
 no-unsafe-return = "implemented"
@@ -102,6 +102,6 @@ strict-boolean-expressions = { status = "planned", issue = "#327" }
 strict-void-return = { status = "planned", issue = "#327" }
 switch-exhaustiveness-check = { status = "planned", issue = "#327" }
 triple-slash-reference = "implemented"
-unbound-method = { status = "planned", issue = "#327" }
+unbound-method = "implemented"
 unified-signatures = { status = "planned", issue = "#296" }
 use-unknown-in-catch-callback-variable = { status = "planned", issue = "#327" }

@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,15 +27,24 @@ public final class BanTsCommentCheck implements RuleCheck {
 
   private final Map<String, String> options;
   private final int minimumDescriptionLength;
+  private final Optional<Pattern> descriptionFormat;
   private final String message;
 
   /**
    * Creates the check; {@code options} maps each directive to true, false or the description rule.
+   * An empty {@code descriptionFormat} leaves the description to the minimum length alone.
    */
   public BanTsCommentCheck(
-      final Map<String, String> options, final int minimumDescriptionLength, final String message) {
+      final Map<String, String> options,
+      final int minimumDescriptionLength,
+      final String descriptionFormat,
+      final String message) {
     this.options = Map.copyOf(options);
     this.minimumDescriptionLength = minimumDescriptionLength;
+    this.descriptionFormat =
+        descriptionFormat.isEmpty()
+            ? Optional.empty()
+            : Optional.of(Pattern.compile(descriptionFormat));
     this.message = message;
   }
 
@@ -79,10 +89,18 @@ public final class BanTsCommentCheck implements RuleCheck {
     final String option = options.getOrDefault(directive, "false");
     if (BANNED.equals(option)) {
       out.add(new RuleMatch(comment.span(), fill(directive)));
-    } else if (NEEDS_DESCRIPTION.equals(option)
-        && text.trim().length() < minimumDescriptionLength) {
+    } else if (NEEDS_DESCRIPTION.equals(option) && !hasDescription(text.trim())) {
       out.add(new RuleMatch(comment.span(), fill(directive)));
     }
+  }
+
+  /**
+   * Reports whether a description matches the format, or reaches the minimum length without one.
+   */
+  private boolean hasDescription(final String description) {
+    return descriptionFormat
+        .map(format -> format.matcher(description).find())
+        .orElseGet(() -> description.length() >= minimumDescriptionLength);
   }
 
   private String fill(final String directive) {

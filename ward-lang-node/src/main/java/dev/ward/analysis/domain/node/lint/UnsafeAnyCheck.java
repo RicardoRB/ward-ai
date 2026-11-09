@@ -24,14 +24,11 @@ public final class UnsafeAnyCheck extends TypedCheck {
     /** An argument of a call. */
     ARGUMENT,
     /** The initializer of a declaration with an explicit type. */
-    ASSIGNMENT,
-    /** The operand of a unary minus. */
-    NEGATION
+    ASSIGNMENT
   }
 
   private static final String RETURN_STATEMENT = "returnStatement";
   private static final String ARGUMENTS = "argument";
-  private static final String MINUS = "-";
   private static final String DECLARATION = "variableDeclaration";
   private static final String ANNOTATION = "typeAnnotation";
 
@@ -81,7 +78,6 @@ public final class UnsafeAnyCheck extends TypedCheck {
     return switch (site) {
       case CALL -> callSubject(parts);
       case MEMBER -> memberSubject(parts);
-      case NEGATION -> negationSubject(parts);
       default -> null;
     };
   }
@@ -96,10 +92,6 @@ public final class UnsafeAnyCheck extends TypedCheck {
             && SyntaxText.isToken(parts.get(1), ".")
             && EXPRESSION.equals(parts.get(0).kind());
     return access ? parts.get(0) : null;
-  }
-
-  private static SyntaxNode negationSubject(final List<SyntaxNode> parts) {
-    return parts.size() == 2 && SyntaxText.isToken(parts.get(0), MINUS) ? parts.get(1) : null;
   }
 
   private void collectReturns(

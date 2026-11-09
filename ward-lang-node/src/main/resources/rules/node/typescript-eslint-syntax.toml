@@ -7,10 +7,10 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.ignore-rest-args = { type = "boolean" }
 body = '''
-check = "forbidden-node"
-kinds = ["predefinedType"]
-text = '^any$'
+check = "node-no-explicit-any"
+ignore-rest-args = false
 message = "unexpected any; specify a more precise type"
 '''
 
@@ -64,7 +64,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-extra-non-null-assertion"
+check = "node-no-extra-non-null-assertion"
 message = "do not use a non-null assertion on an expression that is already asserted"
 '''
 
@@ -76,7 +76,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-non-null-asserted-optional-chain"
+check = "node-no-non-null-asserted-optional-chain"
 message = "an optional chain is already nullable; remove the non-null assertion"
 '''
 
@@ -90,7 +90,7 @@ presets = ["standard", "strict"]
 options.allow-destructuring = { type = "boolean" }
 options.allowed-names = { type = "string-list" }
 body = '''
-check = "ts-no-this-alias"
+check = "node-no-this-alias"
 allow-destructuring = true
 allowed-names = []
 message = "do not alias this; use an arrow function or a bound method instead"
@@ -104,7 +104,7 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-useless-empty-export"
+check = "node-no-useless-empty-export"
 message = "empty export does nothing in a module that has other exports or imports; remove it"
 '''
 
@@ -116,7 +116,7 @@ severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-prefer-as-const"
+check = "node-prefer-as-const"
 message = "expected a const assertion instead of a literal type"
 '''
 
@@ -128,7 +128,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-duplicate-enum-values"
+check = "node-no-duplicate-enum-values"
 message = "duplicate enum member value {value}"
 '''
 
@@ -140,7 +140,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-unsafe-declaration-merging"
+check = "node-no-unsafe-declaration-merging"
 message = "unsafe declaration merging between a class and an interface"
 '''
 
@@ -154,7 +154,7 @@ presets = ["standard", "strict"]
 options.ignore-unions = { type = "boolean" }
 options.ignore-intersections = { type = "boolean" }
 body = '''
-check = "ts-no-duplicate-type-constituents"
+check = "node-no-duplicate-type-constituents"
 ignore-unions = false
 ignore-intersections = false
 message = "{type} type constituent is duplicated with {previous}"
@@ -168,7 +168,7 @@ severity = "ERROR"
 category = "problem"
 presets = ["standard", "strict"]
 body = '''
-check = "ts-no-misused-new"
+check = "node-no-misused-new"
 class-message = "class cannot have a method named new that returns the class"
 interface-message = "interfaces cannot be constructed, only classes"
 '''
@@ -185,12 +185,26 @@ options.ts-check = { type = "string" }
 options.ts-expect-error = { type = "string" }
 options.ts-ignore = { type = "string" }
 options.ts-nocheck = { type = "string" }
+options.description-format = { type = "string" }
 body = '''
-check = "ts-ban-ts-comment"
+check = "node-ban-ts-comment"
 minimum-description-length = 3
+description-format = ""
 ts-check = "false"
 ts-expect-error = "allow-with-description"
 ts-ignore = "true"
 ts-nocheck = "true"
-message = "do not use @ts-{directive}, or add a description of at least {minimum} characters"
+message = "do not use @ts-{directive}, or add a description that meets the format or minimum length"
+'''
+
+[[rules]]
+id = "ward:typescript/no-redundant-type-constituents"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redundant-type-constituents"
+message = "{type} is redundant in this type: another member overrides it or it overrides the others"
 '''

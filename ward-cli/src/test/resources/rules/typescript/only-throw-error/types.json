@@ -1,18 +1,58 @@
 {
+  "104:9-104:11": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "string",
+      "primitive": true
+    }
+  },
+  "112:7-112:13": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "any",
+      "primitive": false
+    }
+  },
+  "122:7-122:12": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "unknown",
+      "primitive": false
+    }
+  },
+  "133:7-133:12": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Ticket",
+      "primitive": false
+    }
+  },
+  "134:7-134:10": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "string",
+      "primitive": true
+    }
+  },
   "1:7-1:12": {
     "type": {
-      "name": "\"oops\"",
-      "primitive": true,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "\"oops\"",
+      "primitive": true
     }
   },
   "31:7-31:20": {
     "type": {
-      "name": "Error",
-      "primitive": false,
       "args": [],
-      "array": 0
+      "array": 0,
+      "name": "Error",
+      "primitive": false
     }
   }
 }

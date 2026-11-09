@@ -1,0 +1,50 @@
+{
+  "2:17-2:21": {
+    "members": {
+      "fields": [
+        {
+          "name": "x",
+          "type": {
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": []
+    },
+    "type": {
+      "name": "{ x: number; }",
+      "primitive": false
+    }
+  },
+  "32:17-32:22": {
+    "members": {
+      "fields": [
+        {
+          "name": "x",
+          "type": {
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Shape"
+          },
+          "name": "toString",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ]
+    },
+    "type": {
+      "name": "{ x: number; toString(): string; }",
+      "primitive": false
+    }
+  }
+}
