@@ -325,3 +325,57 @@ kinds = ["variable_declaration"]
 text = '^(?!.*weak)[a-z]*var\w*[dD]elegate:'
 message = "delegates should be weak to avoid reference cycles"
 '''
+
+[[rules]]
+id = "ward:swift/discouraged-direct-init"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(UIDevice|Bundle|NSError)(\.init)?\(\)$'
+message = "discouraged direct initialization of {value}"
+'''
+
+[[rules]]
+id = "ward:swift/non-optional-string-data-conversion"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^"[^"]*"\.data\(using:\.utf8\)$'
+message = "prefer the non-optional Data(_:) initializer over data(using: .utf8) of a string"
+'''
+
+[[rules]]
+id = "ward:swift/optional-data-string-conversion"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^String(\.init)?\(decoding:.*,as:UTF8\.self\)$'
+message = "prefer the failable String(bytes:encoding:) initializer over String(decoding:as: UTF8.self)"
+'''
+
+[[rules]]
+id = "ward:swift/duplicate-enum-cases"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-enum-cases"
+message = "enum should not contain multiple cases with the same name"
+'''

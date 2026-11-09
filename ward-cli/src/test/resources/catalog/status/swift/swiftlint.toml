@@ -30,13 +30,13 @@ direct-return = { status = "planned", issue = "#298" }
 discarded-notification-center-observer = { status = "planned", issue = "#338" }
 discouraged-assert = "implemented"
 discouraged-default-parameter = { status = "planned", issue = "#338" }
-discouraged-direct-init = { status = "planned", issue = "#338" }
+discouraged-direct-init = "implemented"
 discouraged-none-name = "implemented"
 discouraged-object-literal = { status = "planned", issue = "#338" }
 discouraged-optional-boolean = "implemented"
 discouraged-optional-collection = "implemented"
 duplicate-conditions = { status = "planned", issue = "#338" }
-duplicate-enum-cases = { status = "planned", issue = "#338" }
+duplicate-enum-cases = "implemented"
 duplicate-imports = { status = "planned", issue = "#338" }
 duplicated-key-in-dictionary-literal = { status = "planned", issue = "#338" }
 dynamic-inline = "implemented"
@@ -63,7 +63,7 @@ file-types-order = { status = "planned", issue = "#298" }
 final-test-case = "implemented"
 first-where = "implemented"
 flatmap-over-map-reduce = "implemented"
-for-where = { status = "planned", issue = "#338" }
+for-where = "implemented"
 force-cast = "implemented"
 force-try = "implemented"
 force-unwrapping = { status = "planned", issue = "#338" }
@@ -105,7 +105,7 @@ no-empty-block = { status = "planned", issue = "#338" }
 no-extension-access-modifier = "implemented"
 no-fallthrough-only = "implemented"
 no-grouping-extension = { status = "planned", issue = "#338" }
-non-optional-string-data-conversion = { status = "planned", issue = "#338" }
+non-optional-string-data-conversion = "implemented"
 non-overridable-class-declaration = { status = "planned", issue = "#298" }
 notification-center-detachment = "implemented"
 ns-number-init-as-function-reference = "implemented"
@@ -116,7 +116,7 @@ number-separator = { status = "planned", issue = "#298" }
 object-literal = { status = "planned", issue = "#338" }
 one-declaration-per-file = { status = "planned", issue = "#338" }
 operator-usage-whitespace = { status = "planned", issue = "#298" }
-optional-data-string-conversion = { status = "planned", issue = "#338" }
+optional-data-string-conversion = "implemented"
 optional-enum-case-matching = { status = "planned", issue = "#298" }
 orphaned-doc-comment = { status = "planned", issue = "#338" }
 overridden-super-call = { status = "planned", issue = "#338" }
@@ -134,7 +134,7 @@ prefer-zero-over-explicit-init = "implemented"
 prefixed-toplevel-constant = { status = "planned", issue = "#298" }
 private-action = "implemented"
 private-outlet = { status = "planned", issue = "#338" }
-private-over-fileprivate = { status = "planned", issue = "#338" }
+private-over-fileprivate = "implemented"
 private-subject = "implemented"
 private-swiftui-state = "implemented"
 private-unit-test = "implemented"
@@ -156,7 +156,7 @@ redundant-sendable = { status = "planned", issue = "#338" }
 redundant-set-access-control = "implemented"
 redundant-string-enum-value = "implemented"
 redundant-type-annotation = { status = "planned", issue = "#338" }
-redundant-void-return = { status = "planned", issue = "#338" }
+redundant-void-return = "implemented"
 required-deinit = { status = "planned", issue = "#338" }
 required-enum-case = { status = "planned", issue = "#338" }
 return-value-from-void-function = { status = "planned", issue = "#338" }
@@ -169,7 +169,7 @@ single-test-class = { status = "planned", issue = "#298" }
 sorted-enum-cases = { status = "planned", issue = "#298" }
 sorted-first-last = "implemented"
 static-operator = "implemented"
-static-over-final-class = { status = "planned", issue = "#338" }
+static-over-final-class = "implemented"
 strict-fileprivate = "implemented"
 strong-iboutlet = "implemented"
 superfluous-else = { status = "planned", issue = "#298" }

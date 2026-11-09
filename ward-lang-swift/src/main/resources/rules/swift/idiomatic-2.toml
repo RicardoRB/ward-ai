@@ -27,3 +27,54 @@ kinds = ["enum_case_pattern"]
 text = '\((let|var)\w+,(let|var)\w+'
 message = "combine the pattern matching keywords before the case pattern"
 '''
+
+[[rules]]
+id = "ward:swift/private-over-fileprivate"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "actor_declaration", "protocol_declaration", "function_declaration", "constant_declaration", "variable_declaration", "typealias_declaration"]
+not-inside = ["class_body", "struct_body", "enum_body", "actor_body", "protocol_body", "extension_body", "code_block"]
+text = '^fileprivate(?!\(set\))'
+message = "prefer private over fileprivate for {value}"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-void-return"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-redundant-void-return"
+message = "redundant Void return type; remove the return clause"
+'''
+
+[[rules]]
+id = "ward:swift/for-where"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-for-where"
+message = "prefer a where clause over a single if in a for loop"
+'''
+
+[[rules]]
+id = "ward:swift/static-over-final-class"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-static-over-final-class"
+message = "prefer static over class in a final class"
+'''
