@@ -280,11 +280,11 @@ language = "python"
 capability = "SYNTAX"
 severity = "error"
 category = "coding"
-presets = ["strict"]
+presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["if_stmt"]
-text = "^if[^:]*:\\s*return(?:True|False)\\s*else:\\s*return(?:True|False)"
+text = "^if[^:]*:(?:\\s*return(?:True|False)\\s*else:\\s*return(?:True|False)|\\s*(\\w[\\w.]*)\\s*=\\s*(?:True|False)\\s*else\\s*:\\s*\\1\\s*=\\s*(?:True|False))"
 message = "if statement returns boolean literals; return the condition instead"
 '''
 

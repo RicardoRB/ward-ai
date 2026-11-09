@@ -333,6 +333,7 @@ ruff = ["B010"]
 [[rule]]
 name = "jump-statement-in-finally"
 ruff = ["B012"]
+pylint = ["return-in-finally"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
@@ -349,6 +350,7 @@ ruff = ["B015"]
 [[rule]]
 name = "raise-literal"
 ruff = ["B016"]
+pylint = ["raising-bad-type"]
 
 [[rule]]
 name = "assert-raises-exception"
@@ -452,6 +454,7 @@ ruff = ["B903"]
 [[rule]]
 name = "raise-without-from-inside-except"
 ruff = ["B904"]
+pylint = ["raise-missing-from"]
 
 [[rule]]
 name = "zip-without-explicit-strict"
@@ -502,6 +505,7 @@ ruff = ["C406"]
 [[rule]]
 name = "unnecessary-collection-call"
 ruff = ["C408"]
+pylint = ["use-dict-literal", "use-list-literal"]
 
 [[rule]]
 name = "unnecessary-literal-within-tuple-call"
@@ -543,6 +547,7 @@ ruff = ["C418"]
 [[rule]]
 name = "unnecessary-comprehension-in-call"
 ruff = ["C419"]
+pylint = ["use-a-generator"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
@@ -1112,6 +1117,7 @@ ruff = ["F503"]
 [[rule]]
 name = "percent-format-extra-named-arguments"
 ruff = ["F504"]
+pylint = ["unused-format-string-key"]
 
 [[rule]]
 name = "percent-format-missing-argument"
@@ -1124,6 +1130,7 @@ ruff = ["F506"]
 [[rule]]
 name = "percent-format-positional-count-mismatch"
 ruff = ["F507"]
+pylint = ["too-few-format-args", "too-many-format-args"]
 
 [[rule]]
 name = "percent-format-star-requires-sequence"
@@ -1140,6 +1147,7 @@ ruff = ["F521"]
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
 ruff = ["F522"]
+pylint = ["unused-format-string-argument"]
 
 [[rule]]
 name = "string-dot-format-extra-positional-arguments"
@@ -1224,10 +1232,12 @@ ruff = ["F811"]
 [[rule]]
 name = "undefined-name"
 ruff = ["F821"]
+pylint = ["undefined-variable"]
 
 [[rule]]
 name = "undefined-export"
 ruff = ["F822"]
+pylint = ["undefined-all-variable"]
 
 [[rule]]
 name = "undefined-local"
@@ -2204,6 +2214,7 @@ pylint = ["singledispatchmethod-function"]
 [[rule]]
 name = "yield-from-in-async-function"
 ruff = ["PLE1700"]
+pylint = ["yield-inside-async-function"]
 
 [[rule]]
 name = "bidirectional-unicode"
@@ -4354,6 +4365,7 @@ ruff = ["SIM911"]
 [[rule]]
 name = "private-member-access"
 ruff = ["SLF001"]
+pylint = ["protected-access"]
 
 [[rule]]
 name = "no-slots-in-str-subclass"

@@ -1,5 +1,5 @@
 # Status of the detekt rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-trailing-whitespace = { status = "planned", issue = "#336" }
+trailing-whitespace = "implemented"
 unreachable-code = { status = "planned", issue = "#447" }
-unused-private-member = { status = "planned", issue = "#336" }
+unused-private-member = "implemented"

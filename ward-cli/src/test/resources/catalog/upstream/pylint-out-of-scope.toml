@@ -54,3 +54,55 @@ rules = [
   "wrong-spelling-in-comment",
   "wrong-spelling-in-docstring",
 ]
+
+[[group]]
+reason = "Pylint configuration and pragma checks; Ward has no Pylint configuration"
+rules = [
+  "unknown-option-value",
+  "unrecognized-inline-option",
+  "unrecognized-option",
+  "useless-option-value",
+]
+
+[[group]]
+reason = "reports only modules listed in the preferred-modules option, empty by default"
+rules = [
+  "preferred-module",
+]
+
+[[group]]
+reason = "needs operand type inference"
+rules = [
+  "unsupported-binary-operation",
+  "wrong-exception-operation",
+]
+
+[[group]]
+reason = "needs the package root"
+rules = [
+  "relative-beyond-top-level",
+]
+
+[[group]]
+reason = "the configured Python version is enforced by the type checker (mypy stays a gate)"
+rules = [
+  "using-assignment-expression-in-unsupported-version",
+  "using-comprehension-unpacking-in-unsupported-version",
+  "using-exception-groups-in-unsupported-version",
+  "using-f-string-in-unsupported-version",
+  "using-final-decorator-in-unsupported-version",
+  "using-generic-type-syntax-in-unsupported-version",
+  "using-positional-only-args-in-unsupported-version",
+]
+
+[[group]]
+reason = "parse failures are reported by Ward's analysis itself"
+rules = [
+  "syntax-error",
+]
+
+[[group]]
+reason = "needs the names exported by the imported module; avoid-star-import (F403) already reports every wildcard import"
+rules = [
+  "unused-wildcard-import",
+]
