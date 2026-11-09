@@ -85,6 +85,7 @@ class BiomeParitySmokeTest {
           Map.entry("use-aria-props-supported-by-role", "a11y/useAriaPropsSupportedByRole"),
           Map.entry("use-heading-content", "a11y/useHeadingContent"),
           Map.entry("no-void-elements-with-children", "correctness/noVoidElementsWithChildren"),
+          Map.entry("no-useless-fragments", "complexity/noUselessFragments"),
           Map.entry("use-media-caption", "a11y/useMediaCaption"),
           Map.entry("use-semantic-elements", "a11y/useSemanticElements"),
           Map.entry("no-svg-without-title", "a11y/noSvgWithoutTitle"),

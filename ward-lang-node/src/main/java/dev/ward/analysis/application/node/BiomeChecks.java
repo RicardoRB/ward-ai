@@ -18,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
+import dev.ward.analysis.domain.rule.check.BiomeUselessFragmentsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeVoidElementChildrenCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.HashMap;
@@ -68,6 +69,9 @@ final class BiomeChecks {
             entry(
                 "node-media-caption",
                 toml -> new BiomeMediaCaptionCheck(TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-useless-fragments",
+                toml -> new BiomeUselessFragmentsCheck(TomlValues.required(toml, MESSAGE))),
             entry(
                 "node-void-element-children",
                 toml ->
