@@ -15,7 +15,8 @@ public final class NodeConstructorGroupCheck implements RuleCheck {
 
   private static final String BODY = "classTail";
   private static final String MEMBER = "classElement";
-  private static final Pattern CONSTRUCTOR = Pattern.compile("^(?:public|private|protected)?constructor\\(");
+  private static final Pattern CONSTRUCTOR =
+      Pattern.compile("^(?:public|private|protected)?constructor\\(");
 
   private final String message;
 

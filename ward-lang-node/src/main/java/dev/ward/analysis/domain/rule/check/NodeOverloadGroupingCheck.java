@@ -17,7 +17,8 @@ public final class NodeOverloadGroupingCheck implements RuleCheck {
   private static final String BODY = "classTail";
   private static final String MEMBER = "classElement";
   private static final Set<String> MODIFIERS =
-      Set.of("public", "private", "protected", "static", "readonly", "abstract", "override", "async");
+      Set.of(
+          "public", "private", "protected", "static", "readonly", "abstract", "override", "async");
 
   private final String message;
 
@@ -47,14 +48,14 @@ public final class NodeOverloadGroupingCheck implements RuleCheck {
   private List<RuleMatch> misplaced(final SyntaxNode body) {
     final List<RuleMatch> matches = new ArrayList<>();
     final Set<String> declared = new HashSet<>();
-    String previous = null;
+    String previous = "";
     for (final SyntaxNode member : NodeSyntax.code(body)) {
       if (!MEMBER.equals(member.kind())) {
         continue;
       }
       final String name = name(member);
-      if (name == null) {
-        previous = null;
+      if (name.isEmpty()) {
+        previous = "";
         continue;
       }
       if (declared.contains(name) && !name.equals(previous)) {
@@ -66,14 +67,14 @@ public final class NodeOverloadGroupingCheck implements RuleCheck {
     return matches;
   }
 
-  /** The first identifier of the member that is not a modifier, or null when it has none. */
+  /** The first identifier of the member that is not a modifier, or empty when it has none. */
   private static String name(final SyntaxNode member) {
     for (final String token : leaves(member)) {
       if (!MODIFIERS.contains(token) && token.matches("[A-Za-z_$][\\w$]*")) {
         return token;
       }
     }
-    return null;
+    return "";
   }
 
   private static List<String> leaves(final SyntaxNode node) {
