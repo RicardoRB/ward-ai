@@ -1,0 +1,168 @@
+# ktlint rules for Kotlin, from the standard rule set of ktlint 1.8.0 (the rules that do not
+# format code, which Ward's formatter covers). The checks read the syntax tree, the file name or
+# the comments; see KotlinLinterChecks. Each rule keeps ktlint's default behaviour.
+
+[[rules]]
+id = "ward:kotlin/backing-property-naming"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-backing-property-naming"
+message = "backing property '{value}' must be private, start with an underscore followed by lower camel case, and have a public property or getter without the underscore"
+'''
+
+[[rules]]
+id = "ward:kotlin/enum-entry-name-case"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["enumEntry"]
+modifiers = ["modifierList", "annotation"]
+name = "simpleIdentifier"
+pattern = "[A-Z]([A-Za-z\\d]*|[A-Z_\\d]*)"
+message = "enum entry name '{value}' should be upper snake case like ENUM_ENTRY or upper camel case like EnumEntry"
+'''
+
+[[rules]]
+id = "ward:kotlin/filename"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-filename"
+message = "file name does not match its declarations: a single class is named after the class, other files use PascalCase"
+'''
+
+[[rules]]
+id = "ward:kotlin/function-expression-body"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-function-expression-body"
+message = "function body only returns a value or throws; use an expression body instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/kdoc"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-kdoc-placement"
+message = "KDoc is only allowed before a class, object, function, property, enum entry, typealias, secondary constructor or value parameter, and not inside one"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-consecutive-comments"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-consecutive-comments"
+message = "comment follows another comment that it may not follow; merge them or separate them with a blank line"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-empty-file"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-file"
+message = "file has no declaration; remove it or add its content"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-single-line-block-comment"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-single-line-block-comment"
+message = "replace the block comment with an end-of-line comment"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-unit-return"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unit-return"
+message = "unnecessary 'Unit' return type on a function with a block body"
+'''
+
+[[rules]]
+id = "ward:kotlin/string-template"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-string-template"
+message = "redundant string template: write the name without braces, or without the toString() call"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-parentheses-before-trailing-lambda"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-trailing-lambda-parentheses"
+message = "empty parentheses before a trailing lambda are unnecessary"
+'''
+
+[[rules]]
+id = "ward:kotlin/value-argument-comment"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comment"]
+parent = ["valueArgument"]
+message = "a comment inside or on the same line after a value argument is not allowed; put it on a line above"
+'''
+
+[[rules]]
+id = "ward:kotlin/value-parameter-comment"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comment"]
+parent = ["functionValueParameter", "classParameter", "parameter"]
+message = "a comment inside or on the same line after a value parameter is not allowed; put it on a line above"
+'''

@@ -61,7 +61,7 @@ eval_input
     ;
 
 decorator
-    : '@' dotted_name ('(' arglist? ')')? NEWLINE
+    : '@' namedexpr_test NEWLINE
     ;
 
 decorators
@@ -84,34 +84,22 @@ parameters
     : '(' typedargslist? ')'
     ;
 
+// PEP 570 '/' and PEP 3102 '*' markers sit in the same flat list as the parameters they separate;
+// the parameters stay direct children of the list, which the Python scope walk reads.
 typedargslist
-    : (
-        tfpdef ('=' test)? (',' tfpdef ('=' test)?)* (
-            ',' (
-                '*' tfpdef? (',' tfpdef ('=' test)?)* (',' ('**' tfpdef ','?)?)?
-                | '**' tfpdef ','?
-            )?
-        )?
-        | '*' tfpdef? (',' tfpdef ('=' test)?)* (',' ('**' tfpdef ','?)?)?
-        | '**' tfpdef ','?
-    )
+    : (tfpdef ('=' test)? | '*' tfpdef? | '**' tfpdef | '/') (
+        ',' (tfpdef ('=' test)? | '*' tfpdef? | '**' tfpdef | '/')
+    )* ','?
     ;
 
 tfpdef
-    : name (':' test)?
+    : name (':' (test | star_expr))?
     ;
 
 varargslist
-    : (
-        vfpdef ('=' test)? (',' vfpdef ('=' test)?)* (
-            ',' (
-                '*' vfpdef? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef ','?)?)?
-                | '**' vfpdef (',')?
-            )?
-        )?
-        | '*' vfpdef? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef ','?)?)?
-        | '**' vfpdef ','?
-    )
+    : (vfpdef ('=' test)? | '*' vfpdef? | '**' vfpdef | '/') (
+        ',' (vfpdef ('=' test)? | '*' vfpdef? | '**' vfpdef | '/')
+    )* ','?
     ;
 
 vfpdef
@@ -201,7 +189,7 @@ continue_stmt
     ;
 
 return_stmt
-    : 'return' testlist?
+    : 'return' testlist_star_expr?
     ;
 
 yield_stmt
@@ -282,15 +270,15 @@ async_stmt
     ;
 
 if_stmt
-    : 'if' test ':' block ('elif' test ':' block)* ('else' ':' block)?
+    : 'if' namedexpr_test ':' block ('elif' namedexpr_test ':' block)* ('else' ':' block)?
     ;
 
 while_stmt
-    : 'while' test ':' block ('else' ':' block)?
+    : 'while' namedexpr_test ':' block ('else' ':' block)?
     ;
 
 for_stmt
-    : 'for' exprlist 'in' testlist ':' block ('else' ':' block)?
+    : 'for' exprlist 'in' testlist_star_expr ':' block ('else' ':' block)?
     ;
 
 try_stmt
@@ -303,7 +291,10 @@ try_stmt
     ;
 
 with_stmt
-    : 'with' with_item (',' with_item)* ':' block
+    : 'with' (
+        '(' with_item (',' with_item)* ','? ')' ':'
+        | with_item (',' with_item)* ':'
+    ) block
     ;
 
 with_item
@@ -338,7 +329,7 @@ match_stmt
 
 subject_expr
     : star_named_expression ',' star_named_expressions?
-    | test
+    | namedexpr_test
     ;
 
 star_named_expressions
@@ -347,7 +338,7 @@ star_named_expressions
 
 star_named_expression
     : '*' expr
-    | test
+    | namedexpr_test
     ;
 
 case_block
@@ -518,6 +509,12 @@ keyword_pattern
     : name '=' pattern
     ;
 
+// PEP 572: an assignment expression, allowed where an expression is in a condition, call argument,
+// subscript, container element or match subject. Its target must be a name; the interpreter checks that.
+namedexpr_test
+    : test (WALRUS test)?
+    ;
+
 test
     : or_test ('if' or_test 'else' test)?
     | lambdef
@@ -614,11 +611,12 @@ name
     : NAME
     | '_'
     | 'match'
+    | 'case'
     | 'type'
     ;
 
 testlist_comp
-    : (test | star_expr) (comp_for | (',' (test | star_expr))* ','?)
+    : (namedexpr_test | star_expr) (comp_for | (',' (namedexpr_test | star_expr))* ','?)
     ;
 
 trailer
@@ -632,7 +630,8 @@ subscriptlist
     ;
 
 subscript_
-    : test
+    : namedexpr_test
+    | star_expr
     | test? ':' test? sliceop?
     ;
 
@@ -651,7 +650,7 @@ testlist
 dictorsetmaker
     : (
         ((test ':' test | '**' expr) (comp_for | (',' (test ':' test | '**' expr))* ','?))
-        | ((test | star_expr) (comp_for | (',' (test | star_expr))* ','?))
+        | ((namedexpr_test | star_expr) (comp_for | (',' (namedexpr_test | star_expr))* ','?))
     )
     ;
 
@@ -673,7 +672,7 @@ arglist
 // multiple (test comp_for) arguments are blocked; keyword unpackings
 // that precede iterable unpackings are blocked; etc.
 argument
-    : (test comp_for? | test '=' test | '**' test | '*' test)
+    : (namedexpr_test comp_for? | test '=' test | '**' test | '*' test)
     ;
 
 comp_iter
@@ -700,7 +699,7 @@ yield_expr
 
 yield_arg
     : 'from' test
-    | testlist
+    | testlist_star_expr
     ;
 
 strings

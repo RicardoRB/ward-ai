@@ -16,6 +16,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python-unused.toml",
           "rules/python/bugbear.toml",
           "rules/python/checkstyle.toml",
+          "rules/python/dead-code.toml",
           "rules/python/flake8-2020.toml",
           "rules/python/flake8-bandit-blocks.toml",
           "rules/python/flake8-bandit.toml",
@@ -31,8 +32,10 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/pygrep-hooks.toml",
           "rules/python/pylint-checks-b.toml",
           "rules/python/pylint.toml",
+          "rules/python/python-style.toml",
           "rules/python/refurb-calls.toml",
-          "rules/python/refurb.toml");
+          "rules/python/refurb.toml",
+          "rules/python/ruff-pylint.toml");
 
   @Override
   public List<String> ruleFiles() {

@@ -2,6 +2,6 @@
 
 unused-class = "implemented"
 unused-function = "implemented"
-unused-import = { status = "planned", issue = "#447" }
-unused-method = { status = "planned", issue = "#447" }
-unused-property = { status = "planned", issue = "#447" }
+unused-import = "implemented"
+unused-method = "implemented"
+unused-property = "implemented"

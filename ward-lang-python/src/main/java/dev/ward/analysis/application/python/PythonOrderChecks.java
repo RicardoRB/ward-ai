@@ -26,6 +26,7 @@ import dev.ward.analysis.domain.rule.check.LoggingFormatCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
 import dev.ward.analysis.domain.rule.check.MatchPositionalCheck;
+import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.ModifiedIterationCheck;
 import dev.ward.analysis.domain.rule.check.NonlocalCheck;
 import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
@@ -126,6 +127,9 @@ final class PythonOrderChecks {
             "keyword-arg-before-vararg",
             toml -> new KeywordArgBeforeVarargCheck(TomlValues.required(toml, MESSAGE))),
         entry("first-argument", toml -> new FirstArgumentCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "named-expr-without-context",
+            toml -> new NamedExprWithoutContextCheck(TomlValues.required(toml, MESSAGE))),
         entry("strict-call", PythonOrderChecks::strictCall));
   }
 

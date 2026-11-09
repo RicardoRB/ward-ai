@@ -3895,6 +3895,7 @@ ruff = ["S108"]
 [[rule]]
 name = "try-except-continue"
 ruff = ["S112"]
+
 [[rule]]
 name = "request-without-timeout"
 ruff = ["S113"]

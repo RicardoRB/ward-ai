@@ -1,3 +1,2 @@
 # Status of the eslint rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
-
 no-else-return = "implemented"

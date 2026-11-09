@@ -38,6 +38,8 @@ final class KotlinScopeWalk {
   private static final String EXPRESSION = "expression";
   private static final String POSTFIX = "postfixUnaryExpression";
   private static final String ATOMIC = "atomicExpression";
+  private static final String LINE_STRING_REF = "LineStrRef";
+  private static final String MULTI_LINE_STRING_REF = "MultiLineStrRef";
 
   final ScopeBuilder builder;
   private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
@@ -75,6 +77,8 @@ final class KotlinScopeWalk {
     handlers.put("postfixUnaryOperation", expressions::operation);
     handlers.put(ATOMIC, expressions::atomic);
     handlers.put("valueArgument", expressions::argument);
+    handlers.put(LINE_STRING_REF, this::stringReference);
+    handlers.put(MULTI_LINE_STRING_REF, this::stringReference);
     SKIPPED.forEach(kind -> handlers.put(kind, node -> {}));
   }
 
@@ -85,6 +89,11 @@ final class KotlinScopeWalk {
 
   void generic(final SyntaxNode node) {
     node.children().forEach(this::visit);
+  }
+
+  /** A {@code $name} in a string template reads the name, which follows the dollar sign. */
+  private void stringReference(final SyntaxNode node) {
+    builder.reference(JavaSyntax.textOf(node).substring(1), node.span(), ReferenceAccess.READ);
   }
 
   void scoped(final SyntaxNode node, final ScopeKind kind, final boolean open) {

@@ -18,8 +18,10 @@ final class PythonTopLevelDefinitionsTest {
             "def f():\n    def inner():\n        pass\n\n@deco\ndef g():\n    pass\n\n"
                 + "class C:\n    def m(self):\n        pass\n\nx = 1\n");
 
-    assertThat(names(summary.declared())).containsExactly("f", "C");
-    assertThat(summary.declared()).extracting(Symbol::kind).containsExactly("function", "class");
+    assertThat(names(summary.declared())).containsExactly("f", "C", "m");
+    assertThat(summary.declared())
+        .extracting(Symbol::kind)
+        .containsExactly("function", "class", "method");
   }
 
   @Test
