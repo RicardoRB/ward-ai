@@ -53,6 +53,7 @@ class EcmaSyntaxFixturesTest {
           Map.entry("infer-extends.ts", List.of("inferType")),
           Map.entry("optional-chain-non-null.ts", List.of("'?.'", "'!'")),
           Map.entry("optional-call.ts", List.of("arguments")),
+          Map.entry("private-names.ts", List.of("privateIdentifier")),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),
