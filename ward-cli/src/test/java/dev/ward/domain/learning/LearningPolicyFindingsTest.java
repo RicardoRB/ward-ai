@@ -156,14 +156,13 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult(
-                    "checkstyle", finding("checkstyle", "AvoidStarImport", "Avoid star import")),
+                failedResult("eslint", finding("eslint", "no-undef", "'x' is not defined")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("checkstyle:AvoidStarImport");
+    assertThat(outcome.ledger().records()).containsOnlyKeys("eslint:no-undef");
   }
 }
