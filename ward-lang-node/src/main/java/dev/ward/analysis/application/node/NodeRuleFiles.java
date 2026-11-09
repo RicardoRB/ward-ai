@@ -18,6 +18,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/biome-correctness.toml",
           "rules/node/biome-nursery.toml",
           "rules/node/biome-performance.toml",
+          "rules/node/biome-security.toml",
           "rules/node/biome-suggestion.toml",
           "rules/node/biome-suspicious.toml",
           "rules/node/blocks.toml",

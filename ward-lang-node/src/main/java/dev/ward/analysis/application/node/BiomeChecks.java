@@ -5,7 +5,9 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeAutofocusCheck;
+import dev.ward.analysis.domain.rule.check.BiomeBlankTargetCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
+import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
@@ -42,6 +44,10 @@ final class BiomeChecks {
             "node-unreachable-super",
             toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
         entry("node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
+        entry("node-jsx-blank-target", BiomeChecks::blankTarget),
+        entry(
+            "node-jsx-duplicate-props",
+            toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-jsx-attribute-value",
             toml ->
@@ -49,6 +55,13 @@ final class BiomeChecks {
                     TomlValues.required(toml, "attribute"),
                     Pattern.compile(TomlValues.required(toml, "text")),
                     TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static RuleCheck blankTarget(final TomlParseResult toml) {
+    return new BiomeBlankTargetCheck(
+        TomlValues.optionalStrings(toml, "allow-domains"),
+        toml.getBoolean("allow-no-referrer", () -> true),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck unusedParameter(final TomlParseResult toml) {

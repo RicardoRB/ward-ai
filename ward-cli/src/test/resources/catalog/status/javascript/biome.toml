@@ -15,7 +15,7 @@ no-autofocus = "implemented"
 no-banned-types = "not-applicable"
 no-barrel-file = { status = "planned", issue = "#329" }
 no-before-interactive-script-outside-document = { status = "planned", issue = "#329" }
-no-blank-target = { status = "planned", issue = "#329" }
+no-blank-target = "implemented"
 no-bun-modules = { status = "planned", issue = "#329" }
 no-children-prop = { status = "planned", issue = "#329" }
 no-comment-text = { status = "planned", issue = "#329" }
@@ -26,7 +26,7 @@ no-confusing-labels = "implemented"
 no-confusing-void-type = "not-applicable"
 no-const-enum = "not-applicable"
 no-constant-math-min-max-clamp = "implemented"
-no-dangerously-set-inner-html = { status = "planned", issue = "#329" }
+no-dangerously-set-inner-html = "implemented"
 no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#329" }
 no-default-export = "implemented"
 no-delete = "implemented"
@@ -37,7 +37,7 @@ no-document-import-in-page = { status = "planned", issue = "#329" }
 no-done-callback = { status = "planned", issue = "#296" }
 no-drizzle-delete-without-where = { status = "planned", issue = "#329" }
 no-drizzle-update-without-where = { status = "planned", issue = "#329" }
-no-duplicate-jsx-props = { status = "planned", issue = "#329" }
+no-duplicate-jsx-props = "implemented"
 no-duplicate-test-hooks = { status = "planned", issue = "#329" }
 no-duplicated-spread-props = { status = "planned", issue = "#329" }
 no-dynamic-namespace-import-access = "implemented"

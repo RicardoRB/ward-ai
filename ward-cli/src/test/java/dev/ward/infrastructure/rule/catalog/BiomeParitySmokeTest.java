@@ -55,7 +55,10 @@ class BiomeParitySmokeTest {
           Map.entry("no-access-key", "a11y/noAccessKey"),
           Map.entry("no-autofocus", "a11y/noAutofocus"),
           Map.entry("no-positive-tabindex", "a11y/noPositiveTabindex"),
-          Map.entry("no-distracting-elements", "a11y/noDistractingElements"));
+          Map.entry("no-distracting-elements", "a11y/noDistractingElements"),
+          Map.entry("no-blank-target", "security/noBlankTarget"),
+          Map.entry("no-duplicate-jsx-props", "suspicious/noDuplicateJsxProps"),
+          Map.entry("no-dangerously-set-inner-html", "security/noDangerouslySetInnerHtml"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
