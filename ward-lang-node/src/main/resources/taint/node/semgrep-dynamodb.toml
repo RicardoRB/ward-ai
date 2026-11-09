@@ -1,0 +1,32 @@
+# DynamoDB request sinks of the Semgrep p/javascript rules: a request object built from event data.
+# shortcut: matches the DocumentClient method by name on any receiver.
+
+[[sinks]]
+kind = "call"
+name = "put"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "update"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "scan"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+arguments = [0]

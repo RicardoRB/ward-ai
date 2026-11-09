@@ -1,0 +1,138 @@
+# Biome rules of the nursery group that have no ESLint equivalent, for TypeScript and JavaScript (catalog rows of #329).
+
+[[rules]]
+id = "ward:typescript/use-flat-math-min-max"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.(min|max)\(\s*Math\.\1\(|^Math\.(min|max)\([^()]*,\s*Math\.\2\('
+message = "nested Math.min or Math.max calls can be one flat call"
+'''
+
+[[rules]]
+id = "ward:javascript/use-flat-math-min-max"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.(min|max)\(\s*Math\.\1\(|^Math\.(min|max)\([^()]*,\s*Math\.\2\('
+message = "nested Math.min or Math.max calls can be one flat call"
+'''
+
+[[rules]]
+id = "ward:typescript/use-math-min-max"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w.]+) *[<>]=? *([\w.]+) *\? *\1 *: *\2$|^([\w.]+) *[<>]=? *([\w.]+) *\? *\4 *: *\3$'
+message = "use Math.min or Math.max instead of a ternary comparison"
+'''
+
+[[rules]]
+id = "ward:javascript/use-math-min-max"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w.]+) *[<>]=? *([\w.]+) *\? *\1 *: *\2$|^([\w.]+) *[<>]=? *([\w.]+) *\? *\4 *: *\3$'
+message = "use Math.min or Math.max instead of a ternary comparison"
+'''
+
+[[rules]]
+id = "ward:typescript/use-modern-math-apis"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.log\([^()]*\) *(\* *Math\.LOG10E|/ *Math\.LN10)\b|^Math\.log\([^()]*\) */ *Math\.LN2\b|^Math\.sqrt\(\s*[\w.]+ *\*\* *2 *\)'
+message = "use the dedicated Math API (log10, log2, hypot or abs)"
+'''
+
+[[rules]]
+id = "ward:javascript/use-modern-math-apis"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.log\([^()]*\) *(\* *Math\.LOG10E|/ *Math\.LN10)\b|^Math\.log\([^()]*\) */ *Math\.LN2\b|^Math\.sqrt\(\s*[\w.]+ *\*\* *2 *\)'
+message = "use the dedicated Math API (log10, log2, hypot or abs)"
+'''
+
+[[rules]]
+id = "ward:typescript/use-dom-node-text-content"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-member-property"
+kinds = ["identifier", "StringLiteral"]
+text = '^(innerText|[\x22\x27]innerText[\x22\x27])$'
+message = "use textContent instead of innerText; the two differ"
+'''
+
+[[rules]]
+id = "ward:javascript/use-dom-node-text-content"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-member-property"
+kinds = ["identifier", "StringLiteral"]
+text = '^(innerText|[\x22\x27]innerText[\x22\x27])$'
+message = "use textContent instead of innerText; the two differ"
+'''
+
+[[rules]]
+id = "ward:typescript/no-return-in-finally"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-finally-return"
+message = "return from a finally callback is ignored; remove the return"
+'''
+
+[[rules]]
+id = "ward:javascript/no-return-in-finally"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "NOTE"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-finally-return"
+message = "return from a finally callback is ignored; remove the return"
+'''
+

@@ -26,7 +26,7 @@ class PythonBuildToolConfiguratorTest {
   private static final String PYPROJECT_FILE = "pyproject.toml";
   private static final String LOCK = "version = 1\n";
   private static final List<InitGateOption> GATES =
-      List.of(new InitGateOption("ruff", List.of(), true, ""));
+      List.of(new InitGateOption("mypy", List.of(), true, ""));
 
   @TempDir Path root;
 
@@ -52,7 +52,7 @@ class PythonBuildToolConfiguratorTest {
     final BuildFileChange change = new PythonBuildToolConfigurator(executor).apply(uv(), GATES);
 
     assertThat(change.changed()).isTrue();
-    assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).contains("ward = [", "ruff==0.17.1");
+    assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).contains("ward = [", "mypy==2.4.0");
     assertThat(executor.commands).containsExactly(List.of("uv", "sync", "--group", "ward"));
   }
 
@@ -111,7 +111,7 @@ class PythonBuildToolConfiguratorTest {
     final BuildFileChange change = new PythonBuildToolConfigurator(executor).apply(pip, GATES);
 
     assertThat(Files.readString(root.resolve("requirements-ward.txt")))
-        .contains("# managed-by: ward", "ruff==0.17.1");
+        .contains("# managed-by: ward", "mypy==2.4.0");
     assertThat(executor.commands)
         .containsExactly(
             List.of(".venv/bin/python", "-m", "pip", "install", "-r", "requirements-ward.txt"));

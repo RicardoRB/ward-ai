@@ -1,6 +1,6 @@
 # Status of the typescript-eslint rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-adjacent-overload-signatures = { status = "planned", issue = "#296" }
+adjacent-overload-signatures = "implemented"
 await-thenable = "implemented"
 ban-ts-comment = "implemented"
 ban-tslint-comment = { status = "planned", issue = "#296" }
@@ -44,7 +44,7 @@ no-mixed-enums = { status = "planned", issue = "#327" }
 no-namespace = "implemented"
 no-non-null-asserted-nullish-coalescing = { status = "planned", issue = "#327" }
 no-non-null-asserted-optional-chain = "implemented"
-no-non-null-assertion = { status = "planned", issue = "#296" }
+no-non-null-assertion = "implemented"
 no-redundant-type-constituents = "implemented"
 no-require-imports = "implemented"
 no-restricted-types = { status = "planned", issue = "#296" }
@@ -82,10 +82,10 @@ prefer-find = { status = "planned", issue = "#327" }
 prefer-for-of = { status = "planned", issue = "#296" }
 prefer-function-type = { status = "planned", issue = "#296" }
 prefer-includes = { status = "planned", issue = "#327" }
-prefer-literal-enum-member = { status = "planned", issue = "#296" }
+prefer-literal-enum-member = "implemented"
 prefer-namespace-keyword = "implemented"
 prefer-nullish-coalescing = { status = "planned", issue = "#296" }
-prefer-optional-chain = { status = "planned", issue = "#296" }
+prefer-optional-chain = "implemented"
 prefer-readonly = { status = "planned", issue = "#296" }
 prefer-readonly-parameter-types = { status = "planned", issue = "#327" }
 prefer-reduce-type-parameter = { status = "planned", issue = "#327" }

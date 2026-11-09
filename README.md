@@ -40,8 +40,8 @@ team, and Ward checks every change against them, from the first edit to producti
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Stryker |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
-| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ruff, mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
-| Swift | SwiftPM, Xcode | Any | SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov |
+| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ward rules (lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
+| Swift | SwiftPM, Xcode | Any | Ward rules (lint), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov |
 
 <div align="center">
   <a href="https://youtu.be/ETuomU8HxXw">
@@ -195,8 +195,8 @@ ward check --profile ci --format json > ward-report.json
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Stryker mutation testing, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
-| Python | Ruff (format and lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
-| Swift | SwiftLint, `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
+| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
+| Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 

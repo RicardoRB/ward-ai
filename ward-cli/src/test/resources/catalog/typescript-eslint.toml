@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "adjacent-overload-signatures"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["adjacent-overload-signatures"]
 biome = ["useAdjacentOverloadSignatures"]
 
@@ -136,6 +134,7 @@ typescript-eslint = ["no-deprecated"]
 
 [[rule]]
 name = "no-duplicate-enum-values"
+not-applicable = { javascript = "TypeScript enums have no JavaScript counterpart" }
 typescript-eslint = ["no-duplicate-enum-values"]
 biome = ["noDuplicateEnumValues"]
 
@@ -155,11 +154,13 @@ typescript-eslint = ["no-empty-object-type"]
 
 [[rule]]
 name = "no-explicit-any"
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 typescript-eslint = ["no-explicit-any"]
 biome = ["noExplicitAny"]
 
 [[rule]]
 name = "no-extra-non-null-assertion"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 typescript-eslint = ["no-extra-non-null-assertion"]
 biome = ["noExtraNonNullAssertion"]
 
@@ -171,6 +172,7 @@ typescript-eslint = ["no-extraneous-class"]
 
 [[rule]]
 name = "no-floating-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 typescript-eslint = ["no-floating-promises"]
 biome = ["noFloatingPromises"]
 
@@ -224,6 +226,7 @@ typescript-eslint = ["no-misused-new"]
 
 [[rule]]
 name = "no-misused-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 typescript-eslint = ["no-misused-promises"]
 biome = ["noMisusedPromises"]
 
@@ -253,15 +256,15 @@ typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
 name = "no-non-null-asserted-optional-chain"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 typescript-eslint = ["no-non-null-asserted-optional-chain"]
 biome = ["noNonNullAssertedOptionalChain"]
 
 [[rule]]
 name = "no-non-null-assertion"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-non-null-assertion"]
 biome = ["noNonNullAssertion"]
+not-applicable = { javascript = "JavaScript has no non-null assertion syntax; the postfix ! is a TypeScript-only construct" }
 
 [[rule]]
 name = "no-redundant-type-constituents"
@@ -356,6 +359,7 @@ typescript-eslint = ["no-unsafe-call"]
 
 [[rule]]
 name = "no-unsafe-declaration-merging"
+not-applicable = { javascript = "TypeScript declaration merging has no JavaScript counterpart" }
 typescript-eslint = ["no-unsafe-declaration-merging"]
 biome = ["noUnsafeDeclarationMerging"]
 
@@ -400,6 +404,7 @@ typescript-eslint = ["no-useless-default-assignment"]
 
 [[rule]]
 name = "no-useless-empty-export"
+not-applicable = { javascript = "TypeScript export declarations have no JavaScript counterpart" }
 typescript-eslint = ["no-useless-empty-export"]
 biome = ["noUselessEmptyExport"]
 
@@ -465,8 +470,6 @@ biome = ["useIncludes"]
 
 [[rule]]
 name = "prefer-literal-enum-member"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-literal-enum-member"]
 biome = ["useLiteralEnumMembers"]
 
@@ -484,8 +487,6 @@ biome = ["useNullishCoalescing"]
 
 [[rule]]
 name = "prefer-optional-chain"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-optional-chain"]
 biome = ["useOptionalChain"]
 

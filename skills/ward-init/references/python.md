@@ -19,7 +19,7 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
   refuses a version below 3.11 as `INCOMPATIBLE`.
 - **Virtual environment.** pip installs into `.venv`. When `.venv` is missing, init stops and says
   to run `python -m venv .venv`.
-- **Own configs.** A `ruff.toml`, `mypy.ini`, `.coveragerc`, or a `[tool.ruff]`, `[tool.mypy]`,
+- **Own configs.** A `ruff.toml`, `mypy.ini`, `.coveragerc`, or a `[tool.mypy]`,
   `[tool.coverage]` table, or a `setup.cfg` or `tox.ini` section, is the project's own. Ward keeps
   it unchanged and puts the coverage threshold on the command instead.
 
@@ -27,15 +27,16 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
 
 | Gate | Runs | Standard |
 |---|---|---|
-| `ruff` | `ruff check . --output-format json` | yes |
 | `mypy` | `mypy . -O json` | yes |
 | `pytest` | `coverage run -m pytest` | yes |
 | `coverage` | `coverage report`, `--fail-under=80` with a user config | yes |
 | `pip-audit` | `pip-audit` in `ci` | no, opt-in |
 
-`strict` adds `mutmut` (mutation testing in `ci`, with a 60% minimum). It also turns on mypy's strict mode, Ruff's C90 and
-extra rule sets with complexity 10, and branch coverage with an 85% total. A project's own Ruff,
-mypy or coverage config is kept unchanged, and the same settings go on the commands instead. Each
+`strict` adds `mutmut` (mutation testing in `ci`, with a 60% minimum). It also turns on mypy's strict
+mode, the strict Ward rules in `ward-rules.toml`, and branch coverage with an 85% total. Lint comes
+from the Ward rules that `ward-rules.toml` selects for `"python"`; init does not configure Ruff. A
+project's own mypy or coverage config is kept unchanged, and the same settings go on the commands
+instead. Each
 command runs through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/`.
 
 Architecture: init writes the layer boundaries of the style (`layered`, `hexagonal` or `clean`,
@@ -45,13 +46,13 @@ check and, for the feature packages, `[[checks.ward.independence]]`. The root pa
 
 ## Plan lines
 
-- `add ruff==0.17.1 to the ward group`: the pinned tool, written to `[dependency-groups] ward` in
+- `add mypy==2.4.0 to the ward group`: the pinned tool, written to `[dependency-groups] ward` in
   `pyproject.toml`. Without `pyproject.toml`, it goes to `requirements-ward.txt`.
 - `run uv sync --group ward`, `poetry lock` then `poetry install --with ward`, or `.venv/bin/python
   -m pip install --group ward` followed by `-e .` when `pyproject.toml` has a `[build-system]`.
 - A pip project with a `src/` layout and no `[build-system]` gets a plan note: pip will not install the
   package, so ask the user to add a `[build-system]` table before running tests.
-- `Created ruff.toml`, `mypy.ini` or `.coveragerc`: Ward's owned configs, written only where the
+- `Created mypy.ini` or `.coveragerc`: Ward's owned configs, written only where the
   project has none.
 
 Init does not touch the project's other `pyproject.toml` lines. When an install fails, init restores

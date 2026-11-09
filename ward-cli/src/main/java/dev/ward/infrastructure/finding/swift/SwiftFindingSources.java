@@ -11,10 +11,9 @@ public final class SwiftFindingSources {
 
   /** Groups the Swift finding sources; compiler errors come from both build and Xcode tests. */
   @Inject
-  public SwiftFindingSources(final SwiftLintJsonFindings swiftLint) {
+  public SwiftFindingSources() {
     this.sources =
         List.of(
-            swiftLint,
             new SwiftCompilerOutputFindings("swift-build"),
             new SwiftCompilerOutputFindings(SupportedQualityGates.XCODEBUILD_TEST));
   }

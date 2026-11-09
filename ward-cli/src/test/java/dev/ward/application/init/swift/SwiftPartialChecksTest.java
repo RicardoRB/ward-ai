@@ -12,49 +12,10 @@ import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** The edit hook narrows swiftlint to the edited Swift files, not the tests. */
+/** The Swift test and coverage gates run whole, so the edit hook does not narrow them. */
 class SwiftPartialChecksTest {
   private static final Project SWIFT_PM =
       new Project(Path.of("/shop"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
-
-  @Test
-  void swiftLintNarrowsToEditedSwiftFiles() {
-    final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate(
-                "swiftlint", SWIFT_PM, QualityPreset.STANDARD, SwiftTools.swiftLintCommand())
-            .orElseThrow();
-
-    assertThat(table.command())
-        .containsExactly(
-            ".ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint",
-            "lint",
-            "--reporter",
-            "json",
-            "--quiet");
-    assertThat(table.full()).containsExactly(".swiftlint.yml", ".ward/swiftlint-strict.yml");
-  }
-
-  @Test
-  void strictSwiftLintHookRunsTheGatesOwnStrictCommand() {
-    final List<String> strict =
-        List.of(
-            SwiftTools.SWIFTLINT_BINARY,
-            "lint",
-            "--reporter",
-            "json",
-            "--quiet",
-            "--strict",
-            "--config",
-            ".swiftlint.yml",
-            "--config",
-            ".ward/swiftlint-strict.yml");
-
-    final PartialCheckDefaults.Table table =
-        PartialCheckDefaults.forGate("swiftlint", SWIFT_PM, QualityPreset.STRICT, strict)
-            .orElseThrow();
-
-    assertThat(table.command()).isEqualTo(strict);
-  }
 
   @Test
   void testAndCoverageGatesAreNotPartialChecks() {

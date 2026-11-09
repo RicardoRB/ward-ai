@@ -66,7 +66,7 @@ class SwiftSchemeSelectionTest {
             Optional.empty(),
             (root, tool) -> Optional.empty(),
             WorkspaceMembers.none(),
-            new SwiftPorts(xcode(schemes), (root, name) -> Optional.empty(), root -> List.of()),
+            new SwiftPorts(xcode(schemes), root -> List.of()),
             BuildModulePlanning.none());
     final Project project = XCODE.withXcodeScheme(scheme.orElse(null));
     final List<InitGateOption> gates =

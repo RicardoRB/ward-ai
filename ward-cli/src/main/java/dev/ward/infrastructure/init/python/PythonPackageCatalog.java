@@ -14,7 +14,6 @@ import java.util.Set;
  * every supported version.
  */
 public final class PythonPackageCatalog {
-  static final String RUFF = "ruff";
   static final String MYPY = "mypy";
   static final String PYTEST = "pytest";
   static final String COVERAGE = "coverage";
@@ -30,7 +29,6 @@ public final class PythonPackageCatalog {
 
   private static final Map<String, Package> PACKAGES =
       Map.ofEntries(
-          Map.entry(RUFF, new Package(RUFF, "0.17.1")),
           Map.entry(MYPY, new Package(MYPY, "2.4.0")),
           Map.entry(PYTEST, new Package(PYTEST, "9.1.1")),
           Map.entry(COVERAGE, new Package(COVERAGE, "7.16.2")),
@@ -44,7 +42,6 @@ public final class PythonPackageCatalog {
   /** The distributions each gate's command runs; pytest runs under coverage. */
   private static final Map<String, List<String>> GATE_TOOLS =
       Map.of(
-          "ruff", List.of(RUFF),
           "mypy", List.of(MYPY),
           "pytest", List.of(PYTEST, COVERAGE),
           "coverage", List.of(COVERAGE),

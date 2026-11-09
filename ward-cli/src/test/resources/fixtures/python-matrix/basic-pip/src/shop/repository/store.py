@@ -1,1 +1,3 @@
-store = 1
+"""Fixture code for the Python matrix."""
+
+STORE = 1

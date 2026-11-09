@@ -1,0 +1,25 @@
+# Browser navigation sinks of the Semgrep p/javascript rules: a location assigned or replaced with untrusted text.
+
+[[sinks]]
+kind = "member-write"
+name = "href"
+qualifier = "location"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "href"
+qualifier = "window.location"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replace"
+qualifier = "location"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replace"
+qualifier = "window.location"
+arguments = [0]

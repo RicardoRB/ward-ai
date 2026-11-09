@@ -16,17 +16,10 @@ class SwiftGatesTest {
 
   @Test
   void swiftPackageGatesRunSwiftPmInOrder() {
-    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD, false));
+    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD));
 
     assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swiftlint", "swift-build", "swift-test", COVERAGE);
-    assertThat(command(gates, "swiftlint"))
-        .containsExactly(
-            ".ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint",
-            "lint",
-            "--reporter",
-            "json",
-            "--quiet");
+        .containsExactly("swift-build", "swift-test", COVERAGE);
     assertThat(command(gates, "swift-build")).containsExactly("swift", "build", "--build-tests");
     assertThat(command(gates, "swift-test"))
         .containsExactly("swift", "test", "--enable-code-coverage");
@@ -39,8 +32,7 @@ class SwiftGatesTest {
     final List<InitGateOption> gates =
         gates(SwiftGateFixtures.xcode("iOS Simulator", Optional.empty()));
 
-    assertThat(gates.stream().map(InitGateOption::id))
-        .containsExactly("swiftlint", "xcodebuild-test", COVERAGE);
+    assertThat(gates.stream().map(InitGateOption::id)).containsExactly("xcodebuild-test", COVERAGE);
     assertThat(command(gates, "xcodebuild-test"))
         .containsExactly("xcodebuild", "test", "-scheme", "Shop", "-enableCodeCoverage", "YES");
     assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("iOS Simulator");
@@ -71,7 +63,7 @@ class SwiftGatesTest {
   @Test
   void standardPresetNamesEveryGateThatTheToolHasAndStrictAddsNothing() {
     assertThat(new SwiftGates().presetGates(QualityPreset.STANDARD))
-        .containsExactly("swiftlint", "swift-build", "swift-test", "xcodebuild-test", COVERAGE);
+        .containsExactly("swift-build", "swift-test", "xcodebuild-test", COVERAGE);
     assertThat(new SwiftGates().presetGates(QualityPreset.STRICT))
         .containsExactlyElementsOf(new SwiftGates().presetGates(QualityPreset.STANDARD));
   }

@@ -1,10 +1,13 @@
 package dev.ward.analysis.frontend.antlr.javascript;
 
+import dev.ward.analysis.frontend.antlr.JsxLookahead;
 import dev.ward.analysis.frontend.antlr.WardLexerBase;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
 
@@ -32,6 +35,13 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
           JavaScriptLexer.PlusPlus,
           JavaScriptLexer.MinusMinus);
 
+  /** Token types after which a less-than sign is an operator, so no JSX element can start. */
+  private static final Set<Integer> NO_JSX_AFTER =
+      Stream.concat(
+              NO_REGEX_AFTER.stream(),
+              Stream.of(JavaScriptLexer.JsxSelfCloseEnd, JavaScriptLexer.JsxClosingTagEnd))
+          .collect(Collectors.toUnmodifiableSet());
+
   /** Stores values of nested modes. By default mode is strict or defined externally. */
   private final Deque<Boolean> scopeStrictModes = new ArrayDeque<>();
 
@@ -47,6 +57,17 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
    */
   private boolean useStrictCurrent;
 
+  /**
+   * Counts every open brace of the default mode, so a JSX container knows its own closing brace.
+   */
+  private int braceNesting;
+
+  /** The brace nesting of each open JSX expression container, innermost on top. */
+  private final Deque<Integer> jsxContainers = new ArrayDeque<>();
+
+  /** Whether JSX syntax is recognized; set per unit by the frontend. */
+  private boolean jsxEnabled;
+
   /** Preserves depth due to braces including template literals. */
   private int currentDepth;
 
@@ -60,6 +81,49 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
    */
   public JavaScriptLexerBase(final CharStream input) {
     super(input);
+  }
+
+  /**
+   * Tells whether JSX syntax is recognized, which is the case for {@code .tsx} files only.
+   *
+   * @return {@code true} if a {@code <} can start a JSX element
+   */
+  public boolean isJsx() {
+    return jsxEnabled;
+  }
+
+  /**
+   * Turns JSX syntax on or off for the next unit. Set it before parsing; the lexer keeps it across
+   * resets.
+   *
+   * @param value {@code true} for {@code .tsx} units
+   */
+  public void setJsx(final boolean value) {
+    jsxEnabled = value;
+  }
+
+  /**
+   * Tells whether a {@code <} directly before the input starts a JSX element here. Only a name or a
+   * fragment closer can follow, and a generic arrow function's type parameters like {@code <T,>} or
+   * {@code <T extends U>} are not JSX.
+   *
+   * @return {@code true} if a JSX element starts at the {@code <} just read
+   */
+  protected boolean isJsxStart() {
+    return jsxEnabled && isJsxExpressionPosition() && JsxLookahead.startsElement(_input);
+  }
+
+  private boolean isJsxExpressionPosition() {
+    return lastToken.isEmpty() || !NO_JSX_AFTER.contains(lastToken.get().getType());
+  }
+
+  /**
+   * Starts a JSX expression container: the brace counts like any other, and its closing brace
+   * returns the lexer to the JSX mode that opened it.
+   */
+  protected void processJsxOpenBrace() {
+    processOpenBrace();
+    jsxContainers.push(braceNesting);
   }
 
   /**
@@ -129,6 +193,7 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
   /** Handles an opening brace: enters a scope that keeps the current strict mode. */
   protected void processOpenBrace() {
     currentDepth++;
+    braceNesting++;
     useStrictCurrent = !scopeStrictModes.isEmpty() && scopeStrictModes.peek() || useStrictDefault;
     scopeStrictModes.push(useStrictCurrent);
   }
@@ -137,6 +202,11 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
   protected void processCloseBrace() {
     useStrictCurrent = scopeStrictModes.isEmpty() ? useStrictDefault : scopeStrictModes.pop();
     currentDepth--;
+    if (!jsxContainers.isEmpty() && jsxContainers.peek() == braceNesting) {
+      jsxContainers.pop();
+      popMode();
+    }
+    braceNesting--;
   }
 
   /** Handles the opening brace of a template substitution. */
@@ -186,6 +256,8 @@ public abstract class JavaScriptLexerBase extends WardLexerBase {
     this.useStrictCurrent = false;
     this.currentDepth = 0;
     this.templateDepthStack = new ArrayDeque<>();
+    this.braceNesting = 0;
+    this.jsxContainers.clear();
     super.reset();
   }
 }

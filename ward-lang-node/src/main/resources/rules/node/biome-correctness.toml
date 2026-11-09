@@ -1,0 +1,26 @@
+# Biome rules of the correctness group for TypeScript and JavaScript (catalog rows of #329).
+
+[[rules]]
+id = "ward:typescript/no-constant-math-min-max-clamp"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constant-clamp"
+message = "this Math.min and Math.max combination always returns the same value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-math-min-max-clamp"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constant-clamp"
+message = "this Math.min and Math.max combination always returns the same value"
+'''
+

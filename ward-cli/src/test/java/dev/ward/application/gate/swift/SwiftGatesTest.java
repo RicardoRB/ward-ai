@@ -1,6 +1,7 @@
 package dev.ward.application.gate.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.application.gate.PlatformGatePorts;
@@ -9,6 +10,7 @@ import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
+import dev.ward.domain.config.WardException;
 import dev.ward.domain.config.XcodePlatform;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
@@ -34,7 +36,7 @@ class SwiftGatesTest {
       new Project(ROOT, Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);
   private static final int MINIMUM = 80;
   private static final List<String> TYPES =
-      List.of("swiftlint", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
+      List.of("swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
   private static QualityGateFactory factory(final FakeCommandExecutor executor) {
     return new QualityGateFactory(
@@ -98,5 +100,16 @@ class SwiftGatesTest {
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(executor.commands).containsExactly(command);
     assertThat(executor.workingDirectories).containsExactly(ROOT);
+  }
+
+  @Test
+  void swiftLintIsNoLongerAGateType() {
+    final QualityGateFactory factory = factory(new FakeCommandExecutor(0, "", ""));
+    final WardConfiguration config =
+        new WardConfiguration(1, Map.of("lint", check("swiftlint", List.of("swiftlint", "lint"))));
+
+    assertThatThrownBy(() -> factory.create(config))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("swiftlint");
   }
 }

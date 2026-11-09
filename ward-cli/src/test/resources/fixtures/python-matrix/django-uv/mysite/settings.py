@@ -1,3 +1,5 @@
+"""Fixture code for the Python matrix."""
+
 from pathlib import Path
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent

@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.port;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /** Turns the references of a project's summaries into edges between its files. */
@@ -25,5 +26,16 @@ public interface DependencyResolver {
    */
   default Set<String> entryFiles() {
     return Set.of();
+  }
+
+  /**
+   * Returns the module that owns the project-root-relative file {@code path}, when the resolver
+   * knows the modules of the project. A resolver with no module layout knows none.
+   *
+   * @param path the project-root-relative path with {@code /} separators
+   * @return the module name, or empty when the module of the file is unknown
+   */
+  default Optional<String> moduleOf(final String path) {
+    return Optional.empty();
   }
 }

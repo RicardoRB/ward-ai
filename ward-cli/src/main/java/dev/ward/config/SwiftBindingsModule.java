@@ -5,11 +5,9 @@ import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.init.SwiftPorts;
 import dev.ward.domain.project.swift.SwiftSourceDirectories;
-import dev.ward.domain.project.swift.SwiftToolConfigs;
 import dev.ward.domain.project.swift.SwiftToolchainInspection;
 import dev.ward.domain.project.swift.XcodeSchemes;
 import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
-import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import dev.ward.infrastructure.project.swift.ProcessSwiftToolchainInspection;
 import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 
@@ -21,9 +19,6 @@ abstract class SwiftBindingsModule {
       ProcessSwiftToolchainInspection implementation);
 
   @Binds
-  abstract SwiftToolConfigs swiftToolConfigs(FileSystemSwiftToolConfigs implementation);
-
-  @Binds
   abstract XcodeSchemes xcodeSchemes(XcodebuildSchemes implementation);
 
   @Binds
@@ -33,9 +28,7 @@ abstract class SwiftBindingsModule {
   /** Groups the Swift read ports init takes as one binding. */
   @Provides
   static SwiftPorts swiftPorts(
-      final XcodeSchemes xcode,
-      final SwiftToolConfigs swiftConfigs,
-      final SwiftSourceDirectories swiftSources) {
-    return new SwiftPorts(xcode, swiftConfigs, swiftSources);
+      final XcodeSchemes xcode, final SwiftSourceDirectories swiftSources) {
+    return new SwiftPorts(xcode, swiftSources);
   }
 }
