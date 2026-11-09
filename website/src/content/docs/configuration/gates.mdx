@@ -44,7 +44,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
-| | `swiftlint` | SwiftLint | Lint Swift sources. |
 | | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
@@ -207,22 +206,19 @@ profiles = ["pre-push"]
 
 ## Swift gates
 
-`swiftlint`, `swift-build` and `swift-test` run their `command` from the project
+`swift-build` and `swift-test` run their `command` from the project
 root, exactly as written, and pass when it exits with code 0. `xcodebuild-test` and
 `swift-coverage` add the steps below.
 
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears:
-  `swiftlint lint`, or any path ending in `/swiftlint lint`
-  such as the binary that `swift package resolve` leaves for Ward's SwiftLint tools package, is
-  `swiftlint`; `swift build` is `swift-build`; `swift test` is
-  `swift-test`; and `xcodebuild test` is `xcodebuild-test`. `swift-coverage` is never inferred,
-  so write `uses = "swift-coverage"`.
-- `swiftlint`, `swift-build` and `xcodebuild-test` findings are read from their
-  output; see [structured findings](#structured-findings).
+  `swift build` is `swift-build`; `swift test` is `swift-test`; and `xcodebuild test` is
+  `xcodebuild-test`. `swift-coverage` is never inferred, so write `uses = "swift-coverage"`.
+- `swift-build` and `xcodebuild-test` findings are read from their output; see
+  [structured findings](#structured-findings).
 
 ```toml
-[checks.swiftlint]
-command = ["swiftlint", "lint", "--reporter", "json", "--quiet"]
+[checks.swift-build]
+command = ["swift", "build", "--build-tests"]
 profiles = ["default"]
 
 [checks.swift-test]
@@ -718,7 +714,7 @@ writes no external cycle or independence rule.
 ## Swift structural rules
 
 The `ward` gate runs six Swift structural rules for `.swift` files. They read the syntax tree from
-the ANTLR Swift frontend and use fixed limits. SwiftLint stays the external gate for style and lint.
+the ANTLR Swift frontend and use fixed limits. They are the Swift style and lint checks; no external linter gate runs beside them.
 
 | Rule | Limit | Severity | SwiftLint counterpart |
 |---|---|---|---|
@@ -909,7 +905,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `checkstyle`, `pmd`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -923,7 +919,6 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
 | `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
-| `swiftlint` | SwiftLint JSON on standard output; the command must pass `--reporter json` | | | |
 | `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
@@ -939,9 +934,8 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   change. Only the structured formats are read: the command must pass them.
 - ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
   does not change. An ESLint parsing error is reported with the rule `eslint`.
-- SwiftLint findings keep SwiftLint's severity, and a violation without a character has no column.
-  Swift compiler errors are read without terminal colours, once each even when the compiler
-  repeats them in a source excerpt. Without `--reporter json`, SwiftLint gives no findings.
+- Swift compiler errors are read without terminal colours, once each even when the compiler
+  repeats them in a source excerpt.
 - Other gates have no findings yet.
 
 ## Partial checks

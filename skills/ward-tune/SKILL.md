@@ -62,7 +62,6 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `ward` | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
-| `swiftlint` | SwiftLint rules in `.swiftlint.yml` | [references/swiftlint.md](references/swiftlint.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a

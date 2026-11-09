@@ -12,7 +12,6 @@ import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import dev.ward.infrastructure.init.swift.SwiftBuildToolConfigurator;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
-import dev.ward.infrastructure.project.swift.FileSystemSwiftToolConfigs;
 import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -92,7 +91,6 @@ class InitWardFormatTest {
             .withSwiftPorts(
                 new SwiftPorts(
                     new XcodebuildSchemes(new FakeCommandExecutor(), new ForyJsonCodec()),
-                    new FileSystemSwiftToolConfigs(),
                     new FileSystemSwiftSourceDirectories()));
 
     final int exit = init.run("", "--preset", "standard", "--yes");
