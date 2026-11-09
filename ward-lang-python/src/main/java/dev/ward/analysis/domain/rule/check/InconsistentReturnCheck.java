@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public final class InconsistentReturnCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
-    throw new AnalysisFailedException("the inconsistent-return check reads the syntax tree only");
+    return matches(root);
   }
 
   private void collect(final SyntaxNode node, final List<RuleMatch> found) {
@@ -183,10 +182,8 @@ public final class InconsistentReturnCheck implements RuleCheck {
     if (SCOPES.contains(node.kind()) || LOOPS.contains(node.kind())) {
       return false;
     }
-    if (BREAK.equals(node.kind())) {
-      return true;
-    }
-    return node.children().stream().anyMatch(InconsistentReturnCheck::hasBreak);
+    return BREAK.equals(node.kind())
+        || node.children().stream().anyMatch(InconsistentReturnCheck::hasBreak);
   }
 
   private static boolean tryEnds(final SyntaxNode node) {

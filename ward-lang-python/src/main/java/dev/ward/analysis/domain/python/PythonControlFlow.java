@@ -123,11 +123,9 @@ public final class PythonControlFlow implements ControlFlowLowering {
 
   /** Reports whether a star import appears under {@code node}, which makes its names unknown. */
   private static boolean hasStarImport(final SyntaxNode node) {
-    if (IMPORT_FROM.equals(node.kind())
-        && node.children().stream().anyMatch(child -> STAR.equals(PythonSyntax.text(child)))) {
-      return true;
-    }
-    return node.children().stream().anyMatch(PythonControlFlow::hasStarImport);
+    return IMPORT_FROM.equals(node.kind())
+            && node.children().stream().anyMatch(child -> STAR.equals(PythonSyntax.text(child)))
+        || node.children().stream().anyMatch(PythonControlFlow::hasStarImport);
   }
 
   private static String nameOf(final SyntaxNode definition) {

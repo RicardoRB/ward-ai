@@ -29,6 +29,7 @@ final class PythonAccesses implements VariableAccesses {
   private static final String IMPORT_NAME = "import_name";
   private static final String IMPORT_FROM = "import_from";
   private static final String ALIAS_AS = "as";
+  private static final int THREE_PARTS = 3;
   private static final String EQUALS = "=";
   private static final String WALRUS = ":=";
   private static final String DOT = ".";
@@ -120,29 +121,33 @@ final class PythonAccesses implements VariableAccesses {
 
   /** An assignment reads its value before it writes the targets, so {@code x = x + 1} reads x. */
   private void assignment(final SyntaxNode node, final List<VariableAccess> out) {
-    final List<List<SyntaxNode>> segments = new ArrayList<>();
-    List<SyntaxNode> current = new ArrayList<>();
-    for (final SyntaxNode child : node.children()) {
-      if (isToken(child, EQUALS)) {
-        segments.add(current);
-        current = new ArrayList<>();
-      } else {
-        current.add(child);
-      }
-    }
-    segments.add(current);
-    if (segments.size() == 1) {
+    final List<SyntaxNode> parts = node.children();
+    final List<Integer> equals = indicesOfToken(parts, EQUALS);
+    if (equals.isEmpty()) {
       reads(node, out);
       return;
     }
-    for (final SyntaxNode child : segments.get(segments.size() - 1)) {
+    final int valueStart = equals.get(equals.size() - 1) + 1;
+    for (final SyntaxNode child : parts.subList(valueStart, parts.size())) {
       reads(child, out);
     }
-    for (final List<SyntaxNode> target : segments.subList(0, segments.size() - 1)) {
-      for (final SyntaxNode child : target) {
+    int start = 0;
+    for (final int equal : equals) {
+      for (final SyntaxNode child : parts.subList(start, equal)) {
         targets(child, out);
       }
+      start = equal + 1;
     }
+  }
+
+  private static List<Integer> indicesOfToken(final List<SyntaxNode> parts, final String text) {
+    final List<Integer> indices = new ArrayList<>();
+    for (int index = 0; index < parts.size(); index++) {
+      if (isToken(parts.get(index), text)) {
+        indices.add(index);
+      }
+    }
+    return indices;
   }
 
   private void annotated(
@@ -191,7 +196,7 @@ final class PythonAccesses implements VariableAccesses {
   private void withItem(final SyntaxNode node, final List<VariableAccess> out) {
     final List<SyntaxNode> parts = node.children();
     reads(parts.get(0), out);
-    if (parts.size() == 3) {
+    if (parts.size() == THREE_PARTS) {
       targets(parts.get(2), out);
     }
   }
@@ -274,7 +279,7 @@ final class PythonAccesses implements VariableAccesses {
 
   private void walrus(final SyntaxNode node, final List<VariableAccess> out) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 3 && isToken(parts.get(1), WALRUS)) {
+    if (parts.size() == THREE_PARTS && isToken(parts.get(1), WALRUS)) {
       reads(parts.get(2), out);
       writeNames(parts.get(0), out);
     } else {
@@ -297,7 +302,7 @@ final class PythonAccesses implements VariableAccesses {
   /** A keyword argument names a parameter of the callee, so only its value is read. */
   private void keywordArgument(final SyntaxNode node, final List<VariableAccess> out) {
     final List<SyntaxNode> parts = node.children();
-    if (parts.size() == 3 && isToken(parts.get(1), EQUALS)) {
+    if (parts.size() == THREE_PARTS && isToken(parts.get(1), EQUALS)) {
       reads(parts.get(2), out);
     } else {
       for (final SyntaxNode child : parts) {
@@ -314,13 +319,11 @@ final class PythonAccesses implements VariableAccesses {
   }
 
   private static boolean hasTrailer(final SyntaxNode node) {
-    if (TRAILER.equals(node.kind())) {
-      return true;
-    }
     if (OTHER_SCOPE.contains(node.kind())) {
       return false;
     }
-    return node.children().stream().anyMatch(PythonAccesses::hasTrailer);
+    return TRAILER.equals(node.kind())
+        || node.children().stream().anyMatch(PythonAccesses::hasTrailer);
   }
 
   private static void collectNames(final SyntaxNode node, final List<SyntaxNode> names) {

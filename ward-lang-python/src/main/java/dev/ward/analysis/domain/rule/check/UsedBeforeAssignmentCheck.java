@@ -98,10 +98,10 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
     final State state = start.copy();
     final List<RuleMatch> found = new ArrayList<>();
     for (final VariableAccess access : block.accesses()) {
-      if (access.kind() == AccessKind.READ && locals.contains(access.name())) {
-        if (state.problemOf(access.name()) == problem) {
-          found.add(new RuleMatch(access.span(), message.replace(NAME, access.name())));
-        }
+      if (access.kind() == AccessKind.READ
+          && locals.contains(access.name())
+          && state.problemOf(access.name()) == problem) {
+        found.add(new RuleMatch(access.span(), message.replace(NAME, access.name())));
       }
       state.apply(access, loopTargets);
     }
@@ -190,8 +190,6 @@ public final class UsedBeforeAssignmentCheck implements RuleCheck {
 
   /** The fixed point of the binding states over the blocks of one graph. */
   private static final class Bindings {
-
-    private Bindings() {}
 
     /** Returns the entry state of each block, or null for a block no path reaches. */
     static List<State> solve(final ControlFlowGraph graph, final Set<Span> loopTargets) {

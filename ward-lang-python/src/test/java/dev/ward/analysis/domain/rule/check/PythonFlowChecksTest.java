@@ -14,23 +14,30 @@ import org.junit.jupiter.api.Test;
 /** The Python flow checks, run over the control-flow graphs the Python lowering builds. */
 final class PythonFlowChecksTest {
 
+  private static final int LINE_2 = 2;
+  private static final int LINE_3 = 3;
+  private static final int LINE_4 = 4;
+  private static final int LINE_5 = 5;
+  private static final int LINE_6 = 6;
+
   private static final UsedBeforeAssignmentCheck NEVER =
       new UsedBeforeAssignmentCheck(UsedBeforeAssignmentCheck.Problem.NEVER_BOUND, "m");
   private static final UsedBeforeAssignmentCheck POSSIBLY =
       new UsedBeforeAssignmentCheck(UsedBeforeAssignmentCheck.Problem.POSSIBLY_UNBOUND, "m");
   private static final UsedBeforeAssignmentCheck LOOP =
       new UsedBeforeAssignmentCheck(UsedBeforeAssignmentCheck.Problem.LOOP_VARIABLE, "m");
-  private static final UnreachableStatementCheck UNREACHABLE = new UnreachableStatementCheck("m");
+  private static final PythonUnreachableStatementCheck UNREACHABLE =
+      new PythonUnreachableStatementCheck("m");
 
   @Test
   void aReadBeforeAnyAssignmentIsNeverBound() {
-    assertThat(lines(NEVER, "def f():\n    print(x)\n    x = 1\n")).containsExactly(2);
+    assertThat(lines(NEVER, "def f():\n    print(x)\n    x = 1\n")).containsExactly(LINE_2);
   }
 
   @Test
   void aReadAfterAnAssignmentOnOneBranchIsPossiblyUnbound() {
     final String source = "def f(c):\n    if c:\n        x = 1\n    return x\n";
-    assertThat(lines(POSSIBLY, source)).containsExactly(4);
+    assertThat(lines(POSSIBLY, source)).containsExactly(LINE_4);
     assertThat(lines(NEVER, source)).isEmpty();
   }
 
@@ -50,7 +57,7 @@ final class PythonFlowChecksTest {
 
   @Test
   void anAugmentedAssignmentReadsItsTargetFirst() {
-    assertThat(lines(NEVER, "def f():\n    x += 1\n")).containsExactly(2);
+    assertThat(lines(NEVER, "def f():\n    x += 1\n")).containsExactly(LINE_2);
   }
 
   @Test
@@ -62,13 +69,13 @@ final class PythonFlowChecksTest {
   void aNameAssignedInTryAndReadAfterTheExceptIsPossiblyUnbound() {
     final String source =
         "def f():\n    try:\n        x = g()\n    except ValueError:\n        pass\n    return x\n";
-    assertThat(lines(POSSIBLY, source)).containsExactly(6);
+    assertThat(lines(POSSIBLY, source)).containsExactly(LINE_6);
   }
 
   @Test
   void aTargetOfAPossiblyEmptyLoopIsALoopVariable() {
     final String source = "def f(items):\n    for x in items:\n        pass\n    return x\n";
-    assertThat(lines(LOOP, source)).containsExactly(4);
+    assertThat(lines(LOOP, source)).containsExactly(LINE_4);
     assertThat(lines(POSSIBLY, source)).isEmpty();
   }
 
@@ -84,7 +91,7 @@ final class PythonFlowChecksTest {
     final String source =
         "def f(items, c):\n    if c:\n        x = 1\n    for x in items:\n        pass\n"
             + "    return x\n";
-    assertThat(lines(POSSIBLY, source)).containsExactly(6);
+    assertThat(lines(POSSIBLY, source)).containsExactly(LINE_6);
     assertThat(lines(LOOP, source)).isEmpty();
   }
 
@@ -100,7 +107,7 @@ final class PythonFlowChecksTest {
   void aMatchWithoutACatchAllLeavesTheNameUnbound() {
     final String source =
         "def f(v):\n    match v:\n        case 1:\n            x = 1\n    return x\n";
-    assertThat(lines(POSSIBLY, source)).containsExactly(5);
+    assertThat(lines(POSSIBLY, source)).containsExactly(LINE_5);
   }
 
   @Test
@@ -121,7 +128,8 @@ final class PythonFlowChecksTest {
 
   @Test
   void aDeletedNameIsUnboundAfterTheDelete() {
-    assertThat(lines(NEVER, "def f():\n    x = 1\n    del x\n    return x\n")).containsExactly(4);
+    assertThat(lines(NEVER, "def f():\n    x = 1\n    del x\n    return x\n"))
+        .containsExactly(LINE_4);
   }
 
   @Test
@@ -141,7 +149,7 @@ final class PythonFlowChecksTest {
 
   @Test
   void anAnnotationWithoutAValueDoesNotBindTheName() {
-    assertThat(lines(NEVER, "def f():\n    x: int\n    return x\n")).containsExactly(3);
+    assertThat(lines(NEVER, "def f():\n    x: int\n    return x\n")).containsExactly(LINE_3);
   }
 
   @Test
@@ -151,7 +159,7 @@ final class PythonFlowChecksTest {
 
   @Test
   void aStatementAfterReturnIsUnreachable() {
-    assertThat(lines(UNREACHABLE, "def f():\n    return 1\n    y = 2\n")).containsExactly(3);
+    assertThat(lines(UNREACHABLE, "def f():\n    return 1\n    y = 2\n")).containsExactly(LINE_3);
   }
 
   @Test
@@ -163,13 +171,13 @@ final class PythonFlowChecksTest {
   @Test
   void aStatementAfterABreakInsideALoopIsUnreachable() {
     assertThat(lines(UNREACHABLE, "def f(xs):\n    for x in xs:\n        break\n        z = 1\n"))
-        .containsExactly(4);
+        .containsExactly(LINE_4);
   }
 
   @Test
   void aYieldAfterAReturnIsSkippedAndTheStatementAfterItIsReported() {
     assertThat(lines(UNREACHABLE, "def g():\n    return 1\n    yield 2\n    y = 3\n"))
-        .containsExactly(4);
+        .containsExactly(LINE_4);
   }
 
   @Test

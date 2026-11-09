@@ -6,7 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.InconsistentReturnCheck;
-import dev.ward.analysis.domain.rule.check.UnreachableStatementCheck;
+import dev.ward.analysis.domain.rule.check.PythonUnreachableStatementCheck;
 import dev.ward.analysis.domain.rule.check.UsedBeforeAssignmentCheck;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ final class PythonFlowChecks {
     return Map.ofEntries(
         entry(
             "unreachable-statement",
-            toml -> new UnreachableStatementCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PythonUnreachableStatementCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "inconsistent-return-statements",
             toml -> new InconsistentReturnCheck(TomlValues.required(toml, MESSAGE))),
