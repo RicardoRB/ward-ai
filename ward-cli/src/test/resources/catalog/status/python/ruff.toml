@@ -110,7 +110,6 @@ complex-assignment-in-stub = { status = "planned", issue = "#334" }
 complex-if-statement-in-stub = { status = "planned", issue = "#334" }
 constant-imported-as-non-constant = { status = "planned", issue = "#297" }
 context-manager-iterator = { status = "planned", issue = "#334" }
-continue-in-finally = { status = "planned", issue = "#332" }
 continue-outside-loop = "implemented"
 convert-named-tuple-functional-to-class = { status = "planned", issue = "#334" }
 convert-typed-dict-functional-to-class = { status = "planned", issue = "#334" }
@@ -132,7 +131,7 @@ deprecated-mock-import = { status = "planned", issue = "#334" }
 deprecated-unittest-alias = { status = "planned", issue = "#334" }
 dict-get-with-none-default = "implemented"
 dict-index-missing-items = { status = "planned", issue = "#334" }
-dict-iter-missing-items = { status = "planned", issue = "#332" }
+dict-iter-missing-items = "implemented"
 direct-logger-instantiation = { status = "planned", issue = "#334" }
 django-all-with-model-form = { status = "planned", issue = "#334" }
 django-exclude-with-model-form = { status = "planned", issue = "#334" }
@@ -186,7 +185,7 @@ expr-and-false = { status = "planned", issue = "#334" }
 expr-and-not-expr = { status = "planned", issue = "#334" }
 expr-or-not-expr = { status = "planned", issue = "#334" }
 expr-or-true = { status = "planned", issue = "#334" }
-expressions-in-star-assignment = { status = "planned", issue = "#332" }
+expressions-in-star-assignment = "implemented"
 extraneous-parentheses = { status = "planned", issue = "#334" }
 f-string = { status = "planned", issue = "#334" }
 f-string-docstring = "implemented"

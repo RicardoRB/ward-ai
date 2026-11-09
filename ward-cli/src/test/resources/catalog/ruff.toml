@@ -314,6 +314,7 @@ ruff = ["B005"]
 [[rule]]
 name = "mutable-argument-default"
 ruff = ["B006"]
+pylint = ["dangerous-default-value"]
 
 [[rule]]
 name = "unused-loop-control-variable"
@@ -333,8 +334,8 @@ ruff = ["B010"]
 
 [[rule]]
 name = "jump-statement-in-finally"
-ruff = ["B012"]
-pylint = ["lost-exception", "return-in-finally"]
+ruff = ["B012", "PLE0116"]
+pylint = ["break-in-finally", "continue-in-finally", "lost-exception", "return-in-finally"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
@@ -381,6 +382,7 @@ ruff = ["B022"]
 [[rule]]
 name = "function-uses-loop-variable"
 ruff = ["B023"]
+pylint = ["cell-var-from-loop"]
 
 [[rule]]
 name = "abstract-base-class-without-abstract-method"
@@ -389,6 +391,7 @@ ruff = ["B024"]
 [[rule]]
 name = "duplicate-try-block-exception"
 ruff = ["B025"]
+pylint = ["duplicate-except"]
 
 [[rule]]
 name = "star-arg-unpacking-after-keyword-arg"
@@ -409,6 +412,7 @@ ruff = ["B029"]
 [[rule]]
 name = "except-with-non-exception-classes"
 ruff = ["B030"]
+pylint = ["catching-non-exception"]
 
 [[rule]]
 name = "reuse-of-groupby-generator"
@@ -491,10 +495,12 @@ ruff = ["C402"]
 [[rule]]
 name = "unnecessary-list-comprehension-set"
 ruff = ["C403"]
+pylint = ["consider-using-set-comprehension"]
 
 [[rule]]
 name = "unnecessary-list-comprehension-dict"
 ruff = ["C404"]
+pylint = ["consider-using-dict-comprehension"]
 
 [[rule]]
 name = "unnecessary-literal-set"
@@ -549,7 +555,7 @@ ruff = ["C418"]
 [[rule]]
 name = "unnecessary-comprehension-in-call"
 ruff = ["C419"]
-pylint = ["use-a-generator"]
+pylint = ["consider-using-generator", "use-a-generator"]
 
 [[rule]]
 name = "unnecessary-dict-comprehension-for-iterable"
@@ -1112,6 +1118,7 @@ ruff = ["F501"]
 [[rule]]
 name = "percent-format-expected-mapping"
 ruff = ["F502"]
+pylint = ["format-needs-mapping"]
 
 [[rule]]
 name = "percent-format-expected-sequence"
@@ -1148,6 +1155,7 @@ ruff = ["F509"]
 [[rule]]
 name = "string-dot-format-invalid-format"
 ruff = ["F521"]
+pylint = ["bad-format-string"]
 
 [[rule]]
 name = "string-dot-format-extra-named-arguments"
@@ -1166,14 +1174,17 @@ pylint = ["missing-format-argument-key"]
 [[rule]]
 name = "string-dot-format-mixing-automatic"
 ruff = ["F525"]
+pylint = ["format-combined-specification"]
 
 [[rule]]
 name = "f-string-missing-placeholders"
 ruff = ["F541"]
+pylint = ["f-string-without-interpolation"]
 
 [[rule]]
 name = "multi-value-repeated-key-literal"
 ruff = ["F601"]
+pylint = ["duplicate-key"]
 
 [[rule]]
 name = "multi-value-repeated-key-variable"
@@ -1182,7 +1193,6 @@ ruff = ["F602"]
 [[rule]]
 name = "expressions-in-star-assignment"
 presets = ["standard", "strict"]
-category = "pyflakes"
 ruff = ["F621"]
 
 [[rule]]
@@ -1192,6 +1202,7 @@ ruff = ["F622"]
 [[rule]]
 name = "assert-tuple"
 ruff = ["F631"]
+pylint = ["assert-on-tuple"]
 
 [[rule]]
 name = "is-literal"
@@ -1228,6 +1239,7 @@ pylint = ["return-outside-function"]
 [[rule]]
 name = "default-except-not-last"
 ruff = ["F707"]
+pylint = ["bad-except-order"]
 
 [[rule]]
 name = "forward-annotation-syntax-error"
@@ -1475,6 +1487,7 @@ ruff = ["FURB166"]
 [[rule]]
 name = "regex-flag-alias"
 ruff = ["FURB167"]
+pylint = ["implicit-flag-alias"]
 
 [[rule]]
 name = "isinstance-type-none"
@@ -1626,6 +1639,7 @@ ruff = ["INT003"]
 [[rule]]
 name = "single-line-implicit-string-concatenation"
 ruff = ["ISC001"]
+pylint = ["implicit-str-concat"]
 
 [[rule]]
 name = "multi-line-implicit-string-concatenation"
@@ -2057,13 +2071,6 @@ ruff = ["PLE0101"]
 pylint = ["return-in-init"]
 
 [[rule]]
-name = "continue-in-finally"
-presets = ["standard", "strict"]
-category = "pylint"
-ruff = ["PLE0116"]
-pylint = ["continue-in-finally"]
-
-[[rule]]
 name = "nonlocal-without-binding"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -2163,7 +2170,6 @@ ruff = ["PLE1132"]
 [[rule]]
 name = "dict-iter-missing-items"
 presets = ["standard", "strict"]
-category = "pylint"
 ruff = ["PLE1141"]
 pylint = ["dict-iter-missing-items"]
 
@@ -2185,6 +2191,7 @@ pylint = ["logging-too-few-args"]
 [[rule]]
 name = "bad-string-format-character"
 ruff = ["PLE1300"]
+pylint = ["bad-format-character"]
 
 [[rule]]
 name = "bad-string-format-type"
@@ -3833,6 +3840,7 @@ ruff = ["S101"]
 [[rule]]
 name = "exec-builtin"
 ruff = ["S102"]
+pylint = ["exec-used"]
 
 [[rule]]
 name = "bad-file-permissions"
@@ -3912,6 +3920,7 @@ ruff = ["S306"]
 [[rule]]
 name = "suspicious-eval-usage"
 ruff = ["S307"]
+pylint = ["eval-used"]
 
 [[rule]]
 name = "suspicious-mark-safe-usage"
@@ -4390,6 +4399,7 @@ ruff = ["SLOT002"]
 [[rule]]
 name = "debugger"
 ruff = ["T100"]
+pylint = ["forgotten-debug-statement"]
 
 [[rule]]
 name = "print"
@@ -4874,6 +4884,7 @@ ruff = ["W505"]
 [[rule]]
 name = "invalid-escape-sequence"
 ruff = ["W605"]
+pylint = ["anomalous-backslash-in-string"]
 
 [[rule]]
 name = "sys-version-slice3"
