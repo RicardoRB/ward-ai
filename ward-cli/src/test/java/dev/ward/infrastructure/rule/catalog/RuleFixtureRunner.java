@@ -7,19 +7,14 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.TypeFactsRun;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
-import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.TypeFacts;
-import dev.ward.analysis.domain.python.PythonDependencyResolver;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
-import dev.ward.analysis.domain.python.PythonProjectLayout;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
-import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -72,36 +67,9 @@ final class RuleFixtureRunner {
     return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
   }
 
-  /**
-   * Returns the findings of a graph rule over {@code units}, the Python modules of one project
-   * fixture, with every module in the root of the project.
-   */
-  List<AnalysisFinding> runProject(final RuleDefinition rule, final List<SourceUnit> units) {
-    final FrontendSupport python =
-        frontends.stream()
-            .filter(support -> support.language() == AnalysisLanguage.PYTHON)
-            .findFirst()
-            .orElseThrow();
-    final List<FileSummary> summaries = new ArrayList<>();
-    for (final SourceUnit unit : units) {
-      summaries.add(
-          new PythonFileSummarizer().summarize(unit, python.frontend().parse(unit).tree()));
-    }
-    final List<DependencyEdge> edges =
-        new PythonDependencyResolver(new PythonProjectLayout(List.of(""))).resolve(summaries);
-    return GraphRules.compile(rule).matches(new DependencyGraph(edges)).stream()
-        .map(
-            match ->
-                new AnalysisFinding(
-                    rule.id(),
-                    rule.severity(),
-                    match.match().message(),
-                    match.file(),
-                    match.match().span().startLine(),
-                    match.match().span().startColumn(),
-                    null,
-                    List.of()))
-        .toList();
+  /** The frontends of the {@code ward} gate, for a graph rule over a project fixture. */
+  List<FrontendSupport> frontends() {
+    return frontends;
   }
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */

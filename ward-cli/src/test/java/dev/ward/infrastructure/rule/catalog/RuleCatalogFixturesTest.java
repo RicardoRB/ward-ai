@@ -136,7 +136,7 @@ class RuleCatalogFixturesTest {
                 Files.readString(companion)));
       }
     }
-    return runner.runProject(rule, units).stream()
+    return GraphFixtureRunner.run(runner.frontends(), rule, units).stream()
         .filter(finding -> finding.file().equals(file.getFileName().toString()))
         .toList();
   }

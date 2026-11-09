@@ -1,13 +1,16 @@
 package dev.ward.analysis.domain.rule;
 
-import static dev.ward.analysis.domain.rule.GraphRuleFixtures.definition;
 import static dev.ward.analysis.domain.rule.GraphRuleFixtures.edge;
 import static dev.ward.analysis.domain.rule.GraphRuleFixtures.graph;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.graph.DependencyGraph;
+import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import dev.ward.analysis.domain.ir.Reference;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CyclicImportRuleTest {
@@ -20,15 +23,20 @@ class CyclicImportRuleTest {
   private static final String TS_B = "web/b.ts";
 
   private static CyclicImportRule rule() {
-    return new CyclicImportRule(definition(CyclicImportRule.ID, "check = \"cyclic-import\""));
+    return new CyclicImportRule(
+        new RuleDefinition(
+            CyclicImportRule.ID,
+            Set.of(AnalysisLanguage.PYTHON),
+            RuleCapability.SYMBOLS,
+            AnalysisSeverity.ERROR,
+            "check = \"cyclic-import\""));
   }
 
   @Test
   void reportsAPythonCycleWithItsDottedLabels() {
-    final DependencyGraph graph =
-        graph(edge(PY_A, PY_B, 1), edge(PY_B, PY_A, 2));
+    final DependencyGraph graph = graph(edge(PY_A, PY_B, 1), edge(PY_B, PY_A, 2));
 
-    final var matches = rule().matches(graph);
+    final List<GraphMatch> matches = rule().matches(graph);
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().file()).isEqualTo(PY_A);
@@ -54,7 +62,7 @@ class CyclicImportRuleTest {
             edge(PY_A, PY_B, 3),
             edge(PY_B, PY_A, 4));
 
-    final var matches = rule().matches(graph);
+    final List<GraphMatch> matches = rule().matches(graph);
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().file()).isEqualTo(PY_A);
