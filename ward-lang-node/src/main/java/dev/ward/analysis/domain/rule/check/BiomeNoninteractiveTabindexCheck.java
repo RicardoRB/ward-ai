@@ -78,7 +78,7 @@ public final class BiomeNoninteractiveTabindexCheck implements RuleCheck {
             .filter(BiomeNoninteractiveTabindexCheck::fitsI32)
             .isPresent()
         || JsxAttributes.value(tabIndex)
-            .map(value -> SyntaxWalk.text(value))
+            .map(SyntaxWalk::text)
             .filter(text -> text.matches("\\{\\d+\\}"))
             .isPresent();
   }
