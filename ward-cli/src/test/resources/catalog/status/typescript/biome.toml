@@ -185,7 +185,7 @@ no-vue-reserved-props = { status = "planned", issue = "#329" }
 no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
 no-xor-as-exponentiation = "implemented"
 use-alt-text = "implemented"
-use-anchor-content = { status = "planned", issue = "#329" }
+use-anchor-content = "implemented"
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
 use-aria-props-for-role = { status = "planned", issue = "#329" }
 use-aria-props-supported-by-role = { status = "planned", issue = "#329" }
@@ -281,7 +281,7 @@ use-throw-new-error = "implemented"
 use-top-level-regex = { status = "planned", issue = "#329" }
 use-trim-start-end = "implemented"
 use-unique-element-ids = { status = "planned", issue = "#329" }
-use-valid-anchor = { status = "planned", issue = "#329" }
+use-valid-anchor = "implemented"
 use-valid-aria-props = { status = "planned", issue = "#329" }
 use-valid-aria-role = { status = "planned", issue = "#329" }
 use-valid-aria-values = { status = "planned", issue = "#329" }
