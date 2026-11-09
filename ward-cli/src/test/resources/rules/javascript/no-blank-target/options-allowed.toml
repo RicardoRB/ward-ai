@@ -1,0 +1,2 @@
+allow-domains = ["x.com"]
+allow-no-referrer = false

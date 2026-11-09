@@ -48,7 +48,24 @@ class BiomeParitySmokeTest {
           Map.entry("no-return-in-finally", "nursery/noReturnInFinally"),
           Map.entry("no-constant-math-min-max-clamp", "correctness/noConstantMathMinMaxClamp"),
           Map.entry(
-              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"));
+              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"),
+          Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"),
+          Map.entry("no-base-to-string", "nursery/noBaseToString"),
+          Map.entry("no-unreachable-super", "correctness/noUnreachableSuper"),
+          Map.entry("no-access-key", "a11y/noAccessKey"),
+          Map.entry("no-autofocus", "a11y/noAutofocus"),
+          Map.entry("no-positive-tabindex", "a11y/noPositiveTabindex"),
+          Map.entry("no-distracting-elements", "a11y/noDistractingElements"),
+          Map.entry("no-blank-target", "security/noBlankTarget"),
+          Map.entry("no-duplicate-jsx-props", "suspicious/noDuplicateJsxProps"),
+          Map.entry("no-dangerously-set-inner-html", "security/noDangerouslySetInnerHtml"),
+          Map.entry("no-jsx-props-bind", "performance/noJsxPropsBind"),
+          Map.entry("no-obsolete-tags", "nursery/noObsoleteTags"),
+          Map.entry("no-jsx-namespace", "nursery/noJsxNamespace"),
+          Map.entry("use-button-type", "a11y/useButtonType"),
+          Map.entry("use-alt-text", "a11y/useAltText"),
+          Map.entry("use-iframe-title", "a11y/useIframeTitle"),
+          Map.entry("use-html-lang", "a11y/useHtmlLang"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {

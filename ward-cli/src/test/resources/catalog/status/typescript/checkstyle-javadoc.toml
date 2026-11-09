@@ -12,7 +12,7 @@ javadoc-end-comment-delimiter = { status = "planned", issue = "#296" }
 javadoc-leading-asterisk-align = "implemented"
 javadoc-link-first-occurrence = { status = "planned", issue = "#296" }
 javadoc-link-well-known-api = { status = "planned", issue = "#296" }
-javadoc-method = { status = "planned", issue = "#296" }
+javadoc-method = "implemented"
 javadoc-missing-leading-asterisk = "implemented"
 javadoc-missing-whitespace-after-asterisk = { status = "planned", issue = "#296" }
 javadoc-no-error-in-throws-tag = { status = "planned", issue = "#296" }
@@ -27,7 +27,7 @@ javadoc-type = { status = "planned", issue = "#296" }
 javadoc-variable = { status = "planned", issue = "#296" }
 missing-javadoc-method = { status = "planned", issue = "#296" }
 missing-javadoc-package = "not-applicable"
-missing-javadoc-type = { status = "planned", issue = "#296" }
+missing-javadoc-type = "implemented"
 non-empty-atclause-description = { status = "planned", issue = "#296" }
 prefer-code-or-snippet-javadoc-inline-tag = { status = "planned", issue = "#296" }
 prefer-literal-javadoc-inline-tag = { status = "planned", issue = "#296" }

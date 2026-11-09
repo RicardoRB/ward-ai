@@ -5,16 +5,23 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.NodeArrowCallbackCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
+import dev.ward.analysis.domain.rule.check.NodeHiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.NodeIllegalTokenCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
+import dev.ward.analysis.domain.rule.check.NodeJavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocPositionCheck;
+import dev.ward.analysis.domain.rule.check.NodeMissingJavadocTypeCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
+import dev.ward.analysis.domain.rule.check.NodeTypeOnlyExportCheck;
 import dev.ward.analysis.domain.rule.check.NodeTypeOnlyImportCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessConstructorCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The TypeScript and JavaScript checks that only the style (Checkstyle concepts, ESLint and Biome
@@ -28,7 +35,12 @@ final class StyleChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Map.ofEntries(
+    return Stream.concat(first().stream(), second().stream())
+        .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
+
+  private static List<Map.Entry<String, CheckFactory>> first() {
+    return List.of(
         Map.entry(
             "node-constructor-group",
             toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE))),
@@ -50,11 +62,35 @@ final class StyleChecks {
                     toml.getBoolean("ignore-case", () -> false),
                     TomlValues.required(toml, MESSAGE))),
         Map.entry(
+            "node-hidden-field",
+            toml ->
+                new NodeHiddenFieldCheck(
+                    toml.getBoolean("ignore-constructor-parameter", () -> false),
+                    toml.getBoolean("ignore-setter", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-javadoc-method",
+            toml ->
+                new NodeJavadocMethodCheck(
+                    toml.getBoolean("allow-missing-param-tags", () -> false),
+                    toml.getBoolean("allow-missing-return-tag", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-missing-javadoc-type",
+            toml ->
+                new NodeMissingJavadocTypeCheck(
+                    "public".equals(toml.getString("required")),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
             "node-javadoc-position",
             toml -> new NodeJavadocPositionCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "node-javadoc-align",
-            toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static List<Map.Entry<String, CheckFactory>> second() {
+    return List.of(
         Map.entry(
             "node-arrow-callback",
             toml ->
@@ -65,6 +101,12 @@ final class StyleChecks {
         Map.entry(
             "node-string-concat",
             toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-type-only-export",
+            toml ->
+                new NodeTypeOnlyExportCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    TomlValues.required(toml, "partial-message"))),
         Map.entry(
             "node-type-only-import",
             toml ->

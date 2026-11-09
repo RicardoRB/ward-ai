@@ -1,0 +1,13 @@
+# Biome rules of the suggestion group for TypeScript and JavaScript (catalog rows of #329, #327).
+
+[[rules]]
+id = "ward:javascript/no-base-to-string"
+language = "JAVASCRIPT"
+capability = "TYPES"
+severity = "NOTE"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-base-to-string"
+message = "value only has the default object representation; define toString or format it"
+'''

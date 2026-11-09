@@ -14,7 +14,7 @@ explicit-initialization = { status = "planned", issue = "#296" }
 expression-over-block-lambda = { status = "planned", issue = "#296" }
 fall-through = { status = "planned", issue = "#296" }
 final-local-variable = { status = "planned", issue = "#296" }
-hidden-field = { status = "planned", issue = "#296" }
+hidden-field = "implemented"
 illegal-catch = "not-applicable"
 illegal-instantiation = "not-applicable"
 illegal-symbol = { status = "planned", issue = "#296" }
