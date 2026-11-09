@@ -42,6 +42,26 @@ rules = [
 ]
 
 [[group]]
+reason = "needs inference of the format argument's attributes: pylint checks the attribute chain of an inferred object, which Ward does not infer"
+rules = [
+  "missing-format-attribute",
+]
+
+[[group]]
+reason = "a raw carriage return cannot reach a string literal of a parsed Python unit: the tokenizer ends the line at a CR, so no fixture or unit can show the finding"
+rules = [
+  "invalid-character-carriage-return",
+]
+
+[[group]]
+reason = "needs the type of the callee, operand, iterable, mapping or subscripted object, which Ward does not infer"
+rules = [
+  "looping-through-iterator",
+  "no-member",
+  "no-name-in-module",
+]
+
+[[group]]
 reason = "Ward reads sources as UTF-8; a non-UTF-8 source encoding is not analyzed"
 rules = [
   "bad-file-encoding",
@@ -105,4 +125,16 @@ rules = [
 reason = "needs the names exported by the imported module; avoid-star-import (F403) already reports every wildcard import"
 rules = [
   "unused-wildcard-import",
+]
+
+[[group]]
+reason = "rule fixtures use fixed file names, so a file-name check cannot be expressed"
+rules = [
+  "non-ascii-file-name",
+]
+
+[[group]]
+reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
+rules = [
+  "nonlocal-and-global",
 ]

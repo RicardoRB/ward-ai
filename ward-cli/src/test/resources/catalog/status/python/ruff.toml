@@ -1,5 +1,4 @@
 # Status of the ruff rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
-
 abstract-base-class-without-abstract-method = "implemented"
 access-annotations-from-class-dict = { status = "planned", issue = "#334" }
 airflow-dag-no-schedule-argument = { status = "planned", issue = "#334" }
@@ -267,7 +266,7 @@ incorrectly-parenthesized-tuple-in-subscript = { status = "planned", issue = "#3
 indented-form-feed = { status = "planned", issue = "#334" }
 int-on-sliced-str = { status = "planned", issue = "#334" }
 invalid-all-format = "implemented"
-invalid-all-object = { status = "planned", issue = "#332" }
+invalid-all-object = "implemented"
 invalid-assert-message-literal-argument = { status = "planned", issue = "#334" }
 invalid-bool-return-type = { status = "planned", issue = "#332" }
 invalid-bytes-return-type = { status = "planned", issue = "#332" }
@@ -277,10 +276,10 @@ invalid-character-nul = "implemented"
 invalid-character-sub = "implemented"
 invalid-character-zero-width-space = "implemented"
 invalid-envvar-default = "implemented"
-invalid-envvar-value = { status = "planned", issue = "#332" }
+invalid-envvar-value = "implemented"
 invalid-escape-sequence = "implemented"
 invalid-first-argument-name-for-class-method = { status = "planned", issue = "#297" }
-invalid-first-argument-name-for-method = { status = "planned", issue = "#297" }
+invalid-first-argument-name-for-method = "implemented"
 invalid-formatter-suppression-comment = { status = "planned", issue = "#334" }
 invalid-get-logger-argument = { status = "planned", issue = "#334" }
 invalid-hash-return-type = { status = "planned", issue = "#332" }
@@ -321,11 +320,11 @@ logging-config-insecure-listen = { status = "planned", issue = "#334" }
 logging-eager-conversion = { status = "planned", issue = "#334" }
 logging-exc-info = { status = "planned", issue = "#334" }
 logging-extra-attr-clash = { status = "planned", issue = "#334" }
-logging-f-string = { status = "planned", issue = "#334" }
-logging-percent-format = { status = "planned", issue = "#334" }
+logging-f-string = "implemented"
+logging-percent-format = "implemented"
 logging-redundant-exc-info = { status = "planned", issue = "#334" }
 logging-string-concat = { status = "planned", issue = "#334" }
-logging-string-format = { status = "planned", issue = "#334" }
+logging-string-format = "implemented"
 logging-too-few-args = "implemented"
 logging-too-many-args = "implemented"
 logging-warn = { status = "planned", issue = "#334" }
@@ -373,7 +372,7 @@ missing-type-function-argument = { status = "planned", issue = "#297" }
 missing-type-kwargs = { status = "planned", issue = "#297" }
 mixed-case-variable-in-class-scope = { status = "planned", issue = "#297" }
 mixed-case-variable-in-global-scope = { status = "planned", issue = "#297" }
-modified-iterating-set = { status = "planned", issue = "#332" }
+modified-iterating-set = "implemented"
 module-import-not-at-top-of-file = "implemented"
 multi-line-implicit-string-concatenation = { status = "planned", issue = "#334" }
 multi-line-summary-first-line = { status = "planned", issue = "#297" }
@@ -428,8 +427,7 @@ non-slot-assignment = { status = "planned", issue = "#332" }
 non-unique-enums = { status = "planned", issue = "#334" }
 none-comparison = "implemented"
 none-not-at-end-of-union = { status = "planned", issue = "#334" }
-nonlocal-and-global = { status = "planned", issue = "#332" }
-nonlocal-without-binding = { status = "planned", issue = "#332" }
+nonlocal-without-binding = "implemented"
 noqa-comments = { status = "planned", issue = "#334" }
 not-in-test = "implemented"
 not-is-test = "implemented"

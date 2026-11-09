@@ -679,12 +679,6 @@ category = "pylint"
 pylint = ["invalid-bytes-returned"]
 
 [[rule]]
-name = "invalid-character-carriage-return"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["invalid-character-carriage-return"]
-
-[[rule]]
 name = "invalid-class-object"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -847,52 +841,16 @@ category = "pylint"
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
-name = "literal-comparison"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["literal-comparison"]
-
-[[rule]]
-name = "logging-format-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-format-interpolation"]
-
-[[rule]]
 name = "logging-format-truncated"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["logging-format-truncated"]
 
 [[rule]]
-name = "logging-fstring-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-fstring-interpolation"]
-
-[[rule]]
-name = "logging-not-lazy"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-not-lazy"]
-
-[[rule]]
 name = "logging-unsupported-format"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["logging-unsupported-format"]
-
-[[rule]]
-name = "looping-through-iterator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["looping-through-iterator"]
-
-[[rule]]
-name = "lost-exception"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["lost-exception"]
 
 [[rule]]
 name = "match-class-bind-self"
@@ -931,12 +889,6 @@ category = "pylint"
 pylint = ["misplaced-format-function"]
 
 [[rule]]
-name = "misplaced-future"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["misplaced-future"]
-
-[[rule]]
 name = "missing-any-param-doc"
 presets = ["strict"]
 category = "pylint"
@@ -947,24 +899,6 @@ name = "missing-class-docstring"
 presets = ["standard", "strict"]
 category = "linter"
 pylint = ["missing-class-docstring"]
-
-[[rule]]
-name = "missing-format-argument-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-argument-key"]
-
-[[rule]]
-name = "missing-format-attribute"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-attribute"]
-
-[[rule]]
-name = "missing-format-string-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-string-key"]
 
 [[rule]]
 name = "missing-function-docstring"
@@ -1015,12 +949,6 @@ category = "pylint"
 pylint = ["missing-return-type-doc"]
 
 [[rule]]
-name = "missing-timeout"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-timeout"]
-
-[[rule]]
 name = "missing-type-doc"
 presets = ["strict"]
 category = "pylint"
@@ -1037,12 +965,6 @@ name = "missing-yield-type-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["missing-yield-type-doc"]
-
-[[rule]]
-name = "mixed-format-string"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "modified-iterating-dict"
@@ -1087,40 +1009,16 @@ category = "pylint"
 pylint = ["no-else-raise"]
 
 [[rule]]
-name = "no-member"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-member"]
-
-[[rule]]
 name = "no-method-argument"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["no-method-argument"]
 
 [[rule]]
-name = "no-name-in-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-name-in-module"]
-
-[[rule]]
-name = "no-self-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-self-argument"]
-
-[[rule]]
 name = "no-value-for-parameter"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["no-value-for-parameter"]
-
-[[rule]]
-name = "non-ascii-file-name"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["non-ascii-file-name"]
 
 [[rule]]
 name = "non-ascii-module-import"
@@ -1145,12 +1043,6 @@ name = "non-str-assignment-to-dunder-name"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["non-str-assignment-to-dunder-name"]
-
-[[rule]]
-name = "nonexistent-operator"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["nonexistent-operator"]
 
 [[rule]]
 name = "not-a-mapping"
@@ -1183,18 +1075,6 @@ category = "pylint"
 pylint = ["not-context-manager"]
 
 [[rule]]
-name = "not-in-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["not-in-loop"]
-
-[[rule]]
-name = "notimplemented-raised"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["notimplemented-raised"]
-
-[[rule]]
 name = "overlapping-except"
 presets = ["strict"]
 category = "pylint"
@@ -1211,12 +1091,6 @@ name = "pointless-exception-statement"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["pointless-exception-statement"]
-
-[[rule]]
-name = "pointless-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["pointless-statement"]
 
 [[rule]]
 name = "pointless-string-statement"

@@ -297,6 +297,7 @@ ruff = ["ASYNC251"]
 [[rule]]
 name = "unary-prefix-increment-decrement"
 ruff = ["B002"]
+pylint = ["nonexistent-operator"]
 
 [[rule]]
 name = "assignment-to-os-environ"
@@ -333,7 +334,7 @@ ruff = ["B010"]
 [[rule]]
 name = "jump-statement-in-finally"
 ruff = ["B012"]
-pylint = ["return-in-finally"]
+pylint = ["lost-exception", "return-in-finally"]
 
 [[rule]]
 name = "redundant-tuple-in-exception-handler"
@@ -359,6 +360,7 @@ ruff = ["B017"]
 [[rule]]
 name = "useless-expression"
 ruff = ["B018"]
+pylint = ["pointless-statement"]
 
 [[rule]]
 name = "cached-instance-method"
@@ -1089,6 +1091,7 @@ ruff = ["F402"]
 [[rule]]
 name = "late-future-import"
 ruff = ["F404"]
+pylint = ["misplaced-future"]
 
 [[rule]]
 name = "undefined-local-with-import-star-usage"
@@ -1122,10 +1125,12 @@ pylint = ["unused-format-string-key"]
 [[rule]]
 name = "percent-format-missing-argument"
 ruff = ["F505"]
+pylint = ["missing-format-string-key"]
 
 [[rule]]
 name = "percent-format-mixed-positional-and-named"
 ruff = ["F506"]
+pylint = ["mixed-format-string"]
 
 [[rule]]
 name = "percent-format-positional-count-mismatch"
@@ -1156,6 +1161,7 @@ ruff = ["F523"]
 [[rule]]
 name = "string-dot-format-missing-arguments"
 ruff = ["F524"]
+pylint = ["missing-format-argument-key"]
 
 [[rule]]
 name = "string-dot-format-mixing-automatic"
@@ -1190,6 +1196,7 @@ ruff = ["F631"]
 [[rule]]
 name = "is-literal"
 ruff = ["F632"]
+pylint = ["literal-comparison"]
 
 [[rule]]
 name = "invalid-print-syntax"
@@ -1202,6 +1209,7 @@ ruff = ["F634"]
 [[rule]]
 name = "break-outside-loop"
 ruff = ["F701"]
+pylint = ["not-in-loop"]
 
 [[rule]]
 name = "continue-outside-loop"
@@ -1250,6 +1258,7 @@ ruff = ["F842"]
 [[rule]]
 name = "raise-not-implemented"
 ruff = ["F901"]
+pylint = ["notimplemented-raised"]
 
 [[rule]]
 name = "future-rewritable-type-annotation"
@@ -1517,15 +1526,17 @@ ruff = ["FURB192"]
 
 [[rule]]
 name = "logging-string-format"
-presets = ["strict"]
+presets = ["standard", "strict"]
 category = "flake8-logging-format"
 ruff = ["G001"]
+pylint = ["logging-format-interpolation"]
 
 [[rule]]
 name = "logging-percent-format"
-presets = ["strict"]
+presets = ["standard", "strict"]
 category = "flake8-logging-format"
 ruff = ["G002"]
+pylint = ["logging-not-lazy"]
 
 [[rule]]
 name = "logging-string-concat"
@@ -1535,9 +1546,10 @@ ruff = ["G003"]
 
 [[rule]]
 name = "logging-f-string"
-presets = ["strict"]
+presets = ["standard", "strict"]
 category = "flake8-logging-format"
 ruff = ["G004"]
+pylint = ["logging-fstring-interpolation"]
 
 [[rule]]
 name = "logging-warn"
@@ -1681,9 +1693,10 @@ ruff = ["N804"]
 
 [[rule]]
 name = "invalid-first-argument-name-for-method"
-presets = ["strict"]
+presets = ["standard", "strict"]
 category = "linter"
 ruff = ["N805"]
+pylint = ["no-self-argument"]
 
 [[rule]]
 name = "dunder-function-name"
@@ -2042,13 +2055,6 @@ presets = ["standard", "strict"]
 category = "pylint"
 ruff = ["PLE0101"]
 pylint = ["return-in-init"]
-
-[[rule]]
-name = "nonlocal-and-global"
-presets = ["standard", "strict"]
-category = "pylint"
-ruff = ["PLE0115"]
-pylint = ["nonlocal-and-global"]
 
 [[rule]]
 name = "continue-in-finally"
@@ -3857,9 +3863,11 @@ ruff = ["S108"]
 [[rule]]
 name = "try-except-continue"
 ruff = ["S112"]
+
 [[rule]]
 name = "request-without-timeout"
 ruff = ["S113"]
+pylint = ["missing-timeout"]
 
 [[rule]]
 name = "flask-debug-true"

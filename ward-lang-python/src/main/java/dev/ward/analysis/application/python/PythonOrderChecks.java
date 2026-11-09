@@ -14,7 +14,6 @@ import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
-import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SetDuplicatesCheck;
@@ -45,6 +44,10 @@ final class PythonOrderChecks {
   }
 
   private static Map<String, CheckFactory> build() {
+    return CheckRegistry.union(List.of(buildFirst(), PylintCheckFactories.checks()));
+  }
+
+  private static Map<String, CheckFactory> buildFirst() {
     return Map.ofEntries(
         entry("comparison-operator", PythonOrderChecks::comparisonOperator),
         entry("loop-variable", PythonOrderChecks::loopVariable),
@@ -75,9 +78,6 @@ final class PythonOrderChecks {
         entry(
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "named-expr-without-context",
-            toml -> new NamedExprWithoutContextCheck(TomlValues.required(toml, MESSAGE))),
         entry("strict-call", PythonOrderChecks::strictCall));
   }
 
