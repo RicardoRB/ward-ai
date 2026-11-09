@@ -16,6 +16,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python-unused.toml",
           "rules/python/bugbear.toml",
           "rules/python/checkstyle.toml",
+          "rules/python/dead-code.toml",
           "rules/python/flake8-2020.toml",
           "rules/python/flake8-bandit-blocks.toml",
           "rules/python/flake8-bandit.toml",

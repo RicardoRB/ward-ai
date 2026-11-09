@@ -74,6 +74,7 @@ checkstyle = ["UnnecessaryFullyQualifiedType"]
 
 [[rule]]
 name = "unused-imports"
+not-applicable = { python = "Same concept as ward:python/unused-import, which the vulture unused-import row implements" }
 ids = { java = "ward:java/unused-import" }
 detekt = ["UnusedImports"]
 pmd = ["UnnecessaryImport"]
