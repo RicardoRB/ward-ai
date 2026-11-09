@@ -148,7 +148,7 @@ no-with = "implemented"
 object-shorthand = { status = "planned", issue = "#296" }
 operator-assignment = { status = "planned", issue = "#296" }
 prefer-arrow-callback = { status = "planned", issue = "#296" }
-prefer-const = { status = "planned", issue = "#296" }
+prefer-const = "implemented"
 prefer-destructuring = { status = "planned", issue = "#296" }
 prefer-exponentiation-operator = "implemented"
 prefer-named-capture-group = { status = "planned", issue = "#326" }

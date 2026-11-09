@@ -154,3 +154,27 @@ check = "node-else-after-jump"
 allow-else-if = true
 message = "unnecessary 'else' after 'return'"
 '''
+
+[[rules]]
+id = "ward:typescript/prefer-const"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-prefer-const"
+message = "'{value}' is never reassigned; use 'const' instead"
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-const"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "node-prefer-const"
+message = "'{value}' is never reassigned; use 'const' instead"
+'''

@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
+import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ final class StyleChecks {
         toml ->
             new NodeElseAfterJumpCheck(
                 toml.getBoolean("allow-else-if", () -> true), TomlValues.required(toml, MESSAGE)),
+        "node-prefer-const",
+        toml -> new NodePreferConstCheck(TomlValues.required(toml, MESSAGE)),
         "node-variable-distance",
         toml ->
             new VariableDistanceCheck(

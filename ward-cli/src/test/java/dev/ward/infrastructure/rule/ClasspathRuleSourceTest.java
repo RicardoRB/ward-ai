@@ -14,7 +14,12 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final List<String> SCOPE_CHECKS =
-      List.of("node-variable-distance", "reassigned-binding", "undefined-name", "unused-binding");
+      List.of(
+          "node-prefer-const",
+          "node-variable-distance",
+          "reassigned-binding",
+          "undefined-name",
+          "unused-binding");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {

@@ -889,8 +889,6 @@ biome = ["useArrowFunction"]
 
 [[rule]]
 name = "prefer-const"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-const"]
 biome = ["useConst"]
 
