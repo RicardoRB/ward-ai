@@ -40,6 +40,7 @@ public final class UnsafeAnyCheck extends TypedCheck {
 
   /** Creates the check for one site with the message of the rule. */
   public UnsafeAnyCheck(final Site site, final String message) {
+    super();
     this.site = site;
     this.message = message;
   }
@@ -47,14 +48,21 @@ public final class UnsafeAnyCheck extends TypedCheck {
   @Override
   protected List<RuleMatch> find(final SyntaxNode root, final UnitTypeFacts types) {
     final List<RuleMatch> out = new ArrayList<>();
-    switch (site) {
-      case CALL, MEMBER, NEGATION -> collectExpressions(root, types, out);
-      case RETURN -> collectReturns(root, types, out);
-      case ARGUMENT -> collectArguments(root, types, out);
-      case ASSIGNMENT -> collectDeclarations(root, types, out);
-      default -> {}
-    }
+    collect(root, types, out);
     return out;
+  }
+
+  private void collect(
+      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+    if (site == Site.RETURN) {
+      collectReturns(root, types, out);
+    } else if (site == Site.ARGUMENT) {
+      collectArguments(root, types, out);
+    } else if (site == Site.ASSIGNMENT) {
+      collectDeclarations(root, types, out);
+    } else {
+      collectExpressions(root, types, out);
+    }
   }
 
   private void collectExpressions(
@@ -71,18 +79,27 @@ public final class UnsafeAnyCheck extends TypedCheck {
   /** Returns the operand whose type the site reads, or null when this node is another form. */
   private SyntaxNode subjectOf(final List<SyntaxNode> parts) {
     return switch (site) {
-      case CALL ->
-          parts.size() == 2 && "arguments".equals(parts.get(1).kind()) ? parts.get(0) : null;
-      case MEMBER ->
-          parts.size() == 3
-                  && SyntaxText.isToken(parts.get(1), ".")
-                  && EXPRESSION.equals(parts.get(0).kind())
-              ? parts.get(0)
-              : null;
-      case NEGATION ->
-          parts.size() == 2 && SyntaxText.isToken(parts.get(0), MINUS) ? parts.get(1) : null;
+      case CALL -> callSubject(parts);
+      case MEMBER -> memberSubject(parts);
+      case NEGATION -> negationSubject(parts);
       default -> null;
     };
+  }
+
+  private static SyntaxNode callSubject(final List<SyntaxNode> parts) {
+    return parts.size() == 2 && "arguments".equals(parts.get(1).kind()) ? parts.get(0) : null;
+  }
+
+  private static SyntaxNode memberSubject(final List<SyntaxNode> parts) {
+    final boolean access =
+        parts.size() == SyntaxText.INFIX_PARTS
+            && SyntaxText.isToken(parts.get(1), ".")
+            && EXPRESSION.equals(parts.get(0).kind());
+    return access ? parts.get(0) : null;
+  }
+
+  private static SyntaxNode negationSubject(final List<SyntaxNode> parts) {
+    return parts.size() == 2 && SyntaxText.isToken(parts.get(0), MINUS) ? parts.get(1) : null;
   }
 
   private void collectReturns(
@@ -113,7 +130,7 @@ public final class UnsafeAnyCheck extends TypedCheck {
       final List<SyntaxNode> annotations = SyntaxText.childrenOf(declaration, ANNOTATION);
       final SyntaxNode init = SyntaxText.last(declaration);
       if (annotations.size() == 1
-          && declaration.children().size() == 4
+          && declaration.children().size() == SyntaxText.TYPED_DECLARATION_PARTS
           && !"any".equals(SyntaxText.of(annotations.get(0)).replace(":", ""))
           && !"unknown".equals(SyntaxText.of(annotations.get(0)).replace(":", ""))
           && isAny(types, init)) {

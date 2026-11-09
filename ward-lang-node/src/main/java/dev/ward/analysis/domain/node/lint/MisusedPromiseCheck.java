@@ -9,12 +9,11 @@ import java.util.List;
 /** Reports a promise used as an {@code if} condition, which is always truthy. */
 public final class MisusedPromiseCheck extends TypedCheck {
 
-  private static final String IF = "if";
-
   private final String message;
 
   /** Creates the check with the message of the rule. */
   public MisusedPromiseCheck(final String message) {
+    super();
     this.message = message;
   }
 

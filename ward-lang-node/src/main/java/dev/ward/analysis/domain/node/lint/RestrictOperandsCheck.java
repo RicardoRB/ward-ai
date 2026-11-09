@@ -20,6 +20,7 @@ public final class RestrictOperandsCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public RestrictOperandsCheck(final String message) {
+    super();
     this.message = message;
   }
 
@@ -28,7 +29,7 @@ public final class RestrictOperandsCheck extends TypedCheck {
     final List<RuleMatch> out = new ArrayList<>();
     for (final SyntaxNode node : SyntaxText.nodesOf(root, EXPRESSION)) {
       final List<SyntaxNode> parts = node.children();
-      if (parts.size() == 3 && SyntaxText.isToken(parts.get(1), PLUS)) {
+      if (parts.size() == SyntaxText.INFIX_PARTS && SyntaxText.isToken(parts.get(1), PLUS)) {
         final Optional<TypeRef> left = typeOf(types, parts.get(0));
         final Optional<TypeRef> right = typeOf(types, parts.get(2));
         if (left.isPresent()

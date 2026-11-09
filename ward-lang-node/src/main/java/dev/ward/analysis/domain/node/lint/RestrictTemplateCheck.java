@@ -17,6 +17,7 @@ public final class RestrictTemplateCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public RestrictTemplateCheck(final String message) {
+    super();
     this.message = message;
   }
 
@@ -25,7 +26,7 @@ public final class RestrictTemplateCheck extends TypedCheck {
     final List<RuleMatch> out = new ArrayList<>();
     for (final SyntaxNode atom : SyntaxText.nodesOf(root, TEMPLATE)) {
       final List<SyntaxNode> parts = atom.children();
-      if (parts.size() == 3 && SyntaxText.isToken(parts.get(0), OPEN)) {
+      if (parts.size() == SyntaxText.INFIX_PARTS && SyntaxText.isToken(parts.get(0), OPEN)) {
         final Optional<TypeRef> type = typeOf(types, parts.get(1));
         if (type.isPresent() && isObjectLike(type.get())) {
           out.add(new RuleMatch(parts.get(1).span(), message));

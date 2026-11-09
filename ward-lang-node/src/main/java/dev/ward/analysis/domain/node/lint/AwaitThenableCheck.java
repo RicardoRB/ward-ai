@@ -17,6 +17,7 @@ public final class AwaitThenableCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public AwaitThenableCheck(final String message) {
+    super();
     this.message = message;
   }
 

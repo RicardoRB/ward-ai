@@ -17,6 +17,7 @@ public final class UnnecessaryAssertionCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public UnnecessaryAssertionCheck(final String message) {
+    super();
     this.message = message;
   }
 
@@ -25,7 +26,7 @@ public final class UnnecessaryAssertionCheck extends TypedCheck {
     final List<RuleMatch> out = new ArrayList<>();
     for (final SyntaxNode node : SyntaxText.nodesOf(root, EXPRESSION)) {
       final List<SyntaxNode> parts = node.children();
-      if (parts.size() == 3 && SyntaxText.isToken(parts.get(1), AS)) {
+      if (parts.size() == SyntaxText.INFIX_PARTS && SyntaxText.isToken(parts.get(1), AS)) {
         final Optional<TypeRef> operand = typeOf(types, parts.get(0));
         if (operand.isPresent() && operand.get().display().equals(SyntaxText.of(parts.get(2)))) {
           out.add(new RuleMatch(node.span(), message));

@@ -22,6 +22,7 @@ public final class FloatingPromiseCheck extends TypedCheck {
   /** Creates the check with the rule's options and message. */
   public FloatingPromiseCheck(
       final boolean ignoreVoid, final boolean ignoreIife, final String message) {
+    super();
     this.ignoreVoid = ignoreVoid;
     this.ignoreIife = ignoreIife;
     this.message = message;
@@ -76,7 +77,7 @@ public final class FloatingPromiseCheck extends TypedCheck {
   /** A promise handled by {@code .catch(...)} or by {@code .then} with a rejection handler. */
   private static boolean handled(final SyntaxNode callee, final String arguments) {
     final List<SyntaxNode> parts = callee.children();
-    if (parts.size() != 3) {
+    if (parts.size() != SyntaxText.INFIX_PARTS) {
       return false;
     }
     final String member = SyntaxText.of(parts.get(2));

@@ -51,7 +51,9 @@ public final class DuplicateEnumValuesCheck implements RuleCheck {
 
   private static SyntaxNode initializerOf(final SyntaxNode member) {
     final List<SyntaxNode> parts = member.children();
-    return parts.size() == 3 && EXPRESSION.equals(parts.get(2).kind()) ? parts.get(2) : null;
+    return parts.size() == SyntaxText.INFIX_PARTS && EXPRESSION.equals(parts.get(2).kind())
+        ? parts.get(2)
+        : null;
   }
 
   /** Returns the canonical value of a static initializer, or null when it is not static. */

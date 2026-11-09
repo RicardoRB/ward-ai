@@ -14,6 +14,7 @@ import java.util.Set;
 public final class DeclarationMergingCheck implements RuleCheck {
 
   private static final String CLASS = "class";
+  private static final int BOTH_KINDS = 2;
   private static final String INTERFACE = "interface";
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String INTERFACE_DECLARATION = "interfaceDeclaration";
@@ -33,7 +34,7 @@ public final class DeclarationMergingCheck implements RuleCheck {
     scan(root, out);
     for (final String kind : SCOPES) {
       for (final SyntaxNode scope : SyntaxText.nodesOf(root, kind)) {
-        if (scope != root) {
+        if (!scope.equals(root)) {
           scan(scope, out);
         }
       }
@@ -46,7 +47,7 @@ public final class DeclarationMergingCheck implements RuleCheck {
     final Map<String, Set<String>> kinds = new HashMap<>();
     collect(scope, scope, names, kinds);
     for (final SyntaxNode name : names) {
-      if (kinds.getOrDefault(SyntaxText.of(name), Set.of()).size() == 2) {
+      if (kinds.getOrDefault(SyntaxText.of(name), Set.of()).size() == BOTH_KINDS) {
         out.add(new RuleMatch(name.span(), message));
       }
     }
@@ -57,7 +58,7 @@ public final class DeclarationMergingCheck implements RuleCheck {
       final SyntaxNode node,
       final List<SyntaxNode> names,
       final Map<String, Set<String>> kinds) {
-    if (node != scope && SCOPES.contains(node.kind())) {
+    if (!node.equals(scope) && SCOPES.contains(node.kind())) {
       return;
     }
     final String keyword = declarationKeyword(node);

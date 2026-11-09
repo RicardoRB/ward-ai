@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public final class BanTsCommentCheck implements RuleCheck {
 
   private static final String COMMENT = "comment";
+  private static final int BLOCK_MARKERS = 4;
   private static final String BANNED = "true";
   private static final String NEEDS_DESCRIPTION = "allow-with-description";
   private static final String DIRECTIVE = "{directive}";
@@ -62,7 +63,7 @@ public final class BanTsCommentCheck implements RuleCheck {
       final Matcher line = LINE.matcher(text.substring(2));
       return line.matches() ? line : null;
     }
-    final String body = text.length() >= 4 ? text.substring(2, text.length() - 2) : "";
+    final String body = text.length() >= BLOCK_MARKERS ? text.substring(2, text.length() - 2) : "";
     final String[] lines = body.split("\\R", -1);
     final Matcher block = BLOCK.matcher(lines[lines.length - 1]);
     return block.matches() ? block : null;

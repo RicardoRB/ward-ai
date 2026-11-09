@@ -7,6 +7,12 @@ import java.util.List;
 /** Reads the text and the tokens of TypeScript syntax nodes for the typescript-eslint checks. */
 final class SyntaxText {
 
+  /** The parts of an infix expression: left, operator, right. */
+  static final int INFIX_PARTS = 3;
+
+  /** The parts of a declaration with a type: name, annotation, operator, initializer. */
+  static final int TYPED_DECLARATION_PARTS = 4;
+
   private static final String TEXT = "text";
   private static final String EOF = "<EOF>";
 

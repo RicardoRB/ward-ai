@@ -16,6 +16,7 @@ public final class NoForInArrayCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public NoForInArrayCheck(final String message) {
+    super();
     this.message = message;
   }
 

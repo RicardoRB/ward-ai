@@ -43,13 +43,18 @@ public final class NonNullOptionalChainCheck implements RuleCheck {
   }
 
   private static boolean isOptionalChain(final SyntaxNode sequence) {
-    final SyntaxNode start = sequence.children().isEmpty() ? null : sequence.children().get(0);
-    SyntaxNode current = start;
-    while (current != null && EXPRESSION.equals(current.kind())) {
+    if (sequence.children().isEmpty()) {
+      return false;
+    }
+    SyntaxNode current = sequence.children().get(0);
+    while (EXPRESSION.equals(current.kind())) {
       if (hasOptionalTokens(current)) {
         return true;
       }
-      current = current.children().isEmpty() ? null : current.children().get(0);
+      if (current.children().isEmpty()) {
+        return false;
+      }
+      current = current.children().get(0);
     }
     return false;
   }

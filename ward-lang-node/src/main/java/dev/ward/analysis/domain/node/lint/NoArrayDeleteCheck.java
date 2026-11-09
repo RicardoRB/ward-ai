@@ -18,6 +18,7 @@ public final class NoArrayDeleteCheck extends TypedCheck {
 
   /** Creates the check with the message of the rule. */
   public NoArrayDeleteCheck(final String message) {
+    super();
     this.message = message;
   }
 

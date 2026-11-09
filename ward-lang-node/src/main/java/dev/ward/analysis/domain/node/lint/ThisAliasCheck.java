@@ -33,12 +33,14 @@ public final class ThisAliasCheck implements RuleCheck {
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> out = new ArrayList<>();
     for (final SyntaxNode node : SyntaxText.nodesOf(root, DECLARATION)) {
-      if (node.children().size() == 3 && SyntaxText.isToken(node.children().get(1), ASSIGN)) {
+      if (node.children().size() == SyntaxText.INFIX_PARTS
+          && SyntaxText.isToken(node.children().get(1), ASSIGN)) {
         report(out, node, node.children().get(0), node.children().get(2));
       }
     }
     for (final SyntaxNode node : SyntaxText.nodesOf(root, EXPRESSION)) {
-      if (node.children().size() == 3 && SyntaxText.isToken(node.children().get(1), ASSIGN)) {
+      if (node.children().size() == SyntaxText.INFIX_PARTS
+          && SyntaxText.isToken(node.children().get(1), ASSIGN)) {
         report(out, node, node.children().get(0), node.children().get(2));
       }
     }
