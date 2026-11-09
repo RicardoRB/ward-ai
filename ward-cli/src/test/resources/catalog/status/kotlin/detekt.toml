@@ -89,7 +89,7 @@ missing-package-declaration = { status = "planned", issue = "#324" }
 multiline-lambda-it-parameter = { status = "planned", issue = "#294" }
 multiline-raw-string-indentation = { status = "planned", issue = "#294" }
 named-arguments = { status = "planned", issue = "#294" }
-nested-classes-visibility = { status = "planned", issue = "#294" }
+nested-classes-visibility = "implemented"
 nested-scope-functions = { status = "planned", issue = "#294" }
 new-line-at-end-of-file = "implemented"
 no-name-shadowing = { status = "planned", issue = "#294" }
@@ -154,9 +154,9 @@ unreachable-code = "implemented"
 unsafe-call-on-nullable-type = { status = "planned", issue = "#324" }
 unsafe-cast = { status = "planned", issue = "#324" }
 until-instead-of-range-to = { status = "planned", issue = "#294" }
-unused-parameter = { status = "planned", issue = "#294" }
-unused-private-class = { status = "planned", issue = "#294" }
-unused-private-member = { status = "planned", issue = "#294" }
+unused-parameter = "implemented"
+unused-private-class = "implemented"
+unused-private-member = "implemented"
 unused-unary-operator = "implemented"
 use-any-or-none-instead-of-find = "implemented"
 use-array-literals-in-annotations = "implemented"
@@ -172,10 +172,10 @@ use-or-empty = "implemented"
 use-require = "implemented"
 use-require-not-null = "implemented"
 use-sum-of-instead-of-flat-map-size = { status = "planned", issue = "#294" }
-useless-call-on-not-null = { status = "planned", issue = "#294" }
+useless-call-on-not-null = "implemented"
 useless-postfix-expression = "implemented"
 utility-class-with-public-constructor = "implemented"
-var-could-be-val = { status = "planned", issue = "#294" }
+var-could-be-val = "implemented"
 variable-max-length = { status = "planned", issue = "#294" }
 variable-min-length = { status = "planned", issue = "#294" }
 wrong-equals-type-parameter = "implemented"

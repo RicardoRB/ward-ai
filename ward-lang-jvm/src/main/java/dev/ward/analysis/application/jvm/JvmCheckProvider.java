@@ -45,6 +45,7 @@ public final class JvmCheckProvider implements CheckProvider {
             ImportChecks.checks(),
             KotlinBugChecks.checks(),
             KotlinTextChecks.checks(),
+            KotlinScopeChecks.checks(),
             JavadocChecks.checks(),
             JavadocContentChecks.checks(),
             JavadocLayoutChecks.checks(),

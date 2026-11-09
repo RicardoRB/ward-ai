@@ -29,7 +29,8 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["postfixUnaryExpression"]
-text = '^(?!return|throw)[^={};]*?\bequals\s*\(\s*null\s*\)'
+# shortcut: a call with a receiver only; a bare equals(null) is not reported.
+text = '^(?!return|throw)[^={};]*?\.equals\s*\(\s*null\s*\)'
 message = "equals is called with null; compare with == null instead"
 '''
 
@@ -399,3 +400,87 @@ body = '''
 check = "kotlin-trailing-whitespace"
 message = "line has trailing whitespace"
 '''
+
+# shortcut: a parameter is used when the scopes resolve a read of it; names matching the default
+# allowed-names are skipped. Functions whose modifiers name a fixed signature are skipped.
+[[rules]]
+id = "ward:kotlin/unused-parameter"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-parameter"
+message = "parameter '{value}' is never used"
+'''
+
+# shortcut: a mention of the name anywhere in the file, outside the declaration, counts as a use.
+[[rules]]
+id = "ward:kotlin/unused-private-member"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-private-member"
+message = "private function '{value}' is never used"
+'''
+
+# shortcut: a mention of the name anywhere in the file, outside the declaration, counts as a use.
+[[rules]]
+id = "ward:kotlin/unused-private-class"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-private-class"
+message = "private class '{value}' is never used"
+'''
+
+# shortcut: a var is judged by its write references in the scopes; only local vars and private
+# class properties are checked.
+[[rules]]
+id = "ward:kotlin/var-could-be-val"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-var-could-be-val"
+message = "var '{value}' could be val"
+'''
+
+[[rules]]
+id = "ward:kotlin/nested-classes-visibility"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-nested-classes-visibility"
+message = "nested class '{value}' declares public or protected visibility inside an internal class"
+'''
+
+# shortcut: only a call on a receiver that is certainly non-null by its syntax (a string literal, a
+# collection factory or a constructor call), and listOfNotNull with only non-null literal arguments.
+# Nullness facts from the types will widen this later.
+[[rules]]
+id = "ward:kotlin/useless-call-on-not-null"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(?:(?:"[^"]*"|(?:listOf|emptyList|setOf|mapOf|mutableListOf|mutableSetOf|mutableMapOf|sequenceOf|arrayOf|emptySequence|emptySet|emptyMap)\([^()]*\)|[A-Z]\w*\([^()]*\))\.(?:orEmpty|isNullOrEmpty|isNullOrBlank)\(\)|listOfNotNull\((?:(?:"[^"]*"|-?\d+(?:\.\d+)?|true|false)(?:,(?:"[^"]*"|-?\d+(?:\.\d+)?|true|false))*)?\)$)'
+message = "call on a non-null receiver is useless; remove it"
+'''
+

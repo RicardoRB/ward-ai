@@ -18,13 +18,11 @@ class KotlinTextChecksTest {
   private static final String MESSAGE = "m";
 
   private static List<RuleMatch> newLine(final String text) {
-    return new KotlinNewLineAtEndOfFileCheck(MESSAGE)
-        .matches(root(), FlowView.NONE, unit(text));
+    return new KotlinNewLineAtEndOfFileCheck(MESSAGE).matches(root(), FlowView.NONE, unit(text));
   }
 
   private static List<RuleMatch> trailing(final String text) {
-    return new KotlinTrailingWhitespaceCheck(MESSAGE)
-        .matches(root(), FlowView.NONE, unit(text));
+    return new KotlinTrailingWhitespaceCheck(MESSAGE).matches(root(), FlowView.NONE, unit(text));
   }
 
   private static SourceUnit unit(final String text) {

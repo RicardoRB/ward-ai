@@ -494,8 +494,6 @@ detekt = ["NamedArguments"]
 
 [[rule]]
 name = "nested-classes-visibility"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["NestedClassesVisibility"]
 
 [[rule]]
@@ -834,21 +832,15 @@ detekt = ["UntilInsteadOfRangeTo"]
 
 [[rule]]
 name = "unused-parameter"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedParameter"]
 swiftlint = ["unused_parameter"]
 
 [[rule]]
 name = "unused-private-class"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedPrivateClass"]
 
 [[rule]]
 name = "unused-private-member"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UnusedPrivateMember"]
 pylint = ["unused-private-member"]
 
@@ -926,8 +918,6 @@ detekt = ["UseSumOfInsteadOfFlatMapSize"]
 
 [[rule]]
 name = "useless-call-on-not-null"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["UselessCallOnNotNull"]
 
 [[rule]]
@@ -940,8 +930,6 @@ detekt = ["UtilityClassWithPublicConstructor"]
 
 [[rule]]
 name = "var-could-be-val"
-presets = ["standard", "strict"]
-category = "style"
 detekt = ["VarCouldBeVal"]
 
 [[rule]]
