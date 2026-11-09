@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
+import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
@@ -46,6 +47,7 @@ final class BiomeChecks {
         entry(
             "node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
         entry("node-jsx-blank-target", BiomeChecks::blankTarget),
+        entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
         entry(
             "node-jsx-duplicate-props",
             toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
@@ -57,6 +59,15 @@ final class BiomeChecks {
                     "expression".equals(toml.getString("at")),
                     Pattern.compile(TomlValues.required(toml, "text")),
                     TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static RuleCheck requiredAttribute(final TomlParseResult toml) {
+    return new BiomeJsxRequiredAttributeCheck(
+        TomlValues.optionalStrings(toml, "elements"),
+        TomlValues.required(toml, "attribute"),
+        TomlValues.optionalStrings(toml, "values"),
+        toml.getBoolean("silent-on-spread", () -> false),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck blankTarget(final TomlParseResult toml) {

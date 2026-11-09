@@ -184,7 +184,7 @@ no-vue-reserved-keys = { status = "planned", issue = "#329" }
 no-vue-reserved-props = { status = "planned", issue = "#329" }
 no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
 no-xor-as-exponentiation = "implemented"
-use-alt-text = { status = "planned", issue = "#329" }
+use-alt-text = "implemented"
 use-anchor-content = { status = "planned", issue = "#329" }
 use-aria-activedescendant-with-tabindex = { status = "planned", issue = "#329" }
 use-aria-props-for-role = { status = "planned", issue = "#329" }
@@ -193,7 +193,7 @@ use-array-find = "implemented"
 use-array-some = { status = "planned", issue = "#329" }
 use-at-index = { status = "planned", issue = "#296" }
 use-better-dom-traversing = { status = "planned", issue = "#329" }
-use-button-type = { status = "planned", issue = "#329" }
+use-button-type = "implemented"
 use-component-export-only-modules = { status = "planned", issue = "#296" }
 use-consistent-array-type = { status = "planned", issue = "#296" }
 use-consistent-arrow-return = { status = "planned", issue = "#296" }
@@ -229,9 +229,9 @@ use-google-font-display = { status = "planned", issue = "#329" }
 use-google-font-preconnect = { status = "planned", issue = "#329" }
 use-heading-content = { status = "planned", issue = "#329" }
 use-hook-at-top-level = { status = "planned", issue = "#329" }
-use-html-lang = { status = "planned", issue = "#329" }
+use-html-lang = "implemented"
 use-iframe-sandbox = { status = "planned", issue = "#329" }
-use-iframe-title = { status = "planned", issue = "#329" }
+use-iframe-title = "implemented"
 use-image-size = { status = "planned", issue = "#329" }
 use-import-extensions = { status = "planned", issue = "#329" }
 use-imports-first = { status = "planned", issue = "#329" }

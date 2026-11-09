@@ -110,3 +110,118 @@ text = '^<(?:blink|marquee)(?:[>/]|[\w-]+=)'
 message = "avoid the blink and marquee elements; they distract the user"
 '''
 
+[[rules]]
+id = "ward:javascript/use-button-type"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["button"]
+attribute = "type"
+values = ["button", "submit", "reset"]
+silent-on-spread = true
+message = "a button needs a type of button, submit or reset"
+'''
+
+[[rules]]
+id = "ward:typescript/use-button-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["button"]
+attribute = "type"
+values = ["button", "submit", "reset"]
+silent-on-spread = true
+message = "a button needs a type of button, submit or reset"
+'''
+
+[[rules]]
+id = "ward:javascript/use-alt-text"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["img", "area"]
+attribute = "alt"
+message = "an image needs an alt text; an empty alt text marks a decorative image"
+'''
+
+[[rules]]
+id = "ward:typescript/use-alt-text"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["img", "area"]
+attribute = "alt"
+message = "an image needs an alt text; an empty alt text marks a decorative image"
+'''
+
+[[rules]]
+id = "ward:javascript/use-iframe-title"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["iframe"]
+attribute = "title"
+message = "an iframe needs a title that describes its content"
+'''
+
+[[rules]]
+id = "ward:typescript/use-iframe-title"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["iframe"]
+attribute = "title"
+message = "an iframe needs a title that describes its content"
+'''
+
+[[rules]]
+id = "ward:javascript/use-html-lang"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["html"]
+attribute = "lang"
+message = "the html element needs a lang attribute"
+'''
+
+[[rules]]
+id = "ward:typescript/use-html-lang"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-required-attribute"
+elements = ["html"]
+attribute = "lang"
+message = "the html element needs a lang attribute"
+'''

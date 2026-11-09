@@ -61,7 +61,11 @@ class BiomeParitySmokeTest {
           Map.entry("no-dangerously-set-inner-html", "security/noDangerouslySetInnerHtml"),
           Map.entry("no-jsx-props-bind", "performance/noJsxPropsBind"),
           Map.entry("no-obsolete-tags", "nursery/noObsoleteTags"),
-          Map.entry("no-jsx-namespace", "nursery/noJsxNamespace"));
+          Map.entry("no-jsx-namespace", "nursery/noJsxNamespace"),
+          Map.entry("use-button-type", "a11y/useButtonType"),
+          Map.entry("use-alt-text", "a11y/useAltText"),
+          Map.entry("use-iframe-title", "a11y/useIframeTitle"),
+          Map.entry("use-html-lang", "a11y/useHtmlLang"));
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
