@@ -903,3 +903,15 @@ body = '''
 check = "no-method-argument"
 message = "method declares no parameter; it needs the instance as its first parameter"
 '''
+
+[[rules]]
+id = "ward:python/possibly-unused-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "possibly-unused-variable"
+message = "local variable is never read, but a later locals() call may read it"
+'''
