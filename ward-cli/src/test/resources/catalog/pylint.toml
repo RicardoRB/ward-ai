@@ -1279,12 +1279,6 @@ category = "pylint"
 pylint = ["prefer-typing-namedtuple"]
 
 [[rule]]
-name = "preferred-module"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["preferred-module"]
-
-[[rule]]
 name = "raising-format-tuple"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1343,12 +1337,6 @@ name = "reimported"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["reimported"]
-
-[[rule]]
-name = "relative-beyond-top-level"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["relative-beyond-top-level"]
 
 [[rule]]
 name = "repeated-keyword"
@@ -1433,12 +1421,6 @@ name = "super-with-arguments"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["super-with-arguments"]
-
-[[rule]]
-name = "syntax-error"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["syntax-error"]
 
 [[rule]]
 name = "too-complex"
@@ -1567,12 +1549,6 @@ category = "linter"
 pylint = ["unidiomatic-typecheck"]
 
 [[rule]]
-name = "unknown-option-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unknown-option-value"]
-
-[[rule]]
 name = "unnecessary-ellipsis"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1609,18 +1585,6 @@ category = "pylint"
 pylint = ["unreachable"]
 
 [[rule]]
-name = "unrecognized-inline-option"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unrecognized-inline-option"]
-
-[[rule]]
-name = "unrecognized-option"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unrecognized-option"]
-
-[[rule]]
 name = "unsubscriptable-object"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1631,12 +1595,6 @@ name = "unsupported-assignment-operation"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["unsupported-assignment-operation"]
-
-[[rule]]
-name = "unsupported-binary-operation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["unsupported-binary-operation"]
 
 [[rule]]
 name = "unsupported-delete-operation"
@@ -1723,12 +1681,6 @@ category = "pylint"
 pylint = ["used-prior-global-declaration"]
 
 [[rule]]
-name = "useless-option-value"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["useless-option-value"]
-
-[[rule]]
 name = "useless-param-doc"
 presets = ["strict"]
 category = "pylint"
@@ -1747,64 +1699,16 @@ category = "pylint"
 pylint = ["useless-type-doc"]
 
 [[rule]]
-name = "using-assignment-expression-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-assignment-expression-in-unsupported-version"]
-
-[[rule]]
-name = "using-comprehension-unpacking-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-comprehension-unpacking-in-unsupported-version"]
-
-[[rule]]
 name = "using-constant-test"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["using-constant-test"]
 
 [[rule]]
-name = "using-exception-groups-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-exception-groups-in-unsupported-version"]
-
-[[rule]]
-name = "using-f-string-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-f-string-in-unsupported-version"]
-
-[[rule]]
-name = "using-final-decorator-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-final-decorator-in-unsupported-version"]
-
-[[rule]]
-name = "using-generic-type-syntax-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-generic-type-syntax-in-unsupported-version"]
-
-[[rule]]
-name = "using-positional-only-args-in-unsupported-version"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["using-positional-only-args-in-unsupported-version"]
-
-[[rule]]
 name = "while-used"
 presets = ["strict"]
 category = "pylint"
 pylint = ["while-used"]
-
-[[rule]]
-name = "wrong-exception-operation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["wrong-exception-operation"]
 
 [[rule]]
 name = "wrong-import-order"

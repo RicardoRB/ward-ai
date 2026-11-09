@@ -213,7 +213,6 @@ positional-only-arguments-expected = { status = "planned", issue = "#336" }
 possibly-unused-variable = { status = "planned", issue = "#336" }
 possibly-used-before-assignment = { status = "planned", issue = "#336" }
 prefer-typing-namedtuple = { status = "planned", issue = "#336" }
-preferred-module = { status = "planned", issue = "#336" }
 raising-format-tuple = "implemented"
 raising-non-exception = { status = "planned", issue = "#336" }
 redefined-builtin = "implemented"
@@ -224,7 +223,6 @@ redundant-u-string-prefix = "implemented"
 redundant-unittest-assert = "implemented"
 redundant-yields-doc = { status = "planned", issue = "#336" }
 reimported = { status = "planned", issue = "#336" }
-relative-beyond-top-level = { status = "planned", issue = "#336" }
 repeated-keyword = { status = "planned", issue = "#336" }
 return-arg-in-generator = { status = "planned", issue = "#336" }
 self-cls-assignment = "implemented"
@@ -239,7 +237,6 @@ subclassed-final-class = { status = "planned", issue = "#336" }
 subprocess-run-check = "implemented"
 super-init-not-called = { status = "planned", issue = "#336" }
 super-with-arguments = "implemented"
-syntax-error = { status = "planned", issue = "#336" }
 too-complex = { status = "planned", issue = "#336" }
 too-few-public-methods = { status = "planned", issue = "#336" }
 too-many-ancestors = { status = "planned", issue = "#336" }
@@ -261,18 +258,14 @@ unexpected-keyword-arg = { status = "planned", issue = "#336" }
 ungrouped-imports = { status = "planned", issue = "#297" }
 unhashable-member = "implemented"
 unidiomatic-typecheck = { status = "planned", issue = "#297" }
-unknown-option-value = { status = "planned", issue = "#336" }
 unnecessary-ellipsis = { status = "planned", issue = "#336" }
 unnecessary-lambda-assignment = { status = "planned", issue = "#297" }
 unnecessary-negation = { status = "planned", issue = "#297" }
 unnecessary-pass = { status = "planned", issue = "#336" }
 unpacking-non-sequence = "implemented"
 unreachable = { status = "planned", issue = "#336" }
-unrecognized-inline-option = { status = "planned", issue = "#336" }
-unrecognized-option = { status = "planned", issue = "#336" }
 unsubscriptable-object = "implemented"
 unsupported-assignment-operation = "implemented"
-unsupported-binary-operation = { status = "planned", issue = "#336" }
 unsupported-delete-operation = "implemented"
 unsupported-membership-test = "implemented"
 unused-argument = { status = "planned", issue = "#336" }
@@ -287,20 +280,11 @@ use-set-for-membership = { status = "planned", issue = "#336" }
 use-yield-from = "implemented"
 used-before-assignment = { status = "planned", issue = "#336" }
 used-prior-global-declaration = { status = "planned", issue = "#336" }
-useless-option-value = { status = "planned", issue = "#336" }
 useless-param-doc = { status = "planned", issue = "#336" }
 useless-parent-delegation = { status = "planned", issue = "#336" }
 useless-type-doc = { status = "planned", issue = "#336" }
-using-assignment-expression-in-unsupported-version = { status = "planned", issue = "#336" }
-using-comprehension-unpacking-in-unsupported-version = { status = "planned", issue = "#336" }
 using-constant-test = "implemented"
-using-exception-groups-in-unsupported-version = { status = "planned", issue = "#336" }
-using-f-string-in-unsupported-version = { status = "planned", issue = "#336" }
-using-final-decorator-in-unsupported-version = { status = "planned", issue = "#336" }
-using-generic-type-syntax-in-unsupported-version = { status = "planned", issue = "#336" }
-using-positional-only-args-in-unsupported-version = { status = "planned", issue = "#336" }
 while-used = { status = "planned", issue = "#336" }
-wrong-exception-operation = { status = "planned", issue = "#336" }
 wrong-import-order = { status = "planned", issue = "#297" }
 wrong-import-position = { status = "planned", issue = "#297" }
 wrong-spelling-in-comment = { status = "planned", issue = "#297" }
