@@ -122,11 +122,10 @@ order:
    that uses Biome gets one `biome` gate in place of ESLint, as described there. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
-   script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd` and `enforcer` are
+   script, `coverage`, `mutation` and `enforcer` are
    written into each of those module scripts, and the root script declares their versions with
    `apply false`.
-   In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`
-   and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
+   In a multi-module Maven build, `coverage`, `mutation` and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
    the same gates.
@@ -293,8 +292,8 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that Java projects get no Checkstyle, PMD or SpotBugs gate: init writes `ward-rules.toml`, which
-   selects the Ward rules of the preset for Java. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
+   Mention that Java and Kotlin projects get no Checkstyle, PMD or SpotBugs gate: init writes `ward-rules.toml`, which
+   selects the Ward rules of the preset for the project's JVM languages. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
    Gitleaks (ESLint, or Biome, for TypeScript and JavaScript), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
