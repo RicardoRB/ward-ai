@@ -64,4 +64,17 @@ final class NodeSyntax {
     }
     return Optional.empty();
   }
+
+  /** The first token of a node that has text, in source order. */
+  static SyntaxNode firstLeaf(final SyntaxNode node) {
+    if (node.children().isEmpty()) {
+      return node;
+    }
+    for (final SyntaxNode child : node.children()) {
+      if (child.span().startOffset() < child.span().endOffset()) {
+        return firstLeaf(child);
+      }
+    }
+    return node;
+  }
 }
