@@ -1,0 +1,29 @@
+# String, template and regular expression rules of the ESLint core rules (issue #326), for TypeScript and JavaScript.
+
+[[rules]]
+id = "ward:typescript/no-useless-escape"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-regex-characters = { type = "string-list" }
+body = '''
+check = "node-no-useless-escape"
+allow-regex-characters = []
+message = 'unnecessary escape character: \{value}'
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-escape"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-regex-characters = { type = "string-list" }
+body = '''
+check = "node-no-useless-escape"
+allow-regex-characters = []
+message = 'unnecessary escape character: \{value}'
+'''

@@ -48,7 +48,7 @@ no-debugger = "implemented"
 no-delete-var = "implemented"
 no-div-regex = "implemented"
 no-dupe-args = "implemented"
-no-dupe-class-members = { status = "planned", issue = "#326" }
+no-dupe-class-members = "implemented"
 no-dupe-else-if = "implemented"
 no-dupe-keys = "implemented"
 no-duplicate-case = "implemented"
@@ -139,7 +139,7 @@ no-useless-catch = "implemented"
 no-useless-computed-key = { status = "planned", issue = "#296" }
 no-useless-concat = { status = "planned", issue = "#296" }
 no-useless-constructor = "implemented"
-no-useless-escape = { status = "planned", issue = "#326" }
+no-useless-escape = "implemented"
 no-useless-rename = "implemented"
 no-useless-return = { status = "planned", issue = "#296" }
 no-var = { status = "planned", issue = "#296" }
