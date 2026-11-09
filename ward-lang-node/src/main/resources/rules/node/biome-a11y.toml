@@ -22,10 +22,7 @@ severity = "ERROR"
 category = "a11y"
 presets = ["standard", "strict"]
 body = '''
-# shortcut: components and dialog or popover ancestors are not exempted yet
-check = "forbidden-node"
-kinds = ["jsxAttribute"]
-text = '^autoFocus(?:=|$)'
+check = "node-autofocus"
 message = "avoid the autoFocus prop; it moves focus without the user asking"
 '''
 

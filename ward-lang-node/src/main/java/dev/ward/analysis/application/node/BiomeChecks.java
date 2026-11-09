@@ -4,6 +4,7 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.check.BiomeAutofocusCheck;
 import dev.ward.analysis.domain.rule.check.BiomeBaseToStringCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
@@ -44,6 +45,7 @@ final class BiomeChecks {
         entry(
             "node-base-to-string",
             toml -> new BiomeBaseToStringCheck(TomlValues.required(toml, MESSAGE))),
+        entry("node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-jsx-attribute-value",
             toml ->
