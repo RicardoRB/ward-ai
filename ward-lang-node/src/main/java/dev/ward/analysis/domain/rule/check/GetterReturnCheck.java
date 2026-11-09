@@ -73,7 +73,8 @@ public final class GetterReturnCheck implements RuleCheck {
     }
     if (!allowImplicit) {
       returns.stream()
-          .filter(statement -> statement.children().stream().noneMatch(c -> ARGUMENT.equals(c.kind())))
+          .filter(
+              statement -> statement.children().stream().noneMatch(c -> ARGUMENT.equals(c.kind())))
           .forEach(statement -> matches.add(new RuleMatch(statement.span(), message)));
     }
   }

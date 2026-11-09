@@ -12,8 +12,8 @@ import java.util.Set;
 /**
  * Reports a binary expression whose left operand is a negation, like ESLint {@code
  * no-unsafe-negation}: {@code !a in b} and {@code !a instanceof B} always, and the ordering
- * operators when {@code enforceForOrderingRelations} is set. The TypeScript grammar nests {@code in}
- * and {@code instanceof} one level deeper than the JavaScript grammar, so both shapes are read.
+ * operators when {@code enforceForOrderingRelations} is set. The TypeScript grammar nests {@code
+ * in} and {@code instanceof} one level deeper than the JavaScript grammar, so both shapes are read.
  */
 public final class UnsafeNegationCheck implements RuleCheck {
 
@@ -25,7 +25,7 @@ public final class UnsafeNegationCheck implements RuleCheck {
   private static final Set<String> KEYWORD_OPERATORS = Set.of("'in'", "'instanceof'");
   private static final Set<String> ORDERING = Set.of("'<'", "'>'", "'<='", "'>='");
   private static final String VALUE = "{value}";
-  private static final int QUOTES = 2;
+  private static final int BINARY_OPERANDS = 3;
 
   private final Set<String> operators;
   private final String message;
@@ -75,7 +75,7 @@ public final class UnsafeNegationCheck implements RuleCheck {
   /** {@code a op b} where the left operand is a singleExpression that starts with {@code !}. */
   private Optional<String> javaScriptShape(final SyntaxNode node) {
     final List<SyntaxNode> children = node.children();
-    if (children.size() < 3 || !isNegation(children.get(0))) {
+    if (children.size() < BINARY_OPERANDS || !isNegation(children.get(0))) {
       return Optional.empty();
     }
     final String kind = children.get(1).kind();
