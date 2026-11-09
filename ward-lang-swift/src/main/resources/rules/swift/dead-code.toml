@@ -1,5 +1,5 @@
-# Dead-code rules for Swift, replacing Periphery, SwiftLint's unused rules and detekt's
-# UnusedParameter. Scope rules read the lexical scopes of one file; a declaration that another file
+# Dead-code rules for Swift, replacing Periphery and SwiftLint's unused rules, plus an unused
+# parameter rule. Scope rules read the lexical scopes of one file; a declaration that another file
 # may use is not reported by them.
 
 [[rules]]
