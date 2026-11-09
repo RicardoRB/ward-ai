@@ -30,6 +30,10 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
   private static final String FILE = "kotlinFile";
   private static final Set<String> CONTAINERS =
       Set.of("kotlinFile", "classDeclaration", "objectDeclaration");
+  private static final String OBJECT = "objectDeclaration";
+
+  private final Policy policy;
+  private final String message;
 
   /**
    * The threshold of each container and the functions that do not count.
@@ -53,9 +57,6 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
       boolean ignoreOverridden,
       boolean ignoreDeprecated) {}
 
-  private final Policy policy;
-  private final String message;
-
   /**
    * Creates the check.
    *
@@ -74,7 +75,7 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
       final SyntaxNode node = visit.node();
       if (FILE.equals(node.kind())) {
         report(node, topLevel(node), policy.files(), matches);
-      } else if ("objectDeclaration".equals(node.kind())) {
+      } else if (OBJECT.equals(node.kind())) {
         report(node, members(node), policy.objects(), matches);
       } else {
         report(node, members(node), classThreshold(node), matches);

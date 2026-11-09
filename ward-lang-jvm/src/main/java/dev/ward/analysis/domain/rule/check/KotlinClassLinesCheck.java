@@ -37,18 +37,22 @@ public final class KotlinClassLinesCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final List<RuleMatch> matches = new java.util.ArrayList<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, kinds)) {
-      final Set<Integer> lines = new HashSet<>();
-      collect(visit.node(), true, lines);
-      if (lines.size() > max) {
-        matches.add(
-            new RuleMatch(
-                visit.node().span(),
-                CheckSupport.fill(message, String.valueOf(lines.size()), String.valueOf(max))));
-      }
-    }
-    return List.copyOf(matches);
+    return SyntaxWalk.visits(root, kinds).stream()
+        .map(SyntaxWalk.Visit::node)
+        .filter(node -> lineCount(node) > max)
+        .map(
+            node ->
+                new RuleMatch(
+                    node.span(),
+                    CheckSupport.fill(
+                        message, String.valueOf(lineCount(node)), String.valueOf(max))))
+        .toList();
+  }
+
+  private static int lineCount(final SyntaxNode node) {
+    final Set<Integer> lines = new HashSet<>();
+    collect(node, true, lines);
+    return lines.size();
   }
 
   private static void collect(final SyntaxNode node, final boolean root, final Set<Integer> lines) {
