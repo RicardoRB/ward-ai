@@ -170,3 +170,43 @@ body = '''
 check = "confusing-with"
 message = "with statement binds a name and then a second item, which reads as a tuple; separate them"
 '''
+
+[[rules]]
+id = "ward:python/consider-using-max-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "min-max-builtin"
+builtin = "max"
+message = "consider using max() instead of an if that assigns the larger value"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-min-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "min-max-builtin"
+builtin = "min"
+message = "consider using min() instead of an if that assigns the smaller value"
+'''
+
+[[rules]]
+id = "ward:python/bad-exception-cause"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "from(\\d+|'[^']*'|\"[^\"]*\"|True|False)$"
+message = "exception cause is set to something that is not an exception, nor None"
+'''

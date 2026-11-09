@@ -15,7 +15,7 @@ bad-classmethod-argument = "implemented"
 bad-docstring-quotes = { status = "planned", issue = "#297" }
 bad-dunder-name = { status = "planned", issue = "#336" }
 bad-except-order = { status = "planned", issue = "#336" }
-bad-exception-cause = { status = "planned", issue = "#336" }
+bad-exception-cause = "implemented"
 bad-format-string-key = { status = "planned", issue = "#336" }
 bad-mcs-classmethod-argument = "implemented"
 bad-mcs-method-argument = "implemented"
@@ -48,8 +48,8 @@ consider-using-from-import = "implemented"
 consider-using-get = { status = "planned", issue = "#336" }
 consider-using-in = "implemented"
 consider-using-join = { status = "planned", issue = "#336" }
-consider-using-max-builtin = { status = "planned", issue = "#336" }
-consider-using-min-builtin = { status = "planned", issue = "#336" }
+consider-using-max-builtin = "implemented"
+consider-using-min-builtin = "implemented"
 consider-using-namedtuple-or-dataclass = { status = "planned", issue = "#336" }
 consider-using-sys-exit = "implemented"
 consider-using-ternary = "implemented"

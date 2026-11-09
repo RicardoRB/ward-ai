@@ -98,7 +98,6 @@ pylint = ["bad-except-order"]
 [[rule]]
 name = "bad-exception-cause"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["bad-exception-cause"]
 
 [[rule]]
@@ -288,13 +287,11 @@ pylint = ["consider-using-join"]
 [[rule]]
 name = "consider-using-max-builtin"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-max-builtin"]
 
 [[rule]]
 name = "consider-using-min-builtin"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-min-builtin"]
 
 [[rule]]

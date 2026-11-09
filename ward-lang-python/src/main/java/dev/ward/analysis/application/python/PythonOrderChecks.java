@@ -18,6 +18,7 @@ import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.InitGeneratorCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
+import dev.ward.analysis.domain.rule.check.MinMaxBuiltinCheck;
 import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.RaiseWithoutFromCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -83,6 +84,11 @@ final class PythonOrderChecks {
             toml -> new ThreadInstantiationCheck(TomlValues.required(toml, MESSAGE))),
         entry("bad-super-call", toml -> new BadSuperCallCheck(TomlValues.required(toml, MESSAGE))),
         entry("confusing-with", toml -> new ConfusingWithCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "min-max-builtin",
+            toml ->
+                new MinMaxBuiltinCheck(
+                    TomlValues.required(toml, "builtin"), TomlValues.required(toml, MESSAGE))),
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",
