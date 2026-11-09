@@ -31,23 +31,38 @@ final class CallSignatureChecksTest {
 
   @Test
   void unexpectedKeywordIsReportedUnlessTheSignatureHasKwargs() {
-    assertThat(run(CallSignatureCheck.Problem.UNEXPECTED_KEYWORD, "def f(a):\n    return a\n\n\nf(c=1)\n"))
+    assertThat(
+            run(
+                CallSignatureCheck.Problem.UNEXPECTED_KEYWORD,
+                "def f(a):\n    return a\n\n\nf(c=1)\n"))
         .hasSize(1);
-    assertThat(run(CallSignatureCheck.Problem.UNEXPECTED_KEYWORD, "def f(a, **kw):\n    return a\n\n\nf(c=1)\n"))
+    assertThat(
+            run(
+                CallSignatureCheck.Problem.UNEXPECTED_KEYWORD,
+                "def f(a, **kw):\n    return a\n\n\nf(c=1)\n"))
         .isEmpty();
   }
 
   @Test
   void redundantKeywordIsReportedForAParameterAPositionalArgumentFills() {
-    assertThat(run(CallSignatureCheck.Problem.REDUNDANT_KEYWORD, "def f(a, b):\n    return a\n\n\nf(1, a=2)\n"))
+    assertThat(
+            run(
+                CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
+                "def f(a, b):\n    return a\n\n\nf(1, a=2)\n"))
         .hasSize(1);
-    assertThat(run(CallSignatureCheck.Problem.REDUNDANT_KEYWORD, "def f(a, b):\n    return a\n\n\nf(1, b=2)\n"))
+    assertThat(
+            run(
+                CallSignatureCheck.Problem.REDUNDANT_KEYWORD,
+                "def f(a, b):\n    return a\n\n\nf(1, b=2)\n"))
         .isEmpty();
   }
 
   @Test
   void unpackedArgumentsAndRepeatedNamesAreLeftAlone() {
-    assertThat(run(CallSignatureCheck.Problem.TOO_MANY_POSITIONAL, "def f(a):\n    return a\n\n\nf(*[1, 2])\n"))
+    assertThat(
+            run(
+                CallSignatureCheck.Problem.TOO_MANY_POSITIONAL,
+                "def f(a):\n    return a\n\n\nf(*[1, 2])\n"))
         .isEmpty();
     assertThat(
             run(

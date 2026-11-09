@@ -9,9 +9,9 @@ final class Elements {
   private Elements() {}
 
   /**
-   * Returns the elements of text such as {@code "1,2,3"} or {@code "(1,(2,3))"}, splitting at commas
-   * that are not nested in brackets. A single pair of enclosing brackets is removed first, and an
-   * empty text has no elements. A trailing comma does not add an element.
+   * Returns the elements of text such as {@code "1,2,3"} or {@code "(1,(2,3))"}, splitting at
+   * commas that are not nested in brackets. A single pair of enclosing brackets is removed first,
+   * and an empty text has no elements. A trailing comma does not add an element.
    */
   static List<String> of(final String text) {
     String inner = text.strip();

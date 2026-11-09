@@ -44,8 +44,11 @@ final class PythonShapeChecks {
         entry("reimported", toml -> new ReimportedCheck(TomlValues.required(toml, MESSAGE))),
         entry("class-limit", PythonShapeChecks::classLimit),
         entry("index-range", toml -> new IndexRangeCheck(TomlValues.required(toml, MESSAGE))),
-        entry("shadowed-import", toml -> new ShadowedImportCheck(TomlValues.required(toml, MESSAGE))),
-        entry("simplifiable-condition", toml -> new SimplifiableConditionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "shadowed-import", toml -> new ShadowedImportCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "simplifiable-condition",
+            toml -> new SimplifiableConditionCheck(TomlValues.required(toml, MESSAGE))),
         entry("pattern-count", toml -> new PatternCountCheck(TomlValues.required(toml, MESSAGE))),
         entry("unpacking-count", PythonShapeChecks::unpackingCount),
         entry("unused-name", PythonShapeChecks::unusedName),
@@ -53,7 +56,9 @@ final class PythonShapeChecks {
         entry(
             "raise-non-exception",
             toml -> new RaiseNonExceptionCheck(TomlValues.required(toml, MESSAGE))),
-        entry("repeated-keyword", toml -> new RepeatedKeywordCheck(TomlValues.required(toml, MESSAGE))));
+        entry(
+            "repeated-keyword",
+            toml -> new RepeatedKeywordCheck(TomlValues.required(toml, MESSAGE))));
   }
 
   private static <E extends Enum<E>> E problem(final TomlParseResult toml, final Class<E> type) {

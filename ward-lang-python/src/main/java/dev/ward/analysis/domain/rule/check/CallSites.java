@@ -25,16 +25,22 @@ final class CallSites {
 
   private CallSites() {}
 
-  /** The name of a call of the form {@code name(...)} with one call trailer, if the call has that form. */
+  /**
+   * The name of a call of the form {@code name(...)} with one call trailer, if the call has that
+   * form.
+   */
   static Optional<String> calleeName(final SyntaxNode call) {
     final List<SyntaxNode> parts = call.children();
-    if (parts.size() != CALL_PARTS || !ATOM.equals(parts.get(0).kind())
+    if (parts.size() != CALL_PARTS
+        || !ATOM.equals(parts.get(0).kind())
         || !TRAILER.equals(parts.get(1).kind())) {
       return Optional.empty();
     }
     final List<SyntaxNode> atom = parts.get(0).children();
     final List<SyntaxNode> trailer = parts.get(1).children();
-    if (atom.size() != 1 || !NAME.equals(atom.get(0).kind()) || trailer.isEmpty()
+    if (atom.size() != 1
+        || !NAME.equals(atom.get(0).kind())
+        || trailer.isEmpty()
         || !OPEN.equals(SyntaxWalk.text(trailer.get(0)))) {
       return Optional.empty();
     }
@@ -53,7 +59,8 @@ final class CallSites {
     }
     final List<String> keywords =
         kinds.stream().filter(kind -> kind != null && !kind.isEmpty()).toList();
-    final int positional = (int) kinds.stream().filter(kind -> kind != null && kind.isEmpty()).count();
+    final int positional =
+        (int) kinds.stream().filter(kind -> kind != null && kind.isEmpty()).count();
     return new Arguments(positional, keywords, kinds.contains(null));
   }
 
@@ -64,7 +71,8 @@ final class CallSites {
     if (STAR.equals(first) || DOUBLE_STAR.equals(first)) {
       return null;
     }
-    final boolean keyword = parts.size() == KEYWORD_PARTS && EQUALS.equals(SyntaxWalk.text(parts.get(1)));
+    final boolean keyword =
+        parts.size() == KEYWORD_PARTS && EQUALS.equals(SyntaxWalk.text(parts.get(1)));
     return keyword ? first : "";
   }
 }

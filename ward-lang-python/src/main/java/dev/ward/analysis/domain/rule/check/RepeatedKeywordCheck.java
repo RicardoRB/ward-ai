@@ -91,9 +91,12 @@ public final class RepeatedKeywordCheck implements RuleCheck {
 
   private static void readKeys(final List<SyntaxNode> items, final List<String> keys) {
     for (int index = 0; index + 1 < items.size(); index++) {
-      if (COLON.equals(SyntaxWalk.text(items.get(index + 1))) && !COMMA.equals(SyntaxWalk.text(items.get(index)))) {
+      if (COLON.equals(SyntaxWalk.text(items.get(index + 1)))
+          && !COMMA.equals(SyntaxWalk.text(items.get(index)))) {
         final String key = SyntaxWalk.text(items.get(index));
-        if (key.length() >= 2 && (key.startsWith("\"") && key.endsWith("\"") || key.startsWith("'") && key.endsWith("'"))) {
+        if (key.length() >= 2
+            && (key.startsWith("\"") && key.endsWith("\"")
+                || key.startsWith("'") && key.endsWith("'"))) {
           keys.add(key.substring(1, key.length() - 1));
         }
       }

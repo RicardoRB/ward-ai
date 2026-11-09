@@ -58,8 +58,7 @@ final class ModuleDefinitions {
     final List<SyntaxNode> children = classDefinition.children();
     for (int index = 0; index + 1 < children.size(); index++) {
       if (OPEN.equals(SyntaxWalk.text(children.get(index)))) {
-        final String inside =
-            SyntaxWalk.text(children.get(index + 1) ) ;
+        final String inside = SyntaxWalk.text(children.get(index + 1));
         return inside.matches(IDENTIFIER) ? Optional.of(inside) : Optional.empty();
       }
     }

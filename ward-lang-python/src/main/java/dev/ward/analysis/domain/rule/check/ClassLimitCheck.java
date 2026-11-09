@@ -104,7 +104,10 @@ public final class ClassLimitCheck implements RuleCheck {
   private static int publicMethods(final SyntaxNode definition) {
     int count = 0;
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(definition, Set.of(FUNCTION))) {
-      final boolean direct = visit.ancestors().stream().skip(1).noneMatch(a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()));
+      final boolean direct =
+          visit.ancestors().stream()
+              .skip(1)
+              .noneMatch(a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()));
       final String name = ModuleDefinitions.definedName(visit.node()).orElse("");
       if (direct && !name.startsWith(PUBLIC_PREFIX)) {
         count++;

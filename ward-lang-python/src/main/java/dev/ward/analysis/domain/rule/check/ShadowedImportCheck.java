@@ -48,7 +48,8 @@ public final class ShadowedImportCheck implements RuleCheck {
   }
 
   /** Binds the names of one import statement, reporting an alias that an earlier name occupies. */
-  private void bindStatement(final SyntaxNode statement, final Set<String> bound, final List<RuleMatch> found) {
+  private void bindStatement(
+      final SyntaxNode statement, final Set<String> bound, final List<RuleMatch> found) {
     for (final String[] item : items(SyntaxWalk.leaves(statement))) {
       if (item[ALIAS] != null && bound.contains(item[ALIAS])) {
         found.add(new RuleMatch(statement.span(), message));

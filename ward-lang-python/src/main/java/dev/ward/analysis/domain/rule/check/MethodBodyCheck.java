@@ -10,9 +10,9 @@ import java.util.Set;
 /**
  * Reports the body shapes that Pylint flags in a function: a constructor that returns a value other
  * than {@code None} ({@code return-in-init}), a method whose whole body calls the same method of
- * {@code super()} with its own positional arguments ({@code useless-parent-delegation}), and a
- * name used in a function before the {@code global} statement that declares it
- * ({@code used-prior-global-declaration}). Nested functions, classes and lambdas are not entered.
+ * {@code super()} with its own positional arguments ({@code useless-parent-delegation}), and a name
+ * used in a function before the {@code global} statement that declares it ({@code
+ * used-prior-global-declaration}). Nested functions, classes and lambdas are not entered.
  */
 public final class MethodBodyCheck implements RuleCheck {
 
@@ -79,7 +79,8 @@ public final class MethodBodyCheck implements RuleCheck {
   private static boolean returnsValue(final SyntaxNode function) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(function, Set.of("return_stmt"))) {
       if (!nested(visit.ancestors())) {
-        final String value = SyntaxWalk.text(visit.node()).strip().substring(RETURN.length()).strip();
+        final String value =
+            SyntaxWalk.text(visit.node()).strip().substring(RETURN.length()).strip();
         if (!value.isEmpty() && !NONE.equals(value)) {
           return true;
         }
@@ -112,7 +113,9 @@ public final class MethodBodyCheck implements RuleCheck {
     }
     for (final SyntaxNode leaf : ownLeaves(function, true)) {
       final int index = globals.indexOf(SyntaxWalk.text(leaf));
-      if (index >= 0 && SyntaxWalk.text(leaf).matches(IDENTIFIER) && leaf.span().startLine() < lines.get(index)) {
+      if (index >= 0
+          && SyntaxWalk.text(leaf).matches(IDENTIFIER)
+          && leaf.span().startLine() < lines.get(index)) {
         found.add(new RuleMatch(leaf.span(), message));
       }
     }
@@ -151,10 +154,13 @@ public final class MethodBodyCheck implements RuleCheck {
     return out;
   }
 
-  /** Reports whether a node between the function (first ancestor) and the node is a nested scope. */
+  /**
+   * Reports whether a node between the function (first ancestor) and the node is a nested scope.
+   */
   private static boolean nested(final List<SyntaxNode> ancestors) {
     return ancestors.stream()
         .skip(1)
-        .anyMatch(a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || LAMBDA.equals(a.kind()));
+        .anyMatch(
+            a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || LAMBDA.equals(a.kind()));
   }
 }

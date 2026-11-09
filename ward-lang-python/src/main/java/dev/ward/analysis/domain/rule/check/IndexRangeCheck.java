@@ -10,10 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Reports an integer subscript of a list or tuple display written in place, such as
- * {@code [1, 2][5]}, when the subscript is past the end of the display. Names bound to a display are
- * not followed, as Pylint does not report them, and a parenthesized expression without a comma is not
- * a tuple, so it is not checked.
+ * Reports an integer subscript of a list or tuple display written in place, such as {@code [1,
+ * 2][5]}, when the subscript is past the end of the display. Names bound to a display are not
+ * followed, as Pylint does not report them, and a parenthesized expression without a comma is not a
+ * tuple, so it is not checked.
  */
 public final class IndexRangeCheck implements RuleCheck {
 
@@ -49,7 +49,9 @@ public final class IndexRangeCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  /** Reports whether the brackets are a list, or a tuple, which needs a comma unless it is empty. */
+  /**
+   * Reports whether the brackets are a list, or a tuple, which needs a comma unless it is empty.
+   */
   private static boolean isSequence(final String open, final String inside) {
     return "[".equals(open) || inside.isBlank() || inside.contains(COMMA);
   }

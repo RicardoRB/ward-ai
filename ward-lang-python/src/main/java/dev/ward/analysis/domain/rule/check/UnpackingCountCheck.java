@@ -9,9 +9,10 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports an assignment of a literal sequence or dictionary to a tuple of names whose counts differ:
- * {@code a, b = (1, 2, 3)} for a tuple or list display, and the number of keys for a dictionary
- * display. A starred target or value makes the count unknown, so such an assignment is not checked.
+ * Reports an assignment of a literal sequence or dictionary to a tuple of names whose counts
+ * differ: {@code a, b = (1, 2, 3)} for a tuple or list display, and the number of keys for a
+ * dictionary display. A starred target or value makes the count unknown, so such an assignment is
+ * not checked.
  */
 public final class UnpackingCountCheck implements RuleCheck {
 
@@ -63,7 +64,9 @@ public final class UnpackingCountCheck implements RuleCheck {
   /** The targets and the value of an assignment with one plain equals sign and no star. */
   private static Optional<Sides> plainAssignment(final String text) {
     final int split = text.indexOf(EQUALS);
-    if (split <= 0 || text.contains(STARRED) || text.indexOf(EQUALS, split + 1) >= 0
+    if (split <= 0
+        || text.contains(STARRED)
+        || text.indexOf(EQUALS, split + 1) >= 0
         || SINGLE_ASSIGNMENT_CHARS.indexOf(text.charAt(split - 1)) >= 0) {
       return Optional.empty();
     }

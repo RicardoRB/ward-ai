@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reads the signature that a call binds to: the parameters of a function, or of the {@code __init__}
- * of a class that has no bases. A {@code /} marker makes the signature unknown.
+ * Reads the signature that a call binds to: the parameters of a function, or of the {@code
+ * __init__} of a class that has no bases. A {@code /} marker makes the signature unknown.
  */
 final class SignatureReader {
 
@@ -24,8 +24,11 @@ final class SignatureReader {
   private static final String SLASH = "/";
   private static final String COMMA = ",";
 
-  /** The parameters of a callee: the positional names, the keyword-only names and the catch-alls. */
-  record Signature(List<String> positional, Set<String> keywordOnly, boolean varargs, boolean kwargs) {
+  /**
+   * The parameters of a callee: the positional names, the keyword-only names and the catch-alls.
+   */
+  record Signature(
+      List<String> positional, Set<String> keywordOnly, boolean varargs, boolean kwargs) {
 
     boolean accepts(final String keyword) {
       return kwargs || positional.contains(keyword) || keywordOnly.contains(keyword);
@@ -122,7 +125,8 @@ final class SignatureReader {
         }
         names.remove(0);
       }
-      return Optional.of(new Signature(List.copyOf(names), Set.copyOf(keywordOnly), varargs, kwargs));
+      return Optional.of(
+          new Signature(List.copyOf(names), Set.copyOf(keywordOnly), varargs, kwargs));
     }
   }
 }

@@ -61,7 +61,8 @@ public final class CallSignatureCheck implements RuleCheck {
     return List.copyOf(found);
   }
 
-  private boolean violates(final SignatureReader.Signature signature, final CallSites.Arguments arguments) {
+  private boolean violates(
+      final SignatureReader.Signature signature, final CallSites.Arguments arguments) {
     return switch (problem) {
       case TOO_MANY_POSITIONAL ->
           !signature.varargs() && arguments.positional() > signature.positional().size();

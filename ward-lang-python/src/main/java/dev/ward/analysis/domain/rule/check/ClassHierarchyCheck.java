@@ -54,7 +54,8 @@ public final class ClassHierarchyCheck implements RuleCheck {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxNode child : definitions.values()) {
       if (CLASS.equals(child.kind())) {
-        ModuleDefinitions.singleBase(child).ifPresent(baseName -> compare(child, baseName, definitions, finals, found));
+        ModuleDefinitions.singleBase(child)
+            .ifPresent(baseName -> compare(child, baseName, definitions, finals, found));
       }
     }
     return List.copyOf(found);
@@ -83,7 +84,8 @@ public final class ClassHierarchyCheck implements RuleCheck {
     }
   }
 
-  private void superInit(final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
+  private void superInit(
+      final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
     final Optional<SyntaxNode> init = ModuleDefinitions.method(child, INIT);
     if (init.isPresent()
         && ModuleDefinitions.method(base, INIT).isPresent()
@@ -92,7 +94,8 @@ public final class ClassHierarchyCheck implements RuleCheck {
     }
   }
 
-  private void signatures(final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
+  private void signatures(
+      final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(child, Set.of(FUNCTION))) {
       if (visit.ancestors().stream().anyMatch(ancestor -> FUNCTION.equals(ancestor.kind()))) {
         continue;

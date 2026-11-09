@@ -19,9 +19,21 @@ import java.util.regex.Pattern;
 public final class PatternCountCheck implements RuleCheck {
 
   private static final Set<String> BUILTINS =
-      Set.of("bool", "bytearray", "bytes", "dict", "float", "frozenset", "int", "list", "set", "str", "tuple");
+      Set.of(
+          "bool",
+          "bytearray",
+          "bytes",
+          "dict",
+          "float",
+          "frozenset",
+          "int",
+          "list",
+          "set",
+          "str",
+          "tuple");
   private static final Pattern CLASS_PATTERN = Pattern.compile("^([A-Za-z_]\\w*)\\((.*)\\)$");
-  private static final Pattern MATCH_ARGS = Pattern.compile("^__match_args__=[\\(\\[](.*)[\\)\\]]$");
+  private static final Pattern MATCH_ARGS =
+      Pattern.compile("^__match_args__=[\\(\\[](.*)[\\)\\]]$");
   private static final int BUILTIN_POSITIONAL = 1;
 
   private final String message;
@@ -53,7 +65,8 @@ public final class PatternCountCheck implements RuleCheck {
   }
 
   /** The positional sub-patterns allowed by a class, when they are known. */
-  private static Optional<Integer> allowed(final String name, final Map<String, SyntaxNode> definitions) {
+  private static Optional<Integer> allowed(
+      final String name, final Map<String, SyntaxNode> definitions) {
     if (BUILTINS.contains(name) && !definitions.containsKey(name)) {
       return Optional.of(BUILTIN_POSITIONAL);
     }

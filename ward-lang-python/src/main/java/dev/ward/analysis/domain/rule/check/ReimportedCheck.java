@@ -16,7 +16,15 @@ import java.util.Set;
 public final class ReimportedCheck implements RuleCheck {
 
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
-  private static final Set<String> WRAPPERS = Set.of("file_input", "stmt", "compound_stmt", "simple_stmts", "simple_stmt", "small_stmt", "import_stmt");
+  private static final Set<String> WRAPPERS =
+      Set.of(
+          "file_input",
+          "stmt",
+          "compound_stmt",
+          "simple_stmts",
+          "simple_stmt",
+          "small_stmt",
+          "import_stmt");
 
   private final String message;
 

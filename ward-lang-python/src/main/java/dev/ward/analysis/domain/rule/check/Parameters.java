@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The shape of a function's parameter list: the positional names in order, whether it takes
- * {@code *args}, and how many positional parameters have a default value.
+ * The shape of a function's parameter list: the positional names in order, whether it takes {@code
+ * *args}, and how many positional parameters have a default value.
  */
 record Parameters(List<String> positional, boolean varargs, int defaults) {
 
