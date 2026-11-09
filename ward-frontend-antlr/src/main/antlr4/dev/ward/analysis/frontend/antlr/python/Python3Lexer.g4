@@ -118,16 +118,17 @@ TEMPLATE_STRING_LITERAL: ( [fFtT] | ( [fFtT] [rR]) | ( [rR] [fFtT]) ) ( '"""' | 
 BYTES_LITERAL: ( [bB] | ( [bB] [rR]) | ( [rR] [bB])) ( SHORT_BYTES | LONG_BYTES);
 
 /// decimalinteger ::=  nonzerodigit digit* | "0"+
-DECIMAL_INTEGER: NON_ZERO_DIGIT DIGIT* | '0'+;
+// PEP 515: a single underscore may separate digits
+DECIMAL_INTEGER: NON_ZERO_DIGIT ('_'? DIGIT)* | '0'+ ('_'? '0')*;
 
 /// octinteger     ::=  "0" ("o" | "O") octdigit+
-OCT_INTEGER: '0' [oO] OCT_DIGIT+;
+OCT_INTEGER: '0' [oO] '_'? OCT_DIGIT_PART;
 
 /// hexinteger     ::=  "0" ("x" | "X") hexdigit+
-HEX_INTEGER: '0' [xX] HEX_DIGIT+;
+HEX_INTEGER: '0' [xX] '_'? HEX_DIGIT_PART;
 
 /// bininteger     ::=  "0" ("b" | "B") bindigit+
-BIN_INTEGER: '0' [bB] BIN_DIGIT+;
+BIN_INTEGER: '0' [bB] '_'? BIN_DIGIT_PART;
 
 /// floatnumber   ::=  pointfloat | exponentfloat
 FLOAT_NUMBER: POINT_FLOAT | EXPONENT_FLOAT;
@@ -142,6 +143,7 @@ OPEN_PAREN         : '(' {this.openBrace();};
 CLOSE_PAREN        : ')' {this.closeBrace();};
 COMMA              : ',';
 COLON              : ':';
+WALRUS             : ':=';
 SEMI_COLON         : ';';
 POWER              : '**';
 ASSIGN             : '=';
@@ -218,6 +220,10 @@ fragment DIGIT: [0-9];
 
 /// octdigit       ::=  "0"..."7"
 fragment OCT_DIGIT: [0-7];
+fragment OCT_DIGIT_PART: OCT_DIGIT ('_'? OCT_DIGIT)*;
+fragment HEX_DIGIT_PART: HEX_DIGIT ('_'? HEX_DIGIT)*;
+fragment BIN_DIGIT_PART: BIN_DIGIT ('_'? BIN_DIGIT)*;
+fragment DIGIT_PART: DIGIT ('_'? DIGIT)*;
 
 /// hexdigit       ::=  digit | "a"..."f" | "A"..."F"
 fragment HEX_DIGIT: [0-9a-fA-F];
@@ -232,13 +238,13 @@ fragment POINT_FLOAT: INT_PART? FRACTION | INT_PART '.';
 fragment EXPONENT_FLOAT: ( INT_PART | POINT_FLOAT) EXPONENT;
 
 /// intpart       ::=  digit+
-fragment INT_PART: DIGIT+;
+fragment INT_PART: DIGIT_PART;
 
 /// fraction      ::=  "." digit+
-fragment FRACTION: '.' DIGIT+;
+fragment FRACTION: '.' DIGIT_PART;
 
 /// exponent      ::=  ("e" | "E") ["+" | "-"] digit+
-fragment EXPONENT: [eE] [+-]? DIGIT+;
+fragment EXPONENT: [eE] [+-]? DIGIT_PART;
 
 /// shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
 /// shortbytesitem ::=  shortbyteschar | bytesescapeseq

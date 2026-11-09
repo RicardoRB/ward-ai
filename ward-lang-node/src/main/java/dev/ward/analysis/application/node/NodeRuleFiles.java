@@ -12,6 +12,7 @@ public final class NodeRuleFiles implements RuleFileProvider {
   private static final List<String> FILES =
       List.of(
           "rules/duplication-node.toml",
+          "rules/node/angular.toml",
           "rules/node/blocks.toml",
           "rules/node/dead-code.toml",
           "rules/node/coding.toml",

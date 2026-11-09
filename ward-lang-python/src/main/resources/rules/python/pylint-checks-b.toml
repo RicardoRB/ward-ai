@@ -1,0 +1,917 @@
+# Pylint checks, part B: special methods that return a literal of the wrong type.
+
+[[rules]]
+id = "ward:python/invalid-bool-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__bool__"
+returns = "bool"
+message = "__bool__ does not return bool"
+'''
+
+[[rules]]
+id = "ward:python/invalid-bytes-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__bytes__"
+returns = "bytes"
+message = "__bytes__ does not return bytes"
+'''
+
+[[rules]]
+id = "ward:python/invalid-format-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__format__"
+returns = "str"
+message = "__format__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/invalid-getnewargs-ex-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__getnewargs_ex__"
+returns = "tuple"
+message = "__getnewargs_ex__ does not return a tuple containing (tuple, dict)"
+'''
+
+[[rules]]
+id = "ward:python/invalid-getnewargs-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__getnewargs__"
+returns = "tuple"
+message = "__getnewargs__ does not return a tuple"
+'''
+
+[[rules]]
+id = "ward:python/invalid-hash-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__hash__"
+returns = "int"
+message = "__hash__ does not return int"
+'''
+
+[[rules]]
+id = "ward:python/invalid-index-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__index__"
+returns = "int"
+message = "__index__ does not return int"
+'''
+
+[[rules]]
+id = "ward:python/invalid-length-hint-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__length_hint__"
+returns = "int"
+non-negative = true
+message = "__length_hint__ does not return non-negative integer"
+'''
+
+[[rules]]
+id = "ward:python/invalid-length-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__len__"
+returns = "int"
+non-negative = true
+message = "__len__ does not return non-negative integer"
+'''
+
+[[rules]]
+id = "ward:python/invalid-repr-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__repr__"
+returns = "str"
+message = "__repr__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/invalid-str-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "dunder-return"
+method = "__str__"
+returns = "str"
+message = "__str__ does not return str"
+'''
+
+[[rules]]
+id = "ward:python/logging-string-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "flake8-logging-format"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\.format\\("
+message = "logging call formats its message with str.format(); pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/logging-percent-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "flake8-logging-format"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\s*%(?!=)"
+message = "logging call formats its message with %; pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/logging-f-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "flake8-logging-format"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)|(?:\\w+\\.)*(?:logging\\.)?getLogger\\([^()]*\\))\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*[fF][rRbB]?[\"']"
+message = "logging call uses an f-string; pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-first-argument-name-for-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "first-argument"
+message = "method should have \"self\" as its first argument"
+'''
+
+[[rules]]
+id = "ward:python/invalid-star-assignment-target"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^\\*[\\w.\\[\\]]+=(?!=)"
+message = "starred expression cannot be the only assignment target; put it in a list or tuple"
+'''
+
+[[rules]]
+id = "ward:python/invalid-match-args-definition"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__match_args__=(?!(?:\\(\\s*\\)|\\((?:\\s*(?:\"[^\"\\\\]*\"|\\'[^\\'\\\\]*\\')\\s*,)+(?:\\s*(?:\"[^\"\\\\]*\"|\\'[^\\'\\\\]*\\')\\s*)?\\))$)"
+message = "__match_args__ must be a tuple of strings"
+'''
+
+[[rules]]
+id = "ward:python/isinstance-second-argument-not-valid-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^isinstance\\(\\s*[\\w.\\[\\]]+\\s*,\\s*(?:\\d|\\\"|'|None\\b|\\[|\\{)"
+message = "second argument of isinstance must be a class or a tuple of classes"
+'''
+
+[[rules]]
+id = "ward:python/non-str-assignment-to-dunder-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^[\\w.\\[\\]()]*\\.__name__=(?:\\d|None\\b|True\\b|False\\b|\\[|\\{)"
+message = "__name__ must be assigned a string"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slots"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__slots__=(?:-?\\d|None\\b|True\\b|False\\b)"
+message = "__slots__ must be a string, an iterable or a sequence of names"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slots-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+inside = ["classdef"]
+text = "^__slots__=[\\[(](?!(?:\\s*(?:\"[^\"\\\\]+\"|\\'[^\\'\\\\]+\\')\\s*,)*\\s*(?:(?:\"[^\"\\\\]+\"|\\'[^\\'\\\\]+\\')\\s*)?[\\])]$)"
+message = "__slots__ must contain only non-empty strings"
+'''
+
+[[rules]]
+id = "ward:python/invalid-unicode-codec"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+header-lines = 2
+pattern = "coding[:=]\\s*[\\\"']?utf[ _-]?(16|32)"
+message = "UTF-16 and UTF-32 are not backward compatible; use UTF-8"
+'''
+
+[[rules]]
+id = "ward:python/invalid-format-index"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "format-index"
+message = "format field looks up an index or key that the literal argument does not have"
+'''
+
+[[rules]]
+id = "ward:python/keyword-arg-before-vararg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "keyword-arg-before-vararg"
+message = "a parameter with a default is declared before *args"
+'''
+
+[[rules]]
+id = "ward:python/invalid-class-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^[\\w.\\[\\]()]*\\.__class__=(?:\\d|None\\b|True\\b|False\\b|\\[|\\{|['\\\"])"
+message = "__class__ must be assigned a class"
+'''
+
+[[rules]]
+id = "ward:python/invalid-all-object"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^__all__\\+?=[\\[(].*?[\\[(,](?:\\d|None\\b|True\\b|False\\b)"
+message = "__all__ must contain only strings"
+'''
+
+[[rules]]
+id = "ward:python/method-cache-max-size-none"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["decorated"]
+inside = ["classdef"]
+text = "(?s)^(?:(?!def\\b|async\\b)[\\s\\S])*?@(?:functools\\.)?(?:lru_cache\\((?:maxsize\\s*=\\s*)?None\\)|cache(?![\\w.]))"
+message = "lru_cache(maxsize=None) or cache on a method keeps self alive; give the cache a maxsize"
+'''
+
+[[rules]]
+id = "ward:python/no-else-return"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "else-after-jump"
+jump = "return"
+message = "no else after a branch that returns; dedent the else code"
+'''
+
+[[rules]]
+id = "ward:python/no-else-raise"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "else-after-jump"
+jump = "raise"
+message = "no else after a branch that raises; dedent the else code"
+'''
+
+[[rules]]
+id = "ward:python/no-else-break"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "else-after-jump"
+jump = "break"
+message = "no else after a branch that breaks; dedent the else code"
+'''
+
+[[rules]]
+id = "ward:python/no-else-continue"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "else-after-jump"
+jump = "continue"
+message = "no else after a branch that continues; dedent the else code"
+'''
+
+[[rules]]
+id = "ward:python/pointless-string-statement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "pointless-string"
+message = "string statement has no effect; remove it or make it a docstring"
+'''
+
+[[rules]]
+id = "ward:python/logging-format-truncated"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "logging-format"
+problem = "truncated"
+message = "logging format string ends in the middle of a conversion specifier"
+'''
+
+[[rules]]
+id = "ward:python/logging-unsupported-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "logging-format"
+problem = "unsupported"
+message = "unsupported logging format character"
+'''
+
+[[rules]]
+id = "ward:python/pointless-exception-statement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "exception-statement"
+message = "exception instance created but not raised"
+'''
+
+[[rules]]
+id = "ward:python/invalid-field-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "field-call"
+message = "field() is used outside a dataclass field assignment or make_dataclass()"
+'''
+
+[[rules]]
+id = "ward:python/not-callable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\d[\\d_.]*|\"[^\"]*\"|\\'[^\\']*\\'|None|True|False)\\("
+message = "literal value is not callable"
+'''
+
+[[rules]]
+id = "ward:python/not-an-iterable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = "^for[^:]*?in(?:\\d|None\\b|True\\b|False\\b)"
+message = "literal value is not iterable"
+'''
+
+[[rules]]
+id = "ward:python/not-a-mapping"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "[(,]\\*\\*(?:\\d|\"|\\'|None\\b|True\\b|False\\b|\\[)"
+message = "literal value is not a mapping in **unpacking"
+'''
+
+[[rules]]
+id = "ward:python/invalid-unary-operand-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "(?:^|=)[-+~](?:\"|\\'|None\\b|\\[|\\{)"
+message = "unary operator applied to a literal that does not support it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-sequence-index"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\[[^\\]\\[]*\\]|\"[^\"]*\"|\\'[^\\']*\\')\\[(?:\"|\\'|None\\b|-?\\d+\\.\\d+)"
+message = "sequence indexed with a literal that is not an int or a slice"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slice-index"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\[[^\\]\\[]*\\]|\"[^\"]*\"|\\'[^\\']*\\')\\[(?:(?:\"|\\'|\\d+\\.\\d+)[^\\]\\[]*:|[^\\]\\[]*:(?:\"|\\'|\\d+\\.\\d+))"
+message = "slice bound is a literal that is not an int or None"
+'''
+
+[[rules]]
+id = "ward:python/invalid-slice-step"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\[[^\\]\\[]*\\]|\"[^\"]*\"|\\'[^\\']*\\'|\\([^)(]*\\))\\[[^\\]\\[]*::0\\]"
+message = "slice step is 0"
+'''
+
+[[rules]]
+id = "ward:python/misplaced-format-function"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^print\\((?:[^()]|\\([^()]*\\))*\\)\\.format\\("
+message = "format function is called on the result of print()"
+'''
+
+[[rules]]
+id = "ward:python/invalid-envvar-value"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:os\\.)?(?:getenv|environ\\.get)\\((?:\\d|True\\b|False\\b|\\[|\\{|[^(),]*,(?:\\d|True\\b|False\\b|\\[|\\{))"
+message = "environment variable key or default is a literal that is not a string"
+'''
+
+[[rules]]
+id = "ward:python/no-value-for-parameter"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "same-module-call"
+problem = "no-value-for-parameter"
+message = "call omits a required positional argument of this module's function"
+'''
+
+[[rules]]
+id = "ward:python/missing-kwoa"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "same-module-call"
+problem = "missing-kwoa"
+message = "call omits a required keyword-only argument of this module's function"
+'''
+
+[[rules]]
+id = "ward:python/kwarg-superseded-by-positional-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "same-module-call"
+problem = "kwarg-superseded"
+message = "keyword argument repeats a parameter the call already fills by position"
+'''
+
+[[rules]]
+id = "ward:python/not-context-manager"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-protocol"
+problem = "not-context-manager"
+message = "with statement on a class that has no __enter__ and __exit__"
+'''
+
+[[rules]]
+id = "ward:python/not-async-context-manager"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-protocol"
+problem = "not-async-context-manager"
+message = "async with statement on a class that has no __aenter__ and __aexit__"
+'''
+
+[[rules]]
+id = "ward:python/non-iterator-returned"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-protocol"
+problem = "non-iterator-returned"
+message = "__iter__ returns self, but the class has no __next__"
+'''
+
+[[rules]]
+id = "ward:python/invalid-enum-extension"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-protocol"
+problem = "invalid-enum-extension"
+message = "class extends an enum that already has members"
+'''
+
+[[rules]]
+id = "ward:python/invalid-metaclass"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-protocol"
+problem = "invalid-metaclass"
+message = "metaclass is not a class deriving from type"
+'''
+
+[[rules]]
+id = "ward:python/invalid-overridden-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-override"
+problem = "invalid-overridden-method"
+message = "method overrides a property of a base class, or a property overrides a method"
+'''
+
+[[rules]]
+id = "ward:python/method-hidden"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-override"
+problem = "method-hidden"
+message = "method is hidden by an attribute of the same name"
+'''
+
+[[rules]]
+id = "ward:python/non-parent-init-called"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-override"
+problem = "non-parent-init-called"
+message = "__init__ calls the __init__ of a class that is not a base"
+'''
+
+[[rules]]
+id = "ward:python/overridden-final-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "class-override"
+problem = "overridden-final-method"
+message = "method overrides a base method decorated with final"
+'''
+
+[[rules]]
+id = "ward:python/modified-iterating-dict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "modified-iteration"
+kind = "dict"
+message = "dict is changed while it is iterated"
+'''
+
+[[rules]]
+id = "ward:python/modified-iterating-list"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "modified-iteration"
+kind = "list"
+message = "list is changed while it is iterated"
+'''
+
+[[rules]]
+id = "ward:python/modified-iterating-set"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "modified-iteration"
+kind = "set"
+message = "set is changed while it is iterated"
+'''
+
+[[rules]]
+id = "ward:python/nonlocal-without-binding"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "nonlocal"
+problem = "nonlocal-without-binding"
+message = "nonlocal name is not bound by an enclosing function"
+'''
+
+[[rules]]
+id = "ward:python/match-class-bind-self"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_pattern"]
+text = "^(?:bool|bytearray|bytes|dict|float|frozenset|int|list|set|str|tuple)\\(\\w+\\)$"
+message = "builtin class pattern binds its subject to a name; use the name as a capture instead"
+'''
+
+[[rules]]
+id = "ward:python/multiple-class-sub-patterns"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_pattern"]
+text = "^\\w+\\((?:[^()]*,)?(\\w+)=[^()]*,(?:[^()]*,)?\\1="
+message = "class pattern names the same attribute more than once"
+'''
+
+[[rules]]
+id = "ward:python/match-class-positional-attributes"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "match-positional"
+message = "class pattern uses positional attributes; use keyword attributes"
+'''
+
+[[rules]]
+id = "ward:python/positional-only-arguments-expected"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "same-module-call"
+problem = "positional-only"
+message = "positional-only parameter passed as a keyword argument"
+'''
+
+[[rules]]
+id = "ward:python/missing-parentheses-for-call-in-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-parentheses"
+message = "function used as a condition without calling it"
+'''
+
+[[rules]]
+id = "ward:python/no-method-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "no-method-argument"
+message = "method declares no parameter; it needs the instance as its first parameter"
+'''
+
+[[rules]]
+id = "ward:python/possibly-unused-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "possibly-unused-variable"
+message = "local variable is never read, but a later locals() call may read it"
+'''

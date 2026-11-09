@@ -11,4 +11,4 @@ module-directive-order = "not-applicable"
 module-import-order = "not-applicable"
 redundant-import = { status = "planned", issue = "#297" }
 unnecessary-fully-qualified-type = "not-applicable"
-unused-imports = { status = "planned", issue = "#297" }
+unused-imports = "not-applicable"

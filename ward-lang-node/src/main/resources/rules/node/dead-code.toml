@@ -9,7 +9,7 @@ severity = "error"
 category = "dead-code"
 presets = ["standard", "strict"]
 body = '''
-check = "unresolved-import"
+check = "node-unresolved-import"
 message = "unresolved import '{value}': no file of the project matches it"
 '''
 
@@ -21,7 +21,7 @@ severity = "error"
 category = "dead-code"
 presets = ["standard", "strict"]
 body = '''
-check = "unresolved-import"
+check = "node-unresolved-import"
 message = "unresolved import '{value}': no file of the project matches it"
 '''
 
@@ -33,7 +33,7 @@ severity = "error"
 category = "dead-code"
 presets = ["standard", "strict"]
 body = '''
-check = "unlisted-import"
+check = "node-unlisted-import"
 message = "unlisted dependency '{value}': not in the package.json of this package"
 '''
 
@@ -45,6 +45,6 @@ severity = "error"
 category = "dead-code"
 presets = ["standard", "strict"]
 body = '''
-check = "unlisted-import"
+check = "node-unlisted-import"
 message = "unlisted dependency '{value}': not in the package.json of this package"
 '''

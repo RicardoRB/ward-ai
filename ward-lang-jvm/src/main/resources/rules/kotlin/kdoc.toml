@@ -1,0 +1,123 @@
+# KDoc rules: the Checkstyle Javadoc concepts applied to /** */ comments. The layout and summary
+# checks read comment text only, so they are the shared Javadoc checks; the position, type and
+# method checks need the declaration each comment documents, so they are Kotlin checks.
+
+[[rules]]
+id = "ward:kotlin/invalid-javadoc-position"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-kdoc-position"
+message = "the KDoc comment is not before a declaration"
+'''
+
+[[rules]]
+id = "ward:kotlin/javadoc-content-location"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-content-location"
+message = "the KDoc text must start on the second line"
+'''
+
+[[rules]]
+id = "ward:kotlin/javadoc-leading-asterisk-align"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-leading-asterisk-align"
+message = "the leading asterisk is not aligned with the first asterisk of the opening delimiter"
+'''
+
+[[rules]]
+id = "ward:kotlin/javadoc-method"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-kdoc-method"
+message = "KDoc does not match the function: missing {value}"
+'''
+
+[[rules]]
+id = "ward:kotlin/javadoc-missing-leading-asterisk"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-missing-leading-asterisk"
+message = "the KDoc row has no leading asterisk"
+'''
+
+[[rules]]
+id = "ward:kotlin/javadoc-paragraph"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "javadoc-paragraph"
+message = "KDoc paragraph problem: {value}"
+'''
+
+[[rules]]
+id = "ward:kotlin/missing-javadoc-type"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-missing-kdoc-type"
+message = "public type has no KDoc comment"
+'''
+
+[[rules]]
+id = "ward:kotlin/require-empty-line-before-block-tag-group"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "require-empty-line-before-block-tag-group"
+message = "the first block tag must follow an empty line"
+'''
+
+[[rules]]
+id = "ward:kotlin/single-line-javadoc"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "single-line-javadoc"
+message = "a single-line KDoc comment must not hold a block tag"
+'''
+
+[[rules]]
+id = "ward:kotlin/summary-javadoc"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "summary-javadoc"
+message = "KDoc problem: {value}"
+'''

@@ -3405,12 +3405,6 @@ category = "severity-warning"
 errorprone = ["WakelockReleasedDangerously"]
 
 [[rule]]
-name = "wildcard-import"
-presets = ["standard", "strict"]
-category = "severity-suggestion"
-pylint = ["wildcard-import"]
-
-[[rule]]
 name = "wrong-oneof"
 errorprone = ["WrongOneof"]
 

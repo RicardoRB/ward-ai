@@ -1,0 +1,39 @@
+module
+  variable data @1:1
+  variable count @2:5
+  variable y @4:32
+  variable squares @4:1
+  variable after @5:1
+  function collect @6:5
+  comprehension @4:12
+    variable x @4:18 [destructured]
+  function @6:1
+    parameter items @6:13
+    variable z @7:34
+    variable kept @7:5
+    comprehension @7:13
+      variable x @7:19 [destructured]
+references
+  1:1 data write -> module variable data @1:1
+  2:5 count write -> module variable count @2:5
+  2:14 len read -> unresolved
+  2:18 data read -> module variable data @1:1
+  3:5 print read -> unresolved
+  3:11 count read -> module variable count @2:5
+  4:1 squares write -> module variable squares @4:1
+  4:12 y read -> module variable y @4:32 before-declaration
+  4:18 x write -> comprehension variable x @4:18
+  4:23 data read -> module variable data @1:1
+  4:32 y write -> module variable y @4:32
+  4:37 x read -> comprehension variable x @4:18
+  4:41 x read -> comprehension variable x @4:18
+  5:1 after write -> module variable after @5:1
+  5:9 y read -> module variable y @4:32
+  7:5 kept write -> function variable kept @7:5
+  7:13 z read -> function variable z @7:34 before-declaration
+  7:19 x write -> comprehension variable x @7:19
+  7:24 items read -> function parameter items @6:13
+  7:34 z write -> function variable z @7:34
+  7:39 x read -> comprehension variable x @7:19
+  8:12 kept read -> function variable kept @7:5
+  8:18 z read -> function variable z @7:34
