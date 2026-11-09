@@ -77,6 +77,25 @@ class NativeNodeMembersTest {
         .contains(TypeShape.Kind.ENUM);
   }
 
+  @Test
+  void aToStringDeclaredByAnAncestorIsInheritedAndAnUnresolvedBaseIsUnknown() {
+    final String unit =
+        """
+        class Base { toString(): string { return "b"; } }
+        class Child extends Base { x = 1; }
+        class Orphan extends Missing {}
+        declare const child: Child;
+        declare const orphan: Orphan;
+        const copy = child;
+        const other = orphan;
+        """;
+    final UnitTypeFacts facts = TypeScenarios.project(unit).answer(UNIT, "child", "orphan");
+
+    final TypeMembers child = facts.membersOf(TypeProject.span(unit, "child")).orElseThrow();
+    assertThat(names(child.inheritedMethods())).containsExactly("toString");
+    assertThat(facts.membersOf(TypeProject.span(unit, "orphan"))).isEmpty();
+  }
+
   private static List<String> names(final List<CallTarget> methods) {
     return methods.stream().map(CallTarget::name).toList();
   }

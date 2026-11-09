@@ -75,4 +75,20 @@ class MisusedPromiseCheckTest {
                 UnitTypeFacts.none()))
         .isEqualTo(List.of());
   }
+
+  @Test
+  void aPromiseStoredInAVariableDeclaredAsReturningVoidIsReported() {
+    final String text =
+        "const task: () => void = async () => {};\nconst other: () => number = async () => 1;\n";
+    final UnitTypeFacts facts =
+        new LintFixtures.Facts()
+            .typed("1:7", named("() => void"))
+            .typed("1:26", named("() => Promise<void>"))
+            .typed("2:7", named("() => number"))
+            .typed("2:27", named("() => Promise<number>"))
+            .build();
+
+    assertThat(positions(new MisusedPromiseCheck(false, false, true, MESSAGE), text, facts))
+        .containsExactly("1:26");
+  }
 }

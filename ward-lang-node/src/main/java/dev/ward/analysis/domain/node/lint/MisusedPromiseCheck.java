@@ -23,6 +23,7 @@ public final class MisusedPromiseCheck extends TypedCheck {
   private static final String ARGUMENT = "argument";
   private static final String CALL_ARGUMENTS = "arguments";
   private static final String ARGUMENT_LIST = "argumentList";
+  private static final String DECLARATION = "variableDeclaration";
   private static final String SPREAD = "...";
   private static final Pattern PROMISE_RESULT = Pattern.compile("=>\\s*Promise\\b");
   private static final Pattern VOID_RESULT = Pattern.compile("=>\\s*void$");
@@ -61,6 +62,7 @@ public final class MisusedPromiseCheck extends TypedCheck {
     }
     if (checksVoidReturn) {
       voidReturns(root, types, out);
+      variables(root, types, out);
     }
     return out;
   }
@@ -84,6 +86,22 @@ public final class MisusedPromiseCheck extends TypedCheck {
           && EXPRESSION.equals(operand.kind())
           && isPromise(types, operand)) {
         out.add(new RuleMatch(operand.span(), message));
+      }
+    }
+  }
+
+  /** Reports a promise-returning value stored in a variable whose declared type returns void. */
+  private void variables(
+      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+    for (final SyntaxNode declaration : SyntaxText.nodesOf(root, DECLARATION)) {
+      final SyntaxNode value = SyntaxText.last(declaration);
+      final boolean typedAsVoid =
+          typeOf(types, declaration).filter(MisusedPromiseCheck::returnsVoid).isPresent();
+      if (value != null
+          && EXPRESSION.equals(value.kind())
+          && typedAsVoid
+          && returns(types, value, PROMISE_RESULT)) {
+        out.add(new RuleMatch(value.span(), message));
       }
     }
   }
