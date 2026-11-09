@@ -63,11 +63,11 @@ class KotlinNameChecksTest {
     final SyntaxNode file = topLevelClass("Thing");
 
     assertThat(
-            new KotlinFileNameCheck(true, MESSAGE)
+            new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
                 .check(TreeBuilders.unit(file), new SourceFile("src/Other.kt", "")))
         .hasSize(1);
     assertThat(
-            new KotlinFileNameCheck(true, MESSAGE)
+            new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
                 .check(TreeBuilders.unit(file), new SourceFile("src/Thing.jvm.kt", "")))
         .isEmpty();
   }

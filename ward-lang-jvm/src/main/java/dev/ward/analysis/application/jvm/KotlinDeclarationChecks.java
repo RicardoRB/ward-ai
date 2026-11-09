@@ -9,8 +9,8 @@ import dev.ward.analysis.domain.rule.check.KotlinComplexConditionCheck;
 import dev.ward.analysis.domain.rule.check.KotlinEmptyBlockCheck;
 import dev.ward.analysis.domain.rule.check.KotlinEmptyConstructorCheck;
 import dev.ward.analysis.domain.rule.check.KotlinEmptyWhenCheck;
-import dev.ward.analysis.domain.rule.check.KotlinFileNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinFunctionCountCheck;
+import dev.ward.analysis.domain.rule.check.KotlinMatchingDeclarationNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMemberNameCheck;
 import dev.ward.analysis.domain.rule.check.KotlinNameShadowingCheck;
 import dev.ward.analysis.domain.rule.check.KotlinObjectPropertyCheck;
@@ -64,7 +64,7 @@ final class KotlinDeclarationChecks {
         entry(
             "kotlin-file-name",
             toml ->
-                new KotlinFileNameCheck(
+                new KotlinMatchingDeclarationNameCheck(
                     bool(toml, MUST_BE_FIRST, true), TomlValues.required(toml, MESSAGE))),
         entry(
             "kotlin-member-name",

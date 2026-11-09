@@ -13,7 +13,7 @@ import java.util.Set;
  * {@code matching-declaration-name} does. The file name loses its {@code .kt} suffix and a
  * multiplatform target suffix such as {@code .jvm}. A file without a path is not checked.
  */
-public final class KotlinFileNameCheck implements UnitCheck {
+public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
 
   private static final String FILE = "kotlinFile";
   private static final String KT = ".kt";
@@ -53,7 +53,7 @@ public final class KotlinFileNameCheck implements UnitCheck {
    * @param mustBeFirst whether the declaration must be the first top-level declaration of the file
    * @param message the message; {@code {value}} is the file name without suffix
    */
-  public KotlinFileNameCheck(final boolean mustBeFirst, final String message) {
+  public KotlinMatchingDeclarationNameCheck(final boolean mustBeFirst, final String message) {
     this.mustBeFirst = mustBeFirst;
     this.message = Objects.requireNonNull(message, "message");
   }
