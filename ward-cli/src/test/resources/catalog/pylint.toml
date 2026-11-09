@@ -412,7 +412,7 @@ pylint = ["inconsistent-mro"]
 
 [[rule]]
 name = "inconsistent-quotes"
-presets = ["standard", "strict"]
+presets = ["strict"]
 category = "pylint"
 pylint = ["inconsistent-quotes"]
 
