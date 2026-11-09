@@ -41,6 +41,9 @@ final class SwiftMemberDeclarations {
   private static final Pattern PLAIN_VARIABLE_HEADER =
       Pattern.compile("\\s*((private|fileprivate|internal|static|final)\\s+)*var\\s*");
 
+  /** A header that carries the {@code public} or {@code open} access modifier. */
+  static final Pattern PUBLIC_HEADER = Pattern.compile("(^|\\s)(public|open)\\s");
+
   private static final Set<String> TYPE_DECLARATIONS =
       Set.of(
           "class_declaration",
@@ -94,6 +97,9 @@ final class SwiftMemberDeclarations {
     final List<Symbol> functions = new ArrayList<>();
     final List<Symbol> properties = new ArrayList<>();
 
+    /** The public and open declarations, which other modules may use; they are not declared. */
+    final List<Symbol> publics = new ArrayList<>();
+
     /** The name spans of the protocols that no attribute or public access exposes. */
     final Set<Span> protocolNames = new HashSet<>();
 
@@ -140,6 +146,9 @@ final class SwiftMemberDeclarations {
     }
     found.declaredNames.add(name.get().span());
     final String header = header(node, name.get(), unit);
+    if (context != Context.LOCAL) {
+      addPublic(node, name.get(), unit, SwiftFileSummarizer.PUBLIC_FUNCTION_KIND, found);
+    }
     if (context != Context.BLOCKED && PLAIN_FUNCTION_HEADER.matcher(header).matches()) {
       found.functions.add(
           new Symbol(
@@ -159,9 +168,11 @@ final class SwiftMemberDeclarations {
     final Optional<SyntaxNode> name =
         SwiftSyntax.child(node, VARIABLE_NAME).or(() -> simplePatternName(node));
     if (name.isEmpty()) {
+      typedPublicProperty(node, unit, found);
       return;
     }
     found.declaredNames.add(name.get().span());
+    addPublic(node, name.get(), unit, SwiftFileSummarizer.PUBLIC_PROPERTY_KIND, found);
     final int end = name.get().span().startOffset();
     final int stop = node.span().endOffset();
     final String rest =
@@ -173,6 +184,38 @@ final class SwiftMemberDeclarations {
               SwiftSyntax.textOf(name.get()),
               name.get().span(),
               SwiftFileSummarizer.PROPERTY_KIND));
+    }
+  }
+
+  /**
+   * Records a public property with a type annotation, which is never declared as a stored property
+   * since its annotation may name a type a reader must check. It is only an export.
+   */
+  private static void typedPublicProperty(
+      final SyntaxNode node, final SourceUnit unit, final Collected found) {
+    final Optional<SyntaxNode> pattern =
+        SwiftSyntax.child(node, PATTERN_INITIALIZER_LIST)
+            .flatMap(list -> SwiftSyntax.child(list, PATTERN_INITIALIZER))
+            .flatMap(initializer -> SwiftSyntax.child(initializer, PATTERN))
+            .flatMap(SwiftMemberDeclarations::firstIdentifier);
+    pattern.ifPresent(
+        name -> {
+          found.declaredNames.add(name.span());
+          addPublic(node, name, unit, SwiftFileSummarizer.PUBLIC_PROPERTY_KIND, found);
+        });
+  }
+
+  /**
+   * Records {@code name} as a public export of {@code kind} when its header says public or open.
+   */
+  private static void addPublic(
+      final SyntaxNode node,
+      final SyntaxNode name,
+      final SourceUnit unit,
+      final String kind,
+      final Collected found) {
+    if (PUBLIC_HEADER.matcher(header(node, name, unit)).find()) {
+      found.publics.add(new Symbol(SwiftSyntax.textOf(name), name.span(), kind));
     }
   }
 

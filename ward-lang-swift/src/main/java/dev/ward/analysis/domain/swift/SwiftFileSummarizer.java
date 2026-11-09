@@ -47,6 +47,18 @@ public final class SwiftFileSummarizer implements FileSummarizer {
   /** The kind of a stored property symbol in {@link FileSummary#declared()}. */
   public static final String PROPERTY_KIND = "property";
 
+  /** The kind prefix of a public or open symbol in {@link FileSummary#exports()}. */
+  public static final String PUBLIC_KIND_PREFIX = "public:";
+
+  /** The kind of a public or open type symbol in {@link FileSummary#exports()}. */
+  public static final String PUBLIC_TYPE_KIND = PUBLIC_KIND_PREFIX + "type";
+
+  /** The kind of a public or open function symbol in {@link FileSummary#exports()}. */
+  public static final String PUBLIC_FUNCTION_KIND = PUBLIC_KIND_PREFIX + "function";
+
+  /** The kind of a public or open stored property symbol in {@link FileSummary#exports()}. */
+  public static final String PUBLIC_PROPERTY_KIND = PUBLIC_KIND_PREFIX + "property";
+
   private static final String IDENTIFIER = "Identifier";
   private static final String IMPORT = "import_declaration";
   private static final String IMPORT_PATH = "import_path";
@@ -97,6 +109,8 @@ public final class SwiftFileSummarizer implements FileSummarizer {
     final Map<String, Span> names = new LinkedHashMap<>();
     collectNames(tree, own, names);
     names.forEach((name, span) -> imports.add(new Reference(NAME_PREFIX + name, span)));
+    final List<Symbol> exports = new ArrayList<>(found.types);
+    exports.addAll(found.publics);
     final List<Symbol> declared = new ArrayList<>(declaredTypes(found));
     declared.addAll(found.functions);
     declared.addAll(found.properties);
@@ -105,7 +119,7 @@ public final class SwiftFileSummarizer implements FileSummarizer {
     SwiftUseScan.collectAssignments(tree, excluded, assigned);
     final Set<String> used = new HashSet<>(found.fixedNames);
     SwiftUseScan.collectUsed(tree, excluded, used);
-    return new FileSummary(unit.path(), found.types, imports, declared, used, assigned);
+    return new FileSummary(unit.path(), exports, imports, declared, used, assigned);
   }
 
   /** Records the first use of each identifier outside imports and the file's own names. */
@@ -176,7 +190,7 @@ public final class SwiftFileSummarizer implements FileSummarizer {
       importOf(node).ifPresent(found.imports::add);
       return;
     }
-    final String inner = declare(node, scope, found.types);
+    final String inner = declare(node, scope, unit, found);
     if (PROTOCOL.equals(node.kind())) {
       declareProtocol(node, unit, found);
     }
@@ -195,7 +209,10 @@ public final class SwiftFileSummarizer implements FileSummarizer {
 
   /** Records the type that {@code node} declares and returns the scope of its members. */
   private static String declare(
-      final SyntaxNode node, final String scope, final List<Symbol> declared) {
+      final SyntaxNode node,
+      final String scope,
+      final SourceUnit unit,
+      final SwiftMemberDeclarations.Collected found) {
     if (!TYPE_DECLARATIONS.contains(node.kind())) {
       return scope;
     }
@@ -207,7 +224,12 @@ public final class SwiftFileSummarizer implements FileSummarizer {
         scope.isEmpty()
             ? SwiftSyntax.textOf(name.get())
             : scope + QUALIFIER + SwiftSyntax.textOf(name.get());
-    declared.add(new Symbol(qualified, name.get().span()));
+    found.types.add(new Symbol(qualified, name.get().span()));
+    if (SwiftMemberDeclarations.PUBLIC_HEADER
+        .matcher(SwiftMemberDeclarations.header(node, name.get(), unit))
+        .find()) {
+      found.publics.add(new Symbol(qualified, name.get().span(), PUBLIC_TYPE_KIND));
+    }
     return qualified;
   }
 
