@@ -4,7 +4,11 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.GetterReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeCatchParameterAssignCheck;
+import dev.ward.analysis.domain.rule.check.NodeConstructorReturnCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorSuperCheck;
+import dev.ward.analysis.domain.rule.check.NodeDupeElseIfCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnexpectedMultilineCheck;
+import dev.ward.analysis.domain.rule.check.NodeUnusedPrivateMembersCheck;
 import dev.ward.analysis.domain.rule.check.PreferRegexLiteralsCheck;
 import dev.ward.analysis.domain.rule.check.PreferRestParamsCheck;
 import dev.ward.analysis.domain.rule.check.SetterReturnCheck;
@@ -23,15 +27,28 @@ final class EslintChecks {
 
   /** The checks this family provides, by name. */
   static Map<String, CheckFactory> checks() {
-    return Map.of(
-        "node-getter-return", EslintChecks::getterReturn,
-        "node-unsafe-negation", EslintChecks::unsafeNegation,
-        "node-prefer-regex-literals", EslintChecks::preferRegexLiterals,
-        "node-constructor-super", EslintChecks::constructorSuper,
-        "node-prefer-rest-params", EslintChecks::preferRestParams,
-        "node-no-setter-return", EslintChecks::setterReturn,
-        "node-string-escape", EslintChecks::stringEscape,
-        "node-catch-parameter-assign", EslintChecks::catchParameterAssign);
+    return Map.ofEntries(
+        Map.entry("node-getter-return", EslintChecks::getterReturn),
+        Map.entry("node-unsafe-negation", EslintChecks::unsafeNegation),
+        Map.entry("node-prefer-regex-literals", EslintChecks::preferRegexLiterals),
+        Map.entry("node-constructor-super", EslintChecks::constructorSuper),
+        Map.entry("node-prefer-rest-params", EslintChecks::preferRestParams),
+        Map.entry("node-no-setter-return", EslintChecks::setterReturn),
+        Map.entry("node-string-escape", EslintChecks::stringEscape),
+        Map.entry("node-catch-parameter-assign", EslintChecks::catchParameterAssign),
+        Map.entry(
+            "node-no-constructor-return",
+            (CheckFactory)
+                toml -> new NodeConstructorReturnCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-no-dupe-else-if",
+            (CheckFactory) toml -> new NodeDupeElseIfCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-no-unused-private-class-members",
+            (CheckFactory) toml -> new NodeUnusedPrivateMembersCheck()),
+        Map.entry(
+            "node-no-unexpected-multiline",
+            (CheckFactory) toml -> new NodeUnexpectedMultilineCheck()));
   }
 
   private static GetterReturnCheck getterReturn(final TomlParseResult toml) {

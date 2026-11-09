@@ -1,0 +1,12 @@
+# Class rules of the ESLint core rules (issue #326), for TypeScript and JavaScript.
+
+[[rules]]
+id = "ward:javascript/no-unused-private-class-members"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unused-private-class-members"
+'''
