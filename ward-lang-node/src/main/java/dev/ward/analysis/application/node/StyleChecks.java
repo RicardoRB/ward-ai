@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.NodeArrowCallbackCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
+import dev.ward.analysis.domain.rule.check.NodeHiddenFieldCheck;
 import dev.ward.analysis.domain.rule.check.NodeIllegalTokenCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocMethodCheck;
@@ -57,6 +58,13 @@ final class StyleChecks {
                     TomlValues.strings(toml, "tokens"),
                     TomlValues.required(toml, "format"),
                     toml.getBoolean("ignore-case", () -> false),
+                    TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-hidden-field",
+            toml ->
+                new NodeHiddenFieldCheck(
+                    toml.getBoolean("ignore-constructor-parameter", () -> false),
+                    toml.getBoolean("ignore-setter", () -> false),
                     TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "node-javadoc-method",

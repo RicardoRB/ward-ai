@@ -191,3 +191,35 @@ format = "^$"
 ignore-case = false
 message = "illegal token text '{value}'"
 '''
+
+[[rules]]
+id = "ward:typescript/hidden-field"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["strict"]
+options.ignore-constructor-parameter = { type = "boolean" }
+options.ignore-setter = { type = "boolean" }
+body = '''
+check = "node-hidden-field"
+ignore-constructor-parameter = false
+ignore-setter = false
+message = "'{value}' hides a field"
+'''
+
+[[rules]]
+id = "ward:javascript/hidden-field"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "coding"
+presets = ["strict"]
+options.ignore-constructor-parameter = { type = "boolean" }
+options.ignore-setter = { type = "boolean" }
+body = '''
+check = "node-hidden-field"
+ignore-constructor-parameter = false
+ignore-setter = false
+message = "'{value}' hides a field"
+'''
