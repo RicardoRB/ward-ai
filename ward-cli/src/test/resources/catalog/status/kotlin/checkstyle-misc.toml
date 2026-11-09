@@ -6,12 +6,12 @@ descendant-token = { status = "planned", issue = "#294" }
 final-parameters = { status = "planned", issue = "#294" }
 hex-literal-case = { status = "planned", issue = "#294" }
 line-ending = { status = "planned", issue = "#294" }
-multiline-comment-leading-asterisk-presence = { status = "planned", issue = "#294" }
+multiline-comment-leading-asterisk-presence = "implemented"
 newline-at-end-of-file = { status = "planned", issue = "#294" }
 no-code-in-file = { status = "planned", issue = "#294" }
 numerical-prefixes-infixes-suffixes-character-case = { status = "planned", issue = "#294" }
 outer-type-filename = "not-applicable"
-todo-comment = { status = "planned", issue = "#294" }
+todo-comment = "implemented"
 trailing-comment = { status = "planned", issue = "#294" }
 uncommented-main = "not-applicable"
 upper-ell = { status = "planned", issue = "#294" }

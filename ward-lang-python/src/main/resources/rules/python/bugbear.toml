@@ -320,7 +320,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["expr_stmt"]
-text = "^(?!await|yield)(?!\\.\\.\\.$)[^=()\"'<>!]*$"
+text = "^(?![\\s\\S]*\\b(?:yield|await)\\b)(?!\\.\\.\\.\\s*$)(?![rRbBuUfF]{0,2}(?:\"\"\"|\"|\\')[\\s\\S]*(?:\"\"\"|\"|\\')\\s*$)(?![\\s\\S]*[\\w\\])]\\s*\\()(?![\\s\\S]*(?<![=!<>])=(?!=))(?!\\s*\\w+\\s*:)[\\s\\S]+$"
 message = "useless expression; assign it or remove it"
 '''
 

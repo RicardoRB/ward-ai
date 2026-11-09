@@ -1,0 +1,403 @@
+# Pylint's and Checkstyle's style concepts for Python that a node's text or a scope decides (#297).
+
+[[rules]]
+id = "ward:python/disallowed-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["classdef", "funcdef", "tfpdef", "expr_stmt"]
+name = "NAME"
+pattern = "(?!(?:foo|bar|baz|toto|tutu|tata)$).*"
+message = "name '{value}' is disallowed; choose a descriptive name"
+'''
+
+[[rules]]
+id = "ward:python/unused-local-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:python/single-string-used-for-slots"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^__slots__=[\"']"
+message = "__slots__ is a single string; use a tuple of names"
+'''
+
+[[rules]]
+id = "ward:python/non-ascii-module-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_name", "import_from"]
+text = '[^\x00-\x7F]'
+message = "import of a module whose name has non-ASCII characters"
+'''
+
+[[rules]]
+id = "ward:python/import-outside-toplevel"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_name", "import_from"]
+inside = ["funcdef"]
+message = "import outside the top level of the module"
+'''
+
+[[rules]]
+id = "ward:python/typevar-name-mismatch"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^(\\w+)=TypeVar\\(['\"](?!\\1['\"])"
+message = "TypeVar name does not match the name given to it"
+'''
+
+[[rules]]
+id = "ward:python/typevar-name-incorrect-variance"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^(?:(?!\w+_co=)\w+=TypeVar\(.*covariant=True|(?!\w+_contra=)\w+=TypeVar\(.*contravariant=True|\w+_(?:co|contra)=TypeVar\((?!.*(?:co|contra)variant=True))'
+message = "TypeVar name does not reflect its variance"
+'''
+
+[[rules]]
+id = "ward:python/typevar-double-variance"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = 'TypeVar\(.*covariant=True.*contravariant=True|TypeVar\(.*contravariant=True.*covariant=True'
+message = "TypeVar cannot be both covariant and contravariant"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-negation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["not_test"]
+text = '^notnot|^not[\w.()\[\]]+(?:==|!=|<=|>=|<|>)'
+message = "negated comparison; write it with the inverse operator"
+'''
+
+[[rules]]
+id = "ward:python/use-implicit-booleaness-not-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "(?:==|!=)(?:\\[\\]|\\{\\}|\\(\\)|''|\"\"|list\\(\\)|dict\\(\\)|tuple\\(\\)|set\\(\\)|str\\(\\))|^(?:\\[\\]|\\{\\}|\\(\\)|''|\"\")(?:==|!=)"
+message = "comparison to an empty literal; test the value's truth instead"
+'''
+
+[[rules]]
+id = "ward:python/use-implicit-booleaness-not-len"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt", "while_stmt"]
+text = '^(?:if|while)(?:not)?len\((?:[^()]|\([^()]*\))*\):'
+message = "len() used as a condition; test the sequence's truth value instead"
+'''
+
+[[rules]]
+id = "ward:python/use-maxsplit-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.r?split\\((?:'[^']*'|\"[^\"]*\"|[^(),'\"])*\\)\\[(?:0|-1)\\]"
+message = "split result indexed at one end; pass maxsplit=1"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-enumerate"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = '^for(\w+)in(?:range\(len\((\w+)\)\)):.*\2\[\1\]'
+message = "range(len(...)) indexes the sequence; use enumerate"
+'''
+
+[[rules]]
+id = "ward:python/bad-classmethod-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["decorated"]
+text = '^(?:@[\w.]+(?:\([^)]*\))?\s*)*@classmethod\s*(?:async\s*)?def\w+\((?!cls[,)]|\))'
+message = "first argument of a class method should be named cls"
+'''
+
+[[rules]]
+id = "ward:python/missing-module-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "docstring"
+problem = "missing-module"
+message = "module has no docstring"
+'''
+
+[[rules]]
+id = "ward:python/missing-class-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "docstring"
+problem = "missing-class"
+message = "class has no docstring"
+'''
+
+[[rules]]
+id = "ward:python/missing-function-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "docstring"
+problem = "missing-function"
+message = "function has no docstring"
+'''
+
+[[rules]]
+id = "ward:python/empty-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "docstring"
+problem = "empty"
+message = "docstring is empty"
+'''
+
+[[rules]]
+id = "ward:python/missing-trailing-period"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["strict"]
+body = '''
+check = "docstring"
+problem = "trailing-period"
+message = "first line of the docstring should end with a period"
+'''
+
+[[rules]]
+id = "ward:python/undocumented-param"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["strict"]
+body = '''
+check = "docstring"
+problem = "undocumented-param"
+message = "parameter is not documented in the Args section"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-f-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr", "expr>'%'"]
+text = "^(?:'[^']*'|\"[^\"]*\")(?:\\.format\\(|%(?!\\{))"
+message = "string literal formatted with format() or %; use an f-string"
+'''
+
+[[rules]]
+id = "ward:python/overload-methods-declaration-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "overload-order"
+message = "overloads of the same name must be declared next to each other"
+'''
+
+[[rules]]
+id = "ward:python/hidden-field"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefined-outer-name"
+message = "'{value}' hides a module-level name of the same name"
+'''
+
+[[rules]]
+id = "ward:python/bad-mcs-classmethod-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "metaclass-argument"
+problem = "classmethod"
+message = "first argument of a metaclass class method should be named mcs"
+'''
+
+[[rules]]
+id = "ward:python/bad-mcs-method-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "metaclass-argument"
+problem = "method"
+message = "first argument of a metaclass method should be named cls"
+'''
+
+[[rules]]
+id = "ward:python/ungrouped-imports"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "ungrouped-imports"
+message = "import from a package that is imported elsewhere; group the imports of a package together"
+'''
+
+[[rules]]
+id = "ward:python/use-sequence-for-iteration"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt", "comp_for"]
+text = "^for[^:]*?in\\{[^:{}]+\\}"
+message = "iterating a set literal; use a tuple or list"
+'''
+
+[[rules]]
+id = "ward:python/variable-declaration-usage-distance"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "python-variable-distance"
+max = 3
+message = "variable '{value}' is first used more than {max} statements after its declaration"
+'''
+
+[[rules]]
+id = "ward:python/wrong-import-order"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "python-import-order"
+message = "import comes after an import of a later group; order them __future__, standard, third party, first party, relative"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-dict-items"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt"]
+text = "^for(\\w+)in([\\w.]+?)(?:\\.keys\\(\\))?:.*\\2\\[\\1\\]"
+message = "loop reads the dict by key; iterate over items() instead"
+'''

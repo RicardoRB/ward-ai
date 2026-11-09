@@ -1,10 +1,13 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Language;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /** The body of each preset rule file, in the format its tool loads. */
 final class PresetRuleFileContent {
@@ -32,16 +35,33 @@ final class PresetRuleFileContent {
   private PresetRuleFileContent() {}
 
   /**
-   * The rule selection of the {@code ward} gate: the Ward rules of the preset, for the languages
-   * whose external linters Ward has replaced. Other languages keep their own tools until their
-   * migration lands, so selecting their Ward rules would report each finding twice.
+   * The rule selection of the {@code ward} gate: the Ward rules of the preset, for the JVM source
+   * languages the project has, Java before Kotlin. A project without a JVM language selects Java,
+   * as it always has.
    */
-  static String wardRules(final QualityPreset preset) {
+  static String wardRules(final QualityPreset preset, final Set<Language> languages) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
+    final List<String> ids = jvmLanguageIds(languages);
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
-        + "\"\nlanguages = [\"java\"]\n"
-        + (chosen == QualityPreset.STRICT ? HIDDEN_FIELD : "");
+        + "\"\nlanguages = "
+        + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"))
+        + "\n"
+        + (chosen == QualityPreset.STRICT && ids.contains("java") ? HIDDEN_FIELD : "");
+  }
+
+  private static List<String> jvmLanguageIds(final Set<Language> languages) {
+    final List<String> ids = new ArrayList<>();
+    if (languages.contains(Language.JAVA)) {
+      ids.add("java");
+    }
+    if (languages.contains(Language.KOTLIN)) {
+      ids.add("kotlin");
+    }
+    if (ids.isEmpty()) {
+      ids.add("java");
+    }
+    return ids;
   }
 
   static String pmd(final QualityPreset preset) {

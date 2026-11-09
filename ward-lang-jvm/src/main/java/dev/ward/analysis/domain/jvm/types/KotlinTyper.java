@@ -14,13 +14,20 @@ final class KotlinTyper {
   private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
   private static final String EXPRESSION = "expression";
   private static final String VARIABLE = "variableDeclaration";
+  private static final String TYPE = "type";
 
   private final Session session;
   private final KotlinExpressions expressions;
+  private final NullnessState nullness = new NullnessState();
 
   KotlinTyper(final Session session) {
     this.session = session;
     this.expressions = new KotlinExpressions(session, this);
+  }
+
+  /** The nullness of the variables this typer has seen, and of the uses it will type. */
+  NullnessState nullness() {
+    return nullness;
   }
 
   void run(final KotlinUnitModel model) {
@@ -35,8 +42,7 @@ final class KotlinTyper {
           .forEach(parameter -> declare(parameter, inside));
       declared.members().stream()
           .filter(member -> "propertyDeclaration".equals(member.kind()))
-          .flatMap(member -> Syntax.child(member, VARIABLE).stream())
-          .forEach(variable -> declareWritten(variable, inside));
+          .forEach(property -> declareWritten(property, inside));
       walk(declared.node(), inside);
     }
   }
@@ -47,21 +53,33 @@ final class KotlinTyper {
   }
 
   private void declare(final SyntaxNode holder, final Ctx ctx) {
+    final Optional<SyntaxNode> written = Syntax.child(holder, TYPE);
     Syntax.child(holder, SIMPLE_IDENTIFIER)
         .ifPresent(
-            name ->
-                session.variable(
-                    name,
-                    Syntax.child(holder, "type")
-                        .flatMap(written -> KotlinTypes.type(written, ctx.scope()))));
+            name -> {
+              session.variable(name, written.flatMap(type -> KotlinTypes.type(type, ctx.scope())));
+              nullness.remember(name, KotlinNullness.writtenNullness(written));
+            });
   }
 
-  private void declareWritten(final SyntaxNode variable, final Ctx ctx) {
-    final Optional<JType> written =
-        Syntax.child(variable, "type").flatMap(type -> KotlinTypes.type(type, ctx.scope()));
-    if (written.isPresent()) {
-      Syntax.child(variable, SIMPLE_IDENTIFIER).ifPresent(name -> session.variable(name, written));
-    }
+  /** Types a class property with a written type; the property walk types the rest. */
+  private void declareWritten(final SyntaxNode property, final Ctx ctx) {
+    Syntax.child(property, VARIABLE)
+        .ifPresent(
+            variable -> {
+              final Optional<SyntaxNode> written = Syntax.child(variable, TYPE);
+              final Optional<JType> type =
+                  written.flatMap(node -> KotlinTypes.type(node, ctx.scope()));
+              if (type.isPresent()) {
+                Syntax.child(variable, SIMPLE_IDENTIFIER)
+                    .ifPresent(
+                        name -> {
+                          session.variable(name, type);
+                          nullness.remember(
+                              name, KotlinNullness.propertyNullness(property, written, false));
+                        });
+              }
+            });
   }
 
   void walk(final SyntaxNode node, final Ctx ctx) {
@@ -70,6 +88,10 @@ final class KotlinTyper {
       case "propertyDeclaration" -> property(node, ctx);
       case "functionDeclaration" -> function(node, ctx);
       case "forExpression" -> forLoop(node, ctx);
+      case "catchBlock" -> {
+        KotlinNamedTypes.recordCatchType(session, node, ctx.scope());
+        node.children().forEach(child -> walk(child, ctx));
+      }
       default -> node.children().forEach(child -> walk(child, ctx));
     }
   }
@@ -82,14 +104,19 @@ final class KotlinTyper {
     final Optional<SyntaxNode> variable = Syntax.child(node, VARIABLE);
     final Optional<JType> written =
         variable
-            .flatMap(found -> Syntax.child(found, "type"))
+            .flatMap(found -> Syntax.child(found, TYPE))
             .flatMap(type -> KotlinTypes.type(type, ctx.scope()));
+    final Optional<SyntaxNode> writtenNode = variable.flatMap(found -> Syntax.child(found, TYPE));
+    final boolean literal =
+        Syntax.child(node, EXPRESSION).filter(KotlinNullness::isLiteral).isPresent();
     variable
         .flatMap(found -> Syntax.child(found, SIMPLE_IDENTIFIER))
         .ifPresent(
-            name ->
-                session.variable(
-                    name, written.or(() -> initial.type().filter(type -> !Types.isNull(type)))));
+            name -> {
+              session.variable(
+                  name, written.or(() -> initial.type().filter(type -> !Types.isNull(type))));
+              nullness.remember(name, KotlinNullness.propertyNullness(node, writtenNode, literal));
+            });
   }
 
   private void function(final SyntaxNode node, final Ctx ctx) {
@@ -97,7 +124,9 @@ final class KotlinTyper {
         .flatMap(list -> Syntax.children(list, "functionValueParameter").stream())
         .flatMap(holder -> Syntax.child(holder, "parameter").stream())
         .forEach(parameter -> declare(parameter, ctx));
+    final Optional<Map<String, Integer>> outer = nullness.enter(node);
     Syntax.children(node, "functionBody").forEach(body -> walk(body, ctx));
+    nullness.restore(outer);
   }
 
   private void forLoop(final SyntaxNode node, final Ctx ctx) {

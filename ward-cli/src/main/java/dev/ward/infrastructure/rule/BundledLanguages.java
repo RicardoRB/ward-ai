@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
+import dev.ward.analysis.application.node.NodeCheckProvider;
 import dev.ward.analysis.application.node.NodeRuleFiles;
 import dev.ward.analysis.application.python.PythonCheckProvider;
 import dev.ward.analysis.application.python.PythonRuleFiles;
@@ -32,6 +33,7 @@ public final class BundledLanguages {
     return List.of(
         new CoreCheckProvider(),
         new JvmCheckProvider(),
+        new NodeCheckProvider(),
         new PythonCheckProvider(),
         new SwiftCheckProvider());
   }

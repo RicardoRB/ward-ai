@@ -1,0 +1,133 @@
+{
+  "2:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "getProperty",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "3:19": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "lineSeparator",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "10:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "getProperty",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "11:35": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "getProperty",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "12:28": {
+    "call": {
+      "declaring": {
+        "name": "app.Repo"
+      },
+      "name": "load",
+      "params": [],
+      "returns": {
+        "name": "app.Repo"
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "13:31": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "getenv",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": [
+        "org.jspecify.annotations.Nullable"
+      ]
+    }
+  },
+  "14:27": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "currentTimeMillis",
+      "params": [],
+      "returns": {
+        "name": "long",
+        "primitive": true
+      },
+      "static": true,
+      "annotations": []
+    }
+  },
+  "15:28": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.System"
+      },
+      "name": "lineSeparator",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "annotations": []
+    }
+  }
+}

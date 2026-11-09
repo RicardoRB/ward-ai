@@ -1,0 +1,4 @@
+{
+  "2:5": {"call": {"declaring": {"name": "app.Repo"}, "name": "save", "params": [{"name": "java.lang.String"}], "static": false, "annotations": ["com.google.errorprone.annotations.CheckReturnValue"]}},
+  "3:5": {"call": {"declaring": {"name": "app.Repo"}, "name": "size", "params": [], "static": false, "annotations": ["com.google.errorprone.annotations.CanIgnoreReturnValue", "com.google.errorprone.annotations.CheckReturnValue"]}}
+}

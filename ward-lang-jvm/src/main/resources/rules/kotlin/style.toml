@@ -1,0 +1,477 @@
+# Style rules for Kotlin, from detekt's style set (standard preset, detekt 1.23.8 defaults). Each
+# body is a syntax-level approximation of the detekt rule: the findings are anchored at the start of
+# the node the rule names. Where detekt needs resolved types or scopes, the body says so in a
+# `shortcut:` comment and reads only the syntax.
+
+# shortcut: detekt reports the name of the function; here the finding starts at the function node.
+# shortcut: functions inside interfaces are not exempted, since the body has no interface context.
+[[rules]]
+id = "ward:kotlin/function-only-returning-constant"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+not-inside = ["classBody"]
+text = '^(?:@\w+)*(?:(?:private|internal|public|protected|final|inline|external|suspend)\s*)*fun\s*(?:<[^>]*>\s*)?(?:[\w.<>?]+\.)?\w+\s*\([^)]*\)\s*(?::\s*[^={]+?)?\s*(?:=\s*(?:"[^"$\\]*"|-?\d[\w.]*|true|false|null)|\{\s*return\s*(?:"[^"$\\]*"|-?\d[\w.]*|true|false|null)\s*\})\s*$'
+message = "function returns a constant; declare a constant instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/equals-null-call"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+# shortcut: a call with a receiver only; a bare equals(null) is not reported.
+text = '^(?!return|throw)[^={};]*?\.equals\s*\(\s*null\s*\)'
+message = "equals is called with null; compare with == null instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/explicit-it-lambda-parameter"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionLiteral"]
+text = '^\{\s*it\s*(?::[^->,]*)?->'
+message = "lambda declares 'it' as its parameter name; omit the parameter declaration"
+'''
+
+[[rules]]
+id = "ward:kotlin/forbidden-void"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["simpleUserType"]
+text = '^Void$'
+message = "'Void' should be replaced with 'Unit'"
+'''
+
+[[rules]]
+id = "ward:kotlin/loop-with-too-many-jump-statements"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "kotlin-loop-jumps"
+max = 1
+message = "loop has {value} break or continue statements; the limit is {max}"
+'''
+
+# shortcut: jumps of a nested loop are counted for the outer loop too.
+[[rules]]
+id = "ward:kotlin/may-be-const"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-may-be-const"
+message = "property with a constant value can be a const val"
+'''
+
+[[rules]]
+id = "ward:kotlin/new-line-at-end-of-file"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-new-line-at-end-of-file"
+message = "file does not end with a new line"
+'''
+
+# shortcut: only the JDK single-abstract-method interfaces listed here; upgrade with TYPES.
+[[rules]]
+id = "ward:kotlin/object-literal-to-lambda"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["objectLiteral"]
+text = '^object\s*:\s*(?:Runnable|Callable|Comparator|ThreadFactory|Supplier|Consumer|Predicate|Function)\b[^{]*\{\s*override\s*fun\s*\w+\s*\([^)]*\)[^{]*\{(?![^{}]*this)[^{}]*\}\s*\}$'
+message = "object literal implements a single abstract method and can be a lambda"
+'''
+
+# shortcut: only interface declarations; abstract members of an interface are not checked.
+[[rules]]
+id = "ward:kotlin/optional-abstract-keyword"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?:@\w+)*(?:(?:public|private|protected|internal)\s*)?abstract\s*interface'
+message = "the abstract modifier on this interface is unnecessary"
+'''
+
+# shortcut: a `map` whose receiver is not a list, set or sequence is reported too.
+[[rules]]
+id = "ward:kotlin/redundant-higher-order-map-usage"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(?!\w*(?:[Mm]ap|entries))\w+\.map\{\s*(?:it|(\w+)\s*->\s*\1)\s*\}$'
+message = "this 'map' call returns its elements unchanged and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/safe-cast"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression"]
+text = '^if\s*\(\s*(\w+)\s*(?:is\s*[^)]+\)\s*\{?\s*\1\s*\}?\s*else\s*\{?\s*null|!is\s*[^)]+\)\s*\{?\s*null\s*\}?\s*else\s*\{?\s*\1)\s*\}?$'
+message = "this cast should be replaced with a safe cast: as?"
+'''
+
+# shortcut: a serializable class is any class or object whose header lists Serializable and whose
+# text has no serialVersionUID at all; the value and modifiers of an existing one are not checked.
+[[rules]]
+id = "ward:kotlin/serial-version-uid-in-serializable-class"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "objectDeclaration"]
+text = '^(?![\s\S]*serialVersionUID)[^{]*?(?<![A-Za-z0-9_])(?:class|object)[^{]*:[^{]*Serializable'
+message = "class implements Serializable and should define a private constant serialVersionUID"
+'''
+
+# shortcut: a class with no abstract member and no constructor parameter; the rule does not read
+# supertypes, so an abstract class with a superclass is never reported.
+[[rules]]
+id = "ward:kotlin/unnecessary-abstract-class"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?:@\w+)*(?:(?:public|private|protected|internal)\s*)?abstract\s*class\s*\w+\s*(?:\(\s*\))?\s*\{(?![\s\S]*abstract\s*(?:fun|val|var|class))[\s\S]*\}$'
+message = "abstract class has no abstract member and can be a concrete class or an interface"
+'''
+
+# shortcut: the receiver is taken to be the object the lambda's single member access belongs to.
+[[rules]]
+id = "ward:kotlin/unnecessary-apply"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unnecessary-apply"
+message = "apply block only accesses members of its receiver; the apply call is unnecessary"
+'''
+
+# shortcut: only a filter with a single lambda argument, followed by one of the count checks.
+[[rules]]
+id = "ward:kotlin/unnecessary-filter"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '\.filter\s*\{[^{}]*\}\s*\.(?:size|count\s*\(\s*\)|isEmpty\s*\(\s*\)|isNotEmpty\s*\(\s*\))$'
+message = "filter followed by a count or emptiness check can be replaced by count, any or none"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-inheritance"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "objectDeclaration"]
+text = '^[^{]*[:,]\s*(?:Any|Object)\(\)'
+message = "unnecessary inheritance of Any or Object"
+'''
+
+# shortcut: a find, firstOrNull or lastOrNull compared with null in the same comparison.
+[[rules]]
+id = "ward:kotlin/use-any-or-none-instead-of-find"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["equalityComparison"]
+text = '\.(?:find|firstOrNull|lastOrNull)\s*(?:\{[^{}]*\}|\([^()]*\))?\s*[!=]=\s*null'
+message = "use any or none instead of find compared with null"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-array-literals-in-annotations"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["valueArgument"]
+inside = ["annotation", "unescapedAnnotation"]
+text = '^(?:\w+\s*=\s*)?\w*arrayOf\s*\('
+message = "use an array literal [...] instead of arrayOf in an annotation"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-check-not-null"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '\bcheck\s*\(\s*[\w.]+\s*!=\s*null\s*\)'
+message = "use checkNotNull instead of check with a not-null condition"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-check-or-error"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["jumpExpression"]
+text = '^throw\s*IllegalStateException\s*\(\s*(?:"[^"]*"\s*)?\)$'
+message = "use error instead of throwing IllegalStateException"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-is-null-or-empty"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["disjunction"]
+text = '^(\w+)\s*==\s*null\s*\|\|\s*\1\s*\.\s*(?:isEmpty\s*\(\s*\)|size\s*==\s*0|length\s*==\s*0)$'
+message = "null check followed by an emptiness check can be replaced by isNullOrEmpty()"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-or-empty"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["elvisExpression"]
+text = '\?:\s*(?:(?:emptyList|emptySet|emptyMap|emptySequence|listOf|setOf|mapOf|sequenceOf|arrayOf)\s*\(\s*\)|"")$'
+message = "elvis operator with an empty value can be replaced by orEmpty()"
+'''
+
+[[rules]]
+id = "ward:kotlin/use-require-not-null"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '\brequire\s*\(\s*[\w.]+\s*!=\s*null\s*\)'
+message = "use requireNotNull instead of require with a not-null condition"
+'''
+
+# shortcut: a single if without else; the condition may hold one level of parentheses.
+[[rules]]
+id = "ward:kotlin/use-require"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifExpression"]
+text = '^if\s*\((?:[^()]|\([^()]*\))*\)\s*(?:\{\s*)?throw\s*IllegalArgumentException\s*\(\s*(?:"[^"]*"\s*)?\)\s*(?:\}\s*)?$'
+message = "use require instead of throwing IllegalArgumentException in an if"
+'''
+
+# shortcut: a class whose body is only a companion object and whose header has no parentheses; the
+# rule does not check that the class is not open, and does not read the constructor visibility.
+[[rules]]
+id = "ward:kotlin/utility-class-with-public-constructor"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-utility-class"
+message = "class only contains a companion object; declare an object instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/destructuring-declaration-with-too-many-entries"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "descendant-count"
+kinds = ["multiVariableDeclaration"]
+counted = ["variableDeclaration"]
+max = 3
+message = "destructuring declaration has {value} entries; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/trailing-whitespace"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-trailing-whitespace"
+message = "line has trailing whitespace"
+'''
+
+# shortcut: a parameter is used when the scopes resolve a read of it; names matching the default
+# allowed-names are skipped. Functions whose modifiers name a fixed signature are skipped.
+[[rules]]
+id = "ward:kotlin/unused-parameter"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-parameter"
+message = "parameter '{value}' is never used"
+'''
+
+# shortcut: a mention of the name anywhere in the file, outside the declaration, counts as a use.
+[[rules]]
+id = "ward:kotlin/unused-private-member"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-private-member"
+message = "private function '{value}' is never used"
+'''
+
+# shortcut: a mention of the name anywhere in the file, outside the declaration, counts as a use.
+[[rules]]
+id = "ward:kotlin/unused-private-class"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-private-class"
+message = "private class '{value}' is never used"
+'''
+
+# shortcut: a var is judged by its write references in the scopes; only local vars and private
+# class properties are checked.
+[[rules]]
+id = "ward:kotlin/var-could-be-val"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-var-could-be-val"
+message = "var '{value}' could be val"
+'''
+
+[[rules]]
+id = "ward:kotlin/nested-classes-visibility"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-nested-classes-visibility"
+message = "nested class '{value}' declares public or protected visibility inside an internal class"
+'''
+
+# shortcut: only a call on a receiver that is certainly non-null by its syntax (a string literal, a
+# collection factory or a constructor call), and listOfNotNull with only non-null literal arguments.
+# Nullness facts from the types will widen this later.
+[[rules]]
+id = "ward:kotlin/useless-call-on-not-null"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(?:(?:"[^"]*"|(?:listOf|emptyList|setOf|mapOf|mutableListOf|mutableSetOf|mutableMapOf|sequenceOf|arrayOf|emptySequence|emptySet|emptyMap)\([^()]*\)|[A-Z]\w*\([^()]*\))\.(?:orEmpty|isNullOrEmpty|isNullOrBlank)\(\)|listOfNotNull\((?:(?:"[^"]*"|-?\d+(?:\.\d+)?|true|false)(?:,(?:"[^"]*"|-?\d+(?:\.\d+)?|true|false))*)?\)$)'
+message = "call on a non-null receiver is useless; remove it"
+'''
+

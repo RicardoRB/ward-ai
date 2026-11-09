@@ -94,12 +94,18 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/java/spotbugs-style.toml",
           "rules/java/spotbugs-threads.toml",
           "rules/java/strict-declarations.toml",
+          "rules/kotlin/complexity.toml",
           "rules/kotlin/coroutines.toml",
+          "rules/kotlin/empty-blocks.toml",
           "rules/kotlin/exceptions.toml",
+          "rules/kotlin/kdoc.toml",
+          "rules/kotlin/linter.toml",
           "rules/kotlin/naming.toml",
           "rules/kotlin/performance.toml",
           "rules/kotlin/potential-bugs.toml",
-          "rules/kotlin/size.toml");
+          "rules/kotlin/size.toml",
+          "rules/kotlin/style-checkstyle.toml",
+          "rules/kotlin/style.toml");
 
   @Override
   public List<String> ruleFiles() {

@@ -2,4 +2,3 @@
 
 assert-false = "implemented"
 unnecessary-lambda = { status = "planned", issue = "#334" }
-wildcard-import = { status = "planned", issue = "#336" }
