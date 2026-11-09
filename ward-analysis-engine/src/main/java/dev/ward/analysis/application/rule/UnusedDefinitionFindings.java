@@ -31,6 +31,15 @@ public final class UnusedDefinitionFindings {
   /** The rule id for unused classes. */
   public static final String CLASS_ID = PythonUnusedDefinitions.CLASS_ID;
 
+  /** The rule id for unused methods. */
+  public static final String METHOD_ID = PythonUnusedDefinitions.METHOD_ID;
+
+  /** The rule id for unused properties. */
+  public static final String PROPERTY_ID = PythonUnusedDefinitions.PROPERTY_ID;
+
+  /** The rule id for unused instance attributes. */
+  public static final String ATTRIBUTE_ID = PythonUnusedDefinitions.ATTRIBUTE_ID;
+
   private UnusedDefinitionFindings() {}
 
   /** Whether {@code definition} is one of the unused-definition rules. */

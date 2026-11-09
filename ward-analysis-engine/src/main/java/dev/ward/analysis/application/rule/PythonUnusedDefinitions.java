@@ -18,8 +18,22 @@ final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
   /** The rule id for unused classes. */
   static final String CLASS_ID = "ward:python/unused-class";
 
+  /** The rule id for unused methods. */
+  static final String METHOD_ID = "ward:python/unused-method";
+
+  /** The rule id for unused properties. */
+  static final String PROPERTY_ID = "ward:python/unused-property";
+
+  /** The rule id for unused instance attributes. */
+  static final String ATTRIBUTE_ID = "ward:python/unused-attribute";
+
   private static final Map<String, UnusedDefinitionKind> KINDS =
-      Map.of(FUNCTION_ID, UnusedDefinitionKind.FUNCTION, CLASS_ID, UnusedDefinitionKind.CLASS);
+      Map.of(
+          FUNCTION_ID, UnusedDefinitionKind.FUNCTION,
+          CLASS_ID, UnusedDefinitionKind.CLASS,
+          METHOD_ID, UnusedDefinitionKind.METHOD,
+          PROPERTY_ID, UnusedDefinitionKind.UNUSED_PROPERTY,
+          ATTRIBUTE_ID, UnusedDefinitionKind.ATTRIBUTE);
   private static final String PYTHON_SUFFIX = ".py";
   private static final String DUNDER = "__";
   private static final String TEST_PREFIX = "test";

@@ -71,6 +71,26 @@ final class UnusedDefinitionFindingsTest {
         .containsExactly(UnusedDefinitionFindings.CLASS_ID);
   }
 
+  @Test
+  void aMethodNamedByAnotherFileIsNotReported() {
+    final RuleDefinition method = rule(UnusedDefinitionFindings.METHOD_ID);
+    final Map<String, FileSummary> files =
+        Map.of(
+            "a/model.py",
+                summary(
+                    "a/model.py",
+                    Set.of(),
+                    new Symbol("save", SPAN, "method"),
+                    new Symbol("drop", SPAN, "method")),
+            "a/service.py", summary("a/service.py", Set.of("save")));
+
+    assertThat(UnusedDefinitionFindings.findings(List.of(method), files))
+        .extracting(AnalysisFinding::message)
+        .singleElement()
+        .asString()
+        .contains("drop");
+  }
+
   private static Symbol symbol(final String name) {
     return new Symbol(name, SPAN, "function");
   }

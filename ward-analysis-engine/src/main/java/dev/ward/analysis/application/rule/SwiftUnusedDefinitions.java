@@ -32,7 +32,7 @@ final class SwiftUnusedDefinitions implements UnusedDefinitionStrategy {
   private static final Map<String, UnusedDefinitionKind> KINDS =
       Map.of(
           DECLARATION_ID, UnusedDefinitionKind.FUNCTION,
-          ASSIGN_ONLY_ID, UnusedDefinitionKind.PROPERTY,
+          ASSIGN_ONLY_ID, UnusedDefinitionKind.ASSIGNED_PROPERTY,
           REDUNDANT_PROTOCOL_ID, UnusedDefinitionKind.PROTOCOL);
   private static final String SWIFT_SUFFIX = ".swift";
 

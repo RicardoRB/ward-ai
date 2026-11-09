@@ -11,8 +11,14 @@ enum UnusedDefinitionKind {
   FUNCTION("function", Mode.UNUSED),
   /** A class that no file uses. */
   CLASS("class", Mode.UNUSED),
+  /** A method that no file uses. */
+  METHOD("method", Mode.UNUSED),
+  /** An instance attribute that no file uses. */
+  ATTRIBUTE("attribute", Mode.UNUSED),
+  /** A Python property that no file uses. */
+  UNUSED_PROPERTY("property", Mode.UNUSED),
   /** A stored property that some file assigns but no file reads. */
-  PROPERTY("property", Mode.ASSIGNED_ONLY),
+  ASSIGNED_PROPERTY("property", Mode.ASSIGNED_ONLY),
   /** A protocol that some file conforms to but no file uses as a type. */
   PROTOCOL("protocol", Mode.CONFORMANCE_ONLY);
 
