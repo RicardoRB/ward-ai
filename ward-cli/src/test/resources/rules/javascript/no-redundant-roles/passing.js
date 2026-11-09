@@ -4,3 +4,4 @@ const n = <header role="banner" />;
 const o = <img alt="x" role="presentation" />;
 const p = <a href="x" role="button">x</a>;
 const q = <Nav role="navigation" />;
+const s = <nav role="banner navigation" />;
