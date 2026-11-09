@@ -12,7 +12,7 @@ javadoc-end-comment-delimiter = { status = "planned", issue = "#296" }
 javadoc-leading-asterisk-align = "implemented"
 javadoc-link-first-occurrence = { status = "planned", issue = "#296" }
 javadoc-link-well-known-api = { status = "planned", issue = "#296" }
-javadoc-method = { status = "planned", issue = "#296" }
+javadoc-method = "implemented"
 javadoc-missing-leading-asterisk = "implemented"
 javadoc-missing-whitespace-after-asterisk = { status = "planned", issue = "#296" }
 javadoc-no-error-in-throws-tag = { status = "planned", issue = "#296" }
