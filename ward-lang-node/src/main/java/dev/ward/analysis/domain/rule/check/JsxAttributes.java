@@ -60,6 +60,21 @@ final class JsxAttributes {
         .map(text -> text.substring(1, text.length() - 1));
   }
 
+  /**
+   * The whitespace-separated tokens of a static attribute value, read from the source text so that
+   * the spaces survive; empty for a dynamic value. Biome's {@code from_roles} reads a role this
+   * way.
+   */
+  static List<String> tokens(final SyntaxNode attribute, final String source) {
+    return value(attribute)
+        .filter(node -> literal(attribute).isPresent())
+        .map(node -> source.substring(node.span().startOffset(), node.span().endOffset()))
+        .map(raw -> raw.substring(1, raw.length() - 1).trim())
+        .filter(inner -> !inner.isEmpty())
+        .map(inner -> List.of(inner.split("\\s+")))
+        .orElse(List.of());
+  }
+
   private static boolean isQuote(final char character) {
     return character == '"' || character == '\'';
   }

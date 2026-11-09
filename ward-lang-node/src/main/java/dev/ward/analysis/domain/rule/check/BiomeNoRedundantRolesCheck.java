@@ -1,8 +1,10 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.port.AnalysisFailedException;
+import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +35,24 @@ public final class BiomeNoRedundantRolesCheck implements RuleCheck {
     this.message = Objects.requireNonNull(message, "message");
   }
 
+  /** Always fails: the role's tokens are read from the source text, which only the unit gives. */
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
+    throw new AnalysisFailedException("the redundant-roles check needs the source text");
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
-        .flatMap(visit -> redundant(visit.node()).stream())
+        .flatMap(visit -> redundant(visit.node(), unit.text()).stream())
         .map(value -> CheckSupport.at(value.span(), message))
         .toList();
   }
 
   /** The role's value when it repeats the element's implicit role. */
-  private Optional<SyntaxNode> redundant(final SyntaxNode element) {
+  private Optional<SyntaxNode> redundant(final SyntaxNode element, final String source) {
     final List<SyntaxNode> attributes = JsxAttributes.of(element);
     final Map<String, String> literals = new HashMap<>();
     attributes.forEach(
@@ -61,21 +70,15 @@ public final class BiomeNoRedundantRolesCheck implements RuleCheck {
     if (implicit.isEmpty() || roleAttribute.isEmpty()) {
       return Optional.empty();
     }
-    final Optional<String> explicit = explicitRole(literals.get(ROLE));
+    final Optional<String> explicit =
+        explicitRole(JsxAttributes.tokens(roleAttribute.get(), source));
     return explicit
         .filter(implicit.get()::equals)
         .flatMap(role -> JsxAttributes.value(roleAttribute.get()));
   }
 
-  /**
-   * The first token of a static role that names a concrete role, as Biome's from_roles. shortcut:
-   * the literal has its spaces removed, so only a single-token role is read, upgrade when the
-   * literal keeps its separators.
-   */
-  private Optional<String> explicitRole(final String roles) {
-    if (roles == null) {
-      return Optional.empty();
-    }
-    return Arrays.stream(roles.trim().split("\\s+")).filter(table::isConcrete).findFirst();
+  /** The first token that names a concrete role, as Biome's from_roles reads it. */
+  private Optional<String> explicitRole(final List<String> tokens) {
+    return tokens.stream().filter(table::isConcrete).findFirst();
   }
 }
